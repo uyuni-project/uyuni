@@ -13147,6 +13147,26 @@
 			<product_id eol="N" name="SUSE-Manager-Proxy" version="3.1">1520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Proxies extend large and/or geographically dispersed SUSE Manager environments to reduce load on the SUSE Manager Server, lower bandwidth needs, and provide faster local updates." eol="N" family="SMP" is_signed="Y" label="suse-manager-proxy-3.2-debuginfo-pool-x86_64" name="SUSE-Manager-Proxy-3.2-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="3.2" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.2/x86_64/product_debug/" summary="SUSE Manager Proxy 3.2 x86_64" update_tag="SUSE-Manager-Proxy-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Proxy" version="3.2">1725</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Proxies extend large and/or geographically dispersed SUSE Manager environments to reduce load on the SUSE Manager Server, lower bandwidth needs, and provide faster local updates." eol="N" family="SMP" is_signed="Y" label="suse-manager-proxy-3.2-debuginfo-updates-x86_64" name="SUSE-Manager-Proxy-3.2-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="3.2" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Proxy/3.2/x86_64/update_debug/" summary="SUSE Manager Proxy 3.2 x86_64" update_tag="SUSE-Manager-Proxy-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Proxy" version="3.2">1725</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Proxies extend large and/or geographically dispersed SUSE Manager environments to reduce load on the SUSE Manager Server, lower bandwidth needs, and provide faster local updates." eol="N" family="SMP" is_signed="Y" label="suse-manager-proxy-3.2-pool-x86_64" name="SUSE-Manager-Proxy-3.2-Pool for x86_64" optional="N" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="3.2" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.2/x86_64/product/" summary="SUSE Manager Proxy 3.2 x86_64" update_tag="SUSE-Manager-Proxy-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Proxy" version="3.2">1725</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Proxies extend large and/or geographically dispersed SUSE Manager environments to reduce load on the SUSE Manager Server, lower bandwidth needs, and provide faster local updates." eol="N" family="SMP" is_signed="Y" label="suse-manager-proxy-3.2-updates-x86_64" name="SUSE-Manager-Proxy-3.2-Updates for x86_64" optional="N" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="3.2" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Proxy/3.2/x86_64/update/" summary="SUSE Manager Proxy 3.2 x86_64" update_tag="SUSE-Manager-Proxy-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Proxy" version="3.2">1725</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Manager for Retail" eol="N" family="SLE-POS-AS-SMRBS-X86" is_signed="Y" label="suse-manager-retail-3.1-debuginfo-pool-x86_64" name="SUSE-Manager-Retail-3.1-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="suse-manager-retail" product_version="3.1" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product_debug/" summary="SUSE Manager for Retail 3.1 x86_64" update_tag="SUSE-Manager-Retail-3.1">
 		<products>
 			<product_id eol="N" name="suse-manager-retail" version="3.1">1574</product_id>
@@ -13405,6 +13425,66 @@
 	<channel arch="x86_64" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-X86" is_signed="Y" label="suse-manager-server-3.1-updates-x86_64-sp3" name="SUSE-Manager-Server-3.1-Updates for x86_64 SP3" optional="N" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Server" product_version="3.1" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.1/x86_64/update/" summary="SUSE Manager Server 3.1 x86_64" update_tag="SUSE-Manager-Server-3.1">
 		<products>
 			<product_id eol="N" name="SUSE-Manager-Server" version="3.1">1518</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-PPC" is_signed="Y" label="suse-manager-server-3.2-debuginfo-pool-ppc64le" name="SUSE-Manager-Server-3.2-Debuginfo-Pool for ppc64le" optional="Y" parent="sles12-sp3-pool-ppc64le" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/ppc64le/product_debug/" summary="SUSE Manager Server 3.2 ppc64le" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1722</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-Z" is_signed="Y" label="suse-manager-server-3.2-debuginfo-pool-s390x" name="SUSE-Manager-Server-3.2-Debuginfo-Pool for s390x" optional="Y" parent="sles12-sp3-pool-s390x" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/s390x/product_debug/" summary="SUSE Manager Server 3.2 s390x" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1723</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-X86" is_signed="Y" label="suse-manager-server-3.2-debuginfo-pool-x86_64" name="SUSE-Manager-Server-3.2-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/x86_64/product_debug/" summary="SUSE Manager Server 3.2 x86_64" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1724</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-PPC" is_signed="Y" label="suse-manager-server-3.2-debuginfo-updates-ppc64le" name="SUSE-Manager-Server-3.2-Debuginfo-Updates for ppc64le" optional="Y" parent="sles12-sp3-pool-ppc64le" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/ppc64le/update_debug/" summary="SUSE Manager Server 3.2 ppc64le" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1722</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-Z" is_signed="Y" label="suse-manager-server-3.2-debuginfo-updates-s390x" name="SUSE-Manager-Server-3.2-Debuginfo-Updates for s390x" optional="Y" parent="sles12-sp3-pool-s390x" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/s390x/update_debug/" summary="SUSE Manager Server 3.2 s390x" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1723</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-X86" is_signed="Y" label="suse-manager-server-3.2-debuginfo-updates-x86_64" name="SUSE-Manager-Server-3.2-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/x86_64/update_debug/" summary="SUSE Manager Server 3.2 x86_64" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1724</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-PPC" is_signed="Y" label="suse-manager-server-3.2-pool-ppc64le" name="SUSE-Manager-Server-3.2-Pool for ppc64le" optional="N" parent="sles12-sp3-pool-ppc64le" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/ppc64le/product/" summary="SUSE Manager Server 3.2 ppc64le" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1722</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-Z" is_signed="Y" label="suse-manager-server-3.2-pool-s390x" name="SUSE-Manager-Server-3.2-Pool for s390x" optional="N" parent="sles12-sp3-pool-s390x" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/s390x/product/" summary="SUSE Manager Server 3.2 s390x" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1723</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-X86" is_signed="Y" label="suse-manager-server-3.2-pool-x86_64" name="SUSE-Manager-Server-3.2-Pool for x86_64" optional="N" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/x86_64/product/" summary="SUSE Manager Server 3.2 x86_64" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1724</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-PPC" is_signed="Y" label="suse-manager-server-3.2-updates-ppc64le" name="SUSE-Manager-Server-3.2-Updates for ppc64le" optional="N" parent="sles12-sp3-pool-ppc64le" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/ppc64le/update/" summary="SUSE Manager Server 3.2 ppc64le" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1722</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-Z" is_signed="Y" label="suse-manager-server-3.2-updates-s390x" name="SUSE-Manager-Server-3.2-Updates for s390x" optional="N" parent="sles12-sp3-pool-s390x" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/s390x/update/" summary="SUSE Manager Server 3.2 s390x" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1723</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager lets you efficiently manage physical, virtual, and cloud-based Linux systems. It provides automated and cost-effective configuration and software management, asset management, and system provisioning." eol="N" family="SMS-X86" is_signed="Y" label="suse-manager-server-3.2-updates-x86_64" name="SUSE-Manager-Server-3.2-Updates for x86_64" optional="N" parent="sles12-sp3-pool-x86_64" product_name="SUSE-Manager-Server" product_version="3.2" source_url="https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/x86_64/update/" summary="SUSE Manager Server 3.2 x86_64" update_tag="SUSE-Manager-Server-3.2">
+		<products>
+			<product_id eol="N" name="SUSE-Manager-Server" version="3.2">1724</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE OpenStack Cloud 6" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-6-debuginfo-pool-x86_64" name="SUSE-OpenStack-Cloud-6-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="suse-openstack-cloud" product_version="6" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/6/x86_64/product_debug/" summary="SUSE OpenStack Cloud 6 x86_64" update_tag="OpenStack-Cloud-6">
