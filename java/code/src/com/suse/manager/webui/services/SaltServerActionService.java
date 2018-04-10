@@ -694,21 +694,31 @@ public class SaltServerActionService {
 
             FileUtils.writeStringToFile(scriptFile.toFile(),
                     script.replaceAll("\r\n", "\n"));
+
+            // state.apply remotecommands
+            Map<String, Object> pillar = new HashMap<>();
+            pillar.put("mgr_remote_cmd_script",
+                    "salt://" + SCRIPTS_DIR + "/" + scriptFile.getFileName());
+            pillar.put("mgr_remote_cmd_runas",
+                    scriptAction.getScriptActionDetails().getUsername());
+            ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                    Arrays.asList(REMOTE_COMMANDS),
+                    Optional.of(pillar),
+                    Optional.of(true), Optional.of(false)), minions);
         }
         catch (IOException e) {
-            LOG.error("Could not write script to file " + scriptFile, e);
+            String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
+            LOG.error(errorMsg);
+            scriptAction.getServerActions().stream()
+                    .filter(entry -> minions.contains(entry.getServer()))
+                    .forEach(sa -> {
+                        sa.setCompletionTime(new Date());
+                        sa.setResultCode(-1L);
+                        sa.setResultMsg("Error scheduling the action: " + errorMsg);
+                        sa.setStatus(ActionFactory.STATUS_FAILED);
+                        ActionFactory.save(sa);
+            });
         }
-
-        // state.apply remotecommands
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("mgr_remote_cmd_script",
-                "salt://" + SCRIPTS_DIR + "/" + scriptFile.getFileName());
-        pillar.put("mgr_remote_cmd_runas",
-                scriptAction.getScriptActionDetails().getUsername());
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(
-                Arrays.asList(REMOTE_COMMANDS),
-                Optional.of(pillar),
-                Optional.of(true), Optional.of(false)), minions);
         return ret;
     }
 
