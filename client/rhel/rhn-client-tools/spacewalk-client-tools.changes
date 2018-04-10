@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Apr 10 10:06:04 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.6.4-1
 - Fix up2date logging on FQDN collection exception
   (bsc#1081607, bsc#1082019)
 
