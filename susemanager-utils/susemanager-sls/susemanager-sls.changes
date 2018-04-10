@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Apr 10 10:18:56 CEST 2018 - jgonzalez@suse.com
+
+- version 3.1.16-1
 - Remove SUSE Manager repositories when deleting salt minions (bsc#1079847)
 - perform docker login before building and inspecting images (bsc#1085635)
 - Allow scheduling the change of software channels as an action.
