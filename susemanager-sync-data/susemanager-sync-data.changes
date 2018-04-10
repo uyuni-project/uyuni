@@ -1,3 +1,5 @@
+- Add support for SLES12 SP2 LTSS (bsc#1088878)
+
 -------------------------------------------------------------------
 Tue Apr 10 10:19:31 CEST 2018 - jgonzalez@suse.com
 
