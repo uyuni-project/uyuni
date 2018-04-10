@@ -1,3 +1,9 @@
+-------------------------------------------------------------------
+Tue Apr 10 10:13:19 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.1.15-1
+- Add missing left margin at Software Channels WebUI icon links to
+  channels (bsc#1083329)
 - Fix for the system channels UI, hide the corresponding title and horizontal line if list of
   SUSE or custom channels is empty
 - Fixed behavior on child channels unselecting when multiple channels were unselected
