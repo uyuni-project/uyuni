@@ -55,7 +55,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
                 channel.getConfigFiles().first().getConfigFileName().getPath());
         assertTrue(generatedFile.exists());
         assertTrue(generatedFile.isFile());
-        assertEquals("aoeuaoeuao", FileUtils.readFileToString(generatedFile));
+        assertEquals("aoeuäö€üáóéúř", FileUtils.readFileToString(generatedFile));
 
         File initSlsFile = getGeneratedFile(channel, "init.sls");
         initSlsAssertions(initSlsFile,
