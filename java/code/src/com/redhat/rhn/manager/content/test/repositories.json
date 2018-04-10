@@ -17081,6 +17081,56 @@
   },
   {
     "autorefresh": true,
+    "description": "SUSE-Manager-Server-3.2-Updates for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2982,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/s390x/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Server-3.2-Debuginfo-Updates for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2983,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/s390x/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.2-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2984,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/s390x/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.2-Debuginfo-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2985,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/s390x/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.2-Source-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2986,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/s390x/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SUSE-Manager-Server-3.2-Updates for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": true,
@@ -17128,6 +17178,56 @@
     "installer_updates": false,
     "name": "SUSE-Manager-Server-3.2-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Proxy-3.2-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2992,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.2-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Proxy/3.2/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Proxy-3.2-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2993,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.2-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Proxy/3.2/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Proxy-3.2-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2994,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.2-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.2/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Proxy-3.2-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2995,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.2-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.2/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Proxy-3.2-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2996,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.2-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.2/x86_64/product_source/?my-fake-token"
   },
   {
     "autorefresh": true,
