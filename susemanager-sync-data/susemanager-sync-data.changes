@@ -1,3 +1,7 @@
+- Add support for SLES12 SP1 LTSS (bsc#1088878)
+- Add SUSE Manager 3.2 Server and Proxy Products
+- Add PackageHub 15 Products
+
 -------------------------------------------------------------------
 Wed Apr 04 12:15:17 CEST 2018 - jgonzalez@suse.com
 
