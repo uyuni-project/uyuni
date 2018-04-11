@@ -1,3 +1,4 @@
+- XMLRPC API for state channels
 - Subscribe saltbooted minion to software channels, respect activation key in final registration steps
 - fix deletion of Taskomatic schedules via the GUI (bsc#1095569)
 - Generate OS image pillars via Java
