@@ -528,6 +528,11 @@ public class DistUpgradeManager extends BaseManager {
                     }
                 }
                 if (!foundChild) {
+                    logger.debug("Discarding cloned channel '" + clone + "' of base channel '" +
+                            suseBaseChannel + "' as a migration alternative. " +
+                            "The cloned channel doesn't have required child channels. " +
+                            "Required child channels: '" + requiredChildChannels +
+                            "', accessible child channels of the clone: '" + children + "'.");
                     isValidAlternative = false;
                     break;
                 }
