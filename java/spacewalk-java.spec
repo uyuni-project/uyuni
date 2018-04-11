@@ -55,7 +55,7 @@ Requires: sudo
 Requires: jade4j
 Requires: jose4j
 Requires: salt-netapi-client >= 0.11.1
-Requires: spark
+Requires: spark-core
 Requires: spark-template-jade
 Requires: hibernate5
 Requires: hibernate-commons-annotations
@@ -90,7 +90,7 @@ BuildRequires: log4j
 BuildRequires: jade4j
 BuildRequires: jose4j
 BuildRequires: salt-netapi-client >= 0.11.1
-BuildRequires: spark
+BuildRequires: spark-core
 BuildRequires: spark-template-jade
 BuildRequires: httpcomponents-client
 BuildRequires: velocity
