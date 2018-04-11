@@ -157,7 +157,7 @@ const ProductsPageWrapper = React.createClass({
       let failedProducts = currentObject.state.selectedItems.filter(i => data[i.identifier]);
       let resultMessages = null;
       if (failedProducts.length == 0) {
-        resultMessages = MessagesUtils.success('All the products were installed succesfully.')
+        resultMessages = MessagesUtils.success('Selected channels/products were scheduled successfully for syncing.')
       }
       else {
         resultMessages = MessagesUtils.warning(
