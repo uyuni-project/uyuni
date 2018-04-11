@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.CharEncoding;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
                 channel.getConfigFiles().first().getConfigFileName().getPath());
         assertTrue(generatedFile.exists());
         assertTrue(generatedFile.isFile());
-        assertEquals("aoeuäö€üáóéúř", FileUtils.readFileToString(generatedFile));
+        assertEquals("aoeuäö€üáóéúř", FileUtils.readFileToString(generatedFile, CharEncoding.UTF_8));
 
         File initSlsFile = getGeneratedFile(channel, "init.sls");
         initSlsAssertions(initSlsFile,
