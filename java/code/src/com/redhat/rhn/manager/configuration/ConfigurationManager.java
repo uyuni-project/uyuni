@@ -1952,7 +1952,6 @@ public class ConfigurationManager extends BaseManager {
                 symlinks.size());
     }
 
-
     /**
      * Looks up a config channel, if the given user has access to it.
      * @param user The user requesting to lookup a config channel.
@@ -1973,23 +1972,6 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
-     * Looks up a config channel, if the given user has access to it.
-     * @param user The user requesting to lookup a config channel.
-     * @param label The label for the ConfigChannel
-     * @param cct the config channel type of the config channel.
-     * @return The sought for config channel.
-     */
-    public ConfigChannel lookupConfigChannel(User user,
-            String label,
-            ConfigChannelType cct) {
-        ConfigChannel cc = ConfigurationFactory.lookupConfigChannelByLabel(label, user.getOrg(), cct);
-        if (cc == null || !accessToChannel(user.getId(), cc.getId())) {
-           throwChannelLookUpException(label);
-        }
-        return cc;
-    }
-
-    /**
      * Looks up a  global('normal', 'state') config channel, if the given user has access to it.
      * @param user The user requesting to lookup a config channel.
      * @param label The label for the ConfigChannel
@@ -2004,20 +1986,6 @@ public class ConfigurationManager extends BaseManager {
         return configChannel.filter(cc->
                 accessToChannel(user.getId(), cc.getId())
         ).orElse(null);
-    }
-
-    /**
-     * Throw the customized lookup exception when channel doesn't exist or is inaccessible
-     * @param channelLabel
-     */
-    private LookupException throwChannelLookUpException(String channelLabel) {
-        LocalizationService ls = LocalizationService.getInstance();
-        LookupException e = new LookupException("Could not find config channel with label=" + channelLabel);
-        e.setLocalizedTitle(ls.getMessage("lookup.configchan.title"));
-        e.setLocalizedReason1(ls.getMessage("lookup.configchan.reason1"));
-        e.setLocalizedReason2(ls.getMessage("lookup.configchan.reason2"));
-        return e;
-
     }
 
     /**
@@ -2306,7 +2274,10 @@ public class ConfigurationManager extends BaseManager {
             else {
                 names = listFileNamesForSystemChannel(user, server, channel, null);
             }
-
+            if (names.isEmpty()) {
+                log.warn("No files exists for " + server.getHostname() + " --skipping");
+                continue;
+            }
             Set<Server> system = new HashSet<Server>();
             system.add(server);
             Set<Long> revs = new HashSet<Long>();

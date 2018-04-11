@@ -1,3 +1,4 @@
+- XMLRPC API for state channels
 - add logic for RedHat modules
 - fix deletion of Taskomatic schedules via the GUI (bsc#1095569)
 - Generate OS image pillars via Java
