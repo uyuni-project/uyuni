@@ -32,10 +32,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -438,9 +436,7 @@ public class ConfigurationFactory extends HibernateFactory {
                     .setLong("channel_id", channel.longValue())
                     .setLong("name_id", name.longValue())
                     .setLong("state_id", ConfigFileState.normal().
-                                                    getId().longValue())
-                    //Retrieve from cache if there
-                    .setCacheable(true);
+                                                    getId().longValue());
         try {
             return (ConfigFile) query.uniqueResult();
         }

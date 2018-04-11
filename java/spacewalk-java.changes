@@ -1,3 +1,4 @@
+- XMLRPC API for state channels
 - Optimize execution of actions in minions (bsc#1099857)
 - Reschedule taskomatic jobs if task threads limit reached (bsc#1096511)
 - Logic constraint: results must be ordered and grouped by systemId first (bsc#1101033)
