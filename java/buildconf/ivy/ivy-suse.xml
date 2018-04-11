@@ -80,7 +80,7 @@
         <dependency org="suse" name="slf4j-api" rev="1.7.12" />
         <dependency org="suse" name="slf4j-log4j12" rev="1.7.12" />
         <dependency org="suse" name="snakeyaml" rev="1.10" />
-        <dependency org="suse" name="spark-core" rev="2.3" />
+        <dependency org="suse" name="spark-core" rev="2.7.2" />
         <dependency org="suse" name="spark-template-jade" rev="2.3" />
         <dependency org="suse" name="statistics" rev="1.0.2" />
         <dependency org="suse" name="stringtree-json" rev="2.0.9" />
