@@ -309,6 +309,10 @@ public class SaltActionChainGeneratorService {
             String filePattern = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId +
                     "_" + minionServer.getMachineId() + "_";
             try {
+                // Remove the files
+                for (Path path : filesToDelete) {
+                    Files.deleteIfExists(path);
+                }
                 if (actionChainFailed) {
                     // Add also next SLS chunks because the Action Chain failed and these
                     // files are not longer needed.
