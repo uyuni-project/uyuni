@@ -1,3 +1,4 @@
+- Fix misleading message when syncing channels (bsc#1089103)
 - Properly invalidate channel access tokens when changing to the same channels (bsc#1085660)
 - Fix in SSM channls UI, if all systems in SSM do not have a base channel the corresponding
   child channels are not displayed on the subsequent page
