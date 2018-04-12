@@ -655,3 +655,53 @@ end
 Given(/^I have a valid token for organization "(.*?)" and channel "(.*?)"$/) do |org, channel|
   @token = token(server_secret, org: org, onlyChannels: [channel])
 end
+
+And(/^the "([^"]*)" is a SLE-"(.*?)" client$/) do |target, version|
+  node = get_target(target)
+  os_version = get_os_version(node)
+  unless os_version.include? version
+    raise "This is not a SLE " + version + " client, no 'recommended' child channels can be selected."
+  end
+end
+
+And(/^I should see the recommended toggler "([^"]*)"$/) do |target_status|
+  case target_status
+  when 'enabled'
+    xpath = "//i[contains(@class, 'fa-toggle-on')]"
+    raise unless find(:xpath, xpath)
+  when 'disabled'
+    xpath = "//i[contains(@class, 'fa-toggle-off')]"
+    raise unless find(:xpath, xpath)
+  else
+    raise 'Invalid target status.'
+  end
+end
+
+And(/^I click on the "([^"]*)" recommended toggler$/) do |target_status|
+  case target_status
+  when 'enabled'
+    xpath = "//i[contains(@class, 'fa-toggle-on')]"
+    raise unless find(:xpath, xpath).click
+  when 'disabled'
+    xpath = "//i[contains(@class, 'fa-toggle-off')]"
+    raise unless find(:xpath, xpath).click
+  else
+    raise 'Invalid target status.'
+  end
+end
+
+And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, target_status|
+  step %(I should see a "#{target_channel}" text)
+
+  xpath = "//label[contains(text(), '#{target_channel}')]"
+  channel_checkbox_id = find(:xpath, xpath)['for']
+
+  case target_status
+  when 'selected'
+    raise unless has_checked_field?(channel_checkbox_id)
+  when 'unselected'
+    raise unless !has_checked_field?(channel_checkbox_id)
+  else
+    raise 'Invalid target status.'
+  end
+end
