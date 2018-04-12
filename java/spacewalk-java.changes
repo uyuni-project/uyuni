@@ -1,3 +1,5 @@
+- Fix Advanced search for systems with installed packages (bsc#1085838)
+
 -------------------------------------------------------------------
 Tue Apr 10 10:06:55 CEST 2018 - jgonzalez@suse.com
 
