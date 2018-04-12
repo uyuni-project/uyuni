@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TreeMap;
+import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -254,7 +254,7 @@ public class SPMigrationAction extends RhnAction {
                             targetProducts, suseBaseChannel.getId());
 
             // Get available alternatives
-            TreeMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
+            SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
                     getAlternatives(targetProducts, arch, ctx.getCurrentUser());
 
             // Create new map, put original channels first
