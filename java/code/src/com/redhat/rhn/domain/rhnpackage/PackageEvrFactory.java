@@ -81,10 +81,8 @@ public class PackageEvrFactory {
      * @return Returns a committed PackageEvr
      */
     public static PackageEvr lookupOrCreatePackageEvr(String e, String v, String r) {
-        return lookupPackageEvrByEvr(e, v, r).orElseGet(() -> {
-            Long id = lookupPackageEvr(e, v, r);
-            return lookupPackageEvrById(id);
-        });
+        Long id = lookupPackageEvr(e, v, r);
+        return lookupPackageEvrById(id);
     }
 
     /**
