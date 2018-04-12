@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import com.redhat.rhn.common.util.RpmVersionComparator;
@@ -482,7 +483,7 @@ public class DistUpgradeManager extends BaseManager {
      * @param user user
      * @return alternative target product sets
      */
-    public static TreeMap<ClonedChannel, List<Long>> getAlternatives(
+    public static SortedMap<ClonedChannel, List<Long>> getAlternatives(
             SUSEProductSet targetProducts, ChannelArch arch, User user) {
         // This list will be returned
         TreeMap<ClonedChannel, List<Long>> alternatives =
