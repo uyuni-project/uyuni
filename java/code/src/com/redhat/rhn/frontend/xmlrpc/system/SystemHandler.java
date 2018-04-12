@@ -175,6 +175,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -6222,7 +6223,7 @@ public class SystemHandler extends BaseHandler {
                 }
 
                 // Consider alternatives (cloned channel trees)
-                Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
+                SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
                         getAlternatives(targetProducts, arch, loggedInUser);
                 for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
                     if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
