@@ -24,11 +24,8 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileCreateCommand;
-
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -105,15 +102,6 @@ public class KickstartWizardHelper {
     }
 
     /**
-     * Looks up a PackageName based on its string name
-     * @param name name of PackageName object
-     * @return PackageName if found, else null
-     */
-    public PackageName findPackageName(String name) {
-        return PackageFactory.lookupOrCreatePackageByName(name);
-    }
-
-    /**
      * Get list of available Channels for Kickstarting.
      * @return Collection of Channels.
      */
@@ -134,11 +122,6 @@ public class KickstartWizardHelper {
                         lookupKickstartableTrees(channelId,
                                 currentUser.getOrg()));
     }
-
-    /**
-     * Returns a list of possible Virtualization types
-     * @return list of VirtualizationType instances
-     */
 
     /**
      * Store a newly created KickstartData
