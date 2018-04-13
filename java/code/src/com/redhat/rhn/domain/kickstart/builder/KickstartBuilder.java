@@ -588,7 +588,7 @@ public class KickstartBuilder {
             ksdata.setKsPackages(new TreeSet<KickstartPackage>());
         }
         cmd.store(ksdata);
-        PackageName pn = cmd.findPackageName("@ Base");
+        PackageName pn = PackageFactory.lookupOrCreatePackageByName("@ Base");
         ksdata.addKsPackage(new KickstartPackage(ksdata, pn));
         return ksdata;
 

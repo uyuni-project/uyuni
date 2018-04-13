@@ -1,3 +1,4 @@
+- fix constraint violation errors when onboarding (bsc#1089468)
 - Fix Advanced search for systems with installed packages (bsc#1085838)
 
 -------------------------------------------------------------------

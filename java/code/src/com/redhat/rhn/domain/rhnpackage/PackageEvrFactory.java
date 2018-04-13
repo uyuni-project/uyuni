@@ -39,7 +39,9 @@ public class PackageEvrFactory {
 
     /**
      * Commit a PackageEvr via stored proc - lookup_evr
-     * @param evrIn PackageEvr to commit to db
+     * @param epoch the epoch
+     * @param release the release
+     * @param version the version
      * @return Returns a new/committed PackageEvr object.
      */
     private static Long lookupPackageEvr(String epoch, String version,
@@ -53,7 +55,7 @@ public class PackageEvrFactory {
         inParams.put("release", release);
 
         Map outParams = new HashMap();
-        outParams.put("evrId", new Integer(Types.NUMERIC));
+        outParams.put("evrId", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);
 
@@ -81,10 +83,8 @@ public class PackageEvrFactory {
      * @return Returns a committed PackageEvr
      */
     public static PackageEvr lookupOrCreatePackageEvr(String e, String v, String r) {
-        return lookupPackageEvrByEvr(e, v, r).orElseGet(() -> {
-            Long id = lookupPackageEvr(e, v, r);
-            return lookupPackageEvrById(id);
-        });
+        Long id = lookupPackageEvr(e, v, r);
+        return lookupPackageEvrById(id);
     }
 
     /**

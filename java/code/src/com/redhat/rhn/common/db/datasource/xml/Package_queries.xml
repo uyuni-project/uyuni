@@ -1219,6 +1219,12 @@ ORDER BY  UPPER(X.NVRE)
     </query>
 </callable-mode>
 
+<callable-mode name="lookup_package_name">
+    <query params="name">
+        {:nameId = call lookup_package_name(:name)}
+    </query>
+</callable-mode>
+
 <mode name="compatible_package_arches">
   <query>
 SELECT DISTINCT pa.label, pa.name
