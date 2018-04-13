@@ -35,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.io.File;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -45,6 +46,8 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
@@ -69,6 +72,11 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         worker = new SSHPushWorkerSalt(logger, sshPushSystemMock, saltServiceMock,
                 mock(SaltUtils.class));
         minion = MinionServerFactoryTest.createTestMinionServer(user);
+        // Create script action directory
+        File scriptDir = new File(SUMA_STATE_FILES_ROOT_PATH + "/" + SCRIPTS_DIR);
+        if (!scriptDir.exists()) {
+            scriptDir.mkdirs();
+        }
     }
 
     /**

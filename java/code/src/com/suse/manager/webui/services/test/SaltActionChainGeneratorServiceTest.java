@@ -296,24 +296,25 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         service.createActionChainSLSFiles(actionChain, minion1, states);
 
         // First chunk execution was successfully. Removing only chunk number 1.
-        service.removeActionChainSLSFiles(actionChain.getId(), minion1.getId().toString(), 1, false);
+        service.removeActionChainSLSFiles(actionChain.getId(), minion1.getMinionId(), 1, false);
 
         assertFalse(Files.exists(Paths.get(stateFilesRoot.toString(),
-				SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
+                SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
                 "actionchain_" + actionChain.getId() + "_" + minion1.getMachineId() + "_1.sls")));
         assertTrue(Files.exists(Paths.get(stateFilesRoot.toString(),
-				SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
+                SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
                 "actionchain_" + actionChain.getId() + "_" + minion1.getMachineId() + "_2.sls")));
 
         // Execution of 1 chunk failed. All other chunks should be also removed
+        label = TestUtils.randomString();
         actionChain = ActionChainFactory.createActionChain(label, user);
         service.createActionChainSLSFiles(actionChain, minion1, states);
-        service.removeActionChainSLSFiles(actionChain.getId(), minion1.getId().toString(), 1, true);
+        service.removeActionChainSLSFiles(actionChain.getId(), minion1.getMinionId(), 1, true);
         assertFalse(Files.exists(Paths.get(stateFilesRoot.toString(),
-				SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
+                SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
                 "actionchain_" + actionChain.getId() + "_" + minion1.getMachineId() + "_1.sls")));
         assertFalse(Files.exists(Paths.get(stateFilesRoot.toString(),
-				SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
+                SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
                 "actionchain_" + actionChain.getId() + "_" + minion1.getMachineId() + "_2.sls")));
     }
 

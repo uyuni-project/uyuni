@@ -687,13 +687,17 @@ public class SaltServerActionService {
                 Files.setOwner(scriptFile.getParent(), tomcatUser);
 
             }
-            FileAttribute<Set<PosixFilePermission>> fileAttributes =
-                    PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("r--r--r--"));
-            Files.createFile(scriptFile, fileAttributes);
-            Files.setOwner(scriptFile, tomcatUser);
 
-            FileUtils.writeStringToFile(scriptFile.toFile(),
-                    script.replaceAll("\r\n", "\n"));
+            // In case of action retry, the files script files will be already created.
+            if (!Files.exists(scriptFile)) {
+                FileAttribute<Set<PosixFilePermission>> fileAttributes =
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("r--r--r--"));
+                Files.createFile(scriptFile, fileAttributes);
+                Files.setOwner(scriptFile, tomcatUser);
+
+                FileUtils.writeStringToFile(scriptFile.toFile(),
+                        script.replaceAll("\r\n", "\n"));
+            }
 
             // state.apply remotecommands
             Map<String, Object> pillar = new HashMap<>();
