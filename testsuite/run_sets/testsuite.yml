@@ -37,6 +37,7 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
+- features/min_software_channels.feature
 - features/min_centos_salt_install_package_and_patch.feature
 - features/min_bootstrap_xmlrpc.feature
 - features/min_ssh_bootstrap_xmlrpc.feature
