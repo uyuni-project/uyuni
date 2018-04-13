@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.CachedStatement;
+import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.QuerySanitizer;
@@ -28,10 +29,10 @@ import com.redhat.rhn.frontend.action.channel.PackageSearchAction;
 import com.redhat.rhn.frontend.dto.BooleanWrapper;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.manager.user.UserManager;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import java.sql.Types;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -189,15 +190,27 @@ public class PackageFactory extends HibernateFactory {
      * @return a PackageName object that has a matching name
      */
     public static synchronized PackageName lookupOrCreatePackageByName(String pn) {
-        PackageName returned = lookupPackageName(pn);
+        long id = lookupOrCreatePackageNameId(pn);
+        return lookupPackageName(id);
+    }
 
-        if (returned == null) {
-            PackageName newName = new PackageName();
-            newName.setName(pn);
-            singleton.saveObject(newName);
-            return newName;
-        }
-        return returned;
+    /**
+     * Lookup the ID of a package name, if it exists, otherwise INSERT one (in a separate transaction)
+     * @param name the package name
+     * @return a package name id
+     */
+    public static synchronized long lookupOrCreatePackageNameId(String name) {
+        CallableMode m = ModeFactory.getCallableMode("Package_queries", "lookup_package_name");
+
+        Map inParams = new HashMap();
+        inParams.put("name", name);
+
+        Map outParams = new HashMap();
+        outParams.put("nameId", Types.NUMERIC);
+
+        Map result = m.execute(inParams, outParams);
+
+        return (Long) result.get("nameId");
     }
 
     /**

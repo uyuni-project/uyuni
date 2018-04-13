@@ -1,6 +1,18 @@
+- fix constraint violation errors when onboarding (bsc#1089468)
 - Update Spark to version 2.7.2 (bsc#1089101)
 - Fix misleading message when syncing channels (bsc#1089103)
 - Properly invalidate channel access tokens when changing to the same channels (bsc#1085660)
+- Fix Advanced search for systems with installed packages (bsc#1085838)
+
+-------------------------------------------------------------------
+Tue Apr 10 10:06:55 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.46.11-1
+- Add SUSE OpenStack Cloud 8 and SUSE OpenStack Cloud Crowbar 8 products (bsc#1080298)
+- Add option to schedule the software channels change in
+  software -> channels -> channel -> target systems (bsc#1088246)
+- Fix config channel assignment when registering with an activation key (bsc#1084134)
+>>>>>>> 51cb41425f... Changelogs updated
 - Fix in SSM channls UI, if all systems in SSM do not have a base channel the corresponding
   child channels are not displayed on the subsequent page
 - Apply Salt states in queue mode when executing Action Chains.
