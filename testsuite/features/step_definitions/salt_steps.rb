@@ -351,7 +351,7 @@ Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key
     extra_cmd = ''
   elsif minion == 'ssh-minion' or minion == 'ceos-minion'
     cmd = 'salt-ssh'
-    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
+    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
     $server.run("printf '#{node.full_hostname}:\n  host: #{node.full_hostname}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
     raise 'Invalid target'
