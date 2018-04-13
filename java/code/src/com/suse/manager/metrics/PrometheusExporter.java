@@ -44,6 +44,10 @@ public enum PrometheusExporter{
         }
     }
 
+    public void registerTomcatCollector() {
+        new TomcatCollector().register();
+    }
+
     public void registerThreadPool(ThreadPoolExecutor pool, String poolId) {
         if (ENABLED){
             new ThreadPoolCollector(pool, poolId).register();

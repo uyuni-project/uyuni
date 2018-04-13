@@ -244,7 +244,7 @@
   -->
    <servlet>
         <servlet-name>metrics</servlet-name>
-        <servlet-class>io.prometheus.client.exporter.MetricsServlet</servlet-class>
+        <servlet-class>com.suse.manager.metrics.PrometheusMetricsServlet</servlet-class>
     </servlet>
 
   <!--
