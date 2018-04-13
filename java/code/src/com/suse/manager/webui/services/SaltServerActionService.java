@@ -850,6 +850,7 @@ public class SaltServerActionService {
                     pillar.put("docker-registries", dockerRegistries);
                     String repoPath = profile.getTargetStore().getUri() + "/" + profile.getLabel();
                     String tag = version.orElse("");
+                    // salt 2016.11 dockerng require imagename while salt 2018.3 docker requires it separate
                     pillar.put("imagerepopath", repoPath);
                     pillar.put("imagetag", tag);
                     pillar.put("imagename", repoPath + ":" + tag);
