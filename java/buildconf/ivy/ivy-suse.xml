@@ -74,6 +74,10 @@
         <dependency org="suse" name="redstone-xmlrpc-client" rev="1.1_20071120" />
         <dependency org="suse" name="regexp" rev="1.4" />
         <dependency org="suse" name="salt-netapi-client" rev="0.13.0" />
+        <dependency org="suse" name="simpleclient" rev="0.3.0" />
+        <dependency org="suse" name="simpleclient_common" rev="0.3.0" />
+        <dependency org="suse" name="simpleclient_servlet" rev="0.3.0" />
+        <dependency org="suse" name="simpleclient_httpserver" rev="0.3.0" />
         <dependency org="suse" name="simple-core" rev="3.1.3" />
         <dependency org="suse" name="simple-xml" rev="2.6.2" />
         <dependency org="suse" name="sitemesh" rev="2.1" />
