@@ -36,8 +36,6 @@ import org.hibernate.Transaction;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
-import org.quartz.core.QuartzScheduler;
-import org.quartz.impl.StdScheduler;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.net.UnknownHostException;
