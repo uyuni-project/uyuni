@@ -1,3 +1,4 @@
+- use dockermod with new salt and user repository/tag option for build
 -------------------------------------------------------------------
 Tue Apr 10 10:18:56 CEST 2018 - jgonzalez@suse.com
 

@@ -965,8 +965,8 @@ public class SaltUtils {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
         serverAction.setResultMsg("Success");
 
-        if (result.getDockerngInspect().isResult()) {
-            ImageInspectSlsResult iret = result.getDockerngInspect().getChanges().getRet();
+        if (result.getDockerInspect().isResult()) {
+            ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
             imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
             ImageBuildHistory history = new ImageBuildHistory();
             history.setImageInfo(imageInfo);
@@ -982,13 +982,13 @@ public class SaltUtils {
             imageInfo.getBuildHistory().add(history);
         }
         else {
-            serverAction.setResultMsg(result.getDockerngInspect().getComment());
+            serverAction.setResultMsg(result.getDockerInspect().getComment());
             as = ActionFactory.STATUS_FAILED;
         }
 
-        if (result.getDockerngSlsBuild().isResult()) {
+        if (result.getDockerSlsBuild().isResult()) {
             PkgProfileUpdateSlsResult ret =
-                    result.getDockerngSlsBuild().getChanges().getRet();
+                    result.getDockerSlsBuild().getChanges().getRet();
 
             Optional.of(ret.getInfoInstalled().getChanges().getRet())
             .map(saltPkgs -> saltPkgs.entrySet().stream()
@@ -1026,7 +1026,7 @@ public class SaltUtils {
         }
         else {
             // do not fail the action when no packages are returned
-            serverAction.setResultMsg(result.getDockerngSlsBuild().getComment());
+            serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
         }
 
         serverAction.setStatus(as);
@@ -1077,7 +1077,7 @@ public class SaltUtils {
         }
 
         // Update live patching version
-        server.setKernelLiveVersion(Optional.ofNullable(result.getKernelLiveVersionInfo())
+        server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
                 .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
                 .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
 
