@@ -210,26 +210,226 @@ CREATE TABLE qrtz_simprop_triggers
 -- create indexes for faster queries
 --
 
-drop index idx_qrtz_j_req_recovery;
-drop index idx_qrtz_j_grp;
-drop index idx_qrtz_t_j;
-drop index idx_qrtz_t_jg;
-drop index idx_qrtz_t_c;
-drop index idx_qrtz_t_g;
-drop index idx_qrtz_t_state;
-drop index idx_qrtz_t_n_state;
-drop index idx_qrtz_t_n_g_state;
-drop index idx_qrtz_t_next_fire_time;
-drop index idx_qrtz_t_nft_st;
-drop index idx_qrtz_t_nft_misfire;
-drop index idx_qrtz_t_nft_st_misfire;
-drop index idx_qrtz_t_nft_st_misfire_grp;
-drop index idx_qrtz_ft_trig_inst_name;
-drop index idx_qrtz_ft_inst_job_req_rcvry;
-drop index idx_qrtz_ft_j_g;
-drop index idx_qrtz_ft_jg;
-drop index idx_qrtz_ft_t_g;
-drop index idx_qrtz_ft_tg;
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_j_req_recovery';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_j_grp';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_j';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_jg';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_c';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_g';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_state';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_n_state';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_n_g_state';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_next_fire_time';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_nft_st';
+exception
+    when index_not_exists then null;
+end;
+
+/
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_nft_misfire';
+exception
+    when index_not_exists then null;
+end;
+
+/
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_nft_st_misfire';
+exception
+    when index_not_exists then null;
+end;
+
+/
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_t_nft_st_misfire_grp';
+exception
+    when index_not_exists then null;
+end;
+
+/
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_ft_trig_inst_name';
+exception
+    when index_not_exists then null;
+end;
+
+/
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_ft_inst_job_req_rcvry';
+exception
+    when index_not_exists then null;
+end;
+
+/
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_ft_j_g';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_ft_jg';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_ft_t_g';
+exception
+    when index_not_exists then null;
+end;
+/
+
+declare
+index_not_exists EXCEPTION;
+PRAGMA EXCEPTION_INIT(index_not_exists, -1418);
+begin
+
+    execute immediate 'drop index idx_qrtz_ft_tg';
+exception
+    when index_not_exists then null;
+end;
+/
+
 create index idx_qrtz_j_req_recovery on qrtz_job_details(SCHED_NAME,REQUESTS_RECOVERY);
 create index idx_qrtz_j_grp on qrtz_job_details(SCHED_NAME,JOB_GROUP);
 create index idx_qrtz_t_j on qrtz_triggers(SCHED_NAME,JOB_NAME,JOB_GROUP);
