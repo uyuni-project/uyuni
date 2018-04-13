@@ -34,7 +34,7 @@ public enum PrometheusExporter {
     private static final Logger LOG = Logger.getLogger(PrometheusExporter.class);
 
     // Listening port for non-Servlet based applications
-    private static final int PORT = 2830;
+    private static final int PORT = 9800;
 
     /**
      * Starts an HTTP server serving metrics. To be used outside of J2EE applications.
