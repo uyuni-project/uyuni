@@ -1,3 +1,5 @@
+- fix migration error with not null column (bsc#1088818)
+
 -------------------------------------------------------------------
 Thu Mar 29 01:26:41 CEST 2018 - jgonzalez@suse.com
 
