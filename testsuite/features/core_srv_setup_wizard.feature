@@ -52,6 +52,9 @@ Feature: The Setup Wizard
     And I should see that the "Basesystem Module 15" product is "recommended"
     When I select "SUSE Linux Enterprise Server 15" as a product
     Then I should see the "Basesystem Module 15" selected
+    And I click the Add Product button
+    And I wait for "60" seconds
+    Then the products should be added
 
   Scenario: View the channels list in the products page
     When I follow "SUSE Products" in the content area
