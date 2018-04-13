@@ -39,7 +39,7 @@ Feature: The Setup Wizard
     Then I should see a "Legacy Module 12" text
     When I select the addon "Legacy Module 12"
     And I click the Add Product button
-    And I wait for "120" seconds
+    And I wait for "60" seconds
     Then the products should be added
 
   Scenario: Select product with recommended enabled
