@@ -68,6 +68,7 @@ Requires: statistics
 Requires: gnu-jaf
 Requires: objectweb-asm
 Requires: tomcat-taglibs-standard
+Requires: prometheus-client-java
 BuildRequires: hibernate5
 BuildRequires: hibernate-commons-annotations
 BuildRequires: hibernate-jpa-2.1-api
@@ -92,6 +93,7 @@ BuildRequires: salt-netapi-client >= 0.13.0
 BuildRequires: spark
 BuildRequires: spark-template-jade
 BuildRequires: httpcomponents-client
+BuildRequires: prometheus-client-java
 %else
 Requires: cobbler20
 Requires: dojo
@@ -854,6 +856,7 @@ fi
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/spark-core.jar
 %{jardir}/spark-template-jade.jar
+%{jardir}/simpleclient*.jar
 
 # Hibernate and related
 %{jardir}/hibernate-core-5.jar
