@@ -133,7 +133,7 @@
              regexp ${jmock-jars} strutstest" / -->
 
   <!-- SUSE extra dependencies: build and runtime -->
-  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpclient httpcore" />
+  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpclient httpcore simpleclient simpleclient_common simpleclient_servlet simpleclient_httpserver" />
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="commons-jexl ${commons-lang} concurrentlinkedhashmap-lru
