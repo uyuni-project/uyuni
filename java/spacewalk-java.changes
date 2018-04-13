@@ -1,3 +1,4 @@
+- Log debug message if required cloned children do not exist when finding Service Pack migration alternatives
 - fix constraint violation errors when onboarding (bsc#1089468)
 - Update Spark to version 2.7.2 (bsc#1089101)
 - Fix misleading message when syncing channels (bsc#1089103)
