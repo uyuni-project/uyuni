@@ -22,6 +22,7 @@ import org.quartz.SchedulerException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.suse.manager.metrics.CustomCollectorUtils.counterFor;
 import static com.suse.manager.metrics.CustomCollectorUtils.gaugeFor;
 
 /**
@@ -49,17 +50,17 @@ public class SchedulerCollector extends Collector {
         List<MetricFamilySamples> out = new ArrayList<>();
 
         try {
-            out.add(gaugeFor("thread_pool_size",
-                    "Thread pool size",
+            out.add(counterFor("scheduler_threads",
+                    "Threads total count",
                     this.scheduler.getMetaData().getThreadPoolSize(),
                     this.schedulerId));
-            out.add(gaugeFor("executed_jobs_total_count",
-                    "Executed jobs total count",
-                    this.scheduler.getMetaData().getNumberOfJobsExecuted(),
-                    this.schedulerId));
-            out.add(gaugeFor("currently_executing_jobs_count",
-                    "Currently executing jobs count",
+            out.add(gaugeFor("scheduler_threads_active",
+                    "Active threads count",
                     this.scheduler.getCurrentlyExecutingJobs().size(),
+                    this.schedulerId));
+            out.add(counterFor("scheduler_completed_task_count",
+                    "Number of tasks ever completed",
+                    this.scheduler.getMetaData().getNumberOfJobsExecuted(),
                     this.schedulerId));
         }
         catch (SchedulerException e) {
