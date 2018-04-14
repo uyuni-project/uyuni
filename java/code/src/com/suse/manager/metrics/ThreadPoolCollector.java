@@ -46,6 +46,10 @@ public class ThreadPoolCollector extends Collector {
                 "Threads total count", this.pool.getPoolSize(), this.poolId));
         out.add(CustomCollectorUtils.gaugeFor("thread_pool_threads_active",
                 "Active threads count", this.pool.getActiveCount(), this.poolId));
+        out.add(CustomCollectorUtils.counterFor("thread_pool_task_count",
+                "Number of tasks ever submitted", this.pool.getTaskCount(), this.poolId));
+        out.add(CustomCollectorUtils.counterFor("thread_pool_completed_task_count",
+                "Number of tasks ever completed", this.pool.getCompletedTaskCount(), this.poolId));
 
         return out;
     }
