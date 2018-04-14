@@ -14,6 +14,7 @@
  */
 package com.suse.manager.metrics;
 
+import io.prometheus.client.CounterMetricFamily;
 import io.prometheus.client.GaugeMetricFamily;
 
 /**
@@ -33,5 +34,18 @@ public class CustomCollectorUtils {
      */
     public static GaugeMetricFamily gaugeFor(String metricName, String help, double metricValue, String metricPrefix) {
         return new GaugeMetricFamily(metricPrefix + "_" + metricName, metricPrefix + " - " + help, metricValue);
+    }
+
+    /**
+     * Returns a Counter object.
+     * @param metricName name of the metric
+     * @param help help string
+     * @param metricValue current value of the metric
+     * @param metricPrefix prefix for the metric name
+     * @return a Counter object
+     */
+    public static CounterMetricFamily counterFor(String metricName, String help, long metricValue,
+                                                 String metricPrefix) {
+        return new CounterMetricFamily(metricPrefix + "_" + metricName, metricPrefix + " - " + help, metricValue);
     }
 }
