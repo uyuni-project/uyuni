@@ -492,9 +492,19 @@ When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |target|
   node.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
 end
 
-When(/^I enable SUSE container repository, but not for SLES11 systems$/) do
-  # There are no docker repositories for SLES11 systems,
-  # only for SLES12 and upper systems
+When(/^I enable repositories before installing Docker$/) do
+  # Distribution Pool and Update
+  os_version = get_os_version($minion)
+  arch, _code = $minion.run('uname -m')
+  puts $minion.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
+  puts $minion.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+
+  # Tools
+  out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  puts $minion.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
+
+  # Container repositories
+  # They don't exist for SLES11 systems, only for SLES12 and upper systems
   _out, code = $minion.run('pidof systemd', false)
   if code.zero?
     repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
@@ -502,56 +512,32 @@ When(/^I enable SUSE container repository, but not for SLES11 systems$/) do
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
     $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   end
+
+  $minion.run('zypper -n --gpg-auto-import-keys ref')
 end
 
-When(/^I disable SUSE container repository, but not for SLES11 systems$/) do
-  # There are no docker repositories for SLES11 systems,
-  # only for SLES12 and upper systems
+When(/^I disable repositories after installing Docker$/) do
+  # Distribution Pool and Update
+  os_version = get_os_version($minion)
+  arch, _code = $minion.run('uname -m')
+  puts $minion.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
+  puts $minion.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
+
+  # Tools
+  out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  puts $minion.run("zypper mr --disable #{out.gsub(/\s/, ' ')}")
+
+  # Container repositories
+  # They don't exist for SLES11 systems, only for SLES12 and upper systems
   _out, code = $minion.run('pidof systemd', false)
   if code.zero?
     repos, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
     $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
     repos, _code = $minion.run('zypper lr | grep SLE-Module-Containers | cut -d"|" -f2')
     $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-    $minion.run('zypper -n --gpg-auto-import-keys ref')
   end
-end
 
-And(/^I enable SLES pool and update repository on "([^"]*)", but not for SLES11$/) do |target|
-  def enable_pool(target)
-    node = get_target(target)
-    os_version = get_os_version(node)
-    arch, _code = node.run('uname -m')
-    if os_version == '15'
-      puts node.run("zypper mr --enable SLE-Module-Basesystem15-x86_64-Pool")
-      puts node.run("zypper mr --enable SLE-Module-Basesystem15-x86_64-Update")
-    else
-      puts node.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
-      puts node.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
-    end
-    steps %(
-      And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
-      And I wait until no Salt job is running on "sle-minion"
-      And I apply highstate on "sle-minion"
-      Then I wait until "docker" service is up and running on "sle-minion"
-    )
-  end
-  _out, code = $minion.run('pidof systemd', false)
-  # only for SLES12 and major systems
-  enable_pool(target) if code.zero?
-end
-
-And(/^I disable SLES pool and update repository on "([^"]*)"$/) do |target|
-  node = get_target(target)
-  os_version = get_os_version(node)
-  arch, _code = node.run('uname -m')
-  if os_version == '15'
-    puts node.run("zypper mr -d SLE-Module-Basesystem15-x86_64-Pool")
-    puts node.run("zypper mr -d SLE-Module-Basesystem15-x86_64-Update")
-  else
-    puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Update")
-    puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Pool")
-  end
+  $minion.run('zypper -n --gpg-auto-import-keys ref')
 end
 
 # Register client
