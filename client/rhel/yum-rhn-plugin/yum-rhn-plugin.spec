@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.8.7.1
+Version: 2.8.9
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -16,7 +16,11 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if %{?suse_version: %{?suse_version} > 1110} %{!?suse_version:1}
 BuildArch: noarch
 %endif
+%if 0%{?fedora} >= 28
+BuildRequires: python2
+%else
 BuildRequires: python
+%endif
 BuildRequires: intltool
 BuildRequires: gettext
 
@@ -27,7 +31,11 @@ Requires: python-m2crypto >= 0.16-6
 %else
 Requires: m2crypto >= 0.16-6
 %endif
+%if 0%{?fedora} >= 28
+Requires: python2-iniparse
+%else
 Requires: python-iniparse
+%endif
 
 # Not really, but for upgrades we need these
 Requires: %{rhn_setup} >= 2.8.4
@@ -92,6 +100,12 @@ fi
 
 
 %changelog
+* Wed Apr 11 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.9-1
+- fix condition for RHEL systems
+
+* Tue Apr 10 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.8-1
+- Update Python 2 dependency declarations to new packaging standards
+
 * Mon Mar 19 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.7-1
 - Regenerating .po and .pot files for yum-rhn-plugin.
 
