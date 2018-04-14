@@ -15,8 +15,8 @@ Feature: Support for new CVE-ID syntax
     When I refresh the metadata for "sle-client"
     Then I should have 'reference.*id="CVE-1999-12345' in the patch metadata
     And I should have 'reference.*id="CVE-1999-99781' in the patch metadata
-    And I should have 'reference.*http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-12345' in the patch metadata
-    And I should have 'reference.*http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-99781' in the patch metadata
+    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-12345' in the patch metadata
+    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-99781' in the patch metadata
 
   Scenario: Search for CVE ID with the new format
     Given I am on the patches page
