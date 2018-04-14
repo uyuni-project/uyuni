@@ -10,12 +10,6 @@ Feature: XML-RPC image namespace for containers
     And I check "container_build_host" if not checked
     And I click on "Update Properties"
 
-  Scenario: Apply the highstate to container build host before XML-RPC tests
-    Given I am on the Systems overview page of this "sle-minion"
-    Then I should see a "[Container Build Host]" text
-    And I enable SUSE container repository, but not for SLES11 systems
-    And I enable SLES pool and update repository on "sle-minion", but not for SLES11
-
   Scenario: Test image.store namespace
     Given I am authorized as "admin" with password "admin"
     Then I run image.store tests via XML-RPC
@@ -31,7 +25,7 @@ Feature: XML-RPC image namespace for containers
     Given I am authorized as "admin" with password "admin"
     Then I run image.profiles tests via XML-RPC
 
-  Scenario: Cleanup image namespaces tests
+  Scenario: Cleanup image namespace tests
     Given I am authorized as "admin" with password "admin"
     Then I delete the random image stores
 
@@ -46,9 +40,3 @@ Feature: XML-RPC image namespace for containers
     And I follow "arancio"
     And I follow "Delete Key"
     And I click on "Delete Key"
-
-  Scenario: Cleanup: reset channels on the SLES minion after XML-RPC tests
-    Given I am authorized as "admin" with password "admin"
-    When I disable SUSE container repository, but not for SLES11 systems
-    And I disable SLES pool and update repository on "sle-minion"
-    And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
