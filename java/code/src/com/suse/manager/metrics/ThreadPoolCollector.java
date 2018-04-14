@@ -42,7 +42,7 @@ public class ThreadPoolCollector extends Collector {
     public List<MetricFamilySamples> collect() {
         List<MetricFamilySamples> out = new ArrayList<>();
 
-        out.add(CustomCollectorUtils.gaugeFor("thread_pool_threads",
+        out.add(CustomCollectorUtils.counterFor("thread_pool_threads",
                 "Threads total count", this.pool.getPoolSize(), this.poolId));
         out.add(CustomCollectorUtils.gaugeFor("thread_pool_threads_active",
                 "Active threads count", this.pool.getActiveCount(), this.poolId));
