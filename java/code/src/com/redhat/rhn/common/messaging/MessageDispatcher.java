@@ -18,10 +18,11 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
-
+import com.suse.manager.metrics.PrometheusExporter;
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -69,6 +70,11 @@ public class MessageDispatcher implements Runnable {
      * and executed. Events are wrapped inside of a Runnable instance
      */
     public void run() {
+
+        // register the executor service for exporting metrics
+        PrometheusExporter.INSTANCE.registerThreadPool((ThreadPoolExecutor) this.threadPool, "message_queue");
+
+
         while (!isStopped) {
             try {
                 ActionExecutor actionHandler = MessageQueue.popEventMessage();
