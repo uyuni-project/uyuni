@@ -540,7 +540,6 @@ public class SaltSSHService {
                     .rosterFile(rosterPath.getFileName().toString())
                     .priv(SSH_KEY_PATH)
                     .sudo(sudo)
-                    .wipe(true)
                     .refreshCache(true)
                     .build();
 
