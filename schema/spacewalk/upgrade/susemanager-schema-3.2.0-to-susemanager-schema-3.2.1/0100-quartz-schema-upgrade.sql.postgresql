@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 387f6d8e5a05fe6cba5c893230064ebe61e0d89c
+-- oracle equivalent source sha1 e7701a353f59220b540579ba8d6020fff2c0f64f
 --
 -- drop tables that are no longer used
 --
@@ -37,7 +37,9 @@ alter table qrtz_triggers add column sched_name varchar(120) not null DEFAULT 'T
 --
 -- add new 'sched_time' column to qrtz_fired_triggers
 --
-alter table qrtz_fired_triggers add column sched_time BIGINT NOT NULL;
+alter table qrtz_fired_triggers add column sched_time BIGINT;
+update qrtz_fired_triggers set sched_time = fired_time;
+alter table qrtz_fired_triggers ALTER COLUMN sched_time SET NOT NULL;
 --
 -- drop all primary and foreign key constraints, so that we can define new ones
 --
