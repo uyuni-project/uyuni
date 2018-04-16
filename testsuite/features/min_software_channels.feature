@@ -8,8 +8,9 @@ Feature: Assign channels with dependencies
     And the "sle-minion" is a SLE-"15" client
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then I should see a "Basesystem Module 15" text
-    And I should see the recommended toggler "enabled"
-    And I should see the child channel "Basesystem Module 15" "selected"
-    Then I click on the "enabled" recommended toggler
-    And I should see the child channel "Basesystem Module 15" "unselected"
+    And I check radio button "SLE-Product-SLES15-Pool for x86_64"
+    And I should see the recommended toggler "disabled"
+    Then I should see a text like "SLE-Module-Basesystem15-Pool for x86_64"
+    And I should see the child channel "SLE-Module-Basesystem15-Pool for x86_64" "unselected"
+    Then I click on the "disabled" recommended toggler
+    And I should see the child channel "SLE-Module-Basesystem15-Pool for x86_64" "selected"
