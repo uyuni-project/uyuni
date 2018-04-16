@@ -27,20 +27,16 @@ public class NoActionInScheduleException extends FaultException  {
      * Constructor
      */
     public NoActionInScheduleException() {
-        super(-255 , "noActionInSchedule" , "No action in schedule result");
-        // begin member variable initialization
+        super(10004 , "noActionInSchedule" , "No action in schedule result");
     }
 
     /**
      * Constructor
-     * @param cause the cause (which is saved for later retrieval
-     * by the Throwable.getCause() method). (A null value is
-     * permitted, and indicates that the cause is nonexistent or
-     * unknown.)
+     * @param cause the cause (which is saved for later retrieval by the Throwable.getCause() method).
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public NoActionInScheduleException(Throwable cause) {
-        super(-255 , "noActionInSchedule" , "No action in schedule result", cause);
-        // begin member variable initialization
+        super(10004 , "noActionInSchedule" , "No action in schedule result", cause);
     }
 
     /**
@@ -48,7 +44,7 @@ public class NoActionInScheduleException extends FaultException  {
      * @param message exception message.
      */
     public NoActionInScheduleException(String message) {
-        super(-255 , "noActionInSchedule" , message);
+        super(10004 , "noActionInSchedule" , message);
     }
 
 }
