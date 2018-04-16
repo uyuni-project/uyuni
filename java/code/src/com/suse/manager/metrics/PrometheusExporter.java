@@ -17,8 +17,6 @@ package com.suse.manager.metrics;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import io.prometheus.client.exporter.HTTPServer;
 import org.apache.log4j.Logger;
-import org.quartz.Scheduler;
-
 import java.io.IOException;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -61,14 +59,4 @@ public enum PrometheusExporter {
         }
     }
 
-    /**
-     * Registers a Scheduler for monitoring.
-     * @param scheduler a scheduler
-     * @param schedulerId a unique ID for the scheduler
-     */
-    public void registerScheduler(Scheduler scheduler, String schedulerId) {
-        if (ENABLED) {
-            new SchedulerCollector(scheduler, schedulerId).register();
-        }
-    }
 }
