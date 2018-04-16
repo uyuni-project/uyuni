@@ -694,7 +694,7 @@ And(/^I click on the "([^"]*)" recommended toggler$/) do |target_status|
 end
 
 And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, target_status|
-  step %(I should see a "#{target_channel}" text)
+  step %(I should see a text like "#{target_channel}")
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
   channel_checkbox_id = find(:xpath, xpath)['for']
