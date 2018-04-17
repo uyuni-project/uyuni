@@ -1,3 +1,4 @@
+- fix schema migration by creating correct not null column (bsc#1074642)
 - fix invalid name for quartz migration file (bsc#1088870)
 - fix migration error with not null column (bsc#1088818)
 

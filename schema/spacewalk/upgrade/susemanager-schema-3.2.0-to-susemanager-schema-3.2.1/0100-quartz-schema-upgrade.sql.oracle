@@ -36,7 +36,9 @@ alter table qrtz_triggers add (sched_name varchar(120) DEFAULT 'TestScheduler' n
 --
 -- add new 'sched_time' column to qrtz_fired_triggers
 --
-alter table qrtz_fired_triggers add (sched_time NUMBER(13) NOT NULL);
+alter table qrtz_fired_triggers add (sched_time NUMBER(13));
+update qrtz_fired_triggers set sched_time = fired_time;
+alter table qrtz_fired_triggers modify (sched_time NUMBER(13) NOT NULL);
 --
 -- drop all primary and foreign key constraints, so that we can define new ones
 --
