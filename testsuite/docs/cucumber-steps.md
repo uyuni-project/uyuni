@@ -114,12 +114,6 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I am on the Organizations page
 ```
 
-* Go to Home => User Account => Credentials
-
-```cucumber
-  When I am on the Credentials page
-```
-
 * Go to Patches => Patches => Relevant
 
 ```cucumber

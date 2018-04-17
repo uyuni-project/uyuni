@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.user.User;
 public class Credentials extends BaseDomainHelper {
 
     // Available type labels
-    public static final String TYPE_SUSESTUDIO = "susestudio";
     public static final String TYPE_SCC = "scc";
     public static final String TYPE_VIRT_HOST_MANAGER = "vhm";
     public static final String TYPE_REGISTRY = "registrycreds";

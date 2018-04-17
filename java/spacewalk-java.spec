@@ -123,7 +123,6 @@ Requires: spacewalk-java-config
 Requires: spacewalk-java-jdbc
 Requires: spacewalk-java-lib
 Requires: stringtree-json
-Requires: susestudio-java-client
 Requires: xalan-j2 >= 0:2.6.0
 Requires: xerces-j2
 %if 0%{?fedora}
@@ -279,7 +278,6 @@ BuildRequires: simple-core
 BuildRequires: simple-xml
 BuildRequires: sitemesh
 BuildRequires: stringtree-json
-BuildRequires: susestudio-java-client
 BuildRequires: tanukiwrapper
 %if 0%{?run_checkstyle}
 BuildRequires: checkstyle
@@ -936,7 +934,6 @@ fi
 %{jardir}/simple-xml.jar
 %{jardir}/sitemesh.jar
 %{jardir}/stringtree-json.jar
-%{jardir}/susestudio-java-client.jar
 %{jardir}/tanukiwrapper.jar
 # %{jardir}/velocity-*.jar
 %{jardir}/xalan-j2.jar
