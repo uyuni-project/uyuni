@@ -40,7 +40,6 @@ import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -84,7 +83,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -299,20 +297,6 @@ public class ActionFactory extends HibernateFactory {
         }
 
         return sad;
-    }
-
-    /**
-     * Creates a ApplyStatesActionDetails related to the action.
-     * @param action the related state apply action
-     * @param test indicates test mode
-     * @return ApplyStatesActionDetails for the releated action
-     */
-    public static ApplyStatesActionDetails createApplyStateDetails(Action action,
-            Optional<Boolean> test) {
-        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
-        test.ifPresent(t -> details.setTest(t));
-        details.setActionId(action.getId());
-        return details;
     }
 
     /**
@@ -597,19 +581,6 @@ public class ActionFactory extends HibernateFactory {
         params.put("id", actionConfigRevisionId);
         return (ConfigRevisionActionResult)
                 singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
-                        params, true);
-    }
-
-    /**
-     * Helper method to get a ScriptActionDetail by Action Id
-     * @param action the Action for whom we want to lookup the ScriptActionDetail
-     * @return The ScriptActionDetail corresponding to the action ID.
-     */
-    public static ScriptActionDetails lookupScriptActionDetails(Action action) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("action", action);
-        return (ScriptActionDetails)
-                singleton.lookupObjectByNamedQuery("ScriptActionDetails.findById",
                         params, true);
     }
 

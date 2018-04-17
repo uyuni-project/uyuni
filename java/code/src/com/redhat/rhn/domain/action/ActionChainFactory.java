@@ -20,7 +20,6 @@ package com.redhat.rhn.domain.action;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -36,7 +35,6 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.utils.MinionServerUtils;
 
 /**
  * Creates Action Chain related objects.
@@ -356,26 +354,12 @@ public class ActionChainFactory extends HibernateFactory {
                 // Increment 'earliest' time by a millisecond for each chain action in
                 // order to sort them correctly for display
                 dateInOrder = DateUtils.addMilliseconds(dateInOrder, 1);
-
-                if (MinionServerUtils.isMinionServer(server)) {
-                    if (minionActions.get(server) != null) {
-                        minionActions.get(server).add(action);
-                    }
-                    else {
-                        List<Action> actionList = new ArrayList<>();
-                        actionList.add(action);
-                        minionActions.put(server, actionList);
-                    }
-                }
-
                 latest.put(server, action);
             }
         }
 
-        if (!minionActions.isEmpty()) {
-            // Trigger Action Chain execution for Minions via Taskomatic
-            taskomaticApi.scheduleActionChainExecution(actionChain);
-        }
+        // Trigger Action Chain execution for Minions via Taskomatic
+        taskomaticApi.scheduleActionChainExecution(actionChain);
         log.debug("Action Chain " + actionChain + " scheduled to date " + date);
     }
 
@@ -428,5 +412,17 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
         ActionChainFactory.taskomaticApi = taskomaticApiIn;
+    }
+
+    /**
+     * Check if an Action Chain contains any minion in default contact method as target
+     * @param actionChain the action chain
+     * @return if the action chains contains any minion in default contact method
+     */
+    public static boolean isActionChainTargettingDefaultMinions(final ActionChain actionChain) {
+        return ((Long)singleton.lookupObjectByNamedQuery(
+            "ActionChain.countDefaultMinionsInActionChain",
+            new HashMap<String, Object>() { { put("actionchain_id", actionChain.getId()); } }
+        ) > 0);
     }
 }

@@ -255,8 +255,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 LOG.debug("Matched salt job with action (id=" + actionId + ")");
             }
 
-            Optional<MinionServer> minionServerOpt = MinionServerFactory
-                    .findByMinionId(minionId);
+            Optional<MinionServer> minionServerOpt = MinionServerFactory.findByMinionId(minionId);
             minionServerOpt.ifPresent(minionServer -> {
                 Optional<ServerAction> serverAction = action.get()
                         .getServerActions()
@@ -266,8 +265,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
                 serverAction.ifPresent(sa -> {
                     if (LOG.isDebugEnabled()) {
-                        LOG.debug("Updating action for server: " +
-                                minionServer.getId());
+                        LOG.debug("Updating action for server: " + minionServer.getId());
                     }
                     try {
                         SaltUtils.INSTANCE.updateServerAction(sa,
@@ -287,8 +285,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         sa.setCompletionTime(new Date());
                         sa.setStatus(ActionFactory.STATUS_FAILED);
                         sa.setResultCode(-1L);
-                        sa.setResultMsg("An unexpected error has occured. " +
-                                "Please check the server logs.");
+                        sa.setResultMsg("An unexpected error has occurred. Please check the server logs.");
 
                         ActionFactory.save(sa);
                         // When we throw the exception again, the current transaction
@@ -308,9 +305,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     }
 
     private Optional<Boolean> isActionChainResult(JobReturnEvent event) {
-        return event.getData().getMetadata(ScheduleMetadata.class).map(
-                ScheduleMetadata::isActionChain);
-
+        return event.getData().getMetadata(ScheduleMetadata.class).map(ScheduleMetadata::isActionChain);
     }
 
     /**

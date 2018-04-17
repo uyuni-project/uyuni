@@ -20,6 +20,10 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.suse.manager.webui.services.SaltServerActionService;
 
+import java.time.Duration;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
@@ -73,10 +77,17 @@ public class MinionActionChainExecutor extends RhnJavaJob {
             HibernateFactory.getSession().clear();
         }
 
-        // TODO: At this point, the AC has been already removed from the DB
         // calculate offset between scheduled time of
-        // actions and (now) to avoid execution in case it
-        // was schedule > MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS
+        // actions and (now)
+        long timeDelta = Duration
+                .between(ZonedDateTime.ofInstant(actionChain.getEarliestAction().toInstant(),
+                        ZoneId.systemDefault()), ZonedDateTime.now())
+                .toHours();
+        if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
+            log.warn("Scheduled action chain " + actionChain.getId() + " was scheduled to be executed more than " +
+                    MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS + " hours ago. Skipping it.");
+            return;
+        }
 
         log.info("Executing action chain: " + actionChainId);
 

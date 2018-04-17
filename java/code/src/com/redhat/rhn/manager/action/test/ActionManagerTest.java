@@ -20,13 +20,16 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -36,6 +39,10 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
@@ -51,6 +58,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ActionedSystem;
@@ -60,11 +68,13 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionIsChildException;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -97,6 +107,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 
 /**
  * Tests for {@link ActionManager}.
@@ -803,6 +817,27 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, action2.getServerActions().size());
     }
 
+    public void testScheduleImageBuild() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
+        ImageInfoFactory.setTaskomaticApi(taskomaticMock);
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        ImageStore store = createImageStore("registry.reg", user);
+        ActivationKey ak = createActivationKey(user);
+        ImageProfile prof = createImageProfile("myprofile", store, ak, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain("my-test-ac", user);
+
+        ImageBuildAction action = ActionChainManager.scheduleImageBuild(server.getId(),
+                "1.0.0",
+                prof,
+                new Date(),
+                actionChain, user);
+
+        assertTrue(action != null);
+        assertEquals("Build an Image Profile", action.getActionType().getName());
+    }
 
     public static void assertNotEmpty(Collection coll) {
         assertNotNull(coll);
