@@ -43,8 +43,32 @@ Wed Apr 25 12:13:25 CEST 2018 - jgonzalez@suse.com
 Mon Apr 23 09:26:09 CEST 2018 - jgonzalez@suse.com
 
 - version 3.2.9-1
+||||||| merged common ancestors
+-------------------------------------------------------------------
+Mon May 07 15:31:50 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.11-1
+- fix hardware refresh when FQDN changes (bsc#1073267)
+- Handle empty values. Do not pass optional fields to pillar in
+  formulas if field is empty and no ifempty attr defined.
+- Fixed processing of formulas with $scope: group
+- Preserve order of formulas (bsc#1083326)
+
+-------------------------------------------------------------------
+Wed Apr 25 12:13:25 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.10-1
+- create bootstrap repo only if it exist in the server (bsc#1087840)
+
+-------------------------------------------------------------------
+Mon Apr 23 09:26:09 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.9-1
+=======
+- Add Kiwi image build states from SMR project
+>>>>>>> Add KIWI building states from SMR repository
 - Enqueue states applied from 'mgractionchains' to avoid failures when
-  other states are already running at that time (bsc#1090502)
+  other states are already running at that time.
 
 -------------------------------------------------------------------
 Wed Apr 04 12:14:25 CEST 2018 - jgonzalez@suse.com
