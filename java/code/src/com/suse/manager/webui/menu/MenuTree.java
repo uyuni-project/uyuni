@@ -65,8 +65,6 @@ public class MenuTree {
                     .addChild(new MenuItem("Addresses")
                         .withPrimaryUrl("/rhn/account/Addresses.do").withAltUrl("/rhn/account/EditAddress.do"))
                     .addChild(new MenuItem("Change Email").withPrimaryUrl("/rhn/account/ChangeEmail.do"))
-                    .addChild(new MenuItem("Credentials").withPrimaryUrl("/rhn/account/Credentials.do")
-                        .withAltUrl("/rhn/account/DeleteCredentials.do"))
                     .addChild(new MenuItem("Account Deactivation").withPrimaryUrl("/rhn/account/AccountDeactivation.do")))
                 .addChild(new MenuItem("Your Preferences").withPrimaryUrl("/rhn/account/UserPreferences.do"))
                 .addChild(new MenuItem("Your Organization")
