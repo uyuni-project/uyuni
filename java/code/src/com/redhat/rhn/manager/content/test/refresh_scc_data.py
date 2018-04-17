@@ -28,7 +28,7 @@ def parse_arguments():
                       help="When present, generate organizations_orders.json" +
                            "file. (WARNING: This could leak private data!")
   results = parser.parse_args()
-  return(results)
+  return results
 
 def find_next_path(resp):
   link = resp.getheader("Link")
@@ -61,7 +61,7 @@ def save_json(content, path):
 args = parse_arguments()
 
 connection = httplib.HTTPSConnection("scc.suse.com")
-token = base64.b64encode(b"%s:%s" %(args.username, args.password)).decode("ascii")
+token = base64.b64encode(b"{0}:{1}".format(args.username, args.password)).decode("ascii")
 headers = { 'Authorization' : 'Basic %s' %  token }
 
 products = get_paginated(connection, headers, "/connect/organizations/products/unscoped")
