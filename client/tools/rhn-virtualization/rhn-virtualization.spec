@@ -174,7 +174,7 @@ rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
 if [ -d /proc/xen ]; then
     # xen kernel is running
     # change the default template to the xen version
-    sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-xen-template.xml@' /etc/sysconfig/rhn/image.cfg
+    sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/xen-template.xml@' /etc/sysconfig/rhn/image.cfg
 fi
 
 %else
@@ -185,7 +185,7 @@ fi
 if [ -d /proc/xen ]; then
     # xen kernel is running
     # change the default template to the xen version
-    sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-xen-template.xml@' /etc/sysconfig/rhn/image.cfg
+    sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/xen-template.xml@' /etc/sysconfig/rhn/image.cfg
 fi
 
 %preun host
@@ -248,7 +248,7 @@ fi
 %if ! 0%{?suse_version}
 %endif
 %config(noreplace) %attr(644,root,root) %{cron_dir}/rhn-virtualization.cron
-%{rhn_conf_dir}/studio-*-template.xml
+%{rhn_conf_dir}/*-template.xml
 %config(noreplace) %{rhn_conf_dir}/image.cfg
 %doc LICENSE
 
