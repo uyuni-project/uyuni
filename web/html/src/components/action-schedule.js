@@ -33,7 +33,7 @@ type ActionScheduleState = {
 
 class ActionSchedule extends React.Component<ActionScheduleProps, ActionScheduleState> {
 
-  newActionChainOpt = {id: 0, text: t("new action chain")};
+  newActionChainOpt = {id: t("new action chain"), text: t("new action chain")};
 
   constructor(props: ActionScheduleProps) {
     super(props);

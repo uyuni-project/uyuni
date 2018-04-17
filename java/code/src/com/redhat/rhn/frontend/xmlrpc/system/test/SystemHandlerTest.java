@@ -157,7 +157,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-
     }
 
     public void testGetNetworkDevices() throws Exception {

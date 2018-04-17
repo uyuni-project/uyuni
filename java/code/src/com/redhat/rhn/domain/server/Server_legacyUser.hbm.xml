@@ -410,6 +410,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="advisoryName" type="string"/>
         <return-scalar column="updateTag" type="string"/>
         <return-scalar column="updateStack" type="boolean"/>
+        <return-scalar column="includeSalt" type="boolean"/>
         <![CDATA[
           SELECT DISTINCT
             e.id AS errataId,
@@ -420,12 +421,19 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
               WHEN (SELECT COUNT(*) FROM rhnErrataKeyword k WHERE e.id = k.errata_id AND k.keyword = 'restart_suggested') > 0
             THEN 1
             ELSE 0
-            END AS updateStack
+            END AS updateStack,
+            CASE
+              WHEN (SELECT COUNT(*) FROM rhnErrataPackage k WHERE e.id = k.errata_id AND k.package_id IN
+                (SELECT id FROM rhnPackage p WHERE p.name_id IN
+                  (SELECT id FROM rhnPackageName pn WHERE pn.name = 'salt'))) > 0
+            THEN 1
+            ELSE 0
+            END AS includeSalt
           FROM rhnErrata e
               JOIN rhnChannelErrata ce ON e.id = ce.errata_id
               JOIN rhnChannel c ON ce.channel_id = c.id
               JOIN rhnServerChannel sc ON c.id = sc.channel_id
-            WHERE e.id in (:errataIds) AND
+          WHERE e.id in (:errataIds) AND
               sc.server_id in (:serverIds)
         ]]>
     </sql-query>

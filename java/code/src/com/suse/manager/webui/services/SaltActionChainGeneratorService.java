@@ -16,6 +16,9 @@ package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PKGINSTALL;
+import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PATCHINSTALL;
+import static com.suse.manager.webui.services.SaltServerActionService.PARAM_UPDATE_STACK_PATCHES;
+import static com.suse.manager.webui.services.SaltServerActionService.PARAM_REGULAR_PATCHES;
 
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -25,6 +28,7 @@ import com.suse.manager.webui.utils.AbstractSaltRequisites;
 import com.suse.manager.webui.utils.IdentifiableSaltState;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
+import com.suse.manager.webui.utils.SaltPatchInstalled;
 
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -159,13 +163,31 @@ public class SaltActionChainGeneratorService {
 
     private SaltState checkSaltUpgradeChunk(SaltState state) {
         SaltModuleRun moduleRun = (SaltModuleRun) state;
-        Map<String, Map<String, String>> paramPkgs =
-                (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
-        SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
-        for (Map.Entry<String, String> entry : paramPkgs.get("param_pkgs").entrySet()) {
-            pkgInstalled.addPackage(entry.getKey(), entry.getValue());
+        Optional<String> mods = getModsString(moduleRun);
+        SaltState retState = null;
+
+        if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
+            Map<String, Map<String, String>> paramPillar =
+                    (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
+            SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
+            for (Map.Entry<String, String> entry : paramPillar.get("param_pkgs").entrySet()) {
+                pkgInstalled.addPackage(entry.getKey(), entry.getValue());
+            }
+            retState = pkgInstalled;
         }
-        return pkgInstalled;
+        else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL)) {
+            Map<String, List<String>> paramPillar =
+                    (Map<String, List<String>>) moduleRun.getKwargs().get("pillar");
+            SaltPatchInstalled patchInstalled = new SaltPatchInstalled();
+            for (String patch : paramPillar.get(PARAM_UPDATE_STACK_PATCHES)) {
+                patchInstalled.addPatch(patch);
+            }
+            for (String patch : paramPillar.get(PARAM_REGULAR_PATCHES)) {
+                patchInstalled.addPatch(patch);
+            }
+            retState = patchInstalled;
+        }
+        return retState;
     }
 
     /**
@@ -176,20 +198,20 @@ public class SaltActionChainGeneratorService {
     private Optional<Pair<String, String>> prevRequisiteRef(List<SaltState> fileStates) {
         if (fileStates.size() > 0) {
             SaltState previousState = fileStates.get(fileStates.size() - 1);
-            return previousState.getData().entrySet().stream().findFirst().map(entry ->
-                ((Map<String, ?>)entry.getValue()).entrySet().stream().findFirst().map(ent -> {
-                    String[] stateMod = ent.getKey().split("\\.");
-                    if (stateMod.length == 2) {
-                        return stateMod[0];
-                    }
-                    else {
-                        throw new RuntimeException("Could not get Salt requisite reference for " + ent.getKey());
-                    }
-                })
-                        .map(mod -> new ImmutablePair<>(mod, entry.getKey()))
-                        .orElseThrow(() ->
-                                new RuntimeException("Could not get Salt requisite reference for " + entry.getKey()))
-            );
+            return previousState.getData().entrySet().stream().findFirst()
+                .map(entry -> ((Map<String, ?>)entry.getValue()).entrySet().stream()
+                    .findFirst().map(ent -> {
+                        String[] stateMod = ent.getKey().split("\\.");
+                        if (stateMod.length == 2) {
+                            return stateMod[0];
+                        }
+                        else {
+                            throw new RuntimeException("Could not get Salt requisite reference for " + ent.getKey());
+                        }
+                    })
+                    .map(mod -> new ImmutablePair<>(mod, entry.getKey()))
+                    .orElseThrow(() ->
+                         new RuntimeException("Could not get Salt requisite reference for " + entry.getKey())));
         }
         return Optional.empty();
     }
@@ -200,15 +222,23 @@ public class SaltActionChainGeneratorService {
 
             Optional<String> mods = getModsString(moduleRun);
 
-            if (mods.isPresent() &&
-                    mods.get().contains(PACKAGES_PKGINSTALL)) {
+            if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
                 if (moduleRun.getKwargs() != null) {
-                    Map<String, Map<String, String>> paramPkgs =
+                    Map<String, Map<String, String>> paramPillar =
                             (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
-                    if (!paramPkgs.get("param_pkgs").entrySet().stream()
+                    if (!paramPillar.get("param_pkgs").entrySet().stream()
                             .filter(entry -> entry.getKey().equals("salt"))
                             .map(entry -> entry.getKey())
                             .collect(Collectors.toList()).isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+            else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL)) {
+                if (moduleRun.getKwargs() != null) {
+                    Map<String, List<String>> paramPillar =
+                            (Map<String, List<String>>) moduleRun.getKwargs().get("pillar");
+                    if (paramPillar.containsKey("include_salt_upgrade")) {
                         return true;
                     }
                 }
@@ -228,7 +258,11 @@ public class SaltActionChainGeneratorService {
                     mods.get().contains(PACKAGES_PKGINSTALL) && isSaltUpgrade(state)) {
                 split = true;
             }
-            if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
+            else if (mods.isPresent() &&
+                    mods.get().contains(PACKAGES_PATCHINSTALL) && isSaltUpgrade(state)) {
+                split = true;
+            }
+            else if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
                 split = true;
             }
         }
@@ -275,6 +309,10 @@ public class SaltActionChainGeneratorService {
             String filePattern = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId +
                     "_" + minionServer.getMachineId() + "_";
             try {
+                // Remove the files
+                for (Path path : filesToDelete) {
+                    Files.deleteIfExists(path);
+                }
                 if (actionChainFailed) {
                     // Add also next SLS chunks because the Action Chain failed and these
                     // files are not longer needed.

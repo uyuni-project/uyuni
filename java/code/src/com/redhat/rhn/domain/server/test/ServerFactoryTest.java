@@ -1143,10 +1143,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
         Set<ErrataInfo> errataName = out.get(server.getId()).get(e.getId());
-        assertContains(errataName, new ErrataInfo("SUSE-SLE-SERVER-2016-1234", false));
+        assertContains(errataName, new ErrataInfo("SUSE-SLE-SERVER-2016-1234", false, false));
 
         errataName = out.get(server.getId()).get(ce.getId());
-        assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false));
+        assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false, false));
     }
 
     public void testListErrataNamesForServerSLE11() throws Exception {
@@ -1176,11 +1176,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
         Set<ErrataInfo> errataName = out.get(server.getId()).get(e.getId());
-        assertContains(errataName, new ErrataInfo("slessp4-ecryptfs-utils-12379", false));
+        assertContains(errataName, new ErrataInfo("slessp4-ecryptfs-utils-12379", false, false));
 
         errataName = out.get(server.getId()).get(ce.getId());
         assertContains(errataName,
-                new ErrataInfo("slessp4-CL-ecryptfs-utils-12379", false));
+                new ErrataInfo("slessp4-CL-ecryptfs-utils-12379", false, false));
     }
 
     /**

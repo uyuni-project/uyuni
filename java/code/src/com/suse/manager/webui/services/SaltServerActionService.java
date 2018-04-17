@@ -127,7 +127,7 @@ public class SaltServerActionService {
     private static final String ACTIONCHAIN_START = "actionchains.start";
     public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
-    private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
+    public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
@@ -387,7 +387,9 @@ public class SaltServerActionService {
                     List<MinionServer> minions = getMinionServers(actionIn);
 
                     if (minions.isEmpty()) {
-                        LOG.warn("No server actions for action id=" + actionIn.getId());
+                        // When an Action Chain contains an Action which does not target
+                        // any minion we don't generate any Salt call.
+                        LOG.debug("No server actions for action id=" + actionIn.getId());
                         return;
                     }
 
@@ -526,6 +528,11 @@ public class SaltServerActionService {
                         .sorted()
                         .collect(Collectors.toList())
                 );
+                if (!entry.getKey().stream()
+                        .filter(e -> e.includeSalt())
+                        .collect(Collectors.toList()).isEmpty()) {
+                    params.put("include_salt_upgrade", true);
+                }
                 return State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
                         Optional.of(params),
@@ -680,28 +687,42 @@ public class SaltServerActionService {
                 Files.setOwner(scriptFile.getParent(), tomcatUser);
 
             }
-            FileAttribute<Set<PosixFilePermission>> fileAttributes =
-                    PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("r--r--r--"));
-            Files.createFile(scriptFile, fileAttributes);
-            Files.setOwner(scriptFile, tomcatUser);
 
-            FileUtils.writeStringToFile(scriptFile.toFile(),
-                    script.replaceAll("\r\n", "\n"));
+            // In case of action retry, the files script files will be already created.
+            if (!Files.exists(scriptFile)) {
+                FileAttribute<Set<PosixFilePermission>> fileAttributes =
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("r--r--r--"));
+                Files.createFile(scriptFile, fileAttributes);
+                Files.setOwner(scriptFile, tomcatUser);
+
+                FileUtils.writeStringToFile(scriptFile.toFile(),
+                        script.replaceAll("\r\n", "\n"));
+            }
+
+            // state.apply remotecommands
+            Map<String, Object> pillar = new HashMap<>();
+            pillar.put("mgr_remote_cmd_script",
+                    "salt://" + SCRIPTS_DIR + "/" + scriptFile.getFileName());
+            pillar.put("mgr_remote_cmd_runas",
+                    scriptAction.getScriptActionDetails().getUsername());
+            ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                    Arrays.asList(REMOTE_COMMANDS),
+                    Optional.of(pillar),
+                    Optional.of(true), Optional.of(false)), minions);
         }
         catch (IOException e) {
-            LOG.error("Could not write script to file " + scriptFile, e);
+            String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
+            LOG.error(errorMsg);
+            scriptAction.getServerActions().stream()
+                    .filter(entry -> minions.contains(entry.getServer()))
+                    .forEach(sa -> {
+                        sa.setCompletionTime(new Date());
+                        sa.setResultCode(-1L);
+                        sa.setResultMsg("Error scheduling the action: " + errorMsg);
+                        sa.setStatus(ActionFactory.STATUS_FAILED);
+                        ActionFactory.save(sa);
+            });
         }
-
-        // state.apply remotecommands
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("mgr_remote_cmd_script",
-                "salt://" + SCRIPTS_DIR + "/" + scriptFile.getFileName());
-        pillar.put("mgr_remote_cmd_runas",
-                scriptAction.getScriptActionDetails().getUsername());
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(
-                Arrays.asList(REMOTE_COMMANDS),
-                Optional.of(pillar),
-                Optional.of(true), Optional.of(false)), minions);
         return ret;
     }
 

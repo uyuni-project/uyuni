@@ -347,8 +347,6 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         ActionChainFactory.schedule(actionChain, new Date());
 
-//        assertDeleted(actionChain);
-
         // check actions are scheduled in correct order
         for (ActionChainEntry entry : actionChain.getEntries()) {
             Action action = entry.getAction();
