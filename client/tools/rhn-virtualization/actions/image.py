@@ -21,7 +21,7 @@ log = up2dateLog.initLog()
 
 config = ConfigParser.ConfigParser({
     "IMAGE_BASE_PATH"      : "/var/lib/libvirt/images/",
-    "IMAGE_CFG_TEMPLATE"   : "/etc/sysconfig/rhn/studio-kvm-template.xml",
+    "IMAGE_CFG_TEMPLATE"   : "/etc/sysconfig/rhn/kvm-template.xml",
     "PRE_SCRIPT"           : "",
 })
 config.read('/etc/sysconfig/rhn/image.cfg')
