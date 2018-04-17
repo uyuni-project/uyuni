@@ -268,6 +268,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         LOG.debug("Updating action for server: " + minionServer.getId());
                     }
                     try {
+                        // Avoid setting reboot action to COMPLETED. We wait until next "minion/start/event"
+                        if (action.get().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
+                                success && retcode == 0) {
+                            return;
+                        }
                         SaltUtils.INSTANCE.updateServerAction(sa,
                                 retcode,
                                 success,
