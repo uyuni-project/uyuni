@@ -19,6 +19,14 @@ def parse_arguments():
                       help="When present, store URLs with real tokens at " +
                            "repositories.json (WARNING: This could leak " +
                            "private data!")
+  parser.add_argument("--subscriptions", dest="subscriptions",
+                      action="store_true",
+                      help="When present, generate organizations_subscriptions.json" +
+                           "file. (WARNING: This could leak private data!")
+  parser.add_argument("--orders", dest="orders",
+                      action="store_true",
+                      help="When present, generate organizations_orders.json" +
+                           "file. (WARNING: This could leak private data!")
   results = parser.parse_args()
   return(results)
 
@@ -69,14 +77,19 @@ else:
   for repo_num in range(0,len(repositories)):
     repositories[repo_num]['url'] = repo_url_regex.sub(r'\1?my-fake-token',
                                                        repositories[repo_num]['url'])
-
 save_json(repositories, "repositories.json")
 print("repositories.json refreshed")
 
-subscriptions = get_paginated(connection, headers, "/connect/organizations/subscriptions")
-save_json(subscriptions, "organizations_subscriptions.json")
-print("subscriptions.json refreshed")
+if args.subscriptions:
+  print("WARNING: Generating organizations_subscriptions.json!")
+  print("         This could leak private data!")
+  subscriptions = get_paginated(connection, headers, "/connect/organizations/subscriptions")
+  save_json(subscriptions, "organizations_subscriptions.json")
+  print("organizations_subscriptions.json refreshed")
 
-orders = get_paginated(connection, headers, "/connect/organizations/orders")
-save_json(orders, "organizations_orders.json")
-print("organizations_orders.json refreshed")
+if args.orders:
+  print("WARNING: Generating organizations_orders.json!")
+  print("         This could leak private data!")
+  orders = get_paginated(connection, headers, "/connect/organizations/orders")
+  save_json(orders, "organizations_orders.json")
+  print("organizations_orders.json refreshed")
