@@ -12,14 +12,24 @@ Feature: Reboot systems managed via SUSE Manager
     When I click on "Reboot system"
     Then I wait and check that "ssh-minion" has rebooted
 
-  Scenario: Reboot a SLES Salt minion
+  Scenario: Schedule a Reboot on a SLES Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
     And I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    Then I wait and check that "sle-minion" has rebooted
+
+  Scenario: Reboot Action is not COMPLETED until SLES minion is rebooted.
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Events" in the content area
+    And I follow "History" in the content area
+    And I wait until I see "System reboot scheduled by admin" text, refreshing the page
+    And I follow first "System reboot scheduled by admin"
+    Then I should see a "This action's status is: Picked Up." text
+    And I wait and check that "sle-minion" has rebooted
+    Then I wait until I see "This action's status is: Completed." text, refreshing the page
+    And I should see a "Reboot completed." text
 
   Scenario: Reboot a SLES tradional client
     Given I am on the Systems overview page of this "sle-client"
@@ -37,4 +47,16 @@ Feature: Reboot systems managed via SUSE Manager
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
     When I click on "Reboot system"
-    Then I wait and check that "ceos-minion" has rebooted
+    Then I should see a "Reboot scheduled for system" text
+
+@centosminion
+  Scenario: Reboot Action is not COMPLETED until CentOS minion is rebooted.
+    Given I am on the Systems overview page of this "ceos-minion"
+    When I follow "Events" in the content area
+    And I follow "History" in the content area
+    And I wait until I see "System reboot scheduled by admin" text, refreshing the page
+    And I follow first "System reboot scheduled by admin"
+    Then I should see a "This action's status is: Picked Up." text
+    And I wait and check that "ceos-minion" has rebooted
+    Then I wait until I see "This action's status is: Completed." text, refreshing the page
+    And I should see a "Reboot completed." text
