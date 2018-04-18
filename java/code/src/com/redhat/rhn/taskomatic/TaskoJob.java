@@ -161,74 +161,78 @@ public class TaskoJob implements Job {
                     }
                     markTaskRunning(task);
                 }
-                log.debug(schedule.getJobLabel() + ":" + " task " + task.getName() +
-                        " started");
-                TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
-                TaskoFactory.save(taskRun);
-                HibernateFactory.commitTransaction();
-                HibernateFactory.closeSession();
-
-                Class jobClass = null;
-                RhnJob job = null;
                 try {
-                    jobClass = Class.forName(template.getTask().getTaskClass());
-                    job = (RhnJob) jobClass.newInstance();
-                }
-                catch (Exception e) {
-                    String errorLog = e.getClass().toString() + ": " +
-                            e.getMessage() + '\n' + e.getCause() + '\n';
-                    taskRun.appendToErrorLog(errorLog);
-                    taskRun.saveStatus(TaskoRun.STATUS_FAILED);
+                    log.debug(schedule.getJobLabel() + ":" + " task " + task.getName() +
+                            " started");
+                    TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
+                    TaskoFactory.save(taskRun);
                     HibernateFactory.commitTransaction();
                     HibernateFactory.closeSession();
-                    // log the exception properly to the rhn_taskomatic_daemon.log log
-                    e.printStackTrace();
-                    return;
-                }
 
-                try {
-                    job.execute(context, taskRun);
-                }
-                catch (Exception e) {
-                    if (HibernateFactory.getSession().getTransaction().isActive()) {
-                        HibernateFactory.rollbackTransaction();
+                    Class jobClass = null;
+                    RhnJob job = null;
+                    try {
+                        jobClass = Class.forName(template.getTask().getTaskClass());
+                        job = (RhnJob) jobClass.newInstance();
+                    }
+                    catch (Exception e) {
+                        String errorLog = e.getClass().toString() + ": " +
+                                e.getMessage() + '\n' + e.getCause() + '\n';
+                        taskRun.appendToErrorLog(errorLog);
+                        taskRun.saveStatus(TaskoRun.STATUS_FAILED);
+                        HibernateFactory.commitTransaction();
+                        HibernateFactory.closeSession();
+                        // log the exception properly to the rhn_taskomatic_daemon.log log
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    try {
+                        job.execute(context, taskRun);
+                    }
+                    catch (Exception e) {
+                        if (HibernateFactory.getSession().getTransaction().isActive()) {
+                            HibernateFactory.rollbackTransaction();
+                            HibernateFactory.closeSession();
+                        }
+                        job.appendExceptionToLogError(e);
+                        taskRun.failed();
+                        HibernateFactory.commitTransaction();
                         HibernateFactory.closeSession();
                     }
-                    job.appendExceptionToLogError(e);
-                    taskRun.failed();
-                    HibernateFactory.commitTransaction();
-                    HibernateFactory.closeSession();
-                }
 
-                // rollback everything, what the application changed and didn't committed
-                if (TaskoFactory.getSession().getTransaction().isActive()) {
-                    TaskoFactory.rollbackTransaction();
-                    HibernateFactory.closeSession();
-                }
+                    // rollback everything, what the application changed and didn't committed
+                    if (TaskoFactory.getSession().getTransaction().isActive()) {
+                        TaskoFactory.rollbackTransaction();
+                        HibernateFactory.closeSession();
+                    }
 
-                log.debug(task.getName() + " (" + schedule.getJobLabel() + ") ... " +
-                        taskRun.getStatus().toLowerCase());
-                if (((taskRun.getStatus() == TaskoRun.STATUS_FINISHED) ||
-                        (taskRun.getStatus() == TaskoRun.STATUS_FAILED)) &&
-                     (taskRun.getStatus() != lastStatus.get(task.getName()))) {
-                    String email = "Taskomatic bunch " + schedule.getBunch().getName() +
-                    " was scheduled to run within the " + schedule.getJobLabel() +
-                    " schedule.\n\n" + "Subtask " + task.getName();
-                    if (taskRun.getStatus() == TaskoRun.STATUS_FAILED) {
-                        email += " failed.\n\n" + "For more information check ";
-                        email += taskRun.getStdErrorPath() + ".";
+                    log.debug(task.getName() + " (" + schedule.getJobLabel() + ") ... " +
+                            taskRun.getStatus().toLowerCase());
+                    if (((taskRun.getStatus() == TaskoRun.STATUS_FINISHED) ||
+                            (taskRun.getStatus() == TaskoRun.STATUS_FAILED)) &&
+                            (taskRun.getStatus() != lastStatus.get(task.getName()))) {
+                        String email = "Taskomatic bunch " + schedule.getBunch().getName() +
+                                " was scheduled to run within the " + schedule.getJobLabel() +
+                                " schedule.\n\n" + "Subtask " + task.getName();
+                        if (taskRun.getStatus() == TaskoRun.STATUS_FAILED) {
+                            email += " failed.\n\n" + "For more information check ";
+                            email += taskRun.getStdErrorPath() + ".";
+                        }
+                        else {
+                            email += " finished successfuly and is back to normal.";
+                        }
+                        log.info("Sending e-mail ... " + task.getName());
+                        TaskHelper.sendTaskoEmail(taskRun.getOrgId(), email);
+                        lastStatus.put(task.getName(), taskRun.getStatus());
                     }
-                    else {
-                        email += " finished successfuly and is back to normal.";
-                    }
-                    log.info("Sending e-mail ... " + task.getName());
-                    TaskHelper.sendTaskoEmail(taskRun.getOrgId(), email);
-                    lastStatus.put(task.getName(), taskRun.getStatus());
+                    previousRun = taskRun;
                 }
-                previousRun = taskRun;
-                synchronized (lock) {
-                    unmarkTaskRunning(task);
-                    lock.notify();
+                finally {
+                    synchronized (lock) {
+                        unmarkTaskRunning(task);
+                        lock.notify();
+                    }
                 }
             }
             else {
