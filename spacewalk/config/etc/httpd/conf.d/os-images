@@ -1,0 +1,9 @@
+Alias /os-images /srv/www/os-images
+
+<Directory "/srv/www/os-images">
+    SetEnv VIRTUALENV
+    Options Indexes FollowSymLinks
+    Order allow,deny
+    Allow from all
+</Directory>
+
