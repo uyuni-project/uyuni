@@ -12,7 +12,8 @@ const Utils = require("../utils/functions").Utils;
 /* global storeId */
 
 const typeMap = {
-  "registry": "Registry"
+  "registry": "Registry",
+  "os_image": "OS Image"
 };
 
 const msgMap = {};
@@ -140,6 +141,9 @@ class CreateImageStore extends React.Component {
         <Input.Text key="username" name="username" label={t("Username")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>,
         <Input.Password key="password" name="password" label={t("Password")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>
       ];
+    case "os_image":
+      // No type-specific input for Kiwi image store
+      return [];
     default:
       return <div>If you see this please report a bug.</div>;
     }

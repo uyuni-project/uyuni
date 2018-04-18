@@ -16,4 +16,7 @@
 insert into suseImageStoreType (id, label, name) values
 	(sequence_nextval('suse_imgstore_type_id_seq'), 'registry', 'Registry');
 
+insert into suseImageStoreType (id, label, name) values
+	(sequence_nextval('suse_imgstore_type_id_seq'), 'os_image', 'OS Image');
+
 commit;

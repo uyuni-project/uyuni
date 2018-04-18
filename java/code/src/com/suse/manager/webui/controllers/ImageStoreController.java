@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -30,6 +31,7 @@ import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -52,6 +54,7 @@ public class ImageStoreController {
 
     private static final Gson GSON = Json.GSON;
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
+    private static Logger log = Logger.getLogger(ImageStoreController.class);
 
     private ImageStoreController() { }
 
@@ -104,6 +107,11 @@ public class ImageStoreController {
         if (!store.isPresent()) {
             res.redirect("/rhn/manager/cm/imagestores/create");
         }
+        else if (store.get().getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
+            log.warn("Updating OS Image stores are not allowed.");
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
 
         Map<String, Object> data = new HashMap<>();
         data.put("store_id", storeId);
@@ -124,8 +132,7 @@ public class ImageStoreController {
             ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 
         List<ImageStore> stores = ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
@@ -240,7 +247,12 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object list(Request req, Response res, User user) {
-        List<ImageStore> imageStores = ImageStoreFactory.listImageStores(user.getOrg());
+        // Only list 'registry' stores
+        List<ImageStore> imageStores = ImageStoreFactory.listImageStores(user.getOrg())
+                .stream()
+                .filter(s -> s.getStoreType().equals(ImageStoreFactory.TYPE_REGISTRY))
+                .collect(Collectors.toList());
+
         return json(res, getJsonList(imageStores));
     }
 
@@ -253,13 +265,12 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object update(Request req, Response res, User user) {
-        ImageRegistryCreateRequest updateRequest;
+        ImageStoreCreateRequest updateRequest;
         try {
-            updateRequest = GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
+            updateRequest = GSON.fromJson(req.body(), ImageStoreCreateRequest.class);
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 
         Long storeId = Long.parseLong(req.params("id"));
@@ -267,6 +278,12 @@ public class ImageStoreController {
                 ImageStoreFactory.lookupByIdAndOrg(storeId, user.getOrg());
 
         JsonResult result = store.map(s -> {
+
+            if (s.getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
+                log.warn("Updating OS Image stores are not allowed.");
+                throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            }
+
             s.setLabel(updateRequest.getLabel());
             s.setUri(updateRequest.getUri());
             s.setOrg(user.getOrg());
@@ -289,13 +306,12 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object create(Request req, Response res, User user) {
-        ImageRegistryCreateRequest createRequest;
+        ImageStoreCreateRequest createRequest;
         try {
-            createRequest = GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
+            createRequest = GSON.fromJson(req.body(), ImageStoreCreateRequest.class);
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 
         ImageStore imageStore = new ImageStore();
@@ -303,8 +319,19 @@ public class ImageStoreController {
         imageStore.setUri(createRequest.getUri());
         setStoreCredentials(imageStore, createRequest);
 
-        imageStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(
-                ImageStore.TYPE_REGISTRY).get());
+        Optional<ImageStoreType> storeType = ImageStoreFactory.lookupStoreTypeByLabel(createRequest.getStoreType());
+
+        if (!storeType.isPresent()) {
+            log.warn("Invalid store type: " + createRequest.getStoreType());
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
+        if (storeType.get().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
+            log.warn("Creating OS Image stores are not allowed.");
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
+        imageStore.setStoreType(storeType.get());
         imageStore.setOrg(user.getOrg());
 
         ImageStoreFactory.save(imageStore);
@@ -324,13 +351,12 @@ public class ImageStoreController {
             json.addProperty("id", imageStore.getId());
             json.addProperty("label", imageStore.getLabel());
             json.addProperty("uri", imageStore.getUri());
-            json.addProperty("type", imageStore.getStoreType().getName());
+            json.addProperty("type", imageStore.getStoreType().getLabel());
             return json;
         }).collect(Collectors.toList());
     }
 
-    private static void setStoreCredentials(ImageStore store,
-            ImageRegistryCreateRequest request) {
+    private static void setStoreCredentials(ImageStore store, ImageStoreCreateRequest request) {
         if (request.isUseCredentials()) {
             Credentials dc = store.getCreds() != null ?
                     store.getCreds() : CredentialsFactory.createRegistryCredentials();

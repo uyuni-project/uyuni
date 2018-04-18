@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ImageStoreHandler
@@ -112,7 +113,10 @@ public class ImageStoreHandler extends BaseHandler {
      */
     public List<ImageStore> listImageStores(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
-        return ImageStoreFactory.listImageStores(loggedInUser.getOrg());
+        // Only list 'registry' stores
+        return ImageStoreFactory.listImageStores(loggedInUser.getOrg()).stream()
+                .filter(s -> s.getStoreType().equals(ImageStoreFactory.TYPE_REGISTRY))
+                .collect(Collectors.toList());
     }
 
     /**
