@@ -39,8 +39,6 @@ import javax.persistence.Table;
 @Table(name = "suseImageStore")
 public class ImageStore extends BaseDomainHelper {
 
-    public static final String TYPE_REGISTRY = "registry";
-
     /** The id. */
     private Long id;
 

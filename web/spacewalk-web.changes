@@ -692,7 +692,7 @@ Thu Feb 13 15:12:54 CET 2014 - mc@suse.de
 Fri Feb 07 12:58:53 CET 2014 - mc@suse.de
 
 - version 2.1.54.1-1
-- changes in the logic to update the tick icon. 
+- changes in the logic to update the tick icon.
   Differentiating between edit user form and create user form.
 - adding caller script and tick icon function
 - Fixed unstyled form in PXT page: SSM/Groups
@@ -862,7 +862,7 @@ Mon Jul 16 15:29:50 CEST 2012 - ug@suse.de
 Mon Jun 25 10:27:43 CEST 2012 - mc@suse.de
 
 - version 1.7.28.7-1
-- For the postgres localhost:5432 case, use the 
+- For the postgres localhost:5432 case, use the
   Unix socket local connection.
 
 -------------------------------------------------------------------
@@ -984,7 +984,7 @@ Fri Nov 11 16:01:49 CET 2011 - jrenner@suse.de
 -------------------------------------------------------------------
 Thu Nov 10 16:22:58 CET 2011 - jrenner@suse.de
 
-- Fix internal server errors by returning 0 instead of dying 
+- Fix internal server errors by returning 0 instead of dying
 
 -------------------------------------------------------------------
 Wed Nov  9 09:45:58 CET 2011 - mantel@suse.de
@@ -1137,7 +1137,7 @@ Thu Mar 10 14:55:05 CET 2011 - jrenner@suse.de
 -------------------------------------------------------------------
 Wed Mar  9 15:16:52 CET 2011 - mc@suse.de
 
-- add missing dependency to spacewalk-base-minimal (bnc#678126) 
+- add missing dependency to spacewalk-base-minimal (bnc#678126)
 
 -------------------------------------------------------------------
 Tue Mar  8 16:00:30 CET 2011 - jrenner@suse.de
@@ -1163,12 +1163,12 @@ Mon Feb 28 10:54:36 CET 2011 - ug@suse.de
 -------------------------------------------------------------------
 Thu Feb 17 13:25:22 CET 2011 - jrenner@suse.de
 
-- change kickstart to autoinstallation in navigation on pxt pages 
+- change kickstart to autoinstallation in navigation on pxt pages
 
 -------------------------------------------------------------------
 Wed Feb 16 14:33:20 CET 2011 - mc@suse.de
 
-- debranding 
+- debranding
 
 -------------------------------------------------------------------
 Wed Feb 16 12:24:24 UTC 2011 - dmacvicar@suse.de

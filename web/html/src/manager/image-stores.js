@@ -20,6 +20,11 @@ const msgMap = {
   "delete_success_p": t("Image stores have been deleted.")
 };
 
+const typeMap = {
+  "registry": "Registry",
+  "os_image": "OS Image"
+};
+
 class ImageStores extends React.Component {
 
   constructor(props) {
@@ -131,7 +136,7 @@ class ImageStores extends React.Component {
               width="35%"
               comparator={Utils.sortByText}
               header={t('Type')}
-              cell={ (row) => row.type }
+              cell={ (row) => typeMap[row.type] }
             />
             { isAdmin &&
               <Column

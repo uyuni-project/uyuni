@@ -299,8 +299,7 @@ public class ImageTestUtils {
         ImageStore store = new ImageStore();
         store.setLabel(label);
         store.setUri("my.store.uri");
-        store.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
+        store.setStoreType(ImageStoreFactory.TYPE_REGISTRY);
         store.setOrg(user.getOrg());
 
         if (creds != null) {
