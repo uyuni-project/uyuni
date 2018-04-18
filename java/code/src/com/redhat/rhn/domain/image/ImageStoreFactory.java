@@ -35,6 +35,9 @@ import javax.persistence.criteria.Root;
  */
 public class ImageStoreFactory extends HibernateFactory {
 
+    public static final ImageStoreType TYPE_OS_IMAGE = ImageStoreFactory.lookupStoreTypeByLabel("os_image").get();
+    public static final ImageStoreType TYPE_REGISTRY = ImageStoreFactory.lookupStoreTypeByLabel("registry").get();
+
     private static ImageStoreFactory instance = new ImageStoreFactory();
     private static Logger log = Logger.getLogger(ImageStoreFactory.class);
     public static final String USER_KEY = "username";
@@ -65,6 +68,9 @@ public class ImageStoreFactory extends HibernateFactory {
      * @param store the image store to delete
      */
     public static void delete(ImageStore store) {
+        if (store.getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
+            throw new IllegalArgumentException("Cannot delete permanent OS Image store");
+        }
         instance.removeObject(store);
     }
 
@@ -74,6 +80,9 @@ public class ImageStoreFactory extends HibernateFactory {
      * @param store the image store to save
      */
     public static void save(ImageStore store) {
+        if (store.getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
+            throw new IllegalArgumentException("Cannot update permanent OS Image store");
+        }
         instance.saveObject(store);
     }
 
@@ -210,22 +219,20 @@ public class ImageStoreFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a db entity for credentials if the input params contain
-     * entry for username and password.
+     * Creates a db entity for credentials if the input params contain entry for
+     * username and password.
      * @param params - non-null map of gatherer parameters
      * @param ist - image store type
      * @return new Credentials instance
      */
-    public static Credentials createCredentials(Map<String, String> params,
-            ImageStoreType ist) {
-        String type = "";
-        if (ist.getLabel().equals(ImageStore.TYPE_REGISTRY)) {
+    public static Credentials createCredentials(Map<String, String> params, ImageStoreType ist) {
+        String type;
+        if (ist.equals(ImageStoreFactory.TYPE_REGISTRY)) {
             type = Credentials.TYPE_REGISTRY;
         }
         else {
             return null;
         }
-        return CredentialsFactory.createCredentials(params.get(USER_KEY),
-                params.get(PASS_KEY), type, null);
+        return CredentialsFactory.createCredentials(params.get(USER_KEY), params.get(PASS_KEY), type, null);
     }
 }

@@ -17,10 +17,11 @@ package com.suse.manager.webui.utils.gson;
 /**
  * JSON request wrapper for registry image stores.
  */
-public class ImageRegistryCreateRequest {
+public class ImageStoreCreateRequest {
 
     private String label;
     private String uri;
+    private String storeType;
     private String username;
     private String password;
     private boolean useCredentials;
@@ -37,6 +38,13 @@ public class ImageRegistryCreateRequest {
      */
     public String getUri() {
         return uri;
+    }
+
+    /**
+     * @return the store type
+     */
+    public String getStoreType() {
+        return storeType;
     }
 
     /**
