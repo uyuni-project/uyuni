@@ -1,3 +1,4 @@
+- Handle empty values. Do not pass optional fields to pillar in formulas if field is empty and no ifempty attr defined.
 - use Crypto.getRandomValues for random password generation
 - generate random password only if the button is clicked
 - Simplify titles on channel assignment pages
