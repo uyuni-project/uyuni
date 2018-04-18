@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 36f1a31987f66cf58e2f006709b86f5737b9a328
+-- oracle equivalent source sha1 d10c13c7a085b77b20fdd2392641b064c5d04240
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -210,6 +210,15 @@ begin
                         sgt.id, new_org_id
                 from rhnServerGroupType sgt
                 where sgt.label = 'osimage_build_host';
+
+        insert into suseImageStore (id, label, uri, store_type_id, org_id)
+        values (
+            nextval('suse_imgstore_id_seq'),
+            'SUSE Manager OS Image Store',
+            new_org_id || '/',
+            (SELECT id FROM suseImageStoreType WHERE label = 'os_image'),
+            new_org_id
+        );
 
         org_id_out := new_org_id;
 
