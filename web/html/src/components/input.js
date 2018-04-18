@@ -177,7 +177,8 @@ class _InputBase extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        if(!(props.value === this.props.value && props.disabled === this.props.disabled)) {
+        if(!(props.value === this.props.value && props.disabled === this.props.disabled &&
+              props.required === this.props.required)) {
             this.props.validate(this, props);
             this.setState({
                 showErrors: false
