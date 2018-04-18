@@ -209,6 +209,15 @@ begin
                 from rhnServerGroupType sgt
                 where sgt.label = 'osimage_build_host';
 
+        insert into suseImageStore (id, label, uri, store_type_id, org_id)
+        values (
+            suse_imgstore_id_seq.nextval,
+            'SUSE Manager OS Image Store',
+            new_org_id || '/',
+            (SELECT id FROM suseImageStoreType WHERE label = 'os_image'),
+            new_org_id
+        );
+
 	org_id_out := new_org_id;
 		
 end create_new_org;
