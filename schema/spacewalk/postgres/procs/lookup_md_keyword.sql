@@ -24,18 +24,17 @@ begin
      where label = label_in;
     if not found then
         md_keyword_id := nextval('suse_mdkeyword_id_seq');
-        begin
-            perform pg_dblink_exec(
-                'insert into suseMdKeyword (id, label) values (' ||
-                md_keyword_id || ', ' || coalesce(quote_literal(label_in)) || ')');
-        exception when unique_violation then
-            select id
-              into strict md_keyword_id
-              from suseMdKeyword
-             where label = label_in;
-        end;
+
+        insert into suseMdKeyword (id, label)
+            values (md_keyword_id, label_in)
+            on conflict do nothing;
+
+        select id
+            into strict md_keyword_id
+            from suseMdKeyword
+            where label = label_in;
     end if;
 
     return md_keyword_id;
 end;
-$$ language plpgsql immutable;
+$$ language plpgsql;
