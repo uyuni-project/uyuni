@@ -3,7 +3,7 @@
 
 Feature: Assign channels with dependencies
 
-  Scenario: Check recommended child channels selection
+  Scenario: Play with recommended and required child channels selection
     Given I am on the Systems overview page of this "sle-minion"
     And the "sle-minion" is a SLE-"15" client
     When I follow "Software" in the content area
@@ -12,5 +12,7 @@ Feature: Assign channels with dependencies
     And I should see the recommended toggler "disabled"
     Then I should see a text like "SLE-Module-Basesystem15-Pool for x86_64"
     And I should see the child channel "SLE-Module-Basesystem15-Pool for x86_64" "unselected"
+    Then I select the child channel "SLE-Module-Basesystem15-Updates for x86_64"
+    And I should see the child channel "SLE-Product-SLES15-Updates for x86_64" "selected"
     Then I click on the "disabled" recommended toggler
     And I should see the child channel "SLE-Module-Basesystem15-Pool for x86_64" "selected"
