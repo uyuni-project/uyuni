@@ -89,13 +89,11 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import java.io.File;
 import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
@@ -1871,12 +1869,7 @@ public class SystemManager extends BaseManager {
             }
         }
         if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
-            File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
-            if (!pubKey.isFile()) {
-                log.info("Generating SSH key for salt-ssh");
-                Optional<MgrUtilRunner.ExecResult> res = saltServiceInstance
-                        .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
-            }
+            saltServiceInstance.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
 
         Map<String, Object> in = new HashMap<String, Object>();

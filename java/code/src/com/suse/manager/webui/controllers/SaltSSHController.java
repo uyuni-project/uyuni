@@ -14,12 +14,13 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static spark.Spark.halt;
+
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+
 import org.apache.commons.io.IOUtils;
-import spark.Request;
-import spark.Response;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
-import static spark.Spark.halt;
+import spark.Request;
+import spark.Response;
 
 /**
  * Generate and retrieve the salt-ssh public key.
@@ -45,16 +47,15 @@ public class SaltSSHController {
      */
     public static synchronized byte[] getPubKey(Request request, Response response) {
         File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
-        if (!pubKey.isFile()) {
-            Optional<MgrUtilRunner.ExecResult> res = SaltService.INSTANCE
-                    .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
 
-            if (!res.isPresent()) {
-                halt(500, "Could not retrieve salt-ssh public key.");
-            }
-            if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
-                halt(500, res.get().getStderr() + "");
-            }
+        Optional<MgrUtilRunner.ExecResult> res = SaltService.INSTANCE
+                .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+
+        if (!res.isPresent()) {
+            halt(500, "Could not retrieve salt-ssh public key.");
+        }
+        if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
+            halt(500, res.get().getStderr() + "");
         }
 
         response.header("Content-Type", "application/octet-stream");
