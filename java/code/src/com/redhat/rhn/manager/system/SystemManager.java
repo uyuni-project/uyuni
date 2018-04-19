@@ -14,27 +14,6 @@
  */
 package com.redhat.rhn.manager.system;
 
-import java.net.IDN;
-import java.sql.Date;
-import java.sql.Types;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.Session;
-
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -108,7 +87,32 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+
+import java.io.File;
+import java.net.IDN;
+import java.sql.Date;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -1864,6 +1868,14 @@ public class SystemManager extends BaseManager {
                             virtSetupResults.getMessage());
                     return result;
                 }
+            }
+        }
+        if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
+            File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
+            if (!pubKey.isFile()) {
+                log.info("Generating SSH key for salt-ssh");
+                Optional<MgrUtilRunner.ExecResult> res = saltServiceInstance
+                        .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
             }
         }
 
