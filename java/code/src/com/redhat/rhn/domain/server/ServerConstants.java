@@ -86,7 +86,7 @@ public class ServerConstants {
     }
 
     /**
-     * Static representing the container build hostentitled server group type
+     * Static representing the container build host entitled server group type
      * @return ServerGroupType
      */
     public static final ServerGroupType getServerGroupTypeContainerBuildHostEntitled() {
