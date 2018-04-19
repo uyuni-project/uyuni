@@ -60,7 +60,6 @@ def _prepareHTTP(source, dest):
   _prepareDestDir(dest)
 
   filename = os.path.join(dest, source.split("/")[-1])
-  #             file.manage_file(name, sfn, ret, source, makedirs=False)
   res = __salt__['state.single']('file.managed', filename, source=source, makedirs=True, skip_verify=True)
   for s, r in res.items():
     if not r['result']:
