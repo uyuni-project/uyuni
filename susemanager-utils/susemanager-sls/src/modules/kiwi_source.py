@@ -12,9 +12,7 @@ valid_url_prefixes = ['http://', 'https://']
 valid_url_suffixes = ['.tar.gz', '.tar.xz', '.tar.bz2', '.tgz', '.tar']
 
 def _isLocal(source):
-  if __salt__['file.directory_exists'](source):
-    return True
-  return False
+  return __salt__['file.directory_exists'](source)
 
 def _isGit(source):
   for prefix in valid_git_prefixes:
@@ -40,7 +38,7 @@ def _isTarball(source):
 
 def _prepareDestDir(dest):
   '''
-  Check target directory does not exists and create it
+  Check target directory does not exists
   '''
   if os.path.isdir(dest):
     raise salt.exceptions.SaltException('Working directory "{}" exists before sources are prepared'.format(dest))
@@ -80,7 +78,6 @@ def _prepareGit(source, dest, root):
   # this is needed if we are interested only in git subtree
   tmpdir = __salt__['temp.dir'](parent=root)
 
-  # default revision is master and git root dir
   rev = 'master'
   subdir = None
   url = None
@@ -109,12 +106,12 @@ def _prepareGit(source, dest, root):
 
 def prepare_source(source, root):
   '''
-  Prepare source directory for various sources.
+  Prepare source directory based on different source types.
 
-  source is string with either local directory path, remote http(s) archive or git repository
-  root is local directory where processed source is to be put
+  source -- string with either local directory path, remote http(s) archive or git repository
+  root   -- local directory where to store processed source files
 
-  for git repository following format is understood:
+  For git repository following format is understood:
     [http[s]://|git://][user@]hostname/repository[#revision[:subdirectory]]
   '''
   dest = os.path.join(root, 'source')
