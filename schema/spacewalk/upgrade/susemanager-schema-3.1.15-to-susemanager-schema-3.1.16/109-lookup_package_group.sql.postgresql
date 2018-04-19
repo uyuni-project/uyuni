@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 f948e9b5eb7803acc73679b6a09203892468961a
+-- oracle equivalent source sha1 05a7b2cc7d3436b1c99671ec1c98492eff52252f
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -14,31 +14,31 @@
 -- in this software or its documentation. 
 
 create or replace function
-lookup_source_name(name_in in varchar)
+lookup_package_group(name_in in varchar)
 returns numeric
 as
 $$
 declare
-    source_id   numeric;
+    package_id   numeric;
 begin
     select id
-      into source_id
-      from rhnSourceRPM
+      into package_id
+      from rhnPackageGroup
      where name = name_in;
 
     if not found then
-        source_id := nextval('rhn_sourcerpm_id_seq');
+        package_id := nextval('rhn_package_group_id_seq');
 
-        insert into rhnSourceRPM(id, name)
-            values (source_id, name_in)
+        insert into rhnPackageGroup(id, name)
+            values (package_id, name_in)
             on conflict do nothing;
 
         select id
-            into strict source_id
-            from rhnSourceRPM
+            into strict package_id
+            from rhnPackageGroup
             where name = name_in;
     end if;
 
-    return source_id;
+    return package_id;
 end;
 $$ language plpgsql;

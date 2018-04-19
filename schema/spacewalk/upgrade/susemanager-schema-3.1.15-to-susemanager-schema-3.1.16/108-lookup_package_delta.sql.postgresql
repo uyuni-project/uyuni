@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 f948e9b5eb7803acc73679b6a09203892468961a
+-- oracle equivalent source sha1 0895216a6f46417b794d647e4056acb92f73cbde
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -13,32 +13,31 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 
-create or replace function
-lookup_source_name(name_in in varchar)
+create or replace function lookup_package_delta(n_in in varchar)
 returns numeric
 as
 $$
 declare
-    source_id   numeric;
+    name_id     numeric;
 begin
     select id
-      into source_id
-      from rhnSourceRPM
-     where name = name_in;
+      into name_id
+      from rhnPackageDelta
+     where label = n_in;
 
     if not found then
-        source_id := nextval('rhn_sourcerpm_id_seq');
+        name_id := nextval('rhn_packagedelta_id_seq');
 
-        insert into rhnSourceRPM(id, name)
-            values (source_id, name_in)
+        insert into rhnPackageDelta(id, label)
+            values (name_id, n_in)
             on conflict do nothing;
 
         select id
-            into strict source_id
-            from rhnSourceRPM
-            where name = name_in;
+            into strict name_id
+            from rhnpackagedelta
+            where label = n_in;
     end if;
 
-    return source_id;
+    return name_id;
 end;
 $$ language plpgsql;

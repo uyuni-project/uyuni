@@ -1,3 +1,5 @@
+- fix a race condition on lookup_evr (bsc#1090059)
+
 -------------------------------------------------------------------
 Tue Apr 10 10:17:53 CEST 2018 - jgonzalez@suse.com
 
