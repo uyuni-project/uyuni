@@ -32,6 +32,13 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.impl.SaltSSHService;
+import com.suse.manager.webui.services.impl.SaltService;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.lib.legacy.ClassImposteriser;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -42,9 +49,16 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+
+    private Mockery context = new Mockery();
+    private SaltService saltServiceMock;
+
+    @Override
     public void setUp() throws Exception {
         super.setUp();
-
+        context.setImposteriser(ClassImposteriser.INSTANCE);
+        saltServiceMock = context.mock(SaltService.class);
+        SystemManager.mockSaltService(saltServiceMock);
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());
         UserTestUtils.addVirtualization(user.getOrg());
@@ -110,6 +124,34 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
         assertEquals("1 system(s).",
                 addonEntitlementCounts.get(EntitlementManager.CONTAINER_BUILD_HOST.getLabel()));
+    }
+
+    public void testOSImageBuildHostType() throws Exception {
+        context.checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+        }});
+
+        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        // OS Image building is x86_64 only
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+
+        assertTrue(EntitlementManager.OSIMAGE_BUILD_HOST.isAllowedOnServer(server));
+
+        boolean hasErrors = SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST).hasErrors();
+
+        assertFalse(hasErrors);
+        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.OSIMAGE_BUILD_HOST));
+
+        executeTests();
+        assertNotNull(request.getAttribute(
+                SystemEntitlementsSetupAction.ADDON_ENTITLEMENTS));
+
+        Map<String, String> addonEntitlementCounts = (Map<String, String>) request
+                .getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT_COUNTS);
+
+        assertEquals("1 system(s).",
+                addonEntitlementCounts.get(EntitlementManager.OSIMAGE_BUILD_HOST.getLabel()));
+        context.assertIsSatisfied();
     }
 
     /**
