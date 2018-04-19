@@ -32,7 +32,8 @@ MANAGER_BASE_TOP = [
     "custom_org",
     "formulas",
     "services.salt-minion",
-    "services.docker"
+    "services.docker",
+    "services.kiwi-image-server"
 ]
 
 

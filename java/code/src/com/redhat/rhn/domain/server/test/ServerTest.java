@@ -135,6 +135,29 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertFalse(s.doesOsSupportsContainerization());
     }
 
+    /**
+     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     */
+    public void testOsSupportsOSImageBuilding() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("SLES");
+        s.setRelease("12.1");
+        assertTrue(s.doesOsSupportsOSImageBuilding());
+    }
+    /**
+     * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
+     */
+    public void testOsDoesNotSupportsOSImageBuilding() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("SLES");
+        s.setRelease("11.4");
+        assertFalse(s.doesOsSupportsContainerization());
+    }
+
     public void testGetIpAddress() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         assertNull(s.getIpAddress());

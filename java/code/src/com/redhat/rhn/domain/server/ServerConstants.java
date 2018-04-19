@@ -92,4 +92,12 @@ public class ServerConstants {
     public static final ServerGroupType getServerGroupTypeContainerBuildHostEntitled() {
         return ServerFactory.lookupServerGroupTypeByLabel("container_build_host");
     }
+
+    /**
+     * Static representing the OS Image build host entitled server group type
+     * @return ServerGroupType
+     */
+    public static final ServerGroupType getServerGroupTypeOSImageBuildHostEntitled() {
+        return ServerFactory.lookupServerGroupTypeByLabel("osimage_build_host");
+    }
 }

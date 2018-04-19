@@ -560,6 +560,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public boolean doesOsSupportsContainerization() {
         return false;
     }
+
+    /**
+     * Return <code>true</code> if OS on this system supports OS Image building,
+     * <code>false</code> otherwise.
+     * @return <code>true</code> if OS supports OS Image building
+     */
+    public boolean doesOsSupportsOSImageBuilding() {
+        return false;
+    }
+
     /**
      * Setter for os
      *
@@ -1512,6 +1522,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean hasContainerBuildHostEntitlement() {
         return hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST);
+    }
+
+    /**
+     * Return <code>true</code> if this system has OS Image buildhost entitlement,
+     * <code>false</code> otherwise.
+     * @return <code>true</code> if this system has OS Image buildhost entitlement,
+     *      <code>false</code> otherwise.
+     */
+    public boolean hasOSImageBuildHostEntitlement() {
+        return hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST);
     }
 
     /**
