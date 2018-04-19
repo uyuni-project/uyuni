@@ -39,6 +39,12 @@ mgr_kiwi_build_tools:
     - group: root
     - dir_mode: 755
 
+ssh_public_key:
+  file.append:
+    - name: /root/.ssh/authorized_keys
+    - source: salt://salt_ssh/mgr_ssh_id.pub
+    - makedirs: True
+
 sync:
   module.run:
     - name: saltutil.sync_all
