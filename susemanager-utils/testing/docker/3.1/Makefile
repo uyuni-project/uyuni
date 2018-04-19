@@ -1,6 +1,7 @@
 VERSION = 3.1.0
 REGISTRY = registry.mgr.suse.de
 ORATARGET = suma-3.1-ora
+SHELL := /bin/bash
 
 all: suma-3.1-base suma-3.1-cobbler suma-3.1-gatherer suma-3.1-spacewalkkoan suma-3.1-pgsql suma-3.1-ora
 
