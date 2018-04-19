@@ -68,6 +68,7 @@ cp src/modules/mainframesysinfo.py %{buildroot}/usr/share/susemanager/salt/_modu
 cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgractionchains.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_info.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
 
 %post
 # HACK! Create broken link when it will be replaces with the real file
