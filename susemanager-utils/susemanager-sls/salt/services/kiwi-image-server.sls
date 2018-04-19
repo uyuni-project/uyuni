@@ -2,7 +2,7 @@
 #
 # Copyright © 2017, 2018 SUSE LLC
 
-{% if pillar['addon_group_types'] is defined and 'kiwi_build_host' in pillar['addon_group_types'] %}
+{% if pillar['addon_group_types'] is defined and 'osimage_build_host' in pillar['addon_group_types'] %}
 {% set kiwi_dir = '/var/lib/Kiwi' %}
 
 mgr_install_kiwi:
