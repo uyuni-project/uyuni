@@ -14,17 +14,8 @@
  */
 package com.redhat.rhn.manager.system.test;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.cobbler.test.MockConnection;
-import org.hibernate.Session;
-import org.hibernate.type.IntegerType;
+import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
+import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -92,7 +83,16 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.testing.*;
+import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerGroupTestUtils;
+import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestStatics;
+import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.webui.services.impl.SaltSSHService;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
@@ -105,11 +105,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
-import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
@@ -117,6 +119,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public static final Long NUM_CPUS = new Long(5);
     public static final int HOST_RAM_MB = 2048;
     public static final int HOST_SWAP_MB = 1024;
+
+    private SaltService saltServiceMock;
 
     @Override
     public void setUp() throws Exception {
@@ -127,6 +131,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
+        saltServiceMock = mock(SaltService.class);
+        SystemManager.mockSaltService(saltServiceMock);
         context().checking(new Expectations() {
             {
                 allowing(taskomaticMock)
@@ -456,8 +462,28 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // Removal
         SystemManager.removeServerEntitlement(minion.getId(),
                 EntitlementManager.CONTAINER_BUILD_HOST);
-        server = reload(server);
+        minion = reload(minion);
         assertFalse(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
+
+        //Test OS Image Build Host
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+        }});
+
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        assertTrue(SystemManager.canEntitleServer(minion,
+                EntitlementManager.OSIMAGE_BUILD_HOST));
+        hasErrors = SystemManager.entitleServer(minion,
+                EntitlementManager.OSIMAGE_BUILD_HOST).hasErrors();
+        assertFalse(hasErrors);
+        assertTrue(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
+
+        // Removal
+        SystemManager.removeServerEntitlement(minion.getId(),
+                EntitlementManager.OSIMAGE_BUILD_HOST);
+        minion = reload(minion);
+        assertFalse(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
     }
 
     public void testEntitleVirtForGuest() throws Exception {

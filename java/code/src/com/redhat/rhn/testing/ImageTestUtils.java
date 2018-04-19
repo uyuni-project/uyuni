@@ -343,4 +343,17 @@ public class ImageTestUtils {
         SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
         return server;
     }
+
+    /**
+     * Create a {@link MinionServer} with OSImage Build Host entitlement.
+     *
+     * @param user the user
+     * @return the minion server
+     * @throws Exception the exception
+     */
+    public static MinionServer createOSImageBuildHost(User user) throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        return server;
+    }
 }
