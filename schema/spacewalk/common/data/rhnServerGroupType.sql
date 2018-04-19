@@ -65,5 +65,12 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
       'N', 'N'
    );
 
-commit;
+-- osimage_build_host type ----------------------------------------------------
 
+insert into rhnServerGroupType ( id, label, name, permanent, is_base)
+   values ( sequence_nextval('rhn_servergroup_type_seq'),
+      'osimage_build_host', 'OS Image Build Host',
+      'N', 'N'
+   );
+
+commit;

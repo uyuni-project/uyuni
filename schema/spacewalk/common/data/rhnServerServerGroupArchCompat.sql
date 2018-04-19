@@ -823,5 +823,13 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
 --         values (lookup_server_arch('armv6hl-redhat-linux'),
 --             lookup_sg_type('container_build_host'));
 
-commit;
+-- osimage_build_host* compatibilities --
 
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
+    values (lookup_server_arch('amd64-redhat-linux'),
+            lookup_sg_type('osimage_build_host'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
+    values (lookup_server_arch('x86_64-redhat-linux'),
+            lookup_sg_type('osimage_build_host'));
+commit;
