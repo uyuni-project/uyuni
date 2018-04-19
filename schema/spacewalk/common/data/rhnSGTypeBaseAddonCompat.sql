@@ -25,5 +25,8 @@ insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
 values (lookup_sg_type('salt_entitled'),
         lookup_sg_type('container_build_host'));
 
-commit;
+insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
+values (lookup_sg_type('salt_entitled'),
+        lookup_sg_type('osimage_build_host'));
 
+commit;
