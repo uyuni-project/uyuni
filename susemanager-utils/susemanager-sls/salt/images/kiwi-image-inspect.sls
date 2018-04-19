@@ -1,11 +1,9 @@
 # SUSE Manager for Retail build trigger
 #
-
-{%- set root_dir = '/var/lib/Kiwi/chroot/' + pillar.get('build_id') %}
-{%- set dest_dir = '/var/lib/Kiwi/images/' + pillar.get('build_id') + '.build'  %}
-{%- set bundle_dir = '/var/lib/Kiwi/images/' + pillar.get('build_id')%}
-{%- set bundle_id = pillar.get('build_id')%}
-
+{%- set root_dir   = '/var/lib/Kiwi/' + pillar.get('build_id') %}
+{%- set dest_dir   = root_dir + '/images.build' %}
+{%- set bundle_dir = root_dir + '/images/' %}
+{%- set bundle_id  = pillar.get('build_id') %}
 
 {%- if pillar.get('use_build') %}
 #mgr_buildimage_build:
@@ -23,7 +21,7 @@ mgr_inspect_kiwi_image:
 
 mgr_kiwi_cleanup:
   cmd.run:
-    - name: "rm -rf '{{ root_dir }}' '{{ bundle_dir }}' '{{ dest_dir }}'"
+    - name: "rm -rf '{{ root_dir }}'"
     - require:
       - module: mgr_inspect_kiwi_image
 

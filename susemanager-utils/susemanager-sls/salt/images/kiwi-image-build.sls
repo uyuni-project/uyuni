@@ -1,12 +1,14 @@
 # SUSE Manager for Retail build trigger
 #
 
-{%- set source = pillar.get('source') %}
+{%- set source     = pillar.get('source') %}
 
-{%- set root_dir = '/var/lib/Kiwi/chroot/' + pillar.get('build_id') %}
-{%- set dest_dir = '/var/lib/Kiwi/images/' + pillar.get('build_id') + '.build'  %}
-{%- set bundle_dir = '/var/lib/Kiwi/images/' + pillar.get('build_id')%}
-{%- set bundle_id = pillar.get('build_id')%}
+{%- set root_dir   = '/var/lib/Kiwi/' + pillar.get('build_id') %}
+{%- set source_dir = root_dir + '/source' %}
+{%- set chroot_dir = root_dir + '/chroot/' %}
+{%- set dest_dir   = root_dir + '/images.build' %}
+{%- set bundle_dir = root_dir + '/images/' %}
+{%- set bundle_id  = pillar.get('build_id') %}
 
 {%- if pillar.get('activation_key') %}
 {%- set kiwi_params = salt['cmd.run']('suma-repos ' + pillar.get('activation_key')) %}
@@ -14,20 +16,33 @@
 {%- set kiwi_params = '--add-repo ' + pillar.get('kiwi_repositories')|join(' --add-repo ') %}
 {%- endif %}
 
+mgr_buildimage_prepare_source:
+  file.directory:
+    - name: {{ root_dir }}
+    - clean: True
+  module.run:
+    - name: kiwi_source.prepare_source
+    - source: {{ source }}
+    - root: {{ root_dir }}
+
 {%- if pillar.get('use_build') %}
 mgr_buildimage_build:
   cmd.run:
-   - name: "/usr/bin/build {{ kvm }} --dist {{ dist }} --kiwi-parameter \"{{ kiwi_params }}\" --root {{ root_dir }} {{ build_repos }} {{ source }}"
+   - name: "/usr/bin/build {{ kvm }} --dist {{ dist }} --kiwi-parameter \"{{ kiwi_params }}\" --root {{ chroot_dir }} {{ build_repos }} {{ source_dir }}"
+   - require:
+     - mgr_buildimage_prepare_source
 
 {%- else %}
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
-    - name: "kiwi --nocolor --force-new-root --prepare {{ source }} --root {{ root_dir }} {{ kiwi_params }}"
+    - name: "kiwi --nocolor --force-new-root --prepare {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params }}"
+    - require:
+      - module: mgr_buildimage_prepare_source
 
 mgr_buildimage_kiwi_create:
   cmd.run:
-    - name: "kiwi --nocolor --yes --create {{ root_dir }} --dest {{ dest_dir }} {{ kiwi_params }}"
+    - name: "kiwi --nocolor --yes --create {{ chroot_dir }} --dest {{ dest_dir }} {{ kiwi_params }}"
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
