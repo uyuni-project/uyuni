@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.entitlement.ForeignEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.ManagementEntitlement;
+import com.redhat.rhn.domain.entitlement.OSImageBuildHostEntitlement;
 import com.redhat.rhn.domain.entitlement.SaltEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.manager.BaseManager;
@@ -48,6 +49,8 @@ public class EntitlementManager extends BaseManager {
     public static final Entitlement FOREIGN = new ForeignEntitlement();
     public static final Entitlement CONTAINER_BUILD_HOST =
             new ContainerBuildHostEntitlement();
+    public static final Entitlement OSIMAGE_BUILD_HOST =
+            new OSImageBuildHostEntitlement();
 
     public static final String UNENTITLED = "unentitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
@@ -56,6 +59,7 @@ public class EntitlementManager extends BaseManager {
     public static final String SALT_ENTITLED = "salt_entitled";
     public static final String FOREIGN_ENTITLED = "foreign_entitled";
     public static final String CONTAINER_BUILD_HOST_ENTITLED = "container_build_host";
+    public static final String OSIMAGE_BUILD_HOST_ENTITLED = "osimage_build_host";
 
     private static final Set<Entitlement> ADDON_ENTITLEMENTS;
     private static final Set<Entitlement> BASE_ENTITLEMENTS;
@@ -63,6 +67,7 @@ public class EntitlementManager extends BaseManager {
         ADDON_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION);
         ADDON_ENTITLEMENTS.add(CONTAINER_BUILD_HOST);
+        ADDON_ENTITLEMENTS.add(OSIMAGE_BUILD_HOST);
 
         BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
@@ -94,6 +99,9 @@ public class EntitlementManager extends BaseManager {
         }
         else if (CONTAINER_BUILD_HOST_ENTITLED.equals(name)) {
             return CONTAINER_BUILD_HOST;
+        }
+        else if (OSIMAGE_BUILD_HOST_ENTITLED.equals(name)) {
+            return OSIMAGE_BUILD_HOST;
         }
         return null;
     }
