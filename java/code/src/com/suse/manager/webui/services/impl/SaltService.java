@@ -14,19 +14,19 @@
  */
 package com.suse.manager.webui.services.impl;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.SaltReactor;
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.AuthModule;
@@ -60,6 +60,7 @@ import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileSystems;
@@ -997,16 +998,18 @@ public class SaltService {
     }
 
     /**
-     * Call the custom mgrutil.ssh_keygen runner.
+     * Call the custom mgrutil.ssh_keygen runner if the key files are not present.
      *
      * @param path of the key files
      * @return the result of the runner call as a map
      */
     public Optional<MgrUtilRunner.ExecResult> generateSSHKey(String path) {
-        RunnerCall<MgrUtilRunner.ExecResult> call =
-                MgrUtilRunner.generateSSHKey(path);
-
-        return callSync(call);
+        File pubKey = new File(path + ".pub");
+        if (!pubKey.isFile()) {
+            RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.generateSSHKey(path);
+            return callSync(call);
+        }
+        return Optional.empty();
     }
 
     /**
