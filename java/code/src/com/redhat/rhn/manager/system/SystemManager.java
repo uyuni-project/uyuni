@@ -2532,7 +2532,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("pid", id);
-        return (DataResult<SystemOverview>) m.execute(params);
+        return m.execute(params);
     }
 
     /**
@@ -2549,7 +2549,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("pid", id);
-        return (DataResult<SystemOverview>) m.execute(params);
+        return m.execute(params);
     }
 
     /**
@@ -2566,7 +2566,7 @@ public class SystemManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("pid", id);
         //toReturn.elaborate();
-        return (DataResult<SystemOverview>) m.execute(params);
+        return m.execute(params);
     }
 
     /**
@@ -2668,7 +2668,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("uid", user.getId());
         params.put("org_id", user.getOrg().getId());
-        return (DataResult<CustomDataKeyOverview>) m.execute(params);
+        return m.execute(params);
     }
     /**
      * Looks up a hardware device by the hardware device id
@@ -2718,7 +2718,7 @@ public class SystemManager extends BaseManager {
         params.put("set_label", RhnSetDecl.SYSTEMS.getLabel());
         params.put("package_set_label", packageSetLabel);
 
-        return (DataResult<Map<String, Object>>) makeDataResult(params, params, null, m);
+        return makeDataResult(params, params, null, m);
     }
 
     /**
@@ -2757,7 +2757,7 @@ public class SystemManager extends BaseManager {
         Server server = lookupByIdAndUser(serverId, user);
 
         Session session = HibernateFactory.getSession();
-        Note doomed = (Note) session.get(Note.class, noteId);
+        Note doomed = session.get(Note.class, noteId);
 
         boolean deletedOnServer = server.getNotes().remove(doomed);
         if (deletedOnServer) {

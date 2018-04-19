@@ -20,10 +20,10 @@ import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.domain.server.VirtualInstance;
-import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -65,7 +65,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         s = ServerFactory.lookupById(s.getId());
         s.setBaseEntitlement(EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(s);
-        s = (Server) reload(s);
+        s = reload(s);
         assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
     }
 
@@ -105,9 +105,9 @@ public class ServerTest extends BaseTestCaseWithUser {
     public void testNetworkInterfaces() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(s);
-        s = (Server) TestUtils.saveAndReload(s);
+        s = TestUtils.saveAndReload(s);
         Server s2 = ServerTestUtils.createTestSystem(user);
-        s2 = (Server) TestUtils.saveAndReload(s2);
+        s2 = TestUtils.saveAndReload(s2);
         NetworkInterfaceTest.createTestNetworkInterface(s2);
         TestUtils.saveAndReload(s2);
         assertTrue("we didnt make it to the end", true);
@@ -181,7 +181,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         NetworkInterface eth1 = NetworkInterfaceTest.createTestNetworkInterface(s, "eth1",
                 ipAddr, hwAddr);
 
-        s = (Server) TestUtils.saveAndReload(s);
+        s = TestUtils.saveAndReload(s);
 
         assertNotNull(s.getIpAddress());
 
@@ -206,7 +206,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     public void xxxtestServerWithVirtEntitlementIsVirtualHost() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = new VirtEntitledServer(user);
-        server = (Server) TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
         assertTrue(server.isVirtualHost());
     }
 
