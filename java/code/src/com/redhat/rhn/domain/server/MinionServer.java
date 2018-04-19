@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
-
 import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
 import com.redhat.rhn.manager.configuration.SaltConfigurable;
 
@@ -224,6 +223,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      *
      * @return optional of MinionServer
      */
+    @Override
     public Optional<MinionServer> asMinionServer() {
         return Optional.of(this);
     }
