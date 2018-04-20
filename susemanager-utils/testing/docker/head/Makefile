@@ -1,6 +1,7 @@
 VERSION = 3.2.5
 REGISTRY = registry.mgr.suse.de
 ORATARGET = suma-head-ora
+SHELL := /bin/bash
 # --no-cache=true
 BUILDOPTS=
 
