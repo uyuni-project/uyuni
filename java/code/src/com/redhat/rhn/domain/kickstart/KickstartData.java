@@ -885,6 +885,17 @@ public class KickstartData {
     }
 
     /**
+     * @return if this auto installation profile is SLES 15 installer type or greater
+     *  (for SLES 15+)
+     */
+    public boolean isSLES15OrGreater() {
+        if (getInstallType() != null) {
+            return (getInstallType().isSLES15OrGreater());
+        }
+        return false;
+    }
+
+    /**
      * returns true if this is a SUSE autoinstallation
      * @return if this is a SUSE autoinstallation or not
      */
