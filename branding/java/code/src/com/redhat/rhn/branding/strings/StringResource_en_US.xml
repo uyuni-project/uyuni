@@ -1192,7 +1192,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
       </trans-unit>
       <trans-unit id="sdc.channels.info.change">
-        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditional registered systems and added to the package state on salt managed system.</source>
+        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems or added to the package states on Salt managed systems.</source>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning">
 <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href=&quot;/rhn/systems/details/SystemChannels.do?sid={0}&quot;&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
