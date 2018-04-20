@@ -282,7 +282,11 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
       .flatMap(dto => dto.childChannels.map(channel => channel.id)));
     Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise
       .then((response : JsonResult<Map<number, Array<number>>>) => {
-        this.setState(ChannelUtils.processChannelDependencies(response.data));
+        const channelDeps = ChannelUtils.processChannelDependencies(response.data);
+        this.setState({
+          requiredChannels: channelDeps.requiredChannels,
+          requiredByChannels: channelDeps.requiredByChannels
+        });
       })
       .catch(err => console.log(err.statusText));
   }
@@ -298,15 +302,16 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
 
   onChangeChild = (allowedChannels: SsmAllowedChildChannelsDto, childId: number, action: string) => {
     let dependencies = [];
-    if (action === "SUBSCRIBE") {
-      dependencies = Array.from(this.state.requiredChannels.get(childId));
-    } else if (action === "UNSUBSCRIBE") {
-      dependencies = Array.from(this.state.requiredByChannels.get(childId));
-    } else if (action === "NO_CHANGE") {
+    const childReqChannels = this.state.requiredChannels.get(childId);
+    const childReqByChannels = this.state.requiredByChannels.get(childId);
+    if (action === "SUBSCRIBE" && childReqChannels) {
+      dependencies = Array.from(childReqChannels);
+    } else if (action === "UNSUBSCRIBE" && childReqByChannels) {
+      dependencies = childReqByChannels;
+    } else if (action === "NO_CHANGE" && childReqChannels && childReqByChannels) {
       // in this case we can't make any assumptions about the actual assignment of the channel,
       // let's reset both the forward and backward deps
-      dependencies = Array.from(this.state.requiredChannels.get(childId))
-        .concat(Array.from(this.state.requiredByChannels.get(childId)));
+      dependencies = Array.from(childReqChannels).concat(childReqByChannels);
     }
 
     // change the channel AND its dependencies
