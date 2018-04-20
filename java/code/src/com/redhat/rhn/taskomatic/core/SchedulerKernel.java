@@ -76,7 +76,6 @@ public class SchedulerKernel {
         props.setProperty(ds + ".user", dbUser);
         props.setProperty(ds + ".password", dbPass);
         // props.setProperty(ds + ".maxConnections", 30);
-        props.setProperty("org.quartz.scheduler.jmx.export", "true");
 
         if (ConfigDefaults.get().isOracle()) {
             props.setProperty("org.quartz.jobStore.driverDelegateClass",
