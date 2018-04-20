@@ -76,6 +76,7 @@ public class SchedulerKernel {
         props.setProperty(ds + ".user", dbUser);
         props.setProperty(ds + ".password", dbPass);
         // props.setProperty(ds + ".maxConnections", 30);
+        props.setProperty("org.quartz.scheduler.jmx.export", "true");
 
         if (ConfigDefaults.get().isOracle()) {
             props.setProperty("org.quartz.jobStore.driverDelegateClass",
@@ -120,8 +121,8 @@ public class SchedulerKernel {
             xmlrpcServer = new TaskoXmlRpcServer(Config.get());
             xmlrpcServer.start();
 
-            // starting the HTTP for exporting taskomatic metrics
             PrometheusExporter.INSTANCE.startHttpServer();
+            PrometheusExporter.INSTANCE.registerScheduler(SchedulerKernel.scheduler, "taskomatic");
         }
         catch (SchedulerException e) {
             e.printStackTrace();
