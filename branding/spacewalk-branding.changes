@@ -1,3 +1,5 @@
+- Add option to schedule action to channels|channel|target
+  systems (bsc#1088246)
 - Add missing left margin at Software Channels WebUI icon links to
   channels (bsc#1083329)
 
