@@ -44,7 +44,6 @@ Feature: Install a patch on the contos minion via Salt through the UI
     Then I should see a "1 package install has been scheduled for" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
     Then "andromeda-dummy-2.0-1.1" should be installed on "ceos-minion"
-    And The metadata buildtime from package "andromeda-dummy" match the one in the rpm on "ceos-minion"
 
 @centosminion
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos minion
