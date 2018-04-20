@@ -379,7 +379,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
             <div className="row channel-for-system">
                   <div className="col-md-6">
                     <BootstrapPanel
-                      title={t("Base Software Alteration")}
+                      title={t("Base Channel")}
                       icon="spacewalk-icon-software-channels"
                       header={
                         <div className="page-summary">
@@ -399,7 +399,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                   </div>
                   <div className="col-md-6">
                     <BootstrapPanel
-                      title={t("Child Channels Subscriptions")}
+                      title={t("Child Channels")}
                       icon="spacewalk-icon-software-channels"
                       header={
                         <div className="page-summary">

@@ -141,7 +141,7 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
 
     return (
       <BootstrapPanel
-        title={t("Base Channel Alteration ")}
+        title={t("Base Channel")}
         icon="spacewalk-icon-software-channels"
         header={
           <div className="page-summary">
