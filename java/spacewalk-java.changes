@@ -1,3 +1,5 @@
+- add support for autoinstallation of SLE15 (bsc#1090205)
+- update sles_register cobbler snippets to work with SLE15 (bsc#1090205)
 - Wait until minion is back to set RebootAction as COMPLETED (bsc#1089401)
 - Handle Salt upgrade inside an Action Chain via patch installation.
 - Change the endpoint for the mandatory channels retrieval to work with IDs instead of labels
