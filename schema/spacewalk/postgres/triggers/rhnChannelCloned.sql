@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 643897d64e0a8bf1a4811918cdbef01c57da1aa3
+-- oracle equivalent source sha1 506313790d43233454041c948e9df402b8019de4
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -24,9 +24,9 @@ begin
 		-- if there are not comps in the cloned channel by now,
 		-- we shall clone comps from the original channel
 		insert into rhnChannelComps
-			( id, channel_id, relative_filename,
+			( id, channel_id, comps_type_id, relative_filename,
 				last_modified, created, modified )
-		select nextval('rhn_channelcomps_id_seq'), new.id, relative_filename,
+		select nextval('rhn_channelcomps_id_seq'), new.id, comps_type_id, relative_filename,
 				current_timestamp, current_timestamp, current_timestamp
 		from rhnChannelComps
 		where channel_id = new.original_id
