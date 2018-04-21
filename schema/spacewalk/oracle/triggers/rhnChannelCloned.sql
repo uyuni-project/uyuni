@@ -24,9 +24,9 @@ begin
 		-- if there are not comps in the cloned channel by now,
 		-- we shall clone comps from the original channel
 		insert into rhnChannelComps
-			( id, channel_id, relative_filename,
+			( id, channel_id, comps_type_id, relative_filename,
 				last_modified, created, modified )
-		select rhn_channelcomps_id_seq.nextval, :new.id, relative_filename,
+		select rhn_channelcomps_id_seq.nextval, :new.id, comps_type_id, relative_filename,
 				current_timestamp, current_timestamp, current_timestamp
 		from rhnChannelComps
 		where channel_id = :new.original_id

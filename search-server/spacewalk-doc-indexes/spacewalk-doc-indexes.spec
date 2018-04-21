@@ -1,7 +1,7 @@
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes
-Version: 2.8.4.2
+Version: 2.8.5
 Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
@@ -57,6 +57,10 @@ done
 %endif
 
 %changelog
+* Thu Apr 19 2018 Jiri Dostal <jdostal@redhat.com> 2.8.5-1
+- Update doc-indexes
+- Update crawler to read new release notes page
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
 - remove install/clean section initial cleanup
 - removed Group from specfile
