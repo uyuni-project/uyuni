@@ -174,6 +174,20 @@ public class KickstartInstallType extends BaseDomainHelper {
     }
 
     /**
+     * @return true if the installer type is SLES 15
+     */
+    public boolean isSLES15() {
+        return isSUSE() && getLabel().startsWith(SLES_PREFIX + "15");
+    }
+
+    /**
+     * @return if this installer type is SLES 15 or greater (for SLES 15+)
+     */
+    public boolean isSLES15OrGreater() {
+        return (isSLES12OrGreater() && !isSLES12());
+    }
+
+    /**
      * @return if this installer type is SLES 12 or greater (for SLES 15)
      */
     public boolean isSLES12OrGreater() {

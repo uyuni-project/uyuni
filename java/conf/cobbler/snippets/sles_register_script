@@ -7,7 +7,11 @@
 mkdir -p /usr/share/rhn/
    #set $mycert_file = "RHN-ORG-TRUSTED-SSL-CERT"
    #set $mycert = "/usr/share/rhn/" + $mycert_file
-wget http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT -O $mycert
+if [ -x /usr/bin/curl ]; then
+    curl http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT -o $mycert
+else
+    wget http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT -O $mycert
+fi
 if [ -x /usr/sbin/update-ca-certificates -a -d /etc/pki/trust/anchors ]; then
     ln -s $mycert /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT.pem
     /usr/sbin/update-ca-certificates
