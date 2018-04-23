@@ -1,5 +1,9 @@
+-------------------------------------------------------------------
+Mon Apr 23 09:26:09 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.9-1
 - Enqueue states applied from 'mgractionchains' to avoid failures when
-  other states are already running at that time.
+  other states are already running at that time (bsc#1090502)
 
 -------------------------------------------------------------------
 Wed Apr 04 12:14:25 CEST 2018 - jgonzalez@suse.com
