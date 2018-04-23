@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 23 09:25:19 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.8-1
 - add SLE15 distribution (bsc#1090205)
 - fix a race condition on lookup_evr (bsc#1090059)
 - Clean up SUSE Studio credentials from the DB
