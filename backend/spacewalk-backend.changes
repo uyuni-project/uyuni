@@ -1,4 +1,12 @@
+-------------------------------------------------------------------
+Mon Apr 23 09:00:29 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.57.2-1
 - Fix encoding for RPM package group in reposync (bsc#1083001)
+- Sync with upstream (bsc#1083294)
+- 1567157 - remove 'www' part from cve.mitre.org domain name
+- 1198723 - rhnRepository.py: add support for Debian / Ubuntu Release files
+- 1549546 - Allow spacewalk-channel to add parent channel
 
 -------------------------------------------------------------------
 Wed Apr 04 12:09:11 CEST 2018 - jgonzalez@suse.com
