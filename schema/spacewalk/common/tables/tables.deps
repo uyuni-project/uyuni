@@ -228,6 +228,7 @@ suseCredentials                :: suseCredentialsType web_contact
 suseCVEImageChannel            :: suseImageInfo rhnChannel
 suseCVEServerChannel           :: rhnServer rhnChannel
 suseDockerfileProfile          :: suseImageProfile
+suseKiwiProfile                :: suseImageProfile
 suseProfileCustomDataValue     :: rhnCustomDataKey suseImageProfile web_contact
 suseImageCustomDataValue       :: rhnCustomDataKey suseImageInfo web_contact
 suseImageInfo                  :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo \
