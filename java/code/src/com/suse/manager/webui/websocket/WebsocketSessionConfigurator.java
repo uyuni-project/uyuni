@@ -38,7 +38,9 @@ public class WebsocketSessionConfigurator extends ServerEndpointConfig.Configura
         HttpServletRequest sr = (HttpServletRequest) httpSession.getAttribute("__original_request__");
         User user = new RequestContext(sr).getCurrentUser();
         // force roles to be loaded so now since it will fail from the websocket thread
-        user.getRoles();
-        config.getUserProperties().put("currentUser", user);
+        if (user != null) {
+            user.getRoles();
+            config.getUserProperties().put("currentUser", user);
+        }
     }
 }
