@@ -52,6 +52,7 @@ import javax.persistence.Transient;
 public abstract class ImageProfile extends BaseDomainHelper {
 
     public static final String TYPE_DOCKERFILE = "dockerfile";
+    public static final String TYPE_KIWI = "kiwi";
 
     /** The profileId. */
     private Long profileId;
@@ -183,6 +184,15 @@ public abstract class ImageProfile extends BaseDomainHelper {
      * @return optional of DockerfileProfile
      */
     public Optional<DockerfileProfile> asDockerfileProfile() {
+        return Optional.empty();
+    }
+
+    /**
+     * Converts this profile to a KiwiProfile if it is one.
+     *
+     * @return optional of KiwiProfile
+     */
+    public Optional<KiwiProfile> asKiwiProfile() {
         return Optional.empty();
     }
 
