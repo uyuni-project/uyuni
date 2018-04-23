@@ -37,6 +37,8 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -232,10 +234,20 @@ public class ImageStoreController {
      */
     public static Object listAllWithType(Request req, Response res, User user) {
         String type = req.params("type");
-        List<ImageStore> imageStores =
-                ImageStoreFactory.listByTypeLabelAndOrg(type, user.getOrg());
+        List<ImageStore> imageStores = ImageStoreFactory.listByTypeLabelAndOrg(type, user.getOrg());
 
-        return json(res, getJsonList(imageStores));
+        String uriPrefix = "";
+        if (ImageStoreFactory.TYPE_OS_IMAGE.getLabel().equals(type)) {
+            String suseManagerHostname = "<suse-manager>";
+            try {
+                suseManagerHostname = InetAddress.getLocalHost().getCanonicalHostName();
+            }
+            catch (UnknownHostException ignored) { }
+
+            uriPrefix = "https://" + suseManagerHostname + "/os-images/";
+        }
+
+        return json(res, getJsonList(imageStores, uriPrefix));
     }
 
     /**
@@ -346,11 +358,21 @@ public class ImageStoreController {
      * @return the list of JSON objects
      */
     private static List<JsonObject> getJsonList(List<ImageStore> imageStoreList) {
+        return getJsonList(imageStoreList, "");
+    }
+
+    /**
+     * Creates a list of JSON objects for a list of {@link ImageStore} instances
+     *
+     * @param imageStoreList the image store list
+     * @return the list of JSON objects
+     */
+    private static List<JsonObject> getJsonList(List<ImageStore> imageStoreList, String uriPrefix) {
         return imageStoreList.stream().map(imageStore -> {
             JsonObject json = new JsonObject();
             json.addProperty("id", imageStore.getId());
             json.addProperty("label", imageStore.getLabel());
-            json.addProperty("uri", imageStore.getUri());
+            json.addProperty("uri", uriPrefix + imageStore.getUri());
             json.addProperty("type", imageStore.getStoreType().getLabel());
             return json;
         }).collect(Collectors.toList());

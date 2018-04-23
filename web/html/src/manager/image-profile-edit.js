@@ -41,8 +41,9 @@ class CreateImageProfile extends React.Component {
       customData: {}
     };
 
-    ["handleTokenChange", "handleImageTypeChange", "isLabelValid", "onUpdate",
-      "onCreate", "onFormChange", "onValidate", "clearFields"]
+    ["handleTokenChange", "handleImageTypeChange", "handleImageStoreChange",
+      "isLabelValid", "onUpdate", "onCreate", "onFormChange", "onValidate",
+      "clearFields"]
       .forEach(method => this[method] = this[method].bind(this));
 
     this.getImageStores(typeMap[this.state.model.imageType].storeType);
@@ -72,6 +73,7 @@ class CreateImageProfile extends React.Component {
         });
         this.getChannels(data.activationKey.key);
         this.getImageStores(typeMap[data.imageType].storeType);
+        this.handleImageStoreChange({target: {value: data.store}});
       } else {
         window.location = "/rhn/manager/cm/imageprofiles/create";
       }
@@ -109,8 +111,28 @@ class CreateImageProfile extends React.Component {
     const storeType = typeMap[event.target.value].storeType;
     this.getImageStores(storeType)
       .then((data) => {
-        if(storeType === "os_image")
-          this.setState({model: Object.assign(this.state.model, {imageStore: data[0] && data[0].label})});
+        // Set store for the static OS Image store
+        if(storeType === "os_image") {
+          this.setState({
+            model: Object.assign(this.state.model, {imageStore: data[0] && data[0].label}),
+            storeUri: data[0] && data[0].uri
+          });
+        } else {
+          // Clear URI hint
+          this.setState({
+            storeUri: undefined
+          });
+        }
+      });
+  }
+
+  handleImageStoreChange(event) {
+    const storeLabel = event.target.value;
+    Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel)
+      .promise.then(res => {
+        this.setState({
+          storeUri: res.success && res.data.uri
+        });
       });
   }
 
@@ -229,8 +251,8 @@ class CreateImageProfile extends React.Component {
   renderTypeInputs(type) {
     // Type-dependent inputs
     const typeInputs = [
-      <Input.Select key="imageStore" name="imageStore" label={t("Target Image Store")} required
-        disabled={type === "kiwi"} labelClass="col-md-3" divClass="col-md-6" invalidHint={
+      <Input.Select key="imageStore" name="imageStore" label={t("Target Image Store")} required onChange={this.handleImageStoreChange}
+        disabled={type === "kiwi"} labelClass="col-md-3" divClass="col-md-6" hint={this.state.storeUri} invalidHint={
           <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
         }
       >
