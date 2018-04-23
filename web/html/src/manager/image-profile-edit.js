@@ -268,7 +268,7 @@ class CreateImageProfile extends React.Component {
     switch (type) {
     case "dockerfile":
       typeInputs.push(
-        <Input.Text key="path" name="path" label={t("Path")} required hint={<span>Format: <em>giturl#branch:dockerfile_location</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Input.Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(false)
@@ -276,7 +276,7 @@ class CreateImageProfile extends React.Component {
       break;
     case "kiwi":
       typeInputs.push(
-        <Input.Text key="path" name="path" label={t("Path")} required hint={<span>Format: <em>TODO: Provide format example</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Input.Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(true)
