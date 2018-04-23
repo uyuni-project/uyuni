@@ -127,19 +127,6 @@ public class ImageStoreFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup ImageStore by label
-     * @param label the label
-     * @return Returns the ImageStore
-     */
-    public static Optional<ImageStore> lookupBylabel(String label) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ImageStore> criteria = builder.createQuery(ImageStore.class);
-        Root<ImageStore> root = criteria.from(ImageStore.class);
-        criteria.where(builder.equal(root.get("label"), label));
-        return getSession().createQuery(criteria).uniqueResultOptional();
-    }
-
-    /**
      * List image stores by type label and org
      * @param typeLabel the type label
      * @param org the organization
