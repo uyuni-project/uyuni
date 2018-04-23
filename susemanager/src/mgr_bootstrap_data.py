@@ -231,6 +231,7 @@ RES7 = [
         "rhnlib",
         "openssl",
         "openssl-libs",
+        "python-ipaddress",
        ]
 
 PKGLIST15 = [
