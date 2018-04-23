@@ -99,8 +99,16 @@ function generatePassword(): string {
     const length = Math.floor(Math.random() * 10) + 15;
     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-_";
     let password = "";
-    for (let i = 0; i < length; i++)
-        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    if(window.crypto && window.crypto.getRandomValues) {
+        var rand = new Uint16Array(length);
+        window.crypto.getRandomValues(rand);
+        for (let i = 0; i < length; i++)
+            password += charset.charAt(Math.floor(rand[i] * charset.length / 65536));
+    }
+    else {
+        for (let i = 0; i < length; i++)
+            password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
     return password;
 }
 
