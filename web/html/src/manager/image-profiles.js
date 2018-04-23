@@ -15,7 +15,8 @@ const ModalButton = require("../components/dialogs").ModalButton;
 /* global isAdmin */
 
 const typeMap = {
-  "dockerfile": t("Dockerfile")
+  "dockerfile": t("Dockerfile"),
+  "kiwi": t("Kiwi")
 };
 
 const msgMap = {
