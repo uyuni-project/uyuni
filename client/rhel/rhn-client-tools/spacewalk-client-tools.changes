@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr 23 09:07:24 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.22.2-1
+- Sync with upstream (bsc#1083294)
+- Build both python 2/3 because of rhnpush
+
+-------------------------------------------------------------------
 Mon Mar 26 08:52:09 CEST 2018 - jgonzalez@suse.com
 
 - version 2.8.22.1-1
