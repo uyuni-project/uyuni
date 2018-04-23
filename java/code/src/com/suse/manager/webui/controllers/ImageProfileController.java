@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
@@ -257,19 +258,27 @@ public class ImageProfileController {
                     return JsonResult.error("invalid_label");
                 }
             }
+            // Throw NoSuchElementException if not found
+            ImageStore store = ImageStoreFactory.lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).get();
+
+            p.setLabel(reqData.getLabel());
+            p.setTargetStore(store);
+            p.setToken(getToken(reqData.getActivationKey()));
 
             if (p instanceof DockerfileProfile) {
                 DockerfileProfile dp = (DockerfileProfile) p;
-
-                //Throw NoSuchElementException if not found
-                ImageStore store = ImageStoreFactory
-                        .lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).get();
-
-                dp.setLabel(reqData.getLabel());
                 dp.setPath(reqData.getPath());
-                dp.setTargetStore(store);
-                dp.setToken(getToken(reqData.getActivationKey()));
+            }
+            else if (p instanceof KiwiProfile) {
+                KiwiProfile kp = (KiwiProfile) p;
+                kp.setPath(reqData.getPath());
+            }
 
+            if (!ImageProfileFactory.getStoreTypeForProfile(p).equals(store.getStoreType())) {
+                return JsonResult.error("invalid_store_type");
+            }
+            if (p.asKiwiProfile().isPresent() && StringUtils.isEmpty(reqData.getActivationKey())) {
+                return JsonResult.error("activation_key_required");
             }
 
             ImageProfileFactory.save(p);
@@ -306,23 +315,33 @@ public class ImageProfileController {
 
         ImageProfile profile;
         if (ImageProfile.TYPE_DOCKERFILE.equals(reqData.getImageType())) {
-            //Throw NoSuchElementException if not found
-            ImageStore store = ImageStoreFactory
-                    .lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).get();
-
             DockerfileProfile dockerfileProfile = new DockerfileProfile();
-
-            dockerfileProfile.setLabel(reqData.getLabel());
             dockerfileProfile.setPath(reqData.getPath());
-            dockerfileProfile.setTargetStore(store);
-            dockerfileProfile.setOrg(user.getOrg());
-            dockerfileProfile.setToken(getToken(reqData.getActivationKey()));
-
             profile = dockerfileProfile;
+        }
+        else if (ImageProfile.TYPE_KIWI.equals(reqData.getImageType())) {
+            KiwiProfile kiwiProfile = new KiwiProfile();
+            kiwiProfile.setPath(reqData.getPath());
+            profile = kiwiProfile;
         }
         else {
             return json(res, JsonResult.error("invalid_type"));
         }
+
+        //Throw NoSuchElementException if not found
+        ImageStore store = ImageStoreFactory.lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).get();
+
+        if (!ImageProfileFactory.getStoreTypeForProfile(profile).equals(store.getStoreType())) {
+            return json(res, JsonResult.error("invalid_store_type"));
+        }
+        if (profile.asKiwiProfile().isPresent() && StringUtils.isEmpty(reqData.getActivationKey())) {
+            return json(res, JsonResult.error("activation_key_required"));
+        }
+
+        profile.setLabel(reqData.getLabel());
+        profile.setTargetStore(store);
+        profile.setOrg(user.getOrg());
+        profile.setToken(getToken(reqData.getActivationKey()));
 
         ImageProfileFactory.save(profile);
         updateCustomDataValues(profile, reqData, user);

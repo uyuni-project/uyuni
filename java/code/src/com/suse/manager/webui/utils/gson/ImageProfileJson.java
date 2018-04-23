@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -171,6 +172,9 @@ public class ImageProfileJson {
 
         if (profile instanceof DockerfileProfile) {
             json.setPath(((DockerfileProfile) profile).getPath());
+        }
+        else if (profile instanceof KiwiProfile) {
+            json.setPath(((KiwiProfile) profile).getPath());
         }
 
         json.setCustomData(profile.getCustomDataValues().stream().collect(Collectors.toMap(
