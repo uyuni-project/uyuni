@@ -1,3 +1,4 @@
+- Improved API for formulas to be saved through API for system/group.
 - add SLES12 SP2 LTSS family (bsc#1092194)
 - fix token cleanup task crashing (bsc#1090585)
 - HW refresh fails on SLE15 Salt client (bsc#1090221)

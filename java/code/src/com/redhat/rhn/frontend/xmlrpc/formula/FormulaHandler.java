@@ -16,12 +16,14 @@ package com.redhat.rhn.frontend.xmlrpc.formula;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.manager.formula.FormulaManager;
 
 
 /**
@@ -150,4 +152,88 @@ public class FormulaHandler extends BaseHandler {
         }
         return 1;
     }
+
+    /**
+     * Populate the formula form data for the specified servers
+     * @param loggedInUser The current user
+     * @param systemIds list of IDs of the server
+     * @param formulaName name of the formula that should be populated.
+     * @param content Map containing the values for each field in the form.
+     * @return 1 on success, excpetion thrown otherwise
+     * @throws IOFaultException if an IOException occurs during saving
+     * @throws InvalidParameterException if the server is not a salt minion
+     *
+     * @xmlrpc.doc Populate the formula form for specified servers.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("int", "Ids of the systems for which to populate form")
+     * @xmlrpc.param #param("string", "formulaName")
+     * @xmlrpc.param
+     * #struct("content")
+     * #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int populateSystemFormulaData(User loggedInUser, List<Integer> systemIds, String formulaName, Map<String,
+                Object> content) throws IOFaultException, InvalidParameterException {
+
+        try {
+            FormulaManager manager = FormulaManager.getInstance();
+            boolean assigned = manager.hasSystemsFormulaAssigned(formulaName, systemIds);
+            if (assigned) {
+                manager.validInput(formulaName, content);
+                for (Integer sid : systemIds) {
+                    manager.saveServerFormulaData(loggedInUser, sid.longValue(), formulaName, content);
+                }
+            }
+            else {
+                throw new InvalidParameterException("One of the system doesn't have formula assigned, please assign" +
+                        " it first and try again");
+            }
+        }
+        catch (IOException e) {
+            throw new IOFaultException(e);
+        }
+        return 1;
+    }
+
+    /**
+     * Populate the formula form  data for the group
+     * @param loggedInUser The current user
+     * @param groupId  Id of the group
+     * @param formulaName name of the formula that should be populated.
+     * @param content Map containing the values for each field in the form.
+     * @return 1 on sucsess, exception thrown otherwise
+     * @throws IOFaultException if an IOException occurs during saving
+     * @throws InvalidParameterException if the server is not a salt minion
+     *
+     * @xmlrpc.doc Populate the formula form for specified group.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int",Group id")
+     * @xmlrpc.param #param("string", "formulaName")
+     * @xmlrpc.param
+     * #struct("content")
+     * #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int populateGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
+            Object> content) throws IOFaultException, InvalidParameterException {
+        try {
+            FormulaManager manager = FormulaManager.getInstance();
+            boolean assigned = manager.hasGroupFormulaAssigned(formulaName, groupId.longValue());
+            if (assigned) {
+                manager.validInput(formulaName, content);
+                manager.saveGroupFormulaData(loggedInUser, groupId.longValue(), formulaName, content);
+            }
+            else {
+                throw new InvalidParameterException("Group doesn't have formula assigned, please assign it" +
+                        "first and try again");
+            }
+        }
+        catch (IOException e) {
+            throw new IOFaultException(e);
+        }
+        return 1;
+    }
+
 }
