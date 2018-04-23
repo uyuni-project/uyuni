@@ -102,13 +102,13 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     When I follow "Salt"
     And I follow "Remote Commands"
     Then I should see a "Remote Commands" text
-    When I enter command "ls -lha /etc"
+    When I enter command "file /tmp"
     And I click on preview
     Then I should see "sle-minion" hostname
     When I click on run
     And I wait for "3" seconds
     And I expand the results for "sle-minion"
-    Then I should see "SuSE-release" in the command output for "sle-minion"
+    Then I should see "/tmp: sticky, directory" in the command output for "sle-minion"
 
   Scenario: Check spacecmd system ID of bootstrapped minion
     Given I am on the Systems overview page of this "sle-minion"
