@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Apr 23 09:19:20 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.17.1-1
+- Sync with upstream (bsc#1083294)
+- Update gpgs in database
+- Update common channels with latest releases
+
+-------------------------------------------------------------------
 Mon Mar 26 09:09:33 CEST 2018 - jgonzalez@suse.com
 
 - version 2.8.14.1-1
