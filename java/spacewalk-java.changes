@@ -1,3 +1,11 @@
+-------------------------------------------------------------------
+Mon Apr 23 09:12:55 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.78.2-1
+- Sync with upstream (bsc#1083294)
+- 1567157 - remove 'www' part from cve.mitre.org domain name
+- 1564065 - Fix relevant_to_server_group query performance
+- 1544350 - Add possibility to manage errata severity via API/WebUI
 - add support for autoinstallation of SLE15 (bsc#1090205)
 - update sles_register cobbler snippets to work with SLE15 (bsc#1090205)
 - Wait until minion is back to set RebootAction as COMPLETED (bsc#1089401)
