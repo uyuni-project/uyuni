@@ -230,6 +230,7 @@ RES7 = [
         "rhnlib",
         "openssl",
         "openssl-libs",
+        "python-ipaddress",
        ]
 
 DATA = {

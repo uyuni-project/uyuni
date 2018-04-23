@@ -1,3 +1,4 @@
+- fix bootstrapping RHEL 7 salt client (missing python-ipaddress) (bsc#1087055)
 - add SLES4SAP-12-SP3-ppc64le as bootstrap repository (bsc#1082548)
 
 -------------------------------------------------------------------
