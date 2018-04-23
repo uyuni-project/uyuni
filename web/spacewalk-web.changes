@@ -1,3 +1,6 @@
+- Add missing left margin at Software Channels WebUI icon links to
+  channels (bsc#1083329)
+- Fix misleading message when syncing channels (bsc#1089103)
 - Do not use button for recommended toggler
 - Remove SUSE Studio based image deployments
 - Fix for the system channels UI, hide the corresponding title and horizontal line if list of
