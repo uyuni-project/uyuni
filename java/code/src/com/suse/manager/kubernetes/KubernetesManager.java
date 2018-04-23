@@ -147,10 +147,8 @@ public class KubernetesManager {
                                 String tag = imgTag.length > 1 ? imgTag[1] : "latest";
 
                                 Optional<ImageInfo> imgByRepoNameTag =
-                                        ImageStoreFactory.lookupBylabel(repo).flatMap(
-                                                st -> ImageInfoFactory
-                                                        .lookupByName(name, tag,
-                                                                st.getId()));
+                                        ImageStoreFactory.lookupBylabelAndOrg(repo, virtHostMgr.getOrg())
+                                                .flatMap(st -> ImageInfoFactory.lookupByName(name, tag, st.getId()));
                                 usage = imgByRepoNameTag
                                         .map(imgInfo -> imgToUsage.get(imgInfo.getId()))
                                         .map(Optional::of).orElseGet(() -> imgByRepoNameTag
