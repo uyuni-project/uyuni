@@ -13,7 +13,8 @@ const Utils = require("../utils/functions").Utils;
 /* global profileId, customDataKeys, activationKeys */
 
 const typeMap = {
-  "dockerfile": { name: "Dockerfile", storeType: "registry" }
+  "dockerfile": { name: "Dockerfile", storeType: "registry" },
+  "kiwi": { name: "Kiwi", storeType: "os_image" }
 };
 
 const msgMap = {
@@ -31,7 +32,8 @@ class CreateImageProfile extends React.Component {
 
     this.state = {
       imageTypes: [
-        "dockerfile"
+        "dockerfile",
+        "kiwi"
       ],
       model: Object.assign({}, this.defaultModel),
       imageStores: [],
@@ -69,6 +71,7 @@ class CreateImageProfile extends React.Component {
           initLabel: data.label
         });
         this.getChannels(data.activationKey.key);
+        this.getImageStores(typeMap[data.imageType].storeType);
       } else {
         window.location = "/rhn/manager/cm/imageprofiles/create";
       }
@@ -103,7 +106,12 @@ class CreateImageProfile extends React.Component {
   }
 
   handleImageTypeChange(event) {
-    this.getImageStores(typeMap[event.target.value].storeType);
+    const storeType = typeMap[event.target.value].storeType;
+    this.getImageStores(storeType)
+      .then((data) => {
+        if(storeType === "os_image")
+          this.setState({model: Object.assign(this.state.model, {imageStore: data[0] && data[0].label})});
+      });
   }
 
   addCustomData(label) {
@@ -209,38 +217,57 @@ class CreateImageProfile extends React.Component {
   }
 
   getImageStores(type) {
-    Network.get("/rhn/manager/api/cm/imagestores/type/" + type, "application/json").promise
+    return Network.get("/rhn/manager/api/cm/imagestores/type/" + type, "application/json").promise
       .then(data => {
         this.setState({
           imageStores: data
         });
+        return data;
       });
   }
 
   renderTypeInputs(type) {
+    // Type-dependent inputs
+    const typeInputs = [
+      <Input.Select key="imageStore" name="imageStore" label={t("Target Image Store")} required
+        disabled={type === "kiwi"} labelClass="col-md-3" divClass="col-md-6" invalidHint={
+          <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
+        }
+      >
+        <option value="" disabled key="0">{t("Select an image store")}</option>
+        {
+          this.state.imageStores.map(k =>
+            <option key={k.id} value={k.label}>{ k.label }</option>
+          )
+        }
+      </Input.Select>
+    ];
+
     switch (type) {
     case "dockerfile":
-      return [
-        <Input.Select key="imageStore" name="imageStore" label={t("Target Image Store")} required
-          labelClass="col-md-3" divClass="col-md-6" invalidHint={
-            <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
-          }
-        >
-          <option value="" disabled key="0">{t("Select an image store")}</option>
-          {
-            this.state.imageStores.map(k =>
-              <option key={k.id} value={k.label}>{ k.label }</option>
-            )
-          }
-        </Input.Select>,
+      typeInputs.push(
         <Input.Text key="path" name="path" label={t("Path")} required hint={<span>Format: <em>giturl#branch:dockerfile_location</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
-      ];
+      );
+      typeInputs.push(
+        this.renderTokenSelect(false)
+      );
+      break;
+    case "kiwi":
+      typeInputs.push(
+        <Input.Text key="path" name="path" label={t("Path")} required hint={<span>Format: <em>TODO: Provide format example</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
+      );
+      typeInputs.push(
+        this.renderTokenSelect(true)
+      );
+      break;
     default:
       return <div>If you see this please report a bug.</div>;
     }
+
+    return typeInputs;
   }
 
-  renderTokenSelect() {
+  renderTokenSelect(isRequired) {
     const hint = this.state.channels && (
       this.state.channels.base ?
         <ul className="list-unstyled">
@@ -258,7 +285,7 @@ class CreateImageProfile extends React.Component {
     return (
       <Input.Select name="activationKey" label={t("Activation Key")}
         onChange={this.handleTokenChange} labelClass="col-md-3" divClass="col-md-6"
-        hint={hint}>
+        hint={hint} required={isRequired}>
         <option key="0" value="">None</option>
         {
           activationKeys.map(k =>
@@ -342,7 +369,6 @@ class CreateImageProfile extends React.Component {
               <option key={k} value={k}>{ typeMap[k].name }</option>) }
           </Input.Select>
           { this.renderTypeInputs(this.state.model.imageType) }
-          { this.renderTokenSelect() }
           <hr/>
           { this.renderCustomDataFields() }
           <div className="form-group">
