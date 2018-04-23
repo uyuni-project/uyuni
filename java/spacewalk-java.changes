@@ -1,3 +1,5 @@
+- fix NPE in websocket session configurator (bsc#1080474)
+
 -------------------------------------------------------------------
 Mon Apr 23 09:12:55 CEST 2018 - jgonzalez@suse.com
 
