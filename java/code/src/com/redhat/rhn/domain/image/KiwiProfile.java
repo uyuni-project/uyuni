@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,20 +17,19 @@ package com.redhat.rhn.domain.image;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Optional;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Optional;
 
 /**
- * Domain class for Dockerfile image profiles
+ * Domain class for Kiwi image profiles
  */
 @Entity
-@Table(name = "suseDockerfileProfile")
-@DiscriminatorValue("dockerfile")
-public class DockerfileProfile extends ImageProfile {
+@Table(name = "suseKiwiProfile")
+@DiscriminatorValue("kiwi")
+public class KiwiProfile extends ImageProfile {
 
     private String path;
 
@@ -49,15 +48,14 @@ public class DockerfileProfile extends ImageProfile {
         this.path = pathIn;
     }
 
-
     /**
      * {@inheritDoc}
      */
     public boolean equals(final Object other) {
-        if (!(other instanceof DockerfileProfile)) {
+        if (!(other instanceof KiwiProfile)) {
             return false;
         }
-        DockerfileProfile castOther = (DockerfileProfile) other;
+        KiwiProfile castOther = (KiwiProfile) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(castOther))
                 .append(path, castOther.path)
@@ -75,12 +73,12 @@ public class DockerfileProfile extends ImageProfile {
     }
 
     /**
-     * Converts this profile to a DockerfileProfile if it is one.
+     * Converts this profile to a KiwiProfile if it is one.
      *
-     * @return optional of DockerfileProfile
+     * @return optional of KiwiProfile
      */
     @Override
-    public Optional<DockerfileProfile> asDockerfileProfile() {
+    public Optional<KiwiProfile> asKiwiProfile() {
         return Optional.of(this);
     }
 }
