@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreType;
+import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
@@ -206,6 +207,7 @@ class ConnectionManager {
             config.addAnnotatedClass(ImageStore.class);
             config.addAnnotatedClass(ImageStoreType.class);
             config.addAnnotatedClass(DockerfileProfile.class);
+            config.addAnnotatedClass(KiwiProfile.class);
             config.addAnnotatedClass(ImageProfile.class);
             config.addAnnotatedClass(ProfileCustomDataValue.class);
             config.addAnnotatedClass(ImageInfo.class);
