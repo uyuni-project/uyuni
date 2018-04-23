@@ -30,6 +30,7 @@ class PasswordInput extends React.Component {
     }
 
     render() {
+        // empty password is always rendered as text to prevent problems with browser autocompletion
         return (
             <div className="form-group">
                 <label className="col-lg-3 control-label">
@@ -37,7 +38,7 @@ class PasswordInput extends React.Component {
                 </label>
                 <div className="col-lg-6">
                     <div className="input-group">
-                        <input type={this.state.showPassword ? "text" : "password"}
+                        <input type={(this.state.showPassword || this.props.value === "") ? "text" : "password"}
                             name={this.props.element.$name} id={this.props.id} className="form-control"
                             onChange={this.props.onChange} placeholder={this.props.element.$placeholder}
                             title={this.props.element.$help} disabled={this.props.disabled} value={this.props.value}

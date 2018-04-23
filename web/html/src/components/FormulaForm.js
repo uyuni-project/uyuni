@@ -7,7 +7,6 @@ const generateFormulaComponent = require("./formulas/FormulaComponentGenerator")
 
 const Button = Buttons.Button;
 const capitalize = Functions.Utils.capitalize;
-const generatePassword = Functions.Utils.generatePassword;
 
 //props:
 //dataUrl = url to get the server data
@@ -282,7 +281,7 @@ function preprocessLayout(layout, scope = "system") {
         else if (child.$type === "color")
             child.$default = get(child.$default, "#000000");
         else if (child.$type === "password")
-            child.$default = get(child.$default, generatePassword());
+            child.$default = get(child.$default, "");
         else if (child.$type === "group" || child.$type === "namespace")
             child = preprocessLayout(child, child.$scope);
         else if (child.$type === "edit-group") {
