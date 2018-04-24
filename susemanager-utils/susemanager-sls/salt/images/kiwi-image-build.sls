@@ -53,12 +53,24 @@ mgr_buildimage_kiwi_bundle:
       - cmd: mgr_buildimage_kiwi_create
 
 
-# push to salt store
+{%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
   module.run:
     - name: cp.push_dir
     - path: {{ bundle_dir }}
     - require:
       - cmd: mgr_buildimage_kiwi_bundle
+{%- endif %}
+
+mgr_buildimage_info:
+  module.run:
+    - name: kiwi_info.image_details
+    - dest: {{ dest_dir }}
+    - require:
+{%- if pillar.get('use_salt_transport') %}
+      - mgr_buildimage_kiwi_collect_image
+{%- else %}
+      - mgr_buildimage_kiwi_bundle
+{%- endif %}
 
 {%- endif %}

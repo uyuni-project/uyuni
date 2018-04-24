@@ -79,7 +79,7 @@ _compression_types = [
     { 'suffix': '',    'compression': None }
     ]
 
-def inspect_image(dest, bundle_dest = None):
+def image_details(dest):
     res = {}
     buildinfo = parse_buildinfo(dest)
 
@@ -93,7 +93,7 @@ def inspect_image(dest, bundle_dest = None):
         arch = match.group('arch')
         version = match.group('version')
     else:
-        return undef
+        return None
 
     filename = None
     compression = None
@@ -114,8 +114,17 @@ def inspect_image(dest, bundle_dest = None):
         'filename': filename
     }
 
-
     res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5'), compression is not None))
+
+    return res
+
+def inspect_image(dest, bundle_dest = None):
+    res = image_details(dest)
+    if not res:
+      return None
+
+    basename = res['image']['basename']
+    image_type = res['image']['type']
 
     for fstype in ['ext2', 'ext3', 'ext4', 'btrfs', 'xfs']:
         path = os.path.join(dest, basename + '.' + fstype)
@@ -194,5 +203,3 @@ def inspect_bundle(dest, basename):
     if match:
         res.update(match.groupdict())
     return res
-
-
