@@ -23,6 +23,17 @@ disable_repo_{{ alias }}:
 {%- endif %}
 {%- endfor %}
 
+{%- if grains['os_family'] == 'Suse' %}
+{%- if "." in grains['osrelease'] %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/sle/' ~ grains['osrelease'].replace('.', '/') ~ '/bootstrap/' %}
+{%- else %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/sle/' ~ grains['osrelease'] ~ '/0/bootstrap/' %}
+{%- endif %}
+{%- elif grains['os_family'] == 'RedHat' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- endif %}
+
+
 bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
@@ -33,12 +44,17 @@ bootstrap_repo:
     - source:
       - salt://bootstrap/bootstrap.repo
     - template: jinja
+    - context:
+      bootstrap_repo_url: {{bootstrap_repo_url}}
     - mode: 644
     - require:
       - host: mgr_server_localhost_alias_absent
 {%- if repos_disabled.disabled %}
       - module: disable_repo_*
 {%- endif %}
+    - onlyif:
+      - curl --output /dev/null --silent --head --fail {{ bootstrap_repo_url }}repodata/repomd.xml
+
 
 {%- if grains['os_family'] == 'RedHat' %}
 trust_suse_manager_tools_gpg_key:
