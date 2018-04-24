@@ -1,3 +1,5 @@
+- create bootstrap repo only if it exist in the server (bsc#1087840)
+
 -------------------------------------------------------------------
 Mon Apr 23 09:26:09 CEST 2018 - jgonzalez@suse.com
 
