@@ -1,3 +1,4 @@
+- fix taskomatic deadlock in failure case (bsc#1085471)
 - fix NPE in websocket session configurator (bsc#1080474)
 
 -------------------------------------------------------------------
