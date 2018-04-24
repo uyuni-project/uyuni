@@ -1,3 +1,4 @@
+- create bootstrap repo only if it exist in the server (bsc#1087840)
 - Fix master tops merging when running salt>=2018
 - use dockermod with new salt and user repository/tag option for build
 
