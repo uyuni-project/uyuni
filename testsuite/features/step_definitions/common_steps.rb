@@ -54,7 +54,7 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
     And I wait for "1" second
     And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
-    And I wait until I see "This action's status is: Completed." text, refreshing the page
+    And I wait until I see the state is completed, refreshing the page
   )
 end
 

@@ -55,6 +55,22 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   end
 end
 
+When(/^I wait until I see the state is completed, refreshing the page$/) do
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if page.has_content?("This action's status is: Completed.")
+        raise "Action Failed" if page.has_content?("This action's status is: Failed.")
+        sleep 1
+        page.evaluate_script 'window.location.reload()'
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the #{text} in webpage"
+  end
+end
+
+
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |target|
   node = get_target(target)
   step %(I wait until I see "#{node.full_hostname}" text, refreshing the page)
