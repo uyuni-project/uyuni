@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.audit;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -858,8 +859,11 @@ public class CVEAuditManager {
         boolean ignoreOldProducts = true;
         boolean usesLivePatchingDefault = false;
         boolean usesLivePatchingXen = false;
-
-        for (Wrapper result : results) {
+        Optional<Long> lowestRank = Optional.empty();
+        List<Wrapper> sorted = results.stream()
+                .sorted(Comparator.comparing(s -> s.getChannelRank().orElse(Long.MAX_VALUE)))
+                .collect(Collectors.toList());
+        for (Wrapper result : sorted) {
             // Get the server id first
             final long systemID = result.getId();
             final String packageName = result.getPackageName().orElse(null);
@@ -932,14 +936,28 @@ public class CVEAuditManager {
                     // We have an errata
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
                             currentErrata.get(), result.getErrataAdvisory());
-                    currentSystem.addErrata(errata);
+                    if ((lowestRank.isPresent() &&
+                            result.getChannelRank().isPresent() &&
+                            lowestRank.get() >= result.getChannelRank().get()) || !lowestRank.isPresent()
+                    ) {
+                        currentSystem.addErrata(errata);
+                        lowestRank = result.getChannelRank();
+                    }
                 }
                 if (channelID.isPresent()) {
                     ChannelIdNameLabelTriple channel =
                             new ChannelIdNameLabelTriple(channelID.get(),
                                     result.getChannelName(),
                                     result.getChannelLabel());
-                    currentSystem.addChannel(channel);
+
+
+                    if ((lowestRank.isPresent() &&
+                            result.getChannelRank().isPresent() &&
+                            lowestRank.get() >= result.getChannelRank().get()) || !lowestRank.isPresent()
+                    ) {
+                        currentSystem.addChannel(channel);
+                        lowestRank = result.getChannelRank();
+                    }
                 }
             }
             else {
@@ -1005,13 +1023,25 @@ public class CVEAuditManager {
                 if (errataID.isPresent()) {
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
                             errataID.get(), result.getErrataAdvisory());
-                    currentSystem.addErrata(errata);
+                    if ((lowestRank.isPresent() &&
+                        result.getChannelRank().isPresent() &&
+                        lowestRank.get() >= result.getChannelRank().get()) || !lowestRank.isPresent()
+                    ) {
+                        currentSystem.addErrata(errata);
+                        lowestRank = result.getChannelRank();
+                    }
                 }
                 ChannelIdNameLabelTriple channel =
                         new ChannelIdNameLabelTriple(result.getChannelId().get(),
                                 result.getChannelName(),
                                 result.getChannelLabel());
-                currentSystem.addChannel(channel);
+                if ((lowestRank.isPresent() &&
+                    result.getChannelRank().isPresent() &&
+                    lowestRank.get() >= result.getChannelRank().get()) || !lowestRank.isPresent()
+                ) {
+                    currentSystem.addChannel(channel);
+                    lowestRank = result.getChannelRank();
+                }
             }
         }
 
