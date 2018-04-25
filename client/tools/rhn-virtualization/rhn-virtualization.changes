@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 25 12:20:06 CEST 2018 - jgonzalez@suse.com
+
+- version 5.4.72.2-1
+- Remove SUSE Studio based image deployments (bsc#1090504)
+
+-------------------------------------------------------------------
 Mon Mar 26 08:35:00 CEST 2018 - jgonzalez@suse.com
 
 - version 5.4.72.1-1
