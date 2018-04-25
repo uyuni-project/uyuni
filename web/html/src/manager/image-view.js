@@ -189,14 +189,16 @@ class ImageView extends React.Component {
           });
           //Finished with runtime calls
           Promise.all(runtimePromises).then(() => {this.setState({ gotRuntimeInfo: true })});
+
+          if (runtimePromises.length > 0) {
+            // Show spinners while waiting on runtime data
+            this.setState({gotRuntimeInfo: false});
+          }
         })
         .catch(jqXHR => {
           this.handleResponseError(jqXHR);
         });
     }
-
-    // Show spinners while waiting on runtime data
-    listPromise.then(() => this.setState({ gotRuntimeInfo: false }));
 
     return listPromise;
   }
@@ -243,14 +245,16 @@ class ImageView extends React.Component {
           });
           //Finished with runtime calls
           Promise.all(runtimePromises).then(() => this.setState({ gotRuntimeInfo: true }));
+
+          if (runtimePromises.length > 0) {
+            // Show spinners while waiting on runtime data
+            this.setState({ gotRuntimeInfo: false });
+          }
         })
         .catch(jqXHR => {
           this.handleResponseError(jqXHR);
         });
     }
-
-    // Show spinners while waiting on runtime data
-    detailsPromise.then(() => this.setState({ gotRuntimeInfo: false }));
 
     return detailsPromise;
   }
