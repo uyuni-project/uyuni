@@ -180,11 +180,20 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object getBuildHosts(Request req, Response res, User user) {
-        ServerGroup sg = ServerGroupFactory
-                .lookupEntitled(EntitlementManager.CONTAINER_BUILD_HOST, user.getOrg());
+        ServerGroup sg;
+        String buildType = req.params("type");
 
-        return json(res,
-                getServerStreamJson(SystemManager.systemsInGroupShort(sg.getId())));
+        if (EntitlementManager.CONTAINER_BUILD_HOST_ENTITLED.equals(buildType)) {
+            sg = ServerGroupFactory.lookupEntitled(EntitlementManager.CONTAINER_BUILD_HOST, user.getOrg());
+        }
+        else if (EntitlementManager.OSIMAGE_BUILD_HOST_ENTITLED.equals(buildType)) {
+            sg = ServerGroupFactory.lookupEntitled(EntitlementManager.OSIMAGE_BUILD_HOST, user.getOrg());
+        }
+        else {
+            return json(res, HttpStatus.SC_BAD_REQUEST, JsonResult.error("invalid_build_type"));
+        }
+
+        return json(res, getServerStreamJson(SystemManager.systemsInGroupShort(sg.getId())));
     }
 
     /**
@@ -372,7 +381,7 @@ public class ImageBuildController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
 
-        return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
+        return maybeProfile.map(profile -> {
             try {
                 ImageBuildAction action = ActionChainManager.scheduleImageBuild(buildRequest.buildHostId,
                         buildRequest.getVersion(), profile, scheduleDate, actionChain, user);

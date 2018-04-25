@@ -97,7 +97,8 @@ public class ImageInfoFactory extends HibernateFactory {
             Date earliest, User user) throws TaskomaticApiException {
         MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
 
-        if (!server.hasContainerBuildHostEntitlement()) {
+        if ((!server.hasContainerBuildHostEntitlement() && profile.asDockerfileProfile().isPresent()) ||
+                (!server.hasOSImageBuildHostEntitlement() && profile.asKiwiProfile().isPresent())) {
             throw new IllegalArgumentException("Server is not a build host.");
         }
 
@@ -105,8 +106,11 @@ public class ImageInfoFactory extends HibernateFactory {
         // imageProfile.getLabel() + " " +
         // imageBuildEvent.getTag());
 
+        if (profile.asDockerfileProfile().isPresent()) {
+            version = version.isEmpty() ? "latest" : version;
+        }
+
         // Schedule the build
-        version = version.isEmpty() ? "latest" : version;
         ImageBuildAction action = ActionManager.scheduleImageBuild(user,
                 Collections.singletonList(server.getId()), version, profile, earliest);
         taskomaticApi.scheduleActionExecution(action);

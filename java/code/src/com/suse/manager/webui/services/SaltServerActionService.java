@@ -57,6 +57,7 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -241,13 +242,13 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
             ImageBuildActionDetails details = imageBuildAction.getDetails();
-            return ImageProfileFactory.lookupById(details.getImageProfileId())
-                    .flatMap(ImageProfile::asDockerfileProfile).map(
+            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
                     ip -> imageBuildAction(
                             minions,
                             Optional.ofNullable(details.getVersion()),
                             ip,
-                            imageBuildAction.getSchedulerUser())
+                            imageBuildAction.getSchedulerUser(),
+                            imageBuildAction.getId())
             ).orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
@@ -1186,21 +1187,9 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionServer>> imageBuildAction(
             List<MinionServer> minions, Optional<String> version,
-            DockerfileProfile profile, User user) {
+            ImageProfile profile, User user, Long actionId) {
         List<ImageStore> imageStores = new LinkedList<>();
         imageStores.add(profile.getTargetStore());
-        String cert = "";
-        try {
-            //TODO: maybe from the database
-            cert = Files.readAllLines(
-                    Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"),
-                    Charset.defaultCharset()
-            ).stream().collect(Collectors.joining("\n\n"));
-        }
-        catch (IOException e) {
-            LOG.error("Could not read certificate", e);
-        }
-        final String certificate = cert;
 
         //TODO: optimal scheduling would be to group by host and orgid
         Map<LocalCall<?>, List<MinionServer>> ret = minions.stream().collect(
@@ -1228,17 +1217,36 @@ public class SaltServerActionService {
                     }
                     final String token = t;
 
-
                     Map<String, Object> pillar = new HashMap<>();
-                    Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
-                    pillar.put("docker-registries", dockerRegistries);
-                    String repoPath = profile.getTargetStore().getUri() + "/" + profile.getLabel();
-                    String tag = version.orElse("");
-                    // salt 2016.11 dockerng require imagename while salt 2018.3 docker requires it separate
-                    pillar.put("imagerepopath", repoPath);
-                    pillar.put("imagetag", tag);
-                    pillar.put("imagename", repoPath + ":" + tag);
-                    pillar.put("builddir", profile.getPath());
+
+                    profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {
+                        Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
+                        pillar.put("docker-registries", dockerRegistries);
+
+                        String repoPath = profile.getTargetStore().getUri() + "/" + profile.getLabel();
+                        String tag = version.orElse("");
+                        // salt 2016.11 dockerng require imagename while salt 2018.3 docker requires it separate
+                        pillar.put("imagerepopath", repoPath);
+                        pillar.put("imagetag", tag);
+                        pillar.put("imagename", repoPath + ":" + tag);
+                        pillar.put("builddir", dockerfileProfile.getPath());
+                        try {
+                            //TODO: maybe from the database
+                            String certificate = Files.readAllLines(
+                                    Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"),
+                                    Charset.defaultCharset()
+                            ).stream().collect(Collectors.joining("\n\n"));
+                            pillar.put("cert", certificate);
+                        }
+                        catch (IOException e) {
+                            LOG.error("Could not read certificate", e);
+                        }
+                    });
+
+                    profile.asKiwiProfile().ifPresent(kiwiProfile -> {
+                        pillar.put("source", kiwiProfile.getPath());
+                        pillar.put("build_id", actionId);
+                    });
 
                     String host = SaltStateGeneratorService.getChannelHost(minion);
                     String repocontent = "";
@@ -1259,11 +1267,19 @@ public class SaltServerActionService {
                         }).collect(Collectors.joining("\n\n"));
                     }
                     pillar.put("repo", repocontent);
-                    pillar.put("cert", certificate);
+
+                    String saltCall = "";
+                    if (profile instanceof DockerfileProfile) {
+                        saltCall = "images.docker";
+                    }
+                    else if (profile instanceof KiwiProfile) {
+                        saltCall = "images.kiwi-image-build";
+                    }
 
                     return State.apply(
                             Collections.singletonList("images.docker"),
-                            Optional.of(pillar)
+                            Optional.of(pillar),
+                            Optional.of(true)
                     );
                 },
                 Collections::singletonList
