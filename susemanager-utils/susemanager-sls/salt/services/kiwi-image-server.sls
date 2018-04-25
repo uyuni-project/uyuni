@@ -19,6 +19,7 @@ mgr_kiwi_build_tools:
     - pkgs:
       - kiwi-desc-saltboot
       - image-server-tools
+      - git-core
     - order: last
 
 {{ kiwi_dir }}:
