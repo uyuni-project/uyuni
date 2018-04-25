@@ -740,12 +740,14 @@ public class ActionChainManager {
                                      Date earliest, ActionChain actionChain, User user) throws TaskomaticApiException {
         MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
 
-        if (!server.hasContainerBuildHostEntitlement()) {
+        if ((!server.hasContainerBuildHostEntitlement() && profile.asDockerfileProfile().isPresent()) ||
+                (!server.hasOSImageBuildHostEntitlement() && profile.asKiwiProfile().isPresent())) {
             throw new IllegalArgumentException("Server is not a build host.");
         }
 
-        // Schedule the build
-        version = version.isEmpty() ? "latest" : version;
+        if (profile.asDockerfileProfile().isPresent()) {
+            version = version.isEmpty() ? "latest" : version;
+        }
 
         Set<Action> result = scheduleActions(user, ActionFactory.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
                 earliest, actionChain, null, Collections.singleton(server.getId()));

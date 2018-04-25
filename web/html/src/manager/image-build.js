@@ -14,7 +14,8 @@ const {ActionSchedule} = require("../components/action-schedule");
 
 /* global profileId, hostId, version, localTime, timezone, actionChains */
 const typeMap = {
-  "dockerfile": "Dockerfile"
+  "dockerfile": { name: "Dockerfile", buildType: "container_build_host" },
+  "kiwi": { name: "Kiwi", buildType: "osimage_build_host" },
 };
 
 const msgMap = {
@@ -42,8 +43,6 @@ class BuildImage extends React.Component {
       .forEach(method => this[method] = this[method].bind(this));
 
     this.getProfiles();
-    this.getBuildHosts();
-
   }
 
   getProfiles() {
@@ -79,24 +78,28 @@ class BuildImage extends React.Component {
             path: data.path
           }
         });
+
+        // Get build hosts for the build type
+        this.getBuildHosts(typeMap[data.imageType].buildType);
       } else {
         //TODO: Handle error
       }
     });
   }
 
-  getBuildHosts() {
-    Network.get("/rhn/manager/api/cm/build/hosts").promise.then(res => {
-      this.setState({
-        hosts: res
-      });
+  getBuildHosts(type) {
+    Network.get("/rhn/manager/api/cm/build/hosts/" + type, "application/json").promise
+      .then(res => {
+        this.setState({
+          hosts: res
+        });
 
-      if(hostId) {
-        const model = this.state.model;
-        model.buildHostId = hostId;
-        this.setState({model: model});
-      }
-    });
+        if(hostId) {
+          const model = this.state.model;
+          model.buildHostId = hostId;
+          this.setState({model: model});
+        }
+      });
   }
 
   handleProfileChange(event) {
@@ -201,7 +204,7 @@ class BuildImage extends React.Component {
                 :
                 <tbody>
                   <tr><th>{t("Label")}</th><td>{p.label}</td></tr>
-                  <tr><th>{t("Image Type")}</th><td>{typeMap[p.imageType]}</td></tr>
+                  <tr><th>{t("Image Type")}</th><td>{typeMap[p.imageType].name}</td></tr>
                   <tr><th>{t("Image Store")}</th><td>{p.store}</td></tr>
                   <tr><th>{t("Path")}</th><td>{p.path}</td></tr>
                   <tr>
@@ -249,8 +252,6 @@ class BuildImage extends React.Component {
           onChange={this.onFormChange} onSubmit={this.onBuild}
           onValidate={this.onValidate} divClass="col-md-7">
 
-          <Input.Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
-
           <Input.Select name="profileId" required label={t("Image Profile")}
             onChange={this.handleProfileChange} labelClass="col-md-3"
             divClass="col-md-9" invalidHint={<span>Image Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}>
@@ -261,6 +262,10 @@ class BuildImage extends React.Component {
               )
             }
           </Input.Select>
+
+          { this.state.profile.imageType === "dockerfile" &&
+            <Input.Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
+          }
 
           <Input.Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9">
             <option key="0" disabled="disabled" value="">Select a build host</option>
