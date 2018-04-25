@@ -93,7 +93,7 @@ def _prepareGit(source, dest, root):
 
   log.debug('GIT URL: {}, Revision: {}, subdir: {}'.format(url, rev, subdir))
   __salt__['git.init'](tmpdir)
-  __salt__['git.remote_set'](tmpdir, source)
+  __salt__['git.remote_set'](tmpdir, url)
   __salt__['git.fetch'](tmpdir)
   __salt__['git.checkout'](tmpdir, rev=rev)
 
