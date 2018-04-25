@@ -154,6 +154,7 @@ PKGLIST12 = [
                 "python-tornado",
                 "salt",
                 "salt-minion",
+                "python2-salt",
                 "libgio-2_0-0",
                 "libgthread-2_0-0",
                 "shared-mime-info",
