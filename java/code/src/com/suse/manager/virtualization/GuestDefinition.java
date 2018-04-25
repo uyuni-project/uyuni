@@ -16,6 +16,7 @@ package com.suse.manager.virtualization;
 
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
+import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -43,10 +44,39 @@ public class GuestDefinition {
     private GuestOsDef os;
 
     /**
+     * Create a guest definition from a virtual system overview.
+     *
+     * This is to be used for guests hosted on traditional hosts.
+     * Obviously only a minimal set of the definition data will be set
+     * since the overview doesn't hold them all.
+     *
+     * @param guest the guest to read data from.
+     */
+    public GuestDefinition(VirtualSystemOverview guest) {
+        String guid = guest.getUuid();
+        setUuid(guid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5"));
+        setName(guest.getName());
+        setMemory(guest.getMemory());
+        setMaxMemory(guest.getMemory());
+
+        GuestVcpuDef vcpuDef = new GuestVcpuDef();
+        vcpuDef.setCurrent(guest.getVcpus().intValue());
+        vcpuDef.setMax(guest.getVcpus().intValue());
+        setVcpu(vcpuDef);
+    }
+
+    /**
      * @return the machine type (hypervisor dependent)
      */
     public String getType() {
         return type;
+    }
+
+    /**
+     * @param typeIn The type to set.
+     */
+    public void setType(String typeIn) {
+        type = typeIn;
     }
 
     /**
@@ -65,12 +95,18 @@ public class GuestDefinition {
         this.name = nameIn;
     }
 
-
     /**
      * @return domain UUID
      */
     public String getUuid() {
         return uuid;
+    }
+
+    /**
+     * @param uuidIn The uuid to set.
+     */
+    public void setUuid(String uuidIn) {
+        uuid = uuidIn;
     }
 
     /**
@@ -112,7 +148,6 @@ public class GuestDefinition {
         this.memory = Math.min(this.maxMemory, this.memory);
     }
 
-
     /**
      * @return Vcpu definition
      */
@@ -121,10 +156,24 @@ public class GuestDefinition {
     }
 
     /**
+     * @param vcpuIn The vcpu to set.
+     */
+    public void setVcpu(GuestVcpuDef vcpuIn) {
+        vcpu = vcpuIn;
+    }
+
+    /**
      * @return OS definition
      */
     public GuestOsDef getOs() {
         return os;
+    }
+
+    /**
+     * @param osIn The os to set.
+     */
+    public void setOs(GuestOsDef osIn) {
+        os = osIn;
     }
 
     /**
@@ -185,7 +234,7 @@ public class GuestDefinition {
 
         List<Character> prefixes = Arrays.asList('K', 'M', 'G', 'T');
         int multiplier = 1000;
-        if (unit.toLowerCase().endsWith("iB")) {
+        if (unit.endsWith("iB")) {
             multiplier = 1024;
         }
 
@@ -194,5 +243,12 @@ public class GuestDefinition {
         long bytes = value * (long)Math.pow(multiplier, rank);
 
         return bytes / 1024;
+    }
+
+    /**
+     * Default constructor shouldn't not be used. Either construct from
+     * an XML definition to parse or a VirtualSystemOverview instance.
+     */
+    private GuestDefinition() {
     }
 }
