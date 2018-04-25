@@ -1277,7 +1277,7 @@ public class SaltServerActionService {
                     }
 
                     return State.apply(
-                            Collections.singletonList("images.docker"),
+                            Collections.singletonList(saltCall),
                             Optional.of(pillar)
                     );
                 },
