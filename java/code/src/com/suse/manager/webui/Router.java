@@ -369,7 +369,7 @@ public class Router implements SparkApplication {
         get("/manager/cm/rebuild/:id",
                 withCsrfToken(withUser(ImageBuildController::rebuild)), jade);
 
-        get("/manager/api/cm/build/hosts", withUser(ImageBuildController::getBuildHosts));
+        get("/manager/api/cm/build/hosts/:type", withUser(ImageBuildController::getBuildHosts));
         post("/manager/api/cm/build/:id", withImageAdmin(ImageBuildController::build));
 
         get("/manager/cm/images", withUserPreferences(withCsrfToken(withUser(ImageBuildController::listView))),

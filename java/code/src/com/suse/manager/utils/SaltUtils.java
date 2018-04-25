@@ -918,6 +918,11 @@ public class SaltUtils {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             Optional<ImageProfile> profileOpt =
                     ImageProfileFactory.lookupById(details.getImageProfileId());
+
+            profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
+                // TODO: call runner to rsync image from the Kiwi build host
+            }));
+
             ImageInspectAction iAction = ActionManager.scheduleImageInspect(
                     action.getSchedulerUser(),
                     action.getServerActions()
