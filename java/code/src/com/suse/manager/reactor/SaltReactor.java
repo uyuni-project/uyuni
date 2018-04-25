@@ -25,12 +25,15 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessage;
+import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
@@ -108,6 +111,8 @@ public class SaltReactor {
                 SystemIdGenerateEventMessage.class);
         MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
                 ImageDeployedEventMessage.class);
+        MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(),
+                LibvirtEngineDomainLifecycleMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -251,6 +256,21 @@ public class SaltReactor {
      * @return event handler runnable
      */
     private Stream<EventMessage> eventToMessages(EngineEvent engineEvent) {
+        if ("libvirt_events".equals(engineEvent.getEngine())) {
+            try {
+                AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(engineEvent);
+                if (message != null) {
+                    return of(message);
+                }
+                else {
+                    LOG.debug("Unhandled libvirt engine event:" +
+                              engineEvent.getAdditional());
+                }
+            }
+            catch (IllegalArgumentException e) {
+                LOG.warn("Invalid libvirt engine event: " + engineEvent.getAdditional());
+            }
+        }
         return empty();
     }
 
