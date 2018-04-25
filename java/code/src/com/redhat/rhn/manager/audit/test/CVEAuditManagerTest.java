@@ -716,7 +716,6 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, result.getPatchStatus());
         Iterator<ChannelIdNameLabelTriple> it = result.getChannels().iterator();
         assertEquals((Long) channelClone.getId(), (Long) it.next().getId());
-        assertEquals((Long) channel.getId(), (Long) it.next().getId());
     }
 
     /**
@@ -1005,6 +1004,65 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
+    }
+
+    public void testAssignedChannelPreferredOverMigration() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<>();
+        cves.add(cve);
+
+        // Create SP2 and SP3 products + upgrade path
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct productSP2 = createTestSUSEProduct(channelFamily);
+        SUSEProduct productSP3 = createTestSUSEProduct(channelFamily);
+        createTestSUSEUpgradePath(productSP2, productSP3);
+
+        // Create channels for the products
+        ChannelProduct channelProductSP2 = createTestChannelProduct();
+        ChannelProduct channelProductSP3 = createTestChannelProduct();
+        Channel baseChannelSP2 = createTestVendorBaseChannel(channelFamily, channelProductSP2);
+        Channel updateChannelSP2 = createTestVendorChildChannel(baseChannelSP2, channelProductSP2);
+        Channel baseChannelSP3 = createTestVendorBaseChannel(channelFamily, channelProductSP3);
+        Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
+
+        // Assign channels to products
+        createTestSUSEProductChannel(baseChannelSP2, productSP2);
+        createTestSUSEProductChannel(updateChannelSP2, productSP2);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3);
+
+        // Create two errata: one in SP2 updates and one in SP3 updates
+        User user = createTestUser();
+        Errata errataSP2 = createTestErrata(user, cves);
+        updateChannelSP2.addErrata(errataSP2);
+        TestUtils.saveAndFlush(updateChannelSP2);
+        Errata errataSP3 = createTestErrata(user, cves);
+        updateChannelSP3.addErrata(errataSP3);
+        TestUtils.saveAndFlush(updateChannelSP3);
+
+        Package unpatched = createTestPackage(user, null, baseChannelSP2, "noarch");
+        Package patchedSP2 = createLaterTestPackage(user, errataSP2, updateChannelSP2, unpatched);
+        @SuppressWarnings("unused")
+        Package patchedSP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, unpatched);
+
+        // Create server: no patch is installed
+        Set<Channel> channelsSP2 = new HashSet<>();
+        channelsSP2.add(baseChannelSP2);
+        channelsSP2.add(updateChannelSP2);
+        Server server = createTestServer(user, channelsSP2);
+        createTestInstalledPackage(unpatched, server);
+        installSUSEProductOnServer(productSP2, server);
+
+        CVEAuditManager.populateCVEChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditServer> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
+        List<ChannelIdNameLabelTriple> channels = new ArrayList<>(results.get(0).getChannels());
+        assertEquals(1, channels.size());
+        assertEquals(updateChannelSP2.getId().longValue() ,channels.get(0).getId());
     }
 
     /**
@@ -1423,11 +1481,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         Iterator<ChannelIdNameLabelTriple> it = results.get(0).getChannels().iterator();
         assertEquals((Long) baseChannelClone.getId(), (Long) it.next().getId());
-        assertEquals((Long) baseChannelSLES12.getId(), (Long) it.next().getId());
 
         Iterator<ErrataIdAdvisoryPair> eit = results.get(0).getErratas().iterator();
         assertEquals((Long) errataKernelClone.getId(), (Long) eit.next().getId());
-        assertEquals((Long) kernelErratum.getId(), (Long) eit.next().getId());
     }
 
     /**
