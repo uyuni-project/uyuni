@@ -163,22 +163,14 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
         if element.get("$type", "text") in ["group", "hidden-group"]:
             value = merge_formula_data(element, group_data.get(element_name, {}), system_data.get(element_name, {}), element_scope)
         elif element_scope == "system":
-            value = get_field_value(element_name, element, system_data, group_data)
+            value = system_data.get(element_name, group_data.get(element_name, element.get("$default", element.get("$placeholder", ""))))
         elif element_scope == "group":
             value = group_data.get(element_name, element.get("$default", element.get("$placeholder", "")))
         elif element_scope == "readonly":
             value = element.get("$default", element.get("$placeholder", ""))
 
-        if value is not None or (element_name in system_data and system_data.get(element_name) is None):
+        if value is not None and value != '' or not element.get("$optional"):
             ret[element_name] = value
     return ret
 
 
-def get_field_value(element_name, element, system_data, group_data):
-
-    if system_data.get(element_name) == "" and element.get("$optional"):
-        value = None
-    else:
-        value = system_data.get(element_name, group_data.get(element_name))
-
-    return value
