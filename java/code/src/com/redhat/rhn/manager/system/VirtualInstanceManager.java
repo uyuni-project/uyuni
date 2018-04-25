@@ -130,13 +130,7 @@ public class VirtualInstanceManager extends BaseManager {
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
             virtualInstances.stream().forEach(virtualInstance -> {
-                if (virtualInstance.isRegisteredGuest()) {
-                    virtualInstance.getHostSystem().removeGuest(virtualInstance);
-                    virtualInstance.setHostSystem(null);
-                }
-                else {
-                    vinst.deleteVirtualInstanceOnly(virtualInstance);
-                }
+                deleteGuestVirtualInstance(virtualInstance);
             });
         }
     }
@@ -185,14 +179,23 @@ public class VirtualInstanceManager extends BaseManager {
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
             virtualInstances.stream().forEach(virtualInstance -> {
-                if (virtualInstance.isRegisteredGuest()) {
-                    virtualInstance.getHostSystem().removeGuest(virtualInstance);
-                    virtualInstance.setHostSystem(null);
-                }
-                else {
-                    vinst.deleteVirtualInstanceOnly(virtualInstance);
-                }
+                deleteGuestVirtualInstance(virtualInstance);
             });
+        }
+    }
+
+    /**
+     * Remove a virtual instance from the database
+     *
+     * @param virtualInstance guest to remove
+     */
+    public static void deleteGuestVirtualInstance(VirtualInstance virtualInstance) {
+        if (virtualInstance.isRegisteredGuest()) {
+            virtualInstance.getHostSystem().removeGuest(virtualInstance);
+            virtualInstance.setHostSystem(null);
+        }
+        else {
+            VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
         }
     }
 
