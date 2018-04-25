@@ -1,3 +1,4 @@
+- add python2-salt to SLES12 bootstrap repository
 - add new traditional packages and renamed to bootstrap repo data
 
 -------------------------------------------------------------------
