@@ -155,6 +155,8 @@ class ImageInfo extends React.Component {
 
   render() {
     const data = this.props.data;
+    const isStoreEditable = data.store.type !== "os_image";
+
     return (
       <div className="table-responsive">
         <table className="table">
@@ -197,7 +199,7 @@ class ImageInfo extends React.Component {
             <tr>
               <td>Store:</td>
               { data.store ?
-                <td>{data.store.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id + "?url_bounce=" + encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/>}</td>
+                <td>{data.store.label}{ isAdmin && isStoreEditable && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id + "?url_bounce=" + encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/>}</td>
                 :<td>-</td>
               }
             </tr>
