@@ -4,9 +4,9 @@ grains:
 cpuinfo:
   module.run:
     - name: status.cpuinfo
-udevdb:
+udev:
   module.run:
-    - name: udevdb.exportdb
+    - name: udev.exportdb
 network-interfaces:
   module.run:
     - name: network.interfaces
