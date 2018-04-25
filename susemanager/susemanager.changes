@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Apr 25 12:12:42 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.7-1
 - fix bootstrapping RHEL 7 salt client (missing python-ipaddress) (bsc#1087055)
 
 -------------------------------------------------------------------
