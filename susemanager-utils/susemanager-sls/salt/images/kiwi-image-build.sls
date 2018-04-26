@@ -3,7 +3,10 @@
 
 {%- set source     = pillar.get('source') %}
 
-{%- set root_dir   = '/var/lib/Kiwi/' + pillar.get('build_id') %}
+{%- set kiwi_dir   = '/var/lib/Kiwi/' %}
+{%- set common_repo = kiwi_dir + 'repo' %}
+
+{%- set root_dir   = kiwi_dir + pillar.get('build_id') %}
 {%- set source_dir = root_dir + '/source' %}
 {%- set chroot_dir = root_dir + '/chroot/' %}
 {%- set dest_dir   = root_dir + '/images.build' %}
@@ -11,11 +14,10 @@
 {%- set bundle_id  = pillar.get('build_id') %}
 
 {%- if pillar.get('activation_key') %}
-{%- set kiwi_params = salt['cmd.run']('suma-repos ' + pillar.get('activation_key')) %}
+{%- set kiwi_params = '--add-repo ' + common_repo + salt['cmd.run']('suma-repos ' + pillar.get('activation_key')) %}
 {%- else %}
-{%- set kiwi_params = '--add-repo ' + pillar.get('kiwi_repositories')|join(' --add-repo ') %}
+{%- set kiwi_params = '--add-repo ' + common_repo + ' --add-repo ' + pillar.get('kiwi_repositories')|join(' --add-repo ') %}
 {%- endif %}
-
 mgr_buildimage_prepare_source:
   file.directory:
     - name: {{ root_dir }}

@@ -28,17 +28,17 @@ mgr_kiwi_build_tools:
     - group: root
     - dir_mode: 755
 
-{{ kiwi_dir }}/images:
+# repo for common kiwi build needs - mainly RPM with SUSE Manager certificate
+{{ kiwi_dir }}/repo:
   file.directory:
     - user: root
     - group: root
     - dir_mode: 755
 
-{{ kiwi_dir }}/chroot:
-  file.directory:
-    - user: root
-    - group: root
-    - dir_mode: 755
+# TODO - fix proper source
+#{{ kiwi_dir }}/repo/kiwi_suma_mgr.rpm:
+#  file.managed:
+#    - source: salt://kiwi_suma_mgr.rpm
 
 sshd:
   pkg.installed:
