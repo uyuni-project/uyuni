@@ -1,0 +1,11 @@
+BEGIN
+    FOR idx IN (SELECT index_name FROM user_indexes WHERE index_name = 'SUSE_IMGPROF_LABEL_UQ')
+    LOOP
+        EXECUTE IMMEDIATE 'DROP INDEX ' || idx.index_name;
+    END LOOP;
+END;
+/
+
+CREATE UNIQUE INDEX suse_imgprof_label_uq
+    ON suseImageProfile (org_id, label)
+        TABLESPACE [[2m_tbs]];

@@ -88,16 +88,6 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertEquals(p1, lookup.get(0));
     }
 
-    public void testLookupByLabel() throws Exception {
-        ImageProfile profile =
-                createImageProfile("myprofile", createImageStore("mystore", user), user);
-
-        ImageProfile prf = ImageProfileFactory.lookupByLabel("myprofile").get();
-        assertEquals(profile, prf);
-
-        assertFalse(ImageProfileFactory.lookupByLabel("non-exixtent-label").isPresent());
-    }
-
     public void testLookupByLabelAndOrg() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);

@@ -120,8 +120,8 @@ public class ImageProfileHandler extends BaseHandler {
         if (StringUtils.contains(label, ':')) {
             throw new InvalidParameterException("Label cannot contain colons (:).");
         }
-        else if (ImageProfileFactory.lookupByLabel(label).isPresent()) {
-            throw new InvalidParameterException("Image already exists.");
+        else if (ImageProfileFactory.lookupByLabelAndOrg(label, loggedInUser.getOrg()).isPresent()) {
+            throw new InvalidParameterException("Image already exist.");
         }
         if (StringUtils.isEmpty(type)) {
             throw new InvalidParameterException("Type cannot be empty.");

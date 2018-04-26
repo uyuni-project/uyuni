@@ -1,0 +1,6 @@
+-- oracle equivalent source sha1 e838c02183585de09806abeaafd3fb935d706c14
+
+DROP INDEX IF EXISTS suse_imgprof_label_uq;
+
+CREATE UNIQUE INDEX suse_imgprof_label_uq
+    ON suseImageProfile (org_id, label);
