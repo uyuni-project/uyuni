@@ -502,6 +502,12 @@ public class TaskomaticApi {
                 action.getEarliestAction());
     }
 
+    public void rescheduleActionExecution(Action action, Date earliestDate)
+            throws TaskomaticApiException {
+        invoke("tasko.rescheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
+                MINION_ACTION_JOB_PREFIX + action.getId(), earliestDate);
+    }
+
     /**
      * Schedule an Action Chain execution for Salt minions.
      *
@@ -510,7 +516,7 @@ public class TaskomaticApi {
      */
     public void scheduleActionChainExecution(ActionChain actionchain)
         throws TaskomaticApiException {
-        if (!ActionChainFactory.isActionChainTargettingDefaultMinions(actionchain)) {
+        if (!ActionChainFactory.isActionChainTargettingMinions(actionchain)) {
             return;
         }
 

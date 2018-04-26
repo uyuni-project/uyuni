@@ -63,7 +63,6 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private SSHPushSystem system;
     private TaskQueue parentQueue;
 
-    private boolean packageListRefreshNeeded = false;
     private SaltService saltService;
     private SaltUtils saltUtils;
 
@@ -114,52 +113,10 @@ public class SSHPushWorkerSalt implements QueueWorker {
             MinionServerFactory.lookupById(system.getId()).ifPresent(m -> {
                 log.info("Executing actions for minion: " + m.getMinionId());
 
-                // Get pending actions and reverse to put them in ascending order
-                // TODO: consider prerequisites
-                DataResult<SystemPendingEventDto> pendingEvents = SystemManager
-                        .systemPendingEvents(m.getId(), null);
-                Collections.reverse(pendingEvents);
-                log.debug("Number of pending actions: " + pendingEvents.size());
                 boolean checkinNeeded = true;
 
-                for (SystemPendingEventDto event : pendingEvents) {
-                    log.debug("Looking at pending action: " + event.getActionName());
+                // TODO hande salt-ssh reboot
 
-                    ZonedDateTime now = ZonedDateTime.now();
-                    ZonedDateTime scheduleDate = event.getScheduledFor().toInstant()
-                            .atZone(ZoneId.systemDefault());
-
-                    if (scheduleDate.isAfter(now)) {
-                        // Nothing left to do at the moment, get out of here
-                        break;
-                    }
-                    else {
-                        log.info("Executing action (id=" + event.getId() + "): " +
-                                event.getActionName());
-                        Action action = ActionFactory.lookupById(event.getId());
-                        try {
-                            executeAction(action, m);
-                        }
-                        catch (Exception e) {
-                            log.error("Error executing action: " + e.getMessage(), e);
-                        }
-                        checkinNeeded = false;
-                    }
-                }
-
-                // Perform a package profile update in the end if needed
-                if (packageListRefreshNeeded) {
-                    Action pkgList;
-                    try {
-                        pkgList = ActionManager.schedulePackageRefresh(m.getOrg(), m);
-                        executeAction(pkgList, m);
-                    }
-                    catch (TaskomaticApiException e) {
-                        log.error("Could not schedule package refresh for minion: " +
-                            m.getMinionId());
-                        log.error(e);
-                    }
-                }
 
                 // Perform a check-in if there is no pending actions
                 if (checkinNeeded) {
@@ -201,32 +158,33 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param action the action to be executed
      * @param minion minion on which the action will be executed
      */
-    public void executeAction(Action action, MinionServer minion) {
+    public boolean executeAction(Action action, MinionServer minion) {
         Optional<ServerAction> serverAction = action.getServerActions().stream()
                 .filter(sa -> sa.getServer().equals(minion))
                 .findFirst();
-        serverAction.ifPresent(sa -> {
+        if (serverAction.isPresent()) {
+            ServerAction sa = serverAction.get();
             if (sa.getStatus().equals(STATUS_FAILED) ||
                     sa.getStatus().equals(STATUS_COMPLETED)) {
                 log.info("Action '" + action.getName() + "' is completed or failed." +
                         " Skipping.");
-                return;
+                return false;
             }
 
             if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
                 log.info("Prerequisite of action '" + action.getName() + "' is still" +
                         " queued. Skipping executing of the action.");
-                return;
+                return false;
             }
 
             if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
                 log.info("Failing action '" + action.getName() + "' as its prerequisite '" +
-                                action.getPrerequisite().getName() + "' failed.");
+                        action.getPrerequisite().getName() + "' failed.");
                 sa.setStatus(STATUS_FAILED);
                 sa.setResultMsg("Prerequisite failed.");
                 sa.setResultCode(-100L);
                 sa.setCompletionTime(new Date());
-                return;
+                return false;
             }
 
             if (sa.getRemainingTries() < 1) {
@@ -237,7 +195,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         " without a successful transaction;" +
                         " This action is now failed for this system.");
                 sa.setCompletionTime(new Date());
-                return;
+                return false;
             }
 
             sa.setRemainingTries(sa.getRemainingTries() - 1);
@@ -251,16 +209,15 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 try {
                     result = saltService
                             .callSync(new JsonElementCall(call), minion.getMinionId());
-                }
-                catch (RuntimeException e) {
+                } catch (RuntimeException e) {
                     log.warn("Exception for salt call for action: '" + action.getName() +
-                            "'. Will be re-tried " +  sa.getRemainingTries() + " times");
+                            "'. Will be re-tried " + sa.getRemainingTries() + " times");
                     throw e;
                 }
 
                 if (!result.isPresent()) {
                     log.error("No result for salt call for action: '" + action.getName() +
-                            "'. Will be re-tried " +  sa.getRemainingTries() + " times");
+                            "'. Will be re-tried " + sa.getRemainingTries() + " times");
                 }
 
                 result.ifPresent(r -> {
@@ -272,23 +229,32 @@ public class SSHPushWorkerSalt implements QueueWorker {
                     // reboot needs special handling in case of ssh push
                     if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
                         sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                    }
-                    else {
+                    } else {
                         saltUtils.updateServerAction(sa, 0L, true, "n/a",
                                 r, function);
                     }
 
+                    // Perform a "check-in" after every executed action
+                    minion.updateServerInfo();
+
                     // Perform a package profile update in the end if necessary
                     if (saltUtils.shouldRefreshPackageList(function, result)) {
                         log.info("Scheduling a package profile update");
-                        this.packageListRefreshNeeded = true;
+                        Action pkgList;
+                        try {
+                            pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
+                            executeAction(pkgList, minion);
+                        }
+                        catch (TaskomaticApiException e) {
+                            log.error("Could not schedule package refresh for minion: " +
+                                    minion.getMinionId());
+                            log.error(e);
+                        }
                     }
-
-                    // Perform a "check-in" after every executed action
-                    minion.updateServerInfo();
                 });
             });
-        });
+        }
+        return false;
     }
 
     /**
