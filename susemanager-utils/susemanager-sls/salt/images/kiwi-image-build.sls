@@ -68,6 +68,7 @@ mgr_buildimage_info:
   module.run:
     - name: kiwi_info.image_details
     - dest: {{ dest_dir }}
+    - bundle_dest: {{ bundle_dir }}
     - require:
 {%- if pillar.get('use_salt_transport') %}
       - mgr_buildimage_kiwi_collect_image

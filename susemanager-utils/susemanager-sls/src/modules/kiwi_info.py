@@ -79,7 +79,7 @@ _compression_types = [
     { 'suffix': '',    'compression': None }
     ]
 
-def image_details(dest):
+def image_details(dest, bundle_dest = None):
     res = {}
     buildinfo = parse_buildinfo(dest)
 
@@ -96,12 +96,14 @@ def image_details(dest):
         return None
 
     filename = None
+    filepath = None
     compression = None
     for c in _compression_types:
         path = os.path.join(dest, basename + c['suffix'])
         if __salt__['file.file_exists'](path):
             compression = c['compression']
             filename = basename + c['suffix']
+            filepath = path
             break
 
     res['image'] = {
@@ -111,15 +113,19 @@ def image_details(dest):
         'type': image_type,
         'version': version,
         'compression': compression,
-        'filename': filename
+        'filename': filename,
+        'filepath': filepath
     }
 
     res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5'), compression is not None))
 
+    if bundle_dest is not None:
+      res['bundle'] = inspect_bundle(bundle_dest, basename)
+
     return res
 
 def inspect_image(dest, bundle_dest = None):
-    res = image_details(dest)
+    res = image_details(dest, bundle_dest)
     if not res:
       return None
 
@@ -136,9 +142,6 @@ def inspect_image(dest, bundle_dest = None):
 
     if image_type == 'pxe':
         res['boot_image'] = inspect_boot_image(dest)
-
-    if bundle_dest is not None:
-        res['bundle'] = inspect_bundle(bundle_dest, basename)
 
     return res
 
@@ -202,4 +205,6 @@ def inspect_bundle(dest, basename):
     match = pattern.match(sha256_str)
     if match:
         res.update(match.groupdict())
+        res['filepath'] = os.path.join(dest, res['filename'])
+
     return res
