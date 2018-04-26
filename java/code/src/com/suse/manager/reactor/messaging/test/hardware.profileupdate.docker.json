@@ -201,15 +201,15 @@
         "changes": {},
         "__id__": "smbios-records-bios"
       },
-      "module_|-udevdb_|-udevdb.exportdb_|-run": {
-        "comment": "Module function udevdb.exportdb is not available",
-        "name": "udevdb.exportdb",
+      "module_|-udev_|-udev.exportdb_|-run": {
+        "comment": "Module function udev.exportdb is not available",
+        "name": "udev.exportdb",
         "start_time": "12:58:05.478924",
         "result": false,
         "duration": 389.07,
         "__run_num__": 2,
         "changes": {},
-        "__id__": "udevdb"
+        "__id__": "udev"
       },
       "module_|-smbios-records-system_|-smbios.records_|-run": {
         "comment": "Module function smbios.records is not available",
