@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.profile.test;
 
+import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
@@ -46,11 +49,12 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
     public final void testListImageProfileTypes() throws Exception {
         List<String> types = handler.listImageProfileTypes(admin);
-        assertEquals("Wrong number of image profile types found.", 1, types.size());
-        assertEquals(ImageProfile.TYPE_DOCKERFILE, types.get(0));
+        assertEquals("Wrong number of image profile types found.", 2, types.size());
+        assertTrue(types.stream().anyMatch(ImageProfile.TYPE_DOCKERFILE::equals));
+        assertTrue(types.stream().anyMatch(ImageProfile.TYPE_KIWI::equals));
     }
 
-    public final void testGetDetails() throws Exception {
+    public final void testGetDetailsDockerfile() throws Exception {
         ImageStore store = createImageStore("myregistry", admin);
         ActivationKey key = createActivationKey(admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
@@ -71,24 +75,53 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(ImageProfile.TYPE_DOCKERFILE, profile.getImageType());
         assertEquals(key.getToken(), profile.getToken());
         assertEquals(store, profile.getTargetStore());
+        assertEquals("/path/to/dockerfile", profile.asDockerfileProfile().get().getPath());
     }
 
-    public final void testListImageProfiles() {
-        createImageStore("myregistry", admin);
+    public final void testGetDetailsKiwi() throws Exception {
+        ImageStore store = createImageStore("mystore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
+        ActivationKey key = createActivationKey(admin);
+        int result = handler.create(admin, "myprofile", ImageProfile.TYPE_KIWI,
+                "mystore", "/path/to/kiwiconfig", key.getKey());
+
+        assertEquals(1, result);
+
+        ImageProfile profile = handler.getDetails(admin, "myprofile");
+        assertEquals("myprofile", profile.getLabel());
+        assertEquals(ImageProfile.TYPE_KIWI, profile.getImageType());
+        assertEquals(key.getToken(), profile.getToken());
+        assertEquals(store, profile.getTargetStore());
+        assertEquals("/path/to/kiwiconfig", profile.asKiwiProfile().get().getPath());
+    }
+
+    public final void testListImageProfiles() throws Exception {
+        createImageStore("myregistry", admin, ImageStoreFactory.TYPE_REGISTRY);
+        createImageStore("myosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
+
         int result = handler.create(admin, "newprofile1", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");
         assertEquals(1, result);
 
-        result = handler.create(admin, "newprofile2", ImageProfile.TYPE_DOCKERFILE,
-                "myregistry", "/path/to/dockerfile", "");
+        ActivationKey key = createActivationKey(admin);
+        result = handler.create(admin, "newprofile2", ImageProfile.TYPE_KIWI,
+                "myosimagestore", "/path/to/kiwiconfig", key.getKey());
         assertEquals(1, result);
 
         List<ImageProfile> profiles = handler.listImageProfiles(admin);
 
-        long cnt = profiles.stream().filter(p -> ("newprofile1".equals(p.getLabel()) ||
-                "newprofile2".equals(p.getLabel()))).count();
+        assertEquals(2, profiles.size());
 
-        assertEquals(2, cnt);
+        DockerfileProfile p1 = profiles.stream().filter(p -> "newprofile1".equals(p.getLabel())).findFirst().get()
+                .asDockerfileProfile().get();
+        assertEquals(ImageProfile.TYPE_DOCKERFILE, p1.getImageType());
+        assertEquals("myregistry", p1.getTargetStore().getLabel());
+        assertEquals("/path/to/dockerfile", p1.getPath());
+
+        KiwiProfile p2 = profiles.stream().filter(p -> "newprofile2".equals(p.getLabel())).findFirst().get()
+                .asKiwiProfile().get();
+        assertEquals(ImageProfile.TYPE_KIWI, p2.getImageType());
+        assertEquals("myosimagestore", p2.getTargetStore().getLabel());
+        assertEquals("/path/to/kiwiconfig", p2.getPath());
     }
 
     public final void testCreateImageProfile() throws Exception {
@@ -146,6 +179,38 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         }
         catch (InvalidParameterException e) {
             assertEquals("Activation key does not exist.", e.getMessage());
+        }
+
+        try {
+            handler.create(admin, "newprofile", "kiwi", "myosimagestore", "/path/to/dockerfile/", "");
+            fail("No activation key provided for Kiwi profile.");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Activation key cannot be empty for Kiwi profiles.", e.getMessage());
+        }
+
+        try {
+            handler.create(admin, "newprofile", "dockerfile", "myosimagestore", "/path/to/dockerfile", key.getKey());
+            fail("os_image store provided for dockerfile profile.");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Invalid store for profile type: 'dockerfile'", e.getMessage());
+        }
+
+        try {
+            handler.create(admin, "newprofile", "kiwi", "myregistry", "/path/to/kiwiconfig", key.getKey());
+            fail("registry store provided for kiwi profile.");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Invalid store for profile type: 'kiwi'", e.getMessage());
+        }
+
+        try {
+            handler.create(admin, "newprofile", "invalidtype", "myosimagestore", "/path/to/dockerfile", key.getKey());
+            fail("Invalid profile type provided.");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Type does not exist.", e.getMessage());
         }
 
         try {
@@ -235,13 +300,17 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
     public final void testSetDetails() throws Exception {
         createImageStore("myregistry", admin);
-        ActivationKey key = createActivationKey(admin);
-        int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
-                "myregistry", "/path/to/dockerfile", key.getKey());
+        createImageStore("myosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
 
-        assertEquals(1, result);
+        ActivationKey key = createActivationKey(admin);
+
+        handler.create(admin, "mydockerfileprofile", ImageProfile.TYPE_DOCKERFILE,
+                "myregistry", "/path/to/dockerfile", key.getKey());
+        handler.create(admin, "mykiwiprofile", ImageProfile.TYPE_KIWI,
+                "myosimagestore", "/path/to/kiwiconfig", key.getKey());
 
         createImageStore("newstore", admin);
+        createImageStore("newosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
         ActivationKey newKey = createActivationKey(admin);
         assertFalse(key.equals(newKey));
 
@@ -265,7 +334,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         try {
             details.clear();
             details.put("storeLabel", "invalidstore");
-            handler.setDetails(admin, "myprofile", details);
+            handler.setDetails(admin, "mydockerfileprofile", details);
             fail("Invalid store label provided.");
         }
         catch (NoSuchImageStoreException ignore) { }
@@ -273,7 +342,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         try {
             details.clear();
             details.put("storeLabel", "");
-            handler.setDetails(admin, "myprofile", details);
+            handler.setDetails(admin, "mydockerfileprofile", details);
             fail("No store label provided.");
         }
         catch (InvalidParameterException e) {
@@ -282,8 +351,18 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
         try {
             details.clear();
+            details.put("storeLabel", "newosimagestore");
+            handler.setDetails(admin, "mydockerfileprofile", details);
+            fail("Store label of invalid type provided.");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Invalid store for profile type: 'dockerfile'", e.getMessage());
+        }
+
+        try {
+            details.clear();
             details.put("path", "");
-            handler.setDetails(admin, "myprofile", details);
+            handler.setDetails(admin, "mydockerfileprofile", details);
             fail("No path provided.");
         }
         catch (InvalidParameterException e) {
@@ -293,22 +372,32 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         try {
             details.clear();
             details.put("activationKey", "invalidkey");
-            handler.setDetails(admin, "myprofile", details);
+            handler.setDetails(admin, "mydockerfileprofile", details);
             fail("Invalid activation key provided.");
         }
         catch (InvalidParameterException e) {
             assertEquals("Activation key does not exist.", e.getMessage());
         }
 
+        try {
+            details.clear();
+            details.put("activationKey", "");
+            handler.setDetails(admin, "mykiwiprofile", details);
+            fail("Empty activation key provided for Kiwi profile.");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Activation key cannot be empty for Kiwi profiles.", e.getMessage());
+        }
+
         details.clear();
         details.put("storeLabel", "newstore");
         details.put("path", "/new/path");
         details.put("activationKey", newKey.getKey());
-        result = handler.setDetails(admin, "myprofile", details);
+        int result = handler.setDetails(admin, "mydockerfileprofile", details);
 
         assertEquals(1, result);
         ImageProfile profile =
-                ImageProfileFactory.lookupByLabelAndOrg("myprofile", admin.getOrg()).get();
+                ImageProfileFactory.lookupByLabelAndOrg("mydockerfileprofile", admin.getOrg()).get();
         assertEquals("newstore", profile.getTargetStore().getLabel());
         assertEquals("/new/path", profile.asDockerfileProfile().get().getPath());
         assertEquals(newKey.getToken(), profile.getToken());
@@ -316,9 +405,9 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         // Unset activation key
         details.clear();
         details.put("activationKey", "");
-        result = handler.setDetails(admin, "myprofile", details);
+        result = handler.setDetails(admin, "mydockerfileprofile", details);
         assertEquals(1, result);
-        profile = ImageProfileFactory.lookupByLabelAndOrg("myprofile",
+        profile = ImageProfileFactory.lookupByLabelAndOrg("mydockerfileprofile",
                 admin.getOrg()).get();
         assertNull(profile.getToken());
     }

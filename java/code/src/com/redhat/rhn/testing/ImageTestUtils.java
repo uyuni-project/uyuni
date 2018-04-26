@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -284,7 +285,7 @@ public class ImageTestUtils {
      * @return the image store
      */
     public static ImageStore createImageStore(String label, User user) {
-        return createImageStore(label, null, user);
+        return createImageStore(label, user, ImageStoreFactory.TYPE_REGISTRY);
     }
 
     /**
@@ -296,10 +297,35 @@ public class ImageTestUtils {
      * @return the image store
      */
     public static ImageStore createImageStore(String label, Credentials creds, User user) {
+        return createImageStore(label, creds, user, ImageStoreFactory.TYPE_REGISTRY);
+    }
+
+    /**
+     * Create an image store.
+     *
+     * @param label the label
+     * @param user  the user
+     * @param type  the type
+     * @return the image store
+     */
+    public static ImageStore createImageStore(String label, User user, ImageStoreType type) {
+        return createImageStore(label, null, user, type);
+    }
+
+    /**
+     * Create an image store.
+     *
+     * @param label the label
+     * @param creds the credentials
+     * @param user  the user
+     * @param type  the type
+     * @return the image store
+     */
+    public static ImageStore createImageStore(String label, Credentials creds, User user, ImageStoreType type) {
         ImageStore store = new ImageStore();
         store.setLabel(label);
         store.setUri("my.store.uri");
-        store.setStoreType(ImageStoreFactory.TYPE_REGISTRY);
+        store.setStoreType(type);
         store.setOrg(user.getOrg());
 
         if (creds != null) {

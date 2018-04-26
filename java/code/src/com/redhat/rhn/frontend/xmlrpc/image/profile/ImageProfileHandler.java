@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -58,6 +59,7 @@ public class ImageProfileHandler extends BaseHandler {
         ensureImageAdmin(loggedInUser);
         List<String> imageTypes = new ArrayList<>();
         imageTypes.add(ImageProfile.TYPE_DOCKERFILE);
+        imageTypes.add(ImageProfile.TYPE_KIWI);
         return imageTypes;
     }
 
@@ -142,6 +144,10 @@ public class ImageProfileHandler extends BaseHandler {
                 throw new InvalidParameterException("Activation key does not exist.");
             }
         }
+        else if (ImageProfile.TYPE_KIWI.equals(type)) {
+            throw new InvalidParameterException("Activation key cannot be empty for Kiwi profiles.");
+        }
+
 
         ImageStore store;
         try {
@@ -153,21 +159,31 @@ public class ImageProfileHandler extends BaseHandler {
         }
 
         ImageProfile profile;
+        // Set type-specific properties
         if (ImageProfile.TYPE_DOCKERFILE.equals(type)) {
-
             DockerfileProfile dockerfileProfile = new DockerfileProfile();
-
-            dockerfileProfile.setLabel(label);
             dockerfileProfile.setPath(path);
-            dockerfileProfile.setTargetStore(store);
-            dockerfileProfile.setOrg(loggedInUser.getOrg());
-            dockerfileProfile.setToken(ak != null ? ak.getToken() : null);
-
             profile = dockerfileProfile;
+        }
+        else if (ImageProfile.TYPE_KIWI.equals(type)) {
+            KiwiProfile kiwiProfile = new KiwiProfile();
+            kiwiProfile.setPath(path);
+            profile = kiwiProfile;
         }
         else {
             throw new UnsupportedOperationException();
         }
+
+        if (!ImageProfileFactory.getStoreTypeForProfile(profile).equals(store.getStoreType())) {
+            throw new InvalidParameterException(String.format("Invalid store for profile type: '%s'", type));
+        }
+
+        // Set common properties
+        profile.setLabel(label);
+        profile.setTargetStore(store);
+        profile.setOrg(loggedInUser.getOrg());
+        profile.setToken(ak != null ? ak.getToken() : null);
+
         ImageProfileFactory.save(profile);
 
         return 1;
@@ -223,20 +239,34 @@ public class ImageProfileHandler extends BaseHandler {
             if (StringUtils.isEmpty(storeLabel)) {
                 throw new InvalidParameterException("Store label cannot be empty.");
             }
-            profile.setTargetStore(ImageStoreFactory
-                    .lookupBylabelAndOrg(storeLabel,
-                            loggedInUser.getOrg())
-                    .orElseThrow(NoSuchImageStoreException::new));
+            ImageStore store =
+                    ImageStoreFactory.lookupBylabelAndOrg(storeLabel, loggedInUser.getOrg())
+                            .orElseThrow(NoSuchImageStoreException::new);
+
+            if (!ImageProfileFactory.getStoreTypeForProfile(profile).equals(store.getStoreType())) {
+                throw new InvalidParameterException(String.format(
+                        "Invalid store for profile type: '%s'", profile.getImageType()));
+            }
+
+            profile.setTargetStore(store);
         }
         if (details.containsKey("path")) {
             String path = (String) details.get("path");
             if (StringUtils.isEmpty(path)) {
                 throw new InvalidParameterException("Path cannot be empty.");
             }
-            profile.asDockerfileProfile()
-                    .orElseThrow(() -> new InvalidParameterException("The type " +
-                            profile.getImageType() + " doesn't support 'Path' property"))
-                    .setPath(path);
+
+            switch (profile.getImageType()) {
+            case ImageProfile.TYPE_DOCKERFILE:
+                profile.asDockerfileProfile().get().setPath(path);
+                break;
+            case ImageProfile.TYPE_KIWI:
+                profile.asKiwiProfile().get().setPath(path);
+                break;
+            default:
+                throw new InvalidParameterException("The type " + profile.getImageType() +
+                        " doesn't support 'Path' property");
+            }
         }
         if (details.containsKey("activationKey")) {
             String activationKey = (String) details.get("activationKey");
@@ -246,6 +276,9 @@ public class ImageProfileHandler extends BaseHandler {
                 if (ak == null) {
                     throw new InvalidParameterException("Activation key does not exist.");
                 }
+            }
+            else if (profile.asKiwiProfile().isPresent()) {
+                throw new InvalidParameterException("Activation key cannot be empty for Kiwi profiles.");
             }
             profile.setToken(ak != null ? ak.getToken() : null);
         }

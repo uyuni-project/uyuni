@@ -153,6 +153,23 @@ public class ImageProfileFactory extends HibernateFactory {
     }
 
     /**
+     * Gets the valid store type for an image profile.
+     *
+     * @param profile the image profile
+     * @return the valid store type for profile
+     */
+    public static ImageStoreType getStoreTypeForProfile(ImageProfile profile) {
+        switch (profile.getImageType()) {
+        case ImageProfile.TYPE_DOCKERFILE:
+            return ImageStoreFactory.TYPE_REGISTRY;
+        case ImageProfile.TYPE_KIWI:
+            return ImageStoreFactory.TYPE_OS_IMAGE;
+        default:
+            throw new IllegalArgumentException("Invalid type for image profile: " + profile.getImageType());
+        }
+    }
+
+    /**
      * Save a {@link ProfileCustomDataValue}.
      *
      * @param customDataValue the image profile to save
