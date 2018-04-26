@@ -14,10 +14,12 @@
  */
 package com.suse.manager.webui.services;
 
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
@@ -58,22 +60,35 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.TokenBuilder;
+import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.utils.Json;
 import com.suse.utils.Opt;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
@@ -95,6 +110,8 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -148,6 +165,9 @@ public class SaltServerActionService {
 
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
+
+    private SaltService saltService = SaltService.INSTANCE;
+    private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
 
     private Action unproxy(Action entity) {
         Hibernate.initialize(entity);
@@ -267,55 +287,95 @@ public class SaltServerActionService {
     public void execute(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
-        List<MinionServer> minions = getMinionServers(actionIn);
+        List<MinionServer> allMinions = getMinionServers(actionIn);
 
-        // now prepare each call
-        for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
-                callsForAction(actionIn, minions).entrySet()) {
-            LocalCall<?> call = entry.getKey();
-            final List<MinionServer> targetMinions;
-            Map<Boolean, List<MinionServer>> results;
+        // split minions into regular and salt-ssh
+        Map<Boolean, List<MinionServer>> partitionBySSHPush = allMinions.stream()
+                .collect(Collectors.partitioningBy(MinionServerUtils::isSshPushMinion));
 
-            if (isStagingJob) {
-                targetMinions = new ArrayList<>();
-                stagingJobMinionServerId
-                        .ifPresent(serverId -> MinionServerFactory.lookupById(serverId)
-                                .ifPresent(server -> targetMinions.add(server)));
-                call = prepareStagingTargets(actionIn, targetMinions);
-            }
-            else {
-                targetMinions = entry.getValue();
-            }
+        // Separate SSH push minions from regular minions to apply different states
+        List<MinionServer> sshPushMinions = partitionBySSHPush.get(true);
+        List<MinionServer> regularMinions = partitionBySSHPush.get(false);
 
-            results = execute(actionIn, call, targetMinions, forcePackageListRefresh,
-                    isStagingJob);
+        if (!regularMinions.isEmpty()) {
+            // now prepare each call
+            for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
+                    callsForAction(actionIn, regularMinions).entrySet()) {
+                LocalCall<?> call = entry.getKey();
+                final List<MinionServer> targetMinions;
+                Map<Boolean, List<MinionServer>> results;
 
-            results.get(true).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Asynchronous call on minion: " +
+                if (isStagingJob) {
+                    targetMinions = new ArrayList<>();
+                    stagingJobMinionServerId
+                            .ifPresent(serverId -> MinionServerFactory.lookupById(serverId)
+                                    .ifPresent(server -> targetMinions.add(server)));
+                    call = prepareStagingTargets(actionIn, targetMinions);
+                } else {
+                    targetMinions = entry.getValue();
+                }
+
+                results = execute(actionIn, call, targetMinions, forcePackageListRefresh,
+                        isStagingJob);
+
+                results.get(true).forEach(minionServer -> {
+                    serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Asynchronous call on minion: " +
+                                    minionServer.getMinionId());
+                        }
+                        if (!isStagingJob) {
+                            serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+                            ActionFactory.save(serverAction);
+                        }
+                    });
+                });
+
+                results.get(false).forEach(minionServer -> {
+                    serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                        LOG.warn("Failed to schedule action for minion: " +
                                 minionServer.getMinionId());
-                    }
-                    if (!isStagingJob) {
-                        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        ActionFactory.save(serverAction);
-                    }
+                        if (!isStagingJob) {
+                            serverAction.setCompletionTime(new Date());
+                            serverAction.setResultCode(-1L);
+                            serverAction.setResultMsg("Failed to schedule action.");
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            ActionFactory.save(serverAction);
+                        }
+                    });
                 });
-            });
+            }
+        }
 
-            results.get(false).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    LOG.warn("Failed to schedule action for minion: " +
-                            minionServer.getMinionId());
-                    if (!isStagingJob) {
-                        serverAction.setCompletionTime(new Date());
-                        serverAction.setResultCode(-1L);
-                        serverAction.setResultMsg("Failed to schedule action.");
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        ActionFactory.save(serverAction);
+        if (!sshPushMinions.isEmpty()) {
+            SSHPushWorkerSalt worker = new SSHPushWorkerSalt(LOG, null, saltService, SaltUtils.INSTANCE, saltService.getSaltSSHService());
+            boolean retry = false;
+            for (MinionServer sshMinion: sshPushMinions) {
+
+                try {
+                    retry = retry || worker.executeAction(actionIn, sshMinion);
+                }
+                catch (Exception e) {
+                    LOG.error("Error executing Salt action [" + actionIn.toString() + "] on ssh minion " + sshMinion.getMinionId(), e);
+                    retry = true;
+                }
+
+            }
+            if (retry) {
+                long retriableServerActions = actionIn.getServerActions().stream()
+                        .filter(sa -> sa.getRemainingTries() > 0)
+                        .count();
+                if (retriableServerActions >= 0) {
+                    // reschedule the failed action in 1 min from now
+                    try {
+                        ActionManager.rescheduleAction(actionIn, Date.from(Instant.now().plus(1, ChronoUnit.MINUTES)));
+                        LOG.info("Rescheduled Salt action [" + actionIn + "] in 1 minute");
                     }
-                });
-            });
+                    catch (TaskomaticApiException tae) {
+                        LOG.error("Could not reschedule action [" + actionIn + "]" , tae);
+                    }
+                }
+            }
         }
     }
 

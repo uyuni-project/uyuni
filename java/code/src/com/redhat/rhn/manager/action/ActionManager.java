@@ -792,6 +792,17 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Reschedule the given action at the given time. This can reschedule one-off jobs
+     * with an already existing Quartz trigger i.e. jobs that fired already fired once.
+     * @param action the action
+     * @param earliest the new earliest execution time
+     * @throws TaskomaticApiException
+     */
+    public static void rescheduleAction(Action action, Date earliest) throws TaskomaticApiException {
+        taskomaticApi.rescheduleActionExecution(action, earliest);
+    }
+
+    /**
      * Retrieve the list of unarchived scheduled actions for the
      * current user
      * @param user The user in question
