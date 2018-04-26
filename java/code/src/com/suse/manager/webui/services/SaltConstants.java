@@ -43,4 +43,6 @@ public class SaltConstants {
 
     public static final String SCRIPTS_DIR = "scripts";
 
+    public static final String SALT_FS_PREFIX = "salt://";
+
 }

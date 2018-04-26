@@ -23,6 +23,7 @@ import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.utils.MinionServerUtils;
@@ -142,7 +143,7 @@ public class SaltService {
     SaltService() {
         // Set unlimited timeout
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-        saltSSHService = new SaltSSHService(SALT_CLIENT);
+        saltSSHService = new SaltSSHService(SALT_CLIENT, SaltActionChainGeneratorService.INSTANCE);
     }
 
     /**
@@ -1115,4 +1116,10 @@ public class SaltService {
         return Optional.of(Collections.singletonList(SaltService.MINION_UNREACHABLE_ERROR));
     }
 
+    /**
+     * @return saltSSHService to get
+     */
+    public SaltSSHService getSaltSSHService() {
+        return saltSSHService;
+    }
 }

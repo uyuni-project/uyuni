@@ -19,8 +19,6 @@ import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
@@ -318,28 +316,6 @@ public class TaskoXmlRpcHandler {
             TaskoFactory.commitTransaction();
         }
         return scheduleDate;
-    }
-
-    public Date rescheduleSingleSatBunchRun(String bunchName, String jobLabel, Date start)
-            throws NoSuchBunchTaskException, InvalidParamException {
-        return rescheduleSingleSatBunchRun(null, bunchName, jobLabel, start);
-    }
-
-    public Date rescheduleSingleSatBunchRun(Integer orgId, String bunchName, String jobLabel, Date start)
-            throws NoSuchBunchTaskException, InvalidParamException {
-        checkBunchName(orgId, bunchName);
-        try {
-            if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() &&
-                    (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
-                            TaskoQuartzHelper.getGroupName(orgId))) == null)) {
-                throw new InvalidParamException("no existing job with jobLabel or with active trigger");
-            }
-        }
-        catch (SchedulerException se) {
-            return null;
-        }
-
-        return TaskoQuartzHelper.rescheduleJob(jobLabel, orgId, start, null);
     }
 
     /**

@@ -43,11 +43,13 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Stack;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -112,82 +114,47 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         // Check if the event was triggered by an action chain execution
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         isActionChainResult.filter(isActionChain -> isActionChain).ifPresent(isActionChain -> {
-            jobResult.ifPresent(jsonResult -> {
-                // The Salt reactor triggers a "suma-action-chain" job (mgractionchains.resume) at
-                // 'minion/startup/event/'. This means the result might not be a JSON in case of
-                // a Salt error when the 'mgractionchains' custom module is not yet deployed.
-                if ((jobReturnEvent.getData().getRetcode() == 254) && !(jobReturnEvent.getData().isSuccess())) {
+            if (!jobResult.isPresent()) {
+                return;
+            }
+            JsonElement jsonResult = jobResult.get();
+            // The Salt reactor triggers a "suma-action-chain" job (mgractionchains.resume) at
+            // 'minion/startup/event/'. This means the result might not be a JSON in case of
+            // a Salt error when the 'mgractionchains' custom module is not yet deployed.
+            if (jobReturnEvent.getData().getRetcode() == 254 && !jobReturnEvent.getData().isSuccess()) {
+                return;
+            }
+
+            Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult;
+            try {
+                actionChainResult = Json.GSON.fromJson(jsonResult,
+                        new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() {
+                        }.getType());
+            }
+            catch (JsonSyntaxException e) {
+                LOG.error("Error mapping action chain result: " + jsonResult, e);
+                throw e;
+            }
+
+            handleActionChainResult(jobReturnEvent.getMinionId(),
+                    jobReturnEvent.getJobId(),
+                    jobReturnEvent.getData().getRetcode(),
+                    jobReturnEvent.getData().isSuccess(),
+                    actionChainResult,
+                    stateResult -> false);
+
+            actionChainResult.forEach((stateIdKey, actionStateApply) -> {
+                // check each action state result and schedule a pkg refresh if needed
+                boolean refreshScheduled = SaltActionChainGeneratorService.parseActionChainStateId(stateIdKey)
+                        .map(stateId ->
+                                refreshPackagesIfNeeded(jobReturnEvent, actionStateApply.getName(),
+                                        Optional.ofNullable(actionStateApply.getChanges().getRet())))
+                        .orElse(false);
+                if (refreshScheduled) {
+                    // make sure no more than one pkg refresh is scheduled
                     return;
                 }
-
-                Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult = Json.GSON.fromJson(jsonResult,
-                        new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { }.getType());
-
-                int chunk = 1;
-                Long retActionChainId = null;
-                Long lastActionId = null;
-                boolean actionChainFailed = false;
-                for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
-                    String key = entry.getKey();
-                    StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
-                    Optional<SaltActionChainGeneratorService.ActionChainStateId> stateId =
-                            SaltActionChainGeneratorService.parseActionChainStateId(key);
-                    if (stateId.isPresent()) {
-                        retActionChainId = stateId.get().getActionChainId();
-                        chunk = stateId.get().getChunk();
-                        lastActionId = stateId.get().getActionId();
-                        if (!actionStateApply.isResult()) {
-                            actionChainFailed = true;
-                        }
-                        handleAction(lastActionId,
-                                jobReturnEvent.getMinionId(),
-                                actionStateApply.isResult() ? 0 : -1,
-                                actionStateApply.isResult(),
-                                jobReturnEvent.getJobId(),
-                                actionStateApply.getChanges().getRet(),
-                                actionStateApply.getName());
-
-                        refreshPackagesIfNeeded(jobReturnEvent, actionStateApply.getName(),
-                                Optional.ofNullable(actionStateApply.getChanges().getRet()));
-                    }
-                    else if (!key.contains("schedule_next_chunk")) {
-                        LOG.warn("Could not find action id in action chain state key: " + key);
-                    }
-                }
-
-                if (retActionChainId != null) {
-                    if (actionChainFailed) {
-                         // Set rest of actions as FAILED due prerequisite failed.
-                         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
-                                jobReturnEvent.getMinionId());
-                         if (minion.isPresent()) {
-                            Stack<Long> actionIdsDependencies = new Stack<>();
-                            actionIdsDependencies.push(lastActionId);
-                            while (!actionIdsDependencies.empty()) {
-                                Long acId = actionIdsDependencies.pop();
-                                List<ServerAction> serverActions = ActionFactory
-                                        .listServerActionsForServer(minion.get());
-                                serverActions = serverActions.stream()
-                                    .filter(s -> (s.getParentAction().getPrerequisite() != null))
-                                    .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
-                                    .collect(Collectors.toList());
-                                for (ServerAction sa : serverActions) {
-                                    actionIdsDependencies.push(sa.getParentAction().getId());
-                                    sa.setCompletionTime(new Date());
-                                    sa.setResultCode(new Long(-1));
-                                    sa.setStatus(ActionFactory.STATUS_FAILED);
-                                    sa.setResultMsg("Prerequisite failed");
-                                }
-                            }
-                        }
-                    }
-                    // Removing the generated SLS file
-                    SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
-                            retActionChainId, jobReturnEvent.getMinionId(), chunk, actionChainFailed);
-                }
             });
-
-
         });
 
         // For all jobs: update minion last checkin
@@ -207,11 +174,123 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private void refreshPackagesIfNeeded(JobReturnEvent jobReturnEvent, String function,
-                                         Optional<JsonElement> jobResult) {
-        MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
-            .ifPresent(minionServer -> {
-                jobResult.ifPresent(result -> {
+    /**
+     * Handle action chain Salt result.
+     *
+     * @param minionId the minion id
+     * @param jobId the job id
+     * @param retCode the ret code
+     * @param success whether result is successful or not
+     * @param actionChainResult job result
+     * @param skipFunction function to check if a result should be skipped from handling
+     */
+    public static void handleActionChainResult(
+            String minionId, String jobId, int retCode, boolean success,
+            Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
+            Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
+        int chunk = 1;
+        Long retActionChainId = null;
+        Long firstFailedActionId = null;
+        boolean actionChainFailed = false;
+        for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
+            String key = entry.getKey();
+            StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
+
+            Optional<SaltActionChainGeneratorService.ActionChainStateId> stateId =
+                    SaltActionChainGeneratorService.parseActionChainStateId(key);
+            if (stateId.isPresent()) {
+                retActionChainId = stateId.get().getActionChainId();
+                chunk = stateId.get().getChunk();
+                Long actionId = stateId.get().getActionId();
+                if (skipFunction.apply(actionStateApply)) {
+                    continue; // skip this state from handling
+                }
+
+                if (!actionStateApply.isResult()) {
+                    actionChainFailed = true;
+                    if (firstFailedActionId == null) {
+                        firstFailedActionId = actionId;
+                    }
+                    // don't stop handling the result entries if there's a failed action
+                    // the result entries are not returned in order
+                }
+                handleAction(actionId,
+                        minionId,
+                        actionStateApply.isResult() ? 0 : -1,
+                        actionStateApply.isResult(),
+                        jobId,
+                        actionStateApply.getChanges().getRet(),
+                        actionStateApply.getName());
+            }
+            else if (!key.contains("schedule_next_chunk")) {
+                LOG.warn("Could not find action id in action chain state key: " + key);
+            }
+        }
+
+        if (retActionChainId != null) {
+            if (actionChainFailed) {
+                // Set rest of actions as FAILED due to failed prerequisite
+                failDependentServerActions(firstFailedActionId, minionId, Optional.empty());
+            }
+            // Removing the generated SLS file
+            SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
+                    retActionChainId, minionId, chunk, actionChainFailed);
+        }
+    }
+
+    /**
+     * Set the given action to FAILED if not already in that state and also the dependent actions.
+     * @param actionId the action id
+     * @param minionId the minion id
+     * @param message the result message to set in the server action
+     */
+    public static void failDependentServerActions(long actionId, String minionId, Optional<String> message) {
+        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
+               minionId);
+        if (minion.isPresent()) {
+            // set first action to failed if not already in that state
+            Optional.ofNullable(ActionFactory.lookupById(actionId))
+                    .ifPresent(firstAction ->
+                            firstAction.getServerActions().stream()
+                                    .filter(sa -> sa.getServerId().equals(minion.get().getId()))
+                                    .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
+                                    .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
+                                    .findFirst()
+                                    .ifPresent(sa -> failServerAction(sa, message)));
+
+            // walk dependent server actions recursively and set them to failed
+            Stack<Long> actionIdsDependencies = new Stack<>();
+            actionIdsDependencies.push(actionId);
+            List<ServerAction> serverActions = ActionFactory
+                    .listServerActionsForServer(minion.get(),
+                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP));
+
+            while (!actionIdsDependencies.empty()) {
+               Long acId = actionIdsDependencies.pop();
+                List<ServerAction> serverActionsWithPrereq = serverActions.stream()
+                   .filter(s -> s.getParentAction().getPrerequisite() != null)
+                   .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
+                   .collect(Collectors.toList());
+               for (ServerAction sa : serverActionsWithPrereq) {
+                   actionIdsDependencies.push(sa.getParentAction().getId());
+                   failServerAction(sa, Optional.empty());
+               }
+           }
+       }
+    }
+
+    private static void failServerAction(ServerAction serverAction, Optional<String> message) {
+        serverAction.setCompletionTime(new Date());
+        serverAction.setResultCode(new Long(-1));
+        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+        serverAction.setResultMsg(message.orElse("Prerequisite failed"));
+    }
+
+    private boolean refreshPackagesIfNeeded(JobReturnEvent jobReturnEvent, String function,
+                                                            Optional<JsonElement> jobResult) {
+        return MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
+            .flatMap(minionServer ->
+                jobResult.map(result -> {
                     try {
                         if (forcePackageListRefresh(jobReturnEvent) ||
                             SaltUtils.handlePackageChanges(function, result,
@@ -219,6 +298,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 PackageChangeOutcome.NEEDS_REFRESHING) {
                                 ActionManager.schedulePackageRefresh(minionServer.getOrg(),
                                         minionServer);
+                                return true;
                             }
                         }
                     catch (JsonParseException e) {
@@ -230,8 +310,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     catch (TaskomaticApiException e) {
                         LOG.error(e);
                     }
-                });
-            });
+                    return false;
+                })
+            ).orElse(false);
     }
 
     /**
@@ -268,9 +349,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         LOG.debug("Updating action for server: " + minionServer.getId());
                     }
                     try {
-                        // Avoid setting reboot action to COMPLETED. We wait until next "minion/start/event"
+                        // Reboot has been scheduled so set reboot action to PICKED_UP.
+                        // Wait until next "minion/start/event" to set it to COMPLETED.
                         if (action.get().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
                                 success && retcode == 0) {
+                            sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                            sa.setPickupTime(new Date());
                             return;
                         }
                         SaltUtils.INSTANCE.updateServerAction(sa,

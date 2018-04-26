@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import static com.redhat.rhn.domain.config.ConfigFileState.NORMAL;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 import static java.util.Collections.emptySortedSet;
 import static java.util.Collections.singletonMap;
@@ -52,7 +53,6 @@ public class ConfigChannelSaltManager {
     private String baseDirPath;
     private static ConfigChannelSaltManager instance;
     private static final Logger LOG = Logger.getLogger(ConfigChannelSaltManager.class);
-    private static final String SALT_FS_PREFIX = "salt://";
 
     /**
      * Gets the instance.

@@ -29,6 +29,7 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +40,7 @@ import java.util.Optional;
 
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER;
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
 public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
@@ -55,6 +57,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         states.add(new SaltModuleRun(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 1,
                 "state.apply",
+                1,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
                         ImmutableMap.<String, String>builder()
@@ -66,6 +69,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         states.add(new SaltModuleRun(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 2,
                 "state.apply",
+                2,
                 null,
                 null
         ));
@@ -75,7 +79,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         service.setSuseManagerStatesFilesRoot(stateFilesRoot);
         service.setSkipSetOwner(true);
-        service.createActionChainSLSFiles(actionChain, minion1, states);
+        service.createActionChainSLSFiles(actionChain, minion1, states, Optional.empty());
 
         String fileContent = FileUtils
                 .readFileToString(stateFilesRoot
@@ -117,6 +121,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         states.add(new SaltModuleRun(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 1,
                 "state.apply",
+                1,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
                         ImmutableMap.<String, String>builder()
@@ -127,11 +132,13 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         ));
         states.add(new SaltSystemReboot(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 2,
+                2,
                 1
         ));
         states.add(new SaltModuleRun(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 3,
                 "state.apply",
+                3,
                 null,
                 null
         ));
@@ -141,7 +148,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         service.setSuseManagerStatesFilesRoot(stateFilesRoot);
         service.setSkipSetOwner(true);
-        service.createActionChainSLSFiles(actionChain, minion1, states);
+        service.createActionChainSLSFiles(actionChain, minion1, states, Optional.empty());
 
         String fileContent = FileUtils
                 .readFileToString(stateFilesRoot
@@ -168,6 +175,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   name: mgractionchains.next\n" +
                         "    -   actionchain_id: 131\n" +
                         "    -   chunk: 2\n" +
+                        "    -   next_action_id: 3\n" +
                         "    -   require:\n" +
                         "        -   module: mgr_actionchain_131_action_2_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
                 fileContent);
@@ -193,6 +201,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         states.add(new SaltModuleRun(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 1,
                 "state.apply",
+                1,
                 singletonMap("mods", Arrays.asList("packages.pkginstall")),
                 singletonMap("pillar",
                         singletonMap("param_pkgs",
@@ -209,7 +218,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         service.setSuseManagerStatesFilesRoot(stateFilesRoot);
         service.setSkipSetOwner(true);
-        service.createActionChainSLSFiles(actionChain, minion1, states);
+        service.createActionChainSLSFiles(actionChain, minion1, states, Optional.empty());
 
         String fileContent = FileUtils
                 .readFileToString(stateFilesRoot
@@ -255,15 +264,21 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "        -   salt-minion: 2018.3.0-4.1\n"), fileContent);
     }
 
-    public void testRemoveActionChainSLSFiles() throws Exception {
+    public void testRemoveAllActionChainSLSFilesForMinion() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Path stateFilesRoot = Files.createTempDirectory("actionchaingentest");
+        SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
+        service.setSuseManagerStatesFilesRoot(stateFilesRoot);
+        service.setSkipSetOwner(true);
 
         List<SaltState> states = new ArrayList<>();
         states.add(new SaltModuleRun(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 1,
                 "state.apply",
+                1,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
                         ImmutableMap.<String, String>builder()
@@ -274,11 +289,28 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         ));
         states.add(new SaltSystemReboot(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 2,
+                2,
                 1
+        ));
+        states.add(new SaltModuleRun(
+                "schedule_next_chunk",
+                "mgractionchains.next",
+                0,
+                emptyMap(),
+                singletonMap("pillar",
+                        ImmutableMap.<String, String>builder()
+                                .put("actionchain_id:", "35")
+                                .put("chunk", "2")
+                                .put("next_action_id", "397")
+                                .put("ssh_extra_filerefs", "salt://scripts/script_1.sh,salt://scripts/script_3.sh,salt://channels," +
+                                        service.getActionChainSLSFileName(actionChain.getId(), minion1, 2))
+                                .build()
+                )
         ));
         states.add(new SaltModuleRun(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 3,
                 "state.apply",
+                3,
                 singletonMap("mods", "remotecommands"),
                 singletonMap("pillar",
                         ImmutableMap.<String, String>builder()
@@ -288,34 +320,34 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 )
         ));
 
-        Path stateFilesRoot = Files.createTempDirectory("actionchaingentest");
+        File channels = stateFilesRoot.resolve("channels").toFile();
+        Path scriptsDir = stateFilesRoot.resolve("scripts");
+        File script1 = scriptsDir.resolve("script_1.sh").toFile();
+        File script2 = scriptsDir.resolve("script_3.sh").toFile();
 
-        SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
-        service.setSuseManagerStatesFilesRoot(stateFilesRoot);
-        service.setSkipSetOwner(true);
-        service.createActionChainSLSFiles(actionChain, minion1, states);
+        FileUtils.touch(script1);
+        FileUtils.touch(script2);
+        FileUtils.touch(channels);
 
-        // First chunk execution was successfully. Removing only chunk number 1.
-        service.removeActionChainSLSFiles(actionChain.getId(), minion1.getMinionId(), 1, false);
+        service.createActionChainSLSFiles(actionChain, minion1, states, Optional.empty());
 
-        assertFalse(Files.exists(Paths.get(stateFilesRoot.toString(),
-                SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
-                "actionchain_" + actionChain.getId() + "_" + minion1.getMachineId() + "_1.sls")));
-        assertTrue(Files.exists(Paths.get(stateFilesRoot.toString(),
-                SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
-                "actionchain_" + actionChain.getId() + "_" + minion1.getMachineId() + "_2.sls")));
+        service.removeAllActionChainSLSFilesForMinion(minion1);
 
-        // Execution of 1 chunk failed. All other chunks should be also removed
-        label = TestUtils.randomString();
-        actionChain = ActionChainFactory.createActionChain(label, user);
-        service.createActionChainSLSFiles(actionChain, minion1, states);
-        service.removeActionChainSLSFiles(actionChain.getId(), minion1.getMinionId(), 1, true);
-        assertFalse(Files.exists(Paths.get(stateFilesRoot.toString(),
-                SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
-                "actionchain_" + actionChain.getId() + "_" + minion1.getMachineId() + "_1.sls")));
-        assertFalse(Files.exists(Paths.get(stateFilesRoot.toString(),
-                SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER,
-                "actionchain_" + actionChain.getId() + "_" + minion1.getMachineId() + "_2.sls")));
+        Path sls1Path = stateFilesRoot
+                .resolve(ACTIONCHAIN_SLS_FOLDER)
+                .resolve(service.getActionChainSLSFileName(actionChain.getId(), minion1, 1));
+        File sls1 = sls1Path.toFile();
+
+        Path sls2Path = stateFilesRoot
+                .resolve(ACTIONCHAIN_SLS_FOLDER)
+                .resolve(service.getActionChainSLSFileName(actionChain.getId(), minion1, 2));
+        File sls2 = sls2Path.toFile();
+
+        assertFalse(sls1.exists());
+        assertFalse(script1.exists());
+        assertFalse(script2.exists());
+        assertFalse(sls2.exists());
+        assertTrue(channels.exists());
     }
 
     public void testPkgInstallationSLSFiles() throws Exception {
@@ -329,6 +361,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         states.add(new SaltModuleRun(
                 ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 1,
                 "state.apply",
+                1,
                 singletonMap("mods", Arrays.asList("packages.pkginstall")),
                 singletonMap("pillar",
                         singletonMap("param_pkgs",
@@ -345,7 +378,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         service.setSuseManagerStatesFilesRoot(stateFilesRoot);
         service.setSkipSetOwner(true);
-        service.createActionChainSLSFiles(actionChain, minion1, states);
+        service.createActionChainSLSFiles(actionChain, minion1, states, Optional.empty());
 
         String fileContent = FileUtils
                 .readFileToString(stateFilesRoot
@@ -381,6 +414,83 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
         result = service.parseActionChainStateId("module_|-mgr_actionchain_144_action_chunk_1_|-state.apply_|-run");
         assertFalse(result.isPresent());
+    }
+
+    public void testRemoveActionChainSLSFiles() throws Exception {
+        String label = TestUtils.randomString();
+
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        Path statesFileRoot = Files.createTempDirectory("actionchaingentest");
+        Path scriptsDir = statesFileRoot.resolve("scripts");
+        Files.createDirectory(scriptsDir);
+
+        SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
+        service.setSuseManagerStatesFilesRoot(statesFileRoot);
+        service.setSkipSetOwner(true);
+
+        List<SaltState> states = new ArrayList<>();
+        states.add(new SaltModuleRun(
+                ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 1,
+                "state.apply",
+                1,
+                singletonMap("mods", "remotecommands"),
+                singletonMap("pillar",
+                        ImmutableMap.<String, String>builder()
+                                .put("mgr_remote_cmd_script", "salt://scripts/script_1.sh")
+                                .put("mgr_remote_cmd_runas", "foobar")
+                                .build()
+                )
+        ));
+        String sls2Name = "salt://" + ACTIONCHAIN_SLS_FOLDER + "/" + service.getActionChainSLSFileName(actionChain.getId(), minion1, 2);
+        states.add(new SaltModuleRun(
+                "schedule_next_chunk",
+                "mgractionchains.next",
+                0,
+                emptyMap(),
+                singletonMap("pillar",
+                        ImmutableMap.<String, String>builder()
+                                .put("actionchain_id:", "35")
+                                .put("chunk", "2")
+                                .put("next_action_id", "397")
+                                .put("ssh_extra_filerefs", "salt://scripts/script_2.sh,salt://channels," + sls2Name)
+                                .build()
+                )
+        ));
+
+        service.createActionChainSLSFiles(actionChain, minion1, states, Optional.empty());
+
+        File script1 = scriptsDir.resolve("script_1.sh").toFile();
+        File script2 = scriptsDir.resolve("script_2.sh").toFile();
+        File channels = scriptsDir.resolve("channels").toFile();
+        File sls2 = statesFileRoot
+                .resolve(ACTIONCHAIN_SLS_FOLDER)
+                .resolve(service.getActionChainSLSFileName(actionChain.getId(), minion1, 2))
+                .toFile();
+        FileUtils.touch(script1);
+        FileUtils.touch(script2);
+        FileUtils.touch(channels);
+        FileUtils.touch(sls2);
+
+        Path sls1Path = statesFileRoot
+                .resolve(ACTIONCHAIN_SLS_FOLDER)
+                .resolve(service.getActionChainSLSFileName(actionChain.getId(), minion1, 1));
+        File sls1 = sls1Path.toFile();
+
+        List<String> slsFileRefs = service.findFileRefsToDelete(sls1Path);
+        assertEquals(1, slsFileRefs.size());
+        assertTrue(slsFileRefs.contains("scripts/script_1.sh"));
+
+        service.removeActionChainSLSFiles(actionChain.getId(), minion1.getMinionId(), 1, false);
+
+        assertFalse(sls1.exists());
+        assertFalse(script1.exists());
+        assertTrue(script2.exists());
+        assertTrue(sls2.exists());
+        assertTrue(channels.exists());
     }
 
 

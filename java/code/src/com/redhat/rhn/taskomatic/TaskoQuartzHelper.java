@@ -118,25 +118,6 @@ public class TaskoQuartzHelper {
         }
     }
 
-    public static Date rescheduleJob(String jobLabel, Integer orgId, Date activeFrom, Date activeTill) {
-        Trigger newTrigger = newTrigger()
-                .withIdentity(jobLabel, getGroupName(orgId))
-                .startAt(activeFrom)
-                .endAt(activeTill)
-                .forJob(jobLabel, getGroupName(orgId))
-                .build();
-        try {
-            Date date =
-                    SchedulerKernel.getScheduler().rescheduleJob(
-                            triggerKey(jobLabel, getGroupName(orgId)),
-                            newTrigger);
-            return date;
-        } catch (SchedulerException e) {
-            log.warn("Failed to reschedule job " + jobLabel, e);
-            return null;
-        }
-    }
-
     /**
      * unschedules job
      * @param orgId organization id
