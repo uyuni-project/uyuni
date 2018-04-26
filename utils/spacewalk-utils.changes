@@ -1,3 +1,5 @@
+- clone-by-date removes packages only if the list is not empty (bsc#1089396)
+
 -------------------------------------------------------------------
 Tue Jan 30 13:44:50 CET 2018 - jgonzalez@suse.com
 
