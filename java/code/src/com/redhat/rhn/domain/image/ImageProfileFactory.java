@@ -122,19 +122,6 @@ public class ImageProfileFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup ImageProfile by label
-     * @param label the label
-     * @return Returns the image profile
-     */
-    public static Optional<ImageProfile> lookupByLabel(String label) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ImageProfile> criteria = builder.createQuery(ImageProfile.class);
-        Root<ImageProfile> root = criteria.from(ImageProfile.class);
-        criteria.where(builder.equal(root.get("label"), label));
-        return getSession().createQuery(criteria).uniqueResultOptional();
-    }
-
-    /**
      * Lookup an ImageProfile by label and organization
      * @param label the label
      * @param org the organization
