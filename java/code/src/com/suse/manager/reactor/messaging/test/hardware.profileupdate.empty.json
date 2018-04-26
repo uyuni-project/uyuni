@@ -76,9 +76,9 @@
                     "ret":
                 }
             },
-            "module_|-udevdb_|-udevdb.exportdb_|-run": {
-                "comment": "Module function udevdb.exportdb executed",
-                "name": "udevdb.exportdb",
+            "module_|-udev_|-udev.exportdb_|-run": {
+                "comment": "Module function udev.exportdb executed",
+                "name": "udev.exportdb",
                 "start_time": "12:58:12.374296",
                 "result": true,
                 "duration": 23.922,

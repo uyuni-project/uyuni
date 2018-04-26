@@ -212,9 +212,9 @@
             }, 
             "__id__": "smbios-records-bios"
         }, 
-        "module_|-udevdb_|-udevdb.exportdb_|-run": {
-            "comment": "Module function udevdb.exportdb executed", 
-            "name": "udevdb.exportdb", 
+        "module_|-udev_|-udev.exportdb_|-run": {
+            "comment": "Module function udev.exportdb executed", 
+            "name": "udev.exportdb", 
             "start_time": "17:44:12.889223", 
             "result": true, 
             "duration": 48.613, 
@@ -3022,7 +3022,7 @@
                     }
                 ]
             }, 
-            "__id__": "udevdb"
+            "__id__": "udev"
         }, 
         "module_|-smbios-records-system_|-smbios.records_|-run": {
             "comment": "Module function smbios.records executed", 

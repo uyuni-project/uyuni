@@ -734,8 +734,8 @@
                 "result": true,
                 "start_time": "13:58:24.376300"
             },
-            "module_|-udevdb_|-udevdb.exportdb_|-run": {
-                "__id__": "udevdb",
+            "module_|-udev_|-udev.exportdb_|-run": {
+                "__id__": "udev",
                 "__run_num__": 5,
                 "changes": {
                     "ret": [
@@ -8518,9 +8518,9 @@
                         }
                     ]
                 },
-                "comment": "Module function udevdb.exportdb executed",
+                "comment": "Module function udev.exportdb executed",
                 "duration": 161.039,
-                "name": "udevdb.exportdb",
+                "name": "udev.exportdb",
                 "result": true,
                 "start_time": "13:58:24.592204"
             }
