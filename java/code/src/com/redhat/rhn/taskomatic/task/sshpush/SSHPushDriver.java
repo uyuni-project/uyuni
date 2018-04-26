@@ -18,10 +18,15 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.suse.manager.utils.SaltUtils;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.conf.Config;
@@ -112,14 +117,34 @@ public class SSHPushDriver implements QueueDriver {
      */
     @Override
     public List<SSHPushSystem> getCandidates() {
-        // Find systems with actions scheduled
-        List<SSHPushSystem> candidates = getCandidateSystems();
+        List<SSHPushSystem> candidates = new LinkedList<>();
 
-        // Find systems currently rebooting
-        List<SSHPushSystem> rebootCandidates = getRebootingSystems();
+        // Find traditional systems with actions scheduled
+        candidates.addAll(getTraditionalCandidates());
+
+        // Find Salt systems currently rebooting,
+        // i.e with reboot actions in status picked-up with picked-up time older than 4 minutes
+        List<SSHPushSystem> rebootCandidates = getRebootingMinions();
         for (SSHPushSystem s : rebootCandidates) {
+            s.setRebooting(true);
             if (!candidates.contains(s)) {
                 candidates.add(s);
+            }
+        }
+
+        // For Salt minions, check all queued actions having a completed reboot prerequisite.
+        // Queued actions with a completed reboot prerequisite can appear when a reboot action completes successfully
+        // but resuming the action chain is not successful after reboot so the subsequent actions remain in state queued
+        // or the reboot action is set to completed before the action chain is resumed
+        List<SSHPushAction> queuedActions = getQueuedMinionActionsWithPrerequisites();
+        for (SSHPushAction a : queuedActions) {
+            Action action = ActionFactory.lookupById(a.getActionId());
+
+            if (SaltUtils.prerequisiteIsCompleted(action, Optional.of(ActionFactory.TYPE_REBOOT), a.getSystemId())) {
+                SSHPushSystem s = new SSHPushSystem(a.getSystemId(), a.getSystemName(), a.getMinionId(), true);
+                if (!candidates.contains(s)) {
+                    candidates.add(s);
+                }
             }
         }
 
@@ -230,9 +255,9 @@ public class SSHPushDriver implements QueueDriver {
      * @return list of candidates with actions scheduled
      */
     @SuppressWarnings("unchecked")
-    private DataResult<SSHPushSystem> getCandidateSystems() {
+    private DataResult<SSHPushSystem> getTraditionalCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
-                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_CANDIDATES);
+                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_TRADITIONAL_CANDIDATES);
         return select.execute();
     }
 
@@ -242,9 +267,22 @@ public class SSHPushDriver implements QueueDriver {
      * @return list of candidates with ongoing reboot actions
      */
     @SuppressWarnings("unchecked")
-    private DataResult<SSHPushSystem> getRebootingSystems() {
+    private DataResult<SSHPushSystem> getRebootingMinions() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
-                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_REBOOT_CANDIDATES);
+                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_REBOOTING_MINIONS);
+        return select.execute();
+    }
+
+    /**
+     * Run query to find all minions with queued actions having prerequisites
+     * scheduled before now.
+     *
+     * @return list of candidates with ongoing reboot actions
+     */
+    @SuppressWarnings("unchecked")
+    private DataResult<SSHPushAction> getQueuedMinionActionsWithPrerequisites() {
+        SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_QUEUED_MINION_ACTIONS_WITH_PREREQ);
         return select.execute();
     }
 

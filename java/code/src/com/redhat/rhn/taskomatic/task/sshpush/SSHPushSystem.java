@@ -31,6 +31,27 @@ public class SSHPushSystem {
     private Date lastCheckin;
     private String name;
     private String minionId;
+    private boolean rebooting;
+
+    /**
+     * No arg constructor needed for instantiation.
+     */
+    public SSHPushSystem() {
+    }
+
+    /**
+     * Constructor.
+     * @param idIn system id
+     * @param nameIn system name
+     * @param minionIdIn minion id
+     * @param rebootingIn whether system is rebooting or not
+     */
+    public SSHPushSystem(long idIn, String nameIn, String minionIdIn, boolean rebootingIn) {
+        this.id = idIn;
+        this.name = nameIn;
+        this.minionId = minionIdIn;
+        this.rebooting = rebootingIn;
+    }
 
     /**
      * Return the contact method label.
@@ -139,6 +160,20 @@ public class SSHPushSystem {
      */
     public void setMinionId(String minionIdIn) {
         this.minionId = minionIdIn;
+    }
+
+    /**
+     * @return resumeActionChain to get
+     */
+    public boolean isRebooting() {
+        return rebooting;
+    }
+
+    /**
+     * @param rebootingIn to set
+     */
+    public void setRebooting(boolean rebootingIn) {
+        this.rebooting = rebootingIn;
     }
 
     /**

@@ -12,40 +12,32 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.suse.manager.webui.utils;
 
+import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+
+import static java.util.Collections.singletonMap;
 
 /**
- * YAML generator for a Salt Action Chain.
+ * YAML generator for top files.
  */
-public class SaltActionChainState implements SaltState {
+public class SaltTop implements SaltState {
 
-    private Map<String, Object> data = new TreeMap<>();
+    private List<String> top;
 
     /**
-     * @param dataIn the data to be included
+     * Constructor.
+     * @param topIn top content
      */
-    public SaltActionChainState(Map<String, Object> dataIn) {
-        this.data = dataIn;
+    public SaltTop(List<String> topIn) {
+        this.top = topIn;
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<String, Object> getData() {
-        return data;
-    }
-
-    /**
-     * Add an entry to the Action Chain state
-     * @param name the name of the entry
-     * @param value the value
-     */
-    public void add(String name, Object value) {
-        data.put(name, value);
+        return singletonMap("base",
+                singletonMap("*", top));
     }
 }

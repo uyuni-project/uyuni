@@ -658,24 +658,26 @@ where snc.errata_id = :errata_id
   </query>
 </write-mode>
 
-<mode name="ssh_push_find_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
+<mode name="ssh_push_find_traditional_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
   <query>
-SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_action) as earliest_action, smi.minion_id
+SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_action) as earliest_action
   FROM rhnServer s
   JOIN rhnServerAction sa ON sa.server_id = s.id
   JOIN rhnAction a ON sa.action_id = a.id
   JOIN suseServerContactMethod scm ON s.contact_method_id = scm.id
-  LEFT OUTER JOIN suseMinionInfo smi ON smi.server_id = s.id
  WHERE sa.status = 0
    AND (scm.label = 'ssh-push' OR scm.label = 'ssh-push-tunnel')
    AND a.earliest_action &lt;= current_timestamp
    AND sa.server_id = s.id
- GROUP BY s.id, s.name, scm.label, smi.minion_id
+   AND NOT EXISTS (
+      SELECT 1 FROM suseMinionInfo smi WHERE smi.server_id = s.id
+      )
+ GROUP BY s.id, s.name, scm.label
  ORDER BY earliest_action ASC
   </query>
 </mode>
 
-<mode name="ssh_push_find_reboot_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
+<mode name="ssh_push_find_rebooting_minions" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
   <query>
 SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, smi.minion_id
   FROM rhnServer s
@@ -688,6 +690,22 @@ SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, smi.minion_id
    AND at.label = 'reboot.reboot'
    AND (scm.label = 'ssh-push' OR scm.label = 'ssh-push-tunnel')
    AND sa.pickup_time + numtodsinterval(4, 'minute') &lt;= current_timestamp
+  </query>
+</mode>
+
+<mode name="ssh_push_find_queued_minion_actions_with_prereq" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushAction">
+  <query>
+SELECT at.label AS action_type, sa.status AS action_status, a.id AS action_id, s.id AS system_id, s.name AS system_name, smi.minion_id AS minion_id
+  FROM rhnServer s
+  JOIN rhnServerAction sa ON sa.server_id = s.id
+  JOIN rhnAction a ON sa.action_id = a.id
+  JOIN suseServerContactMethod scm ON s.contact_method_id = scm.id
+  JOIN rhnActionType at ON a.action_type = at.id
+  JOIN suseMinionInfo smi ON smi.server_id = s.id
+WHERE sa.status = 0
+  AND (scm.label = 'ssh-push' OR scm.label = 'ssh-push-tunnel')
+  AND a.earliest_action &lt;= current_timestamp
+  AND a.prerequisite IS NOT NULL
   </query>
 </mode>
 

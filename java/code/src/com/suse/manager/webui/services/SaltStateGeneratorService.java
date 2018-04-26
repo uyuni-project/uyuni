@@ -269,6 +269,10 @@ public enum SaltStateGeneratorService {
         removeConfigChannelAssignments(getGroupStateFileName(group.getId()));
     }
 
+    private void removeActionChains(MinionServer minion) {
+        SaltActionChainGeneratorService.INSTANCE.removeAllActionChainSLSFilesForMinion(minion);
+    }
+
     /**
      * Remove the config channel assignments for an organization.
      * @param org the organization
@@ -383,6 +387,7 @@ public enum SaltStateGeneratorService {
     public void removeServer(MinionServer minion) {
         removePillar(minion);
         removeConfigChannelAssignments(minion);
+        removeActionChains(minion);
     }
 
     /**
