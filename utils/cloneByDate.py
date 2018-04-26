@@ -762,11 +762,18 @@ class ChannelCloner:
         if names_dict.has_key(self.dest_label()):
             full_pkgs += names_dict[self.dest_label()]
 
+        # removes all empty string pattern from the list
+        # e.g.: ["", ".*apache.*"] ==> [".*apache.*"], see bsc#1089396
+        full_pkgs = [x for x in full_pkgs if x != '']
+
         reg_ex = re.compile("|".join(full_pkgs))
-        for pkg in pkg_list:
-            if reg_ex.match(pkg['name']):
-                found_ids.append(pkg['id'])
-                found_names.append(pkg['nvrea'])
+
+        # do the matching only if there is a reg_ex criteria
+        if reg_ex.pattern:
+            for pkg in pkg_list:
+                if reg_ex.match(pkg['name']):
+                    found_ids.append(pkg['id'])
+                    found_names.append(pkg['nvrea'])
 
         log_clean(0, "")
         log_clean(0, "%s: Removing %i packages from %s." %
