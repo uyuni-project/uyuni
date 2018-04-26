@@ -160,6 +160,11 @@ if [ $POST_ARG -eq 2 ] ; then
 fi
 # else new install and the systems dir should be created by spacewalk-setup
 
+if [ ! -d /srv/www/os-images ]; then
+  mkdir -p /srv/www/os-images
+  chown -R salt:salt /srv/www/os-images
+fi
+
 %postun
 %{insserv_cleanup}
 
