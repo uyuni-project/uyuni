@@ -49,7 +49,7 @@ public class InputValidatorTest extends TestCase {
      * Test the check for user with backslash.
      */
     public void testValidateBootstrapInputUserBackslash() {
-        String json = "{user: 'domain\\admin', host: 'host.domain.com'}";
+        String json = "{user: 'domain\\\\admin', host: 'host.domain.com'}";
         JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
