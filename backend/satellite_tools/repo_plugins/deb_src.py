@@ -25,6 +25,13 @@ from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.common.rhnConfig import CFG, initCFG
+from urlgrabber.grabber import URLGrabError
+try:
+    #  python 2
+    import urlparse
+except ImportError:
+    #  python3
+    import urllib.parse as urlparse # pylint: disable=F0401,E0611
 
 RETRIES = 10
 RETRY_DELAY = 1
@@ -189,6 +196,11 @@ class ContentSource(object):
         self.num_packages = 0
         self.num_excluded = 0
 
+        # keep authtokens for mirroring
+        (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
+        if query:
+            self.authtoken = query
+
     def get_md_checksum_type(self):
         return None
 
@@ -321,6 +333,7 @@ class ContentSource(object):
         params['authtoken'] = self.authtoken
         params['urls'] = self.repo.urls
         params['relative_path'] = relative_path
+        params['authtoken'] = self.authtoken
         params['target_file'] = target_file
         params['ssl_ca_cert'] = self.repo.sslcacert
         params['ssl_client_cert'] = self.repo.sslclientcert
@@ -341,3 +354,4 @@ class ContentSource(object):
         # Called from import_kickstarts, not working for deb repo
         log2(0, 0, "Unable to download path %s from deb repo." % path, stream=sys.stderr)
         return None
+
