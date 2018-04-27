@@ -30,9 +30,9 @@ import com.suse.utils.Opt;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 /**
@@ -41,12 +41,13 @@ import java.util.stream.Collectors;
 public class FormulaManager {
 
     private static FormulaManager instance;
-
+    private SaltService saltService;
     private FormulaManager() {
+        saltService = SaltService.INSTANCE;
     }
 
     /**
-     * Gets the instance.
+     * get the singleton instance.
      *
      * @return instance
      */
@@ -56,6 +57,12 @@ public class FormulaManager {
             instance = new FormulaManager();
         }
         return instance;
+    }
+    /**
+     * @param saltServiceIn to set
+     */
+    public void setSaltService(SaltService saltServiceIn) {
+        this.saltService = saltServiceIn;
     }
 
     /**
@@ -71,7 +78,7 @@ public class FormulaManager {
         Optional<MinionServer> minion = MinionServerFactory.lookupById(systemId);
         checkUserHasPermissionsOnServer(user, minion.get());
         FormulaFactory.saveServerFormulaData(content, systemId, formulaName);
-        SaltService.INSTANCE.refreshPillar(new MinionList(minion.get().getMinionId()));
+        saltService.refreshPillar(new MinionList(minion.get().getMinionId()));
     }
 
     /**
@@ -91,7 +98,7 @@ public class FormulaManager {
         List<String> minionIds = group.getServers().stream()
                 .flatMap(s -> Opt.stream(s.asMinionServer()))
                 .map(MinionServer::getMinionId).collect(Collectors.toList());
-        SaltService.INSTANCE.refreshPillar(new MinionList(minionIds));
+        saltService.refreshPillar(new MinionList(minionIds));
     }
 
     /**
@@ -101,19 +108,7 @@ public class FormulaManager {
      */
     public void validInput(String formulaName, Map<String, Object> contents) {
         Map<String, Object> layout = getFormulaLayout(formulaName);
-        validateFormulaName(formulaName, contents);
         validateContents(contents, layout);
-    }
-
-    /**
-     * check if formula name matches with the contents
-     * @param formulaName formula name
-     * @param contents contents
-     */
-    public void validateFormulaName(String formulaName, Map<String, Object> contents) {
-        if (!contents.keySet().stream().findFirst().get().equalsIgnoreCase(formulaName)) {
-            throw new IllegalArgumentException("Formula and contents doesn't match");
-        }
     }
 
     /**
@@ -123,17 +118,21 @@ public class FormulaManager {
      */
     public void validateContents(Map<String, Object> contents, Map<String, Object> layout) {
         contents.forEach((String k, Object v) -> {
+            Optional.ofNullable(layout.get(k)).orElseThrow(() -> new IllegalArgumentException(k + " : doesn't exist " +
+                    "in definition"));
             if (v instanceof Map) {
-                validateContents((HashMap) v, (HashMap) layout.get(k));
+                validateContents((Map) v, (Map) layout.get(k));
             }
             else {
                 Map<String, Object> def = (Map<String, Object>) layout.get(k);
-                Class<?> expectedClass = def.get("$default").getClass();
-                Class<?> actualClass = v.getClass();
-                boolean isAssignable = expectedClass.isAssignableFrom(actualClass);
-                if (!isAssignable) {
-                    throw new IllegalArgumentException("For " + k + ": wrong Type." +
-                            " Expected " + expectedClass + "- Found " + actualClass);
+                if (Objects.nonNull(def.get("$default"))) {
+                    Class<?> expectedClass = def.get("$default").getClass();
+                    Class<?> actualClass = v.getClass();
+                    boolean isAssignable = expectedClass.isAssignableFrom(actualClass);
+                    if (!isAssignable) {
+                        throw new IllegalArgumentException("For " + k + ": wrong Type." +
+                                " Expected " + expectedClass + "- Found " + actualClass);
+                    }
                 }
             }
         });

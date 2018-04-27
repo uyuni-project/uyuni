@@ -1,0 +1,25 @@
+{
+  "dhcpd":{
+    "domain_name":"test",
+    "domain_name_servers":"111",
+    "listen_interfaces":"em21",
+    "max_lease_time":1,
+    "default_lease_time":2,
+    "subnets":{
+      "network1":{
+        "network":"192.168.128.111",
+        "netmask":"255.255.128.111",
+        "range":[
+          "192.168.242.555",
+          "192.168.243.155"
+        ],
+        "broadcast_address":"192.168.255.5555",
+        "routers":[
+          "192.168.128.6666"
+        ],
+        "next_server":"192.168.128.222",
+        "filename":"/boot/pxelinux.02"
+      }
+    }
+  }
+}
