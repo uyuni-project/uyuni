@@ -71,5 +71,5 @@ if [ -e /usr/lib/postgresql-init ]; then
 else
     rcpostgresql stop
 fi
-su - postgres -c '/usr/lib/postgresql94/bin/postgres -D /var/lib/pgsql/data'
+su - postgres -c '/usr/lib/postgresql96/bin/postgres -D /var/lib/pgsql/data'
 
