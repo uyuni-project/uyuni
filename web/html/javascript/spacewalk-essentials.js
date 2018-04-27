@@ -344,6 +344,7 @@ function setupTextareaEditor(textarea, mode) {
 
   var editor = ace.edit(editDiv[0]);
   editor.getSession().setValue(textarea.val());
+  editor.getSession().setOptions({ tabSize: 4, useSoftTabs: true });
 
   editor.setTheme("ace/theme/xcode");
   editor.getSession().setMode("ace/mode/sh");
