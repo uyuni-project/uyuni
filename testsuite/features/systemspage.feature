@@ -6,6 +6,9 @@ Feature: Explore the main landing page
   As a authorized user
   I want to see all the texts and links
 
+  Scenario: Wait for refresh of list of products to finish
+    When I wait until mgr-sync refresh is finished
+
   Scenario: Completeness of the side navigation bar and the content frame
     Given I am authorized
     When I follow "Systems"
