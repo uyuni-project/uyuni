@@ -179,8 +179,8 @@ Feature: Client display after registration
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then I should see a "Base Software Alteration" text
-    And I should see a "Child Channels Subscriptions" text
+    Then I should see a "Base Channel" text
+    And I should see a "Child Channels" text
     And I should see a "Next" button
 
   Scenario: Show Configuration => View/Modify Files page

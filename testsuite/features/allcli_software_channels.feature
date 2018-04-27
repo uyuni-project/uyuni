@@ -11,7 +11,7 @@ Feature: Chanel subscription via SSM
     And I should see "2" systems selected for SSM
     And I am on System Set Manager Overview
     And I follow "channel memberships" in the content area
-    Then I should see a "Base Channel Alteration" text
+    Then I should see a "Base Channel" text
     And I should see a "Next" text
     And I should see a table line with "Test-Channel-x86_64", "2"
     When I select "Test Base Channel" from drop-down in table line with "Test-Channel-x86_64"
