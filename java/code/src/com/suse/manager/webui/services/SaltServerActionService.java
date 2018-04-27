@@ -1245,7 +1245,7 @@ public class SaltServerActionService {
 
                     profile.asKiwiProfile().ifPresent(kiwiProfile -> {
                         pillar.put("source", kiwiProfile.getPath());
-                        pillar.put("build_id", actionId);
+                        pillar.put("build_id", "build" + actionId);
                     });
 
                     String host = SaltStateGeneratorService.getChannelHost(minion);
