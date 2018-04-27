@@ -277,3 +277,20 @@ Then(/^I remove "(.*)" from "(.*)"$/) do |file, host|
   node = get_target(host)
   file_delete(node, file)
 end
+
+Then(/^I wait until mgr-sync refresh is finished$/) do
+  # mgr-sync refresh is a slow operation, we don't use the default timeout
+  cmd = "spacecmd -u admin -p admin api sync.content.listProducts"
+  refresh_timeout = 900
+  begin
+    Timeout.timeout(refresh_timeout) do
+      loop do
+        result, code = $server.run(cmd, false)
+        break if result.include? "SLES"
+        sleep 5
+      end
+    end
+  rescue Timeout::Error
+    raise "'mgr-sync refresh' did not finish in #{refresh_timeout} seconds"
+  end
+end
