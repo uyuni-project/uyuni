@@ -60,7 +60,7 @@ When(/^I wait until I see the state is completed, refreshing the page$/) do
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_content?("This action's status is: Completed.")
-        raise "Action Failed" if page.has_content?("This action's status is: Failed.")
+        raise 'Action Failed' if page.has_content?("This action's status is: Failed.")
         sleep 1
         page.evaluate_script 'window.location.reload()'
       end
@@ -69,7 +69,6 @@ When(/^I wait until I see the state is completed, refreshing the page$/) do
     raise "Couldn't find the #{text} in webpage"
   end
 end
-
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |target|
   node = get_target(target)
