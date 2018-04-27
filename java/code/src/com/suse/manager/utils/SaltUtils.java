@@ -77,6 +77,7 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
@@ -89,6 +90,7 @@ import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
+import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
@@ -132,6 +134,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -920,7 +923,14 @@ public class SaltUtils {
                     ImageProfileFactory.lookupById(details.getImageProfileId());
 
             profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                // TODO: call runner to rsync image from the Kiwi build host
+                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                    Map<String, Object> args = new LinkedHashMap<>();
+                    args.put("minion", minionServer.getName());
+                    args.put("filepath", Optional.empty()); // TODO extract from jsonResult https://github.com/SUSE/spacewalk/pull/4343#issuecomment-384614541
+                    RunnerCall<MgrUtilRunner.ExecResult> call =
+                            new RunnerCall<>("kiwi-image-collect.kiwi_collect_image", Optional.of(args),
+                                    new TypeToken<MgrUtilRunner.ExecResult>() { });
+                        });
             }));
 
             ImageInspectAction iAction = ActionManager.scheduleImageInspect(
