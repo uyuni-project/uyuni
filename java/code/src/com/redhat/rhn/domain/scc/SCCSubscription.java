@@ -213,9 +213,10 @@ public class SCCSubscription extends BaseDomainHelper {
         }
         SCCSubscription otherSCCSubscription = (SCCSubscription) other;
         return new EqualsBuilder()
-            .append(getRegcode(), otherSCCSubscription.getRegcode())
-            .append(getCredentials(), otherSCCSubscription.getCredentials())
-            .isEquals();
+                .append(getSccId(), otherSCCSubscription.getSccId())
+                .append(getRegcode(), otherSCCSubscription.getRegcode())
+                .append(getCredentials(), otherSCCSubscription.getCredentials())
+                .isEquals();
     }
 
     /**
@@ -224,9 +225,10 @@ public class SCCSubscription extends BaseDomainHelper {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-            .append(getRegcode())
-            .append(getCredentials())
-            .toHashCode();
+                .append(getSccId())
+                .append(getRegcode())
+                .append(getCredentials())
+                .toHashCode();
     }
 
     /**
