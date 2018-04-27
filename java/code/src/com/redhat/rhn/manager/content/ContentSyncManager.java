@@ -706,13 +706,18 @@ public class ContentSyncManager {
      */
     public void refreshSubscriptionCache(List<SCCSubscription> subscriptions,
             Credentials c) {
-        SCCCachingFactory.clearSubscriptions(c);
+        List<Long> cachedSccIDs = SCCCachingFactory.listSubscriptionsIdsByCredentials(c);
         for (SCCSubscription s : subscriptions) {
             SCCCachingFactory.saveJsonSubscription(s, c);
+            cachedSccIDs.remove(Long.valueOf(s.getId()));
         }
         if (log.isDebugEnabled()) {
             log.debug("Found " + subscriptions.size() +
                     " subscriptions with credentials: " + c);
+        }
+        for (Long subId : cachedSccIDs) {
+            log.debug("Delete Subscription with sccId: " + subId);
+            SCCCachingFactory.deleteSubscriptionBySccId(subId);
         }
     }
 
