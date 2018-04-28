@@ -750,6 +750,7 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public Collection<SCCSubscription> getSubscriptions() throws ContentSyncException {
+        log.info("ContentSyncManager.getSubscriptions called");
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
         List<Credentials> credentials = filterCredentials();
         // Query subscriptions for all mirror credentials
@@ -764,6 +765,7 @@ public class ContentSyncManager {
         if (log.isDebugEnabled()) {
             log.debug("Found " + subscriptions.size() + " available subscriptions.");
         }
+        log.info("ContentSyncManager.getSubscriptions finished");
         return subscriptions;
     }
 
@@ -833,8 +835,10 @@ public class ContentSyncManager {
      * can't be updated
      */
     public void updateChannels(String mirrorUrl) throws ContentSyncException {
+        log.info("ContentSyncManager.updateChannels called");
         refreshRepositoriesCache();
         updateChannelsInternal(mirrorUrl);
+        log.info("ContentSyncManager.updateChannels finished");
     }
 
     /**
@@ -935,6 +939,7 @@ public class ContentSyncManager {
      */
     public void updateChannelFamilies(Collection<XMLChannelFamily> channelFamilies)
             throws ContentSyncException {
+        log.info("ContentSyncManager.updateChannelFamilies called");
         for (XMLChannelFamily channelFamily : channelFamilies) {
             ChannelFamily family = createOrUpdateChannelFamily(
                     channelFamily.getLabel(), channelFamily.getName());
@@ -948,6 +953,7 @@ public class ContentSyncManager {
                 family.setPublicChannelFamily(pcf);
             }
         }
+        log.info("ContentSyncManager.updateChannelFamilies finished");
     }
 
     /**
@@ -1040,6 +1046,7 @@ public class ContentSyncManager {
      */
     public void updateSUSEProducts(Collection<SCCProduct> products)
             throws ContentSyncException {
+        log.info("ContentSyncManager.updateSUSEProducts called");
         Map<Integer, SUSEProduct> processed = new HashMap<>();
         List<SUSEProductExtension> latestProductExtensions =
                 new LinkedList<SUSEProductExtension>();
@@ -1052,6 +1059,7 @@ public class ContentSyncManager {
         // Sync the database list of product extensions with the updated one
         SUSEProductFactory.mergeAllProductExtension(latestProductExtensions);
         updateUpgradePaths(products);
+        log.info("ContentSyncManager.updateSUSEProducts finished");
     }
 
     /**
@@ -1132,6 +1140,7 @@ public class ContentSyncManager {
      */
     public void updateSUSEProductChannels(List<XMLChannel> availableChannels)
             throws ContentSyncException {
+        log.info("ContentSyncManager.updateSUSEProductChannels called");
         // Get all currently existing product channel relations
         List<SUSEProductChannel> existingProductChannels =
                 SUSEProductFactory.findAllSUSEProductChannels();
@@ -1193,6 +1202,7 @@ public class ContentSyncManager {
         for (SUSEProductChannel spc : existingProductChannels) {
             SUSEProductFactory.remove(spc);
         }
+        log.info("ContentSyncManager.updateSUSEProductChannels finished");
     }
 
     /**
