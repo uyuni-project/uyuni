@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -100,10 +101,10 @@ public class SCCCachingFactory extends HibernateFactory {
     public static void saveJsonSubscription(com.suse.scc.model.SCCSubscription jsonSub,
             Credentials creds) {
         Set<SUSEProduct> products = new HashSet<>();
+        Map<Long, SUSEProduct> prdMap = SUSEProductFactory.productsByProductIds();
         for (Long pid : jsonSub.getProductIds()) {
-            SUSEProduct prd = SUSEProductFactory.lookupByProductId(pid);
-            if (prd != null) {
-                products.add(prd);
+            if (prdMap.containsKey(pid)) {
+                products.add(prdMap.get(pid));
             }
             else {
                 log.error("unable to find product for scc product id: " + pid);

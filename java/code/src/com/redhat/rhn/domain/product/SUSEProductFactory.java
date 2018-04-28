@@ -341,6 +341,20 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup all {@link SUSEProduct} objects and provide a map with productId as key.
+     * @return map of SUSE products with productId as key
+     */
+    public static Map<Long, SUSEProduct> productsByProductIds() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProduct.class);
+        Map<Long, SUSEProduct> result = new HashMap<>();
+        for (SUSEProduct prd: (List<SUSEProduct>) c.list()) {
+            result.put(prd.getProductId(), prd);
+        }
+        return result;
+    }
+
+    /**
      * Return all {@link SUSEProductExtension} which are recommended
      * @return SUSEProductExtensions which are recommended
      */
