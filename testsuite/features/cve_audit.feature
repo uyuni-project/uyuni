@@ -16,7 +16,7 @@ Feature: CVE Audit
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "5" seconds
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: feature should be accessible
     When I follow "Audit"
