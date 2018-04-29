@@ -1,3 +1,4 @@
+- fix updating Subscription cache (bsc#1075466)
 - fix NPE in websocket session configurator (bsc#1080474)
 - Wait until minion is back to set RebootAction as COMPLETED (bsc#1089401)
 - add support for Prometheus monitoring

@@ -26,10 +26,16 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -95,10 +101,10 @@ public class SCCCachingFactory extends HibernateFactory {
     public static void saveJsonSubscription(com.suse.scc.model.SCCSubscription jsonSub,
             Credentials creds) {
         Set<SUSEProduct> products = new HashSet<>();
+        Map<Long, SUSEProduct> prdMap = SUSEProductFactory.productsByProductIds();
         for (Long pid : jsonSub.getProductIds()) {
-            SUSEProduct prd = SUSEProductFactory.lookupByProductId(pid);
-            if (prd != null) {
-                products.add(prd);
+            if (prdMap.containsKey(pid)) {
+                products.add(prdMap.get(pid));
             }
             else {
                 log.error("unable to find product for scc product id: " + pid);
@@ -244,5 +250,33 @@ public class SCCCachingFactory extends HibernateFactory {
         }
 
         return modifiedCache.compareTo(modifiedCreds) < 0;
+    }
+
+    /**
+     * List Subscriptions SCC IDs by Credential
+     * @param c the credential to query
+     * @return list of scc subscription ids
+     */
+    public static List<Long> listSubscriptionsIdsByCredentials(Credentials c) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCSubscription> query = builder.createQuery(SCCSubscription.class);
+        Root<SCCSubscription> root = query.from(SCCSubscription.class);
+        query.where(builder.equal(root.get("credentials"), c));
+        List<Long> result = new ArrayList<>();
+        for (SCCSubscription sub : getSession().createQuery(query).getResultList()) {
+            result.add(sub.getSccId());
+        }
+        return result;
+    }
+
+    /**
+     * Delete Subscriptions from Cache
+     * @param sccSubId id to delete
+     */
+    public static void deleteSubscriptionBySccId(Long sccSubId) {
+        SCCSubscription sub = SCCCachingFactory.lookupSubscriptionBySccId(sccSubId.longValue());
+        if (sub != null) {
+            singleton.removeObject(sub);
+        }
     }
 }

@@ -31,7 +31,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -246,6 +248,20 @@ public class SUSEProductFactory extends HibernateFactory {
         Criteria c = session.createCriteria(SUSEProduct.class);
         c.add(Restrictions.eq("productId", productId));
         return (SUSEProduct) c.uniqueResult();
+    }
+
+    /**
+     * Lookup all {@link SUSEProduct} objects and provide a map with productId as key.
+     * @return map of SUSE products with productId as key
+     */
+    public static Map<Long, SUSEProduct> productsByProductIds() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProduct.class);
+        Map<Long, SUSEProduct> result = new HashMap<>();
+        for (SUSEProduct prd: (List<SUSEProduct>) c.list()) {
+            result.put(prd.getProductId(), prd);
+        }
+        return result;
     }
 
     /**
