@@ -42,6 +42,8 @@ def debrand_string(str)
         when "Step 1: Create Kickstart Profile" then str
         when "Create Kickstart Profile" then str
         when "Test Erratum" then str
+        when "errata-cache-default" then str
+        when "errata-cache-bunch" then str
         # replacement exceptions
         when "Create Kickstart Distribution" then "Create Autoinstallable Distribution"
         when "Upload Kickstart File" then "Upload Kickstart/Autoyast File"

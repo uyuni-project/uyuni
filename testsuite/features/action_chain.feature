@@ -130,3 +130,17 @@ Feature: Test action chaining
     And I should see a "Action Chain new action chain has been scheduled for execution." text
     When I run rhn_check on this client
     Then "/root/webui-actionchain-test" exists on the filesystem of "sle-client"
+
+  Scenario: Reset: downgrade milkyway-dummy to lower version
+    Given I am authorized as "admin" with password "admin"
+    When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    And I run "zypper -n in --oldpackage milkyway-dummy-1.0-2.1" on "sle-client"
+    And I run "zypper -n ref" on "sle-client"
+    And I run "rhn_check -vvv" on "sle-client"
+    And I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
