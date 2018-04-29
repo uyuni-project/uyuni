@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.8.17.1
+Version:	2.8.18
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -120,6 +120,9 @@ spacewalk-python2-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Thu Apr 26 2018 Jiri Dostal <jdostal@redhat.com> 2.8.18-1
+- reflect copr.fedorainfracloud.org packages moving for spacewalk-2.8
+
 * Thu Mar 29 2018 Jiri Dostal <jdostal@redhat.com> 2.8.17-1
 - Update gpgs in database
 - Update common channels with latest releases

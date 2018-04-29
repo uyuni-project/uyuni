@@ -6,7 +6,7 @@
 
 Summary: Python libraries for the Spacewalk project
 Name: rhnlib
-Version: 2.8.10.1
+Version: 2.8.11
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -18,19 +18,26 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch: noarch
 %endif
+
+%description
+rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk.redhat.com) software.
+
+%package -n python2-rhnlib
+Summary: Python libraries for the Spacewalk project
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires: python2-devel
+Requires: python2-pyOpenSSL
 %else
 BuildRequires: python-devel
-%endif
-Provides: python2-rhnlib = %{version}-%{release}
-Obsoletes: python-rhnlib < %{version}-%{release}
-Obsoletes: rhnlib < %{version}-%{release}
-
 %if 0%{?suse_version}
+%if 0%{?suse_version} > 1200
+Requires: python-pyOpenSSL
+%else
 Requires: python-openssl
+%endif
 %else
 Requires: pyOpenSSL
+%endif
 %endif
 Conflicts: rhncfg < 5.10.45
 Conflicts: spacewalk-proxy-installer < 1.3.2
@@ -40,9 +47,11 @@ Conflicts: rhnpush < 5.5.10
 Conflicts: rhnclient < 0.10
 Conflicts: spacewalk-proxy < 1.3.6
 
-%description
-rhnlib is a collection of python modules used by the
-Spacewalk software.
+Provides: rhnlib = %{version}-%{release}
+Obsoletes: rhnlib < %{version}-%{release}
+
+%description -n python2-rhnlib
+rhnlib is a collection of python modules used by the Spacewalk software.
 
 
 %if 0%{?build_py3}
@@ -63,7 +72,7 @@ Conflicts: rhnclient < 0.10
 Conflicts: spacewalk-proxy < 1.3.6
 
 %description -n python3-rhnlib
-rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk.redhat.com) software.
+rhnlib is a collection of python modules used by the Spacewalk software.
 %endif
 
 %prep
@@ -87,8 +96,7 @@ make -f Makefile.rhnlib
 %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
 %endif
 
-
-%files
+%files -n python2-rhnlib
 %defattr(-,root,root)
 %doc ChangeLog COPYING README TODO
 %{python_sitelib}/*
@@ -100,6 +108,9 @@ make -f Makefile.rhnlib
 %endif
 
 %changelog
+* Wed Apr 25 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.11-1
+- move python2 version of rhnlib into python2-rhnlib package
+
 * Wed Mar 21 2018 Jiri Dostal <jdostal@redhat.com> 2.8.10-1
 - Updating copyright years for 2018
 
