@@ -1,3 +1,4 @@
+- fix taskomatic deadlock in failure case (bsc#1085471)
 - Wait until minion is back to set RebootAction as COMPLETED (bsc#1089401)
 - Fix Advanced search for systems with installed packages (bsc#1085838)
 - Fix index out of bound exception when os-release query returns multiple
