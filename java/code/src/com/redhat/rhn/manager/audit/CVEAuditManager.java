@@ -877,7 +877,7 @@ public class CVEAuditManager {
                         patchedPackageNames.remove(KERNEL_DEFAULT_NAME);
                         channelAssignedPackageNames.remove(KERNEL_DEFAULT_NAME);
                     }
-                    if (usesLivePatchingDefault &&
+                    if (usesLivePatchingXen &&
                             patchedPackageNames.containsKey(KERNEL_XEN_NAME)) {
                         patchedPackageNames.remove(KERNEL_XEN_NAME);
                         channelAssignedPackageNames.remove(KERNEL_XEN_NAME);
@@ -1022,7 +1022,7 @@ public class CVEAuditManager {
                 patchedPackageNames.remove(KERNEL_DEFAULT_NAME);
                 channelAssignedPackageNames.remove(KERNEL_DEFAULT_NAME);
             }
-            if (usesLivePatchingDefault &&
+            if (usesLivePatchingXen &&
                     patchedPackageNames.containsKey(KERNEL_XEN_NAME)) {
                 patchedPackageNames.remove(KERNEL_XEN_NAME);
                 channelAssignedPackageNames.remove(KERNEL_XEN_NAME);
