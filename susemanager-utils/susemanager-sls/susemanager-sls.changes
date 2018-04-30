@@ -1,3 +1,6 @@
+- Fixed processing of formulas with $scope: group
+- Preserve order of formulas (bsc#1083326)
+
 -------------------------------------------------------------------
 Wed Apr 25 12:13:25 CEST 2018 - jgonzalez@suse.com
 
