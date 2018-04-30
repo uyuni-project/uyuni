@@ -89,43 +89,34 @@ def load_formulas_from_file(formula_filename):
     return formulas
 
 
-def process_formulas(formula_filename, minion_id, group_ids=[], as_group=False):
-    pillar = {}
-    out_formulas = []
-    data = load_formulas_from_file(formula_filename)
-
-    if as_group:
-        for group in group_ids:
-            for formula in data.get(str(group), []):
-                out_formulas.append(formula.encode('utf-8'))
-                pillar.update(load_formula_pillar(minion_id, group, formula))
-
-    else:
-        for formula in data.get(str(minion_id), []):
-            out_formulas.append(formula.encode('utf-8'))
-            pillar.update(load_formula_pillar(minion_id, None, formula))
-
-    return pillar, out_formulas
-
-
 def formula_pillars(minion_id, group_ids):
     '''
     Find formula pillars for the minion, merge them and return the data.
     '''
-    ret = {}
+    pillar = {}
+    out_formulas = []
 
     # Loading group formulas
-    group_pillar, group_formulas = process_formulas(
-        "group_formulas.json", minion_id, group_ids, as_group=True)
-    ret.update(group_pillar)
+    data = load_formulas_from_file("group_formulas.json")
+    for group in group_ids:
+        for formula in data.get(str(group), []):
+            formula_utf8 = formula.encode('utf-8')
+            if formula_utf8 in out_formulas:
+                continue # already processed
+            out_formulas.append(formula_utf8)
+            pillar.update(load_formula_pillar(minion_id, group, formula))
 
     # Loading minion formulas
-    minion_pillar, minion_formulas = process_formulas(
-        "minion_formulas.json", minion_id)
-    ret.update(minion_pillar)
+    data = load_formulas_from_file("minion_formulas.json")
+    for formula in data.get(str(minion_id), []):
+        formula_utf8 = formula.encode('utf-8')
+        if formula_utf8 in out_formulas:
+            continue # already processed
+        out_formulas.append(formula_utf8)
+        pillar.update(load_formula_pillar(minion_id, None, formula))
 
-    ret["formulas"] = list(set(group_formulas + minion_formulas))
-    return ret
+    pillar["formulas"] = out_formulas
+    return pillar
 
 
 def load_formula_pillar(minion_id, group_id, formula_name):
