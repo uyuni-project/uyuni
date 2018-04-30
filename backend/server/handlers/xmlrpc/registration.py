@@ -1029,7 +1029,10 @@ class Registration(rhnHandler):
         if server.addr["ipaddr"] or server.addr["ip6addr"]:
             primif = None
             ipaddr = server.addr["ipaddr"]
-            ip6addr = server.addr["ip6addr"]
+            try:
+                ip6addr = server.addr["ip6addr"]
+            except:
+                log_debug(1, system_id, "No ipv6addr")
             if ipaddr:
                     h = rhnSQL.prepare("""
                         select interface_id from rhnServerNetAddress4 rsna4 left join rhnServerNetInterface rsni on rsna4.interface_id = rsni.id where address = :address and server_id = :server_id
