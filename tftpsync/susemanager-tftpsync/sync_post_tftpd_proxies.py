@@ -235,12 +235,6 @@ class ProxySync(threading.Thread):
             ret = False
         if ret:
             path = path.replace("%s/" % self.tftpbootdir, "", 1)
-            count = 0
-            while not os.path.exists(self.filename) and count < 10:
-                count += 1
-                if _DEBUG:
-                    self.logger.debug("%s does not exist yet (2) - retrying (try %s)" % (self.filename, count))
-                time.sleep(1)
             params = { "file_name" : os.path.basename(self.filename), "file" : open(self.filename, "rb"), "file_type" : self.format, "directory": path }
             try:
                 response = opener.open("http://%s/tftpsync/add/" % self.proxy, params, self.timeout)
