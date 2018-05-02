@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.utils.Opt;
+import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -49,7 +50,6 @@ import static java.util.Optional.ofNullable;
 public class ConfigChannelSaltManager {
 
     private String baseDirPath;
-    private String encoding;
     private static ConfigChannelSaltManager instance;
     private static final Logger LOG = Logger.getLogger(ConfigChannelSaltManager.class);
     private static final String SALT_FS_PREFIX = "salt://";
@@ -68,11 +68,10 @@ public class ConfigChannelSaltManager {
 
     /**
      * No arg constructor. Will initialize {@link #baseDirPath} with
-     * '/srv/susemanager/salt' and {@link #encoding} with US-ASCII.
+     * '/srv/susemanager/salt'.
      */
     private ConfigChannelSaltManager() {
         this.baseDirPath = SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-        this.encoding = SaltConstants.SLS_FILE_ENCODING;
     }
 
     /**
@@ -209,7 +208,7 @@ public class ConfigChannelSaltManager {
             throws IOException {
         assertStateInOrgDir(channelDir, outFile);
         outFile.getParentFile().mkdirs();
-        FileUtils.writeStringToFile(outFile, content, encoding);
+        FileUtils.writeStringToFile(outFile, content, CharEncoding.UTF_8);
     }
 
     private void removeConfigChannelFiles(Long orgId, String channelLabel) {
