@@ -172,5 +172,3 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
         if value is not None and value != '' or not element.get("$optional"):
             ret[element_name] = value
     return ret
-
-
