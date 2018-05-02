@@ -55,7 +55,7 @@ public class ConfigChannelSaltManagerTestUtils {
         ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(fl,
                 ConfigFileType.file());
         ConfigContent configContent = ConfigTestUtils.createConfigContent(10L, false);
-        configContent.setContents(StringUtils.getUTF8Bytes("aoeuaoeuao"));
+        configContent.setContents(StringUtils.getUTF8Bytes("aoeuäö€üáóéúř"));
         configRevision.setConfigContent(configContent);
         changeConfigInfo(configRevision.getConfigInfo());
         return configRevision;
