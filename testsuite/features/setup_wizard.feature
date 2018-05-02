@@ -25,12 +25,13 @@ Feature: I want to verify the Setup Wizard
     And I follow "Admin" in the tab bar
     And I refresh scc
     And I follow "SUSE Products" in the content area
+    And I wait until I see "RHEL Expanded Support 5" text
     And I should see a "Available Products Below" text
     And I should see a "Architecture" text
     And I should see a "Channels" text
     And I should see a "Status" text
     And I should not see a "WebYaST 1.3" text
-    And I select "SUSE Linux Enterprise Server 12 SP1" as a product for the "x86_64" architecture
+    When I select "SUSE Linux Enterprise Server 12 SP1" as a product for the "x86_64" architecture
     And I select the addon "Legacy Module 12" for the product "SUSE Linux Enterprise Server 12 SP1" with arch "x86_64"
     And I click the Add Product button
     And I wait for "20" seconds

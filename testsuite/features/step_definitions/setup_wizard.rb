@@ -38,6 +38,21 @@ end
 When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |product, architecture|
   within(:xpath, "(//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]])[1]") do
     fail unless find("button.product-add-btn").click
+    begin
+      # wait to finish scheduling
+      Timeout.timeout(DEFAULT_TIMEOUT) do
+        loop do
+          begin
+            break unless find('button.product-add-btn').visible?
+            sleep 2
+          rescue Capybara::ElementNotFound
+            break
+          end
+        end
+      end
+    rescue Timeout::Error
+      puts 'timeout reached'
+    end
   end
 end
 
@@ -47,7 +62,22 @@ When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) d
   xpath += "ancestor::tr[td[contains(text(), '#{arch}')]]/following::span"
   xpath += "[contains(text(), '#{addon}')]/../.."
   within(:xpath, "#{xpath}") do
-      fail unless find("button.product-add-btn").click
+    fail unless find("button.product-add-btn").click
+    begin
+      # wait to finish scheduling
+      Timeout.timeout(DEFAULT_TIMEOUT) do
+        loop do
+          begin
+            break unless find('button.product-add-btn').visible?
+            sleep 2
+          rescue Capybara::ElementNotFound
+            break
+          end
+        end
+      end
+    rescue Timeout::Error
+      puts 'timeout reached'
+    end
   end
 end
 

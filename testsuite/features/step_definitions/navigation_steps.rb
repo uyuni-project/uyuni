@@ -231,3 +231,16 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
     raise "Task does not look FINISHED after #{refresh_timeout} seconds"
   end
 end
+
+When(/^I wait until I see "([^"]*)" text$/) do |text|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if page.has_content?(text)
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the #{text} in webpage"
+  end
+end
