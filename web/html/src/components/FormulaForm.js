@@ -118,10 +118,19 @@ class FormulaForm extends React.Component {
                     result[key] = value;
             }
             else if ((element.$scope === this.props.scope || element.$scope === "system") && !(value && value.length === 0)) {
+                value = this.checkIfEmptyValueAttrExists(value, element, values)
                 result[key] = value;
             }
         }
         return result;
+    }
+
+    checkIfEmptyValueAttrExists(value, element, formulaValues) {
+         if((value == null || value.length == 0) && !element.$optional && (element.$ifEmpty || element.$ifEmpty === null)) {
+            value = element.$ifEmpty;
+            formulaValues[element.$id] = value;
+         }
+         return value;
     }
 
     clearValues() {
@@ -324,9 +333,11 @@ function generateValues(layout, group_data, system_data) {
             value = element.$default;
         }
 
-        if (value !== null) {
-            result[key] = value
+        if (value === null) {
+          value = "";
         }
+        
+        result[key] = value
     }
     return result;
 }
