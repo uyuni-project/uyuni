@@ -169,6 +169,6 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
         elif element_scope == "readonly":
             value = element.get("$default", element.get("$placeholder", ""))
 
-        if value is not None:
+        if value is not None and value != '' or not element.get("$optional"):
             ret[element_name] = value
     return ret
