@@ -1,3 +1,4 @@
+- Render configuration files with UTF-8 (bsc#1088667)
 - Update google-gson to version 2.8.2 (bsc#1091091)
 - fix updating Subscription cache (bsc#1075466)
 - fix NPE in websocket session configurator (bsc#1080474)
