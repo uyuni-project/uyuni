@@ -1,3 +1,4 @@
+- provide full traditional stack in RES bootstrap repo (bsc#1091667)
 - fix bootstrap script for python3 (bsc#1091840)
 - add new traditional packages and renamed to bootstrap repo data
 - fix unknown installed products when using salt-ssh (bsc#1088861)
