@@ -212,7 +212,19 @@ RES6 = [
         "yum-rhn-plugin",
         "yum",
         "rhnlib",
-       ]
+        "rpm-python",
+        "slang",
+        "spacewalk-check",
+        "python2-spacewalk-check",
+        "spacewalk-client-setup",
+        "python2-spacewalk-client-setup",
+        "spacewalk-client-tools",
+        "python2-spacewalk-client-tools",
+        "spacewalk-usix",
+        "spacewalksd",
+        "suseRegisterInfo",
+        "python2-suseRegisterInfo",
+        ]
 
 RES7 = [
         "salt",
@@ -245,6 +257,17 @@ RES7 = [
         "openssl",
         "openssl-libs",
         "python-ipaddress",
+        "rpm-python",
+        "spacewalk-check",
+        "python2-spacewalk-check",
+        "spacewalk-client-setup",
+        "python2-spacewalk-client-setup",
+        "spacewalk-client-tools",
+        "python2-spacewalk-client-tools",
+        "spacewalk-usix",
+        "spacewalksd",
+        "suseRegisterInfo",
+        "python2-suseRegisterInfo",
        ]
 
 DATA = {
