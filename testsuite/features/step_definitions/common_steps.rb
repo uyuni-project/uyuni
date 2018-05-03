@@ -700,7 +700,7 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, 
   when 'selected'
     raise unless has_checked_field?(channel_checkbox_id)
   when 'unselected'
-    raise unless !has_checked_field?(channel_checkbox_id)
+    raise if has_checked_field?(channel_checkbox_id)
   else
     raise 'Invalid target status.'
   end
@@ -712,7 +712,7 @@ And(/^I select the child channel "([^"]*)"$/) do |target_channel|
   xpath = "//label[contains(text(), '#{target_channel}')]"
   channel_checkbox_id = find(:xpath, xpath)['for']
 
-  raise unless !has_checked_field?(channel_checkbox_id)
+  raise if has_checked_field?(channel_checkbox_id)
   find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
 end
 
