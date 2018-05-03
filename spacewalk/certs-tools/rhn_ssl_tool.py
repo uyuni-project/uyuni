@@ -685,10 +685,17 @@ def genCaRpm_dependencies(d):
 def genCaRpm(d, verbosity=0):
     """ generates ssl cert RPM. """
 
+    OSIMAGE_RPM_CERTIFICATE_PATH = "/usr/share/susemanager/salt"
+    OSIMAGE_RPM_FILENAME_SUFFIX = "osimage"
+    OSIMAGE_RPM_REQUIRES = "ca_certificates"
+
     ca_cert_name = os.path.basename(d['--ca-cert'])
     ca_cert = os.path.join(d['--dir'], ca_cert_name)
     ca_cert_rpm_name = os.path.basename(d['--ca-cert-rpm'])
     ca_cert_rpm = os.path.join(d['--dir'], ca_cert_rpm_name)
+
+    ca_cert_rpm_name_osimage = ca_cert_rpm_name + OSIMAGE_RPM_FILENAME_SUFFIX
+    ca_cert_rpm_osimage = os.path.join(OSIMAGE_RPM_CERTIFICATE_PATH, ca_cert_rpm_name_osimage)
 
     genCaRpm_dependencies(d)
 
@@ -720,49 +727,64 @@ def genCaRpm(d, verbosity=0):
 
     update_trust_script = os.path.join(CERT_PATH, 'update-ca-cert-trust.sh')
 
-    # build the CA certificate RPM
-    args = (os.path.join(CERT_PATH, 'gen-rpm.sh') + " "
-            "--name %s --version %s --release %s --packager %s --vendor %s "
-            "--group 'RHN/Security' --summary %s --description %s "
-            "--post %s --postun %s "
-            "/usr/share/rhn/%s=%s"
-            % (repr(ca_cert_rpm_name), ver, rel, repr(d['--rpm-packager']),
-               repr(d['--rpm-vendor']), repr(CA_CERT_RPM_SUMMARY),
-               repr(CA_CERT_RPM_SUMMARY),
-               repr(update_trust_script), repr(update_trust_script),
-               repr(ca_cert_name), repr(cleanupAbsPath(ca_cert))))
-    clientRpmName = '%s-%s-%s' % (ca_cert_rpm, ver, rel)
-    if verbosity >= 0:
-        print("""
-Generating CA public certificate RPM:
-    %s.src.rpm
-    %s.noarch.rpm""" % (clientRpmName, clientRpmName))
-        if verbosity > 1:
-            print("Commandline:", args)
+    for cert_rpm_name, cert_rpm_path in zip([ca_cert_rpm_name, ca_cert_rpm_name_osimage], [ca_cert_rpm, ca_cert_rpm_osimage]):
+        # build the CA certificates RPM
 
-    _disableRpmMacros()
-    cwd = chdir(d['--dir'])
-    try:
-        ret, out_stream, err_stream = rhn_popen(args)
-    except Exception:
+        if OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+            rel = 1
+
+        args = (os.path.join(CERT_PATH, 'gen-rpm.sh') + " "
+                "--name %s --version %s --release %s --packager %s --vendor %s "
+                % (repr(cert_rpm_name), ver, rel, repr(d['--rpm-packager']),
+                   repr(d['--rpm-vendor'])))
+
+        if OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+            args += "--requires %s " % OSIMAGE_RPM_REQUIRES
+
+        args += ("--group 'RHN/Security' --summary %s --description %s "
+                 "--post %s --postun %s "
+                 "/usr/share/rhn/%s=%s"
+                 % (repr(CA_CERT_RPM_SUMMARY),
+                   repr(CA_CERT_RPM_SUMMARY),
+                   repr(update_trust_script), repr(update_trust_script),
+                   repr(ca_cert_name), repr(cleanupAbsPath(ca_cert))))
+
+        clientRpmName = '%s-%s-%s' % (cert_rpm_path, ver, rel)
+        if verbosity >= 0 and not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+            print("""
+    Generating CA public certificate RPM:
+        %s.src.rpm
+        %s.noarch.rpm""" % (clientRpmName, clientRpmName))
+            if verbosity > 1:
+                print("Commandline:", args)
+
+        _disableRpmMacros()
+        if not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+            cwd = chdir(d['--dir'])
+        else:
+             cwd = chdir(OSIMAGE_RPM_CERTIFICATE_PATH)
+             rel = 1
+        try:
+            ret, out_stream, err_stream = rhn_popen(args)
+        except Exception:
+            chdir(cwd)
+            _reenableRpmMacros()
+            raise
         chdir(cwd)
         _reenableRpmMacros()
-        raise
-    chdir(cwd)
-    _reenableRpmMacros()
 
-    out = out_stream.read(); out_stream.close()
-    err = err_stream.read(); err_stream.close()
+        out = out_stream.read(); out_stream.close()
+        err = err_stream.read(); err_stream.close()
 
-    if ret or not os.path.exists("%s.noarch.rpm" % clientRpmName):
-        raise GenCaCertRpmException("CA public SSL certificate RPM generation "
-                                "failed:\n%s\n%s" % (out, err))
-    if verbosity > 2:
-        if out:
-            print("STDOUT:", out)
-        if err:
-            print("STDERR:", err)
-    os.chmod('%s.noarch.rpm' % clientRpmName, int('0644',8))
+        if ret or not os.path.exists("%s.noarch.rpm" % clientRpmName):
+            raise GenCaCertRpmException("CA public SSL certificate RPM generation "
+                                    "failed:\n%s\n%s" % (out, err))
+        if verbosity > 2 and not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+            if out:
+                print("STDOUT:", out)
+            if err:
+                print("STDERR:", err)
+        os.chmod('%s.noarch.rpm' % clientRpmName, int('0644',8))
 
     # write-out latest.txt information
     latest_txt = os.path.join(d['--dir'], 'latest.txt')
@@ -773,7 +795,7 @@ Generating CA public certificate RPM:
     fo.close()
     os.chmod(latest_txt, int('0644',8))
 
-    if verbosity >= 0:
+    if verbosity >= 0 and not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
         print("""
 Make the public CA certificate publically available:
     (NOTE: the RHN Satellite or Proxy installers may do this step for you.)
