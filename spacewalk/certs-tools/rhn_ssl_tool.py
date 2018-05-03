@@ -731,7 +731,7 @@ def genCaRpm(d, verbosity=0):
         # build the CA certificates RPM
 
         if OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
-            rel = 1
+            rel = 1 # filename fixed: rhn-org-trusted-ssl-certosimage-1.0.0-1*.rpm
 
         args = (os.path.join(CERT_PATH, 'gen-rpm.sh') + " "
                 "--name %s --version %s --release %s --packager %s --vendor %s "
