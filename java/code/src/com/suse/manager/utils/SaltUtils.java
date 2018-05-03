@@ -926,7 +926,9 @@ public class SaltUtils {
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     Map<String, Object> args = new LinkedHashMap<>();
                     args.put("minion", minionServer.getName());
-                    args.put("filepath", Optional.empty()); // TODO extract from jsonResult https://github.com/SUSE/spacewalk/pull/4343#issuecomment-384614541
+                    // TODO extract from jsonResult https://github.com/SUSE/spacewalk/pull/4343#issuecomment-384614541
+                    args.put("filepath", Optional.empty());
+
                     RunnerCall<MgrUtilRunner.ExecResult> call =
                             new RunnerCall<>("kiwi-image-collect.kiwi_collect_image", Optional.of(args),
                                     new TypeToken<MgrUtilRunner.ExecResult>() { });
