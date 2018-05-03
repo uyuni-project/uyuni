@@ -435,7 +435,8 @@ public class SaltSSHService {
         LocalCall<Map<String, State.ApplyResult>> call = State.apply(
                 bootstrapMods,
                 Optional.of(pillarData),
-                Optional.of(true));
+                Optional.of(true),
+                Optional.empty());
 
         List<String> bootstrapProxyPath;
         if (parameters.getProxyId().isPresent()) {
@@ -695,6 +696,7 @@ public class SaltSSHService {
                             State.apply(
                                     Collections.singletonList(CLEANUP_SSH_MINION_SALT_STATE),
                                     Optional.of(pillarData),
+                                    Optional.empty(),
                                     Optional.empty()),
                             new MinionList(minion.getMinionId()), timeoutAfter);
             CompletionStage<Result<Map<String, State.ApplyResult>>> future =

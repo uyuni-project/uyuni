@@ -873,7 +873,7 @@ public class SaltService {
     public Optional<Map<String, State.ApplyResult>> applyState(
             String minionId, String state) {
         return callSync(State.apply(Arrays.asList(state), Optional.empty(),
-                Optional.of(true)), minionId);
+                Optional.of(true), Optional.empty()), minionId);
     }
 
     /**
