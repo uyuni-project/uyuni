@@ -334,7 +334,8 @@ public class SaltServerActionService {
                 return State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
                         Optional.of(params),
-                        Optional.of(true)
+                        Optional.of(true),
+                        Optional.empty()
                 );
             },
             Map.Entry::getValue));
@@ -349,7 +350,7 @@ public class SaltServerActionService {
                 (a, b)-> a));
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
                 Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
-                Optional.of(true)), minions);
+                Optional.of(true), Optional.empty()), minions);
         return ret;
     }
 
@@ -362,7 +363,7 @@ public class SaltServerActionService {
                 (a, b)-> a));
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGREMOVE),
                 Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
-                Optional.of(true)), minions);
+                Optional.of(true), Optional.empty()), minions);
         return ret;
     }
 
@@ -370,7 +371,7 @@ public class SaltServerActionService {
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
-                Optional.empty(), Optional.of(true)), minions);
+                Optional.empty(), Optional.of(true), Optional.empty()), minions);
         return ret;
     }
 
@@ -390,12 +391,12 @@ public class SaltServerActionService {
         if (!sshPushMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(
                     ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty(), Optional.of(true)), sshPushMinions);
+                    Optional.empty(), Optional.of(true), Optional.empty()), sshPushMinions);
         }
         if (!regularMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
                     ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty(), Optional.of(true)), regularMinions);
+                    Optional.empty(), Optional.of(true), Optional.empty()), regularMinions);
         }
 
         return ret;
@@ -435,7 +436,7 @@ public class SaltServerActionService {
                     .collect(Collectors.toList());
             ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
                     Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
-                    Optional.of(true)), selectedServers.stream().collect(Collectors.toList()));
+                    Optional.of(true), Optional.empty()), selectedServers.stream().collect(Collectors.toList()));
         });
         return ret;
     }
@@ -456,7 +457,7 @@ public class SaltServerActionService {
                         revision.isSymlink())
                 .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
                 .collect(Collectors.toList());
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+        ret.put(State.apply(
                 Arrays.asList(CONFIG_DIFF_FILES),
                 Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
                 Optional.of(true), Optional.of(true)), minions);
@@ -477,7 +478,7 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
             List<MinionServer> minions, List<String> mods, boolean test) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(mods, Optional.empty(), Optional.of(true),
+        ret.put(State.apply(mods, Optional.empty(), Optional.of(true),
                 test ? Optional.of(test) : Optional.empty()), minions);
         return ret;
     }
@@ -525,7 +526,7 @@ public class SaltServerActionService {
             pillar.put("mgr_channels_new", chanPillar);
 
             ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.CHANNELS),
-                    Optional.of(pillar), Optional.of(true)), Collections.singletonList(minion));
+                    Optional.of(pillar), Optional.of(true), Optional.empty()), Collections.singletonList(minion));
 
         });
         if (commitTransaction) {
@@ -561,7 +562,8 @@ public class SaltServerActionService {
         LocalCall<Map<String, State.ApplyResult>> apply = State.apply(
                 Collections.singletonList("images.profileupdate"),
                 Optional.of(pillar),
-                Optional.of(true)
+                Optional.of(true),
+                Optional.empty()
         );
         result.put(apply, minions);
         return result;
@@ -647,7 +649,8 @@ public class SaltServerActionService {
                     return State.apply(
                             Collections.singletonList("images.docker"),
                             Optional.of(pillar),
-                            Optional.of(true)
+                            Optional.of(true),
+                            Optional.empty()
                     );
                 },
                 Collections::singletonList
@@ -694,7 +697,8 @@ public class SaltServerActionService {
         LocalCall<Map<String, State.ApplyResult>> distUpgrade = State.apply(
                 Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
                 Optional.of(pillar),
-                Optional.of(true)
+                Optional.of(true),
+                Optional.empty()
                 );
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(distUpgrade, minions);
@@ -728,7 +732,7 @@ public class SaltServerActionService {
                                     d -> d.getEvr().toString(), (a, b)-> a));
             call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
                     Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
-                    Optional.of(true));
+                    Optional.of(true), Optional.empty());
             LOG.info("Executing staging of packages");
         }
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
@@ -747,7 +751,7 @@ public class SaltServerActionService {
 
             call = State.apply(Arrays.asList(PACKAGES_PATCHDOWNLOAD),
                     Optional.of(Collections.singletonMap(PARAM_PATCHES, errataArgs)),
-                    Optional.of(true));
+                    Optional.of(true), Optional.empty());
             LOG.info("Executing staging of patches");
         }
         return call;
