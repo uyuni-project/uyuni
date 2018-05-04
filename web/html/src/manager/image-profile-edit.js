@@ -109,21 +109,7 @@ class CreateImageProfile extends React.Component {
 
   handleImageTypeChange(event) {
     const storeType = typeMap[event.target.value].storeType;
-    this.getImageStores(storeType)
-      .then((data) => {
-        // Set store for the static OS Image store
-        if(storeType === "os_image") {
-          this.setState({
-            model: Object.assign(this.state.model, {imageStore: data[0] && data[0].label}),
-            storeUri: data[0] && data[0].uri
-          });
-        } else {
-          // Clear URI hint
-          this.setState({
-            storeUri: undefined
-          });
-        }
-      });
+    this.getImageStores(storeType);
   }
 
   handleImageStoreChange(event) {
@@ -240,10 +226,22 @@ class CreateImageProfile extends React.Component {
 
   getImageStores(type) {
     return Network.get("/rhn/manager/api/cm/imagestores/type/" + type, "application/json").promise
-      .then(data => {
+      .then((data) => {
+
+        let model = this.state.model;
+        let storeUri = undefined;
+        if(type === "os_image") {
+          // Preselect store for the static OS Image store
+          model = Object.assign(this.state.model, {imageStore: data[0] && data[0].label});
+          storeUri = data[0] && data[0].uri;
+        }
+
         this.setState({
-          imageStores: data
+          imageStores: data,
+          model: model,
+          storeUri: storeUri
         });
+
         return data;
       });
   }
