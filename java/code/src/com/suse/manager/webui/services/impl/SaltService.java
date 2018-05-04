@@ -27,6 +27,7 @@ import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -38,7 +39,6 @@ import com.suse.salt.netapi.calls.modules.Config;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
@@ -870,10 +870,9 @@ public class SaltService {
      * @param state the state to apply
      * @return the result of applying the state
      */
-    public Optional<Map<String, State.ApplyResult>> applyState(
+    public Optional<Map<String, ApplyResult>> applyState(
             String minionId, String state) {
-        return callSync(State.apply(Arrays.asList(state), Optional.empty(),
-                Optional.of(true)), minionId);
+        return callSync(State.apply(Arrays.asList(state), Optional.empty()), minionId);
     }
 
     /**
@@ -886,7 +885,7 @@ public class SaltService {
      * during manipulation the salt-ssh roster
      * @return the result of the underlying ssh call for given host
      */
-    public Result<SSHResult<Map<String, State.ApplyResult>>> bootstrapMinion(
+    public Result<SSHResult<Map<String, ApplyResult>>> bootstrapMinion(
             BootstrapParameters parameters, List<String> bootstrapMods,
             Map<String, Object> pillarData) throws SaltException {
         return saltSSHService.bootstrapMinion(parameters, bootstrapMods, pillarData);
