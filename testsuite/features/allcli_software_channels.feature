@@ -22,6 +22,7 @@ Feature: Chanel subscription via SSM
     And I should see "No change" "selected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
     Then I click on the "disabled" recommended toggler
     And I should see "Subscribe" "selected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
+    And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
 
   Scenario: Change child channels for two systems subscribed to a base channel
     Given I am authorized as "admin" with password "admin"
