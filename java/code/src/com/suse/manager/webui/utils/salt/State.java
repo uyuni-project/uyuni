@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,43 +14,29 @@
  */
 package com.suse.manager.webui.utils.salt;
 
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State.ApplyResult;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+
 /**
- * salt.modules.state
+ * This class contains convenience methods to be moved to the salt-netapi-client library.
  */
 public class State {
-
 
     private State() { }
 
     /**
-     *  Apply function with additional argument of test in order to run in dry run mode.
-     * @param mods mods
+     * Convenience method to create a LocalCall object to be used for most of the SUSE Manager "state.apply" purposes:
+     * Set the "queue" parameter to true and do not pass a "test" parameter.
+     *
+     * @param mods state modules
      * @param pillar pillar data
-     * @param queue queue
-     * @param test test-mode true/false
      * @return LocalCall<Map<String, ApplyResult>> result
      */
-    public static LocalCall<Map<String, ApplyResult>> apply(List<String> mods,
-            Optional<Map<String, Object>> pillar, Optional<Boolean> queue,
-                                                  Optional<Boolean> test) {
-        Map<String, Object> kwargs = new LinkedHashMap<>();
-        kwargs.put("mods", mods);
-        pillar.ifPresent(p -> kwargs.put("pillar", p));
-        queue.ifPresent(q -> kwargs.put("queue", q));
-        test.ifPresent(q -> kwargs.put("test", q));
-        return new LocalCall<>("state.apply", Optional.empty(), Optional.of(kwargs),
-                new TypeToken<Map<String, ApplyResult>>() { });
+    public static LocalCall<Map<String, ApplyResult>> apply(List<String> mods, Optional<Map<String, Object>> pillar) {
+        return com.suse.salt.netapi.calls.modules.State.apply(mods, pillar, Optional.of(true), Optional.empty());
     }
-
-
 }

@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.salt;
+package com.suse.manager.webui.utils.salt.custom;
 
 
 import com.google.gson.JsonElement;
