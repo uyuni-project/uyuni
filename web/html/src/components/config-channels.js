@@ -261,6 +261,7 @@ class ConfigChannels extends React.Component {
       elements.push(
         <tr id={currentChannel.label + '-row'} key={currentChannel.label} className={changed !== undefined ? "warning" : ""}>
           <td>{channelIcon(currentChannel)}<a href="#" data-toggle="modal" data-target="#saltStatePopUp" onClick={() => {this.showPopUp(currentChannel);}}>{currentChannel.name}</a></td>
+          <td>{currentChannel.label}</td>
           <td>
             <div className="form-group">
                 <input id={currentChannel.label + "-cbox"} type="checkbox" checked={currentChannel.assigned} value={currentChannel.label} onChange={this.handleSelectionChange(row.original)}/>
@@ -391,6 +392,7 @@ class ConfigChannels extends React.Component {
               <thead>
                 <tr>
                   <th>{t("Channel Name")}</th>
+                  <th>{t("Channel Label")}</th>
                   <th>{t("Assign")}</th>
                 </tr>
               </thead>
@@ -462,7 +464,7 @@ class RankingTable extends React.Component {
       const icon = channelIcon(i);
       return (
         <a href="#" className="list-group-item" key={i.label} data-id={i.label}>
-          <i className="fa fa-sort"/>{icon}{i.label}
+          <i className="fa fa-sort"/>{icon}{i.name} ({i.label})
         </a>
       );
     });
