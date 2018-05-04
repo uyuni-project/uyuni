@@ -572,10 +572,13 @@ fi
 def getUp2dateScriptsSh():
     return """\
 echo "* running the update scripts"
-if [ -f "/usr/bin/python" ] ; then
+if [ -x "/usr/bin/python" ] ; then
     PYTHON=/usr/bin/python
-else
+elif [ -x /usr/bin/python3 ]; then
     PYTHON=/usr/bin/python3
+else
+   echo "No python found"
+   exit 1
 fi
 if [ -f "/etc/sysconfig/rhn/rhn_register" ] ; then
     echo "  . rhn_register config file"
