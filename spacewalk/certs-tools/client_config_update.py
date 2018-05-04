@@ -83,7 +83,7 @@ def _parseConfigLine(line):
     The '\n' is always stripped from the value.
     """
 
-    kv = string.split(line, '=')
+    kv = line.split('='.encode('utf8'))
     if len(kv) < 2:
         # not a setting
         return None
@@ -92,7 +92,7 @@ def _parseConfigLine(line):
         # '=' is part of the value, need to rejoin it.
         kv = [kv[0], string.join(kv[1:], '=')]
 
-    if string.find(kv[0], '[comment]') > 0:
+    if kv[0].find('[comment]'.encode('utf8')) > 0:
         # comment; not a setting
         return None
 
@@ -139,7 +139,7 @@ def mapNewSettings(configFile, dnew):
             # it's a setting, populate from the dictionary
             if dnew.has_key(kv[0]):
                 if dnew[kv[0]] != kv[1]:
-                    fo.write('%s=%s\n' % (kv[0], dnew[kv[0]]))
+                    fo.write(('%s=%s\n' % (kv[0], dnew[kv[0]])).encode('utf8'))
                     changedYN = 1
                 else:
                     fo.write(line)
