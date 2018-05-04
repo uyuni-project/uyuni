@@ -62,6 +62,7 @@ import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -1265,6 +1266,8 @@ public class SaltServerActionService {
                                     "repo_gpgcheck=0\n\n" +
                                     "pkg_gpgcheck=1\n\n";
                         }).collect(Collectors.joining("\n\n"));
+
+                        pillar.put("activation_key", ActivationKeyFactory.lookupByToken(profile.getToken()).getKey());
                     }
                     pillar.put("repo", repocontent);
 
