@@ -48,6 +48,9 @@
                                                                         name ="${current.nameDisplay}"
                                                                         type = "central" nolink="${not current.canAccess}"/>
                                   </rl:column>
+                        <rl:column headerkey="sdc.config.subscriptions.jsp.label">
+                          ${current.label}
+                        </rl:column>
                         <rl:column headerkey="sdc.config.subscriptions.jsp.files"
                         attr="filesAndDirsDisplayString" bound="true"/>
                         </rl:list>

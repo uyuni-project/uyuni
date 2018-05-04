@@ -69,7 +69,8 @@ public abstract class BaseRankChannels extends RhnLookupDispatchAction {
             Long ccid = ((RhnSetElement) itr.next()).getElement();
             ConfigChannel channel = ConfigurationManager.getInstance()
                                         .lookupConfigChannel(user, ccid);
-            labelValues.add(lv(channel.getName(), channel.getId().toString()));
+            String optionstr = channel.getName() + " (" + channel.getLabel() + ")";
+            labelValues.add(lv(optionstr, channel.getId().toString()));
         }
 
         //set the form variables for the widget to read.

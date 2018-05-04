@@ -2810,6 +2810,10 @@ You may grant provisioning entitlements _here_.
           </context-group>
       </trans-unit>
 
+      <trans-unit id="sdc.config.subscriptions.jsp.label">
+        <source>Channel Label</source>
+      </trans-unit>
+
       <!-- Images -->
       <trans-unit id="Images">
         <source>Images</source>
