@@ -1,0 +1,56 @@
+testing:
+   $type: namespace
+
+   # normal string, generates "" if empty
+   str:
+     $type: text
+
+   # normal string with default
+   str_def:
+     $type: text
+     $default: defvalue
+
+   # string or null if empty
+   str_or_null:
+     $type: text
+     $ifEmpty: null
+
+   # string present only if not empty
+   str_opt:
+     $type: text
+     $optional: true
+
+   # normal number, generates "" if empty
+   num:
+     $type: number
+
+   # normal number, generates "0" as default
+   num_def:
+     $type: number
+     $default: 0
+
+   # number or null if empty
+   num_or_null:
+     $type: number
+     $ifEmpty: null
+
+   # number present only if not empty
+   num_opt:
+     $type: number
+     $optional: true
+
+   # normal password, generates '' if empty
+   pw:
+     $type: password
+
+   # password or null if empty
+   pw_or_null:
+     $type: password
+     $ifEmpty: null
+
+   # password present only if not empty
+   pw_opt:
+     $type: password
+     $optional: true
+
+
