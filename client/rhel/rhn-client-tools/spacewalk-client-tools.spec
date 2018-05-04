@@ -190,12 +190,12 @@ Obsoletes: rhn-check < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: %{pythonX}-spacewalk-check = %{version}-%{release}
 %if 0%{?suse_version}
-Requires: zypp-plugin-spacewalk >= 0.4
+Requires: zypp-plugin-spacewalk >= 1.0.2
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 8
 Requires: dnf-plugin-spacewalk >= 2.4.0
 %else
-Requires: yum-rhn-plugin >= 1.6.4-1
+Requires: yum-rhn-plugin >= 2.8.2
 %endif
 %endif
 
