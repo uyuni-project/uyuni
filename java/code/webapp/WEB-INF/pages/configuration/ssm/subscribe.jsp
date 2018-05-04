@@ -33,6 +33,10 @@
         ${current.name}
       </rhn:column>
 
+      <rhn:column header="ssm.config.subscriptions.jsp.label">
+        ${current.label}
+      </rhn:column>
+
       <rhn:column header="ssm.config.subscribe.jsp.files">
         ${current.filesAndDirsDisplayString}
       </rhn:column>
