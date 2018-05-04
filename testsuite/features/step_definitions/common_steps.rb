@@ -716,28 +716,23 @@ And(/^I select the child channel "([^"]*)"$/) do |target_channel|
   find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
 end
 
-And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |radio_sel, sel_status, target_channel|
-  step %(I should see a text like "#{target_channel}")
-
+And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
   xpath = "//a[contains(text(), '#{target_channel}')]"
   channel_id = find(:xpath, xpath)['href'].split('?')[1].split('=')[1]
 
-  checked_xpath = ''
-  case sel_status
-  when 'selected'
-    checked_xpath = "[@checked]"
-  when 'unselected'
-    checked_xpath = "[not(@checked)]"
-  end
-
-  case radio_sel
+  case target_radio
   when 'No change'
-    xpath = "//input[@id='ch_action_no_change_#{channel_id}']"
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='NO_CHANGE']"
   when 'Subscribe'
-    xpath = "//input[@id='ch_action_subscr_#{channel_id}']"
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='SUBSCRIBE']"
   when 'Unsubscribe'
-    xpath = "//input[@id='ch_action_unscr_#{channel_id}']"
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='UNSUBSCRIBE']"
   end
 
-  raise unless find(:xpath, xpath + checked_xpath)
+  case target_status
+  when 'selected'
+    raise if find(:xpath, xpath)['checked'].nil?
+  when 'unselected'
+    raise unless find(:xpath, xpath)['checked'].nil?
+  end
 end
