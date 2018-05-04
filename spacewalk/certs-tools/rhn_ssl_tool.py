@@ -685,9 +685,9 @@ def genCaRpm_dependencies(d):
 def genCaRpm(d, verbosity=0):
     """ generates ssl cert RPM. """
 
-    OSIMAGE_RPM_CERTIFICATE_PATH = "/usr/share/susemanager/salt"
+    OSIMAGE_RPM_CERTIFICATE_PATH = "/usr/share/susemanager/salt/images"
     OSIMAGE_RPM_FILENAME_SUFFIX = "osimage"
-    OSIMAGE_RPM_REQUIRES = "ca_certificates"
+    OSIMAGE_RPM_REQUIRES = "ca-certificates"
 
     ca_cert_name = os.path.basename(d['--ca-cert'])
     ca_cert = os.path.join(d['--dir'], ca_cert_name)
