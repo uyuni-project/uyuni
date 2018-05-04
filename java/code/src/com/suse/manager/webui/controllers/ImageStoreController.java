@@ -203,10 +203,21 @@ public class ImageStoreController {
                 user.getOrg());
 
         return store.map(s -> {
+            String uriPrefix = "";
+            if (ImageStoreFactory.TYPE_OS_IMAGE.equals(s.getStoreType())) {
+                String suseManagerHostname = "<suse-manager>";
+                try {
+                    suseManagerHostname = InetAddress.getLocalHost().getCanonicalHostName();
+                }
+                catch (UnknownHostException ignored) { }
+
+                uriPrefix = "https://" + suseManagerHostname + "/os-images/";
+            }
+
             JsonObject json = new JsonObject();
             json.addProperty("id", s.getId());
             json.addProperty("label", s.getLabel());
-            json.addProperty("uri", s.getUri());
+            json.addProperty("uri", uriPrefix + s.getUri());
             json.addProperty("storeType", s.getStoreType().getLabel());
 
             if (s.getCreds() != null && s.getCreds().getType().getLabel().equals(
