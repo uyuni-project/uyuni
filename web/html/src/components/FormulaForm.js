@@ -6,6 +6,9 @@ const Messages = require("../components/messages").Messages;
 const generateFormulaComponent = require("./formulas/FormulaComponentGenerator").generateFormulaComponent;
 
 const Button = Buttons.Button;
+const getEditGroupSubtype = Functions.Formulas.getEditGroupSubtype;
+const EditGroupSubtype = Functions.Formulas.EditGroupSubtype;
+const deepCopy = Functions.Utils.deepCopy;
 const capitalize = Functions.Utils.capitalize;
 
 //props:
@@ -59,7 +62,10 @@ class FormulaForm extends React.Component {
                 });
             else {
                 const layout = preprocessLayout(data.layout);
+                preprocessData(layout, get(data.system_data, {}));
+                preprocessData(layout, get(data.group_data, {}));
                 const values = generateValues(layout, get(data.group_data, {}), get(data.system_data, {}), this.props.scope);
+
                 this.setState({
                     formulaName: data.formula_name,
                     formulaList: data.formula_list,
@@ -84,9 +90,8 @@ class FormulaForm extends React.Component {
             type: formType,
             id: this.props.systemId,
             formula_name: this.state.formulaName,
-            content: this.getValuesClean()
+            content: this.getValuesClean(preprocessCleanValues(this.state.formulaValues, this.state.formulaLayout))
         };
-        console.log(formData);
 
         Network.post(
             this.props.saveUrl,
@@ -112,12 +117,13 @@ class FormulaForm extends React.Component {
         for (let key in values) {
             let value = values[key];
             let element = layout[key];
+
             if (element.$type === "group" || element.$type === "namespace") {
                 value = this.getValuesClean(value, element);
                 if (!$.isEmptyObject(value))
                     result[key] = value;
             }
-            else if ((element.$scope === this.props.scope || element.$scope === "system") && !(value && value.length === 0)) {
+            else if ((element.$scope === this.props.currentScope || element.$scope === "system") && !(value && value.length === 0)) {
                 value = this.checkIfEmptyValueAttrExists(value, element, values)
                 result[key] = value;
             }
@@ -138,14 +144,14 @@ class FormulaForm extends React.Component {
             if (this.props.scope === "system") {
                 Network.get(this.props.dataUrl).promise.then(data => {
                     this.setState({
-                        formulaValues: generateValues(this.state.formulaLayout, get((data === null ? undefined : data.group_data), {}), {}, this.props.scope),
+                        formulaValues: generateValues(this.state.formulaLayout, get((data === null ? undefined : data.group_data), {}), {}, this.props.currentScope),
                         formulaChanged: false
                     });
                 });
             }
             else {
                 this.setState({
-                    formulaValues: generateValues(this.state.formulaLayout, {}, {}, this.props.scope),
+                    formulaValues: generateValues(this.state.formulaLayout, {}, {}, this.props.currentScope),
                     formulaChanged: false
                 });
             }
@@ -171,7 +177,7 @@ class FormulaForm extends React.Component {
 
         this.setState((state) => {
             let values = state.formulaValues;
-            let parents = id.split("$");
+            let parents = id.split("#");
             for (var i in parents.slice(0, -1)) {
                 if (values[parents[i]] === undefined)
                     values[parents[i]] = {};
@@ -186,7 +192,7 @@ class FormulaForm extends React.Component {
     }
 
     getValueById(id) {
-        let parents = id.split("$");
+        let parents = id.split("#");
         let value = this.state.formulaValues;
         for (let i in parents) {
             if (value[parents[i]] === undefined)
@@ -267,79 +273,253 @@ class FormulaForm extends React.Component {
     }
 }
 
-
+/*
+ * Set missing attributes ($type, $scope) to default values,
+ * set $default values,
+ * set $newItemValues for edit-groups.
+ */
 function preprocessLayout(layout, scope = "system") {
-    for (let child_name in layout) {
-        if (child_name.startsWith("$")) continue;
+    Object.entries(layout)
+        .filter(([name, element]) => !name.startsWith("$") || name === "$key")
+        .forEach(([name, element]) => {
+            adjustElementBasicAttrs([name, element], scope);
 
-        let child = layout[child_name];
-        if (!("$scope" in child))
-            child.$scope = scope;
-
-        if (child.$type === "hidden-group")
-            child.$type = "namespace";
-
-        if (!("$type" in child)) {
-            child.$type = "text"
-            child.$default = get(child.$default, "");
-        }
-        else if (child.$type === "boolean")
-            child.$default = get(child.$default, false);
-        else if (child.$type === "select")
-            child.$default = get(child.$default, child.$values[0]);
-        else if (child.$type === "color")
-            child.$default = get(child.$default, "#000000");
-        else if (child.$type === "password")
-            child.$default = get(child.$default, "");
-        else if (child.$type === "group" || child.$type === "namespace")
-            child = preprocessLayout(child, child.$scope);
-        else if (child.$type === "edit-group") {
-            child.$prototype = preprocessLayout(child.$prototype, child.$scope);
-            child.$prototype.$type = "group";
-            if (child.$itemName === undefined) child.$itemName = "Item ${i}";
-            child.$newItemValue = generateValues(child.$prototype, {}, {});
-            child.$default = get(child.$default, []);
-            while (child.$default.length < child.$minItems) {
-                child.$default.push(Object.assign({}, child.$newItemValue));
+            // groups are processed recursively
+            if (element.$type === "group" || element.$type === "namespace") {
+                preprocessLayout(element, element.$scope)
             }
-        }
-        else
-            child.$default = get(child.$default, "");
+            // edit-groups too
+            else if (element.$type === "edit-group") {
+                element.$prototype = preprocessLayout(element.$prototype, element.$scope);
+                adjustEditGroup(element);
+            }
+        });
 
-        child.$id = child_name;
-        if (child.$name === undefined) child.$name = capitalize(child_name);
-        if (child.$help === undefined) child.$help = child.$name;
-        if (child.$placeholder === undefined) child.$placeholder = "";
-    }
     return layout;
 }
 
+// consumes an element entry: [element name, element]
+function adjustElementBasicAttrs([elementName, element], scope) {
+    if (!("$scope" in element)) {
+        element.$scope = scope;
+    }
+
+    if (element.$type === "hidden-group") {
+        element.$type = "namespace";
+    }
+
+    if (!("$type" in element)) {
+        element.$type = "text"
+    }
+
+    if (element.$name === undefined && elementName === "$key") {
+        element.$name = "Key";
+    }
+
+    element.$id = elementName;
+    element.$name = get(element.$name, capitalize(elementName));
+    element.$help = get(element.$help, element.$name);
+    element.$placeholder = get(element.$placeholder, "");
+
+    if (isPrimitiveElement(element)) {
+        element.$default = defaultValueForElement(element);
+    };
+}
+
+function defaultValue(type, defValue, selectValues) {
+    if (type === "boolean")
+        return get(defValue, false);
+    else if (type === "select")
+        return get(defValue, selectValues[0]);
+    else if (type === "color")
+        return get(defValue, "#000000");
+    else if (type === "password")
+        return get(defValue, "");
+
+    return get(defValue, "");
+}
+
+function defaultValueForElement(element) {
+    return defaultValue(element.$type, element.$default, element.$values);
+}
+
+function isPrimitiveElement(element) {
+    return element.$type !== "group" &&
+        element.$type !== "namespace" &&
+        element.$type !== "edit-group";
+}
+
+/*
+ * Adjust edit group default and 'new item' value of edit-group
+ * Some subtypes of edit-group need special handling (e.g. nested dictionary
+ * needs to be converted to lists).
+ */
+function adjustEditGroup(element) {
+    // Adjust common edit-group attributes
+    if (element.$prototype.$type === undefined) {
+        element.$prototype.$type = "group";
+    }
+    else if (element.$prototype.$scope === undefined) {
+        // for non-groups we want to have some default scope
+        element.$prototype.$scope = "system";
+    }
+
+    if (element.$itemName === undefined) {
+        element.$itemName = "Item ${i}";
+    }
+
+    // helper function for setting values from the prototype
+    const setMissingValues = (value) => {
+        Object.keys(element.$prototype)
+            .filter(att => !att.startsWith("$") && !Object.keys(value).includes(att))
+            .forEach(att => value[att] = element.$prototype[att].$default)
+    }
+
+    // Adjust defaults && new values
+    const editGroupSubType = getEditGroupSubtype(element);
+    if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES) {
+        // normalize the default (convert from an object to array)
+        element.$default = Object.entries(element.$default || {})
+            .map(([name, value]) => {
+                value['$key'] = name;
+                setMissingValues(value);
+                return value;
+            });
+        element.$newItemValue = generateValues(element.$prototype, {}, {});
+    }
+    else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
+        element.$default = (element.$default || [])
+            .map(defEntry => {
+                setMissingValues(defEntry);
+                return defEntry;
+            });
+        element.$newItemValue = generateValues(element.$prototype, {}, {});
+    }
+    else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
+        element.$default = Object.entries(element.$default || {});
+        element.$newItemValue = [
+            defaultValue(element.$prototype.$key.$type, element.$prototype.$key.$default),
+            defaultValue(element.$prototype.$type, element.$prototype.$default)
+        ];
+    }
+    else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_LIST) {
+        element.$newItemValue = defaultValue(element.$prototype.$type, element.$prototype.$default);
+    }
+
+
+    // if we don't have minimum number of items, let's create some
+    // todo handle the edit groups where their key must be unique
+    element.$default = get(element.$default, []);
+    while (element.$default.length < element.$minItems) {
+        element.$default.push(deepCopy(element.$newItemValue));
+    }
+}
+
+/*
+ * Goes through the layout and adjusts data for certain structures
+ * (edit-group in a form of nested dictionary needs to be converted to lists, etc.)
+ */
+function preprocessData(layout, data) {
+    Object.entries(layout)
+        .filter(([name, element]) => !(data[name] === undefined || name.startsWith("$") && name !== "$key"))
+        .forEach(([name, element]) => {
+            const editGroupSubType = getEditGroupSubtype(element);
+            // other edit-group as-a-dictionary needs to be converted to an array
+            if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES) {
+                data[name] = Object.entries(data[name] || {})
+                    .map(e => {
+                        e[1]['$key'] = e[0];
+                        preprocessData(element.$prototype, e[1]);
+                        return e[1];
+                    });
+            }
+            // edit-group as-a-primitive-dictionary too
+            else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
+                data[name] = Object.entries(data[name] || {});
+            }
+            // the last form of a recursive edit-group needs to be processed recursively
+            else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
+                Object.entries(data[name] || {})
+                    .forEach(([name, value]) => preprocessData(element.$prototype, value));
+            }
+            // group elements also must be processed as they can contain edit-groups
+            else if (!isPrimitiveElement(element)) {
+                preprocessData(element, data[name]);
+            }
+        });
+}
+
+/*
+ * Traverses the form values and adjusts certain elements.
+ * (e.g. converts arrays to dictionaries in case of edit-group as a dictionary)
+ */
+function preprocessCleanValues(values, layout) {
+    const result = {};
+    Object.entries(values)
+        .forEach(([key, value]) => {
+            const element = layout[key];
+            const editGroupSubType = getEditGroupSubtype(element);
+
+            if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES) {
+                result[key] = value
+                    .map(entry => preprocessCleanValues(entry, element.$prototype))
+                    .reduce((acc, entry) => {
+                        acc[entry["$key"]] = entry;
+                        delete entry["$key"];
+                        return acc;
+                    }, {});
+            } else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
+                result[key] = value.reduce((acc, entry) => {
+                    acc[entry[0]] = entry[1];
+                    return acc;
+                }, {});
+            } else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
+                result[key] = value
+                    .map(entry => preprocessCleanValues(entry, element.$prototype));
+            // we need to recur to groups as they can contain edit-groups that need an adjustment
+            } else if (element !== undefined && element.$type === "group") {
+                result[key] = preprocessCleanValues(value, element);
+            } else {
+                result[key] = value;
+            }
+        });
+    return result;
+}
+
+/*
+ * For each key in the layout, generate and return a defensive copy of an
+ * object that follows the structure of the layout and has values populated
+ * based on the system data, group data and layout default.
+ */
 function generateValues(layout, group_data, system_data) {
-    let result = {};
+    const generateValuesInternal = (layout, group_data, system_data) => {
+        let result = {};
+        for (let key in layout) {
+            if (key.startsWith("$") && key !== "$key") continue;
 
-    for (let key in layout) {
-        if (key.startsWith("$")) continue;
+            let value = null;
+            let element = layout[key];
 
-        let value = null;
-        let element = layout[key];
-
-        if (element.$type === "group" || element.$type === "namespace") {
-            value = generateValues(element, get(group_data[key], {}), get(system_data[key], {}), element.$scope);
-        } else if (element.$scope === "system") {
-            value = get(system_data[key], get(group_data[key], element.$default));
-        } else if (element.$scope === "group") {
-            value = get(group_data[key], element.$default);
-        } else if (element.$scope === "readonly") {
-            value = element.$default;
-        }
+            if (element.$type === "group" || element.$type === "namespace") {
+                value = generateValuesInternal(element, get(group_data[key], {}), get(system_data[key], {}), element.$scope);
+            } else if (element.$scope === "system") {
+                value = get(system_data[key], get(group_data[key], element.$default));
+            } else if (element.$scope === "group") {
+                value = get(group_data[key], element.$default);
+            } else if (element.$scope === "readonly") {
+                value = element.$default;
+            }
 
         if (value === null) {
           value = "";
         }
-        
+
         result[key] = value
     }
     return result;
+}
+
+    return deepCopy(generateValuesInternal(layout, group_data, system_data));
 }
 
 function get(value, def) {

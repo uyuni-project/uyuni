@@ -1,26 +1,36 @@
+// needed because of circular deps
+module.exports.generateFormulaComponent = generateFormulaComponent;
+module.exports.generateFormulaComponentForId = generateFormulaComponentForId;
+
 const React = require("react");
 const EditGroup = require("./EditGroup").EditGroup;
 const PasswordInput = require("./PasswordInput").PasswordInput;
 const BASIC_INPUT_TYPES = ["text", "email", "url", "date", "time"];
 
-function generateFormulaComponent(element, value, formulaForm, parents) {
-    var id = (parents ? parents + "$" : "") + element.$id;
+
+function generateFormulaComponent(element, value, formulaForm, parents, wrapper) {
+    const id = (parents ? parents + "#" : "") + element.$id;
+    return generateFormulaComponentForId(element, value, formulaForm, id, wrapper);
+}
+
+function generateFormulaComponentForId(element, value, formulaForm, id, wrapper) {
+    wrapper = get(wrapper, defaultWrapper);
+
     var isDisabled = (formulaForm.props.scope !== element.$scope && element.$scope !== "system");
 
     if ("$visibleIf" in element && !checkVisibilityCondition(element.$visibleIf, formulaForm))
         return null;
 
     if (BASIC_INPUT_TYPES.indexOf(element.$type) >= 0) //Element is a basic html input type
-        return wrapFormGroupWithLabel(element.$name,
-            <div className="col-lg-6">
-                <input type={element.$type} name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
-            </div>
+        return wrapper(
+            element.$name,
+            <input type={element.$type} name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
         );
     else if (element.$type === "password")
         return <PasswordInput id={id} key={id} element={element} value={value} onChange={formulaForm.handleChange} disabled={isDisabled} />;
     else if (element.$type === "color")
-        return wrapFormGroupWithLabel(element.$name,
-            <div className="col-lg-6">
+        return wrapper(
+                element.$name,
                 <div className="input-group small-color-picker">
                     <input type="color" name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} title={element.$help} disabled={isDisabled} value={value} />
                     <span className="input-group-btn">
@@ -29,19 +39,16 @@ function generateFormulaComponent(element, value, formulaForm, parents) {
                         </button>
                     </span>
                 </div>
-            </div>
         );
     else if (element.$type === "datetime")
-        return wrapFormGroupWithLabel(element.$name,
-            <div className="col-lg-6">
+        return wrapper(
+                element.$name,
                 <input type="datetime-local" name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
-            </div>
         );
     else if (element.$type === "number")
-        return wrapFormGroupWithLabel(element.$name,
-            <div className="col-lg-6">
+        return wrapper(
+                element.$name,
                 <input type="number" steps="1" max={get(element.$max, "")} min={get(element.$min, "")} name={element.$name} id={id} className="form-control" onChange={formulaForm.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
-            </div>
         );
     else if (element.$type === "group") {
         return (
@@ -57,28 +64,30 @@ function generateFormulaComponent(element, value, formulaForm, parents) {
     }
     else if (element.$type === "namespace")
         return generateChildrenFormItems(element, value, formulaForm, id);
-    else if (element.$type === "edit-group")
-        return <EditGroup id={id} key={element.$name} element={element} value={value} formulaForm={formulaForm} generateFormulaComponent={generateFormulaComponent} />;
-    else if (element.$type === "select")
-        return wrapFormGroupWithLabel(element.$name,
-            <div className="col-lg-6">
+    else if (element.$type === "edit-group") {
+        return <EditGroup
+            id={id}
+            key={element.$name}
+            element={element}
+            value={value}
+            formulaForm={formulaForm} />;
+    } else if (element.$type === "select")
+        return wrapper(
+                element.$name,
                 <select className="form-control" name={element.$name} id={id} onChange={formulaForm.handleChange} title={element.$help} disabled={isDisabled} value={value}>
                     {generateSelectList(element.$values)}
                 </select>
-            </div>
         );
     else if (element.$type === "boolean")
-        return wrapFormGroupWithLabel(element.$name,
-            <div className="col-lg-6">
+        return wrapper(
+                element.$name,
                 <input type="checkbox" className="big-checkbox" onChange={formulaForm.handleChange} name={element.$name} id={id} title={element.$help} disabled={isDisabled} checked={value} />
-            </div>
         );
     else {
         console.error("Unknown $type: " + element.$type);
-        return wrapFormGroupWithLabel(get(element.$name, "Unknown element type \"" + element.$type + "\""),
-            <div className="col-lg-6" id={id}>
-                {JSON.stringify(value)}
-            </div>
+        return wrapper(
+                element.$name,
+                <div>{JSON.stringify(value)}</div>
         );
     }
 }
@@ -118,6 +127,14 @@ function generateSelectList(data) {
     return options;
 }
 
+function defaultWrapper(elementName, element) {
+    return wrapFormGroupWithLabel(elementName,
+            <div className="col-lg-6">
+              {element}
+            </div>
+        );
+}
+
 function wrapFormGroupWithLabel(element_name, innerHTML) {
     return (
         <div className="form-group" key={element_name}>
@@ -142,4 +159,3 @@ function get(value, def) {
 }
 
 
-module.exports.generateFormulaComponent = generateFormulaComponent;
