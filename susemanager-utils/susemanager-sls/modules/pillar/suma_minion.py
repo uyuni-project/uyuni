@@ -165,7 +165,7 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
         element_scope = element.get("$scope", scope)
         value = None
 
-        if element.get("$type", "text") in ["group", "hidden-group"]:
+        if element.get("$type", "text") in ["group", "hidden-group", "namespace"]:
             value = merge_formula_data(element, group_data.get(element_name, {}), system_data.get(element_name, {}), element_scope)
         elif element_scope == "system":
             value = system_data.get(element_name, group_data.get(element_name, element.get("$default", element.get("$placeholder", ""))))
