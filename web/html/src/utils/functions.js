@@ -112,6 +112,42 @@ function generatePassword(): string {
     return password;
 }
 
+// todo: shouldn't we stick to JS terminology here? (array/object vs. list/dict?)
+const EditGroupSubtype = Object.freeze({
+    PRIMITIVE_LIST: Symbol("primitiveList"),
+    PRIMITIVE_DICTIONARY: Symbol("primitiveDictionary"),
+    LIST_OF_DICTIONARIES: Symbol("listOfDictionaries"),
+    DICTIONARY_OF_DICTIONARIES: Symbol("dictionaryOfDictionaries")
+});
+
+function getEditGroupSubtype(element) {
+    if (element !== undefined && element.$prototype !== undefined) {
+        const prototype = element.$prototype;
+        if (prototype.$key === undefined && prototype.$type !== "group") {
+            return EditGroupSubtype.PRIMITIVE_LIST;
+        }
+        if (prototype.$key !== undefined && prototype.$type !== "group") {
+            return EditGroupSubtype.PRIMITIVE_DICTIONARY;
+        }
+        if (prototype.$key === undefined && prototype.$type === "group") {
+            return EditGroupSubtype.LIST_OF_DICTIONARIES;
+        }
+        if (prototype.$key !== undefined && prototype.$type === "group") {
+            return EditGroupSubtype.DICTIONARY_OF_DICTIONARIES;
+        }
+    }
+}
+
+// Returns deep copy of object. In case of primitive values, just returns the
+// value.
+function deepCopy(e) {
+    const type = typeof e;
+    if (type === "object") {
+        return $.extend(true, {}, e);
+    }
+    return e;
+}
+
 
 module.exports = {
     Utils: {
@@ -123,9 +159,14 @@ module.exports = {
         sortByDate: sortByDate,
         urlBounce: urlBounce,
         capitalize: capitalize,
-        generatePassword: generatePassword
+        generatePassword: generatePassword,
+        deepCopy: deepCopy
     },
     Formats: {
         LocalDateTime: LocalDateTime
+    },
+    Formulas: {
+        EditGroupSubtype: EditGroupSubtype,
+        getEditGroupSubtype: getEditGroupSubtype
     }
 }
