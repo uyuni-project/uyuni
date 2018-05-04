@@ -727,27 +727,25 @@ def genCaRpm(d, verbosity=0):
 
     update_trust_script = os.path.join(CERT_PATH, 'update-ca-cert-trust.sh')
 
+    requires = ""
+
     for cert_rpm_name, cert_rpm_path in zip([ca_cert_rpm_name, ca_cert_rpm_name_osimage], [ca_cert_rpm, ca_cert_rpm_osimage]):
         # build the CA certificates RPM
 
         if OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
             rel = 1 # filename fixed: rhn-org-trusted-ssl-certosimage-1.0.0-1*.rpm
+            requires = "--requires %s " % OSIMAGE_RPM_REQUIRES
 
         args = (os.path.join(CERT_PATH, 'gen-rpm.sh') + " "
-                "--name %s --version %s --release %s --packager %s --vendor %s "
+                "--name %s --version %s --release %s --packager %s --vendor %s %s"
+                "--group 'RHN/Security' --summary %s --description %s "
+                "--post %s --postun %s "
+                "/usr/share/rhn/%s=%s"
                 % (repr(cert_rpm_name), ver, rel, repr(d['--rpm-packager']),
-                   repr(d['--rpm-vendor'])))
-
-        if OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
-            args += "--requires %s " % OSIMAGE_RPM_REQUIRES
-
-        args += ("--group 'RHN/Security' --summary %s --description %s "
-                 "--post %s --postun %s "
-                 "/usr/share/rhn/%s=%s"
-                 % (repr(CA_CERT_RPM_SUMMARY),
-                   repr(CA_CERT_RPM_SUMMARY),
-                   repr(update_trust_script), repr(update_trust_script),
-                   repr(ca_cert_name), repr(cleanupAbsPath(ca_cert))))
+                repr(d['--rpm-vendor']), requires, repr(CA_CERT_RPM_SUMMARY),
+                repr(CA_CERT_RPM_SUMMARY),
+                repr(update_trust_script), repr(update_trust_script),
+                repr(ca_cert_name), repr(cleanupAbsPath(ca_cert))))
 
         clientRpmName = '%s-%s-%s' % (cert_rpm_path, ver, rel)
         if verbosity >= 0 and not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
