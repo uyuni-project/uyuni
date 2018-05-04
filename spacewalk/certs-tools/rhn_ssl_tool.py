@@ -50,6 +50,8 @@ from certs.sslToolLib import RhnSslToolException, \
         errnoGeneralError, errnoSuccess
 
 from spacewalk.common.fileutils import rotateFile, rhn_popen, cleanupAbsPath
+from spacewalk.common import rhnLog
+from spacewalk.common.rhnLog import log_debug, log_error
 
 from spacewalk.common.rhn_rpm import hdrLabelCompare, sortRPMs, get_package_header, \
         getInstalledHeader
@@ -684,7 +686,8 @@ def genCaRpm_dependencies(d):
 
 def genCaRpm(d, verbosity=0):
     """ generates ssl cert RPM. """
-
+    DEFAULT_LOG_LOCATION = '/var/log/rhn/'
+    rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'osimage_certificate_generation.log', 5)
     OSIMAGE_RPM_CERTIFICATE_PATH = "/usr/share/susemanager/salt/images"
     OSIMAGE_RPM_FILENAME_SUFFIX = "osimage"
     OSIMAGE_RPM_REQUIRES = "ca-certificates"
@@ -755,6 +758,9 @@ def genCaRpm(d, verbosity=0):
         %s.noarch.rpm""" % (clientRpmName, clientRpmName))
             if verbosity > 1:
                 print("Commandline:", args)
+        if OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+            log_debug(1, "Generating CA public certificate RPM: %s.noarch.rpm"
+                % (clientRpmName))
 
         _disableRpmMacros()
         if not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
@@ -774,13 +780,23 @@ def genCaRpm(d, verbosity=0):
         err = err_stream.read(); err_stream.close()
 
         if ret or not os.path.exists("%s.noarch.rpm" % clientRpmName):
-            raise GenCaCertRpmException("CA public SSL certificate RPM generation "
-                                    "failed:\n%s\n%s" % (out, err))
+            if not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+                raise GenCaCertRpmException("CA public SSL certificate RPM generation "
+                    "failed:\n%s\n%s" % (out, err))
+            else:
+                log_error("CA public SSL certificate RPM generation failed: ")
+                log_error("%s" % out)
+                log_error("%s" % err)
         if verbosity > 2 and not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
             if out:
                 print("STDOUT:", out)
             if err:
                 print("STDERR:", err)
+        elif OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+            if out:
+                log_debug(1, "STDOUT: %s" % out)
+            if err:
+                log_debug(1, "STDERR: %s" % err)
         os.chmod('%s.noarch.rpm' % clientRpmName, int('0644',8))
 
     # write-out latest.txt information
