@@ -77,10 +77,10 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
@@ -110,9 +110,9 @@ import org.hibernate.proxy.HibernateProxy;
 
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.utils.salt.FilesDiffResult.SymLinkResult;
-import static com.suse.manager.webui.utils.salt.FilesDiffResult.DirectoryResult;
-import static com.suse.manager.webui.utils.salt.FilesDiffResult.FileResult;
+import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
+import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
+import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 
 import java.io.File;
 import java.io.FileInputStream;
