@@ -1,3 +1,4 @@
+- fix hardware refresh when FQDN changes (bsc#1073267)
 - Handle empty values. Do not pass optional fields to pillar in formulas if field is empty and no ifempty attr defined.
 - Fixed processing of formulas with $scope: group
 - Preserve order of formulas (bsc#1083326)
