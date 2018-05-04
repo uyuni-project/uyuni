@@ -762,8 +762,7 @@ def genCaRpm(d, verbosity=0):
         if not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
             cwd = chdir(d['--dir'])
         else:
-             cwd = chdir(OSIMAGE_RPM_CERTIFICATE_PATH)
-             rel = 1
+            cwd = chdir(OSIMAGE_RPM_CERTIFICATE_PATH)
         try:
             ret, out_stream, err_stream = rhn_popen(args)
         except Exception:
