@@ -7,7 +7,7 @@ cd /tmp/schema/spacewalk
 find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 
 # Build the schema
-make -f Makefile.schema SCHEMA=susemanager-schema VERSION=3.0 RELEASE=testing
+make -f Makefile.schema SCHEMA=susemanager-schema VERSION=3.2 RELEASE=testing
 
 # Install directories
 install -m 0755 -d /etc/sysconfig/rhn
