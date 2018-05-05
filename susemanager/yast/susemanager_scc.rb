@@ -120,6 +120,16 @@ module Yast
                       _("Parent &Server Name"),
                       Ops.get(@settings, "ISS_PARENT", "")
                     )
+                  ),
+                  @text_mode ? Empty() : VSpacing(),
+                  Left(
+                    RadioButton(
+                      Id(:skip),
+                      Opt(:notify),
+                      # radio button label
+                      _("Skip Connection Setup"),
+                      false
+                    )
                   )
                 )
               )
@@ -132,7 +142,8 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>Here, enter organization credentials (mirror credentials) from the SUSE Customer Center.</p>"
+        "<p>Here, enter organization credentials (mirror credentials) from the SUSE Customer Center.</p>\n" \
+        "<p>The connection to SCC or to another SUSE Manager Server can be configured later if needed.</p>"
       )
 
       # dialog caption
@@ -148,7 +159,7 @@ module Yast
 
       while true
         @ret = UI.UserInput
-        if @ret == :scc || @ret == :iss
+        if @ret == :scc || @ret == :iss || @ret == :skip
           Ops.set(@settings, "ISS_PARENT", "")
           UI.ChangeWidget(Id("ISS_PARENT"), :Enabled, @ret == :iss)
           UI.ChangeWidget(Id("SCC_USER"), :Enabled, @ret == :scc)
@@ -157,6 +168,7 @@ module Yast
         end
         break if @ret == :back
         break if @ret == :abort && Popup.ConfirmAbort(:incomplete)
+        break if @ret == :next && UI.QueryWidget(Id(:rb), :CurrentButton) == :skip
         if @ret == "test_NU_credentials" || @ret == :next
           @missing = false
           @isscc = UI.QueryWidget(Id(:rb), :CurrentButton) == :scc
