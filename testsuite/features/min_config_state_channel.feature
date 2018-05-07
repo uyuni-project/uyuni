@@ -54,6 +54,18 @@ Feature: Configuration state channels
     When I wait until event "Apply states [custom] scheduled by admin" is completed
     And I wait until file "/root/foobar" exists on "sle-minion"
 
+  Scenario: Try to remove init.sls file
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "My State Channel"
+    And I follow "View/Edit 'init.sls' File"
+    When I follow "Delete This File Revision"
+    And I click on "Delete Configuration Revision"
+    Then I should see a "Cannot delete the only revision for the init.sls file" text
+    And I should see a "Revision 1 of /init.sls from channel My State Channel" text
+
   Scenario: Cleanup: remove the state channel and the file
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
