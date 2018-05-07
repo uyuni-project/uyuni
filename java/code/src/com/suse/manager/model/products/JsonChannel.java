@@ -16,7 +16,6 @@
 package com.suse.manager.model.products;
 
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
-import com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage;
 
 /**
  * JsonChannel
@@ -49,7 +48,7 @@ public class JsonChannel {
     }
 
     /**
-     * @return the {@link SyncStage} channel status
+     * @return the {@link SetupWizardProductDto.SyncStatus.SyncStage} channel status
      */
     public SetupWizardProductDto.SyncStatus.SyncStage getStatus() {
         return status;
