@@ -1,3 +1,4 @@
+- Avoid init.sls files with no revision on Config State Channels (bsc#1091855)
 - fix taskomatic deadlock in failure case (bsc#1085471)
 - Render configuration files with UTF-8 (bsc#1088667)
 - Update google-gson to version 2.8.2 (bsc#1091091)
