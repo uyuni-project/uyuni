@@ -1,3 +1,4 @@
+- fix token cleanup task crashing (bsc#1090585)
 - HW refresh fails on SLE15 Salt client (bsc#1090221)
 - reorder styles import
 - prevent NPE when no image build history details are available (bsc#1092161)
