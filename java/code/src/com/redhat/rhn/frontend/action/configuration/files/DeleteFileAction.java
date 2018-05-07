@@ -82,7 +82,7 @@ public class DeleteFileAction extends RhnAction {
         }
         catch (IllegalArgumentException e) {
             //Log the error and go on with life.
-            createErrorMessage(req, "delete.jsp.failure", filename);
+            createErrorMessage(req, "deletefile.jsp.failure", filename);
             ConfigActionHelper.processParamMap(req, params);
             return getStrutsDelegate().forwardParams(
                     map.findForward("failure"), params);

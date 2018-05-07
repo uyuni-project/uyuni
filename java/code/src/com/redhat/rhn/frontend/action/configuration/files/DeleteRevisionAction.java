@@ -60,35 +60,44 @@ public class DeleteRevisionAction extends RhnAction {
             if (cr != null) {
                 if (isSubmitted(cff)) {
                     User u = ctx.getCurrentUser();
-                    boolean deletedFile =
-                        ConfigurationManager.getInstance().deleteConfigRevision(u, cr);
-                    //now that the config revision is gone, some of the sets may no
-                    //longer be valid, so clear them.
-                    ConfigActionHelper.clearRhnSets(u);
+                    try {
+                        boolean deletedFile =
+                            ConfigurationManager.getInstance().deleteConfigRevision(u, cr);
+                        //now that the config revision is gone, some of the sets may no
+                        //longer be valid, so clear them.
+                        ConfigActionHelper.clearRhnSets(u);
 
-                    if (!deletedFile) {
-                        String path = cr.getConfigFile().getConfigFileName().getPath();
-                        String revision = cr.getRevision().toString();
-                        ActionMessage am = new ActionMessage("deleterev.jsp.deleted",
-                                path, revision);
+                        if (!deletedFile) {
+                            String path = cr.getConfigFile().getConfigFileName().getPath();
+                            String revision = cr.getRevision().toString();
+                            ActionMessage am = new ActionMessage("deleterev.jsp.deleted",
+                                    path, revision);
+                            msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
+                            /*
+                             * Although I would like to just do:
+                             * ConfigActionHelper.processParamMap(request, params);
+                             * The revision from the request is the one we just deleted,
+                             * so this would cause a LookupException.
+                             */
+                            params.put("cfid", cf.getId().toString());
+                            params.put("crid", cf.getLatestConfigRevision().getId().toString());
+                            return getStrutsDelegate().forwardParams(
+                                    mapping.findForward("success"), params);
+                        }
+                        ActionMessage am = new ActionMessage("deleterev.jsp.deletedfile",
+                                cr.getConfigFile().getConfigFileName().getPath());
                         msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
-                        /*
-                         * Although I would like to just do:
-                         * ConfigActionHelper.processParamMap(request, params);
-                         * The revision from the request is the one we just deleted,
-                         * so this would cause a LookupException.
-                         */
+                        ConfigActionHelper.processParamMap(cf.getConfigChannel(), params);
+                        return getStrutsDelegate().forwardParams(
+                                mapping.findForward("deletedfile"), params);
+                    }
+                    catch (IllegalArgumentException e) {
                         params.put("cfid", cf.getId().toString());
                         params.put("crid", cf.getLatestConfigRevision().getId().toString());
+                        createErrorMessage(request, "deletefile.jsp.error", e.getMessage());
                         return getStrutsDelegate().forwardParams(
                                 mapping.findForward("success"), params);
                     }
-                    ActionMessage am = new ActionMessage("deleterev.jsp.deletedfile",
-                            cr.getConfigFile().getConfigFileName().getPath());
-                    msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
-                    ConfigActionHelper.processParamMap(cf.getConfigChannel(), params);
-                    return getStrutsDelegate().forwardParams(
-                            mapping.findForward("deletedfile"), params);
                 }
                 cff.updateFromRevision(request, cr);
                 request.setAttribute("deleting", Boolean.TRUE);
