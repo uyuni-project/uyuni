@@ -165,7 +165,7 @@ def create_repo(label, additional=[]):
             messages.append("ERROR: package '%s' not found" % pkgname)
             errors += 1
             if not suggestions['no-packages']:
-                suggestions['no-packages'] = ('mgr-create-bootstrap-repo uses the locally synchronized' +
+                suggestions['no-packages'] = ('mgr-create-bootstrap-repo uses the locally synchronized ' +
                                               'versions of files from the SUSE Manager Tools repository, ' +
                                               'and uses the locally synchronized pool channel for dependency resolution. ' +
                                               'Both should be fully synched before running the mgr-create-bootstrap script.')
