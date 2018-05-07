@@ -1,3 +1,5 @@
+- Avoid init.sls files with no revision on Config State Channels (bsc#1091855)
+
 -------------------------------------------------------------------
 Mon May 07 15:23:43 CEST 2018 - jgonzalez@suse.com
 
