@@ -7,6 +7,12 @@ from spacewalk.server import rhnSQL
 from spacewalk.common import usix
 from spacewalk.common.rhnConfig import CFG, initCFG
 from optparse import OptionParser
+import textwrap
+
+msg_wrapper = textwrap.TextWrapper()
+msg_wrapper.initial_indent = '- '
+msg_wrapper.width = 75
+msg_wrapper.subsequent_indent = '  '
 
 sys.path.append("/usr/share/susemanager")
 
@@ -130,6 +136,9 @@ def create_repo(label, additional=[]):
     destdir = mgr_bootstrap_data.DATA[label]['DEST']
     errors = 0
     messages = []
+    suggestions = {
+        'no-packages': None
+    }
 
     if not os.path.exists(destdir):
         if dryrun:
@@ -155,6 +164,11 @@ def create_repo(label, additional=[]):
         if len(pkgs) == 0:
             messages.append("ERROR: package '%s' not found" % pkgname)
             errors += 1
+            if not suggestions['no-packages']:
+                suggestions['no-packages'] = ('mgr-create-bootstrap-repo uses the locally synchronized' +
+                                              'versions of files from the SUSE Manager Tools repository, ' +
+                                              'and uses the locally synchronized pool channel for dependency resolution. ' +
+                                              'Both should be fully synched before running the mgr-create-bootstrap script.')
             continue
         for p in pkgs:
             rpmdir = os.path.join(destdir, p['arch'])
@@ -173,6 +187,11 @@ def create_repo(label, additional=[]):
             print m
         if label.startswith('RES') and not options.usecustomchannels:
             print "If the installation media was imported into a custom channel, try to run again with --with-custom-channels option"
+        suggestions = list(filter(None, suggestions.values()))
+        if suggestions:
+            print "\nSuggestions:"
+            for suggestion in suggestions:
+                print msg_wrapper.fill(suggestion) + "\n"
         sys.exit(1)
 
 usage = "usage: %prog [options] [additional_pkg1 additional_pkg2 ...]"
