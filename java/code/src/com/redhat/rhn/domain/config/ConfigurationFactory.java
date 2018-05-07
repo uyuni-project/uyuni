@@ -732,6 +732,11 @@ public class ConfigurationFactory extends HibernateFactory {
             latest = true;
         }
 
+        // Do not remove only existing revision if safeDelete
+        if (getCountRevisionForFile(file) == 1 && safeDelete) {
+            throw new ConfigFileSafeDeleteException();
+        }
+
         CallableMode m = ModeFactory.getCallableMode("config_queries", "remove_config_revision");
 
         Map inParams = new HashMap();
@@ -750,12 +755,9 @@ public class ConfigurationFactory extends HibernateFactory {
                 commit(file);
             }
             else if (!safeDelete) {
-                //there are no revisions in this file, delete the file (only if deleteFile flag is set).
+                //there are no revisions in this file, delete the file (only if safeDelete is not set).
                 removeConfigFile(file);
                 return true;
-            }
-            else {
-                throw new ConfigFileSafeDeleteException();
             }
         }
         return false;
@@ -916,6 +918,14 @@ public class ConfigurationFactory extends HibernateFactory {
             return null; //no revisions left.
         }
         return (Map)dr.get(0);
+    }
+
+    private static Long getCountRevisionForFile(ConfigFile file) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cfid", file.getId());
+        SelectMode m = ModeFactory.getMode("config_queries", "count_revision_for_file");
+        DataResult dr = m.execute(params);
+        return (Long)((Map)dr.get(0)).get("count");
     }
 
     /**
