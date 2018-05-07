@@ -1,3 +1,5 @@
+- fix bootstrap script for python3 (bsc#1091840)
+
 -------------------------------------------------------------------
 Mon Mar 26 08:49:11 CEST 2018 - jgonzalez@suse.com
 
