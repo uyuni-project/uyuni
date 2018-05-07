@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon May 07 15:33:00 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.22.3-1
 - Require zypp-plugin-spacewalk and yum-rhn-plugin in a version
   which install actions to standard python path (bsc#1091665)
 
