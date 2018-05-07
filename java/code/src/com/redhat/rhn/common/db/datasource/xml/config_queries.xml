@@ -12,6 +12,14 @@ SELECT CR.revision AS revision, CR.id as id
   </query>
 </mode>
 
+<mode name="count_revision_for_file">
+  <query params="cfid">
+SELECT COUNT(*) AS count
+FROM rhnConfigRevision CR
+WHERE CR.config_file_id = :cfid
+  </query>
+</mode>
+
 <!-- Called only from ConfigFactory - so doesn't do security checking -->
 <mode name="lookup_id_by_label_org_channel_type">
   <query params="cc_label, org_id, cct_label">

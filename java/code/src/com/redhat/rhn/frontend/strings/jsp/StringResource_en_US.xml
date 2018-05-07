@@ -13588,6 +13588,24 @@ any of these revisions.  Are you sure you want to do this?</source>
           </context>
         </context-group>
       </trans-unit>
+      <trans-unit id="deletefile.jsp.failure">
+        <source>File {0} failed to be deleted.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/ManageRevisions.do</context>
+          <context context-type="paramnotes">
+              File /etc/sig failed to be deleted
+          </context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="deletefile.jsp.error">
+        <source>{0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/ManageRevisions.do</context>
+          <context context-type="paramnotes">
+              Unexpected error has occured
+          </context>
+        </context-group>
+      </trans-unit>
       <!-- quota.jsp -->
       <!-- globalfilelist.jsp -->
       <trans-unit id="globalfilelist.jsp.toolbar">
