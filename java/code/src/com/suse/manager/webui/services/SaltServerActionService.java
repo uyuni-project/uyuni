@@ -1278,8 +1278,7 @@ public class SaltServerActionService {
 
                     return State.apply(
                             Collections.singletonList("images.docker"),
-                            Optional.of(pillar),
-                            Optional.of(true)
+                            Optional.of(pillar)
                     );
                 },
                 Collections::singletonList
