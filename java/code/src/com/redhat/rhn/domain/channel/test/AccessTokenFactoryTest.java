@@ -15,9 +15,11 @@
 package com.redhat.rhn.domain.channel.test;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -41,6 +43,25 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
+    }
+
+    public void testCleanupNotDeletingChannels() throws Exception {
+        int initialChannelCount = ChannelFactory.listAllBaseChannels().size();
+        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
+
+        assertEquals(initialChannelCount + 1, ChannelFactory.listAllBaseChannels().size());
+
+        AccessToken expired = new AccessToken();
+        expired.setChannels(Collections.singleton(base1));
+        expired.setExpiration(Date.from(Instant.now().minus(Duration.ofDays(1))));
+        expired.setStart(Date.from(Instant.now().minus(Duration.ofDays(3))));
+        expired.setToken("expired");
+        AccessTokenFactory.save(expired);
+
+        assertEquals(1, AccessTokenFactory.all().size());
+        AccessTokenFactory.cleanupUnusedExpired();
+        List<AccessToken> all = AccessTokenFactory.all();
+        assertEquals(initialChannelCount + 1, ChannelFactory.listAllBaseChannels().size());
     }
 
     public void testCleanupExpired() {
