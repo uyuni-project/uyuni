@@ -184,7 +184,8 @@ public class ChannelOverviewAction extends RhnAction {
 
         if (cc.isStateChannel() && cc.getConfigFiles() != null) {
             request.setAttribute(INIT_SLS_FILE, cc.getConfigFiles().stream()
-                    .filter(c -> c.getLatestConfigRevision().isInitSls()).findFirst().orElse(null));
+                    .filter(c -> c.getLatestConfigRevision() != null && c.getLatestConfigRevision().isInitSls())
+                    .findFirst().orElse(null));
         }
 
         request.setAttribute(CHANNEL_TYPE_LABEL, cc.getConfigChannelType().getLabel());
