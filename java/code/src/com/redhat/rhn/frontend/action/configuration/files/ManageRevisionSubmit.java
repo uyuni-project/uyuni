@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.upload.FormFile;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -240,22 +241,30 @@ public class ManageRevisionSubmit extends RhnSetAction {
         }
         //create messages
         ActionMessages msg = new ActionMessages();
-        addIntMessage(successCount, "config_revisions.success", msg);
-        addIntMessage(failureCount, "config_revisions.failure", msg);
+        ActionErrors errors = new ActionErrors();
+        addIntMessage(successCount, "config_revisions.success", msg, errors, false);
+        addIntMessage(failureCount, "config_revisions.failure", msg, errors, true);
         //save messages
         strutsDelegate.saveMessages(request, msg);
+        strutsDelegate.saveMessages(request, errors);
         //go to the next page
         return strutsDelegate.forwardParams(
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
     }
 
-    private void addIntMessage(int number, String key, ActionMessages msgs) {
+    private void addIntMessage(int number, String key, ActionMessages msgs, ActionErrors errors,
+            boolean isError) {
         if (number > 0) {
             if (number == 1) {
                 key = key + ".singular";
             }
             ActionMessage message = new ActionMessage(key, String.valueOf(number));
-            msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
+            if (isError) {
+                errors.add(ActionMessages.GLOBAL_MESSAGE, message);
+            }
+            else {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
+            }
         }
     }
 
