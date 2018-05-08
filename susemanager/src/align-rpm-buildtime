@@ -155,9 +155,7 @@ def assert_rpm_pkg(pkg_data):
 # the main
 #
 if __name__ == '__main__':
-    
     rhnSQL.initDB()
-
     something_changed = False
 
     # find all packages
@@ -167,6 +165,8 @@ if __name__ == '__main__':
         log_debug(1, 'Scanning %s packages' % len(package_list))
         print('Scanning %s packages' % len(package_list))
 
+        updated_packages = 0
+        failed_packages = 0
         # iterate on each package
         for index, package_blob in enumerate(package_list):
             try:
@@ -175,6 +175,7 @@ if __name__ == '__main__':
                 log_error('Unable to find RPM file for id: {0}, name: {1}'.format(
                     package_blob.get('id', 'N/A'), package_blob.get('name', 'N/A')
                 ))
+                failed_packages += 1
                 continue
 
             rpm_tag_build_time = datetime(*time.gmtime(get_rpm_tag_build_time(absolute_package_path))[:6])
@@ -182,14 +183,14 @@ if __name__ == '__main__':
 
             # compare RPM vs DB "buildtime"s
             if package_blob['build_time'] != rpm_tag_build_time:
-
+                updated_packages += 1
                 # update the row in DB
                 ret = update_package_build_time_by_id(package_id, rpm_tag_build_time)
                 if ret == 1:
                     log_debug(1, 'build_time updated for the package id %s' % package_id)
                     something_changed = True
                 else:
-                    log_error('something went wrong during update of the build_time for the package id %s' % package_id)
+                    log_error('Unable to update the build time for the package {0}, id {1}'.format( package_blob['name'], package_id))
 
                 # remove the stored metadata snippet for this package
                 ret = delete_repodata_snippet_by_id(package_id)
@@ -199,19 +200,19 @@ if __name__ == '__main__':
                 else:
                     log_error('something went wrong during remove of the repodata snippet for the package id %s' % package_id)
 
-            if index % 100 == 0:
+            if updated_packages and not updated_packages % 100:
                 rhnSQL.commit()
-                sys.stdout.write('.')
+            if not index % 25:
+                sys.stdout.write('Verified {0} packages         \r'.format(index))
                 sys.stdout.flush()
 
-        print('All {0} packages has been processed.'.format(len(package_list)))
+        print('All {0} packages has been verified.'.format(len(package_list)))
+        print('{0} updates, {1} failures.'.format(updated_packages, failed_packages))
 
         # finally trigger regeneration of all metadata for all channels
         if something_changed:
             ret = regenerate_metadata_for_all_channels()
             log_debug(1, 'queued %s channel metadata regeneration' % ret)
-            print('queued %s channel metadata regeneration' % ret)
-
             rhnSQL.commit()
     else:
         print('No packages needs to be aligned')
