@@ -1182,7 +1182,8 @@ public class SaltServerActionService {
                     Optional.of(pillar));
             result.put(apply, minions);
             return result;
-        } else {
+        }
+        else {
             pillar.put("imagename", store.getUri() + "/" + details.getName() + ":" + details.getVersion());
             LocalCall<Map<String, ApplyResult>> apply = State.apply(
                     Collections.singletonList("images.profileupdate"),
