@@ -4,6 +4,11 @@ mgr_install_docker:
     - pkgs:
       - docker: '>=1.9.0'
       - python-docker-py: '>=1.6.0'
+{%- if grains['osmajorrelease'] == 12 %}
+      - python3-salt
+{%- else %}
+      - python2-salt
+{%- endif %}
 
 mgr_docker_service:
   service.running:
