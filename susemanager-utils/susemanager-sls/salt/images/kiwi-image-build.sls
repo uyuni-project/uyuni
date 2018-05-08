@@ -14,9 +14,9 @@
 {%- set bundle_id  = pillar.get('build_id') %}
 
 {%- if pillar.get('activation_key') %}
-{%- set kiwi_params = '--add-repo ' + common_repo + ' --add-repotype rpm-md ' + salt['cmd.run']('suma-repos ' + pillar.get('activation_key')) %}
+{%- set kiwi_params = '--add-repo ' + common_repo + salt['cmd.run']('suma-repos ' + pillar.get('activation_key')) %}
 {%- else %}
-{%- set kiwi_params = '--add-repo ' + common_repo + ' --add-repotype rpm-md --add-repo ' + pillar.get('kiwi_repositories')|join(' --add-repo ') %}
+{%- set kiwi_params = '--add-repo ' + common_repo + ' --add-repo ' + pillar.get('kiwi_repositories')|join(' --add-repo ') %}
 {%- endif %}
 mgr_buildimage_prepare_source:
   file.directory:
