@@ -11,6 +11,7 @@ Feature: Action chain on salt minions
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
+    And I run "echo '/dev/vda1 / ext4 defaults 0 0' > /etc/fstab" on "sle-minion"
 
   Scenario: Pre-requisite: wait until downgrade is finished
     Given I am on the Systems overview page of this "sle-minion"
