@@ -9,7 +9,6 @@ import time
 import os
 import rpm
 import sys
-from io import StringIO
 
 LOG_FILE = '/var/log/rhn/align-rpm-buildtime.log'
 initLOG(LOG_FILE, 1)
