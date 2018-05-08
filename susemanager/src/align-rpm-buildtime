@@ -175,6 +175,7 @@ if __name__ == '__main__':
                 log_error('Unable to find RPM file for id: {0}, name: {1}'.format(
                     package_blob.get('id', 'N/A'), package_blob.get('name', 'N/A')
                 ))
+                log_error(str(err))
                 failed_packages += 1
                 continue
 
