@@ -1,3 +1,5 @@
+- install python2/3 salt flavours on buildhosts to generate a compatible
+  thin for the dockerimage beeing build (bsc#1092161)
 - docker.login requires a list as input (bsc#1092161)
 - Fix profileupdate sls to execute retrieval of kernel live patching info (bsc#1091052)
 - support SLE15 product family
