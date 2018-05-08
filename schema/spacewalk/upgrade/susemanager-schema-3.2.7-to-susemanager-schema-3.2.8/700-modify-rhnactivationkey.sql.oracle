@@ -1,0 +1,3 @@
+ALTER TABLE rhnactionimageinspect ADD build_action_id NUMBER;
+
+

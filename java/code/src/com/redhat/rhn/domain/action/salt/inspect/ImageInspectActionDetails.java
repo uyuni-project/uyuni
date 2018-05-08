@@ -30,6 +30,7 @@ public class ImageInspectActionDetails extends ActionChild {
     private String version;
     private long imageStoreId;
     private Set<ImageInspectActionResult> results = new HashSet<>();
+    private Long buildActionId;
 
     /**
      * @return the version
@@ -99,6 +100,20 @@ public class ImageInspectActionDetails extends ActionChild {
      */
     public void setActionId(long actionIdIn) {
         this.actionId = actionIdIn;
+    }
+
+    /**
+     * @return the build action id
+     */
+    public Long getBuildActionId() {
+        return buildActionId;
+    }
+
+    /**
+     * @param buildActionIdIn the action id to set
+     */
+    public void setBuildActionId(Long buildActionIdIn) {
+        this.buildActionId = buildActionIdIn;
     }
 
     /**
