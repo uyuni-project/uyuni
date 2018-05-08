@@ -33,6 +33,10 @@
         ${current.name}
       </rhn:column>
 
+      <rhn:column header="ssm.config.subscriptions.jsp.label">
+        ${current.label}
+      </rhn:column>
+
       <rhn:column header="unsubscribe.jsp.systems"
                   url="/rhn/systems/ssm/config/ChannelSystems.do?ccid=${current.id}">
         <c:choose>
