@@ -5,7 +5,7 @@
 mgr_registries_login_inspect:
   module.run:
     - name: docker.login
-    - registries: {{ pillar.get('docker-registries', {}).keys() }}
+    - registries: {{ pillar.get('docker-registries', {}).keys() | list }}
 
 mgr_image_profileupdate:
   module.run:
