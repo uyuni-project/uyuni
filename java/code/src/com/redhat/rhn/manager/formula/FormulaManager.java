@@ -42,6 +42,9 @@ public class FormulaManager {
 
     private static FormulaManager instance;
     private SaltService saltService;
+    private final String DEFAULT_KEY = "$default";
+    private final String TYPE_KEY = "$type";
+    private final String EDIT_GROUP = "edit-group";
     private FormulaManager() {
         saltService = SaltService.INSTANCE;
     }
@@ -102,6 +105,34 @@ public class FormulaManager {
     }
 
     /**
+     * Get the saved formula data for the specific server.
+     * @param user user
+     * @param formulaName formula name for the formula for which data should be returned
+     * @param serverId server Id of the server for which data should be returned
+     * @return the saved data in map form
+     */
+    public Map<String, Object> getSystemFormulaData(User user, String formulaName, Long serverId) {
+        Optional<MinionServer> minion = MinionServerFactory.lookupById(serverId);
+        checkUserHasPermissionsOnServer(user, minion.get());
+        Optional<Map<String, Object>> data = FormulaFactory.getFormulaValuesByNameAndServerId(formulaName, serverId);
+        return data.orElse(Collections.emptyMap());
+    }
+
+    /**
+     * Get the saved formula data for the specific group.
+     * @param user user
+     * @param formulaName formula name for the formula for which data should be returned
+     * @param groupId groupId Id of the Group for which data should be returned
+     * @return the saved data in map form
+     */
+    public Map<String, Object> getGroupFormulaData(User user, String formulaName, Long groupId) {
+        ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
+        checkUserHasPermissionsOnServerGroup(user, group);
+        Optional<Map<String, Object>> data = FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupId);
+        return data.orElse(Collections.emptyMap());
+    }
+
+    /**
      * Validate the provided data
      * @param formulaName formula name
      * @param contents contents
@@ -117,25 +148,117 @@ public class FormulaManager {
      * @param layout corresponding layout with the definition of formula
      */
     public void validateContents(Map<String, Object> contents, Map<String, Object> layout) {
-        contents.forEach((String k, Object v) -> {
-            Optional.ofNullable(layout.get(k)).orElseThrow(() -> new IllegalArgumentException(k + " : doesn't exist " +
-                    "in definition"));
-            if (v instanceof Map) {
-                validateContents((Map) v, (Map) layout.get(k));
+        contents.forEach((String key, Object value) -> {
+            checkForUndefinedFields(key, layout);
+            boolean isEditGroup = isEditGroup(key, layout);
+            //Edit Group should be handled different
+            if (value instanceof Map && !isEditGroup) {
+                validateContents((Map) value, (Map) layout.get(key));
             }
             else {
-                Map<String, Object> def = (Map<String, Object>) layout.get(k);
-                if (Objects.nonNull(def.get("$default"))) {
-                    Class<?> expectedClass = def.get("$default").getClass();
-                    Class<?> actualClass = v.getClass();
-                    boolean isAssignable = expectedClass.isAssignableFrom(actualClass);
-                    if (!isAssignable) {
-                        throw new IllegalArgumentException("For " + k + ": wrong Type." +
-                                " Expected " + expectedClass + "- Found " + actualClass);
-                    }
-                }
+                Map<String, Object> def = (Map<String, Object>) layout.get(key);
+                Optional.ofNullable(def.get(DEFAULT_KEY)).ifPresent(defaultValue-> {
+                    Class<?> expectedClass = def.get(DEFAULT_KEY).getClass();
+                    Class<?> actualClass = value.getClass();
+                    validateTypes(key, actualClass, expectedClass);
+                    validateEditGroups(key, value, isEditGroup, def, expectedClass);
+                });
             }
         });
+    }
+
+    /**
+     * Validate Edit groups based on its type
+     * @param key key
+     * @param value value
+     * @param isEditGroup is item edit-group
+     * @param def definition
+     * @param expectedClass expected class
+     */
+    private void validateEditGroups(String key, Object value, boolean isEditGroup,
+                                    Map<String, Object> def, Class<?> expectedClass) {
+        if (isEditGroup) {
+            if (List.class.isAssignableFrom(expectedClass)) {
+                validateListContents(key, (List) value, (List<Object>) def.get(DEFAULT_KEY), def);
+            }
+            else if (Map.class.isAssignableFrom(expectedClass)) {
+                validateDictionary((Map<String, Object>) value, def);
+            }
+        }
+    }
+
+    /**
+     * Validate dictionary(Map) of given daata against the definition
+     * @param editGroupDict dict
+     * @param def definition
+     * @return true if everything is fine
+     */
+    private boolean validateDictionary(Map<String, Object> editGroupDict, Map<String, Object> def) {
+        Map<String, Object> prototype = (Map<String, Object>) def.get("$prototype");
+        editGroupDict.forEach((k, v) -> {
+            if (v instanceof Map) {
+                Optional.ofNullable(prototype.get(k)).map(item -> validateDictionary((Map) v, (Map) item))
+                        .orElseGet(() -> validateDictionary((Map) v, def));
+            }
+            else {
+                Optional<Object> defaultValue = Opt.or(Optional.ofNullable(prototype.get(k))
+                        .map(item -> ((Map) item).get(DEFAULT_KEY)), Optional.ofNullable(prototype.get(DEFAULT_KEY)));
+                defaultValue.ifPresent(value -> validateTypes(k, v.getClass(), value.getClass()));
+            }
+        });
+        return true;
+    }
+
+    /**
+     * Validate List contents
+     * @param key key
+     * @param actualList data to be checked
+     * @param expectedListFormat expected format
+     * @param def definition
+     */
+    private void validateListContents(String key, List<Object> actualList, List<Object> expectedListFormat,
+                                                                                      Map<String, Object> def) {
+        Class<?> expectedClass = expectedListFormat.iterator().next().getClass();
+        if (Map.class.isAssignableFrom(expectedClass)) {
+            actualList.forEach(item -> validateDictionary((Map) item, def));
+        }
+        else {
+            actualList.forEach(item -> validateTypes(key, expectedClass, item.getClass()));
+        }
+    }
+
+    /**
+     * Validate the actual data by comparing the classes(type)
+     * @param key key for which data should be validated
+     * @param actualClass actual class
+     * @param expectedClass expected class
+     */
+    private  void validateTypes(String key, Class<?> actualClass, Class<?> expectedClass) {
+        boolean isAssignable = expectedClass.isAssignableFrom(actualClass);
+        if (!isAssignable) {
+            throw new IllegalArgumentException("For " + key + ": wrong Type." +
+                    " Expected " + expectedClass.getSimpleName() + " - Found " + actualClass.getSimpleName());
+        }
+    }
+
+    /**
+     * Check if provided data's key exist in definition
+     * @param key key
+     * @param layout form definition
+     */
+    private void checkForUndefinedFields(String key, Map<String, Object> layout) {
+        if (Objects.isNull(layout.get(key))) {
+            throw new IllegalArgumentException(key + " : doesn't exist in definition");
+        }
+    }
+
+    /**
+     * Check if the given item is of type 'edit-group'
+     * @return
+     */
+    private boolean isEditGroup(String key, Map<String, Object> layout) {
+        Map<String, Object> def = (Map<String, Object>) layout.get(key);
+        return Optional.ofNullable(def.get(TYPE_KEY)).map(d->d.equals(EDIT_GROUP)).orElse(false);
     }
 
     /**
