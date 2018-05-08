@@ -34,6 +34,10 @@
             ${current.name}
         </rhn:column>
 
+        <rhn:column header="sdc.config.subscriptions.jsp.label">
+            ${current.label}
+        </rhn:column>
+
       <rhn:column header="sdc.config.subscriptions.jsp.files">
             ${current.filesAndDirsDisplayString}
       </rhn:column>

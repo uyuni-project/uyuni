@@ -88,7 +88,8 @@ public class RankChannelsAction  extends RhnAction {
         for (String id : set) {
             Long ccid = Long.valueOf(id);
             ConfigChannel channel = ConfigurationFactory.lookupConfigChannelById(ccid);
-            labelValues.add(lv(channel.getName(), channel.getId().toString()));
+            String optionstr = channel.getName() + " (" + channel.getLabel() + ")";
+            labelValues.add(lv(optionstr, channel.getId().toString()));
         }
 
         //set the form variables for the widget to read.
@@ -231,10 +232,9 @@ public class RankChannelsAction  extends RhnAction {
                                             RequestContext context) {
 
         ActivationKey key = context.lookupAndBindActivationKey();
-        for (ConfigChannel channel :
-                key.getConfigChannelsFor(context.getCurrentUser())) {
-            labelValues.add(lv(channel.getName(),
-                                        channel.getId().toString()));
+        for (ConfigChannel channel : key.getConfigChannelsFor(context.getCurrentUser())) {
+            String optionstr = channel.getName() + " (" + channel.getLabel() + ")";
+            labelValues.add(lv(optionstr, channel.getId().toString()));
         }
     }
 

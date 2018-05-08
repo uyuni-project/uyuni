@@ -143,7 +143,10 @@ public class RankChannelsAction extends BaseRankChannels {
                                             RequestContext context) {
         Server server = context.lookupAndBindServer();
         server.getConfigChannelStream()
-                .forEach(c -> labelValues.add(lv(c.getName(), c.getId().toString())));
+                .forEach(c -> {
+                    String optionstr = c.getName() + " (" + c.getLabel() + ")";
+                    labelValues.add(lv(optionstr, c.getId().toString()));
+                });
     }
 
     @Override

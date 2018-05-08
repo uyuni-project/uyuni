@@ -16,6 +16,9 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -154,22 +157,23 @@ public class JSONConfigChannel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+    public boolean equals(Object other) {
+        if (!(other instanceof JSONConfigChannel)) {
             return false;
         }
-
-        JSONConfigChannel that = (JSONConfigChannel) o;
-
-        return name != null ? name.equals(that.name) : that.name == null;
-
+        JSONConfigChannel castOther = (JSONConfigChannel) other;
+        return new EqualsBuilder()
+                .append(name, castOther.name)
+                .append(label, castOther.label)
+                .append(type, castOther.type)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return new HashCodeBuilder()
+                .append(name)
+                .append(label)
+                .append(type).toHashCode();
     }
 }
