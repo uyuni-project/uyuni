@@ -1,3 +1,5 @@
+- Show channel label when listing config channels (bsc#1083278)
+
 -------------------------------------------------------------------
 Mon May 07 15:13:19 CEST 2018 - jgonzalez@suse.com
 

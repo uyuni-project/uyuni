@@ -2183,7 +2183,7 @@ SELECT  CC.id,
 -->
 <mode name="ssm_channels_for_subscribe_choose" class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
   <query params="org_id, user_id">
-SELECT  CC.id, CC.name
+SELECT  CC.id, CC.name, CC.label
   FROM  rhnConfigChannel CC
   JOIN  rhnConfigChannelType CCT
     ON  CC.confchan_type_id = CCT.id
@@ -2220,7 +2220,7 @@ ORDER BY UPPER(CC.name)
 -->
 <mode name="ssm_channels_for_subscribe_already_sub" class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
   <query params="org_id, user_id">
-SELECT  CC.id, CC.name
+SELECT  CC.id, CC.name, CC.label
   FROM  rhnConfigChannel CC
   JOIN  rhnConfigChannelType CCT
     ON  CC.confchan_type_id = CCT.id
@@ -2243,7 +2243,7 @@ ORDER BY UPPER(CC.name)
 
 <mode name="ssm_channels_for_subscribe_in_set" class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
   <query params="user_id, channel_set_label">
-SELECT  CC.id, CC.name
+SELECT  CC.id, CC.name, CC.label
   FROM  rhnConfigChannel CC, rhnConfigChannelType CCT, rhnSet ST
  WHERE  ST.user_id = :user_id
    AND  ST.label = :channel_set_label

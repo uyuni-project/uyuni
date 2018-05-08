@@ -1,3 +1,6 @@
+- Show channel label when listing config channels (bsc#1083278)
+- fix equals to display channels with same name but different label
+  (bsc#1083278)
 - Avoid init.sls files with no revision on Config State Channels (bsc#1091855)
 
 -------------------------------------------------------------------
