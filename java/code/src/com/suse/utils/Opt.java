@@ -90,4 +90,36 @@ public class Opt {
             present.accept(opt.get());
         }
     }
+
+    /**
+     * Takes two optional and return one of them
+     * @param first first optional
+     * @param second second optional
+     * @param <T> content type of the supplied optional
+     * @return optional
+     */
+    public static <T> Optional<T> or(Optional<T> first, Optional<T> second) {
+        if (first.isPresent()) {
+            return first;
+        }
+        else {
+            return second;
+        }
+    }
+
+    /**
+     * Takes two optional and return one of them
+     * @param first first optional
+     * @param second second optional
+     * @param <T> content type of the supplied optional
+     * @return optional
+     */
+    public static <T> Optional<T> or(Optional<T> first, Supplier<Optional<T>> second) {
+        if (first.isPresent()) {
+            return first;
+        }
+        else {
+            return second.get();
+        }
+    }
 }
