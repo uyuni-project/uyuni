@@ -18,7 +18,7 @@ CREATE TABLE suseImageInfo
     id             NUMBER NOT NULL
                      CONSTRAINT suse_imginfo_imgid_pk PRIMARY KEY,
     name           VARCHAR2(128) NOT NULL,
-    version        VARCHAR2(128) NOT NULL,
+    version        VARCHAR2(128),
     checksum_id    NUMBER
                      CONSTRAINT suse_imginfo_chsum_fk
                        REFERENCES rhnChecksum (id),
