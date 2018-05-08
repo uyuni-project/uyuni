@@ -1251,6 +1251,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageInspectAction inspectAction = ActionManager.scheduleImageInspect(
                 user,
                 Collections.singletonList(server.getId()),
+                Optional.empty(),
                 imageVersion,
                 profile.getLabel(),
                 profile.getTargetStore(),
