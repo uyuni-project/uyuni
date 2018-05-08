@@ -321,23 +321,26 @@ When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
-  target = get_target(minion)
-  output, _code = target.run('date +%Z')
+  node = get_target(minion)
+  output, _code = node.run('date +%Z')
   result = output.strip
   result = 'CET' if result == 'CEST'
   raise unless result == timezone
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
-  target = get_target(minion)
-  output, _code = target.run('cat /etc/vconsole.conf')
+  node = get_target(minion)
+  output, _code = node.run('cat /etc/vconsole.conf')
   raise unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
-  target = get_target(minion)
-  output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
-  raise unless output.strip == "RC_LANG=\"#{language}\""
+  node = get_target(minion)
+  output, _code = node.run("grep 'RC_LANG=' /etc/sysconfig/language")
+  unless output.strip == "RC_LANG=\"#{language}\""
+    output, _code = node.run("grep 'LANG=' /etc/locale.conf")
+    raise unless output.strip == "LANG=#{language}"
+  end
 end
 
 When(/^I refresh the pillar data$/) do
