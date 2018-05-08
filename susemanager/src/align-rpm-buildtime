@@ -15,6 +15,7 @@ LOG_FILE = '/var/log/rhn/align-rpm-buildtime.log'
 initLOG(LOG_FILE, 1)
 
 initCFG('server')
+_package_path_prefix = CFG.MOUNT_POINT
 
 #
 # - find first sync after install/update to 3.1
@@ -212,7 +213,7 @@ if __name__ == '__main__':
             log_debug(1, 'queued %s channel metadata regeneration' % ret)
             print('queued %s channel metadata regeneration' % ret)
 
-        rhnSQL.commit()
+            rhnSQL.commit()
     else:
         print('No packages needs to be aligned')
 
