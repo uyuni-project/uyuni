@@ -934,13 +934,13 @@ public class SaltUtils {
                                     new TypeToken<MgrUtilRunner.ExecResult>() { });
                         });
             }));
-
             ImageInspectAction iAction = ActionManager.scheduleImageInspect(
                     action.getSchedulerUser(),
                     action.getServerActions()
                             .stream()
                             .map(ServerAction::getServerId)
                             .collect(Collectors.toList()),
+                    Optional.of(action.getId()),
                     details.getVersion(),
                     profileOpt.map(ImageProfile::getLabel).orElse(null),
                     profileOpt.map(ImageProfile::getTargetStore).orElse(null),

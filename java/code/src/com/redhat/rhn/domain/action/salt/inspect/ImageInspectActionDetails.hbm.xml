@@ -13,6 +13,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </id>
         <property name="name" column="name" type="string" />
         <property name="version" column="version" type="string" />
+        <property name="buildActionId" column="build_action_id" type="long" />
         <property name="imageStoreId" column="image_store_id" type="long" />
         <property name="created" type="timestamp" insert="false" update="false" />
         <property name="modified" type="timestamp" insert="false" update="false" />

@@ -2208,6 +2208,7 @@ public class ActionManager extends BaseManager {
      *
      * @param scheduler the scheduler
      * @param sids      the sids
+     * @param buildActionId the build actionId
      * @param version   the image version
      * @param name      the image name
      * @param store     the image store
@@ -2215,7 +2216,7 @@ public class ActionManager extends BaseManager {
      * @return the image inspect action
      */
     public static ImageInspectAction scheduleImageInspect(User scheduler, List<Long> sids,
-                                                          String version, String name,
+                                                          Optional<Long> buildActionId, String version, String name,
                                                           ImageStore store, Date earliest) {
         ImageInspectAction action = (ImageInspectAction) ActionFactory
                 .createAction(ActionFactory.TYPE_IMAGE_INSPECT, earliest);
@@ -2226,6 +2227,7 @@ public class ActionManager extends BaseManager {
 
         ImageInspectActionDetails actionDetails = new ImageInspectActionDetails();
         actionDetails.setName(name);
+        buildActionId.ifPresent(aid -> actionDetails.setBuildActionId(aid));
         actionDetails.setVersion(version);
         actionDetails.setImageStoreId(store.getId());
         action.setDetails(actionDetails);
