@@ -166,8 +166,7 @@ if __name__ == '__main__':
 
     if package_list is not None:
         log_debug(1, 'Scanning %s packages' % len(package_list))
-        sys.stdout.write('Scanning %s packages' % len(package_list))
-        sys.stdout.write('\n')
+        print('Scanning %s packages' % len(package_list))
 
         # iterate on each package
         for index, package_blob in enumerate(package_list):
@@ -204,17 +203,15 @@ if __name__ == '__main__':
                 sys.stdout.write('.')
                 sys.stdout.flush()
 
-        sys.stdout.write('\n')
+        print('All {0} packages has been processed.'.format(len(package_list)))
 
         # finally trigger regeneration of all metadata for all channels
         if something_changed:
             ret = regenerate_metadata_for_all_channels()
             log_debug(1, 'queued %s channel metadata regeneration' % ret)
-            sys.stdout.write('queued %s channel metadata regeneration' % ret)
-            sys.stdout.write('\n')
+            print('queued %s channel metadata regeneration' % ret)
 
         rhnSQL.commit()
     else:
-        sys.stdout.write('Nothing to do.')
-        sys.stdout.write('\n')
+        print('No packages needs to be aligned')
 
