@@ -16051,6 +16051,56 @@
   },
   {
     "autorefresh": true,
+    "description": "SLE-WE12-SP4-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2844,
+    "installer_updates": false,
+    "name": "SLE-WE12-SP4-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-WE/12-SP4/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-WE12-SP4-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2845,
+    "installer_updates": false,
+    "name": "SLE-WE12-SP4-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-WE/12-SP4/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-WE12-SP4-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2846,
+    "installer_updates": false,
+    "name": "SLE-WE12-SP4-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12-SP4/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-WE12-SP4-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2847,
+    "installer_updates": false,
+    "name": "SLE-WE12-SP4-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12-SP4/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-WE12-SP4-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2848,
+    "installer_updates": false,
+    "name": "SLE-WE12-SP4-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12-SP4/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SLE-Product-HA15-Updates for sle-15-aarch64",
     "distro_target": "sle-15-aarch64",
     "enabled": true,
