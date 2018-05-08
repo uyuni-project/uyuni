@@ -162,14 +162,18 @@ public class JSONConfigChannel {
             return false;
         }
         JSONConfigChannel castOther = (JSONConfigChannel) other;
-        return new EqualsBuilder().append(label, castOther.label)
-                                  .append(type, castOther.type)
-                                  .isEquals();
+        return new EqualsBuilder()
+                .append(name, castOther.name)
+                .append(label, castOther.label)
+                .append(type, castOther.type)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(label)
+        return new HashCodeBuilder()
+                .append(name)
+                .append(label)
                 .append(type).toHashCode();
     }
 }
