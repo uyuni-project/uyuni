@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.suse.utils.Json;
 
 
 /**
@@ -151,6 +152,46 @@ public class FormulaHandler extends BaseHandler {
                     "Provided systemId does not correspond to a minion");
         }
         return 1;
+    }
+
+    /**
+     * Get the saved data for the specific formula against specific server
+     * @param loggedInUser user
+     * @param formulaName formula name
+     * @param systemId system id
+     * @return saved data as Json
+     *
+     * @xmlrpc.doc Get the saved data for the specific formula against specific server
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "formulaName")
+     * @xmlrpc.param #param("Integer", "systemId")
+     * @xmlrpc.returntype string - Json data string
+     */
+    public String getSystemFormulaData(User loggedInUser, String formulaName, Integer systemId) {
+        FormulaManager manager = FormulaManager.getInstance();
+        Map<String, Object> savedData = manager.getSystemFormulaData(loggedInUser, formulaName, systemId.longValue());
+        return Json.GSON.toJson(savedData);
+    }
+
+    /**
+     *  Get the saved data for the specific formula against specific group
+     * @param loggedInUser user
+     * @param formulaName formula name
+     * @param groupId group id
+     * @return saved data as Json string
+     * @xmlrpc.doc Get the saved data for the specific formula against specific group
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("int", "Ids of the systems for which to populate form")
+     * @xmlrpc.param #param("string", "formulaName")
+     * @xmlrpc.param #param("Integer", "groupId")
+     * @xmlrpc.returntype string - Json data
+     */
+    public String getGroupFormulaData(User loggedInUser, String formulaName, Integer groupId) {
+        FormulaManager manager = FormulaManager.getInstance();
+        Map<String, Object> savedData = manager.getGroupFormulaData(loggedInUser, formulaName, groupId.longValue());
+        return Json.GSON.toJson(savedData);
     }
 
     /**

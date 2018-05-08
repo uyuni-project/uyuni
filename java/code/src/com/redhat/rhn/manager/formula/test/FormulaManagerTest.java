@@ -50,6 +50,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
     static final String FORMULA_DATA = "dhcpd-formula-data.json";
     static final String FORMULA_DEFINATION = "dhcpd-formula-form.json";
+
     static final String TEMP_PATH = "formulas/";
     static final String formulaName = "dhcpd";
     private SaltService saltServiceMock;
