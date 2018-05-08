@@ -1,3 +1,4 @@
+- Automatically select mandatory channels when selecting a base channel (bsc#1083513)
 - Bugfix: ace.js editor config to use soft tabs (bsc#1090040)
 - Do not use button for recommended toggler
 - rewrite products page into reactjs

@@ -54,7 +54,8 @@ type SystemChannelsState = {
   // channel dependencies: by which child channels is a child channel required?
   requiredByChannels: Map<number, Set<number>>,
   page: number,
-  scheduled: boolean
+  scheduled: boolean,
+  dependencyDataAvailable: boolean
 }
 
 class SystemChannels extends React.Component<SystemChannelsProps, SystemChannelsState> {
@@ -71,7 +72,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       requiredChannels: new Map(),
       requiredByChannels: new Map(),
       page: 1,
-      scheduled: false
+      scheduled: false,
+      dependencyDataAvailable: false
     };
   }
 
@@ -113,11 +115,23 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           // sort child channels by name to have a consistent order in the UI
           availableChildren: availableChildren
         });
-        const childrenIds : Array<number> = Array.from(availableChildren.keys());
-        return Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise;
+        const channelIds : Array<number> = Array.from(availableChildren.keys());
+        channelIds.push(baseId);
+        return Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(channelIds), "application/json").promise;
       })
       .then((data : JsonResult<Map<number, Array<number>>>) => {
-        this.setState(ChannelUtils.processChannelDependencies(data.data));
+        let numericBaseId = Number(baseId)
+        let channelDependencies = ChannelUtils.processChannelDependencies(data.data);
+
+        if (!channelDependencies.selectedChildrenIds) {
+          channelDependencies.selectedChildrenIds = this.state.selectedChildrenIds;		
+        }
+        let prevSelectedChildren = this.state.selectedChildrenIds.get(numericBaseId) ? this.state.selectedChildrenIds.get(numericBaseId) : new Set();
+        let newSelectedChildren = new Set([...prevSelectedChildren, ...channelDependencies.requiredChannels.get(numericBaseId)]);
+
+        channelDependencies.selectedChildrenIds.set(numericBaseId, newSelectedChildren);
+        this.setState(channelDependencies);
+        this.setState({dependencyDataAvailable: true});
       })
       .catch(this.handleResponseError);
   }
@@ -138,7 +152,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           this.state.availableBase.find(c => c.id == baseId) :
           this.getNoBase(),
       availableChildren: new Map(),
-      selectedChildrenIds: this.state.selectedChildrenIds
+      selectedChildrenIds: this.state.selectedChildrenIds,
+      dependencyDataAvailable: baseId > -1 ? false : true
     });
 
     this.getAccessibleChildren(event.target.value);
@@ -319,13 +334,14 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       }
     }
 
-    if (this.state.availableChildren) {
+    if (this.state.availableChildren && this.state.dependencyDataAvailable == true) {
       let selectedChildrenList = this.getSelectedChildren();
+      let mandatoryChannels = this.state.requiredChannels.get(this.state.selectedBase.id);
 
       childChannels = Array.from(this.state.availableChildren.values()).map(c => <div className="checkbox">
         <input type="checkbox" value={c.id} id={"child_" + c.id}
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
-          disabled={!c.subscribable}
+          disabled={!c.subscribable || mandatoryChannels.has(c.id)}
           onChange={this.handleChildChange}/>
         <label title={this.dependenciesTooltip(c.id)} htmlFor={"child_" + c.id}>{c.name}</label> &nbsp;
         {
@@ -351,6 +367,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           <div className="btn-group">
             <Button
               id="btn-next"
+              disabled={!this.state.dependencyDataAvailable}
               text={t("Next")}
               className="btn-default"
               icon="fa-arrow-right"
@@ -397,10 +414,15 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                         { childChannels && childChannels.length > 0 ?
                             <div>{ childChannels } </div> :
                             <div>
-                              { this.state.selectedBase && this.state.selectedBase.id > -1 ?
-                                <span><i className="fa fa-exclamation-triangle fa-1-5x" title={t("No child channels available.")}/>
-                                  {t("No child channels available.")}</span>
-                                : undefined }
+                              {
+                                (this.state.selectedBase && this.state.selectedBase.id > -1)
+                                  ? (this.state.dependencyDataAvailable && this.state.dependencyDataAvailable == true)
+                                      ? <span><i className="fa fa-exclamation-triangle fa-1-5x" title={t("No child channels available.")}/>
+                                      {t("No child channels available.")}</span>
+                                      : <span><i className="fa fa-spinner fa-spin fa-1-5x" title={t("Loading...")}/>
+                                      {t("Loading...")}</span>
+                                  : undefined
+                              }
                             </div>
                         }
 
