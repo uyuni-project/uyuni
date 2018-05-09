@@ -119,13 +119,11 @@ end
 
 Then(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
-  step %(I copy "/tmp/spacewalk-debug.tar.bz2" from "server")
-end
-
-When(/^I copy "([^"]*)" from "([^"]*)"$/) do |file, target|
-  node = get_target(target)
-  return_code = file_extract(node, file, File.basename(file))
-  raise 'File extraction failed' unless return_code.zero?
+  cmd = "echo | scp -o StrictHostKeyChecking=no root@#{$server.ip}:/tmp/spacewalk-debug.tar.bz2 . 2>&1"
+  command_output = `#{cmd}`
+  unless $CHILD_STATUS.success?
+    raise "Execute command failed: #{$ERROR_INFO}: #{command_output}"
+  end
 end
 
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, target|
@@ -475,12 +473,16 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-And(/^I create the "([^"]*)" bootstrap-repo for "([^"]*)" on the server$/) do |arch, target|
+And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, target|
   node = get_target(target)
   os_version = get_os_version(node)
-  sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
-  cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}" if os_version.include? '12'
-  cmd = "mgr-create-bootstrap-repo -c SLE-#{sle11}-#{arch}" if os_version.include? '11'
+  cmd = 'false'
+  if (os_version.include? '12') || (os_version.include? '15')
+    cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
+  elsif os_version.include? '11'
+    sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
+    cmd = "mgr-create-bootstrap-repo -c SLE-#{sle11}-#{arch}"
+  end
   puts 'Creating the boostrap repository on the server: ' + cmd
   $server.run(cmd, false)
 end

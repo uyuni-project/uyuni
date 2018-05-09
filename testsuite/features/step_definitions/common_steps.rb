@@ -509,10 +509,11 @@ When(/^I enable SUSE container repository, but not for SLES11 systems$/) do
   # only for SLES12 and upper systems
   _out, code = $minion.run('pidof systemd', false)
   if code.zero?
+    os_version = get_os_version($minion)
     out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
     $minion.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
-    $minion.run('zypper mr --enable SLE-Module-Containers-SLE-12-x86_64-Pool')
-    $minion.run('zypper mr --enable SLE-Module-Containers-SLE-12-x86_64-Update')
+    $minion.run("zypper mr --enable SLE-Module-Containers-SLE-#{os_version}-x86_64-Pool")
+    $minion.run("zypper mr --enable SLE-Module-Containers-SLE-#{os_version}-x86_64-Update")
   end
 end
 
@@ -521,10 +522,11 @@ When(/^I disable SUSE container repository, but not for SLES11 systems$/) do
   # only for SLES12 and upper systems
   _out, code = $minion.run('pidof systemd', false)
   if code.zero?
+    os_version = get_os_version($minion)
     out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
     $minion.run("zypper mr --disable #{out.gsub(/\s/, ' ')}")
-    $minion.run('zypper mr --disable SLE-Module-Containers-SLE-12-x86_64-Pool')
-    $minion.run('zypper mr --disable SLE-Module-Containers-SLE-12-x86_64-Update')
+    $minion.run("zypper mr --disable SLE-Module-Containers-SLE-#{os_version}-x86_64-Pool")
+    $minion.run("zypper mr --disable SLE-Module-Containers-SLE-#{os_version}-x86_64-Update")
     $minion.run('zypper -n --gpg-auto-import-keys ref')
   end
 end
@@ -534,8 +536,13 @@ And(/^I enable SLES pool and update repository on "([^"]*)", but not for SLES11$
     node = get_target(target)
     os_version = get_os_version(node)
     arch, _code = node.run('uname -m')
-    puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Update")
-    puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Pool")
+    if os_version == '15'
+      puts node.run("zypper mr --enable SLE-Module-Basesystem15-x86_64-Pool")
+      puts node.run("zypper mr --enable SLE-Module-Basesystem15-x86_64-Update")
+    else
+      puts node.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+      puts node.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
+    end
     steps %(
       And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
       And I wait until no Salt job is running on "sle-minion"
@@ -552,8 +559,13 @@ And(/^I disable SLES pool and update repository on "([^"]*)"$/) do |target|
   node = get_target(target)
   os_version = get_os_version(node)
   arch, _code = node.run('uname -m')
-  puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Update")
-  puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Pool")
+  if os_version == '15'
+    puts node.run("zypper mr -d SLE-Module-Basesystem15-x86_64-Pool")
+    puts node.run("zypper mr -d SLE-Module-Basesystem15-x86_64-Update")
+  else
+    puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Update")
+    puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Pool")
+  end
 end
 
 # Register client
