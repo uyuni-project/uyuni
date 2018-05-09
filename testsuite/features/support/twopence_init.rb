@@ -87,3 +87,5 @@ def file_inject(node, local_file, remote_file)
   code, _remote = node.inject_file(local_file, remote_file, 'root', false)
   code
 end
+
+$sle15_minion = minion_is_sle15
