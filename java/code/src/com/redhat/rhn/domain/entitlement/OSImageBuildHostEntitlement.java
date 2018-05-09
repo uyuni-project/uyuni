@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.entitlement;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
@@ -59,12 +61,14 @@ public class OSImageBuildHostEntitlement extends Entitlement {
     public boolean isAllowedOnServer(Server server) {
         return  super.isAllowedOnServer(server) &&
                 server.getBaseEntitlement() instanceof SaltEntitlement &&
-                server.doesOsSupportsOSImageBuilding();
+                server.doesOsSupportsOSImageBuilding() &&
+                Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAllowedOnServer(Server server, ValueMap grains) {
         return isAllowedOnServer(server);
     }
