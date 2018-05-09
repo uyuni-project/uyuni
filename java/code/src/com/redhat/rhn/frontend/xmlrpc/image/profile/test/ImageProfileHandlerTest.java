@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.profile.test;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -46,6 +48,11 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
     private ImageProfileHandler handler = new ImageProfileHandler();
+
+    @Override public void setUp() throws Exception {
+        super.setUp();
+        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
+    }
 
     public final void testListImageProfileTypes() throws Exception {
         List<String> types = handler.listImageProfileTypes(admin);

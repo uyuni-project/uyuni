@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.entitlements.test;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -63,6 +65,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());
         UserTestUtils.addVirtualization(user.getOrg());
+        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
     /**
      *

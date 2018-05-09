@@ -240,6 +240,11 @@ public class ConfigDefaults {
      */
     public static final String SALT_CHECK_DOWNLOAD_TOKENS = "java.salt_check_download_tokens";
 
+    /**
+     * If true, Kiwi OS Image building feature preview will be enabled
+     */
+    public static final String KIWI_OS_IMAGE_BUILDING_ENABLED = "java.kiwi_os_image_building_enabled";
+
 
     /**
      * If true, signing metadata is enabled, otherwise metadata will not be signed
