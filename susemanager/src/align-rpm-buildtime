@@ -171,10 +171,9 @@ if __name__ == '__main__':
             try:
                 absolute_package_path = assert_rpm_pkg(package_blob)
             except OSError as err:
-                log_error('Unable to find RPM file for id: {0}, name: {1}'.format(
-                    package_blob.get('id', 'N/A'), package_blob.get('name', 'N/A')
+                log_error('Unable to find RPM file for id: {0}, name: {1} - {2}'.format(
+                    package_blob.get('id', 'N/A'), package_blob.get('name', 'N/A'), err
                 ))
-                log_error(str(err))
                 failed_packages += 1
                 continue
 
