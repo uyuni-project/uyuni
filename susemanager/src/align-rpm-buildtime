@@ -134,17 +134,21 @@ def assert_rpm_pkg(pkg_data):
     Checks if the RPM package is there, prior adding a mount point
     '''
     err = None
+    pkg_path = pkg_data.get('path')
     if not CFG.MOUNT_POINT:
         err = 'Mount point is not configured in the configuration'
-    elif not pkg_data.get('path'):
+    elif not pkg_path:
         pkg_name = pkg_data.get('name')
         if not pkg_name:
             err = 'Package name was not found'
         else:
-            err = 'Path not found for the RPM package "{0}".'.format(pkg_name)
-    pkg_path = os.path.join(CFG.MOUNT_POINT, pkg_data.get('path'))
-    if not err and not os.path.exists(pkg_path):
+            err = 'Path not found for the RPM package in the database "{0}".'.format(pkg_name)
+    if CFG.MOUNT_POINT and pkg_path:
+        pkg_path = os.path.join(CFG.MOUNT_POINT, pkg_path)
+
+    if not err and pkg_path and not os.path.exists(pkg_path):
         err = 'RPM file was not found at "{0}"'.format(pkg_path)
+
     if err:
         raise OSError(err)
 
