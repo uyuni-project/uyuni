@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.entitlement.test;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.entitlement.OSImageBuildHostEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -12,6 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
+
+    @Override public void setUp() throws Exception {
+        super.setUp();
+        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
+    }
 
     @Override
     protected void createEntitlement() {
