@@ -137,7 +137,7 @@ def assert_rpm_pkg(pkg_data):
     if not CFG.MOUNT_POINT:
         err = 'Mount point is not configured in the configuration'
     elif not pkg_data.get('path'):
-        pkg_name = pkg.data.get('name')
+        pkg_name = pkg_data.get('name')
         if not pkg_name:
             err = 'Package name was not found'
         else:
