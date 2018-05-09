@@ -30,8 +30,9 @@ module ImageProfile
     pro_det = cont_op.get_profile_custom_values('fakeone')
     assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
     pro_type = cont_op.list_image_profile_types
-    assert_equal(pro_type.length, 1, 'support at moment only one type of Profile!')
+    assert_equal(pro_type.length, 2, 'support for Dockerfile and Kiwi profiles')
     assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
+    assert_equal(pro_type[1], 'kiwi', 'type is not kiwi?')
     key = ['arancio']
     cont_op.delete_profile_custom_values('fakeone', key)
   end
@@ -181,8 +182,9 @@ And(/^I run image.store tests via XML-RPC$/) do
   cont_op.delete_store('fake_store')
   # test list images and list image types call
   store_typ = cont_op.list_image_store_types
-  assert_equal(store_typ.length, 1, 'we have only type support for Registry! New method added?! please update the tests')
+  assert_equal(store_typ.length, 2, 'we have only type support for Registry and OS Image Store type! New method added?! please update the tests')
   assert_equal(store_typ[0]['label'], 'registry', 'imagestore label type should be registry!')
+  assert_equal(store_typ[1]['label'], 'os_image', 'imagestore label type should be OS image!')
   registry_list = cont_op.list_image_stores
   # print just for debug
   puts registry_list
