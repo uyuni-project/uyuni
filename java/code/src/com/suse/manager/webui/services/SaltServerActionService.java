@@ -60,10 +60,11 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.TokenBuilder;
+import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Cmd;
-import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
@@ -333,8 +334,7 @@ public class SaltServerActionService {
                 );
                 return State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
-                        Optional.of(params),
-                        Optional.of(true)
+                        Optional.of(params)
                 );
             },
             Map.Entry::getValue));
@@ -348,8 +348,7 @@ public class SaltServerActionService {
                 // See PR#2839
                 (a, b)-> a));
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
-                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
-                Optional.of(true)), minions);
+                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
     }
 
@@ -361,8 +360,7 @@ public class SaltServerActionService {
                 // See PR#2839
                 (a, b)-> a));
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGREMOVE),
-                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
-                Optional.of(true)), minions);
+                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
     }
 
@@ -370,7 +368,7 @@ public class SaltServerActionService {
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
-                Optional.empty(), Optional.of(true)), minions);
+                Optional.empty()), minions);
         return ret;
     }
 
@@ -390,12 +388,13 @@ public class SaltServerActionService {
         if (!sshPushMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(
                     ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty(), Optional.of(true)), sshPushMinions);
+                    Optional.empty()), sshPushMinions);
         }
         if (!regularMinions.isEmpty()) {
-            ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
+            ret.put(State.apply(Arrays.asList(
+                    ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
                     ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty(), Optional.of(true)), regularMinions);
+                    Optional.empty()), regularMinions);
         }
 
         return ret;
@@ -434,8 +433,8 @@ public class SaltServerActionService {
                     .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
                     .collect(Collectors.toList());
             ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
-                    Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
-                    Optional.of(true)), selectedServers.stream().collect(Collectors.toList()));
+                    Optional.of(Collections.singletonMap(PARAM_FILES, fileStates))),
+                    selectedServers.stream().collect(Collectors.toList()));
         });
         return ret;
     }
@@ -456,7 +455,7 @@ public class SaltServerActionService {
                         revision.isSymlink())
                 .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
                 .collect(Collectors.toList());
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+        ret.put(com.suse.salt.netapi.calls.modules.State.apply(
                 Arrays.asList(CONFIG_DIFF_FILES),
                 Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
                 Optional.of(true), Optional.of(true)), minions);
@@ -477,7 +476,7 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
             List<MinionServer> minions, List<String> mods, boolean test) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(mods, Optional.empty(), Optional.of(true),
+        ret.put(com.suse.salt.netapi.calls.modules.State.apply(mods, Optional.empty(), Optional.of(true),
                 test ? Optional.of(test) : Optional.empty()), minions);
         return ret;
     }
@@ -525,7 +524,7 @@ public class SaltServerActionService {
             pillar.put("mgr_channels_new", chanPillar);
 
             ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.CHANNELS),
-                    Optional.of(pillar), Optional.of(true)), Collections.singletonList(minion));
+                    Optional.of(pillar)), Collections.singletonList(minion));
 
         });
         if (commitTransaction) {
@@ -558,10 +557,9 @@ public class SaltServerActionService {
         Map<String, Object> pillar = new HashMap<>();
         pillar.put("imagename", store.getUri() + "/" + name + ":" + version);
         Map<LocalCall<?>, List<MinionServer>> result = new HashMap<>();
-        LocalCall<Map<String, State.ApplyResult>> apply = State.apply(
+        LocalCall<Map<String, ApplyResult>> apply = State.apply(
                 Collections.singletonList("images.profileupdate"),
-                Optional.of(pillar),
-                Optional.of(true)
+                Optional.of(pillar)
         );
         result.put(apply, minions);
         return result;
@@ -646,8 +644,7 @@ public class SaltServerActionService {
 
                     return State.apply(
                             Collections.singletonList("images.docker"),
-                            Optional.of(pillar),
-                            Optional.of(true)
+                            Optional.of(pillar)
                     );
                 },
                 Collections::singletonList
@@ -691,10 +688,9 @@ public class SaltServerActionService {
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
 
-        LocalCall<Map<String, State.ApplyResult>> distUpgrade = State.apply(
+        LocalCall<Map<String, ApplyResult>> distUpgrade = State.apply(
                 Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
-                Optional.of(pillar),
-                Optional.of(true)
+                Optional.of(pillar)
                 );
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(distUpgrade, minions);
@@ -727,8 +723,7 @@ public class SaltServerActionService {
                                     // See PR#2839
                                     d -> d.getEvr().toString(), (a, b)-> a));
             call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
-                    Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
-                    Optional.of(true));
+                    Optional.of(Collections.singletonMap(PARAM_PKGS, args)));
             LOG.info("Executing staging of packages");
         }
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
@@ -746,8 +741,7 @@ public class SaltServerActionService {
                 .collect(Collectors.toList());
 
             call = State.apply(Arrays.asList(PACKAGES_PATCHDOWNLOAD),
-                    Optional.of(Collections.singletonMap(PARAM_PATCHES, errataArgs)),
-                    Optional.of(true));
+                    Optional.of(Collections.singletonMap(PARAM_PATCHES, errataArgs)));
             LOG.info("Executing staging of patches");
         }
         return call;

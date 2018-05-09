@@ -28,10 +28,11 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.modules.Match;
-import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -428,14 +429,11 @@ public class SaltSSHService {
      * during manipulation the salt-ssh roster
      * @return the result of the underlying ssh call for given host
      */
-    public Result<SSHResult<Map<String, State.ApplyResult>>> bootstrapMinion(
+    public Result<SSHResult<Map<String, ApplyResult>>> bootstrapMinion(
             BootstrapParameters parameters, List<String> bootstrapMods,
             Map<String, Object> pillarData) throws SaltException {
         LOG.info("Bootstrapping host: " + parameters.getHost());
-        LocalCall<Map<String, State.ApplyResult>> call = State.apply(
-                bootstrapMods,
-                Optional.of(pillarData),
-                Optional.of(true));
+        LocalCall<Map<String, ApplyResult>> call = State.apply(bootstrapMods, Optional.of(pillarData));
 
         List<String> bootstrapProxyPath;
         if (parameters.getProxyId().isPresent()) {
@@ -465,7 +463,7 @@ public class SaltSSHService {
                 getSshPushTimeout(),
                 minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH));
 
-        Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> result =
+        Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
                 callSyncSSHInternal(call,
                         new MinionList(parameters.getHost()),
                         roster,
@@ -690,14 +688,13 @@ public class SaltSSHService {
                         .ifPresent(key ->
                                 pillarData.put("proxy_pub_key", key));
             }
-            Map<String, CompletionStage<Result<Map<String, State.ApplyResult>>>> res =
+            Map<String, CompletionStage<Result<Map<String, ApplyResult>>>> res =
                     callAsyncSSH(
                             State.apply(
                                     Collections.singletonList(CLEANUP_SSH_MINION_SALT_STATE),
-                                    Optional.of(pillarData),
-                                    Optional.empty()),
+                                    Optional.of(pillarData)),
                             new MinionList(minion.getMinionId()), timeoutAfter);
-            CompletionStage<Result<Map<String, State.ApplyResult>>> future =
+            CompletionStage<Result<Map<String, ApplyResult>>> future =
                     res.get(minion.getMinionId());
             if (future == null) {
                 return Optional.of(
