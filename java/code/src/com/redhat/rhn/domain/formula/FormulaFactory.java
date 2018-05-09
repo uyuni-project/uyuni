@@ -61,15 +61,13 @@ public class FormulaFactory {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
 
-    private static final String DEFAULT_DATA_DIR = "/srv/susemanager/formula_data/";
-    private static String dataDir = DEFAULT_DATA_DIR;
-    private static final String METADATA_DIR_OFFICIAL =
-            "/usr/share/susemanager/formulas/metadata/";
+    private static String dataDir = "/srv/susemanager/formula_data/";
+    private static final String METADATA_DIR_OFFICIAL = "/usr/share/susemanager/formulas/metadata/";
     private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
     private static final String PILLAR_DIR = "pillar/";
     private static final String GROUP_PILLAR_DIR = "group_pillar/";
-    private static final String GROUP_DATA_FILE  =  "group_formulas.json";
-    private static final String SERVER_DATA_FILE =  "minion_formulas.json";
+    private static final String GROUP_DATA_FILE  = "group_formulas.json";
+    private static final String SERVER_DATA_FILE = "minion_formulas.json";
     private static final String PILLAR_FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
