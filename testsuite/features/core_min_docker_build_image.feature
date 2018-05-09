@@ -135,8 +135,8 @@ Feature: Build container images
   Scenario: Build some images via GUI
   Given I am authorized as "admin" with password "admin"
   And I navigate to images build webpage
-  When I enter "GUI_BUILT_IMAGE" as "version"
   And I select "suse_real_key" from "profileId"
+  And I enter "GUI_BUILT_IMAGE" as "version"
   And I select sle-minion hostname in Build Host
   And I click on "submit-btn"
   And I wait for "5" seconds
@@ -145,8 +145,8 @@ Feature: Build container images
   Scenario: Login as docker image administrator and build an image
   Given I am authorized as "docker" with password "docker"
   And I navigate to images build webpage
-  When I enter "GUI_DOCKERADMIN" as "version"
   And I select "suse_real_key" from "profileId"
+  And I enter "GUI_DOCKERADMIN" as "version"
   And I select sle-minion hostname in Build Host
   And I click on "submit-btn"
   And I wait for "5" seconds

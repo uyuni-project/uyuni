@@ -29,8 +29,8 @@ Feature: Test image building with authenticated registry
   Scenario: Build some images via GUI
     Given I am authorized as "docker" with password "docker"
     And I navigate to images build webpage
-    When I enter "latest" as "version"
     And I select "portus_profile" from "profileId"
+    When I enter "latest" as "version"
     And I select sle-minion hostname in Build Host
     And I click on "submit-btn"
     Then I wait until I see "portus_profile" text
