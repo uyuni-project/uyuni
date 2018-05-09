@@ -69,6 +69,11 @@ Before('@sshminion') do |scenario|
   scenario.skip_invoke! unless $ssh_minion
 end
 
+# do some tests only if node is of a given type
+Before('@SLE15_MINION') do |scenario|
+  scenario.skip_invoke! unless $sle15_minion
+end
+
 ## this is for having more infos about the errors.
 
 def debug_server_on_realtime_failure
