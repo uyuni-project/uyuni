@@ -655,3 +655,76 @@ end
 Given(/^I have a valid token for organization "(.*?)" and channel "(.*?)"$/) do |org, channel|
   @token = token(server_secret, org: org, onlyChannels: [channel])
 end
+
+And(/^I should see the recommended toggler "([^"]*)"$/) do |target_status|
+  case target_status
+  when 'enabled'
+    xpath = "//i[contains(@class, 'fa-toggle-on')]"
+    raise unless find(:xpath, xpath)
+  when 'disabled'
+    xpath = "//i[contains(@class, 'fa-toggle-off')]"
+    raise unless find(:xpath, xpath)
+  else
+    raise 'Invalid target status.'
+  end
+end
+
+And(/^I click on the "([^"]*)" recommended toggler$/) do |target_status|
+  case target_status
+  when 'enabled'
+    xpath = "//i[contains(@class, 'fa-toggle-on')]"
+    raise unless find(:xpath, xpath).click
+  when 'disabled'
+    xpath = "//i[contains(@class, 'fa-toggle-off')]"
+    raise unless find(:xpath, xpath).click
+  else
+    raise 'Invalid target status.'
+  end
+end
+
+And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, target_status|
+  step %(I should see a "#{target_channel}" text)
+
+  xpath = "//label[contains(text(), '#{target_channel}')]"
+  channel_checkbox_id = find(:xpath, xpath)['for']
+
+  case target_status
+  when 'selected'
+    raise unless has_checked_field?(channel_checkbox_id)
+  when 'unselected'
+    raise if has_checked_field?(channel_checkbox_id)
+  else
+    raise 'Invalid target status.'
+  end
+end
+
+And(/^I select the child channel "([^"]*)"$/) do |target_channel|
+  step %(I should see a "#{target_channel}" text)
+
+  xpath = "//label[contains(text(), '#{target_channel}')]"
+  channel_checkbox_id = find(:xpath, xpath)['for']
+
+  raise if has_checked_field?(channel_checkbox_id)
+  find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
+end
+
+And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
+  xpath = "//a[contains(text(), '#{target_channel}')]"
+  channel_id = find(:xpath, xpath)['href'].split('?')[1].split('=')[1]
+
+  case target_radio
+  when 'No change'
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='NO_CHANGE']"
+  when 'Subscribe'
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='SUBSCRIBE']"
+  when 'Unsubscribe'
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='UNSUBSCRIBE']"
+  end
+
+  case target_status
+  when 'selected'
+    raise if find(:xpath, xpath)['checked'].nil?
+  when 'unselected'
+    raise unless find(:xpath, xpath)['checked'].nil?
+  end
+end
