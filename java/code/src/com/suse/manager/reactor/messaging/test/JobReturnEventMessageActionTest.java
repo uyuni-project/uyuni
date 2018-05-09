@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -57,7 +58,9 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -105,6 +108,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             new JsonParser<>(new TypeToken<Event>(){});
 
     private TaskomaticApi taskomaticApi;
+    private SaltService saltServiceMock;
 
     @Override
     public void setUp() throws Exception {
@@ -112,6 +116,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
+        saltServiceMock = context().mock(SaltService.class);
+        SystemManager.mockSaltService(saltServiceMock);
     }
 
     /**
@@ -1073,7 +1079,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Openscap.OpenscapResult openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
                 .orElseThrow(() -> new RuntimeException("missiong scap result"));
 
-        SaltService saltServiceMock = mock(SaltService.class);
         context().checking(new Expectations() {{
             oneOf(saltServiceMock).storeMinionScapFiles(
                     with(any(MinionServer.class)),
@@ -1091,13 +1096,40 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
     }
 
+    public void testKiwiImageBuild() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+
+        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
+        context().checking(new Expectations() {{
+                allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+                allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                        with(equal("/var/lib/kiwi/build06/images/pos_image_jeos6.x86_64-6.0.0-build06.tgz")),
+                        with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+                will(returnValue(Optional.of(mockResult)));
+        }});
+        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+
+        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
+            assertEquals(1, info.getRevisionNumber());
+            assertTrue(StringUtils.isEmpty(info.getVersion()));
+        });
+    }
+
     /**
      * Build and inspect the same profile twice.
      * Check that the same ImageInfo instance is kept during successive runs and that the build history and revision
      * number are filled correctly.
      * @throws Exception
      */
-    public void testImageBuild()  throws Exception {
+    public void testContainerImageBuild()  throws Exception {
         String digest1 = "1111111111111111111111111111111111111111111111111111111111111111";
         String digest2 = "2222222222222222222222222222222222222222222222222222222222222222";
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
@@ -1111,7 +1143,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
         ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, user);
 
-        ImageInfo imgInfoBuild1 = doTestImageBuild(server, imageName, imageVersion, profile,
+        ImageInfo imgInfoBuild1 = doTestContainerImageBuild(server, imageName, imageVersion, profile,
                 (imgInfo) -> {
                     // assert initial revision number
                     assertEquals(1, imgInfo.getRevisionNumber());
@@ -1136,7 +1168,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        doTestImageBuild(server, imageName, imageVersion, profile,
+        doTestContainerImageBuild(server, imageName, imageVersion, profile,
                 (imgInfo) -> {
                     // assert revision number incremented
                     assertEquals(2, imgInfo.getRevisionNumber());
@@ -1276,7 +1308,38 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertions.accept(imgInfo);
     }
 
-    private ImageInfo doTestImageBuild(MinionServer server, String imageName, String imageVersion, ImageProfile profile, Consumer<ImageInfo> assertions) throws Exception {
+    private ImageInfo doTestKiwiImageBuild(MinionServer server, String imageName,
+            ImageProfile profile, Consumer<ImageInfo> assertions)
+        throws Exception {
+        // schedule the build
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile, new Date(), user);
+        ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
+        TestUtils.reload(buildAction);
+        Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
+        assertTrue(imgInfoBuild.isPresent());
+
+        // Process the image build return event
+        Optional<JobReturnEvent> event =
+                JobReturnEvent.parse(getJobReturnEvent("image.build.kiwi.json", actionId));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        // assert we have the same initial ImageInfo even after processing the event
+        assertTrue(ImageInfoFactory.lookupById(imgInfoBuild.get().getId()).isPresent());
+        ImageInfo imgInfo = TestUtils.reload(imgInfoBuild.get());
+        assertNotNull(imgInfo);
+
+        // other assertions after build
+        assertions.accept(imgInfoBuild.get());
+
+        return imgInfoBuild.get();
+    }
+
+    private ImageInfo doTestContainerImageBuild(MinionServer server, String imageName,
+            String imageVersion, ImageProfile profile, Consumer<ImageInfo> assertions)
+        throws Exception {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), imageVersion, profile, new Date(), user);
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
@@ -1286,7 +1349,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the image build return event
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("image.build.json",
+                getJobReturnEvent("image.build.dockerfile.json",
                         actionId,
                         Collections.singletonMap("$IMAGE$", imageName)));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());

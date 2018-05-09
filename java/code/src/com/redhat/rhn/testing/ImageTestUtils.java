@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
+import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -243,6 +244,27 @@ public class ImageTestUtils {
         if (key != null) {
             profile.setToken(key.getToken());
         }
+        TestUtils.saveAndFlush(profile);
+        return profile;
+    }
+
+    /**
+     * Create a Kiwi image profile.
+     *
+     * @param label the label
+     * @param key   the key
+     * @param user  the user
+     * @return the image profile
+     */
+    public static KiwiProfile createKiwiImageProfile(String label, ActivationKey key, User user) {
+        KiwiProfile profile = new KiwiProfile();
+        profile.setLabel(label);
+        profile.setOrg(user.getOrg());
+        profile.setPath("my/test/path");
+        profile.setTargetStore(ImageStoreFactory
+                .lookupBylabelAndOrg("SUSE Manager OS Image Store", user.getOrg()).get());
+        profile.setToken(key.getToken());
+
         TestUtils.saveAndFlush(profile);
         return profile;
     }
