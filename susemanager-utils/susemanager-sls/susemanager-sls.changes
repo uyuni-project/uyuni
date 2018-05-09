@@ -1,3 +1,7 @@
+- install python2/3 salt flavours on buildhosts to generate a compatible
+  thin for the dockerimage beeing build (bsc#1092161)
+- docker.login requires a list as input (bsc#1092161)
+
 -------------------------------------------------------------------
 Mon May 07 15:31:50 CEST 2018 - jgonzalez@suse.com
 
