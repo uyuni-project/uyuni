@@ -659,14 +659,6 @@ Given(/^I have a valid token for organization "(.*?)" and channel "(.*?)"$/) do 
   @token = token(server_secret, org: org, onlyChannels: [channel])
 end
 
-And(/^the "([^"]*)" is a SLE-"(.*?)" client$/) do |target, version|
-  node = get_target(target)
-  os_version = get_os_version(node)
-  unless os_version.include? version
-    raise "This is not a SLE " + version + " client, no 'recommended' child channels can be selected."
-  end
-end
-
 And(/^I should see the recommended toggler "([^"]*)"$/) do |target_status|
   case target_status
   when 'enabled'
