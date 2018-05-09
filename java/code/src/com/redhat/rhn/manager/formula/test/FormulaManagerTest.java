@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.formula.InvalidFormulaException;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -101,7 +102,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         try {
             manager.validateContents(contents,layout);
             fail( "Exception expected but didn't throw" );
-        } catch (IllegalArgumentException ex) {
+        } catch (InvalidFormulaException ex) {
 
         }
     }

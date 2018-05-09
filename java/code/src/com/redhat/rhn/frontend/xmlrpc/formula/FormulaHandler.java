@@ -23,7 +23,9 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.formula.InvalidFormulaException;
 import com.suse.utils.Json;
 
 
@@ -183,9 +185,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.doc Get the saved data for the specific formula against specific group
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "Ids of the systems for which to populate form")
-     * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param #param("Integer", "groupId")
+     * @xmlrpc.param #param("string", "formula name")
+     * @xmlrpc.param #param("Integer", "group id ")
      * @xmlrpc.returntype string - Json data
      */
     public String getGroupFormulaData(User loggedInUser, String formulaName, Integer groupId) {
@@ -197,10 +198,10 @@ public class FormulaHandler extends BaseHandler {
     /**
      * Populate the formula form data for the specified servers
      * @param loggedInUser The current user
-     * @param systemIds list of IDs of the server
+     * @param systemId Id of the server
      * @param formulaName name of the formula that should be populated.
      * @param content Map containing the values for each field in the form.
-     * @return 1 on success, excpetion thrown otherwise
+     * @return 1 on success, exception thrown otherwise
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
@@ -214,17 +215,14 @@ public class FormulaHandler extends BaseHandler {
      * #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    public int populateSystemFormulaData(User loggedInUser, List<Integer> systemIds, String formulaName, Map<String,
+    public int populateSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
                 Object> content) throws IOFaultException, InvalidParameterException {
-
         try {
             FormulaManager manager = FormulaManager.getInstance();
-            boolean assigned = manager.hasSystemsFormulaAssigned(formulaName, systemIds);
+            boolean assigned = manager.hasSystemFormulaAssigned(formulaName, systemId);
             if (assigned) {
-                manager.validInput(formulaName, content);
-                for (Integer sid : systemIds) {
-                    manager.saveServerFormulaData(loggedInUser, sid.longValue(), formulaName, content);
-                }
+                manager.validateInput(formulaName, content);
+                manager.saveServerFormulaData(loggedInUser, systemId.longValue(), formulaName, content);
             }
             else {
                 throw new InvalidParameterException("One of the system doesn't have formula assigned, please assign" +
@@ -233,6 +231,9 @@ public class FormulaHandler extends BaseHandler {
         }
         catch (IOException e) {
             throw new IOFaultException(e);
+        }
+        catch (InvalidFormulaException e) {
+            throw new ValidationException(e.getMessage());
         }
         return 1;
     }
@@ -243,7 +244,7 @@ public class FormulaHandler extends BaseHandler {
      * @param groupId  Id of the group
      * @param formulaName name of the formula that should be populated.
      * @param content Map containing the values for each field in the form.
-     * @return 1 on sucsess, exception thrown otherwise
+     * @return 1 on success, exception thrown otherwise
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
@@ -263,7 +264,7 @@ public class FormulaHandler extends BaseHandler {
             FormulaManager manager = FormulaManager.getInstance();
             boolean assigned = manager.hasGroupFormulaAssigned(formulaName, groupId.longValue());
             if (assigned) {
-                manager.validInput(formulaName, content);
+                manager.validateInput(formulaName, content);
                 manager.saveGroupFormulaData(loggedInUser, groupId.longValue(), formulaName, content);
             }
             else {
@@ -274,7 +275,9 @@ public class FormulaHandler extends BaseHandler {
         catch (IOException e) {
             throw new IOFaultException(e);
         }
+        catch (InvalidFormulaException e) {
+            throw new ValidationException(e.getMessage());
+        }
         return 1;
     }
-
 }
