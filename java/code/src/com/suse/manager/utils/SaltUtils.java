@@ -87,10 +87,11 @@ import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
+import com.suse.manager.webui.utils.salt.custom.KiwiBundleInfo;
+import com.suse.manager.webui.utils.salt.custom.KiwiImageBuildSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
-import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
@@ -134,7 +135,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -540,18 +540,7 @@ public class SaltUtils {
                 serverAction.setResultMsg("Script executed successfully. [jid=" +
                         jid + "]");
             }
-            StringBuilder sb = new StringBuilder();
-            if (StringUtils.isNotEmpty(result.getStderr())) {
-                sb.append("stderr:\n\n");
-                sb.append(result.getStderr());
-                sb.append("\n");
-            }
-            if (StringUtils.isNotEmpty(result.getStdout())) {
-                sb.append("stdout:\n\n");
-                sb.append(result.getStdout());
-                sb.append("\n");
-            }
-            scriptResult.setOutput(sb.toString().getBytes());
+            scriptResult.setOutput(printStdMessages(result.getStderr(), result.getStdout()).getBytes());
 
             Path scriptPath = getScriptPath(action.getId());
             try {
@@ -912,11 +901,15 @@ public class SaltUtils {
         }
     }
 
-    private static void handleImageBuildData(ServerAction serverAction,
-            JsonElement jsonResult) {
+    private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
         ImageBuildAction ba = (ImageBuildAction)action;
         ImageBuildActionDetails details = ba.getDetails();
+
+        // Pretty-print the whole return map (or whatever fits into 1024 characters)
+        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        serverAction.setResultMsg(StringUtils.left(gson.toJson(returnObject), 1024));
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             Optional<ImageProfile> profileOpt =
@@ -924,15 +917,21 @@ public class SaltUtils {
 
             profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                    Map<String, Object> args = new LinkedHashMap<>();
-                    args.put("minion", minionServer.getName());
-                    // TODO extract from jsonResult https://github.com/SUSE/spacewalk/pull/4343#issuecomment-384614541
-                    args.put("filepath", Optional.empty());
+                    // Download the built Kiwi image to SUSE Manager server
+                    KiwiBundleInfo bundleInfo = Json.GSON.fromJson(jsonResult, KiwiImageBuildSlsResult.class)
+                            .getKiwiBuildInfo().getChanges().getRet().getBundle();
 
-                    RunnerCall<MgrUtilRunner.ExecResult> call =
-                            new RunnerCall<>("kiwi-image-collect.kiwi_collect_image", Optional.of(args),
-                                    new TypeToken<MgrUtilRunner.ExecResult>() { });
-                        });
+                    MgrUtilRunner.ExecResult collectResult = saltService
+                            .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
+                                    "/srv/www/os-images/" + kiwiProfile.getTargetStore().getUri())
+                            .orElseThrow(() -> new RuntimeException("Failed to download image."));
+
+                    if (collectResult.getReturnCode() != 0) {
+                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                        serverAction.setResultMsg(StringUtils
+                                .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()), 1024));
+                    }
+                });
             }));
             ImageInspectAction iAction = ActionManager.scheduleImageInspect(
                     action.getSchedulerUser(),
@@ -1660,5 +1659,27 @@ public class SaltUtils {
      */
     public void setScriptsDir(Path scriptsDirIn) {
         scriptsDir = scriptsDirIn;
+    }
+
+    /**
+     * Returns a combined, printable string from output channels stderr and stdout.
+     *
+     * @param stderr the stderr message
+     * @param stdout the stdout message
+     * @return the string
+     */
+    public static String printStdMessages(String stderr, String stdout) {
+        StringBuilder sb = new StringBuilder();
+        if (StringUtils.isNotEmpty(stderr)) {
+            sb.append("stderr:\n\n");
+            sb.append(stderr);
+            sb.append("\n");
+        }
+        if (StringUtils.isNotEmpty(stdout)) {
+            sb.append("stdout:\n\n");
+            sb.append(stdout);
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }

@@ -26,6 +26,7 @@ import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
+import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.State;
@@ -1124,5 +1125,19 @@ public class SaltService {
      */
     public SaltSSHService getSaltSSHService() {
         return saltSSHService;
+    }
+    /**
+     * Upload built Kiwi image to SUSE Manager
+     *
+     * @param minion     the minion
+     * @param filepath   the filepath of the image to upload, in the build host
+     * @param imageStore the image store location
+     * @return the execution result
+     */
+    public Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
+            String imageStore) {
+        RunnerCall<MgrUtilRunner.ExecResult> call =
+                MgrKiwiImageRunner.collectImage(minion.getName(), filepath, imageStore);
+        return callSync(call);
     }
 }
