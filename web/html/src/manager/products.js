@@ -693,7 +693,7 @@ const CheckListItem = React.createClass({
         />;
     }
     else if (this.isInstalled()) {
-      selectorContent = <i className='fa fa-info product-installed' title={t('This product is installed.')} />
+      selectorContent = <i className='fa fa-check-square-o fa-1-5x product-installed' title={t('This product is mirrored.')} />
     }
     /*****/
 
@@ -764,10 +764,10 @@ const CheckListItem = React.createClass({
     const resyncDisabled = this.props.bypassProps.readOnlyMode || resyncActionInProgress;
     const conditionalResyncTitle =
         this.props.bypassProps.readOnlyMode ?
-          t('SCC product catalog in progress')
+          t('SCC product catalog refresh in progress')
           : resyncActionInProgress ?
               t('Scheduling a product resync')
-              : t('Resync product');
+              : t('Schedule a product resync');
     const conditionalResyncAction = !this.props.bypassProps.readOnlyMode ? () => this.resyncProduct() : null;
     const resyncActionContent =
       this.isInstalled() ?
@@ -775,7 +775,7 @@ const CheckListItem = React.createClass({
             className='btn btn-default btn-sm'
             disabled={resyncDisabled ? 'disabled' : ''}
             handler={conditionalResyncAction}
-            icon={'fa-refresh fa-1-5x pointer ' + conditionalResyncClass}
+            icon={'fa-refresh pointer ' + conditionalResyncClass}
             title={conditionalResyncTitle}
         />
         : null;
