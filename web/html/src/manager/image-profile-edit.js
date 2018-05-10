@@ -31,10 +31,7 @@ class CreateImageProfile extends React.Component {
     };
 
     this.state = {
-      imageTypes: [
-        "dockerfile",
-        "kiwi"
-      ],
+      imageTypes: imageTypesDataFromTheServer,
       model: Object.assign({}, this.defaultModel),
       imageStores: [],
       messages: [],
