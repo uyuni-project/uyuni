@@ -57,6 +57,7 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -322,12 +323,18 @@ public class SystemsController {
                 }
 
                 List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
+
+                Map<Long, Boolean> channelRecommendedFlags = ChannelManager.computeChannelRecommendedFlags(
+                        baseChannel,
+                        children.stream().filter(c -> c.isSubscribable(user.getOrg(), server)));
+
                 List<ChannelsJson.ChannelJson> jsonList = children.stream()
                         .filter(c -> c.isSubscribable(user.getOrg(), server))
                         .map(c -> new ChannelsJson.ChannelJson(c.getId(),
                                 c.getName(),
                                 c.isCustom(),
-                                c.isSubscribable(user.getOrg(), server)))
+                                c.isSubscribable(user.getOrg(), server),
+                                channelRecommendedFlags.get(c.getId())))
                         .collect(Collectors.toList());
                 return json(response, JsonResult.success(jsonList));
             }
@@ -338,6 +345,5 @@ public class SystemsController {
             }
         });
     }
-
 
 }

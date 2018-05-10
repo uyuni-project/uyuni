@@ -34,6 +34,17 @@ $(document).on("ready", function(){
   addTextareaLengthNotification();
 });
 
+
+function adaptFluidColLayout() {
+  $('.col-class-calc-width').each(function() {
+    var totalWidth = $(this).parent().width();
+    $(this).siblings('.col').each(function() {
+      totalWidth = Math.floor(totalWidth - $(this).outerWidth());
+    });
+    $(this).css('width', totalWidth - 10);
+  });
+}
+
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
 // On window load
 $(window).load(function () {
@@ -61,6 +72,7 @@ $(window).scroll(function () {
 // A container function for what should be fired
 // to set HTML tag dimensions
 function alignContentDimensions() {
+  adaptFluidColLayout();
   adjustDistanceForFixedHeader();
   sstStyle();
   columnHeight();

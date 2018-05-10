@@ -346,54 +346,46 @@ When(/^I view the primary subscription list for asdf$/) do
   end
 end
 
-When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |product, architecture|
-  within(:xpath, "(//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]])[1]") do
-    raise unless find('button.product-add-btn').click
-    begin
-      # wait to finish scheduling
-      Timeout.timeout(DEFAULT_TIMEOUT) do
-        loop do
-          begin
-            break unless find('button.product-add-btn').visible?
-            sleep 2
-          rescue Capybara::ElementNotFound
-            break
-          end
-        end
-      end
-    rescue Timeout::Error
-      puts 'timeout reached'
-    end
-  end
+And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
+  # let the the select2js box filter open the hidden options
+  raise unless find(:xpath, "//div[@id='s2id_product-arch-filter']/ul/li/input").click
+  # select the desired option
+  raise unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
-When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) do |addon, product, archi|
-  # xpath query is too long, so breaking up on multiple lines.
-  xpath =  "//span[contains(text(), '#{product}')]/"
-  xpath += "ancestor::tr[td[contains(text(), '#{archi}')]]/following::span"
-  xpath += "[contains(text(), '#{addon}')]/../.."
-  within(:xpath, xpath) do
-    raise unless find('button.product-add-btn').click
-    begin
-      # wait to finish scheduling
-      Timeout.timeout(DEFAULT_TIMEOUT) do
-        loop do
-          begin
-            break unless find('button.product-add-btn').visible?
-            sleep 2
-          rescue Capybara::ElementNotFound
-            break
-          end
-        end
-      end
-    rescue Timeout::Error
-      puts 'timeout reached'
-    end
-  end
+When(/^I select "([^\"]*)" as a product$/) do |product|
+  # click on the checkbox to select the product
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  raise unless find(:xpath, xpath).click
+end
+
+And(/^I open the sub-list of the product "(.*?)"$/) do |product|
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
+  # within(:xpath, xpath) do
+  #   raise unless find('i.fa-angle-down').click
+  # end
+  raise unless find(:xpath, xpath).click
+end
+
+When(/^I select the addon "(.*?)"$/) do |addon|
+  # click on the checkbox of the sublist to select the addon product
+  xpath = "//span[contains(text(), '#{addon}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  raise unless find(:xpath, xpath).click
+end
+
+And(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
+  xpath = "//span[contains(text(), '#{product}')]/../span[contains(text(), '#{recommended}')]"
+  raise unless find(:xpath, xpath)
+end
+
+Then(/^I should see the "(.*?)" selected$/) do |product|
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
+  product_identifier = find(:xpath, xpath)['data-identifier']
+  raise unless has_checked_field?('checkbox-for-' + product_identifier)
 end
 
 When(/^I click the Add Product button$/) do
-  raise unless find('button#synchronize').click
+  raise unless find('button#addProducts').click
 end
 
 When(/^the products should be added$/) do
@@ -404,10 +396,9 @@ When(/^the products should be added$/) do
   raise unless output[:stdout].include? sle_module
 end
 
-When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
-  within(:xpath, "//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]]") do
-    raise unless find('.product-channels-btn').click
-  end
+When(/^I click the channel list of product "(.*?)"$/) do |product|
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/a[contains(@class, 'showChannels')]"
+  raise unless find(:xpath, xpath).click
 end
 
 Then(/^I see verification succeeded/) do
@@ -666,4 +657,77 @@ end
 
 Given(/^I have a valid token for organization "(.*?)" and channel "(.*?)"$/) do |org, channel|
   @token = token(server_secret, org: org, onlyChannels: [channel])
+end
+
+And(/^I should see the recommended toggler "([^"]*)"$/) do |target_status|
+  case target_status
+  when 'enabled'
+    xpath = "//i[contains(@class, 'fa-toggle-on')]"
+    raise unless find(:xpath, xpath)
+  when 'disabled'
+    xpath = "//i[contains(@class, 'fa-toggle-off')]"
+    raise unless find(:xpath, xpath)
+  else
+    raise 'Invalid target status.'
+  end
+end
+
+And(/^I click on the "([^"]*)" recommended toggler$/) do |target_status|
+  case target_status
+  when 'enabled'
+    xpath = "//i[contains(@class, 'fa-toggle-on')]"
+    raise unless find(:xpath, xpath).click
+  when 'disabled'
+    xpath = "//i[contains(@class, 'fa-toggle-off')]"
+    raise unless find(:xpath, xpath).click
+  else
+    raise 'Invalid target status.'
+  end
+end
+
+And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, target_status|
+  step %(I should see a "#{target_channel}" text)
+
+  xpath = "//label[contains(text(), '#{target_channel}')]"
+  channel_checkbox_id = find(:xpath, xpath)['for']
+
+  case target_status
+  when 'selected'
+    raise unless has_checked_field?(channel_checkbox_id)
+  when 'unselected'
+    raise if has_checked_field?(channel_checkbox_id)
+  else
+    raise 'Invalid target status.'
+  end
+end
+
+And(/^I select the child channel "([^"]*)"$/) do |target_channel|
+  step %(I should see a "#{target_channel}" text)
+
+  xpath = "//label[contains(text(), '#{target_channel}')]"
+  channel_checkbox_id = find(:xpath, xpath)['for']
+
+  raise if has_checked_field?(channel_checkbox_id)
+  find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
+end
+
+And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
+  xpath = "//a[contains(text(), '#{target_channel}')]"
+  channel_id = find(:xpath, xpath)['href'].split('?')[1].split('=')[1]
+
+  case target_radio
+  when 'No change'
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='NO_CHANGE']"
+  when 'Subscribe'
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='SUBSCRIBE']"
+  when 'Unsubscribe'
+    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='UNSUBSCRIBE']"
+  end
+
+  case target_status
+  when 'selected'
+    raise if find(:xpath, xpath)['checked'].nil?
+  when 'unselected'
+    raise unless find(:xpath, xpath)['checked'].nil?
+  end
 end

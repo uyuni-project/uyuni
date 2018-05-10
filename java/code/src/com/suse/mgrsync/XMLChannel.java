@@ -25,6 +25,7 @@ import org.simpleframework.xml.Root;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A channel as we parse it from the channels.xml file.
@@ -51,6 +52,9 @@ public class XMLChannel {
 
     @Attribute
     private String optional;
+
+    @Attribute
+    private String eol;
 
     @Attribute
     private String parent;
@@ -193,6 +197,30 @@ public class XMLChannel {
         }
         else {
             this.optional = "N";
+        }
+    }
+
+    /**
+     * True if this channel reached end of life, false otherwise.
+     *
+     * @return eol
+     */
+    public Boolean getEol() {
+        return (this.eol + "").toUpperCase().equals("Y");
+    }
+
+
+    /**
+     * Sets if this channel reached end of life.
+     *
+     * @param eolIn true if eol
+     */
+    public void setEol(boolean eolIn) {
+        if (eolIn) {
+            this.eol = "Y";
+        }
+        else {
+            this.eol = "N";
         }
     }
 
@@ -367,5 +395,36 @@ public class XMLChannel {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
             .append("label", label)
             .toString();
+    }
+
+    /**
+     * Copy the current object into a new one
+     *
+     * @return a new XMLChannel that is a copy of the current one
+     */
+    public XMLChannel copy() {
+        XMLChannel xmlChannel = new XMLChannel();
+        xmlChannel.setArch(this.getArch());
+        xmlChannel.setDescription(this.getDescription());
+        xmlChannel.setFamily(this.getFamily());
+        xmlChannel.setOptional(this.isOptional());
+        xmlChannel.setName(this.getName());
+        xmlChannel.setParent(this.getParent());
+        xmlChannel.setProductName(this.getProductName());
+        xmlChannel.setUpdateTag(this.getUpdateTag());
+        xmlChannel.setLabel(this.getLabel());
+        xmlChannel.setSigned(this.isSigned());
+        xmlChannel.setSummary(this.getSummary());
+        xmlChannel.setProductVersion(this.getProductVersion());
+        xmlChannel.setStatus(this.getStatus());
+        xmlChannel.setSourceUrl(this.getSourceUrl());
+        xmlChannel.distribution = this.getDistribution();
+        if (this.getProducts() == null) {
+            xmlChannel.setProducts(null);
+        }
+        else {
+            xmlChannel.setProducts(this.getProducts().stream().map(XMLProduct::copy).collect(Collectors.toList()));
+        }
+        return xmlChannel;
     }
 }

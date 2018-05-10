@@ -8416,16 +8416,6 @@
                path="/WEB-INF/pages/admin/setup/mirror-credentials.jsp" />
     </action>
 
-    <action path="/admin/setup/SUSEProducts"
-            scope="request"
-            type="com.redhat.rhn.frontend.action.satellite.SetupWizardAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping"
-            parameter="dispatch">
-      <set-property property="postRequiredIfSubmitted" value="true" />
-      <set-property property="acls" value="user_role(satellite_admin)" />
-      <forward name="default"
-               path="/WEB-INF/pages/admin/setup/suse-products.jsp" />
-    </action>
   </action-mappings>
 
   <!-- ===================================== -->

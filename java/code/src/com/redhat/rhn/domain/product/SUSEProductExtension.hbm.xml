@@ -10,7 +10,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                        class="com.redhat.rhn.domain.product.SUSEProduct" />
       <key-many-to-one name="extensionProduct" column="ext_pdid"
                        class="com.redhat.rhn.domain.product.SUSEProduct" />
+      <key-many-to-one name="rootProduct" column="root_pdid"
+                       class="com.redhat.rhn.domain.product.SUSEProduct" />
     </composite-id>
+    <property name="recommended" column="recommended" type="yes_no" not-null="true" />
     <property name="created" column="created" type="timestamp" insert="false" update="false" />
     <property name="modified" column="modified" type="timestamp" insert="false" update="false" />
   </class>
@@ -18,4 +21,44 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
   <query name="SUSEProductExtension.clear">
     <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProductExtension]]>
   </query>
+
+  <sql-query name="SUSEProductExtension.findAllExtensionProductsOf">
+    <![CDATA[select {ext.*}
+             from SUSEProductExtension pe
+             join SUSEProducts base on base.id = pe.base_pdid
+             join SUSEProducts ext on pe.ext_pdid = ext.id
+             where base.id = :baseId
+             ]]>
+    <return alias="ext" class="com.redhat.rhn.domain.product.SUSEProduct"/>
+  </sql-query>
+
+  <sql-query name="SUSEProductExtension.findAllBaseProductsOf">
+    <![CDATA[select {base.*}
+             from SUSEProductExtension pe
+             join SUSEProducts base on base.id = pe.base_pdid
+             join SUSEProducts ext on pe.ext_pdid = ext.id
+             where ext.id = :extId
+             ]]>
+    <return alias="base" class="com.redhat.rhn.domain.product.SUSEProduct"/>
+  </sql-query>
+
+  <sql-query name="SUSEProductExtension.findAllBaseProductsForRootOf">
+    <![CDATA[select {base.*}
+             from SUSEProductExtension pe
+             join SUSEProducts base on base.id = pe.base_pdid
+             join SUSEProducts ext on pe.ext_pdid = ext.id
+             where ext.id = :extId and pe.root_pdid = :rootId
+             ]]>
+    <return alias="base" class="com.redhat.rhn.domain.product.SUSEProduct"/>
+  </sql-query>
+
+  <sql-query name="SUSEProductExtension.findAllRootProductsOf">
+    <![CDATA[select {root.*}
+             from SUSEProductExtension pe
+             join SUSEProducts base on base.id = pe.base_pdid
+             join SUSEProducts root on pe.root_pdid = root.id
+             where base.id = :baseId
+             ]]>
+    <return alias="root" class="com.redhat.rhn.domain.product.SUSEProduct"/>
+  </sql-query>
 </hibernate-mapping>

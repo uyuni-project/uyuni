@@ -31,25 +31,23 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.XMLChannel;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Manager class for interacting with SUSE products.
@@ -100,12 +98,21 @@ public class ProductSyncManager {
      * @param productIdents the product ident list
      * @param user the current user
      * @throws ProductSyncException if an error occurred
+     * @return a map of added products and an error message if any
      */
-    public void addProducts(List<String> productIdents, User user)
-        throws ProductSyncException {
-        for (String productIdent : productIdents) {
-            addProduct(productIdent, user);
-        }
+    public Map<String, Optional<? extends Throwable>> addProducts(List<String> productIdents, User user) {
+        return productIdents.stream().collect(Collectors.toMap(
+                ident -> ident,
+                ident -> {
+                   try {
+                       addProduct(ident, user);
+                       return Optional.<Throwable>empty();
+                   }
+                   catch (ProductSyncException e) {
+                       return Optional.of(e);
+                   }
+               }
+        ));
     }
 
     /**
@@ -161,7 +168,7 @@ public class ProductSyncManager {
         StringBuilder debugDetails = new StringBuilder();
 
         for (Channel c : product.getMandatoryChannels()) {
-            SyncStatus channelStatus = getChannelSyncStatus(c);
+            SyncStatus channelStatus = getChannelSyncStatus(c.getLabel());
 
             if (StringUtils.isNotBlank(channelStatus.getDetails())) {
                 debugDetails.append(channelStatus.getDetails());
@@ -216,16 +223,16 @@ public class ProductSyncManager {
 
     /**
      * Get the synchronization status for a given channel.
-     * @param channel the channel
+     * @param channelLabel the channel label
      * @return channel sync status as string
      */
-    private SyncStatus getChannelSyncStatus(Channel channel) {
+    public SyncStatus getChannelSyncStatus(String channelLabel) {
         // Fall back to FAILED if no progress or success is detected
         SyncStatus channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
 
         // Check for success: is there metadata for this channel?
         com.redhat.rhn.domain.channel.Channel c =
-                ChannelFactory.lookupByLabel(channel.getLabel());
+                ChannelFactory.lookupByLabel(channelLabel);
 
         if (c == null) {
             return new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
@@ -309,7 +316,7 @@ public class ProductSyncManager {
         }
 
         // Check if channel metadata generation is in progress
-        if (ChannelManager.isChannelLabelInProgress(channel.getLabel())) {
+        if (ChannelManager.isChannelLabelInProgress(channelLabel)) {
             channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             return channelSyncStatus;
         }
@@ -318,7 +325,7 @@ public class ProductSyncManager {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("channel_label", channel.getLabel());
+        params.put("channel_label", channelLabel);
         if (selector.execute(params).size() > 0) {
             channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             return channelSyncStatus;
@@ -392,12 +399,10 @@ public class ProductSyncManager {
         }
 
         // Add base channel on top of everything else so it can be added first.
-        Collections.sort(mandatoryChannelsOut, new Comparator<Channel>() {
-            public int compare(Channel a, Channel b) {
-                return a.getLabel().equals(productIn.getBaseChannel().getLabel()) ? -1 :
-                        b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0;
-            }
-        });
+        mandatoryChannelsOut.sort(
+                (a, b) -> a.getLabel().equals(productIn.getBaseChannel().getLabel()) ? -1 :
+                          b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0
+        );
 
         // Setup the product that will be displayed
         SetupWizardProductDto displayProduct = new SetupWizardProductDto(

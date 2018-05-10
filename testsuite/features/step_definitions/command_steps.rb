@@ -44,6 +44,36 @@ Then(/^I wait until "([^"]*)" service is up and running on "([^"]*)"$/) do |serv
   node.run_until_ok(cmd)
 end
 
+When(/^I enable product "([^"]*)"$/) do |prd|
+  list_output = sshcmd("mgr-sync list products", ignore_err: true)[:stdout]
+  executed = false
+  linenum = 0
+  list_output.each_line do |line|
+    next unless /^ *\[ \]/ =~ line
+    linenum += 1
+    next unless line.include? prd
+    executed = true
+    $command_output = sshcmd("echo '#{linenum}' | mgr-sync add product", ignore_err: true)[:stdout]
+    break
+  end
+  raise $command_output.to_s unless executed
+end
+
+When(/^I enable product "([^"]*)" without recommended$/) do |prd|
+  list_output = sshcmd("mgr-sync list products", ignore_err: true)[:stdout]
+  executed = false
+  linenum = 0
+  list_output.each_line do |line|
+    next unless /^ *\[ \]/ =~ line
+    linenum += 1
+    next unless line.include? prd
+    executed = true
+    $command_output = sshcmd("echo '#{linenum}' | mgr-sync add product --no-recommends", ignore_err: true)[:stdout]
+    break
+  end
+  raise $command_output.to_s unless executed
+end
+
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
   $command_output = sshcmd("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", ignore_err: true)[:stdout]
 end
@@ -121,9 +151,7 @@ Then(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
   cmd = "echo | scp -o StrictHostKeyChecking=no root@#{$server.ip}:/tmp/spacewalk-debug.tar.bz2 . 2>&1"
   command_output = `#{cmd}`
-  unless $CHILD_STATUS.success?
-    raise "Execute command failed: #{$ERROR_INFO}: #{command_output}"
-  end
+  raise "Execute command failed: #{$ERROR_INFO}: #{command_output}" unless $CHILD_STATUS.success?
 end
 
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, target|

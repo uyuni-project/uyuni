@@ -79,6 +79,12 @@ def _create_add_subparser(subparsers):
         dest='no_optionals',
         default=False,
         help='do not list optional channels in interactive mode')
+    add_parser.add_argument(
+        '--no-recommends',
+        action='store_true',
+        dest='no_recommends',
+        default=False,
+        help='do not enable recommended products automatically')
 
 
 def _create_list_subparser(subparsers):

@@ -249,10 +249,10 @@ def getRegistrationStackSh(saltEnabled):
     PKG_NAME_YUM = saltEnabled and ['salt', 'salt-minion'] or []
 
     PKG_NAME_UPDATE = list(PKG_NAME)
-    PKG_NAME_UPDATE.extend(['zypper', 'rhnlib', 'openssl'])
+    PKG_NAME_UPDATE.extend(['zypper', 'openssl'])
 
     PKG_NAME_UPDATE_YUM = list(PKG_NAME_YUM)
-    PKG_NAME_UPDATE_YUM.extend(saltEnabled and ['yum', 'rhnlib', 'openssl'] or ['yum-rhn-plugin', 'yum', 'rhnlib', 'openssl'])
+    PKG_NAME_UPDATE_YUM.extend(saltEnabled and ['yum', 'openssl'] or ['yum-rhn-plugin', 'yum', 'openssl'])
 
     return """\
 echo
@@ -305,6 +305,20 @@ function test_repo_exists() {{
     CLIENT_REPO_URL=""
   fi
   rm -f repomd.xml
+}}
+
+function get_rhnlib_pkgs() {{
+  # Gets all installed rhnlib packages for update
+  RHNLIB_PKG=""
+  if rpm -q python3-rhnlib > /dev/null; then
+    RHNLIB_PKG+="python3-rhnlib "
+  fi
+  if rpm -q python2-rhnlib > /dev/null; then
+    RHNLIB_PKG+="python2-rhnlib "
+  fi
+  if rpm -q rhnlib > /dev/null; then
+    RHNLIB_PKG+="rhnlib "
+  fi
 }}
 
 function setup_bootstrap_repo() {{
@@ -381,17 +395,22 @@ if [ "$INSTALLER" == yum ]; then
         done
     fi
     # try update main packages for registration from any repo which is available
-    yum -y upgrade {PKG_NAME_UPDATE_YUM} ||:
+    get_rhnlib_pkgs
+    yum -y upgrade {PKG_NAME_UPDATE_YUM} $RHNLIB_PKG ||:
 fi
 if [ "$INSTALLER" == zypper ]; then
   function getZ_CLIENT_CODE_BASE() {{
     local BASE=""
     local VERSION=""
     local PATCHLEVEL=""
-    test -r /etc/SuSE-release && {{
-      grep -q 'Enterprise' /etc/SuSE-release && BASE="sle"
+    if [ -r /etc/SuSE-release ]; then
+      grep -q 'Enterprise' /etc/SuSE-release && BASE='sle'
       eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
-    }}
+    elif [ -r /etc/os-release ]; then
+      grep -q 'Enterprise' /etc/os-release && BASE='sle'
+      VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
+      PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
+    fi
     Z_CLIENT_CODE_BASE="${{BASE:-unknown}}"
     Z_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"
     Z_CLIENT_CODE_PATCHLEVEL="${{PATCHLEVEL:-0}}"
@@ -515,8 +534,9 @@ if [ "$INSTALLER" == zypper ]; then
     fi
   fi
 
+  get_rhnlib_pkgs
   # try update main packages for registration from any repo which is available
-  zypper --non-interactive up {PKG_NAME_UPDATE} ||:
+  zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
 fi
 
 remove_bootstrap_repo

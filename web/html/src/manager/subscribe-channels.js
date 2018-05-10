@@ -9,7 +9,9 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
+const Toggler = require("../components/toggler");
 const {BootstrapPanel} = require("../components/panel");
+const ChannelUtils = require("../utils/channels");
 const {ChannelAnchorLink, ActionLink} = require("../components/links");
 
 import type JsonResult from "../utils/network";
@@ -35,16 +37,22 @@ type ChannelDto = {
   id: number,
   name: string,
   custom: boolean,
-  subscribable: boolean
+  subscribable: boolean,
+  recommended: boolean
 }
 
 type SystemChannelsState = {
   messages: Array<Object>,
   earliest: Date,
   selectedBase: ?ChannelDto,
-  selectedChildren: Map<number, Array<ChannelDto>>,
+  selectedChildrenIds: Map<number, Set<number>>, // base channel id -> set<child channel id>
   availableBase: Array<ChannelDto>,
-  availableChildren: Array<ChannelDto>,
+  // mapping channel ids to their DTOs
+  availableChildren: Map<number, ChannelDto>,
+  // channel dependencies: which child channels are required by a child channel?
+  requiredChannels: Map<number, Set<number>>,
+  // channel dependencies: by which child channels is a child channel required?
+  requiredByChannels: Map<number, Set<number>>,
   page: number,
   scheduled: boolean
 }
@@ -57,9 +65,11 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       messages: [],
       earliest: Functions.Utils.dateWithTimezone(localTime),
       selectedBase: null,
-      selectedChildren: new Map(),
+      selectedChildrenIds: new Map(),
       availableBase: [],
-      availableChildren: [],
+      availableChildren: new Map(),
+      requiredChannels: new Map(),
+      requiredByChannels: new Map(),
       page: 1,
       scheduled: false
     };
@@ -75,7 +85,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         const base : ChannelDto = data.data && data.data.base ? data.data.base : this.getNoBase();
         this.setState({
           selectedBase: base,
-          selectedChildren: new Map([[base.id, data.data.children]])
+          selectedChildrenIds: new Map([[base.id, new Set(data.data.children.map(c => c.id))]])
         });
         if (data.data && data.data.base) {
           this.getAccessibleChildren(data.data.base.id);
@@ -94,12 +104,20 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   getAccessibleChildren = (baseId) => {
     // TODO cache children to avoid repeated calls
-    Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${baseId}/accessible-children`)
-      .promise.then((data : JsonResult<Array<ChannelDto>>) => {
+    Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${baseId}/accessible-children`).promise
+      .then((data : JsonResult<Array<ChannelDto>>) => {
+        const availableChildren = new Map(data.data
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map(channel => [channel.id, channel]));
         this.setState({
           // sort child channels by name to have a consistent order in the UI
-          availableChildren: data.data.sort((a, b) => a.name.localeCompare(b.name))
+          availableChildren: availableChildren
         });
+        const childrenIds : Array<number> = Array.from(availableChildren.keys());
+        return Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise;
+      })
+      .then((data : JsonResult<Map<number, Array<number>>>) => {
+        this.setState(ChannelUtils.processChannelDependencies(data.data));
       })
       .catch(this.handleResponseError);
   }
@@ -112,15 +130,15 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   handleBaseChange = (event: SyntheticInputEvent<*>) => {
     const baseId : number = parseInt(event.target.value);
-    if (!this.state.selectedChildren.has(baseId)) {
-      this.state.selectedChildren.set(baseId, []);
+    if (!this.state.selectedChildrenIds.has(baseId)) {
+      this.state.selectedChildrenIds.set(baseId, new Set());
     }
     this.setState({
       selectedBase: baseId > -1 ?
           this.state.availableBase.find(c => c.id == baseId) :
           this.getNoBase(),
-      availableChildren: [],
-      selectedChildren: this.state.selectedChildren
+      availableChildren: new Map(),
+      selectedChildrenIds: this.state.selectedChildrenIds
     });
 
     this.getAccessibleChildren(event.target.value);
@@ -131,21 +149,32 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   handleChildChange = (event: SyntheticInputEvent<*>) => {
-    let child : ?ChannelDto = this.state.availableChildren.find(c => c.id.toString() == event.target.value);
-    let selectedChildrenList : ?Array<ChannelDto>;
-    if (child && this.state.selectedBase) {
-      selectedChildrenList =  this.state.selectedChildren.get(this.state.selectedBase.id);
-    }
-    if (selectedChildrenList && child) {
-      if (event.target.checked) {
-        selectedChildrenList.push(child);
-      } else {
-        selectedChildrenList.splice(selectedChildrenList.findIndex(e => e.id.toString() == event.target.value), 1);
-      }
+    this.selectChildChannel(parseInt(event.target.value), event.target.checked);
+  }
 
+  selectChildChannel = (childChannelId, select) => {
+    const child : ?ChannelDto = this.state.availableChildren.get(childChannelId);
+    if (child == null || this.state.selectedBase == null) {
+      return;
+    }
+    const selectedChildrenIds = this.state.selectedChildrenIds.get(this.state.selectedBase.id);
+    if (selectedChildrenIds) {
+      if (select) {
+        const dependingChannelIds = this.state.requiredChannels.get(child.id) || [];
+        Array.from(dependingChannelIds)
+          .filter(channel => channel.id !== child.id)
+          .forEach(channelId => selectedChildrenIds.add(channelId));
+        selectedChildrenIds.add(child.id);
+      } else { // unselect
+        const dependingChannelIds = this.state.requiredByChannels.get(child.id) || [];
+        Array.from(dependingChannelIds)
+          .filter(channel => channel.id !== child.id)
+          .forEach(channelId => selectedChildrenIds.delete(channelId));
+        selectedChildrenIds.delete(child.id);
+      }
     }
     this.setState({
-      selectedChildren: this.state.selectedChildren
+      selectedChildrenIds: this.state.selectedChildrenIds
     });
   }
 
@@ -163,9 +192,33 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   getSelectedChildren = () : ?Array<ChannelDto> => {
     if (this.state.selectedBase && this.state.selectedBase.id) {
-      return this.state.selectedChildren.get(this.state.selectedBase.id)
+      const selectedChildrenIds = this.state.selectedChildrenIds.get(this.state.selectedBase.id);
+      return Array.from(selectedChildrenIds)
+        .map(channelId => this.state.availableChildren.get(channelId))
+        .filter(channel => channel !== undefined);
     }
     return null;
+  }
+
+  toggleRecommended = () => {
+    if (this.areRecommendedChildrenSelected()) {
+      const selectedRecommendedChildren = this.getSelectedChildren().filter(channel => channel.recommended);
+      selectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, false));
+    } else {
+      const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id);
+      const unselectedRecommendedChildren = Array.from(this.state.availableChildren.values())
+          .filter(channel => channel.recommended && !selectedChildrenIds.includes(channel.id))
+      unselectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, true));
+    }
+  }
+
+  areRecommendedChildrenSelected = () : Boolean => {
+    const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id);
+    const recommendedChildren = Array.from(this.state.availableChildren.values()).filter(channel => channel.recommended);
+    const selectedRecommendedChildren = recommendedChildren.filter(channel => selectedChildrenIds.includes(channel.id));
+    const unselectedRecommendedChildren = recommendedChildren.filter(channel => !selectedChildrenIds.includes(channel.id));
+
+    return selectedRecommendedChildren.length > 0 && unselectedRecommendedChildren.length == 0;
   }
 
   handleConfirm = () => {
@@ -194,6 +247,18 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   onDateTimeChanged = (date) => {
       this.setState({earliest: date});
+  }
+
+  dependenciesTooltip = (channelId) => {
+    const resolveChannelNames = (channelIds) => {
+      return Array.from(channelIds || new Set())
+        .map(channelId => this.state.availableChildren.get(channelId))
+        .filter(channel => channel != null)
+        .map(channel => channel.name);
+    }
+    return ChannelUtils.dependenciesTooltip(
+      resolveChannelNames(this.state.requiredChannels.get(channelId)),
+      resolveChannelNames(this.state.requiredByChannels.get(channelId)));
   }
 
   render() {
@@ -257,12 +322,25 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     if (this.state.availableChildren) {
       let selectedChildrenList = this.getSelectedChildren();
 
-      childChannels = this.state.availableChildren.map(c => <div className="checkbox">
+      childChannels = Array.from(this.state.availableChildren.values()).map(c => <div className="checkbox">
         <input type="checkbox" value={c.id} id={"child_" + c.id}
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
           disabled={!c.subscribable}
           onChange={this.handleChildChange}/>
-        <label htmlFor={"child_" + c.id}>{c.name}</label>
+        <label title={this.dependenciesTooltip(c.id)} htmlFor={"child_" + c.id}>{c.name}</label> &nbsp;
+        {
+          this.dependenciesTooltip(c.id)
+            ? <a href="#">
+                <i className="fa fa-info-circle spacewalk-help-link" title={this.dependenciesTooltip(c.id)}></i>
+              </a>
+            : null
+        }
+        &nbsp;
+        {
+          c.recommended
+            ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>
+            : null
+        }
         <ChannelAnchorLink id={c.id} newWindow={true}/>
       </div>)
     }
@@ -291,7 +369,15 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                           {t("You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel.")}
                         </div>
                       }>
-                        <div>{ baseChannels } </div>
+                      <div style={{"overflow": "auto"}} >
+                        <div style={{"float": "right"}}>
+                          <Toggler.WithRecommended
+                             enabled={this.areRecommendedChildrenSelected()}
+                             handler={() => this.toggleRecommended()} />
+                        </div>
+                      </div>
+                      <hr />
+                      <div>{ baseChannels } </div>
                     </BootstrapPanel>
                   </div>
                   <div className="col-md-6">
@@ -363,7 +449,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                  <hr/>
             </div>
             <div>{
-              this.state.availableChildren && this.state.availableChildren.map(c => <div className="checkbox">
+              this.state.availableChildren && Array.from(this.state.availableChildren.values()).map(c => <div className="checkbox">
                   <input type="checkbox" value={c.id}
                     checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
                     disabled={true}/>

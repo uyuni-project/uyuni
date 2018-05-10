@@ -2,46 +2,7 @@
 
 const React = require("react");
 const StatePersistedMixin = require("./util").StatePersistedMixin;
-
-const PaginationBlock = (props) => {
-  const currentPage = props.currentPage;
-  const lastPage = props.lastPage;
-  const onPageChange = props.onPageChange;
-
-  const pagination = lastPage > 1 ?
-    <div className="spacewalk-list-pagination">
-      <div className="spacewalk-list-pagination-btns btn-group">
-        <PaginationButton onClick={() => onPageChange(1)} toPage={1} disabled={currentPage == 1} text={t("First")} />
-        <PaginationButton onClick={() => onPageChange(currentPage - 1)} disabled={currentPage == 1} text={t("Prev")} />
-        <PaginationButton onClick={() => onPageChange(currentPage + 1)} disabled={currentPage == lastPage} text={t("Next")} />
-        <PaginationButton onClick={() => onPageChange(lastPage)} disabled={currentPage == lastPage} text={t("Last")} />
-      </div>
-    </div> :
-    null
-  ;
-
-  return (
-    <div>
-      <div className="table-page-information">{t("Page {0} of {1}", currentPage, lastPage)}</div>
-      {pagination}
-    </div>
-  );
-}
-
-const PaginationButton = (props) =>
-  <button type="button" className="btn btn-default"
-    disabled={props.disabled} onClick={props.onClick}>
-    {props.text}
-  </button>
-;
-
-const ItemsPerPageSelector = (props) =>
-  <select className="display-number"
-    defaultValue={props.currentValue}
-    onChange={(e) => props.onChange(parseInt(e.target.value))}>
-      {[5,10,15,25,50,100,250,500].map((o) => <option value={o} key={o}>{o}</option>)}
-  </select>
-;
+const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
 
 const SearchPanel = (props) =>
   <div className="spacewalk-list-filter table-search-wrapper">
@@ -49,17 +10,19 @@ const SearchPanel = (props) =>
       React.Children.map(props.children,
         (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }))
     }
-    <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
-    { props.selectable && props.selectedCount > 0 &&
-        <span>
-            {t("({0} selected)", props.selectedCount)}&nbsp;
-            <a href="#" onClick={props.onClear}>{t("Clear")}</a>
-            &nbsp;/&nbsp;
-        </span>
-    }
-    { props.selectable &&
-        <a href="#" onClick={props.onSelectAll}>{t("Select All")}</a>
-    }
+    <div className="d-inline-block">
+      <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
+      { props.selectable && props.selectedCount > 0 &&
+          <span>
+              {t("({0} selected)", props.selectedCount)}&nbsp;
+              <a href="#" onClick={props.onClear}>{t("Clear")}</a>
+              &nbsp;/&nbsp;
+          </span>
+      }
+      { props.selectable &&
+          <a href="#" onClick={props.onSelectAll}>{t("Select All")}</a>
+      }
+    </div>
   </div>
 ;
 
@@ -359,7 +322,8 @@ const Table = React.createClass({
             </div>
           </div>
           { this.state.loading ?
-            <div className="panel-body">
+            <div className="panel-body text-center">
+              <i className='fa fa-spinner fa-spin fa-1-5x'></i>
               <h4>{loadingText}</h4>
             </div>
             :

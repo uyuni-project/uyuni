@@ -29,17 +29,22 @@ class Product(object):
         self.arch = data["arch"]
         self.friendly_name = data["friendly_name"]
         self.status = Product.Status(data["status"].upper())
+        self.recommended = data["recommended"]
         self.extensions = []
         self._parse_extensions(data["extensions"])
         self.channels = [Channel(channel) for channel in data['channels']]
+        self.isBase = False
+
+    def __repr__(self):
+        return self.to_ascii_row()
 
     @property
     def short_status(self):
         # pylint: disable=E1101
         if self.status == Product.Status.AVAILABLE:
-            return "[ ]"
+            return "[ ]%s" % (self.recommended and " (R)" or "")
         else:
-            return "[%s]" % str(self.status.value)[0]
+            return "[%s]%s" % (str(self.status.value)[0], self.recommended and " (R)" or "")
 
     def to_ascii_row(self):
         return "{0} {1} ({2})".format(self.short_status, self.friendly_name,
@@ -97,8 +102,9 @@ def parse_products(data, log):
     products = []
 
     for p in data:
-        log.debug("Found product '{0} {1}'".format(
-            Product(p).friendly_name, Product(p).arch))
-        products.append(Product(p))
+        prd = Product(p)
+        prd.isBase = True
+        log.debug("Found product '{0} {1}'".format(prd.friendly_name, prd.arch))
+        products.append(prd)
 
     return products

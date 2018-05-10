@@ -19,6 +19,7 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -466,13 +467,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
                     assertFalse(minion.getChannels().isEmpty());
                     assertTrue(minion.getChannels().size() > 1);
-
-                    // Check if the state assignment file is generated
-                    assertTrue(tmpSaltRoot.resolve("custom")
-                            .resolve("custom_" + minion.getMachineId() + ".sls").toFile()
-                            .exists());
                 }, DEFAULT_CONTACT_METHOD);
     }
+
 
     @SuppressWarnings("unchecked")
     public void testRegisterMinionWithInvalidActivationKeyNoSyncProducts() throws Exception {
@@ -739,6 +736,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     public void testRegisterRHELMinionWithRESActivationKey() throws Exception {
         Channel resChannel = RhelUtilsTest.createResChannel(user, "7");
+        HibernateFactory.getSession().flush();
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
@@ -752,7 +750,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(getGrains(MINION_ID, "rhel", key)));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
+                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" redhat-release-server"));
                     will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
@@ -796,7 +794,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(getGrains(MINION_ID, "res", null)));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server\n")))));
+                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" sles_es-release-server"));
                     will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +

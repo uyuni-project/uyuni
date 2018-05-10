@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -185,8 +186,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         sourceAddonProduct = TestUtils.saveAndReload(sourceAddonProduct);
         SUSEProductTestUtils.createChildChannelsForProduct(sourceAddonProduct, sourceBaseChannel, user);
-        sourceAddonProduct.setExtensionOf(Collections.singleton(sourceBaseProduct));
-        sourceBaseProduct.setExtensionFor(Collections.singleton(sourceAddonProduct));
+        SUSEProductExtension e = new SUSEProductExtension(sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
+        TestUtils.saveAndReload(e);
 
         sourceAddons.add(sourceAddonProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProduct, sourceAddons);
@@ -202,8 +203,10 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         targetAddonProduct = TestUtils.saveAndReload(targetAddonProduct);
         SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
-        targetAddonProduct.setExtensionOf(new HashSet(Arrays.asList(targetBaseProduct, sourceBaseProduct)));
-        targetBaseProduct.setExtensionFor(Collections.singleton(targetAddonProduct));
+        SUSEProductExtension e2 = new SUSEProductExtension(sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
+        SUSEProductExtension e3 = new SUSEProductExtension(targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
+        TestUtils.saveAndReload(e2);
+        TestUtils.saveAndReload(e3);
 
         // Verify that target products are returned correctly
 

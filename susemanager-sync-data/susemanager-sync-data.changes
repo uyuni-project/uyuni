@@ -1,3 +1,8 @@
+- Add PackageHub 15 Products
+- add product sle-module-live-patching 15
+- add new HPC 15 Product
+- add missing channel to sle-module-basesystem 15
+- support SLE15 product family
 -------------------------------------------------------------------
 Tue Apr 10 17:32:03 CEST 2018 - jgonzalez@suse.com
 

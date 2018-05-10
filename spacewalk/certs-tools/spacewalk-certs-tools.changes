@@ -1,3 +1,5 @@
+- Add detection of multiple rhnlib package installs
+- support SLE15 product family
 -------------------------------------------------------------------
 Tue Apr 10 09:58:36 CEST 2018 - jgonzalez@suse.com
 

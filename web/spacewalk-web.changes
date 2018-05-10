@@ -1,3 +1,5 @@
+- Do not use button for recommended toggler
+- rewrite products page into reactjs
 - Display always config channel name and label (bsc#1083278)
 - Simplify titles on channel assignment pages
 

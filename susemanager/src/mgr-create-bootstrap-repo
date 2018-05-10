@@ -4,6 +4,7 @@ import sys
 import os
 import shutil
 from spacewalk.server import rhnSQL
+from spacewalk.common import usix
 from spacewalk.common.rhnConfig import CFG, initCFG
 from optparse import OptionParser
 
@@ -21,7 +22,7 @@ JOIN suseProductChannel spc ON sp.id = spc.product_id
 WHERE spc.channel_id IS NOT NULL
 """)
 
-_sql_find_pkgs = rhnSQL.Statement("""
+_sql_find_pkgs = """
 SELECT distinct
         pkg.id AS id,
         PN.name || '-' || evr_t_as_vre_simple(full_list.evr) || '.' || full_list.arch_label AS nvrea,
@@ -35,7 +36,7 @@ SELECT distinct
            FROM  rhnPackageArch PA, rhnPackageEVR PE, rhnPackage P,
                  rhnChannelNewestPackage CNP, suseProductChannel PC,
                  suseProducts sp
-          WHERE  sp.product_id = :pdid
+          WHERE  sp.product_id in ( %s )
             AND  sp.id = pc.product_id
             AND  pc.channel_id = cnp.channel_id
             AND  cnp.package_id = p.id
@@ -52,12 +53,12 @@ SELECT distinct
  WHERE full_list.name_id = pkg.name_id
    AND full_list.evr = pevr.evr
    AND full_list.arch_id = pkg.package_arch_id
-   AND SP.product_id = :pdid
+   AND SP.product_id in ( %s )
    AND pn.name = :pkgname
 order by pkg.id
-""");
+""";
 
-_sql_find_pkgs_with_custom_channels = rhnSQL.Statement("""
+_sql_find_pkgs_with_custom_channels = """
 SELECT  distinct
         pkg.id AS id,
         PN.name || '-' || evr_t_as_vre_simple(full_list.evr) || '.' || full_list.arch_label AS nvrea,
@@ -75,7 +76,7 @@ SELECT  distinct
            JOIN  rhnPackage I_P ON I_CNP.package_id = I_P.id
            JOIN  rhnPackageEVR I_PE ON I_P.evr_id = I_PE.id
            JOIN  rhnPackageArch I_PA ON I_P.package_arch_id = I_PA.id
-          WHERE  I_SP.product_id = :pdid
+          WHERE  I_SP.product_id in ( %s )
        GROUP BY  I_P.name_id, I_PA.label, I_PA.id
        ) full_list,
        suseProducts SP
@@ -88,10 +89,10 @@ SELECT  distinct
  WHERE full_list.name_id = pkg.name_id
    AND full_list.evr = pevr.evr
    AND full_list.arch_id = pkg.package_arch_id
-   AND SP.product_id = :pdid
+   AND SP.product_id in ( %s )
    AND pn.name = :pkgname
 order by pkg.id
-""");
+""";
 
 def check_bootstrap_packages():
     """ Check, if bootstrap repo packages are installed """
@@ -118,14 +119,14 @@ def list_labels():
     synced_products = map(lambda x: x['id'], rhnSQL.fetchall_dict(_sql_synced_proucts) or [])
     label_index = 1
     for label in sorted(mgr_bootstrap_data.DATA.iterkeys()):
-        if mgr_bootstrap_data.DATA[label]['PDID'] in synced_products:
+        if int(mgr_bootstrap_data.DATA[label]['PDID'][0]) in synced_products:
             print "{0}. {1}".format(label_index, label)
             label_map[label_index] = label
             label_index += 1
     return label_map
 
 def create_repo(label, additional=[]):
-    pdid = int(mgr_bootstrap_data.DATA[label]['PDID'])
+    pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
     destdir = mgr_bootstrap_data.DATA[label]['DEST']
     errors = 0
     messages = []
@@ -143,9 +144,9 @@ def create_repo(label, additional=[]):
     print
 
     if options.usecustomchannels:
-        h = rhnSQL.prepare(_sql_find_pkgs_with_custom_channels)
+        h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_with_custom_channels % (pdids, pdids)))
     else:
-        h = rhnSQL.prepare(_sql_find_pkgs)
+        h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids, pdids)))
     packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
     packagelist.extend(additional)
     for pkgname in packagelist:
@@ -197,6 +198,11 @@ if options.datamodule and options.datamodule != '':
 
 try:
     mgr_bootstrap_data = __import__(modulename)
+    for label in mgr_bootstrap_data.DATA:
+        if not isinstance(mgr_bootstrap_data.DATA[label]['PDID'], usix.ListType):
+            mgr_bootstrap_data.DATA[label]['PDID'] = map(str, [int(mgr_bootstrap_data.DATA[label]['PDID'])])
+        else:
+            mgr_bootstrap_data.DATA[label]['PDID'] = map(str, [int(pdid) for pdid in mgr_bootstrap_data.DATA[label]['PDID']])
 except ImportError, e:
     sys.stderr.write("Unable to load module '%s'\n" % modulename)
     sys.stderr.write(str(e) + "\n")

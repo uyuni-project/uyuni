@@ -13,6 +13,8 @@ const {BootstrapPanel} = require("../components/panel");
 const MessagesUtils = require("../components/messages").Utils;
 const {ChannelLink, ActionLink, SystemLink} = require("../components/links");
 const {PopUp} = require("../components/popup");
+const Toggler = require("../components/toggler");
+const ChannelUtils = require("../utils/channels");
 
 import type JsonResult from "../utils/network";
 
@@ -244,7 +246,11 @@ type ChildChannelProps = {
 type ChildChannelState = {
   selections: Map<string, string>,
   popupServersList: Array<SsmServerDto>,
-  popupServersChannelName: string
+  popupServersChannelName: string,
+  // channel dependencies: which child channels are required by a child channel?
+  requiredChannels: Map<number, Set<number>>,
+  // channel dependencies: by which child channels is a child channel required?
+  requiredByChannels: Map<number, Set<number>>
 }
 
 class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelState> {
@@ -261,8 +267,26 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     this.state = {
       selections : selections,
       popupServersList: [],
-      popupServersChannelName: ""
+      popupServersChannelName: "",
+      requiredChannels: new Map(),
+      requiredByChannels: new Map()
     }
+  }
+
+  componentDidMount() {
+    // get channel dependencies
+    // TODO cache stuff to avoid repeated calls
+    const childrenIds : Array<number> = Array.from(this.props.childChannels
+      .flatMap(dto => dto.childChannels.map(channel => channel.id)));
+    Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise
+      .then((response : JsonResult<Map<number, Array<number>>>) => {
+        const channelDeps = ChannelUtils.processChannelDependencies(response.data);
+        this.setState({
+          requiredChannels: channelDeps.requiredChannels,
+          requiredByChannels: channelDeps.requiredByChannels
+        });
+      })
+      .catch(err => console.log(err.statusText));
   }
 
   getChangeId = (change: ChannelChangeDto, childId: string) => {
@@ -274,11 +298,68 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     (childId ? childId : "");
   }
 
-  onChangeChild = (allowedChannels: SsmAllowedChildChannelsDto, childId: string, action: string) => {
-    const allowedId = getAllowedChangeId(allowedChannels, childId);
-    this.state.selections.set(allowedId, action);
+  onChangeChild = (allowedChannels: SsmAllowedChildChannelsDto, childId: number, action: string) => {
+    let dependencies = [];
+    const childReqChannels = this.state.requiredChannels.get(childId);
+    const childReqByChannels = this.state.requiredByChannels.get(childId);
+    if (action === "SUBSCRIBE" && childReqChannels) {
+      dependencies = Array.from(childReqChannels);
+    } else if (action === "UNSUBSCRIBE" && childReqByChannels) {
+      dependencies = childReqByChannels;
+    } else if (action === "NO_CHANGE" && childReqChannels && childReqByChannels) {
+      // in this case we can't make any assumptions about the actual assignment of the channel,
+      // let's reset both the forward and backward deps
+      dependencies = Array.from(childReqChannels).concat(childReqByChannels);
+    }
+
+    // change the channel AND its dependencies
+    [childId].concat(dependencies).forEach(channelId => {
+      const allowedId = getAllowedChangeId(allowedChannels, channelId);
+      this.state.selections.set(allowedId, action);
+      this.setState({selections: this.state.selections});
+      this.props.onChangeChild(allowedChannels, channelId, action);
+    });
+  }
+
+  dependenciesTooltip = (channelId) => {
+    const resolveChannelNames = (channelIds) => {
+      return this.props.childChannels
+        .flatMap(dto => dto.childChannels)
+        .filter(channel => (channelIds || new Set()).has(channel.id))
+        .map(channel => channel.name);
+    }
+    return ChannelUtils.dependenciesTooltip(
+      resolveChannelNames(this.state.requiredChannels.get(channelId)),
+      resolveChannelNames(this.state.requiredByChannels.get(channelId)));
+  }
+
+  toggleRecommended = (change: SsmAllowedChildChannelsDto) => {
+    const recommendedChangeIds = change.childChannels
+      .filter(channel => channel.recommended)
+      .map(channel => getAllowedChangeId(change, channel.id));
+
+    if (this.areRecommendedChildrenSelected(change)) {
+      recommendedChangeIds
+        .filter(changeId => this.state.selections.get(changeId) === "SUBSCRIBE")
+        .forEach(changeId => this.state.selections.set(changeId, "NO_CHANGE"));
+    } else {
+      recommendedChangeIds
+        .filter(changeId => this.state.selections.get(changeId) !== "SUBSCRIBE")
+        .forEach(changeId => this.state.selections.set(changeId, "SUBSCRIBE"));
+    }
+
     this.setState({selections: this.state.selections});
-    this.props.onChangeChild(allowedChannels, childId, action)
+  }
+
+  areRecommendedChildrenSelected = (change: SsmAllowedChildChannelsDto) => {
+    const recommendedChannels = change.childChannels
+      .filter(channel => channel.recommended);
+    const recommendedNonSubscribeActions = recommendedChannels
+      .map(channel => getAllowedChangeId(change, channel.id))
+      .map(changeId => this.state.selections.get(changeId))
+      .filter(action => action !== "SUBSCRIBE");
+
+    return recommendedChannels.length > 0 && recommendedNonSubscribeActions.length == 0;
   }
 
   showServersListPopUp = (channelName: string, servers: Array<SsmServerDto>) => {
@@ -301,12 +382,15 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
           <div key={getAllowedChangeId(allowed, "")}>
             <div className="row">
               <div className="col-md-8">
-                <h4>
+                <h4 style={{"float": "left", "paddingRight": "10px"}}>
                   { allowed.newBaseChannel ?
                     <ChannelLink id={allowed.newBaseChannel.id} newWindow={true}>{allowed.newBaseChannel.name}</ChannelLink> :
                      t("(Couldn't determine new base channel)")
                   }
                 </h4>
+                <Toggler.WithRecommended
+                   enabled={this.areRecommendedChildrenSelected(allowed)}
+                   handler={() => this.toggleRecommended(allowed)} />
               </div>
               <div className="col-md-4 text-right">
                 <strong>
@@ -333,7 +417,20 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
               { allowed.childChannels.map(child =>
                 <dt className="row">
                   <div className="col-md-6">
-                    <ChannelLink id={child.id} newWindow={true}>{ child.name }</ChannelLink>
+                    <ChannelLink id={child.id} newWindow={true}>{ child.name }</ChannelLink> &nbsp;
+                    {
+                      this.dependenciesTooltip(child.id)
+                        ? <a href="#">
+                            <i className="fa fa-info-circle spacewalk-help-link" title={this.dependenciesTooltip(child.id)}></i>
+                          </a>
+                        : null
+                    }
+                    &nbsp;
+                    {
+                      child.recommended
+                        ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>
+                        : null
+                    }
                   </div>
                   <div className="col-md-4">
                     <div className="row radio">
@@ -485,7 +582,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
               { allowed.childChannels.map(child =>
                 <dt className="row">
                   <div className="col-md-6">
-                    <ChannelLink id={child.id} newWindow={true}>{ child.name }</ChannelLink>
+                    <ChannelLink id={child.id} newWindow={true}>{ child.name + (child.recommended ? " (R)" : "") }</ChannelLink>
                   </div>
                   <div className="col-md-4">
                     { actionLabelMap[this.getChildAction(allowed, child.id)] }
