@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.profile;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -29,6 +31,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -59,7 +62,9 @@ public class ImageProfileHandler extends BaseHandler {
         ensureImageAdmin(loggedInUser);
         List<String> imageTypes = new ArrayList<>();
         imageTypes.add(ImageProfile.TYPE_DOCKERFILE);
-        imageTypes.add(ImageProfile.TYPE_KIWI);
+        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
+            imageTypes.add(ImageProfile.TYPE_KIWI);
+        }
         return imageTypes;
     }
 
