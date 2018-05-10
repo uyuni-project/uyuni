@@ -12,6 +12,7 @@ const MessagesUtils = require("../components/messages").Utils;
 const Toggler = require("../components/toggler");
 const {BootstrapPanel} = require("../components/panel");
 const ChannelUtils = require("../utils/channels");
+const {ChannelAnchorLink, ActionLink} = require("../components/links");
 
 import type JsonResult from "../utils/network";
 
