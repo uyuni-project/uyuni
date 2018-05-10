@@ -1,3 +1,4 @@
+- fix URL for new products page (bsc#1092492)
 - SLE15 support: recommended/required flag for products and channels
 - rewrite products page into reactjs
 - Show channel label when listing config channels (bsc#1083278)

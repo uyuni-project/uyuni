@@ -1941,10 +1941,10 @@ tree will not be usable for autoinstalling.
         <source>A Service Pack Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date">
-        <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/admin/setup/SUSEProducts.do"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
+          <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-channels">
-        <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/admin/setup/SUSEProducts.do"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
+          <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed">
         <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
