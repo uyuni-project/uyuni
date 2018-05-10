@@ -15,11 +15,9 @@
 
 package com.suse.manager.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -29,17 +27,16 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
-import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -70,6 +67,11 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -83,12 +85,16 @@ import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.KiwiBundleInfo;
 import com.suse.manager.webui.utils.salt.custom.KiwiImageBuildSlsResult;
+import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
@@ -106,27 +112,22 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
-import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
-import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -1028,75 +1029,86 @@ public class SaltUtils {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
         serverAction.setResultMsg("Success");
 
-        if (result.getDockerInspect().isResult()) {
-            ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
-            imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
-            ImageBuildHistory history = new ImageBuildHistory();
-            history.setImageInfo(imageInfo);
-            // revision number was already incremented in handleImageBuildData()
-            history.setRevisionNumber(imageInfo.getRevisionNumber());
-            history.getRepoDigests().addAll(
-                    iret.getRepoDigests().stream().map(digest -> {
-                        ImageRepoDigest repoDigest = new ImageRepoDigest();
-                        repoDigest.setRepoDigest(digest);
-                        repoDigest.setBuildHistory(history);
-                        return repoDigest;
-                    }).collect(Collectors.toSet()));
-            imageInfo.getBuildHistory().add(history);
-        }
-        else {
-            serverAction.setResultMsg(result.getDockerInspect().getComment());
-            as = ActionFactory.STATUS_FAILED;
-        }
-
-        if (result.getDockerSlsBuild().isResult()) {
-            PkgProfileUpdateSlsResult ret =
-                    result.getDockerSlsBuild().getChanges().getRet();
-
-            Optional.of(ret.getInfoInstalled().getChanges().getRet())
-            .map(saltPkgs -> saltPkgs.entrySet().stream()
-                    .flatMap(entry -> Opt.stream(entry.getValue().left())
-                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                    .collect(Collectors.toSet()));
-
-            Optional.of(ret.getInfoInstalled().getChanges().getRet())
-            .map(saltPkgs -> saltPkgs.entrySet().stream()
-                    .flatMap(entry -> Opt.stream(entry.getValue().right())
-                        .flatMap(infoList -> infoList.stream())
-                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                    .collect(Collectors.toSet()));
-
-            Optional.ofNullable(ret.getListProducts())
-            .map(products -> products.getChanges().getRet())
-            .map(SaltUtils::getInstalledProducts)
-            .ifPresent(imageInfo::setInstalledProducts);
-
-            Optional<String> rhelReleaseFile =
-                    Optional.ofNullable(ret.getRhelReleaseFile())
-                    .map(StateApplyResult::getChanges)
-                    .filter(res -> res.getStdout() != null)
-                    .map(CmdExecCodeAll::getStdout);
-            Optional<String> centosReleaseFile =
-                    Optional.ofNullable(ret.getCentosReleaseFile())
-                    .map(StateApplyResult::getChanges)
-                    .filter(res -> res.getStdout() != null)
-                    .map(CmdExecCodeAll::getStdout);
-            Optional<String> resReleasePkg =
-                    Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
-                    .map(StateApplyResult::getChanges)
-                    .filter(res -> res.getStdout() != null)
-                    .map(CmdExecCodeAll::getStdout);
-            if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
-                    resReleasePkg.isPresent()) {
-                Set<InstalledProduct> products = getInstalledProductsForRhel(
-                        imageInfo, resReleasePkg,
-                        rhelReleaseFile, centosReleaseFile);
-                imageInfo.setInstalledProducts(products);
+        if (imageInfo.getProfile().asDockerfileProfile().isPresent()) {
+            if (result.getDockerInspect().isResult()) {
+                ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
+                imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
+                ImageBuildHistory history = new ImageBuildHistory();
+                history.setImageInfo(imageInfo);
+                // revision number was already incremented in handleImageBuildData()
+                history.setRevisionNumber(imageInfo.getRevisionNumber());
+                history.getRepoDigests().addAll(
+                        iret.getRepoDigests().stream().map(digest -> {
+                            ImageRepoDigest repoDigest = new ImageRepoDigest();
+                            repoDigest.setRepoDigest(digest);
+                            repoDigest.setBuildHistory(history);
+                            return repoDigest;
+                        }).collect(Collectors.toSet()));
+                imageInfo.getBuildHistory().add(history);
             }
-        }
-        else {
-            // do not fail the action when no packages are returned
-            serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
+            else {
+                serverAction.setResultMsg(result.getDockerInspect().getComment());
+                as = ActionFactory.STATUS_FAILED;
+            }
+
+            if (result.getDockerSlsBuild().isResult()) {
+                PkgProfileUpdateSlsResult ret =
+                        result.getDockerSlsBuild().getChanges().getRet();
+
+                Optional.of(ret.getInfoInstalled().getChanges().getRet())
+                .map(saltPkgs -> saltPkgs.entrySet().stream()
+                        .map(entry -> createImagePackageFromSalt(entry.getKey(),
+                                entry.getValue(), imageInfo))
+                        .collect(Collectors.toSet())
+                        );
+                Optional.ofNullable(ret.getListProducts())
+                .map(products -> products.getChanges().getRet())
+                .map(SaltUtils::getInstalledProducts)
+                .ifPresent(imageInfo::setInstalledProducts);
+
+                Optional<String> rhelReleaseFile =
+                        Optional.ofNullable(ret.getRhelReleaseFile())
+                        .map(StateApplyResult::getChanges)
+                        .filter(res -> res.getStdout() != null)
+                        .map(CmdExecCodeAll::getStdout);
+                Optional<String> centosReleaseFile =
+                        Optional.ofNullable(ret.getCentosReleaseFile())
+                        .map(StateApplyResult::getChanges)
+                        .filter(res -> res.getStdout() != null)
+                        .map(CmdExecCodeAll::getStdout);
+                Optional<String> resReleasePkg =
+                        Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
+                        .map(StateApplyResult::getChanges)
+                        .filter(res -> res.getStdout() != null)
+                        .map(CmdExecCodeAll::getStdout);
+                if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
+                        resReleasePkg.isPresent()) {
+                    Set<InstalledProduct> products = getInstalledProductsForRhel(
+                            imageInfo, resReleasePkg,
+                            rhelReleaseFile, centosReleaseFile);
+                    imageInfo.setInstalledProducts(products);
+                }
+            }
+            else {
+                // do not fail the action when no packages are returned
+                serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
+            }
+        };
+
+        if (imageInfo.getProfile().asKiwiProfile().isPresent()) {
+            if (result.getKiwiInspect().isResult()) {
+                OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
+                List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
+                packages.stream().forEach(pkg -> {
+                    createImagePackageFromSalt(pkg.getName(), pkg.getEpoch().equals(StringUtils.EMPTY) ? null : pkg.getEpoch(),
+                            pkg.getRelease(), pkg.getVersion(), Optional.empty(),
+                            Optional.of(pkg.getArch()), imageInfo);
+                });
+            }
+            else {
+                serverAction.setResultMsg(result.getKiwiInspect().getComment());
+                as = ActionFactory.STATUS_FAILED;
+            }
         }
 
         serverAction.setStatus(as);
@@ -1365,13 +1377,18 @@ public class SaltUtils {
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
         String version = info.getVersion().get();
+        return createImagePackageFromSalt(name, epoch, release, version, info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
+    }
+
+    private static ImagePackage createImagePackageFromSalt(
+            String name, String epoch, String release, String version, Optional<Long> installDateUnixTime, Optional<String> architecture, ImageInfo imageInfo) {
         PackageEvr evr = PackageEvrFactory
                 .lookupOrCreatePackageEvr(epoch, version, release);
 
         ImagePackage pkg = new ImagePackage();
         pkg.setEvr(evr);
-        pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture().get()));
-        pkg.setInstallTime(new Date(info.getInstallDateUnixTime().get() * 1000));
+        architecture.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
+        installDateUnixTime.ifPresent(udut -> pkg.setInstallTime(new Date(udut * 1000)));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setImageInfo(imageInfo);
         ImageInfoFactory.save(pkg);

@@ -35,16 +35,16 @@ import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA512Chec
 
 import org.apache.log4j.Logger;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * Factory class for ImageInfo entity
@@ -162,7 +162,8 @@ public class ImageInfoFactory extends HibernateFactory {
             throws TaskomaticApiException {
         MinionServer server = image.getBuildServer();
 
-        if (!server.hasContainerBuildHostEntitlement()) {
+        if ((!server.hasContainerBuildHostEntitlement() && image.getProfile().asDockerfileProfile().isPresent())
+                || !server.hasOSImageBuildHostEntitlement() && image.getProfile().asKiwiProfile().isPresent()) {
             throw new IllegalArgumentException("Server is not a build host.");
         }
 
