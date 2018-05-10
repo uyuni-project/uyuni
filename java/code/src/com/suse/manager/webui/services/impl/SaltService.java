@@ -28,8 +28,10 @@ import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner.ExecResult;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -57,6 +59,7 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
+import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
@@ -79,6 +82,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -1144,4 +1148,28 @@ public class SaltService {
                 MgrKiwiImageRunner.collectImage(minion.getName(), filepath, imageStore);
         return callSync(call);
     }
+
+    /**
+     * Generate custom pillars for OS images
+     *
+     * @param dest     the destination (filename) of the generate pillar
+     * @param ret      Java object representing the JSON output of the image inspection
+     * @param urlBase  OS image store base URL
+     * @return the execution result
+     */
+    public Optional<MgrUtilRunner.ExecResult> generatePillar(String dest,
+            OSImageInspectSlsResult ret, String urlBase) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("dest", dest);
+        args.put("image", Json.GSON.toJson(ret.getImage()));
+        args.put("bundle", Json.GSON.toJson(ret.getBundle()));
+        args.put("boot_image", Json.GSON.toJson(ret.getBootImage()));
+        args.put("url_base", urlBase);
+        RunnerCall<ExecResult> call =
+                new RunnerCall<>("kiwi-image-register.generate_pillar", Optional.of(args),
+                        new TypeToken<MgrUtilRunner.ExecResult>() {
+                        });
+        return callSync(call);
+    }
+
 }
