@@ -15,9 +15,10 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -40,13 +41,11 @@ import com.suse.manager.webui.utils.gson.ImageProfileCreateRequest;
 import com.suse.manager.webui.utils.gson.ImageProfileJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,7 +55,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 
 /**
  * Spark controller class for image profile pages and API endpoints.
@@ -91,9 +93,15 @@ public class ImageProfileController {
      * @return the model and view
      */
     public static ModelAndView createView(Request req, Response res, User user) {
+        List<String> imageTypesDataFromTheServer = new ArrayList<String>();
+        imageTypesDataFromTheServer.add("dockerfile");
+        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
+            imageTypesDataFromTheServer.add("kiwi");
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("activationKeys", getActivationKeys(user));
         data.put("customDataKeys", getCustomDataKeys(user.getOrg()));
+        data.put("imageTypesDataFromTheServer", GSON.toJson(imageTypesDataFromTheServer));
         return new ModelAndView(data, "content_management/edit-profile.jade");
     }
 
