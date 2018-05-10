@@ -729,7 +729,7 @@ def genCaRpm(d, verbosity=0):
 
     requires = ""
 
-    for cert_rpm_name, cert_rpm_path in zip([ca_cert_rpm_name, ca_cert_rpm_name_osimage], [ca_cert_rpm, ca_cert_rpm_osimage]):
+    for cert_rpm_name, cert_rpm_path in zip([ca_cert_rpm_name_osimage, ca_cert_rpm_name], [ca_cert_rpm_osimage, ca_cert_rpm]):
         # build the CA certificates RPM
 
         if OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
@@ -784,24 +784,23 @@ def genCaRpm(d, verbosity=0):
                 print("STDERR:", err)
         os.chmod('%s.noarch.rpm' % clientRpmName, int('0644',8))
 
-    # write-out latest.txt information
-    latest_txt = os.path.join(d['--dir'], 'latest.txt')
-    fo = open(latest_txt, 'wb')
-    fo.write(bstr('%s\n' % ca_cert_name))
-    fo.write(bstr('%s.noarch.rpm\n' % os.path.basename(clientRpmName)))
-    fo.write(bstr('%s.src.rpm\n' % os.path.basename(clientRpmName)))
-    fo.close()
-    os.chmod(latest_txt, int('0644',8))
+        if not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+            # write-out latest.txt information
+            latest_txt = os.path.join(d['--dir'], 'latest.txt')
+            fo = open(latest_txt, 'wb')
+            fo.write(bstr('%s\n' % ca_cert_name))
+            fo.write(bstr('%s.noarch.rpm\n' % os.path.basename(clientRpmName)))
+            fo.write(bstr('%s.src.rpm\n' % os.path.basename(clientRpmName)))
+            fo.close()
+            os.chmod(latest_txt, int('0644',8))
 
-    if verbosity >= 0:
-        print("""
-Make the public CA certificate publically available:
-    (NOTE: the RHN Satellite or Proxy installers may do this step for you.)
-    The "noarch" RPM and raw CA certificate can be made publically accessible
-    by copying it to the /srv/www/htdocs/pub directory of your RHN Satellite or
-    Proxy server.""")
-
-
+        if verbosity >= 0:
+            print("""
+    Make the public CA certificate publically available:
+        (NOTE: the RHN Satellite or Proxy installers may do this step for you.)
+        The "noarch" RPM and raw CA certificate can be made publically accessible
+        by copying it to the /srv/www/htdocs/pub directory of your RHN Satellite or
+        Proxy server.""")
     return '%s.noarch.rpm' % clientRpmName
 
 
