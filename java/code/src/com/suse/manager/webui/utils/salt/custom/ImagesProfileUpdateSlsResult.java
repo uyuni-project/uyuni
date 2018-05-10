@@ -41,6 +41,9 @@ public class ImagesProfileUpdateSlsResult {
     @SerializedName("module_|-mgr_image_inspect_|-docker.inspect_image_|-run")
     private Optional<StateApplyResult<Ret<ImageInspectSlsResult>>> dockerInspect = Optional.empty();
 
+    @SerializedName("module_|-mgr_inspect_kiwi_image_|-kiwi_info.inspect_image_|-run")
+    private Optional<StateApplyResult<Ret<OSImageInspectSlsResult>>> kiwiInspect = Optional.empty();
+
     /**
      * @return getter
      */
@@ -59,5 +62,12 @@ public class ImagesProfileUpdateSlsResult {
             return dockerInspect.get();
         }
         return dockerngInspect.get();
+    }
+
+    /**
+     * @return getter
+     */
+    public StateApplyResult<Ret<OSImageInspectSlsResult>> getKiwiInspect() {
+        return kiwiInspect.get();
     }
 }
