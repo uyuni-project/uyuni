@@ -15,11 +15,9 @@
 
 package com.suse.manager.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -29,17 +27,16 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
-import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -70,6 +67,11 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -83,6 +85,9 @@ import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
@@ -106,27 +111,22 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
-import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
-import static com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -921,9 +921,12 @@ public class SaltUtils {
                     KiwiBundleInfo bundleInfo = Json.GSON.fromJson(jsonResult, KiwiImageBuildSlsResult.class)
                             .getKiwiBuildInfo().getChanges().getRet().getBundle();
 
+                    File storeDirectory = new File("/srv/www/os-images/" + kiwiProfile.getTargetStore().getUri());
+                    if (!storeDirectory.exists()) {
+                        storeDirectory.mkdirs();
+                    }
                     MgrUtilRunner.ExecResult collectResult = saltService
-                            .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                    "/srv/www/os-images/" + kiwiProfile.getTargetStore().getUri())
+                            .collectKiwiImage(minionServer, bundleInfo.getFilepath(), storeDirectory.toString())
                             .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
                     if (collectResult.getReturnCode() != 0) {
