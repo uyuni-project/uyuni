@@ -733,7 +733,8 @@ def genCaRpm(d, verbosity=0):
         # build the CA certificates RPM
 
         if OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
-            ver, rel = '1.0', '0' # filename fixed: rhn-org-trusted-ssl-certosimage-1.0-0.*.rpm
+            # filename fixed: rhn-org-trusted-ssl-certosimage-1.0-1.{noarch,src}.rpm
+            ver, rel = '1.0', '1'
             requires = "--requires %s" % OSIMAGE_RPM_REQUIRES
 
         args = (os.path.join(CERT_PATH, 'gen-rpm.sh') + " "
@@ -748,7 +749,7 @@ def genCaRpm(d, verbosity=0):
                 repr(ca_cert_name), repr(cleanupAbsPath(ca_cert))))
 
         clientRpmName = '%s-%s-%s' % (cert_rpm_path, ver, rel)
-        if verbosity >= 0 and not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+        if verbosity >= 0:
             print("""
     Generating CA public certificate RPM:
         %s.src.rpm
@@ -776,7 +777,7 @@ def genCaRpm(d, verbosity=0):
         if ret or not os.path.exists("%s.noarch.rpm" % clientRpmName):
             raise GenCaCertRpmException("CA public SSL certificate RPM generation "
                                     "failed:\n%s\n%s" % (out, err))
-        if verbosity > 2 and not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+        if verbosity > 2:
             if out:
                 print("STDOUT:", out)
             if err:
@@ -792,7 +793,7 @@ def genCaRpm(d, verbosity=0):
     fo.close()
     os.chmod(latest_txt, int('0644',8))
 
-    if verbosity >= 0 and not OSIMAGE_RPM_FILENAME_SUFFIX in cert_rpm_name:
+    if verbosity >= 0:
         print("""
 Make the public CA certificate publically available:
     (NOTE: the RHN Satellite or Proxy installers may do this step for you.)
