@@ -45,7 +45,17 @@ def parse_packages(path):
         for line in packages.splitlines():
             match = pattern.match(line)
             if match:
-                ret.append(match.groupdict())
+                # translate '(none)' values to ''
+                d = match.groupdict()
+                for k in d.keys():
+                    if d[k] == '(none)':
+                        d[k] = ''
+
+                # if arch is '' and name begins gpg-pubkey then skip the package
+                if d['arch'] == '' and d['name'].startswith('gpg-pubkey'):
+                    continue
+
+                ret.append(d)
     return ret
 
 
