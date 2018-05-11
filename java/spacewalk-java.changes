@@ -1,3 +1,4 @@
+- HW refresh fails on SLE15 Salt client (bsc#1090221)
 - only show the most relevant (least effort) solutions (bsc#1087071)
 - add support for autoinstallation of SLE15 (bsc#1090205)
 - update sles_register cobbler snippets to work with SLE15 (bsc#1090205)
