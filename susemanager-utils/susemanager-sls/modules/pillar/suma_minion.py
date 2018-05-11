@@ -146,7 +146,9 @@ def load_formula_pillar(minion_id, group_id, formula_name):
         log.error('Error loading data for formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
         return {}
 
-    return merge_formula_data(layout, group_data, system_data)
+    merged_data = merge_formula_data(layout, group_data, system_data)
+    merged_data = adjust_empty_values(layout, merged_data)
+    return merged_data
 
 def merge_formula_data(layout, group_data, system_data, scope="system"):
     '''
@@ -167,6 +169,7 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
 
         if element.get("$type", "text") in ["group", "hidden-group", "namespace"]:
             value = merge_formula_data(element, group_data.get(element_name, {}), system_data.get(element_name, {}), element_scope)
+        # edit-group is handled as primitive element - use either system_data or group data, no merging
         elif element_scope == "system":
             value = system_data.get(element_name, group_data.get(element_name, element.get("$default", element.get("$placeholder", ""))))
         elif element_scope == "group":
@@ -174,9 +177,61 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
         elif element_scope == "readonly":
             value = element.get("$default", element.get("$placeholder", ""))
 
-        if value is None or value == '' and '$ifEmpty' in element:
+        ret[element_name] = value
+    return ret
+
+def adjust_empty_values(layout, data):
+    '''
+    Adjust empty values in formula data
+    '''
+    ret = {}
+
+    for element_name in layout:
+        if element_name.startswith("$"):
+            continue
+
+        element = layout[element_name]
+        if not isinstance(element, dict):
+            continue
+
+        element_type = element.get("$type", "text")
+        value = value = data.get(element_name, "")
+
+        if element_type in ["group", "hidden-group", "namespace"]:
+            value = adjust_empty_values(element, data.get(element_name, {}))
+        elif element_type in ["edit-group"]:
+            prototype = element.get("$prototype")
+            subtype = get_edit_group_subtype(element)
+            if subtype == "DICTIONARY_OF_DICTIONARIES":
+                value = {}
+                if isinstance(data.get(element_name), dict):
+                    for key, entry in data.get(element_name).items():
+                        proc_entry = adjust_empty_values(prototype, entry)
+                        value[key] = proc_entry
+            elif subtype == "LIST_OF_DICTIONARIES":
+                value = []
+                if isinstance(data.get(element_name), list):
+                    for entry in data.get(element_name):
+                        proc_entry = adjust_empty_values(prototype, entry)
+                        value.append(proc_entry)
+
+        if not value and '$ifEmpty' in element:
             value = element.get("$ifEmpty")
 
-        if value is not None and value != '' or not element.get("$optional"):
+        if value or not element.get("$optional"):
             ret[element_name] = value
     return ret
+
+
+def get_edit_group_subtype(element):
+    if element is not None and element.get("$prototype"):
+        prototype = element.get("$prototype");
+        if prototype.get("$key") is None and prototype.get("$type", "group") != "group":
+            return "PRIMITIVE_LIST"
+        if prototype.get("$key") is not None and prototype.get("$type", "group") != "group":
+            return "PRIMITIVE_DICTIONARY"
+        if prototype.get("$key") is None and prototype.get("$type", "group") == "group":
+            return "LIST_OF_DICTIONARIES"
+        if prototype.get("$key") is not None and prototype.get("$type", "group") == "group":
+            return "DICTIONARY_OF_DICTIONARIES"
+    return None
