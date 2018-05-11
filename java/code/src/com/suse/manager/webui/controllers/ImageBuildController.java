@@ -424,6 +424,10 @@ public class ImageBuildController {
         Long imageId = Long.parseLong(req.params("id"));
 
         return ImageInfoFactory.lookupByIdAndOrg(imageId, user.getOrg()).map(info -> {
+            if (info.getImageType().equals("kiwi")) {
+                // Manually scheduling inspect is not allowed for Kiwi images
+                return json(res, HttpStatus.SC_BAD_REQUEST, JsonResult.error());
+            }
             try {
                 ImageInfoFactory.scheduleInspect(info, scheduleDate, user);
                 return json(res, JsonResult.successMessage("inspect_scheduled"));

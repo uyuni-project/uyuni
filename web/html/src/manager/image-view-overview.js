@@ -329,6 +329,11 @@ class ImageViewOverview extends React.Component {
     return data.external || (data.buildAction && data.buildAction.status === 2);
   }
 
+  canInspect() {
+    const data = this.props.data;
+    return this.hasBuilt() && data.type !== 'kiwi';
+  }
+
   hasInspected() {
     return this.props.data.inspectAction && this.props.data.inspectAction.status === 2;
   }
@@ -375,7 +380,7 @@ class ImageViewOverview extends React.Component {
                               target="build-modal"
                             />
                           }
-                          { this.hasBuilt() &&
+                          { this.canInspect() &&
                             <ModalButton
                               className="btn-default btn-xs"
                               text={t("Reinspect")}
