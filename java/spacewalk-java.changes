@@ -1,3 +1,4 @@
+- HW refresh fails on SLE15 Salt client (bsc#1090221)
 - reorder styles import
 - prevent NPE when no image build history details are available (bsc#1092161)
 - Show channel label when listing config channels (bsc#1083278)
