@@ -1093,14 +1093,16 @@ public class SaltUtils {
                 // do not fail the action when no packages are returned
                 serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
             }
-        };
+        }
 
         if (imageInfo.getProfile().asKiwiProfile().isPresent()) {
             if (result.getKiwiInspect().isResult()) {
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
                 List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
                 packages.stream().forEach(pkg -> {
-                    createImagePackageFromSalt(pkg.getName(), pkg.getEpoch().equals(StringUtils.EMPTY) ? null : pkg.getEpoch(),
+                    createImagePackageFromSalt(pkg.getName(),
+                            pkg.getEpoch().equals(StringUtils.EMPTY) ? null :
+                                    pkg.getEpoch(),
                             pkg.getRelease(), pkg.getVersion(), Optional.empty(),
                             Optional.of(pkg.getArch()), imageInfo);
                 });
@@ -1377,13 +1379,15 @@ public class SaltUtils {
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
         String version = info.getVersion().get();
-        return createImagePackageFromSalt(name, epoch, release, version, info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
+        return createImagePackageFromSalt(name, epoch, release, version,
+                info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
     }
 
-    private static ImagePackage createImagePackageFromSalt(
-            String name, String epoch, String release, String version, Optional<Long> installDateUnixTime, Optional<String> architecture, ImageInfo imageInfo) {
-        PackageEvr evr = PackageEvrFactory
-                .lookupOrCreatePackageEvr(epoch, version, release);
+    private static ImagePackage createImagePackageFromSalt(String name, String epoch,
+            String release, String version, Optional<Long> installDateUnixTime,
+            Optional<String> architecture, ImageInfo imageInfo) {
+        PackageEvr evr =
+                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release);
 
         ImagePackage pkg = new ImagePackage();
         pkg.setEvr(evr);

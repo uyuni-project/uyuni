@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**
@@ -24,263 +22,361 @@ import java.util.List;
  */
 public class OSImageInspectSlsResult {
 
+    /**
+     * The type Image.
+     */
     public static class Image {
 
-        @SerializedName("hash")
         private String hash;
-        @SerializedName("compression")
         private String compression;
-        @SerializedName("name")
         private String name;
-        @SerializedName("filepath")
         private String filepath;
-        @SerializedName("type")
         private String type;
-        @SerializedName("basename")
         private String basename;
-        @SerializedName("fstype")
         private String fstype;
-        @SerializedName("version")
         private String version;
-        @SerializedName("filename")
         private String filename;
-        @SerializedName("arch")
         private String arch;
-        @SerializedName("size")
         private Double size;
 
+        /**
+         * @return the hash
+         */
         public String getHash() {
             return hash;
         }
 
+        /**
+         * @return the compression
+         */
         public String getCompression() {
             return compression;
         }
 
+        /**
+         * @return the name
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * @return the filepath
+         */
         public String getFilepath() {
             return filepath;
         }
 
+        /**
+         * @return the type
+         */
         public String getType() {
             return type;
         }
 
+        /**
+         * @return the basename
+         */
         public String getBasename() {
             return basename;
         }
 
+        /**
+         * @return the filesystem type
+         */
         public String getFstype() {
             return fstype;
         }
 
+        /**
+         * @return the version
+         */
         public String getVersion() {
             return version;
         }
 
+        /**
+         * @return the filename
+         */
         public String getFilename() {
             return filename;
         }
 
+        /**
+         * @return the arch
+         */
         public String getArch() {
             return arch;
         }
 
+        /**
+         * @return the image size
+         */
         public Double getSize() {
             return size;
         }
     }
 
+    /**
+     * The type BootImage.
+     */
     public static class BootImage {
 
-        @SerializedName("kernel")
         private Kernel kernel;
-        @SerializedName("basename")
         private String basename;
-        @SerializedName("arch")
         private String arch;
-        @SerializedName("name")
         private String name;
-        @SerializedName("initrd")
         private Initrd initrd;
 
+        /**
+         * The type Kernel.
+         */
         public static class Kernel {
-            @SerializedName("version")
             private String version;
-            @SerializedName("hash")
             private String hash;
-            @SerializedName("filename")
             private String filename;
-            @SerializedName("size")
             private Double size;
 
+            /**
+             * @return the version
+             */
             public String getVersion() {
                 return version;
             }
 
+            /**
+             * @return the hash
+             */
             public String getHash() {
                 return hash;
             }
 
+            /**
+             * @return the filename
+             */
             public String getFilename() {
                 return filename;
             }
 
+            /**
+             * @return the size
+             */
             public Double getSize() {
                 return size;
             }
         }
 
+        /**
+         * @return the kernel
+         */
         public Kernel getKernel() {
             return kernel;
         }
 
+        /**
+         * @return the basename
+         */
         public String getBasename() {
             return basename;
         }
 
+        /**
+         * @return the arch
+         */
         public String getArch() {
             return arch;
         }
 
+        /**
+         * @return the name
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * @return the initrd
+         */
         public Initrd getInitrd() {
             return initrd;
         }
 
+        /**
+         * The type Initrd.
+         */
         public static class Initrd {
-            @SerializedName("version")
             private String version;
-            @SerializedName("hash")
             private String hash;
-            @SerializedName("filename")
             private String filename;
-            @SerializedName("size")
             private Double size;
 
+            /**
+             * @return the version
+             */
             public String getVersion() {
                 return version;
             }
 
+            /**
+             * @return the hash
+             */
             public String getHash() {
                 return hash;
             }
 
+            /**
+             * @return the filename
+             */
             public String getFilename() {
                 return filename;
             }
 
+            /**
+             * @return the size
+             */
             public Double getSize() {
                 return size;
             }
         }
     }
 
+    /**
+     * The type Bundle.
+     */
     public static class Bundle {
-        @SerializedName("hash")
         private String hash;
-        @SerializedName("suffix")
         private String suffix;
-        @SerializedName("filepath")
         private String filepath;
-        @SerializedName("basename")
         private String basename;
-        @SerializedName("filename")
         private String filename;
-        @SerializedName("id")
         private String id;
 
+        /**
+         * @return the hash
+         */
         public String getHash() {
             return hash;
         }
 
+        /**
+         * @return the suffix
+         */
         public String getSuffix() {
             return suffix;
         }
 
+        /**
+         * @return the filepath
+         */
         public String getFilepath() {
             return filepath;
         }
 
+        /**
+         * @return the basename
+         */
         public String getBasename() {
             return basename;
         }
 
+        /**
+         * @return the filename
+         */
         public String getFilename() {
             return filename;
         }
 
+        /**
+         * @return the id
+         */
         public String getId() {
             return id;
         }
     }
 
-    @SerializedName("image")
     private Image image;
-    @SerializedName("boot_image")
     private BootImage bootImage;
-    @SerializedName("bundle")
     private Bundle bundle;
-    @SerializedName("packages")
     private List<Package> packages;
 
+    /**
+     * The type Package.
+     */
     public static class Package {
-        @SerializedName("name")
         private String name;
-        @SerializedName("disturl")
         private String distUrl;
-        @SerializedName("epoch")
         private String epoch;
-        @SerializedName("version")
         private String version;
-        @SerializedName("release")
         private String release;
-        @SerializedName("arch")
         private String arch;
 
+        /**
+         * @return the name
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * @return the dist url
+         */
         public String getDistUrl() {
             return distUrl;
         }
 
+        /**
+         * @return the epoch
+         */
         public String getEpoch() {
             return epoch;
         }
 
+        /**
+         * @return the version
+         */
         public String getVersion() {
             return version;
         }
 
+        /**
+         * @return the release
+         */
         public String getRelease() {
             return release;
         }
 
+        /**
+         * @return the arch
+         */
         public String getArch() {
             return arch;
         }
     }
 
+    /**
+     * @return the packages
+     */
     public List<Package> getPackages() {
         return packages;
     }
 
+    /**
+     * @return the image
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * @return the boot image
+     */
     public BootImage getBootImage() {
         return bootImage;
     }
 
+    /**
+     * @return the bundle
+     */
     public Bundle getBundle() {
         return bundle;
     }
