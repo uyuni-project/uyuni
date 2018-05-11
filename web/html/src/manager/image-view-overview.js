@@ -11,6 +11,11 @@ const BootstrapPanel = require("../components/panel").BootstrapPanel;
 
 /* global isAdmin, localTime, timezone */
 
+const typeMap = {
+  "dockerfile": "Container Image",
+  "kiwi": "OS Image"
+};
+
 function StatusIcon(props) {
   const data = props.data;
   const action = props.action;
@@ -164,6 +169,10 @@ class ImageInfo extends React.Component {
             <tr>
               <td>Image Name:</td>
               <td>{data.name ? data.name : "-"}</td>
+            </tr>
+            <tr>
+              <td>Type:</td>
+              <td>{data.type ? typeMap[data.type] : "-"}</td>
             </tr>
             <tr>
               <td>Version:</td>
