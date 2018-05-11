@@ -1278,7 +1278,9 @@ public class SaltServerActionService {
                         String repos = StringUtils.EMPTY;
                         Set<Channel> channels = ActivationKeyFactory.lookupByToken(profile.getToken()).getChannels();
                         for (Channel channel: channels) {
-                            repos += " --add-repo https://" + host + "/rhn/manager/download/" + channel.getLabel() + "?" + token;
+                            repos += " --add-repo https://" + host +
+                                    "/rhn/manager/download/" + channel.getLabel() + "?" +
+                                    token;
                         }
                         pillar.put("activation_key_channels", repos);
                     });
