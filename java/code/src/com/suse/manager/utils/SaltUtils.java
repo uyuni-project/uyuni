@@ -1392,8 +1392,8 @@ public class SaltUtils {
         return pkg;
     }
 
-    private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info,
-            ImageInfo imageInfo) {
+    private static ImagePackage createImagePackageFromSalt(
+            String name, Pkg.Info info, ImageInfo imageInfo) {
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
         String version = info.getVersion().get();
@@ -1409,8 +1409,7 @@ public class SaltUtils {
 
         ImagePackage pkg = new ImagePackage();
         pkg.setEvr(evr);
-        architecture.ifPresent(
-                arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
+        architecture.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
         installDateUnixTime.ifPresent(udut -> pkg.setInstallTime(new Date(udut * 1000)));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setImageInfo(imageInfo);
