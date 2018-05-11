@@ -76,6 +76,7 @@ import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.JsonElementCall;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltModuleRun;
+import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
@@ -92,13 +93,13 @@ import com.suse.utils.Json;
 import com.suse.utils.Opt;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.log4j.Logger;
-import org.jose4j.lang.JoseException;
 import org.apache.commons.lang3.tuple.Pair;
-
+import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
+import org.jose4j.lang.JoseException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -119,12 +120,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1226,6 +1227,7 @@ public class SaltServerActionService {
                     final String token = t;
 
                     Map<String, Object> pillar = new HashMap<>();
+                    String host = SaltStateGeneratorService.getChannelHost(minion);
 
                     profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {
                         Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
@@ -1249,34 +1251,37 @@ public class SaltServerActionService {
                         catch (IOException e) {
                             LOG.error("Could not read certificate", e);
                         }
+                        String repocontent = "";
+                        if (profile.getToken() != null) {
+                            repocontent = profile.getToken().getChannels().stream().map(s ->
+                            {
+                                return "[susemanager:" + s.getLabel() + "]\n\n" +
+                                        "name=" + s.getName() + "\n\n" +
+                                        "enabled=1\n\n" +
+                                        "autorefresh=1\n\n" +
+                                        "baseurl=https://" + host +
+                                        ":443/rhn/manager/download/" + s.getLabel() + "?" +
+                                        token + "\n\n" +
+                                        "type=rpm-md\n\n" +
+                                        "gpgcheck=1\n\n" +
+                                        "repo_gpgcheck=0\n\n" +
+                                        "pkg_gpgcheck=1\n\n";
+                            }).collect(Collectors.joining("\n\n"));
+
+                        }
+                        pillar.put("repo", repocontent);
                     });
 
                     profile.asKiwiProfile().ifPresent(kiwiProfile -> {
                         pillar.put("source", kiwiProfile.getPath());
                         pillar.put("build_id", "build" + actionId);
+                        String repos = StringUtils.EMPTY;
+                        Set<Channel> channels = ActivationKeyFactory.lookupByToken(profile.getToken()).getChannels();
+                        for (Channel channel: channels) {
+                            repos += " --add-repo https://" + host + "/rhn/manager/download/" + channel.getLabel() + "?" + token;
+                        }
+                        pillar.put("activation_key_channels", repos);
                     });
-
-                    String host = SaltStateGeneratorService.getChannelHost(minion);
-                    String repocontent = "";
-                    if (profile.getToken() != null) {
-                        repocontent = profile.getToken().getChannels().stream().map(s ->
-                        {
-                            return "[susemanager:" + s.getLabel() + "]\n\n" +
-                                    "name=" + s.getName() + "\n\n" +
-                                    "enabled=1\n\n" +
-                                    "autorefresh=1\n\n" +
-                                    "baseurl=https://" + host +
-                                    ":443/rhn/manager/download/" + s.getLabel() + "?" +
-                                    token + "\n\n" +
-                                    "type=rpm-md\n\n" +
-                                    "gpgcheck=1\n\n" +
-                                    "repo_gpgcheck=0\n\n" +
-                                    "pkg_gpgcheck=1\n\n";
-                        }).collect(Collectors.joining("\n\n"));
-
-                        pillar.put("activation_key", ActivationKeyFactory.lookupByToken(profile.getToken()).getKey());
-                    }
-                    pillar.put("repo", repocontent);
 
                     String saltCall = "";
                     if (profile instanceof DockerfileProfile) {
