@@ -28,6 +28,11 @@ const msgMap = {
       "Image overview not found."
 };
 
+const typeMap = {
+  "dockerfile": "Container Image",
+  "kiwi": "OS Image"
+};
+
 const hashUrlRegex = /^#\/([^/]*)\/(\d*)$/;
 
 function getHashId() {
@@ -521,6 +526,12 @@ class ImageViewList extends React.Component {
         selectable
         selectedItems={this.state.selectedItems}
         onSelect={this.handleSelectItems}>
+        <Column
+          columnKey="type"
+          comparator={Utils.sortByText}
+          header={t('Type')}
+          cell={ (row) => typeMap[row.type] }
+        />
         <Column
           columnKey="name"
           comparator={Utils.sortByText}
