@@ -35,8 +35,7 @@ def move_file_from_minion_cache(minion, filetomove, targetdir):
     return __salt__['salt.cmd']('file.move', src, targetdir);
 
 def kiwi_collect_image(minion, filepath, image_store_dir):
-    if not os.path.exists(image_store_dir):
-      raise salt.exceptions.SaltRunnerError('Target directory {} does not exists'.format(image_store_dir))
+    __salt__['salt.cmd']('file.mkdir', image_store_dir)
 
     pillars = list(__salt__['cache.pillar'](tgt=minion).values())[0]
     if pillars.get('use_salt_transport'):
