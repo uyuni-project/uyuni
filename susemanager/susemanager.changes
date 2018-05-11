@@ -1,3 +1,5 @@
+- Add doc suggestions on "package not found" error (bsc#1090481)
+
 -------------------------------------------------------------------
 Mon May 07 15:30:54 CEST 2018 - jgonzalez@suse.com
 
