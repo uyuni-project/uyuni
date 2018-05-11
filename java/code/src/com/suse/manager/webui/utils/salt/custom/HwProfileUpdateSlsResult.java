@@ -37,7 +37,7 @@ public class HwProfileUpdateSlsResult {
     @SerializedName("module_|-cpuinfo_|-status.cpuinfo_|-run")
     private StateApplyResult<Ret<Map<String, Object>>> cpuInfo;
 
-    @SerializedName("module_|-udevdb_|-udevdb.exportdb_|-run")
+    @SerializedName("module_|-udev_|-udev.exportdb_|-run")
     private StateApplyResult<Ret<List<Map<String, Object>>>> udevdb;
 
     @SerializedName("module_|-network-interfaces_|-network.interfaces_|-run")
