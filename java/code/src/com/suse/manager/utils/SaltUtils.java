@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -123,8 +124,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
@@ -926,7 +925,7 @@ public class SaltUtils {
 
                     MgrUtilRunner.ExecResult collectResult = saltService
                             .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                    "/srv/www/os-images/" + kiwiProfile.getTargetStore().getUri())
+                                    OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
                             .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
                     if (collectResult.getReturnCode() != 0) {
@@ -969,7 +968,7 @@ public class SaltUtils {
         serverAction.setResultMsg(json);
     }
 
-    private static void handleImageInspectData(ServerAction serverAction,
+    private void handleImageInspectData(ServerAction serverAction,
             JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
         ImageInspectAction ia = (ImageInspectAction) action;
@@ -1026,23 +1025,21 @@ public class SaltUtils {
         return results;
     }
 
-    private static void handleImagePackageProfileUpdate(ImageInfo imageInfo,
+    private void handleImagePackageProfileUpdate(ImageInfo imageInfo,
             ImagesProfileUpdateSlsResult result, ServerAction serverAction) {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
         serverAction.setResultMsg("Success");
 
         if (imageInfo.getProfile().asDockerfileProfile().isPresent()) {
             if (result.getDockerInspect().isResult()) {
-                ImageInspectSlsResult iret =
-                        result.getDockerInspect().getChanges().getRet();
+                ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
                 imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
                 ImageBuildHistory history = new ImageBuildHistory();
                 history.setImageInfo(imageInfo);
-                // revision number was already incremented in
-                // handleImageBuildData()
+                // revision number was already incremented in handleImageBuildData()
                 history.setRevisionNumber(imageInfo.getRevisionNumber());
-                history.getRepoDigests()
-                        .addAll(iret.getRepoDigests().stream().map(digest -> {
+                history.getRepoDigests().addAll(
+                        iret.getRepoDigests().stream().map(digest -> {
                             ImageRepoDigest repoDigest = new ImageRepoDigest();
                             repoDigest.setRepoDigest(digest);
                             repoDigest.setBuildHistory(history);
@@ -1060,34 +1057,36 @@ public class SaltUtils {
                         result.getDockerSlsBuild().getChanges().getRet();
 
                 Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                        .map(saltPkgs -> saltPkgs.entrySet().stream()
-                                .map(entry -> createImagePackageFromSalt(entry.getKey(),
-                                        entry.getValue(), imageInfo))
-                                .collect(Collectors.toSet()));
+                .map(saltPkgs -> saltPkgs.entrySet().stream()
+                        .map(entry -> createImagePackageFromSalt(entry.getKey(),
+                                entry.getValue(), imageInfo))
+                        .collect(Collectors.toSet())
+                        );
                 Optional.ofNullable(ret.getListProducts())
-                        .map(products -> products.getChanges().getRet())
-                        .map(SaltUtils::getInstalledProducts)
-                        .ifPresent(imageInfo::setInstalledProducts);
+                .map(products -> products.getChanges().getRet())
+                .map(SaltUtils::getInstalledProducts)
+                .ifPresent(imageInfo::setInstalledProducts);
 
                 Optional<String> rhelReleaseFile =
                         Optional.ofNullable(ret.getRhelReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                        .map(StateApplyResult::getChanges)
+                        .filter(res -> res.getStdout() != null)
+                        .map(CmdExecCodeAll::getStdout);
                 Optional<String> centosReleaseFile =
                         Optional.ofNullable(ret.getCentosReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                        .map(StateApplyResult::getChanges)
+                        .filter(res -> res.getStdout() != null)
+                        .map(CmdExecCodeAll::getStdout);
                 Optional<String> resReleasePkg =
                         Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                        .map(StateApplyResult::getChanges)
+                        .filter(res -> res.getStdout() != null)
+                        .map(CmdExecCodeAll::getStdout);
                 if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                         resReleasePkg.isPresent()) {
-                    Set<InstalledProduct> products = getInstalledProductsForRhel(imageInfo,
-                            resReleasePkg, rhelReleaseFile, centosReleaseFile);
+                    Set<InstalledProduct> products = getInstalledProductsForRhel(
+                            imageInfo, resReleasePkg,
+                            rhelReleaseFile, centosReleaseFile);
                     imageInfo.setInstalledProducts(products);
                 }
             }
@@ -1108,21 +1107,14 @@ public class SaltUtils {
                             pkg.getRelease(), pkg.getVersion(), Optional.empty(),
                             Optional.of(pkg.getArch()), imageInfo);
                 });
-                String storeDirectory = "";
-                try {
-                    storeDirectory = "https://" +
-                            InetAddress.getLocalHost().getCanonicalHostName() +
-                            "/os-images/" + serverAction.getParentAction().getOrg().getId();
-                }
-                catch (UnknownHostException e) {
-                    LOG.error("Cannot retrieve canonical hostname for this server" + e);
-                }
+                String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(
+                        serverAction.getParentAction().getOrg());
                 String generatedPillarFilename =
                         "/srv/susemanager/pillar_data/images/image-" +
                                 ret.getBundle().getBasename() + "-" +
                                 ret.getBundle().getId().replace('.', '-') + ".sls";
                 MgrUtilRunner.ExecResult generatedResult = saltService
-                        .generatePillar(generatedPillarFilename, ret, storeDirectory)
+                        .generateOSImagePillar(generatedPillarFilename, ret, storeDirectory)
                         .orElseThrow(
                                 () -> new RuntimeException("Failed to register image."));
 

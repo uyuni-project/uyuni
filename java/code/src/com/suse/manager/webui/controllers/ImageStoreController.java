@@ -14,15 +14,14 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
-import com.google.gson.JsonParseException;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -30,15 +29,10 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
+
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,7 +41,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 
 /**
  * Spark controller class for image store pages and API endpoints.
@@ -205,13 +202,7 @@ public class ImageStoreController {
         return store.map(s -> {
             String uriPrefix = "";
             if (ImageStoreFactory.TYPE_OS_IMAGE.equals(s.getStoreType())) {
-                String suseManagerHostname = "<suse-manager>";
-                try {
-                    suseManagerHostname = InetAddress.getLocalHost().getCanonicalHostName();
-                }
-                catch (UnknownHostException ignored) { }
-
-                uriPrefix = "https://" + suseManagerHostname + "/os-images/";
+                uriPrefix = OSImageStoreUtils.getOSImageStoreURI();
             }
 
             JsonObject json = new JsonObject();
@@ -249,13 +240,7 @@ public class ImageStoreController {
 
         String uriPrefix = "";
         if (ImageStoreFactory.TYPE_OS_IMAGE.getLabel().equals(type)) {
-            String suseManagerHostname = "<suse-manager>";
-            try {
-                suseManagerHostname = InetAddress.getLocalHost().getCanonicalHostName();
-            }
-            catch (UnknownHostException ignored) { }
-
-            uriPrefix = "https://" + suseManagerHostname + "/os-images/";
+            uriPrefix = OSImageStoreUtils.getOSImageStoreURI();
         }
 
         return json(res, getJsonList(imageStores, uriPrefix));

@@ -1152,19 +1152,19 @@ public class SaltService {
     /**
      * Generate custom pillars for OS images
      *
-     * @param dest     the destination (filename) of the generate pillar
-     * @param ret      Java object representing the JSON output of the image inspection
-     * @param urlBase  OS image store base URL
+     * @param pillarFilename     the destination (filename) of the generate pillar
+     * @param inspectionResult      Java object representing the JSON output of the image inspection
+     * @param baseUrl  OS image store base URL
      * @return the execution result
      */
-    public Optional<MgrUtilRunner.ExecResult> generatePillar(String dest,
-            OSImageInspectSlsResult ret, String urlBase) {
+    public Optional<MgrUtilRunner.ExecResult> generateOSImagePillar(String pillarFilename,
+            OSImageInspectSlsResult inspectionResult, String baseUrl) {
         Map<String, Object> args = new LinkedHashMap<>();
-        args.put("dest", dest);
-        args.put("image", Json.GSON.toJson(ret.getImage()));
-        args.put("bundle", Json.GSON.toJson(ret.getBundle()));
-        args.put("boot_image", Json.GSON.toJson(ret.getBootImage()));
-        args.put("url_base", urlBase);
+        args.put("dest", pillarFilename);
+        args.put("image", Json.GSON.toJson(inspectionResult.getImage()));
+        args.put("bundle", Json.GSON.toJson(inspectionResult.getBundle()));
+        args.put("boot_image", Json.GSON.toJson(inspectionResult.getBootImage()));
+        args.put("url_base", baseUrl);
         RunnerCall<ExecResult> call =
                 new RunnerCall<>("kiwi-image-register.generate_pillar", Optional.of(args),
                         new TypeToken<MgrUtilRunner.ExecResult>() {
