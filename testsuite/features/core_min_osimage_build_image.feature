@@ -58,7 +58,7 @@ Feature: Build OS images
   And I follow "Create"
   And I enter "suse_osimage_real_simple" as "label"
   And I select "1-KIWI-TEST" from "activationKey"
-  And I enter "https://gitlab.suse.de/mbologna/SUMA_Retail.git#master:POS_Image-JeOS6/jeos-6.0.0" as "path" # TODO simple repo with packages from Test-Channel-x86_64
+  And I enter "https://gitlab.suse.de/oholecek/kiwi_test_image#master:." as "path" # TODO simple repo with packages from Test-Channel-x86_64
   And I click on "create-btn"
 
   Scenario: Build some images via GUI
