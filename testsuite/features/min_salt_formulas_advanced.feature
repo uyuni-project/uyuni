@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Use advanced features of salt formulas
-  In order to use simple forms to apply changes to minions
+  In order to use forms to apply changes to minions
   As an authorized user
   I want to be able to install and use salt formulas
 
@@ -33,7 +33,7 @@ Feature: Use advanced features of salt formulas
      And I check the "sle-minion" client
      And I click on "Add Systems"
      Then I should see a "1 systems were added to test-formula-group server group." text
-#    Is the refresh necessary?
+#    Is the refresh necessary? bsc#1028285 is already fixed.
      When I refresh the pillar data
      Then the pillar data for "testing:str" should be "" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
@@ -46,6 +46,19 @@ Feature: Use advanced features of salt formulas
      And the pillar data for "testing:pw" should be "" on "sle-minion"
      And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
      And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
+     And the pillar data for "testing:list_of_strings" should contain "def_item1" on "sle-minion"
+     And the pillar data for "testing:list_of_strings" should contain "def_item2" on "sle-minion"
+     And the pillar data for "testing:dict_of_strings:name1" should be "def_value1" on "sle-minion"
+     And the pillar data for "testing:dict_of_strings:name2" should be "def_value2" on "sle-minion"
+     And the pillar data for "testing:list_of_dicts:0:name" should be "def_user" on "sle-minion"
+     And the pillar data for "testing:list_of_dicts:0:password" should be "secret1" on "sle-minion"
+     And the pillar data for "testing:list_of_dicts:0" should not contain "full_name" on "sle-minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:name" should be "root" on "sle-minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:password" should be "secret2" on "sle-minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:full_name" should be "None" on "sle-minion"
+#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle-minion"
+#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle-minion"
+#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle-minion"
 
 
   Scenario: Fill in and verify non-default values in group formula
@@ -102,6 +115,19 @@ Feature: Use advanced features of salt formulas
      And the pillar data for "testing:pw" should be "" on "sle-minion"
      And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
      And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
+     And the pillar data for "testing:list_of_strings" should contain "def_item1" on "sle-minion"
+     And the pillar data for "testing:list_of_strings" should contain "def_item2" on "sle-minion"
+     And the pillar data for "testing:dict_of_strings:name1" should be "def_value1" on "sle-minion"
+     And the pillar data for "testing:dict_of_strings:name2" should be "def_value2" on "sle-minion"
+     And the pillar data for "testing:list_of_dicts:0:name" should be "def_user" on "sle-minion"
+     And the pillar data for "testing:list_of_dicts:0:password" should be "secret1" on "sle-minion"
+     And the pillar data for "testing:list_of_dicts:0" should not contain "full_name" on "sle-minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:name" should be "root" on "sle-minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:password" should be "secret2" on "sle-minion"
+     And the pillar data for "testing:dict_of_dicts:def_user:full_name" should be "None" on "sle-minion"
+#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle-minion"
+#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle-minion"
+#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle-minion"
 
 
   Scenario: Fill in and verify mix of default and non-default values in group formula
@@ -201,6 +227,20 @@ Feature: Use advanced features of salt formulas
      And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
      And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
 
+# this should not be necessary, but it is currently required to run this test repeatedly
+# https://github.com/SUSE/spacewalk/issues/4513
+  Scenario: Cleanup: remove "Testform" formula from "test-formula-group"
+     Given I am on the groups page
+     And I follow "test-formula-group" in the content area
+     And I follow "Formulas" in the content area
+     Then I should see a "Choose formulas:" text
+     And I should see a "Testform" text
+     When I uncheck the "testform" formula
+     And I click on "Save"
+     Then I should see a "Formulas saved!" text
+#    Is the refresh necessary?
+     When I refresh the pillar data
+     Then the pillar data for "testing" should be empty on "sle-minion"
 
   Scenario: Cleanup: remove "test-formula-group" system group
      Given I am on the groups page
