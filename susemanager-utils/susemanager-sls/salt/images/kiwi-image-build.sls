@@ -13,8 +13,8 @@
 {%- set bundle_dir = root_dir + '/images/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
 
-{%- if pillar.get('activation_key') %}
-{%- set kiwi_params = '--add-repo ' + common_repo + salt['cmd.run']('suma-repos ' + pillar.get('activation_key')) %}
+{%- if pillar.get('activation_key_channels') %}
+{%- set kiwi_params = '--add-repo ' + common_repo + pillar.get('activation_key_channels') %}
 {%- else %}
 {%- set kiwi_params = '--add-repo ' + common_repo + ' --add-repo ' + pillar.get('kiwi_repositories')|join(' --add-repo ') %}
 {%- endif %}

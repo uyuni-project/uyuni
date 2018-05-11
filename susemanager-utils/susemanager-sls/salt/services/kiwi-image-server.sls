@@ -18,7 +18,6 @@ mgr_kiwi_build_tools:
   pkg.installed:
     - pkgs:
       - kiwi-desc-saltboot
-      - image-server-tools
       - git-core
     - order: last
 
