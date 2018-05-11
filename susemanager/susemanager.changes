@@ -444,7 +444,7 @@ Thu Dec 04 16:22:57 CET 2014 - mc@suse.de
 - use noRepoSync parameter always
 - Enable and allow "mgr-sync refresh" in the case of ISS
 - mgr-sync: Fixed error message on exception (bnc#905263)
-- mgr-sync: fixed add product to not trigger redundant 
+- mgr-sync: fixed add product to not trigger redundant
             add of base channe (bnc#901928)
 - drop unused columns in suseProducts table
 
@@ -1093,7 +1093,7 @@ Wed Aug 24 10:36:21 CEST 2011 - mc@suse.de
 -------------------------------------------------------------------
 Tue Aug 23 17:33:04 CEST 2011 - ug@suse.de
 
-- mgr-ncc-sync does not work for system entitlements 
+- mgr-ncc-sync does not work for system entitlements
   (bnc#713395)
 
 -------------------------------------------------------------------
@@ -1631,4 +1631,3 @@ Tue Nov  9 11:10:26 CET 2010 - mantel@suse.de
 Mon Nov  8 10:51:15 CET 2010 - mc@suse.de
 
 - Initial release of susemanager
-
