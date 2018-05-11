@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 public class OSImageStoreUtils {
 
     private static String osImageStorePath = "/srv/www/os-images";
+    private static String osImageWWWDirectory = "os-images";
 
     public static String getOSImageStorePathForOrg(Org org) {
         return osImageStorePath + org.getId() + "/";
@@ -24,7 +25,7 @@ public class OSImageStoreUtils {
         }
         catch (UnknownHostException ignored) { }
 
-        return "https://" + suseManagerHostname + "/os-images/";
+        return "https://" + suseManagerHostname + "/" + osImageWWWDirectory + "/";
     }
 
     public static String getOSImageStoreURIForOrg(Org org) {
