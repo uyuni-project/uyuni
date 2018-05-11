@@ -89,6 +89,7 @@ public class ImageTestUtils {
         info.setStore(profile.getTargetStore());
         info.setOrg(user.getOrg());
         info.setProfile(profile);
+        info.setImageType(profile.getImageType());
         info.setBuildServer(buildHost);
 
         if (profile.getToken() != null) {

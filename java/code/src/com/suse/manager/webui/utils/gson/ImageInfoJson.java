@@ -41,6 +41,7 @@ public class ImageInfoJson {
     private Long id;
     private String name;
     private String version;
+    private String type;
     private Integer revision;
     private String checksum;
     private boolean external;
@@ -89,6 +90,20 @@ public class ImageInfoJson {
      */
     public String getVersion() {
         return version;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param typeIn the type
+     */
+    public void setType(String typeIn) {
+        this.type = typeIn;
     }
 
     /**
@@ -340,6 +355,7 @@ public class ImageInfoJson {
         json.setId(imageOverview.getId());
         json.setName(imageOverview.getName());
         json.setVersion(imageOverview.getVersion());
+        json.setType(imageOverview.getImageType());
         json.setRevision(imageOverview.getCurrRevisionNum());
         json.setChecksum(c != null ? c.getChecksum() : "");
         json.setExternal(imageOverview.isExternalImage());

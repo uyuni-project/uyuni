@@ -1,0 +1,3 @@
+ALTER TABLE suseImageInfo ADD image_type VARCHAR2(32) DEFAULT 'dockerfile';
+ALTER TABLE suseImageInfo MODIFY image_type DEFAULT NULL;
+

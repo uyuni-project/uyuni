@@ -765,6 +765,7 @@ public class ImageBuildController {
         json.addProperty("id", imageOverview.getId());
         json.addProperty("name", imageOverview.getName());
         json.addProperty("version", imageOverview.getVersion());
+        json.addProperty("type", imageOverview.getImageType());
         json.addProperty("external", imageOverview.isExternalImage());
         json.addProperty("revision", imageOverview.getCurrRevisionNum());
         json.addProperty("modified", VIEW_HELPER.renderDate(imageOverview.getModified()));

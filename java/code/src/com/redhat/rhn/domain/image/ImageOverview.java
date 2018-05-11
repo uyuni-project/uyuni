@@ -57,6 +57,7 @@ public class ImageOverview extends BaseDomainHelper {
     private Long id;
     private String name;
     private String version;
+    private String imageType;
     private Checksum checksum;
     private String arch;
     private ImageProfile profile;
@@ -110,6 +111,14 @@ public class ImageOverview extends BaseDomainHelper {
     @Column(name = "image_version")
     public String getVersion() {
         return version;
+    }
+
+    /**
+     * @return the image type
+     */
+    @Column(name = "image_type")
+    public String getImageType() {
+        return imageType;
     }
 
     /**
@@ -344,6 +353,13 @@ public class ImageOverview extends BaseDomainHelper {
      */
     public void setVersion(String versionIn) {
         this.version = versionIn;
+    }
+
+    /**
+     * @param imageTypeIn the image type
+     */
+    public void setImageType(String imageTypeIn) {
+        this.imageType = imageTypeIn;
     }
 
     /**
