@@ -63,6 +63,7 @@ public class ImageTestUtils {
         ImageInfo inf = new ImageInfo();
         inf.setName(profileLabel);
         inf.setVersion(version);
+        inf.setImageType(ImageProfile.TYPE_DOCKERFILE);
         inf.setChecksum(null);
         inf.setImageArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         inf.setOrg(user.getOrg());
@@ -86,6 +87,7 @@ public class ImageTestUtils {
         ImageInfo info = new ImageInfo();
         info.setName(profile.getLabel());
         info.setVersion(version);
+        info.setImageType(profile.getImageType());
         info.setStore(profile.getTargetStore());
         info.setOrg(user.getOrg());
         info.setProfile(profile);
@@ -131,6 +133,7 @@ public class ImageTestUtils {
         ImageInfo image = new ImageInfo();
         image.setName(name);
         image.setVersion(version);
+        image.setImageType(ImageProfile.TYPE_DOCKERFILE);
         image.setImageArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         image.setOrg(user.getOrg());
         image.setChannels(channels);
