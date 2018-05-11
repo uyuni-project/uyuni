@@ -18,6 +18,7 @@ import logging
 import yaml
 import json
 import sys
+import salt.utils.dictupdate
 
 # SUSE Manager static pillar paths:
 MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
@@ -104,7 +105,9 @@ def formula_pillars(minion_id, group_ids):
             if formula_utf8 in out_formulas:
                 continue # already processed
             out_formulas.append(formula_utf8)
-            pillar.update(load_formula_pillar(minion_id, group, formula))
+            pillar = salt.utils.dictupdate.merge(pillar,
+                     load_formula_pillar(minion_id, group, formula),
+                     strategy='recurse')
 
     # Loading minion formulas
     data = load_formulas_from_file("minion_formulas.json")
@@ -113,7 +116,9 @@ def formula_pillars(minion_id, group_ids):
         if formula_utf8 in out_formulas:
             continue # already processed
         out_formulas.append(formula_utf8)
-        pillar.update(load_formula_pillar(minion_id, None, formula))
+        pillar = salt.utils.dictupdate.merge(pillar,
+                 load_formula_pillar(minion_id, None, formula),
+                 strategy='recurse')
 
     pillar["formulas"] = out_formulas
     return pillar
