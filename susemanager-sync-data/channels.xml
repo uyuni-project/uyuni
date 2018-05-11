@@ -10677,36 +10677,7 @@
 			<product_id eol="Y" name="SUSE-Linux-Enterprise-Server-SP3" version="10">808</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES12-SP2-LTSS-PPC" is_signed="Y" label="sles12-sp2-ltss-debuginfo-updates-ppc64le" name="SLES12-SP2-LTSS-Debuginfo-Updates for ppc64le" optional="Y" parent="sles12-sp2-pool-ppc64le" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/ppc64le/update_debug/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 ppc64le" update_tag="SLE-SERVER">
-		<products>
-			<product_id name="SLES-LTSS" version="12.2">1737</product_id>
-		</products>
-	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES12-SP2-LTSS-Z" is_signed="Y" label="sles12-sp2-ltss-debuginfo-updates-s390x" name="SLES12-SP2-LTSS-Debuginfo-Updates for s390x" optional="Y" parent="sles12-sp2-pool-s390x" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/s390x/update_debug/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 s390x" update_tag="SLE-SERVER">
-		<products>
-			<product_id name="SLES-LTSS" version="12.2">1738</product_id>
-		</products>
-	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES12-SP2-LTSS-X86" is_signed="Y" label="sles12-sp2-ltss-debuginfo-updates-x86_64" name="SLES12-SP2-LTSS-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/x86_64/update_debug/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 x86_64" update_tag="SLE-SERVER">
-		<products>
-			<product_id name="SLES-LTSS" version="12.2">1739</product_id>
-		</products>
-	</channel>
-	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES12-SP2-LTSS-PPC" is_signed="Y" label="sles12-sp2-ltss-updates-ppc64le" name="SLES12-SP2-LTSS-Updates for ppc64le" optional="N" parent="sles12-sp2-pool-ppc64le" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/ppc64le/update/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 ppc64le" update_tag="SLE-SERVER">
-		<products>
-			<product_id name="SLES-LTSS" version="12.2">1737</product_id>
-		</products>
-	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES12-SP2-LTSS-Z" is_signed="Y" label="sles12-sp2-ltss-updates-s390x" name="SLES12-SP2-LTSS-Updates for s390x" optional="N" parent="sles12-sp2-pool-s390x" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/s390x/update/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 s390x" update_tag="SLE-SERVER">
-		<products>
-			<product_id name="SLES-LTSS" version="12.2">1738</product_id>
-		</products>
-	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES12-SP2-LTSS-X86" is_signed="Y" label="sles12-sp2-ltss-updates-x86_64" name="SLES12-SP2-LTSS-Updates for x86_64" optional="N" parent="sles12-sp2-pool-x86_64" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/x86_64/update/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 x86_64" update_tag="SLE-SERVER">
-		<products>
-			<product_id name="SLES-LTSS" version="12.2">1739</product_id>
-		</products>
-	</channel>
+	<channel arch="ia64" description="SUSE Linux Enterprise Server 10 SP3 ia64" eol="Y" family="SLES-IA" is_signed="Y" label="sles10-sp3-updates-ia64" name="SLES10-SP3-Updates for ia64" optional="N" parent="sles10-sp3-pool-ia64" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://updates.suse.com/repo/$RCE/SLES10-SP3-Updates/sles-10-ia64/" summary="SUSE Linux Enterprise Server 10 SP3 ia64" update_tag="slesp3">
 		<products>
 			<product_id eol="Y" name="SUSE-Linux-Enterprise-Server-SP3" version="10">740</product_id>
 		</products>
@@ -12330,6 +12301,36 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="AiO" is_signed="Y" label="sles12-sp2-debuginfo-updates-x86_64-sap-sp2" name="SLES12-SP2-Debuginfo-Updates for x86_64 SAP-SP2" optional="Y" parent="sle12-sp2-sap-pool-x86_64" product_name="SLES_SAP" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2/x86_64/update_debug/" summary="SUSE Linux Enterprise Server 12 SP2 x86_64" update_tag="SLE-SERVER">
 		<products>
 			<product_id eol="N" name="SLES_SAP" version="12.2">1414</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="SLES12-SP2-LTSS-PPC" is_signed="Y" label="sles12-sp2-ltss-debuginfo-updates-ppc64le" name="SLES12-SP2-LTSS-Debuginfo-Updates for ppc64le" optional="Y" parent="sles12-sp2-pool-ppc64le" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/ppc64le/update_debug/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 ppc64le" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="SLES-LTSS" version="12.2">1737</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="SLES12-SP2-LTSS-Z" is_signed="Y" label="sles12-sp2-ltss-debuginfo-updates-s390x" name="SLES12-SP2-LTSS-Debuginfo-Updates for s390x" optional="Y" parent="sles12-sp2-pool-s390x" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/s390x/update_debug/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 s390x" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="SLES-LTSS" version="12.2">1738</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="SLES12-SP2-LTSS-X86" is_signed="Y" label="sles12-sp2-ltss-debuginfo-updates-x86_64" name="SLES12-SP2-LTSS-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/x86_64/update_debug/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="SLES-LTSS" version="12.2">1739</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="SLES12-SP2-LTSS-PPC" is_signed="Y" label="sles12-sp2-ltss-updates-ppc64le" name="SLES12-SP2-LTSS-Updates for ppc64le" optional="N" parent="sles12-sp2-pool-ppc64le" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/ppc64le/update/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 ppc64le" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="SLES-LTSS" version="12.2">1737</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="SLES12-SP2-LTSS-Z" is_signed="Y" label="sles12-sp2-ltss-updates-s390x" name="SLES12-SP2-LTSS-Updates for s390x" optional="N" parent="sles12-sp2-pool-s390x" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/s390x/update/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 s390x" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="SLES-LTSS" version="12.2">1738</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="SLES12-SP2-LTSS-X86" is_signed="Y" label="sles12-sp2-ltss-updates-x86_64" name="SLES12-SP2-LTSS-Updates for x86_64" optional="N" parent="sles12-sp2-pool-x86_64" product_name="SLES-LTSS" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2-LTSS/x86_64/update/" summary="SUSE Linux Enterprise Server LTSS 12 SP2 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="SLES-LTSS" version="12.2">1739</product_id>
 		</products>
 	</channel>
 	<channel arch="aarch64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="SLES-ARM64" is_signed="Y" label="sles12-sp2-pool-aarch64" name="SLES12-SP2-Pool for aarch64" optional="N" parent="BASE" product_name="SLES" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP2/aarch64/product/" summary="SUSE Linux Enterprise Server 12 SP2 aarch64" update_tag="SLE-SERVER">
