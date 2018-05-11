@@ -126,6 +126,7 @@ public class ImageInfoFactory extends HibernateFactory {
         info.setOrg(server.getOrg());
         info.setBuildAction(action);
         info.setProfile(profile);
+        info.setImageType(profile.getImageType());
         info.setBuildServer(server);
         if (profile.getToken() != null) {
             info.setChannels(new HashSet<>(profile.getToken().getChannels()));
