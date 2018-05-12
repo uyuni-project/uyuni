@@ -25,7 +25,7 @@ import java.net.UnknownHostException;
  */
 public class OSImageStoreUtils {
 
-    private static String osImageStorePath = "/srv/www/os-images";
+    private static String osImageStorePath = "/srv/www/os-images/";
     private static String osImageWWWDirectory = "os-images";
 
     private OSImageStoreUtils() { }
