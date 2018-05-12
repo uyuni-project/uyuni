@@ -9,25 +9,25 @@ Feature: Be able to list available products and enable them
   Scenario: List available products
     When I execute mgr-sync "list products" with user "admin" and password "admin"
     Then I should get "[I] SUSE Linux Enterprise Server 12 SP2 (x86_64)"
-    And I should get "[ ] SUSE Linux Enterprise Server 15 (x86_64)"
+    And I should get "[ ] SUSE Linux Enterprise Desktop 15 (x86_64)"
 
   Scenario: List all available products
     When I execute mgr-sync "list products -e"
-    Then I should get "[ ] SUSE Linux Enterprise Server 15 (x86_64)"
+    Then I should get "[ ] SUSE Linux Enterprise Desktop 15 (x86_64)"
     And I should get "  [ ] (R) Basesystem Module 15 (x86_64)"
-    And I should get "  [ ] Containers Module 15 (x86_64)"
+    And I should get "  [ ] Development Tools Module 15 (x86_64)"
 
-  Scenario: Enable "SUSE Linux Enterprise Server 15 (x86_64)" with recommended modules
-    When I enable product "SUSE Linux Enterprise Server 15 (x86_64)"
-    Then I should get "Adding channels required by 'SUSE Linux Enterprise Server 15' product"
-    And I should get "- sle-product-sles15-pool-x86_64"
-    And I should get "- sle-product-sles15-updates-x86_64"
-    And I should get "- sle-module-basesystem15-pool-x86_64"
-    And I should get "- sle-module-basesystem15-updates-x86_64"
-    And I should get "- sle-module-server-applications15-updates-x86_64"
-    And I should get "- sle-module-server-applications15-pool-x86_64"
-    And I should get "- sle-manager-tools15-pool-x86_64"
-    And I should get "- sle-manager-tools15-updates-x86_64"
+  Scenario: Enable "SUSE Linux Enterprise Desktop 15 (x86_64)" with recommended modules
+    When I enable product "SUSE Linux Enterprise Desktop 15 (x86_64)"
+    Then I should get "Adding channels required by 'SUSE Linux Enterprise Desktop 15' product"
+    And I should get "- sle-product-sled15-updates-x86_64"
+    And I should get "- sle-product-sled15-pool-x86_64"
+    And I should get "- sle-module-basesystem15-updates-x86_64-sled"
+    And I should get "- sle-module-basesystem15-pool-x86_64-sled"
+    And I should get "- sle-module-desktop-applications15-updates-x86_64-sled"
+    And I should get "- sle-module-desktop-applications15-pool-x86_64-sled"
+    And I should get "- sle-product-we15-updates-x86_64-sled"
+    And I should get "- sle-product-we15-pool-x86_64-sled"
     And I should get "Product successfully added"
 
   Scenario: Enable "SUSE Linux Enterprise Server for SAP Applications 15 (x86_64)" without recommended modules
