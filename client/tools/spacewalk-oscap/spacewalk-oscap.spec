@@ -24,7 +24,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 %endif
 BuildRequires:  libxslt
-%if 0%{?rhel} || 0%{?suse_version}
+%if ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
 Requires: openscap-utils
 %else
 Requires:	openscap-scanner
