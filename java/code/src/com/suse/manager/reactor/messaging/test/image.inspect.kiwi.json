@@ -1,0 +1,2382 @@
+salt/job/20180511164426906095/ret/minion.tf.local	{
+    "_stamp": "2018-05-11T14:44:28.063635",
+    "cmd": "_return",
+    "fun": "state.apply",
+    "fun_args": [
+        {
+            "mods": [
+                "images.kiwi-image-inspect"
+            ],
+            "pillar": {
+                "build_id": "build53"
+            },
+            "queue": true
+        }
+    ],
+    "id": "minion.tf.local",
+    "jid": "20180511164426906095",
+    "metadata": {
+        "suma-action-id": 54
+    },
+    "out": "highstate",
+    "retcode": 0,
+    "return": {
+        "cmd_|-mgr_kiwi_cleanup_|-rm -rf '/var/lib/Kiwi/build53'_|-run": {
+            "__id__": "mgr_kiwi_cleanup",
+            "__run_num__": 1,
+            "changes": {
+                "pid": 24027,
+                "retcode": 0,
+                "stderr": "",
+                "stdout": ""
+            },
+            "comment": "Command \"rm -rf '/var/lib/Kiwi/build53'\" run",
+            "duration": 895.734,
+            "name": "rm -rf '/var/lib/Kiwi/build53'",
+            "result": true,
+            "start_time": "16:44:27.157775"
+        },
+        "module_|-mgr_inspect_kiwi_image_|-kiwi_info.inspect_image_|-run": {
+            "__id__": "mgr_inspect_kiwi_image",
+            "__run_num__": 0,
+            "changes": {
+                "ret": {
+                    "boot_image": {
+                        "arch": "x86_64",
+                        "basename": "initrd-netboot-suse-SLES12.x86_64-2.1.1",
+                        "initrd": {
+                            "filename": "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                            "hash": "c093c0861dbe0502955eeff6e41f6d90",
+                            "size": 101573293,
+                            "version": "2.1.1"
+                        },
+                        "kernel": {
+                            "filename": "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
+                            "hash": "ec5473654d2fdca4f60c7d2f8f86e45c",
+                            "size": 6053712,
+                            "version": "4.4.126-94.22-default"
+                        },
+                        "name": "initrd-netboot-suse-SLES12"
+                    },
+                    "bundle": {
+                        "basename": "POS_Image_JeOS6.x86_64-6.0.0",
+                        "filename": "POS_Image_JeOS6.x86_64-6.0.0-build53.tgz",
+                        "filepath": "/var/lib/Kiwi/build53/images/POS_Image_JeOS6.x86_64-6.0.0-build53.tgz",
+                        "hash": "079d85aad458cc9640665d06f24c02acd7696e6e7119c68943b4216d54327a9a",
+                        "id": "build53",
+                        "suffix": "tgz"
+                    },
+                    "image": {
+                        "arch": "x86_64",
+                        "basename": "POS_Image_JeOS6.x86_64-6.0.0",
+                        "compression": null,
+                        "filename": "POS_Image_JeOS6.x86_64-6.0.0",
+                        "filepath": "/var/lib/Kiwi/build53/images.build/POS_Image_JeOS6.x86_64-6.0.0",
+                        "fstype": "ext3",
+                        "hash": "73561af58dd6e80df1625da2e6ba0238",
+                        "name": "POS_Image_JeOS6",
+                        "size": 1490026496,
+                        "type": "pxe",
+                        "version": "6.0.0"
+                    },
+                    "packages": [
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/ae15081902ea27fd632375aeb0ce0da6-filesystem",
+                            "epoch": "",
+                            "name": "filesystem",
+                            "release": "14.15",
+                            "version": "13.1"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6702/SUSE_SLE-12-SP2_Update/5384977124b11b5f3e4298ed07199b85-kernel-firmware.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "kernel-firmware",
+                            "release": "21.19.1",
+                            "version": "20170530"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6206/SUSE_SLE-12_Update/59cb2f48217e1390186e4ae95c28fe51-file.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "file-magic",
+                            "release": "10.6.1",
+                            "version": "5.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5905/SUSE_SLE-12-SP3_Update/a58a635cda8501274c389cc79f74cbb5-dbus-1-x11.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "dbus-1-x11",
+                            "release": "29.10.2",
+                            "version": "1.8.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6721/SUSE_SLE-12-SP2_Update/4ba1e4a1144334178e7ae535bccba4c5-glibc.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "glibc",
+                            "release": "62.10.1",
+                            "version": "2.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6851/SUSE_SLE-12_Update/1ed117ae30253204ca6322ff5a8f0f58-perl.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "perl",
+                            "release": "12.11.1",
+                            "version": "5.18.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5239/SUSE_SLE-12-SP3_Update/ecde5f9f6c2e182583fce268fabaaf9b-util-linux.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libuuid1",
+                            "release": "3.5.1",
+                            "version": "2.29.2"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6584/SUSE_SLE-12-SP3_Update/319c7dd8cd79d52119dcd676b004cce7-grub2.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "grub2-snapper-plugin",
+                            "release": "4.14.1",
+                            "version": "2.02"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3807/SUSE_SLE-12_Update/4d82a298608a964a294e8c2b9466df73-cyrus-sasl.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libsasl2-3",
+                            "release": "8.7.1",
+                            "version": "2.1.26"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5568/SUSE_SLE-12-SP2_Update/c8b9ff71b5e1e0a6babd3212bc47e9c3-iproute2.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "iproute2",
+                            "release": "15.3.2",
+                            "version": "4.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5934/SUSE_SLE-12_Update/69b0c0ea30c3c275e638e8d7a7f2763a-pcre.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libpcre1",
+                            "release": "8.3.1",
+                            "version": "8.39"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6466/SUSE_SLE-12_Update/fe3c48d9d4a9addb8ec555167120be7f-rsync.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "rsync",
+                            "release": "13.10.1",
+                            "version": "3.1.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6163/SUSE_SLE-12_Update/8259b3d64c24531872930138032b41b7-kmod.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libkmod2",
+                            "release": "9.6.1",
+                            "version": "17"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6565/SUSE_SLE-12-SP3_Update/4faa436cb587acd316b284ea323ab7e8-SUSEConnect.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "SUSEConnect",
+                            "release": "3.5.1",
+                            "version": "0.3.7"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7208/SUSE_SLE-12_Update/98e9c22210c137d4cd948a81a8034fa6-gcc7.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libgcc_s1",
+                            "release": "5.2",
+                            "version": "7.3.1+r258812"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7048/SUSE_SLE-12_Update/66d6cf28870dc8b302e567e8dd402bf5-boost.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libboost_thread1_54_0",
+                            "release": "26.3.1",
+                            "version": "1.54.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5905/SUSE_SLE-12-SP3_Update/0c6c9614716f8505c6cffea87f97dee0-dbus-1.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libdbus-1-3",
+                            "release": "29.10.2",
+                            "version": "1.8.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6300/SUSE_SLE-12-SP2_Update/c8ae12cdbb789de2ddb8f1df04c4eaa0-wicked.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "wicked-service",
+                            "release": "38.8.1",
+                            "version": "0.6.40"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4861/SUSE_SLE-12_Update/c03a7b71596c3509f3cce3d0ea0ef94d-insserv-compat.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "insserv-compat",
+                            "release": "14.3.1",
+                            "version": "0.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7009/SUSE_SLE-12_Update/435ae50ff1d42646b823d674d8521803-python-pycrypto.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-pycrypto",
+                            "release": "10.6.3",
+                            "version": "2.6.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7208/SUSE_SLE-12_Update/98e9c22210c137d4cd948a81a8034fa6-gcc7.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libstdc++6",
+                            "release": "5.2",
+                            "version": "7.3.1+r258812"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7237/SUSE_SLE-12_Update/c7875a1f1d54d46fd2e3e5afaa5879fc-python-msgpack-python.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-msgpack-python",
+                            "release": "8.3.1",
+                            "version": "0.4.6"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5239/SUSE_SLE-12-SP3_Update/ecde5f9f6c2e182583fce268fabaaf9b-util-linux.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libfdisk1",
+                            "release": "3.5.1",
+                            "version": "2.29.2"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2353/SUSE_SLE-12_Update/c059d76f64c3b70bb3d9df8e745c18fd-python-backports.ssl_match_hostname.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-backports.ssl_match_hostname",
+                            "release": "17.1",
+                            "version": "3.4.0.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6486/SUSE_SLE-12_Update/5119e62c627883f77dfc7efc92526b1d-ncurses.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libncurses5",
+                            "release": "58.1",
+                            "version": "5.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7052/SUSE_SLE-12_Update/f0a2a8c9a151771d702b9ecaec711acf-python-PyYAML.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-PyYAML",
+                            "release": "26.3.1",
+                            "version": "3.12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5753/SUSE_SLE-12-SP2_Update/c2af162e38b537dc7f9cfb061bb5bfca-bash.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libreadline6",
+                            "release": "83.5.2",
+                            "version": "6.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4308/SUSE_SLE-12-SP1_Update/655c05e4beb1847f4bd2edc26952fe94-python.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "python",
+                            "release": "27.1",
+                            "version": "2.7.13"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/30b0f6ddb4ddc593205b93f68c514755-pkg-config",
+                            "epoch": "",
+                            "name": "pkg-config",
+                            "release": "6.98",
+                            "version": "0.28"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/525a99b6ab9fac5367762bdf0876b9f4-shim",
+                            "epoch": "",
+                            "name": "shim",
+                            "release": "23.14",
+                            "version": "0.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/974659bfd76332ae10b10935ddeb0b06-libverto",
+                            "epoch": "",
+                            "name": "libverto1",
+                            "release": "2.4",
+                            "version": "0.2.6"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/c35fd5a5b8f5a42fc8d0bd29f7c834ae-libsepol",
+                            "epoch": "",
+                            "name": "libsepol1",
+                            "release": "3.143",
+                            "version": "2.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/ec4b1790dfe11e92e686362831770cda-perl-Digest-SHA1",
+                            "epoch": "",
+                            "name": "perl-Digest-SHA1",
+                            "release": "17.216",
+                            "version": "2.13"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/09e1a39770f088004f982e82b30b8e19-qrencode",
+                            "epoch": "",
+                            "name": "libqrencode3",
+                            "release": "1.31",
+                            "version": "3.4.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/ac461e4b4345a26dbdb573cee1ac3da0-popt",
+                            "epoch": "",
+                            "name": "libpopt0",
+                            "release": "26.128",
+                            "version": "1.16"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/345261c1016215bd58717b3ed3573688-sysconfig",
+                            "epoch": "",
+                            "name": "sysconfig",
+                            "release": "13.1",
+                            "version": "0.84.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/a76fee55414b457cac948b2cca6cca07-keyutils",
+                            "epoch": "",
+                            "name": "libkeyutils1",
+                            "release": "3.29",
+                            "version": "1.5.9"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/06a1a4707a3e858a4780410ec666b786-perl-Digest-HMAC",
+                            "epoch": "",
+                            "name": "perl-Digest-HMAC",
+                            "release": "18.16",
+                            "version": "1.03"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/4e461b7bd46f547717eab2ff5fe4cb8b-gmp",
+                            "epoch": "",
+                            "name": "libgmp10",
+                            "release": "2.121",
+                            "version": "5.1.3"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/754f98097e45e9588f795774e72a476d-glib2-branding-SLE",
+                            "epoch": "",
+                            "name": "gio-branding-SLE",
+                            "release": "14.5",
+                            "version": "12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4601/SUSE_SLE-12_Update/83287f3299b84dcf9a8942a49d6a0e4e-libffi-gcc5.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libffi4",
+                            "release": "12.1",
+                            "version": "5.3.1+r233831"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/e113d6d752683793f6e98d0191e58c38-gobject-introspection",
+                            "epoch": "",
+                            "name": "libgirepository-1_0-1",
+                            "release": "11.2",
+                            "version": "1.48.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4950/SUSE_SLE-12_Update/5d9d0d7a891bd2dd465f59b771bbc2f9-e2fsprogs.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libcom_err2",
+                            "release": "15.1",
+                            "version": "1.42.11"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/e113d6d752683793f6e98d0191e58c38-gobject-introspection",
+                            "epoch": "",
+                            "name": "girepository-1_0",
+                            "release": "11.2",
+                            "version": "1.48.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/6b1a1551a1bcd82c45acaba143c9a95d-libcap-ng",
+                            "epoch": "",
+                            "name": "libcap-ng0",
+                            "release": "4.125",
+                            "version": "0.7.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6038/SUSE_SLE-12_Update/5a04145257eef84c85aca3584a66778d-rpm-python.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "rpm-python",
+                            "release": "16.7.1",
+                            "version": "4.11.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/ea9cb5ef3120e6e7dea2f1b169f1f8fa-attr",
+                            "epoch": "",
+                            "name": "libattr1",
+                            "release": "3.143",
+                            "version": "2.4.47"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/a5c73f0677c4ffdcfee025adb007def3-libaio",
+                            "epoch": "",
+                            "name": "libaio1",
+                            "release": "17.15",
+                            "version": "0.3.109"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6456/SUSE_SLE-12-SP3_Update/558a024f6e8c7e136331b4433c57c2b0-SuSEfirewall2.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "SuSEfirewall2",
+                            "release": "3.13.1",
+                            "version": "3.6.312.333"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/d0bcb2e98a5adab75b6a83659f1807e0-hardlink",
+                            "epoch": "",
+                            "name": "hardlink",
+                            "release": "6.45",
+                            "version": "1.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2353/SUSE_SLE-12_Update/4926f2b626b0ae17f6044e95196243a0-python-tornado.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-tornado",
+                            "release": "9.1",
+                            "version": "4.2.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/a8af0c5022d8d03f1fa44d0f4ac1ee76-libselinux",
+                            "epoch": "",
+                            "name": "libselinux1",
+                            "release": "8.79",
+                            "version": "2.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7212/SUSE_SLE-12_Update/3c0a5c2545a4d46029f9d625c1fa7c5a-salt.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "salt-minion",
+                            "release": "46.20.2",
+                            "version": "2016.11.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/2f315949c63fdbfc25157fcfa41987cc-libmodman",
+                            "epoch": "",
+                            "name": "libmodman1",
+                            "release": "15.75",
+                            "version": "2.0.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4804/SUSE_SLE-12-SP2_Update/c66a6ec35677809f8122e1303d7641b8-plymouth.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "plymouth-plugin-label",
+                            "release": "34.2",
+                            "version": "0.9.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/7a29b1216f26953bbb1805dc77880145-xz",
+                            "epoch": "",
+                            "name": "xz",
+                            "release": "4.852",
+                            "version": "5.0.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4804/SUSE_SLE-12-SP2_Update/c66a6ec35677809f8122e1303d7641b8-plymouth.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "plymouth-scripts",
+                            "release": "34.2",
+                            "version": "0.9.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/998265147d8319ce44dc5ee36faf5bbe-libassuan",
+                            "epoch": "",
+                            "name": "libassuan0",
+                            "release": "3.217",
+                            "version": "2.1.1"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/9154b7fae52d640fd716a47a48f5101a-branding-SLE",
+                            "epoch": "",
+                            "name": "plymouth-branding-SLE",
+                            "release": "11.1",
+                            "version": "12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:361/SUSE_SLE-12_Update/35ec126043106b2dab3bdb67397019b0-elfutils.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libasm1",
+                            "release": "6.1",
+                            "version": "0.158"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4804/SUSE_SLE-12-SP2_Update/c66a6ec35677809f8122e1303d7641b8-plymouth.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "plymouth",
+                            "release": "34.2",
+                            "version": "0.9.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:361/SUSE_SLE-12_Update/35ec126043106b2dab3bdb67397019b0-elfutils.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libdw1",
+                            "release": "6.1",
+                            "version": "0.158"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5157/SUSE_SLE-12-SP1_Update/d108559c59cb05351e72435e571b1030-btrfsmaintenance.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "btrfsmaintenance",
+                            "release": "8.1",
+                            "version": "0.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:1437/SUSE_SLE-12_Update/2982fa6a3129ea324f34b4270ce8c04d-acl.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libacl1",
+                            "release": "6.1",
+                            "version": "2.2.52"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/291d4df873f5ac01a58335f9fa086d2d-libproxy",
+                            "epoch": "",
+                            "name": "libproxy1",
+                            "release": "16.3",
+                            "version": "0.4.13"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/bc3cdc0dab0edd18debe8df1706b198f-texinfo",
+                            "epoch": "",
+                            "name": "info",
+                            "release": "37.229",
+                            "version": "4.13a"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/17e862361f019ee616d9acb04a805770-pinentry",
+                            "epoch": "",
+                            "name": "pinentry",
+                            "release": "4.27",
+                            "version": "0.8.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2821/SUSE_SLE-12_Update/297ddf3df5451b2e63858312681a1212-findutils.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "findutils",
+                            "release": "7.1",
+                            "version": "4.5.12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4599/SUSE_SLE-12_Update/5f804e6b87930c9d77f7aa3a03e2ad5d-cpio.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "cpio",
+                            "release": "35.1",
+                            "version": "2.11"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6206/SUSE_SLE-12_Update/59cb2f48217e1390186e4ae95c28fe51-file.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libmagic1",
+                            "release": "10.6.1",
+                            "version": "5.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6072/SUSE_SLE-12_Update/385ff40a0a1c1f9ecaa1848481297db2-libgcrypt.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libgcrypt20",
+                            "release": "16.48.1",
+                            "version": "1.6.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5239/SUSE_SLE-12-SP3_Update/ecde5f9f6c2e182583fce268fabaaf9b-util-linux.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libmount1",
+                            "release": "3.5.1",
+                            "version": "2.29.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6639/SUSE_SLE-12-SP2_Update/cd71f0028b369b4e11627370c1ec254d-freetype2.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libfreetype6",
+                            "release": "7.15.1",
+                            "version": "2.6.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6488/SUSE_SLE-12-SP3_Update/7811b447e3ad1ec53b2e10a4fb829d57-libtasn1.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libtasn1-6",
+                            "release": "3.5.1",
+                            "version": "4.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4414/SUSE_SLE-12-SP2_Update/7c031caf324d98f9f4944ab718569591-coreutils.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "coreutils",
+                            "release": "13.7.1",
+                            "version": "8.25"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6055/SUSE_SLE-12-SP2_Update/172fb675d9cb7acd6d1730d3fc7e4687-openldap2-client.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libldap-2_4-2",
+                            "release": "18.37.5",
+                            "version": "2.4.41"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6794/SUSE_SLE-12-SP3_Update/8ecb413230709aaa2cfbdf3aeaf7fd5d-augeas.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libaugeas0",
+                            "release": "17.3.1",
+                            "version": "1.2.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6488/SUSE_SLE-12-SP3_Update/7811b447e3ad1ec53b2e10a4fb829d57-libtasn1.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libtasn1",
+                            "release": "3.5.1",
+                            "version": "4.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6038/SUSE_SLE-12_Update/c3dcba38c65357bbc386edd350a8dfbb-rpm.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "rpm",
+                            "release": "16.7.1",
+                            "version": "4.11.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6721/SUSE_SLE-12-SP2_Update/4ba1e4a1144334178e7ae535bccba4c5-glibc.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "glibc-locale",
+                            "release": "62.10.1",
+                            "version": "2.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7100/SUSE_SLE-12-SP3_Update/11857bc6d8003750942cc520ced8c1ce-libsolv.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libsolv-tools",
+                            "release": "2.11.2",
+                            "version": "0.6.34"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/e5680dcd8319d41949ee8b3a0bf78bff-fipscheck",
+                            "epoch": "",
+                            "name": "fipscheck",
+                            "release": "9.3",
+                            "version": "1.2.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/5b6595c971e2461013189d825c754b98-libusb-1_0",
+                            "epoch": "",
+                            "name": "libusb-1_0-0",
+                            "release": "5.3",
+                            "version": "1.0.20"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/6b37a507e78ac26c2cef62c8de545ca2-systemd-presets-branding-SLE",
+                            "epoch": "",
+                            "name": "systemd-presets-branding-SLE",
+                            "release": "2.26",
+                            "version": "12.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3099/SUSE_SLE-12_Update/be225cd673245e43e8fedc9b10bb5c1a-kbd.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "kbd",
+                            "release": "8.7.1",
+                            "version": "1.15.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5083/SUSE_SLE-12_Update/fbef42f8afa4236348cc3b0d0e2c7790-dirmngr.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "dirmngr",
+                            "release": "13.1",
+                            "version": "1.1.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/9083c3d8ed2603feec4d2016e5d151f9-p11-kit",
+                            "epoch": "",
+                            "name": "p11-kit",
+                            "release": "1.7",
+                            "version": "0.20.7"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/245fa4d5e11ddd98380230ce434894c3-utempter",
+                            "epoch": "",
+                            "name": "libutempter0",
+                            "release": "5.114",
+                            "version": "1.1.6"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/d45176ad1a10f99930899a194a3f24eb-gettext-runtime",
+                            "epoch": "",
+                            "name": "gettext-runtime",
+                            "release": "1.103",
+                            "version": "0.19.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/e28f53a497b62b65d503f9b40e1a012a-gawk",
+                            "epoch": "",
+                            "name": "gawk",
+                            "release": "3.663",
+                            "version": "4.1.0"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/faf5b04b9ed33df8522abfe57dd9a93f-ca-certificates",
+                            "epoch": "",
+                            "name": "ca-certificates",
+                            "release": "6.2",
+                            "version": "1_201403302107"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6879/SUSE_SLE-12_Update/26923418d0986123c33565b82c6f353d-curl.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libcurl4",
+                            "release": "37.17.1",
+                            "version": "7.37.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6716/SUSE_SLE-12-SP3_Update/f3344743167cb0dfe49f0ba10055ee4e-aaa_base.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "aaa_base",
+                            "release": "38.5.1",
+                            "version": "13.2+git20140911.61c1681"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2837/SUSE_SLE-12_Update/1c231dee4d1a927ef6df0fdf38213e65-gpg2.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "gpg2",
+                            "release": "8.1",
+                            "version": "2.0.24"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7100/SUSE_SLE-12-SP3_Update/794f71a435403dc1d40e3afa9325f779-libzypp.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libzypp",
+                            "release": "2.28.2",
+                            "version": "16.17.12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6471/SUSE_SLE-12-SP3_Update/5303e9539beab4dd4586faf32f86eb1e-zypper.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "zypper",
+                            "release": "21.16.1",
+                            "version": "1.13.40"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5905/SUSE_SLE-12-SP3_Update/a58a635cda8501274c389cc79f74cbb5-dbus-1-x11.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "dbus-1",
+                            "release": "29.10.2",
+                            "version": "1.8.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6774/SUSE_SLE-12-SP2_Update/1cb936a1fa7f519fea1956571e5aa7ce-systemd.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "systemd",
+                            "release": "150.35.1",
+                            "version": "228"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6774/SUSE_SLE-12-SP2_Update/1cb936a1fa7f519fea1956571e5aa7ce-systemd.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "systemd-sysvinit",
+                            "release": "150.35.1",
+                            "version": "228"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6584/SUSE_SLE-12-SP3_Update/319c7dd8cd79d52119dcd676b004cce7-grub2.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "grub2-i386-pc",
+                            "release": "4.14.1",
+                            "version": "2.02"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/9154b7fae52d640fd716a47a48f5101a-branding-SLE",
+                            "epoch": "",
+                            "name": "grub2-branding-SLE",
+                            "release": "11.1",
+                            "version": "12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5752/SUSE_SLE-12-SP3_Update/753700629e3ae6fa5833c41027259ac1-dracut.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "dracut",
+                            "release": "114.17.1",
+                            "version": "044.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2353/SUSE_SLE-12_Update/e386666ed48397fc63f9118a3a074496-zeromq.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libzmq3",
+                            "release": "6.1",
+                            "version": "4.0.4"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3563/SUSE_SLE-12-SP2_Update/2d4b934b7399454535115b3c6ce313a7-btrfsprogs.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "btrfsprogs-udev-rules",
+                            "release": "16.1",
+                            "version": "4.5.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4823/SUSE_SLE-12_Update/713a0e5505c4bd5f5c9101740896e96e-cryptsetup.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "cryptsetup",
+                            "release": "4.1",
+                            "version": "1.6.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4393/SUSE_SLE-12_Update/8b473acb540f9f6376d8d02cba0325b1-fdupes.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "fdupes",
+                            "release": "7.1",
+                            "version": "1.61"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/924906d4a7601688209c2b82cb286622-iputils",
+                            "epoch": "",
+                            "name": "iputils",
+                            "release": "2.19",
+                            "version": "s20121221"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3563/SUSE_SLE-12-SP2_Update/2d4b934b7399454535115b3c6ce313a7-btrfsprogs.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libbtrfs0",
+                            "release": "16.1",
+                            "version": "4.5.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/54f1aa64b3c9bd71762610947fa17db5-dialog",
+                            "epoch": "",
+                            "name": "libdialog11",
+                            "release": "5.36",
+                            "version": "1.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/1dd0670d3f9485478b63d8dbc9c0d414-libedit",
+                            "epoch": "",
+                            "name": "libedit0",
+                            "release": "1.13",
+                            "version": "3.1.snap20140620"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/fce260d89ed3ce455d0251a91917ad72-libelf0",
+                            "epoch": "",
+                            "name": "libelf0",
+                            "release": "18.64",
+                            "version": "0.8.13"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/910b02ac57561a98f761002b6725efca-gdbm",
+                            "epoch": "",
+                            "name": "libgdbm4",
+                            "release": "9.70",
+                            "version": "1.10"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/d3013560d2c357a77d6f8446e82af73f-glib2",
+                            "epoch": "",
+                            "name": "libgobject-2_0-0",
+                            "release": "10.2",
+                            "version": "2.48.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/3ba32dafceb4d39f55f3970c39b58ebe-lzo",
+                            "epoch": "",
+                            "name": "liblzo2-2",
+                            "release": "1.13",
+                            "version": "2.08"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/58359463f168b9ffc419594f77a10af5-libnfnetlink",
+                            "epoch": "",
+                            "name": "libnfnetlink0",
+                            "release": "6.58",
+                            "version": "1.0.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/21274f22b7e6801b2e1653e28a608dc7-parted",
+                            "epoch": "",
+                            "name": "libparted0",
+                            "release": "33.10",
+                            "version": "3.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4308/SUSE_SLE-12-SP1_Update/fbdf8ddb8ed9eeda24a5cf16c7a7764c-python-base.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "libpython2_7-1_0",
+                            "release": "27.1",
+                            "version": "2.7.13"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4671/SUSE_SLE-12_Update/de8f7c7f5868dc448af2b87e88ffb3f3-ruby2.1.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libruby2_1-2_1",
+                            "release": "18.1",
+                            "version": "2.1.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/9f0e0eab389c7952a605b4a4dc07b736-libthai",
+                            "epoch": "",
+                            "name": "libthai-data",
+                            "release": "4.2",
+                            "version": "0.1.25"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/d0adfe01414c8d7eb9fc8e251f805c9f-libx86emu",
+                            "epoch": "",
+                            "name": "libx86emu1",
+                            "release": "1.7",
+                            "version": "1.11"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:1382/SUSE_SLE-12_Update/11ed75805a10899716b9623b63e20ca5-libyaml.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libyaml-0-2",
+                            "release": "7.1",
+                            "version": "0.1.6"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/9154b7fae52d640fd716a47a48f5101a-branding-SLE",
+                            "epoch": "",
+                            "name": "wallpaper-branding-SLE",
+                            "release": "11.1",
+                            "version": "12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:435/SUSE_SLE-12_Update/1fd7994bce2be5a4731168ad83a344f6-cronie.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "cronie",
+                            "release": "58.3",
+                            "version": "1.4.11"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/de491b80296eb3500c75fc80f0bc840c-libdrm",
+                            "epoch": "",
+                            "name": "libdrm_radeon1",
+                            "release": "1.14",
+                            "version": "2.4.76"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/de491b80296eb3500c75fc80f0bc840c-libdrm",
+                            "epoch": "",
+                            "name": "libdrm_amdgpu1",
+                            "release": "1.14",
+                            "version": "2.4.76"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/c83a5befcce4cba4e8e774d3385f5236-efibootmgr",
+                            "epoch": "",
+                            "name": "efibootmgr",
+                            "release": "1.13",
+                            "version": "14"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2788/SUSE_SLE-12-SP1_Update/2fefd2450094990e4b6cf423b7cdf9c7-haveged.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "haveged",
+                            "release": "16.1",
+                            "version": "1.9.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/60896fd0ec64070d9adbad1f3b5e8dbb-libnl3",
+                            "epoch": "",
+                            "name": "libnl3-200",
+                            "release": "2.21",
+                            "version": "3.2.23"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4308/SUSE_SLE-12-SP1_Update/fbdf8ddb8ed9eeda24a5cf16c7a7764c-python-base.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "python-base",
+                            "release": "27.1",
+                            "version": "2.7.13"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4671/SUSE_SLE-12_Update/de8f7c7f5868dc448af2b87e88ffb3f3-ruby2.1.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "ruby2.1-stdlib",
+                            "release": "18.1",
+                            "version": "2.1.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4308/SUSE_SLE-12-SP1_Update/fbdf8ddb8ed9eeda24a5cf16c7a7764c-python-base.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "python-xml",
+                            "release": "27.1",
+                            "version": "2.7.13"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4429/SUSE_SLE-12_Update/a5c0cdbca139c91f871e345fc4e755fd-ruby-common.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "ruby-common",
+                            "release": "19.1",
+                            "version": "2.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4804/SUSE_SLE-12-SP2_Update/c66a6ec35677809f8122e1303d7641b8-plymouth.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "plymouth-plugin-script",
+                            "release": "34.2",
+                            "version": "0.9.2"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6557/SUSE_SLE-12_Update/0632540820cc0397b1bc4df354409379-ca-certificates-mozilla.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "ca-certificates-mozilla",
+                            "release": "12.3.1",
+                            "version": "2.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7070/SUSE_SLE-12-SP3_Update/e94601496df8f1e05a97998f45a4c1bb-kernel-default.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "kernel-default",
+                            "release": "94.22.1",
+                            "version": "4.4.126"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5081/SUSE_SLE-12_Update/1d5a45b94c8b73b56c40a4c679a1d760-libdb-4_8.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libdb-4_8",
+                            "release": "29.6",
+                            "version": "4.8.30"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5766/SUSE_SLE-12_Update/ecaa1cf5ff2b879b7b9d972eb3211d61-iptables.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libiptc0",
+                            "release": "6.1",
+                            "version": "1.4.21"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6602/SUSE_SLE-12-SP2_Update/0e1e0183dc29d0c29ad9a118679d5ebe-libxml2.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libxml2-tools",
+                            "release": "46.12.1",
+                            "version": "2.9.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6551/SUSE_SLE-12-SP3_Update/9892a6f0589df9513379b77b60ccd853-logrotate.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "logrotate",
+                            "release": "2.8.3",
+                            "version": "3.11.0"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6888/SUSE_SLE-12_Update/84b96988334772e2aa755ee82b576b68-suse-build-key.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "suse-build-key",
+                            "release": "7.3.1",
+                            "version": "12.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5239/SUSE_SLE-12-SP3_Update/a7d63953591f2c608c1c108adba88241-util-linux-systemd.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "util-linux-systemd",
+                            "release": "3.5.4",
+                            "version": "2.29.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6338/SUSE_SLE-12-SP2_Update/5cbc9d338ecf8833a2fef9592883fde9-openssh.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "openssh",
+                            "release": "74.16.3",
+                            "version": "7.2p2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6716/SUSE_SLE-12-SP3_Update/f3344743167cb0dfe49f0ba10055ee4e-aaa_base.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "aaa_base-extras",
+                            "release": "38.5.1",
+                            "version": "13.2+git20140911.61c1681"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6300/SUSE_SLE-12-SP2_Update/c8ae12cdbb789de2ddb8f1df04c4eaa0-wicked.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libwicked-0-6",
+                            "release": "38.8.1",
+                            "version": "0.6.40"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/d5c8b2d7b3f95e2cd62f400b358a6a8e-cracklib-dict-full",
+                            "epoch": "",
+                            "name": "cracklib-dict-full",
+                            "release": "63.17",
+                            "version": "2.8.12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6723/SUSE_SLE-12_Update/27170b7eb494f458047a29efa8163050-python-simplejson.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-simplejson",
+                            "release": "9.1",
+                            "version": "3.8.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/435134b5848b13aa386201ba897d1a70-_product:SLES-release",
+                            "epoch": "",
+                            "name": "sles-release-POOL",
+                            "release": "1.267",
+                            "version": "12.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6486/SUSE_SLE-12_Update/5119e62c627883f77dfc7efc92526b1d-ncurses.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "terminfo-base",
+                            "release": "58.1",
+                            "version": "5.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7048/SUSE_SLE-12_Update/66d6cf28870dc8b302e567e8dd402bf5-boost.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libboost_system1_54_0",
+                            "release": "26.3.1",
+                            "version": "1.54.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6851/SUSE_SLE-12_Update/1ed117ae30253204ca6322ff5a8f0f58-perl.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "perl-base",
+                            "release": "12.11.1",
+                            "version": "5.18.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5239/SUSE_SLE-12-SP3_Update/ecde5f9f6c2e182583fce268fabaaf9b-util-linux.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libsmartcols1",
+                            "release": "3.5.1",
+                            "version": "2.29.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5766/SUSE_SLE-12_Update/ecaa1cf5ff2b879b7b9d972eb3211d61-iptables.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "xtables-plugins",
+                            "release": "6.1",
+                            "version": "1.4.21"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5483/SUSE_SLE-12_Update/d2aa821b9c8280a7420a58948cfb557f-procps.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libprocps3",
+                            "release": "11.8.1",
+                            "version": "3.3.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5882/SUSE_SLE-12_Update/19189f285a481af91c9f60d87aa79773-wpa_supplicant.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "wpa_supplicant",
+                            "release": "15.3.1",
+                            "version": "2.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5395/SUSE_SLE-12_Update/9722f04bcab7f2a2ce491064b0e1d112-lua51.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "liblua5_1",
+                            "release": "8.3.1",
+                            "version": "5.1.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6956/SUSE_SLE-12_Update/172c355956dea93b1aa4a64ea3cbacd0-libidn.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libidn11",
+                            "release": "5.3.1",
+                            "version": "1.28"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6300/SUSE_SLE-12-SP2_Update/c8ae12cdbb789de2ddb8f1df04c4eaa0-wicked.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "wicked",
+                            "release": "38.8.1",
+                            "version": "0.6.40"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5356/SUSE_SLE-12_Update/57b9a80f0cee52d61822f36f281e7183-expat.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libexpat1",
+                            "release": "21.3.1",
+                            "version": "2.1.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5766/SUSE_SLE-12_Update/ecaa1cf5ff2b879b7b9d972eb3211d61-iptables.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "iptables",
+                            "release": "6.1",
+                            "version": "1.4.21"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5264/SUSE_SLE-12_Update/1ea1245542d93c448c89a0baf98f8e7e-audit.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libaudit1",
+                            "release": "4.3.1",
+                            "version": "2.3.6"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7013/SUSE_SLE-12_Update/0e0d549fe34c240b540151988a7ef3a1-python-pyzmq.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-pyzmq",
+                            "release": "9.3.1",
+                            "version": "14.0.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5239/SUSE_SLE-12-SP3_Update/ecde5f9f6c2e182583fce268fabaaf9b-util-linux.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "libblkid1",
+                            "release": "3.5.1",
+                            "version": "2.29.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7009/SUSE_SLE-12_Update/d7d493e423e727862c171483d3aedf3e-python-psutil.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-psutil",
+                            "release": "15.3.3",
+                            "version": "1.2.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5356/SUSE_SLE-12_Update/57b9a80f0cee52d61822f36f281e7183-expat.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "expat",
+                            "release": "21.3.1",
+                            "version": "2.1.0"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2412/SUSE_SLE-12_Update/487263fe64d13949ff05f31c575d94d6-python-futures.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-futures",
+                            "release": "7.1",
+                            "version": "3.0.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6486/SUSE_SLE-12_Update/5119e62c627883f77dfc7efc92526b1d-ncurses.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libncurses6",
+                            "release": "58.1",
+                            "version": "5.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7233/SUSE_SLE-12_Update/34ace6ea01b5bed95ed43bc49825f8f1-python-MarkupSafe.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-MarkupSafe",
+                            "release": "16.3.1",
+                            "version": "0.18"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6486/SUSE_SLE-12_Update/5119e62c627883f77dfc7efc92526b1d-ncurses.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "ncurses-utils",
+                            "release": "58.1",
+                            "version": "5.9"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7240/SUSE_SLE-12_Update/d029a925045c18f5a449c6e8f303b3c4-python-Jinja2.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-Jinja2",
+                            "release": "19.11.1",
+                            "version": "2.8"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5753/SUSE_SLE-12-SP2_Update/c2af162e38b537dc7f9cfb061bb5bfca-bash.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "bash",
+                            "release": "83.5.2",
+                            "version": "4.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3732/SUSE_SLE-12-SP2_Update/892dea8943a59c0adf44c40cb85e0ea1-zlib.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libz1",
+                            "release": "11.1",
+                            "version": "1.2.8"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/33317c871c0c5ed752ba5e8306909b31-libustr",
+                            "epoch": "",
+                            "name": "libustr-1_0-1",
+                            "release": "31.197",
+                            "version": "1.0.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4063/SUSE_SLE-12_Update/26f9bc45ea108bb36182b3c1cbc39d0b-vim.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "vim",
+                            "release": "16.1",
+                            "version": "7.4.326"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4020/SUSE_SLE-12-SP2_Update/faae0d1c5ad1940d3d390d2827c70d98-libseccomp.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libseccomp2",
+                            "release": "10.1",
+                            "version": "2.3.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3853/SUSE_SLE-12_Update/72aebda9a8484186eff1161c5e1aa9cd-pth.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libpth20",
+                            "release": "140.1",
+                            "version": "2.0.7"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/95319ff0e934ba0aad5a68674f7e7cf7-snapper",
+                            "epoch": "",
+                            "name": "libsnapper4",
+                            "release": "1.21",
+                            "version": "0.5.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/7a29b1216f26953bbb1805dc77880145-xz",
+                            "epoch": "",
+                            "name": "liblzma5",
+                            "release": "4.852",
+                            "version": "5.0.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/d3013560d2c357a77d6f8446e82af73f-glib2",
+                            "epoch": "",
+                            "name": "glib2-tools",
+                            "release": "10.2",
+                            "version": "2.48.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/8d25be884cdf2f3c0e711118c0c1a137-libgpg-error",
+                            "epoch": "",
+                            "name": "libgpg-error0",
+                            "release": "1.79",
+                            "version": "1.13"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/345261c1016215bd58717b3ed3573688-sysconfig",
+                            "epoch": "",
+                            "name": "sysconfig-netconfig",
+                            "release": "13.1",
+                            "version": "0.84.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:633/SUSE_SLE-12_Update/9e1febed6dab0597bce75698a034ba8e-fuse.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libfuse2",
+                            "release": "5.1",
+                            "version": "2.9.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:287/SUSE_SLE-12_Update/293f129a03a30d18261c0ade26ba507b-perl-Net-DNS.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "perl-Net-DNS",
+                            "release": "4.1",
+                            "version": "0.73"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:361/SUSE_SLE-12_Update/35ec126043106b2dab3bdb67397019b0-elfutils.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libelf1",
+                            "release": "6.1",
+                            "version": "0.158"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/80f9fb252d42622bcbb88d3c2aed9cd7-dbus-1-glib",
+                            "epoch": "",
+                            "name": "dbus-1-glib",
+                            "release": "3.58",
+                            "version": "0.100.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2136/SUSE_SLE-12_Update/8891ea54c5e4bdf31ae83dab8165a187-libcap.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libcap2",
+                            "release": "13.1",
+                            "version": "2.22"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6871/SUSE_SLE-12-SP1_Update/1f283bebaa11d95e3593e5c6869c6247-zypp-plugin.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "zypp-plugin-python",
+                            "release": "3.3.1",
+                            "version": "0.6.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2333/SUSE_SLE-12_Update/b80d71ddd36adfab03f033f38c0c8a34-bzip2.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libbz2-1",
+                            "release": "29.2",
+                            "version": "1.0.6"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5224/SUSE_SLE-12_Update/b8263d6bf19c67d0c807810335132d0c-python-requests.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "python-requests",
+                            "release": "6.22.1",
+                            "version": "2.11.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/19ec9dc7068b9ff206fd94e2c072b471-apparmor",
+                            "epoch": "",
+                            "name": "libapparmor1",
+                            "release": "49.21",
+                            "version": "2.8.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6449/SUSE_SLE-12-SP3_Update/864812ddf38075d18778e8e755241d2f-patterns-sles.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "patterns-sles-Minimal",
+                            "release": "79.3.3",
+                            "version": "12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/f18b08c5b5730ace0e67cbdbda4142c4-adns",
+                            "epoch": "",
+                            "name": "libadns1",
+                            "release": "101.65",
+                            "version": "1.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/ecf92900d0a35ef176269e5c06657edb-fillup",
+                            "epoch": "",
+                            "name": "fillup",
+                            "release": "270.64",
+                            "version": "1.42"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7212/SUSE_SLE-12_Update/3c0a5c2545a4d46029f9d625c1fa7c5a-salt.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "salt",
+                            "release": "46.20.2",
+                            "version": "2016.11.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/d3013560d2c357a77d6f8446e82af73f-glib2",
+                            "epoch": "",
+                            "name": "libglib-2_0-0",
+                            "release": "10.2",
+                            "version": "2.48.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3563/SUSE_SLE-12-SP2_Update/2d4b934b7399454535115b3c6ce313a7-btrfsprogs.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "btrfsprogs",
+                            "release": "16.1",
+                            "version": "4.5.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:523/SUSE_SLE-12_Update/c1f6858ccc2ea9fac54d28a1f580f8d5-pigz.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "pigz",
+                            "release": "5.1",
+                            "version": "2.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/0852365d6c5a49501444bb1e9a7ddd5f-pango",
+                            "epoch": "",
+                            "name": "typelib-1_0-Pango-1_0",
+                            "release": "9.5",
+                            "version": "1.40.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3069/SUSE_SLE-12_Update/b41175c7609e536f99685f3c0487363c-cracklib.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "cracklib",
+                            "release": "7.1",
+                            "version": "2.9.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/ae8f586a38f73a3694c81dcb40840b95-python-gobject",
+                            "epoch": "",
+                            "name": "python-gobject",
+                            "release": "8.2",
+                            "version": "3.20.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2545/SUSE_SLE-12_Update/f8e15be716131820f7e83995be3dddba-libksba.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libksba8",
+                            "release": "23.1",
+                            "version": "1.3.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/c3e8f526ad5cc3e8a036cf07ef2ad9c1-dbus-1-python",
+                            "epoch": "",
+                            "name": "dbus-1-python",
+                            "release": "4.194",
+                            "version": "1.2.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/9083c3d8ed2603feec4d2016e5d151f9-p11-kit",
+                            "epoch": "",
+                            "name": "libp11-kit0",
+                            "release": "1.7",
+                            "version": "0.20.7"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/95319ff0e934ba0aad5a68674f7e7cf7-snapper",
+                            "epoch": "",
+                            "name": "snapper",
+                            "release": "1.21",
+                            "version": "0.5.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/79acbd0107232d48d10eb971fe55eac7-libzio",
+                            "epoch": "",
+                            "name": "libzio1",
+                            "release": "9.188",
+                            "version": "1.00"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/95319ff0e934ba0aad5a68674f7e7cf7-snapper",
+                            "epoch": "",
+                            "name": "snapper-zypp-plugin",
+                            "release": "1.21",
+                            "version": "0.5.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2333/SUSE_SLE-12_Update/b80d71ddd36adfab03f033f38c0c8a34-bzip2.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "bzip2",
+                            "release": "29.2",
+                            "version": "1.0.6"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4993/SUSE_SLE-12-SP2_Update/a5646fac077bb23183cc1999b69c4d08-libsemanage.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libsemanage1",
+                            "release": "8.1",
+                            "version": "2.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3069/SUSE_SLE-12_Update/b41175c7609e536f99685f3c0487363c-cracklib.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libcrack2",
+                            "release": "7.1",
+                            "version": "2.9.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:361/SUSE_SLE-12_Update/35ec126043106b2dab3bdb67397019b0-elfutils.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "elfutils",
+                            "release": "6.1",
+                            "version": "0.158"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:1124/SUSE_SLE-12_Update/1c04302d26452abb5a6b354a58ca8d52-grep.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "grep",
+                            "release": "3.1",
+                            "version": "2.16"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/660e8a447a46de3348728f24263d94e9-diffutils",
+                            "epoch": "",
+                            "name": "diffutils",
+                            "release": "5.40",
+                            "version": "3.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6976/SUSE_SLE-12-SP2_Update/6dd337882cbfaede156e33565741849f-openssl.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libopenssl1_0_0",
+                            "release": "60.24.1",
+                            "version": "1.0.2j"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6602/SUSE_SLE-12-SP2_Update/0e1e0183dc29d0c29ad9a118679d5ebe-libxml2.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libxml2-2",
+                            "release": "46.12.1",
+                            "version": "2.9.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6774/SUSE_SLE-12-SP2_Update/1cb936a1fa7f519fea1956571e5aa7ce-systemd.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libudev1",
+                            "release": "150.35.1",
+                            "version": "228"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6630/SUSE_SLE-12-SP2_Update/3a1e93bba71177c20f954e6fa8b49502-krb5.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "krb5",
+                            "release": "40.23.2",
+                            "version": "1.12.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3804/SUSE_SLE-12_Update/c9c7f4f6c3e72b121b18742538f7c507-sed.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "sed",
+                            "release": "7.3.1",
+                            "version": "4.2.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6217/SUSE_SLE-12_Update/da61e729c66bd9708d810bb63e2a1507-gzip.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "gzip",
+                            "release": "9.3.1",
+                            "version": "1.6"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6976/SUSE_SLE-12-SP2_Update/6dd337882cbfaede156e33565741849f-openssl.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "openssl",
+                            "release": "60.24.1",
+                            "version": "1.0.2j"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6206/SUSE_SLE-12_Update/59cb2f48217e1390186e4ae95c28fe51-file.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "file",
+                            "release": "10.6.1",
+                            "version": "5.22"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6774/SUSE_SLE-12-SP2_Update/1cb936a1fa7f519fea1956571e5aa7ce-systemd.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libsystemd0",
+                            "release": "150.35.1",
+                            "version": "228"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7358/SUSE_SLE-12-SP3_Update/4ab8077a91aef02ac4fae0edb34b6d52-SLES-release.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "sles-release",
+                            "release": "4.3.1",
+                            "version": "12.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5866/SUSE_SLE-12-SP2_Update/8e026f63702ff9f0064e99948ef4cce5-permissions.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "permissions",
+                            "release": "17.3.1",
+                            "version": "2015.09.28.1626"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5483/SUSE_SLE-12_Update/d2aa821b9c8280a7420a58948cfb557f-procps.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "procps",
+                            "release": "11.8.1",
+                            "version": "3.3.9"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2421/SUSE_SLE-12_Update/2e2a96ded2e28ba0276880dbfa367581-libssh2_org.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libssh2-1",
+                            "release": "19.1",
+                            "version": "1.4.3"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/3594505aaaaab34e9ef3fd827840992c-libcroco",
+                            "epoch": "",
+                            "name": "libcroco-0_6-3",
+                            "release": "10.2",
+                            "version": "0.6.11"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/1571da1bd46f02ae067eacb4391889e8-update-alternatives",
+                            "epoch": "",
+                            "name": "update-alternatives",
+                            "release": "14.216",
+                            "version": "1.18.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/10f403f5de93ec995244a3b7837b1dd2-perl-Bootloader",
+                            "epoch": "",
+                            "name": "perl-Bootloader",
+                            "release": "1.7",
+                            "version": "0.919"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/de3360dfaac8d501adc5b0883016c1f0-blog",
+                            "epoch": "",
+                            "name": "blog",
+                            "release": "2.7",
+                            "version": "2.18"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/9083c3d8ed2603feec4d2016e5d151f9-p11-kit",
+                            "epoch": "",
+                            "name": "p11-kit-tools",
+                            "release": "1.7",
+                            "version": "0.20.7"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2581/SUSE_SLE-12_Update/8e5876e65d808585f4eb42c3ff7d896d-pam.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "pam",
+                            "release": "23.1",
+                            "version": "1.1.8"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/e5680dcd8319d41949ee8b3a0bf78bff-fipscheck",
+                            "epoch": "",
+                            "name": "libfipscheck1",
+                            "release": "9.3",
+                            "version": "1.2.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/cdaacbcac96e785a739ccbce47a8623c-libusb-compat",
+                            "epoch": "",
+                            "name": "libusb-0_1-4",
+                            "release": "29.13",
+                            "version": "0.1.13"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/a45d6acc240b1a17b03c89345a746b46-sysvinit",
+                            "epoch": "",
+                            "name": "sysvinit-tools",
+                            "release": "99.15",
+                            "version": "2.88+"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/82a7de4b934e28b292c64c64f2812d14-pam-config",
+                            "epoch": "",
+                            "name": "pam-config",
+                            "release": "3.2",
+                            "version": "0.89"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5239/SUSE_SLE-12-SP3_Update/ecde5f9f6c2e182583fce268fabaaf9b-util-linux.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "util-linux",
+                            "release": "3.5.1",
+                            "version": "2.29.2"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "",
+                            "epoch": "",
+                            "name": "rhn-org-trusted-ssl-certosimage",
+                            "release": "1",
+                            "version": "1.0"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4368/SUSE_SLE-12-SP1_Update/e9f7bf146fe74b2a5c377078cccc4c8d-netcfg.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "netcfg",
+                            "release": "29.1",
+                            "version": "11.5"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6709/SUSE_SLE-12-SP2_Update/67f5e172607b1d4e2eefc363bad20f17-shadow.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "shadow",
+                            "release": "27.6.1",
+                            "version": "4.2.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6163/SUSE_SLE-12_Update/8259b3d64c24531872930138032b41b7-kmod.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "kmod-compat",
+                            "release": "9.6.1",
+                            "version": "17"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4823/SUSE_SLE-12_Update/713a0e5505c4bd5f5c9101740896e96e-cryptsetup.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libcryptsetup4",
+                            "release": "4.1",
+                            "version": "1.6.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5953/SUSE_SLE-12-SP2_Update/f9b11ed67ebef1e7d2938699f33c9b7c-lvm2.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "device-mapper",
+                            "release": "78.16.1",
+                            "version": "1.02.97"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6584/SUSE_SLE-12-SP3_Update/319c7dd8cd79d52119dcd676b004cce7-grub2.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "grub2",
+                            "release": "4.14.1",
+                            "version": "2.02"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/a80f97b76c5c24c16964f170b63f33e3-suse-module-tools",
+                            "epoch": "",
+                            "name": "suse-module-tools",
+                            "release": "25.1",
+                            "version": "12.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6774/SUSE_SLE-12-SP2_Update/1cb936a1fa7f519fea1956571e5aa7ce-systemd.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "udev",
+                            "release": "150.35.1",
+                            "version": "228"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6163/SUSE_SLE-12_Update/8259b3d64c24531872930138032b41b7-kmod.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "kmod",
+                            "release": "9.6.1",
+                            "version": "17"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:1437/SUSE_SLE-12_Update/2982fa6a3129ea324f34b4270ce8c04d-acl.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "acl",
+                            "release": "6.1",
+                            "version": "2.2.52"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:435/SUSE_SLE-12_Update/1fd7994bce2be5a4731168ad83a344f6-cronie.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "cron",
+                            "release": "58.3",
+                            "version": "4.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/6da120b8b94d807ad9e3225c74aebe54-dmidecode",
+                            "epoch": "",
+                            "name": "dmidecode",
+                            "release": "8.2",
+                            "version": "3.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/827c24a5ea5849b1fc081138c6b394bf-less",
+                            "epoch": "",
+                            "name": "less",
+                            "release": "5.13",
+                            "version": "458"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/64c73471c0bc914d2737231ab90a7111-efivar",
+                            "epoch": "",
+                            "name": "libefivar1",
+                            "release": "1.13",
+                            "version": "31"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4950/SUSE_SLE-12_Update/5d9d0d7a891bd2dd465f59b771bbc2f9-e2fsprogs.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libext2fs2",
+                            "release": "15.1",
+                            "version": "1.42.11"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP2:GA/standard/d3013560d2c357a77d6f8446e82af73f-glib2",
+                            "epoch": "",
+                            "name": "libgmodule-2_0-0",
+                            "release": "10.2",
+                            "version": "2.48.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2788/SUSE_SLE-12-SP1_Update/2fefd2450094990e4b6cf423b7cdf9c7-haveged.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "libhavege1",
+                            "release": "16.1",
+                            "version": "1.9.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/2f47dce8489ba94c01e3ca885a67bdb9-libmnl",
+                            "epoch": "",
+                            "name": "libmnl0",
+                            "release": "9.18",
+                            "version": "1.0.3"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/60896fd0ec64070d9adbad1f3b5e8dbb-libnl3",
+                            "epoch": "",
+                            "name": "libnl-config",
+                            "release": "2.21",
+                            "version": "3.2.23"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4804/SUSE_SLE-12-SP2_Update/c66a6ec35677809f8122e1303d7641b8-plymouth.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libply-boot-client4",
+                            "release": "34.2",
+                            "version": "0.9.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/a2883a66f44e36f8824a582a6cf8dfb6-reiserfs",
+                            "epoch": "",
+                            "name": "libreiserfscore0",
+                            "release": "5.47",
+                            "version": "3.6.24"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4263/SUSE_SLE-12-SP1_Update/7e222a9ac10123d3b2f75836ae502b63-sqlite3.SUSE_SLE-12-SP1_Update",
+                            "epoch": "",
+                            "name": "libsqlite3-0",
+                            "release": "8.1",
+                            "version": "3.8.10.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP1:GA/standard/1bd633266376142b5ea1e8891cdee03a-tcpd",
+                            "epoch": "",
+                            "name": "libwrap0",
+                            "release": "886.3",
+                            "version": "7.6"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/d8b525d06a83b9eb12813025db7e6cb4-libxshmfence",
+                            "epoch": "",
+                            "name": "libxshmfence1",
+                            "release": "1.28",
+                            "version": "1.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3206/SUSE_SLE-12_Update/46a84a639f8ee6c645ecee54a92933f0-openslp.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "openslp",
+                            "release": "17.1",
+                            "version": "2.0.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:3825/SUSE_SLE-12_Update/cf311c74bc71f48cc57cd0da1376d2c9-tar.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "tar",
+                            "release": "14.1",
+                            "version": "1.27.1"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/20d249fb1df2a2786da310ef34485a02-zypper-lifecycle-plugin",
+                            "epoch": "",
+                            "name": "zypper-lifecycle-plugin",
+                            "release": "1.35",
+                            "version": "0.6.1490613702.a925823"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/54f1aa64b3c9bd71762610947fa17db5-dialog",
+                            "epoch": "",
+                            "name": "dialog",
+                            "release": "5.36",
+                            "version": "1.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4950/SUSE_SLE-12_Update/5d9d0d7a891bd2dd465f59b771bbc2f9-e2fsprogs.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "e2fsprogs",
+                            "release": "15.1",
+                            "version": "1.42.11"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12:GA/standard/8e14c292a9d488515a823269af2b89d8-libnetfilter_conntrack",
+                            "epoch": "",
+                            "name": "libnetfilter_conntrack3",
+                            "release": "3.60",
+                            "version": "1.0.4"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/21274f22b7e6801b2e1653e28a608dc7-parted",
+                            "epoch": "",
+                            "name": "parted",
+                            "release": "33.10",
+                            "version": "3.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4804/SUSE_SLE-12-SP2_Update/c66a6ec35677809f8122e1303d7641b8-plymouth.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libply4",
+                            "release": "34.2",
+                            "version": "0.9.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/5f017cac0c226d3388cb1ef6c7cfb60a-mdadm",
+                            "epoch": "",
+                            "name": "mdadm",
+                            "release": "4.4",
+                            "version": "4.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2962/SUSE_SLE-12_Update/99133dc26a818927027b7dbea3ea585b-libxcb.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libxcb-sync1",
+                            "release": "3.1",
+                            "version": "1.10"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2962/SUSE_SLE-12_Update/99133dc26a818927027b7dbea3ea585b-libxcb.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libxcb-render0",
+                            "release": "3.1",
+                            "version": "1.10"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:2962/SUSE_SLE-12_Update/99133dc26a818927027b7dbea3ea585b-libxcb.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libxcb-glx0",
+                            "release": "3.1",
+                            "version": "1.10"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4804/SUSE_SLE-12-SP2_Update/c66a6ec35677809f8122e1303d7641b8-plymouth.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libply-splash-core4",
+                            "release": "34.2",
+                            "version": "0.9.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4429/SUSE_SLE-12_Update/ea5ae072b509e98617c8c39009dc5330-rubygem-gem2rpm.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "ruby2.1-rubygem-gem2rpm",
+                            "release": "4.1",
+                            "version": "0.10.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4804/SUSE_SLE-12-SP2_Update/c66a6ec35677809f8122e1303d7641b8-plymouth.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libply-splash-graphics4",
+                            "release": "34.2",
+                            "version": "0.9.2"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:4671/SUSE_SLE-12_Update/de8f7c7f5868dc448af2b87e88ffb3f3-ruby2.1.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "ruby2.1",
+                            "release": "18.1",
+                            "version": "2.1.9"
+                        },
+                        {
+                            "arch": "noarch",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7048/SUSE_SLE-12_Update/66d6cf28870dc8b302e567e8dd402bf5-boost.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "boost-license1_54_0",
+                            "release": "26.3.1",
+                            "version": "1.54.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6879/SUSE_SLE-12_Update/26923418d0986123c33565b82c6f353d-curl.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "curl",
+                            "release": "37.17.1",
+                            "version": "7.37.0"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5304/SUSE_SLE-12-SP3_Update/5cf02db62292d9da786ff4a24debdd4a-kexec-tools.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "kexec-tools",
+                            "release": "23.3.5",
+                            "version": "2.0.12"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6849/SUSE_SLE-12_Update/32d4842207539b1e70ba41dc07d2e8ad-graphite2.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libgraphite2-3",
+                            "release": "10.3.1",
+                            "version": "1.3.1"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5481/SUSE_SLE-12-SP2_Update/095c88834a25e4c9572489cd119d7de2-sg3_utils.SUSE_SLE-12-SP2_Update",
+                            "epoch": "",
+                            "name": "libsgutils2-2",
+                            "release": "16.5.1",
+                            "version": "1.43"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5766/SUSE_SLE-12_Update/ecaa1cf5ff2b879b7b9d972eb3211d61-iptables.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "libxtables10",
+                            "release": "6.1",
+                            "version": "1.4.21"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5919/SUSE_SLE-12_Update/90d55af376198a3cf2b3bee7595a44db-net-tools.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "net-tools",
+                            "release": "765.5.4",
+                            "version": "1.60"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:7011/SUSE_SLE-12_Update/8565ef468b327814c39abc0f1ae1377c-timezone.SUSE_SLE-12_Update",
+                            "epoch": "",
+                            "name": "timezone",
+                            "release": "74.9.1",
+                            "version": "2018d"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:5965/SUSE_SLE-12-SP3_Update/ed6fb1e0b384780bac9229f0801de9e8-hwinfo.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "hwinfo",
+                            "release": "2.3.5",
+                            "version": "21.50"
+                        },
+                        {
+                            "arch": "x86_64",
+                            "disturl": "obs://build.suse.de/SUSE:Maintenance:6584/SUSE_SLE-12-SP3_Update/319c7dd8cd79d52119dcd676b004cce7-grub2.SUSE_SLE-12-SP3_Update",
+                            "epoch": "",
+                            "name": "grub2-x86_64-efi",
+                            "release": "4.14.1",
+                            "version": "2.02"
+                        }
+                    ]
+                }
+            },
+            "comment": "Module function kiwi_info.inspect_image executed",
+            "duration": 52.822,
+            "name": "kiwi_info.inspect_image",
+            "result": true,
+            "start_time": "16:44:27.102733"
+        }
+    },
+    "success": true
+}
