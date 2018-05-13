@@ -13,11 +13,7 @@
 {%- set bundle_dir = root_dir + '/images/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
 
-{%- if pillar.get('activation_key_channels') %}
-{%- set kiwi_params = '--add-repo ' + common_repo + pillar.get('activation_key_channels') %}
-{%- else %}
 {%- set kiwi_params = '--add-repo ' + common_repo + ' --add-repo ' + pillar.get('kiwi_repositories')|join(' --add-repo ') %}
-{%- endif %}
 mgr_buildimage_prepare_source:
   file.directory:
     - name: {{ root_dir }}
