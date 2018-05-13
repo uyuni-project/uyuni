@@ -1,3 +1,6 @@
+- allow again to use a higher version of spacewalk-backend-libs
+  with spacewalk-backend (bsc#1092383)
+
 -------------------------------------------------------------------
 Mon May 07 14:59:31 CEST 2018 - jgonzalez@suse.com
 

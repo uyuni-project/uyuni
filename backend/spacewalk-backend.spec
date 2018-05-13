@@ -59,7 +59,7 @@ Requires: /etc/rhn
 Requires: rhnlib >= 2.5.74
 # for Debian support
 Requires: %{python_prefix}-debian
-Requires: %{name}-libs == %{version}-%{release}
+Requires: %{name}-libs >= %{version}
 %if 0%{?suse_version} > 1320
 Requires: python-pyliblzma
 %else
