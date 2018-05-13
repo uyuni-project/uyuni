@@ -1,4 +1,7 @@
+- allow again to use a higher version of spacewalk-backend-libs
+  with spacewalk-backend (bsc#1092383)
 - SLE15 support: recommended/required flag for products and channels
+
 -------------------------------------------------------------------
 Tue Apr 10 09:31:59 CEST 2018 - jgonzalez@suse.com
 

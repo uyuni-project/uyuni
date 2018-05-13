@@ -54,7 +54,7 @@ Requires: /etc/rhn
 Requires: rhnlib >= 2.5.74
 # for Debian support
 Requires: python-debian
-Requires: %{name}-libs == %{version}-%{release}
+Requires: %{name}-libs >= %{version}
 %if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
 Requires: pyliblzma
 %endif
