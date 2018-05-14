@@ -1512,7 +1512,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="message.refeshScheduled">
-        <source>You have successfully scheduled a hardware profile refresh for {0}.</source>
+        <source>You have successfully &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; a hardware profile refresh for &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>

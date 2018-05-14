@@ -1,3 +1,4 @@
+- Uniform the notification message when scheduling HW refresh (bsc#1082796)
 - add SLES12 SP2 LTSS family (bsc#1092194)
 - fix token cleanup task crashing (bsc#1090585)
 - HW refresh fails on SLE15 Salt client (bsc#1090221)
