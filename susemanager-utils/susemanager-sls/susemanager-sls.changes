@@ -1,3 +1,4 @@
+- Fix profileupdate sls to execute retrieval of kernel live patching info (bsc#1091052)
 - support SLE15 product family
 - fix hardware refresh when FQDN changes (bsc#1073267)
 - create bootstrap repo only if it exist in the server (bsc#1087840)
