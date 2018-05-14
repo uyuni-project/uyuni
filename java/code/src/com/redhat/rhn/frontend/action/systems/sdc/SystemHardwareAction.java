@@ -92,8 +92,10 @@ public class SystemHardwareAction extends RhnAction {
                 ActionFactory.save(a);
                 try {
                     TASKOMATIC_API.scheduleActionExecution(a);
-                    createSuccessMessage(request, "message.refeshScheduled",
-                            server.getName());
+                    String[] messageParams = new String[2];
+                    messageParams[0] = server.getName();
+                    messageParams[1] = sid.toString();
+                    createMessage(request, "message.refeshScheduled", messageParams);
                 }
                 catch (TaskomaticApiException e) {
                     log.error("Could not unschedule action:");
