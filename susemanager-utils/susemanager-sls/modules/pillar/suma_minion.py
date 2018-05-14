@@ -150,6 +150,7 @@ def load_formula_pillar(minion_id, group_id, formula_name):
     merged_data = adjust_empty_values(layout, merged_data)
     return merged_data
 
+
 def merge_formula_data(layout, group_data, system_data, scope="system"):
     '''
     Merge the group and system formula data, respecting the scope of a value.
@@ -180,6 +181,7 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
         ret[element_name] = value
     return ret
 
+
 def adjust_empty_values(layout, data):
     '''
     Adjust empty values in formula data
@@ -195,7 +197,7 @@ def adjust_empty_values(layout, data):
             continue
 
         element_type = element.get("$type", "text")
-        value = value = data.get(element_name, "")
+        value = data.get(element_name, "")
 
         if element_type in ["group", "hidden-group", "namespace"]:
             value = adjust_empty_values(element, data.get(element_name, {}))
@@ -225,7 +227,7 @@ def adjust_empty_values(layout, data):
 
 def get_edit_group_subtype(element):
     if element is not None and element.get("$prototype"):
-        prototype = element.get("$prototype");
+        prototype = element.get("$prototype")
         if prototype.get("$key") is None and prototype.get("$type", "group") != "group":
             return "PRIMITIVE_LIST"
         if prototype.get("$key") is not None and prototype.get("$type", "group") != "group":
