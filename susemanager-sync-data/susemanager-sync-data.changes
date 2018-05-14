@@ -1,3 +1,4 @@
+- Add SLES12-SP2-LTSS product classes (bsc#1092194)
 - Add debuginfo channels for SLE15 products
 - Add PackageHub 15 Products
 - add product sle-module-live-patching 15
