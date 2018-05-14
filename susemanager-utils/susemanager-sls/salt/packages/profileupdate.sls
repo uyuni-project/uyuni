@@ -23,7 +23,7 @@ grains_update:
     - require:
       - module: sync_grains
 
-{% if pillar.get('imagename') is not defined %}
+{% if not pillar.get('imagename') %}
 kernel_live_version:
   module.run:
     - name: sumautil.get_kernel_live_version
