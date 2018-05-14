@@ -1,3 +1,4 @@
+- Fix profileupdate sls to execute retrieval of kernel live patching info (bsc#1091052)
 - Use recursive merge on form pillars
 - install python2/3 salt flavours on buildhosts to generate a compatible
   thin for the dockerimage beeing build (bsc#1092161)
