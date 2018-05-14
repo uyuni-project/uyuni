@@ -1,3 +1,4 @@
+- add SLES12 SP2 LTSS family (bsc#1092194)
 - Add SLES12-SP2-LTSS product classes (bsc#1092194)
 - Add debuginfo channels for SLE15 products
 - Add PackageHub 15 Products
