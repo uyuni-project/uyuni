@@ -13,6 +13,7 @@ Retrieve SUSE Manager pillar data for a minion_id.
 
 # Import python libs
 from __future__ import absolute_import
+from enum import Enum
 import os
 import logging
 import yaml
@@ -33,6 +34,13 @@ FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
 MANAGER_STATIC_PILLAR = [
     'gpgkeys',
 ]
+
+# Fomula group subtypes
+class EditGroupSubtype(Enum):
+    PRIMITIVE_LIST = "PRIMITIVE_LIST"
+    PRIMITIVE_DICTIONARY = "PRIMITIVE_DICTIONARY"
+    LIST_OF_DICTIONARIES = "LIST_OF_DICTIONARIES"
+    DICTIONARY_OF_DICTIONARIES = "DICTIONARY_OF_DICTIONARIES"
 
 # Set up logging
 log = logging.getLogger(__name__)
@@ -204,13 +212,13 @@ def adjust_empty_values(layout, data):
         elif element_type in ["edit-group"]:
             prototype = element.get("$prototype")
             subtype = get_edit_group_subtype(element)
-            if subtype == "DICTIONARY_OF_DICTIONARIES":
+            if subtype is EditGroupSubtype.DICTIONARY_OF_DICTIONARIES:
                 value = {}
                 if isinstance(data.get(element_name), dict):
                     for key, entry in data.get(element_name).items():
                         proc_entry = adjust_empty_values(prototype, entry)
                         value[key] = proc_entry
-            elif subtype == "LIST_OF_DICTIONARIES":
+            elif subtype is EditGroupSubtype.LIST_OF_DICTIONARIES:
                 value = []
                 if isinstance(data.get(element_name), list):
                     for entry in data.get(element_name):
@@ -229,11 +237,11 @@ def get_edit_group_subtype(element):
     if element is not None and element.get("$prototype"):
         prototype = element.get("$prototype")
         if prototype.get("$key") is None and prototype.get("$type", "group") != "group":
-            return "PRIMITIVE_LIST"
+            return EditGroupSubtype.PRIMITIVE_LIST
         if prototype.get("$key") is not None and prototype.get("$type", "group") != "group":
-            return "PRIMITIVE_DICTIONARY"
+            return EditGroupSubtype.PRIMITIVE_DICTIONARY
         if prototype.get("$key") is None and prototype.get("$type", "group") == "group":
-            return "LIST_OF_DICTIONARIES"
+            return EditGroupSubtype.LIST_OF_DICTIONARIES
         if prototype.get("$key") is not None and prototype.get("$type", "group") == "group":
-            return "DICTIONARY_OF_DICTIONARIES"
+            return EditGroupSubtype.DICTIONARY_OF_DICTIONARIES
     return None
