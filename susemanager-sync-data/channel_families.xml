@@ -18,6 +18,7 @@
 	<family default_nodecount="0" label="STUDIOONSITE" name="SUSE Studio Onsite"/>
 	<family default_nodecount="0" label="SLMS" name="SUSE Lifecycle Management Server"/>
 	<family default_nodecount="0" label="DSMP" name="Data Synchronizer Mobility Pack"/>
+	<family default_nodecount="0" label="SLES12-SP2-LTSS-Z" name="SUSE Linux Enterprise Server LTSS 12 SP2 Z-Series"/>
 	<family default_nodecount="0" label="MONO" name="SUSE Linux Enterprise Mono Extension"/>
 	<family default_nodecount="0" label="7261" name="SUSE Linux Enterprise Server"/>
 	<family default_nodecount="0" label="7260" name="SUSE Linux Enterprise Desktop"/>
@@ -67,4 +68,5 @@
 	<family default_nodecount="0" label="SLES-IA" name="SUSE Linux Enterprise Server (Itanium)"/>
 	<family default_nodecount="0" label="SLES-PPC" name="SUSE Linux Enterprise Server (PPC)"/>
 	<family default_nodecount="0" label="SLES12-SP1-LTSS-X86" name="SUSE Linux Enterprise Server LTSS 12 SP1 x86_64"/>
+	<family default_nodecount="0" label="SLES12-SP2-LTSS-X86" name="SUSE Linux Enterprise Server LTSS 12 SP2 x86_64"/>
 </channelfamilies>
