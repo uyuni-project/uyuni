@@ -18,7 +18,8 @@
 
 SUBDIR	=   certs
 FILES	=   __init__ rhn_ssl_tool sslToolCli sslToolConfig sslToolLib \
-            timeLib rhn_bootstrap rhn_bootstrap_strings client_config_update
+            timeLib rhn_bootstrap rhn_bootstrap_strings client_config_update \
+	    mgr_package_rpm_certificate_osimage
 INSTALL_ROOT_FILES   = gen-rpm.sh sign.sh update-ca-cert-trust.sh
 
 # check if we can build man pages
@@ -40,7 +41,7 @@ include Makefile.defs
 
 SBINFILES = spacewalk-push-register spacewalk-ssh-push-init
 BINFILES = rhn-sudo-ssl-tool
-PYBINFILES = rhn-ssl-tool rhn-bootstrap
+PYBINFILES = rhn-ssl-tool rhn-bootstrap mgr-package-rpm-certificate-osimage
 
 install :: $(SBINFILES) $(BINFILES) $(PYBINFILES) $(MANS) $(PREFIX)/$(MANDIR)
 	$(INSTALL_DATA) $(MANS) $(PREFIX)$(MANDIR)/man$(MANSECT)
