@@ -1026,32 +1026,42 @@ class Registration(rhnHandler):
         self.__add_hw_profile_no_auth(server, hwlist)
         # set primary interface to the one that is used to reach the server
         sid = server.getid()
-        if server.addr["ipaddr"] or server.addr["ip6addr"]:
-            primif = None
-            ipaddr = server.addr["ipaddr"]
-            ip6addr = server.addr["ip6addr"]
-            if ipaddr:
-                    h = rhnSQL.prepare("""
-                        select interface_id from rhnServerNetAddress4 rsna4 left join rhnServerNetInterface rsni on rsna4.interface_id = rsni.id where address = :address and server_id = :server_id
-                    """)
-                    h.execute(address=ipaddr, server_id=sid)
-                    row = h.fetchone_dict()
-                    if row:
-                        primif=row['interface_id']
-            elif ip6addr:
-                h = rhnSQL.prepare("""
-                    select interface_id from rhnServerNetAddress6 rsna6 left join rhnServerNetInterface rsni on rsna6.interface_id = rsni.id where address = :address and server_id = :server_id
-                """)
-                h.execute(address=ip6addr, server_id=sid)
-                row = h.fetchone_dict()
-                if row:
-                    primif=row['interface_id']
+
+        ipaddr_suffix = 0
+        ipaddr_value = None
+        # use ipaddr by default, if it is null try to fallback
+        # on ip6addr, if it is null as well --> fail
+        if server.addr.get("ipaddr"):
+            ipaddr_value = server.addr.get("ipaddr")
+            ipaddr_suffix = 4
+            log_debug(1, system_id, "Setting ipaddr as a primary interface")
+        elif server.addr.get("ip6addr"):
+            ipaddr_value = server.addr.get("ip6addr")
+            ipaddr_suffix = 6
+            log_debug(1, system_id, "Setting ip6addr as a primary interface")
+        else:
+            raise rhnFault(22, _("Unable to find a valid network interface, both ipaddr and ip6addr not found."))
+
+        # read the interface from the right table in the database
+        # according to the primary network interface found
+        h = rhnSQL.prepare("""
+            select interface_id
+            from rhnServerNetAddress{0} rsna
+                left join rhnServerNetInterface rsni
+                    on rsna.interface_id = rsni.id
+            where address = :address and server_id = :server_id
+        """.format(ipaddr_suffix))
+        h.execute(address=ipaddr_value, server_id=sid)
+        row = h.fetchone_dict()
+        if row:
+            primif=row.get('interface_id')
             if primif:
                 h = rhnSQL.prepare("""
                     update rhnservernetinterface set is_primary = 'Y' where id = :id
                 """)
                 h.execute(id=primif)
                 rhnSQL.commit()
+
         return 0
 
     def refresh_hw_profile(self, system_id, hwlist):
