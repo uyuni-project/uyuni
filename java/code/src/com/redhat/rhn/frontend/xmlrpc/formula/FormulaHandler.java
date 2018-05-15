@@ -212,6 +212,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.param
      * #struct("content")
+     *   #prop("string", "field")
+     *   #prop("string", "data")
      * #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
@@ -255,6 +257,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.param
      * #struct("content")
+     *   #prop("string", "field")
+     *   #prop("string", "data")
      * #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
