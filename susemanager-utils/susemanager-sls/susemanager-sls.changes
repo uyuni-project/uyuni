@@ -1,3 +1,5 @@
+- Update profileupdate.sls to report all versions installed (bsc#1089526)
+
 -------------------------------------------------------------------
 Wed May 23 09:03:37 CEST 2018 - jgonzalez@suse.com
 
