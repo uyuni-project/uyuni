@@ -1,3 +1,4 @@
+- Fix external pillar formula "ifempty" and "namespace" handling
 - Fix profileupdate sls to execute retrieval of kernel live patching info (bsc#1091052)
 - Use recursive merge on form pillars
 - install python2/3 salt flavours on buildhosts to generate a compatible
