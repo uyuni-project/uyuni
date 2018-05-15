@@ -1,3 +1,4 @@
+- prevent NPE when no image build history details are available (bsc#1092161)
 - Uniform the notification message when scheduling HW refresh (bsc#1082796)
 - add SLES12 SP2 LTSS family (bsc#1092194)
 - fix token cleanup task crashing (bsc#1090585)
