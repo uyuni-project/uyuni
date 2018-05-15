@@ -21,7 +21,7 @@ Feature: Install a package to the traditional client
 
   Scenario: Enable old packages for testing a patch install
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
 
   Scenario: Schedule errata refresh after reverting to old package

@@ -61,7 +61,7 @@ Feature: Install a package on the minion with staging enabled
     Given I am on the Systems overview page of this "sle-minion"
     And I remove package "virgo-dummy" from this "sle-minion"
     And I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
-    And I install package "virgo-dummy-1.0-1.1" on this "sle-minion"
+    And I install package "virgo-dummy-1.0" on this "sle-minion"
     And I wait for "30" seconds
     And I follow "Software" in the content area
     And I click on "Update Package List"

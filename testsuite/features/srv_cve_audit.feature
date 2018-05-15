@@ -9,7 +9,7 @@ Feature: CVE Audit
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     Given I am authorized as "admin" with password "admin"
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
-    And I run "zypper -n in --oldpackage milkyway-dummy-1.0-2.1" on "sle-client"
+    And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
     And I follow "Admin"
