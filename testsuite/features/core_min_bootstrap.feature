@@ -28,7 +28,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I enter "FRANZ" as "user"
      And I enter "KAFKA" as "password"
      And I click on "Bootstrap"
-     And I wait until I see "Permission denied (publickey,keyboard-interactive)." text
+     And I wait until I see "Permission denied (publickey,keyboard-interactive)." text or "Password authentication failed" text
      Then I should not see a "GenericSaltError" text
 
   Scenario: Bootstrap a SLES minion with wrong SSH port number
