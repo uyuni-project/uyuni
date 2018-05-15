@@ -61,14 +61,13 @@ public class FormulaFactory {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
 
-    private static final String DATA_DIR = "/srv/susemanager/formula_data/";
-    private static final String METADATA_DIR_OFFICIAL =
-            "/usr/share/susemanager/formulas/metadata/";
+    private static String dataDir = "/srv/susemanager/formula_data/";
+    private static final String METADATA_DIR_OFFICIAL = "/usr/share/susemanager/formulas/metadata/";
     private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
-    private static final String PILLAR_DIR = DATA_DIR + "pillar/";
-    private static final String GROUP_PILLAR_DIR = DATA_DIR + "group_pillar/";
-    private static final String GROUP_DATA_FILE = DATA_DIR + "group_formulas.json";
-    private static final String SERVER_DATA_FILE = DATA_DIR + "minion_formulas.json";
+    private static final String PILLAR_DIR = "pillar/";
+    private static final String GROUP_PILLAR_DIR = "group_pillar/";
+    private static final String GROUP_DATA_FILE  = "group_formulas.json";
+    private static final String SERVER_DATA_FILE = "minion_formulas.json";
     private static final String PILLAR_FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -89,6 +88,46 @@ public class FormulaFactory {
     private static final Yaml YAML = new Yaml(new SafeConstructor());
 
     private FormulaFactory() { }
+
+    /**
+     * Setter for data directory(will be needed for testing)
+     * @param dataDirPath base path to where store files
+     */
+    public static void setDataDir(String dataDirPath) {
+        FormulaFactory.dataDir = dataDirPath;
+    }
+
+    /**
+     * Getter for directory path of group pillar
+     * @return group pillar directory
+     */
+    public static String getGroupPillarDir() {
+        return dataDir + GROUP_PILLAR_DIR;
+    }
+
+    /**
+     * Getter for directory path of system pillar
+     * @return system pillar directory
+     */
+    public static String getPillarDir() {
+        return dataDir + PILLAR_DIR;
+    }
+
+    /**
+     * Getter for path of group data file
+     * @return group data file
+     */
+    public static String getGroupDataFile() {
+        return dataDir + GROUP_DATA_FILE;
+    }
+
+    /**
+     * Getter for path of server data file
+     * @return server data file
+     */
+    public static String getServerDataFile() {
+        return dataDir + SERVER_DATA_FILE;
+    }
 
     /**
      * Returns the list of the names of all currently installed formulas.
@@ -134,7 +173,7 @@ public class FormulaFactory {
      */
     public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId,
             String formulaName) throws IOException {
-        File file = new File(GROUP_PILLAR_DIR +
+        File file = new File(getGroupPillarDir() +
                 groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         try {
             file.getParentFile().mkdirs();
@@ -158,7 +197,7 @@ public class FormulaFactory {
      */
     public static void saveServerFormulaData(Map<String, Object> formData, Long serverId,
             String formulaName) throws IOException, UnsupportedOperationException {
-        File file = new File(PILLAR_DIR + getMinionId(serverId) +
+        File file = new File(getPillarDir() + getMinionId(serverId) +
                 "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         try {
             file.getParentFile().mkdirs();
@@ -178,7 +217,7 @@ public class FormulaFactory {
      * @return the list of formulas
      */
     public static List<String> getFormulasByGroupId(Long groupId) {
-        File serverFile = new File(GROUP_DATA_FILE);
+        File serverFile = new File(getGroupDataFile());
         if (!serverFile.exists()) {
             return new LinkedList<>();
         }
@@ -202,7 +241,7 @@ public class FormulaFactory {
      */
     public static List<String> getFormulasByServerId(Long serverId) {
         List<String> formulas = new LinkedList<>();
-        File serverDataFile = new File(SERVER_DATA_FILE);
+        File serverDataFile = new File(getServerDataFile());
         try {
             Map<String, List<String>> serverFormulas = GSON.fromJson(
                     new BufferedReader(new FileReader(serverDataFile)), Map.class);
@@ -235,7 +274,7 @@ public class FormulaFactory {
      */
     public static List<String> getGroupFormulasByServerId(Long serverId) {
         List<String> formulas = new LinkedList<>();
-        File groupDataFile = new File(GROUP_DATA_FILE);
+        File groupDataFile = new File(getGroupDataFile());
         try {
             Map<String, List<String>> groupFormulas = GSON.fromJson(
                     new BufferedReader(new FileReader(groupDataFile)), Map.class);
@@ -286,7 +325,7 @@ public class FormulaFactory {
     public static Optional<Map<String, Object>> getFormulaValuesByNameAndServerId(
             String name, Long serverId) {
         try {
-            File dataFile = new File(PILLAR_DIR +
+            File dataFile = new File(getPillarDir() +
                     getMinionId(serverId) + "_" + name + "." + PILLAR_FILE_EXTENSION);
             if (dataFile.exists()) {
                 return Optional.of((Map<String, Object>) GSON.fromJson(
@@ -326,7 +365,7 @@ public class FormulaFactory {
      */
     public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndGroupId(
             String name, Long groupId) {
-        File dataFile = new File(GROUP_PILLAR_DIR +
+        File dataFile = new File(getGroupPillarDir() +
                 groupId + "_" + name + "." + PILLAR_FILE_EXTENSION);
         try {
             if (dataFile.exists()) {
@@ -352,7 +391,7 @@ public class FormulaFactory {
      */
     public static synchronized void saveGroupFormulas(Long groupId,
             List<String> selectedFormulas, Org org) throws IOException {
-        File dataFile = new File(GROUP_DATA_FILE);
+        File dataFile = new File(getGroupDataFile());
 
         Map<String, List<String>> groupFormulas;
         if (!dataFile.exists()) {
@@ -399,7 +438,7 @@ public class FormulaFactory {
     public static synchronized void saveServerFormulas(Long serverId,
             List<String> selectedFormulas) throws IOException,
             UnsupportedOperationException {
-        File dataFile = new File(SERVER_DATA_FILE);
+        File dataFile = new File(getServerDataFile());
         String minionId = getMinionId(serverId);
 
         Map<String, List<String>> serverFormulas;
@@ -441,7 +480,7 @@ public class FormulaFactory {
     public static void deleteServerFormulaData(Long serverId, String formulaName)
             throws IOException {
         try {
-            File file = new File(PILLAR_DIR +
+            File file = new File(getPillarDir() +
                     getMinionId(serverId) + "_" + formulaName +
                     "." + PILLAR_FILE_EXTENSION);
             if (file.exists()) {
@@ -462,7 +501,7 @@ public class FormulaFactory {
      */
     public static void deleteGroupFormulaData(Long groupId, String formulaName)
             throws IOException {
-        File file = new File(GROUP_PILLAR_DIR +
+        File file = new File(getGroupPillarDir() +
                 groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         if (file.exists()) {
             file.delete();

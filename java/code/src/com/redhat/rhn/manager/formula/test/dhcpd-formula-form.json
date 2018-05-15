@@ -1,0 +1,198 @@
+{
+  "dhcpd": {
+    "$type": "hidden-group",
+    "domain_name": {
+      "$placeholder": "example1.org",
+      "$optional": false,
+      "$default": "test-name",
+      "$ifempty": null
+    },
+    "domain_name_servers": {
+      "$placeholder": "example.org",
+      "$ifempty": "Test",
+      "$default": null
+
+    },
+    "listen_interfaces": {
+      "$help": "Comma separated list of interfaces to listen on",
+      "$default": "em2"
+    },
+    "max_lease_time": {
+      "$default": 20001,
+      "$type": "number",
+      "$ifempty": 1
+    },
+    "default_lease_time": {
+      "$default": 20000,
+      "$type": "number",
+      "$ifempty": 2
+    },
+    "subnets": {
+      "$type": "group",
+      "network1": {
+        "$type": "group",
+        "$name": "Network configuration",
+        "network": {
+          "$type": "text",
+          "$default": "192.168.128.0"
+        },
+        "netmask": {
+          "$default": "255.255.128.0",
+          "$type": "text"
+        },
+        "range": {
+          "$default": [
+            "192.168.242.51",
+            "192.168.243.151"
+          ]
+        },
+        "broadcast_address": {
+          "$default": "192.168.255.255"
+        },
+        "routers": {
+          "$default": [
+            "192.168.243.1"
+          ]
+        },
+        "next_server": {
+          "$default": "192.168.255.255"
+        },
+        "filename": {
+          "$default": "/boot/pxelinux.0",
+          "$type": "text"
+        }
+      }
+    }
+  },
+  "list_of_things": {
+    "$type": "group",
+    "name": {
+      "$type": "text",
+      "$default": "aoeu"
+    },
+    "partitions_as_primitive_list": {
+      "$name": "HD Partitions as primitive list",
+      "$type": "edit-group",
+      "$minItems": 1,
+      "$maxItems": 3,
+      "$prototype": {
+        "$type": "text",
+        "$default": 1234
+      },
+      "$default": [
+        "fst",
+        "snd"
+      ]
+    },
+    "partitions2_as_list_of_dicts": {
+      "$name": "HD Partitions as list of dicts",
+      "$type": "edit-group",
+      "$minItems": 1,
+      "$maxItems": 3,
+      "$itemName": "Partition ${name}",
+      "$prototype": {
+        "name": {
+          "$default": "New partition"
+        },
+        "mountpoint": {
+          "$default": "/root"
+        },
+        "size": {
+          "$type": "number",
+          "$name": "Size in GB"
+        }
+      },
+      "$default": [
+        {
+          "name": "Boot",
+          "mountpoint": "/boot"
+        },
+        {
+          "name": "Root",
+          "mountpoint": "/root",
+          "size": 5000
+        }
+      ]
+    }
+  },
+  "dict_of_primitives": {
+    "$type": "edit-group",
+    "$minItems": 1,
+    "$maxItems": 4,
+    "$prototype": {
+      "$key": {
+        "$type": "text",
+        "$default": "test"
+      },
+      "$type": "number",
+      "$default": 12345
+    },
+    "$default": {
+      "name1": -1,
+      "name2": 123
+    }
+  },
+  "dict_of_dicts": {
+    "$type": "edit-group",
+    "$minItems": 1,
+    "$prototype": {
+      "$key": {
+        "$type": "text",
+        "$default": "test"
+      },
+      "name": {
+        "$type": "text",
+        "$default": "wow"
+      },
+      "password_of_dicts": {
+        "$type": "edit-group",
+        "$minItems": 1,
+        "$maxItems": 2,
+        "$prototype": {
+          "$key": {
+            "$type": "text",
+            "$default": "aoeu"
+          },
+          "name": {
+            "$type": "text",
+            "$default": "aoeu2222"
+          },
+          "password": {
+            "$type": "password",
+            "$default": "test"
+          },
+          "innerest_stuff": {
+            "$type": "edit-group",
+            "$minItems": 1,
+            "$prototype": {
+              "$key": {
+                "$type": "text",
+                "$default": "htsss"
+              },
+              "blehName": {
+                "$type": "text",
+                "$default": "blehblah"
+              }
+            },
+            "$default": {
+              "innerESTdefault": {
+                "blehName": "mynameINNER"
+              }
+            }
+          }
+        },
+        "$default": {
+          "innerdefault": {
+            "name": "myname",
+            "password": "mypass"
+          }
+        }
+      }
+    },
+    "$default": {
+      "user": {
+        "name": "user1name"
+      }
+    }
+  }
+}
