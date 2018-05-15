@@ -99,6 +99,7 @@
 - features/allcli_software_channels_dependencies.feature
 - features/srv_sync_products.feature
 - features/allcli_reboot.feature
+- features/srv_notifications.feature
 ## Secondary features END ##
 
 
