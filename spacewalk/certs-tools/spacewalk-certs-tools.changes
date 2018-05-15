@@ -1,3 +1,4 @@
+- fix bootstrap script for python3 (bsc#1091840)
 - Add detection of multiple rhnlib package installs
 - support SLE15 product family
 -------------------------------------------------------------------
