@@ -41,6 +41,19 @@ When(/^I wait until I see "([^"]*)" text$/) do |text|
   end
 end
 
+When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if page.has_content?(text1) || page.has_content?(text2)
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the #{text1} and #{text2} in webpage"
+  end
+end
+
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
