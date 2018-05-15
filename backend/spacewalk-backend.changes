@@ -1,3 +1,4 @@
+- Bugfix: do not fail boostrap if no ip6addr interface (bsc#1090395)
 - allow again to use a higher version of spacewalk-backend-libs
   with spacewalk-backend (bsc#1092383)
 
