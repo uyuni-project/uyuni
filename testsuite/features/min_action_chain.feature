@@ -9,7 +9,7 @@ Feature: Action chain on salt minions
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-minion"
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "echo '/dev/vda1 / ext4 defaults 0 0' > /etc/fstab" on "sle-minion"
 
@@ -18,7 +18,7 @@ Feature: Action chain on salt minions
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0-4.1" text
+    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
 
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on Salt minion
     Given I am authorized as "admin" with password "admin"
@@ -252,11 +252,11 @@ Feature: Action chain on salt minions
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-minion"
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0-4.1" text
+    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
     And I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"

@@ -9,7 +9,7 @@ Feature: Action chain on traditional clients
     And I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-client" without error control
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
 
@@ -76,7 +76,7 @@ Feature: Action chain on traditional clients
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Verify" in the content area
-    And I check "andromeda-dummy-1.0-4.1" in the list
+    And I check "andromeda-dummy-1.0" in the list
     And I click on "Verify Selected Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"

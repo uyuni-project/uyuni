@@ -24,7 +24,7 @@ Feature: Reboot required after patch
     Given I am authorized as "admin" with password "admin"
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
-    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
     And I follow "Admin"
     And I follow "Task Schedules"
