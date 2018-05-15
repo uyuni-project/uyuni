@@ -17,7 +17,9 @@ package com.suse.manager.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -120,6 +122,7 @@ import java.nio.ByteOrder;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -542,8 +545,7 @@ public class SaltUtils {
                 serverAction.setResultMsg("Success");
             }
             serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                        PkgProfileUpdateSlsResult.class));
+                handlePackageProfileUpdate(minionServer, parsePkgProfileUpdateSlsResult(jsonResult));
             });
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
@@ -745,6 +747,39 @@ public class SaltUtils {
         return "Unable to parse dry run result";
     }
 
+    private static JsonElement adaptPkgProfileJsonToNewFormat(JsonElement jsonResult) {
+        JsonObject newRetJson = new JsonObject();
+        JsonElement changesJsonElement = jsonResult.getAsJsonObject()
+                .get(PkgProfileUpdateSlsResult.PKG_PROFILE_INFO_INSTALLED).getAsJsonObject()
+                .get("changes");
+        JsonElement oldRetJsonElement = changesJsonElement.getAsJsonObject().get("ret");
+        oldRetJsonElement.getAsJsonObject().entrySet().stream().forEach(
+            pkg -> {
+                JsonArray tmpInfoList = new JsonArray();
+                tmpInfoList.add(pkg.getValue());
+                newRetJson.add(pkg.getKey(), tmpInfoList);
+            });
+        changesJsonElement.getAsJsonObject().remove("ret");
+        changesJsonElement.getAsJsonObject().add("ret", newRetJson);
+        return jsonResult;
+    }
+
+    private static PkgProfileUpdateSlsResult parsePkgProfileUpdateSlsResult(JsonElement jsonResult) {
+        try {
+            return Json.GSON.fromJson(jsonResult, PkgProfileUpdateSlsResult.class);
+        }
+        catch (JsonSyntaxException e) {
+            try {
+                return Json.GSON.fromJson(adaptPkgProfileJsonToNewFormat(jsonResult),
+                        PkgProfileUpdateSlsResult.class);
+            }
+            catch (JsonSyntaxException ex) {
+                LOG.error("Unable to parse Salt package profile", ex);
+                throw ex;
+            }
+        }
+    }
+
     /**
      * Set the results based on the result from SALT
      * @param jsonResult response from SALT master
@@ -912,10 +947,21 @@ public class SaltUtils {
                 .lookupByName(details.getName(), details.getVersion(),
                         details.getImageStoreId())
                 .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
-                        .ifPresent(minionServer -> handleImagePackageProfileUpdate(
-                                imageInfo, Json.GSON.fromJson(jsonResult,
-                                        ImagesProfileUpdateSlsResult.class),
-                                serverAction)));
+                        .ifPresent(minionServer -> {
+                            ImagesProfileUpdateSlsResult imageProfile;
+                            try {
+                                imageProfile = Json.GSON.fromJson(jsonResult, ImagesProfileUpdateSlsResult.class);
+                            }
+                            catch (JsonSyntaxException e) {
+                                JsonElement pkgProfileUpdateJson = jsonResult.getAsJsonObject()
+                                        .get(ImagesProfileUpdateSlsResult.IMAGE_PROFILE_PKG_PROFILE_UPDATE)
+                                        .getAsJsonObject().get("changes")
+                                        .getAsJsonObject().get("ret");
+                                adaptPkgProfileJsonToNewFormat(pkgProfileUpdateJson);
+                                imageProfile = Json.GSON.fromJson(jsonResult, ImagesProfileUpdateSlsResult.class);
+                            }
+                            handleImagePackageProfileUpdate(imageInfo, imageProfile, serverAction);
+                        }));
     }
 
     /**
@@ -992,8 +1038,9 @@ public class SaltUtils {
 
             Optional.of(ret.getInfoInstalled().getChanges().getRet())
             .map(saltPkgs -> saltPkgs.entrySet().stream()
-                    .map(entry -> createImagePackageFromSalt(entry.getKey(),
-                            entry.getValue(), imageInfo))
+                    .map(entry -> entry.getValue().stream()
+                        .map(info -> createImagePackageFromSalt(entry.getKey(),
+                            info, imageInfo)))
                     .collect(Collectors.toSet())
                     );
             Optional.ofNullable(ret.getListProducts())
@@ -1130,7 +1177,16 @@ public class SaltUtils {
 
         Map<String, Map.Entry<String, Pkg.Info>> newPackageMap = result
             .getInfoInstalled().getChanges().getRet()
-            .entrySet().stream()
+            .entrySet().stream().map(entry -> {
+                List<Map.Entry<String, Pkg.Info>> ret = new ArrayList<>();
+                entry.getValue().stream().forEach(x -> {
+                        Map<String, Pkg.Info> infoTuple = new HashMap<>();
+                        infoTuple.put(entry.getKey(), x);
+                        ret.addAll(infoTuple.entrySet());
+                });
+                return ret;
+            })
+            .flatMap(entrySet -> entrySet.stream())
             .collect(Collectors.toMap(
                     SaltUtils::packageToKey,
                     Function.identity()

@@ -39,6 +39,8 @@ public class PkgProfileUpdateSlsResult {
             "cmd_|-centosrelease_|-cat /etc/centos-release_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
             "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
+    public static final String PKG_PROFILE_INFO_INSTALLED =
+            "module_|-packages_|-pkg.info_installed_|-run";
 
     @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|" +
             "-run")
@@ -50,8 +52,8 @@ public class PkgProfileUpdateSlsResult {
     @SerializedName("module_|-products_|-pkg.list_products_|-run")
     private StateApplyResult<Ret<List<Zypper.ProductInfo>>> listProducts;
 
-    @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
-    private StateApplyResult<Ret<Map<String, Pkg.Info>>> infoInstalled;
+    @SerializedName(PKG_PROFILE_INFO_INSTALLED)
+    private StateApplyResult<Ret<Map<String, List<Pkg.Info>>>> infoInstalled;
 
     @SerializedName(PKG_PROFILE_REDHAT_RELEASE)
     private StateApplyResult<CmdExecCodeAll> rhelReleaseFile;
@@ -90,7 +92,7 @@ public class PkgProfileUpdateSlsResult {
     /**
      * @return information about installed packages
      */
-    public StateApplyResult<Ret<Map<String, Pkg.Info>>> getInfoInstalled() {
+    public StateApplyResult<Ret<Map<String, List<Pkg.Info>>>> getInfoInstalled() {
         return infoInstalled;
     }
 
