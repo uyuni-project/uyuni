@@ -726,3 +726,13 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
     raise unless find(:xpath, xpath)['checked'].nil?
   end
 end
+
+Then(/^the notification badge and the table should count the same amount of messages$/) do
+  badge_xpath = "//div[@id='notification-counter']"
+  notification_badge_count = find(:xpath, badge_xpath).text
+
+  table_xpath = "//span[contains(text(), 'Items 1 - ')]"
+  raise unless (table_count = find(:xpath, table_xpath).text)
+
+  raise if notification_badge_count != table_count.split('of ')[1]
+end
