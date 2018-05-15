@@ -1,0 +1,40 @@
+#!/usr/bin/python
+#
+# Package RHN SSL certificate into RPM with a dependency on `ca-certificates`
+#
+# Author: Michele Bologna <michele.bologna@suse.com>
+#
+
+
+## language imports
+import sys
+import os
+
+sys.argv[0] = os.path.join(os.path.dirname(sys.argv[0]), os.path.basename(sys.argv[0]).replace('mgr', 'rhn'))
+mod_name = os.path.basename(sys.argv[0]).replace('-', '_')
+try:
+    mod = __import__("certs." + mod_name)
+except KeyboardInterrupt:
+    sys.stderr.write("\nUser interrupted process.\n")
+    sys.exit(0)
+except ImportError as e:
+    sys.stderr.write("Unable to load module %s\n" % mod_name)
+    sys.stderr.write(str(e) + "\n")
+    sys.exit(1)
+mod = getattr(mod, mod_name)
+
+
+#-------------------------------------------------------------------------------
+if __name__ == '__main__':
+    try:
+        sys.exit(mod.main() or 0)
+    except KeyboardInterrupt:
+        sys.stderr.write("\nUser interrupted process.\n")
+        sys.exit(0)
+    except SystemExit:
+        raise
+    except:
+        sys.stderr.write("\nERROR: unhandled exception occurred:\n")
+        raise
+#===============================================================================
+
