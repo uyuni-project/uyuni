@@ -103,7 +103,7 @@ public class FormulaHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param systemGroupId The Id of the server group
      * @param formulas The formulas to apply to the server group.
-     * @return 1 on sucess, expcetion thrown otherwise
+     * @return 1 on success, exception thrown otherwise
      * @throws IOFaultException if an IOException occurs during saving
      *
      * @xmlrpc.doc Set the formulas of a server group.
@@ -130,7 +130,7 @@ public class FormulaHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param systemId The Id of the server
      * @param formulas The formulas to apply to the server group.
-     * @return 1 on sucess, expcetion thrown otherwise
+     * @return 1 on success, exception thrown otherwise
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
@@ -185,8 +185,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.doc Get the saved data for the specific formula against specific group
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "formula name")
-     * @xmlrpc.param #param("Integer", "group id ")
+     * @xmlrpc.param #param("string", "formulaName")
+     * @xmlrpc.param #param("int", "groupId")
      * @xmlrpc.returntype string - Json data
      */
     public String getGroupFormulaData(User loggedInUser, String formulaName, Integer groupId) {
@@ -205,10 +205,10 @@ public class FormulaHandler extends BaseHandler {
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
-     * @xmlrpc.doc Populate the formula form for specified servers.
+     * @xmlrpc.doc Populate the formula form for the specified server.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "Ids of the systems for which to populate form")
+     * @xmlrpc.param #array_single("int","systemId")
      * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.param
      * #struct("content")
@@ -248,10 +248,10 @@ public class FormulaHandler extends BaseHandler {
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
-     * @xmlrpc.doc Populate the formula form for specified group.
+     * @xmlrpc.doc Populate the formula form for the specified group.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int",Group id")
+     * @xmlrpc.param #param("int","groupId")
      * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.param
      * #struct("content")
