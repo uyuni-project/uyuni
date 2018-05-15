@@ -360,7 +360,6 @@ function adjustEditGroup(element) {
         element.$prototype.$type = "group";
     }
     else if (element.$prototype.$scope === undefined) {
-        // for non-groups we want to have some default scope
         element.$prototype.$scope = "system";
     }
 
@@ -368,35 +367,15 @@ function adjustEditGroup(element) {
         element.$itemName = "Item ${i}";
     }
 
-    // helper function for setting values from the prototype
-    const setMissingValues = (value) => {
-        Object.keys(element.$prototype)
-            .filter(att => !att.startsWith("$") && !Object.keys(value).includes(att))
-            .forEach(att => value[att] = element.$prototype[att].$default)
-    }
-
     // Adjust defaults && new values
+    element.$default = adjustNestedDefault(element, element.$default);
     const editGroupSubType = getEditGroupSubtype(element);
-    if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES) {
-        // normalize the default (convert from an object to array)
-        element.$default = Object.entries(element.$default || {})
-            .map(([name, value]) => {
-                value['$key'] = name;
-                setMissingValues(value);
-                return value;
-            });
-        element.$newItemValue = generateValues(element.$prototype, {}, {});
-    }
-    else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
-        element.$default = (element.$default || [])
-            .map(defEntry => {
-                setMissingValues(defEntry);
-                return defEntry;
-            });
+    if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES
+            || editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES)
+    {
         element.$newItemValue = generateValues(element.$prototype, {}, {});
     }
     else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
-        element.$default = Object.entries(element.$default || {});
         element.$newItemValue = [
             defaultValue(element.$prototype.$key.$type, element.$prototype.$key.$default),
             defaultValue(element.$prototype.$type, element.$prototype.$default)
@@ -406,13 +385,59 @@ function adjustEditGroup(element) {
         element.$newItemValue = defaultValue(element.$prototype.$type, element.$prototype.$default);
     }
 
-
     // if we don't have minimum number of items, let's create some
     // todo handle the edit groups where their key must be unique
-    element.$default = get(element.$default, []);
+    element.$default = get(element.$default, [])
     while (element.$default.length < element.$minItems) {
         element.$default.push(deepCopy(element.$newItemValue));
     }
+}
+
+/*
+ * This needs to be recursive as the element.$default can be a complex nested
+ * structure of edit-groups/groups which we need to adjust.
+ */
+function adjustNestedDefault(element, defVal) {
+    // helper function for setting values from the prototype
+    const setMissingValues = (value) => {
+        Object.keys(element.$prototype)
+            .filter(att => !att.startsWith("$") && !Object.keys(value).includes(att))
+            .forEach(att => value[att] = element.$prototype[att].$default)
+    }
+
+    const recurOnVals = (value) => {
+        return Object.entries(value)
+            .map(([nestedName, nestedVal]) => [nestedName, adjustNestedDefault(element.$prototype[nestedName], nestedVal)])
+            .reduce((acc, entry) => {
+                acc[entry[0]] = entry[1];
+                return acc;
+            }, {})
+    };
+
+    const editGroupSubType = getEditGroupSubtype(element);
+    if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES) {
+        // normalize the default (convert from an object to array)
+        return Object.entries(defVal || {})
+            .map(([name, value]) => {
+                value = recurOnVals(value);
+                value['$key'] = name;
+                setMissingValues(value);
+                return value;
+            });
+    }
+    else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
+        return (defVal || [])
+            .map(defEntry => {
+                defEntry = recurOnVals(defEntry);
+                setMissingValues(defEntry);
+                return defEntry;
+            });
+    }
+    else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
+        return Object.entries(defVal || {});
+    }
+
+    return defVal;
 }
 
 /*
@@ -477,7 +502,7 @@ function preprocessCleanValues(values, layout) {
                 result[key] = value
                     .map(entry => preprocessCleanValues(entry, element.$prototype));
             // we need to recur to groups as they can contain edit-groups that need an adjustment
-            } else if (element !== undefined && element.$type === "group") {
+            } else if (element !== undefined && (element.$type === "group" || element.$type === "namespace")) {
                 result[key] = preprocessCleanValues(value, element);
             } else {
                 result[key] = value;
