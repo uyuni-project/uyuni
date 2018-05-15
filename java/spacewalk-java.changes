@@ -1,3 +1,5 @@
+- Fix minion software profile to allow multiple installed versions for the
+  same package name (bsc#1089526)
 - add API functions to specify system cleanup type when deleting a
   system (bsc#1094190)
 - change default cleanup type for XMLRPC API to NO_CLEANUP
