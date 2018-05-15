@@ -1,17 +1,19 @@
 #!/usr/bin/python
 
+from __future__ import print_function
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLog import initLOG, log_debug, log_error
 from spacewalk.server import rhnSQL
 from datetime import datetime
 import time
-import os, rpm, sys
+import os
+import rpm
+import sys
 
 LOG_FILE = '/var/log/rhn/align-rpm-buildtime.log'
 initLOG(LOG_FILE, 1)
 
 initCFG('server')
-_package_path_prefix = CFG.MOUNT_POINT
 
 #
 # - find first sync after install/update to 3.1
@@ -127,13 +129,36 @@ def regenerate_metadata_for_all_channels():
     return ret
 
 
+def assert_rpm_pkg(pkg_data):
+    '''
+    Checks if the RPM package is there, prior adding a mount point
+    '''
+    err = None
+    pkg_path = pkg_data.get('path')
+    if not CFG.MOUNT_POINT:
+        err = 'Mount point is not configured in the configuration'
+    elif not pkg_path:
+        pkg_name = pkg_data.get('name')
+        if not pkg_name:
+            err = 'Package name was not found'
+        else:
+            err = 'Path not found for the RPM package in the database "{0}".'.format(pkg_name)
+    if CFG.MOUNT_POINT and pkg_path:
+        pkg_path = os.path.join(CFG.MOUNT_POINT, pkg_path)
+
+    if not err and pkg_path and not os.path.exists(pkg_path):
+        err = 'RPM file was not found at "{0}"'.format(pkg_path)
+
+    if err:
+        raise OSError(err)
+
+    return pkg_path
+
 #
 # the main
 #
 if __name__ == '__main__':
-    
     rhnSQL.initDB()
-
     something_changed = False
 
     # find all packages
@@ -141,30 +166,34 @@ if __name__ == '__main__':
 
     if package_list is not None:
         log_debug(1, 'Scanning %s packages' % len(package_list))
-        sys.stdout.write('Scanning %s packages' % len(package_list))
-        sys.stdout.write('\n')
+        print('Scanning %s packages' % len(package_list))
 
+        updated_packages = 0
+        failed_packages = 0
         # iterate on each package
         for index, package_blob in enumerate(package_list):
+            try:
+                absolute_package_path = assert_rpm_pkg(package_blob)
+            except OSError as err:
+                log_error('Unable to find RPM file for id: {0}, name: {1} - {2}'.format(
+                    package_blob.get('id', 'N/A'), package_blob.get('name', 'N/A'), err
+                ))
+                failed_packages += 1
+                continue
 
-            package_id = package_blob['id']
-
-            # get the absolute path of the package on the filesystem
-            absolute_package_path = os.path.join(_package_path_prefix, package_blob['path'])
-
-            # extract the rpm_tag_build_time from the rpm
             rpm_tag_build_time = datetime(*time.gmtime(get_rpm_tag_build_time(absolute_package_path))[:6])
+            package_id = package_blob['id']
 
             # compare RPM vs DB "buildtime"s
             if package_blob['build_time'] != rpm_tag_build_time:
-
+                updated_packages += 1
                 # update the row in DB
                 ret = update_package_build_time_by_id(package_id, rpm_tag_build_time)
                 if ret == 1:
                     log_debug(1, 'build_time updated for the package id %s' % package_id)
                     something_changed = True
                 else:
-                    log_error('something went wrong during update of the build_time for the package id %s' % package_id)
+                    log_error('Unable to update the build time for the package {0}, id {1}'.format( package_blob['name'], package_id))
 
                 # remove the stored metadata snippet for this package
                 ret = delete_repodata_snippet_by_id(package_id)
@@ -174,22 +203,20 @@ if __name__ == '__main__':
                 else:
                     log_error('something went wrong during remove of the repodata snippet for the package id %s' % package_id)
 
-            if index % 100 == 0:
+            if updated_packages and not updated_packages % 100:
                 rhnSQL.commit()
-                sys.stdout.write('.')
+            if not index % 25:
+                sys.stdout.write('Verified {0} packages         \r'.format(index))
                 sys.stdout.flush()
 
-        sys.stdout.write('\n')
+        print('All {0} packages has been verified.'.format(len(package_list)))
+        print('{0} updates, {1} failures.'.format(updated_packages, failed_packages))
 
         # finally trigger regeneration of all metadata for all channels
         if something_changed:
             ret = regenerate_metadata_for_all_channels()
             log_debug(1, 'queued %s channel metadata regeneration' % ret)
-            sys.stdout.write('queued %s channel metadata regeneration' % ret)
-            sys.stdout.write('\n')
-
-        rhnSQL.commit()
+            rhnSQL.commit()
     else:
-        sys.stdout.write('Nothing to do.')
-        sys.stdout.write('\n')
+        print('No packages needs to be aligned')
 

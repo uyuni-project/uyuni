@@ -1,5 +1,6 @@
 - add missing python3 packages to bootstrap JeOS image (bsc#1085044)
 - support SLE15 product family
+- fix crash on not properly configured environment (bsc#1092275)
 - provide full traditional stack in RES bootstrap repo (bsc#1091667)
 - fix bootstrap script for python3 (bsc#1091840)
 - add new traditional packages and renamed to bootstrap repo data
