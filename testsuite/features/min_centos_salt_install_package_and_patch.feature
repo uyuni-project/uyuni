@@ -49,6 +49,6 @@ Feature: Install a patch on the contos minion via Salt through the UI
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos minion
     Given I am authorized as "admin" with password "admin"
     And I run "yum erase -y andromeda-dummy" on "ceos-minion" without error control
-    And I run "yum install -y andromeda-dummy-1.0-4.1" on "ceos-minion"
+    And I run "yum install -y andromeda-dummy-1.0" on "ceos-minion"
     And I run "yum erase -y virgo-dummy" on "ceos-minion"
     And I run "sed -i 's/enabled=.*/enabled=0/' /etc/yum.repos.d/Devel_Galaxy_BuildRepo.repo" on "ceos-minion"
