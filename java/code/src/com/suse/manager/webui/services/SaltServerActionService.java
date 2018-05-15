@@ -93,7 +93,6 @@ import com.suse.utils.Json;
 import com.suse.utils.Opt;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
@@ -1275,12 +1274,12 @@ public class SaltServerActionService {
                     profile.asKiwiProfile().ifPresent(kiwiProfile -> {
                         pillar.put("source", kiwiProfile.getPath());
                         pillar.put("build_id", "build" + actionId);
-                        String repos = StringUtils.EMPTY;
+                        List<String> repos = new ArrayList<>();
                         Set<Channel> channels = ActivationKeyFactory.lookupByToken(profile.getToken()).getChannels();
                         for (Channel channel: channels) {
-                            repos += "https://" + host +
+                            repos.add("https://" + host +
                                     "/rhn/manager/download/" + channel.getLabel() + "?" +
-                                    token;
+                                    token);
                         }
                         pillar.put("kiwi_repositories", repos);
                     });
