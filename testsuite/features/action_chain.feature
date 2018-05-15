@@ -55,7 +55,7 @@ Feature: Test action chaining
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
     And I follow "Verify" in the content area
-    And I check "andromeda-dummy-1.0-4.1" in the list
+    And I check "andromeda-dummy-1.0" in the list
     And I click on "Verify Selected Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
@@ -134,7 +134,7 @@ Feature: Test action chaining
   Scenario: Reset: downgrade milkyway-dummy to lower version
     Given I am authorized as "admin" with password "admin"
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
-    And I run "zypper -n in --oldpackage milkyway-dummy-1.0-2.1" on "sle-client"
+    And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
     And I follow "Admin"

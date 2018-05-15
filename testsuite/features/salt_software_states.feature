@@ -59,7 +59,7 @@ Feature: Check the Salt package state UI
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "andromeda-dummy" text
-    And "andromeda-dummy-1.0-4.1" is installed on "minion"
+    And "andromeda-dummy-1.0" is installed on "minion"
     And I change the state of "andromeda-dummy" to "Installed" and "Latest"
     Then I should see a "1 Changes" text
     And I click save
