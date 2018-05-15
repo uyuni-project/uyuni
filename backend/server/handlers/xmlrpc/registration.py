@@ -1046,11 +1046,11 @@ class Registration(rhnHandler):
         # according to the primary network interface found
         h = rhnSQL.prepare("""
             select interface_id
-            from rhnServerNetAddress%d rsna
+            from rhnServerNetAddress{0} rsna
                 left join rhnServerNetInterface rsni
                     on rsna.interface_id = rsni.id
             where address = :address and server_id = :server_id
-        """ % ipaddr_suffix)
+        """.format(ipaddr_suffix))
         h.execute(address=ipaddr_value, server_id=sid)
         row = h.fetchone_dict()
         if row:
