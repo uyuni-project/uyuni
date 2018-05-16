@@ -176,7 +176,7 @@ class FileProcessor:
 
             #check for permissions differences
             if not stat_err:
-                cur_perm = str(oct(stat.S_IMODE(cur_stat[stat.ST_MODE])))
+                cur_perm = format(stat.S_IMODE(cur_stat[stat.ST_MODE]), 'o')
             else:
                 cur_perm = "missing"
 
