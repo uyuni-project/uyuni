@@ -728,11 +728,18 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
 end
 
 And(/^the notification badge and the table should count the same amount of messages$/) do
-  badge_xpath = "//div[@id='notification-counter']"
-  notification_badge_count = find(:xpath, badge_xpath).text
+  # get the notifications node
+  notification_xpath = "//i[contains(@class, 'fa-bell')]/ancestor::li"
+  notification_node = find(:xpath, notification_xpath)
 
-  table_xpath = "//span[contains(text(), 'Items 1 - ')]"
-  raise unless (table_count = find(:xpath, table_xpath).text)
-
-  raise if notification_badge_count != table_count.split('of ')[1]
+  # check if there is a node with the unread-messages counter
+  badge_xpath = "//*[@id='notification-counter']"
+  if notification_node.has_xpath?(badge_xpath)
+    notification_badge_count = find(:xpath, badge_xpath).text
+    table_xpath = "//span[contains(text(), 'Items 1 - ')]"
+    raise unless (table_count = find(:xpath, table_xpath).text)
+    raise if notification_badge_count != table_count.split('of ')[1]
+  else
+    puts "All messages are read, nothing to check"
+  end
 end
