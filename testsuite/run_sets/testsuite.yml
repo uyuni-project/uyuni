@@ -37,6 +37,7 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
+- features/trad_lock_packages.feature
 - features/min_centos_salt_install_package_and_patch.feature
 - features/min_bootstrap_xmlrpc.feature
 - features/min_ssh_bootstrap_xmlrpc.feature
@@ -82,7 +83,6 @@
 - features/trad_sp_migration.feature
 - features/srv_salt.feature
 - features/min_salt_user_states.feature
-- features/trad_lock_packages.feature
 - features/srv_check_channels_page.feature
 - features/min_salt_minion_details.feature
 - features/trad_check_registration.feature
