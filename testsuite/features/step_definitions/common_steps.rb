@@ -730,7 +730,7 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
   end
 end
 
-Then(/^the notification badge and the table should count the same amount of messages$/) do
+And(/^the notification badge and the table should count the same amount of messages$/) do
   badge_xpath = "//div[@id='notification-counter']"
   notification_badge_count = find(:xpath, badge_xpath).text
 
