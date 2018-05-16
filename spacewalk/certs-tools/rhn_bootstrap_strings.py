@@ -261,11 +261,16 @@ echo "-------------------------------------------------"
 
 function clean_up_old_trad_repos() {{
   local trad_client_repo_prefix="spacewalk:"
-  
+  if [ -f /usr/bin/realpath ]; then
+    GET_PATH="/usr/bin/realpath"
+  else
+    GET_PATH="/usr/bin/readlink -f --"
+  fi
+
   for file in $1/$trad_client_repo_prefix*.repo; do
     if [ -f "$file" ] ; then
-      echo "Removing $(realpath "$file")"
-      rm -f $(realpath "$file")
+      echo "Removing $($GET_PATH "$file")"
+      rm -f $($GET_PATH "$file")
     fi
   done
 }}
