@@ -948,9 +948,10 @@ public class SaltUtils {
                         details.getImageStoreId())
                 .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
                         .ifPresent(minionServer -> {
-                            ImagesProfileUpdateSlsResult imageProfile;
                             try {
-                                imageProfile = Json.GSON.fromJson(jsonResult, ImagesProfileUpdateSlsResult.class);
+                                handleImagePackageProfileUpdate(imageInfo,
+                                        Json.GSON.fromJson(jsonResult, ImagesProfileUpdateSlsResult.class),
+                                        serverAction);
                             }
                             catch (JsonSyntaxException e) {
                                 JsonElement pkgProfileUpdateJson = jsonResult.getAsJsonObject()
@@ -958,9 +959,10 @@ public class SaltUtils {
                                         .getAsJsonObject().get("changes")
                                         .getAsJsonObject().get("ret");
                                 adaptPkgProfileJsonToNewFormat(pkgProfileUpdateJson);
-                                imageProfile = Json.GSON.fromJson(jsonResult, ImagesProfileUpdateSlsResult.class);
+                                handleImagePackageProfileUpdate(imageInfo,
+                                        Json.GSON.fromJson(jsonResult, ImagesProfileUpdateSlsResult.class),
+                                        serverAction);
                             }
-                            handleImagePackageProfileUpdate(imageInfo, imageProfile, serverAction);
                         }));
     }
 
@@ -1037,12 +1039,14 @@ public class SaltUtils {
                     result.getDockerSlsBuild().getChanges().getRet();
 
             Optional.of(ret.getInfoInstalled().getChanges().getRet())
-            .map(saltPkgs -> saltPkgs.entrySet().stream()
-                    .map(entry -> entry.getValue().stream()
-                        .map(info -> createImagePackageFromSalt(entry.getKey(),
-                            info, imageInfo)))
-                    .collect(Collectors.toSet())
+            .map(saltPkgs -> {
+                    saltPkgs.entrySet().stream().forEach(entry ->
+                        entry.getValue().stream().forEach(info ->
+                            createImagePackageFromSalt(entry.getKey(), info, imageInfo)
+                        )
                     );
+                    return saltPkgs;
+            });
             Optional.ofNullable(ret.getListProducts())
             .map(products -> products.getChanges().getRet())
             .map(SaltUtils::getInstalledProducts)
