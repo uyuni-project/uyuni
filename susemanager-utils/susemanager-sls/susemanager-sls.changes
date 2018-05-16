@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 16 17:38:30 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.12-1
 - Fix external pillar formula "ifempty" and "namespace" handling
 - Fix profileupdate sls to execute retrieval of kernel live patching info (bsc#1091052)
 - Use recursive merge on form pillars
