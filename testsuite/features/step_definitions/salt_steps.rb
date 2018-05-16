@@ -311,11 +311,11 @@ end
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   boxid = case box
           when 'timezone name'
-            "timezone\$name"
+            "timezone\#name"
           when 'language'
-            "keyboard_and_language\$language"
+            "keyboard_and_language\#language"
           when 'keyboard layout'
-            "keyboard_and_language\$keyboard_layout"
+            "keyboard_and_language\#keyboard_layout"
           end
   select(value, from: boxid)
 end
