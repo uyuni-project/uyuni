@@ -34,9 +34,9 @@ mgr_kiwi_build_tools:
     - group: root
     - dir_mode: 755
 
-{{ kiwi_dir }}/repo/rhn-org-trusted-ssl-certosimage-1.0-1.noarch.rpm:
+{{ kiwi_dir }}/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm:
   file.managed:
-    - source: salt://images/rhn-org-trusted-ssl-certosimage-1.0-1.noarch.rpm
+    - source: salt://images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm
 
 sshd:
   pkg.installed:
