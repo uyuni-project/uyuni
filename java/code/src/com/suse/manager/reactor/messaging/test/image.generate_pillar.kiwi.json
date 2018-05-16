@@ -1,0 +1,24 @@
+{
+    "tag": "salt/run/20180516175500800829/ret",
+    "data": {
+        "fun_args": [
+            {
+                "dest": "/srv/susemanager/pillar_data/images/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls",
+                "image": "{\"hash\":\"a64dbc025c748bde968b888db6b7b9e3\",\"name\":\"POS_Image_JeOS6\",\"filepath\":\"/var/lib/Kiwi/build24/images.build/POS_Image_JeOS6.x86_64-6.0.0\",\"type\":\"pxe\",\"basename\":\"POS_Image_JeOS6.x86_64-6.0.0\",\"fstype\":\"ext3\",\"version\":\"6.0.0\",\"filename\":\"POS_Image_JeOS6.x86_64-6.0.0\",\"arch\":\"x86_64\",\"size\":1.490026496E9}",
+                "boot_image": "{\"kernel\":{\"version\":\"4.4.126-94.22-default\",\"hash\":\"ec5473654d2fdca4f60c7d2f8f86e45c\",\"filename\":\"initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default\",\"size\":6053712.0},\"basename\":\"initrd-netboot-suse-SLES12.x86_64-2.1.1\",\"arch\":\"x86_64\",\"name\":\"initrd-netboot-suse-SLES12\",\"initrd\":{\"version\":\"2.1.1\",\"hash\":\"e39757568fbd014656307e04508e01fb\",\"filename\":\"initrd-netboot-suse-SLES12.x86_64-2.1.1.gz\",\"size\":1.01571905E8}}",
+                "url_base": "https://server.tf.local/os-images/1/",
+                "bundle": "{\"hash\":\"2471c584ab05eaf65f1a0e577f0b99814f44b344887dca127918cb4b6e43826c\",\"suffix\":\"tgz\",\"filepath\":\"/var/lib/Kiwi/build24/images/POS_Image_JeOS6.x86_64-6.0.0-build24.tgz\",\"basename\":\"POS_Image_JeOS6.x86_64-6.0.0\",\"filename\":\"POS_Image_JeOS6.x86_64-6.0.0-build24.tgz\",\"id\":\"build24\"}"
+            }
+        ],
+        "jid": "20180516175500800829",
+        "return": {
+            "returncode": 0,
+            "stderr": "",
+            "stdout": ""
+        },
+        "success": true,
+        "_stamp": "2018-05-16T15:55:01.374373",
+        "user": "admin",
+        "fun": "runner.kiwi-image-register.generate_pillar"
+    }
+}
