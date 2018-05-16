@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 16 17:41:11 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.78.5-1
 - Uniform the notification message when scheduling HW refresh (bsc#1082796)
 - Improved API for formulas to be saved through API for system/group.
 - add SLES12 SP2 LTSS family (bsc#1092194)
