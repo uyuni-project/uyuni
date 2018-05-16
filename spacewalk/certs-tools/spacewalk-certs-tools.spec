@@ -123,6 +123,12 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %endif
 %endif
 
+%post
+
+if [ ! -f /usr/share/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
+  mgr-package-rpm-certificate-osimage
+fi
+
 %files
 %defattr(-,root,root,-)
 %dir %{rhnroot}/certs
@@ -278,4 +284,3 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 * Tue Aug 06 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.1-1
 - Branding clean-up of proxy stuff in cert-tools dir
 - Bumping package versions for 2.1.
-
