@@ -16,7 +16,7 @@
 #
 
 Name:           susemanager-sls
-Version:        0.1.26
+Version:        0.1.27
 Release:        1
 License:        GPL-2.0
 Summary:        Static Salt state files for SUSE Manager
