@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Wed May 16 18:11:55 CEST 2018 - jgonzalez@suse.com
+
+- version 2.5.59.22-1
+- fix unknown installed products when using salt-ssh (bsc#1088861)
 - add SLES12 SP2 LTSS family (bsc#1092194)
 - fix token cleanup task crashing (bsc#1090585)
 - fix taskomatic deadlock in failure case (bsc#1085471)
@@ -11,6 +16,7 @@
 - Adjusted the code to override software channel's gpg_check during clone(#bsc1080290)
 - Harmonize display of custom system information (bsc#979073)
 - Fix NPE when retrieving OES repo (bsc#1082328)
+
 -------------------------------------------------------------------
 Fri Mar 09 16:27:20 CET 2018 - jgonzalez@suse.com
 
