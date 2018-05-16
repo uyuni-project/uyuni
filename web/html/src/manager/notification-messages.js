@@ -24,7 +24,8 @@ const NotificationMessages = React.createClass({
       dataUrlTags: ['#data-unread', '#data-all'],
       currentDataUrlTag: location.hash ? location.hash : '#data-unread',
       loading: true,
-      messages: []
+      messages: [],
+      selectedItems: [],
     };
   },
 
@@ -81,6 +82,12 @@ const NotificationMessages = React.createClass({
           messages: []
         });
       });
+  },
+
+  handleSelectItems(items) {
+    this.setState({
+      selectedItems: items
+    });
   },
 
   updateReadStatus: function(messageId) {
@@ -310,6 +317,9 @@ const NotificationMessages = React.createClass({
             initialSortDirection={-1}
             initialItemsPerPage={userPrefPageSize}
             loading={this.state.loading}
+            selectable
+            selectedItems={this.state.selectedItems}
+            onSelect={this.handleSelectItems}
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
