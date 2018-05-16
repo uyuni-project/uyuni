@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.org;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -459,6 +461,11 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
             if (!sgt.isBase()) {
                 Entitlement ent = EntitlementManager.getByName(sgt.getLabel());
                 if (ent != null) {
+                    if (EntitlementManager.OSIMAGE_BUILD_HOST_ENTITLED.equals(ent.getLabel())) {
+                        if (!Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
+                            continue;
+                        }
+                    }
                     addonEntitlements.add(ent);
                 }
             }
