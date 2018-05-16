@@ -1,3 +1,5 @@
+- adds check for realpath and uses readlink instead (bsc#1088350)
+
 -------------------------------------------------------------------
 Mon May 21 13:33:05 CEST 2018 - jgonzalez@suse.com
 
