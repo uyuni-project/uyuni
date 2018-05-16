@@ -1,0 +1,23 @@
+{
+    "tag": "salt/run/20180516175421216798/ret",
+    "data": {
+        "fun_args": [
+            {
+                "minion": "minion.tf.local",
+                "image_store_dir": "/srv/www/os-images/1/",
+                "filepath": "/var/lib/Kiwi/build24/images/POS_Image_JeOS6.x86_64-6.0.0-build24.tgz"
+            }
+        ],
+        "jid": "20180516175421216798",
+        "return": {
+            "pid": 28601,
+            "retcode": 0,
+            "stderr": "Warning: Permanently added '192.168.122.248' (ECDSA) to the list of known hosts.",
+            "stdout": "receiving incremental file list\nPOS_Image_JeOS6.x86_64-6.0.0-build24.tgz\n\nsent 43 bytes  received 448,980,421 bytes  21,901,486.05 bytes/sec\ntotal size is 464,164,455  speedup is 1.03"
+        },
+        "success": true,
+        "_stamp": "2018-05-16T15:54:45.961160",
+        "user": "admin",
+        "fun": "runner.kiwi-image-collect.kiwi_collect_image"
+    }
+}
