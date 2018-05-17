@@ -23,9 +23,13 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerArch;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,8 +46,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * ImageInfo
@@ -378,6 +380,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageInfo)) {
             return false;
@@ -393,6 +396,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(name)

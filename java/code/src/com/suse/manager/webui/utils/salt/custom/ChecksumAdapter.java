@@ -19,8 +19,8 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.Checksum;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA256Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
 
 import java.io.IOException;
 
