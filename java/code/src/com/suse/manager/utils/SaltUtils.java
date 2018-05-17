@@ -1104,7 +1104,8 @@ public class SaltUtils {
                     createImagePackageFromSalt(pkg.getName(),
                             pkg.getEpoch().equals(StringUtils.EMPTY) ? null :
                                     pkg.getEpoch(),
-                            pkg.getRelease(), pkg.getVersion(), Optional.empty(),
+                            pkg.getRelease(), pkg.getVersion(),
+                            Optional.of(imageInfo.getBuildAction().getCreated().getTime()/1000L),
                             Optional.of(pkg.getArch()), imageInfo);
                 });
                 if ("pxe".equals(ret.getImage().getType())) {
