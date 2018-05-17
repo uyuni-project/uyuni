@@ -23,11 +23,14 @@ log = logging.getLogger(__name__)
 # on SUMA and on Branch server
 def generate_pillar(dest, image, bundle, boot_image, url_base):
     if type(image) is str:
-    	image = json.loads(image)
+      image = json.loads(image)
     if type(bundle) is str:
-    	bundle = json.loads(bundle)
+      bundle = json.loads(bundle)
     if type(boot_image) is str:
-    	boot_image = json.loads(boot_image) 
+      boot_image = json.loads(boot_image)
+
+    if image['type'] != 'pxe':
+      return {'returncode': 0, 'stdout': 'Pillar generation skipped. Not a PXE image type (image type "{}")'.format(image['type'])}
 
     pillar = {
         'images': {},
