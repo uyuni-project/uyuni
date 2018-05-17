@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 17 08:48:01 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.2.13-1
 - fix URL for new products page (bsc#1092492)
 - SLE15 support: recommended/required flag for products and channels
 - rewrite products page into reactjs
