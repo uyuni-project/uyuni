@@ -14,45 +14,51 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
+import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.redhat.rhn.domain.action.test.ActionFactoryTest;
-import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
-import com.redhat.rhn.domain.server.*;
-import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -73,9 +79,8 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
-import com.google.gson.reflect.TypeToken;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -84,9 +89,9 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1106,7 +1111,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
                 allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                        with(equal("/var/lib/kiwi/build06/images/pos_image_jeos6.x86_64-6.0.0-build06.tgz")),
+                        with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
                         with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
                 will(returnValue(Optional.of(mockResult)));
         }});
