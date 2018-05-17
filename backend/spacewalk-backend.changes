@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 17 08:44:49 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.73.13-1
 - Bugfix: do not fail boostrap if no ip6addr interface (bsc#1090395)
 - allow again to use a higher version of spacewalk-backend-libs
   with spacewalk-backend (bsc#1092383)
