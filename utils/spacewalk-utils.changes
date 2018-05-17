@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 17 09:13:17 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.10.7-1
 - clone-by-date removes packages only if the list is not empty (bsc#1089396)
 
 -------------------------------------------------------------------
