@@ -11512,7 +11512,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>The following events have been scheduled for this system.</source>
         </trans-unit>
         <trans-unit id="system.event.pending.headerPending">
-          <source>You may cancel events for this system by selecting them and hitting the &lt;strong&gt;Cancel Events&lt;/strong&gt; button at the bottom of the page.</source>
+          <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Selected Events&lt;/strong&gt; button.</source>
         </trans-unit>
         <trans-unit id="system.event.pending.noevent">
           <source>No pending events</source>
