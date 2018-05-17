@@ -83,7 +83,7 @@ def _parseConfigLine(line):
     The '\n' is always stripped from the value.
     """
 
-    kv = line.split('='.encode('utf8'))
+    kv = line.decode('utf8').split('=')
     if len(kv) < 2:
         # not a setting
         return None
@@ -92,14 +92,13 @@ def _parseConfigLine(line):
         # '=' is part of the value, need to rejoin it.
         kv = [kv[0], '='.join(kv[1:])]
 
-    if kv[0].find('[comment]'.encode('utf8')) > 0:
+    if kv[0].find('[comment]') > 0:
         # comment; not a setting
         return None
 
     # it's a setting, trim the '\n' and return the (key, value) pair.
     kv[0] = kv[0].strip()
-    if kv[1][-1] == '\n':
-        kv[1] = kv[1][:-1]
+    kv[1] = kv[1].strip()
     return tuple(kv)
 
 def readConfigFile(configFile):
