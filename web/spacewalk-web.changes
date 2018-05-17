@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Thu May 17 09:15:58 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.1.16-1
+- Fix misleading message when syncing channels (bsc#1089103)
 - Automatically select mandatory channels when selecting a base channel (bsc#1083513)
 - Bugfix: ace.js editor config to use soft tabs (bsc#1090040)
 - Do not use button for recommended toggler
