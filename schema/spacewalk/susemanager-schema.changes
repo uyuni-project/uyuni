@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 17 09:23:12 CEST 2018 - jgonzalez@suse.com
+
+- version 3.1.17-1
 - add SLE15 distribution (bsc#1090205)
 - SLE15 support: recommended/required flag for products and channels
 - support SLE15 product family
