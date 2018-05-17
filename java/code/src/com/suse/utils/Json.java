@@ -14,6 +14,8 @@
  */
 package com.suse.utils;
 
+import static com.suse.utils.Fn.applyIf;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -23,14 +25,13 @@ import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.reactor.utils.ZonedDateTimeISOAdapter;
 import com.suse.manager.webui.utils.salt.custom.ChecksumAdapter;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
 import com.suse.salt.netapi.parser.XorTypeAdapterFactory;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.function.Function;
-import static com.suse.utils.Fn.applyIf;
 
 /**
  * Helper for composing json extractors to extract a single element from a json tree
