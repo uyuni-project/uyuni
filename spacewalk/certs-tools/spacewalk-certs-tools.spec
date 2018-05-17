@@ -107,7 +107,7 @@ make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
 
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
 ln -s rhn-ssl-tool%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-ssl-tool
-ln -s mgr-package-rpm-certificate-osimage%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/mgr-package-rpm-certificate-osimage
+ln -s mgr-package-rpm-certificate-osimage%{default_suffix} $RPM_BUILD_ROOT%{_sbindir}/mgr-package-rpm-certificate-osimage
 ln -s rhn-bootstrap%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
 
 %if 0%{?suse_version}
@@ -126,7 +126,7 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %post
 
 if [ ! -f /usr/share/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
-  mgr-package-rpm-certificate-osimage
+  /usr/sbin/mgr-package-rpm-certificate-osimage
 fi
 
 %files
@@ -137,7 +137,7 @@ fi
 %attr(755,root,root) %{rhnroot}/certs/update-ca-cert-trust.sh
 %attr(755,root,root) %{_bindir}/rhn-sudo-ssl-tool
 %{_bindir}/rhn-ssl-tool
-%{_bindir}/mgr-package-rpm-certificate-osimage
+%{_sbindir}/mgr-package-rpm-certificate-osimage
 %{_bindir}/rhn-bootstrap
 %attr(755,root,root) %{_sbindir}/spacewalk-push-register
 %attr(755,root,root) %{_sbindir}/spacewalk-ssh-push-init
@@ -159,14 +159,14 @@ fi
 %files -n python2-%{name}
 %{python_sitelib}/certs
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python_version}
-%attr(755,root,root) %{_bindir}/mgr-package-rpm-certificate-osimage%{python_version}
+%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage%{python_version}
 %attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python_version}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %{python3_sitelib}/certs
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python3_version}
-%attr(755,root,root) %{_bindir}/mgr-package-rpm-certificate-osimage%{python3_version}
+%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage%{python3_version}
 %attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python3_version}
 %endif
 
