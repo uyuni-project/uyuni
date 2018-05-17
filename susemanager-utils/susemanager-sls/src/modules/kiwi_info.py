@@ -214,7 +214,9 @@ def inspect_bundle(dest, basename):
     pattern = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>.*)\s*$")
     match = pattern.match(sha256_str)
     if match:
-        res.update(match.groupdict())
+        d = match.groupdict()
+        d['hash'] = 'sha256:{}'.format(d['hash'])
+        res.update(d)
         res['filepath'] = os.path.join(dest, res['filename'])
 
     return res
