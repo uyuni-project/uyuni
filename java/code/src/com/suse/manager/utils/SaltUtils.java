@@ -1098,6 +1098,7 @@ public class SaltUtils {
         if (imageInfo.getProfile().asKiwiProfile().isPresent()) {
             if (result.getKiwiInspect().isResult()) {
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
+                imageInfo.setChecksum(ImageInfoFactory.convertChecksum(ret.getBundle().getChecksum()));
                 List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
                 packages.stream().forEach(pkg -> {
                     createImagePackageFromSalt(pkg.getName(),
