@@ -954,8 +954,12 @@ public class SaltUtils {
                                         serverAction);
                             }
                             catch (JsonSyntaxException e) {
+                                final String pkgProfileResultLabel = (jsonResult.getAsJsonObject()
+                                        .has(ImagesProfileUpdateSlsResult.IMAGE_PROFILE_PKG_PROFILE_UPDATE)) ?
+                                        ImagesProfileUpdateSlsResult.IMAGE_PROFILE_PKG_PROFILE_UPDATE :
+                                        ImagesProfileUpdateSlsResult.IMAGE_PROFILE_OLD_PKG_PROFILE_UPDATE;
                                 JsonElement pkgProfileUpdateJson = jsonResult.getAsJsonObject()
-                                        .get(ImagesProfileUpdateSlsResult.IMAGE_PROFILE_PKG_PROFILE_UPDATE)
+                                        .get(pkgProfileResultLabel)
                                         .getAsJsonObject().get("changes")
                                         .getAsJsonObject().get("ret");
                                 adaptPkgProfileJsonToNewFormat(pkgProfileUpdateJson);
