@@ -16,5 +16,7 @@ Then run Salt command(s)
 
 # How to format/prettify JSON
 
+```
 cat file.json | python -m json.tool
+```
 
