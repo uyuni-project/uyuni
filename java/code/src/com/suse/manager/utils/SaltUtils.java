@@ -1107,22 +1107,24 @@ public class SaltUtils {
                             pkg.getRelease(), pkg.getVersion(), Optional.empty(),
                             Optional.of(pkg.getArch()), imageInfo);
                 });
-                String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(
-                        serverAction.getParentAction().getOrg());
-                String generatedPillarFilename =
-                        "/srv/susemanager/pillar_data/images/image-" +
-                                ret.getBundle().getBasename() + "-" +
-                                ret.getBundle().getId().replace('.', '-') + ".sls";
-                MgrUtilRunner.ExecResult generatedResult = saltService
-                        .generateOSImagePillar(generatedPillarFilename, ret, storeDirectory)
-                        .orElseThrow(
-                                () -> new RuntimeException("Failed to register image."));
+                if ("pxe".equals(ret.getImage().getType())) {
+                    String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(
+                            serverAction.getParentAction().getOrg());
+                    String generatedPillarFilename =
+                            "/srv/susemanager/pillar_data/images/image-" +
+                                    ret.getBundle().getBasename() + "-" +
+                                    ret.getBundle().getId().replace('.', '-') + ".sls";
+                    MgrUtilRunner.ExecResult generatedResult = saltService
+                            .generateOSImagePillar(generatedPillarFilename, ret, storeDirectory)
+                            .orElseThrow(
+                                    () -> new RuntimeException("Failed to register image."));
 
-                if (generatedResult.getReturnCode() != 0) {
-                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                    serverAction.setResultMsg(
-                            StringUtils.left(printStdMessages(generatedResult.getStderr(),
-                                    generatedResult.getStdout()), 1024));
+                    if (generatedResult.getReturnCode() != 0) {
+                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                        serverAction.setResultMsg(
+                                StringUtils.left(printStdMessages(generatedResult.getStderr(),
+                                        generatedResult.getStdout()), 1024));
+                    }
                 }
             }
             else {
