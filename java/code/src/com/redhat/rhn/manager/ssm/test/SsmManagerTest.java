@@ -556,7 +556,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     public void testScheduleChannelChangesChangeDefaultBaseAndOneChildForTwoServers() throws Exception {
         context().checking(new Expectations() { {
-            exactly(2).of(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
+            exactly(1).of(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
         Channel parent = ChannelFactoryTest.createTestChannel(user);

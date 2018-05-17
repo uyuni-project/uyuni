@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.ssm;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -44,7 +45,6 @@ import org.apache.commons.logging.LogFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -177,56 +178,121 @@ public class SsmManager {
      */
     public static List<ScheduleChannelChangesResultDto> scheduleChannelChanges(
             List<ChannelChangeDto> channelChanges, Date earliest, User user) {
-        List<ScheduleChannelChangesResultDto> schedulingResult = new ArrayList<>();
-        // systems with a base channel
-        for (SystemsPerChannelDto spc : ChannelManager.baseChannelsInSet(user)) {
-            Channel currentBase = ChannelFactory.lookupById(spc.getId().longValue());
-            List<Server> oldBaseServers = SsmManager.findServersInSetByChannel(user, currentBase.getId());
-            for (Server srv : oldBaseServers) {
-                // find changes by old base
-                Set<ChannelChangeDto> srvChanges = channelChanges.stream()
-                        .filter(ch -> ch.getNewBaseId().isPresent()) // exclude invalid changes without a new base
-                        .filter(ch -> ch.getOldBaseId().map(currentBase.getId()::equals).orElse(false))
-                        .collect(Collectors.toSet());
-                if (defaultBaseChange(srvChanges)) {
-                    handleDefaultBaseChannelChange(earliest, user, schedulingResult, srv, srvChanges);
-                }
-                else if (explicitChange(srvChanges)) {
-                    handleExplicitBaseChannelChange(earliest, user, schedulingResult,
-                            Optional.of(currentBase), srv, srvChanges.stream().findFirst().get());
-                }
-                else if (onlyChildChannelsChange(srvChanges)) {
-                    ChannelChangeDto srvChange = srvChanges.stream().findFirst().get();
-                    List<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange, srv.getBaseChannel());
-                    schedulingResult.add(
-                            scheduleSubscribeChannelsAction(srv, Optional.empty(), childChannels, user, earliest));
-                }
-                else {
-                    LOG.error("Invalid channel change for serverId=" + srv.getId());
-                    schedulingResult.add(new ScheduleChannelChangesResultDto(SsmServerDto.from(srv), "invalid_change"));
-                }
-            }
-        }
-        // systems without a base channel
-        for (EssentialServerDto srvDto : SystemManager.systemsWithoutBaseChannelsInSet(user)) {
-            Server srv = ServerFactory.lookupById(srvDto.getId());
-            Set<ChannelChangeDto> srvChanges = channelChanges.stream()
-                    .filter(ch -> !ch.getOldBaseId().isPresent())
-                    .collect(Collectors.toSet());
-            if (defaultBaseChange(srvChanges)) {
-                handleDefaultBaseChannelChange(earliest, user, schedulingResult, srv, srvChanges);
-            }
-            else if (explicitChange(srvChanges)) {
-                handleExplicitBaseChannelChange(earliest, user, schedulingResult, Optional.empty(), srv,
-                        srvChanges.stream().findFirst().get());
-            }
-            // no child-only changes possible in case of systems without a base channel
-        }
-        return schedulingResult;
+        Stream<ChannelSelectionResult> withBaseChannelResults =
+                handleChannelChangesForSystemsWithBaseChannel(channelChanges, earliest, user);
+
+        DataResult<EssentialServerDto> systemsWithNoBaseChannel = SystemManager.systemsWithoutBaseChannelsInSet(user);
+        Stream<ChannelSelectionResult> noBaseChannelResults =
+                systemsWithNoBaseChannel != null && !systemsWithNoBaseChannel.isEmpty() ?
+                handleChannelChangesForSystemsWithNoBaseChannel(channelChanges,
+                        earliest, user, systemsWithNoBaseChannel) :
+                Stream.empty();
+
+        List<ChannelSelectionResult> allResults = Stream.concat(withBaseChannelResults, noBaseChannelResults)
+                                                        .collect(Collectors.toList());
+
+        //success channel selections
+        Stream<ChannelSelectionResult> succeededResults = allResults.stream().filter(e -> !e.isError());
+
+        Map<ChannelSelection, List<ChannelSelectionResult>> succededMap = succeededResults
+                .collect(Collectors.groupingBy(ChannelSelectionResult::getChannelSelection));
+
+        //error channel selections
+        Stream<ChannelSelectionResult> errored = allResults.stream().filter(ChannelSelectionResult::isError);
+
+        Map<String, List<ChannelSelectionResult>> erroredMap = errored
+                .collect(Collectors.groupingBy(ChannelSelectionResult::getError));
+
+        return scheduleChannelChanges(user, earliest, succededMap, erroredMap);
     }
 
-    private static void handleExplicitBaseChannelChange(Date earliest, User user,
-                                                        List<ScheduleChannelChangesResultDto> schedulingResult,
+    private static List<ScheduleChannelChangesResultDto> scheduleChannelChanges(User user, Date earliest,
+            Map<ChannelSelection, List<ChannelSelectionResult>> succeded,
+            Map<String, List<ChannelSelectionResult>> errored) {
+        Stream<ScheduleChannelChangesResultDto> succededResults =
+                succeded.entrySet().stream().map(e ->
+                           scheduleSubscribeChannelsAction(succeded.get(e.getKey()),
+                                                           e.getKey().getNewBaseChannel(),
+                                                           e.getKey().getChildChannels(),
+                                                           user, earliest)
+        ).flatMap(Set::stream);
+
+        Stream<ScheduleChannelChangesResultDto> erroredResults =
+                errored.entrySet().stream().map(e -> e.getValue().stream()
+                        .map(r -> new ScheduleChannelChangesResultDto(SsmServerDto.from(r.getServer()), e.getKey())
+                )
+        ).flatMap(Function.identity());
+
+        return Stream.concat(succededResults, erroredResults).collect(Collectors.toList());
+    }
+
+    private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithNoBaseChannel(
+            List<ChannelChangeDto> channelChanges, Date earliest, User user,
+            DataResult<EssentialServerDto> systemsWithNoBaseChannel) {
+
+        Set<ChannelChangeDto> srvChanges = channelChanges.stream()
+                .filter(ch -> !ch.getOldBaseId().isPresent())
+                .collect(Collectors.toSet());
+
+        return systemsWithNoBaseChannel.stream()
+                .map(srv -> handleSingleSystemChannelAddition(srvChanges, srv, earliest, user))
+                .filter(c -> c != null);
+    }
+
+    private static ChannelSelectionResult handleSingleSystemChannelAddition(Set<ChannelChangeDto> srvChanges,
+            EssentialServerDto srvDto, Date earliest, User user) {
+        Server srv = ServerFactory.lookupById(srvDto.getId());
+
+        if (defaultBaseChange(srvChanges)) {
+            return handleDefaultBaseChannelChange(earliest, user, srv, srvChanges);
+        }
+        else if (explicitChange(srvChanges)) {
+            return handleExplicitBaseChannelChange(earliest, user, Optional.empty(), srv,
+                    srvChanges.stream().findFirst().get());
+        }
+        // no child-only changes possible in case of systems without a base channel
+        return null;
+    }
+
+    private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithBaseChannel(
+            List<ChannelChangeDto> channelChanges, Date earliest, User user) {
+        return ChannelManager.baseChannelsInSet(user).stream().flatMap(spc -> {
+            Channel currentBase = ChannelFactory.lookupById(spc.getId().longValue());
+            List<Server> oldBaseServers = SsmManager.findServersInSetByChannel(user, currentBase.getId());
+
+            // find changes by old base
+            Set<ChannelChangeDto> srvChanges = channelChanges.stream()
+                    .filter(ch -> ch.getNewBaseId().isPresent()) // exclude invalid changes without a new base
+                    .filter(ch -> ch.getOldBaseId().map(currentBase.getId()::equals).orElse(false))
+                    .collect(Collectors.toSet());
+
+            return oldBaseServers.stream()
+                    .map(srv -> handleSingleSystemChannelChange(srvChanges, earliest, user, currentBase, srv));
+        });
+    }
+
+    private static ChannelSelectionResult handleSingleSystemChannelChange(Set<ChannelChangeDto> srvChanges,
+            Date earliest, User user, Channel currentBase, Server srv) {
+        if (defaultBaseChange(srvChanges)) {
+            return handleDefaultBaseChannelChange(earliest, user, srv, srvChanges);
+        }
+        else if (explicitChange(srvChanges)) {
+            return handleExplicitBaseChannelChange(earliest, user,  Optional.of(currentBase), srv,
+                    srvChanges.stream().findFirst().get());
+        }
+        else if (onlyChildChannelsChange(srvChanges)) {
+            ChannelChangeDto srvChange = srvChanges.stream().findFirst().get();
+            Set<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange, srv.getBaseChannel());
+
+            return new ChannelSelectionResult(srv, new ChannelSelection(Optional.empty(), childChannels));
+        }
+        else {
+            LOG.error("Invalid channel change for serverId=" + srv.getId());
+            return new ChannelSelectionResult(srv, "invalid_change");
+        }
+    }
+
+    private static ChannelSelectionResult handleExplicitBaseChannelChange(Date earliest, User user,
                                                         Optional<Channel> currentBase,
                                                         Server srv,
                                                         ChannelChangeDto srvChange) {
@@ -258,20 +324,17 @@ public class SsmManager {
                     " not compatible with base id=" +
                     Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none") +
                     " for serverId=" + srv.getId());
-            schedulingResult.add(new ScheduleChannelChangesResultDto(SsmServerDto.from(srv),
-                    "incompatible_base"));
+            return new ChannelSelectionResult(srv, "incompatible_base");
         }
         else {
             Channel newBaseChannel = ChannelFactory.lookupById(srvChange.getNewBaseId().get());
+            Set<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange, newBaseChannel);
 
-            List<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange, newBaseChannel);
-            schedulingResult.add(
-                    scheduleSubscribeChannelsAction(srv, Optional.of(newBaseChannel), childChannels, user, earliest));
+            return new ChannelSelectionResult(srv, new ChannelSelection(Optional.of(newBaseChannel), childChannels));
         }
     }
 
-    private static void handleDefaultBaseChannelChange(Date earliest, User user,
-                                                       List<ScheduleChannelChangesResultDto> schedulingResult,
+    private static ChannelSelectionResult handleDefaultBaseChannelChange(Date earliest, User user,
                                                        Server srv, Set<ChannelChangeDto> srvChanges) {
         Optional<Channel> guessedChannel =
                 ChannelManager.guessServerBaseChannel(user, srv.getId());
@@ -280,47 +343,52 @@ public class SsmManager {
                     srv.getId() +
                     " user=" +
                     user.getLogin());
-            schedulingResult.add(new ScheduleChannelChangesResultDto(SsmServerDto.from(srv), "no_base_channel_guess"));
-            return;
+            return new ChannelSelectionResult(srv, "no_base_channel_guess");
         }
         Optional<ChannelChangeDto> srvChange = getChangeByDefaultBase(srvChanges, guessedChannel.get());
         if (srvChange.isPresent()) {
             Channel newBaseChannel = ChannelFactory.lookupById(srvChange.get().getNewBaseId().get());
-            List<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange.get(), newBaseChannel);
-            schedulingResult.add(
-                    scheduleSubscribeChannelsAction(srv, Optional.of(newBaseChannel), childChannels, user, earliest));
+            Set<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange.get(), newBaseChannel);
+
+            return new ChannelSelectionResult(srv, new ChannelSelection(Optional.of(newBaseChannel), childChannels));
         }
         else {
             LOG.warn("No base channel change found for serverId=" + srv.getId());
-            schedulingResult.add(new ScheduleChannelChangesResultDto(SsmServerDto.from(srv), "no_base_change_found"));
+            return new ChannelSelectionResult(srv, "no_base_change_found");
         }
     }
 
-    private static ScheduleChannelChangesResultDto scheduleSubscribeChannelsAction(Server srv,
+    private static Set<ScheduleChannelChangesResultDto> scheduleSubscribeChannelsAction(
+                                                                                   List<ChannelSelectionResult> results,
                                                                                    Optional<Channel> baseChannel,
-                                                                                   List<Channel> childChannels,
+                                                                                   Set<Channel> childChannels,
                                                                                    User user, Date earliest) {
         try {
             SubscribeChannelsAction action = ActionManager.scheduleSubscribeChannelsAction(
                     user,
-                    Collections.singleton(srv.getId()),
+                    results.stream().map(ChannelSelectionResult::getServerId).collect(Collectors.toSet()),
                     baseChannel,
                     childChannels,
                     earliest
                     );
-            return new ScheduleChannelChangesResultDto(SsmServerDto.from(srv), action.getId());
+
+            return results.stream()
+                    .map(r -> new ScheduleChannelChangesResultDto(SsmServerDto.from(r.getServer()), action.getId()))
+                    .collect(Collectors.toSet());
         }
         catch (TaskomaticApiException e) {
             LOG.error("Taskomatic error scheduling subscribe channel action", e);
-            return new ScheduleChannelChangesResultDto(SsmServerDto.from(srv), "taskomatic_error");
+            return results.stream()
+                    .map(r -> new ScheduleChannelChangesResultDto(SsmServerDto.from(r.getServer()), "taskomatic_error"))
+                    .collect(Collectors.toSet());
         }
     }
 
-    private static List<Channel> getChildChannelsForChange(User user, Server server, ChannelChangeDto change,
+    private static Set<Channel> getChildChannelsForChange(User user, Server server, ChannelChangeDto change,
                                                            Channel newBaseChannel) {
         List<Channel> accessibleChildren = ChannelFactory.getAccessibleChildChannels(newBaseChannel, user);
         // TODO ChannelManager.verifyChannelSubscribe() for base and children ?
-        List<Channel> result = new ArrayList<>();
+        Set<Channel> result = new HashSet<>();
         change.getChildChannelActions().forEach((cid, action) -> {
             final long childId = cid;
             if (action == ChannelChangeDto.ChannelAction.SUBSCRIBE) {
