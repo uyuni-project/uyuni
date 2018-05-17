@@ -1,6 +1,11 @@
+-------------------------------------------------------------------
+Thu May 17 09:12:07 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.0.10-1
 - fix bootstrap script for python3 (bsc#1091840)
 - Add detection of multiple rhnlib package installs
 - support SLE15 product family
+
 -------------------------------------------------------------------
 Tue Apr 10 09:58:36 CEST 2018 - jgonzalez@suse.com
 
