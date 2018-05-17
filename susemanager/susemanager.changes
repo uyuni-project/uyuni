@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 17 09:21:05 CEST 2018 - jgonzalez@suse.com
+
+- version 3.1.14-1
 - add missing python3 packages to bootstrap JeOS image (bsc#1085044)
 - support SLE15 product family
 - fix crash on not properly configured environment (bsc#1092275)
