@@ -247,7 +247,8 @@ public class OSImageInspectSlsResult {
      * The type Bundle.
      */
     public static class Bundle {
-        private String hash;
+        @SerializedName("hash")
+        private Checksum checksum;
         private String suffix;
         private String filepath;
         private String basename;
@@ -255,10 +256,10 @@ public class OSImageInspectSlsResult {
         private String id;
 
         /**
-         * @return the hash
+         * @return the checksum
          */
-        public String getHash() {
-            return hash;
+        public Checksum getChecksum() {
+            return checksum;
         }
 
         /**
