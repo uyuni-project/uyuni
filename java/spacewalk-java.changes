@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 17 10:26:47 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.46.12-1
 - fix unknown installed products when using salt-ssh (bsc#1088861)
 - prevent NPE when no image build history details are available (bsc#1092161)
 - Uniform the notification message when scheduling HW refresh (bsc#1082796)
