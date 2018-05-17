@@ -15,6 +15,12 @@
 
 package com.redhat.rhn.domain.image.test;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
@@ -44,9 +50,10 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-
 import com.redhat.rhn.testing.UserTestUtils;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
+
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -61,12 +68,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
-import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
 
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
@@ -85,8 +86,8 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public final void testConvertChecksum() {
         //SHA1
         String sha1Str = DigestUtils.sha1Hex("mychecksum");
-        ImageInspectSlsResult.Checksum chksum =
-                new ImageInspectSlsResult.SHA1Checksum(sha1Str);
+        ImageChecksum.Checksum chksum =
+                new ImageChecksum.SHA1Checksum(sha1Str);
         assertEquals(chksum.getChecksum(), sha1Str);
 
         Checksum converted = ImageInfoFactory.convertChecksum(chksum);
@@ -97,12 +98,12 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(converted.getChecksumType().getLabel(), "sha1");
 
         chksum = ImageInfoFactory.convertChecksum(converted);
-        assertTrue(chksum instanceof ImageInspectSlsResult.SHA1Checksum);
+        assertTrue(chksum instanceof ImageChecksum.SHA1Checksum);
         assertEquals(chksum.getChecksum(), sha1Str);
 
         //SHA256
         String sha256Str = DigestUtils.sha256Hex("mychecksum");
-        chksum = new ImageInspectSlsResult.SHA256Checksum(sha256Str);
+        chksum = new ImageChecksum.SHA256Checksum(sha256Str);
         assertEquals(chksum.getChecksum(), sha256Str);
 
         converted = ImageInfoFactory.convertChecksum(chksum);
@@ -113,12 +114,12 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(converted.getChecksumType().getLabel(), "sha256");
 
         chksum = ImageInfoFactory.convertChecksum(converted);
-        assertTrue(chksum instanceof ImageInspectSlsResult.SHA256Checksum);
+        assertTrue(chksum instanceof ImageChecksum.SHA256Checksum);
         assertEquals(chksum.getChecksum(), sha256Str);
 
         //SHA384
         String sha384Str = DigestUtils.sha384Hex("mychecksum");
-        chksum = new ImageInspectSlsResult.SHA384Checksum(sha384Str);
+        chksum = new ImageChecksum.SHA384Checksum(sha384Str);
         assertEquals(chksum.getChecksum(), sha384Str);
 
         converted = ImageInfoFactory.convertChecksum(chksum);
@@ -129,12 +130,12 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(converted.getChecksumType().getLabel(), "sha384");
 
         chksum = ImageInfoFactory.convertChecksum(converted);
-        assertTrue(chksum instanceof ImageInspectSlsResult.SHA384Checksum);
+        assertTrue(chksum instanceof ImageChecksum.SHA384Checksum);
         assertEquals(chksum.getChecksum(), sha384Str);
 
         //SHA512
         String sha512Str = DigestUtils.sha256Hex("mychecksum");
-        chksum = new ImageInspectSlsResult.SHA512Checksum(sha256Str);
+        chksum = new ImageChecksum.SHA512Checksum(sha256Str);
         assertEquals(chksum.getChecksum(), sha512Str);
 
         converted = ImageInfoFactory.convertChecksum(chksum);
@@ -145,7 +146,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(converted.getChecksumType().getLabel(), "sha512");
 
         chksum = ImageInfoFactory.convertChecksum(converted);
-        assertTrue(chksum instanceof ImageInspectSlsResult.SHA512Checksum);
+        assertTrue(chksum instanceof ImageChecksum.SHA512Checksum);
         assertEquals(chksum.getChecksum(), sha512Str);
     }
 

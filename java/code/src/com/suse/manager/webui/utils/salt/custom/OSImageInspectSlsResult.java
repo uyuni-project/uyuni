@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
 
 import java.util.List;
 

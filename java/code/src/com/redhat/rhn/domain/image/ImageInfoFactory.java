@@ -27,11 +27,11 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.Checksum;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA1Checksum;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA256Checksum;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA384Checksum;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA512Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA1Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA384Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA512Checksum;
 
 import org.apache.log4j.Logger;
 
