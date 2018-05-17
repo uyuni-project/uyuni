@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu May 17 09:26:00 CEST 2018 - jgonzalez@suse.com
+
+- version 3.1.13-1
 - add SLES12 SP2 LTSS family (bsc#1092194)
 - Add SLES12-SP2-LTSS product classes (bsc#1092194)
 - Add debuginfo channels for SLE15 products
@@ -6,6 +10,7 @@
 - add new HPC 15 Product
 - add missing channel to sle-module-basesystem 15
 - support SLE15 product family
+
 -------------------------------------------------------------------
 Tue Apr 10 17:32:03 CEST 2018 - jgonzalez@suse.com
 
