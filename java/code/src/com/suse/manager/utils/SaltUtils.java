@@ -906,6 +906,7 @@ public class SaltUtils {
         Action action = serverAction.getParentAction();
         ImageBuildAction ba = (ImageBuildAction)action;
         ImageBuildActionDetails details = ba.getDetails();
+        Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
 
         // Pretty-print the whole return map (or whatever fits into 1024 characters)
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
@@ -921,9 +922,7 @@ public class SaltUtils {
                     // Download the built Kiwi image to SUSE Manager server
                     OSImageInspectSlsResult.Bundle bundleInfo = Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                             .getKiwiBuildInfo().getChanges().getRet().getBundle();
-                    ImageInfoFactory.lookupByBuildAction(ba).ifPresent(info -> {
-                        info.setChecksum(ImageInfoFactory.convertChecksum(bundleInfo.getChecksum()));
-                    });
+                    infoOpt.ifPresent(info -> info.setChecksum(ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
                     MgrUtilRunner.ExecResult collectResult = saltService
                             .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
                                     OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
@@ -956,7 +955,7 @@ public class SaltUtils {
                 LOG.error(e);
             }
 
-            ImageInfoFactory.lookupByBuildAction(ba).ifPresent(info -> {
+            infoOpt.ifPresent(info -> {
                 info.setRevisionNumber(info.getRevisionNumber() + 1);
                 info.setInspectAction(iAction);
                 ImageInfoFactory.save(info);
