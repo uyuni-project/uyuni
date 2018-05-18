@@ -70,6 +70,8 @@ public class Router implements SparkApplication {
     public void init() {
         JadeTemplateEngine jade = setup();
 
+        initNotFoundRoutes(jade);
+
         //CVEAudit
 
         get("/manager/audit/cve",
@@ -78,7 +80,6 @@ public class Router implements SparkApplication {
         post("/manager/api/audit/cve", withUser(CVEAuditController::cveAudit));
         get("/manager/api/audit/cve.csv", withUser(CVEAuditController::cveAuditCSV));
 
-        // Content Management
         initContentManagementRoutes(jade);
 
         // Minions
@@ -304,7 +305,9 @@ public class Router implements SparkApplication {
                 withProductAdmin(ProductsController::synchronizeProductChannels));
         post("/manager/admin/setup/sync/subscriptions",
                 withProductAdmin(ProductsController::synchronizeSubscriptions));
+    }
 
+    private void  initNotFoundRoutes(JadeTemplateEngine jade) {
         notFound((request, response) -> {
             Map<String, Object> data = new HashMap<>();
             data.put("currentUrl", request.pathInfo());
@@ -317,7 +320,6 @@ public class Router implements SparkApplication {
             data.put("currentUrl", request.pathInfo());
             response.body(jade.render(new ModelAndView(data, "errors/404.jade")));
         });
-
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
