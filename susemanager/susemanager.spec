@@ -166,6 +166,10 @@ if [ ! -d /srv/www/os-images ]; then
   chmod g+w /srv/www/os-images
 fi
 
+if [ ! -f /usr/share/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
+  /usr/sbin/mgr-package-rpm-certificate-osimage
+fi
+
 if [ ! -d /srv/susemanager/pillar_data/images ]; then
   mkdir -p /srv/susemanager/pillar_data/images
   chown -R tomcat:susemanager /srv/susemanager/pillar_data
