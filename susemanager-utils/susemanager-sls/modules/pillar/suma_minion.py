@@ -30,6 +30,9 @@ MANAGER_FORMULAS_METADATA_PATH = '/usr/share/susemanager/formulas/metadata'
 CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
 FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
 
+# SUSE Manager images paths:
+IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
+
 # SUSE Manager static pillar data.
 MANAGER_STATIC_PILLAR = [
     'gpgkeys',
@@ -82,6 +85,12 @@ def ext_pillar(minion_id, *args):
         ret.update(formula_pillars(minion_id, ret.get("group_ids", [])))
     except Exception as error:
         log.error('Error accessing formula pillar data: {message}'.format(message=str(error)))
+
+    # Including images pillar
+    try:
+        ret.update(image_pillars(minion_id))
+    except:
+        log.error('Error accessing image pillar data: {}'.format(str(error)))
 
     return ret
 
@@ -232,7 +241,6 @@ def adjust_empty_values(layout, data):
             ret[element_name] = value
     return ret
 
-
 def get_edit_group_subtype(element):
     if element is not None and element.get("$prototype"):
         prototype = element.get("$prototype")
@@ -245,3 +253,23 @@ def get_edit_group_subtype(element):
         if prototype.get("$key") is not None and prototype.get("$type", "group") == "group":
             return EditGroupSubtype.DICTIONARY_OF_DICTIONARIES
     return None
+
+def image_pillars(minion_id):
+    '''
+    Load image pillars
+
+    Image pillars are automatically created after image build and are available to all minions
+    '''
+    ret = {}
+    for pillar in os.listdir(IMAGES_DATA_PATH):
+        pillar_path = os.path.join(IMAGES_DATA_PATH, pillar)
+        if not os.path.isfile(pillar_path):
+            continue
+
+        try:
+            with open(pillar_path) as p:
+                ret.update(yaml.load(p.read()))
+        except Exception as error:
+            log.error('Error loading data for image "{image}": {message}'.format(image=pillar, message=str(error)))
+            return {}
+    return ret
