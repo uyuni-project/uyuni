@@ -152,9 +152,10 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
         Map<String, String> addonEntitlementCounts = (Map<String, String>) request
                 .getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT_COUNTS);
-
-        assertEquals("1 system(s).",
-                addonEntitlementCounts.get(EntitlementManager.OSIMAGE_BUILD_HOST.getLabel()));
+        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
+            assertEquals("1 system(s).",
+                    addonEntitlementCounts.get(EntitlementManager.OSIMAGE_BUILD_HOST.getLabel()));
+        }
         context.assertIsSatisfied();
     }
 
