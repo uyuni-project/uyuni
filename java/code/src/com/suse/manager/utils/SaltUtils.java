@@ -1046,21 +1046,16 @@ public class SaltUtils {
 
             Optional.of(ret.getInfoInstalled().getChanges().getRet())
             .map(saltPkgs -> saltPkgs.entrySet().stream()
-                    .filter(entry -> entry.getValue().isLeft())
-                    .map(entry -> createImagePackageFromSalt(entry.getKey(),
-                            entry.getValue().left().get(), imageInfo))
+                    .flatMap(entry -> Opt.stream(entry.getValue().left())
+                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
                     .collect(Collectors.toSet()));
 
             Optional.of(ret.getInfoInstalled().getChanges().getRet())
-            .map(saltPkgs -> {
-                    saltPkgs.entrySet().stream()
-                        .filter(entry -> entry.getValue().isRight())
-                        .forEach(entry ->
-                            entry.getValue().right().get().stream().forEach(info ->
-                                    createImagePackageFromSalt(entry.getKey(), info, imageInfo)
-                        ));
-                    return saltPkgs;
-            });
+            .map(saltPkgs -> saltPkgs.entrySet().stream()
+                    .flatMap(entry -> Opt.stream(entry.getValue().right())
+                        .flatMap(infoList -> infoList.stream())
+                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
+                    .collect(Collectors.toSet()));
 
             Optional.ofNullable(ret.getListProducts())
             .map(products -> products.getChanges().getRet())
@@ -1197,30 +1192,30 @@ public class SaltUtils {
         Map<String, Map.Entry<String, Pkg.Info>> newPackageMap = new HashMap<>();
         newPackageMap.putAll(result.getInfoInstalled().getChanges().getRet()
             .entrySet().stream()
-            .filter(entry -> entry.getValue().isRight())
-            .map(entry -> {
-                List<Map.Entry<String, Pkg.Info>> ret = new ArrayList<>();
-                entry.getValue().right().get().stream().forEach(x -> {
-                        Map<String, Pkg.Info> infoTuple = new HashMap<>();
-                        infoTuple.put(entry.getKey(), x);
-                        ret.addAll(infoTuple.entrySet());
-                });
-                return ret;
-            })
+            .flatMap(entry -> Opt.stream(entry.getValue().right())
+                .map(infoList -> {
+                    List<Map.Entry<String, Pkg.Info>> ret = new ArrayList<>();
+                    infoList.stream().forEach(x -> {
+                            Map<String, Pkg.Info> infoTuple = new HashMap<>();
+                            infoTuple.put(entry.getKey(), x);
+                            ret.addAll(infoTuple.entrySet());
+                    });
+                    return ret;
+                }))
             .flatMap(entrySet -> entrySet.stream())
             .collect(Collectors.toMap(
                     SaltUtils::packageToKey,
                     Function.identity()
-             )));
+            )));
         newPackageMap.putAll(result.getInfoInstalled().getChanges().getRet()
             .entrySet().stream()
-            .filter(entry -> entry.getValue().isLeft())
-            .collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue().left().get()))
-            .entrySet().stream()
+            .flatMap(entry -> Opt.stream(entry.getValue().left())
+                    .collect(Collectors.toMap(x -> entry.getKey(), x -> x))
+                    .entrySet().stream())
             .collect(Collectors.toMap(
                     SaltUtils::packageToKey,
                     Function.identity()
-             )));
+            )));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
             e -> newPackageMap.containsKey(e.getKey())
