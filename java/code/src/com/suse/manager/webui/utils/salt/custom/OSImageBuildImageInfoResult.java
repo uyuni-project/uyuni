@@ -17,14 +17,14 @@ package com.suse.manager.webui.utils.salt.custom;
 /**
  * The resulting image info from kiwi-image-build
  */
-public class KiwiBuildImageInfoResult {
+public class OSImageBuildImageInfoResult {
 
-    private KiwiBundleInfo bundle;
+    private OSImageInspectSlsResult.Bundle bundle;
 
     /**
      * @return the bundle info
      */
-    public KiwiBundleInfo getBundle() {
+    public OSImageInspectSlsResult.Bundle getBundle() {
         return bundle;
     }
 }
