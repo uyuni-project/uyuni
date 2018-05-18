@@ -107,7 +107,6 @@ make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
 
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
 ln -s rhn-ssl-tool%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-ssl-tool
-ln -s mgr-package-rpm-certificate-osimage%{default_suffix} $RPM_BUILD_ROOT%{_sbindir}/mgr-package-rpm-certificate-osimage
 ln -s rhn-bootstrap%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
 
 %if 0%{?suse_version}
@@ -122,12 +121,6 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif
-
-%post
-
-if [ ! -f /usr/share/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
-  /usr/sbin/mgr-package-rpm-certificate-osimage
-fi
 
 %files
 %defattr(-,root,root,-)
