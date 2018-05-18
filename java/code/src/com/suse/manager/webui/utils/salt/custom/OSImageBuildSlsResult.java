@@ -21,16 +21,16 @@ import com.suse.salt.netapi.results.StateApplyResult;
 /**
  * Result structure from images.kiwi-image-build
  */
-public class KiwiImageBuildSlsResult {
+public class OSImageBuildSlsResult {
 
     // used for old salt 2016.11 dockerng module
     @SerializedName("module_|-mgr_buildimage_info_|-kiwi_info.image_details_|-run")
-    private StateApplyResult<Ret<KiwiBuildImageInfoResult>> kiwiBuildInfo;
+    private StateApplyResult<Ret<OSImageBuildImageInfoResult>> kiwiBuildInfo;
 
     /**
      * @return the kiwi build info
      */
-    public StateApplyResult<Ret<KiwiBuildImageInfoResult>> getKiwiBuildInfo() {
+    public StateApplyResult<Ret<OSImageBuildImageInfoResult>> getKiwiBuildInfo() {
         return kiwiBuildInfo;
     }
 }
