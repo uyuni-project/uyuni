@@ -89,6 +89,6 @@ def generate_pillar(dest, image, bundle, boot_image, url_base):
     p = Popen(['/bin/true'], stdout=PIPE, stderr=PIPE)
 
     stdout, stderr = p.communicate()
-    return {"returncode": p.returncode, "stdout": salt.utils.to_unicode(stdout), "stderr": salt.utils.to_unicode(stderr)}
+    return {"returncode": p.returncode, "stdout": salt.utils.stringutils.to_unicode(stdout), "stderr": salt.utils.stringutils.to_unicode(stderr)}
 
 
