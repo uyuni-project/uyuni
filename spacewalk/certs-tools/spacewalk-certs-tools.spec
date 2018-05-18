@@ -161,14 +161,12 @@ fi
 %files -n python2-%{name}
 %{python_sitelib}/certs
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python_version}
-%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage-%{python_version}
 %attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python_version}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %{python3_sitelib}/certs
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python3_version}
-%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage-%{python3_version}
 %attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python3_version}
 %endif
 
