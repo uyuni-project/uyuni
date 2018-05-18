@@ -1547,7 +1547,7 @@ public class SystemHandler extends BaseHandler {
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
                 new SsmDeleteServersEvent(loggedInUser, deletion,
-                        SystemManager.ServerCleanupType.FORCE_DELETE);
+                        SystemManager.ServerCleanupType.NO_CLEANUP);
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException
@@ -1582,7 +1582,7 @@ public class SystemHandler extends BaseHandler {
         Server server = validateClientCertificate(clientCert);
         SystemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
                 server.getId(),
-                SystemManager.ServerCleanupType.FORCE_DELETE
+                SystemManager.ServerCleanupType.NO_CLEANUP
                 );
         return 1;
     }
@@ -1605,7 +1605,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, serverId);
         SystemManager.deleteServerAndCleanup(loggedInUser,
                 server.getId(),
-                SystemManager.ServerCleanupType.FORCE_DELETE
+                SystemManager.ServerCleanupType.NO_CLEANUP
         );
         return 1;
     }
