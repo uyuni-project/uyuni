@@ -38,8 +38,8 @@ EXTRA_DIRS = $(MANDIR)/man$(MANSECT) $(BINDIR) $(PUB_BOOTSTRAP_DIR) $(SBINDIR)
 # now include some Macros
 include Makefile.defs
 
-SBINFILES = spacewalk-push-register spacewalk-ssh-push-init
-BINFILES = rhn-sudo-ssl-tool mgr-package-rpm-certificate-osimage
+SBINFILES = spacewalk-push-register spacewalk-ssh-push-init mgr-package-rpm-certificate-osimage
+BINFILES = rhn-sudo-ssl-tool
 PYBINFILES = rhn-ssl-tool rhn-bootstrap
 
 install :: $(SBINFILES) $(BINFILES) $(PYBINFILES) $(MANS) $(PREFIX)/$(MANDIR)
