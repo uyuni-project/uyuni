@@ -336,6 +336,16 @@ def build_channel_labels(source):
 
     return source, destination
 
+def get_config_credentials(conf, opts):
+    '''
+    Look into configuration for credentials for the admin user.
+    '''
+    username = conf.get('general', 'username')
+    password = conf.get('general', 'password')
+    if username and password:
+        opts.username = username
+        opts.password = password
+
 ##############################################################################
 
 usage = '''usage: %prog [options]
@@ -480,6 +490,9 @@ if os.path.exists(SESSION_CACHE):
             logging.exception(e)
         logging.warning('Existing session is invalid')
         session = None
+
+# Look for credentials in settings.conf
+get_config_credentials(config, options)
 
 if not session:
     # prompt for the username
