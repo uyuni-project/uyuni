@@ -921,7 +921,9 @@ public class SaltUtils {
                     // Download the built Kiwi image to SUSE Manager server
                     OSImageInspectSlsResult.Bundle bundleInfo = Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                             .getKiwiBuildInfo().getChanges().getRet().getBundle();
-
+                    ImageInfoFactory.lookupByBuildAction(ba).ifPresent(info -> {
+                        info.setChecksum(ImageInfoFactory.convertChecksum(bundleInfo.getChecksum()));
+                    });
                     MgrUtilRunner.ExecResult collectResult = saltService
                             .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
                                     OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
@@ -1098,7 +1100,6 @@ public class SaltUtils {
         if (imageInfo.getProfile().asKiwiProfile().isPresent()) {
             if (result.getKiwiInspect().isResult()) {
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
-                imageInfo.setChecksum(ImageInfoFactory.convertChecksum(ret.getBundle().getChecksum()));
                 List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
                 packages.stream().forEach(pkg -> {
                     createImagePackageFromSalt(pkg.getName(),
