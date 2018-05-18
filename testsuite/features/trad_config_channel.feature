@@ -223,7 +223,9 @@ Feature: Configuration management of traditional clients
     When I run "rhn_check -vvv" on "sle-client"
     And I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
     Then I should see a "Differences exist" link
-    And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist /etc/sysconfig/cron (rev. 1) /tmp/mycache.txt (rev. 1) Missing file" text
+    And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist" text
+    And I should see a "/etc/sysconfig/cron (rev. 1)" text
+    And I should see a "/tmp/mycache.txt (rev. 1) Missing file" text
     When I follow "Differences exist"
     Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
     And I should see a "+MGR_PROXY=yes" text
