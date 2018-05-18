@@ -93,8 +93,7 @@ import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
-import com.suse.manager.webui.utils.salt.custom.KiwiBundleInfo;
-import com.suse.manager.webui.utils.salt.custom.KiwiImageBuildSlsResult;
+import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -920,7 +919,7 @@ public class SaltUtils {
             profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     // Download the built Kiwi image to SUSE Manager server
-                    KiwiBundleInfo bundleInfo = Json.GSON.fromJson(jsonResult, KiwiImageBuildSlsResult.class)
+                    OSImageInspectSlsResult.Bundle bundleInfo = Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                             .getKiwiBuildInfo().getChanges().getRet().getBundle();
 
                     MgrUtilRunner.ExecResult collectResult = saltService
