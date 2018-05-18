@@ -137,11 +137,12 @@ fi
 %attr(755,root,root) %{rhnroot}/certs/update-ca-cert-trust.sh
 %attr(755,root,root) %{_bindir}/rhn-sudo-ssl-tool
 %{_bindir}/rhn-ssl-tool
-%{_sbindir}/mgr-package-rpm-certificate-osimage
 %{_bindir}/rhn-bootstrap
 %attr(755,root,root) %{_sbindir}/spacewalk-push-register
 %attr(755,root,root) %{_sbindir}/spacewalk-ssh-push-init
+%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage
 %doc %{_mandir}/man1/rhn-*.1*
+%doc %{_mandir}/man1/mgr-*.1*
 %doc LICENSE
 %doc ssl-howto-simple.txt ssl-howto.txt
 %{pub_bootstrap_dir}/client_config_update.py*
@@ -154,19 +155,20 @@ fi
 %{_bindir}/mgr-sudo-ssl-tool
 %{_sbindir}/mgr-push-register
 %{_sbindir}/mgr-ssh-push-init
+%{_sbindir}/mgr-package-rpm-certificate-osimage
 %endif
 
 %files -n python2-%{name}
 %{python_sitelib}/certs
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python_version}
-%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage%{python_version}
+%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage-%{python_version}
 %attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python_version}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %{python3_sitelib}/certs
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python3_version}
-%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage%{python3_version}
+%attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage-%{python3_version}
 %attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python3_version}
 %endif
 
