@@ -56,7 +56,7 @@ def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", option
 def _cmd(cmd):
     p = Popen(cmd, stdout=PIPE, stderr=PIPE)
     stdout, stderr = p.communicate()
-    return {"returncode": p.returncode, "stdout": salt.utils.to_unicode(stdout), "stderr": salt.utils.to_unicode(stderr)}
+    return {"returncode": p.returncode, "stdout": salt.utils.stringutils.to_unicode(stdout), "stderr": salt.utils.stringutils.to_unicode(stderr)}
 
 
 def move_minion_uploaded_files(minion=None, dirtomove=None, basepath=None, actionpath=None):
