@@ -25,14 +25,8 @@ import java.util.Optional;
  */
 public class ImagesProfileUpdateSlsResult {
 
-    public static final String IMAGE_PROFILE_OLD_PKG_PROFILE_UPDATE =
-            "module_|-mgr_image_profileupdate_|-dockerng.sls_build_|-run";
-
-    public static final String IMAGE_PROFILE_PKG_PROFILE_UPDATE =
-            "module_|-mgr_image_profileupdate_|-docker.sls_build_|-run";
-
     // used for old salt 2016.11 dockerng module
-    @SerializedName(IMAGE_PROFILE_OLD_PKG_PROFILE_UPDATE)
+    @SerializedName("module_|-mgr_image_profileupdate_|-dockerng.sls_build_|-run")
     private Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> dockerngSlsBuild = Optional.empty();
 
     // used for old salt 2016.11 dockerng module
@@ -40,7 +34,7 @@ public class ImagesProfileUpdateSlsResult {
     private Optional<StateApplyResult<Ret<ImageInspectSlsResult>>> dockerngInspect = Optional.empty();
 
     // used for new salt 2018.3 docker module
-    @SerializedName(IMAGE_PROFILE_PKG_PROFILE_UPDATE)
+    @SerializedName("module_|-mgr_image_profileupdate_|-docker.sls_build_|-run")
     private Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> dockerSlsBuild = Optional.empty();
 
     // used for new salt 2018.3 docker module
