@@ -1,3 +1,8 @@
+- add API functions to specify system cleanup type when deleting a
+  system (bsc#1094190)
+- change default cleanup type for XMLRPC API to NO_CLEANUP
+  (bsc#1094190)
+
 -------------------------------------------------------------------
 Wed May 16 17:41:11 CEST 2018 - jgonzalez@suse.com
 
