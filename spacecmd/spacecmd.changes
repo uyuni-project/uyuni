@@ -1,3 +1,5 @@
+- add option to set cleanup type for system_delete (bsc#1094190)
+
 -------------------------------------------------------------------
 Wed May 16 17:20:02 CEST 2018 - jgonzalez@suse.com
 
