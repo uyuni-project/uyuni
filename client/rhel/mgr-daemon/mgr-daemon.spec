@@ -126,6 +126,7 @@ rm $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
 mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
 install -m 0644 rhnsd.service $RPM_BUILD_ROOT/%{_unitdir}/
 install -m 0644 spacewalk-update-status.service $RPM_BUILD_ROOT/%{_unitdir}/
+install -m 0644 rhnsd.timer $RPM_BUILD_ROOT/%{_unitdir}/
 %endif
 %if 0%{?suse_version}
 # remove all unsupported translations
@@ -154,9 +155,14 @@ ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
 %{!?systemd_postun_with_restart: %global systemd_postun_with_restart() /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : ; if [ $1 -ge 1 ] ; then /usr/bin/systemctl try-restart %%{?*} >/dev/null 2>&1 || : ; fi; }
 %endif
 
+%if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
+rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/rhn/rhnsd
+rm -f $RPM_BUILD_ROOT/%{_sbindir}/rhnsd
+%endif
+
 %if 0%{?suse_version} >= 1210
 %pre
-%service_add_pre rhnsd.service
+%service_add_pre rhnsd.timer
 %service_add_pre spacewalk-update-status.service
 %endif
 
@@ -164,7 +170,7 @@ ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
 %if %{_vendor} != "debbuild"
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
-%service_add_post rhnsd.service
+%service_add_post rhnsd.timer
 %service_add_post spacewalk-update-status.service
 %else
 %{fillup_and_insserv rhnsd}
@@ -174,12 +180,12 @@ if [ -f /etc/init.d/rhnsd ]; then
     /sbin/chkconfig --add rhnsd
 fi
 if [ -f %{_unitdir}/rhnsd.service ]; then
-    %systemd_post rhnsd.service
+    %systemd_post rhnsd.timer
     %systemd_post spacewalk-update-status.service
     if [ "$1" = "2" ]; then
         # upgrade from old init.d
         if [ -L /etc/rc2.d/S97rhnsd ]; then
-            /usr/bin/systemctl enable rhnsd.service >/dev/null 2>&1
+            /usr/bin/systemctl enable rhnsd.timer >/dev/null 2>&1
         fi
         rm -f /etc/rc?.d/[SK]??rhnsd
     fi
@@ -195,7 +201,7 @@ if [ -f %{_initrddir}/rhnsd ] && ( [ "$1" == "configure" ] || [ "$1" == "abort-u
         update-rc.d rhnsd defaults >/dev/null 2>&1 || :
 fi
 if [ -f %{_unitdir}/rhnsd.service ] && [ "$1" == "configure" ]; then
-    systemctl preset rhnsd.service >/dev/null 2>&1 || :
+    systemctl preset rhnsd.timer >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -204,7 +210,7 @@ fi
 %if %{_vendor} != "debbuild"
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
-%service_del_preun rhnsd.service
+%service_del_preun rhnsd.timer
 %service_del_preun spacewalk-update-status.service
 %else
 %stop_on_removal rhnsd
@@ -213,7 +219,7 @@ exit 0
 %else
 if [ $1 = 0 ] ; then
     %if 0%{?fedora} || 0%{?rhel} >= 7
-        %systemd_preun rhnsd.service
+        %systemd_preun rhnsd.timer
         %systemd_preun spacewalk-update-status.service
     %else
     service rhnsd stop >/dev/null 2>&1
@@ -230,8 +236,8 @@ if [ -f %{_initrddir}/rhnsd ] || [ -e "/etc/init/rhnsd.conf" ]; then
     update-rc.d -f rhnsd remove || exit $?
 fi
 if [ -f %{_unitdir}/rhnsd.service ] && ( [ "$1" == "remove" ] || [ "$1" == "purge" ] ); then
-    systemctl --no-reload disable rhnsd.service >/dev/null 2>&1 || :
-    systemctl stop rhnsd.service >/dev/null 2>&1 || :
+    systemctl --no-reload disable rhnsd.timer >/dev/null 2>&1 || :
+    systemctl stop rhnsd.timer >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -239,7 +245,7 @@ fi
 %if %{_vendor} != "debbuild"
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
-%service_del_postun rhnsd.service
+%service_del_postun rhnsd.timer
 %service_del_postun spacewalk-update-status.service
 %else
 %restart_on_update rhnsd
@@ -248,7 +254,7 @@ fi
 %else
 if [ "$1" -ge "1" ]; then
     %if 0%{?fedora} || 0%{?rhel} >= 7
-    %systemd_postun_with_restart rhnsd.service
+    %systemd_postun_with_restart rhnsd.timer
     %systemd_postun_with_restart spacewalk-update-status.service
     %else
     service rhnsd condrestart >/dev/null 2>&1 || :
@@ -279,6 +285,7 @@ fi
 %if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
 %{_unitdir}/rhnsd.service
 %{_unitdir}/spacewalk-update-status.service
+%{_unitdir}/rhnsd.timer
 %else
 %{_initrddir}/rhnsd
 %endif
