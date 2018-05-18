@@ -1098,6 +1098,7 @@ public class SaltUtils {
 
         if (imageInfo.getProfile().asKiwiProfile().isPresent()) {
             if (result.getKiwiInspect().isResult()) {
+                Long instantNow = new Date().getTime()/1000L;
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
                 List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
                 packages.stream().forEach(pkg -> {
@@ -1105,7 +1106,7 @@ public class SaltUtils {
                             pkg.getEpoch().equals(StringUtils.EMPTY) ? null :
                                     pkg.getEpoch(),
                             pkg.getRelease(), pkg.getVersion(),
-                            Optional.of(imageInfo.getBuildAction().getCreated().getTime()/1000L),
+                            Optional.of(instantNow),
                             Optional.of(pkg.getArch()), imageInfo);
                 });
                 if ("pxe".equals(ret.getImage().getType())) {
