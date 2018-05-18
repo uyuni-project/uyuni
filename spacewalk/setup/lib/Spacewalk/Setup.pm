@@ -99,16 +99,8 @@ use constant ORACLE_RHNCONF_BACKUP =>
 
 use constant EMBEDDED_DB_ANSWERS =>
   '/usr/share/spacewalk/setup/defaults.d/embedded-postgresql.conf';
-our $DEFAULT_DOC_ROOT = "/var/www/html";
-our $CA_TRUST_DIR = '/etc/pki/ca-trust/source/anchors';
-if ( -d '/etc/pki/trust/anchors/' )
-{
-    $CA_TRUST_DIR = '/etc/pki/trust/anchors';
-}
-if ( -d '/srv/www/htdocs' )
-{
-    $DEFAULT_DOC_ROOT = '/srv/www/htdocs';
-}
+our $DEFAULT_DOC_ROOT = "/srv/www/htdocs";
+our $CA_TRUST_DIR = '/etc/pki/trust/anchors/';
 use constant DEFAULT_SUSEMANAGER_CONF =>
   '/usr/share/rhn/config-defaults/rhn_server_susemanager.conf';
 
