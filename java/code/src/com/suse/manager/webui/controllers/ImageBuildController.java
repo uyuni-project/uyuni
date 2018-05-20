@@ -52,6 +52,7 @@ import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.controllers.utils.ImagesUtil;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.ViewHelper;
@@ -122,8 +123,7 @@ public class ImageBuildController {
                     "&profile=" + i.getProfile().getProfileId());
             return new ModelAndView(model, "content_management/build.jade");
         }).orElseGet(() -> {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         });
     }
 
@@ -205,8 +205,7 @@ public class ImageBuildController {
                 model.put("id", profileId);
             }
             catch (NumberFormatException e) {
-                Spark.halt(HttpStatus.SC_NOT_FOUND);
-                return null;
+                throw new NotFoundException();
             }
         }
         else {
@@ -507,8 +506,7 @@ public class ImageBuildController {
             id = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageOverview> imageInfo =
@@ -531,8 +529,7 @@ public class ImageBuildController {
             id = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageOverview> imageInfo =
@@ -556,8 +553,7 @@ public class ImageBuildController {
             id = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageOverview> imageInfo =

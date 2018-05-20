@@ -52,6 +52,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -293,8 +294,7 @@ public class StatesAPI {
      */
     private static <T> T getEntityIfExists(Optional<T> entity) {
         return entity.orElseGet(() -> {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         });
     }
 
@@ -306,7 +306,7 @@ public class StatesAPI {
      */
     private static <T> T getEntityIfExists(T entity) {
         if (entity == null) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            throw new NotFoundException();
         }
         return entity;
     }
