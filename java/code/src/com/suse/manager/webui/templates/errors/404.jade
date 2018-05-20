@@ -1,8 +1,11 @@
-body
-    h1 Page Not Found
-    p The page you requested, #{currentUrl}, was not found.
-    ol
-        li If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated.
-        li If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.
-        li If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark.
-        li If you feel you've reached this page in error, please contact us with details of how you received this message.
+include ../common.jade
+
+#notfoundpage
+
+script(src='/javascript/manager/errors/not-found.bundle.js', type='text/javascript')
+
+script(type='text/javascript').
+    pageRenderers.errors.NotFoundRenderer(
+        'notfoundpage',
+        { currentUrl: '#{currentUrl}' }
+    );
