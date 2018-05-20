@@ -22,6 +22,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdm
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.delete;
+import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.head;
 import static spark.Spark.post;
@@ -45,7 +46,14 @@ import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VisualizationController;
+import com.suse.manager.webui.errors.NotFoundException;
 
+import org.apache.http.HttpStatus;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import spark.ModelAndView;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
 
@@ -295,6 +303,14 @@ public class Router implements SparkApplication {
                 withProductAdmin(ProductsController::synchronizeProductChannels));
         post("/manager/admin/setup/sync/subscriptions",
                 withProductAdmin(ProductsController::synchronizeSubscriptions));
+
+        exception(NotFoundException.class, (exception, request, response) -> {
+            response.status(HttpStatus.SC_NOT_FOUND);
+            Map<String, Object> data = new HashMap<>();
+            data.put("currentUrl", request.pathInfo());
+            response.body(jade.render(new ModelAndView(data, "errors/404.jade")));
+        });
+
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
