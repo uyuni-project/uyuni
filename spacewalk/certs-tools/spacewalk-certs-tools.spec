@@ -44,6 +44,7 @@ BuildRequires: filesystem
 Requires: susemanager-build-keys-web
 %endif
 BuildRequires: python
+Requires(post): spacewalk-backend-libs
 Obsoletes: rhns-certs < 5.3.0
 Obsoletes: rhns-certs-tools < 5.3.0
 # can not provides = %{version} since some old packages expect > 3.6.0
@@ -121,6 +122,15 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif
+
+%post
+case "$1" in
+  2)
+       if [ ! -f /usr/share/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
+               /usr/sbin/mgr-package-rpm-certificate-osimage
+       fi
+  ;;
+esac
 
 %files
 %defattr(-,root,root,-)
