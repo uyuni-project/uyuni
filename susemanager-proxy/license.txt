@@ -1,434 +1,324 @@
-﻿SUSE(R) Manager 2.1 Server
-
-SUSE Manager 2.1 Proxy
+﻿
+SUSE® Manager 3 Server
+SUSE® Manager 3 Proxy
 
 SUSE End User License Agreement
 
+PLEASE READ THIS AGREEMENT CAREFULLY.  BY PURCHASING, INSTALLING, DOWNLOADING
+OR OTHERWISE USING THE SOFTWARE (INCLUDING ITS COMPONENTS), YOU AGREE TO THE
+TERMS OF THIS AGREEMENT.  IF YOU DO NOT AGREE WITH THESE TERMS, YOU ARE NOT
+PERMITTED TO DOWNLOAD, INSTALL OR USE THE SOFTWARE AND YOU SHOULD NOTIFY THE
+PARTY FROM WHICH YOU PURCHASED THE SOFTWARE TO OBTAIN A REFUND.   AN
+INDIVIDUAL ACTING ON BEHALF OF AN ENTITY REPRESENTS THAT HE OR SHE HAS THE
+AUTHORITY TO ENTER INTO THIS AGREEMENT ON BEHALF OF THAT ENTITY.
 
-PLEASE READ THIS AGREEMENT CAREFULLY.  BY INSTALLING, DOWNLOADING
-OR OTHERWISE USING THE SOFTWARE, YOU AGREE TO THE TERMS OF THIS
-AGREEMENT.  IF YOU DO NOT AGREE WITH THESE TERMS, YOU ARE NOT
-PERMITTED TO DOWNLOAD, INSTALL OR USE THE SOFTWARE AND YOU SHOULD
-NOTIFY THE PARTY FROM WHICH YOU PURCHASED THE SOFTWARE TO OBTAIN A
-REFUND.  THE SOFTWARE MAY NOT BE SOLD, TRANSFERRED, OR FURTHER
-DISTRIBUTED EXCEPT AS AUTHORIZED BY LICENSOR.
-
-This End User License Agreement ("Agreement") is a legal agreement
-between You (an entity or a person) and SUSE LLC ("Licensor").  The
-software product identified in the title of this Agreement for which
-You have acquired licenses, any media and accompanying documentation
-(collectively the "Software") is protected by the copyright laws and
-treaties of the United States ("U.S.") and other countries and is
-subject to the terms of this Agreement.  If the laws of Your country
-of origin require contracts to be in the local language to be
-enforceable, such local language version may be obtained from
-Licensor upon written request and shall be deemed to govern Your
-purchase of licenses to the Software.  Any update, mobile
-application, module or adapter or support release to the Software
-that You may download or receive that is not accompanied by a
-license agreement is Software and governed by this Agreement.  If
-the Software is an update or support release, then You must have
-validly licensed the version and quantity of the Software being
-updated or supported in order to install or use the update or
-support release.
-
+This End User License Agreement (“Agreement”) is a legal agreement between
+You (an entity or a person) and SUSE LLC (“Licensor”).  The software product
+identified in the title of this Agreement for which You have acquired
+licenses, any media or reproductions (physical or virtual)   and accompanying
+documentation (collectively the “Software”) is protected by the copyright
+laws and treaties of the United States (“U.S.”) and other countries and is
+subject to the terms of this Agreement.  If the laws of Your principal place
+of business require contracts to be in the local language to be enforceable,
+such local language version may be obtained from Licensor upon written
+request and shall be deemed to govern Your purchase of licenses to the
+Software.  Any add-on, update, mobile application, module, adapter or support
+release to the Software that You may download or receive that is not
+accompanied by a license agreement is Software and governed by this Agreement.
+If the Software is an update or support release, then You must have validly
+licensed the version and quantity of the Software being updated or supported
+in order to install or use the update or support release.
 
 LICENSED USE
 
-LICENSES. The Software and each of its components are owned by
-Licensor or other licensors and are protected under copyright laws
-and other applicable laws. Subject to compliance with the terms and
-conditions of this Agreement, Licensor grants to You a perpetual,
-non-transferable, worldwide license to reproduce and use copies of
-the Software within Your Organization (as defined below). Many of
-the individual components included in the Software are licensed
-pursuant to an open source license identified in the documentation
-or located in the source code or binary code for the component.
-This Agreement does not limit Your rights under such licenses or
-supersede or conflict with the license terms or obligations for use
-of any individual open source component.
+LICENSES. The Software and each of its components are owned by Licensor or
+other licensors and are protected under copyright laws and other applicable
+laws. Subject to compliance with the terms and conditions of this Agreement,
+Licensor grants to You a perpetual, non-exclusive, non-transferable, worldwide
+license to reproduce and use copies of the Software within Your Organization
+(as defined below) solely in connection with, and for the duration of, your
+lawfully acquired licenses for SUSE Linux Enterprise Server 12, SUSE Linux
+Enterprise Desktop 12 and associated products.  Associated products currently
+include, but are not limited to, the following:  WebYaST, SUSE Linux
+Enterprise High Availability Extension, GEO Clustering for SUSE Linux
+Enterprise High Availability Extension, SUSE Linux Enterprise Real Time
+Extension, SUSE Linux Enterprise Point of Sale, SUSE Linux Enterprise Server
+for SAP applications.
 
-"Organization" means a legal entity, excluding subsidiaries and
-affiliates with a separate existence for tax purposes or for legal
-personality purposes. An example of an Organization in the private
-sector would be a corporation, partnership, or trust, excluding any
-subsidiaries or affiliates of the organization with a separate tax
-identification number or company registration number. In the public
-sector, an example of Organization would be a specific government
-body or local government authority.
+"Organization" means a legal entity, excluding subsidiaries and affiliates
+with a separate existence for tax purposes or for legal personality purposes.
+An example of an Organization in the private sector would be a corporation,
+partnership, or trust, excluding any subsidiaries or affiliates of the
+organization with a separate tax identification number or company registration
+number. A public sector example of an Organization would be a specific
+government body or local government authority.
 
-SUBSCRIPTION SERVICES.  Licensor sells Subscription Services for
-the Software that entitle You to fee based technical support and
-internal use of Software updates provided during the Subscription
-Service period purchased and subject to the terms of the applicable
-Subscription Service offering. The fee charged for Subscription
-Services for this Software is based on the total number of units of
-the Software You deploy, install or use ("units" of the Software is
-defined by Licensor in the applicable subscription offering).
+THIRD PARTY SOFTWARE/OPEN SOURCE.  Nothing in this Agreement shall restrict,
+limit or otherwise affect any rights or obligations You may have, or
+conditions to which You may be subject, under any applicable open source
+licenses to any open source code contained in the Software.  The Software
+may include or be bundled with other software programs licensed under
+different terms and/or licensed by a third party other than Licensor.  Use of
+any software programs accompanied by a separate license agreement is governed
+by that separate license agreement.
 
-In addition to the Subscription Services for the SUSE Manager
-Server and/or SUSE Manager Proxy, for each unique instance that
-connects to SUSE Manager Server, either directly or via a SUSE
-Manager Proxy, You must purchase the appropriate number of SUSE
-Manager Lifecycle Management subscriptions. You may also need to
-purchase additional subscriptions for some advanced functionality to
-be supported.
+SUBSCRIPTION SERVICES.  Licensor has no obligation to provide maintenance or
+support unless You purchase a subscription offering that expressly includes
+such services.  Licensor sells subscription offerings for the Software that
+entitles You to fee based technical support and/or internal use of Software
+updates provided on a specified annual period (“Subscription Offering”) and
+are subject to the terms of the Subscription Offering Terms and Conditions
+available here https://www.suse.com/products/terms_and_conditions.pdf.  In
+addition to these Subscription Offering services for the SUSE Manager Server
+and/or SUSE Manager Proxy, for each unique instance that connects to SUSE
+Manager Server, either directly or via a SUSE Manager Proxy, You must purchase
+the appropriate number of SUSE Manager Lifecycle Management Subscription
+Offerings. You may also need to purchase additional Subscription Offerings for
+some advanced functionality to be supported.
+Furthermore, if you have purchased a Subscription Offering that restricts the
+number of managed instances connected to SUSE Manager, then you may not
+register more than that number of managed instances with SUSE Manager.
 
-Furthermore, if you have purchased a subscription that restricts the
-number of managed instances connected to SUSE Manager, then you may
-not register more than that number of managed instances with SUSE
-Manager.
-
-MARKS. No right or license, express or implied, is granted under
-this Agreement with respect to any trademark, trade name or service
-mark of Licensor or its affiliates or licensors ("Mark"). If You
-distribute any open source component of the Software, You must
-remove all Marks except those used to identify Licensor's ownership
-or licensing of the component.
-
-PROPRIETARY DATABASE SOFTWARE.  If the Software includes a version
-of Oracle database software ("Database"), for  each unit  of
-Subscription  Services  You  have  purchased  for  the  Software,
-You  are authorized to use one Instance of the Database solely for
-use with the Software for which You have purchased the Subscription.
-In addition to the terms of this Agreement, Your use of the Database
-is subject to the Third Party Addendum included with this Agreement.
-
+MARKS. No right or license, express or implied, is granted under this
+Agreement with respect to any trademark, trade name or service mark of
+Licensor or its affiliates or licensors (“Mark”). This Agreement does not
+permit you to distribute the Software or its components using Licensor's
+trademarks, regardless of whether the copy has been modified.  You may make a
+commercial redistribution of the Programs only if (a) permitted under a
+separate written agreement with Licensor authorizing such commercial
+redistribution, or (b) you remove and replace all occurrences of any Mark.
 
 RESTRICTIONS
 
-License Restrictions.  Licensor reserves all rights not expressly
-granted to You.  The Software is licensed for Your internal use
-only.  Except as this Agreement expressly allows, You may not (1)
-copy (except for back-up purposes), modify, alter, create derivative
-works, reverse engineer, decompile, or disassemble the Software
-except and only to the extent  expressly permitted by applicable
-law; (2) transfer, assign, pledge, rent, timeshare, host or lease
-the Software, or sublicense any of Your  license grants or rights
-under this Agreement; in whole or in part, without prior written
-permission of Licensor; (3) remove any patent, trademark, copyright,
-trade secret or other proprietary notices or labels on the Software
-or its documentation; or (4) disclose the results of any
-performance, functional or other evaluation or benchmarking of the
-Software to any third party without the prior written permission of
-Licensor.
+License Restrictions.  The Software and each of its components are owned by
+Licensor and/or its licensors and are protected under copyright law and under
+other laws as applicable. Title to the Software and any component, or to any
+copy, modification, or merged portion shall remain with Licensor and other
+licensors, subject to the applicable license.  Licensor reserves all rights
+not expressly granted to You.  The Software is licensed for Your internal use
+only.  Except as this Agreement expressly allows and without limiting any
+rights or obligations set forth in the “Third Party/Open Source” section
+above, You may not
+(1) remove any patent, trademark, copyright, trade secret or other proprietary
+notices or labels on the Software or its documentation;
+(2) modify, alter, create derivative works, reverse engineer, decompile, or
+disassemble the Software except and only to the extent expressly permitted by
+applicable law;
+(3) transfer, assign, pledge, rent, timeshare, host or lease
+the Software, or sublicense any of Your license grants or rights under this
+Agreement; in whole or in part, without prior written permission of Licensor,
+(4) disclose the results of any performance, functional or other evaluation or
+benchmarking of the Software to any third party without the prior written
+permission of Licensor.
 
-Hosting Restrictions.  In the event that You desire to have a third
-party manage, host (either remotely or virtually) or use the
-Software on Your behalf, You shall (1) first enter into a valid and
-binding agreement with such third party that contains terms and
-conditions to protect Licensor's rights in the Software that are no
-less prohibitive and/or restrictive than those contained in this
-Agreement, including, without limitation, the Verification section
-below; (2) prohibit use by such third party except for the sole
-benefit of You; and (3) be solely responsible to Licensor for any
-and all breaches of the above terms and conditions by such third
-party.
+Outsourcing Requirements. Your license to use the Software may be used under
+the terms of this Agreement by a third party acting on Your behalf, such as a
+third party cloud provider or outsourcing vendor  who manages or hosts
+(either remotely or virtually) the Software for You, subject to and
+conditioned upon Your adherence to the following:
+(1) You remain responsible for all of Your obligations under this Agreement
+and  enter into an enforceable agreement with the third party that contains
+terms and conditions to protect Licensor's rights in the Software that are no
+less restrictive than those contained in this Agreement, including without
+limitation the Verification section below;
+(2) You prohibit use of the Software by the third party for any purpose other
+than Your sole benefit;
+(3) You are solely responsible to Licensor for any and all breaches of this
+Agreement by the third party; and
+(4) You are and will remain current on subscription purchases that cover all
+installations and deployments of the Software by the third party on Your
+behalf.
 
-Suite Licenses.  If Your license to use the Software is for a suite
-of products, then for each license only one user may use the
-products in the suite.  The suite license does not allow use of
-individual products in the suite by multiple users if licensed on a
-user basis or multiple devices if licensed on a device or server
-basis.
-
-Upgrade Software.  This section applies to You if You have purchased
-the Software based upon upgrade pricing or otherwise received an
-upgrade or update to the Software.  "Original Product" means the
-product from which You are upgrading.  You are authorized to use the
-Software only if You are the authorized user of the Original Product
-and You may use the Software to replace Your licensed unit count of
-the Original Product on a one-for-one basis, not exceeding the
-authorized licensed unit count for the Original Software. This
-Agreement shall replace and govern any license agreement for the
-surviving units of Original Product.  This Agreement is specific to
-the Software (by product and version) that it accompanies, and You
-may not re-allocate Your Software licensed unit count to another
-product or version except under express written permission from
-Licensor.
-
-Maintenance and Support.  Licensor has no obligation to provide
-support unless You purchase an offering that expressly includes
-support services.  If You make such a purchase and no separate
-agreement specifically applies to the support services, then the
-terms of this Agreement will govern the provision of such support
-services ("Services").  For more information on Licensor's current
-support offerings, see http://www.suse.com/support.
+Appliance License.  If, either directly from Licensor or from a third party,
+you have received a hardware, software or other appliance that uses the
+Software, You acknowledge and agree to use the Software solely for the purpose
+of running the appliance and not as a general purpose operating system.
 
 
 OWNERSHIP
 
-No title to or ownership of the Software is transferred to You.
-Licensor and/or its third party licensors retain all right, title
-and interest in and to all intellectual property rights in the
-Software and Services, including any adaptations or copies thereof.
-The Software is not sold to You, You acquire only a conditional
-license to use the Software.  Title, ownership rights and
-intellectual property rights in and to the content accessed through
-the Software are the property of the applicable content owner and
-may be protected by applicable copyright or other law.  This
-Agreement gives You no rights to such content.
-
+No title to or ownership of the Software is transferred to You.  Licensor
+and/or its third party licensors retain all right, title and interest in and
+to all intellectual property rights in the Software and Services, including
+any adaptations or copies thereof.  The Software is not sold to You, You
+acquire only a conditional license to use the Software.  Title, ownership
+rights and intellectual property rights in and to the content accessed through
+the Software are the property of the applicable content owner and may be
+protected by applicable copyright or other law.  This Agreement gives You no
+rights to such content.
 
 LIMITED WARRANTY
 
-For ninety (90) days from Your date of purchase, Licensor warrants
-that the Software will substantially conform to its accompanying
-documentation.  If You report the nonconformity to Licensor within
-ninety (90) days from the date of purchase, Licensor will at its
-sole discretion either resolve the nonconformity or refund the
-license fees You paid for the Software.  Any unauthorized use or
-modification to the Software voids this warranty.  THE FOREGOING
-WARRANTY IS YOUR SOLE AND EXCLUSIVE REMEDY AND IS IN LIEU OF ALL
-OTHER WARRANTIES, EXPRESS OR IMPLIED.  The foregoing warranty does
-not apply to Software provided free of charge.  SUCH SOFTWARE IS
-PROVIDED "AS IS" WITHOUT ANY WARRANTIES OF ANY KIND.
+Licensor warrants that the media that the Software is delivered on will be
+free from defects in materials and manufacture under normal use for a period
+of sixty (60) days from the date of delivery to you.    THE FOREGOING WARRANTY
+IS YOUR SOLE AND EXCLUSIVE REMEDY AND IS IN LIEU OF ALL OTHER WARRANTIES,
+EXPRESS OR IMPLIED.  SAVE FOR THE FOREGOING WARRANTY, THE SOFTWARE IS PROVIDED
+“AS IS” WITHOUT ANY WARRANTIES OF ANY KIND.
 
-Services.  Licensor warrants that any Services purchased will be
-supplied in a professional manner in accordance with generally
-accepted industry standards.  This warranty will be effective for
-thirty (30) days following delivery of the Services.  Upon any
-breach of this warranty, Licensor's only obligation is to either
-correct the Services so that they comply with this warranty or at
-its option refund the amount You paid to Licensor for the portion of
-the Services that fail to comply with this warranty.  You agree to
-take appropriate measures to isolate and back up Your systems.
+Services.  Licensor warrants that any Services purchased will be supplied in a
+professional manner in accordance with generally accepted industry standards.
+This warranty will be effective for thirty (30) days following delivery of the
+Services.  Upon any breach of this warranty, Licensor’s only obligation is to
+either correct the Services so that they comply with this warranty or at its
+option refund the amount You paid to Licensor for the portion of the Services
+that fail to comply with this warranty.  You agree to take appropriate
+measures to isolate and back up Your systems.
 
-THE SOFTWARE IS NOT DESIGNED, MANUFACTURED OR INTENDED FOR USE OR
-DISTRIBUTION WITH ON-LINE CONTROL EQUIPMENT IN HAZARDOUS
-ENVIRONMENTS REQUIRING FAIL-SAFE PERFORMANCE, SUCH AS IN THE
-OPERATION OF NUCLEAR FACILITIES, AIRCRAFT NAVIGATION, COMMUNICATION,
-OR CONTROL SYSTEMS, DIRECT LIFE SUPPORT MACHINES, WEAPONS SYSTEMS,
-OR OTHER USES IN WHICH FAILURE OF THE SOFTWARE COULD LEAD DIRECTLY
-TO DEATH, PERSONAL INJURY, OR SEVERE PHYSICAL OR ENVIRONMENTAL
+THE SOFTWARE IS NOT DESIGNED, MANUFACTURED OR INTENDED FOR USE OR DISTRIBUTION
+WITH ON-LINE CONTROL EQUIPMENT IN HAZARDOUS ENVIRONMENTS REQUIRING FAIL-SAFE
+PERFORMANCE, SUCH AS IN THE OPERATION OF NUCLEAR FACILITIES, AIRCRAFT
+NAVIGATION, COMMUNICATION, OR CONTROL SYSTEMS, DIRECT LIFE SUPPORT MACHINES,
+WEAPONS SYSTEMS, OR OTHER USES IN WHICH FAILURE OF THE SOFTWARE COULD LEAD
+DIRECTLY TO DEATH, PERSONAL INJURY, OR SEVERE PHYSICAL OR ENVIRONMENTAL
 DAMAGE.
 
-Non-Licensor Products.  The Software may include or be bundled with
-hardware or other software programs or services licensed or sold by
-an entity other than Licensor.  LICENSOR DOES NOT WARRANT
-NON-LICENSOR PRODUCTS OR SERVICES.  ANY SUCH PRODUCTS OR SERVICES
-ARE PROVIDED ON AN "AS IS" BASIS.  WARRANTY SERVICE IF ANY FOR
-NON-LICENSOR PRODUCTS IS PROVIDED BY THE PRODUCT LICENSOR IN
-ACCORDANCE WITH THE APPLICABLE LICENSOR WARRANTY.
+Non-Licensor Products.  The Software may include or be bundled with hardware
+or other software programs or services licensed or sold by an entity other
+than Licensor.  LICENSOR DOES NOT WARRANT NON-LICENSOR PRODUCTS OR SERVICES.
+ANY SUCH PRODUCTS OR SERVICES ARE PROVIDED ON AN “AS IS” BASIS.  WARRANTY
+SERVICE IF ANY FOR NON-LICENSOR PRODUCTS IS PROVIDED BY THE PRODUCT LICENSOR
+IN ACCORDANCE WITH THEIR APPLICABLE WARRANTY.
 
-EXCEPT AS OTHERWISE RESTRICTED BY LAW, LICENSOR DISCLAIMS AND
-EXCLUDES ANY AND ALL IMPLIED WARRANTIES INCLUDING ANY WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE OR
-NON-INFRINGEMENT NOR ARE THERE ANY WARRANTIES CREATED BY COURSE OF
-DEALING, COURSE OF PERFORMANCE OR TRADE USAGE.  LICENSOR MAKES NO
-WARRANTY, REPRESENTATION OR PROMISE NOT EXPRESSLY SET FORTH IN THIS
-LIMITED WARRANTY.  LICENSOR DOES NOT WARRANT THAT THE SOFTWARE OR
-SERVICES WILL SATISFY YOUR REQUIREMENTS, BE COMPATIBLE WITH ALL
-OPERATING SYSTEMS, OR THAT THE OPERATION OF THE SOFTWARE OR SERVICES
-WILL BE UNINTERRUPTED OR ERROR-FREE.  THE FOREGOING EXCLUSIONS AND
-DISCLAIMERS ARE AN ESSENTIAL PART OF THIS AGREEMENT AND FORMED THE
-BASIS FOR DETERMINING THE PRICE CHARGED FOR THE PRODUCTS.  Some
-jurisdictions do not allow certain disclaimers and limitations of
-warranties, so portions of the above limitations may not apply to
-You.  This limited warranty gives You specific rights and You may
-also have other rights which vary by state or jurisdiction.
-
+EXCEPT AS OTHERWISE RESTRICTED BY LAW, LICENSOR DISCLAIMS AND EXCLUDES ANY AND
+ALL IMPLIED WARRANTIES INCLUDING ANY WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, TITLE OR NON-INFRINGEMENT NOR ARE THERE ANY
+WARRANTIES CREATED BY COURSE OF DEALING, COURSE OF PERFORMANCE OR TRADE USAGE.
+LICENSOR MAKES NO WARRANTY, REPRESENTATION OR PROMISE NOT EXPRESSLY SET FORTH
+IN THIS LIMITED WARRANTY.  LICENSOR DOES NOT WARRANT THAT THE SOFTWARE OR
+SERVICES WILL SATISFY YOUR REQUIREMENTS, BE COMPATIBLE WITH ALL OPERATING
+SYSTEMS, OR THAT THE OPERATION OF THE SOFTWARE OR SERVICES WILL BE
+UNINTERRUPTED OR ERROR-FREE.  THE FOREGOING EXCLUSIONS AND DISCLAIMERS ARE AN
+ESSENTIAL PART OF THIS AGREEMENT AND FORMED THE BASIS FOR DETERMINING THE
+PRICE CHARGED FOR THE PRODUCTS.  Some jurisdictions do not allow certain
+disclaimers and limitations of warranties, so portions of the above
+limitations may not apply to You.  This limited warranty gives You specific
+rights and You may also have other rights which vary by state or jurisdiction.
 
 LIMITATION OF LIABILITY
 
-Consequential Losses.  NEITHER LICENSOR NOR ANY OF ITS THIRD PARTY
-LICENSORS, SUBSIDIARIES, OR EMPLOYEES WILL IN ANY CASE BE LIABLE FOR
-ANY SPECIAL, INCIDENTAL, CONSEQUENTIAL, INDIRECT, TORT, ECONOMIC OR
-PUNITIVE DAMAGES, WHETHER BASED ON CONTRACT, NEGLIGENCE, STRICT
-LIABILITY OR OTHER TORT, BREACH OF ANY STATUTORY DUTY, INDEMNITY OR
-CONTRIBUTION, INCLUDING WITHOUT LIMITATION LOSS OF PROFITS, BUSINESS
-OR DATA, EVEN IF ADVISED OF THE POSSIBILITY OF THOSE DAMAGES.
+Consequential Losses.  NEITHER LICENSOR NOR ANY OF ITS THIRD PARTY LICENSORS,
+SUBSIDIARIES, OR EMPLOYEES WILL IN ANY CASE BE LIABLE FOR ANY SPECIAL,
+INCIDENTAL, CONSEQUENTIAL, INDIRECT, TORT, ECONOMIC OR PUNITIVE DAMAGES,
+WHETHER BASED ON CONTRACT, NEGLIGENCE, STRICTLIABILITY OR OTHER TORT, BREACH
+OF ANY STATUTORY DUTY, INDEMNITY OR CONTRIBUTION, INCLUDING WITHOUT LIMITATION
+LOSS OF PROFITS, BUSINESS OR DATA, EVEN IF ADVISED OF THE POSSIBILITY OF THOSE
+DAMAGES.
 
-Direct Damages.  IN NO EVENT WILL LICENSOR'S AGGREGATE LIABILITY
-FOR DIRECT DAMAGES TO PROPERTY OR PERSON (WHETHER IN ONE INSTANCE OR
-A SERIES OF INSTANCES) EXCEED 1.25 TIMES THE AMOUNT PAID BY YOU FOR
-THE SOFTWARE OR SERVICES OUT OF WHICH SUCH CLAIM AROSE (OR $50
-(U.S.) IF YOU RECEIVED THE SOFTWARE FREE OF CHARGE).  The above
-exclusions and limitations will not apply to claims relating to
-death or personal injury caused by the negligence of Licensor or its
-employees, agents or contractors.  In those jurisdictions that do
-not allow the exclusion or limitation of damages, including, without
-limitation, damages for breach of any implied terms as to title or
-quiet enjoyment of any Software obtained pursuant to this Agreement
-or for fraudulent misrepresentation, Licensor's liability shall be
-limited or excluded to the maximum extent allowed within those
-jurisdictions.
-
+Direct Damages.  IN NO EVENT WILL LICENSOR'S AGGREGATE LIABILITY FOR DIRECT
+DAMAGES TO PROPERTY OR PERSON (WHETHER IN ONE INSTANCE OR A SERIES OF
+INSTANCES) EXCEED 1.25 TIMES THE AMOUNT PAID BY YOU FOR THE SOFTWARE OR
+SERVICES OUT OF WHICH SUCH CLAIM AROSE (OR $50 (U.S.) IF YOU RECEIVED THE
+SOFTWARE FREE OF CHARGE).  The above exclusions and limitations will not apply
+to claims relating to death or personal injury caused by the negligence of
+Licensor or its employees, agents or contractors.  In those jurisdictions that
+do not allow the exclusion or limitation of damages, including, without
+limitation, damages for breach of any implied terms as to title or quiet
+enjoyment of any Software obtained pursuant to this Agreement or for
+fraudulent misrepresentation, Licensor's liability shall be limited or
+excluded to the maximum extent allowed within those jurisdictions.
 
 GENERAL TERMS
 
-Term.  This Agreement becomes effective on the date You legally
-acquire the Software and will automatically terminate if You breach
-any of its terms.  If the Software is provided to You on a
-subscription basis, then Your right to possess or use the Software
-will terminate at the end of the applicable subscription period.
-Upon termination of this Agreement or any applicable subscription
-period, You must destroy the original and all copies of the Software
-or return them to Licensor and delete the Software from Your systems.
+Term.  This Agreement becomes effective on the date You legally acquire the
+Software and will automatically terminate if You breach any of its terms.
+Verification. Licensor has the right to verify Your compliance with this
+Agreement. You agree to:
+(1)  Implement internal safeguards to prevent any unauthorized copying,
+distribution, installation, use of, or access to, the Software or Subscription
+Offerings;
+(2)  Keep records sufficient to certify Your compliance with this Agreement,
+and, upon request of Licensor, provide and certify metrics and/or reports
+based upon such records and account for both numbers of copies (by product and
+version) and network architectures as they may reasonably relate to Your
+licensing and deployment of the Software or Subscription Offerings; and
+(3)  Allow a Licensor representative or an independent auditor ("Auditor")
+to inspect and audit Your (including any subsidiaries or affiliates or
+contractors with access), computers and records, during Your normal business
+hours, for compliance with the licensing terms for Licensor’s software
+products and/or Subscription Offerings. Upon Licensor’s and Auditor’s
+presentation of their signed written confidentiality statement form to
+safeguard Your confidential information, You shall fully cooperate with such
+audit and provide any necessary assistance and access to records and
+computers. If an audit reveals that You have or at any time have had
+unlicensed installation, use of, or access to the Software or Subscription
+Offerings, You will, within 30 days, purchase sufficient licenses or
+Subscription Offerings to cover any shortfall without benefit of any otherwise
+applicable discount and subject to fees reflecting the duration of the
+shortfall. If a shortfall of 5% or more is found, You must reimburse Licensor
+for the costs incurred in the audit.
 
-Verification. Licensor has the right to verify Your compliance with
-this Agreement. You agree to:  (1)  Implement internal safeguards to
-prevent any unauthorized copying, distribution, installation, use
-of, or access to, the Software; (2)  Keep records sufficient to
-certify Your compliance with this Agreement, and, upon request of
-Licensor, provide and certify metrics and/or reports based upon such
-records and account for both numbers of copies (by product and
-version) and network architectures as they may reasonably relate to
-Your licensing and deployment of the Software; and  (3)  Allow a
-Licensor representative or an independent auditor ("Auditor") to
-inspect and audit Your, or Your contractor's, computers and records,
-during Your normal business hours, for compliance with the licensing
-terms for Licensor's software products. Upon Licensor's and
-Auditor's presentation of their signed written confidentiality
-statement form to safeguard Your confidential information, You shall
-fully cooperate with such audit and provide any necessary assistance
-and access to records and computers. If an audit reveals that You
-have or at any time have had unlicensed installation, use of, or
-access to the Software, You will, within 30 days, purchase
-sufficient licenses to cover any shortfall without benefit of any
-otherwise applicable discount and subject to license fees reflecting
-the duration of the shortfall. If a material license shortfall of 5%
-or more is found, You must reimburse Licensor for the costs incurred
-in the audit.
+Transfer.  This Agreement and the associated licenses purchased for use of the
+Software may not be transferred or assigned without the prior written approval
+of Licensor. Any such attempted transfer or assignment shall be void and of no
+effect.  Please contact CRC@suse.com to request the transfer of licenses and
+assignment of this Agreement.
 
-Third Party Software/Open Source.  Nothing in this Agreement shall
-restrict, limit or otherwise affect any rights or obligations You
-may have, or conditions to which You may be subject, under any
-applicable open source licenses to any open source code contained in
-the Software.  The Software may include or be bundled with other
-software programs licensed under different terms and/or licensed by
-a licensor other than Licensor.  Use of any software programs
-accompanied by a separate license agreement is governed by that
-separate license agreement.  Any third party software that may be
-provided with the Software is included for use at Your option.
+Law. All matters arising out of or relating to this Agreement will be governed
+by the substantive laws of the United States and the State of Utah without
+regard to its choice of law provisions. Any suit, action or proceeding arising
+out of or relating to this Agreement may only be brought before a federal or
+state court of appropriate jurisdiction in Utah.  If a party initiates
+Agreement-related legal proceedings, the prevailing party will be entitled to
+recover reasonable attorneys' fees.  If, however, Your principal place of
+business is a member state of the European Union or the European Free Trade
+Association,
+(1) the courts of Ireland shall have exclusive jurisdiction over any action of
+law relating to this Agreement; and
+(2) where the laws of such country of Your principal place of business are
+required to be applied to any such action of law the laws of that country
+shall apply.  The application of the United Nations Convention of Contracts
+for the International Sale of Goods is expressly excluded.
 
-Transfer.  This Agreement and the associated licenses purchased for
-use of the Software may not be transferred or assigned without the
-prior written approval of Licensor.  Any such attempted transfer or
-assignment shall be void and of no effect.  Please contact
-CRC@novell.com to request the transfer of licenses and assignment of
-this Agreement.  This Agreement may not be transferred or assigned
-without the prior written approval of Licensor. Any such attempted
-assignment shall be void and of no effect.
+Entire Agreement.  This Agreement, together with any other purchase documents
+or other agreement between You and Licensor, sets forth the entire
+understanding and agreement between You and Licensor and may be amended or
+modified only by a written agreement agreed to by You and an authorized
+representative of Licensor.  NO THIRD PARTY LICENSOR, DISTRIBUTOR, DEALER,
+RETAILER, RESELLER, SALES PERSON, OR EMPLOYEE IS AUTHORIZED TO MODIFY THIS
+AGREEMENT OR TO MAKE ANY REPRESENTATION OR PROMISE THAT IS DIFFERENT FROM,
+OR IN ADDITION TO, THE TERMS OF THIS AGREEMENT.
+Waiver.  No waiver of any right under this Agreement will be effective unless
+in writing, signed by a duly authorized representative of the party to be
+bound.  No waiver of any past or present right arising from any breach or
+failure to perform will be deemed to be a waiver of any future right arising
+under this Agreement.
 
-Law. All matters arising out of or relating to the Agreement will
-be governed by the substantive laws of the United States and the
-State of Utah without regard to its choice of law provisions. Any
-suit, action or proceeding arising out of or relating to the
-Agreement may only be brought before a federal or state court of
-appropriate jurisdiction in Utah.  If a party initiates
-Agreement-related legal proceedings, the prevailing party will be
-entitled to recover reasonable attorneys' fees.  If, however, Your
-country of principal residence is a member state of the European
-Union or the European Free Trade Association, (1) the courts of
-Ireland shall have exclusive jurisdiction over any action of law
-relating to this Agreement; and (2) where the laws of such country
-of principal residence are required to be applied to any such action
-of law the laws of that country shall apply.  The application of the
-United Nations Convention of Contracts for the International Sale of
-Goods is expressly excluded.
+Severability.  If any provision in this Agreement is invalid or unenforceable,
+that provision will be construed, limited, modified or, if necessary, severed,
+to the extent necessary, to eliminate its invalidity or unenforceability, and
+the other provisions of this Agreement will remain unaffected.
 
-Entire Agreement.  This Agreement, together with any other purchase
-documents or other agreement between You and Licensor, sets forth
-the entire understanding and agreement between You and Licensor and
-may be amended or modified only by a written agreement agreed to by
-You and an authorized representative of Licensor.  NO LICENSOR,
-DISTRIBUTOR, DEALER, RETAILER, RESELLER, SALES PERSON, OR EMPLOYEE
-IS AUTHORIZED TO MODIFY THIS AGREEMENT OR TO MAKE ANY REPRESENTATION
-OR PROMISE THAT IS DIFFERENT FROM, OR IN ADDITION TO, THE TERMS OF
-THIS AGREEMENT.
+Export Compliance.  You acknowledge that Licensor’s products and/or technology
+are subject to the U.S. Export Administration Regulations (the “EAR”) and You
+agree to comply with the EAR.  You will not export or re-export Licensor’s
+products, directly or indirectly, to:
+(1) any countries that are subject to US export restrictions;
+(2) any end user who You know or have reason to know will utilize Licensor’s
+products in the design, development or production of nuclear, chemical or
+biological weapons, or rocket systems, space launch vehicles, and sounding
+rockets, or unmanned air vehicle systems, except as authorized by the
+relevant government agency by regulation or specific license; or
+(3) any end user who has been prohibited from participating in the
+US export transactions by any federal agency of the US government. By
+downloading or using the Software, You are agreeing to the foregoing and You
+are representing and warranting that You are not located in, under the control
+of, or a national or resident of any such country or on any such list. In
+addition, You are responsible for complying with any local laws in Your
+jurisdiction which may impact Your right to import, export or use Licensor’s
+products.  Please consult the Bureau of Industry and Security web page
+www.bis.doc.gov before exporting items subject to the EAR. For more
+information on exporting Software, including the applicable Export Control
+Classification Number (ECCN) and associated license exception (as applicable),
+see www.suse.com/company/legal/. Upon request, Licensor's International Trade
+Services Department can provide information regarding applicable export
+restrictions for Licensor products. Licensor assumes no responsibility for
+Your failure to obtain any necessary export approvals.
 
-Waiver.  No waiver of any right under this Agreement will be
-effective unless in writing, signed by a duly authorized
-representative of the party to be bound.  No waiver of any past or
-present right arising from any breach or failure to perform will be
-deemed to be a waiver of any future right arising under this
-Agreement.
+U.S. Government Restricted Rights.  Use, duplication, or disclosure of any
+Deliverables by the U.S. Government is subject to the restrictions in
+FAR 52.227-14 (Dec 2007) Alternate III (Dec 2007), FAR  52.227-19 (Dec 2007),
+or DFARS 252.227-7013(b)(3) (Nov 1995), or applicable successor clauses.
 
-Severability.  If any provision in this Agreement is invalid or
-unenforceable, that provision will be construed, limited, modified
-or, if necessary, severed, to the extent necessary, to eliminate its
-invalidity or unenforceability, and the other provisions of this
-Agreement will remain unaffected.
+[042016]
 
-Export Compliance.  You acknowledge that Licensor's products and/or
-technology are subject to the U.S. Export Administration Regulations
-(the "EAR") and You agree to comply with the EAR.  You will not
-export or re-export Licensor's products, directly or indirectly, to:
-(1) any countries that are subject to US export restrictions; (2)
-any end user who You know or have reason to know will utilize
-Licensor's products in the design, development or production of
-nuclear, chemical or biological weapons, or rocket systems, space
-launch vehicles, and sounding rockets, or unmanned air vehicle
-systems; or (3) any end user who has been prohibited from
-participating in the US export transactions by any federal agency of
-the US government. By downloading or using the Software, You are
-agreeing to the foregoing and You are representing and warranting
-that You are not located in, under the control of, or a national or
-resident of any such country or on any such list. In addition, You
-are responsible for complying with any local laws in Your
-jurisdiction which may impact Your right to import, export or use
-Licensor's products.  Please consult the Bureau of Industry and
-Security web page www.bis.doc.gov before exporting items subject to
-the EAR. For more information on exporting Software, including the
-applicable Export Control Classification Number (ECCN) and
-associated license exception (as applicable), see
-www.Novell.com/info/exports/ . Upon request, Licensor's
-International Trade Services Department can provide information
-regarding applicable export restrictions for Licensor products.
-Licensor assumes no responsibility for Your failure to obtain any
-necessary export approvals.
-
-U.S. Government Restricted Rights.  Use, duplication, or disclosure
-of any Deliverables by the U.S. Government is subject to the
-restrictions in FAR 52.227-14 (Dec 2007) Alternate III (Dec 2007),
-FAR 52.227-19 (Dec 2007), or DFARS 252.227-7013(b)(3) (Nov 1995), or
-applicable successor clauses.
-
-(052114)
-
-
-THIRD PARTY ADDENDUM
-
-The Software contains database software licensed by SUSE or its
-affiliates from Oracle America, Inc. ("Oracle"). For pur-poses of
-this addendum, the term "program" refers to the Oracle database
-software. Oracle requires that You agree to the following terms
-regarding use of the program. You may only use the Oracle program in
-conjunction with the SUSE Man-ager Server with Database Software and
-not as a general purpose database in support of other applications.
-You agree to comply with the following:
-1) Use of the program is limited to the legal entity that executed
-the SUSE Manager with Database Software License Agreement.
-2) Use of the program is restricted to the scope of the application
-package with which You received it and to Your internal business
-operations. You may permit agents or contractors (including, without
-limitation, outsourcers) to use the applica-tion package on Your
-behalf. You are responsible for Your agent's, contractor's,
-outsourcer's, customer's and supplier's use of the application
-package and compliance with the end user license agreement.
-3) Oracle or its licensor retains all ownership and intellectual
-property rights to the program.
-4) The following are prohibited: (a) use of the program for rental,
-timesharing, subscription service, hosting, or outsourc-ing; (b) the
-removal or modification of any program markings or any notice of
-Oracle's or its licensors' proprietary rights; (c) making the
-programs available in any manner to any third party for use in the
-third party's business operations (un-less such access is expressly
-permitted for the specific program license); (d) reverse engineering
-(unless required by law for interoperability), disassembly or
-decompilation of the programs (the foregoing prohibition includes
-but is not limited to review of data structures or similar materials
-produced by programs); and (e) publication of any results of
-benchmark tests run on the programs.
-To the extent permitted by applicable law, Oracle disclaims
-liability for (a) any damages, whether direct, indirect,
-inci-dental, special, punitive or consequential, and (b) any loss of
-profits, revenue, data or data use, arising from the use of the
-programs. You agree to permit SUSE to audit Your use of the programs
-and report the audit results to Oracle or allow Oracle to perform
-the audit at Your cost. Oracle is a third party beneficiary of this
-addendum and the end user license agreement (with respect only to
-the program). The application of the Uniform Computer Information
-Transactions Act is excluded.
-(rev July 2012)
