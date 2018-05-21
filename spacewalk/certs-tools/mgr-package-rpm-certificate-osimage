@@ -20,10 +20,11 @@ from certs.sslToolLib import RhnSslToolException, chdir
 from spacewalk.common.fileutils import cleanupAbsPath, rhn_popen
 from certs.rhn_ssl_tool import legacyTreeFixup, _disableRpmMacros, _reenableRpmMacros, \
     GenCaCertRpmException
-from certs.sslToolConfig import CERT_PATH, CA_CERT_RPM_SUMMARY, CA_CRT_NAME, CA_CRT_RPM_NAME
+from certs.sslToolConfig import BUILD_DIR, CERT_PATH, CA_CERT_RPM_SUMMARY, \
+    CA_CRT_NAME, CA_CRT_RPM_NAME
 from rhn.i18n import bstr
 
-CA_CERT_FULL_PATH_DEFAULT = "/root/ssl-build/" + CA_CRT_NAME
+CA_CERT_FULL_PATH_DEFAULT = BUILD_DIR + os.path.sep + CA_CRT_NAME
 
 def processCommandline():
     parser = argparse.ArgumentParser(description="""Generates RPM certificate for
@@ -41,7 +42,7 @@ def processCommandline():
         and the full path of your CA certificate to generate the RPM package
         needed to build OS images""" % sys.argv[0])
         print("See manpage for '%s' for additional help" % sys.argv[0])
-        sys.exit(-1)
+        sys.exit(0)
     return args
 
 def genCaRpm(options):
