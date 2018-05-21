@@ -2211,7 +2211,7 @@ tree will not be usable for autoinstalling.
 
       <!--  SCC refresh -->
       <trans-unit id="copyright.jsp.title">
-        <source>Copyright (c) 2011 - 2017 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2018 SUSE LLC.</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement">
         <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
