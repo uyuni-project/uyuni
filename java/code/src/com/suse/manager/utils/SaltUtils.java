@@ -120,7 +120,6 @@ import java.nio.ByteOrder;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1136,33 +1135,21 @@ public class SaltUtils {
                     Function.identity()
              ));
 
-        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap = new HashMap<>();
-        newPackageMap.putAll(result.getInfoInstalled().getChanges().getRet()
-            .entrySet().stream()
-            .flatMap(entry -> Opt.stream(entry.getValue().right())
-                .map(infoList -> {
-                    List<Map.Entry<String, Pkg.Info>> ret = new ArrayList<>();
-                    infoList.stream().forEach(x -> {
-                            Map<String, Pkg.Info> infoTuple = new HashMap<>();
-                            infoTuple.put(entry.getKey(), x);
-                            ret.addAll(infoTuple.entrySet());
-                    });
-                    return ret;
-                }))
-            .flatMap(entrySet -> entrySet.stream())
-            .collect(Collectors.toMap(
-                    SaltUtils::packageToKey,
-                    Function.identity()
-            )));
-        newPackageMap.putAll(result.getInfoInstalled().getChanges().getRet()
-            .entrySet().stream()
-            .flatMap(entry -> Opt.stream(entry.getValue().left())
-                    .collect(Collectors.toMap(x -> entry.getKey(), x -> x))
-                    .entrySet().stream())
-            .collect(Collectors.toMap(
-                    SaltUtils::packageToKey,
-                    Function.identity()
-            )));
+        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap =
+            result.getInfoInstalled().getChanges().getRet()
+                .entrySet().stream()
+                .flatMap(entry ->
+                   entry.getValue().fold(Stream::of, Collection::stream)
+                        .flatMap(x -> {
+                           Map<String, Info> infoTuple = new HashMap<>();
+                           infoTuple.put(entry.getKey(), x);
+                           return infoTuple.entrySet().stream();
+                        })
+                )
+                .collect(Collectors.toMap(
+                        SaltUtils::packageToKey,
+                        Function.identity()
+                ));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
             e -> newPackageMap.containsKey(e.getKey())
