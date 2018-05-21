@@ -72,9 +72,7 @@ def genCaRpm(options):
                repr(update_trust_script), repr(update_trust_script),
                repr(ca_cert_name), repr(cleanupAbsPath(ca_cert))))
     clientRpmName = '%s-%s-%s' % (ca_cert_rpm_osimage, ver, rel)
-    print("""Generating CA public certificate RPM:
-    %s.src.rpm
-    %s.noarch.rpm""" % (clientRpmName, clientRpmName))
+    print("CA Cert for OS Images: Packaging %s into %s.noarch.rpm" % (ca_cert, clientRpmName))
 
     _disableRpmMacros()
     cwd = chdir(OSIMAGE_RPM_CERTIFICATE_PATH)
