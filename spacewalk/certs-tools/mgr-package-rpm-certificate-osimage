@@ -20,7 +20,7 @@ from certs.sslToolLib import RhnSslToolException, chdir
 from spacewalk.common.fileutils import cleanupAbsPath, rhn_popen
 from certs.rhn_ssl_tool import legacyTreeFixup, _disableRpmMacros, _reenableRpmMacros, \
     GenCaCertRpmException
-from certs.sslToolConfig import DEFS, CERT_PATH, CA_CERT_RPM_SUMMARY, CA_CRT_NAME, CA_CRT_RPM_NAME
+from certs.sslToolConfig import CERT_PATH, CA_CERT_RPM_SUMMARY, CA_CRT_NAME, CA_CRT_RPM_NAME
 from rhn.i18n import bstr
 
 CA_CERT_FULL_PATH_DEFAULT = "/root/ssl-build/" + CA_CRT_NAME
