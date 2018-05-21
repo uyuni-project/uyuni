@@ -1,3 +1,5 @@
+- Fix migration from traditional stack to salt registration (bsc#1093825)
+
 -------------------------------------------------------------------
 Wed May 16 17:38:30 CEST 2018 - jgonzalez@suse.com
 
