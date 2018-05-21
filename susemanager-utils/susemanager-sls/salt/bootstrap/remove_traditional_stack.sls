@@ -35,6 +35,8 @@ remove_traditional_stack:
       - rhncfg
       - rhnlib
       - rhnmd
+    - require:
+      - module: disable_repo*
 
 # disable all spacewalk:* repos
 {%- set repos_disabled = {'disabled': false} %}
