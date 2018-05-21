@@ -604,7 +604,7 @@ sub setup_ssl_certs {
 
       Spacewalk::Setup::ask(
           -noninteractive => $opts{"non-interactive"},
-          -question => "Cname alias of the machine (comma seperated)",
+          -question => "Cname alias of the machine (comma separated)",
           -test => sub { my $text = shift;
                          return length($text) <= 128 },
           -answer => \$answers->{"ssl-set-cnames"},
