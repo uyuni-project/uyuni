@@ -45,6 +45,8 @@ Requires: susemanager-build-keys-web
 %endif
 BuildRequires: python
 Requires(post): spacewalk-backend-libs
+Requires(post): rhnlib
+Requires(post): rpm-python
 Obsoletes: rhns-certs < 5.3.0
 Obsoletes: rhns-certs-tools < 5.3.0
 # can not provides = %{version} since some old packages expect > 3.6.0
