@@ -415,13 +415,13 @@ public class ActionChainFactory extends HibernateFactory {
     }
 
     /**
-     * Check if an Action Chain contains any minion in default contact method as target
+     * Check if an Action Chain contains any minion as target
      * @param actionChain the action chain
-     * @return if the action chains contains any minion in default contact method
+     * @return if the action chains contains any minion
      */
-    public static boolean isActionChainTargettingDefaultMinions(final ActionChain actionChain) {
+    public static boolean isActionChainTargettingMinions(final ActionChain actionChain) {
         return ((Long)singleton.lookupObjectByNamedQuery(
-            "ActionChain.countDefaultMinionsInActionChain",
+            "ActionChain.countMinionsInActionChain",
             new HashMap<String, Object>() { { put("actionchain_id", actionChain.getId()); } }
         ) > 0);
     }

@@ -510,7 +510,7 @@ public class TaskomaticApi {
      */
     public void scheduleActionChainExecution(ActionChain actionchain)
         throws TaskomaticApiException {
-        if (!ActionChainFactory.isActionChainTargettingDefaultMinions(actionchain)) {
+        if (!ActionChainFactory.isActionChainTargettingMinions(actionchain)) {
             return;
         }
 

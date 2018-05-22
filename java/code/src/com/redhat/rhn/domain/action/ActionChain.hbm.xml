@@ -68,7 +68,7 @@
         ]]>
     </query>
 
-    <query name="ActionChain.countDefaultMinionsInActionChain">
+    <query name="ActionChain.countMinionsInActionChain">
         <![CDATA[
             SELECT count(*)
             FROM
@@ -77,8 +77,7 @@
                 com.redhat.rhn.domain.action.ActionChain ac,
                 com.redhat.rhn.domain.action.Action a,
                 com.redhat.rhn.domain.action.server.ServerAction sa,
-                com.redhat.rhn.domain.server.MinionServer mi,
-                com.redhat.rhn.domain.server.ContactMethod cm
+                com.redhat.rhn.domain.server.MinionServer mi
             WHERE
                 ac.id = :actionchain_id
                 AND ac.id = ace.actionChain.id
@@ -86,8 +85,6 @@
                 AND a.id = sa.parentAction.id
                 AND sa.server.id = s.id
                 AND sa.server.id = mi.id
-                AND s.contactMethod.id = cm.id
-                AND cm.label = 'default'
         ]]>
     </query>
 

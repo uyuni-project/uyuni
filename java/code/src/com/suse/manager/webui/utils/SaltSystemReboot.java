@@ -25,19 +25,22 @@ import static java.util.Collections.singletonMap;
 /**
  * Represents a system reboot state run.
  */
-public class SaltSystemReboot extends AbstractSaltRequisites implements IdentifiableSaltState {
+public class SaltSystemReboot extends AbstractSaltRequisites implements IdentifiableSaltState, ActionSaltState {
 
     private String id;
+    private long actionId;
     private Optional<Integer> minutes = Optional.empty();
 
     /**
      * Standard constructor.
      * @param idIn state ID
+     * @param actionIdIn reboot action id
      * @param minutesIn minutes before rebooting
      */
-    public SaltSystemReboot(String idIn, int minutesIn) {
+    public SaltSystemReboot(String idIn, long actionIdIn, int minutesIn) {
         this.id = idIn;
         this.minutes = Optional.of(minutesIn);
+        this.actionId = actionIdIn;
     }
 
     /**
@@ -75,5 +78,13 @@ public class SaltSystemReboot extends AbstractSaltRequisites implements Identifi
      */
     public void setId(String idIn) {
         this.id = idIn;
+    }
+
+    /**
+     * @return actionId to get
+     */
+    @Override
+    public long getActionId() {
+        return actionId;
     }
 }

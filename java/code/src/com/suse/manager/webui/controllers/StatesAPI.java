@@ -611,7 +611,7 @@ public class StatesAPI {
                     SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SALT_PACKAGE_FILES);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
-                    "packages_" + server.getDigitalServerId() + ".sls");
+                    getPackagesSlsName(server));
             SaltStateGenerator saltStateGenerator =
                     new SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(new SaltInclude(ApplyStatesEventMessage.CHANNELS),
@@ -620,6 +620,15 @@ public class StatesAPI {
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
+    }
+
+    /**
+     * Get the name of the package sls file.
+     * @param server the minion server
+     * @return the name of the package sls file
+     */
+    public static String getPackagesSlsName(MinionServer server) {
+        return "packages_" + server.getDigitalServerId() + ".sls";
     }
 
     /**

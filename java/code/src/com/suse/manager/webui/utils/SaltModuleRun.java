@@ -25,9 +25,10 @@ import static java.util.Collections.singletonMap;
 /**
  * Encapsulates the execution of a state.
  */
-public class SaltModuleRun extends AbstractSaltRequisites implements IdentifiableSaltState {
+public class SaltModuleRun extends AbstractSaltRequisites implements IdentifiableSaltState, ActionSaltState {
     private String id;
     private String name;
+    private long actionId;
     private Map<String, ?> args;
     private Map<String, ?> kwargs;
 
@@ -47,12 +48,14 @@ public class SaltModuleRun extends AbstractSaltRequisites implements Identifiabl
      * Complete constructor
      * @param idIn state id
      * @param nameIn module name
+     * @param actionIdIn the id of the corresponding action
      * @param argsIn positional arguments
      * @param kwargsIn keyword arguments
      */
-    public SaltModuleRun(String idIn, String nameIn, Map<String, ?> argsIn, Map<String, ?> kwargsIn) {
+    public SaltModuleRun(String idIn, String nameIn, long actionIdIn, Map<String, ?> argsIn, Map<String, ?> kwargsIn) {
         this.id = idIn;
         this.name = nameIn;
+        this.actionId = actionIdIn;
         this.args = argsIn;
         this.kwargs = kwargsIn;
     }
@@ -115,4 +118,8 @@ public class SaltModuleRun extends AbstractSaltRequisites implements Identifiabl
         return args;
     }
 
+    @Override
+    public long getActionId() {
+        return actionId;
+    }
 }
