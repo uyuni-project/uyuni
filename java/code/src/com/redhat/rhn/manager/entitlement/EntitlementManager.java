@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.entitlement;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
 import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -69,9 +67,7 @@ public class EntitlementManager extends BaseManager {
         ADDON_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION);
         ADDON_ENTITLEMENTS.add(CONTAINER_BUILD_HOST);
-        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
-            ADDON_ENTITLEMENTS.add(OSIMAGE_BUILD_HOST);
-        }
+        ADDON_ENTITLEMENTS.add(OSIMAGE_BUILD_HOST);
 
         BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
