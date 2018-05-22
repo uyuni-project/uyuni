@@ -1,3 +1,5 @@
+- Fix issue with "suse_img_repodigest_idx" index if multiple image tags (bsc#1090664)
+
 -------------------------------------------------------------------
 Thu May 17 09:23:12 CEST 2018 - jgonzalez@suse.com
 
