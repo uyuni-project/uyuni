@@ -1098,7 +1098,7 @@ public class SaltUtils {
 
         if (imageInfo.getProfile().asKiwiProfile().isPresent()) {
             if (result.getKiwiInspect().isResult()) {
-                Long instantNow = new Date().getTime()/1000L;
+                Long instantNow = new Date().getTime() / 1000L;
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
                 List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
                 packages.stream().forEach(pkg -> {
