@@ -113,9 +113,6 @@ const NotificationMessages = React.createClass({
     });
   },
 
-  deleteNotification: function(messageId) {
-    var currentObject = this;
-
   deleteNotifications: function(ids) {
     var currentObject = this;
     Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
@@ -302,6 +299,8 @@ const NotificationMessages = React.createClass({
 
     const panelButtons = <div className="pull-right btn-group">
       <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
+      <Button id="delete-selected-messages" icon="fa-trash" className='btn-default'
+          title={t('Delete selected messages')} text={t('Delete selected messages')} handler={() => this.deleteNotifications(this.state.selectedItems)} />
       <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
           title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
     </div>;
