@@ -1078,6 +1078,77 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    /**
+     * Build and inspect two versions of the same image.
+     * @throws Exception
+     */
+    public void testImageBuildMultipleVersions()  throws Exception {
+        String digest = "1111111111111111111111111111111111111111111111111111111111111111";
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minionsles12-suma3pg.vagrant.local");
+        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+
+        String imageName = "meaksh-apache-python" + TestUtils.randomString(5);
+        String imageVersion1 = "latest";
+        String imageVersion2 = "anotherversion";
+
+        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
+        ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, user);
+
+        ImageInfo imgInfoBuild1 = doTestImageBuild(server, imageName, imageVersion1, profile,
+                (imgInfo) -> {
+                    // assert initial revision number
+                    assertEquals(1, imgInfo.getRevisionNumber());
+                } );
+        doTestImageInspect(server, imageName, imageVersion1, profile, imgInfoBuild1,
+                digest,
+                (imgInfo) -> {
+            // assertions after inspect
+            // reload imgInfo to get the build history
+            imgInfo = TestUtils.reload(imgInfo);
+            assertNotNull(imgInfo);
+            // test that the history of the build was updated correctly
+            assertEquals(1, imgInfo.getBuildHistory().size());
+            assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
+            assertEquals(
+                    "docker-registry:5000/" + imageName + "@sha256:" + digest,
+                    imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).findFirst().get().getRepoDigest());
+            assertEquals(1,
+                    imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
+        });
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        ImageInfo imgInfoBuild2 = doTestImageBuild(server, imageName, imageVersion2, profile,
+                (imgInfo) -> {
+                    // assert revision number incremented
+                    assertEquals(1, imgInfo.getRevisionNumber());
+                    assertFalse(imgInfoBuild1.getId().equals(imgInfo.getId()));
+                } );
+        doTestImageInspect(server, imageName, imageVersion2, profile, imgInfoBuild2,
+                digest,
+                (imgInfo) -> {
+            // reload imgInfo to get the build history
+            imgInfo = TestUtils.reload(imgInfo);
+            assertNotNull(imgInfo);
+            // test that history for the second build is present
+            assertEquals(1, imgInfo.getBuildHistory().size());
+            assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
+            assertEquals(
+                    "docker-registry:5000/" + imageName + "@sha256:" + digest,
+                    imgInfo.getBuildHistory().stream()
+                            .filter(hist -> hist.getRevisionNumber() == 1)
+                            .flatMap(h -> h.getRepoDigests().stream())
+                            .findFirst().get().getRepoDigest());
+            assertEquals(1, imgInfo.getBuildHistory().size());
+            assertTrue(
+                    imgInfo.getBuildHistory().stream().anyMatch(h -> h.getRevisionNumber() == 1));
+
+        });
+    }
+
     private void doTestImageInspect(MinionServer server, String imageName, String imageVersion, ImageProfile profile, ImageInfo imgInfo,
                                     String digest,
                                     Consumer<ImageInfo> assertions) throws Exception {
