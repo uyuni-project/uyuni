@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.UserNotification;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.suse.utils.Json;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -96,7 +98,7 @@ public class NotificationMessageController {
     }
 
     /**
-     * Delete a {@link UserNotification}
+     * Delete a set of {@link UserNotification}
      *
      * @param request the request
      * @param response the response
@@ -104,17 +106,20 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String delete(Request request, Response response, User user) {
-        Long messageId = Long.valueOf(request.params("messageId"));
+        List<Long> messageIds = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
 
-        Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
+        messageIds.forEach(messageId ->
+                {
+                    Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
+                    if (un.isPresent()) {
+                        UserNotificationFactory.remove(un.get());
+                    }
+                });
 
-        if (un.isPresent()) {
-            UserNotificationFactory.remove(un.get());
-        }
         Notification.spreadUpdate();
 
         Map<String, String> data = new HashMap<>();
-        data.put("message", "Notification deleted");
+        data.put("message", "Notifications deleted");
         response.type("application/json");
         return GSON.toJson(data);
     }
