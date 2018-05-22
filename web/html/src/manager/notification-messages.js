@@ -116,10 +116,19 @@ const NotificationMessages = React.createClass({
   deleteNotification: function(messageId) {
     var currentObject = this;
 
-    var updatedData = this.state.serverData.filter(m => m.id != messageId);
-    Network.post("/rhn/manager/notification-messages/delete/" + messageId, "application/json").promise
+  deleteNotifications: function(ids) {
+    var currentObject = this;
+    Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
     .then(data => {
-      this.setState({serverData : updatedData})
+      var updatedData = currentObject.state.serverData;
+      ids.forEach(id =>
+        updatedData = updatedData.filter(m => m.id != id)
+      );
+      var updatedSelectedItems = currentObject.state.selectedItems;
+      ids.forEach(id =>
+        updatedSelectedItems = updatedSelectedItems.filter(m => m.id != id)
+      );
+      this.setState({serverData : updatedData, selectedItems : updatedSelectedItems});
     })
     .catch(response => {
       currentObject.setState({
@@ -365,7 +374,7 @@ const NotificationMessages = React.createClass({
                         text action={() => this.updateReadStatus(row['id'], row['isRead'])} />
                     <AsyncButton id="delete"  classStyle="btn-sm"
                         icon="trash fa-1-5x no-margin" title={t('Delete Notification')}
-                        text action={() => this.deleteNotification(row['id'])} />
+                        text action={() => this.deleteNotifications([row['id']])} />
                   </div>
               }
             />
