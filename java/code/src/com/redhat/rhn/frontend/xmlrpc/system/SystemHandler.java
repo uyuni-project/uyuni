@@ -1513,7 +1513,7 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Delete systems given a list of system ids asynchronously.
+     * Delete systems given a list of system ids asynchronously without cleanup.
      * This call queues the systems for deletion
      * @param loggedInUser The current user
      * @param systemIds A list of systems ids to delete
@@ -1528,6 +1528,31 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int deleteSystems(User loggedInUser, List<Integer> systemIds)
+            throws FaultException {
+        return deleteSystems(loggedInUser, systemIds, "NO_CLEANUP");
+    }
+
+    /**
+     * Delete systems given a list of system ids asynchronously.
+     * This call queues the systems for deletion
+     * @param loggedInUser The current user
+     * @param systemIds A list of systems ids to delete
+     * @param cleanupType one of FAIL_ON_CLEANUP_ERR, NO_CLEANUP or FORCE_DELETE
+     * @return Returns the number of systems deleted if successful, fault exception
+     * containing ids of systems not deleted otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     *
+     * @xmlrpc.doc Delete systems given a list of system ids asynchronously.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.param #param_desc("string", "cleanupType", "Possible values:
+     *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,
+     *  'NO_CLEANUP' - do not cleanup, just delete,
+     *  'FORCE_DELETE' - Try cleanup first but delete server anyway in case of error")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int deleteSystems(User loggedInUser, List<Integer> systemIds, String cleanupType)
             throws FaultException {
 
         List<Integer> skippedSids = new ArrayList<Integer>();
@@ -1547,7 +1572,8 @@ public class SystemHandler extends BaseHandler {
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
                 new SsmDeleteServersEvent(loggedInUser, deletion,
-                        SystemManager.ServerCleanupType.FORCE_DELETE);
+                        SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
+                        new IllegalArgumentException("Invalid server cleanup type value: " + cleanupType)));
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException
@@ -1582,30 +1608,54 @@ public class SystemHandler extends BaseHandler {
         Server server = validateClientCertificate(clientCert);
         SystemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
                 server.getId(),
-                SystemManager.ServerCleanupType.FORCE_DELETE
+                SystemManager.ServerCleanupType.NO_CLEANUP
                 );
         return 1;
     }
 
     /**
-     * Delete a system given its server id synchronously
+     * Delete a system given its server id synchronously without cleanup
      * @param loggedInUser The current user
      * @param serverId The id of the server in question
      * @return 1 on success
      * @throws FaultException A FaultException is thrown if:
      *   - The server corresponding to the sid cannot be found
-     * @xmlrpc.doc Delete a system given its server id synchronously
+     * @xmlrpc.doc Delete a system given its server id synchronously without cleanup
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype #return_int_success()
      */
     public int deleteSystem(User loggedInUser, Integer serverId)
             throws FaultException {
+        return deleteSystem(loggedInUser, serverId, "NO_CLEANUP");
+    }
+
+    /**
+     * Delete a system given its server id synchronously
+     * @param loggedInUser The current user
+     * @param serverId The id of the server in question
+     * @param cleanupType one of FAIL_ON_CLEANUP_ERR, NO_CLEANUP or FORCE_DELETE
+     * @return 1 on success
+     * @throws FaultException A FaultException is thrown if:
+     *   - The server corresponding to the sid cannot be found
+     * @xmlrpc.doc Delete a system given its server id synchronously
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param_desc("string", "cleanupType", "Possible values:
+     *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,
+     *  'NO_CLEANUP' - do not cleanup, just delete,
+     *  'FORCE_DELETE' - Try cleanup first but delete server anyway in case of error")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int deleteSystem(User loggedInUser, Integer serverId, String cleanupType)
+            throws FaultException {
 
         Server server = lookupServer(loggedInUser, serverId);
         SystemManager.deleteServerAndCleanup(loggedInUser,
                 server.getId(),
-                SystemManager.ServerCleanupType.FORCE_DELETE
+                SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
+                                    new IllegalArgumentException(
+                                            "Invalid server cleanup type value: " + cleanupType))
         );
         return 1;
     }
