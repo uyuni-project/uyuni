@@ -70,7 +70,8 @@ const NotificationMessages = React.createClass({
           serverData: data,
           error: null,
           loading: false,
-          messages: []
+          messages: [],
+          selectedItems: []
         });
       })
       .catch(response => {
@@ -79,7 +80,8 @@ const NotificationMessages = React.createClass({
             response.status >= 500 ? "general" :
             null,
           loading: false,
-          messages: []
+          messages: [],
+          selectedItems: []
         });
       });
   },
@@ -123,7 +125,7 @@ const NotificationMessages = React.createClass({
       );
       var updatedSelectedItems = currentObject.state.selectedItems;
       ids.forEach(id =>
-        updatedSelectedItems = updatedSelectedItems.filter(m => m.id != id)
+        updatedSelectedItems = updatedSelectedItems.filter(m => m != id)
       );
       this.setState({serverData : updatedData, selectedItems : updatedSelectedItems});
     })
