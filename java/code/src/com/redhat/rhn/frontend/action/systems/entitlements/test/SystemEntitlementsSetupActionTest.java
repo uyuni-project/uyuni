@@ -59,13 +59,13 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
         SystemManager.mockSaltService(saltServiceMock);
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());
         UserTestUtils.addVirtualization(user.getOrg());
-        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
     /**
      *
@@ -152,10 +152,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
         Map<String, String> addonEntitlementCounts = (Map<String, String>) request
                 .getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT_COUNTS);
-        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
-            assertEquals("1 system(s).",
-                    addonEntitlementCounts.get(EntitlementManager.OSIMAGE_BUILD_HOST.getLabel()));
-        }
+        assertEquals("1 system(s).",
+                addonEntitlementCounts.get(EntitlementManager.OSIMAGE_BUILD_HOST.getLabel()));
         context.assertIsSatisfied();
     }
 
