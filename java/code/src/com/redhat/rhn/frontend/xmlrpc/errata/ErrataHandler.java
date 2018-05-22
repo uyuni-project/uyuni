@@ -894,7 +894,7 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException Occurs when the erratum is not found
      */
     private Errata lookupErrata(String advisoryName, Org org) throws FaultException {
-        Errata errata = ErrataManager.lookupByAdvisory(advisoryName);
+        Errata errata = ErrataManager.lookupByAdvisory(advisoryName, org);
 
         /*
          * ErrataManager.lookupByAdvisory() could return null, so we need to check
@@ -925,7 +925,7 @@ public class ErrataHandler extends BaseHandler {
      */
     private Errata lookupErrataReadOnly(String advisoryName, Org org)
             throws FaultException {
-        Errata errata = ErrataManager.lookupByAdvisory(advisoryName);
+        Errata errata = ErrataManager.lookupByAdvisory(advisoryName, org);
 
         /*
          * ErrataManager.lookupByAdvisory() could return null, so we need to check
@@ -1250,7 +1250,8 @@ public class ErrataHandler extends BaseHandler {
         String references = (String) errataInfo.get("references");
         String notes = (String) errataInfo.get("notes");
 
-        Errata newErrata = ErrataManager.lookupByAdvisory(advisoryName);
+        Errata newErrata = ErrataManager.lookupByAdvisory(advisoryName,
+                loggedInUser.getOrg());
         if (newErrata != null) {
             throw new DuplicateErrataException(advisoryName);
         }

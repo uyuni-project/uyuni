@@ -1,3 +1,5 @@
+- take organization into account when looking up for an erratum (bsc#1089185)
+
 -------------------------------------------------------------------
 Thu May 17 10:26:47 CEST 2018 - jgonzalez@suse.com
 
