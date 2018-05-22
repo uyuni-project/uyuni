@@ -51,7 +51,6 @@ remove_traditional_stack:
 {%- endif %}
 
 # disable all spacewalk:* repos
-{%- set repos_disabled = {'disabled': false} %}
 {%- for alias in repos_to_disable %}
 disable_repo_{{ alias }}:
   module.run:
@@ -59,7 +58,6 @@ disable_repo_{{ alias }}:
     - repo: {{ alias }}
     - kwargs:
         enabled: False
-{%- if repos_disabled.update({'disabled': true}) %}{% endif %}
 {%- endfor %}
 
 # Remove suseRegisterInfo in a separate yum transaction to avoid being called by
