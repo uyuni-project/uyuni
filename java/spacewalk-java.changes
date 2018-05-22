@@ -1,3 +1,7 @@
+- add API functions to specify system cleanup type when deleting a
+  system (bsc#1094190)
+- change default cleanup type for XMLRPC API to NO_CLEANUP
+  (bsc#1094190)
 - take organization into account when looking up for an erratum (bsc#1089185)
 
 -------------------------------------------------------------------

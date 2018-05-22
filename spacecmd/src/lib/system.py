@@ -1689,9 +1689,14 @@ def do_system_deployconfigfiles(self, args):
 
 def help_system_delete(self):
     print 'system_delete: Delete a system profile'
-    print 'usage: system_delete <SYSTEMS>'
-    print
-    print self.HELP_SYSTEM_OPTS
+    print('''usage: system_delete [options] <SYSTEMS>
+
+    options:
+          -c TYPE - Possible values:
+             *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,
+             *  'NO_CLEANUP' - do not cleanup, just delete,
+             *  'FORCE_DELETE' - Try cleanup first but delete server anyway in case of error
+    ''')
 
 
 def complete_system_delete(self, text, line, beg, end):
@@ -1699,7 +1704,9 @@ def complete_system_delete(self, text, line, beg, end):
 
 
 def do_system_delete(self, args):
-    (args, _options) = parse_arguments(args)
+    options = [Option('-c', '--cleanuptype', default='NO_CLEANUP',
+                      choices=['FAIL_ON_CLEANUP_ERR', 'NO_CLEANUP', 'FORCE_DELETE'])]
+    (args, options) = parse_arguments(args, options)
 
     if not len(args):
         self.help_system_delete()
@@ -1741,7 +1748,7 @@ def do_system_delete(self, args):
     if not self.user_confirm('Delete these systems [y/N]:'):
         return
 
-    self.client.system.deleteSystems(self.session, system_ids)
+    self.client.system.deleteSystems(self.session, system_ids, options.cleanuptype)
 
     logging.info('%i system(s) scheduled for removal', len(system_ids))
 
