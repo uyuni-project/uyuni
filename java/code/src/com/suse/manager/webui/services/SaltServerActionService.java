@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.services;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -23,6 +26,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
@@ -58,22 +62,33 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.JsonElementCall;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.TokenBuilder;
+import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.utils.Json;
 import com.suse.utils.Opt;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
@@ -110,10 +125,16 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
+import static java.util.Optional.ofNullable;
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -125,7 +146,6 @@ public class SaltServerActionService {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
-    private static final String ACTIONCHAIN_START = "actionchains.start";
     public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
     public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
@@ -137,6 +157,7 @@ public class SaltServerActionService {
     private static final String PARAM_PATCHES = "param_patches";
     private static final String PARAM_FILES = "param_files";
     private static final String REMOTE_COMMANDS = "remotecommands";
+    private static final String SYSTEM_REBOOT = "system.reboot";
 
     /** SLS pillar parameter name for the list of update stack patch names. */
     public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
@@ -148,6 +169,11 @@ public class SaltServerActionService {
 
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
+
+    private SaltService saltService = SaltService.INSTANCE;
+    private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
+    private SaltUtils saltUtils = SaltUtils.INSTANCE;
+    private boolean skipCommandScriptPerms;
 
     private Action unproxy(Action entity) {
         Hibernate.initialize(entity);
@@ -267,55 +293,69 @@ public class SaltServerActionService {
     public void execute(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
-        List<MinionServer> minions = getMinionServers(actionIn);
+        List<MinionServer> allMinions = getMinionServers(actionIn);
 
-        // now prepare each call
-        for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
-                callsForAction(actionIn, minions).entrySet()) {
-            LocalCall<?> call = entry.getKey();
-            final List<MinionServer> targetMinions;
-            Map<Boolean, List<MinionServer>> results;
+        // split minions into regular and salt-ssh
+        Map<Boolean, List<MinionServer>> partitionBySSHPush = allMinions.stream()
+                .collect(Collectors.partitioningBy(MinionServerUtils::isSshPushMinion));
 
-            if (isStagingJob) {
-                targetMinions = new ArrayList<>();
-                stagingJobMinionServerId
-                        .ifPresent(serverId -> MinionServerFactory.lookupById(serverId)
-                                .ifPresent(server -> targetMinions.add(server)));
-                call = prepareStagingTargets(actionIn, targetMinions);
-            }
-            else {
-                targetMinions = entry.getValue();
-            }
+        // Separate SSH push minions from regular minions to apply different states
+        List<MinionServer> sshPushMinions = partitionBySSHPush.get(true);
+        List<MinionServer> regularMinions = partitionBySSHPush.get(false);
 
-            results = execute(actionIn, call, targetMinions, forcePackageListRefresh,
-                    isStagingJob);
+        if (!regularMinions.isEmpty()) {
+            // now prepare each call
+            for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
+                    callsForAction(actionIn, regularMinions).entrySet()) {
+                LocalCall<?> call = entry.getKey();
+                final List<MinionServer> targetMinions;
+                Map<Boolean, List<MinionServer>> results;
 
-            results.get(true).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Asynchronous call on minion: " +
+                if (isStagingJob) {
+                    targetMinions = new ArrayList<>();
+                    stagingJobMinionServerId
+                            .ifPresent(serverId -> MinionServerFactory.lookupById(serverId)
+                                    .ifPresent(server -> targetMinions.add(server)));
+                    call = prepareStagingTargets(actionIn, targetMinions);
+                }
+                else {
+                    targetMinions = entry.getValue();
+                }
+
+                results = execute(actionIn, call, targetMinions, forcePackageListRefresh,
+                        isStagingJob);
+
+                results.get(true).forEach(minionServer -> {
+                    serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Asynchronous call on minion: " +
+                                    minionServer.getMinionId());
+                        }
+                        if (!isStagingJob) {
+                            serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+                            ActionFactory.save(serverAction);
+                        }
+                    });
+                });
+
+                results.get(false).forEach(minionServer -> {
+                    serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                        LOG.warn("Failed to schedule action for minion: " +
                                 minionServer.getMinionId());
-                    }
-                    if (!isStagingJob) {
-                        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        ActionFactory.save(serverAction);
-                    }
+                        if (!isStagingJob) {
+                            serverAction.setCompletionTime(new Date());
+                            serverAction.setResultCode(-1L);
+                            serverAction.setResultMsg("Failed to schedule action.");
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            ActionFactory.save(serverAction);
+                        }
+                    });
                 });
-            });
+            }
+        }
 
-            results.get(false).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    LOG.warn("Failed to schedule action for minion: " +
-                            minionServer.getMinionId());
-                    if (!isStagingJob) {
-                        serverAction.setCompletionTime(new Date());
-                        serverAction.setResultCode(-1L);
-                        serverAction.setResultMsg("Failed to schedule action.");
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        ActionFactory.save(serverAction);
-                    }
-                });
-            });
+        for (MinionServer sshMinion: sshPushMinions) {
+            executeSSHAction(actionIn, sshMinion);
         }
     }
 
@@ -323,48 +363,225 @@ public class SaltServerActionService {
      * Call Salt to start the execution of the given action chain.
      *
      * @param actionChain the action chain to execute
-     * @param minions a list containing target minions
+     * @param targetMinions a list containing target minions
      */
-    private void startActionChainExecution(ActionChain actionChain, Set<MinionServer> minions) {
-        // now prepare each call
-        Pair<LocalCall<?>, Set<MinionServer>> entry =
-                startActionChainCall(minions, actionChain.getId());
-
-        LocalCall<?> call = entry.getKey();
-        Set<MinionServer> targetMinions = entry.getValue();
-
+    private void startActionChainExecution(ActionChain actionChain, Set<MinionServer> targetMinions) {
+        // prepare the start action chain call
         Map<Boolean, ? extends Collection<MinionServer>> results =
-                callAsyncActionChainStart(actionChain.getId(), call, targetMinions);
-
-        // collect all server actions
-        List<ServerAction> serverActions =
-                actionChain.getEntries().stream()
-                        .map(ace -> ace.getAction())
-                        .flatMap(a -> a.getServerActions().stream())
-                        .collect(Collectors.toList());
-
-        results.get(true).forEach(minionServer -> {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Asynchronous call on minion: " +
-                        minionServer.getMinionId());
-            }
-            serverActions.stream()
-                    .filter(sa -> sa.getServer().getId().equals(minionServer.getId()))
-                    .forEach(sa -> {
-                        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        ActionFactory.save(sa);
-                    });
-        });
+                callAsyncActionChainStart(MgrActionChains.start(actionChain.getId()), targetMinions);
 
         results.get(false).forEach(minionServer -> {
             LOG.warn("Failed to schedule action chain for minion: " +
                     minionServer.getMinionId());
-            serverActions.stream()
-                    .filter(sa -> sa.getServer().getId().equals(minionServer.getId()))
-                    .forEach(sa -> {
-                        sa.setStatus(ActionFactory.STATUS_FAILED);
-                        ActionFactory.save(sa);
+            Optional<Long> firstActionId = actionChain.getEntries().stream()
+                    .sorted(Comparator.comparingInt(ActionChainEntry::getSortOrder))
+                    .map(ActionChainEntry::getAction)
+                    .map(Action::getId)
+                    .findFirst();
+            failActionChain(minionServer.getMinionId(), firstActionId,
+                    Optional.of("Got empty result."));
+        });
+    }
+
+    private void startSSHActionChain(ActionChain actionChain, Set<MinionServer> sshMinions,
+                                     Optional<String> extraFilerefs) {
+        // use a state to start the action chain in order to trick salt-ssh into including the
+        // mgractionchains custom module in the thin-dir tarball
+        LocalCall<Map<String, ApplyResult>> call =
+                State.apply(singletonList("actionchains.startssh"),
+                        Optional.of(singletonMap("actionchain_id", actionChain.getId())));
+
+        Optional<Long> firstActionId = actionChain.getEntries().stream()
+                .sorted(Comparator.comparingInt(ActionChainEntry::getSortOrder))
+                .map(ActionChainEntry::getAction)
+                .map(Action::getId)
+                .findFirst();
+
+        // start the action chain synchronously
+        try {
+            Map<String, Result<Map<String, ApplyResult>>> res = saltSSHService.callSyncSSH(call,
+                    new MinionList(sshMinions.stream().map(minion -> minion.getMinionId())
+                            .collect(Collectors.toList())),
+                    extraFilerefs);
+
+            res.forEach((minionId, chunkResult) -> {
+                if (chunkResult.result().isPresent()) {
+                    handleActionChainSSHResult(firstActionId, minionId, chunkResult.result().get());
+                }
+                else {
+                    String errMsg = chunkResult.error().map(saltErr -> saltErr.fold(
+                            e ->  {
+                                LOG.error(e);
+                                return "Function " + e.getFunctionName() + " not available";
+                            },
+                            e ->  {
+                                LOG.error(e);
+                                return "Module " + e.getModuleName() + " not supported";
+                            },
+                            e ->  {
+                                LOG.error(e);
+                                return "Error parsing JSON: " + e.getJson();
+                            },
+                            e ->  {
+                                LOG.error(e);
+                                return "Salt error: " + e.getMessage();
+                            }
+                    )).orElse("Unknonw error");
+                    // no result, fail the entire chain
+                    failActionChain(minionId, firstActionId,
+                            Optional.of(errMsg));
+                }
+            });
+
+        }
+        catch (SaltException e) {
+            LOG.error("Error handling action chain execution: ", e);
+            // fail the entire chain
+            sshMinions.forEach(minion -> {
+                failActionChain(minion.getMinionId(), firstActionId,
+                        Optional.of("Error handling action chain execution: " + e.getMessage()));
+            });
+        }
+    }
+
+    /**
+     * Handle result of applying an action chain.
+     * @param firstChunkActionId id of the first action in the chunk
+     * @param minionId minion id
+     * @param chunkResult result of applying the chunk
+     * @return true if the result could be handled
+     */
+    public boolean handleActionChainSSHResult(Optional<Long> firstChunkActionId, String minionId,
+                                              Map<String, ApplyResult> chunkResult) {
+        try {
+            // mgractionchains.start is executed via state.apply, get the actual output of the module
+            // fist look for start result
+            StateApplyResult<JsonElement> stateApplyResult =
+                    chunkResult.get("module_|-startssh_|-mgractionchains.start_|-run");
+
+            if (stateApplyResult == null) {
+                // if no start result, look for resume
+                stateApplyResult =
+                        chunkResult.get("module_|-resumessh_|-mgractionchains.resume_|-run");
+            }
+
+            if (stateApplyResult == null) {
+                LOG.error("No action chain result for minion " + minionId);
+                failActionChain(minionId, firstChunkActionId, Optional.of("No action chain result"));
+            }
+            else if (!stateApplyResult.isResult() && (stateApplyResult.getChanges() == null ||
+                    (stateApplyResult.getChanges().isJsonObject()) &&
+                            ((JsonObject)stateApplyResult.getChanges()).size() == 0)) {
+                LOG.error("Error handling action chain execution: " + stateApplyResult.getComment());
+                failActionChain(minionId, firstChunkActionId, Optional.of(stateApplyResult.getComment()));
+            }
+            else if (stateApplyResult.getChanges() != null) {
+                // handle the result
+                Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult = null;
+                try {
+                    Ret<Map<String, StateApplyResult<Ret<JsonElement>>>> actionChainRet =
+                            Json.GSON.fromJson(stateApplyResult.getChanges(),
+                                    new TypeToken<Ret<Map<String, StateApplyResult<Ret<JsonElement>>>>>() {
+                                    }.getType());
+                    actionChainResult = actionChainRet.getRet();
+                }
+                catch (JsonSyntaxException e) {
+                    LOG.error("Error mapping action chain result: " + stateApplyResult.getChanges(), e);
+                    throw e;
+                }
+                JobReturnEventMessageAction.handleActionChainResult(minionId, "", 0, true,
+                        actionChainResult,
+                        // skip reboot, needs special handling
+                        stateResult -> SYSTEM_REBOOT.equals(stateResult.getName()));
+
+                boolean refreshPkg = false;
+                for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
+                    String stateIdKey = entry.getKey();
+                    StateApplyResult<Ret<JsonElement>> stateResult = entry.getValue();
+
+                    Optional<SaltActionChainGeneratorService.ActionChainStateId> actionChainStateId =
+                            SaltActionChainGeneratorService.parseActionChainStateId(stateIdKey);
+                    if (actionChainStateId.isPresent()) {
+                        SaltActionChainGeneratorService.ActionChainStateId stateId = actionChainStateId.get();
+                        // only reboot needs special handling,
+                        // for salt pkg update there's no need to split the sls in case of salt-ssh minions
+                        if (SYSTEM_REBOOT.equals(stateResult.getName()) && stateResult.isResult()) {
+                            Action rebootAction = ActionFactory.lookupById(stateId.getActionId());
+
+                            if (rebootAction.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                                Optional<ServerAction> rebootServerAction =
+                                        rebootAction.getServerActions().stream()
+                                                .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
+                                                        sa.getServer().asMinionServer().get()
+                                                                .getMinionId().equals(minionId))
+                                                .findFirst();
+                                if (rebootServerAction.isPresent()) {
+                                    rebootServerAction.get().setStatus(ActionFactory.STATUS_PICKED_UP);
+                                    rebootServerAction.get().setPickupTime(new Date());
+                                }
+                                else {
+                                    LOG.error("Action of type " + SYSTEM_REBOOT +
+                                            " found in action chain result but not in actions for minion " +
+                                            minionId);
+                                }
+                            }
+                        }
+
+                        if (stateResult.isResult() &&
+                                saltUtils.shouldRefreshPackageList(stateResult.getName(),
+                                        Optional.of(stateResult.getChanges().getRet()))) {
+                            refreshPkg = true;
+                        }
+                    }
+                }
+                if (refreshPkg) {
+                    MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
+                        LOG.info("Scheduling a package profile update for minion " + minionId);
+                        try {
+                            Action pkgList = ActionManager
+                                    .schedulePackageRefresh(minion.getOrg(), minion);
+                            executeSSHAction(pkgList, minion);
+                        }
+                        catch (TaskomaticApiException e) {
+                            LOG.error("Could not schedule package refresh for minion: " +
+                                    minion.getMinionId(), e);
+                        }
                     });
+                }
+                // update minion last checkin
+                MinionServerFactory.findByMinionId(minionId).ifPresent(minion ->
+                        minion.updateServerInfo());
+            }
+            else {
+                LOG.error("'state.apply mgractionchains.startssh' was successful " +
+                        "but not state apply changes are present");
+                failActionChain(minionId, firstChunkActionId, Optional.of("Got null result."));
+                return false;
+            }
+        }
+        catch (Exception e) {
+            LOG.error("Error handling action chain result for SSH minion " +
+                    minionId, e);
+            failActionChain(minionId, firstChunkActionId,
+                    Optional.of("Error handling action chain result:" + e.getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Set the action and dependent actions to failed
+     * @param minionId the minion id
+     * @param failedActionId the failed action id
+     * @param message the message to set to the failed action
+     */
+    public static void failActionChain(String minionId, Optional<Long> failedActionId, Optional<String> message) {
+        failedActionId.ifPresent(last ->
+                JobReturnEventMessageAction.failDependentServerActions(last, minionId, message));
+        MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
+            // there's only one action chain execution possible at a given time so it should
+            // be fine to remove all files for the minion
+            SaltActionChainGeneratorService.INSTANCE.removeAllActionChainSLSFilesForMinion(minion);
         });
     }
 
@@ -390,7 +607,7 @@ public class SaltServerActionService {
                     if (minions.isEmpty()) {
                         // When an Action Chain contains an Action which does not target
                         // any minion we don't generate any Salt call.
-                        LOG.debug("No server actions for action id=" + actionIn.getId());
+                        LOG.warn("No server actions for action id=" + actionIn.getId());
                         return;
                     }
 
@@ -428,21 +645,84 @@ public class SaltServerActionService {
 
                 });
 
-        // render local calls to salt states
+        // split minions into regular and salt-ssh
+        Map<Boolean, Set<MinionServer>> minionPartitions =
+                minionCalls.keySet().stream()
+                        .collect(Collectors.partitioningBy(entry ->
+                                MinionServerUtils.isSshPushMinion(entry), Collectors.toSet()));
+
+        Set<MinionServer> sshMinionIds = minionPartitions.get(true);
+        Set<MinionServer> regularMinionIds = minionPartitions.get(false);
+
+        // convert local calls to salt state objects
+        Map<MinionServer, List<SaltState>> statesPerMinion = new HashMap<>();
         minionCalls.forEach((minion, serverActionCalls) -> {
+            boolean isSshPush = MinionServerUtils.isSshPushMinion(minion);
             List<SaltState> states = serverActionCalls.stream()
                     .flatMap(saCalls -> {
                         ServerAction sa = saCalls.getKey();
                         List<LocalCall<?>> calls = saCalls.getValue();
-                        return convertToState(actionChain.getId(), sa, calls).stream();
+                        return convertToState(actionChain.getId(), sa, calls, isSshPush).stream();
                     }).collect(Collectors.toList());
-            saltActionChainGeneratorService.createActionChainSLSFiles(actionChain,
-                    minion, states);
+
+            statesPerMinion.put(minion, states);
         });
 
-        startActionChainExecution(actionChain, minionCalls.keySet());
+        // Compute the additional sls files to be included in the state tarball for ssh-push minions.
+        // This is needed because we're using module.run + state.apply to apply the corresponding
+        // action states and this breaks the introspection that Salt does in order to figure out
+        // what files it needs to included in the state tarball.
+        Optional<String> extraFilerefs = Optional.empty();
+        if (!sshMinionIds.isEmpty()) {
+            Map<MinionServer, Integer> chunksPerMinion =
+                    saltActionChainGeneratorService.getChunksPerMinion(statesPerMinion);
 
-        // action chain no longer needed, delete it
+            // If there are highstate apply actions the corresponding top files must be generated
+            // because we're applying highstates using state.top instead of state.apply.
+            // This is due to module.run + state.apply highstate not working properly even if there's
+            // a top.sls included in the state tarball.
+            Map<MinionServer, List<Long>> highstateActionPerMinion =
+                    saltSSHService.findApplyHighstateActionsPerMinion(statesPerMinion);
+
+            List<String> fileRefsList = new LinkedList<>();
+            highstateActionPerMinion.forEach((minion, highstateActionIds) -> {
+                for (Long highstateActionId: highstateActionIds) {
+                    // generate a top files for each highstate apply action
+                    Pair<String, List<String>> highstateTop = saltSSHService
+                            .generateTopFile(actionChainId, highstateActionId, minion);
+                    fileRefsList.add(highstateTop.getKey());
+                }
+            });
+
+            // collect additional files (e.g. salt://scripts/script_xxx.sh) referenced from the action
+            // chain sls file
+            String extraFilerefsStr = saltSSHService
+                    .findStatesExtraFilerefs(actionChain.getId(), chunksPerMinion, statesPerMinion);
+            fileRefsList.add(extraFilerefsStr);
+
+            // join extra files and tops
+            extraFilerefs = Optional.of(fileRefsList.stream().collect(Collectors.joining(",")));
+
+        }
+
+        // render the action chain sls files
+        for (Map.Entry<MinionServer, List<SaltState>> entry: statesPerMinion.entrySet()) {
+            saltActionChainGeneratorService
+                    .createActionChainSLSFiles(actionChain, entry.getKey(), entry.getValue(),
+                            MinionServerUtils.isSshPushMinion(entry.getKey()) ? extraFilerefs : Optional.empty());
+        }
+
+        // start the execution
+        if (!regularMinionIds.isEmpty()) {
+            startActionChainExecution(actionChain, regularMinionIds);
+        }
+
+        if (!sshMinionIds.isEmpty()) {
+            startSSHActionChain(actionChain, sshMinionIds, extraFilerefs);
+        }
+
+        // We have generated the sls files for the action chain execution.
+        // Delete the action chain db entity as it's no longer needed.
         ActionChainFactory.delete(actionChain);
     }
 
@@ -452,12 +732,12 @@ public class SaltServerActionService {
                                         .map(ServerAction::getServer)
                                         .collect(Collectors.toList()))
                                         .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
-                                        .filter(m -> m.getContactMethod().getLabel().equals("default"))
                                         .collect(Collectors.toList()))
                                 .orElse(new LinkedList<>());
     }
 
-    private List<SaltState> convertToState(long actionChainId, ServerAction serverAction, List<LocalCall<?>> calls) {
+    private List<SaltState> convertToState(long actionChainId, ServerAction serverAction,
+                                           List<LocalCall<?>> calls, boolean isSshPush) {
         String stateId = SaltActionChainGeneratorService.createStateId(actionChainId,
                 serverAction.getParentAction().getId());
 
@@ -468,18 +748,44 @@ public class SaltServerActionService {
             switch(fun) {
                 case "state.apply":
                     List<String> mods = (List<String>)kwargs.get("mods");
-                    Map<String, Object> args = new HashMap<>();
-                    args.put("mods", mods);
-                    args.put("queue", true);
+                    if (CollectionUtils.isEmpty(mods)) {
+                        if (isSshPush) {
+                            // Apply highstate using a custom top.
+                            // The custom top is needed because salt-ssh invokes
+                            // "salt-call --local" and this needs a top file in order to apply the highstate
+                            // and salt-ssh doesn't pack one automatically in the state tarball
+                            return new SaltModuleRun(stateId,
+                                    "state.top",
+                                    serverAction.getParentAction().getId(),
+                                    singletonMap("topfn",
+                                            saltActionChainGeneratorService
+                                                    .getActionChainTopPath(actionChainId,
+                                                            serverAction.getParentAction().getId())),
+                                    emptyMap());
+                        }
+                        else {
+                            return new SaltModuleRun(stateId,
+                                    "state.apply",
+                                    serverAction.getParentAction().getId(),
+                                    emptyMap(),
+                                    kwargs.get("pillar") != null ?
+                                            singletonMap("pillar", kwargs.get("pillar")) : emptyMap());
+                        }
+
+                    }
                     return new SaltModuleRun(stateId,
                             "state.apply",
-                            args,
-                            singletonMap("pillar", kwargs.get("pillar")));
+                            serverAction.getParentAction().getId(),
+                            !mods.isEmpty() ?
+                                    singletonMap("mods", mods) : emptyMap(),
+                            kwargs.get("pillar") != null ?
+                                    singletonMap("pillar", kwargs.get("pillar")) : emptyMap());
                 case "system.reboot":
                     Integer time = (Integer)kwargs.get("at_time");
-                    return new SaltSystemReboot(stateId, time);
+                    return new SaltSystemReboot(stateId,
+                            serverAction.getParentAction().getId(), time);
                 default:
-                    throw new RuntimeException("TODO add code");
+                    throw new RuntimeException("Salt module call" + fun + " can't be converted to a state.");
             }
         }).collect(Collectors.toList());
     }
@@ -670,38 +976,40 @@ public class SaltServerActionService {
 
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
-        Path scriptFile = SaltUtils.getScriptPath(scriptAction.getId());
+        Path scriptFile = saltUtils.getScriptPath(scriptAction.getId());
         try {
-            FileSystem fileSystem = FileSystems.getDefault();
-            UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-            UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+            if (!Files.exists(scriptFile)) {
+                // make sure parent dir exists
+                if (!Files.exists(scriptFile.getParent())) {
+                    FileAttribute<Set<PosixFilePermission>> dirAttributes =
+                            PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-xr-x"));
 
-            // make sure parent dir exists
-            if (!Files.exists(scriptFile.getParent())) {
-                FileAttribute<Set<PosixFilePermission>> dirAttributes =
-                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-xr-x"));
+                    Files.createDirectory(scriptFile.getParent(), dirAttributes);
+                    // make sure correct user is set
+                }
+            }
 
-                Files.createDirectory(scriptFile.getParent(), dirAttributes);
-                // make sure correct user is set
-                Files.setOwner(scriptFile.getParent(), tomcatUser);
-
+            if (!skipCommandScriptPerms) {
+                setFileOwner(scriptFile.getParent());
             }
 
             // In case of action retry, the files script files will be already created.
             if (!Files.exists(scriptFile)) {
                 FileAttribute<Set<PosixFilePermission>> fileAttributes =
-                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("r--r--r--"));
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r--r--"));
                 Files.createFile(scriptFile, fileAttributes);
-                Files.setOwner(scriptFile, tomcatUser);
-
                 FileUtils.writeStringToFile(scriptFile.toFile(),
                         script.replaceAll("\r\n", "\n"));
+            }
+
+            if (!skipCommandScriptPerms) {
+                setFileOwner(scriptFile);
             }
 
             // state.apply remotecommands
             Map<String, Object> pillar = new HashMap<>();
             pillar.put("mgr_remote_cmd_script",
-                    "salt://" + SCRIPTS_DIR + "/" + scriptFile.getFileName());
+                    SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
             pillar.put("mgr_remote_cmd_runas",
                     scriptAction.getScriptActionDetails().getUsername());
             ret.put(State.apply(Arrays.asList(REMOTE_COMMANDS), Optional.of(pillar)), minions);
@@ -720,6 +1028,14 @@ public class SaltServerActionService {
             });
         }
         return ret;
+    }
+
+    private void setFileOwner(Path path) throws IOException {
+        FileSystem fileSystem = FileSystems.getDefault();
+        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+        UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+
+        Files.setOwner(path, tomcatUser);
     }
 
     private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
@@ -1000,15 +1316,6 @@ public class SaltServerActionService {
         return call;
     }
 
-    private Pair<LocalCall<?>, Set<MinionServer>> startActionChainCall(
-            Set<MinionServer> minions, Long actionChainId) {
-        List<String> args = new ArrayList<>(1);
-        args.add(Long.toString(actionChainId));
-        LocalCall<?> call = new LocalCall("mgractionchains.start",
-                Optional.of(args), Optional.empty(), new TypeToken<Map<String, ApplyResult>>() { });
-        return new ImmutablePair<>(call, minions);
-    }
-
     /**
      * @param actionIn the action
      * @param call the call
@@ -1061,13 +1368,12 @@ public class SaltServerActionService {
     }
 
     /**
-     * @param actionChainId the id of the action chain
      * @param call the call
      * @param minions minions to target
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, ? extends Collection<MinionServer>> callAsyncActionChainStart(Long actionChainId,
-                                                                       LocalCall<?> call, Set<MinionServer> minions) {
+    private Map<Boolean, ? extends Collection<MinionServer>> callAsyncActionChainStart(LocalCall<?> call,
+                                                                                       Set<MinionServer> minions) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("suma-action-chain", true);
@@ -1100,6 +1406,133 @@ public class SaltServerActionService {
     }
 
     /**
+     * Execute an action on an ssh-push minion.
+     *
+     * @param action the action to be executed
+     * @param minion minion on which the action will be executed
+     */
+    public void executeSSHAction(Action action, MinionServer minion) {
+        Optional<ServerAction> serverAction = action.getServerActions().stream()
+                .filter(sa -> sa.getServer().equals(minion))
+                .findFirst();
+        if (serverAction.isPresent()) {
+            ServerAction sa = serverAction.get();
+            if (sa.getStatus().equals(STATUS_FAILED) ||
+                    sa.getStatus().equals(STATUS_COMPLETED)) {
+                LOG.info("Action '" + action.getName() + "' is completed or failed." +
+                        " Skipping.");
+                return;
+            }
+
+            if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
+                LOG.info("Prerequisite of action '" + action.getName() + "' is still" +
+                        " queued. Skipping executing of the action.");
+                return;
+            }
+
+            if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
+                LOG.info("Failing action '" + action.getName() + "' as its prerequisite '" +
+                        action.getPrerequisite().getName() + "' failed.");
+                sa.setStatus(STATUS_FAILED);
+                sa.setResultMsg("Prerequisite failed.");
+                sa.setResultCode(-100L);
+                sa.setCompletionTime(new Date());
+                return;
+            }
+
+            sa.setRemainingTries(sa.getRemainingTries() - 1);
+
+            Map<LocalCall<?>, List<MinionServer>> calls = callsForAction(action, Arrays.asList(minion));
+
+            for (LocalCall<?> call : calls.keySet()) {
+                Optional<JsonElement> result;
+                // try-catch as we'd like to log the warning in case of exception
+                try {
+                    result = saltService.callSync(new JsonElementCall(call), minion.getMinionId());
+                }
+                catch (RuntimeException e) {
+                    LOG.error("Error executing Salt call for action: " + action.getName() +
+                            "on minion " + minion.getMinionId(), e);
+                    sa.setStatus(STATUS_FAILED);
+                    sa.setResultMsg("Error calling Salt: " + e.getMessage());
+                    sa.setCompletionTime(new Date());
+                    throw e;
+                }
+
+                if (!result.isPresent()) {
+                    LOG.error("Action '" + action.getName() + "' failed. Got not result from Salt," +
+                            " probablly minion is down or could not be contacted.");
+                    sa.setStatus(STATUS_FAILED);
+                    sa.setResultMsg("Minion is down or could not be contacted.");
+                    sa.setCompletionTime(new Date());
+                    return;
+                }
+
+                result.ifPresent(r -> {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Salt call result: " + r);
+                    }
+                    String function = (String) call.getPayload().get("fun");
+
+                    // reboot needs special handling in case of ssh push
+                    if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                        sa.setPickupTime(new Date());
+                    }
+                    else {
+                        saltUtils.updateServerAction(sa, 0L, true, "n/a",
+                                r, function);
+                    }
+
+                    // Perform a "check-in" after every executed action
+                    minion.updateServerInfo();
+
+                    // Perform a package profile update in the end if necessary
+                    if (saltUtils.shouldRefreshPackageList(function, result)) {
+                        LOG.info("Scheduling a package profile update");
+                        Action pkgList;
+                        try {
+                            pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
+                            executeSSHAction(pkgList, minion);
+                        }
+                        catch (TaskomaticApiException e) {
+                            LOG.error("Could not schedule package refresh for minion: " +
+                                    minion.getMinionId());
+                            LOG.error(e);
+                        }
+                    }
+                });
+            }
+        }
+        return;
+    }
+
+    /**
+     * Checks whether the parent action of given server action contains a server action
+     * that is in given state and is associated with the server of given server action.
+     * @param serverAction server action
+     * @param state state
+     * @return true if there exists a server action in given state associated with the same
+     * server as serverAction and parent action of serverAction
+     */
+    private boolean prerequisiteInStatus(ServerAction serverAction, ActionStatus state) {
+        Optional<Stream<ServerAction>> prerequisites =
+                ofNullable(serverAction.getParentAction())
+                        .map(Action::getPrerequisite)
+                        .map(Action::getServerActions)
+                        .map(a -> a.stream());
+
+        return prerequisites
+                .flatMap(serverActions ->
+                        serverActions
+                                .filter(s ->
+                                        serverAction.getServer().equals(s.getServer()) &&
+                                                state.equals(s.getStatus()))
+                                .findAny())
+                .isPresent();
+    }
+
+    /**
      * @param saltActionChainGeneratorServiceIn to set
      */
     public void setSaltActionChainGeneratorService(SaltActionChainGeneratorService
@@ -1116,4 +1549,29 @@ public class SaltServerActionService {
     public void setCommitTransaction(boolean commitTransactionIn) {
         this.commitTransaction = commitTransactionIn;
     }
+
+    /**
+     * Only used in unit tests.
+     * @param saltUtilsIn to set
+     */
+    public void setSaltUtils(SaltUtils saltUtilsIn) {
+        this.saltUtils = saltUtilsIn;
+    }
+
+    /**
+     * Only used in unit tests.
+     * @param saltServiceIn to set
+     */
+    public void setSaltService(SaltService saltServiceIn) {
+        this.saltService = saltServiceIn;
+    }
+
+    /**
+     * Only used in unit tests.
+     * @param skipCommandScriptPermsIn to set
+     */
+    public void setSkipCommandScriptPerms(boolean skipCommandScriptPermsIn) {
+        this.skipCommandScriptPerms = skipCommandScriptPermsIn;
+    }
+
 }

@@ -24,16 +24,23 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.utils.ActionSaltState;
+import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltRoster;
+import com.suse.manager.webui.utils.SaltState;
+import com.suse.manager.webui.utils.SaltTop;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.modules.Match;
-import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.client.SaltClient;
+import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.SSHTarget;
@@ -47,16 +54,21 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -69,7 +81,12 @@ import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import static com.suse.manager.webui.controllers.StatesAPI.SALT_PACKAGE_FILES;
+import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static java.util.Collections.singletonList;
 
 /**
@@ -90,19 +107,48 @@ public class SaltSSHService {
     private static final Logger LOG = Logger.getLogger(SaltSSHService.class);
     private static final String CLEANUP_SSH_MINION_SALT_STATE = "cleanup_ssh_minion";
 
+    public static final List<String> ACTION_STATES_LIST = Arrays.asList(
+            "certs", "channels", "cleanup_ssh_minion", "configuration",
+            "distupgrade", "hardware", "images", "packages/init.sls",
+            "packages/patchdownload.sls", "packages/patchinstall.sls", "packages/pkgdownload.sls",
+            "packages/pkginstall.sls", "packages/pkgremove.sls", "packages/profileupdate.sls",
+            "packages/redhatproductinfo.sls", "remotecommands", "scap", "services",
+            "custom", "custom_groups", "custom_org", "util", "bootstrap", "formulas.sls");
+
+    public static final String ACTION_STATES = ACTION_STATES_LIST
+            .stream()
+            .map(state -> SALT_FS_PREFIX + state)
+            .collect(Collectors.joining(","));
+
+    public static final List<String> DEFAULT_TOPS = Arrays.asList(
+            "channels",
+            "certs",
+            "packages",
+            "custom",
+            "custom_groups",
+            "custom_org",
+            "formulas",
+            "services.salt-minion",
+            "services.docker");
+
     // Shared salt client instance
     private final SaltClient saltClient;
 
     private Executor asyncSaltSSHExecutor;
+
+    private SaltActionChainGeneratorService saltActionChainGeneratorService;
+
     /**
      * Standard constructor.
      * @param saltClientIn salt client to use for the underlying salt calls
+     * @param saltActionChainGeneratorServiceIn the action chain file generator service
      */
-    public SaltSSHService(SaltClient saltClientIn) {
+    public SaltSSHService(SaltClient saltClientIn, SaltActionChainGeneratorService saltActionChainGeneratorServiceIn) {
         this.saltClient = saltClientIn;
         // use a small fixed pool so we don't overwhelm the salt-api
         // with salt-ssh executions
         this.asyncSaltSSHExecutor = Executors.newFixedThreadPool(3);
+        this.saltActionChainGeneratorService = saltActionChainGeneratorServiceIn;
     }
 
     /**
@@ -122,12 +168,13 @@ public class SaltSSHService {
      *
      * @param call the salt call
      * @param target the minion list target
+     * @param extraFileRefs --extra-fileresfs salt-ssh param
      * @param <R> result type of the salt function
      * @return the result of the call
      * @throws SaltException if something goes wrong during command execution or
      * during manipulation the salt-ssh roster
      */
-    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target)
+    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target, Optional<String> extraFileRefs)
             throws SaltException {
         // Using custom LocalCall timeout if included in the payload
         Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
@@ -135,7 +182,24 @@ public class SaltSSHService {
                     getSshPushTimeout();
         SaltRoster roster = prepareSaltRoster(target, sshTimeout);
         return unwrapSSHReturn(
-                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser())));
+                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser()), extraFileRefs));
+    }
+
+    /**
+     * Synchronously executes a salt function on given minion list using salt-ssh.
+     *
+     * Before the execution, this method creates an one-time roster corresponding to targets
+     * in given minion list.
+     *
+     * @param call the salt call
+     * @param target the minion list target
+     * @param <R> result type of the salt function
+     * @return the result of the call
+     * @throws SaltException if something goes wrong during command execution or
+     * during manipulation the salt-ssh roster
+     */
+    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target) throws SaltException {
+        return callSyncSSH(call, target, Optional.empty());
     }
 
     private SaltRoster prepareSaltRoster(MinionList target, Optional<Integer> sshTimeout) {
@@ -192,12 +256,27 @@ public class SaltSSHService {
      * Executes salt-ssh calls in another thread and returns {@link CompletionStage}s.
      * @param call the salt call
      * @param target the minion list target
-     * @param <R> result type of the salt function
      * @param cancel a future used to cancel waiting
+     * @param <R> result type of the salt function
      * @return the result of the call
      */
     public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(
             LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel) {
+        return callAsyncSSH(call, target, cancel, Optional.empty());
+    }
+
+    /**
+     * Executes salt-ssh calls in another thread and returns {@link CompletionStage}s.
+     * @param call the salt call
+     * @param target the minion list target
+     * @param <R> result type of the salt function
+     * @param cancel a future used to cancel waiting
+     * @param extraFilerefs value of salt-ssh param --extra-filerefs
+     * @return the result of the call
+     */
+    public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(
+            LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel,
+            Optional<String> extraFilerefs) {
         SaltRoster roster = prepareSaltRoster(target, getSshPushTimeout());
         Map<String, CompletableFuture<Result<R>>> futures = new HashedMap();
         target.getTarget().forEach(minionId ->
@@ -208,7 +287,8 @@ public class SaltSSHService {
                     try {
                         return unwrapSSHReturn(
                                 callSyncSSHInternal(call, target, roster,
-                                        false, isSudoUser(getSSHUser())));
+                                        false, isSudoUser(getSSHUser()),
+                                        extraFilerefs));
                     }
                     catch (SaltException e) {
                         LOG.error("Error calling async salt-ssh minions", e);
@@ -515,7 +595,19 @@ public class SaltSSHService {
                         kv -> kv.getKey(),
                         kv -> kv.getValue().fold(
                                 err -> new Result<T>(Xor.left(err)),
-                                succ -> new Result<T>(Xor.right(succ.getReturn().get())))));
+                                succ -> {
+                                    if (succ.getReturn().isPresent()) {
+                                        return new Result<T>(Xor.right(
+                                                succ.getReturn().get()));
+                                    }
+                                    else {
+                                        return new Result<T>(Xor.left(
+                                                succ.getStderr().map(stderr ->
+                                                        new GenericError("Error unwrapping ssh return: " + stderr))
+                                                        .orElse(new GenericError(
+                                                                "Error unwrapping ssh return: no return value"))));
+                                    }
+                                })));
     }
 
     /**
@@ -544,6 +636,13 @@ public class SaltSSHService {
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
             SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
             throws SaltException {
+        return callSyncSSHInternal(call, target, roster, ignoreHostKeys, sudo, Optional.empty());
+    }
+
+
+    private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
+            SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo, Optional<String> extraFilerefs)
+            throws SaltException {
         if (!(target instanceof MinionList || target instanceof Glob)) {
             throw new UnsupportedOperationException("Only MinionList and Glob supported.");
         }
@@ -551,13 +650,14 @@ public class SaltSSHService {
         Path rosterPath = null;
         try {
             rosterPath = roster.persistInTempFile();
-            SaltSSHConfig sshConfig = new SaltSSHConfig.Builder()
+            SaltSSHConfig.Builder sshConfigBuilder = new SaltSSHConfig.Builder()
                     .ignoreHostKeys(ignoreHostKeys)
                     .rosterFile(rosterPath.getFileName().toString())
                     .priv(SSH_KEY_PATH)
                     .sudo(sudo)
-                    .refreshCache(true)
-                    .build();
+                    .refreshCache(true);
+            extraFilerefs.ifPresent(filerefs -> sshConfigBuilder.extraFilerefs(filerefs));
+            SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
             return call.callSyncSSH(saltClient, target, sshConfig);
         }
@@ -731,4 +831,158 @@ public class SaltSSHService {
         }
 
     }
+
+    /**
+     * Collect all salt:// file refs from the salt states.
+     * @param actionChainId id of the action chain
+     * @param chunksPerMinion chunks for each minion
+     * @param statesPerMinion states for each minion
+     * @return a comma separated list of all the salt:// file refs
+     */
+    public String findStatesExtraFilerefs(long actionChainId, Map<MinionServer, Integer> chunksPerMinion,
+                                          Map<MinionServer, List<SaltState>> statesPerMinion) {
+        Set<String> fileRefs = statesPerMinion.entrySet().stream()
+                .flatMap(entry ->
+                        entry.getValue().stream()
+                                .flatMap(state -> gatherSaltFileRefs(state.getData()).stream())
+                                .collect(Collectors.toSet()).stream())
+                .collect(Collectors.toSet());
+
+        // add packages/package_<minion_machine_id>
+        Set<String> pkgRefs = statesPerMinion.entrySet().stream()
+                .map(entry -> SALT_FS_PREFIX + SALT_PACKAGE_FILES + "/" + StatesAPI.getPackagesSlsName(entry.getKey()))
+                .collect(Collectors.toSet());
+
+
+        Set<String> actionChainSls = chunksPerMinion.entrySet().stream()
+                .flatMap(entry ->
+                        IntStream.range(0, entry.getValue())
+                                .mapToObj(chunk -> SALT_FS_PREFIX + ACTIONCHAIN_SLS_FOLDER + "/" +
+                                        SaltActionChainGeneratorService
+                                                .getActionChainSLSFileName(actionChainId, entry.getKey(), chunk + 1))
+                ).collect(Collectors.toSet());
+
+        String extraFileRefs = ACTION_STATES + "," + Stream.concat(pkgRefs.stream(),
+                Stream.concat(actionChainSls.stream(), fileRefs.stream()))
+                .collect(Collectors.joining(","));
+
+        return extraFileRefs;
+    }
+
+    private Collection<String> gatherSaltFileRefs(Map<String, Object> data) {
+        Collection<String> fileRefs = new LinkedList<>();
+        gatherSaltFileRefs(data, fileRefs, 0);
+        return fileRefs;
+    }
+
+    private void gatherSaltFileRefs(Map<String, Object> data, Collection<String> fileRefs, int depth) {
+        if (depth > 50) {
+            return; // guard against infinite recursion
+        }
+        data.forEach((key, val) -> {
+            if (val instanceof String) {
+                gatherSaltFileRefs((String)val, fileRefs);
+            }
+            else if (val instanceof List) {
+                gatherSaltFileRefs((List)val, fileRefs, depth + 1);
+            }
+            else if (val instanceof Map) {
+                gatherSaltFileRefs((Map)val, fileRefs, depth + 1);
+            }
+        });
+    }
+
+    private void gatherSaltFileRefs(List<Object> data, Collection<String> fileRefs, int depth) {
+        if (depth > 50) {
+            return; // guard against infinite recursion
+        }
+        for (Object val : data) {
+            if (val instanceof String) {
+                gatherSaltFileRefs((String) val, fileRefs);
+            }
+            else if (val instanceof List) {
+                gatherSaltFileRefs((List)val, fileRefs, depth + 1);
+            }
+            else if (val instanceof Map) {
+                gatherSaltFileRefs((Map)val, fileRefs, depth + 1);
+            }
+        }
+    }
+
+    private void gatherSaltFileRefs(String val, Collection<String> fileRefs) {
+        if (val.startsWith(SALT_FS_PREFIX)) {
+            fileRefs.add(val);
+        }
+    }
+
+    /**
+     * Collect apply highstate actions for each minion
+     * @param statesPerMinion states for each minion
+     * @return the apply highstate action ids for each minion
+     */
+    public Map<MinionServer, List<Long>> findApplyHighstateActionsPerMinion(Map<MinionServer,
+            List<SaltState>> statesPerMinion) {
+        return statesPerMinion.entrySet().stream()
+                .filter(entry -> entry.getValue().stream().anyMatch(state -> isApplyHighstate(state)))
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey(),
+                        entry -> entry.getValue()
+                                .stream()
+                                .filter(state -> isApplyHighstate(state))
+                                .filter(state -> state instanceof ActionSaltState)
+                                .map(state -> ((ActionSaltState)state).getActionId())
+                        .collect(Collectors.toList())
+                ));
+    }
+
+    private static boolean isApplyHighstate(SaltState state) {
+        if (state instanceof SaltModuleRun) {
+            SaltModuleRun moduleRun = (SaltModuleRun)state;
+            return "state.top".equals(moduleRun.getName());
+        }
+        return false;
+    }
+
+    /**
+     * Generate the top file to use for applying highstate actions in action chains executed via salt-ssh.
+     * @param actionChainId the action chain id
+     * @param actionId the action id
+     * @param minionServer the minion
+     * @return a tuple containing the salt:// reference to the top file and the content of the top
+     */
+    public Pair<String, List<String>> generateTopFile(long actionChainId, long actionId, MinionServer minionServer) {
+        String saltTopPath = saltActionChainGeneratorService
+                .generateTop(actionChainId, actionId, new SaltTop(DEFAULT_TOPS));
+        return new ImmutablePair<>(saltTopPath, DEFAULT_TOPS);
+    }
+
+    /**
+     * Remove any pending action chain execution from the given minion by calling mgractionchains.clean asynchronously.
+     * @param minion the minion
+     */
+    public void cleanPendingActionChainAsync(MinionServer minion) {
+        LOG.warn("Cleaning up pending action chain execution on ssh minion " + minion.getMinionId());
+        CompletableFuture<GenericError> cancel =
+                SaltService.INSTANCE.failAfter(ConfigDefaults.get().getSaltSSHConnectTimeout());
+        Map<String, CompletionStage<Result<Map<String, Boolean>>>> completionStages =
+                callAsyncSSH(MgrActionChains.clean(), new MinionList(minion.getMinionId()), cancel);
+        completionStages.forEach((minionId, future) ->
+                future.whenComplete((res, err) -> {
+                    if (res != null) {
+                        res.fold(e -> {
+                            LOG.warn("Pending action chain execution cleanup failed for minion " + minionId);
+                            return null;
+                            },
+                                r -> {
+                            LOG.debug("Pending action chain execution cleaned up for minion " + minionId);
+                            return null;
+                        });
+                    }
+                    else if (err != null) {
+                        LOG.error("Error cleaning up pending action chain execution on minion " + minion.getMinionId() +
+                                ". Remove directory /var/tmp/.root_XXXX_salt/minion.d manually. ", err);
+                    }
+                }));
+    }
+
 }

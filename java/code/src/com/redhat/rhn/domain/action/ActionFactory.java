@@ -730,6 +730,20 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a List of ServerAction objects in the given states for a given Server.
+     * @param serverIn you want to limit the list of Actions to
+     * @param statusList to filter the ServerActoins by
+     * @return List of ServerAction objects
+     */
+    public static List listServerActionsForServer(Server serverIn, List<ActionStatus> statusList) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("server", serverIn);
+        params.put("statusList", statusList);
+        return singleton.listObjectsByNamedQuery(
+                "ServerAction.findByServerAndStatus", params);
+    }
+
+    /**
      * Lookup ServerAction object for given Server/Action pair.
      * @param serverIn the server who's ServerAction you are searching for
      * @param actionIn the action who's ServerAction you are searching for

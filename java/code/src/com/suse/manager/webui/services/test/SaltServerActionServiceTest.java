@@ -14,45 +14,58 @@
  */
 package com.suse.manager.webui.services.test;
 
+import com.google.gson.JsonElement;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.task.SSHPush;
+import com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem;
+import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
+import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.Target;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -68,13 +81,32 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
+
 
 public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
+
+    private SaltService saltServiceMock;
+    private MinionServer minion;
+    private SaltServerActionService saltServerActionService;
+    private SSHPushSystem sshPushSystemMock;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
+
+        saltServiceMock = mock(SaltService.class);
+        minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        saltServerActionService = new SaltServerActionService();
+        saltServerActionService.setSaltService(saltServiceMock);
+        saltServerActionService.setSkipCommandScriptPerms(true);
+
+        sshPushSystemMock = mock(SSHPushSystem.class);
     }
 
     public void testPackageUpdate() throws Exception {
@@ -148,9 +180,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testExecuteActionChain() throws Exception {
+        SaltUtils.INSTANCE.setScriptsDir(Files.createTempDirectory("actionscripts"));
+
         SaltActionChainGeneratorService generatorService = new SaltActionChainGeneratorService() {
             @Override
-            public void createActionChainSLSFiles(ActionChain actionChain, MinionServer minion, List<SaltState> states) {
+            public Map<MinionServer, Integer> createActionChainSLSFiles(ActionChain actionChain, MinionServer minion, List<SaltState> states, Optional<String> extraFileRefs) {
                 assertEquals(3, states.size());
                 SaltModuleRun scriptRun = (SaltModuleRun)states.get(0);
                 SaltSystemReboot reboot = (SaltSystemReboot)states.get(1);
@@ -174,10 +208,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                         reboot.getId());
                 assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + highstateActionId,
                         highstate.getId());
+                return null;
             }
         };
 
-        SaltServerActionService.INSTANCE.setSaltActionChainGeneratorService(generatorService);
+        saltServerActionService.setSaltActionChainGeneratorService(generatorService);
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainFactory.setTaskomaticApi(taskomaticMock);
 
@@ -214,11 +249,17 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
+            allowing(saltServiceMock).callAsync(with(any(LocalCall.class)), with(any(Target.class)));
+            will(returnValue(new LocalAsyncResult() {
+                public List<String> getMinions() {
+                    return Collections.emptyList(); // results are not important for this test
+                }
+            }));
         } });
 
         ActionChainFactory.schedule(actionChain, earliestAction);
 
-        SaltServerActionService.INSTANCE.executeActionChain(actionChain.getId());
+        saltServerActionService.executeActionChain(actionChain.getId());
     }
 
     public void testSubscribeChannels() throws Exception {
@@ -287,5 +328,300 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         AccessToken tokenForChannel = action.getDetails().getAccessTokens().stream()
                 .filter(token -> token.getChannels().contains(channel)).findFirst().get();
         assertEquals(tokenForChannel.getToken(), ((Map<String, Object>)channels.get(channel.getLabel())).get("token"));
+    }
+
+    private void expectNoSaltCalls() {
+        context().checking(new Expectations() {{
+            // we never invoke call for actions that are out of remaining tries!
+            never(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+        }});
+    }
+
+    /**
+     * Tests that execution skips server actions which still have queued prerequisite
+     * server actions but after the prerequisite is executed (= it's in either completed or
+     * failed state), the dependant server action is not skipped anymore.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testSkipActionComplex() throws Exception {
+        expectNoSaltCalls();
+        successWorker();
+
+        // prerequisite is still queued
+        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction prereqServerAction = createChildServerAction(prereq, STATUS_QUEUED, 5L);
+
+        // action is queued as well
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        action.setPrerequisite(prereq);
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
+        saltServerActionService.executeSSHAction(action, minion);
+
+        // both status and remaining tries should remain unchanged
+        assertEquals(STATUS_QUEUED, serverAction.getStatus());
+        assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
+
+        context().checking(new Expectations() {{
+            exactly(2).of(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+            Optional<JsonElement> result = Optional.of(mock(JsonElement.class));
+            will(returnValue(result));
+        }});
+
+        saltServerActionService.executeSSHAction(prereq, minion);
+        assertEquals(STATUS_COMPLETED, prereqServerAction.getStatus());
+
+        // 2nd try
+        saltServerActionService.executeSSHAction(action, minion);
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+    }
+
+    /**
+     * Tests that an attempt to execute action that has been already completed will not
+     * invoke any salt calls and that the state of the action doesn't change.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDontExecuteCompletedAction() throws Exception {
+        expectNoSaltCalls();
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction serverAction = createChildServerAction(action, STATUS_COMPLETED, 5L);
+
+        SaltServerActionService.INSTANCE.executeSSHAction(action, minion);
+
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
+    }
+
+    private ServerAction createChildServerAction(Action action, ActionStatus status,
+                                                 long remainingTries) throws Exception {
+        return createChildServerAction(minion, action, status, remainingTries);
+    }
+
+    private ServerAction createChildServerAction(MinionServer minoin, Action action, ActionStatus status,
+                                                 long remainingTries) throws Exception {
+        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
+        serverAction.setStatus(status);
+        serverAction.setRemainingTries(remainingTries);
+        action.setServerActions(Collections.singleton(serverAction));
+        return serverAction;
+    }
+
+    /**
+     * Tests that an attempt to execute action that has already failed will not
+     * invoke any salt calls.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDontExecuteFailedAction() throws Exception {
+        expectNoSaltCalls();
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction serverAction = createChildServerAction(action, STATUS_FAILED, 5L);
+
+        SaltServerActionService.INSTANCE.executeSSHAction(action, minion);
+
+        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
+    }
+
+    /**
+     * Tests that an action with a failed prerequisite will set be to the failed state
+     * (with a corresponding message) and that it will not invoke any salt calls.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDontExecuteActionWhenPrerequisiteFailed() throws Exception {
+        expectNoSaltCalls();
+
+        // prerequisite failed
+        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        createChildServerAction(prereq, STATUS_FAILED, 0L);
+
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        action.setPrerequisite(prereq);
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
+        SaltServerActionService.INSTANCE.executeSSHAction(action, minion);
+
+        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertEquals("Prerequisite failed.", serverAction.getResultMsg());
+        // this comes from the xmlrpc/queue.py
+        assertEquals(Long.valueOf(-100L), serverAction.getResultCode());
+        ActionFactory.getSession().flush();
+        assertEquals(Long.valueOf(1L), action.getFailedCount());
+    }
+
+    /**
+     * Tests that the successful execution of an action correctly sets the status and the
+     * number of remaining tries.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testExecuteActionSuccess() throws Exception {
+        successWorker();
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+            Optional<JsonElement> result = Optional.of(mock(JsonElement.class));
+            will(returnValue(result));
+        }});
+
+        // create action without servers
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
+        saltServerActionService.executeSSHAction(action, minion);
+
+        assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+    }
+
+    /**
+     * Tests that an execution with empty result from salt keeps the action in the queued
+     * state and decreases the number of tries.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testActionFailedOnEmptyResult() throws Exception {
+        // expect salt returning empty result
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+            will(returnValue(Optional.empty()));
+        }});
+
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
+        saltServerActionService.executeSSHAction(action, minion);
+
+        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertEquals("Minion is down or could not be contacted.", serverAction.getResultMsg());
+    }
+
+    /**
+     * Tests that an execution with exception from salt keeps the action in the queued
+     * state and decreases the number of tries.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testActionFailedOnException() throws Exception {
+        // expect salt returning empty result
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+            will(throwException(new RuntimeException()));
+        }});
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+        try {
+            saltServerActionService.executeSSHAction(action, minion);
+        } catch (RuntimeException e) {
+            // expected
+            assertEquals(STATUS_FAILED, serverAction.getStatus());
+            assertTrue(serverAction.getResultMsg().startsWith("Error calling Salt: "));
+            return;
+        }
+        fail("Runtime exception should have been thrown.");
+    }
+
+    /**
+     * Tests that a successful execution of a reboot action will move this action to the
+     * 'picked-up' state and the remaining tries counter decreases.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testRebootActionIsPickedUp() throws Exception {
+        successWorker();
+        mockSyncCallResult();
+
+        Action action = createRebootAction(new Date(1L));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
+        saltServerActionService.executeSSHAction(action, minion);
+
+        assertEquals(STATUS_PICKED_UP, serverAction.getStatus());
+        assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
+    }
+
+    private void mockSyncCallResult() {
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+            Optional<JsonElement> result = Optional.of(mock(JsonElement.class));
+            will(returnValue(result));
+        }});
+    }
+
+    private Action createRebootAction(Date earliestAction) {
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT);
+        action.setOrg(user.getOrg());
+        action.setEarliestAction(earliestAction);
+        return action;
+    }
+
+    /**
+     * Tests that execution skips server actions which still have queued prerequisite
+     * server actions.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testSkipActionWhenPrerequisiteQueued() throws Exception {
+        expectNoSaltCalls();
+        successWorker();
+
+        // prerequisite is still queued
+        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction prereqServerAction = createChildServerAction(prereq, STATUS_QUEUED, 5L);
+        prereq.setServerActions(Collections.singleton(prereqServerAction));
+
+        // action is queued as well
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        action.setPrerequisite(prereq);
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
+        saltServerActionService.executeSSHAction(action, minion);
+
+        // both status and remaining tries should remain unchanged
+        assertEquals(STATUS_QUEUED, serverAction.getStatus());
+        assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
+    }
+
+    private void assertActionWillBeRetried() throws Exception {
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
+        saltServerActionService.executeSSHAction(action, minion);
+
+        assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
+        assertEquals(STATUS_QUEUED, serverAction.getStatus());
+    }
+
+    private void successWorker() throws IOException {
+        SaltUtils saltUtils = new SaltUtils() {
+            @Override
+            public boolean shouldRefreshPackageList(String function,
+                                                    Optional<JsonElement> callResult) {
+                return false;
+            }
+
+            @Override
+            public void updateServerAction(ServerAction serverAction, long retcode,
+                                           boolean success, String jid, JsonElement jsonResult, String function) {
+                serverAction.setStatus(STATUS_COMPLETED);
+            }
+        };
+        saltUtils.setScriptsDir(Files.createTempDirectory("actionscripts"));
+        saltServerActionService.setSaltUtils(saltUtils);
     }
 }

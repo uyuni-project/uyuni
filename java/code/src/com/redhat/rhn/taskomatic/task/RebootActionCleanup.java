@@ -25,6 +25,8 @@ import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.Server;
 
+import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.webui.services.impl.SaltService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -104,6 +106,11 @@ public class RebootActionCleanup extends RhnJavaJob {
             sa.setResultMsg("Prerequisite failed");
             sa.setCompletionTime(sa.getPickupTime());
             sa.setStatus(ActionFactory.STATUS_FAILED);
+
+            s.asMinionServer()
+                    .filter(MinionServerUtils::isSshPushMinion)
+                    .ifPresent(minion ->
+                        SaltService.INSTANCE.getSaltSSHService().cleanPendingActionChainAsync(minion));
         }
 
         return aIds;

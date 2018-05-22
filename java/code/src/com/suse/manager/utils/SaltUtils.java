@@ -26,6 +26,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -161,6 +162,8 @@ public class SaltUtils {
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     public static final SaltUtils INSTANCE = new SaltUtils();
+
+    private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
     private SaltService saltService = SaltService.INSTANCE;
 
@@ -658,8 +661,7 @@ public class SaltUtils {
      * @param scriptActionId the ID of the ScriptAction
      * @return a Path object to the storage.
      */
-    public static Path getScriptPath(Long scriptActionId) {
-        Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
+    public Path getScriptPath(Long scriptActionId) {
         return scriptsDir.resolve("script_" + scriptActionId + ".sh");
     }
 
@@ -1484,6 +1486,7 @@ public class SaltUtils {
         for (ServerAction sa : serverActions) {
             if (shouldCleanupAction(bootTime, sa)) {
                 sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                sa.setCompletionTime(new Date());
                 sa.setResultMsg("Reboot completed.");
                 sa.setResultCode(0L);
                 ActionFactory.save(sa);
@@ -1496,12 +1499,46 @@ public class SaltUtils {
     }
 
     private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
-        return sa.getParentAction().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
-                (sa.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
-                        sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP)) &&
-                bootTime.after(sa.getParentAction().getEarliestAction());
+        Action action = sa.getParentAction();
+        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+            if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() != null) {
+                return bootTime.after(sa.getPickupTime());
+            }
+            else if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() == null) {
+                return bootTime.after(action.getEarliestAction());
+            }
+            else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                if (action.getPrerequisite() != null) {
+                    // queued reboot actions that do not complete in 12 hours will
+                    // be cleaned up by MinionActionUtils.cleanupMinionActions()
+                    return false;
+                }
+                return bootTime.after(sa.getParentAction().getEarliestAction());
+            }
+        }
+        return false;
     }
 
+    /**
+     * Check recursively if there's prerequisite action of the given type in the completed state
+     * @param action the action for which to check prerequisites
+     * @param prereqType action type to check
+     * @param systemId system id
+     * @return true if there's prerequisite action of the given type in the completed state
+     */
+    public static boolean prerequisiteIsCompleted(Action action, Optional<ActionType> prereqType, long systemId) {
+        if (action == null) {
+            return false;
+        }
+        if ((!prereqType.isPresent() || prereqType.get().equals(action.getActionType())) &&
+                action.getServerActions().stream()
+                        .filter(sa -> sa.getServer().getId() == systemId)
+                        .filter(sa -> ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
+                        .findFirst().isPresent()) {
+            return true;
+        }
+        return prerequisiteIsCompleted(action.getPrerequisite(), prereqType, systemId);
+    }
 
     /**
      * For unit testing only.
@@ -1591,4 +1628,11 @@ public class SaltUtils {
         return returnMessage.orElseGet(() -> saltErr.toString());
     }
 
+    /**
+     * Only used for unit tests.
+     * @param scriptsDirIn to set
+     */
+    public void setScriptsDir(Path scriptsDirIn) {
+        scriptsDir = scriptsDirIn;
+    }
 }

@@ -1,3 +1,5 @@
+- Changes to mgractionchains module in order to support action chains on
+  minions using ssh-push connection method.
 - Fix migration from traditional stack to salt registration (bsc#1093825)
 
 -------------------------------------------------------------------

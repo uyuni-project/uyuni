@@ -1,3 +1,4 @@
+- Add Action Chain support for Salt clients using the ssh-push connection method.
 - add API functions to specify system cleanup type when deleting a
   system (bsc#1094190)
 - change default cleanup type for XMLRPC API to NO_CLEANUP
