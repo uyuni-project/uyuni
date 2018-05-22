@@ -43,7 +43,7 @@
                             "size": 1490026496
                         },
                         "bundle": {
-                            "hash": "2471c584ab05eaf65f1a0e577f0b99814f44b344887dca127918cb4b6e43826c",
+                            "hash": "sha256:a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
                             "suffix": "tgz",
                             "filepath": "/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
                             "basename": "POS_Image_JeOS6.x86_64-6.0.0",
