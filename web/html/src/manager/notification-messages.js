@@ -299,12 +299,16 @@ const NotificationMessages = React.createClass({
       </div>
     ;
 
-    const panelButtons = <div className="pull-right btn-group">
-      <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
-      <Button id="delete-selected-messages" icon="fa-trash" className='btn-default'
-          title={t('Delete selected messages')} text={t('Delete selected messages')} handler={() => this.deleteNotifications(this.state.selectedItems)} />
-      <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
-          title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
+    const panelButtons = <div className='spacewalk-section-toolbar'>
+        <div className='action-button-wrapper'>
+          <div className='btn-group'>
+            <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
+            <Button id="delete-selected-messages" icon="fa-trash" className='btn-default'
+                title={t('Delete selected messages')} text={t('Delete selected messages')} handler={() => this.deleteNotifications(this.state.selectedItems)} />
+            <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
+                title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
+        </div>
+      </div>
     </div>;
 
     const visibleMessages = this.state.messages.length > 3 ? this.state.messages.slice(this.state.messages.length - 3) : this.state.messages;
@@ -312,13 +316,16 @@ const NotificationMessages = React.createClass({
 
     if (data != null) {
       return  (
-        <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
+        <Panel title={t("Notification Messages")} icon="fa-envelope">
           <ErrorMessage error={this.state.error} />
 
           { messages }
 
           <p>{t('The server has collected the following notification messages.')}</p>
           {headerTabs}
+
+          {panelButtons}
+
           <Table
             data={this.buildRows(data)}
             identifier={(row) => row["id"]}
@@ -385,7 +392,7 @@ const NotificationMessages = React.createClass({
     }
     else {
       return (
-        <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
+        <Panel title={t("Notification Messages")} icon="fa-envelope">
           <ErrorMessage error={this.state.error} />
         </Panel>
       );
