@@ -1,3 +1,5 @@
+- Bugfix: disable toggler if no recommended channels (bsc#1090224)
+
 -------------------------------------------------------------------
 Thu May 17 09:15:58 CEST 2018 - jgonzalez@suse.com
 
