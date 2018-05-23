@@ -407,6 +407,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                         <div style={{"float": "right"}}>
                           <Toggler.WithRecommended
                              enabled={this.areRecommendedChildrenSelected()}
+                             muted={!Array.from(this.state.availableChildren.values()).some(channel => channel.recommended)}
                              handler={() => this.toggleRecommended()} />
                         </div>
                       </div>
