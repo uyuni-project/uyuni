@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Wed May 23 08:59:19 CEST 2018 - jgonzalez@suse.com
+
+- version 5.10.122.2-1
 - format the file mode in unified way(bsc#1093529)
+
 -------------------------------------------------------------------
 Mon Mar 26 08:36:31 CEST 2018 - jgonzalez@suse.com
 
