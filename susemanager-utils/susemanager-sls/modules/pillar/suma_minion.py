@@ -89,7 +89,7 @@ def ext_pillar(minion_id, *args):
     # Including images pillar
     try:
         ret.update(image_pillars(minion_id))
-    except:
+    except Exception as error:
         log.error('Error accessing image pillar data: {}'.format(str(error)))
 
     return ret
