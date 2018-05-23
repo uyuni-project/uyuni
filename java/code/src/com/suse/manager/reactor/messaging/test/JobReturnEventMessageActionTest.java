@@ -1125,8 +1125,38 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
             assertEquals(1, info.getRevisionNumber());
             assertTrue(StringUtils.isEmpty(info.getVersion()));
+            assertNotNull(info.getChecksum());
+            assertEquals("a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
+                    info.getChecksum().getChecksum());
         });
     }
+
+    public void testKiwiImageInspect() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+
+        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
+        context().checking(new Expectations() {{
+                allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+                allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                        with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
+                        with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+                will(returnValue(Optional.of(mockResult)));
+        }});
+        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+
+        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        doTestKiwiImageInspect(server, "my-kiwi-image", profile, (info) -> {
+            assertNotNull(info.getInspectAction().getId());
+        });
+    }
+
 
     /**
      * Build and inspect the same profile twice.
@@ -1335,6 +1365,41 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(ImageInfoFactory.lookupById(imgInfoBuild.get().getId()).isPresent());
         ImageInfo imgInfo = TestUtils.reload(imgInfoBuild.get());
         assertNotNull(imgInfo);
+
+        // other assertions after build
+        assertions.accept(imgInfoBuild.get());
+
+        return imgInfoBuild.get();
+    }
+
+    private ImageInfo doTestKiwiImageInspect(MinionServer server, String imageName,
+            ImageProfile profile, Consumer<ImageInfo> assertions)
+        throws Exception {
+        // schedule the build
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile,
+                new Date(), user);
+        ImageBuildAction buildAction =
+                (ImageBuildAction) ActionFactory.lookupById(actionId);
+        TestUtils.reload(buildAction);
+        Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
+        assertTrue(imgInfoBuild.isPresent());
+
+        actionId = ImageInfoFactory.scheduleInspect(imgInfoBuild.get(), new Date(), user);
+
+        // schedule an inspect action
+        ImageInspectAction inspectAction = (ImageInspectAction) ActionFactory.lookupById(actionId);
+        TestUtils.reload(inspectAction);
+        // Process the image inspect return event
+        Optional<JobReturnEvent> event = JobReturnEvent
+                .parse(getJobReturnEvent("image.inspect.kiwi.json", actionId));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        assertTrue(ImageInfoFactory.lookupById(imgInfoBuild.get().getId()).isPresent());
+        ImageInfo imgInfo = TestUtils.reload(imgInfoBuild.get());
+        assertNotNull(imgInfo.getInspectAction().getId());
 
         // other assertions after build
         assertions.accept(imgInfoBuild.get());
