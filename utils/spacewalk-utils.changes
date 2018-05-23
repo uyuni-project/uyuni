@@ -1,3 +1,5 @@
+- Add an ability to specify admin credentials in settings.conf (bsc#1085484)
+
 -------------------------------------------------------------------
 Thu May 17 09:13:17 CEST 2018 - jgonzalez@suse.com
 
