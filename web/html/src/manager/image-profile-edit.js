@@ -263,7 +263,7 @@ class CreateImageProfile extends React.Component {
     switch (type) {
     case "dockerfile":
       typeInputs.push(
-        <Input.Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Input.Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/Containers">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(false)
@@ -271,7 +271,7 @@ class CreateImageProfile extends React.Component {
       break;
     case "kiwi":
       typeInputs.push(
-        <Input.Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Input.Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/OSImage">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(true)
