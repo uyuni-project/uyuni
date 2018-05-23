@@ -14,9 +14,19 @@
     </div>
   </c:if>
   <div class="col-sm-6">
-      <h1 class="Raleway-font">SUSE<br/> Manager</h1>
-      <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
-      <p class="gray-text">Learn more about SUSE Manager: <a href="http://www.suse.com/products/suse-manager/" class="btn-dark" target="_blank"> View website</a></p>
+      <c:set var="product_name" scope="page" value="${rhn:getConfig('product_name')}" />
+      <c:choose>
+          <c:when test="${product_name == 'Uyuni'}">
+              <h1 class="Raleway-font">Uyuni</h1>
+              <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
+              <p class="gray-text">Learn more about Uyuni: <a href="http://www.uyuni-project.org/" class="btn-dark" target="_blank"> View website</a></p>
+          </c:when>
+          <c:otherwise>
+              <h1 class="Raleway-font">SUSE<br/> Manager</h1>
+              <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
+              <p class="gray-text">Learn more about SUSE Manager: <a href="http://www.suse.com/products/suse-manager/" class="btn-dark" target="_blank"> View website</a></p>
+          </c:otherwise>
+      </c:choose>
 
       <!-- original text
       <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
