@@ -30,7 +30,7 @@ MANAGER_FORMULAS_METADATA_PATH = '/usr/share/susemanager/formulas/metadata'
 CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
 FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
 
-# SUSE Manager images paths:
+# OS images path:
 IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
 
 # SUSE Manager static pillar data.
@@ -263,13 +263,11 @@ def image_pillars(minion_id):
     ret = {}
     for pillar in os.listdir(IMAGES_DATA_PATH):
         pillar_path = os.path.join(IMAGES_DATA_PATH, pillar)
-        if not os.path.isfile(pillar_path):
-            continue
+        if os.path.isfile(pillar_path) and pillar.endswith('.sls'):
+            try:
+                with open(pillar_path) as p:
+                    ret.update(yaml.load(p.read()))
+            except Exception as error:
+                log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
 
-        try:
-            with open(pillar_path) as p:
-                ret.update(yaml.load(p.read()))
-        except Exception as error:
-            log.error('Error loading data for image "{image}": {message}'.format(image=pillar, message=str(error)))
-            return {}
     return ret
