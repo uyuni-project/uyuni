@@ -189,14 +189,26 @@ const Breadcrumb = React.createClass({
       breadcrumbArray.push(level);
       level = level.submenu ? level.submenu.find(l => l.active) : null;
     }
-    return (
-      <div>
+
+    const product_name_link =
+      _IS_UYUNI ?
+        <Link key='home' cssClass="navbar-brand" url='/'
+            responsiveLabel={<i className='fa fa-home' title="Uyuni homepage"></i>}
+            label={<span>Uyuni</span>}
+            target=''
+            title={t("Uyuni homepage")}
+          />
+        :
         <Link key='home' cssClass="navbar-brand" url='/'
           responsiveLabel={<i className='fa fa-home' title="SUSE Manager homepage"></i>}
           label={<span>SUSE<i className="fa fa-registered"></i>Manager</span>}
           target=''
           title={t("SUSE Manager homepage")}
         />
+    ;
+    return (
+      <div>
+        {product_name_link}
         <span>></span>
         {
           breadcrumbArray.map((a, i) => {

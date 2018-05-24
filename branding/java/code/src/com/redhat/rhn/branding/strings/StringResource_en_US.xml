@@ -2216,6 +2216,16 @@ tree will not be usable for autoinstalling.
       <trans-unit id="copyright.jsp.urlagreement">
         <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
       </trans-unit>
+      <trans-unit id="copyright.jsp.body.uyuni">
+          <source>
+&lt;p&gt;
+    @@PRODUCT_NAME@@ is an open source (GPLv2) Linux systems management solution.
+&lt;/p&gt;
+&lt;p&gt;
+    For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
+&lt;/p&gt;
+        </source>
+      </trans-unit>
       <trans-unit id="copyright.jsp.body">
         <source>
 &lt;p&gt;
@@ -2628,12 +2638,18 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
       <trans-unit id="help.jsp.about.learnmore">
-        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about SUSE Manager</source>
+        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <!-- Salt -->
+      <trans-unit id="help.jsp.about.learnmore.uyuni">
+        <source>&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/about</context>
+        </context-group>
+      </trans-unit>
+       <!-- Salt -->
       <trans-unit id="Salt">
           <source>Salt</source>
       </trans-unit>
