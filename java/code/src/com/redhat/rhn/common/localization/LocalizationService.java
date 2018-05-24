@@ -643,7 +643,7 @@ public class LocalizationService {
      *
      * @return TimeZone from the Context
      */
-    private TimeZone determineTimeZone() {
+    public  TimeZone determineTimeZone() {
         TimeZone retval = null;
         Context ctx = Context.getCurrentContext();
 

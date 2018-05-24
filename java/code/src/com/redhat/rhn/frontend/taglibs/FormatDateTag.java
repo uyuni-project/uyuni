@@ -246,6 +246,7 @@ public class FormatDateTag extends TagSupport {
         }
         else {
             DateFormat fmt = getFormatter();
+            fmt.setTimeZone(LocalizationService.getInstance().determineTimeZone());
             if (getPattern() != null) {
                 SimpleDateFormat simplefmt = (SimpleDateFormat) fmt;
                 simplefmt.applyPattern(pattern);
