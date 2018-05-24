@@ -14,6 +14,16 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.test;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageInfoCustomDataValue;
+import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+import static com.redhat.rhn.testing.ImageTestUtils.createKiwiImageProfile;
+
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
@@ -31,6 +41,7 @@ import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -47,6 +58,11 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.impl.SaltSSHService;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit3.JUnit3Mockery;
@@ -59,13 +75,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageInfoCustomDataValue;
-import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
-
 public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     private ImageInfoHandler handler = new ImageInfoHandler();
@@ -75,11 +84,15 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }};
 
     private static TaskomaticApi taskomaticApi;
+    private static SaltService saltServiceMock;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+        saltServiceMock = CONTEXT.mock(SaltService.class);
+        SystemManager.mockSaltService(saltServiceMock);
+        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 
     public final void testImportImage() throws Exception {
@@ -119,7 +132,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertTrue(ret > 0);
     }
 
-    public final void testScheduleImageBuild() throws Exception {
+    public final void testScheduleContainerImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
@@ -127,6 +140,34 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         ImageStore store = createImageStore("registry.reg", admin);
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createImageProfile("myprofile", store, ak, admin);
+
+        DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        int preScheduleSize = dr.size();
+
+        long ret = handler.scheduleImageBuild(admin, prof.getLabel(), "1.0.0",
+                server.getId().intValue(), getNow());
+        assertTrue(ret > 0);
+
+        dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, dr.size() - preScheduleSize);
+        assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
+    }
+
+    public final void testScheduleOSImageBuild() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+
+        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
+        CONTEXT.checking(new Expectations() {{
+                allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+                will(returnValue(Optional.of(mockResult)));
+        }});
+        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        ActivationKey ak = createActivationKey(admin);
+        ImageProfile prof = createKiwiImageProfile("myprofile", ak, admin);
 
         DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         int preScheduleSize = dr.size();

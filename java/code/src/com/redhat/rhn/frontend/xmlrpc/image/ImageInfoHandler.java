@@ -31,7 +31,6 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
-
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
@@ -40,6 +39,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -139,7 +139,7 @@ public class ImageInfoHandler extends BaseHandler {
             }
         }
 
-        validateBuildHost(buildHostId, loggedInUser.getOrg());
+        validateBuildHost(buildHostId, loggedInUser.getOrg(), store.getStoreType().getId());
 
         try {
             return ImageInfoFactory.scheduleImport(buildHostId, name, version, store,
@@ -179,7 +179,7 @@ public class ImageInfoHandler extends BaseHandler {
                 ImageProfileFactory.lookupByLabelAndOrg(profileLabel, loggedInUser.getOrg())
                         .orElseThrow(NoSuchImageProfileException::new);
 
-        validateBuildHost(buildHostId, loggedInUser.getOrg());
+        validateBuildHost(buildHostId, loggedInUser.getOrg(), profile.getTargetStore().getId());
 
         try {
             return ImageInfoFactory.scheduleBuild(buildHostId, version, profile,
@@ -313,15 +313,26 @@ public class ImageInfoHandler extends BaseHandler {
         return 1;
     }
 
-    private Server validateBuildHost(long buildHostId, Org org) {
+    private Server validateBuildHost(long buildHostId, Org org, Long storeType) {
         Server buildHost = ServerFactory.lookupByIdAndOrg(buildHostId, org);
         if (buildHost == null) {
             throw new NoSuchSystemException();
         }
-        if (!buildHost.hasContainerBuildHostEntitlement()) {
-            throw new NoSuchSystemException(
-                    buildHost.getHostname() + " is not a valid container buildhost");
-        }
+        Optional<ImageStore> imageStore = ImageStoreFactory.lookupById(storeType);
+        imageStore.ifPresent(store -> {
+            if (store.getStoreType().equals(ImageStoreFactory.TYPE_REGISTRY)) {
+                if (!buildHost.hasContainerBuildHostEntitlement()) {
+                    throw new NoSuchSystemException(
+                            buildHost.getHostname() + " is not a valid container buildhost");
+                }
+            }
+            else if (store.getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
+                if (!buildHost.hasOSImageBuildHostEntitlement()) {
+                    throw new NoSuchSystemException(
+                            buildHost.getHostname() + " is not a valid OS image buildhost");
+                }
+            }
+        });
 
         return buildHost;
     }
