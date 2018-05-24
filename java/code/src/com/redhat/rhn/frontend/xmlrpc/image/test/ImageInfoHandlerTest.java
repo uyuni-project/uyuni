@@ -84,14 +84,11 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }};
 
     private static TaskomaticApi taskomaticApi;
-    private static SaltService saltServiceMock;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
-        saltServiceMock = CONTEXT.mock(SaltService.class);
-        SystemManager.mockSaltService(saltServiceMock);
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 
@@ -155,7 +152,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     public final void testScheduleOSImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-
+        SaltService saltServiceMock = CONTEXT.mock(SaltService.class);
+        SystemManager.mockSaltService(saltServiceMock);
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         CONTEXT.checking(new Expectations() {{
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
