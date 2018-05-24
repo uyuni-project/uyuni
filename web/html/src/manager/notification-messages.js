@@ -307,7 +307,9 @@ const NotificationMessages = React.createClass({
           <div className='btn-group'>
             <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
             <Button id="delete-selected-messages" icon="fa-trash" className='btn-default'
-                title={t('Delete selected messages')} text={t('Delete selected messages')} handler={() => this.deleteNotifications(this.state.selectedItems)} />
+                title={t('Delete selected messages')} text={t('Delete selected messages')}
+                handler={() => this.deleteNotifications(this.state.selectedItems)}
+                disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
             <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
                 title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
         </div>
