@@ -14,17 +14,19 @@
  */
 package com.suse.manager.webui.controllers;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.domain.user.User;
 
-import org.apache.http.HttpStatus;
+import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.domain.formula.FormulaFactory;
-import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.utils.FlashScopeHelper;
+
+import org.apache.http.HttpStatus;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import spark.ModelAndView;
 import spark.Request;
