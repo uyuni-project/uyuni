@@ -2216,6 +2216,16 @@ tree will not be usable for autoinstalling.
       <trans-unit id="copyright.jsp.urlagreement">
         <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
       </trans-unit>
+      <trans-unit id="copyright.jsp.body.uyuni">
+          <source>
+&lt;p&gt;
+    @@PRODUCT_NAME@@ is an open source (GPLv2) Linux systems management solution.
+&lt;/p&gt;
+&lt;p&gt;
+    For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
+&lt;/p&gt;
+        </source>
+      </trans-unit>
       <trans-unit id="copyright.jsp.body">
         <source>
 &lt;p&gt;
