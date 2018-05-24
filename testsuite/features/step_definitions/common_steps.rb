@@ -761,3 +761,23 @@ And(/^the notification badge and the table should count the same amount of messa
     raise unless find(:xpath, badge_xpath)
   end
 end
+
+Then(/^I check the first notification message$/) do
+  if count_table_items == '0'
+    puts "There are no notification messages, nothing to delete then"
+  else
+    within(:xpath, '//section') do
+      row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]")
+      row.first(:xpath, './/input[@type="checkbox"]').set(true)
+    end
+  end
+end
+
+And(/^I delete it via the "([^"]*)" button$/) do |target_button|
+  if count_table_items != '0'
+    xpath_for_delete_button = "//button[.//span[contains(text(), '#{target_button}')]]"
+    raise unless find(:xpath, xpath_for_delete_button).click
+
+    step %(I wait until I see "1 message deleted successfully." text)
+  end
+end
