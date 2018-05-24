@@ -1,3 +1,4 @@
+- honor user timezone setting for system overview dates (bsc#1085516)
 - Avoid ISE when unsubscribing channels in SSM (bsc#1094578)
 - Initial branding change for Uyuni (bsc#1094497)
 - Fix NPE in software profile sync when building update query (bsc#1094240)
