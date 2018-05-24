@@ -1,5 +1,5 @@
 {
-    "tag": "salt/job/20180516175456187526/ret/minion.tf.local",
+    "tag": "salt/job/20180516175456187526/ret/minion.local",
     "data": {
         "fun_args": [
             {
@@ -2379,7 +2379,7 @@
         "metadata": {
             "suma-action-id": 25
         },
-        "id": "minion.tf.local",
+        "id": "minion.local",
         "out": "highstate"
     }
 }
