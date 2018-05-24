@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -139,7 +140,7 @@ public class ImageInfoHandler extends BaseHandler {
             }
         }
 
-        validateBuildHost(buildHostId, loggedInUser.getOrg(), store.getStoreType().getId());
+        validateBuildHost(buildHostId, loggedInUser.getOrg(), store.getStoreType().getLabel());
 
         try {
             return ImageInfoFactory.scheduleImport(buildHostId, name, version, store,
@@ -179,7 +180,7 @@ public class ImageInfoHandler extends BaseHandler {
                 ImageProfileFactory.lookupByLabelAndOrg(profileLabel, loggedInUser.getOrg())
                         .orElseThrow(NoSuchImageProfileException::new);
 
-        validateBuildHost(buildHostId, loggedInUser.getOrg(), profile.getTargetStore().getId());
+        validateBuildHost(buildHostId, loggedInUser.getOrg(), profile.getTargetStore().getLabel());
 
         try {
             return ImageInfoFactory.scheduleBuild(buildHostId, version, profile,
@@ -313,20 +314,20 @@ public class ImageInfoHandler extends BaseHandler {
         return 1;
     }
 
-    private Server validateBuildHost(long buildHostId, Org org, Long storeType) {
+    private Server validateBuildHost(long buildHostId, Org org, String storeTypeLabel) {
         Server buildHost = ServerFactory.lookupByIdAndOrg(buildHostId, org);
         if (buildHost == null) {
             throw new NoSuchSystemException();
         }
-        Optional<ImageStore> imageStore = ImageStoreFactory.lookupById(storeType);
-        imageStore.ifPresent(store -> {
-            if (store.getStoreType().equals(ImageStoreFactory.TYPE_REGISTRY)) {
+        Optional<ImageStoreType> imageStoreType = ImageStoreFactory.lookupStoreTypeByLabel(storeTypeLabel);
+        imageStoreType.ifPresent(storeType -> {
+            if (storeType.equals(ImageStoreFactory.TYPE_REGISTRY)) {
                 if (!buildHost.hasContainerBuildHostEntitlement()) {
                     throw new NoSuchSystemException(
                             buildHost.getHostname() + " is not a valid container buildhost");
                 }
             }
-            else if (store.getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
+            else if (storeType.equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
                 if (!buildHost.hasOSImageBuildHostEntitlement()) {
                     throw new NoSuchSystemException(
                             buildHost.getHostname() + " is not a valid OS image buildhost");
