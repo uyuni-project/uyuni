@@ -746,18 +746,15 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
 end
 
 And(/^the notification badge and the table should count the same amount of messages$/) do
-  # decode how many rows the table has
-  items_label_xpath = "//span[contains(text(), 'Items ')]"
-  raise unless (items_label = find(:xpath, items_label_xpath).text)
-  table_items_count = items_label.split('of ')[1]
+  table_notifications_count = count_table_items
 
-  badge_xpath = "//i[contains(@class, 'fa-bell')]/following-sibling::*[text()='#{table_items_count}']"
+  badge_xpath = "//i[contains(@class, 'fa-bell')]/following-sibling::*[text()='#{table_notifications_count}']"
 
-  if table_items_count == '0'
+  if table_notifications_count == '0'
     puts "All notification-messages are read, I expect no notification badge"
     raise if page.has_xpath?(badge_xpath)
   else
-    puts "Unread notification-messages count = " + table_items_count
+    puts "Unread notification-messages count = " + table_notifications_count
     raise unless find(:xpath, badge_xpath)
   end
 end
