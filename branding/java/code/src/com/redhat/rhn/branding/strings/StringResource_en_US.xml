@@ -2628,12 +2628,18 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
       <trans-unit id="help.jsp.about.learnmore">
-        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about SUSE Manager</source>
+        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <!-- Salt -->
+      <trans-unit id="help.jsp.about.learnmore.uyuni">
+        <source>&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/about</context>
+        </context-group>
+      </trans-unit>
+       <!-- Salt -->
       <trans-unit id="Salt">
           <source>Salt</source>
       </trans-unit>
