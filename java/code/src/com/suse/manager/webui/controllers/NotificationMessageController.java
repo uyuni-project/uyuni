@@ -119,7 +119,13 @@ public class NotificationMessageController {
         Notification.spreadUpdate();
 
         Map<String, String> data = new HashMap<>();
-        data.put("message", "Notifications deleted");
+        data.put("severity", "success");
+        if (messageIds.size() == 1) {
+            data.put("text", "1 message deleted successfully");
+        }
+        else {
+            data.put("text", messageIds.size() + " messages deleted successfully");
+        }
         response.type("application/json");
         return GSON.toJson(data);
     }

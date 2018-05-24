@@ -119,6 +119,9 @@ const NotificationMessages = React.createClass({
     var currentObject = this;
     Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
     .then(data => {
+      var newMessagesState = this.state.messages;
+      newMessagesState.push({ severity: data.severity, text: data.text });
+
       var updatedData = currentObject.state.serverData;
       ids.forEach(id =>
         updatedData = updatedData.filter(m => m.id != id)
@@ -127,7 +130,7 @@ const NotificationMessages = React.createClass({
       ids.forEach(id =>
         updatedSelectedItems = updatedSelectedItems.filter(m => m != id)
       );
-      this.setState({serverData : updatedData, selectedItems : updatedSelectedItems});
+      this.setState({serverData : updatedData, selectedItems : updatedSelectedItems, messages : newMessagesState});
     })
     .catch(response => {
       currentObject.setState({
