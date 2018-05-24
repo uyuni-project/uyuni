@@ -305,7 +305,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     if (action === "SUBSCRIBE" && childReqChannels) {
       dependencies = Array.from(childReqChannels);
     } else if (action === "UNSUBSCRIBE" && childReqByChannels) {
-      dependencies = childReqByChannels;
+      dependencies = Array.from(childReqByChannels);
     } else if (action === "NO_CHANGE" && childReqChannels && childReqByChannels) {
       // in this case we can't make any assumptions about the actual assignment of the channel,
       // let's reset both the forward and backward deps
