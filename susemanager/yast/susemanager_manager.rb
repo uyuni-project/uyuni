@@ -19,6 +19,7 @@ module Yast
 
       @migration_file = Ops.add(Directory.tmpdir, "/susemanager_migration")
       @migration = FileUtils.Exists(@migration_file)
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
       @settings = {
         "MANAGER_IP"          => "",
@@ -74,7 +75,7 @@ module Yast
                 Id("MANAGER_IP"),
                 Opt(:hstretch),
                 # text entry label
-                _("&IP Address of the SUSE Manager Server"),
+                _("&IP Address of the #{@product_name} Server"),
                 Ops.get(@settings, "MANAGER_IP", "")
               ),
             VSpacing(0.5),
@@ -84,14 +85,14 @@ module Yast
             Id("MANAGER_ADMIN_EMAIL"),
             Opt(:hstretch),
             # text entry label
-            _("SUSE Manager &Administrator E-mail Address"),
+            _("#{@product_name} &Administrator E-mail Address"),
             Ops.get(@settings, "MANAGER_ADMIN_EMAIL", "")
           ),
           VSpacing(0.5),
           Left(
             CheckBox(
               Id("ACTIVATE_SLP"),
-              _("Advertise SUSE Manager via SLP"),
+              _("Advertise #{@product_name} via SLP"),
               false
             )
           )
@@ -102,14 +103,14 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>Fill in <b>Administrator E-mail Address</b>. It is used for notifications by SUSE Manager.</p>
-         <p>By checking SLP (Service Location Protocol) SUSE Manager will advertise its service in the
+        "<p>Fill in <b>Administrator E-mail Address</b>. It is used for notifications by #{@product_name}.</p>
+         <p>By checking SLP (Service Location Protocol) #{@product_name} will advertise its service in the
            network so it can easily be found by client systems.</p>"
       )
 
       # dialog caption
       Wizard.SetContents(
-        _("SUSE Manager"),
+        "#{@product_name}",
         @contents,
         @help_text,
         Ops.get_boolean(@args, "enable_back", true),

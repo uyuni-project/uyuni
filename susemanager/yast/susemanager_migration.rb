@@ -27,6 +27,7 @@ module Yast
         return deep_copy(@ret)
       end
 
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
       @invalid_pw_chars = "\"$'!"
 
       @settings = {
@@ -63,7 +64,7 @@ module Yast
             Id("SATELLITE_HOST"),
             Opt(:hstretch),
             # text entry label
-            _("&Hostname of source SUSE Manager Server"),
+            _("&Hostname of source #{@product_name} Server"),
             Ops.get(@settings, "SATELLITE_HOST", "")
           ),
           # text entry label
@@ -77,14 +78,14 @@ module Yast
           InputField(
             Id("SATELLITE_DB_USER"),
             Opt(:hstretch),
-            _("Source SUSE Manager Database &User Name"),
+            _("Source #{@product_name} Database &User Name"),
             Ops.get(@settings, "SATELLITE_DB_USER", "")
           ),
           # text entry label
           Password(
             Id("SATELLITE_DB_PASS"),
             Opt(:hstretch),
-            _("Source SUSE Manager Database &Password"),
+            _("Source #{@product_name} Database &Password"),
             Ops.get(@settings, "SATELLITE_DB_PASS", "")
           ),
           # text entry label
@@ -98,7 +99,7 @@ module Yast
           InputField(
             Id("SATELLITE_DB_SID"),
             Opt(:hstretch),
-            _("Source SUSE Manager Database &Name"),
+            _("Source #{@product_name} Database &Name"),
             Ops.get(@settings, "SATELLITE_DB_SID", "")
           ),
           VSpacing(0.5)
@@ -111,7 +112,7 @@ module Yast
 
       # dialog caption
       Wizard.SetContents(
-        _("Migration from previous SUSE Manager to new SUSE Manager"),
+        _("Migration from previous #{@product_name} to new #{@product_name}"),
         @contents,
         @help_text,
         Ops.get_boolean(@args, "enable_back", true),

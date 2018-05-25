@@ -37,6 +37,7 @@ module Yast
         # text entry label
         "ISS_PARENT" => _("Parent Server Name")
       }
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
       @env_file = Ops.add(Directory.tmpdir, "/env_cc")
       if FileUtils.Exists(@env_file)
@@ -107,7 +108,7 @@ module Yast
                       Id(:iss),
                       Opt(:notify),
                       # radio button label
-                      _("Connect to SUSE Manager for inter-server sync"),
+                      _("Connect to #{@product_name} for inter-server sync"),
                       Ops.get(@settings, "ISS_PARENT", "") != ""
                     )
                   ),
@@ -143,7 +144,7 @@ module Yast
       # help text
       @help_text = _(
         "<p>Here, enter organization credentials (mirror credentials) from the SUSE Customer Center.</p>\n" \
-        "<p>The connection to SCC or to another SUSE Manager Server can be configured later if needed.</p>"
+        "<p>The connection to SCC or to another #{@product_name} Server can be configured later if needed.</p>"
       )
 
       # dialog caption
