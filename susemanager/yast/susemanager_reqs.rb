@@ -13,7 +13,7 @@ module Yast
       Yast.import "Wizard"
 
       @args = GetInstArgs.argmap
-      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name"))
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
       # 4GB
       @enough_memory = 4000000
