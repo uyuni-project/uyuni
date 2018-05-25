@@ -85,7 +85,6 @@ public class SaltActionChainGeneratorService {
     public static final String ACTIONCHAIN_SLS_FOLDER = "actionchains";
 
     private static final String ACTIONCHAIN_SLS_FILE_PREFIX = "actionchain_";
-    private static final String SCRIPTS_DIR = "scripts";
 
     public static final Pattern ACTION_STATE_PATTERN =
             Pattern.compile(".*\\|-" + ACTION_STATE_ID_PREFIX + "(\\d+)" +
@@ -93,7 +92,7 @@ public class SaltActionChainGeneratorService {
                     ACTION_STATE_ID_CHUNK_PREFIX + "(\\d+).*");
 
     private static final Pattern SALT_FILE_REF =
-            Pattern.compile(SALT_FS_PREFIX + "([a-zA-Z0-9_\\./]+)");
+            Pattern.compile("(" + SALT_FS_PREFIX + "|topfn:\\s*)([a-zA-Z0-9_\\./]+)");
 
     private Path suseManagerStatesFilesRoot;
     private boolean skipSetOwner;
@@ -433,7 +432,7 @@ public class SaltActionChainGeneratorService {
             List<String> res = new LinkedList<>();
             int start = 0;
             while (m.find(start)) {
-                String ref = m.group(1);
+                String ref = m.group(2);
                 start = m.start() + 1;
                 if (refInList(DEFAULT_TOPS, ref) || refInList(ACTION_STATES_LIST, ref)) {
                     // skip refs to tops and action states
@@ -444,7 +443,7 @@ public class SaltActionChainGeneratorService {
                     continue;
                 }
 
-                res.add(m.group(1));
+                res.add(ref);
             }
             return res;
         }
