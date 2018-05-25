@@ -32,23 +32,23 @@ import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
 import com.suse.manager.utils.MinionServerUtils;
-
 import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * TaskomaticApi
@@ -550,39 +550,41 @@ public class TaskomaticApi {
     /**
      * Delete a scheduled Action.
      *
-     * @param action the action id to be removed
-     * @param involvedMinions minions involved in the action to remove
+     * @param action the action to be removed
+     * @param servers servers involved in the action to remove
      * @throws TaskomaticApiException if there was an error
      */
-    public void deleteScheduledAction(Action action, Set<Server> involvedMinions)
+    public void deleteScheduledAction(Action action, Set<Server> servers)
+            throws TaskomaticApiException {
+        deleteScheduledActions(Collections.singletonMap(action, servers));
+    }
+
+    /**
+     * Delete several scheduled Actions.
+     *
+     * @param actionMap mapping from Actions to involved Servers
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void deleteScheduledActions(Map<Action, Set<Server>> actionMap)
         throws TaskomaticApiException {
 
-        Set<Server> minionServers = action.getServerActions().stream()
-                .map(ServerAction::getServer)
-                .filter(s -> MinionServerUtils.isMinionServer(s))
-                .collect(toSet());
+        Stream<Action> actionsToBeUnscheduled = actionMap.entrySet().stream()
+            // select Actions that have no minions besides those in the specified set
+            // (those that have any other minion should NOT be unscheduled!)
+            .filter(e -> e.getKey().getServerActions().stream()
+                    .map(ServerAction::getServer)
+                    .filter(s -> MinionServerUtils.isMinionServer(s))
+                    .allMatch(s -> e.getValue().contains(s))
+            )
+            .map(Map.Entry::getKey);
 
-        String jobLabel = MINION_ACTION_JOB_PREFIX + action.getId();
+        List<String> jobLabels = actionsToBeUnscheduled
+                .map(a -> MINION_ACTION_JOB_PREFIX + a.getId())
+                .collect(Collectors.toList());
 
-        if (involvedMinions.equals(minionServers)) {
-            try {
-                LOG.debug("Unscheduling job: " + jobLabel);
-                invoke("tasko.unscheduleSatBunch", jobLabel);
-            }
-            catch (TaskomaticApiException e) {
-                if (e.getCause() instanceof XmlRpcFault &&
-                        e.getMessage().contains("InvalidParamException")) {
-                    // bunch was not there to begin with. Move on
-                    return;
-                }
-                throw e;
-            }
-        }
-        else {
-            LOG.debug("Job schedule" + jobLabel +
-                    " will NOT be deleted, as others minions are involved. " +
-                    "Actions related to server ids " + involvedMinions +
-                    " will be deleted.");
+        if (!jobLabels.isEmpty()) {
+            LOG.debug("Unscheduling jobs: " + jobLabels);
+            invoke("tasko.unscheduleSatBunches", jobLabels);
         }
     }
 }
