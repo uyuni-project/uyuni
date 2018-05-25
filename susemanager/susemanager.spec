@@ -96,11 +96,17 @@ make -C src install PREFIX=$RPM_BUILD_ROOT MANDIR=%{_mandir}
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
+mkdir -p %{buildroot}%{_datadir}/YaST2/scrconf
 mkdir -p %{buildroot}%{_datadir}/applications/YaST2
 mkdir -p %{buildroot}/etc/YaST2
 install -m 0644 yast/*.rb %{buildroot}%{_datadir}/YaST2/clients
 install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
-install -m 0644 yast/susemanager_setup.desktop %{buildroot}%{_datadir}/applications/YaST2/
+install -m 0644 yast/*.scr %{buildroot}%{_datadir}/YaST2/scrconf
+%if 0%{?is_opensuse}
+install -m 0644 yast/susemanager_setup_uyuni.desktop %{buildroot}%{_datadir}/applications/YaST2/susemanager_setup.desktop
+%else
+install -m 0644 yast/susemanager_setup.desktop %{buildroot}%{_datadir}/applications/YaST2/susemanager_setup.desktop
+%endif
 
 %check
 # we need to build a fake python dir. python did not work with
@@ -166,10 +172,12 @@ fi
 %dir /etc/YaST2
 %dir %{_datadir}/YaST2
 %dir %{_datadir}/YaST2/clients
+%dir %{_datadir}/YaST2/scrconf
 %dir %{_datadir}/applications/YaST2
 %dir %{_sysconfdir}/slp.reg.d
 %{_prefix}/lib/susemanager/bin/*
 %{_datadir}/YaST2/clients/*.rb
+%{_datadir}/YaST2/scrconf/*.scr
 %config /etc/YaST2/firstboot-susemanager.xml
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
