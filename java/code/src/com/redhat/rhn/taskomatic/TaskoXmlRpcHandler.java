@@ -19,6 +19,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
+import org.apache.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
@@ -33,6 +34,8 @@ import static org.quartz.TriggerKey.triggerKey;
  * TaskoXmlRpcHandler
  */
 public class TaskoXmlRpcHandler {
+
+    private static Logger log = Logger.getLogger(TaskoXmlRpcHandler.class);
 
     /**
      * dummy call
@@ -201,11 +204,8 @@ public class TaskoXmlRpcHandler {
      * stop scheduling an organizational bunch
      * @param orgId organization id
      * @param jobLabel job name
-     * @return 1 if successful
-     * @throws InvalidParamException thrown if job name not known
      */
-    public Integer unscheduleBunch(Integer orgId, String jobLabel)
-        throws InvalidParamException {
+    public void unscheduleBunch(Integer orgId, String jobLabel) {
         // one or none shall be returned
         List<TaskoSchedule> scheduleList =
             TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel);
@@ -221,25 +221,27 @@ public class TaskoXmlRpcHandler {
         // quartz unschedules job after trigger end time
         // so better handle quartz and schedules separately
         if ((scheduleList.isEmpty()) && (trigger == null)) {
-            throw new InvalidParamException("No such jobLabel");
+            log.error("Unscheduling of bunch " + jobLabel + "failed: no such job label");
+            return;
         }
         for (TaskoSchedule schedule : scheduleList) {
             schedule.unschedule();
         }
         if (trigger != null) {
-            return TaskoQuartzHelper.destroyJob(orgId, jobLabel);
+            TaskoQuartzHelper.destroyJob(orgId, jobLabel);
         }
-        return 1;
     }
 
     /**
      * stop scheduling a satellite bunch
-     * @param jobLabel job name
+     * @param jobLabels job names
      * @return 1 if successful
-     * @throws InvalidParamException thrown if jobLabel not known
      */
-    public Integer unscheduleSatBunch(String jobLabel) throws InvalidParamException {
-        return unscheduleBunch(null, jobLabel);
+    public Integer unscheduleSatBunches(List<String> jobLabels) {
+        for (String jobLabel: jobLabels) {
+            unscheduleBunch(null, jobLabel);
+        }
+        return 1;
     }
 
     /**
