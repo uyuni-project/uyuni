@@ -9,13 +9,17 @@ Feature: Chanel subscription with recommended/required dependencies
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I check radio button "SLE-Product-SLES15-Pool for x86_64"
+    # check that the required channel by the base one is selected and disabled
+    And I should see the child channel "SLE-Product-SLES15-Updates for x86_64" "selected" and "disabled"
     And I should see the recommended toggler "disabled"
     Then I should see a "SLE-Module-Basesystem15-Pool for x86_64" text
     And I should see the child channel "SLE-Module-Basesystem15-Pool for x86_64" "unselected"
     Then I select the child channel "SLE-Module-Basesystem15-Updates for x86_64"
-    And I should see the child channel "SLE-Product-SLES15-Updates for x86_64" "selected"
-    Then I click on the "disabled" recommended toggler
+    # check the a child channel selection that requires some channel trigger the selection of it
     And I should see the child channel "SLE-Module-Basesystem15-Pool for x86_64" "selected"
+    Then I click on the "disabled" recommended toggler
+    # check a recommended channel not yet selected is checked  by the recommended toggler
+    And I should see the child channel "SLE-Module-Server-Applications15-Pool for x86_64" "selected"
 
 @SLE15_MINION
   Scenario: Play with recommended and required child channels selection in SSM
