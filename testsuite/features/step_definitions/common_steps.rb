@@ -696,6 +696,24 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, 
   end
 end
 
+And(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |target_channel, target_status, is_disabled|
+  step %(I should see a "#{target_channel}" text)
+
+  xpath = "//label[contains(text(), '#{target_channel}')]"
+  channel_checkbox_id = find(:xpath, xpath)['for']
+
+  "disabled".eql?(is_disabled) || raise('Invalid disabled flag value')
+
+  case target_status
+  when 'selected'
+    raise unless has_checked_field?(channel_checkbox_id, disabled: true)
+  when 'unselected'
+    raise if has_checked_field?(channel_checkbox_id, disabled: true)
+  else
+    raise 'Invalid target status.'
+  end
+end
+
 And(/^I select the child channel "([^"]*)"$/) do |target_channel|
   step %(I should see a "#{target_channel}" text)
 
