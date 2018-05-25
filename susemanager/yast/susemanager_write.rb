@@ -31,7 +31,7 @@ module Yast
 
       @migration_file = Ops.add(Directory.tmpdir, "/susemanager_migration")
       @migration = FileUtils.Exists(@migration_file)
-      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name"))
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
       Builtins.foreach(
         ["env_force", "env_migration", "env_manager", "env_db", "env_cert", "env_cc"]

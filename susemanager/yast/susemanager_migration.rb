@@ -27,7 +27,7 @@ module Yast
         return deep_copy(@ret)
       end
 
-      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name"))
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
       @invalid_pw_chars = "\"$'!"
 
       @settings = {

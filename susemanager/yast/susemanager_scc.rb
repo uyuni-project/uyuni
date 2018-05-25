@@ -37,7 +37,7 @@ module Yast
         # text entry label
         "ISS_PARENT" => _("Parent Server Name")
       }
-      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name"))
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
       @env_file = Ops.add(Directory.tmpdir, "/env_cc")
       if FileUtils.Exists(@env_file)
