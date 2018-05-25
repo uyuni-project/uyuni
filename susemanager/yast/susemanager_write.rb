@@ -31,6 +31,7 @@ module Yast
 
       @migration_file = Ops.add(Directory.tmpdir, "/susemanager_migration")
       @migration = FileUtils.Exists(@migration_file)
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name"))
 
       Builtins.foreach(
         ["env_force", "env_migration", "env_manager", "env_db", "env_cert", "env_cc"]
@@ -83,10 +84,10 @@ module Yast
                 "View the available options with /usr/lib/susemanager/bin/mgr-setup -h\n" +
                 "\n" +
                 "Be aware that this process can take more than 10 hours,\n" +
-                "depending on the configuration of your SUSE Manager server.\n" +
+                "depending on the configuration of your #{@product_name} server.\n" +
                 "\n" +
-                "For more information on how to migrate a SUSE Manager server,\n" +
-                "refer to the SUSE Manager Quick Start."
+                "For more information on how to migrate a #{@product_name} server,\n" +
+                "refer to the #{@product_name} Quick Start."
             )
           ),
           VSpacing(2)

@@ -1,0 +1,29 @@
+/**
+ * File:	usr_share_rhn_config_defaults_rhn.scr
+ * Summary:	Agent for reading/writing /usr/share/rhn/config-defaults/rhn.conf
+ * Access:	read / write
+ * Author:	Michael Calmer <mc@suse.com>
+ *
+ * Example:
+ *   Dir(.usr_share_rhn_config_defaults_rhn)
+ *   (["product_name"])
+ **
+ *   Read(.usr_share_rhn_config_defaults_rhn.product_name)
+ *   ("SUSE Manager")
+ **
+ *   Write(.usr_share_rhn_config_defaults_rhn.product_name, "Uyuni")
+ *   (true)
+ */
+.usr_share_rhn_config_defaults_rhn
+
+`ag_ini(
+    `IniAgent( "/usr/share/rhn/config-defaults/rhn.conf",
+	$[
+	    "options" : [ "global_values", "flat" ],
+	    "comments" : [ "^#.*", "^[ \t]*$", ],
+	    "params" : [
+		$[ "match" : [ "^[ \t]*([a-zA-Z0-9_]+)[ \t]*=[ \t]*(.*)[ \t]*$", "%s = %s" ] ]
+	    ]
+	]
+    )
+)
