@@ -474,20 +474,7 @@ public class SaltActionChainGeneratorService {
     }
 
     private void saveChunkSLS(List<SaltState> states, MinionServer minion, long actionChainId, int chunk) {
-        Path targetDir = getTargetDir();
-        try {
-            Files.createDirectories(targetDir);
-            if (!skipSetOwner) {
-                FileSystem fileSystem = FileSystems.getDefault();
-                UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-                UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
-                Files.setOwner(targetDir, tomcatUser);
-            }
-        }
-        catch (IOException e) {
-            LOG.error("Could not create action chain directory " + targetDir, e);
-            throw new RuntimeException(e);
-        }
+        Path targetDir = createActionChainsDir();
         Path targetFilePath = Paths.get(targetDir.toString(),
                 getActionChainSLSFileName(actionChainId, minion, chunk));
 
@@ -619,6 +606,7 @@ public class SaltActionChainGeneratorService {
      */
     public String generateTop(long actionChainId, long applyHighstateActionId, SaltTop top) {
         String topFile = getActionChainTopPath(actionChainId, applyHighstateActionId);
+        createActionChainsDir();
         Path topPath = suseManagerStatesFilesRoot.resolve(topFile);
         try (Writer fout = new FileWriter(topPath.toFile())) {
             SaltStateGenerator generator = new SaltStateGenerator(fout);
@@ -628,5 +616,29 @@ public class SaltActionChainGeneratorService {
             throw new RuntimeException(e);
         }
         return SALT_FS_PREFIX + topFile;
+    }
+
+    /**
+     * Make sure the {@literal actionchains} subdir exists.
+     * @return the {@link Path} of the {@literal} actionchains directory
+     */
+    private Path createActionChainsDir() {
+        Path targetDir = getTargetDir();
+        if (!Files.exists(targetDir)) {
+            try {
+                Files.createDirectories(targetDir);
+                if (!skipSetOwner) {
+                    FileSystem fileSystem = FileSystems.getDefault();
+                    UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+                    UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+                    Files.setOwner(targetDir, tomcatUser);
+                }
+            }
+            catch (IOException e) {
+                LOG.error("Could not create action chain directory " + targetDir, e);
+                throw new RuntimeException(e);
+            }
+        }
+        return targetDir;
     }
 }
