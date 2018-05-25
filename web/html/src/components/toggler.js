@@ -6,7 +6,7 @@ const Button = require('./buttons').Button;
 const WithRecommended = React.createClass({
   render:function() {
     return (
-      <span onClick={this.props.handler} className='pointer v-middle'>
+      <span onClick={this.props.handler} className={'v-middle ' + (this.props.muted ? 'text-muted' : 'pointer')}>
         <i className={'v-middle fa ' + (this.props.enabled ? 'fa-toggle-on text-success' : 'fa-toggle-off')} />
         &nbsp;
         <span className='v-middle'>{t('include recommended')}</span>
