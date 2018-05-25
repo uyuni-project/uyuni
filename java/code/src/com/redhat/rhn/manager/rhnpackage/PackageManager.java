@@ -689,32 +689,14 @@ public class PackageManager extends BaseManager {
      *
      * @param sid System ID
      * @param actionId Action ID
-     * @param pending Pending value. If null or empty, then all packages gets sync'ed.
      * @throws java.lang.Exception in case of unknown pending status
      */
-    public static void syncLockedPackages(Long sid, Long actionId, String pending)
+    public static void syncLockedPackages(Long sid, Long actionId)
             throws Exception {
-        if (pending == null) {
-            pending = "";
-        }
-
-        pending = pending.trim();
-
-        if (!pending.isEmpty() &&
-            !pending.equals(PackageManager.PKG_PENDING_LOCK) &&
-            !pending.equals(PackageManager.PKG_PENDING_UNLOCK)) {
-            throw new Exception("Unknown pending status: " + pending);
-        }
-
-        // Sync orphan locks when action has been canceled.
-        String query = "remove_orphan_lock_on_action_cancel";
         Map params = new HashMap();
         params.put("sid", sid);
         params.put("action_id", actionId);
-        params.put("pending", pending);
-        ModeFactory.getWriteMode("Package_queries",
-                                 query + (pending.isEmpty() ? "" : "_pending"))
-                .executeUpdate(params);
+        ModeFactory.getWriteMode("Package_queries", "remove_orphan_lock_on_action_cancel").executeUpdate(params);
     }
 
     /**

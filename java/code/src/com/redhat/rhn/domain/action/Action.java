@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import java.util.Map;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -28,6 +27,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -389,9 +389,8 @@ public class Action extends BaseDomainHelper implements Serializable {
 
     /**
      * Hook when action is canceled.
-     * @param params A map of params. Each implementation should have its own keys.
      */
-    public void onCancelAction(Map params) {
+    public void onCancelAction() {
         // Something to do, when action is canceled.
         // Override this method for specific action.
     }

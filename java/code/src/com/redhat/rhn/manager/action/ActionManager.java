@@ -318,25 +318,6 @@ public class ActionManager extends BaseManager {
      */
     public static void cancelAction(User user, Action action)
         throws TaskomaticApiException {
-        ActionManager.cancelAction(user, action, null);
-    }
-
-    /**
-     * Cancels the server actions associated with a given action, and if
-     * required deals with associated pending kickstart actions and minion
-     * jobs.
-     *
-     * Actions themselves are not deleted, only the ServerActions associated
-     * with them.
-     *
-     * @param user User requesting the action be cancelled.
-     * @param action Action to be cancelled.
-     * @param cancelParams Canceling params to the specific cancelled action.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static void cancelAction(User user, Action action, Map cancelParams)
-        throws TaskomaticApiException {
         log.debug("Cancelling action: " + action.getId() + " for user: " + user.getLogin());
 
         // Can only cancel top level actions:
@@ -355,7 +336,7 @@ public class ActionManager extends BaseManager {
         Iterator<Action> iter = actionsToDelete.iterator();
         while (iter.hasNext()) {
             Action a = iter.next();
-            a.onCancelAction(cancelParams);
+            a.onCancelAction();
         }
     }
 
