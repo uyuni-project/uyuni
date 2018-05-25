@@ -38,7 +38,6 @@ import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -571,18 +570,6 @@ public class TaskomaticApi {
         invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
                 MINION_ACTION_JOB_PREFIX + action.getId(), params,
                 action.getEarliestAction());
-    }
-
-    /**
-     * Delete a scheduled Action.
-     *
-     * @param action the action to be removed
-     * @param servers servers involved in the action to remove
-     * @throws TaskomaticApiException if there was an error
-     */
-    public void deleteScheduledAction(Action action, Set<Server> servers)
-            throws TaskomaticApiException {
-        deleteScheduledActions(Collections.singletonMap(action, servers));
     }
 
     /**
