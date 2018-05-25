@@ -1,7 +1,7 @@
 # Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Action chain on salt minions
+Feature: Salt-ssh Action chain
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt ssh-minion
     Given I am authorized as "admin" with password "admin"
