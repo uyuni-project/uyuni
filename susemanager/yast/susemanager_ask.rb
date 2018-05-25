@@ -19,6 +19,7 @@ module Yast
 
       @migration_file = Ops.add(Directory.tmpdir, "/susemanager_migration")
       @migration = FileUtils.Exists(@migration_file)
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
       if FileUtils.Exists(@migration_file)
         SCR.Execute(path(".target.remove"), @migration_file)
@@ -34,7 +35,7 @@ module Yast
                 Id(:start),
                 Opt(:notify),
                 # radio button label
-                _("Set up SUSE Manager from scratch"),
+                _("Set up #{@product_name} from scratch"),
                 !@migration
               )
             ),
@@ -44,7 +45,7 @@ module Yast
                 Id(:migration),
                 Opt(:notify),
                 # radio button label
-                _("Migrate a SUSE Manager compatible server"),
+                _("Migrate a #{@product_name} compatible server"),
                 @migration
               )
             )
@@ -56,12 +57,12 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>Choose if you are setting up SUSE Manager from scratch or migrating to SUSE Manager from a SUSE Manager compatible server.</p>"
+        "<p>Choose if you are setting up #{@product_name} from scratch or migrating to #{@product_name} from a #{@product_name} compatible server.</p>"
       )
 
       # dialog caption
       Wizard.SetContents(
-        _("SUSE Manager Setup"),
+        _("#{@product_name} Setup"),
         @contents,
         @help_text,
         Ops.get_boolean(@args, "enable_back", true),

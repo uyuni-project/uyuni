@@ -13,9 +13,10 @@ module Yast
       Yast.import "Wizard"
 
       @args = GetInstArgs.argmap
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
-      # 2GB
-      @enough_memory = 2000000
+      # 4GB
+      @enough_memory = 4000000
 
       @free_disk_space = 0
       @message = ""
@@ -63,7 +64,7 @@ module Yast
         if !Popup.AnyQuestionRichText(
             _("already setup"),
             _(
-              "SUSE Manager is already set up. Do you want to delete the existing setup and start all over again?"
+              "#{@product_name} is already set up. Do you want to delete the existing setup and start all over again?"
             ),
             40,
             10,
@@ -84,7 +85,7 @@ module Yast
         if !Popup.AnyQuestionRichText(
             _("Not enough memory"),
             _(
-              "SUSE Manager requires 2G of memory to be installed and 8G for good perfomance. If you continue the product will not function correctly."
+              "#{@product_name} requires 4G of memory to be installed and 16G for good perfomance. If you continue the product will not function correctly."
             ),
             40,
             10,
@@ -111,7 +112,7 @@ module Yast
         if !Popup.AnyQuestionRichText(
             @message,
             _(
-              "SUSE Manager requires 100G of free disk space in /var/spacewalk to be installed. If you continue the product will not function correctly."
+              "#{@product_name} requires 100G of free disk space in /var/spacewalk to be installed. If you continue the product will not function correctly."
             ),
             46,
             10,
@@ -138,7 +139,7 @@ module Yast
         if !Popup.AnyQuestionRichText(
             @message,
             _(
-              "SUSE Manager requires 30G of free disk space in /var/lib/pgsql to be installed. If you continue the product will not function correctly."
+              "#{@product_name} requires 30G of free disk space in /var/lib/pgsql to be installed. If you continue the product will not function correctly."
             ),
             46,
             10,
