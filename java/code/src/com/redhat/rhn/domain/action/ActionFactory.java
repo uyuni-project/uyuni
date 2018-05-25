@@ -73,6 +73,7 @@ import org.hibernate.Session;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -175,7 +176,7 @@ public class ActionFactory extends HibernateFactory {
                 new ArrayList<>(set.getElementValues())).stream().collect(toSet());
         Action action = ActionFactory.lookupById(actionId);
 
-        TASKOMATIC_API.deleteScheduledAction(action, involvedMinions);
+        TASKOMATIC_API.deleteScheduledActions(Collections.singletonMap(action, involvedMinions));
 
         return involvedSystems.stream().map(Server::getId).mapToInt(sid -> {
             try {
