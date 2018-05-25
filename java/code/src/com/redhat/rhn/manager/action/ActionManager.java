@@ -82,10 +82,12 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.suse.manager.utils.MinionServerUtils;
+
 import com.suse.utils.Opt;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 
@@ -93,7 +95,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -103,13 +104,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
 import static com.suse.manager.utils.MinionServerUtils.isSshPushMinion;
-import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -369,15 +366,24 @@ public class ActionManager extends BaseManager {
         KickstartFactory.failKickstartSessions(actionsToDelete, servers);
 
         // cancel associated schedule in Taskomatic
-        taskomaticApi.deleteScheduledActions(actionsToDelete.stream().collect(
-            toMap(
-                Function.identity(),
-                a -> a.getServerActions().stream()
-                        .filter(sa -> isMinionServer(sa.getServer()) && !(isSshPushMinion(sa.getServer())))
-                        .map(sa -> sa.getServer())
-                        .collect(toSet())
-            )
-        ));
+        Map<Action, Set<Server>> actionMap = actionsToDelete.stream()
+                .map(a -> new ImmutablePair<>(
+                        a,
+                        a.getServerActions().stream()
+                            .filter(sa -> isMinionServer(sa.getServer()) && !(isSshPushMinion(sa.getServer())))
+                            .map(sa -> sa.getServer())
+                            .collect(toSet())
+                        )
+                )
+                .filter(p -> !p.getRight().isEmpty())
+                .collect(toMap(
+                    Pair::getLeft,
+                    Pair::getRight
+                ));
+
+        if (!actionMap.isEmpty()) {
+            taskomaticApi.deleteScheduledActions(actionMap);
+        }
 
         // delete ServerActions from the database
         serverActions.stream()
