@@ -987,20 +987,6 @@ DELETE FROM rhnlockedpackages l
   </query>
 </write-mode>
 
-<write-mode name="remove_orphan_lock_on_action_cancel_pending">
-  <query params="sid, action_id, pending">
-DELETE FROM rhnlockedpackages l
-      WHERE l.pkg_id IN (SELECT lck.pkg_id
-                           FROM rhnaction act
-                      LEFT JOIN rhnactionpackage ack ON ack.action_id = act.id
-                      LEFT JOIN rhnlockedpackages lck ON lck.name_id = ack.name_id
-                                                     AND lck.evr_id = ack.evr_id
-                                                     AND lck.arch_id = ack.package_arch_id
-                          WHERE lck.server_id = :sid AND act.id = :action_id)
-        AND l.pending = :pending
-  </query>
-</write-mode>
-
 <write-mode name="set_pending_lock_status">
   <query params="pkg_id, pending">
       UPDATE rhnlockedpackages SET pending = :pending WHERE pkg_id = :pkg_id

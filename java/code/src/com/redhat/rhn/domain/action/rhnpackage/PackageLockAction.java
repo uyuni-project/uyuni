@@ -18,8 +18,7 @@ package com.redhat.rhn.domain.action.rhnpackage;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,21 +26,14 @@ import java.util.logging.Logger;
  * PackageLockAction
  */
 public class PackageLockAction extends PackageAction {
-    public static final String PARAM_PENDING = "pending";
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public void onCancelAction(Map params) {
-        if (params == null) {
-            params = new HashMap();
-        }
-
+    public void onCancelAction() {
         for (ServerAction action : this.getServerActions()) {
             try {
-                PackageManager.syncLockedPackages(action.getServer().getId(),
-                    this.getId(), (String) params.get(PackageLockAction.PARAM_PENDING));
+                PackageManager.syncLockedPackages(action.getServer().getId(), this.getId());
             }
             catch (Exception e) {
                 Logger.getLogger(PackageLockAction.class.getName()).log(
