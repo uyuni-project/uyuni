@@ -1,3 +1,5 @@
+- remove unmaintained openSUSE Leap versions from common channels
+- add openSUSE Leap 15.0 to common channels
 - Add an ability to specify admin credentials in settings.conf (bsc#1085484)
 
 -------------------------------------------------------------------
