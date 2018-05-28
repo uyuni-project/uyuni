@@ -49,11 +49,13 @@ import org.apache.log4j.Logger;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -756,70 +758,71 @@ public class HardwareMapper {
             ServerFactory.getSession().flush();
             ServerFactory.getSession().refresh(iface);
 
-            Optional<Network.INet> inet = Optional.ofNullable(saltIface.getInet())
-                    .flatMap(addr -> addr.stream().findFirst());
+            List<ServerNetAddress4> dbipv4 = ServerNetworkFactory.findServerNetAddress4(iface.getInterfaceId());
+            List<Network.INet> saltipv4 = Optional.ofNullable(saltIface.getInet()).orElse(new LinkedList<>());
 
-            inet.ifPresent(addr4 -> {
-                // set IPv4 network info
-                String address = addr4.getAddress().orElse(null);
-                Long interfaceId = iface.getInterfaceId();
-
-                ServerNetAddress4 ipv4 = ServerNetworkFactory
-                        .findServerNetAddress4(interfaceId);
-
-                if (ipv4 != null &&
-                        Objects.equals(interfaceId, ipv4.getInterfaceId()) &&
-                        Objects.equals(address, ipv4.getAddress())) {
-                    ipv4.setNetmask(addr4.getNetmask().orElse(null));
-                    ipv4.setBroadcast(addr4.getBroadcast().orElse(null));
-                }
-                else {
-                    if (ipv4 != null) {
-                        ServerNetworkFactory.removeServerNetAddress4(ipv4);
+            Set<ServerNetAddress4> dbfound = new HashSet<>();
+            for (Network.INet inet : saltipv4) {
+                boolean found = false;
+                for (ServerNetAddress4 dbinet: dbipv4) {
+                    if (inet.getAddress().orElse("").equals(dbinet.getAddress())) {
+                        // update
+                        dbinet.setNetmask(inet.getNetmask().orElse(null));
+                        dbinet.setBroadcast(inet.getBroadcast().orElse(null));
+                        found = true;
+                        dbfound.add(dbinet);
+                        break;
                     }
-                    ipv4 = new ServerNetAddress4();
-                    ipv4.setInterfaceId(interfaceId);
-                    ipv4.setAddress(address);
-                    ipv4.setNetmask(addr4.getNetmask().orElse(null));
-                    ipv4.setBroadcast(addr4.getBroadcast().orElse(null));
+                }
+                if (!found) {
+                    // insert
+                    ServerNetAddress4 ipv4 = new ServerNetAddress4();
+                    ipv4.setInterfaceId(iface.getInterfaceId());
+                    ipv4.setAddress(inet.getAddress().orElse(null));
+                    ipv4.setNetmask(inet.getNetmask().orElse(null));
+                    ipv4.setBroadcast(inet.getBroadcast().orElse(null));
 
                     ServerNetworkFactory.saveServerNetAddress4(ipv4);
                 }
-            });
+            }
+            dbipv4.removeAll(dbfound);
+            for (ServerNetAddress4 del: dbipv4) {
+                // remove
+                ServerNetworkFactory.removeServerNetAddress4(del);
+            }
 
-            Optional<Network.INet6> inet6 = Optional.ofNullable(saltIface.getInet6())
-                    .flatMap(addr -> addr.stream().findFirst());
-            inet6.ifPresent(addr6 -> {
-                // set IPv6 network info
-                Long interfaceId = iface.getInterfaceId();
-                String address = addr6.getAddress();
+            List<ServerNetAddress6> dbipv6 = ServerNetworkFactory.findServerNetAddress6(iface.getInterfaceId());
+            List<Network.INet6> saltipv6 = Optional.ofNullable(saltIface.getInet6()).orElse(new LinkedList<>());
 
-                ServerNetAddress6 ipv6 = ServerNetworkFactory
-                        .findServerNetAddress6(interfaceId);
-
-                // scope is part of the entity's composite-id
-                // so if it's null we'll get a list with null on namedQuery.list()
-                // therefore we need a default value
-                String scope = Optional.ofNullable(addr6.getScope()).orElse("unknown");
-                if (ipv6 != null &&
-                        Objects.equals(interfaceId, ipv6.getInterfaceId()) &&
-                        Objects.equals(address, ipv6.getAddress()) &&
-                        Objects.equals(scope, ipv6.getScope())) {
-                    ipv6.setNetmask(addr6.getPrefixlen());
-                }
-                else {
-                    if (ipv6 != null) {
-                        ServerNetworkFactory.removeServerNetAddress6(ipv6);
+            Set<ServerNetAddress6> dbfound6 = new HashSet<>();
+            for (Network.INet6 inet : saltipv6) {
+                boolean found = false;
+                for (ServerNetAddress6 dbinet: dbipv6) {
+                    if (inet.getAddress().equals(dbinet.getAddress())) {
+                        // update
+                        dbinet.setNetmask(inet.getPrefixlen());
+                        dbinet.setScope(Optional.ofNullable(inet.getScope()).orElse("unknown"));
+                        found = true;
+                        dbfound6.add(dbinet);
+                        break;
                     }
-                    ipv6 = new ServerNetAddress6();
-                    ipv6.setInterfaceId(interfaceId);
-                    ipv6.setAddress(address);
-                    ipv6.setNetmask(addr6.getPrefixlen());
-                    ipv6.setScope(scope);
+                }
+                if (!found) {
+                    // insert
+                    ServerNetAddress6 ipv6 = new ServerNetAddress6();
+                    ipv6.setInterfaceId(iface.getInterfaceId());
+                    ipv6.setAddress(inet.getAddress());
+                    ipv6.setNetmask(inet.getPrefixlen());
+                    ipv6.setScope(Optional.ofNullable(inet.getScope()).orElse("unknown"));
 
                     ServerNetworkFactory.saveServerNetAddress6(ipv6);
                 }
-            });
+            }
+            dbipv6.removeAll(dbfound6);
+            for (ServerNetAddress6 del: dbipv6) {
+                // remove
+                ServerNetworkFactory.removeServerNetAddress6(del);
+            }
         });
 
         // reset primary IP flag, we will re-compute it
@@ -827,20 +830,22 @@ public class HardwareMapper {
 
         // find the interface having primary IPv4 addr
         Optional<NetworkInterface> primaryNetIf = primaryIPv4.flatMap(pipv4 ->
-                server.getNetworkInterfaces().stream()
-                    .filter(netIf -> ObjectUtils.equals(pipv4, netIf.getIpaddr()))
-                    .findFirst());
+            server.getNetworkInterfaces().stream()
+                .filter(netIf -> netIf.getIPv4Addresses().stream()
+                        .anyMatch(addr -> ObjectUtils.equals(pipv4, addr.getAddress()))
+                        )
+                .findFirst()
+                );
 
         if (!primaryNetIf.isPresent()) {
             // no primary IPv4, fallback to IPv6
             primaryNetIf = primaryIPv6.flatMap(pipv6 ->
-                    server.getNetworkInterfaces().stream()
-                            .filter(netIf -> netIf.getIPv6Addresses().stream()
-                                    .anyMatch(addr ->
-                                            ObjectUtils.equals(pipv6, addr.getAddress()))
+                server.getNetworkInterfaces().stream()
+                    .filter(netIf -> netIf.getIPv6Addresses().stream()
+                            .anyMatch(addr -> ObjectUtils.equals(pipv6, addr.getAddress()))
                             )
-                            .findFirst()
-            );
+                    .findFirst()
+                    );
         }
 
         primaryNetIf.ifPresent(netIf -> {
@@ -860,9 +865,10 @@ public class HardwareMapper {
     }
 
     private boolean notLocalhost(NetworkInterface netIf) {
-        return !"127.0.0.1".equals(netIf.getIpaddr()) &&
+        return !netIf.getIPv4Addresses().stream()
+                .anyMatch(addr -> "127.0.0.1".equals(addr.getAddress())) &&
                 !netIf.getIPv6Addresses().stream()
-                        .anyMatch(addr -> "::1".equals(addr.getAddress()));
+                .anyMatch(addr -> "::1".equals(addr.getAddress()));
     }
 
     /**
