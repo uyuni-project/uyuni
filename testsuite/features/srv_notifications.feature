@@ -9,3 +9,11 @@ Feature: Test the notification/notification-messages feature
     And I wait until I see "The server has collected the following notification messages." text
     Then I follow "Unread Messages"
     And the notification badge and the table should count the same amount of messages
+
+  Scenario: Delete notification-messages
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Notification Messages" in the left menu
+    And I wait until I see "The server has collected the following notification messages." text
+    Then I follow "All Messages"
+    Then I check the first notification message
+    And I delete it via the "Delete selected messages" button

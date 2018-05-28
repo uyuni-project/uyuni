@@ -24,7 +24,8 @@ const NotificationMessages = React.createClass({
       dataUrlTags: ['#data-unread', '#data-all'],
       currentDataUrlTag: location.hash ? location.hash : '#data-unread',
       loading: true,
-      messages: []
+      messages: [],
+      selectedItems: [],
     };
   },
 
@@ -69,7 +70,8 @@ const NotificationMessages = React.createClass({
           serverData: data,
           error: null,
           loading: false,
-          messages: []
+          messages: [],
+          selectedItems: []
         });
       })
       .catch(response => {
@@ -78,9 +80,16 @@ const NotificationMessages = React.createClass({
             response.status >= 500 ? "general" :
             null,
           loading: false,
-          messages: []
+          messages: [],
+          selectedItems: []
         });
       });
+  },
+
+  handleSelectItems(items) {
+    this.setState({
+      selectedItems: items
+    });
   },
 
   updateReadStatus: function(messageId) {
@@ -106,16 +115,19 @@ const NotificationMessages = React.createClass({
     });
   },
 
-  deleteNotification: function(messageId) {
-    var currentObject = this;
-
-    var updatedData = this.state.serverData.filter(m => m.id != messageId);
-    Network.post("/rhn/manager/notification-messages/delete/" + messageId, "application/json").promise
+  deleteNotifications: function(ids) {
+    Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
     .then(data => {
-      this.setState({serverData : updatedData})
+      var newMessagesState = this.state.messages;
+      newMessagesState.push({ severity: data.severity, text: data.text });
+
+      const updatedData = this.state.serverData.filter(m => !ids.includes(m.id));
+      const updatedSelectedItems = this.state.selectedItems.filter(m => !ids.includes(m))
+
+      this.setState({serverData : updatedData, selectedItems : updatedSelectedItems, messages : newMessagesState});
     })
     .catch(response => {
-      currentObject.setState({
+      this.setState({
         error: response.status == 401 ? "authentication" :
           response.status >= 500 ? "general" :
           null
@@ -284,10 +296,18 @@ const NotificationMessages = React.createClass({
       </div>
     ;
 
-    const panelButtons = <div className="pull-right btn-group">
-      <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
-      <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
-          title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
+    const panelButtons = <div className='spacewalk-section-toolbar'>
+        <div className='action-button-wrapper'>
+          <div className='btn-group'>
+            <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
+            <Button id="delete-selected-messages" icon="fa-trash" className='btn-default'
+                title={t('Delete selected messages')} text={t('Delete selected messages')}
+                handler={() => this.deleteNotifications(this.state.selectedItems)}
+                disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
+            <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
+                title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
+        </div>
+      </div>
     </div>;
 
     const visibleMessages = this.state.messages.length > 3 ? this.state.messages.slice(this.state.messages.length - 3) : this.state.messages;
@@ -295,13 +315,16 @@ const NotificationMessages = React.createClass({
 
     if (data != null) {
       return  (
-        <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
+        <Panel title={t("Notification Messages")} icon="fa-envelope">
           <ErrorMessage error={this.state.error} />
 
           { messages }
 
           <p>{t('The server has collected the following notification messages.')}</p>
           {headerTabs}
+
+          {panelButtons}
+
           <Table
             data={this.buildRows(data)}
             identifier={(row) => row["id"]}
@@ -310,6 +333,9 @@ const NotificationMessages = React.createClass({
             initialSortDirection={-1}
             initialItemsPerPage={userPrefPageSize}
             loading={this.state.loading}
+            selectable
+            selectedItems={this.state.selectedItems}
+            onSelect={this.handleSelectItems}
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
@@ -355,7 +381,7 @@ const NotificationMessages = React.createClass({
                         text action={() => this.updateReadStatus(row['id'], row['isRead'])} />
                     <AsyncButton id="delete"  classStyle="btn-sm"
                         icon="trash fa-1-5x no-margin" title={t('Delete Notification')}
-                        text action={() => this.deleteNotification(row['id'])} />
+                        text action={() => this.deleteNotifications([row['id']])} />
                   </div>
               }
             />
@@ -365,7 +391,7 @@ const NotificationMessages = React.createClass({
     }
     else {
       return (
-        <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
+        <Panel title={t("Notification Messages")} icon="fa-envelope">
           <ErrorMessage error={this.state.error} />
         </Panel>
       );
