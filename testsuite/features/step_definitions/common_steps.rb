@@ -749,18 +749,35 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
 end
 
 And(/^the notification badge and the table should count the same amount of messages$/) do
-  # decode how many rows the table has
-  items_label_xpath = "//span[contains(text(), 'Items ')]"
-  raise unless (items_label = find(:xpath, items_label_xpath).text)
-  table_items_count = items_label.split('of ')[1]
+  table_notifications_count = count_table_items
 
-  badge_xpath = "//i[contains(@class, 'fa-bell')]/following-sibling::*[text()='#{table_items_count}']"
+  badge_xpath = "//i[contains(@class, 'fa-bell')]/following-sibling::*[text()='#{table_notifications_count}']"
 
-  if table_items_count == '0'
+  if table_notifications_count == '0'
     puts "All notification-messages are read, I expect no notification badge"
     raise if page.has_xpath?(badge_xpath)
   else
-    puts "Unread notification-messages count = " + table_items_count
+    puts "Unread notification-messages count = " + table_notifications_count
     raise unless find(:xpath, badge_xpath)
+  end
+end
+
+Then(/^I check the first notification message$/) do
+  if count_table_items == '0'
+    puts "There are no notification messages, nothing to delete then"
+  else
+    within(:xpath, '//section') do
+      row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]")
+      row.first(:xpath, './/input[@type="checkbox"]').set(true)
+    end
+  end
+end
+
+And(/^I delete it via the "([^"]*)" button$/) do |target_button|
+  if count_table_items != '0'
+    xpath_for_delete_button = "//button[.//span[contains(text(), '#{target_button}')]]"
+    raise unless find(:xpath, xpath_for_delete_button).click
+
+    step %(I wait until I see "1 message deleted successfully." text)
   end
 end
