@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
@@ -95,8 +96,7 @@ public class ImageStoreController {
             storeId = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageStore> store =
@@ -151,8 +151,7 @@ public class ImageStoreController {
             storeId = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageStore> store = ImageStoreFactory.lookupByIdAndOrg(storeId,
