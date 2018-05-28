@@ -5,7 +5,7 @@
 - Fix NPE in software profile sync when building update query (bsc#1094240)
 - Fix minion software profile to allow multiple installed versions for the
   same package name (bsc#1089526)
-- added 404 handling inside the Spark framework
+- added 404 handling inside the Spark framework (bsc#1029726)
 
 -------------------------------------------------------------------
 Wed May 23 09:01:39 CEST 2018 - jgonzalez@suse.com

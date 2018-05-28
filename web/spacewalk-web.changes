@@ -1,6 +1,6 @@
 - Bugfix: disable toggler if no recommended channels (bsc#1090224)
 - Initial branding change for Uyuni (bsc#1094497)
-- Implemented new 404 page in react
+- Implemented new 404 page in react (bsc#1029726)
 
 -------------------------------------------------------------------
 Mon May 21 13:34:38 CEST 2018 - jgonzalez@suse.com
