@@ -116,24 +116,18 @@ const NotificationMessages = React.createClass({
   },
 
   deleteNotifications: function(ids) {
-    var currentObject = this;
     Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
     .then(data => {
       var newMessagesState = this.state.messages;
       newMessagesState.push({ severity: data.severity, text: data.text });
 
-      var updatedData = currentObject.state.serverData;
-      ids.forEach(id =>
-        updatedData = updatedData.filter(m => m.id != id)
-      );
-      var updatedSelectedItems = currentObject.state.selectedItems;
-      ids.forEach(id =>
-        updatedSelectedItems = updatedSelectedItems.filter(m => m != id)
-      );
+      const updatedData = this.state.serverData.filter(m => !ids.includes(m.id));
+      const updatedSelectedItems = this.state.selectedItems.filter(m => !ids.includes(m))
+
       this.setState({serverData : updatedData, selectedItems : updatedSelectedItems, messages : newMessagesState});
     })
     .catch(response => {
-      currentObject.setState({
+      this.setState({
         error: response.status == 401 ? "authentication" :
           response.status >= 500 ? "general" :
           null
