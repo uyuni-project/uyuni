@@ -46,6 +46,8 @@ import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionErrors;
@@ -58,6 +60,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.stringtree.json.JSONWriter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -409,6 +412,11 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             updated.setGloballySubscribable((sharing != null) &&
                     ("all".equals(sharing)), loggedInUser.getOrg());
             updated = (Channel) ChannelFactory.reload(updated);
+            ServerFactory.listMinionsByChannel(updated.getId()).stream().forEach(ms -> {
+                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false,
+                        Collections.emptySet());
+            });
+
         }
         catch (InvalidGPGFingerprintException borg) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
