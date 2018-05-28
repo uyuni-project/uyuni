@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.log4j.Logger;
 
+import java.util.List;
+
 /**
  * ServerFactory - the singleton class used to fetch and store
  * {@link ServerNetAddress4} and {@link ServerNetAddress6} objects
@@ -34,31 +36,31 @@ public class ServerNetworkFactory extends HibernateFactory {
     }
 
     /**
-     * Find a {@link ServerNetAddress4} for the given interface.
+     * Find list of {@link ServerNetAddress4} for the given interface.
      * @param interfaceId the id of the {@link NetworkInterface}
-     * @return a {@link ServerNetAddress4} or null
+     * @return a List of {@link ServerNetAddress4} or null
      * @throws org.hibernate.NonUniqueResultException
      * if there is more than one matching result
      */
-    public static ServerNetAddress4 findServerNetAddress4(Long interfaceId) {
-        return (ServerNetAddress4) HibernateFactory.getSession()
+    public static List<ServerNetAddress4> findServerNetAddress4(Long interfaceId) {
+        return (List<ServerNetAddress4>) HibernateFactory.getSession()
                 .getNamedQuery("ServerNetAddress4.lookup")
                 .setParameter("interface_id", interfaceId)
-                .uniqueResult();
+                .list();
     }
 
     /**
-     * Find a {@link ServerNetAddress6} for the given interface.
+     * Find a list of {@link ServerNetAddress6} for the given interface.
      * @param interfaceId the id of the {@link NetworkInterface}
-     * @return a {@link ServerNetAddress6} or null
+     * @return a list of {@link ServerNetAddress6} or null
      * @throws org.hibernate.NonUniqueResultException
      * if there is more than one matching result
      */
-    public static ServerNetAddress6 findServerNetAddress6(Long interfaceId) {
-        return (ServerNetAddress6) HibernateFactory.getSession()
+    public static List<ServerNetAddress6> findServerNetAddress6(Long interfaceId) {
+        return (List<ServerNetAddress6>) HibernateFactory.getSession()
                 .getNamedQuery("ServerNetAddress6.lookup_by_id")
                 .setParameter("interface_id", interfaceId)
-                .uniqueResult();
+                .list();
     }
 
     /**
