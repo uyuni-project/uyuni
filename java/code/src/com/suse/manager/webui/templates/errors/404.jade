@@ -1,0 +1,11 @@
+include ../common.jade
+
+#notfoundpage
+
+script(src='/javascript/manager/errors/not-found.bundle.js', type='text/javascript')
+
+script(type='text/javascript').
+    pageRenderers.errors.NotFoundRenderer(
+        'notfoundpage',
+        { currentUrl: '#{currentUrl}' }
+    );

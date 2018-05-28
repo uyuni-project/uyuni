@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ImageProfileCreateRequest;
 import com.suse.manager.webui.utils.gson.ImageProfileJson;
@@ -109,8 +110,7 @@ public class ImageProfileController {
             profileId = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageProfile> profile =
@@ -184,8 +184,7 @@ public class ImageProfileController {
             profileId = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageProfile> profile =
