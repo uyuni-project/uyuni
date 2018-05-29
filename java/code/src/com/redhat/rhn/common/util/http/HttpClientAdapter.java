@@ -16,10 +16,13 @@ package com.redhat.rhn.common.util.http;
 
 import java.io.IOException;
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import javax.net.ssl.SSLContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -36,6 +39,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.ProxyAuthenticationStrategy;
@@ -89,7 +93,22 @@ public class HttpClientAdapter {
      * be read from the configuration and applied transparently.
      */
     public HttpClientAdapter() {
+        Optional<SSLConnectionSocketFactory> sslSocketFactory = Optional.empty();
+        try {
+            SSLContext sslContext = SSLContext.getDefault();
+            sslSocketFactory = Optional.of(new SSLConnectionSocketFactory(
+                    sslContext,
+                    new String[]{"TLSv1", "TLSv1.1", "TLSv1.2"},
+                    null,
+                    SSLConnectionSocketFactory.getDefaultHostnameVerifier()));
+        }
+        catch (NoSuchAlgorithmException e) {
+            log.warn("No such algorithm. Using default context", e);
+        }
+
         HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+        sslSocketFactory.ifPresent(sf -> clientBuilder.setSSLSocketFactory(sf));
+
         clientBuilder.setDefaultCredentialsProvider(credentialsProvider);
         Builder requestConfigBuilder = RequestConfig.custom()
                 .setCookieSpec(CookieSpecs.IGNORE_COOKIES);
