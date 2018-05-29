@@ -14,22 +14,22 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.domain.user.User;
+
+import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.utils.FlashScopeHelper;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.HttpStatus;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.redhat.rhn.domain.formula.FormulaFactory;
-import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.utils.FlashScopeHelper;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 
 /**
  * Controller class for the formula catalog page.
@@ -79,8 +79,7 @@ public class FormulaCatalogController {
         String formulaName = request.params("name");
 
         if (!FormulaFactory.listFormulaNames().contains(formulaName)) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND); // TODO redirect to the default 404 page
-            return null;
+            throw new NotFoundException();
         }
 
         Map<String, Object> data = new HashMap<>();

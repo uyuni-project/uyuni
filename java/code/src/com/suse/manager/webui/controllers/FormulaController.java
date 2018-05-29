@@ -30,6 +30,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.StateTargetType;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,8 +40,6 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.utils.Opt;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;

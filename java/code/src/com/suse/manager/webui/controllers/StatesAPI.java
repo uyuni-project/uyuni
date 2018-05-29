@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -35,13 +37,9 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.configuration.SaltConfigurable;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
+import com.redhat.rhn.manager.configuration.SaltConfigurable;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -49,33 +47,36 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.utils.MinionServerUtils;
-import com.suse.manager.webui.utils.SaltInclude;
-import com.suse.manager.webui.utils.gson.StateTargetType;
-import org.apache.http.HttpStatus;
-
-import org.apache.log4j.Logger;
-
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.SaltInclude;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONConfigChannel;
-import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
+import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyHighstate;
-import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
+import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerConfigChannels;
+import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
+import com.suse.manager.webui.utils.gson.StateTargetType;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -88,8 +89,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -99,8 +100,6 @@ import java.util.stream.Stream;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
-
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 /**
  * Controller class providing the backend for API calls to work with states.
@@ -290,8 +289,7 @@ public class StatesAPI {
      */
     private static <T> T getEntityIfExists(Optional<T> entity) {
         return entity.orElseGet(() -> {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         });
     }
 
@@ -303,7 +301,7 @@ public class StatesAPI {
      */
     private static <T> T getEntityIfExists(T entity) {
         if (entity == null) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            throw new NotFoundException();
         }
         return entity;
     }

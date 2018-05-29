@@ -15,11 +15,9 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.utils.Json.GSON;
+
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -31,10 +29,10 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -42,23 +40,28 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.webui.controllers.utils.ImagesUtil;
+import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -72,8 +75,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.utils.Json.GSON;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 
 /**
  * Spark controller class for image building and listing.
@@ -116,8 +121,7 @@ public class ImageBuildController {
                     "&profile=" + i.getProfile().getProfileId());
             return new ModelAndView(model, "content_management/build.jade");
         }).orElseGet(() -> {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         });
     }
 
@@ -199,8 +203,7 @@ public class ImageBuildController {
                 model.put("id", profileId);
             }
             catch (NumberFormatException e) {
-                Spark.halt(HttpStatus.SC_NOT_FOUND);
-                return null;
+                throw new NotFoundException();
             }
         }
         else {
@@ -484,8 +487,7 @@ public class ImageBuildController {
             id = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageOverview> imageInfo =
@@ -508,8 +510,7 @@ public class ImageBuildController {
             id = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageOverview> imageInfo =
@@ -533,8 +534,7 @@ public class ImageBuildController {
             id = Long.parseLong(req.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            throw new NotFoundException();
         }
 
         Optional<ImageOverview> imageInfo =
