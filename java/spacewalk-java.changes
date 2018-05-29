@@ -1,3 +1,4 @@
+- enable all TLS version for HTTPS connections (bsc#1094530)
 - allow multi selection/deletion of notification messages
 - change text on pending actions on the system page (bsc#1086176)
 - Schedule only one action when changing channel assignment for a group of servers on SSM
