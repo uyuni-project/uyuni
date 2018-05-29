@@ -13,9 +13,10 @@ set -e
 WORKSPACE=${WORKSPACE:-/tmp/push-packages-to-obs}
 PACKAGE="$@"
 OSCRC=${OSCRC:+-c $OSCRC}
+OSCAPI=${OSCAPI:-https://api.suse.de}
 
-OSC="osc $OSCRC -A https://api.suse.de"
-OBS_PROJ=${OBS_PROJ:-Devel:Galaxy:Manager:T}
+OSC="osc ${OSCRC} -A ${OSCAPI}"
+OBS_PROJ=${OBS_PROJ:-Devel:Galaxy:Manager:TEST}
 
 FAKE_COMITTOBS=${FAKE_COMITTOBS:+1}
 
