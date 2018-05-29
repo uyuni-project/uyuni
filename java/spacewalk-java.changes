@@ -1,3 +1,4 @@
+- Fix: show only directly connected systems for Proxy (bsc#1094986)
 - generate pillar after changeing gpg_check flag (bsc#1079605)
 - enable all TLS version for HTTPS connections (bsc#1094530)
 - added 404 handling inside the Spark framework (bsc#1029726)
