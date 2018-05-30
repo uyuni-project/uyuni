@@ -441,14 +441,14 @@ function t(key) {
 */
 // create an observer instance
 var spacewalkContentObserver = new MutationObserver(function(mutations) {
-  mutations.forEach(function(mutation) {
-    alignContentDimensions();
-
-    // trigger the 'spacewalk-section-toolbar' (sst) handler on content change
-    // since it can happen that the sst has just been added right now
-    handleSst();
-  });
+    if (mutations.length > 0) {
+        alignContentDimensions();
+        // trigger the 'spacewalk-section-toolbar' (sst) handler on content change
+        // since it can happen that the sst has just been added right now
+        handleSst();
+    }
 });
+
 $(document).ready(function() {
   var target = document.getElementById('spacewalk-content');
   // configuration of the observer:
