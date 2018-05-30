@@ -900,8 +900,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public String getIpAddress() {
         NetworkInterface ni = findPrimaryNetworkInterface();
         if (ni != null) {
-            log.debug("Found a NetworkInterface: " + ni.getIpaddr());
-            return ni.getIpaddr();
+            for (ServerNetAddress4 ipv4address : ni.getIPv4Addresses()) {
+                log.debug("Found a NetworkInterface: " + ipv4address.getAddress());
+                return ipv4address.getAddress();
+            }
         }
         return null;
     }
@@ -968,12 +970,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
             i = networkInterfaces.iterator();
             while (i.hasNext()) {
                 NetworkInterface n = i.next();
-                String addr = n.getIpaddr();
-                if (addr != null &&
-                        !addr.equals("127.0.0.1")) {
-                    log.debug("Found NetworkInterface !localhost");
-                    primaryInterface = n;
-                    return n;
+                for (ServerNetAddress4 ad4 : n.getIPv4Addresses()) {
+                    if (ad4 != null && !ad4.getAddress().equals("127.0.0.1")) {
+                        log.debug("Found NetworkInterface !localhost");
+                        primaryInterface = n;
+                        return n;
+                    }
                 }
                 for (ServerNetAddress6 ad6 : n.getIPv6Addresses()) {
                     if (ad6 != null && !ad6.getAddress().equals("::1")) {

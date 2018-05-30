@@ -55,10 +55,13 @@ public class CobblerUnregisteredSystemCreateCommand extends
         List<Network> ifaces = new LinkedList<Network>();
         if (serverIn.getNetworkInterfaces() != null) {
             for (NetworkInterface n : serverIn.getNetworkInterfaces()) {
+                if (n.getIPv4Addresses().isEmpty()) {
+                    continue;
+                }
                 Network net = new Network(getCobblerConnection(), n.getName());
-                net.setIpAddress(n.getIpaddr());
+                net.setIpAddress(n.getIPv4Addresses().get(0).getAddress());
                 net.setMacAddress(n.getHwaddr());
-                net.setNetmask(n.getNetmask());
+                net.setNetmask(n.getIPv4Addresses().get(0).getNetmask());
                 if (!StringUtils.isBlank(networkInterface) &&
                         n.getName().equals(networkInterface)) {
                     net.setStaticNetwork(!isDhcp);
@@ -89,7 +92,6 @@ public class CobblerUnregisteredSystemCreateCommand extends
         /**
          * {@inheritDoc}
          */
-        @Override
         public String getIpaddr() {
             return this.ipAddress;
         }
