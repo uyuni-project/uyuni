@@ -1,3 +1,4 @@
+- Fix on UI content observer (bsc#108463)
 - allow multi selection/deletion of notification messages
 - Bugfix: disable toggler if no recommended channels (bsc#1090224)
 - Implemented new 404 page in react (bsc#1029726)
