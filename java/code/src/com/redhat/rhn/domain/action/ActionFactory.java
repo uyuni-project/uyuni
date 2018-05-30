@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.action;
 
-import static java.util.stream.Collectors.toSet;
-
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -68,7 +66,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -76,6 +73,7 @@ import org.hibernate.Session;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -84,6 +82,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -175,7 +176,7 @@ public class ActionFactory extends HibernateFactory {
                 new ArrayList<>(set.getElementValues())).stream().collect(toSet());
         Action action = ActionFactory.lookupById(actionId);
 
-        TASKOMATIC_API.deleteScheduledAction(action, involvedMinions);
+        TASKOMATIC_API.deleteScheduledActions(Collections.singletonMap(action, involvedMinions));
 
         return involvedSystems.stream().map(Server::getId).mapToInt(sid -> {
             try {
@@ -673,10 +674,10 @@ public class ActionFactory extends HibernateFactory {
      * @param parentAction Parent action.
      * @return Set of actions dependent on the given parent.
      */
-    public static Set lookupDependentActions(Action parentAction) {
+    public static Stream<Action> lookupDependentActions(Action parentAction) {
         Session session = HibernateFactory.getSession();
 
-        Set returnSet = new HashSet();
+        Set<Action> returnSet = new HashSet<>();
         List actionsAtHierarchyLevel = new LinkedList();
         actionsAtHierarchyLevel.add(parentAction.getId());
         do {
@@ -693,7 +694,7 @@ public class ActionFactory extends HibernateFactory {
         }
         while (actionsAtHierarchyLevel.size() > 0);
 
-        return returnSet;
+        return returnSet.stream();
     }
 
     /**
