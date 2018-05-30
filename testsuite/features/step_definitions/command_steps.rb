@@ -301,9 +301,13 @@ Then(/^the command should fail$/) do
 end
 
 When(/^I wait until file "(.*)" exists on "(.*)"$/) do |file, host|
+  step %(I wait "#{DEFAULT_TIMEOUT}" seconds until file "#{file}" exists on "#{host}")
+end
+
+When(/^I wait "(.*)" seconds until file "(.*)" exists on "(.*)"$/) do |seconds, file, host|
   node = get_target(host)
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    Timeout.timeout(seconds.to_i) do
       loop do
         break if file_exists?(node, file)
         sleep(1)
