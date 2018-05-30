@@ -445,6 +445,12 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                                 .build()
                 )
         ));
+        states.add(new SaltModuleRun(ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 2,
+                "state.top",
+                2,
+                singletonMap("topfn",
+                        service.getActionChainTopPath(actionChain.getId(),2)),
+                emptyMap()));
         String sls2Name = "salt://" + ACTIONCHAIN_SLS_FOLDER + "/" + service.getActionChainSLSFileName(actionChain.getId(), minion1, 2);
         states.add(new SaltModuleRun(
                 "schedule_next_chunk",
@@ -465,6 +471,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
         File script1 = scriptsDir.resolve("script_1.sh").toFile();
         File script2 = scriptsDir.resolve("script_2.sh").toFile();
+        String topFilename = service.getActionChainTopPath(actionChain.getId(), 2);
+        File top = statesFileRoot.resolve(topFilename).toFile();
         File channels = scriptsDir.resolve("channels").toFile();
         File sls2 = statesFileRoot
                 .resolve(ACTIONCHAIN_SLS_FOLDER)
@@ -472,6 +480,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 .toFile();
         FileUtils.touch(script1);
         FileUtils.touch(script2);
+        FileUtils.touch(top);
         FileUtils.touch(channels);
         FileUtils.touch(sls2);
 
@@ -481,13 +490,15 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         File sls1 = sls1Path.toFile();
 
         List<String> slsFileRefs = service.findFileRefsToDelete(sls1Path);
-        assertEquals(1, slsFileRefs.size());
+        assertEquals(2, slsFileRefs.size());
         assertTrue(slsFileRefs.contains("scripts/script_1.sh"));
+        assertTrue(slsFileRefs.contains(topFilename));
 
         service.removeActionChainSLSFiles(actionChain.getId(), minion1.getMinionId(), 1, false);
 
         assertFalse(sls1.exists());
         assertFalse(script1.exists());
+        assertFalse(top.exists());
         assertTrue(script2.exists());
         assertTrue(sls2.exists());
         assertTrue(channels.exists());

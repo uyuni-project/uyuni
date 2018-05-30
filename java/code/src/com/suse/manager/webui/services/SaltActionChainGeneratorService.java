@@ -85,7 +85,6 @@ public class SaltActionChainGeneratorService {
     public static final String ACTIONCHAIN_SLS_FOLDER = "actionchains";
 
     private static final String ACTIONCHAIN_SLS_FILE_PREFIX = "actionchain_";
-    private static final String SCRIPTS_DIR = "scripts";
 
     public static final Pattern ACTION_STATE_PATTERN =
             Pattern.compile(".*\\|-" + ACTION_STATE_ID_PREFIX + "(\\d+)" +
@@ -93,7 +92,7 @@ public class SaltActionChainGeneratorService {
                     ACTION_STATE_ID_CHUNK_PREFIX + "(\\d+).*");
 
     private static final Pattern SALT_FILE_REF =
-            Pattern.compile(SALT_FS_PREFIX + "([a-zA-Z0-9_\\./]+)");
+            Pattern.compile("(" + SALT_FS_PREFIX + "|topfn:\\s*)([a-zA-Z0-9_\\./]+)");
 
     private Path suseManagerStatesFilesRoot;
     private boolean skipSetOwner;
@@ -433,7 +432,7 @@ public class SaltActionChainGeneratorService {
             List<String> res = new LinkedList<>();
             int start = 0;
             while (m.find(start)) {
-                String ref = m.group(1);
+                String ref = m.group(2);
                 start = m.start() + 1;
                 if (refInList(DEFAULT_TOPS, ref) || refInList(ACTION_STATES_LIST, ref)) {
                     // skip refs to tops and action states
@@ -444,7 +443,7 @@ public class SaltActionChainGeneratorService {
                     continue;
                 }
 
-                res.add(m.group(1));
+                res.add(ref);
             }
             return res;
         }
@@ -475,20 +474,7 @@ public class SaltActionChainGeneratorService {
     }
 
     private void saveChunkSLS(List<SaltState> states, MinionServer minion, long actionChainId, int chunk) {
-        Path targetDir = getTargetDir();
-        try {
-            Files.createDirectories(targetDir);
-            if (!skipSetOwner) {
-                FileSystem fileSystem = FileSystems.getDefault();
-                UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-                UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
-                Files.setOwner(targetDir, tomcatUser);
-            }
-        }
-        catch (IOException e) {
-            LOG.error("Could not create action chain directory " + targetDir, e);
-            throw new RuntimeException(e);
-        }
+        Path targetDir = createActionChainsDir();
         Path targetFilePath = Paths.get(targetDir.toString(),
                 getActionChainSLSFileName(actionChainId, minion, chunk));
 
@@ -620,6 +606,7 @@ public class SaltActionChainGeneratorService {
      */
     public String generateTop(long actionChainId, long applyHighstateActionId, SaltTop top) {
         String topFile = getActionChainTopPath(actionChainId, applyHighstateActionId);
+        createActionChainsDir();
         Path topPath = suseManagerStatesFilesRoot.resolve(topFile);
         try (Writer fout = new FileWriter(topPath.toFile())) {
             SaltStateGenerator generator = new SaltStateGenerator(fout);
@@ -629,5 +616,29 @@ public class SaltActionChainGeneratorService {
             throw new RuntimeException(e);
         }
         return SALT_FS_PREFIX + topFile;
+    }
+
+    /**
+     * Make sure the {@literal actionchains} subdir exists.
+     * @return the {@link Path} of the {@literal} actionchains directory
+     */
+    private Path createActionChainsDir() {
+        Path targetDir = getTargetDir();
+        if (!Files.exists(targetDir)) {
+            try {
+                Files.createDirectories(targetDir);
+                if (!skipSetOwner) {
+                    FileSystem fileSystem = FileSystems.getDefault();
+                    UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+                    UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+                    Files.setOwner(targetDir, tomcatUser);
+                }
+            }
+            catch (IOException e) {
+                LOG.error("Could not create action chain directory " + targetDir, e);
+                throw new RuntimeException(e);
+            }
+        }
+        return targetDir;
     }
 }
