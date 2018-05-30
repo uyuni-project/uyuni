@@ -1,3 +1,4 @@
+- Fix logic in jsp so enabling config systems page shows right icon for error (bsc#1082988)
 - Fix: show only directly connected systems for Proxy (bsc#1094986)
 - generate pillar after changeing gpg_check flag (bsc#1079605)
 - enable all TLS version for HTTPS connections (bsc#1094530)
