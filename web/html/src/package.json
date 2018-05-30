@@ -23,5 +23,9 @@
     "sigmund": "1.0.1",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.73.0",
+    "watchify": "^3.11.0"
   }
 }
