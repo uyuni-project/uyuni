@@ -7,10 +7,10 @@
   <rhn:listdisplay>
 
     <rhn:column header="summary.jsp.status">
-      <c:if test="${current.success}">
+      <c:if test="${current.errorCode == 0}">
         <rhn:icon type="action-ok" title="summary.jsp.okAlt" />
       </c:if>
-      <c:if test="${!current.success}">
+      <c:if test="${current.errorCode > 0}">
         <rhn:icon type="action-failed" title="summary.jsp.errorAlt" />
       </c:if>
     </rhn:column>
