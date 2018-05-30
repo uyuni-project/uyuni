@@ -7,14 +7,16 @@ var browserify = require('browserify');
 var babelify = require('babelify');
 var glob  = require('glob');
 var es = require('event-stream');
-var rename = require('gulp-rename')
+var rename = require('gulp-rename');
+var watchify = require('watchify');
 
 var bundlerOpts = null;
 
 gulp.task('devel-opts', function(done) {
     bundlerOpts = {
         debug: true, // Gives us sourcemapping
-        cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
+        cache: {}, packageCache: {}, fullPaths: true,
+        plugin: [watchify]
     };
 });
 
