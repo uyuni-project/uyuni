@@ -199,7 +199,7 @@ Serializable {
         ArrayList<String> addresses = findServerNetAddress6ByScope("universe");
         // RHEL-5 registration may return "global" rather than "universe"
         // for global addresses (a libnl thing).
-        if (addresses == null) {
+        if (addresses == null || addresses.isEmpty()) {
             addresses = findServerNetAddress6ByScope("global");
         }
         return addresses;
