@@ -42,10 +42,10 @@ import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
-import com.redhat.rhn.domain.action.script.ScriptActionDetails;
-import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -60,6 +60,7 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -81,16 +82,18 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.redhat.rhn.domain.rhnpackage.Package;
 
-import com.suse.manager.utils.MinionServerUtils;
+import com.suse.utils.Opt;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -101,11 +104,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Calendar;
-import java.util.Collections;
 
-import static java.util.stream.Collectors.toSet;
+import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
+import static com.suse.manager.utils.MinionServerUtils.isSshPushMinion;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -293,19 +298,20 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Cancels all actions in given list.
-     * @param user User associated with the set of actions.
-     * @param actionsToCancel List of actions to be cancelled.
+     * Cancels the server actions associated with a given action, and if
+     * required deals with associated pending kickstart actions and minion
+     * jobs.
+     *
+     * Actions themselves are not deleted, only the ServerActions associated
+     * with them.
+     *
+     * @param user User requesting the action be cancelled.
+     * @param actions List of actions to be cancelled.
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static void cancelActions(User user, List actionsToCancel)
-        throws TaskomaticApiException {
-        Iterator it = actionsToCancel.iterator();
-        while (it.hasNext()) {
-            Action a = (Action) it.next();
-            cancelAction(user, a);
-        }
+    public static void cancelActions(User user, Collection<Action> actions) throws TaskomaticApiException {
+        cancelActions(user, actions, Optional.empty());
     }
 
     /**
@@ -317,90 +323,78 @@ public class ActionManager extends BaseManager {
      * with them.
      *
      * @param user User requesting the action be cancelled.
-     * @param action Action to be cancelled.
+     * @param actions List of actions to be cancelled.
+     * @param serverIds If specified, only cancel ServerActions for a subset of system IDs
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static void cancelAction(User user, Action action)
+    public static void cancelActions(User user, Collection<Action> actions, Optional<Collection<Long>> serverIds)
         throws TaskomaticApiException {
-        log.debug("Cancelling action: " + action.getId() + " for user: " + user.getLogin());
+        if (log.isDebugEnabled()) {
+            String actionIds = actions.stream()
+                    .map(Action::getId)
+                    .collect(toList())
+                    .toString();
+            log.debug("Cancelling actions: " + actionIds + " for user: " + user.getLogin());
+        }
 
         // Can only cancel top level actions:
-        if (action.getPrerequisite() != null) {
-            throw new ActionIsChildException("It's allowed to cancel only top level " +
-                    "actions.");
+        if (actions.stream().anyMatch(a -> a.getPrerequisite() != null)) {
+            throw new ActionIsChildException();
         }
 
-        Set<Action> actionsToDelete = new HashSet<>();
-        actionsToDelete.add(action);
-        actionsToDelete.addAll(ActionFactory.lookupDependentActions(action));
+        Set<Action> actionsToDelete = concat(
+            actions.stream(),
+            actions.stream().flatMap(ActionFactory::lookupDependentActions)
+        ).collect(toSet());
 
-        for (Action actionToDelete : actionsToDelete) {
-            cancelServerActions(actionToDelete.getId(), actionToDelete.getServerActions());
-        }
-
-        Iterator<Action> iter = actionsToDelete.iterator();
-        while (iter.hasNext()) {
-            Action a = iter.next();
-            a.onCancelAction();
-        }
-    }
-
-    private static void cancelServerActions(long actionId,
-            Set<ServerAction> serverActions) throws TaskomaticApiException {
-        Set<ServerAction> minionServerActions = new HashSet<>();
-
-        // fail any Kickstart sessions for this action and servers
-        Action action = ActionFactory.lookupById(actionId);
-        KickstartFactory.failKickstartSessions(Collections.singleton(action), serverActions
-                .stream().map(sa -> sa.getServer()).collect(toSet()));
-
-        // first delete actions for traditional servers
-        for (ServerAction serverAction : new ArrayList<>(serverActions)) {
-            if (serverAction.getServer().asMinionServer().isPresent() &&
-                    !(MinionServerUtils.isSshPushMinion(serverAction.getServer()))) {
-                // minion actions have to be canceled first from the minions
-                minionServerActions.add(serverAction);
-            }
-            else {
-                // not a minion action. delete it from the db
-                serverAction.getParentAction().getServerActions().remove(serverAction);
-                ActionFactory.delete(serverAction);
-            }
-        }
-        // cancel minion jobs and delete corresponding actions from db
-        if (!minionServerActions.isEmpty()) {
-            Set<Server> involvedMinions =
-                    serverActions.stream().map(ServerAction::getServer).collect(toSet());
-            // cancel associated schedule in Taskomatic
-            taskomaticApi.deleteScheduledAction(action, involvedMinions);
-
-            // delete successfully canceled minion actions from the db
-            minionServerActions.stream().forEach(serverAction -> {
-                serverAction.getParentAction().getServerActions().remove(serverAction);
-                ActionFactory.delete(serverAction);
-            });
-        }
-    }
-
-    /**
-     * Cancels the server actions associated with a given action, and if
-     * required deals with associated pending kickstart actions and minion
-     * jobs.
-     *
-     * @param actionId the id of the action
-     * @param serverIds the id of the servers
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static void cancelActionForSystems(long actionId, Collection<Long> serverIds)
-        throws TaskomaticApiException {
-        Action action = ActionFactory.lookupById(actionId);
-        Set<ServerAction> setServerActions = action.getServerActions().stream()
-                .filter(sa -> serverIds.contains(sa.getServer().getId()))
+        Set<ServerAction> serverActions = actionsToDelete.stream()
+                .flatMap(a -> a.getServerActions().stream())
+                .filter(Opt.fold(serverIds,
+                        // if serverIds is not specified, do not filter at all
+                        () -> (a -> true),
+                        // if it is, only ServerActions that have server ids in the specified set can pass
+                        s -> (a -> s.contains(a.getServerId()))
+                ))
                 .collect(toSet());
 
-        cancelServerActions(actionId, setServerActions);
+        Set<Server> servers = serverActions.stream()
+                .map(ServerAction::getServer)
+                .collect(toSet());
+
+        // fail any Kickstart sessions for these actions and servers
+        KickstartFactory.failKickstartSessions(actionsToDelete, servers);
+
+        // cancel associated schedule in Taskomatic
+        Map<Action, Set<Server>> actionMap = actionsToDelete.stream()
+                .map(a -> new ImmutablePair<>(
+                        a,
+                        a.getServerActions().stream()
+                            .filter(sa -> isMinionServer(sa.getServer()) && !(isSshPushMinion(sa.getServer())))
+                            .map(sa -> sa.getServer())
+                            .collect(toSet())
+                        )
+                )
+                .filter(p -> !p.getRight().isEmpty())
+                .collect(toMap(
+                    Pair::getLeft,
+                    Pair::getRight
+                ));
+
+        if (!actionMap.isEmpty()) {
+            taskomaticApi.deleteScheduledActions(actionMap);
+        }
+
+        // delete ServerActions from the database
+        serverActions.stream()
+                .forEach(serverAction -> {
+                    serverAction.getParentAction().getServerActions().remove(serverAction);
+                    ActionFactory.delete(serverAction);
+                });
+
+        // run post-actions
+        actionsToDelete.stream()
+                .forEach(a ->a.onCancelAction());
     }
 
     /**
