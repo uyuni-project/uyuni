@@ -114,6 +114,17 @@ public class System {
     }
 
     /**
+     * Sets the type.
+     *
+     * @param typeIn - the type
+     * @return this
+     */
+    public System setType(String typeIn) {
+        type = typeIn;
+        return this;
+    }
+
+    /**
      * Gets the id.
      *
      * @return id
