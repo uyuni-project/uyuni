@@ -174,7 +174,7 @@ Feature: Action chain on salt minions
 
   Scenario: Verify that the action chain was executed successfully
     When I wait for "virgo-dummy" to be installed on this "sle-minion"
-    And I wait until file "/tmp/action_chain_one_system_done" exists on "sle-minion"
+    And I wait "300" seconds until file "/tmp/action_chain_one_system_done" exists on "sle-minion"
 
   Scenario: Add a remote command to the new action chain on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
