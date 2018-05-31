@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
+LimitNOFILE=51200
 ExecStart=/usr/bin/salt-broker
 
 [Install]
