@@ -1,3 +1,4 @@
+- Show chain of proxies correctly (bsc#1084128)
 - Fix typo in 'Installed Products' label in image overview page
 - Disallow colons in image labels (bsc#1092940)
 - Improve the gulpfile watch mode performance (bsc#1096747)
