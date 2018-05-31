@@ -45,7 +45,7 @@ function prepareDom() {
 }
 
 function isSystemType(d) {
-  return d.data.type && d.data.type == 'system' && d.data.rawId != '' && d.data.id != 'root';
+  return d.data.type && (d.data.type == 'system' || d.data.type == 'proxy') && d.data.rawId != '' && d.data.id != 'root';
 }
 
 function isCompliantToSSM(d) {
