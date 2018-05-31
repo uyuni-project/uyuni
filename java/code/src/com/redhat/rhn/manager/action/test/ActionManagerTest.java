@@ -311,8 +311,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         servers.add(sa[1].getServer());
         servers.add(sa[2].getServer());
 
+        Map<Action, Set<Server>> actionMap = Collections.singletonMap(parent, servers);
+
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent)), with(equal(servers)));
+            allowing(taskomaticMock).deleteScheduledActions(with(equal(actionMap)));
         } });
 
         assertServerActionCount(parent, 3);
@@ -357,8 +359,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         servers.add(sa.get(1).getServer());
         servers.add(sa.get(2).getServer());
 
+        Map<Action, Set<Server>> actionMap = Collections.singletonMap(parent, servers);
+
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent)), with(equal(servers)));
+            allowing(taskomaticMock).deleteScheduledActions(with(equal(actionMap)));
         } });
         Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
                 .filter(s -> !s.getServer().asMinionServer().isPresent())

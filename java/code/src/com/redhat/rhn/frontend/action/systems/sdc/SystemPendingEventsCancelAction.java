@@ -14,18 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -34,10 +25,21 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.redhat.rhn.manager.action.ActionManager;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+import java.util.Map;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static java.util.Collections.singleton;
 
@@ -70,8 +72,9 @@ public class SystemPendingEventsCancelAction extends RhnAction {
 
         if (context.wasDispatched("system.event.pending.cancel")) {
             try {
-                for (SystemPendingEventDto action : result) {
-                    ActionManager.cancelActionForSystems(action.getId(), singleton(sid));
+                for (SystemPendingEventDto dto : result) {
+                    Action action = ActionFactory.lookupById(dto.getId());
+                    ActionManager.cancelActions(user, singleton(action), Optional.of(singleton(sid)));
                 }
                 createSuccessMessage(request, "system.event.pending.canceled",
                         Integer.toString(result.size()));
