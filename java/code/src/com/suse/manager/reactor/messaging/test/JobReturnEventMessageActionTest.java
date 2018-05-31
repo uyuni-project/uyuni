@@ -591,17 +591,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("link", ethNames.get("eth0").getIPv6Addresses().get(0).getScope());
             assertEquals("link", ethNames.get("eth1").getIPv6Addresses().get(0).getScope());
 
-            assertEquals("127.0.0.1", ethNames.get("lo").getIpaddr());
-            assertEquals("192.168.121.155", ethNames.get("eth0").getIpaddr());
-            assertEquals("172.24.108.98", ethNames.get("eth1").getIpaddr());
+            assertEquals("127.0.0.1", ethNames.get("lo").getIPv4Addresses().get(0).getAddress());
+            assertEquals("192.168.121.155", ethNames.get("eth0").getIPv4Addresses().get(0).getAddress());
+            assertEquals("172.24.108.98", ethNames.get("eth1").getIPv4Addresses().get(0).getAddress());
 
-            assertEquals("255.0.0.0", ethNames.get("lo").getNetmask());
-            assertEquals("255.255.255.0", ethNames.get("eth0").getNetmask());
-            assertEquals("255.240.0.0", ethNames.get("eth1").getNetmask());
+            assertEquals("255.0.0.0", ethNames.get("lo").getIPv4Addresses().get(0).getNetmask());
+            assertEquals("255.255.255.0", ethNames.get("eth0").getIPv4Addresses().get(0).getNetmask());
+            assertEquals("255.240.0.0", ethNames.get("eth1").getIPv4Addresses().get(0).getNetmask());
 
-            assertEquals("127.255.255.255", ethNames.get("lo").getBroadcast());
-            assertEquals("192.168.121.255", ethNames.get("eth0").getBroadcast());
-            assertEquals("172.31.255.255", ethNames.get("eth1").getBroadcast());
+            assertEquals("127.255.255.255", ethNames.get("lo").getIPv4Addresses().get(0).getBroadcast());
+            assertEquals("192.168.121.255", ethNames.get("eth0").getIPv4Addresses().get(0).getBroadcast());
+            assertEquals("172.31.255.255", ethNames.get("eth1").getIPv4Addresses().get(0).getBroadcast());
 
             assertEquals(null, ethNames.get("lo").getModule());
             assertEquals("virtio_net", ethNames.get("eth0").getModule());
@@ -652,24 +652,27 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("00:00:00:00:00:00", ethNames.get("lo").getHwaddr());
             assertEquals("52:54:00:d7:4f:20", ethNames.get("eth0").getHwaddr());
 
-            assertEquals(1, ethNames.get("eth0").getIPv6Addresses().size());
+            assertEquals(2, ethNames.get("eth0").getIPv6Addresses().size());
+            assertEquals(1, ethNames.get("eth0").getGlobalIpv6Addresses().size());
             assertEquals("::1", ethNames.get("lo").getIPv6Addresses().get(0).getAddress());
             assertEquals("2620:113:80c0:8000:10:161:25:49", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
+            assertEquals("fe80::5054:ff:fed7:4f20", ethNames.get("eth0").getIPv6Addresses().get(1).getAddress());
 
             assertEquals("128", ethNames.get("lo").getIPv6Addresses().get(0).getNetmask());
             assertEquals("64", ethNames.get("eth0").getIPv6Addresses().get(0).getNetmask());
 
             assertEquals("host", ethNames.get("lo").getIPv6Addresses().get(0).getScope());
             assertEquals("global", ethNames.get("eth0").getIPv6Addresses().get(0).getScope());
+            assertEquals("link", ethNames.get("eth0").getIPv6Addresses().get(1).getScope());
 
-            assertEquals("127.0.0.1", ethNames.get("lo").getIpaddr());
-            assertEquals("10.161.25.49", ethNames.get("eth0").getIpaddr());
+            assertEquals("127.0.0.1", ethNames.get("lo").getIPv4Addresses().get(0).getAddress());
+            assertEquals("10.161.25.49", ethNames.get("eth0").getIPv4Addresses().get(0).getAddress());
 
-            assertEquals("255.0.0.0", ethNames.get("lo").getNetmask());
-            assertEquals("255.255.192.0", ethNames.get("eth0").getNetmask());
+            assertEquals("255.0.0.0", ethNames.get("lo").getIPv4Addresses().get(0).getNetmask());
+            assertEquals("255.255.192.0", ethNames.get("eth0").getIPv4Addresses().get(0).getNetmask());
 
-            assertEquals(null, ethNames.get("lo").getBroadcast());
-            assertEquals("10.161.63.255", ethNames.get("eth0").getBroadcast());
+            assertEquals(null, ethNames.get("lo").getIPv4Addresses().get(0).getBroadcast());
+            assertEquals("10.161.63.255", ethNames.get("eth0").getIPv4Addresses().get(0).getBroadcast());
 
             assertEquals(null, ethNames.get("lo").getModule());
             assertEquals("ibmveth", ethNames.get("eth0").getModule());
@@ -882,14 +885,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("host", ethNames.get("lo").getIPv6Addresses().get(0).getScope());
             assertEquals("link", ethNames.get("eth0").getIPv6Addresses().get(0).getScope());
 
-            assertEquals("127.0.0.1", ethNames.get("lo").getIpaddr());
-            assertEquals("10.161.155.142", ethNames.get("eth0").getIpaddr());
+            assertEquals("127.0.0.1", ethNames.get("lo").getIPv4Addresses().get(0).getAddress());
+            assertEquals("10.161.155.142", ethNames.get("eth0").getIPv4Addresses().get(0).getAddress());
 
-            assertEquals("255.0.0.0", ethNames.get("lo").getNetmask());
-            assertEquals("255.255.240.0", ethNames.get("eth0").getNetmask());
+            assertEquals("255.0.0.0", ethNames.get("lo").getIPv4Addresses().get(0).getNetmask());
+            assertEquals("255.255.240.0", ethNames.get("eth0").getIPv4Addresses().get(0).getNetmask());
 
-            assertEquals("127.255.255.255", ethNames.get("lo").getBroadcast());
-            assertEquals(null, ethNames.get("eth0").getBroadcast());
+            assertEquals("127.255.255.255", ethNames.get("lo").getIPv4Addresses().get(0).getBroadcast());
+            assertEquals(null, ethNames.get("eth0").getIPv4Addresses().get(0).getBroadcast());
 
             assertEquals(null, ethNames.get("lo").getModule());
             assertEquals("qeth", ethNames.get("eth0").getModule());
