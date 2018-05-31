@@ -175,7 +175,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         NetworkInterface dev = results.get(0);
         assertEquals(device.getName(), dev.getName());
-        assertEquals(device.getIpaddr(), dev.getIpaddr());
+        assertEquals(device.getIPv4Addresses(), dev.getIPv4Addresses());
     }
 
     public void testObtainReactivationKey() throws Exception {
