@@ -77,8 +77,7 @@ class CVEAudit extends React.Component {
 
   searchData(datum, criteria) {
     if (criteria) {
-      return datum.id.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) ||
-        datum.fingerprint.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
+      return datum.name.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
     }
     return true;
   }
@@ -220,7 +219,9 @@ class CVEAudit extends React.Component {
               onSelect={this.handleSelectItems}
               selectedItems={this.state.selectedItems}
               searchField={
-                  <SearchField filter={this.searchData} criteria={""} />
+                <SearchField filter={this.searchData}
+                    criteria={""}
+                    placeholder={t("Filter by name")} />
               }>
             <Column
               columnKey="patchStatus"
