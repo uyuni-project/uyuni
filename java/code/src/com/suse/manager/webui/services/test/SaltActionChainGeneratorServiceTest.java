@@ -331,7 +331,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
         service.createActionChainSLSFiles(actionChain, minion1, states, Optional.empty());
 
-        service.removeAllActionChainSLSFilesForMinion(minion1);
+        service.removeActionChainSLSFilesForMinion(minion1, Optional.empty());
 
         Path sls1Path = stateFilesRoot
                 .resolve(ACTIONCHAIN_SLS_FOLDER)
