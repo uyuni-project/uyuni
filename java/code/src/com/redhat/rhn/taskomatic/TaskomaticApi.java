@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -297,7 +298,7 @@ public class TaskomaticApi {
     public void unscheduleSatTask(String jobLabel, User user)
         throws TaskomaticApiException {
         ensureSatAdminRole(user);
-        invoke("tasko.unscheduleSatBunch", jobLabel);
+        invoke("tasko.unscheduleSatBunches", Collections.singletonList(jobLabel));
     }
 
     /**

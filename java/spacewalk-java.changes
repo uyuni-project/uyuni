@@ -1,3 +1,5 @@
+- fix deletion of Taskomatic schedules via the GUI (bsc#1095569)
+
 -------------------------------------------------------------------
 Thu May 17 10:26:47 CEST 2018 - jgonzalez@suse.com
 
