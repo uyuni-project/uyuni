@@ -381,17 +381,20 @@ public class SaltActionChainGeneratorService {
     }
 
     /**
-     * Remove all action chains files for the given minion.
+     * Remove all action chains files for the given minion and action chain.
      * @param minion the minion
+     * @param actionChainId optionally, the id of the action chain
      */
-    public void removeAllActionChainSLSFilesForMinion(MinionServer minion) {
+    public void removeActionChainSLSFilesForMinion(MinionServer minion, Optional<Long> actionChainId) {
         Path targetDir = getTargetDir();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDir,
-                ACTIONCHAIN_SLS_FILE_PREFIX + "*_" + minion.getMachineId() + "_*.sls")) {
+                ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId.map(id -> Long.toString(id)).orElse("") +
+                        "_" + minion.getMachineId() + "_*.sls")) {
             stream.forEach(slsFile -> {
                 deleteSlsAndRefs(targetDir,  slsFile);
             });
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             LOG.warn("Error deleting action chain files", e);
         }
     }

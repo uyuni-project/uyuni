@@ -270,7 +270,7 @@ public enum SaltStateGeneratorService {
     }
 
     private void removeActionChains(MinionServer minion) {
-        SaltActionChainGeneratorService.INSTANCE.removeAllActionChainSLSFilesForMinion(minion);
+        SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(minion, Optional.empty());
     }
 
     /**
