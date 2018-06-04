@@ -1,3 +1,4 @@
+- spacewalk-debug: add Postgres configuration files
 - Initial branding change for Uyuni (bsc#1094497)
 
 -------------------------------------------------------------------
