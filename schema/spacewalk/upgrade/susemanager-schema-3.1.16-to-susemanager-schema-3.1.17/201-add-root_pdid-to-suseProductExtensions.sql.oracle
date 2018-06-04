@@ -1,0 +1,21 @@
+
+declare
+    column_exists exception;
+    pragma exception_init (column_exists , -01430);
+begin
+  begin
+    execute immediate 'alter table suseProductExtension add root_pdid number';
+
+    execute immediate 'update suseProductExtension set root_pdid = base_pdid';
+    execute immediate 'alter table suseProductExtension modify root_pdid number NOT NULL';
+    execute immediate 'alter table suseProductExtension add CONSTRAINT suse_prdext_rootid_fk FOREIGN KEY (root_pdid) REFERENCES suseProducts (id) ON DELETE CASCADE';
+    execute immediate 'CREATE UNIQUE INDEX prdext_ber_id_uq ON suseProductExtension (base_pdid, ext_pdid, root_pdid) TABLESPACE [[64k_tbs]]';
+    execute immediate 'alter table suseProductExtension add recommended CHAR(1) DEFAULT (''N'') NOT NULL CONSTRAINT suse_prdext_rec_ck CHECK (recommended in (''Y'', ''N''))';
+
+  exception
+    when column_exists then null;
+  end;
+
+end;
+/
+show errors

@@ -1,3 +1,5 @@
+- Fix migration path between 3.1 and 3.2 (bsc#1095398)
+
 -------------------------------------------------------------------
 Wed May 23 09:02:48 CEST 2018 - jgonzalez@suse.com
 
