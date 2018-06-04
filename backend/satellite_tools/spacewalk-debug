@@ -329,6 +329,16 @@ if [ $? == 0 ]; then
 	PGSQL_ROOT="/opt/rh/postgresql92/root"
 fi
 
+# PostgreSQL configuration
+if [ -f $PGSQL_ROOT/var/lib/pgsql/postgresql.conf ] ; then
+  echo "    * copying postgresql.conf"
+	cp -fa $PGSQL_ROOT/var/lib/pgsql/data/postgresql.conf $DIR/database
+fi
+if [ -f $PGSQL_ROOT/var/lib/pgsql/pg_hba.conf ] ; then
+  echo "    * copying pg_hba.conf"
+	cp -fa $PGSQL_ROOT/var/lib/pgsql/data/pg_hba.conf $DIR/database
+fi
+
 # PostgreSQL logs
 if [ -f $PGSQL_ROOT/var/lib/pgsql/pgstartup.log ] ; then
 	echo "    * copying pgstartup.log"
