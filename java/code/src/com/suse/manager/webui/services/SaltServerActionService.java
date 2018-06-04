@@ -486,8 +486,14 @@ public class SaltServerActionService {
                     actionChainResult = actionChainRet.getRet();
                 }
                 catch (JsonSyntaxException e) {
-                    LOG.error("Error mapping action chain result: " + stateApplyResult.getChanges(), e);
-                    throw e;
+                    LOG.error("Unexpected response: " + stateApplyResult.getChanges(), e);
+                    String msg = stateApplyResult.getChanges().toString();
+                    if ((stateApplyResult.getChanges().isJsonObject()) &&
+                            ((JsonObject)stateApplyResult.getChanges()).get("ret") != null) {
+                        msg = ((JsonObject)stateApplyResult.getChanges()).get("ret").toString();
+                    }
+                    failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
+                    return false;
                 }
                 JobReturnEventMessageAction.handleActionChainResult(minionId, "", 0, true,
                         actionChainResult,
