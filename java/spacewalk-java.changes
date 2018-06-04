@@ -1,3 +1,5 @@
+- Disable support for Oracle on openSUSE (bsc#1095804)
+
 -------------------------------------------------------------------
 Tue Jun 05 10:09:30 CEST 2018 - jgonzalez@suse.com
 
