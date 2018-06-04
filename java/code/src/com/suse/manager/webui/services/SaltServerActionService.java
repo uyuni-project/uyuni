@@ -378,7 +378,7 @@ public class SaltServerActionService {
                     .map(ActionChainEntry::getAction)
                     .map(Action::getId)
                     .findFirst();
-            failActionChain(minionServer.getMinionId(), firstActionId,
+            failActionChain(minionServer.getMinionId(), Optional.of(actionChain.getId()), firstActionId,
                     Optional.of("Got empty result."));
         });
     }
@@ -399,8 +399,46 @@ public class SaltServerActionService {
 
         // start the action chain synchronously
         try {
-            Map<String, Result<Map<String, ApplyResult>>> res = saltSSHService.callSyncSSH(call,
+            // first check if there's an action chain with a reboot already executing
+            Map<String, Result<Map<String, String>>> pendingResumeConf = saltService.callSync(
+                    MgrActionChains.getPendingResume(),
                     new MinionList(sshMinions.stream().map(minion -> minion.getMinionId())
+                            .collect(Collectors.toList())));
+
+            List<MinionServer> targetSSHMinions = sshMinions.stream()
+                    .filter(sshMinion -> {
+                        Optional<Map<String, String>> confValues = pendingResumeConf.get(sshMinion.getMinionId())
+                                .fold(err -> {
+                                        LOG.error("mgractionchains.get_pending_resume failed: " + err.fold(
+                                                Object::toString,
+                                                Object::toString,
+                                                Object::toString,
+                                                Object::toString
+                                        ));
+                                        return Optional.empty();
+                                    },
+                                    res -> Optional.of(res));
+                        if (!confValues.isPresent() || confValues.get().isEmpty()) {
+                            // all good, no action chain currently executing on the minion
+                            return true;
+                        }
+                        // fail the action chain because concurrent execution is not possible
+                        LOG.warn("Minion " + sshMinion.getMinionId() + " has an action chain execution in progress");
+                        failActionChain(sshMinion.getMinionId(), Optional.of(actionChain.getId()), firstActionId,
+                                Optional.of("An action chain execution is already in progress. " +
+                                        "Concurrent action chain execution is not allowed. " +
+                                        "If the execution became stale remove directory " +
+                                        "/var/tmp/.root_XXXX_salt/minion.d manually."));
+                        return false;
+                    }).collect(Collectors.toList());
+
+            if (targetSSHMinions.isEmpty()) {
+                // do nothing, no targets
+                return;
+            }
+
+            Map<String, Result<Map<String, ApplyResult>>> res = saltSSHService.callSyncSSH(call,
+                    new MinionList(targetSSHMinions.stream().map(minion -> minion.getMinionId())
                             .collect(Collectors.toList())),
                     extraFilerefs);
 
@@ -428,7 +466,7 @@ public class SaltServerActionService {
                             }
                     )).orElse("Unknonw error");
                     // no result, fail the entire chain
-                    failActionChain(minionId, firstActionId,
+                    failActionChain(minionId, Optional.of(actionChain.getId()), firstActionId,
                             Optional.of(errMsg));
                 }
             });
@@ -438,7 +476,7 @@ public class SaltServerActionService {
             LOG.error("Error handling action chain execution: ", e);
             // fail the entire chain
             sshMinions.forEach(minion -> {
-                failActionChain(minion.getMinionId(), firstActionId,
+                failActionChain(minion.getMinionId(), Optional.of(actionChain.getId()), firstActionId,
                         Optional.of("Error handling action chain execution: " + e.getMessage()));
             });
         }
@@ -582,12 +620,15 @@ public class SaltServerActionService {
      * @param message the message to set to the failed action
      */
     public static void failActionChain(String minionId, Optional<Long> failedActionId, Optional<String> message) {
+        failActionChain(minionId, Optional.empty(), failedActionId, message);
+    }
+
+    private static void failActionChain(String minionId, Optional<Long> actionChainId, Optional<Long> failedActionId,
+                                        Optional<String> message) {
         failedActionId.ifPresent(last ->
                 JobReturnEventMessageAction.failDependentServerActions(last, minionId, message));
         MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
-            // there's only one action chain execution possible at a given time so it should
-            // be fine to remove all files for the minion
-            SaltActionChainGeneratorService.INSTANCE.removeAllActionChainSLSFilesForMinion(minion);
+            SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(minion, actionChainId);
         });
     }
 
