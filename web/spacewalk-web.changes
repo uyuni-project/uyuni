@@ -1,3 +1,4 @@
+- Avoid ISE when unsubscribing channels in SSM (bsc#1094578)
 - Fix cve search box (bsc#1089571)
 - Fix on UI content observer (bsc#108463)
 - allow multi selection/deletion of notification messages
