@@ -20,6 +20,11 @@ OBS_PROJ=${OBS_PROJ:-Devel:Galaxy:Manager:TEST}
 
 FAKE_COMITTOBS=${FAKE_COMITTOBS:+1}
 
+# Set KEEP_SRPMS environment variable to TRUE if you want to keep your SRPMS
+# Useful if, for example, you are resubmitting the same set to several
+# projects in row
+KEEP_SRPMS=${KEEP_SRPMS:-FALSE}
+
 DIFF="diff -u"
 
 grep -v -- "\(--help\|-h\|-?\)\>" <<<"$@" || {
@@ -287,7 +292,9 @@ while read PKG_NAME; do
     echo "Package is unchanged."
     UNCHANGED_CNT=$(($UNCHANGED_CNT+1))
   fi
-  rm -rf "$SRPM_PKG_DIR"
+  if [ "${KEEP_SRPMS}" == "FALSE" ]; then
+    rm -rf "$SRPM_PKG_DIR"
+  fi
   rm -rf "$OBS_PKG_DIR"
 done < <(srpm_package_defs)
 
