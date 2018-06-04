@@ -30,6 +30,9 @@
 %global apache_group www
 %global apache_pkg apache2
 %global m2crypto python-m2crypto
+%if !0%{?is_opensuse}
+%define with_oracle     1
+%endif
 %endif
 
 %if  0%{?fedora} >= 28  || 0%{?rhel} >= 8
@@ -125,6 +128,7 @@ Requires: python2-spacewalk-usix
 This package contains the basic code that provides SQL connectivity for
 the Spacewalk backend modules.
 
+%if 0%{?with_oracle}
 %package sql-oracle
 Summary: Oracle backend for Spacewalk
 Group: Applications/Internet
@@ -135,6 +139,7 @@ Provides: %{name}-sql-virtual = %{version}-%{release}
 %description sql-oracle
 This package contains provides Oracle connectivity for the Spacewalk backend
 modules.
+%endif
 
 %package sql-postgresql
 Summary: Postgresql backend for Spacewalk
@@ -579,10 +584,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/rhnSQL/__init__.py*
 %{pythonrhnroot}/server/rhnSQL/sql_*.py*
 
+%if 0%{?with_oracle}
 %files sql-oracle
 %defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
+%endif
 
 %files sql-postgresql
 %defattr(-,root,root)
