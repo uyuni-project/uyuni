@@ -1045,17 +1045,10 @@ public class SaltUtils {
 
             Optional.of(ret.getInfoInstalled().getChanges().getRet())
             .map(saltPkgs -> saltPkgs.entrySet().stream()
-                    .flatMap(entry -> Opt.stream(entry.getValue().left())
-                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                    .collect(Collectors.toSet()));
-
-            Optional.of(ret.getInfoInstalled().getChanges().getRet())
-            .map(saltPkgs -> saltPkgs.entrySet().stream()
-                    .flatMap(entry -> Opt.stream(entry.getValue().right())
-                        .flatMap(infoList -> infoList.stream())
-                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                    .collect(Collectors.toSet()));
-
+                    .map(entry -> createImagePackageFromSalt(entry.getKey(),
+                            entry.getValue(), imageInfo))
+                    .collect(Collectors.toSet())
+                    );
             Optional.ofNullable(ret.getListProducts())
             .map(products -> products.getChanges().getRet())
             .map(SaltUtils::getInstalledProducts)
@@ -1188,21 +1181,13 @@ public class SaltUtils {
                     Function.identity()
              ));
 
-        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap =
-            result.getInfoInstalled().getChanges().getRet()
-                .entrySet().stream()
-                .flatMap(entry ->
-                   entry.getValue().fold(Stream::of, Collection::stream)
-                        .flatMap(x -> {
-                           Map<String, Info> infoTuple = new HashMap<>();
-                           infoTuple.put(entry.getKey(), x);
-                           return infoTuple.entrySet().stream();
-                        })
-                )
-                .collect(Collectors.toMap(
-                        SaltUtils::packageToKey,
-                        Function.identity()
-                ));
+        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap = result
+            .getInfoInstalled().getChanges().getRet()
+            .entrySet().stream()
+            .collect(Collectors.toMap(
+                    SaltUtils::packageToKey,
+                    Function.identity()
+             ));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
             e -> newPackageMap.containsKey(e.getKey())

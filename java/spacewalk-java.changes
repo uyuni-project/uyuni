@@ -9,8 +9,6 @@
 - honor user timezone setting for system overview dates (bsc#1085516)
 - Initial branding change for Uyuni (bsc#1094497)
 - Fix NPE in software profile sync when building update query (bsc#1094240)
-- Fix minion software profile to allow multiple installed versions for the
-  same package name (bsc#1089526)
 - added 404 handling inside the Spark framework (bsc#1029726)
 
 -------------------------------------------------------------------
