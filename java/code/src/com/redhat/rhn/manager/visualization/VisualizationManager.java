@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.visualization;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.visualization.json.System;
 import com.redhat.rhn.manager.visualization.json.VirtualHostManager;
@@ -126,28 +127,26 @@ public class VisualizationManager {
         root.setId("root");
         root.setName("SUSE Manager");
 
-        Stream<System> proxiesBehindRoot = ((Stream<System>) HibernateFactory.getSession()
-                .getNamedQuery("Server.listProxiesBehindRoot")
+        Stream<System> proxies = ((Stream<System>) HibernateFactory.getSession()
+                .getNamedQuery("Server.listProxySystems")
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
-                .map(p -> p.setType("proxy"))
                 .map(p -> p.setInstalledProducts(installedProducts.get(p.getRawId())))
-                .map(p -> p.setParentId(root.getId()));
-
-        Stream<System> proxiesBehindProxies = ((Stream<System>) HibernateFactory.getSession()
-                .getNamedQuery("Server.listProxiesBehindProxy")
-                .setParameter("org", user.getOrg())
-                .list()
-                .stream())
-                .map(s -> s.setInstalledProducts(installedProducts.get(s.getRawId())))
                 .map(p -> p.setType("proxy"))
-                .map(p -> p.setParentId(
-                                // extract the direct parent node id from the ServerPaths of the current system
-                                ServerFactory.lookupById(Long.valueOf(p.getId()))
-                                        .getServerPaths().stream().filter(sp -> sp.getPosition() == 0).findFirst()
-                                                .get().getId().getProxyServer().getId().toString()))
-                .map(s -> s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))));
+                .map(p -> {
+                        // extract the direct parent node id from the ServerPaths of the current system
+                        Optional<ServerPath> directParentServerPath = ServerFactory.lookupById(Long.valueOf(p.getId()))
+                                .getServerPaths().stream().filter(sp -> sp.getPosition() == 0).findFirst();
+                        if (directParentServerPath.isPresent()) {
+                            p.setParentId(directParentServerPath.get().getId().getProxyServer().getId().toString());
+                        }
+                        else {
+                            p.setParentId(root.getId());
+                        }
+                        return p;
+                    }
+                );
 
         Stream<System> systemsBehindProxies = ((Stream<System>) HibernateFactory.getSession()
                 .getNamedQuery("Server.listSystemsBehindProxy")
@@ -159,8 +158,7 @@ public class VisualizationManager {
 
         return concatStreams(
                 Stream.of(root),
-                proxiesBehindRoot,
-                proxiesBehindProxies,
+                proxies,
                 systemsBehindProxies
         ).collect(Collectors.toList());
     }
