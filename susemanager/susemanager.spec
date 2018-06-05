@@ -1,5 +1,5 @@
 Name:           susemanager
-Version:        3.2.9
+Version:        3.2.10
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 Group:          Applications/System
