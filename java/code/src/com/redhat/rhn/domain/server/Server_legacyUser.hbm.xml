@@ -278,18 +278,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     pi is null]]>
     </query>
 
-    <query name="Server.listProxiesBehindProxy">
+    <query name="Server.listProxySystems">
         <![CDATA[ select
                 new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
                 from Server s
-                    inner join s.serverPaths sp
                     left join s.proxyInfo pi
                     left join s.channels c
                     left join s.groups g
                 where c.parentChannel is NULL and
                     g.groupType.isBaseChar = 'Y' and
                     s.org = :org and
-                    sp.position = 0 and
                     pi is not null]]>
     </query>
 
@@ -312,21 +310,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 where s.org = :org and
                     g.org = :org and
                     (g.groupType is null)]]>
-    </query>
-
-    <query name="Server.listProxiesBehindRoot">
-        <![CDATA[ select
-                new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
-                from Server s
-                    left join s.serverPaths sp
-                    left join s.proxyInfo pi
-                    left join s.channels c
-                    left join s.groups g
-                where c.parentChannel is NULL and
-                    g.groupType.isBaseChar = 'Y' and
-                    s.org = :org and
-                    pi is not null and
-                    sp is null]]>
     </query>
 
     <query name="Server.listHostSystems">
