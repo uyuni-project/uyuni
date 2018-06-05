@@ -133,6 +133,7 @@ public class VisualizationManager {
                 .list()
                 .stream())
                 .map(p -> p.setInstalledProducts(installedProducts.get(p.getRawId())))
+                .map(p -> p.setPatchCounts(patchCountsToList(patchCounts.get(p.getRawId()))))
                 .map(p -> p.setType("proxy"))
                 .map(p -> {
                         // extract the direct parent node id from the ServerPaths of the current system
