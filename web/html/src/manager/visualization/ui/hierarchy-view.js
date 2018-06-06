@@ -167,7 +167,7 @@ function getIconDimensionByType(node) {
   if (node.data.id == 'root') {
     size = '50';
   }
-  else if (view == 'proxy-hierarchy' && node.depth == 1 || ['vhm', 'group'].includes(node.data.type)) {
+  else if (view == 'proxy-hierarchy' && node.data.type == 'proxy' || ['vhm', 'group'].includes(node.data.type)) {
     size = '34';
   }
   else if (Utils.isSystemType(node)) {

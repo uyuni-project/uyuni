@@ -125,27 +125,17 @@ public class VisualizationManager {
         root.setId("root");
         root.setName("SUSE Manager");
 
-        Stream<System> proxies = ((Stream<System>) HibernateFactory.getSession()
-                .getNamedQuery("Server.listProxySystems")
+        Stream<System> systems = ((Stream<System>) HibernateFactory.getSession()
+                .getNamedQuery("Server.listProxySystemsHierarchy")
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
                 .map(p -> p.setInstalledProducts(installedProducts.get(p.getRawId())))
-                .map(p -> p.setParentId(root.getId()));
-
-        Stream<System> systemsWithProxies = ((Stream<System>) HibernateFactory.getSession()
-                .getNamedQuery("Server.listSystemsBehindProxy")
-                .setParameter("org", user.getOrg())
-                .list()
-                .stream())
-                .map(s -> s.setInstalledProducts(installedProducts.get(s.getRawId())))
-                .map(s ->
-                        s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))));
+                .map(p -> p.setPatchCounts(patchCountsToList(patchCounts.get(p.getRawId()))));
 
         return concatStreams(
                 Stream.of(root),
-                proxies,
-                systemsWithProxies
+                systems
         ).collect(Collectors.toList());
     }
 
