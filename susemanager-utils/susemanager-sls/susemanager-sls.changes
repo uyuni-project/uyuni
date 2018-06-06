@@ -1,3 +1,5 @@
+- Fix bootstrap error when removing traditional stack (bsc#1096009)
+- Fix migration from traditional stack to salt registration (bsc#1093825)
 - Update profileupdate.sls to report all versions installed (bsc#1089526)
 
 -------------------------------------------------------------------
