@@ -19,7 +19,7 @@
             <span id="label-link-text"><c:out value="${actionChain.label}"/></span>
             <i class="fa fa-pencil"></i>
         </a>
-        <input id="label-input" type="text" value='<c:out value="${actionChain.label}"/>' autocomplete="off" hidden/>
+        <input id="label-input" type="text" value='<c:out value="${actionChain.label}"/>' maxlength="256" autocomplete="off" hidden/>
     </rhn:toolbar>
 
     <div class="alert alert-success" id="success-message" hidden></div>
