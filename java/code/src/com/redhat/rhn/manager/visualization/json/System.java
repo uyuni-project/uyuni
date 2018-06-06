@@ -81,7 +81,8 @@ public class System {
         }
     }
     /**
-     * Standard constructor
+     * Standard constructor that will not append the parentId to the id value as other constructor do.
+     *
      * @param rawIdIn the real system id
      * @param parentIdIn idIn of parent
      * @param nameIn nameIn
