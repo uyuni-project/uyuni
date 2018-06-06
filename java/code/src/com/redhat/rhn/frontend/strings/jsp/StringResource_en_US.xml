@@ -2585,6 +2585,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="actionchain.jsp.labeltoolong">
+	      <source>Could not save the Action Chain, chain label is too long (>= 256 chars).</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="actionchain.jsp.schedulesummary">
         <source>This Action Chain can be scheduled for execution below:</source>
         <context-group name="ctx">
