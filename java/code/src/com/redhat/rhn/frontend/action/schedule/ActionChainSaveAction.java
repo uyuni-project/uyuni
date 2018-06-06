@@ -71,6 +71,11 @@ public class ActionChainSaveAction {
             ActionChain actionChain = ActionChainFactory.getActionChain(u, actionChainId);
 
             // input validation
+
+            if (label.length() >= 256) {
+                log.debug("Action Chain label " + label + " is too long (>= 256 chars)");
+                return makeResult(false, "actionchain.jsp.labeltoolong");
+            }
             ActionChain sameLabelActionChain = ActionChainFactory.getActionChain(u, label);
             if (sameLabelActionChain != null &&
                 !sameLabelActionChain.getId().equals(actionChainId)) {
