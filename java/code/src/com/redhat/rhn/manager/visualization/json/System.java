@@ -80,6 +80,33 @@ public class System {
             this.checkin = checkinIn.getTime();
         }
     }
+    /**
+     * Standard constructor
+     * @param rawIdIn the real system id
+     * @param parentIdIn idIn of parent
+     * @param nameIn nameIn
+     * @param contactMethodIn contact method
+     * @param baseChannelIn base channel
+     * @param baseEntitlementIn base entitlement
+     * @param checkinIn check-in
+     * @param typeIn type-in
+     */
+    public System(Long rawIdIn, String parentIdIn, String nameIn, String contactMethodIn,
+                  String baseChannelIn, String baseEntitlementIn, Date checkinIn, String typeIn) {
+        if (rawIdIn != null) {
+            this.rawId = rawIdIn.toString();
+            this.id += this.rawId;
+        }
+        this.parentId = parentIdIn;
+        this.name = nameIn;
+        this.contactMethod = contactMethodIn;
+        this.baseChannel = baseChannelIn;
+        this.baseEntitlement = baseEntitlementIn;
+        if (checkinIn != null) {
+            this.checkin = checkinIn.getTime();
+        }
+        this.type = typeIn;
+    }
 
     /**
      * Standard constructor
