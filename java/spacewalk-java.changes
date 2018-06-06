@@ -1,3 +1,5 @@
+- Fix registration of RHEL clients when multiple release packages are installed
+  (bsc#1076931)
 - Show chain of proxies correctly (bsc#1084128)
 - make mass-canceling of Actions faster (bsc#1095211)
 - Fix: show only directly connected systems for Proxy (bsc#1094986)

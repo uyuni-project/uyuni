@@ -19,6 +19,7 @@ import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -80,6 +81,7 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -764,13 +766,27 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private Map<String, List<String>> parseRHELReleseQuery(String result) {
-        return Arrays.stream(result.split("\\r?\\n")).map(line -> line.split("="))
-                .collect(
-                        Collectors.<String[], String, List<String>>toMap(
-                                linetoks -> linetoks[0],
-                                linetoks -> Arrays.asList(
-                                        StringUtils.splitPreserveAllTokens(linetoks[1], ",")
-                                        )));
+        // Split the result into 3-line chunks per installed package version
+        String[] resultLines = result.split("\\r?\\n");
+        List<List<String>> resultItems = new ArrayList<>();
+        for (int i = 0; i < resultLines.length;) {
+            List<String> resultItem = new ArrayList<>();
+            for (int j = 0; j < 3; j++) {
+                resultItem.add(resultLines[i++]);
+            }
+            resultItems.add(resultItem);
+        }
+
+        // Create a map for each 3-line chunk from key-value pairs in each line
+        return resultItems.stream()
+                .map(list -> list.stream().map(line -> line.split("="))
+                        .collect(Collectors.toMap(linetoks -> linetoks[0],
+                                linetoks -> Arrays.asList(StringUtils
+                                        .splitPreserveAllTokens(linetoks[1], ",")))))
+                // Get the result map with the biggest rpm version
+                .max(Comparator.comparing(pkgInfoMap -> pkgInfoMap.get("VERSION").get(0),
+                        new RpmVersionComparator()))
+                .get();
     }
 
     private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct base) {
@@ -835,12 +851,33 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             err4 -> rpmErrQueryRHELProvidesRelease(minionId)),
                     r -> Optional.of(r.split("\\r?\\n")[0]) // Take the first line if multiple results return
             ))
+            .flatMap(pkgStr -> {
+                String[] pkgs = StringUtils.split(pkgStr);
+                if (pkgs.length > 1) {
+                    LOG.warn("Multiple release packages are installed on minion: " + minionId);
+                    // Pick the package with the biggest precedence:
+                    // sles_es > redhat > others (centos etc.)
+                    return Arrays.stream(pkgs).max(Comparator.comparingInt(s -> {
+                        switch (s) {
+                        case "sles_es-release-server":
+                            return 2;
+                        case "redhat-release-server":
+                            return 1;
+                        default:
+                            return 0;
+                        }
+                    }));
+                }
+                else {
+                    return Optional.of(pkgs[0]);
+                }
+            })
             .flatMap(pkg ->
                 SALT_SERVICE.runRemoteCommand(target,
                         "rpm -q --queryformat \"" +
                             "VERSION=%{VERSION}\\n" +
                             "PROVIDENAME=[%{PROVIDENAME},]\\n" +
-                            "PROVIDEVERSION=[%{PROVIDEVERSION},]\" " + pkg)
+                            "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" " + pkg)
                         .entrySet().stream().findFirst().map(e -> e.getValue())
                         .flatMap(res -> res.fold(
                                 err -> err.fold(
@@ -850,7 +887,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                                         err4 -> rpmErrQueryRHELRelease(err4, minionId)),
                                 r -> Optional.of(r)
                         ))
-                        .map(this::parseRHELReleseQuery)
+                        .map(result -> {
+                            if (result.split("\\r?\\n").length > 3) {
+                                // Output should be 3 lines per installed package version
+                                LOG.warn(String.format(
+                                        "Multiple versions of release package '%s' is installed on minion: %s",
+                                        pkg, minionId));
+                            }
+                            return this.parseRHELReleseQuery(result);
+                        })
                         .map(pkgtags -> {
                             Optional<String> version = Optional
                                     .ofNullable(pkgtags.get("VERSION"))
