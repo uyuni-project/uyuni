@@ -263,32 +263,35 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
-    <query name="Server.listSystemsBehindProxy">
+    <query name="Server.listProxySystemsHierarchy">
         <![CDATA[ select
-                new com.redhat.rhn.manager.visualization.json.System(s.id, sp.id.proxyServer.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
+                new com.redhat.rhn.manager.visualization.json.System(
+                    s.id,
+                    CASE
+                      WHEN (pi is not null and sp is null)
+                    THEN 'root'
+                    ELSE cast(sp.id.proxyServer.id as string)
+                    END AS parentId,
+                    s.name,
+                    s.contactMethod.label,
+                    c.name,
+                    g.groupType.label,
+                    s.serverInfo.checkin,
+                    CASE
+                      WHEN (pi is not null)
+                    THEN 'proxy'
+                    ELSE 'system'
+                    END AS type
+                )
                 from Server s
-                    inner join s.serverPaths sp
+                    left join s.serverPaths sp
                     left join s.proxyInfo pi
                     left join s.channels c
                     left join s.groups g
                 where c.parentChannel is NULL and
                     g.groupType.isBaseChar = 'Y' and
                     s.org = :org and
-                    sp.position = 0 and
-                    pi is null]]>
-    </query>
-
-    <query name="Server.listProxySystems">
-        <![CDATA[ select
-                new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
-                from Server s
-                    left join s.proxyInfo pi
-                    left join s.channels c
-                    left join s.groups g
-                where c.parentChannel is NULL and
-                    g.groupType.isBaseChar = 'Y' and
-                    s.org = :org and
-                    pi is not null]]>
+                    ((pi is not null and sp is null) or sp.position = 0)]]>
     </query>
 
     <query name="Server.listSystems">
