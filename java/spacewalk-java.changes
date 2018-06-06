@@ -1,3 +1,5 @@
+- Fix registration of RHEL clients when multiple release packages are installed
+  (bsc#1076931)
 - Disable support for Oracle on openSUSE (bsc#1095804)
 - Fix removing action chain sls files after execution (bsc#1096016)
 
