@@ -17,8 +17,6 @@ package com.redhat.rhn.manager.visualization;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.visualization.json.System;
 import com.redhat.rhn.manager.visualization.json.VirtualHostManager;
@@ -127,40 +125,17 @@ public class VisualizationManager {
         root.setId("root");
         root.setName("SUSE Manager");
 
-        Stream<System> proxies = ((Stream<System>) HibernateFactory.getSession()
-                .getNamedQuery("Server.listProxySystems")
+        Stream<System> systems = ((Stream<System>) HibernateFactory.getSession()
+                .getNamedQuery("Server.listProxySystemsHierarchy")
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
                 .map(p -> p.setInstalledProducts(installedProducts.get(p.getRawId())))
-                .map(p -> p.setPatchCounts(patchCountsToList(patchCounts.get(p.getRawId()))))
-                .map(p -> p.setType("proxy"))
-                .map(p -> {
-                        // extract the direct parent node id from the ServerPaths of the current system
-                        Optional<ServerPath> directParentServerPath = ServerFactory.lookupById(Long.valueOf(p.getId()))
-                                .getServerPaths().stream().filter(sp -> sp.getPosition() == 0).findFirst();
-                        if (directParentServerPath.isPresent()) {
-                            p.setParentId(directParentServerPath.get().getId().getProxyServer().getId().toString());
-                        }
-                        else {
-                            p.setParentId(root.getId());
-                        }
-                        return p;
-                    }
-                );
-
-        Stream<System> systemsBehindProxies = ((Stream<System>) HibernateFactory.getSession()
-                .getNamedQuery("Server.listSystemsBehindProxy")
-                .setParameter("org", user.getOrg())
-                .list()
-                .stream())
-                .map(s -> s.setInstalledProducts(installedProducts.get(s.getRawId())))
-                .map(s -> s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))));
+                .map(p -> p.setPatchCounts(patchCountsToList(patchCounts.get(p.getRawId()))));
 
         return concatStreams(
                 Stream.of(root),
-                proxies,
-                systemsBehindProxies
+                systems
         ).collect(Collectors.toList());
     }
 
