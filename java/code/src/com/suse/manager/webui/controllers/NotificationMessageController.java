@@ -14,21 +14,23 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.reflect.TypeToken;
-import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.UserNotification;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.JSONNotificationMessage;
 import com.suse.manager.webui.websocket.Notification;
+import com.suse.utils.Json;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -37,7 +39,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.suse.utils.Json;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
