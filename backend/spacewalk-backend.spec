@@ -412,6 +412,9 @@ install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd}
+%if !0%{?with_oracle}
+rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
+%endif
 
 %if 0%{?build_py3}
 install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
