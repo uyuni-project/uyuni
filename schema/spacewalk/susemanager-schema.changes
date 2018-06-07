@@ -1,3 +1,4 @@
+- Fix config channels state revision inconsistency after migration (bsc#1094543)
 - Fix issue with "suse_img_repodigest_idx" index if multiple image tags (bsc#1090664)
 
 -------------------------------------------------------------------
