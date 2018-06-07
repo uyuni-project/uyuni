@@ -12,7 +12,7 @@ After:
 ## Documentation
 - [ ] No documentation needed: *add explanation why*
 - [ ] Wiki page: *add link*
-- [ ] Documentation issue: #123
+- [ ] Documentation issue: TBD
 
 ## Test coverage
 - [ ] No tests: *add explanation why*
@@ -23,8 +23,9 @@ After:
 ## Links
 
 Related issues:
- - #123
+ - TBD
 
 Related PRs:
- - [ ] Manager-3.0: #123
- - [ ] Manager-3.1: #123
+ - [ ] Manager-3.0: TBD
+ - [ ] Manager-3.1: TBD
+ - [ ] Manager-3.2: TBD
