@@ -3,7 +3,7 @@
 {%- for alias, data in repos.items() %}
   {%- if 'spacewalk:' in alias %}
     {%- if data.get('enabled', true) %}
-      {%- set repos_to_disable = repos_to_disable.append(alias) %}
+      {%- do repos_to_disable.append(alias) %}
     {%- endif %}
   {%- endif %}
 {%- endfor %}

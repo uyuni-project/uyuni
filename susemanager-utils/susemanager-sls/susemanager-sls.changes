@@ -1,3 +1,5 @@
+- Fix bootstrap error when removing traditional stack (bsc#1096009)
+
 -------------------------------------------------------------------
 Wed May 23 09:03:37 CEST 2018 - jgonzalez@suse.com
 
