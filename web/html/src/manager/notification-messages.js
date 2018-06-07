@@ -92,27 +92,36 @@ const NotificationMessages = React.createClass({
     });
   },
 
-  updateReadStatus: function(messageId) {
-    var currentObject = this;
+  updateReadStatus: function(ids, flagAsRead) {
+    var dataRequest = {};
+    dataRequest.messageIds = ids;
+    dataRequest.flagAsRead = flagAsRead;
 
-    var updatedData = this.state.serverData;
-    var messageRaw = updatedData.find(m => m.id == messageId);
-    messageRaw.isRead = !messageRaw.isRead;
-
-    var messageDataRequest = {};
-    messageDataRequest.messageId = messageRaw.id;
-    messageDataRequest.isRead = messageRaw.isRead;
-    Network.post("/rhn/manager/notification-messages/update-message-status", JSON.stringify(messageDataRequest), "application/json").promise
+    Network.post("/rhn/manager/notification-messages/update-messages-status", JSON.stringify(dataRequest), "application/json").promise
     .then(data => {
-        this.setState({serverData : updatedData})
+      var newMessagesState = this.state.messages;
+      newMessagesState.push({ severity: data.severity, text: data.text });
+
+      const updatedData = this.state.serverData.map(m => {
+        if (ids.includes(m.id)) {
+          m.isRead = flagAsRead;
+        }
+        return m;
+      });
+
+      this.setState({serverData : updatedData, messages : newMessagesState});
     })
     .catch(response => {
-      currentObject.setState({
+      this.setState({
         error: response.status == 401 ? "authentication" :
           response.status >= 500 ? "general" :
           null
       });
     });
+  },
+
+  markAsRead: function(ids) {
+    this.updateReadStatus(ids, true);
   },
 
   deleteNotifications: function(ids) {
@@ -128,21 +137,6 @@ const NotificationMessages = React.createClass({
     })
     .catch(response => {
       this.setState({
-        error: response.status == 401 ? "authentication" :
-          response.status >= 500 ? "general" :
-          null
-      });
-    });
-  },
-
-  readThemAll: function() {
-    var currentObject = this;
-    Network.post("/rhn/manager/notification-messages/mark-all-as-read", "application/json").promise
-    .then(() => {
-      currentObject.refreshServerData();
-    })
-    .catch(response => {
-      currentObject.setState({
         error: response.status == 401 ? "authentication" :
           response.status >= 500 ? "general" :
           null
@@ -304,8 +298,10 @@ const NotificationMessages = React.createClass({
                 title={t('Delete selected messages')} text={t('Delete selected messages')}
                 handler={() => this.deleteNotifications(this.state.selectedItems)}
                 disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
-            <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
-                title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
+            <Button id="mark-as-read" icon="fa-check-circle" className='btn-default'
+                title={t('Mark selected as read')} text={t('Mark selected as read')}
+                handler={() => this.markAsRead(this.state.selectedItems)}
+                disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
         </div>
       </div>
     </div>;
@@ -378,7 +374,7 @@ const NotificationMessages = React.createClass({
                     <AsyncButton id="updateReadStatus" classStyle="btn-sm"
                         icon={(row['isRead'] ? ' spacewalk-icon-envelope-open-o text-muted' : 'envelope text-primary') + " fa-1-5x no-margin"}
                         title={row['isRead'] ? t('Flag as Unread') : t('Flag as Read')}
-                        text action={() => this.updateReadStatus(row['id'], row['isRead'])} />
+                        text action={() => this.updateReadStatus([row['id']], !row['isRead'])} />
                     <AsyncButton id="delete"  classStyle="btn-sm"
                         icon="trash fa-1-5x no-margin" title={t('Delete Notification')}
                         text action={() => this.deleteNotifications([row['id']])} />
