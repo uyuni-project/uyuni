@@ -1,4 +1,5 @@
 - Disable support for Oracle on openSUSE (bsc#1095804)
+- Fix removing action chain sls files after execution (bsc#1096016)
 
 -------------------------------------------------------------------
 Tue Jun 05 10:09:30 CEST 2018 - jgonzalez@suse.com
