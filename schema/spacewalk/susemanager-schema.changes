@@ -1,3 +1,5 @@
+- Fix config channels state revision inconsistency after migration (bsc#1094543)
+
 -------------------------------------------------------------------
 Tue Jun 05 10:22:49 CEST 2018 - jgonzalez@suse.com
 
