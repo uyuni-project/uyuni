@@ -4,6 +4,9 @@
 %else
 %global postgresql /usr/bin/psql
 %endif
+%if !0%{?is_opensuse}
+%define with_oracle     1
+%endif
 
 Name:           spacewalk
 Version:        2.8.2.2
@@ -98,6 +101,7 @@ Requires:       cobbler20
 Spacewalk is a systems management application that will
 inventory, provision, update and control your Linux machines.
 
+%if 0%{?with_oracle}
 %package oracle
 Summary: Spacewalk Systems Management Application with Oracle database backend
 Group:   Applications/Internet
@@ -123,6 +127,7 @@ Obsoletes: spacewalk-dobby < 2.7.0
 Spacewalk is a systems management application that will
 inventory, provision, update and control your Linux machines.
 Version for Oracle database backend.
+%endif
 
 %package postgresql
 Summary: Spacewalk Systems Management Application with PostgreSQL database backend
@@ -159,11 +164,16 @@ Version for PostgreSQL database backend.
 #nothing to do here
 
 %install
+%if 0%{?with_oracle}
+RDBMS="oracle postgresql"
+%else
+RDBMS="postgresql"
+%endif
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}
 SW_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
 echo "Spacewalk release $SW_REL (%{release_name})" > $RPM_BUILD_ROOT/%{_sysconfdir}/spacewalk-release
 install -d $RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d
-for i in oracle postgresql ; do
+for i in ${RDBMS} ; do
         cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
 # database backend to be used by spacewalk
 db-backend = $i
@@ -179,8 +189,10 @@ done
 %dir %{_datadir}/spacewalk/setup/defaults.d
 %endif
 
+%if 0%{?with_oracle}
 %files oracle
 %{_datadir}/spacewalk/setup/defaults.d/oracle-backend.conf
+%endif
 
 %files postgresql
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
