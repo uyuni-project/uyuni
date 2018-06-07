@@ -737,6 +737,8 @@ install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_R
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/taskomaticd
 %if 0%{?with_oracle}
 ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
+%else
+rm -f %{_javadir}/ojdbc14.jar
 %endif
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
@@ -750,14 +752,18 @@ touch $RPM_BUILD_ROOT%{_var}/spacewalk/systemlogs/audit-review.log
 
 # special links for taskomatic
 TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
+%if 0%{?with_oracle}
 ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/ojdbc14.jar
+%endif
 ln -s -f %{_javadir}/quartz-oracle.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/quartz-oracle.jar
 rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*nop.jar
 rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*simple.jar
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
+%if 0%{?with_oracle}
 ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ojdbc14.jar
+%endif
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
 
 # install docbook sources
