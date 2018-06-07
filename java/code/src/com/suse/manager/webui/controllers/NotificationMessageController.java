@@ -131,46 +131,38 @@ public class NotificationMessageController {
     }
 
     /**
-     * Update the read status of the message
+     * Update the read status of the messages
      *
      * @param request the request
      * @param response the response
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String updateMessageStatus(Request request, Response response, User user) {
+    public static String updateMessagesStatus(Request request, Response response, User user) {
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
-        Long messageId = Double.valueOf(map.get("messageId").toString()).longValue();
-        boolean isRead = (boolean) map.get("isRead");
+        List<Long> messageIds = Json.GSON.fromJson(
+                map.get("messageIds").toString(),
+                new TypeToken<List<Long>>() { }.getType());
+        boolean flagAsRead = (boolean) map.get("flagAsRead");
 
-        Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
+        messageIds.forEach(messageId ->
+        {
+            Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
+            if (un.isPresent()) {
+                UserNotificationFactory.updateStatus(un.get(), flagAsRead);
+            }
+        });
 
-        if (un.isPresent()) {
-            UserNotificationFactory.updateStatus(un.get(), isRead);
-        }
         Notification.spreadUpdate();
 
         Map<String, String> data = new HashMap<>();
-        data.put("message", "Message status updated");
-        response.type("application/json");
-        return GSON.toJson(data);
-    }
-
-    /**
-     * Mark all {@link NotificationMessage}s as read in one shot
-     *
-     * @param request the request
-     * @param response the response
-     * @param user the user
-     * @return JSON result of the API call
-     */
-    public static String markAllAsRead(Request request, Response response, User user) {
-        for (UserNotification un : UserNotificationFactory.listUnreadByUser(user)) {
-            UserNotificationFactory.updateStatus(un, true);
+        data.put("severity", "success");
+        if (messageIds.size() == 1) {
+            data.put("text", "1 message read status updated successfully");
         }
-        Notification.spreadUpdate();
-        Map<String, String> data = new HashMap<>();
-        data.put("message", "All messages marked as read succesfully");
+        else {
+            data.put("text", messageIds.size() + " messages status updated successfully");
+        }
         response.type("application/json");
         return GSON.toJson(data);
     }
