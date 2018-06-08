@@ -97,51 +97,51 @@ const NotificationMessages = React.createClass({
     dataRequest.messageIds = ids;
     dataRequest.flagAsRead = flagAsRead;
 
-    Network.post("/rhn/manager/notification-messages/update-messages-status", JSON.stringify(dataRequest), "application/json").promise
-    .then(data => {
-      var newMessagesState = this.state.messages;
-      newMessagesState.push({ severity: data.severity, text: data.text });
+    return Network.post("/rhn/manager/notification-messages/update-messages-status", JSON.stringify(dataRequest), "application/json").promise
+      .then(data => {
+        var newMessagesState = this.state.messages;
+        newMessagesState.push({ severity: data.severity, text: data.text });
 
-      const updatedData = this.state.serverData.map(m => {
-        if (ids.includes(m.id)) {
-          m.isRead = flagAsRead;
-        }
-        return m;
-      });
+        const updatedData = this.state.serverData.map(m => {
+          if (ids.includes(m.id)) {
+            m.isRead = flagAsRead;
+          }
+          return m;
+        });
 
-      this.setState({serverData : updatedData, messages : newMessagesState});
-    })
-    .catch(response => {
-      this.setState({
-        error: response.status == 401 ? "authentication" :
-          response.status >= 500 ? "general" :
-          null
+        this.setState({serverData : updatedData, messages : newMessagesState});
+      })
+      .catch(response => {
+        this.setState({
+          error: response.status == 401 ? "authentication" :
+            response.status >= 500 ? "general" :
+            null
+        });
       });
-    });
   },
 
   markAsRead: function(ids) {
-    this.updateReadStatus(ids, true);
+    return this.updateReadStatus(ids, true);
   },
 
   deleteNotifications: function(ids) {
-    Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
-    .then(data => {
-      var newMessagesState = this.state.messages;
-      newMessagesState.push({ severity: data.severity, text: data.text });
+    return Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
+      .then(data => {
+        var newMessagesState = this.state.messages;
+        newMessagesState.push({ severity: data.severity, text: data.text });
 
-      const updatedData = this.state.serverData.filter(m => !ids.includes(m.id));
-      const updatedSelectedItems = this.state.selectedItems.filter(m => !ids.includes(m))
+        const updatedData = this.state.serverData.filter(m => !ids.includes(m.id));
+        const updatedSelectedItems = this.state.selectedItems.filter(m => !ids.includes(m))
 
-      this.setState({serverData : updatedData, selectedItems : updatedSelectedItems, messages : newMessagesState});
-    })
-    .catch(response => {
-      this.setState({
-        error: response.status == 401 ? "authentication" :
-          response.status >= 500 ? "general" :
-          null
+        this.setState({serverData : updatedData, selectedItems : updatedSelectedItems, messages : newMessagesState});
+      })
+      .catch(response => {
+        this.setState({
+          error: response.status == 401 ? "authentication" :
+            response.status >= 500 ? "general" :
+            null
+        });
       });
-    });
   },
 
   decodeTypeText: function(rawType) {
@@ -237,25 +237,25 @@ const NotificationMessages = React.createClass({
   },
 
   retryOnboarding: function(minionId) {
-    Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
-    .then((data) => {
-      var newMessagesState = this.state.messages;
-      newMessagesState.push({ severity: data.severity, text: data.text });
-      this.setState({ messages : newMessagesState });
-    })
-    .catch(response => {
-    });
+    return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
+      .then((data) => {
+        var newMessagesState = this.state.messages;
+        newMessagesState.push({ severity: data.severity, text: data.text });
+        this.setState({ messages : newMessagesState });
+      })
+      .catch(response => {
+      });
   },
 
   retryReposync: function(channelId) {
-    Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
-    .then((data) => {
-      var newMessagesState = this.state.messages;
-      newMessagesState.push({ severity: data.severity, text: data.text });
-      this.setState({ messages : newMessagesState });
-    })
-    .catch(response => {
-    });
+    return Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
+      .then((data) => {
+        var newMessagesState = this.state.messages;
+        newMessagesState.push({ severity: data.severity, text: data.text });
+        this.setState({ messages : newMessagesState });
+      })
+      .catch(response => {
+      });
   },
 
   messageReaction: function(messageType, messageData) {
@@ -263,11 +263,11 @@ const NotificationMessages = React.createClass({
     switch(messageType) {
       case 'OnboardingFailed':
         actionButton = <AsyncButton id="retryOnboarding" icon="fa fa-rocket fa-1-5x no-margin" classStyle="btn-sm"
-            title={t('Retry onboarding')} text action={() => this.retryOnboarding(messageData['minionId'])} />;
+            title={t('Retry onboarding')} action={() => this.retryOnboarding(messageData['minionId'])} />;
       break;
       case 'ChannelSyncFailed':
         actionButton = <AsyncButton id="retryReposync" icon="fa fa-refresh fa-1-5x no-margin" classStyle="btn-sm"
-            title={t('Retry repo sync')} text action={() => this.retryReposync(messageData['channelId'])} />;
+            title={t('Retry repo sync')} action={() => this.retryReposync(messageData['channelId'])} />;
       break;
     }
     return actionButton;
@@ -293,14 +293,14 @@ const NotificationMessages = React.createClass({
     const panelButtons = <div className='spacewalk-section-toolbar'>
         <div className='action-button-wrapper'>
           <div className='btn-group'>
-            <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
-            <Button id="delete-selected-messages" icon="fa-trash" className='btn-default'
-                title={t('Delete selected messages')} text={t('Delete selected messages')}
-                handler={() => this.deleteNotifications(this.state.selectedItems)}
+            <AsyncButton id="reload" icon="refresh" name={t('Refresh')} action={this.refreshServerData} />
+            <AsyncButton id="delete-selected-messages" icon="trash" classStyle='btn-default'
+                title={t('Delete selected messages')} name={t('Delete selected messages')}
+                action={() => this.deleteNotifications(this.state.selectedItems)}
                 disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
-            <Button id="mark-as-read" icon="fa-check-circle" className='btn-default'
-                title={t('Mark selected as read')} text={t('Mark selected as read')}
-                handler={() => this.markAsRead(this.state.selectedItems)}
+            <AsyncButton id="mark-as-read" icon="check-circle" classStyle='btn-default'
+                title={t('Mark selected as read')} name={t('Mark selected as read')}
+                action={() => this.markAsRead(this.state.selectedItems)}
                 disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
         </div>
       </div>
