@@ -43,6 +43,7 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -190,8 +191,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
         int chunk = 1;
         Long retActionChainId = null;
-        Long firstFailedActionId = null;
         boolean actionChainFailed = false;
+        List<Long> failedActionIds = new ArrayList<>();
         for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
             String key = entry.getKey();
             StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
@@ -208,9 +209,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
                 if (!actionStateApply.isResult()) {
                     actionChainFailed = true;
-                    if (firstFailedActionId == null) {
-                        firstFailedActionId = actionId;
-                    }
+                    failedActionIds.add(actionId);
                     // don't stop handling the result entries if there's a failed action
                     // the result entries are not returned in order
                 }
@@ -229,6 +228,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
         if (retActionChainId != null) {
             if (actionChainFailed) {
+                long firstFailedActionId = failedActionIds.stream().min(Long::compare).get();
                 // Set rest of actions as FAILED due to failed prerequisite
                 failDependentServerActions(firstFailedActionId, minionId, Optional.empty());
             }
@@ -249,7 +249,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                minionId);
         if (minion.isPresent()) {
             // set first action to failed if not already in that state
-            Optional.ofNullable(ActionFactory.lookupById(actionId))
+            Action action = ActionFactory.lookupById(actionId);
+            Optional.ofNullable(action)
                     .ifPresent(firstAction ->
                             firstAction.getServerActions().stream()
                                     .filter(sa -> sa.getServerId().equals(minion.get().getId()))
@@ -263,7 +264,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             actionIdsDependencies.push(actionId);
             List<ServerAction> serverActions = ActionFactory
                     .listServerActionsForServer(minion.get(),
-                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP));
+                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
+                            ActionFactory.STATUS_FAILED), action.getCreated());
 
             while (!actionIdsDependencies.empty()) {
                Long acId = actionIdsDependencies.pop();
