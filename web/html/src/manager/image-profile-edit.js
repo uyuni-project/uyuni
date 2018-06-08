@@ -39,7 +39,7 @@ class CreateImageProfile extends React.Component {
       customData: {}
     };
 
-    ["handleTokenChange", "handleImageTypeChange", "isLabelUnique", "onUpdate",
+    ["handleTokenChange", "handleImageTypeChange", "isLabelValid", "onUpdate",
       "onCreate", "onFormChange", "onValidate", "clearFields"]
       .forEach(method => this[method] = this[method].bind(this));
 
@@ -128,13 +128,18 @@ class CreateImageProfile extends React.Component {
     }
   }
 
-  isLabelUnique(label) {
+  isLabelValid(label) {
     if(this.state.initLabel && this.state.initLabel === label) {
+      // Initial state (on edit), always valid.
       return true;
     }
 
+    // Should not contain ':' character
+    const isValid = label.indexOf(':') === -1;
+
+    // Check for uniqueness
     return Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
-      .promise.then(res => !res.success).catch(() => false);
+      .promise.then(res => !res.success && isValid).catch(() => false);
   }
 
   onUpdate(model) {
@@ -331,7 +336,7 @@ class CreateImageProfile extends React.Component {
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
-          <Input.Text name="label" label={t("Label")} required validators={[this.isLabelUnique, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string.")} labelClass="col-md-3" divClass="col-md-6"/>
+          <Input.Text name="label" label={t("Label")} required validators={[this.isLabelValid, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
           <Input.Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
             { this.state.imageTypes.map(k =>
               <option key={k} value={k}>{ typeMap[k].name }</option>) }
