@@ -242,8 +242,7 @@ public class ImageProfileController {
             reqData = GSON.fromJson(req.body(), ImageProfileCreateRequest.class);
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 
         Long profileId = Long.parseLong(req.params("id"));
@@ -251,6 +250,14 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         JsonResult result = profile.map(p -> {
+            String label = reqData.getLabel();
+            if (!p.getLabel().equals(label)) {
+                // Check if the label is valid
+                if (label.contains(":") || ImageProfileFactory.lookupByLabelAndOrg(label, p.getOrg()).isPresent()) {
+                    return JsonResult.error("invalid_label");
+                }
+            }
+
             if (p instanceof DockerfileProfile) {
                 DockerfileProfile dp = (DockerfileProfile) p;
 
@@ -288,8 +295,13 @@ public class ImageProfileController {
             reqData = GSON.fromJson(req.body(), ImageProfileCreateRequest.class);
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
+        // Check if the label is valid
+        String label = reqData.getLabel();
+        if (label.contains(":") || ImageProfileFactory.lookupByLabelAndOrg(label, user.getOrg()).isPresent()) {
+            return json(res, JsonResult.error("invalid_label"));
         }
 
         ImageProfile profile;
