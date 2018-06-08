@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 public class ImageProfileHandlerTest extends BaseHandlerTestCase {
@@ -120,6 +121,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
     public final void testCreateImageProfileFailed() throws Exception {
         ActivationKey key = createActivationKey(admin);
+        createImageProfile("existing-profile", createImageStore("myregistry", admin), admin);
 
         try {
             handler.create(admin, "newprofile", "container", "mystore",
@@ -137,8 +139,6 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         }
         catch (NoSuchImageStoreException ignore) { }
 
-        createImageStore("myregistry", admin);
-
         try {
             handler.create(admin, "newprofile", "dockerfile", "myregistry",
                     "/path/to/dockerfile/", "invalidkey");
@@ -155,6 +155,24 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         }
         catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
+        }
+
+        try {
+            handler.create(admin, "existing-profile", ImageProfile.TYPE_DOCKERFILE, "myregistry",
+                    "/path/to/dockerfile/", key.getKey());
+            fail("Existing label provided.");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Image already exists.", e.getMessage());
+        }
+
+        try {
+            handler.create(admin, "invalid:chars", ImageProfile.TYPE_DOCKERFILE, "myregistry",
+                    "/path/to/dockerfile/", key.getKey());
+            fail("Invalid label with ':' character provided.");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Label cannot contain colons (:).", e.getMessage());
         }
 
         try {
