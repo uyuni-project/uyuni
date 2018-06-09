@@ -19,6 +19,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <query name="ServerNetAddress4.lookup">
         <![CDATA[from com.redhat.rhn.domain.server.ServerNetAddress4 as sa
-                 where sa.interfaceId = :interface_id]]>
+                 where sa.interfaceId = :interface_id
+                 order by address]]>
     </query>
 </hibernate-mapping>
