@@ -264,12 +264,14 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
             if (StringUtils.isBlank(form.getString(BOND_IP_ADDRESS))) {
                 form.set(BOND_IP_ADDRESS, oldBond.getIPv4Addresses().isEmpty() ?
-                        null : oldBond.getIPv4Addresses().get(0).getAddress());
+                        null : oldBond.getIPv4Addresses().stream().findFirst()
+                        .map(ServerNetAddress4::getAddress).orElse(null));
             }
 
             if (StringUtils.isBlank(form.getString(BOND_NETMASK))) {
                 form.set(BOND_NETMASK, oldBond.getIPv4Addresses().isEmpty() ?
-                        null : oldBond.getIPv4Addresses().get(0).getNetmask());
+                        null : oldBond.getIPv4Addresses().stream().findFirst()
+                        .map(ServerNetAddress4::getNetmask).orElse(null));
             }
         }
 
