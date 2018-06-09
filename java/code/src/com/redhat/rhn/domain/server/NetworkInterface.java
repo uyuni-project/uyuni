@@ -25,6 +25,7 @@ import org.hibernate.Session;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * NetworkInterface
@@ -336,6 +337,14 @@ Serializable {
     }
 
     /**
+     * Return comma separated list of IPv4 addresses
+     * @return comma separated list of IPv4 addresses
+     */
+    public String getIPv4AddressesAsString() {
+        return getIPv4Addresses().stream().map(ServerNetAddress4::getAddress).collect(Collectors.joining(","));
+    }
+
+    /**
      * Retrieve list of IPv6 addresses
      * @return List of ServerNetAddress6 objects
      */
@@ -348,6 +357,14 @@ Serializable {
         }
 
         return sa6;
+    }
+
+    /**
+     * Return comma separated list of IPv6 addresses
+     * @return comma separated list of IPv6 addresses
+     */
+    public String getIPv6AddressesAsString() {
+        return getIPv6Addresses().stream().map(ServerNetAddress6::getAddress).collect(Collectors.joining(","));
     }
 
     /**

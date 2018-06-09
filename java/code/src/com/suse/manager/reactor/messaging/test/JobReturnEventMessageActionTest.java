@@ -775,6 +775,24 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
     }
 
+    public void testHardwareProfileMultiIP()  throws Exception {
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.multi-ipv4.json", (server) -> {
+            Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                    eth -> eth.getName(),
+                    Function.identity()
+            ));
+            assertEquals(null, ethNames.get("lo").getPrimary());
+            assertEquals(null, ethNames.get("eth0").getPrimary());
+            assertEquals("Y", ethNames.get("br0").getPrimary());
+            assertEquals(null, ethNames.get("virbr0").getPrimary());
+            assertEquals("10.160.5.165,192.168.103.42", ethNames.get("br0").getIPv4AddressesAsString());
+            assertEquals("2620:113:80c0:8080:10:160:5:165,2620:113:80c0:8080:1ec:34d9:996:79bf," +
+                    "2620:113:80c0:8080:88ac:f1ab:8b:6735,2620:113:80c0:8080:f64d:30ff:fe67:6333," +
+                    "fe80::f64d:30ff:fe67:6333",
+                    ethNames.get("br0").getIPv6AddressesAsString());
+        });
+    }
+
     public void testHardwareProfileNoNetworkIPChange()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
