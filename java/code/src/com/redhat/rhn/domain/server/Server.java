@@ -900,10 +900,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public String getIpAddress() {
         NetworkInterface ni = findPrimaryNetworkInterface();
         if (ni != null) {
-            for (ServerNetAddress4 ipv4address : ni.getIPv4Addresses()) {
-                log.debug("Found a NetworkInterface: " + ipv4address.getAddress());
-                return ipv4address.getAddress();
-            }
+            return ni.getIPv4Addresses().stream().findFirst().map(ServerNetAddress4::getAddress).orElse(null);
         }
         return null;
     }

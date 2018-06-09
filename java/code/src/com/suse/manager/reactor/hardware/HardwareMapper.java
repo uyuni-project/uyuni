@@ -777,11 +777,8 @@ public class HardwareMapper {
                     ServerNetworkFactory.saveServerNetAddress4(ipv4);
                 }
             }
-            dbipv4.removeAll(dbfound);
-            for (ServerNetAddress4 del: dbipv4) {
-                // remove
-                ServerNetworkFactory.removeServerNetAddress4(del);
-            }
+            dbipv4.stream().filter(ipv4 -> !dbfound.contains(ipv4)).forEach(del ->
+                ServerNetworkFactory.removeServerNetAddress4(del));
 
             List<ServerNetAddress6> dbipv6 = ServerNetworkFactory.findServerNetAddress6(iface.getInterfaceId());
             List<Network.INet6> saltipv6 = Optional.ofNullable(saltIface.getInet6()).orElse(new LinkedList<>());
@@ -810,11 +807,8 @@ public class HardwareMapper {
                     ServerNetworkFactory.saveServerNetAddress6(ipv6);
                 }
             }
-            dbipv6.removeAll(dbfound6);
-            for (ServerNetAddress6 del: dbipv6) {
-                // remove
-                ServerNetworkFactory.removeServerNetAddress6(del);
-            }
+            dbipv6.stream().filter(ipv6 -> !dbfound6.contains(ipv6)).forEach(del ->
+                ServerNetworkFactory.removeServerNetAddress6(del));
         });
 
         // reset primary IP flag, we will re-compute it
@@ -824,20 +818,16 @@ public class HardwareMapper {
         Optional<NetworkInterface> primaryNetIf = primaryIPv4.flatMap(pipv4 ->
             server.getNetworkInterfaces().stream()
                 .filter(netIf -> netIf.getIPv4Addresses().stream()
-                        .anyMatch(addr -> ObjectUtils.equals(pipv4, addr.getAddress()))
-                        )
-                .findFirst()
-                );
+                        .anyMatch(addr -> ObjectUtils.equals(pipv4, addr.getAddress())))
+                .findFirst());
 
         if (!primaryNetIf.isPresent()) {
             // no primary IPv4, fallback to IPv6
             primaryNetIf = primaryIPv6.flatMap(pipv6 ->
                 server.getNetworkInterfaces().stream()
                     .filter(netIf -> netIf.getIPv6Addresses().stream()
-                            .anyMatch(addr -> ObjectUtils.equals(pipv6, addr.getAddress()))
-                            )
-                    .findFirst()
-                    );
+                            .anyMatch(addr -> ObjectUtils.equals(pipv6, addr.getAddress())))
+                    .findFirst());
         }
 
         primaryNetIf.ifPresent(netIf -> {
