@@ -52,6 +52,14 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *                 #prop_desc("string", "scope", "IPv6 address scope")
  *               #struct_end()
  *            #array_end()
+ *          #prop_desc("array", "ipv4", "List of IPv4 addresses")
+ *            #array()
+ *               #struct("ipv4 address")
+ *                 #prop_desc("string", "address", "IPv4 address of this network device")
+ *                 #prop_desc("string", "netmask", "IPv4 netmask of this network device")
+ *                 #prop_desc("string", "broadcast", "IPv4 broadcast address of this network device")
+ *               #struct_end()
+ *            #array_end()
  *      #struct_end()
  *
  */
