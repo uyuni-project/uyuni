@@ -984,12 +984,23 @@ public class ContentSyncManager {
             // Update this product in the database if it is there
             product = SUSEProductFactory.findSUSEProduct(p.getIdentifier(),
                     p.getVersion(), p.getReleaseType(), p.getArch(), false);
+
+            // product not found by {name,version,release,arch} but maybe those values are changed (likely the name)
+            // but we already have a product with that product_id, so we lookup by product_id and update it if found
+            if (product == null) {
+                product = SUSEProductFactory.lookupByProductId(p.getId());
+            }
+
             if (product != null) {
                 // it is not guaranteed for this ID to be stable in time, as it
                 // depends on IBS
                 product.setProductId(p.getId());
                 product.setFriendlyName(p.getFriendlyName());
                 product.setFree(p.isFree());
+
+                product.setName(p.getIdentifier().toLowerCase());
+                product.setVersion(p.getVersion() != null ? p.getVersion().toLowerCase() : null);
+                product.setRelease(p.getReleaseType() != null ? p.getReleaseType().toLowerCase() : null);
             }
             else {
                 // Otherwise create a new SUSE product and save it
