@@ -29,7 +29,6 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.suse.manager.metrics.PrometheusExporter;
 import org.apache.log4j.Logger;
-import org.hibernate.Transaction;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
@@ -227,14 +226,12 @@ public class SchedulerKernel {
                     if (!runList.isEmpty()) {
                         // there're runs in the future
                         // reinit the schedule
-                        Transaction tx = TaskoFactory.getSession().beginTransaction();
                         log.warn("Reinitializing " + schedule.getJobLabel() + ", found " +
                         runList.size() + " runs in the future.");
                         TaskoFactory.reinitializeScheduleFromNow(schedule, now);
                         for (TaskoRun run : runList) {
                             TaskoFactory.deleteRun(run);
                         }
-                        tx.commit();
                     }
                 }
             }
