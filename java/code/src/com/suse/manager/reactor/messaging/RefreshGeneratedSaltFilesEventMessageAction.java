@@ -39,7 +39,6 @@ import java.util.List;
 
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 
 /**
@@ -119,7 +118,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                                 return rev;
                             });
                     SaltStateGeneratorService.INSTANCE.generateConfigState(groupRev, tempSaltRootPath);
-				}
+                }
 
                 List<MinionServer> minions = MinionServerFactory
                         .lookupByOrg(org.getId());
