@@ -1,3 +1,5 @@
+- Do not create new product if product_id exists, update it instead (bsc#1096714)
+
 -------------------------------------------------------------------
 Fri Jun 01 15:25:16 CEST 2018 - jgonzalez@suse.com
 
