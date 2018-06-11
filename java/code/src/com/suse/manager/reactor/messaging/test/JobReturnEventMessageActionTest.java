@@ -1330,6 +1330,46 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findFirst().isPresent());
     }
 
+    public void testFailDependentServerActions() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Action applyStateAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
+        Action rebootAction = ActionFactoryTest.createAction(user,ActionFactory.TYPE_REBOOT);
+        Action runScriptAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        //Add dependency
+        rebootAction.setPrerequisite(applyStateAction);
+        runScriptAction.setPrerequisite(rebootAction);
+
+        ActionFactory.addServerToAction(minion.getId(), applyStateAction);
+        ActionFactory.addServerToAction(minion.getId(), rebootAction);
+        ActionFactory.addServerToAction(minion.getId(), runScriptAction);
+
+        //need to flush to get the correct dates in database
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        applyStateAction.getServerActions().stream().findFirst().get().setStatus(ActionFactory.STATUS_FAILED);
+
+        JobReturnEventMessageAction.failDependentServerActions(applyStateAction.getId(),
+                minion.getMinionId(), Optional.empty());
+
+        applyStateAction =  ActionFactory.lookupById(applyStateAction.getId());
+        rebootAction = ActionFactory.lookupById(rebootAction.getId());
+        runScriptAction =  ActionFactory.lookupById(runScriptAction.getId());
+
+        assertEquals(ActionFactory.STATUS_FAILED,
+                applyStateAction.getServerActions().stream().findFirst().get().getStatus());
+        assertEquals(ActionFactory.STATUS_FAILED,
+                rebootAction.getServerActions().stream().findFirst().get().getStatus());
+        assertEquals(ActionFactory.STATUS_FAILED,
+                runScriptAction.getServerActions().stream().findFirst().get().getStatus());
+
+        //Check the output of dependent actions
+        assertEquals("Prerequisite failed",
+                rebootAction.getServerActions().stream().findFirst().get().getResultMsg());
+        assertEquals("Prerequisite failed",
+                runScriptAction.getServerActions().stream().findFirst().get().getResultMsg());
+    }
+
     public void testActionChainResponse() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
