@@ -1,3 +1,4 @@
+- Regenerate custom states SLS files for all minions during Spacewalk startup (bsc#1094543)
 - Fix: limit naming of action chain (bsc#1086335)
 - specify old udev name as alternative when parsing hw results
 - fix detection of a xen virtualization host (bsc#1096056)
