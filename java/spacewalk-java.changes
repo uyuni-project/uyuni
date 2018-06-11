@@ -1,3 +1,4 @@
+- Regenerate custom states SLS files for all minions during Spacewalk startup (bsc#1094543)
 - improve branding for Uyuni
 - Mark all proceeding actions in action-chain failed after an action failed(bsc#1096510)
 - Fix: limit naming of action chain (bsc#1086335)
