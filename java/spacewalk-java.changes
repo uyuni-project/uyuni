@@ -1,3 +1,4 @@
+- Regenerate custom states SLS files for all minions during Spacewalk startup (bsc#1094543)
 - improve gatherer-matcher Taskomatic task's performance (bsc#1094524)
 - Show chain of proxies correctly (bsc#1084128)
 
