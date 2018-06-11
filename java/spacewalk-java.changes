@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Jun 11 17:25:11 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.46.14-1
 - Do not create new product if product_id exists, update it instead (bsc#1096714)
 
 -------------------------------------------------------------------
