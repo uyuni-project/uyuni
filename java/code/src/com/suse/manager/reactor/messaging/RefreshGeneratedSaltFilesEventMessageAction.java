@@ -18,9 +18,12 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
+import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -116,6 +119,20 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                                 return rev;
                             });
                     SaltStateGeneratorService.INSTANCE.generateConfigState(groupRev, tempSaltRootPath);
+				}
+
+                List<MinionServer> minions = MinionServerFactory
+                        .lookupByOrg(org.getId());
+                for (MinionServer minion : minions) {
+                    ServerStateRevision serverRev = StateFactory
+                            .latestStateRevision(minion)
+                            .orElseGet(() -> {
+                                ServerStateRevision rev =
+                                        new ServerStateRevision();
+                                rev.setServer(minion);
+                                return rev;
+                            });
+                    SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, tempSaltRootPath);
                 }
             }
 
@@ -124,15 +141,6 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                     SALT_CONFIG_STATES_DIR + "_todelete");
             Path tempCustomPath = tempSaltRootPath
                     .resolve(SALT_CONFIG_STATES_DIR);
-
-            // copy /srv/susemanager/salt/custom/custom_*.sls
-            // to /srv/susemanager/tmpXXXX/salt/custom
-            if (Files.exists(saltPath)) {
-                for (Path serverSls : Files.newDirectoryStream(saltPath,
-                        SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
-                    Files.copy(serverSls, tempCustomPath.resolve(serverSls.getFileName()));
-                }
-            }
 
             // rm -rf /srv/susemanager/tmp/custom_todelete
             FileUtils.deleteDirectory(oldSaltPath.toFile());
