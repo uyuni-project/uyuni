@@ -1,3 +1,4 @@
+- Do not create new product if product_id exists, update it instead (bsc#1096714)
 - specify old udev name as alternative when parsing hw results
 - fix detection of a xen virtualization host (bsc#1096056)
 - Disallow colons in image labels (bsc#1092940)
