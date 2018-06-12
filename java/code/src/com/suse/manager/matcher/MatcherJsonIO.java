@@ -98,7 +98,7 @@ public class MatcherJsonIO {
      * about systems on this Server
      */
     public List<JsonSystem> getJsonSystems(boolean includeSelf, String arch) {
-        Stream<JsonSystem> systems = ServerFactory.list().stream()
+        Stream<JsonSystem> systems = ServerFactory.list(true, true).stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
                 Set<Long> productIds = productIdsForServer(system).collect(toSet());
