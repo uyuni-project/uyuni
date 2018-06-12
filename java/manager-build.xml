@@ -184,10 +184,10 @@
     <exec executable="ssh">
       <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
     </exec>
-
     <exec executable="ssh">
       <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
     </exec>
+
   </target>
 
   <target name="is-npm-installed">
@@ -290,7 +290,7 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat" />
 
-  <target name="test" depends="jar" description="Run unit tests">    
+  <target name="test" depends="jar" description="Run unit tests">
     <mkdir dir="${tests.results.dir}" />
 
     <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
@@ -299,7 +299,7 @@
     <echo message="${tests.includes.text}" />
     <echo message="and excluding:" />
     <echo message="${tests.excludes.text}" />
-    
+
     <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf"
 	    failureproperty="junit_failed">
       <sysproperty key="rhn-home" value="." />
