@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -46,7 +47,6 @@ import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
 import com.suse.matcher.json.JsonSystem;
-
 import com.suse.matcher.json.JsonVirtualizationGroup;
 import org.apache.log4j.Logger;
 
@@ -71,6 +71,9 @@ public class MatcherJsonIO {
     /** (De)serializer instance. */
     private Gson gson;
 
+    /** Cached instance of the s390x ServerArch object. */
+    private final ServerArch s390arch;
+
     /**
      * Logger for this class
      */
@@ -85,6 +88,7 @@ public class MatcherJsonIO {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setPrettyPrinting()
             .create();
+        s390arch = ServerFactory.lookupServerArchByLabel("s390x");
     }
 
     /**
@@ -287,8 +291,7 @@ public class MatcherJsonIO {
     private Stream<Long> entitlementIdsForServer(Server server) {
         if (server.hasEntitlement(EntitlementManager.MANAGEMENT) ||
                 server.hasEntitlement(EntitlementManager.SALT)) {
-            if (server.getServerArch()
-                    .equals(ServerFactory.lookupServerArchByLabel("s390x"))) {
+            if (server.getServerArch().equals(s390arch)) {
                 return productIdsForS390xSystem();
             }
             else if (server.hasVirtualizationEntitlement()) {
