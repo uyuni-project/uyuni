@@ -99,17 +99,20 @@ const NotificationMessages = React.createClass({
 
     return Network.post("/rhn/manager/notification-messages/update-messages-status", JSON.stringify(dataRequest), "application/json").promise
       .then(data => {
-        var newMessagesState = this.state.messages;
-        newMessagesState.push({ severity: data.severity, text: data.text });
-
-        const updatedData = this.state.serverData.map(m => {
-          if (ids.includes(m.id)) {
-            m.isRead = flagAsRead;
-          }
-          return m;
-        });
-
-        this.setState({serverData : updatedData, messages : newMessagesState});
+        const newMessage = { severity: data.severity, text: data.text };
+        this.setState((prevState, props) => ({
+            // serverData = prev serverData without those are changed + those changed with the changes
+            serverData : prevState.serverData.filter(m => !ids.includes(m.id))
+              .concat(prevState.serverData
+                .filter(m => ids.includes(m.id))
+                .map(m => {
+                  var newM = Object.assign({}, m);
+                  newM.isRead = flagAsRead;
+                  return newM;
+                })),
+            messages : prevState.messages.concat([newMessage])
+          })
+        );
       })
       .catch(response => {
         this.setState({
@@ -127,13 +130,13 @@ const NotificationMessages = React.createClass({
   deleteNotifications: function(ids) {
     return Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
       .then(data => {
-        var newMessagesState = this.state.messages;
-        newMessagesState.push({ severity: data.severity, text: data.text });
-
-        const updatedData = this.state.serverData.filter(m => !ids.includes(m.id));
-        const updatedSelectedItems = this.state.selectedItems.filter(m => !ids.includes(m))
-
-        this.setState({serverData : updatedData, selectedItems : updatedSelectedItems, messages : newMessagesState});
+        const newMessage = { severity: data.severity, text: data.text };
+        this.setState((prevState, props) => ({
+            serverData : prevState.serverData.filter(m => !ids.includes(m.id)),
+            selectedItems : prevState.selectedItems.filter(m => !ids.includes(m)),
+            messages : prevState.messages.concat([newMessage])
+          })
+        );
       })
       .catch(response => {
         this.setState({
@@ -239,9 +242,8 @@ const NotificationMessages = React.createClass({
   retryOnboarding: function(minionId) {
     return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
       .then((data) => {
-        var newMessagesState = this.state.messages;
-        newMessagesState.push({ severity: data.severity, text: data.text });
-        this.setState({ messages : newMessagesState });
+        const newMessage = { severity: data.severity, text: data.text };
+        this.setState((prevState, props) => ({ messages : prevState.message.concat([newMessage]) }));
       })
       .catch(response => {
       });
@@ -250,9 +252,8 @@ const NotificationMessages = React.createClass({
   retryReposync: function(channelId) {
     return Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
       .then((data) => {
-        var newMessagesState = this.state.messages;
-        newMessagesState.push({ severity: data.severity, text: data.text });
-        this.setState({ messages : newMessagesState });
+        const newMessage = { severity: data.severity, text: data.text };
+        this.setState((prevState, props) => ({ messages : prevState.message.concat([newMessage]) }));
       })
       .catch(response => {
       });
