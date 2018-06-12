@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -43,6 +44,7 @@ public class LoginSetupAction extends RhnAction {
         ActionForm form, HttpServletRequest request,
         HttpServletResponse response) {
 
+        request.setAttribute("isUyuni", ConfigDefaults.get().isUyuni());
         request.setAttribute("schemaUpgradeRequired",
                 LoginHelper.isSchemaUpgradeRequired().toString());
 

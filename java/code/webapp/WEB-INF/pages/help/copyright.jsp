@@ -6,9 +6,8 @@
     <body>
         <h1><rhn:icon type="header-info" /><bean:message key="help.jsp.copyright.title"/></h1>
         <p><bean:message key="copyright.jsp.title"/></p>
-        <c:set var="product_name" scope="page" value="${rhn:getConfig('product_name')}" />
         <c:choose>
-            <c:when test="${product_name == 'Uyuni'}">
+            <c:when test="${isUyuni}">
                 <bean:message key="copyright.jsp.body.uyuni"/>
             </c:when>
             <c:otherwise>
