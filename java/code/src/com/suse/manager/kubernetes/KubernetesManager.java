@@ -171,12 +171,6 @@ public class KubernetesManager {
                             containerUsage.setVirtualHostManager(virtHostMgr);
                             usage.ifPresent(u -> u.getContainerInfos().add(containerUsage));
                         }
-                        else {
-                            LOG.warn("Expected image id with " + DOCKER_PULLABLE +
-                                    " prefix but got: " +
-                                    container.getImageId());
-                        }
-
                     });
                 }
                 else {
