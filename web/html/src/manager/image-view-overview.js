@@ -223,7 +223,7 @@ class ImageInfo extends React.Component {
               }
             </tr>
             <tr>
-              <td>Installed Products</td>
+              <td>Installed Products:</td>
               { data.installedProducts ?
                 <td>
                   <ul className="list-group">
