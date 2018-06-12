@@ -31,6 +31,9 @@ Requires: librepo >= 1.7.15
 %if 0%{?fedora}
 Obsoletes: yum-rhn-plugin < 2.7
 %endif
+%if 0%{?rhel} >= 8
+Provides: yum-rhn-plugin = %{version}
+%endif
 
 %description
 This DNF plugin provides access to a Spacewalk server for software updates.
@@ -73,6 +76,8 @@ install -d %{buildroot}%{_mandir}/man{5,8}
 install -m 644 spacewalk.conf %{buildroot}%{_sysconfdir}/dnf/plugins/
 install -m 644 man/spacewalk.conf.5 %{buildroot}%{_mandir}/man5/
 install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
+ln -sf dnf.plugin.spacewalk.8 $RPM_BUILD_ROOT%{_mandir}/man8/dnf-plugin-spacewalk.8
+ln -sf dnf.plugin.spacewalk.8 $RPM_BUILD_ROOT%{_mandir}/man8/yum-rhn-plugin.8
 install -d %{buildroot}%{_datadir}/licenses
 install -d %{buildroot}%{_datadir}/licenses/%{name}
 # python2
