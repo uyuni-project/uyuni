@@ -22,8 +22,6 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -51,7 +49,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
-
 
 /**
  * Class responsible for executing one-time upgrade logic
@@ -307,23 +304,18 @@ public class UpgradeCommand extends BaseTransactionCommand {
      */
     private void refreshCustomSlsFiles() {
         try {
-            List<Org> orgs = OrgFactory.lookupAllOrgs();
-            for (Org org : orgs) {
-                List<MinionServer> minions = MinionServerFactory
-                        .lookupByOrg(org.getId());
-                for (MinionServer minion : minions) {
-                    ServerStateRevision serverRev = StateFactory
-                            .latestStateRevision(minion)
-                            .orElseGet(() -> {
-                                ServerStateRevision rev =
-                                        new ServerStateRevision();
-                                rev.setServer(minion);
-                                return rev;
-                            });
-                    SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, saltRootPath);
-                }
+            for (MinionServer minion : MinionServerFactory.listMinions()) {
+                ServerStateRevision serverRev = StateFactory
+                        .latestStateRevision(minion)
+                        .orElseGet(() -> {
+                            ServerStateRevision rev =
+                                    new ServerStateRevision();
+                            rev.setServer(minion);
+                            return rev;
+                        });
+                SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, saltRootPath);
             }
-            log.info("Regenerated minion, org and group .sls files in " + saltRootPath);
+            log.info("Regenerated custom minion SLS files in " + saltRootPath);
         }
         catch (Exception e) {
             log.error("Error refreshing custom SLS files. Ignoring.", e);
