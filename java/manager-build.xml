@@ -187,7 +187,10 @@
       <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
     </exec>
 
-    <echo message="Linking the main jar for Taskomatic..."/>
+    <echo message="Linking jars for Taskomatic..."/>
+    <exec executable="ssh">
+      <arg line="${ssh.command.args} ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+    </exec>
     <exec executable="ssh">
       <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
     </exec>
