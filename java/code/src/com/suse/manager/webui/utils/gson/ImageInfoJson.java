@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.webui.utils.ViewHelper;
@@ -354,16 +355,10 @@ public class ImageInfoJson {
         json.setInstalledPackages(imageOverview.getInstalledPackages());
 
         Map<Boolean, List<InstalledProduct>> collect = imageOverview.getInstalledProducts()
-                .stream().collect(Collectors.partitioningBy(ip -> ip.isBaseproduct()));
-        Optional<InstalledProductsJson> installedProductsJson = collect.get(true).stream()
-                .findFirst().map(base ->
-                new InstalledProductsJson(
-                        base.getSUSEProduct().getFriendlyName(),
-                        collect.get(false).stream().map(
-                                ip -> ip.getSUSEProduct().getFriendlyName())
-                        .collect(Collectors.toSet())
-                )
-        );
+                .stream().collect(Collectors.partitioningBy(InstalledProduct::isBaseproduct));
+        Optional<InstalledProductsJson> installedProductsJson =
+                collect.get(true).stream().findFirst().map(base -> new InstalledProductsJson(getProductName(base),
+                        collect.get(false).stream().map(ImageInfoJson::getProductName).collect(Collectors.toSet())));
         json.setInstalledProducts(installedProductsJson.orElse(null));
         json.setCustomData(imageOverview.getCustomDataValues());
 
@@ -391,4 +386,8 @@ public class ImageInfoJson {
         return json;
     }
 
+    private static String getProductName(InstalledProduct product) {
+        SUSEProduct suseProduct = product.getSUSEProduct();
+        return suseProduct != null ? suseProduct.getFriendlyName() : product.getName() + " " + product.getVersion();
+    }
 }
