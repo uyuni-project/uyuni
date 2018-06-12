@@ -1,3 +1,4 @@
+- Do not log when received 'docker://' prefix from Kubernetes clusters
 - fix cleaning up tasks when starting up taskomatic (bsc#1095210)
 - Mark all proceeding actions in action-chain failed after an action failed(bsc#1096510)
 - Check if directory /srv/susemanager/salt/actionchains exists before deleting minion
