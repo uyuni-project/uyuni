@@ -22,8 +22,14 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
@@ -45,6 +51,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+
 
 /**
  * Class responsible for executing one-time upgrade logic
@@ -61,6 +69,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "kickstart_profiles";
     public static final String UPGRADE_CUSTOM_STATES =
             UPGRADE_TASK_NAME + "custom_states";
+    public static final String UPGRADE_REFRESH_CUSTOM_SLS_FILES =
+            UPGRADE_TASK_NAME + "refresh_custom_sls_files";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -123,6 +133,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         break;
                     case UPGRADE_CUSTOM_STATES:
                         processCustomStates();
+                        break;
+                    case UPGRADE_REFRESH_CUSTOM_SLS_FILES:
+                        refreshCustomSlsFiles();
                         break;
                     default:
                 }
@@ -288,5 +301,34 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         path.toFile().isDirectory())
                 .collect(Collectors.toSet());
     }
-}
 
+    /**
+     * Regenerate all minion custom SLS files (/srv/susemanager/salt/custom/custom_*.sls) according to
+     * the information stored on the database.
+     */
+    private void refreshCustomSlsFiles() {
+        Path saltCustomSlsPath = saltRootPath.resolve(SALT_CONFIG_STATES_DIR);
+        try {
+            List<Org> orgs = OrgFactory.lookupAllOrgs();
+            for (Org org : orgs) {
+                List<MinionServer> minions = MinionServerFactory
+                        .lookupByOrg(org.getId());
+                for (MinionServer minion : minions) {
+                    ServerStateRevision serverRev = StateFactory
+                            .latestStateRevision(minion)
+                            .orElseGet(() -> {
+                                ServerStateRevision rev =
+                                        new ServerStateRevision();
+                                rev.setServer(minion);
+                                return rev;
+                            });
+                    SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, saltCustomSlsPath);
+                }
+            }
+            log.info("Regenerated minion, org and group .sls files in " + saltCustomSlsPath);
+        }
+        catch (Exception e) {
+            log.error("Error refreshing custom SLS files. Ignoring.", e);
+        }
+    }
+}
