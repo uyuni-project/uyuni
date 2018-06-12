@@ -51,7 +51,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 
 
 /**
@@ -307,7 +306,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
      * the information stored on the database.
      */
     private void refreshCustomSlsFiles() {
-        Path saltCustomSlsPath = saltRootPath.resolve(SALT_CONFIG_STATES_DIR);
         try {
             List<Org> orgs = OrgFactory.lookupAllOrgs();
             for (Org org : orgs) {
@@ -322,10 +320,10 @@ public class UpgradeCommand extends BaseTransactionCommand {
                                 rev.setServer(minion);
                                 return rev;
                             });
-                    SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, saltCustomSlsPath);
+                    SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, saltRootPath);
                 }
             }
-            log.info("Regenerated minion, org and group .sls files in " + saltCustomSlsPath);
+            log.info("Regenerated minion, org and group .sls files in " + saltRootPath);
         }
         catch (Exception e) {
             log.error("Error refreshing custom SLS files. Ignoring.", e);
