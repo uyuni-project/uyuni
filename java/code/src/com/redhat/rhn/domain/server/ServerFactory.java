@@ -57,6 +57,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 
 /**
  * ServerFactory - the singleton class used to fetch and store
@@ -1068,13 +1072,24 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * @param fetchingVirtualGuests eagerly load virtual guests
+     * @param fetchingGroups eagerly load server groups
      * @return a list of all systems
      */
-    @SuppressWarnings("unchecked")
-    public static List<Server> list() {
-        return getSession().createCriteria(Server.class)
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-                .list();
+    public static List<Server> list(boolean fetchingVirtualGuests, boolean fetchingGroups) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<Server> criteria = builder.createQuery(Server.class);
+        Root r = criteria.from(Server.class);
+        if (fetchingVirtualGuests) {
+            r.fetch("virtualGuests", JoinType.LEFT);
+        }
+        if (fetchingGroups) {
+            r.fetch("groups", JoinType.LEFT);
+        }
+        criteria.distinct(true);
+        return getSession().createQuery(criteria).getResultList().stream()
+                .collect(Collectors.toList());
+
     }
 
     /**
