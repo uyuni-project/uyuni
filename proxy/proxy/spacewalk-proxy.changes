@@ -1,6 +1,12 @@
 - Increase max open files for salt-broker service (bsc#1094705)
 
 -------------------------------------------------------------------
+Fri Jun 01 15:27:41 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.1.6-1
+- Increase max open files for salt-broker service (bsc#1094705)
+
+-------------------------------------------------------------------
 Tue Nov 28 14:36:51 CET 2017 - jgonzalez@suse.com
 
 - version 2.7.1.5-1

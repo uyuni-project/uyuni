@@ -23,6 +23,18 @@
 - take organization into account when looking up for an erratum (bsc#1089185)
 
 -------------------------------------------------------------------
+Mon Jun 11 17:25:11 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.46.14-1
+- Do not create new product if product_id exists, update it instead (bsc#1096714)
+
+-------------------------------------------------------------------
+Fri Jun 01 15:25:16 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.46.13-1
+- fix deletion of Taskomatic schedules via the GUI (bsc#1095569)
+
+-------------------------------------------------------------------
 Thu May 17 10:26:47 CEST 2018 - jgonzalez@suse.com
 
 - version 2.7.46.12-1
