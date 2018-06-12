@@ -1,3 +1,4 @@
+- Fix typo in 'Installed Products' label in image overview page
 - Disallow colons in image labels (bsc#1092940)
 - Show chain of proxies correctly (bsc#1084128)
 - Fix cve search box (bsc#1089571)
