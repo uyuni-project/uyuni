@@ -126,13 +126,16 @@ public class MatcherJsonIO {
         Stream<JsonSystem> systems = ServerFactory.list(true, true).stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
-                Set<Long> productIds = productIdsForServer(system).collect(toSet());
+                Set<String> entitlements = system.getEntitlementLabels();
+                boolean virtualHost = entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED) ||
+                        !system.getGuests().isEmpty();
+                Set<Long> productIds = productIdsForServer(system, entitlements).collect(toSet());
                 return new JsonSystem(
                     system.getId(),
                     system.getName(),
                     cpus == null ? null : cpus.intValue(),
                     !system.isVirtualGuest(),
-                    system.isVirtualHost(),
+                    virtualHost,
                     getVirtualGuests(system),
                     productIds
                 );
@@ -296,7 +299,7 @@ public class MatcherJsonIO {
      * (For systems without a SUSE base product, empty stream is returned as we don't
      * require SUSE Manager entitlements for such systems).
      */
-    private Stream<Long> productIdsForServer(Server server) {
+    private Stream<Long> productIdsForServer(Server server, Set<String> entitlements) {
         SUSEProductSet productSet = server.getInstalledProductSet();
         if (productSet == null || productSet.getBaseProduct() == null) {
             return empty();
@@ -306,20 +309,20 @@ public class MatcherJsonIO {
         return of(
             of(productSet.getBaseProduct().getProductId()),
             productSet.getAddonProducts().stream().map(p -> p.getProductId()),
-            entitlementIdsForServer(server)
+            entitlementIdsForServer(server, entitlements)
         ).flatMap(Function.identity());
     }
 
     /**
      * Returns SUSE Manager entitlement product ids for a server.
      */
-    private Stream<Long> entitlementIdsForServer(Server server) {
-        if (server.hasEntitlement(EntitlementManager.MANAGEMENT) ||
-                server.hasEntitlement(EntitlementManager.SALT)) {
+    private Stream<Long> entitlementIdsForServer(Server server, Set<String> entitlements) {
+        if (entitlements.contains(EntitlementManager.SALT_ENTITLED) ||
+                entitlements.contains(EntitlementManager.ENTERPRISE_ENTITLED)) {
             if (server.getServerArch().equals(s390arch)) {
                 return productIdsForS390xSystem.stream();
             }
-            else if (server.hasVirtualizationEntitlement()) {
+            else if (entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED)) {
                 return productIdsForVirtualHost.stream();
             }
             else {
