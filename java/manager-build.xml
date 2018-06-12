@@ -3,12 +3,12 @@
  SUSE Manager build file for development use
 
  Builds and deploys the webapp to a SSH host running Tomcat, runs tests
- 
+
  Requirements & configuration:
- 
+
  https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir=".">
+<project name="SUSE Manager" default="deploy" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
@@ -40,6 +40,9 @@
   <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
   <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
 
+  <!-- Taskdefs -->
+  <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
+
   <!-- Paths -->
   <path id="libjars">
     <fileset dir="${lib.dir}" includes="**/*.jar" />
@@ -55,6 +58,10 @@
       <exclude name="classes/**/*" if="precompiled" />
     </delete>
     <delete dir="${test.results.dir}" />
+  </target>
+
+  <target name="ivy" description="Retrieves dependencies through ivy">
+    <ivy-retrieve sync="true" />
   </target>
 
   <target name="refresh-branding-jar" depends="clean" description="Compiles and builds the SUSE branding jar">
