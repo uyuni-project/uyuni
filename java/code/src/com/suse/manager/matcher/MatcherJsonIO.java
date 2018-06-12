@@ -74,6 +74,15 @@ public class MatcherJsonIO {
     /** Cached instance of the s390x ServerArch object. */
     private final ServerArch s390arch;
 
+    /** Cached list of mandatory product IDs for an s390x system. */
+    private final List<Long> productIdsForS390xSystem;
+
+    /** Cached list of mandatory product IDs for a virtualization host. */
+    private final List<Long> productIdsForVirtualHost;
+
+    /** Cached list of mandatory product IDs for a regular system. */
+    private final List<Long> productIdsForSystem;
+
     /**
      * Logger for this class
      */
@@ -88,7 +97,23 @@ public class MatcherJsonIO {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setPrettyPrinting()
             .create();
+
         s390arch = ServerFactory.lookupServerArchByLabel("s390x");
+
+        productIdsForS390xSystem = of(
+                productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z"),
+                productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
+        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
+
+        productIdsForVirtualHost = of(
+                productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual"),
+                productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual")
+        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
+
+        productIdsForSystem = of(
+                productIdForEntitlement("SUSE-Manager-Mgmt-Single"),
+                productIdForEntitlement("SUSE-Manager-Prov-Single")
+        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
     }
 
     /**
@@ -292,46 +317,16 @@ public class MatcherJsonIO {
         if (server.hasEntitlement(EntitlementManager.MANAGEMENT) ||
                 server.hasEntitlement(EntitlementManager.SALT)) {
             if (server.getServerArch().equals(s390arch)) {
-                return productIdsForS390xSystem();
+                return productIdsForS390xSystem.stream();
             }
             else if (server.hasVirtualizationEntitlement()) {
-                return productIdsForVirtualHost();
+                return productIdsForVirtualHost.stream();
             }
             else {
-                return productIdsForSystem();
+                return productIdsForSystem.stream();
             }
         }
         return empty();
-    }
-
-    /**
-     * Retruns product ids for an s390x system.
-     */
-    private Stream<Long> productIdsForS390xSystem() {
-        return of(
-            productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z"),
-            productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
-        ).filter(id -> id.isPresent()).map(id -> id.get());
-    }
-
-    /**
-     * Retruns product ids for a virtual host.
-     */
-    private Stream<Long> productIdsForVirtualHost() {
-        return of(
-            productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual"),
-            productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual")
-        ).filter(id -> id.isPresent()).map(id -> id.get());
-    }
-
-    /**
-     * Returns product ids for a normal system.
-     */
-    private Stream<Long> productIdsForSystem() {
-        return of(
-            productIdForEntitlement("SUSE-Manager-Mgmt-Single"),
-            productIdForEntitlement("SUSE-Manager-Prov-Single")
-        ).filter(id -> id.isPresent()).map(id -> id.get());
     }
 
     /**
