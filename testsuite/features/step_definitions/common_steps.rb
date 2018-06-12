@@ -764,7 +764,7 @@ end
 
 Then(/^I check the first notification message$/) do
   if count_table_items == '0'
-    puts "There are no notification messages, nothing to delete then"
+    puts "There are no notification messages, nothing to do then"
   else
     within(:xpath, '//section') do
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]")
@@ -779,5 +779,14 @@ And(/^I delete it via the "([^"]*)" button$/) do |target_button|
     raise unless find(:xpath, xpath_for_delete_button).click
 
     step %(I wait until I see "1 message deleted successfully." text)
+  end
+end
+
+And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
+  if count_table_items != '0'
+    xpath_for_read_button = "//button[.//span[contains(text(), '#{target_button}')]]"
+    raise unless find(:xpath, xpath_for_read_button).click
+
+    step %(I wait until I see "1 message read status updated successfully." text)
   end
 end
