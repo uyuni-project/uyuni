@@ -14,9 +14,8 @@
     </div>
   </c:if>
   <div class="col-sm-6">
-      <c:set var="product_name" scope="page" value="${rhn:getConfig('product_name')}" />
       <c:choose>
-          <c:when test="${product_name == 'Uyuni'}">
+          <c:when test="${isUyuni}">
               <h1 class="Raleway-font">Uyuni</h1>
               <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
               <p class="gray-text">Learn more about Uyuni: <a href="http://www.uyuni-project.org/" class="btn-dark" target="_blank"> View website</a></p>

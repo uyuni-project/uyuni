@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * ConfigDefaults is the place to store application specific Config settings
@@ -31,7 +33,7 @@ public class ConfigDefaults {
 
     private static ConfigDefaults instance = new ConfigDefaults();
 
-    public static final String SPACEWALK = "Spacewalk";
+    public static final List<String> SPACEWALK = Arrays.asList("Spacewalk", "Uyuni");
     //
     // Names of the configuration parameters
     //
@@ -535,11 +537,19 @@ public class ConfigDefaults {
     }
 
     /**
-     * Return true if this is a Spacewalk instance. (as opposed to Satellite)
-     * @return true is this is a Spacewalk instance.
+     * Return true if this is an Uyuni or Spacewalk instance. (as opposed to SUSE Manager and Satellite)
+     * @return true is this is an Uyuni or Spacewalk instance.
      */
     public boolean isSpacewalk() {
-        return Config.get().getString(PRODUCT_NAME).equals(SPACEWALK);
+        return SPACEWALK.contains(Config.get().getString(PRODUCT_NAME));
+    }
+
+    /**
+     * Return true if this is an Uyuni or Spacewalk instance. (as opposed to SUSE Manager and Satellite)
+     * @return true is this is a Uyuni or Spacewalk instance.
+     */
+    public boolean isUyuni() {
+        return isSpacewalk();
     }
 
     /**

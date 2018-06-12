@@ -37,7 +37,7 @@ public class ChatAction extends org.apache.struts.action.Action {
                                   ActionForm formIn,
                                   HttpServletRequest request,
                                   HttpServletResponse response) {
-        request.setAttribute("isSpacewalk", ConfigDefaults.get().isSpacewalk());
+        request.setAttribute("isUyuni", ConfigDefaults.get().isUyuni());
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 }

@@ -20,6 +20,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class EulaAction extends org.apache.struts.action.Action {
                                   ActionForm formIn,
                                   HttpServletRequest request,
                                   HttpServletResponse response) {
+        request.setAttribute("isUyuni", ConfigDefaults.get().isUyuni());
         String attr = "EulaText";
         if (EULA_PATH.canRead()) {
             try {
