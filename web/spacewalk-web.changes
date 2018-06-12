@@ -1,3 +1,4 @@
+- Fix typo in 'Installed Products' label in image overview page
 - Fix css issues on minion-state pages (bsc#1083295)
 - Show feedback on button clicked (bsc#1085464)
 - Show chain of proxies correctly (bsc#1084128)
