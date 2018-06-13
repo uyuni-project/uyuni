@@ -24,7 +24,14 @@ module Yast
       @display_info = UI.GetDisplayInfo
       @text_mode = Ops.get_boolean(@display_info, "TextMode", false)
 
+      @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
       @invalid_pw_chars = "\\\"$'!+%`=\#@/"
+
+      if @product_name == "Uyuni"
+        db_user = "uyuni"
+      else
+        db_user = "susemanager"
+      end
 
       @settings = {
         "DB_BACKEND"          => "postgresql",
@@ -32,13 +39,13 @@ module Yast
         "MANAGER_DB_HOST"     => "localhost",
         "MANAGER_DB_PORT"     => "",
         "MANAGER_DB_PROTOCOL" => "TCP",
-        "MANAGER_USER"        => "susemanager",
+        "MANAGER_USER"        => db_user,
         "MANAGER_PASS"        => "",
         "MANAGER_PASS2"       => ""
       }
 
       @local_db = {
-        "MANAGER_DB_NAME"     => "susemanager",
+        "MANAGER_DB_NAME"     => db_user,
         "MANAGER_DB_HOST"     => "localhost",
         "MANAGER_DB_PROTOCOL" => "TCP"
       }
@@ -62,7 +69,7 @@ module Yast
       end
 
       if @migration
-        Ops.set(@settings, "MANAGER_USER", "susemanager")
+        Ops.set(@settings, "MANAGER_USER", db_user)
         Ops.set(@settings, "MANAGER_PASS", "")
         Ops.set(@settings, "MANAGER_PASS2", "")
       end
@@ -99,7 +106,7 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>By default SUSE Manager is using an internal postgresql database named 'susemanager'. " +
+        "<p>By default SUSE Manager is using an internal postgresql database named '" + db_user + "'. " +
         "If you want to use an external database or a custom database name, you will " +
         "need to modify the answer file created by this user interface (/root/setup_env.sh) " +
         "and run the setup procedure manually with the following command:</p>\n\n" +

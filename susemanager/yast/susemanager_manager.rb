@@ -21,9 +21,15 @@ module Yast
       @migration = FileUtils.Exists(@migration_file)
       @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
 
+      if @product_name == "Uyuni"
+        email = Ops.add("uyuni@", Hostname.CurrentDomain)
+      else
+        email = Ops.add("susemanager@", Hostname.CurrentDomain)
+      end
+
       @settings = {
         "MANAGER_IP"          => "",
-        "MANAGER_ADMIN_EMAIL" => Ops.add("susemanager@", Hostname.CurrentDomain),
+        "MANAGER_ADMIN_EMAIL" => email,
         "ACTIVATE_SLP"        => "n"
       }
       if !@migration
