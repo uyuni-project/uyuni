@@ -43,7 +43,7 @@ Feature: openSCAP audit of traditional client
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "Default" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text
+    And I should see a "pass" text or "notapplicable" text
     And I should see a "rule-" link
 
   Scenario: Check NAGIOS status of last action
