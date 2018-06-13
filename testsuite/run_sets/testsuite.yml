@@ -47,6 +47,8 @@
 - features/trad_ssh_push.feature
 - features/srv_change_password.feature
 - features/min_salt_software_states.feature
+# min_docker_xmlrpc feature takes quite some and was the reason for issue#4679.
+- features/min_docker_xmlrpc.feature
 - features/trad_metadata_check.feature
 - features/srv_clone_channel_npn.feature
 - features/trad_cve_id_new_syntax.feature
@@ -56,7 +58,6 @@
 - features/min_salt_install_with_staging.feature
 - features/srv_xmlrpc_activationkey.feature
 - features/allcli_overview_systems_details.feature
-- features/min_docker_xmlrpc.feature
 - features/srv_distro_cobbler.feature
 - features/srv_mainpage.feature
 - features/srv_xmlrpc_user.feature
