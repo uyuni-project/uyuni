@@ -80,5 +80,5 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text
+    And I should see a "pass" text or "notapplicable" text
     And I should see a "rpm_" link
