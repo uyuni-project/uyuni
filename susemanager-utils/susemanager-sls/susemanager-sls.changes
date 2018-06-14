@@ -1,3 +1,6 @@
+- Do not install 'python-salt' on container build hosts with older Salt versions
+  (bsc#1097699)
+
 -------------------------------------------------------------------
 Mon Jun 11 15:04:58 CEST 2018 - jgonzalez@suse.com
 
