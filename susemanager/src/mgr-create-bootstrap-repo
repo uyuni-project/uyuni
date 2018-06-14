@@ -1,5 +1,5 @@
 #! /usr/bin/python
-
+from __future__ import print_function
 import sys
 import os
 import shutil
@@ -106,13 +106,13 @@ def check_bootstrap_packages():
         os.system("rpm -q spacewalk-client-repository-sle-10-3 >/dev/null") == 0 or
         os.system("rpm -q spacewalk-client-repository-sle-11-1 >/dev/null") == 0 or
         os.system("rpm -q spacewalk-client-repository >/dev/null") == 0):
-            print "Using this script requires to de-install the bootstrap repository packages."
-            print "Take care the the following packages are not on your system:"
-            print "* spacewalk-client-repository-sle-10-4"
-            print "* spacewalk-client-repository-sle-10-3"
-            print "* spacewalk-client-repository-sle-11-1"
-            print "* spacewalk-client-repository"
-            print "Aborted."
+            print("Using this script requires to de-install the bootstrap repository packages.")
+            print("Take care the the following packages are not on your system:")
+            print("* spacewalk-client-repository-sle-10-4")
+            print("* spacewalk-client-repository-sle-10-3")
+            print("* spacewalk-client-repository-sle-11-1")
+            print("* spacewalk-client-repository")
+            print("Aborted.")
             sys.exit(1)
 
 def list_labels():
@@ -126,12 +126,12 @@ def list_labels():
     label_index = 1
     for label in sorted(mgr_bootstrap_data.DATA.iterkeys()):
         if int(mgr_bootstrap_data.DATA[label]['PDID'][0]) in synced_products:
-            print "{0}. {1}".format(label_index, label)
+            print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
             label_index += 1
     return label_map
 
-def create_repo(label, additional=[]):
+def create_repo(label, flush, additional=[]):
     pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
     destdir = mgr_bootstrap_data.DATA[label]['DEST']
     errors = 0
@@ -140,16 +140,23 @@ def create_repo(label, additional=[]):
         'no-packages': None
     }
 
+    if flush:
+        print("Removing directory:", destdir)
+        try:
+            shutil.rmtree(destdir)
+        except OSError as err:
+            print('Error while deleting {0}: {1}'.format(destdir, err))
+
     if not os.path.exists(destdir):
         if dryrun:
-            print "Create directory '%s'" % destdir
+            print("Create directory:", destdir)
         else:
             os.makedirs(destdir)
 
     if label.startswith('RES'):
-        print "Creating bootstrap repo for latest Service Pack of {0}".format(label)
+        print("Creating bootstrap repo for latest Service Pack of {0}".format(label))
     else:
-        print "Creating bootstrap repo for {0}".format(label)
+        print("Creating bootstrap repo for {0}".format(label))
     print
 
     if options.usecustomchannels:
@@ -174,24 +181,24 @@ def create_repo(label, additional=[]):
             rpmdir = os.path.join(destdir, p['arch'])
             if not os.path.exists(rpmdir):
                 os.makedirs(rpmdir)
-            print "copy '%s'" % p['nvrea']
+            print("copy '%s'" % p['nvrea'])
             if not dryrun:
                 shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
 
     if dryrun:
-        print "createrepo -s sha %s" % destdir
+        print("createrepo -s sha %s" % destdir)
     else:
         os.system("createrepo -s sha %s" % destdir)
     if errors:
         for m in messages:
-            print m
+            print(m)
         if label.startswith('RES') and not options.usecustomchannels:
-            print "If the installation media was imported into a custom channel, try to run again with --with-custom-channels option"
+            print("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
         suggestions = list(filter(None, suggestions.values()))
         if suggestions:
-            print "\nSuggestions:"
+            print("\nSuggestions:")
             for suggestion in suggestions:
-                print msg_wrapper.fill(suggestion) + "\n"
+                print(msg_wrapper.fill(suggestion) + "\n")
         sys.exit(1)
 
 usage = "usage: %prog [options] [additional_pkg1 additional_pkg2 ...]"
@@ -204,6 +211,8 @@ parser.add_option('-l', '--list', action='store_true', dest='list',
                   help='list available distributions')
 parser.add_option('-c', '--create', action='store', dest='create',
                   help='create bootstrap repo for given distribution label')
+parser.add_option('-f', '--flush', action='store_true', dest='flush',
+                  help='when used in conjuction with --create, deletes the target repository before creating it')
 parser.add_option('', '--datamodule', action="store", dest='datamodule',
                   help='Use an own datamodule (Default: mgr_bootstrap_data)')
 parser.add_option('', '--with-custom-channels', action='store_true', dest='usecustomchannels',
@@ -243,19 +252,17 @@ if options.interactive:
             elabel = label_map.get(int(raw_input("Enter a number of a product label: ")), '')
             break
         except Exception:
-            print "Please enter a number."
+            print("Please enter a number.")
 
     if elabel not in mgr_bootstrap_data.DATA:
-        print "'%s' not found" % elabel
+        print("'%s' not found" % elabel)
         sys.exit(1)
 
-    create_repo(elabel, additional=args)
+    create_repo(elabel, options.flush, additional=args)
 elif options.list:
     list_labels()
 elif options.create:
     if options.create not in mgr_bootstrap_data.DATA:
-        print "'%s' not found" % options.create
+        print("'%s' not found" % options.create)
         sys.exit(1)
-    create_repo(options.create, additional=args)
-
-
+    create_repo(options.create, options.flush, additional=args)
