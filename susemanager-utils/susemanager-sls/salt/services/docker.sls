@@ -4,18 +4,20 @@ mgr_install_docker:
     - pkgs:
       - docker: '>=1.9.0'
 {%- if grains['pythonversion'][0] == 3 %}
-{%- if grains['osmajorrelease'] == 12 %}
+    {%- if grains['osmajorrelease'] == 12 %}
       - python3-docker-py: '>=1.6.0'
-{%- else %}
+    {%- else %}
       - python3-docker: '>=1.6.0'
-{%- endif %}
+    {%- endif %}
 {%- else %}
       - python-docker-py: '>=1.6.0'
 {%- endif %}
-{%- if grains['osmajorrelease'] == 12 %}
+{%- if grains['saltversioninfo'][0] >= 2018 %}
+    {%- if grains['osmajorrelease'] == 12 %}
       - python3-salt
-{%- else %}
+    {%- else %}
       - python2-salt
+    {%- endif %}
 {%- endif %}
 
 mgr_docker_service:
