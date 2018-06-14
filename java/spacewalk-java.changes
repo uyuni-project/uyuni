@@ -1,3 +1,4 @@
+- improve gatherer-matcher Taskomatic task's performance (bsc#1094524)
 - fix hardware refresh with multiple IPs on a network interface (bsc#1041134)
 - Fix NPE in image pages when showing containers with non-SUSE distros
   (bsc#1097676)
