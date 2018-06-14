@@ -128,10 +128,17 @@ public class ImageProfileController {
             res.redirect("/rhn/manager/cm/imageprofiles/create");
         }
 
+        List<String> imageTypesDataFromTheServer = new ArrayList<String>();
+        imageTypesDataFromTheServer.add("dockerfile");
+        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
+            imageTypesDataFromTheServer.add("kiwi");
+        }
+
         Map<String, Object> data = new HashMap<>();
         data.put("profileId", profileId);
         data.put("activationKeys", getActivationKeys(user));
         data.put("customDataKeys", getCustomDataKeys(user.getOrg()));
+        data.put("imageTypesDataFromTheServer", GSON.toJson(imageTypesDataFromTheServer));
         return new ModelAndView(data, "content_management/edit-profile.jade");
     }
 
