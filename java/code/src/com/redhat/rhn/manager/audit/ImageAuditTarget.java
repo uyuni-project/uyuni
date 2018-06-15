@@ -17,9 +17,10 @@ package com.redhat.rhn.manager.audit;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,12 +30,16 @@ public class ImageAuditTarget implements AuditTarget {
 
     private final ImageInfo imageInfo;
 
+    private final CachingSUSEProductFactory productFactory;
+
     /**
      * Constructor
      * @param imageInfoIn an image Info object
+     * @param productFactoryIn the factory object
      */
-    public ImageAuditTarget(ImageInfo imageInfoIn) {
+    public ImageAuditTarget(ImageInfo imageInfoIn, CachingSUSEProductFactory productFactoryIn) {
         this.imageInfo = imageInfoIn;
+        this.productFactory = productFactoryIn;
     }
 
 
@@ -44,13 +49,8 @@ public class ImageAuditTarget implements AuditTarget {
     }
 
     @Override
-    public Optional<SUSEProductSet> getInstalledProductSet() {
-        if (imageInfo.getInstalledProducts().isEmpty()) {
-            return Optional.empty();
-        }
-        else {
-            return Optional.of(new SUSEProductSet(imageInfo.getInstalledProducts()));
-        }
+    public List<SUSEProduct> getSUSEProducts() {
+        return productFactory.map(imageInfo.getInstalledProducts());
     }
 
     @Override

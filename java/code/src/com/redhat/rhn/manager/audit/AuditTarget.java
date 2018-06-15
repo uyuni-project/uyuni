@@ -16,9 +16,9 @@ package com.redhat.rhn.manager.audit;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.product.SUSEProduct;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,9 +34,9 @@ public interface AuditTarget {
 
     /**
      * get installed products
-     * @return Optional of SUSEProductSet
+     * @return List of SUSEProduct
      */
-    Optional<SUSEProductSet> getInstalledProductSet();
+    List<SUSEProduct> getSUSEProducts();
 
     /**
      * get compatible architectures
