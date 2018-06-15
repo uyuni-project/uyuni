@@ -26,12 +26,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
+import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCSubscription;
-import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerArch;
@@ -49,17 +48,12 @@ import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
 import com.suse.matcher.json.JsonSystem;
 import com.suse.matcher.json.JsonVirtualizationGroup;
-import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -88,8 +82,8 @@ public class MatcherJsonIO {
     /** Cached list of mandatory product IDs for a regular system. */
     private final List<Long> productIdsForSystem;
 
-    /* Cache for findSUSEProduct() results */
-    private final Map<String, SUSEProduct> suseProductCache;
+    /** Fast factory for SUSEProduct objects. */
+    private final CachingSUSEProductFactory productFactory;
 
     /**
      * Logger for this class
@@ -123,7 +117,7 @@ public class MatcherJsonIO {
                 productIdForEntitlement("SUSE-Manager-Prov-Single")
         ).filter(Optional::isPresent).map(Optional::get).collect(toList());
 
-        suseProductCache = new HashMap<>();
+        productFactory = new CachingSUSEProductFactory();
     }
 
     /**
@@ -310,11 +304,7 @@ public class MatcherJsonIO {
      * require SUSE Manager entitlements for such systems).
      */
     private Stream<Long> productIdsForServer(Server server, Set<String> entitlements) {
-        List<SUSEProduct> products = server.getInstalledProducts().stream()
-                .map(this::lookupCachedSUSEProduct)
-                .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(SUSEProduct::isBase).thenComparing(SUSEProduct::getId))
-                .collect(toList());
+        List<SUSEProduct> products = productFactory.map(server.getInstalledProducts());
 
         if (products.stream().noneMatch(SUSEProduct::isBase)) {
             return Stream.empty();
@@ -325,27 +315,6 @@ public class MatcherJsonIO {
             products.stream().map(SUSEProduct::getProductId),
             entitlementIdsForServer(server, entitlements)
         );
-    }
-
-    /**
-     * Returns the SUSE product corresponding to an InstalledProduct, if available. Caches results for faster lookups.
-     */
-    private SUSEProduct lookupCachedSUSEProduct(InstalledProduct ip) {
-        String name = ip.getName();
-        String version = ip.getVersion();
-        String release = ip.getRelease();
-        String arch = Opt.fold(ofNullable(ip.getArch()), () -> null, PackageArch::getLabel);
-
-        String key = name + "-" + version + "-" + release + "-" + arch;
-        SUSEProduct cached = suseProductCache.get(key);
-        if (cached != null) {
-            return cached;
-        }
-        else {
-            SUSEProduct result = SUSEProductFactory.findSUSEProduct(name, version, release, arch, true);
-            suseProductCache.put(key, result);
-            return result;
-        }
     }
 
     /**
