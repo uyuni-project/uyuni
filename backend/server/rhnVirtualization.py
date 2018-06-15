@@ -1006,6 +1006,8 @@ class EntitlementVirtualizationListener(VirtualizationListener):
 
         if "virtualization_host" in host_system_slots:
             host_system_slots.remove("virtualization_host")
+        if "foreign_entitled" in host_system_slots:
+            host_system_slots.remove("foreign_entitled")
 
         guest_system_slots = server_lib.check_entitlement(guest_sid)
         guest_system_slots = list(guest_system_slots.keys())
