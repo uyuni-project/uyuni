@@ -14,6 +14,27 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.frontend.dto.SUSEProductDto;
+import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
+
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,27 +48,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.ImageInfoFactory;
-import org.apache.log4j.Logger;
-
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSet;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.frontend.dto.SUSEProductDto;
-import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
 /**
  * CVESearchManager.
@@ -426,10 +426,12 @@ public class CVEAuditManager {
             log.debug("Number of servers found: " + servers.size());
         }
 
+        CachingSUSEProductFactory productFactory = new CachingSUSEProductFactory();
+
         Map<Server, List<RankedChannel>> relevantServerChannels = servers.stream()
             .collect(Collectors.toMap(
                 Function.identity(),
-                server -> populateCVEChannels(new ServerAuditTarget(server))
+                server -> populateCVEChannels(new ServerAuditTarget(server, productFactory))
             ));
 
         insertRelevantServerChannels(relevantServerChannels);
@@ -437,7 +439,7 @@ public class CVEAuditManager {
         Map<ImageInfo, List<RankedChannel>> relevantImageChannels =
                 ImageInfoFactory.list().stream().collect(Collectors.toMap(
                     Function.identity(),
-                    imageInfo -> populateCVEChannels(new ImageAuditTarget(imageInfo))
+                    imageInfo -> populateCVEChannels(new ImageAuditTarget(imageInfo, productFactory))
                 ));
 
         insertRelevantImageChannels(relevantImageChannels);
@@ -457,19 +459,26 @@ public class CVEAuditManager {
 
         final List<RankedChannel> result = new ArrayList<>();
 
-        SUSEProductSet suseProductSet = auditTarget.getInstalledProductSet().orElse(null);
-        if (suseProductSet == null) {
+        List<SUSEProduct> products = auditTarget.getSUSEProducts();
+
+        if (products.isEmpty()) {
             return Collections.emptyList();
         }
 
-        SUSEProduct baseProduct = suseProductSet.getBaseProduct();
-        if (baseProduct == null) {
+        Optional<SUSEProduct> baseProduct = products.stream()
+                .filter(SUSEProduct::isBase)
+                .findFirst();
+        if (!baseProduct.isPresent()) {
             return Collections.emptyList();
         }
 
-        Long baseProductID = baseProduct.getId();
+        Long baseProductID = baseProduct.get().getId();
         List<SUSEProductDto> baseProductTargets = findAllTargetProducts(baseProductID);
         List<SUSEProductDto> baseProductSources = findAllSourceProducts(baseProductID);
+        List<Long> suseProductIDs = products.stream()
+                .map(SUSEProduct::getId)
+                .collect(Collectors.toList());
+
         ChannelArch arch = auditTarget.getCompatibleChannelArch();
         int currentRank = maxRank;
 
@@ -480,7 +489,7 @@ public class CVEAuditManager {
             // ...if a base channel exists and is synced...
             if (baseProductChannelId != null) {
                 // ...and for each installed product...
-                for (long suseProductID : suseProductSet.getProductIDs()) {
+                for (long suseProductID : suseProductIDs) {
 
                     // ...if it has a target with that base product...
                     List<SUSEProductDto> targets = findAllTargetProducts(suseProductID);
@@ -514,7 +523,7 @@ public class CVEAuditManager {
             // ...if a base channel exists and is synced...
             if (baseProductChannelId != null) {
                 // ...and for each installed product...
-                for (long suseProductID : suseProductSet.getProductIDs()) {
+                for (long suseProductID : suseProductIDs) {
 
                     // ...if it has a source with that base product...
                     List<SUSEProductDto> sources = findAllSourceProducts(suseProductID);

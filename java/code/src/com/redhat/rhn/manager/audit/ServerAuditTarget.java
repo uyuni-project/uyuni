@@ -16,10 +16,11 @@ package com.redhat.rhn.manager.audit;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.server.Server;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,12 +30,16 @@ public class ServerAuditTarget implements AuditTarget {
 
     private final Server server;
 
+    private final CachingSUSEProductFactory productFactory;
+
     /**
      * Constructor
      * @param serverIn the server object
+     * @param productFactoryIn the factory object
      */
-    public ServerAuditTarget(Server serverIn) {
+    public ServerAuditTarget(Server serverIn, CachingSUSEProductFactory productFactoryIn) {
         this.server = serverIn;
+        this.productFactory = productFactoryIn;
     }
 
     @Override
@@ -43,8 +48,8 @@ public class ServerAuditTarget implements AuditTarget {
     }
 
     @Override
-    public Optional<SUSEProductSet> getInstalledProductSet() {
-        return Optional.ofNullable(server.getInstalledProductSet());
+    public List<SUSEProduct> getSUSEProducts() {
+        return productFactory.map(server.getInstalledProducts());
     }
 
     @Override
