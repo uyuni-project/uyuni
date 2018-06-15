@@ -1,3 +1,5 @@
+- Do not copy 'foreign_entitlement' from virtual host to the
+  registered guest (bsc#1093381) 
 - Disable Oracle support for openSUSE (bsc#1095804)
 
 -------------------------------------------------------------------
