@@ -25,10 +25,10 @@ import org.hibernate.Session;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * NetworkInterface
- * @version $Rev$
  */
 public class NetworkInterface extends BaseDomainHelper implements
 Serializable {
@@ -39,7 +39,7 @@ Serializable {
     private String name;
     private String hwaddr;
     private String module;
-    private ServerNetAddress4 sa4 = null;
+    private ArrayList<ServerNetAddress4> sa4 = null;
     private ArrayList<ServerNetAddress6> sa6 = null;
     private static final String IPV6_REGEX = "^(((?=(?>.*?::)(?!.*::)))(::)?" +
             "([0-9A-F]{1,4}::?){0,5}|([0-9A-F]{1,4}:){6})(\\2([0-9A-F]{1,4}(::?|$)){0,2}" +
@@ -164,48 +164,9 @@ Serializable {
         }
 
         Session session = HibernateFactory.getSession();
-        sa4 = (ServerNetAddress4) session.getNamedQuery("ServerNetAddress4.lookup")
+        sa4 = (ArrayList<ServerNetAddress4>) session.getNamedQuery("ServerNetAddress4.lookup")
                 .setParameter("interface_id", this.interfaceId)
-                .uniqueResult();
-    }
-
-    /**
-     * @return Returns the IP address (IPv4 compatibility).
-     */
-    public String getIpaddr() {
-        findServerNetAddress4(this.getInterfaceId());
-
-        if (sa4 == null) {
-            return null;
-        }
-
-        return sa4.getAddress();
-    }
-
-    /**
-     * @return Returns the netmask (IPv4 compatibility).
-     */
-    public String getNetmask() {
-        findServerNetAddress4(this.getInterfaceId());
-
-        if (sa4 == null) {
-            return null;
-        }
-
-        return sa4.getNetmask();
-    }
-
-    /**
-     * @return Returns the broadcast (IPv4 compatibility).
-     */
-    public String getBroadcast() {
-        findServerNetAddress4(this.getInterfaceId());
-
-        if (sa4 == null) {
-            return null;
-        }
-
-        return sa4.getBroadcast();
+                .list();
     }
 
     /**
@@ -239,7 +200,7 @@ Serializable {
         ArrayList<String> addresses = findServerNetAddress6ByScope("universe");
         // RHEL-5 registration may return "global" rather than "universe"
         // for global addresses (a libnl thing).
-        if (addresses == null) {
+        if (addresses == null || addresses.isEmpty()) {
             addresses = findServerNetAddress6ByScope("global");
         }
         return addresses;
@@ -251,6 +212,7 @@ Serializable {
      */
     public boolean isDisabled() {
         boolean ipv6Available = false;
+        boolean ipv4Available = false;
 
         for (String a : getGlobalIpv6Addresses()) {
             if (a != null && !a.equals("")) {
@@ -258,10 +220,13 @@ Serializable {
             }
         }
 
-        return ((this.getIpaddr() == null ||
-                this.getIpaddr().equals("0") ||
-                this.getIpaddr().equals("")) &&
-                !ipv6Available);
+        for (ServerNetAddress4 a : getIPv4Addresses()) {
+            if (a != null && !a.getAddress().equals("")) {
+                ipv4Available = true;
+            }
+        }
+
+        return !(ipv4Available || ipv6Available);
     }
 
     /**
@@ -269,12 +234,14 @@ Serializable {
      */
     public boolean isIpValid() {
         try {
-            new IpAddress(this.getIpaddr());
-            return true;
+            for (ServerNetAddress4 addr4 : getIPv4Addresses()) {
+                new IpAddress(addr4.getAddress());
+            }
         }
         catch (Exception e) {
             return false;
         }
+        return true;
     }
 
     /**
@@ -320,13 +287,11 @@ Serializable {
     public boolean isPublic() {
         boolean isPub = isValid();
         boolean hasAddress = false;
-        String addr4 = getIpaddr();
 
-        if (addr4 != null) {
+        for (ServerNetAddress4 addr4 : getIPv4Addresses()) {
             hasAddress = true;
-            isPub = isPub &&
-                    !(addr4.equals("127.0.0.1") ||
-                            addr4.equals("0.0.0.0"));
+            isPub = isPub && !(addr4.getAddress().equals("127.0.0.1") ||
+                    addr4.getAddress().equals("0.0.0.0"));
         }
 
         for (ServerNetAddress6 addr6 : getIPv6Addresses()) {
@@ -357,6 +322,29 @@ Serializable {
     }
 
     /**
+     * Retrieve list of IPv4 addresses
+     * @return List of ServerNetAddress4 objects
+     */
+    public ArrayList<ServerNetAddress4> getIPv4Addresses() {
+        if (sa4 == null) {
+            Session session = HibernateFactory.getSession();
+            sa4 = (ArrayList<ServerNetAddress4>)
+                    session.getNamedQuery("ServerNetAddress4.lookup")
+                    .setParameter("interface_id", this.interfaceId).list();
+        }
+
+        return sa4;
+    }
+
+    /**
+     * Return comma separated list of IPv4 addresses
+     * @return comma separated list of IPv4 addresses
+     */
+    public String getIPv4AddressesAsString() {
+        return getIPv4Addresses().stream().map(ServerNetAddress4::getAddress).collect(Collectors.joining(","));
+    }
+
+    /**
      * Retrieve list of IPv6 addresses
      * @return List of ServerNetAddress6 objects
      */
@@ -372,10 +360,18 @@ Serializable {
     }
 
     /**
+     * Return comma separated list of IPv6 addresses
+     * @return comma separated list of IPv6 addresses
+     */
+    public String getIPv6AddressesAsString() {
+        return getIPv6Addresses().stream().map(ServerNetAddress6::getAddress).collect(Collectors.joining(","));
+    }
+
+    /**
      * Setter for sa4
      * @param sa4In sa4
      */
-    public void setSa4(ServerNetAddress4 sa4In) {
+    public void setSa4(ArrayList<ServerNetAddress4> sa4In) {
         this.sa4 = sa4In;
     }
 

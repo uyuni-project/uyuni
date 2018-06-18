@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import java.util.ArrayList;
+
 
 public class KickstartManagerTest extends BaseTestCaseWithUser {
 
@@ -47,9 +49,10 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
         nic.setServer(serv);
         ServerNetAddress4 netAddr = new ServerNetAddress4();
         netAddr.setAddress("192.168.0.122");
-        nic.setSa4(netAddr);
+        ArrayList<ServerNetAddress4> salist = new ArrayList<>();
+        salist.add(netAddr);
+        nic.setSa4(salist);
         serv.getNetworkInterfaces().add(nic);
-
 
         KickstartData result = KickstartManager.getInstance().
                 findProfileForServersNetwork(serv);
@@ -84,7 +87,9 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
         nic.setHwaddr("aa:aa:aa");
         ServerNetAddress4 netAddr = new ServerNetAddress4();
         netAddr.setAddress("192.168.0.123");
-        nic.setSa4(netAddr);
+        ArrayList<ServerNetAddress4> salist = new ArrayList<>();
+        salist.add(netAddr);
+        nic.setSa4(salist);
         nic.setServer(serv);
         serv.getNetworkInterfaces().add(nic);
 
@@ -121,7 +126,9 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
         nic.setServer(serv);
         ServerNetAddress4 netAddr = new ServerNetAddress4();
         netAddr.setAddress("1.2.3.4");
-        nic.setSa4(netAddr);
+        ArrayList<ServerNetAddress4> salist = new ArrayList<>();
+        salist.add(netAddr);
+        nic.setSa4(salist);
         serv.getNetworkInterfaces().add(nic);
 
 
@@ -153,7 +160,9 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
         nic.setServer(serv);
         ServerNetAddress4 netAddr = new ServerNetAddress4();
         netAddr.setAddress("1.2.3.4");
-        nic.setSa4(netAddr);
+        ArrayList<ServerNetAddress4> salist = new ArrayList<>();
+        salist.add(netAddr);
+        nic.setSa4(salist);
         serv.getNetworkInterfaces().add(nic);
 
 

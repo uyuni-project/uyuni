@@ -173,7 +173,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         s.addNetworkInterface(virbr0);
 
         NetworkInterface ni = s.findPrimaryNetworkInterface();
-        assertEquals(ipAddr, ni.getIpaddr());
+        assertEquals(ipAddr, ni.getIPv4Addresses().get(0).getAddress());
 
         assertEquals(ipAddr, s.getIpAddress());
         assertEquals(hwAddr, s.getHardwareAddress());
