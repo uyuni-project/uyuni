@@ -34,4 +34,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  where s.name = :name
                  order by s.id asc]]>
     </query>
+
+    <sql-query name="ServerArch.findCompatibleChannelArch">
+        <![CDATA[
+            SELECT ca.*
+            FROM rhnServerChannelArchCompat sc
+            JOIN rhnChannelArch ca on sc.channel_arch_id = ca.id
+            WHERE sc.server_arch_id = :server_arch_id
+       ]]>
+        <return alias="ca" class="com.redhat.rhn.domain.channel.ChannelArch" />
+    </sql-query>
+
+
 </hibernate-mapping>
