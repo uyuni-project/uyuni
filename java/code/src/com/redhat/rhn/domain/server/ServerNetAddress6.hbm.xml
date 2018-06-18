@@ -20,7 +20,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="ServerNetAddress6.lookup_by_id">
         <![CDATA[from com.redhat.rhn.domain.server.ServerNetAddress6 as sa
                  where sa.interfaceId = :interface_id
-                 order by scope]]>
+                 order by scope, address]]>
     </query>
 
     <query name="ServerNetAddress6.lookup_by_scope_and_id">
