@@ -421,18 +421,6 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Return a {@link ChannelArch} for a given ID.
-     * @param id ChannelArch id
-     * @return channel arch
-     */
-    public static ChannelArch findArchById(long id) {
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(ChannelArch.class);
-        criteria.add(Restrictions.eq("id", id));
-        return (ChannelArch) criteria.uniqueResult();
-    }
-
-    /**
      * Returns the Channel whose label matches the given label.
      * @param org The org of the user looking up the channel
      * @param label Channel label sought.

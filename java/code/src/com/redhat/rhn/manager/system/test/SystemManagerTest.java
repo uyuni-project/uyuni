@@ -1121,27 +1121,27 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testFindCompatibleChannelArch() {
         // x86_64
         ServerArch serverArch = ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux");
-        ChannelArch channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        ChannelArch channelArch = ServerFactory.findCompatibleChannelArch(serverArch);
         assertEquals("channel-x86_64", channelArch.getLabel());
         assertEquals("x86_64", channelArch.getName());
         serverArch = ServerFactory.lookupServerArchByLabel("ia32e-redhat-linux");
-        channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        channelArch = ServerFactory.findCompatibleChannelArch(serverArch);
         assertEquals("channel-x86_64", channelArch.getLabel());
         assertEquals("x86_64", channelArch.getName());
 
         // IA-32
         serverArch = ServerFactory.lookupServerArchByLabel("i386-redhat-linux");
-        channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        channelArch = ServerFactory.findCompatibleChannelArch(serverArch);
         assertEquals("channel-ia32", channelArch.getLabel());
         assertEquals("IA-32", channelArch.getName());
         serverArch = ServerFactory.lookupServerArchByLabel("i686-redhat-linux");
-        channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        channelArch = ServerFactory.findCompatibleChannelArch(serverArch);
         assertEquals("channel-ia32", channelArch.getLabel());
         assertEquals("IA-32", channelArch.getName());
 
         // s390
         serverArch = ServerFactory.lookupServerArchByLabel("s390-redhat-linux");
-        channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        channelArch = ServerFactory.findCompatibleChannelArch(serverArch);
         assertEquals("channel-s390", channelArch.getLabel());
         assertEquals("s390", channelArch.getName());
     }

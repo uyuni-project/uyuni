@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -639,6 +640,18 @@ public class ServerFactory extends HibernateFactory {
         params.put("org_id", server.getOrg().getId());
         return singleton.listObjectsByNamedQuery("Server.lookupAdministrators",
                 params);
+    }
+
+    /**
+     * For a {@link ServerArch}, find the compatible {@link ChannelArch}.
+     * @param serverArch server arch
+     * @return channel arch
+     */
+    public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("server_arch_id", serverArch.getId());
+        return (ChannelArch) singleton.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
+                params, true);
     }
 
     /**
