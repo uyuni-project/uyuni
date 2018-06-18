@@ -25,6 +25,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -93,7 +94,9 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         netint.setName(networkName);
         ServerNetAddress4 netAddr = new ServerNetAddress4();
         netAddr.setAddress(ipAddress);
-        netint.setSa4(netAddr);
+        ArrayList<ServerNetAddress4> salist = new ArrayList<>();
+        salist.add(netAddr);
+        netint.setSa4(salist);
         server.addNetworkInterface(netint);
         netint = (NetworkInterface) TestUtils.saveAndReload(netint);
         netAddr.setInterfaceId(netint.getInterfaceId());

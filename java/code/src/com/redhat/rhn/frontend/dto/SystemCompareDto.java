@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
@@ -369,13 +370,16 @@ public class SystemCompareDto {
 
 
     private List<String> getMacAddresses(Server system) {
-        List<String> macs = new LinkedList<String>();
+        List<String> macs = new LinkedList<>();
         for (NetworkInterface n : system.getNetworkInterfaces()) {
-            String addr = n.getIpaddr();
-            if (addr != null &&
-                !addr.equals("127.0.0.1") &&
-                !addr.equals("127.0.0.2")) {
-                macs.add(n.getHwaddr());
+            if (!n.getIPv4Addresses().isEmpty()) {
+                for (ServerNetAddress4 addr : n.getIPv4Addresses()) {
+                    if (!addr.getAddress().equals("127.0.0.1") &&
+                        !addr.getAddress().equals("127.0.0.2")) {
+                        macs.add(n.getHwaddr());
+                        break;
+                    }
+                }
             }
         }
         return macs;
@@ -384,11 +388,13 @@ public class SystemCompareDto {
     private List<String> getIpAddresses(Server system) {
         List<String> macs = new LinkedList<String>();
         for (NetworkInterface n : system.getNetworkInterfaces()) {
-            String addr = n.getIpaddr();
-            if (addr != null &&
-                !addr.equals("127.0.0.1") &&
-                !addr.equals("127.0.0.2")) {
-                macs.add(addr);
+            if (!n.getIPv4Addresses().isEmpty()) {
+                for (ServerNetAddress4 addr : n.getIPv4Addresses()) {
+                    if (!addr.getAddress().equals("127.0.0.1") &&
+                        !addr.getAddress().equals("127.0.0.2")) {
+                        macs.add(addr.getAddress());
+                    }
+                }
             }
         }
         return macs;

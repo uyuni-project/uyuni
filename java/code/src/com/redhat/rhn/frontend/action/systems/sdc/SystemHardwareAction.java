@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -185,15 +186,17 @@ public class SystemHardwareAction extends RhnAction {
 
         List nicList2 = new ArrayList();
         for (String nicName : nicList) {
-            Map nic = new HashMap();
             NetworkInterface n = server.getNetworkInterface(nicName);
-            nic.put("name", n.getName());
-            nic.put("ip", n.getIpaddr());
-            nic.put("netmask", n.getNetmask());
-            nic.put("broadcast", n.getBroadcast());
-            nic.put("hwaddr", n.getHwaddr());
-            nic.put("module", n.getModule());
-            nicList2.add(nic);
+            for (ServerNetAddress4 na4 : n.getIPv4Addresses()) {
+                Map nic = new HashMap();
+                nic.put("name", n.getName());
+                nic.put("ip", na4.getAddress());
+                nic.put("netmask", na4.getNetmask());
+                nic.put("broadcast", na4.getBroadcast());
+                nic.put("hwaddr", n.getHwaddr());
+                nic.put("module", n.getModule());
+                nicList2.add(nic);
+            }
         }
         request.setAttribute("network_interfaces", nicList2);
 
