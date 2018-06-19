@@ -141,27 +141,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSearchByPackagesIds() throws Exception {
-        final User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-
         searchByPackagesIdsHelper(
-                user,
                 Optional.empty(),
                 (pids) -> ErrataManager.searchByPackageIds(pids));
     }
 
     public void testSearchByPackagesIdsInOrg() throws Exception {
-        final User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
         Channel channel = ChannelTestUtils.createTestChannel(user);
-
         searchByPackagesIdsHelper(
-                user,
                 Optional.of(channel),
                 (pids) -> ErrataManager.searchByPackageIdsWithOrg(pids, user.getOrg()));
     }
 
-    private void searchByPackagesIdsHelper(User user, Optional<Channel> channel, Function<List, List<ErrataOverview>> searchFn) {
+    private void searchByPackagesIdsHelper(Optional<Channel> channel, Function<List, List<ErrataOverview>> errataSearchFn) {
         Package p = PackageTest.createTestPackage(user.getOrg());
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
@@ -202,7 +194,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // now test for errata
         List pids = new ArrayList();
         pids.add(p.getId());
-        List<ErrataOverview> eos = searchFn.apply(pids);
+        List<ErrataOverview> eos = errataSearchFn.apply(pids);
         assertNotNull(eos);
         assertEquals(1, eos.size());
         ErrataOverview eo = eos.get(0);
