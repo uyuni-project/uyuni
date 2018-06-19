@@ -1,3 +1,4 @@
+- Fix truncated result message of server actions (bsc#1039043)
 - Do not copy 'foreign_entitlement' from virtual host to the
   registered guest (bsc#1093381) 
 
