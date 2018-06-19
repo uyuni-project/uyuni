@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -35,9 +37,6 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
 import org.apache.log4j.Logger;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,8 +50,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * CVESearchManager.
@@ -155,16 +155,19 @@ public class CVEAuditManager {
      * @param channelIDs list of vendor channel IDs
      * @return list of channel product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> findChannelProducts(List<Long> channelIDs) {
-        SelectMode m = ModeFactory.getMode("cve_audit_queries",
-                "find_relevant_products");
-        List<Map<String, Long>> results = m.execute(channelIDs);
-        List<Long> channelProductIDs = new LinkedList<>();
-        for (Map<String, Long> result : results) {
-            channelProductIDs.add(result.get("channel_product_id"));
-        }
-        return channelProductIDs;
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+
+        Root<Channel> root = query.from(Channel.class);
+        query.select(root.get("product").get("id"))
+             .distinct(true)
+             .where(
+                 builder.and(
+                     root.get("id").in(channelIDs)
+                 )
+             );
+        return getSession().createQuery(query).list();
     }
 
     /**
