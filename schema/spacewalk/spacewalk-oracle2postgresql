@@ -5,6 +5,7 @@ s/\bVARCHAR2/VARCHAR/i;
 s/\bDATE\b/TIMESTAMPTZ/i;
 s/\bNUMBER\b/NUMERIC/i;
 s/\bBLOB\b/BYTEA/i;
+s/\bCLOB\b/TEXT/i;
 s/\btimestamp with local time zone\b/TIMESTAMPTZ/i;
 s/\b\([0-9]\+\) CHAR/\1/i;
 
