@@ -1,3 +1,4 @@
+- Fix truncated result message of server actions (bsc#1039043)
 - Fix config channels state revision inconsistency after migration (bsc#1094543)
 
 -------------------------------------------------------------------
