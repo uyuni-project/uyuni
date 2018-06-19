@@ -580,13 +580,11 @@ public class SaltUtils {
                         new ApplyStatesEventMessage(serverAction.getServerId(), false,
                                 ApplyStatesEventMessage.CHANNELS));
                 String message = parseDryRunMessage(jsonResult);
-                serverAction.setResultMsg(message.length() > 1024 ?
-                         message.substring(0, 1024) : message);
+                serverAction.setResultMsg(message);
             }
             else {
                 String message = parseMigrationMessage(jsonResult);
-                serverAction.setResultMsg(message.length() > 1024 ?
-                        message.substring(0, 1024) : message);
+                serverAction.setResultMsg(message);
 
                 // Make sure grains are updated after dist upgrade
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
@@ -633,8 +631,7 @@ public class SaltUtils {
     private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(returnObject);
-        return json.length() > 1024 ? json.substring(0, 1024) : json;
+        return gson.toJson(returnObject);
     }
 
     private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
@@ -661,8 +658,6 @@ public class SaltUtils {
             Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(returnObject);
-            serverAction.setResultMsg(json.length() > 1024 ?
-                    json.substring(0, 1024) : json);
             serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS);
         }
     }
@@ -899,8 +894,7 @@ public class SaltUtils {
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(returnObject);
-        serverAction.setResultMsg(json.length() > 1024 ?
-                json.substring(0, 1024) : json);
+        serverAction.setResultMsg(json);
     }
 
     private static void handleImageInspectData(ServerAction serverAction,
