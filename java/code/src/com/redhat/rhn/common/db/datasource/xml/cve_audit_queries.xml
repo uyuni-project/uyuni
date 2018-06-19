@@ -26,14 +26,6 @@
   </query>
 </write-mode>
 
-<mode name="find_relevant_products">
-  <query>
-    SELECT DISTINCT channel_product_id
-      FROM rhnChannel
-     WHERE id IN (%s)
-  </query>
-</mode>
-
 <mode name="convert_suse_product_to_channel_products">
   <query params="suseProductId">
     select distinct c.channel_product_id
