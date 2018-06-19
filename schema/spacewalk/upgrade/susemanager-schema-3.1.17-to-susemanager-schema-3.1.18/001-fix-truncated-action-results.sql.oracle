@@ -1,0 +1,18 @@
+DECLARE
+  result_msg_data_type varchar2(20);
+BEGIN
+  SELECT DATA_TYPE INTO result_msg_data_type
+  FROM user_tab_columns
+  WHERE table_name = 'RHNSERVERACTION' and column_name = 'RESULT_MSG';
+
+  IF (result_msg_data_type='VARCHAR2') THEN
+    EXECUTE IMMEDIATE 'ALTER TABLE rhnserveraction ADD (result_msg_clob CLOB)';
+    EXECUTE IMMEDIATE 'UPDATE rhnserveraction SET result_msg_clob = result_msg';
+    EXECUTE IMMEDIATE 'ALTER TABLE rhnserveraction DROP COLUMN result_msg';
+    EXECUTE IMMEDIATE 'ALTER TABLE rhnserveraction RENAME COLUMN result_msg_clob TO result_msg';
+  END IF;
+END;
+/
+
+
+
