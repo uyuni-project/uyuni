@@ -1,5 +1,6 @@
 - Fix typo in 'Installed Products' label in image overview page
 - Disallow colons in image labels (bsc#1092940)
+- Improve the gulpfile watch mode performance (bsc#1096747)
 
 -------------------------------------------------------------------
 Tue Jun 05 10:13:20 CEST 2018 - jgonzalez@suse.com
