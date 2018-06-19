@@ -89,7 +89,7 @@ def update_server_action(server_id, action_id, status, result_code=None,
     """)
     h.execute(action_id=action_id, server_id=server_id,
               status=status, result_code=result_code,
-              result_message=result_message[:1024])
+              result_message=result_message)
 
 
 _query_lookup_action_childs = rhnSQL.Statement("""
