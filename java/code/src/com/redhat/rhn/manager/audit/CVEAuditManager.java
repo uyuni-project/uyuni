@@ -35,6 +35,9 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
 import org.apache.log4j.Logger;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -48,6 +51,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 
 /**
  * CVESearchManager.
@@ -176,11 +181,18 @@ public class CVEAuditManager {
     @SuppressWarnings("unchecked")
     public static List<Channel> findProductChannels(List<Long> channelProductIDs,
             Long parentChannelID) {
-        SelectMode m = ModeFactory.getMode("cve_audit_queries",
-                "find_product_channels");
-        Map<String, Long> params = new HashMap<>();
-        params.put("parent", parentChannelID);
-        return m.execute(params, channelProductIDs);
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<Channel> query = builder.createQuery(Channel.class);
+
+        Root<Channel> root = query.from(Channel.class);
+        query.where(builder.and(
+                root.get("product").get("id").in(channelProductIDs),
+                builder.or(
+                        builder.equal(root.get("id"), parentChannelID),
+                        builder.equal(root.get("parentChannel"), parentChannelID)
+                )
+        ));
+        return getSession().createQuery(query).list();
     }
 
     /**
