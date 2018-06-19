@@ -1,3 +1,4 @@
+- Add missing result fields for errata query (bsc#1097615)
 - Add new 'upgrade_satellite_refresh_custom_sls_files' task to refresh
   custom SLS files generated for minions (bsc#1094543)
 - improve gatherer-matcher Taskomatic task's performance (bsc#1094524)
