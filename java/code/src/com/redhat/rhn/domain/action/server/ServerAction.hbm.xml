@@ -15,7 +15,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </composite-id>
 
         <property name="resultCode" column="result_code" type="long" />
-        <property name="resultMsg" column="result_msg" type="string" length="1024" />
+        <property name="resultMsg" column="result_msg" type="string"/>
         <property name="pickupTime" column="pickup_time" type="timestamp" />
         <property name="completionTime" column="completion_time" type="timestamp" />
         <property name="created" type="timestamp" insert="false" update="false" />
