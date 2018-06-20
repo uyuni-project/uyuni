@@ -1,3 +1,6 @@
+- Do not copy 'foreign_entitlement' from virtual host to the
+  registered guest (bsc#1093381) 
+
 -------------------------------------------------------------------
 Tue Jun 05 10:03:59 CEST 2018 - jgonzalez@suse.com
 
