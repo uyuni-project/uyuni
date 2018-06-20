@@ -82,7 +82,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -139,8 +141,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSearchByPackagesIds() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        searchByPackagesIdsHelper(
+                Optional.empty(),
+                (pids) -> ErrataManager.searchByPackageIds(pids));
+    }
+
+    public void testSearchByPackagesIdsInOrg() throws Exception {
+        Channel channel = ChannelTestUtils.createTestChannel(user);
+        searchByPackagesIdsHelper(
+                Optional.of(channel),
+                (pids) -> ErrataManager.searchByPackageIdsWithOrg(pids, user.getOrg()));
+    }
+
+    private void searchByPackagesIdsHelper(Optional<Channel> channel, Function<List, List<ErrataOverview>> errataSearchFn) {
         Package p = PackageTest.createTestPackage(user.getOrg());
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
@@ -159,8 +172,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.setIssueDate(new Date());
         e.setUpdateDate(e.getIssueDate());
         e.addPackage(p);
-        e = ErrataManager.publish(e);
-        assertTrue(e instanceof PublishedErrata);
+        Errata publishedErrata = ErrataManager.publish(e);
+        assertTrue(publishedErrata instanceof PublishedErrata);
+
+        channel.ifPresent(c -> publishedErrata.addChannel(c));
 
         WebSession session = WebSessionFactory.createSession();
         WebSessionFactory.save(session);
@@ -172,19 +187,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> params = new HashMap<String, Object>();
         //"sessionid, obj_id, obj_type"
         params.put("sessionid", session.getId());
-        params.put("obj_id", e.getId());
+        params.put("obj_id", publishedErrata.getId());
         params.put("obj_type", "errata");
         mode.executeUpdate(params);
 
         // now test for errata
         List pids = new ArrayList();
         pids.add(p.getId());
-        List<ErrataOverview> eos = ErrataManager.searchByPackageIds(pids);
+        List<ErrataOverview> eos = errataSearchFn.apply(pids);
         assertNotNull(eos);
         assertEquals(1, eos.size());
         ErrataOverview eo = eos.get(0);
         assertNotNull(eo);
-        assertEquals(e.getAdvisory(), eo.getAdvisory());
+        assertEquals(publishedErrata.getAdvisory(), eo.getAdvisory());
     }
 
     public void testSearch() throws Exception {
