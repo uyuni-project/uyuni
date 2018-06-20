@@ -28,11 +28,13 @@ import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -46,17 +48,20 @@ import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
 import com.suse.matcher.json.JsonSystem;
-
 import com.suse.matcher.json.JsonVirtualizationGroup;
+import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,6 +75,21 @@ public class MatcherJsonIO {
 
     /** (De)serializer instance. */
     private Gson gson;
+
+    /** Cached instance of the s390x ServerArch object. */
+    private final ServerArch s390arch;
+
+    /** Cached list of mandatory product IDs for an s390x system. */
+    private final List<Long> productIdsForS390xSystem;
+
+    /** Cached list of mandatory product IDs for a virtualization host. */
+    private final List<Long> productIdsForVirtualHost;
+
+    /** Cached list of mandatory product IDs for a regular system. */
+    private final List<Long> productIdsForSystem;
+
+    /* Cache for findSUSEProduct() results */
+    private final Map<String, SUSEProduct> suseProductCache;
 
     /**
      * Logger for this class
@@ -85,6 +105,25 @@ public class MatcherJsonIO {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setPrettyPrinting()
             .create();
+
+        s390arch = ServerFactory.lookupServerArchByLabel("s390x");
+
+        productIdsForS390xSystem = of(
+                productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z"),
+                productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
+        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
+
+        productIdsForVirtualHost = of(
+                productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual"),
+                productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual")
+        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
+
+        productIdsForSystem = of(
+                productIdForEntitlement("SUSE-Manager-Mgmt-Single"),
+                productIdForEntitlement("SUSE-Manager-Prov-Single")
+        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
+
+        suseProductCache = new HashMap<>();
     }
 
     /**
@@ -94,16 +133,19 @@ public class MatcherJsonIO {
      * about systems on this Server
      */
     public List<JsonSystem> getJsonSystems(boolean includeSelf, String arch) {
-        Stream<JsonSystem> systems = ServerFactory.list().stream()
+        Stream<JsonSystem> systems = ServerFactory.list(true, true).stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
-                Set<Long> productIds = productIdsForServer(system).collect(toSet());
+                Set<String> entitlements = system.getEntitlementLabels();
+                boolean virtualHost = entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED) ||
+                        !system.getGuests().isEmpty();
+                Set<Long> productIds = productIdsForServer(system, entitlements).collect(toSet());
                 return new JsonSystem(
                     system.getId(),
                     system.getName(),
                     cpus == null ? null : cpus.intValue(),
                     !system.isVirtualGuest(),
-                    system.isVirtualHost(),
+                    virtualHost,
                     getVirtualGuests(system),
                     productIds
                 );
@@ -267,68 +309,62 @@ public class MatcherJsonIO {
      * (For systems without a SUSE base product, empty stream is returned as we don't
      * require SUSE Manager entitlements for such systems).
      */
-    private Stream<Long> productIdsForServer(Server server) {
-        SUSEProductSet productSet = server.getInstalledProductSet();
-        if (productSet == null || productSet.getBaseProduct() == null) {
-            return empty();
+    private Stream<Long> productIdsForServer(Server server, Set<String> entitlements) {
+        List<SUSEProduct> products = server.getInstalledProducts().stream()
+                .map(this::lookupCachedSUSEProduct)
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(SUSEProduct::isBase).thenComparing(SUSEProduct::getId))
+                .collect(toList());
+
+        if (products.stream().noneMatch(SUSEProduct::isBase)) {
+            return Stream.empty();
         }
 
-        // concatenate base product, addon products and the SUSE Manager entitlements
-        return of(
-            of(productSet.getBaseProduct().getProductId()),
-            productSet.getAddonProducts().stream().map(p -> p.getProductId()),
-            entitlementIdsForServer(server)
-        ).flatMap(Function.identity());
+        // add SUSE Manager entitlements
+        return concat(
+            products.stream().map(SUSEProduct::getProductId),
+            entitlementIdsForServer(server, entitlements)
+        );
+    }
+
+    /**
+     * Returns the SUSE product corresponding to an InstalledProduct, if available. Caches results for faster lookups.
+     */
+    private SUSEProduct lookupCachedSUSEProduct(InstalledProduct ip) {
+        String name = ip.getName();
+        String version = ip.getVersion();
+        String release = ip.getRelease();
+        String arch = Opt.fold(ofNullable(ip.getArch()), () -> null, PackageArch::getLabel);
+
+        String key = name + "-" + version + "-" + release + "-" + arch;
+        SUSEProduct cached = suseProductCache.get(key);
+        if (cached != null) {
+            return cached;
+        }
+        else {
+            SUSEProduct result = SUSEProductFactory.findSUSEProduct(name, version, release, arch, true);
+            suseProductCache.put(key, result);
+            return result;
+        }
     }
 
     /**
      * Returns SUSE Manager entitlement product ids for a server.
      */
-    private Stream<Long> entitlementIdsForServer(Server server) {
-        if (server.hasEntitlement(EntitlementManager.MANAGEMENT) ||
-                server.hasEntitlement(EntitlementManager.SALT)) {
-            if (server.getServerArch()
-                    .equals(ServerFactory.lookupServerArchByLabel("s390x"))) {
-                return productIdsForS390xSystem();
+    private Stream<Long> entitlementIdsForServer(Server server, Set<String> entitlements) {
+        if (entitlements.contains(EntitlementManager.SALT_ENTITLED) ||
+                entitlements.contains(EntitlementManager.ENTERPRISE_ENTITLED)) {
+            if (server.getServerArch().equals(s390arch)) {
+                return productIdsForS390xSystem.stream();
             }
-            else if (server.hasVirtualizationEntitlement()) {
-                return productIdsForVirtualHost();
+            else if (entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED)) {
+                return productIdsForVirtualHost.stream();
             }
             else {
-                return productIdsForSystem();
+                return productIdsForSystem.stream();
             }
         }
         return empty();
-    }
-
-    /**
-     * Retruns product ids for an s390x system.
-     */
-    private Stream<Long> productIdsForS390xSystem() {
-        return of(
-            productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z"),
-            productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
-        ).filter(id -> id.isPresent()).map(id -> id.get());
-    }
-
-    /**
-     * Retruns product ids for a virtual host.
-     */
-    private Stream<Long> productIdsForVirtualHost() {
-        return of(
-            productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual"),
-            productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual")
-        ).filter(id -> id.isPresent()).map(id -> id.get());
-    }
-
-    /**
-     * Returns product ids for a normal system.
-     */
-    private Stream<Long> productIdsForSystem() {
-        return of(
-            productIdForEntitlement("SUSE-Manager-Mgmt-Single"),
-            productIdForEntitlement("SUSE-Manager-Prov-Single")
-        ).filter(id -> id.isPresent()).map(id -> id.get());
     }
 
     /**
