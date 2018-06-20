@@ -1,3 +1,4 @@
+- improve cve-server-channels Taskomatic task's performance (bsc#1094524)
 - Increase the default number of Quartz worker threads (bsc#1096511)
 - Do not break backward compatibility on package installation/removal (bsc#1096514)
 - Bugfix: proxyClients missing csrf token and paginations (bsc#1098225)
