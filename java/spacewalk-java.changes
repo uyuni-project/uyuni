@@ -1,3 +1,4 @@
+- improve gatherer-matcher Taskomatic task's performance (bsc#1094524)
 - Check if directory /srv/susemanager/salt/actionchains exists before deleting minion
   action chain files
 - fix hardware refresh with multiple IPs on a network interface (bsc#1041134)
