@@ -3,6 +3,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Buttons = require("../components/buttons");
+const Panels = require("../components/panel");
 const Network = require("../utils/network");
 const Fields = require("../components/fields");
 const Messages = require("../components/messages").Messages;
@@ -10,6 +11,7 @@ const MessagesUtils = require("../components/messages").Utils;
 
 const AsyncButton = Buttons.AsyncButton;
 const TextField = Fields.TextField;
+const InnerPanel = Panels.InnerPanel;
 
 const UNMANAGED = {};
 const INSTALLED = {value: 0};
@@ -346,19 +348,16 @@ class PackageStates extends React.Component {
     const messages = this.state.messages ?
           <Messages items={this.state.messages}/>
           : null;
+    const buttons = [
+              <AsyncButton id="save" action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>,
+              <AsyncButton id="apply" action={this.applyPackageState} name={t("Apply")} />
+    ];
 
     return (
       <div>
         {messages}
-        <h2>
-          <i className="fa spacewalk-icon-package-add"></i>
-          {t("Package States")}
-          <span className="btn-group pull-right">
-              <AsyncButton id="save" action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>
-              <AsyncButton id="apply" action={this.applyPackageState} name={t("Apply")} />
-          </span>
-        </h2>
-        <div className="row col-md-12">
+        <InnerPanel title={t("Package States")} icon="spacewalk-icon-package-add" buttons={buttons} >
+        <div className="row">
           <div className="panel panel-default">
             <div className="panel-body">
                 <div className="row">
@@ -387,6 +386,7 @@ class PackageStates extends React.Component {
               </div>
           </div>
         </div>
+      </InnerPanel>
       </div>
     );
   }

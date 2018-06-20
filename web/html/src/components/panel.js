@@ -62,14 +62,16 @@ class InnerPanel extends React.Component {
 
   render() {
     return (
-      <div className="col-md-12">
+      <div>
         <h2>
           <i className={"fa " +  this.props.icon}></i>
           {this.props.title}
         </h2>
         <div className="spacewalk-section-toolbar">
-          <div className="btn-group action-button-wrapper">
-            {this.props.buttons}
+          <div className="action-button-wrapper">
+            <div className="btn-group">
+              {this.props.buttons}
+            </div>
           </div>
         </div>
         <div className="row">
