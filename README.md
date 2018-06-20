@@ -1,28 +1,21 @@
-Spacewalk
-=========
+Uyuni
+=====
 
-![Current Spacewalk release][CurrentReleaseImg]
+<a href="https://www.uyuni-project.org/"><img src="https://www.uyuni-project.org/img/logo.svg" width="100" height="100" alt="Uyuni logo" /></a>
 
+[Uyuni](https://www.uyuni-project.org/) is an open source systems management solution, forked
+from [Spacewalk](https://spacewalkproject.github.io/).
 
-[![Build Status](https://travis-ci.org/spacewalkproject/spacewalk.svg?branch=master)](https://travis-ci.org/spacewalkproject/spacewalk/builds)
-
-Spacewalk is an open source Linux systems management solution.
-It is the upstream community project from which the [Red Hat
-Satellite][RedHatSatellite] and [SUSE Manager][SUSEManager] products
-are derived.
-For information on how to work with our source repository, please visit [the wiki download page][DownloadIt].
+It is the upstream community project from which [SUSE Manager](https://www.suse.com/products/suse-manager/)
+is derived.
 
 Resources
 ---------
 
 Following links might be of value in case you are interested:
 
-  * [project pages](https://spacewalkproject.github.io/),
-  * [wiki](https://github.com/spacewalkproject/spacewalk/wiki) ([submit PR](https://github.com/spacewalkproject/spacewalk-wiki/pulls)),
-  * [issue tracker (Bugzilla)](https://bugzilla.redhat.com/enter_bug.cgi?product=Spacewalk).
-  * [Spacewalk mailing list and IRC](https://github.com/spacewalkproject/spacewalk/wiki/Communications)
-
-[RedHatSatellite]: https://www.redhat.com/products/enterprise-linux/satellite/
-[SUSEManager]: https://www.suse.com/products/suse-manager/
-[DownloadIt]: https://github.com/spacewalkproject/spacewalk/wiki/DownloadIt
-[CurrentReleaseImg]: https://raw.githubusercontent.com/spacewalkproject/spacewalk-wiki/master/images/27release.png
+  * [Project home](https://www.uyuni-project.org/)
+  * [OBS project](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master)
+  * [IRC](http://webchat.freenode.net/?channels=%23uyuni) (#uyuni at irc.freenode.org)
+  * [uyuni-announce mailing list](https://lists.opensuse.org/uyuni-announce/)
+  * [SUSE Manager](https://www.suse.com/products/suse-manager/)
