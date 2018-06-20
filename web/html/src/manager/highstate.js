@@ -6,10 +6,12 @@ const Messages = require("../components/messages").Messages;
 const DateTimePicker = require("../components/datetimepicker").DateTimePicker;
 const AsyncButton = require("../components/buttons").AsyncButton;
 const Network = require("../utils/network");
+const Panels = require("../components/panel");
 const Functions = require("../utils/functions");
 const Formats = Functions.Formats;
 
 const messagesCounterLimit = 3;
+const InnerPanel = Panels.InnerPanel;
 
 function msg(severityIn, textIn) {
     return {severity: severityIn, text: textIn};
@@ -156,14 +158,11 @@ var Highstate = React.createClass({
 
     render: function() {
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
+        const buttons = [ <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} disabled={minions.length === 0} /> ];
         return (
-            <span>
+            <div>
                 {messages}
-                <div className="spacewalk-section-toolbar">
-                    <div className="action-button-wrapper">
-                        <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} disabled={minions.length === 0} />
-                    </div>
-                </div>
+                <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} >
                 <div className="spacewalk-scheduler">
                     <div className="form-horizontal">
                         <div className="form-group">
@@ -176,6 +175,7 @@ var Highstate = React.createClass({
                         </div>
                     </div>
                 </div>
+
                 { minions.length === 1 ?
                     <MinionHighstateSingle data={minions[0]}/>
                     : <div className="panel panel-default">
@@ -193,7 +193,8 @@ var Highstate = React.createClass({
                         }
                     </div>
                 }
-            </span>
+              </InnerPanel>
+            </div>
         );
     }
 });
