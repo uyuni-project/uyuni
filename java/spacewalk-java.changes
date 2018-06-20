@@ -1,3 +1,4 @@
+- improve gatherer-matcher Taskomatic task's performance (bsc#1094524)
 - Show chain of proxies correctly (bsc#1084128)
 
 -------------------------------------------------------------------
