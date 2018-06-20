@@ -64,12 +64,15 @@ public class MatcherRunner {
 
         Runtime r = Runtime.getRuntime();
         try {
-            Process p = r.exec(args.toArray(new String[0]));
-            PrintWriter stdin = new PrintWriter(p.getOutputStream());
+            long start = System.currentTimeMillis();
             boolean isISSMaster = IssFactory.getCurrentMaster() == null;
             String arch = System.getProperty("os.arch");
-            PinnedSubscriptionFactory.getInstance().cleanStalePins();
             String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch);
+            logger.info("subscription-matcher input generation took " + (System.currentTimeMillis() - start) + "ms");
+
+            Process p = r.exec(args.toArray(new String[0]));
+            PrintWriter stdin = new PrintWriter(p.getOutputStream());
+            PinnedSubscriptionFactory.getInstance().cleanStalePins();
             stdin.println(s);
             stdin.flush();
             stdin.close();

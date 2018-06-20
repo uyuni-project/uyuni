@@ -207,6 +207,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setProductId(1322);
         product.setChannelFamily(cfsles);
+        product.setBase(true);
         TestUtils.saveAndFlush(product);
 
         product = new SUSEProduct();
