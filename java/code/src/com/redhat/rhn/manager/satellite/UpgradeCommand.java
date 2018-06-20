@@ -24,6 +24,10 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
@@ -61,6 +65,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "kickstart_profiles";
     public static final String UPGRADE_CUSTOM_STATES =
             UPGRADE_TASK_NAME + "custom_states";
+    public static final String UPGRADE_REFRESH_CUSTOM_SLS_FILES =
+            UPGRADE_TASK_NAME + "refresh_custom_sls_files";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -123,6 +129,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         break;
                     case UPGRADE_CUSTOM_STATES:
                         processCustomStates();
+                        break;
+                    case UPGRADE_REFRESH_CUSTOM_SLS_FILES:
+                        refreshCustomSlsFiles();
                         break;
                     default:
                 }
@@ -288,5 +297,28 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         path.toFile().isDirectory())
                 .collect(Collectors.toSet());
     }
-}
 
+    /**
+     * Regenerate all minion custom SLS files (/srv/susemanager/salt/custom/custom_*.sls) according to
+     * the information stored on the database.
+     */
+    private void refreshCustomSlsFiles() {
+        try {
+            for (MinionServer minion : MinionServerFactory.listMinions()) {
+                ServerStateRevision serverRev = StateFactory
+                        .latestStateRevision(minion)
+                        .orElseGet(() -> {
+                            ServerStateRevision rev =
+                                    new ServerStateRevision();
+                            rev.setServer(minion);
+                            return rev;
+                        });
+                SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, saltRootPath);
+            }
+            log.info("Regenerated custom minion SLS files in " + saltRootPath);
+        }
+        catch (Exception e) {
+            log.error("Error refreshing custom SLS files. Ignoring.", e);
+        }
+    }
+}
