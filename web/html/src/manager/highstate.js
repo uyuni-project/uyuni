@@ -7,11 +7,13 @@ const MessagesUtils = require("../components/messages").Utils;
 const {ActionSchedule} = require("../components/action-schedule");
 const AsyncButton = require("../components/buttons").AsyncButton;
 const Network = require("../utils/network");
+const Panels = require("../components/panel");
 const Functions = require("../utils/functions");
 const Formats = Functions.Formats;
 const {ActionLink, ActionChainLink} = require("../components/links");
 
 const messagesCounterLimit = 3;
+const InnerPanel = Panels.InnerPanel;
 
 function msg(severityIn, textIn) {
     return {severity: severityIn, text: textIn};
@@ -172,14 +174,11 @@ var Highstate = React.createClass({
 
     render: function() {
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
+        const buttons = [ <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} disabled={minions.length === 0} /> ];
         return (
-            <span>
+            <div>
                 {messages}
-                <div className="spacewalk-section-toolbar">
-                    <div className="action-button-wrapper">
-                        <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} disabled={minions.length === 0} />
-                    </div>
-                </div>
+                <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} >
 
                 <ActionSchedule timezone={timezone} localTime={localTime}
                    earliest={this.state.earliest}
@@ -205,7 +204,8 @@ var Highstate = React.createClass({
                         }
                     </div>
                 }
-            </span>
+              </InnerPanel>
+            </div>
         );
     }
 });
