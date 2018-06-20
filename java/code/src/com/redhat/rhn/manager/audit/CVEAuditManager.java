@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -347,80 +348,82 @@ public class CVEAuditManager {
      * @return set of channels
      */
     public static List<RankedChannel> populateCVEChannels(AuditTarget auditTarget) {
-        List<RankedChannel> relevantChannels = new ArrayList<>();
-        List<Long> vendorChannelIDs = new LinkedList<>();
-        Long parentChannelID = null;
+        return HibernateFactory.doWithoutAutoFlushing(() -> {
+            List<RankedChannel> relevantChannels = new ArrayList<>();
+            List<Long> vendorChannelIDs = new LinkedList<>();
+            Long parentChannelID = null;
 
-        // All assigned channels are relevant (rank = 0)
-        int maxRank = 0;
-        for (Channel c : auditTarget.getAssignedChannels()) {
-            relevantChannels.add(new RankedChannel(c.getId(), 0));
+            // All assigned channels are relevant (rank = 0)
+            int maxRank = 0;
+            for (Channel c : auditTarget.getAssignedChannels()) {
+                relevantChannels.add(new RankedChannel(c.getId(), 0));
 
-            // All originals in the cloning chain are relevant, channel
-            // ranking should increase with every layer.
-            int i = 0;
-            Channel original = c;
-            while (original.isCloned()) {
-                original = original.getOriginal();
-                // Revert the index if no channel has actually been added
-                i = relevantChannels.add(
-                        new RankedChannel(original.getId(), ++i)) ? i : --i;
-            }
-            // Remember the longest cloning chain as 'maxRank'
-            if (i > maxRank) {
-                maxRank = i;
-            }
+                // All originals in the cloning chain are relevant, channel
+                // ranking should increase with every layer.
+                int i = 0;
+                Channel original = c;
+                while (original.isCloned()) {
+                    original = original.getOriginal();
+                    // Revert the index if no channel has actually been added
+                    i = relevantChannels.add(
+                            new RankedChannel(original.getId(), ++i)) ? i : --i;
+                }
+                // Remember the longest cloning chain as 'maxRank'
+                if (i > maxRank) {
+                    maxRank = i;
+                }
 
-            // Store vendor channels and the parent channel ID
-            if (original.getOrg() == null &&
-                    !vendorChannelIDs.contains(original.getId())) {
-                vendorChannelIDs.add(original.getId());
+                // Store vendor channels and the parent channel ID
+                if (original.getOrg() == null &&
+                        !vendorChannelIDs.contains(original.getId())) {
+                    vendorChannelIDs.add(original.getId());
 
-                if (original.getParentChannel() == null) {
-                    parentChannelID = original.getId();
+                    if (original.getParentChannel() == null) {
+                        parentChannelID = original.getId();
+                    }
                 }
             }
-        }
 
-        // Find all channels relevant for the currently installed products
-        if (!vendorChannelIDs.isEmpty() && parentChannelID != null) {
+            // Find all channels relevant for the currently installed products
+            if (!vendorChannelIDs.isEmpty() && parentChannelID != null) {
 
-            // Find IDs of relevant channel products
-            List<Long> relevantChannelProductIDs =
-                    findChannelProducts(vendorChannelIDs);
+                // Find IDs of relevant channel products
+                List<Long> relevantChannelProductIDs =
+                        findChannelProducts(vendorChannelIDs);
 
-            // Find all relevant channels
-            List<Channel> productChannels = findProductChannels(
-                    relevantChannelProductIDs, parentChannelID);
+                // Find all relevant channels
+                List<Channel> productChannels = findProductChannels(
+                        relevantChannelProductIDs, parentChannelID);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Found " + vendorChannelIDs.size() + " vendor channels -> " +
-                        "channel products: " + relevantChannelProductIDs);
+                if (log.isDebugEnabled()) {
+                    log.debug("Found " + vendorChannelIDs.size() + " vendor channels -> " +
+                            "channel products: " + relevantChannelProductIDs);
+                }
+
+                // Increase ranking index for unassigned product channels, but revert the
+                // index if no channel has actually been added
+                maxRank = addRelevantChannels(relevantChannels, productChannels,
+                        ++maxRank) ? maxRank : --maxRank;
             }
 
-            // Increase ranking index for unassigned product channels, but revert the
-            // index if no channel has actually been added
-            maxRank = addRelevantChannels(relevantChannels, productChannels,
-                    ++maxRank) ? maxRank : --maxRank;
-        }
-
-        // Find all channels relevant for past and future migrations
-        List<RankedChannel> migrationChannels = addRelevantMigrationProductChannels(
-                auditTarget, maxRank);
-        relevantChannels.addAll(migrationChannels);
+            // Find all channels relevant for past and future migrations
+            List<RankedChannel> migrationChannels = addRelevantMigrationProductChannels(
+                    auditTarget, maxRank);
+            relevantChannels.addAll(migrationChannels);
 
 
-        return relevantChannels.stream()
-                .collect(
-                    Collectors.groupingBy(
-                        RankedChannel::getChannelId,
-                        // take only the lowest rank for each channel
-                        Collectors.reducing((a, b) -> a.getRank() <= b.getRank() ? a : b)
-                    )
-                ).entrySet()
-                 .stream()
-                 // its safe to call get here since groupingBy will not produce empty lists
-                 .map(s -> s.getValue().get()).collect(Collectors.toList());
+            return relevantChannels.stream()
+                    .collect(
+                            Collectors.groupingBy(
+                                    RankedChannel::getChannelId,
+                                    // take only the lowest rank for each channel
+                                    Collectors.reducing((a, b) -> a.getRank() <= b.getRank() ? a : b)
+                            )
+                    ).entrySet()
+                    .stream()
+                    // its safe to call get here since groupingBy will not produce empty lists
+                    .map(s -> s.getValue().get()).collect(Collectors.toList());
+        });
     }
 
     /**
