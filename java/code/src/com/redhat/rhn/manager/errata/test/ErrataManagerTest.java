@@ -153,7 +153,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 (pids) -> ErrataManager.searchByPackageIdsWithOrg(pids, user.getOrg()));
     }
 
-    private void searchByPackagesIdsHelper(Optional<Channel> channel, Function<List, List<ErrataOverview>> errataSearchFn) {
+    private void searchByPackagesIdsHelper(Optional<Channel> channel, Function<List, List<ErrataOverview>> errataSearchFn) throws Exception {
         Package p = PackageTest.createTestPackage(user.getOrg());
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
