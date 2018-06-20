@@ -30,12 +30,18 @@ module Yast
       @product_name = SCR.Read(path(".usr_share_rhn_config_defaults_rhn.product_name")) || "SUSE Manager"
       @invalid_pw_chars = "\"$'!"
 
+      if @product_name == "Uyuni"
+        db_user = "uyuni"
+      else
+        db_user = "susemanager"
+      end
+
       @settings = {
         "SATELLITE_HOST"    => "",
         "SATELLITE_DOMAIN"  => Hostname.CurrentDomain,
-        "SATELLITE_DB_USER" => "susemanager",
+        "SATELLITE_DB_USER" => db_user,
         "SATELLITE_DB_PASS" => "",
-        "SATELLITE_DB_SID"  => "susemanager"
+        "SATELLITE_DB_SID"  => db_user
       }
 
       @env_file = Ops.add(Directory.tmpdir, "/env_migration")
