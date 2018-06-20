@@ -269,7 +269,7 @@ function removeSystemFromSSM(ids) {
 }
 
 function deriveNodeName(d) {
-  return (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d);
+  return (d.data.type && !['system', 'proxy'].includes(d.data.type) ? d.data.name : '') + countChildren(d);
 }
 
 function countChildren(node) {
@@ -283,7 +283,7 @@ function myDeriveClass(node) {
   if (node.data.type == 'vhm') {
     return 'vhm';
   }
-  if (view == 'proxy-hierarchy' && node.depth == 1 || node.data.type == 'group') {
+  if (view == 'proxy-hierarchy' && node.data.type == 'proxy' || node.data.type == 'group') {
     return 'inner-node';
   }
 
@@ -336,7 +336,7 @@ function strengthByType(node) {
   if (node.data.id == 'root') {
     force = -1800;
   }
-  else if (view == 'proxy-hierarchy' && node.depth == 1 || ['vhm', 'group'].includes(node.data.type)) {
+  else if (view == 'proxy-hierarchy' && node.data.type == 'proxy' || ['vhm', 'group'].includes(node.data.type)) {
     force = -900;
   }
   else if (Utils.isSystemType(node)) {

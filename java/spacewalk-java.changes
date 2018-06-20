@@ -1,3 +1,4 @@
+- Show chain of proxies correctly (bsc#1084128)
 - improve gatherer-matcher Taskomatic task's performance (bsc#1094524)
 - Check if directory /srv/susemanager/salt/actionchains exists before deleting minion
   action chain files
