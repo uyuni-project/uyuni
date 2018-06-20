@@ -214,8 +214,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <sql-query name="PublishedErrata.searchByPackageIdsWithOrg">
         <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName, e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
-                        e.update_date as updateDate, e.issue_date as issueDate, pn.name
-                   from rhnErrata e,
+                        e.update_date as updateDate, e.issue_date as issueDate, pn.name,
+                        case when rb.keyword is not null then 1 else 0 end as reboot_suggested,
+                        case when rs.keyword is not null then 1 else 0 end as restart_suggested
+                   from rhnErrata e
+                        left join rhnerratakeyword rb on e.id = rb.errata_id and rb.keyword = 'reboot_suggested'
+                        left join rhnerratakeyword rs on e.id = rs.errata_id and rs.keyword = 'restart_suggested',
                         rhnErrataPackage ep,
                         rhnPackage p,
                         rhnPackageName pn,
@@ -237,6 +241,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="updateDate" type="timestamp" />
         <return-scalar column="issueDate" type="timestamp" />
         <return-scalar column="name" type="string" />
+        <return-scalar column="reboot_suggested" type="boolean" />
+        <return-scalar column="restart_suggested" type="boolean" />
     </sql-query>
 
 </hibernate-mapping>
