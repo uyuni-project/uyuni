@@ -3,12 +3,12 @@
  SUSE Manager build file for development use
 
  Builds and deploys the webapp to a SSH host running Tomcat, runs tests
- 
+
  Requirements & configuration:
- 
+
  https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir=".">
+<project name="SUSE Manager" default="deploy" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
@@ -40,6 +40,9 @@
   <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
   <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
 
+  <!-- Taskdefs -->
+  <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
+
   <!-- Paths -->
   <path id="libjars">
     <fileset dir="${lib.dir}" includes="**/*.jar" />
@@ -55,6 +58,10 @@
       <exclude name="classes/**/*" if="precompiled" />
     </delete>
     <delete dir="${test.results.dir}" />
+  </target>
+
+  <target name="ivy" description="Retrieves dependencies through ivy">
+    <ivy-retrieve sync="true" />
   </target>
 
   <target name="refresh-branding-jar" depends="clean" description="Compiles and builds the SUSE branding jar">
@@ -180,14 +187,17 @@
       <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
     </exec>
 
-    <echo message="Linking the main jar for Taskomatic..."/>
+    <echo message="Linking jars for Taskomatic..."/>
+    <exec executable="ssh">
+      <arg line="${ssh.command.args} ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+    </exec>
     <exec executable="ssh">
       <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
     </exec>
-
     <exec executable="ssh">
       <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
     </exec>
+
   </target>
 
   <target name="is-npm-installed">
@@ -290,7 +300,7 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat" />
 
-  <target name="test" depends="jar" description="Run unit tests">    
+  <target name="test" depends="jar" description="Run unit tests">
     <mkdir dir="${tests.results.dir}" />
 
     <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
@@ -299,7 +309,7 @@
     <echo message="${tests.includes.text}" />
     <echo message="and excluding:" />
     <echo message="${tests.excludes.text}" />
-    
+
     <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf"
 	    failureproperty="junit_failed">
       <sysproperty key="rhn-home" value="." />
