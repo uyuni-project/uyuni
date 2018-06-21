@@ -92,62 +92,59 @@ const NotificationMessages = React.createClass({
     });
   },
 
-  updateReadStatus: function(messageId) {
-    var currentObject = this;
+  updateReadStatus: function(ids, flagAsRead) {
+    var dataRequest = {};
+    dataRequest.messageIds = ids;
+    dataRequest.flagAsRead = flagAsRead;
 
-    var updatedData = this.state.serverData;
-    var messageRaw = updatedData.find(m => m.id == messageId);
-    messageRaw.isRead = !messageRaw.isRead;
-
-    var messageDataRequest = {};
-    messageDataRequest.messageId = messageRaw.id;
-    messageDataRequest.isRead = messageRaw.isRead;
-    Network.post("/rhn/manager/notification-messages/update-message-status", JSON.stringify(messageDataRequest), "application/json").promise
-    .then(data => {
-        this.setState({serverData : updatedData})
-    })
-    .catch(response => {
-      currentObject.setState({
-        error: response.status == 401 ? "authentication" :
-          response.status >= 500 ? "general" :
-          null
+    return Network.post("/rhn/manager/notification-messages/update-messages-status", JSON.stringify(dataRequest), "application/json").promise
+      .then(data => {
+        const newMessage = { severity: data.severity, text: data.text };
+        this.setState((prevState, props) => ({
+            // serverData = prev serverData without those are changed + those changed with the changes
+            serverData : prevState.serverData.filter(m => !ids.includes(m.id))
+              .concat(prevState.serverData
+                .filter(m => ids.includes(m.id))
+                .map(m => {
+                  var newM = Object.assign({}, m);
+                  newM.isRead = flagAsRead;
+                  return newM;
+                })),
+            messages : prevState.messages.concat([newMessage])
+          })
+        );
+      })
+      .catch(response => {
+        this.setState({
+          error: response.status == 401 ? "authentication" :
+            response.status >= 500 ? "general" :
+            null
+        });
       });
-    });
+  },
+
+  markAsRead: function(ids) {
+    return this.updateReadStatus(ids, true);
   },
 
   deleteNotifications: function(ids) {
-    Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
-    .then(data => {
-      var newMessagesState = this.state.messages;
-      newMessagesState.push({ severity: data.severity, text: data.text });
-
-      const updatedData = this.state.serverData.filter(m => !ids.includes(m.id));
-      const updatedSelectedItems = this.state.selectedItems.filter(m => !ids.includes(m))
-
-      this.setState({serverData : updatedData, selectedItems : updatedSelectedItems, messages : newMessagesState});
-    })
-    .catch(response => {
-      this.setState({
-        error: response.status == 401 ? "authentication" :
-          response.status >= 500 ? "general" :
-          null
+    return Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
+      .then(data => {
+        const newMessage = { severity: data.severity, text: data.text };
+        this.setState((prevState, props) => ({
+            serverData : prevState.serverData.filter(m => !ids.includes(m.id)),
+            selectedItems : prevState.selectedItems.filter(m => !ids.includes(m)),
+            messages : prevState.messages.concat([newMessage])
+          })
+        );
+      })
+      .catch(response => {
+        this.setState({
+          error: response.status == 401 ? "authentication" :
+            response.status >= 500 ? "general" :
+            null
+        });
       });
-    });
-  },
-
-  readThemAll: function() {
-    var currentObject = this;
-    Network.post("/rhn/manager/notification-messages/mark-all-as-read", "application/json").promise
-    .then(() => {
-      currentObject.refreshServerData();
-    })
-    .catch(response => {
-      currentObject.setState({
-        error: response.status == 401 ? "authentication" :
-          response.status >= 500 ? "general" :
-          null
-      });
-    });
   },
 
   decodeTypeText: function(rawType) {
@@ -243,25 +240,23 @@ const NotificationMessages = React.createClass({
   },
 
   retryOnboarding: function(minionId) {
-    Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
-    .then((data) => {
-      var newMessagesState = this.state.messages;
-      newMessagesState.push({ severity: data.severity, text: data.text });
-      this.setState({ messages : newMessagesState });
-    })
-    .catch(response => {
-    });
+    return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
+      .then((data) => {
+        const newMessage = { severity: data.severity, text: data.text };
+        this.setState((prevState, props) => ({ messages : prevState.message.concat([newMessage]) }));
+      })
+      .catch(response => {
+      });
   },
 
   retryReposync: function(channelId) {
-    Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
-    .then((data) => {
-      var newMessagesState = this.state.messages;
-      newMessagesState.push({ severity: data.severity, text: data.text });
-      this.setState({ messages : newMessagesState });
-    })
-    .catch(response => {
-    });
+    return Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
+      .then((data) => {
+        const newMessage = { severity: data.severity, text: data.text };
+        this.setState((prevState, props) => ({ messages : prevState.message.concat([newMessage]) }));
+      })
+      .catch(response => {
+      });
   },
 
   messageReaction: function(messageType, messageData) {
@@ -269,11 +264,11 @@ const NotificationMessages = React.createClass({
     switch(messageType) {
       case 'OnboardingFailed':
         actionButton = <AsyncButton id="retryOnboarding" icon="fa fa-rocket fa-1-5x no-margin" classStyle="btn-sm"
-            title={t('Retry onboarding')} text action={() => this.retryOnboarding(messageData['minionId'])} />;
+            title={t('Retry onboarding')} action={() => this.retryOnboarding(messageData['minionId'])} />;
       break;
       case 'ChannelSyncFailed':
         actionButton = <AsyncButton id="retryReposync" icon="fa fa-refresh fa-1-5x no-margin" classStyle="btn-sm"
-            title={t('Retry repo sync')} text action={() => this.retryReposync(messageData['channelId'])} />;
+            title={t('Retry repo sync')} action={() => this.retryReposync(messageData['channelId'])} />;
       break;
     }
     return actionButton;
@@ -299,13 +294,15 @@ const NotificationMessages = React.createClass({
     const panelButtons = <div className='spacewalk-section-toolbar'>
         <div className='action-button-wrapper'>
           <div className='btn-group'>
-            <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
-            <Button id="delete-selected-messages" icon="fa-trash" className='btn-default'
-                title={t('Delete selected messages')} text={t('Delete selected messages')}
-                handler={() => this.deleteNotifications(this.state.selectedItems)}
+            <AsyncButton id="reload" icon="refresh" name={t('Refresh')} action={this.refreshServerData} />
+            <AsyncButton id="delete-selected-messages" icon="trash" classStyle='btn-default'
+                title={t('Delete selected messages')} name={t('Delete selected messages')}
+                action={() => this.deleteNotifications(this.state.selectedItems)}
                 disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
-            <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
-                title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
+            <AsyncButton id="mark-as-read" icon="check-circle" classStyle='btn-default'
+                title={t('Mark selected as read')} name={t('Mark selected as read')}
+                action={() => this.markAsRead(this.state.selectedItems)}
+                disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
         </div>
       </div>
     </div>;
@@ -378,7 +375,7 @@ const NotificationMessages = React.createClass({
                     <AsyncButton id="updateReadStatus" classStyle="btn-sm"
                         icon={(row['isRead'] ? ' spacewalk-icon-envelope-open-o text-muted' : 'envelope text-primary') + " fa-1-5x no-margin"}
                         title={row['isRead'] ? t('Flag as Unread') : t('Flag as Read')}
-                        text action={() => this.updateReadStatus(row['id'], row['isRead'])} />
+                        text action={() => this.updateReadStatus([row['id']], !row['isRead'])} />
                     <AsyncButton id="delete"  classStyle="btn-sm"
                         icon="trash fa-1-5x no-margin" title={t('Delete Notification')}
                         text action={() => this.deleteNotifications([row['id']])} />
