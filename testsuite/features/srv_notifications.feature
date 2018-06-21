@@ -17,3 +17,11 @@ Feature: Test the notification/notification-messages feature
     Then I follow "All Messages"
     Then I check the first notification message
     And I delete it via the "Delete selected messages" button
+
+  Scenario: Flag a notification-message as read
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Notification Messages" in the left menu
+    And I wait until I see "The server has collected the following notification messages." text
+    Then I follow "All Messages"
+    Then I check the first notification message
+    And I mark as read it via the "Mark selected as read" button
