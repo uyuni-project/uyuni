@@ -277,12 +277,10 @@ public class Router implements SparkApplication {
                 withUserPreferences(withCsrfToken(withUser(NotificationMessageController::getList))), jade);
         get("/manager/notification-messages/data-unread", withUser(NotificationMessageController::dataUnread));
         get("/manager/notification-messages/data-all", withUser(NotificationMessageController::dataAll));
-        post("/manager/notification-messages/update-message-status",
-                withUser(NotificationMessageController::updateMessageStatus));
+        post("/manager/notification-messages/update-messages-status",
+                withUser(NotificationMessageController::updateMessagesStatus));
         post("/manager/notification-messages/delete",
                 withUser(NotificationMessageController::delete));
-        post("/manager/notification-messages/mark-all-as-read",
-                withUser(NotificationMessageController::markAllAsRead));
         post("/manager/notification-messages/retry-onboarding/:minionId",
                 withUser(NotificationMessageController::retryOnboarding));
         post("/manager/notification-messages/retry-reposync/:channelId",
