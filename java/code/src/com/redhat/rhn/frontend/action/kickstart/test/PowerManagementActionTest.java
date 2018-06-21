@@ -30,6 +30,7 @@ import org.cobbler.test.MockConnection;
 
 import servletunit.HttpServletRequestSimulator;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -86,11 +87,14 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
         Server server = ServerFactoryTest.createTestServer(user, true);
         NetworkInterface networkInterface = server.getNetworkInterfaces().iterator().next();
-        networkInterface.setSa4(new ServerNetAddress4() {
+        ServerNetAddress4 ip4 = new ServerNetAddress4() {
             {
                 setAddress(EXPECTED_ADDRESS);
             }
-        });
+        };
+        ArrayList<ServerNetAddress4> iplist = new ArrayList<>();
+        iplist.add(ip4);
+        networkInterface.setSa4(iplist);
         addRequestParameter(RequestContext.SID, server.getId().toString());
         actionPerform();
 

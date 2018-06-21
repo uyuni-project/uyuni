@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
@@ -235,8 +236,10 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
         for (Iterator<NetworkInterface> itr = nics.iterator(); itr.hasNext();) {
             NetworkInterface nic = itr.next();
-            if ("127.0.0.1".equals(nic.getIpaddr())) {
-                itr.remove();
+            for (ServerNetAddress4 addr : nic.getIPv4Addresses()) {
+                if ("127.0.0.1".equals(addr.getAddress())) {
+                    itr.remove();
+                }
             }
         }
 
@@ -260,11 +263,15 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
 
             if (StringUtils.isBlank(form.getString(BOND_IP_ADDRESS))) {
-                form.set(BOND_IP_ADDRESS, oldBond.getIpaddr());
+                form.set(BOND_IP_ADDRESS, oldBond.getIPv4Addresses().isEmpty() ?
+                        null : oldBond.getIPv4Addresses().stream().findFirst()
+                        .map(ServerNetAddress4::getAddress).orElse(null));
             }
 
             if (StringUtils.isBlank(form.getString(BOND_NETMASK))) {
-                form.set(BOND_NETMASK, oldBond.getNetmask());
+                form.set(BOND_NETMASK, oldBond.getIPv4Addresses().isEmpty() ?
+                        null : oldBond.getIPv4Addresses().stream().findFirst()
+                        .map(ServerNetAddress4::getNetmask).orElse(null));
             }
         }
 
@@ -276,7 +283,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                 for (NetworkInterface nic : nics) {
                     // if the nic does not have an IP address it is probably a
                     // slave to the bond, add it to the default selected list
-                    if (StringUtils.isBlank(nic.getIpaddr())) {
+                    if (nic.getIPv4Addresses().isEmpty()) {
                         slavesList.add(nic.getName());
                     }
                 }
@@ -308,7 +315,8 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
         for (Iterator<NetworkInterface> itr = nics.iterator(); itr.hasNext();) {
             NetworkInterface nic = itr.next();
-            if (nic.isDisabled() || "127.0.0.1".equals(nic.getIpaddr())) {
+            if (nic.isDisabled() || nic.getIPv4Addresses().isEmpty() ||
+                    nic.getIPv4Addresses().get(0).getAddress().equals("127.0.0.1")) {
                 itr.remove();
             }
         }
