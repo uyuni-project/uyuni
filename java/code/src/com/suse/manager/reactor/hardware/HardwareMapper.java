@@ -530,6 +530,15 @@ public class HardwareMapper {
         }
     }
 
+    private boolean isVirtualGuest(String virtTypeLowerCase, String virtSubtype) {
+        if (StringUtils.isNotBlank(virtTypeLowerCase) &&
+                !"physical".equals(virtTypeLowerCase) &&
+                !("xen".equals(virtTypeLowerCase) && "Xen Dom0".equals(virtSubtype))) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Map virtualization information to the database.
      *
@@ -547,8 +556,7 @@ public class HardwareMapper {
 
         VirtualInstanceType type = null;
 
-        if (StringUtils.isNotBlank(virtTypeLowerCase) &&
-                !"physical".equals(virtTypeLowerCase)) {
+        if (isVirtualGuest(virtTypeLowerCase, virtSubtype)) {
             if (StringUtils.isNotBlank(virtUuid)) {
 
                 virtUuid = StringUtils.remove(virtUuid, '-');
