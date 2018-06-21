@@ -3485,7 +3485,7 @@
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/ssmhwrefresh.jsp"/>
         <forward name="success"
-                 path="/systems/ssm/misc/Index.do" redirect="true"/>
+                 path="/systems/ssm/misc/HardwareRefresh.do" redirect="true"/>
     </action>
 
         <action path="/systems/ssm/misc/SoftwareRefresh"
@@ -3498,7 +3498,7 @@
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/ssmswrefresh.jsp"/>
         <forward name="success"
-                 path="/systems/ssm/misc/Index.do" redirect="true"/>
+                 path="/systems/ssm/misc/SoftwareRefresh.do" redirect="true"/>
     </action>
 
     <action path="/systems/ssm/ListSystems"
