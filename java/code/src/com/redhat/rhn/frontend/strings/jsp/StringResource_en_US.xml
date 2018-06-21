@@ -4562,7 +4562,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>Misc</source>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.updateprofiles">
-          <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#profiles"&gt;hardware/package profiles&lt;/a&gt;</source>
+          <source>&lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardware profiles&lt;/a&gt; or &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;package profiles&lt;/a&gt;</source>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.systempreferences">
           <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#sysprefs"&gt;system preferences&lt;/a&gt;</source>
