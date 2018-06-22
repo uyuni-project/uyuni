@@ -1356,18 +1356,20 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         rebootAction = ActionFactory.lookupById(rebootAction.getId());
         runScriptAction =  ActionFactory.lookupById(runScriptAction.getId());
 
-        assertEquals(ActionFactory.STATUS_FAILED,
-                applyStateAction.getServerActions().stream().findFirst().get().getStatus());
-        assertEquals(ActionFactory.STATUS_FAILED,
-                rebootAction.getServerActions().stream().findFirst().get().getStatus());
-        assertEquals(ActionFactory.STATUS_FAILED,
-                runScriptAction.getServerActions().stream().findFirst().get().getStatus());
+        ServerAction applyStateServerAction = applyStateAction.getServerActions().stream()
+                .filter(sa -> sa.getServerId().equals(minion.getId())).findFirst().get();
+        ServerAction rebootSeverAction = rebootAction.getServerActions().stream()
+                .filter(sa -> sa.getServerId().equals(minion.getId())).findFirst().get();
+        ServerAction runScriptSeverAction = runScriptAction.getServerActions().stream()
+                .filter(sa -> sa.getServerId().equals(minion.getId())).findFirst().get();
+
+        assertEquals(ActionFactory.STATUS_FAILED, applyStateServerAction.getStatus());
+        assertEquals(ActionFactory.STATUS_FAILED, rebootSeverAction.getStatus());
+        assertEquals(ActionFactory.STATUS_FAILED, runScriptSeverAction.getStatus());
 
         //Check the output of dependent actions
-        assertEquals("Prerequisite failed",
-                rebootAction.getServerActions().stream().findFirst().get().getResultMsg());
-        assertEquals("Prerequisite failed",
-                runScriptAction.getServerActions().stream().findFirst().get().getResultMsg());
+        assertEquals("Prerequisite failed", rebootSeverAction.getResultMsg());
+        assertEquals("Prerequisite failed", runScriptSeverAction.getResultMsg());
     }
 
     public void testActionChainResponse() throws Exception {
