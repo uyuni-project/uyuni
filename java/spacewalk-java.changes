@@ -1,3 +1,4 @@
+- Mark all proceeding actions in action-chain failed after an action failed(bsc#1096510)
 - Check if directory /srv/susemanager/salt/actionchains exists before deleting minion
   action chain files
 - specify old udev name as alternative when parsing hw results
