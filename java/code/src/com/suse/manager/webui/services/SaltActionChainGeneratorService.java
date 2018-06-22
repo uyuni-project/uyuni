@@ -387,6 +387,10 @@ public class SaltActionChainGeneratorService {
      */
     public void removeActionChainSLSFilesForMinion(MinionServer minion, Optional<Long> actionChainId) {
         Path targetDir = getTargetDir();
+        if (!Files.exists(targetDir)) {
+            return;
+        }
+
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDir,
                 ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId.map(id -> Long.toString(id)).orElse("*") +
                         "_" + minion.getMachineId() + "_*.sls")) {

@@ -1,3 +1,5 @@
+- Check if directory /srv/susemanager/salt/actionchains exists before deleting minion
+  action chain files
 - specify old udev name as alternative when parsing hw results
 - fix detection of a xen virtualization host (bsc#1096056)
 - fix hardware refresh with multiple IPs on a network interface (bsc#1041134)
