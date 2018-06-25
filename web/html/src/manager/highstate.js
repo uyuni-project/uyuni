@@ -174,7 +174,7 @@ var Highstate = React.createClass({
 
     render: function() {
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
-        const buttons = [ <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} disabled={minions.length === 0} /> ];
+        const buttons = [ <AsyncButton action={this.applyHighstate} defaultType="btn-success" name={t("Apply Highstate")} disabled={minions.length === 0} /> ];
         return (
             <div>
                 {messages}
