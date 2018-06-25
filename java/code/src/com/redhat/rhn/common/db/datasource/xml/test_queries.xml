@@ -227,6 +227,14 @@ update rhnServerGroup set group_type = :type_id where id = :sgid
   </query>
 </write-mode>
 
+<write-mode name="insert_into_table_pg">
+  <query params="foobar, id, test_column, pin">
+    INSERT INTO adv_datasource (foobar, id, test_column, pin)
+    VALUES (:foobar, :id, :test_column, :pin)
+    ON CONFLICT DO NOTHING
+  </query>
+</write-mode>
+
 <write-mode name="update_in_table">
   <query params="foobar, id">
     UPDATE adv_datasource
