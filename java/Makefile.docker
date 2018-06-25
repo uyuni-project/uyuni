@@ -2,7 +2,7 @@
 #
 
 # Docker tests variables
-DOCKER_CONTAINER_BASE = suma-3.1
+DOCKER_CONTAINER_BASE = suma-3.2
 DOCKER_REGISTRY       = registry.mgr.suse.de
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
 DOCKER_PG_PORTS       = -p 5432:5432
