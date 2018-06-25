@@ -1,9 +1,13 @@
-{% if pillar.get('param_pkgs', {}).items() %}
+{% if pillar.get('param_pkgs') %}
 pkg_removed:
   pkg.removed:
     -   pkgs:
-{%- for pkg, version in pillar.get('param_pkgs', {}).items() %}
+{%- for pkg, arch, version in pillar.get('param_pkgs', []) %}
+    {%- if grains.get('__suse_reserved_pkg_all_versions_support', False) %}
+        - {{ pkg }}.{{ arch }}: {{ version }}
+    {%- else %}
         - {{ pkg }}: {{ version }}
+    {%- endif %}
 {%- endfor %}
     -   require:
         - file: mgrchannels*
