@@ -1,3 +1,4 @@
+- Use custom Salt capabilities to prevent breaking backward compatibility (bsc#1089526)
 - Update profileupdate.sls to report all versions installed (bsc#1089526)
 - Do not install 'python-salt' on container build hosts with older Salt versions
   (bsc#1097699)
