@@ -33,6 +33,33 @@
   </query>
 </write-mode>
 
+<write-mode name="add_to_set_el3_pg">
+   <query params="user_id, label, el_one, el_two, el_three">
+     INSERT
+       INTO rhnSet (user_id, label, element, element_two, element_three)
+     VALUES (:user_id, :label, :el_one, :el_two, :el_three)
+     ON CONFLICT DO NOTHING
+   </query>
+</write-mode>
+
+<write-mode name="add_to_set_el2_pg">
+  <query params="user_id, label, el_one, el_two">
+    INSERT
+      INTO rhnSet (user_id, label, element, element_two)
+    VALUES (:user_id, :label, :el_one, :el_two)
+    ON CONFLICT DO NOTHING
+  </query>
+</write-mode>
+
+<write-mode name="add_to_set_el1_pg">
+  <query params="user_id, label, el_one">
+    INSERT
+      INTO rhnSet (user_id, label, element)
+    VALUES (:user_id, :label, :el_one)
+    ON CONFLICT DO NOTHING
+  </query>
+</write-mode>
+
 <write-mode name="delete_from_set_el3">
   <query params="user_id, label, el_one, el_two, el_three">
     DELETE
