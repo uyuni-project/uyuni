@@ -139,9 +139,10 @@ public class RhnSetFactory extends HibernateFactory {
         else {
             added = simpl.getAdded();
         }
-        WriteMode insertEl3 = writeMode("add_to_set_el3");
-        WriteMode insertEl2 = writeMode("add_to_set_el2");
-        WriteMode insertEl1 = writeMode("add_to_set_el1");
+        WriteMode insertEl3 = ModeFactory.getWriteMode(CATALOG, "add_to_set_el3", true);
+        WriteMode insertEl2 = ModeFactory.getWriteMode(CATALOG, "add_to_set_el2", true);
+        WriteMode insertEl1 = ModeFactory.getWriteMode(CATALOG, "add_to_set_el1", true);
+
         for (Iterator i = added.iterator(); i.hasNext();) {
             RhnSetElement current = (RhnSetElement) i.next();
             try {
