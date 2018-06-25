@@ -23,7 +23,6 @@
 - allow multi selection/deletion of notification messages
 - honor user timezone setting for system overview dates (bsc#1085516)
 - Schedule only one action when changing channel assignment for a group of servers on SSM
-- Avoid ISE when unsubscribing channels in SSM (bsc#1094578)
 - Fix minion software profile to allow multiple installed versions for the
   same package name (bsc#1089526)
 - add API functions to specify system cleanup type when deleting a
