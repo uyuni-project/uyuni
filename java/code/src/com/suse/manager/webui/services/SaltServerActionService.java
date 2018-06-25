@@ -898,10 +898,9 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> packagesUpdateAction(
             List<MinionServer> minions, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
-                d -> d.getPackageName().getName() + "." + d.getArch().getName(), d -> d.getEvr().toString(),
-                // See PR#2839
-                (a, b)-> a));
+        List<List<String>> pkgs = action.getDetails().stream().map(
+                d -> Arrays.asList(d.getPackageName().getName(), d.getArch().getName(), d.getEvr().toString())
+        ).collect(Collectors.toList());
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
                 Optional.of(singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
@@ -910,10 +909,9 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> packagesRemoveAction(
             List<MinionServer> minions, PackageRemoveAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
-                d -> d.getPackageName().getName() + "." + d.getArch().getName(), d -> d.getEvr().toString(),
-                // See PR#2839
-                (a, b)-> a));
+        List<List<String>> pkgs = action.getDetails().stream().map(
+                d -> Arrays.asList(d.getPackageName().getName(), d.getArch().getName(), d.getEvr().toString())
+        ).collect(Collectors.toList());
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGREMOVE),
                 Optional.of(singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
@@ -1333,11 +1331,11 @@ public class SaltServerActionService {
             List<MinionServer> minions) {
         LocalCall<?> call = null;
         if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
-            Map<String, String> args =
-                    ((PackageUpdateAction) actionIn).getDetails().stream()
-                            .collect(Collectors.toMap(d -> d.getPackageName().getName(),
-                                    // See PR#2839
-                                    d -> d.getEvr().toString(), (a, b)-> a));
+            List<List<String>> args =
+                    ((PackageUpdateAction) actionIn).getDetails().stream().map(
+                            d -> Arrays.asList(d.getPackageName().getName(),
+                                    d.getArch().getName(), d.getEvr().toString())
+                    ).collect(Collectors.toList());
             call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
                     Optional.of(Collections.singletonMap(PARAM_PKGS, args)));
             LOG.info("Executing staging of packages");
