@@ -21,9 +21,12 @@
     </c:choose>
 
 	<rl:listset name="systemListSet" legend="system">
+        <rhn:csrf />
+        <rhn:submitted />
+	    <rl:list dataset="pageList" name="systemList" emptykey="nosystems.message" alphabarcolumn="name"
+                filter="com.redhat.rhn.frontend.taglibs.list.filters.SystemOverviewFilter">
 
-	    <rl:list dataset="pageList" name="systemList" emptykey="nosystems.message" alphabarcolumn="name">
-
+             <rl:decorator name="PageSizeDecorator"/>
              <rl:selectablecolumn value="${current.id}" selected="${current.selected}"/>
 
              <!-- Name Column -->

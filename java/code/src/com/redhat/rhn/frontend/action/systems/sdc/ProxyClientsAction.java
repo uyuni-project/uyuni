@@ -82,7 +82,7 @@ public class ProxyClientsAction extends BaseSystemsAction {
             }
             ListTagHelper.bindSetDeclTo("systemList", getSetDecl(), request);
             request.setAttribute(RequestContext.PAGE_LIST, result);
-            request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+            request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?sid=" + server.getId());
             TagHelper.bindElaboratorTo("systemList", result.getElaborator(), request);
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
