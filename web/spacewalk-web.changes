@@ -1,3 +1,5 @@
+- Disable child channel selection only if channel is actually assigned(bsc#1097697)
+
 -------------------------------------------------------------------
 Wed Jul 04 09:15:50 CEST 2018 - jgonzalez@suse.com
 
