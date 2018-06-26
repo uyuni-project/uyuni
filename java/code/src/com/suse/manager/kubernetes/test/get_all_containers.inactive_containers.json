@@ -1,0 +1,25 @@
+{
+  "containers": [
+    {
+      "container_id": "docker://dab0d9c63db06f1338c06913907b582a9a7598384ea75c2779a92a1ee27b2747",
+      "image": "docker.io/jocatalin/kubernetes-bootcamp:v1",
+      "image_id": "docker-pullable://jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af",
+      "pod_name": "matei-kubernetes-test-2-373020608-3x7bl",
+      "pod_namespace": "default"
+    },
+    {
+      "container_id": "docker://9d438d105c42cd1afa635e52fb846a502412e2ce41a0684a5e1f3d237b294737",
+      "image": "docker.io/jocatalin/kubernetes-bootcamp:v1",
+      "image_id": "docker-pullable://jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af",
+      "pod_name": "matei-kubernetes-test-2894518018-vds1n",
+      "pod_namespace": "default"
+    },
+    {
+      "container_id": null,
+      "image": "docker.io/jocatalin/kubernetes-bootcamp:v1",
+      "image_id": "",
+      "pod_name": "matei-kubernetes-test-2894518018-33333",
+      "pod_namespace": "default"
+    }
+  ]
+}

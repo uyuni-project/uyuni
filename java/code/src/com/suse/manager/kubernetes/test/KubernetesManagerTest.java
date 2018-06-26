@@ -210,6 +210,31 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                         .count());
     }
 
+    /**
+     * Test with inactive containers (i.e. container id null)
+     * @throws Exception
+     */
+    public void testGetContainersUsage_inactiveContainers() throws Exception {
+        expectGetAllContainers("local-context", "get_all_containers.inactive_containers.json");
+
+        VirtualHostManager cluster1 = createVirtHostManager();
+
+        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
+
+        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
+
+        imgInfo.getBuildHistory().add(history1);
+        imgInfo.setRevisionNumber(1);
+
+        TestUtils.saveAndFlush(imgInfo);
+
+        Set<ImageUsage> usages = manager.getImagesUsage();
+
+        assertEquals(1, usages.size());
+        assertTrue(usages.stream().filter(usage -> usage.getImageInfo().getName().equals(imgInfo.getName())).findFirst().isPresent());
+        assertEquals(2, matchContainers(imgInfo, usages).count());
+    }
+
 
     private void expectGetAllContainers(String kubeconfig, String context, String file) throws IOException, ClassNotFoundException {
         context().checking(new Expectations() { {
@@ -223,11 +248,20 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         expectGetAllContainers("/srv/salt/kubeconfig", context, file);
     }
 
+    private Stream<ContainerInfo> matchContainers(ImageInfo imgInfo, Set<ImageUsage> usages) {
+        return matchContainers(imgInfo, usages, null);
+    }
+
     private Stream<ContainerInfo> matchContainers(ImageInfo imgInfo, Set<ImageUsage> usages, Predicate<? super ContainerInfo> filter) {
-        return usages.stream()
+        Stream<ContainerInfo> stream = usages.stream()
                 .filter(usage -> usage.getImageInfo().getName().equals(imgInfo.getName()))
-                .flatMap(usage -> usage.getContainerInfos().stream())
-                .filter(filter);
+                .flatMap(usage -> usage.getContainerInfos().stream());
+
+        if (filter != null) {
+            stream = stream.filter(filter);
+        }
+
+        return stream;
     }
 
     private VirtualHostManager createVirtHostManager(String... kubeconfig) {

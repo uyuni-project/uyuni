@@ -109,7 +109,10 @@ public class KubernetesManager {
                         return;
                     }
 
-                    containers.get().getContainers().forEach(container -> {
+                    // Loop through 'running' containers (with container id present)
+                    containers.get().getContainers().stream()
+                            .filter(c -> c.getContainerId().isPresent()).forEach(container -> {
+
                         if (container.getImageId().startsWith(DOCKER_PULLABLE)) {
                             String imgDigest = StringUtils
                                     .removeStart(container.getImageId(), DOCKER_PULLABLE);
@@ -164,7 +167,7 @@ public class KubernetesManager {
                             }
 
                             ContainerInfo containerUsage = new ContainerInfo();
-                            containerUsage.setContainerId(container.getContainerId());
+                            containerUsage.setContainerId(container.getContainerId().get());
                             containerUsage.setPodName(container.getPodName());
                             containerUsage.setPodNamespace(container.getPodNamespace());
                             containerUsage.setBuildRevision(imgBuildRevision);
