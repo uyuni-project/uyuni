@@ -1,4 +1,4 @@
-- Do not break backward compatibility on package installation/removal (bsc#1089526)
+- Do not break backward compatibility on package installation/removal (bsc#1096514)
 - Bugfix: proxyClients missing csrf token and paginations (bsc#1098225)
 - fix cleaning up tasks when starting up taskomatic (bsc#1095210)
 - Fix truncated result message of server actions (bsc#1039043)

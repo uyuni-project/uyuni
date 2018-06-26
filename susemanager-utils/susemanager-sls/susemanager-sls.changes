@@ -1,4 +1,4 @@
-- Use custom Salt capabilities to prevent breaking backward compatibility (bsc#1089526)
+- Use custom Salt capabilities to prevent breaking backward compatibility (bsc#1096514)
 - Do not install 'python-salt' on container build hosts with older Salt versions
   (bsc#1097699)
 - Fix bootstrap error when removing traditional stack (bsc#1096009)
