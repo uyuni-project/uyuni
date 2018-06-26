@@ -27,13 +27,13 @@ type ActionScheduleProps = {
 type ActionScheduleState = {
   type: "earliest" | "actionChain",
   earliest: Date,
-  actionChain: ?ActionChain,
+  actionChain: ActionChain,
   actionChains: Array<ActionChain>
 };
 
 class ActionSchedule extends React.Component<ActionScheduleProps, ActionScheduleState> {
 
-  newActionChainOpt = {id: t("new action chain"), text: t("new action chain")};
+  newActionChainOpt = {id: 0, text: t("new action chain")};
 
   constructor(props: ActionScheduleProps) {
     super(props);
@@ -100,8 +100,8 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
               <input type="radio" name="action_chain" value="false" checked={this.state.type == "actionChain"} id="schedule-by-action-chain" onChange={this.onSelectActionChain}/>
               <label htmlFor="schedule-by-action-chain">{t("Add to:")}</label>
             </div>
-            <div className="col-sm-6">
-              <Combobox id="action-chain" name="action_chain" value={this.state.actionChain ? this.state.actionChain.id : 0}
+            <div className="col-sm-3">
+              <Combobox id="action-chain" name="action_chain" value={this.state.actionChain.id}
                         onFocus={this.onSelectActionChain} data={this.state.actionChains} onSelect={this.onActionChainChanged} />
             </div>
           </div>
