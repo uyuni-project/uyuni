@@ -117,21 +117,21 @@
     </rhn-tab>
 
     <rhn-tab name="Misc" url="/rhn/systems/ssm/misc/Index.do">
-        <rhn-require acl="all_systems_in_set_have_feature(ftr_hardware_refresh)">
-            <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do" />
-            <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do" />
-        </rhn-require>
+        <rhn-tab name="ssm.misc.index.tabs.preferences" url="/rhn/systems/ssm/misc/Index.do"/>
+        <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do"
+                acl="all_systems_in_set_have_feature(ftr_hardware_refresh)"/>
+        <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do"
+                acl="all_systems_in_set_have_feature(ftr_package_refresh)"/>
         <rhn-tab name="Remote Command" url="/rhn/systems/ssm/provisioning/RemoteCommand.do"
-                acl="all_systems_in_set_have_feature(ftr_remote_command)">
-            <rhn-tab-url>/rhn/systems/ssm/provisioning/RemoteCommand.do</rhn-tab-url>
-        </rhn-tab>
-        <rhn-tab name="ssm.misc.index.tabs.delete" url="/rhn/systems/ssm/DeleteConfirm.do"/>
+                acl="all_systems_in_set_have_feature(ftr_remote_command)"/>
+        <rhn-tab name="ssm.misc.index.tabs.custom" url="/rhn/systems/ssm/misc/CustomValue.do"
+                acl="all_systems_in_set_have_feature(ftr_system_custom_values)"/>
+        <rhn-tab name="ssm.misc.index.tabs.lockunlock" url="/rhn/systems/ssm/misc/LockUnlockSystem.do"
+                acl="all_systems_in_set_have_feature(ftr_system_lock)"/>
         <rhn-tab name="ssm.misc.index.tabs.reboot" url="/rhn/systems/ssm/misc/RebootSystem.do"
                 acl="all_systems_in_set_have_feature(ftr_reboot)"/>
         <rhn-tab name="ssm.misc.index.tabs.migrate" url="/rhn/systems/ssm/MigrateSystems.do"/>
-        <rhn-tab name="ssm.misc.index.tabs.lockunlock" url="/rhn/systems/ssm/misc/LockUnlockSystem.do"
-                acl="all_systems_in_set_have_feature(ftr_system_lock)"/>
+        <rhn-tab name="ssm.misc.index.tabs.delete" url="/rhn/systems/ssm/DeleteConfirm.do"/>
         <rhn-tab-url>/rhn/systems/ssm/misc/ConfirmSystemPreferences.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/systems/ssm/DeleteConfirm.do</rhn-tab-url>
     </rhn-tab>
 </rhn-navi-tree>
