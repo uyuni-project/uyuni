@@ -1,4 +1,4 @@
-- Do not break backward compatibility on package installation/removal (bsc#1089526)
+- Do not break backward compatibility on package installation/removal (bsc#1096514)
 - Fix minion software profile to allow multiple installed versions for the
   same package name (bsc#1089526)
 - Fix NPE in image pages when showing containers with non-SUSE distros
