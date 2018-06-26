@@ -1226,9 +1226,19 @@ i.fa.pointer {
   }
 }
 
-.recommended-tag-base {
-  background-color: @spacewalk-yellow;
+.tag-base {
   padding: 0 .5em;
   border-radius: 2px;
   font-size: 85%;
+}
+
+.recommended-tag-base {
+  .tag-base;
+  background-color: @spacewalk-yellow;
+ }
+
+.mandatory-tag-base {
+  .tag-base;
+  background-color: @spacewalk-red;
+  color: white;
 }
