@@ -43,7 +43,7 @@ public class MgrK8sRunner {
         private String imageId;
 
         @SerializedName("container_id")
-        private String containerId;
+        private Optional<String> containerId = Optional.empty();
 
         @SerializedName("pod_name")
         private String podName;
@@ -82,14 +82,14 @@ public class MgrK8sRunner {
         /**
          * @return container id
          */
-        public String getContainerId() {
+        public Optional<String> getContainerId() {
             return containerId;
         }
 
         /**
          * @param containerIdIn to set
          */
-        public void setContainerId(String containerIdIn) {
+        public void setContainerId(Optional<String> containerIdIn) {
             this.containerId = containerIdIn;
         }
 
