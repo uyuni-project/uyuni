@@ -107,7 +107,11 @@ public class SaltService {
     private static final Logger LOG = Logger.getLogger(SaltService.class);
 
     // Salt properties
-    private final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
+    private final URI SALT_MASTER_URI = URI.create("http://" +
+            com.redhat.rhn.common.conf.Config.get()
+                    .getString(ConfigDefaults.SALT_API_HOST, "localhost") +
+            ":" + com.redhat.rhn.common.conf.Config.get()
+                    .getString(ConfigDefaults.SALT_API_PORT, "9080"));
     private final String SALT_USER = "admin";
     private final String SALT_PASSWORD = "";
     private final AuthModule AUTH_MODULE = AuthModule.AUTO;
