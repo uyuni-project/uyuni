@@ -47,21 +47,22 @@
             <rhn-tab-url>/rhn/systems/ssm/config/DiffConfirm.do</rhn-tab-url>
             <rhn-tab-url>/rhn/systems/ssm/config/DiffConfirmSubmit.do</rhn-tab-url>
         </rhn-tab>
-        <rhn-require acl="user_role(config_admin); all_systems_in_set_have_feature(ftr_channel_config_subscription)">
-            <rhn-tab name="ssm.nav.config.subscribe" url="/rhn/systems/ssm/config/Subscribe.do">
-                <rhn-tab-url>/rhn/systems/ssm/config/SubscribeSubmit.do</rhn-tab-url>
-                <rhn-tab-url>/rhn/systems/ssm/config/Rank.do</rhn-tab-url>
-                <rhn-tab-url>/rhn/systems/ssm/config/SubscribeConfirm.do</rhn-tab-url>
-            </rhn-tab>
-            <rhn-tab name="ssm.nav.config.unsubscribe" url="/rhn/systems/ssm/config/Unsubscribe.do">
-                <rhn-tab-url>/rhn/systems/ssm/config/UnsubscribeSubmit.do</rhn-tab-url>
-                <rhn-tab-url>/rhn/systems/ssm/config/UnsubscribeConfirm.do</rhn-tab-url>
-            </rhn-tab>
-            <rhn-tab name="ssm.nav.config.enable" url="/rhn/systems/ssm/config/Enable.do">
-                <rhn-tab-url>/rhn/systems/ssm/config/EnableSubmit.do</rhn-tab-url>
-                <rhn-tab-url>/rhn/systems/ssm/config/EnableSummary.do</rhn-tab-url>
-            </rhn-tab>
-        </rhn-require>
+        <rhn-tab name="ssm.nav.config.subscribe" url="/rhn/systems/ssm/config/Subscribe.do"
+                acl="user_role(config_admin); all_systems_in_set_have_feature(ftr_channel_config_subscription)">
+            <rhn-tab-url>/rhn/systems/ssm/config/SubscribeSubmit.do</rhn-tab-url>
+            <rhn-tab-url>/rhn/systems/ssm/config/Rank.do</rhn-tab-url>
+            <rhn-tab-url>/rhn/systems/ssm/config/SubscribeConfirm.do</rhn-tab-url>
+        </rhn-tab>
+        <rhn-tab name="ssm.nav.config.unsubscribe" url="/rhn/systems/ssm/config/Unsubscribe.do"
+                acl="user_role(config_admin); all_systems_in_set_have_feature(ftr_channel_config_subscription)">
+            <rhn-tab-url>/rhn/systems/ssm/config/UnsubscribeSubmit.do</rhn-tab-url>
+            <rhn-tab-url>/rhn/systems/ssm/config/UnsubscribeConfirm.do</rhn-tab-url>
+        </rhn-tab>
+        <rhn-tab name="ssm.nav.config.enable" url="/rhn/systems/ssm/config/Enable.do"
+                acl="user_role(config_admin); all_systems_in_set_have_feature(ftr_channel_config_subscription)">
+            <rhn-tab-url>/rhn/systems/ssm/config/EnableSubmit.do</rhn-tab-url>
+            <rhn-tab-url>/rhn/systems/ssm/config/EnableSummary.do</rhn-tab-url>
+        </rhn-tab>
     </rhn-tab>
 
     <rhn-tab name="Provisioning" url="/rhn/systems/ssm/kickstart/KickstartableSystems.do"
@@ -71,20 +72,16 @@
             <rhn-tab-url>/rhn/systems/ssm/kickstart/ScheduleByIp.do</rhn-tab-url>
         </rhn-tab>
 
-        <rhn-require acl="all_systems_in_set_have_feature(ftr_tag_system)">
-            <rhn-tab name="Tag Systems" url="/rhn/systems/ssm/provisioning/TagSystems.do"/>
-            <rhn-tab name="Rollback" url="/rhn/systems/ssm/provisioning/Rollback.do">
-                <rhn-tab-url>/rhn/systems/ssm/provisioning/RollbackToTag.do</rhn-tab-url>
-            </rhn-tab>
-        </rhn-require>
-        <rhn-require acl="all_systems_in_set_have_feature(ftr_power_management)">
-            <rhn-tab name="Power Management Configuration" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do">
-                <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do</rhn-tab-url>
-            </rhn-tab>
-            <rhn-tab name="Power Management Operations" url="/rhn/systems/ssm/provisioning/PowerManagementOperations.do">
-                <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementOperations.do</rhn-tab-url>
-            </rhn-tab>
-        </rhn-require>
+        <rhn-tab name="Tag Systems" url="/rhn/systems/ssm/provisioning/TagSystems.do"
+                acl="all_systems_in_set_have_feature(ftr_tag_system)"/>
+        <rhn-tab name="Rollback" url="/rhn/systems/ssm/provisioning/Rollback.do"
+                acl="all_systems_in_set_have_feature(ftr_tag_system)">
+            <rhn-tab-url>/rhn/systems/ssm/provisioning/RollbackToTag.do</rhn-tab-url>
+        </rhn-tab>
+        <rhn-tab name="Power Management Configuration" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"
+                acl="all_systems_in_set_have_feature(ftr_power_management)"/>
+        <rhn-tab name="Power Management Operations" url="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"
+                acl="all_systems_in_set_have_feature(ftr_power_management)"/>
     </rhn-tab>
 
 <!--
@@ -93,14 +90,10 @@
 -->
     <rhn-tab name="Provisioning" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"
             acl="all_systems_in_set_have_feature(ftr_power_management); not all_systems_in_set_have_feature(ftr_kickstart); any_system_with_salt_entitlement()">
-        <rhn-require acl="all_systems_in_set_have_feature(ftr_power_management)">
-            <rhn-tab name="Power Management Configuration" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do">
-                <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do</rhn-tab-url>
-            </rhn-tab>
-            <rhn-tab name="Power Management Operations" url="/rhn/systems/ssm/provisioning/PowerManagementOperations.do">
-                <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementOperations.do</rhn-tab-url>
-            </rhn-tab>
-        </rhn-require>
+        <rhn-tab name="Power Management Configuration" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"
+                acl="all_systems_in_set_have_feature(ftr_power_management)"/>
+        <rhn-tab name="Power Management Operations" url="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"
+                acl="all_systems_in_set_have_feature(ftr_power_management)"/>
     </rhn-tab>
 <!-- ENDFIX -->
 
