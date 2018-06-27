@@ -243,6 +243,16 @@ public class ConfigDefaults {
     public static final String SALT_CHECK_DOWNLOAD_TOKENS = "java.salt_check_download_tokens";
 
 
+    /**
+     * Indicates the salt-api host to connect to (host)
+     */
+    public static final String SALT_API_HOST = "java.salt_api_host";
+
+    /**
+     * Indicates the salt-api host to connect to (port)
+     */
+    public static final String SALT_API_PORT = "java.salt_api_port";
+
     private ConfigDefaults() {
     }
 
