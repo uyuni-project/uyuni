@@ -1,3 +1,4 @@
+- add package python-pyudev for bootstrapping (bsc#1099311)
 - Feat: allow cleanup of bootstrap repo (bsc#1096204)
 -------------------------------------------------------------------
 Tue Jun 05 10:15:34 CEST 2018 - jgonzalez@suse.com
