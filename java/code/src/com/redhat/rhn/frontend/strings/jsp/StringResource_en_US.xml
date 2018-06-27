@@ -4658,7 +4658,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>No systems are selected.</source>
         </trans-unit>
         <trans-unit id="ssm.hw.systems.confirmbutton">
-          <source>Confirm refresh</source>
+          <source>Confirm Refresh</source>
         </trans-unit>
         <trans-unit id="ssm.hw.systems.confirmmessage">
           <source>{0} hardware {1} will be refreshed.</source>
@@ -4679,7 +4679,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>No systems are selected.</source>
         </trans-unit>
         <trans-unit id="ssm.sw.systems.confirmbutton">
-          <source>Confirm refresh</source>
+          <source>Confirm Refresh</source>
         </trans-unit>
         <trans-unit id="ssm.sw.systems.confirmmessage">
           <source>{0} package {1} will be refreshed.</source>
