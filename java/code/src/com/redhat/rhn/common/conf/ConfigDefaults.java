@@ -300,6 +300,16 @@ public class ConfigDefaults {
      */
     public static final String SALT_EVENTS_PER_COMMIT = "java.salt_events_per_commit";
 
+    /**
+     * Indicates the salt-api host to connect to (host)
+     */
+    public static final String SALT_API_HOST = "java.salt_api_host";
+
+    /**
+     * Indicates the salt-api host to connect to (port)
+     */
+    public static final String SALT_API_PORT = "java.salt_api_port";
+
     private ConfigDefaults() {
     }
 
