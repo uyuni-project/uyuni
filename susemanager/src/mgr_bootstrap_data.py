@@ -119,7 +119,6 @@ PKGLIST12 = [
                 "python-pyOpenSSL",
                 "python-six",
                 "python-xml",
-                "python-pyudev",
                 "rhnlib",
                 "rpm-python",
                 "libsolv-tools",
