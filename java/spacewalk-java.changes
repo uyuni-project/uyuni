@@ -1,3 +1,4 @@
+- Fix tabs and links in the SSM "Misc" section (bsc#1098388)
 - Handle binary files appropriately (bsc#1096264)
 - Increase the default number of Quartz worker threads (bsc#1096511)
 - Ignore inactive containers in Kubernetes clusters
