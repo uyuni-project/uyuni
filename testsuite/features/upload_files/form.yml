@@ -111,30 +111,30 @@ testing:
                 password: secret2
 
 
-#    recursive_dict_of_dicts:
-#        $type: edit-group
-#        $minItems: 1
-#        $prototype:
-#            $type: group
-#            $key:
-#                $type: text
-#            group_name:
-#                $type: text
-#            entries:
-#                $type: edit-group
-#                $minItems: 1
-#                $prototype:
-#                    $key:
-#                        $type: text
-#                    entry_name:
-#                        $type: text
-#                    entry_desc:
-#                        $type: text
-#        $default:
-#            def_gr1:
-#                group_name: default group 1
-#                entries:
-#                    def_entry1:
-#                        entry_name: default entry 1
-#                        entry_desc: some text
+    recursive_dict_of_dicts:
+        $type: edit-group
+        $minItems: 1
+        $prototype:
+            $type: group
+            $key:
+                $type: text
+            group_name:
+                $type: text
+            entries:
+                $type: edit-group
+                $minItems: 1
+                $prototype:
+                    $key:
+                        $type: text
+                    entry_name:
+                        $type: text
+                    entry_desc:
+                        $type: text
+        $default:
+            def_gr1:
+                group_name: default group 1
+                entries:
+                    def_entry1:
+                        entry_name: default entry 1
+                        entry_desc: some text
 
