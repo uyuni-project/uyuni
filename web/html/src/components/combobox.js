@@ -3,10 +3,17 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
+import CreatableSelect from 'react-select/lib/Creatable';
 
 declare function $(param: any): any;
 
-type ComboboxItem = {
+type ReactSelectItem = {
+  value: ?string,
+  id: ?any,
+  label: string,
+}
+
+export type ComboboxItem = {
   id: any,
   text: string
 }
@@ -15,9 +22,9 @@ type ComboboxProps = {
   id: string,
   name: string,
   data: Array<ComboboxItem>,
-  value?: ?number | ?string,
+  selectedId?: ?number | ?string,
   onFocus?: () => void,
-  onSelect: (value: string) => void
+  onSelect: (value: ComboboxItem) => void
 };
 
 type ComboboxState = {
@@ -26,69 +33,55 @@ type ComboboxState = {
 
 class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
-    combobox: any;
-
-    constructor(props: ComboboxProps) {
-        super(props);
-        this.combobox = null;
-        this.state = {
-          focused: false
-        };
+  onChange = (selectedOption: ReactSelectItem) => {
+    if(selectedOption.id && selectedOption.value) {
+      return this.props.onSelect({
+        id: selectedOption.id,
+        text: selectedOption.label
+      });
     }
 
-    componentDidMount() {
-      this.combobox = $(ReactDOM.findDOMNode(this));
+    const sanitizedLabel = selectedOption.label && selectedOption.label.replace(/[',]/g, "");
 
-      // init widget
-      this.combobox.select2({
-        width: "20em",
-        data: this.props.data,
-        createSearchChoice: function(term: string, data: Array<ComboboxItem>) {
-          // returns a new search choice if term is new
-          let matchingChoices = data.filter(item => item.text.localeCompare(term) == 0);
+    // It means a new option was created
+    return this.props.onSelect({
+      id: selectedOption.id,
+      text: sanitizedLabel
+    });
+  };
 
-          if (matchingChoices.length == 0) {
-            var sanitizedTerm = term.replace(/[',]/g, "");
-            return {id: sanitizedTerm, text: sanitizedTerm};
-          }
-        },
-        maximumInputLength: 256
-      });
+  render() {
+    const colourStyles = {
+      option: (styles, { data, isDisabled, isFocused, isSelected }) => {
 
-      // init initial selection
-      this.combobox.select2("val", this.props.value);
-
-      // select radio button when combobox has focus
-      this.combobox.on("select2-focus", (event) => {
-        if(!this.state.focused) {
-          this.setState({focused: true});
-          this.props.onFocus && this.props.onFocus();
+        if (isFocused) {
+          return Object.assign(styles, {backgroundColor: "#052940", color: "#ffffff"});
         }
-      });
 
-      this.combobox.on("select2-blur", (event) => {
-        this.setState({focused: false});
-      });
+        if (isSelected) {
+          return Object.assign(styles, {backgroundColor: "#063559", color: "#ffffff"});
+        }
 
-      this.combobox.on("select2-selecting", (event) => {
-        this.props.onSelect(event.val);
-      })
+        return styles;
+      },
+    };
 
-      this.combobox.on("change", (event) => {
-        this.props.onSelect(event.val);
-      });
-    }
+    // The react-select is expecting the value to be a string, but let's keep the original id here so we can propagate
+    // correctly the selected option up.
+    const options: Array<ReactSelectItem> = this.props.data.map(item => ({value: item.id.toString(), id: item.id, label: item.text}));
 
-    render() {
-      return (
-        <input type="hidden"
-            id={this.props.id}
-            name={this.props.name}
-        />);
-    }
-
+    return <CreatableSelect
+      id={this.props.id}
+      name={this.props.name}
+      onFocus={this.props.onFocus}
+      onChange={this.onChange}
+      value={options.find(option => option.id === this.props.selectedId)}
+      options={options}
+      styles={colourStyles}
+    />;
+  }
 }
 
 module.exports = {
-    Combobox : Combobox
+  Combobox : Combobox
 }
