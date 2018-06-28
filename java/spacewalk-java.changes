@@ -1,3 +1,4 @@
+- Handle binary files appropriately (bsc#1096264)
 - XML-RPC API call system.scheduleChangeChannels() fails when no children are given (bsc#1098815)
 - Ignore inactive containers in Kubernetes clusters
 - explicitly require IBM java for SLES < SLE15 (bsc#1099454)
