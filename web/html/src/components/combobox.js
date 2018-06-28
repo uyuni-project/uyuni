@@ -3,11 +3,17 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-import Select from 'react-select';
+import CreatableSelect from 'react-select/lib/Creatable';
 
 declare function $(param: any): any;
 
-type ComboboxItem = {
+type ReactSelectItem = {
+  value: ?string,
+  id: ?any,
+  label: string,
+}
+
+export type ComboboxItem = {
   id: any,
   text: string
 }
@@ -16,9 +22,9 @@ type ComboboxProps = {
   id: string,
   name: string,
   data: Array<ComboboxItem>,
-  value?: ?number | ?string,
+  selectedId?: ?number | ?string,
   onFocus?: () => void,
-  onSelect: (value: string) => void
+  onSelect: (value: ComboboxItem) => void
 };
 
 type ComboboxState = {
@@ -26,9 +32,25 @@ type ComboboxState = {
 };
 
 class Combobox extends React.Component<ComboboxProps, ComboboxState> {
-  render() {
-    const options = this.props.data.map(item => ({value: item.id, label: item.text}));
 
+  onChange = (selectedOption: ReactSelectItem) => {
+    if(selectedOption.id && selectedOption.value) {
+      return this.props.onSelect({
+        id: selectedOption.id,
+        text: selectedOption.label
+      });
+    }
+
+    const sanitizedLabel = selectedOption.label && selectedOption.label.replace(/[',]/g, "");
+
+    // It means a new option was created
+    return this.props.onSelect({
+      id: selectedOption.id,
+      text: sanitizedLabel
+    });
+  };
+
+  render() {
     const colourStyles = {
       option: (styles, { data, isDisabled, isFocused, isSelected }) => {
 
@@ -44,12 +66,16 @@ class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       },
     };
 
-    return <Select
+    // The react-select is expecting the value to be a string, but let's keep the original id here so we can propagate
+    // correctly the selected option up.
+    const options: Array<ReactSelectItem> = this.props.data.map(item => ({value: item.id.toString(), id: item.id, label: item.text}));
+
+    return <CreatableSelect
       id={this.props.id}
       name={this.props.name}
       onFocus={this.props.onFocus}
-      onChange={(selectedOption) => this.props.onSelect(selectedOption.value)}
-      value={options.find(option => option.value === this.props.value)}
+      onChange={this.onChange}
+      value={options.find(option => option.id === this.props.selectedId)}
       options={options}
       styles={colourStyles}
     />;
