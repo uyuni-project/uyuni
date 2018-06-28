@@ -1,10 +1,10 @@
+- replace select2js plugin in the React environment
 - Fix css issues on minion-state pages (bsc#1083295)
 - Show feedback on button clicked (bsc#1085464)
 - Show chain of proxies correctly (bsc#1084128)
 - Fix typo in 'Installed Products' label in image overview page
 - Disallow colons in image labels (bsc#1092940)
 - Improve the gulpfile watch mode performance (bsc#1096747)
-- replace select2js plugin in the React environment
 
     -------------------------------------------------------------------
 Tue Jun 05 10:13:20 CEST 2018 - jgonzalez@suse.com
