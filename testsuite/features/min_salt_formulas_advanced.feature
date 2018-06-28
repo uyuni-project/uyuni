@@ -1,11 +1,10 @@
 # Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Use advanced features of salt formulas
+Feature: Use advanced features of Salt formulas
   In order to use forms to apply changes to minions
   As an authorized user
-  I want to be able to install and use salt formulas
-
+  I want to be able to install and use Salt formulas
 
   Scenario: Install a formula package on the server
      Given I am authorized
@@ -15,8 +14,7 @@ Feature: Use advanced features of salt formulas
      And I follow "Formula Catalog"
      Then I should see a "testform" text
 
-
-  Scenario: Assign formula to minion via group formula and verify default values
+  Scenario: Assign formula to minion via group formula
      Given I am on the groups page
      When I follow "Create Group"
      And I enter "test-formula-group" as "name"
@@ -33,7 +31,10 @@ Feature: Use advanced features of salt formulas
      And I check the "sle-minion" client
      And I click on "Add Systems"
      Then I should see a "1 systems were added to test-formula-group server group." text
-#    Is the refresh necessary? bsc#1028285 is already fixed.
+
+
+  Scenario: Verify default values
+#    The refresh is necessary, bsc#1028285 does not cover this.
      When I refresh the pillar data
      Then the pillar data for "testing:str" should be "" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
@@ -56,32 +57,29 @@ Feature: Use advanced features of salt formulas
      And the pillar data for "testing:dict_of_dicts:def_user:name" should be "root" on "sle-minion"
      And the pillar data for "testing:dict_of_dicts:def_user:password" should be "secret2" on "sle-minion"
      And the pillar data for "testing:dict_of_dicts:def_user:full_name" should be "None" on "sle-minion"
-#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle-minion"
-#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle-minion"
-#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle-minion"
-
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle-minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle-minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle-minion"
 
   Scenario: Fill in and verify non-default values in group formula
      Given I am on the groups page
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I enter "text1" as "testing$str"
-     And I enter "text2" as "testing$str_def"
-     And I enter "text3" as "testing$str_or_null"
-     And I enter "text4" as "testing$str_opt"
-     And I enter "1" as "testing$num"
-     And I enter "2" as "testing$num_def"
-     And I enter "3" as "testing$num_or_null"
-     And I enter "4" as "testing$num_opt"
-     And I enter "pw1" as "testing$pw"
-     And I enter "pw2" as "testing$pw_or_null"
-     And I enter "pw3" as "testing$pw_opt"
+     And I enter "text1" as "testing#str"
+     And I enter "text2" as "testing#str_def"
+     And I enter "text3" as "testing#str_or_null"
+     And I enter "text4" as "testing#str_opt"
+     And I enter "1" as "testing#num"
+     And I enter "2" as "testing#num_def"
+     And I enter "3" as "testing#num_or_null"
+     And I enter "4" as "testing#num_opt"
+     And I enter "pw1" as "testing#pw"
+     And I enter "pw2" as "testing#pw_or_null"
+     And I enter "pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
-#    Is the refresh necessary?
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "text1" on "sle-minion"
+     And the pillar data for "testing:str" should be "text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "text2" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "text3" on "sle-minion"
      And the pillar data for "testing:str_opt" should be "text4" on "sle-minion"
@@ -93,7 +91,6 @@ Feature: Use advanced features of salt formulas
      And the pillar data for "testing:pw_or_null" should be "pw2" on "sle-minion"
      And the pillar data for "testing:pw_opt" should be "pw3" on "sle-minion"
 
-
   Scenario: Clear values in group formula and verify the defaults again
      Given I am on the groups page
      When I follow "test-formula-group" in the content area
@@ -102,9 +99,7 @@ Feature: Use advanced features of salt formulas
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
-#    Is the refresh necessary?
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "" on "sle-minion"
+     And the pillar data for "testing:str" should be "" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle-minion"
@@ -125,25 +120,22 @@ Feature: Use advanced features of salt formulas
      And the pillar data for "testing:dict_of_dicts:def_user:name" should be "root" on "sle-minion"
      And the pillar data for "testing:dict_of_dicts:def_user:password" should be "secret2" on "sle-minion"
      And the pillar data for "testing:dict_of_dicts:def_user:full_name" should be "None" on "sle-minion"
-#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle-minion"
-#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle-minion"
-#     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle-minion"
-
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:group_name" should be "default group 1" on "sle-minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_name" should be "default entry 1" on "sle-minion"
+     And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle-minion"
 
   Scenario: Fill in and verify mix of default and non-default values in group formula
      Given I am on the groups page
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I enter "text1" as "testing$str"
-     And I enter "1" as "testing$num"
-     And I enter "2" as "testing$num_def"
-     And I enter "pw1" as "testing$pw"
+     And I enter "text1" as "testing#str"
+     And I enter "1" as "testing#num"
+     And I enter "2" as "testing#num_def"
+     And I enter "pw1" as "testing#pw"
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
-#    Is the refresh necessary?
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "text1" on "sle-minion"
+     And the pillar data for "testing:str" should be "text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle-minion"
@@ -161,8 +153,6 @@ Feature: Use advanced features of salt formulas
      And I follow first "Testform" in the content area
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
-#    Is the refresh necessary?
-     When I refresh the pillar data
      Then the pillar data for "testing:str" should be "text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
@@ -179,22 +169,20 @@ Feature: Use advanced features of salt formulas
      Given I am on the Systems overview page of this "sle-minion"
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I enter "min_text1" as "testing$str"
-     And I enter "min_text2" as "testing$str_def"
-     And I enter "min_text3" as "testing$str_or_null"
-     And I enter "min_text4" as "testing$str_opt"
-     And I enter "101" as "testing$num"
-     And I enter "102" as "testing$num_def"
-     And I enter "103" as "testing$num_or_null"
-     And I enter "104" as "testing$num_opt"
-     And I enter "min_pw1" as "testing$pw"
-     And I enter "min_pw2" as "testing$pw_or_null"
-     And I enter "min_pw3" as "testing$pw_opt"
+     And I enter "min_text1" as "testing#str"
+     And I enter "min_text2" as "testing#str_def"
+     And I enter "min_text3" as "testing#str_or_null"
+     And I enter "min_text4" as "testing#str_opt"
+     And I enter "101" as "testing#num"
+     And I enter "102" as "testing#num_def"
+     And I enter "103" as "testing#num_or_null"
+     And I enter "104" as "testing#num_opt"
+     And I enter "min_pw1" as "testing#pw"
+     And I enter "min_pw2" as "testing#pw_or_null"
+     And I enter "min_pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
-#    Is the refresh necessary?
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "min_text1" on "sle-minion"
+     And the pillar data for "testing:str" should be "min_text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "min_text2" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "min_text3" on "sle-minion"
      And the pillar data for "testing:str_opt" should be "min_text4" on "sle-minion"
@@ -206,6 +194,7 @@ Feature: Use advanced features of salt formulas
      And the pillar data for "testing:pw_or_null" should be "min_pw2" on "sle-minion"
      And the pillar data for "testing:pw_opt" should be "min_pw3" on "sle-minion"
 
+# https://github.com/SUSE/spacewalk/issues/4546
   Scenario: Clear values in minion formula and verify that the pillar is set to group values
      Given I am on the Systems overview page of this "sle-minion"
      When I follow "Formulas" in the content area
@@ -213,8 +202,6 @@ Feature: Use advanced features of salt formulas
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
-#    Is the refresh necessary?
-     When I refresh the pillar data
      Then the pillar data for "testing:str" should be "text1" on "sle-minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle-minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle-minion"
@@ -227,6 +214,8 @@ Feature: Use advanced features of salt formulas
      And the pillar data for "testing:pw_or_null" should be "None" on "sle-minion"
      And the pillar data for "testing" should not contain "pw_opt" on "sle-minion"
 
+#TODO test for adding/removing items in edit-group
+
 # this should not be necessary, but it is currently required to run this test repeatedly
 # https://github.com/SUSE/spacewalk/issues/4513
   Scenario: Cleanup: remove "Testform" formula from "test-formula-group"
@@ -238,7 +227,7 @@ Feature: Use advanced features of salt formulas
      When I uncheck the "testform" formula
      And I click on "Save"
      Then I should see a "Formulas saved!" text
-#    Is the refresh necessary?
+#    The refresh is necessary, bsc#1028285 does not cover this.
      When I refresh the pillar data
      Then the pillar data for "testing" should be empty on "sle-minion"
 
@@ -250,9 +239,6 @@ Feature: Use advanced features of salt formulas
      Then I should see a "System group" text
      Then I should see a "test-formula-group" text
      And I should see a "deleted" text
-#    Is the refresh necessary?
+#    The refresh is necessary, bsc#1028285 does not cover this.
      When I refresh the pillar data
      Then the pillar data for "testing" should be empty on "sle-minion"
-
-
-
