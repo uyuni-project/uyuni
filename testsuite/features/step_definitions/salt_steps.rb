@@ -292,6 +292,7 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   $server.run("mkdir -p /srv/formula_metadata/" + formula)
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
+  $server.run("chmod 644 " + dest)
 end
 
 When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
