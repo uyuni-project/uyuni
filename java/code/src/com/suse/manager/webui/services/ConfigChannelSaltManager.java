@@ -167,7 +167,7 @@ public class ConfigChannelSaltManager {
         }
         if (channel.isNormalChannel()) {
             File stateFile = new File(channelDir, defaultExtension("init.sls"));
-            writeContent(configChannelInitSLSContent(channel), channelDir, stateFile);
+            writeTextFile(configChannelInitSLSContent(channel), channelDir, stateFile);
         }
     }
 
@@ -189,8 +189,13 @@ public class ConfigChannelSaltManager {
         }
         LOG.trace("Generating configuration file: " + file.getConfigFileName().getPath());
         File fileOnDisk = new File(channelDir, file.getConfigFileName().getPath());
-        writeContent(latestRev.getConfigContent().getContentsString(), channelDir,
-                fileOnDisk);
+
+        if (latestRev.getConfigContent().isBinary()) {
+            writeBinaryFile(latestRev.getConfigContent().getContents(), channelDir, fileOnDisk);
+        }
+        else {
+            writeTextFile(latestRev.getConfigContent().getContentsString(), channelDir, fileOnDisk);
+        }
     }
 
     /**
@@ -204,11 +209,29 @@ public class ConfigChannelSaltManager {
      * directory
      * @throws IOException if there is an error when writing on the disk
      */
-    private void writeContent(String content, File channelDir, File outFile)
+    private void writeTextFile(String content, File channelDir, File outFile)
             throws IOException {
         assertStateInOrgDir(channelDir, outFile);
         outFile.getParentFile().mkdirs();
         FileUtils.writeStringToFile(outFile, content, CharEncoding.UTF_8);
+     }
+
+    /**
+     * Checks that the outFile is inside the channel directory and writes the contents to
+     * it.
+     *
+     * @param content byte[] ConfigContent to be written
+     * @param channelDir the channel directory
+     * @param outFile the output file
+     * @throws IllegalArgumentException if there is an attempt to write file outside channel
+     * directory
+     * @throws IOException if there is an error when writing on the disk
+     */
+    private void writeBinaryFile(byte[] content, File channelDir, File outFile)  throws IOException {
+        assertStateInOrgDir(channelDir, outFile);
+        outFile.getParentFile().mkdirs();
+        FileUtils.writeByteArrayToFile(outFile, content);
+
     }
 
     private void removeConfigChannelFiles(Long orgId, String channelLabel) {
