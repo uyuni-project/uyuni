@@ -3,8 +3,12 @@ packages:
     - name: pkg.info_installed
     - kwargs: {
           attr: 'arch,epoch,version,release,install_date_time_t',
+{%- if grains.get('__suse_reserved_pkg_all_versions_support', False) %}
           errors: report,
           all_versions: true
+{%- else %}
+          errors: report
+{%- endif %}
       }
 {% if grains['os_family'] == 'Suse' %}
 products:
