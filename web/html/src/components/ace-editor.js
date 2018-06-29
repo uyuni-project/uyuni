@@ -1,19 +1,20 @@
 'use strict';
 
-var React = require("react");
+const React = require("react");
+const PropTypes = React.PropTypes;
 
 const AceEditor = React.createClass({
 
   propTypes: {
-    mode: React.PropTypes.string,
-    content: React.PropTypes.string,
-    className: React.PropTypes.string,
-    id: React.PropTypes.string,
-    minLines: React.PropTypes.number,
-    maxLines: React.PropTypes.number,
-    readOnly: React.PropTypes.bool,
-    name: React.PropTypes.string,
-    onChange: React.PropTypes.func,
+    mode: PropTypes.string,
+    content: PropTypes.string,
+    className: PropTypes.string,
+    id: PropTypes.string,
+    minLines: PropTypes.number,
+    maxLines: PropTypes.number,
+    readOnly: PropTypes.bool,
+    name: PropTypes.string,
+    onChange: PropTypes.func,
   },
 
   componentDidMount: function() {

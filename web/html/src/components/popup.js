@@ -1,15 +1,16 @@
 "use strict";
 
 const React = require("react");
+const PropTypes = React.PropTypes;
 
 const PopUp = React.createClass({
     propTypes: {
-      id: React.PropTypes.string.isRequired, // the id of the html div tag
-      onClosePopUp: React.PropTypes.func, // a callback function with no parameters
-      className: React.PropTypes.string, // the css className for the 'modal-dialog' div
-      title: React.PropTypes.string,
-      content: React.PropTypes.node, // the body of the popup
-      footer: React.PropTypes.node,
+      id: PropTypes.string.isRequired, // the id of the html div tag
+      onClosePopUp: PropTypes.func, // a callback function with no parameters
+      className: PropTypes.string, // the css className for the 'modal-dialog' div
+      title: PropTypes.string,
+      content: PropTypes.node, // the body of the popup
+      footer: PropTypes.node,
     },
 
   componentDidMount: function() {
