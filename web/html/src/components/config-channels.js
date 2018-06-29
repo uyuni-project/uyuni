@@ -336,7 +336,7 @@ class ConfigChannels extends React.Component {
       // Buttons for the ranking page
       buttons = [
         <button key="1" id="back-btn" className="btn btn-default" onClick={this.hideRanking}>{t("Back")}</button>,
-        <AsyncButton key="2" id="confirm-btn" defaultType="btn-success" action={this.save} name={t("Confirm")} />
+        <AsyncButton key="2" id="confirm-btn" defaultType="btn-success" action={this.save} text={t("Confirm")} />
       ];
     } else {
       // Buttons for the list/search page
@@ -349,7 +349,7 @@ class ConfigChannels extends React.Component {
         // No changes, reorder or apply existing assignments
         const assigned = currentAssignment.length > 0;
         buttons = [
-          <AsyncButton key="2" id="apply-btn" defaultType="btn-success" disabled={!assigned} action={this.applySaltState} name={t("Apply")} />
+          <AsyncButton key="2" id="apply-btn" defaultType="btn-success" disabled={!assigned} action={this.applySaltState} text={t("Apply")} />
         ];
 
         if(assigned) {
@@ -372,7 +372,7 @@ class ConfigChannels extends React.Component {
             <PanelRow className="input-group">
               <TextField id="search-field" value={this.state.filter} placeholder={t("Search in configuration channels")} onChange={this.onSearchChange} onPressEnter={this.search}/>
               <span className="input-group-btn">
-                <AsyncButton id="search-states" name={t("Search")} action={this.search} />
+                <AsyncButton id="search-states" text={t("Search")} action={this.search} />
                 <button id="system-btn" className={this.state.view == "system" ? "btn btn-info" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
                 <button id="changes-btn" className={this.state.view == "changes" ? "btn btn-info" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
                   {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}

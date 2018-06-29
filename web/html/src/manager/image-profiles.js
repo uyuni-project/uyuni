@@ -102,7 +102,7 @@ class ImageProfiles extends React.Component {
           <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
             title={t("Delete selected")} target="delete-selected-modal"/>
       }
-      <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
+      <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
       { isAdmin &&
         <LinkButton id="create" icon="fa-plus" className="btn-default" title={t("Create")} text={t("Create")} href="/rhn/manager/cm/imageprofiles/create" />
       }

@@ -1,3 +1,4 @@
+- Refactor buttons.js
 - Feature: implement test-mode for highstate UI
 - Disable child channel selection only if channel is actually assigned(bsc#1097697)
 - Fix typo in 'Installed Products' label in image overview page
