@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.server;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 
@@ -23,7 +22,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
  * @version $Rev$
  */
 public class SatelliteServer extends Server {
-    private byte[] cert;
     private String product;
     private String owner;
     // these are dates but are stored as strings. if we need to perform some
@@ -38,39 +36,6 @@ public class SatelliteServer extends Server {
     public SatelliteServer() {
         super();
     }
-
-    /**
-     * @return Returns the cert.
-     */
-    public String getCertString() {
-        if (cert != null) {
-            return HibernateFactory.getByteArrayContents(cert);
-        }
-        return null;
-    }
-
-    /**
-     * Get the cert
-     * @return the cert
-     */
-    public byte[] getCert() {
-        return cert;
-    }
-
-    /**
-     * @param aCert The cert to set.
-     */
-    public void setCert(String aCert) {
-        cert = HibernateFactory.stringToByteArray(aCert);
-    }
-
-    /**
-     * @param aCert The cert to set.
-     */
-    public void setCert(byte[] aCert) {
-        cert = aCert;
-    }
-
 
     /**
      * @return Returns the expiration.
