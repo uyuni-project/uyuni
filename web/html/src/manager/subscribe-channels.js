@@ -53,7 +53,6 @@ type SystemChannelsState = {
   requiredChannels: Map<number, Set<number>>,
   // channel dependencies: by which child channels is a child channel required?
   requiredByChannels: Map<number, Set<number>>,
-  assignedChildrenIds :  Set<number>, // channels which are already assigned
   page: number,
   scheduled: boolean,
   dependencyDataAvailable: boolean
@@ -72,7 +71,6 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       availableChildren: new Map(),
       requiredChannels: new Map(),
       requiredByChannels: new Map(),
-      assignedChildrenIds : new Set(),
       page: 1,
       scheduled: false,
       dependencyDataAvailable: false
@@ -89,8 +87,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         const base : ChannelDto = data.data && data.data.base ? data.data.base : this.getNoBase();
         this.setState({
           selectedBase: base,
-          selectedChildrenIds: new Map([[base.id, new Set(data.data.children.map(c => c.id))]]),
-          assignedChildrenIds : new Set(data.data.children.map(c => c.id))
+          selectedChildrenIds: new Map([[base.id, new Set(data.data.children.map(c => c.id))]])
         });
         if (data.data && data.data.base) {
           this.getAccessibleChildren(data.data.base.id);
@@ -127,11 +124,12 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         let channelDependencies = ChannelUtils.processChannelDependencies(data.data);
 
         if (!channelDependencies.selectedChildrenIds) {
-          channelDependencies.selectedChildrenIds = this.state.selectedChildrenIds;
+          channelDependencies.selectedChildrenIds = this.state.selectedChildrenIds;		
         }
         let prevSelectedChildren = this.state.selectedChildrenIds.get(numericBaseId) ? this.state.selectedChildrenIds.get(numericBaseId) : new Set();
         let newSelectedChildren = new Set([...prevSelectedChildren, ...channelDependencies.requiredChannels.get(numericBaseId)]);
 
+        channelDependencies.selectedChildrenIds.set(numericBaseId, newSelectedChildren);
         this.setState(channelDependencies);
         this.setState({dependencyDataAvailable: true});
       })
@@ -215,15 +213,6 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         .filter(channel => channel !== undefined);
     }
     return null;
-  }
-
-  areAllMandatoryChildrenSelected = () => {
-    if (this.state.selectedBase && this.state.selectedBase.id && this.state.requiredChannels.get(this.state.selectedBase.id)) {
-        let baseId = this.state.selectedBase.id;
-        let mandatoryChannels = this.state.requiredChannels.get(baseId);
-        let alreadyAssignedChildrenIds = this.state.assignedChildrenIds;
-        return Array.from(mandatoryChannels).every(mc=>alreadyAssignedChildrenIds.has(mc));
-    }
   }
 
   toggleRecommended = () => {
@@ -348,12 +337,11 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     if (this.state.availableChildren && this.state.dependencyDataAvailable == true) {
       let selectedChildrenList = this.getSelectedChildren();
       let mandatoryChannels = this.state.requiredChannels.get(this.state.selectedBase.id);
-      let alreadyAssignedChildrenIds = this.state.assignedChildrenIds;
 
       childChannels = Array.from(this.state.availableChildren.values()).map(c => <div className="checkbox">
         <input type="checkbox" value={c.id} id={"child_" + c.id}
-          checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id) }
-          disabled={!c.subscribable || (mandatoryChannels.has(c.id) && alreadyAssignedChildrenIds.has(c.id)) }
+          checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
+          disabled={!c.subscribable || mandatoryChannels.has(c.id)}
           onChange={this.handleChildChange}/>
         <label title={this.dependenciesTooltip(c.id)} htmlFor={"child_" + c.id}>{c.name}</label> &nbsp;
         {
@@ -366,12 +354,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         &nbsp;
         {
           c.recommended
-            ? <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
-            : null
-        }
-        {
-          (mandatoryChannels.has(c.id) && !alreadyAssignedChildrenIds.has(c.id))
-            ? <span className='mandatory-tag-base' title={'This channel is mandatory'}>{t('mandatory')}</span>
+            ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>
             : null
         }
         <ChannelAnchorLink id={c.id} newWindow={true}/>
@@ -445,11 +428,6 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                         }
 
                     </BootstrapPanel>
-                    {
-                        (!this.areAllMandatoryChildrenSelected())
-                        ?<span className="help-block">  <strong>Important:</strong> All the 'mandatory' channels should be subscribed to have a consistent set of channels.</span>
-                        :null
-                    }
                   </div>
             </div>
             <div className="row">

@@ -1,4 +1,3 @@
-- Disable child channel selection only if channel is actually assigned(bsc#1097697)
 - Avoid ISE when unsubscribing channels in SSM (bsc#1094578)
 - Show feedback on button clicked (bsc#1085464)
 - Fix typo in 'Installed Products' label in image overview page
