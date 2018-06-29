@@ -1,6 +1,7 @@
 "use strict";
 
 const React = require("react");
+const PropTypes = React.PropTypes;
 const StatePersistedMixin = require("./util").StatePersistedMixin;
 const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
 
@@ -94,19 +95,19 @@ const Table = React.createClass({
   mixins: [StatePersistedMixin],
 
   propTypes: {
-    data: React.PropTypes.arrayOf(React.PropTypes.any).isRequired, // any type of data in and array, where each element is a row data
-    identifier: React.PropTypes.func.isRequired, // the unique key of the row
-    initialSortColumnKey: React.PropTypes.string, // the column key name of the initial sorted column
-    initialSortDirection: React.PropTypes.number, // 1 for ascending, -1 for descending
-    cssClassFunction: React.PropTypes.func, // a function that return a css class for each row
-    searchField: React.PropTypes.node, // the React Object that contains the filter search field
-    initialItemsPerPage: React.PropTypes.number, // the initial number of how many row-per-page to show
-    selectable: React.PropTypes.bool, // enables item selection
-    onSelect: React.PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
-    selectedItems: React.PropTypes.array, // the identifiers for selected items
-    emptyText: React.PropTypes.string, // The message which is shown when there are no rows to display
-    loading: React.PropTypes.bool, // if data is loading
-    loadingText: React.PropTypes.string, // The message which is shown when the data is loading
+    data: PropTypes.arrayOf(PropTypes.any).isRequired, // any type of data in and array, where each element is a row data
+    identifier: PropTypes.func.isRequired, // the unique key of the row
+    initialSortColumnKey: PropTypes.string, // the column key name of the initial sorted column
+    initialSortDirection: PropTypes.number, // 1 for ascending, -1 for descending
+    cssClassFunction: PropTypes.func, // a function that return a css class for each row
+    searchField: PropTypes.node, // the React Object that contains the filter search field
+    initialItemsPerPage: PropTypes.number, // the initial number of how many row-per-page to show
+    selectable: PropTypes.bool, // enables item selection
+    onSelect: PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
+    selectedItems: PropTypes.array, // the identifiers for selected items
+    emptyText: PropTypes.string, // The message which is shown when there are no rows to display
+    loading: PropTypes.bool, // if data is loading
+    loadingText: PropTypes.string, // The message which is shown when the data is loading
   },
   defaultEmptyText: t('There are no entries to show.'),
   defaultLoadingText: t('Loading..'),
