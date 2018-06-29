@@ -1,6 +1,7 @@
 "use strict";
 
 const React = require("react");
+const PropTypes = React.PropTypes;
 const StatePersistedMixin = require("./util").StatePersistedMixin;
 const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
 
@@ -64,18 +65,18 @@ const DataHandler = React.createClass({
   mixins: [StatePersistedMixin],
 
   propTypes: {
-    data: React.PropTypes.arrayOf(React.PropTypes.any).isRequired, // any type of data in and array, where each element is an item data
-    identifier: React.PropTypes.func.isRequired, // the unique key of the item
-    cssClassFunction: React.PropTypes.func, // a function that return a css class for each item
-    searchField: React.PropTypes.node, // the React Object that contains the filter search field
-    additionalFilters: React.PropTypes.node, // other filters to render but not handled here
-    initialItemsPerPage: React.PropTypes.number, // the initial number of how many item-per-page to show
-    selectable: React.PropTypes.bool, // enables item selection
-    onSelect: React.PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
-    selectedItems: React.PropTypes.array, // the identifiers for selected items
-    emptyText: React.PropTypes.string, // The message which is shown when there are no items to display
-    loading: React.PropTypes.bool, // if data is loading
-    loadingText: React.PropTypes.string, // The message which is shown when the data is loading
+    data: PropTypes.arrayOf(PropTypes.any).isRequired, // any type of data in and array, where each element is an item data
+    identifier: PropTypes.func.isRequired, // the unique key of the item
+    cssClassFunction: PropTypes.func, // a function that return a css class for each item
+    searchField: PropTypes.node, // the React Object that contains the filter search field
+    additionalFilters: PropTypes.node, // other filters to render but not handled here
+    initialItemsPerPage: PropTypes.number, // the initial number of how many item-per-page to show
+    selectable: PropTypes.bool, // enables item selection
+    onSelect: PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
+    selectedItems: PropTypes.array, // the identifiers for selected items
+    emptyText: PropTypes.string, // The message which is shown when there are no items to display
+    loading: PropTypes.bool, // if data is loading
+    loadingText: PropTypes.string, // The message which is shown when the data is loading
   },
   defaultEmptyText: t('There are no entries to show.'),
   defaultLoadingText: t('Loading..'),
