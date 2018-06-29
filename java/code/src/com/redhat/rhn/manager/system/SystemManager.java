@@ -33,8 +33,6 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
@@ -47,7 +45,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -3304,21 +3301,6 @@ public class SystemManager extends BaseManager {
         params.put("user_id", uid);
         params.put("tag_id",  tid);
         return m.execute(params);
-    }
-
-    /**
-     * For a {@link ServerArch}, find the compatible {@link ChannelArch}.
-     * @param serverArch server arch
-     * @return channel arch
-     */
-    public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "find_compatible_channel_arch");
-        Map params = new HashMap();
-        params.put("server_arch_id", serverArch.getId());
-        Long channelArchId = (Long) ((HashMap) makeDataResult(params, null, null, m).
-                get(0)).get("channel_arch_id");
-        return ChannelFactory.findArchById(channelArchId);
     }
 
     /**

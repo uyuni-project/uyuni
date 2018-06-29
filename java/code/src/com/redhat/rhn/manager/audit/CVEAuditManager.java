@@ -14,6 +14,30 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
+
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.frontend.dto.SUSEProductDto;
+import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
+
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,27 +51,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.ImageInfoFactory;
-import org.apache.log4j.Logger;
-
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSet;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.frontend.dto.SUSEProductDto;
-import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * CVESearchManager.
@@ -150,16 +156,19 @@ public class CVEAuditManager {
      * @param channelIDs list of vendor channel IDs
      * @return list of channel product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> findChannelProducts(List<Long> channelIDs) {
-        SelectMode m = ModeFactory.getMode("cve_audit_queries",
-                "find_relevant_products");
-        List<Map<String, Long>> results = m.execute(channelIDs);
-        List<Long> channelProductIDs = new LinkedList<>();
-        for (Map<String, Long> result : results) {
-            channelProductIDs.add(result.get("channel_product_id"));
-        }
-        return channelProductIDs;
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+
+        Root<Channel> root = query.from(Channel.class);
+        query.select(root.get("product").get("id"))
+             .distinct(true)
+             .where(
+                 builder.and(
+                     root.get("id").in(channelIDs)
+                 )
+             );
+        return getSession().createQuery(query).list();
     }
 
     /**
@@ -176,11 +185,18 @@ public class CVEAuditManager {
     @SuppressWarnings("unchecked")
     public static List<Channel> findProductChannels(List<Long> channelProductIDs,
             Long parentChannelID) {
-        SelectMode m = ModeFactory.getMode("cve_audit_queries",
-                "find_product_channels");
-        Map<String, Long> params = new HashMap<>();
-        params.put("parent", parentChannelID);
-        return m.execute(params, channelProductIDs);
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<Channel> query = builder.createQuery(Channel.class);
+
+        Root<Channel> root = query.from(Channel.class);
+        query.where(builder.and(
+                root.get("product").get("id").in(channelProductIDs),
+                builder.or(
+                        builder.equal(root.get("id"), parentChannelID),
+                        builder.equal(root.get("parentChannel"), parentChannelID)
+                )
+        ));
+        return getSession().createQuery(query).list();
     }
 
     /**
@@ -332,80 +348,82 @@ public class CVEAuditManager {
      * @return set of channels
      */
     public static List<RankedChannel> populateCVEChannels(AuditTarget auditTarget) {
-        List<RankedChannel> relevantChannels = new ArrayList<>();
-        List<Long> vendorChannelIDs = new LinkedList<>();
-        Long parentChannelID = null;
+        return HibernateFactory.doWithoutAutoFlushing(() -> {
+            List<RankedChannel> relevantChannels = new ArrayList<>();
+            List<Long> vendorChannelIDs = new LinkedList<>();
+            Long parentChannelID = null;
 
-        // All assigned channels are relevant (rank = 0)
-        int maxRank = 0;
-        for (Channel c : auditTarget.getAssignedChannels()) {
-            relevantChannels.add(new RankedChannel(c.getId(), 0));
+            // All assigned channels are relevant (rank = 0)
+            int maxRank = 0;
+            for (Channel c : auditTarget.getAssignedChannels()) {
+                relevantChannels.add(new RankedChannel(c.getId(), 0));
 
-            // All originals in the cloning chain are relevant, channel
-            // ranking should increase with every layer.
-            int i = 0;
-            Channel original = c;
-            while (original.isCloned()) {
-                original = original.getOriginal();
-                // Revert the index if no channel has actually been added
-                i = relevantChannels.add(
-                        new RankedChannel(original.getId(), ++i)) ? i : --i;
-            }
-            // Remember the longest cloning chain as 'maxRank'
-            if (i > maxRank) {
-                maxRank = i;
-            }
+                // All originals in the cloning chain are relevant, channel
+                // ranking should increase with every layer.
+                int i = 0;
+                Channel original = c;
+                while (original.isCloned()) {
+                    original = original.getOriginal();
+                    // Revert the index if no channel has actually been added
+                    i = relevantChannels.add(
+                            new RankedChannel(original.getId(), ++i)) ? i : --i;
+                }
+                // Remember the longest cloning chain as 'maxRank'
+                if (i > maxRank) {
+                    maxRank = i;
+                }
 
-            // Store vendor channels and the parent channel ID
-            if (original.getOrg() == null &&
-                    !vendorChannelIDs.contains(original.getId())) {
-                vendorChannelIDs.add(original.getId());
+                // Store vendor channels and the parent channel ID
+                if (original.getOrg() == null &&
+                        !vendorChannelIDs.contains(original.getId())) {
+                    vendorChannelIDs.add(original.getId());
 
-                if (original.getParentChannel() == null) {
-                    parentChannelID = original.getId();
+                    if (original.getParentChannel() == null) {
+                        parentChannelID = original.getId();
+                    }
                 }
             }
-        }
 
-        // Find all channels relevant for the currently installed products
-        if (!vendorChannelIDs.isEmpty() && parentChannelID != null) {
+            // Find all channels relevant for the currently installed products
+            if (!vendorChannelIDs.isEmpty() && parentChannelID != null) {
 
-            // Find IDs of relevant channel products
-            List<Long> relevantChannelProductIDs =
-                    findChannelProducts(vendorChannelIDs);
+                // Find IDs of relevant channel products
+                List<Long> relevantChannelProductIDs =
+                        findChannelProducts(vendorChannelIDs);
 
-            // Find all relevant channels
-            List<Channel> productChannels = findProductChannels(
-                    relevantChannelProductIDs, parentChannelID);
+                // Find all relevant channels
+                List<Channel> productChannels = findProductChannels(
+                        relevantChannelProductIDs, parentChannelID);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Found " + vendorChannelIDs.size() + " vendor channels -> " +
-                        "channel products: " + relevantChannelProductIDs);
+                if (log.isDebugEnabled()) {
+                    log.debug("Found " + vendorChannelIDs.size() + " vendor channels -> " +
+                            "channel products: " + relevantChannelProductIDs);
+                }
+
+                // Increase ranking index for unassigned product channels, but revert the
+                // index if no channel has actually been added
+                maxRank = addRelevantChannels(relevantChannels, productChannels,
+                        ++maxRank) ? maxRank : --maxRank;
             }
 
-            // Increase ranking index for unassigned product channels, but revert the
-            // index if no channel has actually been added
-            maxRank = addRelevantChannels(relevantChannels, productChannels,
-                    ++maxRank) ? maxRank : --maxRank;
-        }
-
-        // Find all channels relevant for past and future migrations
-        List<RankedChannel> migrationChannels = addRelevantMigrationProductChannels(
-                auditTarget, maxRank);
-        relevantChannels.addAll(migrationChannels);
+            // Find all channels relevant for past and future migrations
+            List<RankedChannel> migrationChannels = addRelevantMigrationProductChannels(
+                    auditTarget, maxRank);
+            relevantChannels.addAll(migrationChannels);
 
 
-        return relevantChannels.stream()
-                .collect(
-                    Collectors.groupingBy(
-                        RankedChannel::getChannelId,
-                        // take only the lowest rank for each channel
-                        Collectors.reducing((a, b) -> a.getRank() <= b.getRank() ? a : b)
-                    )
-                ).entrySet()
-                 .stream()
-                 // its safe to call get here since groupingBy will not produce empty lists
-                 .map(s -> s.getValue().get()).collect(Collectors.toList());
+            return relevantChannels.stream()
+                    .collect(
+                            Collectors.groupingBy(
+                                    RankedChannel::getChannelId,
+                                    // take only the lowest rank for each channel
+                                    Collectors.reducing((a, b) -> a.getRank() <= b.getRank() ? a : b)
+                            )
+                    ).entrySet()
+                    .stream()
+                    // its safe to call get here since groupingBy will not produce empty lists
+                    .map(s -> s.getValue().get()).collect(Collectors.toList());
+        });
     }
 
     /**
@@ -426,10 +444,12 @@ public class CVEAuditManager {
             log.debug("Number of servers found: " + servers.size());
         }
 
+        CachingSUSEProductFactory productFactory = new CachingSUSEProductFactory();
+
         Map<Server, List<RankedChannel>> relevantServerChannels = servers.stream()
             .collect(Collectors.toMap(
                 Function.identity(),
-                server -> populateCVEChannels(new ServerAuditTarget(server))
+                server -> populateCVEChannels(new ServerAuditTarget(server, productFactory))
             ));
 
         insertRelevantServerChannels(relevantServerChannels);
@@ -437,7 +457,7 @@ public class CVEAuditManager {
         Map<ImageInfo, List<RankedChannel>> relevantImageChannels =
                 ImageInfoFactory.list().stream().collect(Collectors.toMap(
                     Function.identity(),
-                    imageInfo -> populateCVEChannels(new ImageAuditTarget(imageInfo))
+                    imageInfo -> populateCVEChannels(new ImageAuditTarget(imageInfo, productFactory))
                 ));
 
         insertRelevantImageChannels(relevantImageChannels);
@@ -457,19 +477,26 @@ public class CVEAuditManager {
 
         final List<RankedChannel> result = new ArrayList<>();
 
-        SUSEProductSet suseProductSet = auditTarget.getInstalledProductSet().orElse(null);
-        if (suseProductSet == null) {
+        List<SUSEProduct> products = auditTarget.getSUSEProducts();
+
+        if (products.isEmpty()) {
             return Collections.emptyList();
         }
 
-        SUSEProduct baseProduct = suseProductSet.getBaseProduct();
-        if (baseProduct == null) {
+        Optional<SUSEProduct> baseProduct = products.stream()
+                .filter(SUSEProduct::isBase)
+                .findFirst();
+        if (!baseProduct.isPresent()) {
             return Collections.emptyList();
         }
 
-        Long baseProductID = baseProduct.getId();
+        Long baseProductID = baseProduct.get().getId();
         List<SUSEProductDto> baseProductTargets = findAllTargetProducts(baseProductID);
         List<SUSEProductDto> baseProductSources = findAllSourceProducts(baseProductID);
+        List<Long> suseProductIDs = products.stream()
+                .map(SUSEProduct::getId)
+                .collect(Collectors.toList());
+
         ChannelArch arch = auditTarget.getCompatibleChannelArch();
         int currentRank = maxRank;
 
@@ -480,7 +507,7 @@ public class CVEAuditManager {
             // ...if a base channel exists and is synced...
             if (baseProductChannelId != null) {
                 // ...and for each installed product...
-                for (long suseProductID : suseProductSet.getProductIDs()) {
+                for (long suseProductID : suseProductIDs) {
 
                     // ...if it has a target with that base product...
                     List<SUSEProductDto> targets = findAllTargetProducts(suseProductID);
@@ -514,7 +541,7 @@ public class CVEAuditManager {
             // ...if a base channel exists and is synced...
             if (baseProductChannelId != null) {
                 // ...and for each installed product...
-                for (long suseProductID : suseProductSet.getProductIDs()) {
+                for (long suseProductID : suseProductIDs) {
 
                     // ...if it has a source with that base product...
                     List<SUSEProductDto> sources = findAllSourceProducts(suseProductID);
