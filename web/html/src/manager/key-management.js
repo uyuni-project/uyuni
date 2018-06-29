@@ -27,9 +27,9 @@ function rejectKey(key) {
 }
 
 function actionsFor(id, state, update, enabled) {
-  const acc = () => <AsyncButton disabled={enabled?"":"disabled"} key="accept" title="accept" icon="check" action={() => acceptKey(id).then(update)} />;
-  const rej = () => <AsyncButton disabled={enabled?"":"disabled"} key="reject" title="reject" icon="times" action={() => rejectKey(id).then(update)} />;
-  const del = () => <AsyncButton disabled={enabled?"":"disabled"} key="delete" title="delete" icon="trash" action={() => deleteKey(id).then(update)} />;
+  const acc = () => <AsyncButton disabled={!enabled} key="accept" title={t("Accept")} icon="fa-check" action={() => acceptKey(id).then(update)} />;
+  const rej = () => <AsyncButton disabled={!enabled} key="reject" title={t("Reject")} icon="fa-times" action={() => rejectKey(id).then(update)} />;
+  const del = () => <AsyncButton disabled={!enabled} key="delete" title={t("Delete")} icon="fa-trash" action={() => deleteKey(id).then(update)} />;
   const mapping = {
     "accepted": [del],
     "pending": [acc, rej],
@@ -108,7 +108,7 @@ class KeyManagement extends React.Component {
 
   render() {
     const panelButtons = <div className="pull-right btn-group">
-      <AsyncButton id="reload" icon="refresh" name="Refresh" text action={this.reloadKeys} />
+      <AsyncButton id="reload" icon="fa-refresh" text="Refresh" action={this.reloadKeys} />
     </div>;
     return (
       <span>
