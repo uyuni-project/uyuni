@@ -263,11 +263,11 @@ const NotificationMessages = React.createClass({
     let actionButton = null;
     switch(messageType) {
       case 'OnboardingFailed':
-        actionButton = <AsyncButton id="retryOnboarding" icon="fa fa-rocket fa-1-5x no-margin" classStyle="btn-sm"
+        actionButton = <AsyncButton id="retryOnboarding" icon="fa-rocket fa-1-5x"
             title={t('Retry onboarding')} action={() => this.retryOnboarding(messageData['minionId'])} />;
       break;
       case 'ChannelSyncFailed':
-        actionButton = <AsyncButton id="retryReposync" icon="fa fa-refresh fa-1-5x no-margin" classStyle="btn-sm"
+        actionButton = <AsyncButton id="retryReposync" icon="fa-refresh fa-1-5x"
             title={t('Retry repo sync')} action={() => this.retryReposync(messageData['channelId'])} />;
       break;
     }
@@ -294,13 +294,13 @@ const NotificationMessages = React.createClass({
     const panelButtons = <div className='spacewalk-section-toolbar'>
         <div className='action-button-wrapper'>
           <div className='btn-group'>
-            <AsyncButton id="reload" icon="refresh" name={t('Refresh')} action={this.refreshServerData} />
-            <AsyncButton id="delete-selected-messages" icon="trash" classStyle='btn-default'
-                title={t('Delete selected messages')} name={t('Delete selected messages')}
+            <AsyncButton id="reload" icon="fa-refresh" text={t('Refresh')} action={this.refreshServerData} />
+            <AsyncButton id="delete-selected-messages" icon="fa-trash"
+                title={t('Delete selected messages')} text={t('Delete selected messages')}
                 action={() => this.deleteNotifications(this.state.selectedItems)}
                 disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
-            <AsyncButton id="mark-as-read" icon="check-circle" classStyle='btn-default'
-                title={t('Mark selected as read')} name={t('Mark selected as read')}
+            <AsyncButton id="mark-as-read" icon="fa-check-circle"
+                title={t('Mark selected as read')} text={t('Mark selected as read')}
                 action={() => this.markAsRead(this.state.selectedItems)}
                 disabled={this.state.selectedItems.length == 0 ? 'disabled' : ''} />
         </div>
@@ -372,13 +372,13 @@ const NotificationMessages = React.createClass({
               header={t("Read|Delete")}
               cell={ (row) =>
                   <div className="btn-group">
-                    <AsyncButton id="updateReadStatus" classStyle="btn-sm"
-                        icon={(row['isRead'] ? ' spacewalk-icon-envelope-open-o text-muted' : 'envelope text-primary') + " fa-1-5x no-margin"}
+                    <AsyncButton id="updateReadStatus"
+                        icon={(row['isRead'] ? 'spacewalk-icon-envelope-open-o text-muted' : 'fa-envelope text-primary') + " fa-1-5x"}
                         title={row['isRead'] ? t('Flag as Unread') : t('Flag as Read')}
-                        text action={() => this.updateReadStatus([row['id']], !row['isRead'])} />
-                    <AsyncButton id="delete"  classStyle="btn-sm"
-                        icon="trash fa-1-5x no-margin" title={t('Delete Notification')}
-                        text action={() => this.deleteNotifications([row['id']])} />
+                        action={() => this.updateReadStatus([row['id']], !row['isRead'])} />
+                    <AsyncButton id="delete"
+                        icon="fa-trash fa-1-5x" title={t('Delete Notification')}
+                        action={() => this.deleteNotifications([row['id']])} />
                   </div>
               }
             />
