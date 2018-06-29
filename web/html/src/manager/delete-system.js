@@ -61,9 +61,9 @@ class DeleteSystem extends React.Component {
     const buttons = <span>
             <AsyncButton
                 id={"btn-delete-confirm-" + this.props.serverId}
-                name={t("Delete Profile Without Cleanup") }
+                text={t("Delete Profile Without Cleanup") }
                 title={t("Delete Profile Without Cleanup") }
-                icon="trash"
+                icon="fa-trash"
                 defaultType={this.props.buttonClass}
                 action={() => this.handleDelete(true)}
             />
@@ -84,9 +84,9 @@ class DeleteSystem extends React.Component {
         buttons={buttons}
       />
       <AsyncButton id={"btn-delete-" + this.props.serverId}
-        icon="trash"
+        icon="fa-trash"
         action={() => this.handleDelete(false)}
-        name={this.props.buttonText}
+        text={this.props.buttonText}
         defaultType={this.props.buttonClass}
         />
     </span>);
