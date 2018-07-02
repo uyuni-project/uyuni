@@ -1,3 +1,4 @@
+- explicitly require IBM java for SLES (bsc#1099454)
 - Do not break backward compatibility on package installation/removal (bsc#1096514)
 - Fix minion software profile to allow multiple installed versions for the
   same package name (bsc#1089526)
