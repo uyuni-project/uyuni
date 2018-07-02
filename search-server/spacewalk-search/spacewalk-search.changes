@@ -1,3 +1,5 @@
+- Fix the search when server is missing primary interface (bsc#1099638)
+
 -------------------------------------------------------------------
 Thu Mar 29 01:24:57 CEST 2018 - jgonzalez@suse.com
 
