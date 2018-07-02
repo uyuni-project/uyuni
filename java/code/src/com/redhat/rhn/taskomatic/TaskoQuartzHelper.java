@@ -23,8 +23,10 @@ import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
-
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
@@ -35,6 +37,9 @@ import java.util.Date;
 public class TaskoQuartzHelper {
 
     private static Logger log = Logger.getLogger(TaskoQuartzHelper.class);
+
+    private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+            .withZone(ZoneId.systemDefault());
 
     /**
      * cann't construct
@@ -101,6 +106,62 @@ public class TaskoQuartzHelper {
         }
         catch (SchedulerException e) {
             log.warn("Job " + schedule.getJobLabel() + " failed to schedule.");
+            return null;
+        }
+    }
+
+    /**
+     * Reschedule the job with the given schedule by creating a new trigger with the given
+     * start date.
+     * @param schedule for the job to be rescheduled
+     * @param startAtDate trigger time
+     * @return the date of the trigger or null if scheduling was not successful
+     */
+    public static Date rescheduleJob(TaskoSchedule schedule, Instant startAtDate) {
+        // create trigger
+        String timestamp = TIMESTAMP_FORMAT.format(startAtDate);
+
+        String triggerName = schedule.getJobLabel() + "-retry" + timestamp;
+        String groupName = getGroupName(schedule.getOrgId());
+        try {
+            Trigger retryTrigger = SchedulerKernel.getScheduler().getTrigger(triggerName, groupName);
+            if (retryTrigger != null) {
+                log.warn("Retry trigger " + triggerName + " - " + groupName + " already exists");
+                return retryTrigger.getStartTime();
+            }
+        }
+        catch (SchedulerException e) {
+            log.warn("no trigger found " + triggerName + " - " + groupName);
+        }
+        Trigger trigger = new SimpleTrigger(triggerName,
+                groupName);
+
+        trigger.setJobName(schedule.getJobLabel());
+        trigger.setJobGroup(groupName);
+        trigger.setStartTime(Date.from(startAtDate));
+
+        // execute job immediately after discovering a misfire situation
+        trigger.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
+
+        // create job
+        JobDetail jobDetail = new JobDetail(schedule.getJobLabel(),
+                groupName, TaskoJob.class);
+
+        // set job params
+        if (schedule.getDataMap() != null) {
+            jobDetail.getJobDataMap().putAll(schedule.getDataMap());
+        }
+        jobDetail.getJobDataMap().put("schedule_id", schedule.getId());
+
+        // schedule job
+        try {
+            Date date =
+                    SchedulerKernel.getScheduler().scheduleJob(trigger);
+            log.info("Job " + schedule.getJobLabel() + " rescheduled with trigger " + trigger.getKey());
+            return date;
+        }
+        catch (SchedulerException e) {
+            log.info("Job " + schedule.getJobLabel() + " failed to be reschedule with trigger " + trigger.getKey(), e);
             return null;
         }
     }
