@@ -20,8 +20,8 @@
                 sl.state as state,
                 sl.country as country,
                 s.hostname as hostname,
-                rsna4.address as ipaddr,
-                rsna6.address as ip6addr,
+                addresses.ipaddr as ipaddr,
+                addresses.ip6addr as ip6addr,
                 dmi.vendor as dmiVendor,
                 dmi.system as dmiSystem,
                 dmi.product as dmiProduct,
@@ -49,16 +49,18 @@
                 rr.swap as swap,
                 vi.uuid as uuid
             FROM rhnServer s
-                LEFT OUTER JOIN rhnservernetinterface rsni ON s.id = rsni.server_id
-                LEFT OUTER JOIN rhnservernetaddress4 rsna4 ON rsni.id = rsna4.interface_id
-                LEFT OUTER JOIN rhnservernetaddress6 rsna6 ON rsni.id = rsna6.interface_id
                 LEFT OUTER JOIN rhnServerInfo si on s.id = si.server_id
                 LEFT OUTER JOIN rhnRam rr on s.id = rr.server_id
                 LEFT OUTER JOIN rhnServerLocation sl ON s.id = sl.server_id
                 LEFT OUTER JOIN rhnServerDmi dmi ON s.id = dmi.server_id
                 LEFT OUTER JOIN rhnCPU cpu on s.id = cpu.server_id
                 LEFT OUTER JOIN rhnVirtualInstance vi on s.id = vi.virtual_system_id
-            WHERE rsni.is_primary = 'Y' and (
+                LEFT OUTER JOIN (SELECT rsni.server_id, rsna4.address as ipaddr, rsna6.address as ip6addr
+                                    FROM rhnservernetinterface rsni
+                                        LEFT OUTER JOIN rhnservernetaddress4 rsna4 ON rsni.id = rsna4.interface_id
+                                        LEFT OUTER JOIN rhnservernetaddress6 rsna6 ON rsni.id = rsna6.interface_id
+                                    WHERE is_primary = 'Y') AS addresses ON addresses.server_id = s.id
+            WHERE (
                 s.modified &gt;= #{last_modified}
                 or rsni.modified &gt;= #{last_modified}
                 or si.checkin &gt;= #{last_modified}
