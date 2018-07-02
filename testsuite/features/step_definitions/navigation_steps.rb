@@ -539,7 +539,7 @@ end
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
   # this step is used for long operations like refreshing caches, repositories, etc.
   # therefore we use a non-standard timeout
-  refresh_timeout = 500
+  refresh_timeout = 800
   begin
     Timeout.timeout(refresh_timeout) do
       loop do
