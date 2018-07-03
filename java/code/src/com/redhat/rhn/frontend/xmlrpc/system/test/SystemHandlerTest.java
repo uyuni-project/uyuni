@@ -155,16 +155,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testGetNetworkDevices() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
-        server.setNetworkInterfaces(new HashSet());
-        Integer sid = new Integer(server.getId().intValue());
-        assertEquals(0, server.getNetworkInterfaces().size());
+        server.getNetworkInterfaces().clear();
 
         NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(server);
         server.addNetworkInterface(device);
         assertEquals(1, server.getNetworkInterfaces().size());
         TestUtils.saveAndFlush(server);
 
-        List<NetworkInterface> results = handler.getNetworkDevices(admin, sid);
+        List<NetworkInterface> results = handler.getNetworkDevices(admin, server.getId().intValue());
         assertEquals(1, results.size());
 
         NetworkInterface dev = results.get(0);
@@ -1127,7 +1125,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testGetNetwork() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
-        server.setNetworkInterfaces(new HashSet());
         assertNull(server.getIpAddress());
         assertNull(server.getHostname());
 
