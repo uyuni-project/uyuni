@@ -38,7 +38,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -64,17 +63,18 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Containers use the same image version.
+     * Basic tests
      * @throws Exception
      */
-    public void testGetContainersUsage_sameVersion() throws Exception {
-        expectGetAllContainers("local-context", "get_all_containers.same_version.json");
+    public void testGetContainersUsage() throws Exception {
+        expectGetAllContainers("local-context", "get_all_containers.basic.json");
 
         VirtualHostManager cluster1 = createVirtHostManager();
 
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
 
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
+        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.setRevisionNumber(1);
@@ -84,28 +84,31 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         Set<ImageUsage> usages = manager.getImagesUsage();
 
         assertEquals(1, usages.size());
-        assertTrue(usages.stream().filter(usage -> usage.getImageInfo().getName().equals(imgInfo.getName())).findFirst().isPresent());
-        assertEquals(3,
-                matchContainers(imgInfo, usages, container -> container.getBuildRevision().get() == 1)
-                        .count());
-        assertEquals(3,
-                matchContainers(imgInfo, usages, container -> container.getVirtualHostManager().getId() == cluster1.getId())
-                        .count());
+        assertEquals(imgInfo, usages.iterator().next().getImageInfo());
+        assertTrue(getMatchingContainers(imgInfo, usages).allMatch(c -> c.getBuildRevision().get() == 1));
+        assertTrue(getMatchingContainers(imgInfo, usages).allMatch(c -> c.getVirtualHostManager().equals(cluster1)));
+
+        assertEquals(2,
+                getMatchingContainers(imgInfo, usages).filter(c -> "default".equals(c.getPodNamespace())).count());
+        assertEquals(1,
+                getMatchingContainers(imgInfo, usages).filter(c -> "other".equals(c.getPodNamespace())).count());
     }
 
     /**
      * Containers have two different versions of the same image.
      * @throws Exception
      */
-    public void testGetContainersUsage_multipleVersions() throws Exception {
+    public void testGetContainersUsageMultipleVersions() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.multiple_versions.json");
 
         createVirtHostManager();
 
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v2", user);
 
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
-        ImageBuildHistory history2 = createImageBuildHistory(imgInfo, 2, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
+        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
+        ImageBuildHistory history2 = createImageBuildHistory(imgInfo, 2,
+                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.getBuildHistory().add(history2);
@@ -116,23 +119,17 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         Set<ImageUsage> usages = manager.getImagesUsage();
 
         assertEquals(1, usages.size());
-        assertTrue(usages.stream().filter(usage -> usage.getImageInfo().getName().equals(imgInfo.getName())).findFirst().isPresent());
-        assertEquals(3,
-                matchContainers(imgInfo, usages, container -> true)
-                        .count());
-        assertEquals(1,
-                matchContainers(imgInfo, usages, container -> container.getBuildRevision().get() == 1)
-                        .count());
-        assertEquals(2,
-                matchContainers(imgInfo, usages, container -> container.getBuildRevision().get() == 2)
-                        .count());
+        assertEquals(imgInfo, usages.iterator().next().getImageInfo());
+        assertEquals(3, getMatchingContainers(imgInfo, usages).count());
+        assertEquals(1, getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().get() == 1).count());
+        assertEquals(2, getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().get() == 2).count());
     }
 
     /**
      * Two clusters running the same image in different versions.
      * @throws Exception
      */
-    public void testGetContainersUsage_multipleClusters() throws Exception {
+    public void testGetContainersUsageMultipleClusters() throws Exception {
         expectGetAllContainers("/srv/salt/kubeconfig1", "local-context", "get_all_containers.cluster1.json");
         expectGetAllContainers("/srv/salt/kubeconfig2", "local-context", "get_all_containers.cluster2.json");
         VirtualHostManager cluster1 = createVirtHostManager("/srv/salt/kubeconfig1");
@@ -140,8 +137,10 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v2", user);
 
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
-        ImageBuildHistory history2 = createImageBuildHistory(imgInfo, 2, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
+        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
+        ImageBuildHistory history2 = createImageBuildHistory(imgInfo, 2,
+                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.getBuildHistory().add(history2);
@@ -152,22 +151,14 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         Set<ImageUsage> usages = manager.getImagesUsage();
 
         assertEquals(1, usages.size());
-        assertTrue(usages.stream().filter(usage -> usage.getImageInfo().getName().equals(imgInfo.getName())).findFirst().isPresent());
-        assertEquals(6,
-                matchContainers(imgInfo, usages, container -> true)
-                        .count());
+        assertEquals(imgInfo, usages.iterator().next().getImageInfo());
+        assertEquals(6, getMatchingContainers(imgInfo, usages).count());
         assertEquals(3,
-                matchContainers(imgInfo, usages, container -> container.getVirtualHostManager().equals(cluster1))
-                        .count());
+                getMatchingContainers(imgInfo, usages).filter(c -> c.getVirtualHostManager().equals(cluster1)).count());
         assertEquals(3,
-                matchContainers(imgInfo, usages, container -> container.getVirtualHostManager().equals(cluster2))
-                        .count());
-        assertEquals(2,
-                matchContainers(imgInfo, usages, container -> container.getBuildRevision().get() == 1)
-                        .count());
-        assertEquals(4,
-                matchContainers(imgInfo, usages, container -> container.getBuildRevision().get() == 2)
-                        .count());
+                getMatchingContainers(imgInfo, usages).filter(c -> c.getVirtualHostManager().equals(cluster2)).count());
+        assertEquals(2, getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().get() == 1).count());
+        assertEquals(4, getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().get() == 2).count());
     }
 
     /**
@@ -180,15 +171,15 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
      * Both :latest should be matched, one by Repo Digest and the other one by repo/name:tag. :v1 should not be matched.
      * @throws Exception
      */
-    public void testGetContainersUsage_externalBuild() throws Exception {
+    public void testGetContainersUsageExternalBuild() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.external_build.json");
-
-        VirtualHostManager cluster1 = createVirtHostManager();
+        createVirtHostManager();
 
         ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "latest", user);
         imgInfo.setStore(store);
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
+        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
 
         imgInfo.getBuildHistory().add(history1);
         imgInfo.setRevisionNumber(1);
@@ -198,20 +189,41 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         Set<ImageUsage> usages = manager.getImagesUsage();
 
         assertEquals(1, usages.size());
-        assertTrue(usages.stream().filter(usage -> usage.getImageInfo().getName().equals(imgInfo.getName())).findFirst().isPresent());
-        assertEquals(2,
-                matchContainers(imgInfo, usages, container -> true)
-                        .count());
+        assertEquals(imgInfo, usages.iterator().next().getImageInfo());
+        assertEquals(2, getMatchingContainers(imgInfo, usages).count());
         assertEquals(1,
-                matchContainers(imgInfo, usages, container -> container.getBuildRevision().orElse(0) == 1)
-                        .count());
-        assertEquals(1,
-                matchContainers(imgInfo, usages, container -> !container.getBuildRevision().isPresent())
-                        .count());
+                getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().orElse(0) == 1).count());
+        assertEquals(1, getMatchingContainers(imgInfo, usages).filter(c -> !c.getBuildRevision().isPresent()).count());
     }
 
+    /**
+     * Test with inactive containers (i.e. container id null)
+     * @throws Exception
+     */
+    public void testGetContainersUsageInactiveContainers() throws Exception {
+        expectGetAllContainers("local-context", "get_all_containers.inactive_containers.json");
 
-    private void expectGetAllContainers(String kubeconfig, String context, String file) throws IOException, ClassNotFoundException {
+        VirtualHostManager cluster1 = createVirtHostManager();
+
+        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
+
+        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+                "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
+
+        imgInfo.getBuildHistory().add(history1);
+        imgInfo.setRevisionNumber(1);
+
+        TestUtils.saveAndFlush(imgInfo);
+
+        Set<ImageUsage> usages = manager.getImagesUsage();
+
+        assertEquals(1, usages.size());
+        assertEquals(imgInfo, usages.iterator().next().getImageInfo());
+        assertEquals(2, getMatchingContainers(imgInfo, usages).count());
+    }
+
+    private void expectGetAllContainers(String kubeconfig, String context, String file)
+        throws IOException, ClassNotFoundException {
         context().checking(new Expectations() { {
             allowing(saltServiceMock).getAllContainers(with(kubeconfig), with(context));
             will(returnValue(Optional.of(new JsonParser<>(MgrK8sRunner.getAllContainers("", "").getReturnType()).parse(
@@ -223,30 +235,26 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         expectGetAllContainers("/srv/salt/kubeconfig", context, file);
     }
 
-    private Stream<ContainerInfo> matchContainers(ImageInfo imgInfo, Set<ImageUsage> usages, Predicate<? super ContainerInfo> filter) {
-        return usages.stream()
-                .filter(usage -> usage.getImageInfo().getName().equals(imgInfo.getName()))
-                .flatMap(usage -> usage.getContainerInfos().stream())
-                .filter(filter);
+    private Stream<ContainerInfo> getMatchingContainers(ImageInfo imgInfo, Set<ImageUsage> usages) {
+        return usages.stream().filter(usage -> usage.getImageInfo().equals(imgInfo))
+                .flatMap(usage -> usage.getContainerInfos().stream());
     }
 
-    private VirtualHostManager createVirtHostManager(String... kubeconfig) {
-        Map params = new HashMap<>();
-        if (kubeconfig.length > 0) {
-            params.put("kubeconfig", kubeconfig[0]);
-        } else {
-            params.put("kubeconfig", "/srv/salt/kubeconfig");
-        }
+    private VirtualHostManager createVirtHostManager() {
+        return createVirtHostManager("/srv/salt/kubeconfig");
+    }
+
+    private VirtualHostManager createVirtHostManager(String kubeconfig) {
+        Map<String, String> params = new HashMap<>();
+
+        params.put("kubeconfig", kubeconfig);
         params.put("context", "local-context");
 
         String label = "K8s_" + TestUtils.randomString();
 
-        VirtualHostManager virtualHostManager = VirtualHostManagerFactory.getInstance().createVirtualHostManager(
-                label,
-                user.getOrg(),
-                VirtualHostManagerFactory.KUBERNETES,
-                params
-        );
+        VirtualHostManager virtualHostManager = VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
+                user.getOrg(), VirtualHostManagerFactory.KUBERNETES, params);
+
         TestUtils.saveAndFlush(virtualHostManager);
         return virtualHostManager;
     }
@@ -261,5 +269,4 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         history.getRepoDigests().add(digest1);
         return history;
     }
-
 }
