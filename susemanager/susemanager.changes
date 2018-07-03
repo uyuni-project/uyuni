@@ -1,4 +1,6 @@
+- fix mgr-create-bootstrap-repo with custom channels (bsc#1099934)
 - add python-pyudev to bootstrap repo (bsc#1099311)
+
 -------------------------------------------------------------------
 Thu May 17 09:21:05 CEST 2018 - jgonzalez@suse.com
 
