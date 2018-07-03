@@ -206,7 +206,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     public void testCreateServer() throws Exception {
         Server newS = createTestServer(user);
-        newS.setNetworkInterfaces(new HashSet());
+        newS.getNetworkInterfaces().clear();
         // make sure our many-to-one mappings were set and saved
         assertNotNull(newS.getOrg());
         assertNotNull(newS.getCreator());
@@ -225,17 +225,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ServerFactory.save(newS);
 
-        Server server2 = ServerFactory.lookupByIdAndOrg(newS.getId(),
-                user.getOrg());
-        Set notes = server2.getNotes();
-        assertTrue(notes.size() == 2);
-        Note note = (Note) notes.toArray()[0];
-        assertEquals(server2.getId(), note.getServer().getId());
+        Server server2 = ServerFactory.lookupByIdAndOrg(newS.getId(), user.getOrg());
 
-        Set interfaces = server2.getNetworkInterfaces();
-        assertTrue(interfaces.size() == 2);
-        NetworkInterface netint = (NetworkInterface) interfaces.toArray()[0];
-        assertEquals(server2.getId(), netint.getServer().getId());
+        Set<Note> notes = server2.getNotes();
+        assertEquals(2, notes.size());
+        assertTrue(notes.stream().allMatch(n -> server2.equals(n.getServer())));
+
+        Set<NetworkInterface> interfaces = server2.getNetworkInterfaces();
+        assertEquals(2, interfaces.size());
+        assertTrue(interfaces.stream().allMatch(i -> server2.equals(i.getServer())));
     }
 
     /**
