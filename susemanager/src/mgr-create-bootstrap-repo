@@ -166,7 +166,7 @@ def create_repo(label, flush, additional=[]):
     packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
     packagelist.extend(additional)
     for pkgname in packagelist:
-        h.execute(pdid=pdid, pkgname=pkgname)
+        h.execute(pkgname=pkgname)
         pkgs = h.fetchall_dict() or []
         if len(pkgs) == 0:
             messages.append("ERROR: package '%s' not found" % pkgname)
