@@ -137,7 +137,6 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     public void testGetIpAddress() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
-        s.setNetworkInterfaces(new HashSet());
         assertNull(s.getIpAddress());
 
 
