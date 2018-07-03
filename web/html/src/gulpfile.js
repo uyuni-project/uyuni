@@ -45,7 +45,7 @@ gulp.task('bundle-manager', function(done) {
                     plugins: ["transform-flow-strip-types", "transform-class-properties"]
                 });
 
-            commonVendorPlugins.forEach((vendorPlugin) => {
+            commonVendorPlugins.forEach(function (vendorPlugin) {
                 bundler.external(vendorPlugin);
             });
 
@@ -61,7 +61,6 @@ gulp.task('bundle-manager', function(done) {
                     process.exit(1);
                 })
                 .pipe(source(entry)) // this is a surrogate file name //'org-state-catalog-app.js'
-                .pipe(gulpif(!bundlerOpts.debug, streamify(uglify())))
                 .pipe(rename({
                     extname: '.bundle.js'
                 }))
@@ -72,18 +71,15 @@ gulp.task('bundle-manager', function(done) {
         es.merge(tasks).on('end', done);
 
         // vendors
-        browserify(Object.assign({ bundlerOpts }, { require: commonVendorPlugins}))
+        // ugly trick to support old node.js versions
+        const bundlerOptsForVendor = JSON.parse(JSON.stringify(bundlerOpts));
+        bundlerOptsForVendor[require] = commonVendorPlugins;
+        // vendors
+        browserify(bundlerOptsForVendor)
         .external("react") // exclude react from these bundles
         .external("react-dom") // exclude react-dom from these bundles
             .bundle()
             .pipe(source('common.vendors.bundle.js'))
-            .pipe(gulpif(!bundlerOpts.debug, streamify(uglify(
-                {
-                    output: {
-                        comments: true
-                    }
-                }
-            ))))
             .pipe(gulp.dest('../javascript/manager/common/'))
     })
 });
