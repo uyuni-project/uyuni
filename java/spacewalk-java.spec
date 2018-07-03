@@ -50,7 +50,15 @@ Requires: concurrent
 Requires: httpcomponents-client
 Requires: cobbler >= 2.0.0
 Requires: google-gson >= 2.2.4
+%if !0%{?is_opensuse}
+%if %{suse_version} < 1500
+Requires: java-ibm >= 1.8.0
+%else
 Requires: java >= 1.8.0
+%endif
+%else
+Requires: java >= 1.8.0
+%endif
 Requires: pam-modules
 Requires: snakeyaml
 Requires: sudo
