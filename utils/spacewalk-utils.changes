@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 04 09:15:20 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.10.8-1
 - Add an ability to specify admin credentials in settings.conf (bsc#1085484)
 
 -------------------------------------------------------------------

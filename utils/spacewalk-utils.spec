@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.7.10.7
+Version:	2.7.10.8
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
