@@ -1,5 +1,6 @@
+- Increase the default number of Quartz worker threads (bsc#1096511)
 - Ignore inactive containers in Kubernetes clusters
-- explicitly require IBM java for SLES < SLE15 (bsc#1099454) 
+- explicitly require IBM java for SLES < SLE15 (bsc#1099454)
 - Do not break backward compatibility on package installation/removal (bsc#1096514)
 - Fix minion software profile to allow multiple installed versions for the
   same package name (bsc#1089526)
