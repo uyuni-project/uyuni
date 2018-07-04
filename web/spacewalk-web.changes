@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 04 09:15:50 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.1.17-1
 - Avoid ISE when unsubscribing channels in SSM (bsc#1094578)
 - Show feedback on button clicked (bsc#1085464)
 - Fix typo in 'Installed Products' label in image overview page
