@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 04 09:19:16 CEST 2018 - jgonzalez@suse.com
+
+- version 3.1.18-1
 - Use custom Salt capabilities to prevent breaking backward compatibility (bsc#1096514)
 - Do not install 'python-salt' on container build hosts with older Salt versions
   (bsc#1097699)
