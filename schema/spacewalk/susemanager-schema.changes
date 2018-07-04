@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 04 09:18:32 CEST 2018 - jgonzalez@suse.com
+
+- version 3.1.18-1
 - Fix truncated result message of server actions (bsc#1039043)
 - Fix config channels state revision inconsistency after migration (bsc#1094543)
 - Fix issue with "suse_img_repodigest_idx" index if multiple image tags (bsc#1090664)
