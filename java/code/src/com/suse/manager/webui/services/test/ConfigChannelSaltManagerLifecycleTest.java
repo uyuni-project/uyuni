@@ -15,20 +15,29 @@
 
 package com.suse.manager.webui.services.test;
 
+import com.redhat.rhn.common.util.SHA256Crypt;
+import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigFile;
+import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Random;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -63,6 +72,29 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
 
         ConfigurationManager.getInstance().deleteConfigChannel(user, channel);
         assertFalse(initSls.getParentFile().exists());
+    }
+
+    public void testCreatedBinaryFile() throws Exception {
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigFile fl = ConfigTestUtils.createConfigFile(channel);
+        ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(fl,ConfigFileType.file());
+
+        byte [] randomData = new byte[1000];
+        new Random().nextBytes(randomData);
+        ConfigContent configContent = ConfigTestUtils.createConfigContent(1000L, true);
+        configContent.setContents(randomData);
+        Checksum contentsChecksum = ChecksumFactory.safeCreate(SHA256Crypt.sha256Hex(randomData),"sha256");
+        configContent.setChecksum(contentsChecksum);
+        configRevision.setConfigContent(configContent);
+
+        ConfigurationManager.getInstance().save(channel, empty());
+        File createdFile = getGeneratedFile(channel, fl.getConfigFileName().getPath());
+        Checksum fileChecksum =  ChecksumFactory.
+                safeCreate(SHA256Crypt.sha256Hex(IOUtils.toByteArray(new FileInputStream(createdFile))),"sha256");
+        assertEquals(contentsChecksum, fileChecksum);
+        
+        ConfigurationManager.getInstance().deleteConfigChannel(user, channel);
+        assertFalse(createdFile.getParentFile().exists());
     }
 
     public void testRenameChannelLabel() throws Exception {
