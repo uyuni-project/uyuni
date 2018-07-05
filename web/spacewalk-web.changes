@@ -1,3 +1,4 @@
+- Fix css issues on minion-state pages (bsc#1083295)
 - Disable child channel selection only if channel is actually assigned(bsc#1097697)
 
 -------------------------------------------------------------------
