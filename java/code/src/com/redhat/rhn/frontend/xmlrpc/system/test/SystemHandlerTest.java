@@ -131,6 +131,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -570,6 +571,37 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, sca.getDetails().getChannels().size());
         assertTrue(sca.getDetails().getChannels()
                 .stream().filter(cc -> cc.getId().equals(child3.getId())).findFirst().isPresent());
+    }
+
+    public void testScheduleChangeChannelsNoChildren() throws Exception {
+        SystemHandler handler = getMockedHandler();
+        ActionManager.setTaskomaticApi(handler.getTaskomaticApi());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Channel child1 = ChannelFactoryTest.createTestChannel(admin);
+        Channel child2 = ChannelFactoryTest.createTestChannel(admin);
+        Channel parent = ChannelFactoryTest.createTestChannel(admin);
+        child1.setParentChannel(parent);
+        child2.setParentChannel(parent);
+
+        server.addChannel(parent);
+        server.addChannel(child1);
+        server.addChannel(child2);
+
+        Integer sid = new Integer(server.getId().intValue());
+
+        Channel base1 = ChannelFactoryTest.createTestChannel(admin);
+        base1.setParentChannel(null);
+        Date earliest = new Date();
+        long actionId = handler.scheduleChangeChannels(admin, sid, base1.getLabel(),
+                Collections.emptyList(), earliest);
+
+        Action action = ActionFactory.lookupById(actionId);
+        assertEquals(earliest, action.getEarliestAction());
+        assertTrue(action instanceof SubscribeChannelsAction);
+        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+        assertEquals(base1.getId(), sca.getDetails().getBaseChannel().getId());
+        assertTrue(sca.getDetails().getChannels().isEmpty());
     }
 
 
