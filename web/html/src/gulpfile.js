@@ -73,7 +73,7 @@ gulp.task('bundle-manager', function(done) {
         // vendors
         // ugly trick to support old node.js versions
         const bundlerOptsForVendor = JSON.parse(JSON.stringify(bundlerOpts));
-        bundlerOptsForVendor[require] = commonVendorPlugins;
+        bundlerOptsForVendor["require"] = commonVendorPlugins;
         // vendors
         browserify(bundlerOptsForVendor)
         .external("react") // exclude react from these bundles
