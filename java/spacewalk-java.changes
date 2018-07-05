@@ -1,3 +1,4 @@
+- Fix tabs and links in the SSM "Misc" section (bsc#1098388)
 - Ignore inactive containers in Kubernetes clusters
 - Handle binary files appropriately (bsc#1096264)
 -------------------------------------------------------------------

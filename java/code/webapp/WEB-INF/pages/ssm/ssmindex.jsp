@@ -164,34 +164,32 @@
                 </div>
                 <div class="col-sm-10">
                     <ul class="list-unstyled">
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_preferences)">
+                            <li><bean:message key="ssm.overview.misc.systempreferences"/></li>
+                        </rhn:require>
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_hardware_refresh)">
-                            <li>
-                                <bean:message key="update"/> <bean:message key="ssm.overview.misc.updateprofiles"/>
-                                <rhn:require acl="all_systems_in_set_have_feature(ftr_system_preferences)">
-                                    <bean:message key="and"/> <bean:message key="ssm.overview.misc.systempreferences"/>
-                                </rhn:require>
-                            </li>
+                            <li><bean:message key="ssm.overview.misc.hardwareprofiles"/></li>
+                        </rhn:require>
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_package_refresh)">
+                            <li><bean:message key="ssm.overview.misc.packageprofiles"/></li>
                         </rhn:require>
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_remote_command)">
                             <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
                         </rhn:require>
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_system_custom_values)">
-                          <li><bean:message key="ssm.overview.misc.customvalues"/></li>
+                            <li><bean:message key="ssm.overview.misc.customvalues"/></li>
                         </rhn:require>
-                        <rhn:require acl="user_role(org_admin); all_systems_in_set_have_feature(ftr_add_rm_addon_type)">
-                            <li><bean:message key="ssm.overview.misc.entitlements"/></li>
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_lock)">
+                            <li><bean:message key="ssm.overview.misc.lock"/></li>
                         </rhn:require>
-                        <li><bean:message key="ssm.overview.misc.delete"/></li>
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_audit)">
+                            <li><bean:message key="ssm.overview.misc.scap"/></li>
+                        </rhn:require>
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_reboot)">
                             <li><bean:message key="ssm.overview.misc.reboot"/></li>
                         </rhn:require>
                         <li><bean:message key="ssm.overview.misc.migrate"/></li>
-                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_lock)">
-                            <li><bean:message key="ssm.overview.misc.lock"/></li>
-                       </rhn:require>
-                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_audit)">
-                            <li><bean:message key="ssm.overview.misc.scap"/></li>
-                        </rhn:require>
+                        <li><bean:message key="ssm.overview.misc.delete"/></li>
                     </ul>
                 </div>
             </div>
