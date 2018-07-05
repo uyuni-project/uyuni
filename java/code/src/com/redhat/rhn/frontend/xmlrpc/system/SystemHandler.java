@@ -549,7 +549,8 @@ public class SystemHandler extends BaseHandler {
             throw new InvalidChannelListException();
         }
 
-        List<Long> channelIds = ChannelFactory.getChannelIds(childLabels);
+        List<Long> channelIds = !childLabels.isEmpty() ?
+                ChannelFactory.getChannelIds(childLabels) : Collections.emptyList();
 
         // if we weren't able to retrieve channel ids for all labels provided,
         // one or more of the labels must be invalid...
