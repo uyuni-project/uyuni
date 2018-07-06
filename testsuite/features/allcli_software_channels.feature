@@ -91,6 +91,7 @@ Feature: Chanel subscription via SSM
     And channel "Test Base Channel" should be enabled on "sle-client"
     And channel "Test Child Channel" should be enabled on "sle-client"
 
+@centosminion
   Scenario: System default channel can't be determined
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
@@ -114,6 +115,7 @@ Feature: Chanel subscription via SSM
     And I should see a "Items 1 - 1 of 1" text
     And a table line should contain system "ceos-minion", "Could not determine system default channel"
 
+@centosminion
   Scenario: Cleanup: make sure the CentOS minion is still unchanged
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Software" in the content area
@@ -148,6 +150,7 @@ Feature: Chanel subscription via SSM
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
+@centosminion
   Scenario: Cleanup: remove systems from SSM
     Given I am authorized as "admin" with password "admin"
     And I am on the System Overview page
