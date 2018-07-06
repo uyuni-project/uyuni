@@ -20,6 +20,8 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.domain.TaskoTask;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
+import com.redhat.rhn.taskomatic.task.MinionActionExecutor;
+import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.RhnJob;
 import com.redhat.rhn.taskomatic.task.RhnQueueJob;
 import com.redhat.rhn.taskomatic.task.TaskHelper;
@@ -33,6 +35,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,6 +54,7 @@ public class TaskoJob implements Job {
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss")
             .withZone(ZoneId.systemDefault());
 
+    private static final Map<String, Integer> DEFAULT_RESCHEDULE_TIMES = new HashMap<>();
 
     private Long scheduleId;
 
@@ -60,6 +64,9 @@ public class TaskoJob implements Job {
             lastStatus.put(task.getName(), TaskoRun.STATUS_FINISHED);
         }
         TaskoFactory.closeSession();
+
+        DEFAULT_RESCHEDULE_TIMES.put("taskomatic." + MinionActionExecutor.class.getName() + ".reschedule_time", 10);
+        DEFAULT_RESCHEDULE_TIMES.put("taskomatic." + RepoSyncTask.class.getName() + ".reschedule_time", 30);
     }
 
     /**
@@ -151,7 +158,9 @@ public class TaskoJob implements Job {
                 }
                 else {
                     if (!isTaskThreadAvailable(task)) {
-                        int rescheduleSeconds = Config.get().getInt("taskomatic.reschedule_job_time", 30);
+                        String rescheduleTimeKey = "taskomatic." + task.getTaskClass() + ".reschedule_time";
+                        int rescheduleSeconds = Config.get().getInt(rescheduleTimeKey,
+                                DEFAULT_RESCHEDULE_TIMES.getOrDefault(rescheduleTimeKey, 10));
                         log.info(schedule.getJobLabel() + " RESCHEDULED in " + rescheduleSeconds + " seconds");
                         TaskoQuartzHelper.rescheduleJob(schedule,
                                 ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant());
