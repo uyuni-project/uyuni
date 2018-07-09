@@ -241,21 +241,22 @@ public class ContentSyncHandler extends BaseHandler {
                 XMLChannel::getArch
         ));
 
-        List<String> mandetoryChannelLabels =
+        List<String> mandatoryChannelLabels =
                 SUSEProductFactory.findAllMandatoryChannels(channelLabel, archByChannelLabel::get)
                 .filter(s -> s.getChannel() == null)
                 .map(SUSEProductChannel::getChannelLabel)
                 .collect(Collectors.toList());
 
-        LinkedHashSet<String> strings = new LinkedHashSet<>(mandetoryChannelLabels);
+        LinkedHashSet<String> channelLabelsToAdd = new LinkedHashSet<>(mandatoryChannelLabels);
+        channelLabelsToAdd.add(channelLabel);
 
-        for (String channel : strings) {
+        for (String channel : channelLabelsToAdd) {
             csm.addChannel(channel, mirrorUrl);
         }
 
         List<String> returnList = new ArrayList<>();
         returnList.add(channelLabel);
-        returnList.addAll(mandetoryChannelLabels);
+        returnList.addAll(mandatoryChannelLabels);
         return returnList.toArray();
     }
 
