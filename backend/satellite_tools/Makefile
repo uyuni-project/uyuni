@@ -17,7 +17,8 @@ SCRIPTS = satellite-sync spacewalk-debug \
 	  rhn-schema-version rhn-satellite-activate rhn-charsets \
 	  rhn-ssl-dbstore update-packages rhn-db-stats rhn-schema-stats \
           spacewalk-repo-sync spacewalk-remove-channel \
-	  spacewalk-update-signatures spacewalk-data-fsck spacewalk-fips-tool
+	  spacewalk-update-signatures spacewalk-data-fsck spacewalk-fips-tool \
+	  mgr-sign-metadata
 
 # check if we can build man pages
 DOCBOOK = $(wildcard /usr/bin/docbook2man)
