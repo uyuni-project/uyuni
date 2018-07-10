@@ -403,7 +403,7 @@ public class StatesAPI {
                     .orElse(null);
 
             Set<Action> actions = ActionChainManager.scheduleApplyStates(user, minionIds,
-                    Optional.of(false), getScheduleDate(json), actionChain);
+                    Optional.of(json.isTest()), getScheduleDate(json), actionChain);
 
             if (actionChain != null) {
                 return GSON.toJson(actionChain.getId());
