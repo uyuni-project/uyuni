@@ -682,6 +682,7 @@ def channels_for_server(server_id):
         c.description,
         c.gpg_key_url,
         case when c.gpg_check = 'Y' then 1 ELSE 0 end gpgcheck,
+        :metadata_signed metadata_signed,
         case s.org_id when c.org_id then 1 else 0 end local_channel,
         TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
     from
@@ -696,7 +697,7 @@ def channels_for_server(server_id):
         and ca.id = c.channel_arch_id
     order by c.parent_channel nulls first
     """)
-    h.execute(server_id=str(server_id))
+    h.execute(server_id=str(server_id), metadata_signed=(CFG.SIGN_METADATA == 1 and 1 or 0))
     channels = h.fetchall_dict()
     if not channels:
         log_error("Server not subscribed to any channels", server_id)
