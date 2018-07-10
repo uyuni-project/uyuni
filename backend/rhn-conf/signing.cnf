@@ -1,0 +1,14 @@
+#
+# GPG KEYID to sign with
+#
+KEYID=""
+
+#
+# GPG PASSPHRASE
+#
+GPGPASS=""
+
+#
+# GPG HOMEDIR (optional)
+#
+GNUPGHOME="/root/.gnupg"
