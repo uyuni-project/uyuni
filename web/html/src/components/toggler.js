@@ -15,6 +15,19 @@ const WithRecommended = React.createClass({
   }
 });
 
+const TestState = React.createClass({
+  render:function() {
+    return (
+      <span onClick={this.props.handler} className={'btn ' + (this.props.muted ? 'text-muted' : 'pointer')}>
+        <i className={'v-middle fa ' + (this.props.enabled ? 'fa-toggle-on text-success' : 'fa-toggle-off')} />
+        &nbsp;
+        <span className='v-middle'>{t('Test State')}</span>
+      </span>
+    )
+  }
+});
+
 module.exports = {
-  WithRecommended: WithRecommended
+  WithRecommended: WithRecommended,
+  TestState: TestState
 }

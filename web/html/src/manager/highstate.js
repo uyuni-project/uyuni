@@ -6,6 +6,7 @@ const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
 const {ActionSchedule} = require("../components/action-schedule");
 const AsyncButton = require("../components/buttons").AsyncButton;
+const Toggler = require("../components/toggler");
 const Network = require("../utils/network");
 const Panels = require("../components/panel");
 const Functions = require("../utils/functions");
@@ -116,7 +117,8 @@ var Highstate = React.createClass({
     getInitialState: function() {
         var state = {
             messages: [],
-            earliest: Functions.Utils.dateWithTimezone(localTime)
+            earliest: Functions.Utils.dateWithTimezone(localTime),
+            test: false
         };
         return state;
     },
@@ -127,7 +129,8 @@ var Highstate = React.createClass({
             JSON.stringify({
                 ids: minions.map(m => m.id),
                 earliest: Formats.LocalDateTime(this.state.earliest),
-                actionChain: this.state.actionChain ? this.state.actionChain.text : null
+                actionChain: this.state.actionChain ? this.state.actionChain.text : null,
+                test: this.state.test
             }),
             "application/json"
         ).promise.then(data => {
@@ -164,6 +167,10 @@ var Highstate = React.createClass({
         this.setState({actionChain: actionChain})
     },
 
+    toggleTestState: function() {
+        this.setState({test: !this.state.test})
+    },
+
     renderMinions: function() {
         const minionList = [];
         for(var system of minions) {
@@ -174,7 +181,12 @@ var Highstate = React.createClass({
 
     render: function() {
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
-        const buttons = [ <AsyncButton action={this.applyHighstate} defaultType="btn-success" name={t("Apply Highstate")} disabled={minions.length === 0} /> ];
+        const buttons = [
+            <div className="btn-group pull-right">
+              <Toggler.TestState enabled={this.state.test} muted={false} handler={() => this.toggleTestState()} />
+              <AsyncButton action={this.applyHighstate} defaultType="btn-success" name={t("Apply Highstate")} disabled={minions.length === 0} />
+            </div>
+            ];
         return (
             <div>
                 {messages}
