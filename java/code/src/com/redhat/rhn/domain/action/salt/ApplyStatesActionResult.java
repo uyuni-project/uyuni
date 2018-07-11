@@ -18,8 +18,12 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ApplyStatesActionResult
@@ -109,6 +113,20 @@ public class ApplyStatesActionResult implements Serializable {
      */
     public String getOutputContents() {
         return HibernateFactory.getByteArrayContents(getOutput());
+    }
+
+    /**
+     * @return a list of state results
+     */
+    public List<StateResult> getResult() {
+        Yaml yaml = new Yaml();
+        @SuppressWarnings("unchecked")
+        Map<String, Map<String, Object>> payload = yaml.loadAs(getOutputContents(), Map.class);
+        List<StateResult> result = new LinkedList<>();
+        payload.entrySet().stream().forEach(e -> {
+            result.add(new StateResult(e));
+        });
+        return result;
     }
 
     @Override
