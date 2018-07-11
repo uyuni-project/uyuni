@@ -9,7 +9,7 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
-const Toggler = require("../components/toggler");
+const {Toggler} = require("../components/toggler");
 const {BootstrapPanel} = require("../components/panel");
 const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("../components/links");
 const ChannelUtils = require("../utils/channels");
@@ -422,10 +422,12 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                       }>
                       <div style={{"overflow": "auto"}} >
                         <div style={{"float": "right"}}>
-                          <Toggler.WithRecommended
-                             enabled={this.areRecommendedChildrenSelected()}
-                             muted={!Array.from(this.state.availableChildren.values()).some(channel => channel.recommended)}
-                             handler={() => this.toggleRecommended()} />
+                          <Toggler
+                             handler={this.toggleRecommended.bind(this)}
+                             value={this.areRecommendedChildrenSelected()}
+                             text={t("include recommended")}
+                             disabled={!Array.from(this.state.availableChildren.values()).some(channel => channel.recommended)}
+                          />
                         </div>
                       </div>
                       <hr />
