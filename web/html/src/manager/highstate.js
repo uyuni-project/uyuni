@@ -6,7 +6,7 @@ const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
 const {ActionSchedule} = require("../components/action-schedule");
 const AsyncButton = require("../components/buttons").AsyncButton;
-const Toggler = require("../components/toggler");
+const {Toggler} = require("../components/toggler");
 const Network = require("../utils/network");
 const Panels = require("../components/panel");
 const Functions = require("../utils/functions");
@@ -183,7 +183,7 @@ var Highstate = React.createClass({
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
         const buttons = [
             <div className="btn-group pull-right">
-              <Toggler.TestState enabled={this.state.test} muted={false} handler={() => this.toggleTestState()} />
+              <Toggler text={t('Test mode')} value={this.state.test} className="btn" handler={this.toggleTestState.bind(this)} />
               <AsyncButton action={this.applyHighstate} defaultType="btn-success" name={t("Apply Highstate")} disabled={minions.length === 0} />
             </div>
             ];
