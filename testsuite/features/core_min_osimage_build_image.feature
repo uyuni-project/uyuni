@@ -43,7 +43,7 @@ Feature: Build OS images
   And I click on "Update Properties"
   Then I should see a "OS Image Build Host type has been applied." text
   And I should see a "Note: This action will not result in state application" text
-  And I should see a "To apply the state, either use the states page or run `state.highstate` from the command line." text
+  And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
   And I should see a "System properties changed" text
 
   Scenario: Apply the highstate to container build host
