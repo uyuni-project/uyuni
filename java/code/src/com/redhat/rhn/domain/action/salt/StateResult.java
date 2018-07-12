@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.salt;
 
+import com.suse.manager.webui.utils.YamlHelper;
+
 import java.util.Formatter;
 import java.util.Map;
 
@@ -40,6 +42,7 @@ public class StateResult {
     public StateResult(Map.Entry<String, Map<String, Object>> e) {
         String[] arr = e.getKey().split("_|-");
         function = arr[0] + "." + arr[arr.length - 1];
+
         e.getValue().forEach((key, val) -> {
             String value = val != null ? val.toString() : "";
             switch (key) {
@@ -58,7 +61,13 @@ public class StateResult {
                 sls = value;
                 break;
             case "changes":
-                changes = value;
+                if (value.equals("{}")) {
+                    changes = value;
+                }
+                else {
+                    changes = YamlHelper.INSTANCE.dump(val);
+                    changes = changes.replaceAll("\\\\n", "\n");
+                }
                 break;
             case "comment":
                 comment = value;
@@ -146,7 +155,20 @@ public class StateResult {
      * @return the changes
      */
     public String getChanges() {
-        return changes;
+        StringBuilder retval = new StringBuilder();
+        String indentation = new String(new char[14]).replace("\0", " ");
+        for (int i = 0; i < changes.length(); i++) {
+            char c = changes.charAt(i);
+            switch (c) {
+            case '\n':
+                retval.append(c + indentation);
+                break;
+            default:
+                retval.append(c);
+                break;
+            }
+        }
+        return retval.toString();
     }
 
     /**
