@@ -11,13 +11,13 @@ Feature: Chanel subscription with recommended/required dependencies
     And I check radio button "SLE-Product-SLES15-Pool for x86_64"
     # check that the required channel by the base one is selected and disabled
     And I should see the child channel "SLE-Product-SLES15-Updates for x86_64" "selected" and "disabled"
-    And I should see the recommended toggler "disabled"
+    And I should see the toggler "disabled"
     Then I should see a "SLE-Module-Basesystem15-Pool for x86_64" text
     And I should see the child channel "SLE-Module-Basesystem15-Pool for x86_64" "unselected"
     Then I select the child channel "SLE-Module-Basesystem15-Updates for x86_64"
     # check the a child channel selection that requires some channel trigger the selection of it
     And I should see the child channel "SLE-Module-Basesystem15-Pool for x86_64" "selected"
-    Then I click on the "disabled" recommended toggler
+    Then I click on the "disabled" toggler
     # check a recommended channel not yet selected is checked  by the recommended toggler
     And I should see the child channel "SLE-Module-Server-Applications15-Pool for x86_64" "selected"
 
@@ -35,9 +35,9 @@ Feature: Chanel subscription with recommended/required dependencies
     And I should see a table line with "Test-Channel-x86_64", "2"
     When I select "System Default Base Channel" from drop-down in table line with "Test-Channel-x86_64"
     And I click on "Next"
-    And I should see the recommended toggler "disabled"
+    And I should see the toggler "disabled"
     And I should see a "SLE-Module-Basesystem15-Pool for x86_64" text
     And I should see "No change" "selected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
-    Then I click on the "disabled" recommended toggler
+    Then I click on the "disabled" toggler
     And I should see "Subscribe" "selected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
     And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
