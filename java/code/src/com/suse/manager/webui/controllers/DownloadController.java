@@ -95,7 +95,10 @@ public class DownloadController {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
 
-        if (filename.endsWith(".asc") || filename.endsWith(".key")) {
+        File file = new File(new File("/var/cache/rhn/repodata", channelLabel),
+                filename).getAbsoluteFile();
+
+        if (!file.exists() && (filename.endsWith(".asc") || filename.endsWith(".key"))) {
             halt(HttpStatus.SC_NOT_FOUND,
                     String.format("Key or signature file not provided: %s", filename));
         }
@@ -104,9 +107,6 @@ public class DownloadController {
             String token = getTokenFromRequest(request);
             validateToken(token, channelLabel, filename);
         }
-
-        File file = new File(new File("/var/cache/rhn/repodata", channelLabel),
-                filename).getAbsoluteFile();
 
         if (!file.exists() && filename.equals("comps.xml")) {
             File compsFile = getCompsFile(ChannelFactory.lookupByLabel(channelLabel));
