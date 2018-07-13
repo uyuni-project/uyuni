@@ -47,6 +47,15 @@ Feature: Use salt formulas
      And the pillar data for "timezone" should be empty on "ssh-minion"
      And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
 
+  Scenario: Test the parametrized formula via the highstate
+     Given I am on the Systems overview page of this "sle-minion"
+     And I follow "States" in the content area
+     Then I should see the toggler "disabled"
+     When I click on the "disabled" toggler
+     And I click on "Apply Highstate"
+     Then I should see a "Applying the highstate has been scheduled." text
+     And I wait until event "Apply highstate in test-mode scheduled by admin" is completed
+
   Scenario: Apply the parametrized formula via the highstate
      Given I am on the Systems overview page of this "sle-minion"
      And I follow "States" in the content area
