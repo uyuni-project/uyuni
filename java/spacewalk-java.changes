@@ -1,3 +1,4 @@
+- Fix: errata id should be unique (bsc#1089662)
 - improve cve-server-channels Taskomatic task's performance (bsc#1094524)
 - fix union and intersection button in grouplist (bsc#1100570)
 - Feature: show ordered and formated output of state apply results
