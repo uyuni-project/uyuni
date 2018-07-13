@@ -1,3 +1,4 @@
+- Feature: implement test-mode for highstate UI
 - Feature: implement optional signing repository metadata
 - Valid optional channel must be added before reposync starts (bsc#1099583)
 - XML-RPC API call system.scheduleChangeChannels() fails when no children are given (bsc#1098815)
