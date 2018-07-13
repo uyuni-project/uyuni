@@ -1,0 +1,38 @@
+#! /bin/bash
+
+set -e
+
+FILETOSIGN=$1
+
+if [ -z "$FILETOSIGN" -o ! -r "$FILETOSIGN" ]; then
+    echo "No file to sign provided" >&2
+    exit 1
+fi
+
+if [ ! -r /etc/rhn/signing.conf ]; then
+    echo "No config file found: /etc/rhn/signing.conf" >&2
+    exit 1
+fi
+
+source /etc/rhn/signing.conf
+
+if [ -z "$KEYID" ]; then
+    echo "Unable to find GPG KEYID in config" >&2
+    exit 1
+fi
+
+if [ -z "$GPGPASS" ]; then
+    echo "Unable to find GPG PASSWORD in config" >&2
+    exit 1
+fi
+
+SIGFILE="$FILETOSIGN.asc"
+KEYFILE="$FILETOSIGN.key"
+
+rm -f $SIGFILE
+echo "$GPGPASS" | gpg -sab --batch -u $KEYID --passphrase-fd 0 -o $SIGFILE $FILETOSIGN
+
+rm -f $KEYFILE
+gpg --batch --export -a -o $KEYFILE $KEYID
+
+exit 0

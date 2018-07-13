@@ -237,6 +237,8 @@ class Repository(rhnRepository.Repository):
 
         if file_name in ["repomd.xml", "comps.xml", "products.xml"]:
             content_type = "text/xml"
+        elif file_name in ["repomd.xml.asc", "repomd.xml.key"]:
+            content_type = "text/plain"
         elif file_name not in ["primary.xml.gz", "other.xml.gz",
                                "filelists.xml.gz", "updateinfo.xml.gz", "Packages.gz", "modules.yaml",
                                "InRelease", "Release", "Release.gpg",

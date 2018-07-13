@@ -1,3 +1,4 @@
+- Feature: implement optional signing repository metadata
 - Valid optional channel must be added before reposync starts (bsc#1099583)
 - Fix tabs and links in the SSM "Misc" section (bsc#1098388)
 - Handle binary files appropriately (bsc#1096264)
