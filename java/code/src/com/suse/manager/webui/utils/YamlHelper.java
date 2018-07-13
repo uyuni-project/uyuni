@@ -32,6 +32,7 @@ public enum YamlHelper {
         // Configure the YAML output here
         options = new DumperOptions();
         options.setIndent(4);
+        options.setWidth(150);
         options.setAllowUnicode(true);
         options.setPrettyFlow(true);
         options.setLineBreak(DumperOptions.LineBreak.UNIX);
