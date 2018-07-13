@@ -654,7 +654,7 @@ Given(/^I have a valid token for organization "(.*?)" and channel "(.*?)"$/) do 
   @token = token(server_secret, org: org, onlyChannels: [channel])
 end
 
-And(/^I should see the recommended toggler "([^"]*)"$/) do |target_status|
+And(/^I should see the toggler "([^"]*)"$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = "//i[contains(@class, 'fa-toggle-on')]"
@@ -667,7 +667,7 @@ And(/^I should see the recommended toggler "([^"]*)"$/) do |target_status|
   end
 end
 
-And(/^I click on the "([^"]*)" recommended toggler$/) do |target_status|
+And(/^I click on the "([^"]*)" toggler$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = "//i[contains(@class, 'fa-toggle-on')]"

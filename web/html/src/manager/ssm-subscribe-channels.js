@@ -13,7 +13,7 @@ const {BootstrapPanel} = require("../components/panel");
 const MessagesUtils = require("../components/messages").Utils;
 const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("../components/links");
 const {PopUp} = require("../components/popup");
-const Toggler = require("../components/toggler");
+const {Toggler} = require("../components/toggler");
 const ChannelUtils = require("../utils/channels");
 
 import type JsonResult from "../utils/network";
@@ -390,10 +390,12 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                      t("(Couldn't determine new base channel)")
                   }
                 </h4>
-                <Toggler.WithRecommended
-                   enabled={this.areRecommendedChildrenSelected(allowed)}
-                   muted={!allowed.childChannels.some(channel => channel.recommended)}
-                   handler={() => this.toggleRecommended(allowed)} />
+                <Toggler
+                   handler={() => this.toggleRecommended(allowed)}
+                   value={this.areRecommendedChildrenSelected(allowed)}
+                   text={t('include recommended')}
+                   disabled={!allowed.childChannels.some(channel => channel.recommended)}
+                />
               </div>
               <div className="col-md-4 text-right">
                 <strong>
