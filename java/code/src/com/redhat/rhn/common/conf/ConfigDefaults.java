@@ -241,6 +241,11 @@ public class ConfigDefaults {
     public static final String SALT_CHECK_DOWNLOAD_TOKENS = "java.salt_check_download_tokens";
 
 
+    /**
+     * If true, signing metadata is enabled, otherwise metadata will not be signed
+     */
+    public static final String SIGN_METADATA = "sign_metadata";
+
     private ConfigDefaults() {
     }
 
@@ -834,5 +839,13 @@ public class ConfigDefaults {
      */
     public float getSaltContentStagingAdvance() {
         return Config.get().getFloat(SALT_CONTENT_STAGING_ADVANCE, 8);
+    }
+
+    /**
+     * Returns true if metadata signing is enabled, otherwise false.
+     * @return metadata signing enabled
+     */
+    public boolean isMetadataSigningEnabled() {
+        return Config.get().getBoolean(SIGN_METADATA);
     }
 }
