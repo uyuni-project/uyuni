@@ -204,8 +204,9 @@ public class TaskoXmlRpcHandler {
      * stop scheduling an organizational bunch
      * @param orgId organization id
      * @param jobLabel job name
+     * @return 1 on success
      */
-    public void unscheduleBunch(Integer orgId, String jobLabel) {
+    public Integer unscheduleBunch(Integer orgId, String jobLabel) {
         // one or none shall be returned
         List<TaskoSchedule> scheduleList =
             TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel);
@@ -222,7 +223,7 @@ public class TaskoXmlRpcHandler {
         // so better handle quartz and schedules separately
         if ((scheduleList.isEmpty()) && (trigger == null)) {
             log.error("Unscheduling of bunch " + jobLabel + "failed: no such job label");
-            return;
+            return 0;
         }
         for (TaskoSchedule schedule : scheduleList) {
             schedule.unschedule();
@@ -230,6 +231,7 @@ public class TaskoXmlRpcHandler {
         if (trigger != null) {
             TaskoQuartzHelper.destroyJob(orgId, jobLabel);
         }
+        return 1;
     }
 
     /**
