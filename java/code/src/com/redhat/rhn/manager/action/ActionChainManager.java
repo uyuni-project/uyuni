@@ -327,11 +327,13 @@ public class ActionChainManager {
         Set<Long> sidSet = new HashSet<Long>();
         sidSet.addAll(sids);
 
-        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_APPLY_STATES, "Apply highstate",
+        String summary = "Apply highstate" + (test.isPresent() && test.get() ? " in test-mode" : "");
+        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_APPLY_STATES, summary,
                 earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ApplyStatesActionDetails applyState = new ApplyStatesActionDetails();
             applyState.setActionId(action.getId());
+            test.ifPresent(t -> applyState.setTest(t));
             ((ApplyStatesAction)action).setDetails(applyState);
             ActionFactory.save(action);
         }

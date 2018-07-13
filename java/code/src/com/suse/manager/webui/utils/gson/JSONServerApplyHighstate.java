@@ -32,6 +32,9 @@ public class JSONServerApplyHighstate {
     /** The action chain to which to add */
     private Optional<String> actionChain = Optional.empty();
 
+    /** test mode */
+    private boolean test = false;
+
     /**
      * @return the server id
      */
@@ -51,5 +54,12 @@ public class JSONServerApplyHighstate {
      */
     public Optional<String> getActionChain() {
         return actionChain;
+    }
+
+    /**
+     * @return true if test mode is called
+     */
+    public boolean isTest() {
+        return test;
     }
 }
