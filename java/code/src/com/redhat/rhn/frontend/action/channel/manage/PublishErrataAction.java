@@ -58,6 +58,7 @@ public class PublishErrataAction extends RhnListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
             ActionForm formIn,
             HttpServletRequest request,
@@ -95,7 +96,7 @@ public class PublishErrataAction extends RhnListAction {
         //ErrataManager.publishErrataToChannelAsync(currentChan, errataIds, user);
         List<ErrataOverview> errata = ErrataManager.errataInSet(user,
                 RhnSetDecl.setForChannelErrata(currentChan).get(user).getLabel());
-        List<Long> eids = ErrataManager.cloneChannelErrata(errata, currentChan.getId(),
+        Set<Long> eids = ErrataManager.cloneChannelErrata(errata, currentChan.getId(),
                 user);
 
 
