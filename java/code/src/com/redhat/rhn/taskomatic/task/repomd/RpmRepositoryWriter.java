@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.RepoMetadata;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.task.TaskManager;
 
 import java.io.BufferedWriter;
@@ -306,7 +307,13 @@ public class RpmRepositoryWriter extends RepositoryWriter {
 
         renameFiles(prefix, channel.getLastModified().getTime(),
                 updateinfoData != null, productsData != null);
-
+        if (ConfigDefaults.get().isMetadataSigningEnabled()) {
+            SystemCommandExecutor sce = new SystemCommandExecutor();
+            String[] signCommand = new String[2];
+            signCommand[0] = "mgr-sign-metadata";
+            signCommand[1] = prefix + "repomd.xml";
+            sce.execute(signCommand);
+        }
         log.info("Repository metadata generation for '" +
                 channel.getLabel() + "' finished in " +
                 (int) (new Date().getTime() - start.getTime()) / 1000 + " seconds");

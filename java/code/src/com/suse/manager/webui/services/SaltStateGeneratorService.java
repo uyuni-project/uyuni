@@ -207,9 +207,17 @@ public enum SaltStateGeneratorService {
         }
         chanProps.put("token", accessToken.getToken());
         chanProps.put("type", "rpm-md");
-        chanProps.put("gpgcheck", "0");
-        chanProps.put("repo_gpgcheck", "0");
-        chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
+        if (ConfigDefaults.get().isMetadataSigningEnabled()) {
+            chanProps.put("gpgcheck", chan.isGPGCheck() ? "1" : "0");
+            // three state field. yes, no or default
+            chanProps.put("repo_gpgcheck", "default");
+            chanProps.put("pkg_gpgcheck", "default");
+        }
+        else {
+            chanProps.put("gpgcheck", "0");
+            chanProps.put("repo_gpgcheck", "0");
+            chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
+        }
         return chanProps;
     }
 

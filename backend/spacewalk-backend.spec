@@ -370,6 +370,7 @@ Requires: %{m2crypto}
 %if 0%{?fedora} || 0%{?rhel} > 5
 BuildRequires: python-requests
 %endif
+BuildRequires: spacewalk-config
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
 Provides: spacewalk-backend-satellite-tools = %{version}-%{release}
@@ -410,6 +411,7 @@ make -f Makefile.backend all
 %install
 install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}
+install -d $RPM_BUILD_ROOT%{rhnconf}
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd}
 %if !0%{?with_oracle}
@@ -440,6 +442,7 @@ ln -s satellite-sync $RPM_BUILD_ROOT/usr/bin/mgr-inter-sync
 ln -s satellite-sync.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/mgr-inter-sync.8.gz
 ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
 
+install -m 644 rhn-conf/signing.cnf $RPM_BUILD_ROOT%{rhnconf}/signing.conf
 
 %find_lang %{name}-server
 
@@ -851,6 +854,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc README.ULN
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
+%config(noreplace) %{rhnconf}/signing.conf
 %attr(755,root,root) %{_bindir}/rhn-charsets
 %attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version
@@ -870,6 +874,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-update-signatures
 %attr(755,root,root) %{_bindir}/spacewalk-data-fsck
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
+%attr(755,root,root) %{_bindir}/mgr-sign-metadata
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
