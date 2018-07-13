@@ -88,6 +88,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1464,11 +1465,11 @@ public class ErrataManager extends BaseManager {
      * @param user the requesting user
      * @return list of errata ids that were published into channel
      */
-    public static List<Long> cloneChannelErrata(List<ErrataOverview> toClone, Long toCid,
+    public static Set<Long> cloneChannelErrata(List<ErrataOverview> toClone, Long toCid,
             User user) {
         List<OwnedErrata> owned = ErrataFactory
                 .listPublishedOwnedUnmodifiedClonedErrata(user.getOrg().getId());
-        List<Long> eids = new ArrayList<Long>();
+        Set<Long> eids = new HashSet<Long>();
 
         // add published, cloned, owned errata to mapping. we want the oldest owned
         // clone to reuse. listPublishedOwnedUnmodifiedClonedErrata orders by created,
