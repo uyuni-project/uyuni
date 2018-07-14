@@ -6,6 +6,7 @@ Feature: The Setup Wizard
   Background:
     Given I am on the Admin page
 
+@notwithfromdir
   Scenario: Set up the credentials
     When I follow "Organization Credentials" in the content area
     And I want to add a new credential
