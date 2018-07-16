@@ -231,7 +231,7 @@ class FormulaSelection extends React.Component {
                 <div className="spacewalk-section-toolbar">
                     <div className="action-button-wrapper">
                         <span className="btn-group pull-right">
-                            <AsyncButton id="save-btn" icon="floppy-o" action={this.saveRequest} name={t("Save")} />
+                            <AsyncButton id="save-btn" icon="fa-floppy-o" action={this.saveRequest} text={t("Save")} />
                             <Button id="clear-btn" icon="fa-eraser" text="Remove all" className="btn btn-default" handler={this.removeAllFormulas} />
                             <Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default" handler={this.resetChanges} />
                         </span>

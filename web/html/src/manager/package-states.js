@@ -349,8 +349,8 @@ class PackageStates extends React.Component {
           <Messages items={this.state.messages}/>
           : null;
     const buttons = [
-              <AsyncButton id="save" action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>,
-              <AsyncButton id="apply" action={this.applyPackageState} name={t("Apply")} />
+              <AsyncButton id="save" action={this.save} text={t("Save")} disabled={this.state.changed.size == 0}/>,
+              <AsyncButton id="apply" action={this.applyPackageState} text={t("Apply")} />
     ];
 
     return (
@@ -365,7 +365,7 @@ class PackageStates extends React.Component {
                         <span className="input-group">
                             <TextField id="package-search" value={this.state.filter} placeholder={t("Search package")} onChange={this.onSearchChange} onPressEnter={this.triggerSearch}/>
                             <span className="input-group-btn">
-                                <AsyncButton id="search" name={t("Search")} action={this.search} ref={(c) => this.searchButton = c}/>
+                                <AsyncButton id="search" text={t("Search")} action={this.search} ref={(c) => this.searchButton = c}/>
                                 <button id="system" className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
                                 <button id="changes" className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
                                     {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
