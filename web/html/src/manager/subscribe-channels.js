@@ -500,7 +500,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
             <AsyncButton
               id="btn-confirm"
               defaultType="btn-success"
-              name={t("Confirm")}
+              text={t("Confirm")}
               action={this.handleConfirm}
               disabled={this.state.scheduled}
             />

@@ -958,9 +958,9 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
               <Footer page={this.state.page}>
                 <AsyncButton id="next-btn"
                   defaultType="btn-success"
-                  icon="arrow-right"
+                  icon="fa-arrow-right"
                   disabled={this.state.allowedBaseChannels.length == 0}
-                  name={t("Next")}
+                  text={t("Next")}
                   action={this.onGotoChildChannels}/>
               </Footer>
             }/>);
@@ -979,8 +979,8 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
                   handler={this.backToBaseChannels}/>
                 <AsyncButton id="next-btn"
                   defaultType="btn-success"
-                  icon="arrow-right"
-                  name={t("Next")}
+                  icon="fa-arrow-right"
+                  text={t("Next")}
                   action={this.onGotoConfirm}/>
               </Footer>
             }/>);
@@ -1001,7 +1001,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
                 handler={this.backToChildChannels}/>
               <AsyncButton id="confirm-btn"
                 defaultType="btn-success"
-                name={t("Confirm")}
+                text={t("Confirm")}
                 action={this.onConfirm}/>
             </Footer>
           }/>);

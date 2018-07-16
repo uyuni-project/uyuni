@@ -308,7 +308,7 @@ class ImageView extends React.Component {
       { isAdmin && !this.state.selected &&
           <Button id="import" icon="fa-download" text={t("Import")} className="btn-default" handler={this.handleImportImage} />
       }
-      <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
+      <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
     </div>;
 
     const selected = Object.assign({}, this.state.selected, this.state.selectedRuntime);
