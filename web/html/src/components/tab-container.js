@@ -1,14 +1,15 @@
 "use strict";
 
 const React = require("react");
+const PropTypes = React.PropTypes;
 
 const TabContainer = React.createClass({
   propTypes: {
-    labels: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
-    hashes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired, // must start with #
-    tabs: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
-    initialActiveTabHash: React.PropTypes.string,
-    onTabHashChange: React.PropTypes.func, // takes a hash parameter
+    labels: PropTypes.arrayOf(PropTypes.node).isRequired,
+    hashes: PropTypes.arrayOf(PropTypes.string).isRequired, // must start with #
+    tabs: PropTypes.arrayOf(PropTypes.node).isRequired,
+    initialActiveTabHash: PropTypes.string,
+    onTabHashChange: PropTypes.func, // takes a hash parameter
   },
 
   getInitialState: function() {
