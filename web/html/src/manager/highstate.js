@@ -184,7 +184,7 @@ var Highstate = React.createClass({
         const buttons = [
             <div className="btn-group pull-right">
               <Toggler text={t('Test mode')} value={this.state.test} className="btn" handler={this.toggleTestState.bind(this)} />
-              <AsyncButton action={this.applyHighstate} defaultType="btn-success" name={t("Apply Highstate")} disabled={minions.length === 0} />
+              <AsyncButton action={this.applyHighstate} defaultType="btn-success" text={t("Apply Highstate")} disabled={minions.length === 0} />
             </div>
             ];
         return (

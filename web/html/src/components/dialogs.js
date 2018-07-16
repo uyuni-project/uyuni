@@ -1,6 +1,7 @@
 "use strict";
 
 const React = require("react");
+const PropTypes = React.PropTypes;
 const Button = require("./buttons").Button;
 const PopUp = require("./popup").PopUp;
 
@@ -24,14 +25,14 @@ function ModalButton(props) {
 }
 
 ModalButton.propTypes = {
-    target: React.PropTypes.string.isRequired,
-    id: React.PropTypes.string,
-    className: React.PropTypes.string,
-    title: React.PropTypes.string,
-    text: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    item: React.PropTypes.object,
-    onClick: React.PropTypes.func
+    target: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    className: PropTypes.string,
+    title: PropTypes.string,
+    text: PropTypes.string,
+    icon: PropTypes.string,
+    item: PropTypes.object,
+    onClick: PropTypes.func
 };
 
 /**
@@ -66,14 +67,14 @@ function hideDialog(modalId) {
 }
 
 ModalLink.propTypes = {
-    target: React.PropTypes.string.isRequired,
-    id: React.PropTypes.string,
-    className: React.PropTypes.string,
-    title: React.PropTypes.string,
-    text: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    item: React.PropTypes.object,
-    onClick: React.PropTypes.func
+    target: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    className: PropTypes.string,
+    title: PropTypes.string,
+    text: PropTypes.string,
+    icon: PropTypes.string,
+    item: PropTypes.object,
+    onClick: PropTypes.func
 };
 
 /**
@@ -130,13 +131,13 @@ function Dialog(props) {
 }
 
 DeleteDialog.propTypes = {
-    id: React.PropTypes.string.isRequired,
-    onClosePopUp: React.PropTypes.func,
-    className: React.PropTypes.string,
-    title: React.PropTypes.string,
-    content: React.PropTypes.node,
-    item: React.PropTypes.object,
-    onConfirm: React.PropTypes.func
+    id: PropTypes.string.isRequired,
+    onClosePopUp: PropTypes.func,
+    className: PropTypes.string,
+    title: PropTypes.string,
+    content: PropTypes.node,
+    item: PropTypes.object,
+    onConfirm: PropTypes.func
 };
 
 module.exports = {
