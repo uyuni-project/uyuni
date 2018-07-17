@@ -225,12 +225,15 @@ public class SaltActionChainGeneratorService {
         SaltState retState = null;
 
         if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
-            Map<String, Map<String, String>> paramPillar =
-                    (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
+            Map<String, List<List<String>>> paramPillar =
+                    (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
             SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
-            for (Map.Entry<String, String> entry : paramPillar.get("param_pkgs").entrySet()) {
-                pkgInstalled.addPackage(entry.getKey(), entry.getValue());
-            }
+            paramPillar.get("param_pkgs").stream()
+                    .filter(entry -> entry.size() == 3)
+                    .forEach(entry -> {
+                        // name arch version
+                        pkgInstalled.addPackage(entry.get(0), entry.get(1), entry.get(2));
+                    });
             retState = pkgInstalled;
         }
         else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL)) {
@@ -282,11 +285,12 @@ public class SaltActionChainGeneratorService {
 
             if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
                 if (moduleRun.getKwargs() != null) {
-                    Map<String, Map<String, String>> paramPillar =
-                            (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
-                    if (!paramPillar.get("param_pkgs").entrySet().stream()
-                            .filter(entry -> entry.getKey().equals("salt"))
-                            .map(entry -> entry.getKey())
+                    Map<String, List<List<String>>> paramPillar =
+                            (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
+                    if (!paramPillar.get("param_pkgs").stream()
+                            .filter(e -> e.size() > 0)
+                            .map(e -> e.get(0))
+                            .filter(e -> "salt".equals(e))
                             .collect(Collectors.toList()).isEmpty()) {
                         return true;
                     }
