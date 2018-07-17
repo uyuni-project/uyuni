@@ -205,10 +205,10 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 singletonMap("mods", Arrays.asList("packages.pkginstall")),
                 singletonMap("pillar",
                         singletonMap("param_pkgs",
-                            ImmutableMap.<String, String>builder()
-                                    .put("salt", "2018.3.0-4.1")
-                                    .put("salt-minion", "2018.3.0-4.1")
-                                    .build()
+                            Arrays.asList(
+                                    Arrays.asList("salt", "x86_64", "2018.3.0-4.1"),
+                                    Arrays.asList("salt-minion", "x86_64", "2018.3.0-4.1")
+                            )
                         )
                 )
         ));
@@ -240,13 +240,18 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   kwargs:\n" +
                         "            pillar:\n" +
                         "                param_pkgs:\n" +
-                        "                    salt: 2018.3.0-4.1\n" +
-                        "                    salt-minion: 2018.3.0-4.1\n" +
+                        "                -   - salt\n" +
+                        "                    - x86_64\n" +
+                        "                    - 2018.3.0-4.1\n" +
+                        "                -   - salt-minion\n" +
+                        "                    - x86_64\n" +
+                        "                    - 2018.3.0-4.1\n" +
                         "clean_action_chain_if_previous_failed:\n" +
                         "    module.run:\n" +
                         "    -   name: mgractionchains.clean\n" +
                         "    -   onfail:\n" +
-                        "        -   module: mgr_actionchain_142_action_1_chunk_1\n").replaceAll("142", actionChain.getId() + ""),
+                        "        -   module: mgr_actionchain_142_action_1_chunk_1\n")
+                        .replaceAll("142", actionChain.getId() + ""),
                 fileContent);
 
         fileContent = FileUtils
@@ -260,8 +265,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    pkg.installed:\n" +
                         "    -   refresh: true\n" +
                         "    -   pkgs:\n" +
-                        "        -   salt: 2018.3.0-4.1\n" +
-                        "        -   salt-minion: 2018.3.0-4.1\n"), fileContent);
+                        "        -   salt.x86_64: 2018.3.0-4.1\n" +
+                        "        -   salt-minion.x86_64: 2018.3.0-4.1\n"), fileContent);
     }
 
     public void testRemoveAllActionChainSLSFilesForMinion() throws Exception {
@@ -365,10 +370,10 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 singletonMap("mods", Arrays.asList("packages.pkginstall")),
                 singletonMap("pillar",
                         singletonMap("param_pkgs",
-                            ImmutableMap.<String, String>builder()
-                                    .put("dummy-package", "0.1.2-3")
-                                    .put("another-package", "4.3.2-1")
-                                    .build()
+                            Arrays.asList(
+                                    Arrays.asList("dummy-package", "0.1.2-3"),
+                                    Arrays.asList("another-package", "4.3.2-1")
+                            )
                         )
                 )
         ));
@@ -395,8 +400,11 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   kwargs:\n" +
                         "            pillar:\n" +
                         "                param_pkgs:\n" +
-                        "                    dummy-package: 0.1.2-3\n" +
-                        "                    another-package: 4.3.2-1\n").replaceAll("142", actionChain.getId() + ""),
+                        "                -   - dummy-package\n" +
+                        "                    - 0.1.2-3\n" +
+                        "                -   - another-package\n" +
+                        "                    - 4.3.2-1\n"
+                ).replaceAll("142", actionChain.getId() + ""),
                 fileContent);
     }
 
