@@ -14,14 +14,19 @@
 --
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
-    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-chain-executor-bunch', 'Execute action chains on Minions', null);
+  SELECT sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-chain-executor-bunch', 'Execute action chains on Minions', null) from dual
+   where not exists (select 1 from rhnTaskoBunch where name = 'minion-action-chain-executor-bunch');
 
 INSERT INTO rhnTaskoTask (id, name, class)
-    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'minion-action-chain-executor', 'com.redhat.rhn.taskomatic.task.MinionActionChainExecutor');
+    SELECT sequence_nextval('rhn_tasko_task_id_seq'), 'minion-action-chain-executor', 'com.redhat.rhn.taskomatic.task.MinionActionChainExecutor' from dual
+     where not exists (select 1 from rhnTaskoTask where name = 'minion-action-chain-executor');
 
 INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
-    VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+    SELECT sequence_nextval('rhn_tasko_template_id_seq'),
         (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-chain-executor-bunch'),
         (SELECT id FROM rhnTaskoTask WHERE name='minion-action-chain-executor'),
         0,
-        null);
+        null) from dual
+     where not exists (select 1 from rhnTaskoTemplate
+                        where bunch_id = (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-chain-executor-bunch')
+                          and task_id = (SELECT id FROM rhnTaskoTask WHERE name='minion-action-chain-executor'));
