@@ -815,8 +815,7 @@ public class SaltServerActionService {
                                     "state.apply",
                                     serverAction.getParentAction().getId(),
                                     emptyMap(),
-                                    kwargs.get("pillar") != null ?
-                                            singletonMap("pillar", kwargs.get("pillar")) : emptyMap());
+                                    createStateApplyKwargs(kwargs));
                         }
 
                     }
@@ -825,8 +824,7 @@ public class SaltServerActionService {
                             serverAction.getParentAction().getId(),
                             !mods.isEmpty() ?
                                     singletonMap("mods", mods) : emptyMap(),
-                            kwargs.get("pillar") != null ?
-                                    singletonMap("pillar", kwargs.get("pillar")) : emptyMap());
+                            createStateApplyKwargs(kwargs));
                 case "system.reboot":
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
@@ -835,6 +833,15 @@ public class SaltServerActionService {
                     throw new RuntimeException("Salt module call" + fun + " can't be converted to a state.");
             }
         }).collect(Collectors.toList());
+    }
+
+    private Map<String, Object> createStateApplyKwargs(Map<String, ?> kwargs) {
+        Map<String, Object> applyKwargs = new HashMap<>();
+        if (kwargs.get("pillar") != null) {
+            applyKwargs.put("pillar", kwargs.get("pillar"));
+        }
+        applyKwargs.put("queue", true);
+        return applyKwargs;
     }
 
 
