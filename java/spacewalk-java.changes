@@ -1,3 +1,4 @@
+- fix defining a schedule for repo-sync (bsc#1100793)
 - Drop removed network interfaces on hardware profile update (bsc#1099781)
 - Feature: implement test-mode for highstate UI
 - Feature: implement optional signing repository metadata

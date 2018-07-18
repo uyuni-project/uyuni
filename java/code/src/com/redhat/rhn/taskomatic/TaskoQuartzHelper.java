@@ -86,7 +86,7 @@ public class TaskoQuartzHelper {
                         .withSchedule(cronSchedule(schedule.getCronExpr()))
                         .startAt(schedule.getActiveFrom())
                         .endAt(schedule.getActiveTill())
-                        .forJob(schedule.getJobLabel())
+                        .forJob(schedule.getJobLabel(), getGroupName(schedule.getOrgId()))
                         .build();
             }
             catch (Exception e) {
