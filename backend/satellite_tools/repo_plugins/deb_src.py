@@ -74,7 +74,7 @@ class DebRepo(object):
         self.proxy = self.proxy_username = self.proxy_password = None
         self.basecachedir = cache_dir
         if not os.path.isdir(self.basecachedir):
-            fileutils.makedirs(self.basecachedir, user='apache', group='apache')
+            fileutils.makedirs(self.basecachedir, user='wwwrun', group='www')
         self.includepkgs = []
         self.exclude = []
         self.pkgdir = pkg_dir
