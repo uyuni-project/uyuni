@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import java.util.Comparator;
+
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.
  */
@@ -65,10 +67,31 @@ public class ApplyStatesAction extends Action {
                 retval.append("Results:");
                 retval.append("</br>");
                 retval.append("<pre>");
-                retval.append(StringEscapeUtils.escapeHtml4(result.getOutputContents()));
+                retval.append(formatStateApplyResult(result));
                 retval.append("</pre>");
             }
         }
+        return retval.toString();
+    }
+
+    private String formatStateApplyResult(ApplyStatesActionResult result) {
+        StringBuilder retval = new StringBuilder();
+        result.getResult().stream()
+        .sorted(
+                new Comparator<StateResult>() {
+                    public int compare(StateResult r1, StateResult r2) {
+                        return (r2.getRunNum() < r1.getRunNum()) ? 1 : -1;
+                    }
+                })
+        .forEach(entry -> {
+            if (!entry.isResult()) {
+                retval.append("<strong><span class='text-danger'>");
+            }
+            retval.append(StringEscapeUtils.escapeHtml4(entry.toString()));
+            if (!entry.isResult()) {
+                retval.append("</span></strong>");
+            }
+        });
         return retval.toString();
     }
 }
