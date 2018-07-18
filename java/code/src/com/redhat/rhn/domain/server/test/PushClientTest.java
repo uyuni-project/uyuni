@@ -65,8 +65,7 @@ public class PushClientTest extends RhnBaseTestCase {
                                                     true,
                                                     ServerConstants.
                                                     getServerGroupTypeEnterpriseEntitled(),
-                                                    ServerFactoryTest.
-                                                    TYPE_SERVER_SATELLITE);
+                                                    ServerFactoryTest.TYPE_SERVER_NORMAL);
 
         pc.setServer(s);
         return pc;
