@@ -1,3 +1,5 @@
+- copy missing action-chain schema migration to correct directory
+  (bsc#1100760)
 - Fix truncated result message of server actions (bsc#1039043)
 - Fix config channels state revision inconsistency after migration (bsc#1094543)
 
