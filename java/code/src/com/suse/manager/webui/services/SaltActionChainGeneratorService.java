@@ -232,7 +232,7 @@ public class SaltActionChainGeneratorService {
                     .filter(entry -> entry.size() == 3)
                     .forEach(entry -> {
                         // name arch version
-                        pkgInstalled.addPackage(entry.get(0), entry.get(1), entry.get(2));
+                        pkgInstalled.addPackageNameArchVersion(entry.get(0), entry.get(1), entry.get(2));
                     });
             retState = pkgInstalled;
         }
