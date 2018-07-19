@@ -1,3 +1,4 @@
+- Add queue=true to state.apply calls generated in action chain sls files
 - Feature: show ordered and formated output of state apply results
 - fix defining a schedule for repo-sync (bsc#1100793)
 - Drop removed network interfaces on hardware profile update (bsc#1099781)
