@@ -12,7 +12,7 @@ Feature: Main landing page options and preferences
     Given I am not authorized
     When I go to the home page
     And I follow "About"
-    Then I should see a "About SUSE Manager" text
+    Then I should see a "About $PRODUCT" text
 
   Scenario: Access the Copyright Notice
     Given I am not authorized
@@ -25,7 +25,7 @@ Feature: Main landing page options and preferences
     When I go to the home page
     And I follow "Copyright Notice"
     And I follow "SUSE MANAGER LICENSE AGREEMENT"
-    Then I should see a "SUSE Manager License Agreement" text
+    Then I should see a "$PRODUCT License Agreement" text
 
   Scenario: Log into SUSE Manager
     Given I am not authorized

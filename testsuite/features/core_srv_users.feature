@@ -70,7 +70,7 @@ Feature: Manage users
     And I check "role_config_admin"
     And I click on "Update"
     Then the "role_satellite_admin" checkbox should be disabled
-    And I should see a "SUSE Manager Administrator" text
+    And I should see a "$PRODUCT Administrator" text
     And I should see "role_org_admin" as checked
     And I should see a "Organization Administrator" text
     And the "role_system_group_admin" checkbox should be disabled
@@ -133,7 +133,7 @@ Feature: Manage users
     And I follow "user1"
     Then I should see a "Reactivate User" link
     When I follow "Reactivate User"
-    Then I should see a "This action will allow this user to access SUSE Manager. This user will retain all permissions, roles, and data that he or she had before being deactivated." text
+    Then I should see a "This action will allow this user to access $PRODUCT. This user will retain all permissions, roles, and data that he or she had before being deactivated." text
     When I click on "Reactivate User"
     Then I should see a "Active Users" text
     And I should see a "user1" link
