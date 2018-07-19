@@ -32,3 +32,13 @@ def count_table_items
   raise unless (items_label = find(:xpath, items_label_xpath).text)
   items_label.split('of ')[1]
 end
+
+# Define the product name, depending on the environment variable
+# PRODUCT
+def product
+  if ENV['PRODUCT'] == 'Uyuni' || ENV['PRODUCT'] == 'SUSE Manager'
+    ENV['PRODUCT']
+  else
+    'SUSE Manager'
+  end
+end
