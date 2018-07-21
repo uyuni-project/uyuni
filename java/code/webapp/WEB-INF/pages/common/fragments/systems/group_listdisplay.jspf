@@ -7,8 +7,12 @@
 
 
 <div class="spacewalk-section-toolbar">
-    <input class="btn btn-default" type="submit" name="union" value="<bean:message key="grouplist.jsp.union"/>" />
-    <input class="btn btn-default" type="submit" name="intersection" value="<bean:message key="grouplist.jsp.intersection"/>" />
+    <html:submit styleClass="btn btn-default" property="dispatch">
+        <bean:message key="grouplist.jsp.union"/>
+    </html:submit>
+    <html:submit styleClass="btn btn-default" property="dispatch">
+        <bean:message key="grouplist.jsp.intersection"/>
+    </html:submit>
 </div>
 
 <rhn:submitted/>
