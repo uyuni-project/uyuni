@@ -222,8 +222,8 @@ class FileProcessor:
                 else:
                     raise e
         else:
-            result = ''.join(diff(temp_file, path,
-                    display_diff=get_config('display_diff'), is_binary=file_struct['is_binary']))
+            result = ''.join(diff(temp_file, path, display_diff=get_config('display_diff'),
+                is_binary=False if file_struct['is_binary'] == 'N' else True))
 
         if temp_file:
             os.unlink(temp_file)
