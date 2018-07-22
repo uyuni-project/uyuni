@@ -1,3 +1,5 @@
+- remove not needed build dependency to cobbler (bsc#1102137)
+
 -------------------------------------------------------------------
 Mon Mar 05 08:48:15 CET 2018 - jgonzalez@suse.com
 
