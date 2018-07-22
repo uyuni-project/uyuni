@@ -370,7 +370,6 @@ Requires: %{m2crypto}
 %if 0%{?fedora} || 0%{?rhel} > 5
 BuildRequires: python-requests
 %endif
-BuildRequires: spacewalk-config
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
 Provides: spacewalk-backend-satellite-tools = %{version}-%{release}
@@ -852,6 +851,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %doc README.ULN
+%attr(0750,root,%{apache_group}) %dir %{rhnconf}
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %config(noreplace) %{rhnconf}/signing.conf
