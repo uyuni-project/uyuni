@@ -1,3 +1,4 @@
+- sudoers file is now in /etc/sudoers.d/spacewalk (bsc#1099517)
 -------------------------------------------------------------------
 Tue Jun 05 10:11:13 CEST 2018 - jgonzalez@suse.com
 
