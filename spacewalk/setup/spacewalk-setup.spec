@@ -198,6 +198,14 @@ if [ -d /var/cache/salt/master/thin ]; then
   # clean the thin cache
   rm -rf /var/cache/salt/master/thin
 fi
+
+# sudoers file is now in /etc/sudoers.d/spacewalk
+if [ -f /etc/sudoers.d/spacewalk -a -f /etc/sudoers.d/susemanager ]; then
+    # do not fail if one is just a link to the other one
+    cp /etc/sudoers.d/spacewalk /etc/sudoers.d/spacewalk.tmp
+    rm -f /etc/sudoers.d/spacewalk /etc/sudoers.d/susemanager
+    mv /etc/sudoers.d/spacewalk.tmp /etc/sudoers.d/spacewalk
+fi
 exit 0
 
 %check
