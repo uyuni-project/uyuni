@@ -400,13 +400,13 @@ end
 # Perform actions
 When(/^I reject "(.*?)" from the Pending section$/) do |minion|
   node = get_target(minion)
-  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'reject']"
+  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'Reject']"
   raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
   node = get_target(minion)
-  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'delete']"
+  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'Delete']"
   raise unless find(:xpath, xpath_query).click
 end
 
@@ -419,7 +419,7 @@ end
 
 When(/^I accept "(.*?)" key$/) do |minion|
   node = get_target(minion)
-  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'accept']"
+  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'Accept']"
   raise unless find(:xpath, xpath_query).click
 end
 
