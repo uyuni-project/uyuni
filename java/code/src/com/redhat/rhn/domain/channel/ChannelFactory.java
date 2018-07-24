@@ -26,8 +26,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +73,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static Channel lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        Channel c = (Channel) session.get(Channel.class, id);
+        Channel c = session.get(Channel.class, id);
         return c;
     }
 
@@ -1245,7 +1246,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param eids List of eids to add mappings for
      * @param cid channel id we're cloning into
      */
-    public static void addClonedErrataToChannel(List<Long> eids, Long cid) {
+    public static void addClonedErrataToChannel(Set<Long> eids, Long cid) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
                 "add_cloned_erratum_to_channel");
         Map<String, Object> params = new HashMap<String, Object>();
