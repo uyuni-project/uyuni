@@ -237,7 +237,7 @@ public class SaltServerActionService {
             ImageInspectActionDetails details = iia.getDetails();
             ImageStore store = ImageStoreFactory.lookupById(
                     details.getImageStoreId()).get();
-                return imageInspectAction(minions, details, store);
+            return imageInspectAction(minions, details, store);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
