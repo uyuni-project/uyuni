@@ -162,7 +162,7 @@ fi
 
 if [ ! -d /srv/www/os-images ]; then
   mkdir -p /srv/www/os-images
-  chown -R salt:susemanager /srv/www/os-images
+  chown salt:susemanager /srv/www/os-images
   chmod g+w /srv/www/os-images
 fi
 

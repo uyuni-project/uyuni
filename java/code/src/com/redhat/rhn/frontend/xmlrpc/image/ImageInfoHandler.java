@@ -320,7 +320,7 @@ public class ImageInfoHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
         Optional<ImageStoreType> imageStoreType = ImageStoreFactory.lookupStoreTypeByLabel(storeTypeLabel);
-        imageStoreType.ifPresent(storeType -> {
+        Server server = imageStoreType.map(storeType -> {
             if (storeType.equals(ImageStoreFactory.TYPE_REGISTRY)) {
                 if (!buildHost.hasContainerBuildHostEntitlement()) {
                     throw new NoSuchSystemException(
@@ -333,8 +333,8 @@ public class ImageInfoHandler extends BaseHandler {
                             buildHost.getHostname() + " is not a valid OS image buildhost");
                 }
             }
-        });
-
-        return buildHost;
+            return buildHost;
+        }).orElseThrow(NoSuchSystemException::new);
+        return server;
     }
 }
