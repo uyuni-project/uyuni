@@ -221,6 +221,12 @@
           <context context-type="sourcefile">Any page with required posix name fields</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="errors.config_channel_label">
+        <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Any page with configuration channel label field</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="errors.minsize">
         <source>{0} cannot be less than {1}.</source>
         <context-group name="ctx">
