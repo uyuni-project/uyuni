@@ -415,6 +415,31 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    public void testCloneChannelErrata() throws Exception {
+        Channel original = ChannelFactoryTest.createTestChannel(user);
+        final Errata errata1 =
+                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        final Errata errata2 =
+                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        final Errata errata3 =
+                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+
+        original.addErrata(errata1);
+        original.addErrata(errata2);
+        original.addErrata(errata3);
+
+        // clone it
+        Channel cloned = ChannelFactoryTest.createTestClonedChannel(original, user);
+        cloned.addErrata(errata1);
+        cloned.addErrata(errata3);
+
+        List<ErrataOverview> toClone = ErrataFactory
+                .relevantToOneChannelButNotAnother(original.getId(), cloned.getId());
+        Set<Long> eids = ErrataManager.cloneChannelErrata(toClone, cloned.getId(), user);
+        assertTrue(eids.size() > 0);
+        assertTrue(new HashSet<Long>(eids).size() == eids.size());
+    }
+
     /**
      * Tests applyErrata(), note that the onlyRelevant flag is always set in
      * this case. {@link SystemHandlerTest#testApplyIrrelevantErrata} covers the
