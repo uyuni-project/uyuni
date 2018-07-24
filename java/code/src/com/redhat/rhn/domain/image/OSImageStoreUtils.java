@@ -14,11 +14,8 @@
  */
 package com.redhat.rhn.domain.image;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.org.Org;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 
 /**
  * Utils related to OS Image Store paths and URIs
@@ -56,12 +53,7 @@ public class OSImageStoreUtils {
      * @return the full URI
      */
     public static String getOSImageStoreURI() {
-        String suseManagerHostname = "<suse-manager>";
-        try {
-            suseManagerHostname = InetAddress.getLocalHost().getCanonicalHostName();
-        }
-        catch (UnknownHostException ignored) { }
-
+        String suseManagerHostname = ConfigDefaults.get().getHostname();
         return "https://" + suseManagerHostname + "/" + osImageWWWDirectory + "/";
     }
 

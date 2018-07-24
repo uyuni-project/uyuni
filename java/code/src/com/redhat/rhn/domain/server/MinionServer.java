@@ -135,7 +135,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     @Override
     public boolean doesOsSupportsOSImageBuilding() {
-        return !isSLES11Or10();
+        return !isSLES11Or10() && !ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
     }
 
     /**
@@ -158,7 +158,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     private boolean isSLES11Or10() {
         return ServerConstants.SLES.equals(getOs()) &&
-               (getRelease().startsWith("11") || getRelease().startsWith("10"));
+                (getRelease().startsWith("11") || getRelease().startsWith("10"));
     }
 
     /**
