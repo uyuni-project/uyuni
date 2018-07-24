@@ -14,20 +14,6 @@
  */
 package com.redhat.rhn.domain.channel;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -40,10 +26,24 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-
-import org.hibernate.criterion.MatchMode;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -74,7 +74,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static Channel lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (Channel) session.get(Channel.class, id);
+        return session.get(Channel.class, id);
     }
 
     /**
@@ -1235,7 +1235,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param eids List of eids to add mappings for
      * @param cid channel id we're cloning into
      */
-    public static void addClonedErrataToChannel(List<Long> eids, Long cid) {
+    public static void addClonedErrataToChannel(Set<Long> eids, Long cid) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
                 "add_cloned_erratum_to_channel");
         Map<String, Object> params = new HashMap<String, Object>();
