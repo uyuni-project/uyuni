@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 25 09:36:42 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.78.10-1
 - Fix: errata id should be unique (bsc#1089662)
 - Fix race condition when applying patches to systems (bsc#1097250)
 - improve cve-server-channels Taskomatic task's performance (bsc#1094524)
