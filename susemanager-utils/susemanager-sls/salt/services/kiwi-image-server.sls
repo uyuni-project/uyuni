@@ -14,7 +14,6 @@ mgr_install_kiwi:
 mgr_kiwi_build_tools:
   pkg.installed:
     - pkgs:
-      - kiwi-desc-saltboot
       - git-core
 
 mgr_kiwi_dir_created:
