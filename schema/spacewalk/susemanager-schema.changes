@@ -1,3 +1,4 @@
+- Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - copy missing action-chain schema migration to correct directory
   (bsc#1100760)
 - Fix truncated result message of server actions (bsc#1039043)

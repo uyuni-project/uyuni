@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 c345f5fc0d274a8fac75ed9f18950affdb3b2e02
+-- oracle equivalent source sha1 a1ca8beb03b7c9a673ebf63492f2bb2a74e62b39
 
 DROP INDEX IF EXISTS suse_imgstore_label_uq;
 

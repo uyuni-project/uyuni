@@ -1,3 +1,4 @@
+- Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - Use custom Salt capabilities to prevent breaking backward compatibility (bsc#1096514)
 - Update profileupdate.sls to report all versions installed (bsc#1089526)
 - Do not install 'python-salt' on container build hosts with older Salt versions
@@ -43,7 +44,6 @@ Wed Apr 25 12:13:25 CEST 2018 - jgonzalez@suse.com
 Mon Apr 23 09:26:09 CEST 2018 - jgonzalez@suse.com
 
 - version 3.2.9-1
-- Add Kiwi image build states from SMR project
 - Enqueue states applied from 'mgractionchains' to avoid failures when
   other states are already running at that time (bsc#1090502)
 

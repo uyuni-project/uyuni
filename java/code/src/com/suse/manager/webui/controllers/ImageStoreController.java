@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.errors.NotFoundException;
-import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
+import com.suse.manager.webui.utils.gson.ImageStoreCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
 
