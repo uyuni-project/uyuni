@@ -1,3 +1,5 @@
+- Add sp migration dry runs to the daily status report (bsc#1083094)
+
 -------------------------------------------------------------------
 Fri Oct 05 16:35:25 CEST 2018 - jgonzalez@suse.com
 
