@@ -113,10 +113,7 @@ public class ImageStoreHandler extends BaseHandler {
      */
     public List<ImageStore> listImageStores(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
-        // Only list 'registry' stores
-        return ImageStoreFactory.listImageStores(loggedInUser.getOrg()).stream()
-                .filter(s -> s.getStoreType().equals(ImageStoreFactory.TYPE_REGISTRY))
-                .collect(Collectors.toList());
+        return ImageStoreFactory.listImageStores(loggedInUser.getOrg()).stream().collect(Collectors.toList());
     }
 
     /**
