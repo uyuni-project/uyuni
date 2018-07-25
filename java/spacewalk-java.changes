@@ -1,3 +1,5 @@
+- Fix missing acl to toggle notifications in user prefs in salt clients (bsc#1100131)
+
 -------------------------------------------------------------------
 Wed Jul 25 09:36:42 CEST 2018 - jgonzalez@suse.com
 
