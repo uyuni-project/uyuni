@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -142,17 +143,16 @@ public class ImageProfileHandler extends BaseHandler {
         if (!listImageProfileTypes(loggedInUser).contains(type)) {
             throw new InvalidParameterException("Type does not exist.");
         }
-        ActivationKey ak = null;
+        Optional<ActivationKey> ak = Optional.empty();
         if (StringUtils.isNotEmpty(activationKey)) {
-            ak = ActivationKeyFactory.lookupByKey(activationKey);
-            if (ak == null) {
+            ak = Optional.of(ActivationKeyFactory.lookupByKey(activationKey));
+            if (!ak.isPresent()) {
                 throw new InvalidParameterException("Activation key does not exist.");
             }
         }
         else if (ImageProfile.TYPE_KIWI.equals(type)) {
             throw new InvalidParameterException("Activation key cannot be empty for Kiwi profiles.");
         }
-
 
         ImageStore store;
         try {
@@ -187,7 +187,7 @@ public class ImageProfileHandler extends BaseHandler {
         profile.setLabel(label);
         profile.setTargetStore(store);
         profile.setOrg(loggedInUser.getOrg());
-        profile.setToken(ak != null ? ak.getToken() : null);
+        ak.ifPresent(akey -> profile.setToken(akey.getToken()));
 
         ImageProfileFactory.save(profile);
 
@@ -262,15 +262,15 @@ public class ImageProfileHandler extends BaseHandler {
             }
 
             switch (profile.getImageType()) {
-            case ImageProfile.TYPE_DOCKERFILE:
-                profile.asDockerfileProfile().get().setPath(path);
-                break;
-            case ImageProfile.TYPE_KIWI:
-                profile.asKiwiProfile().get().setPath(path);
-                break;
-            default:
-                throw new InvalidParameterException("The type " + profile.getImageType() +
-                        " doesn't support 'Path' property");
+                case ImageProfile.TYPE_DOCKERFILE:
+                    profile.asDockerfileProfile().get().setPath(path);
+                    break;
+                case ImageProfile.TYPE_KIWI:
+                    profile.asKiwiProfile().get().setPath(path);
+                    break;
+                default:
+                    throw new InvalidParameterException("The type " + profile.getImageType() +
+                            " doesn't support 'Path' property");
             }
         }
         if (details.containsKey("activationKey")) {
