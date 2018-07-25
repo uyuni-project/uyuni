@@ -9,9 +9,6 @@ mgr_install_kiwi:
   pkg.installed:
     - pkgs:
       - kiwi
-{%- if pillar.get('use_build') %}
-      - build
-{%- endif %}
     - order: first
 
 mgr_kiwi_build_tools:
@@ -19,39 +16,43 @@ mgr_kiwi_build_tools:
     - pkgs:
       - kiwi-desc-saltboot
       - git-core
-    - order: last
 
-{{ kiwi_dir }}:
+mgr_kiwi_dir_created:
   file.directory:
+    - name: {{ kiwi_dir }}
     - user: root
     - group: root
     - dir_mode: 755
 
 # repo for common kiwi build needs - mainly RPM with SUSE Manager certificate
-{{ kiwi_dir }}/repo:
+mgr_kiwi_dir_repo_created:
   file.directory:
+    - name: {{ kiwi_dir }}/repo
     - user: root
     - group: root
     - dir_mode: 755
 
-{{ kiwi_dir }}/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm:
+mgr_osimage_cert_deployed:
   file.managed:
+    - name: {{ kiwi_dir }}/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm
     - source: salt://images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm
 
-sshd:
+mgr_sshd_installed_enabled:
   pkg.installed:
     - name: openssh
   service.running:
+    - name: sshd
     - enable: True
 
-ssh_public_key:
+mgr_sshd_public_key_copied:
   file.append:
     - name: /root/.ssh/authorized_keys
     - source: salt://salt_ssh/mgr_ssh_id.pub
     - makedirs: True
     - require:
-      - pkg: sshd
-sync:
+      - pkg: mgr_sshd_installed_enabled
+
+mgr_saltutil_synced:
   module.run:
     - name: saltutil.sync_all
 

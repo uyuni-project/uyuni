@@ -39,7 +39,7 @@ CREATE TABLE suseImageStore
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX suse_imgstore_label_uq
+CREATE UNIQUE INDEX suse_imgstore_oid_label_uq
     ON suseImageStore (org_id, label)
         TABLESPACE [[2m_tbs]];
 

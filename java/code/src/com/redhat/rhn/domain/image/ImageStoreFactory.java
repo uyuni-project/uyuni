@@ -35,8 +35,8 @@ import javax.persistence.criteria.Root;
  */
 public class ImageStoreFactory extends HibernateFactory {
 
-    public static final ImageStoreType TYPE_OS_IMAGE = ImageStoreFactory.lookupStoreTypeByLabel("os_image").get();
-    public static final ImageStoreType TYPE_REGISTRY = ImageStoreFactory.lookupStoreTypeByLabel("registry").get();
+    public static final ImageStoreType TYPE_OS_IMAGE = lookupStoreTypeByLabel("os_image").get();
+    public static final ImageStoreType TYPE_REGISTRY = lookupStoreTypeByLabel("registry").get();
 
     private static ImageStoreFactory instance = new ImageStoreFactory();
     private static Logger log = Logger.getLogger(ImageStoreFactory.class);

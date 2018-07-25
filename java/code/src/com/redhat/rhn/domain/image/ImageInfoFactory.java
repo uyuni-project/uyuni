@@ -102,10 +102,6 @@ public class ImageInfoFactory extends HibernateFactory {
             throw new IllegalArgumentException("Server is not a build host.");
         }
 
-        // LOG.debug("Schedule image.build for " + server.getName() + ": " +
-        // imageProfile.getLabel() + " " +
-        // imageBuildEvent.getTag());
-
         if (profile.asDockerfileProfile().isPresent()) {
             version = version.isEmpty() ? "latest" : version;
         }

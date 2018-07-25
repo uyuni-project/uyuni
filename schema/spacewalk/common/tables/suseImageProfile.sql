@@ -39,7 +39,7 @@ CREATE TABLE suseImageProfile
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX suse_imgprof_label_uq
+CREATE UNIQUE INDEX suse_imgprof_oid_label_uq
     ON suseImageProfile (org_id, label)
         TABLESPACE [[2m_tbs]];
 

@@ -179,18 +179,18 @@ public abstract class ImageProfile extends BaseDomainHelper {
     }
 
     /**
-     * Converts this profile to a DockerfileProfile if it is one.
+     * Always returns an empty <code>Optional</code>. @see com.redhat.rhn.domain.image.DockerfileProfile
      *
-     * @return optional of DockerfileProfile
+     * @return an empty <code>Optional</code>
      */
     public Optional<DockerfileProfile> asDockerfileProfile() {
         return Optional.empty();
     }
 
     /**
-     * Converts this profile to a KiwiProfile if it is one.
+     * Always returns an empty <code>Optional</code>. @see com.redhat.rhn.domain.image.KiwiProfile
      *
-     * @return optional of KiwiProfile
+     * @return an empty <code>Optional</code>
      */
     public Optional<KiwiProfile> asKiwiProfile() {
         return Optional.empty();

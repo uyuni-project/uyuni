@@ -17,11 +17,11 @@ package com.redhat.rhn.domain.image;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Optional;
 
 /**
  * Domain class for Kiwi image profiles
@@ -73,9 +73,9 @@ public class KiwiProfile extends ImageProfile {
     }
 
     /**
-     * Converts this profile to a KiwiProfile if it is one.
+     * Converts this profile to a <code>KiwiProfile</code> if it is one.
      *
-     * @return optional of KiwiProfile
+     * @return optional of <code>KiwiProfile</code>
      */
     @Override
     public Optional<KiwiProfile> asKiwiProfile() {

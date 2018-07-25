@@ -5,11 +5,6 @@
 {%- set bundle_dir = root_dir + '/images/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
 
-{%- if pillar.get('use_build') %}
-#mgr_buildimage_build:
-
-{%- else %}
-
 # the goal is to collect all information required for
 # saltboot image pillar
 
@@ -24,5 +19,3 @@ mgr_kiwi_cleanup:
     - name: "rm -rf '{{ root_dir }}'"
     - require:
       - module: mgr_inspect_kiwi_image
-
-{%- endif %}
