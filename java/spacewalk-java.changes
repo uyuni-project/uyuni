@@ -1,3 +1,4 @@
+- Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - Apply State Result - use different color for applied changes
 - Fix missing acl to toggle notifications in user prefs in salt clients (bsc#1100131)
 

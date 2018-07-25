@@ -127,7 +127,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      * Return <code>true</code> if OS on this system supports OS Image building,
      * <code>false</code> otherwise.
      * <p>
-     * Note: For SLES, we are only checking if it's not 10 or 11.
+     * Note: For SLES, we are only checking if it's not 10 nor 11 nor 15.
      * Older than SLES 10 are not being checked.
      * </p>
      *
@@ -142,7 +142,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      * Return <code>true</code> if OS on this system supports Containerization,
      * <code>false</code> otherwise.
      * <p>
-     * Note: For SLES, we are only checking if it's not 10 or 11.
+     * Note: For SLES, we are only checking if it's not 10 nor 11.
      * Older than SLES 10 are not being checked.
      * </p>
      *
