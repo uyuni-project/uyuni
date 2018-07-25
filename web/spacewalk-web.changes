@@ -1,3 +1,5 @@
+- Refactor the fetching and cache the child channels and mandatory channels in System Details change channels page
+
 -------------------------------------------------------------------
 Wed Jul 25 09:38:43 CEST 2018 - jgonzalez@suse.com
 
