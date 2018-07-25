@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -67,12 +68,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -113,6 +108,11 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -911,7 +911,8 @@ public class SaltUtils {
         // Pretty-print the whole return map (or whatever fits into 1024 characters)
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        serverAction.setResultMsg(StringUtils.left(gson.toJson(returnObject), 1024));
+        String json = gson.toJson(returnObject);
+        serverAction.setResultMsg(json);
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             Optional<ImageProfile> profileOpt =
@@ -920,8 +921,9 @@ public class SaltUtils {
             profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     // Download the built Kiwi image to SUSE Manager server
-                    OSImageInspectSlsResult.Bundle bundleInfo = Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                            .getKiwiBuildInfo().getChanges().getRet().getBundle();
+                    OSImageInspectSlsResult.Bundle bundleInfo =
+                            Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
+                                    .getKiwiBuildInfo().getChanges().getRet().getBundle();
                     infoOpt.ifPresent(info -> info.setChecksum(
                             ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
                     MgrUtilRunner.ExecResult collectResult = saltService
@@ -962,11 +964,6 @@ public class SaltUtils {
                 ImageInfoFactory.save(info);
             });
         }
-        // Pretty-print the whole return map (or whatever fits into 1024 characters)
-        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(returnObject);
-        serverAction.setResultMsg(json);
     }
 
     private void handleImageInspectData(ServerAction serverAction,
@@ -1058,31 +1055,38 @@ public class SaltUtils {
                         result.getDockerSlsBuild().getChanges().getRet();
 
                 Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                .map(saltPkgs -> saltPkgs.entrySet().stream()
-                        .map(entry -> createImagePackageFromSalt(entry.getKey(),
-                                entry.getValue(), imageInfo))
-                        .collect(Collectors.toSet())
-                        );
+                        .map(saltPkgs -> saltPkgs.entrySet().stream()
+                                .flatMap(entry -> Opt.stream(entry.getValue().left())
+                                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
+                                .collect(Collectors.toSet()));
+
+                Optional.of(ret.getInfoInstalled().getChanges().getRet())
+                        .map(saltPkgs -> saltPkgs.entrySet().stream()
+                                .flatMap(entry -> Opt.stream(entry.getValue().right())
+                                        .flatMap(infoList -> infoList.stream())
+                                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
+                                .collect(Collectors.toSet()));
+
                 Optional.ofNullable(ret.getListProducts())
-                .map(products -> products.getChanges().getRet())
-                .map(SaltUtils::getInstalledProducts)
-                .ifPresent(imageInfo::setInstalledProducts);
+                        .map(products -> products.getChanges().getRet())
+                        .map(SaltUtils::getInstalledProducts)
+                        .ifPresent(imageInfo::setInstalledProducts);
 
                 Optional<String> rhelReleaseFile =
                         Optional.ofNullable(ret.getRhelReleaseFile())
-                        .map(StateApplyResult::getChanges)
-                        .filter(res -> res.getStdout() != null)
-                        .map(CmdExecCodeAll::getStdout);
+                                .map(StateApplyResult::getChanges)
+                                .filter(res -> res.getStdout() != null)
+                                .map(CmdExecCodeAll::getStdout);
                 Optional<String> centosReleaseFile =
                         Optional.ofNullable(ret.getCentosReleaseFile())
-                        .map(StateApplyResult::getChanges)
-                        .filter(res -> res.getStdout() != null)
-                        .map(CmdExecCodeAll::getStdout);
+                                .map(StateApplyResult::getChanges)
+                                .filter(res -> res.getStdout() != null)
+                                .map(CmdExecCodeAll::getStdout);
                 Optional<String> resReleasePkg =
                         Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
-                        .map(StateApplyResult::getChanges)
-                        .filter(res -> res.getStdout() != null)
-                        .map(CmdExecCodeAll::getStdout);
+                                .map(StateApplyResult::getChanges)
+                                .filter(res -> res.getStdout() != null)
+                                .map(CmdExecCodeAll::getStdout);
                 if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                         resReleasePkg.isPresent()) {
                     Set<InstalledProduct> products = getInstalledProductsForRhel(

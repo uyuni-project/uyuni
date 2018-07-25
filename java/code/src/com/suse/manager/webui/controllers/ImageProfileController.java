@@ -42,6 +42,9 @@ import com.suse.manager.webui.utils.gson.ImageProfileJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
@@ -54,7 +57,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
