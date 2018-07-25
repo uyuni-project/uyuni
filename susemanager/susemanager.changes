@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 25 09:31:55 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.11-1
 - fix mgr-create-bootstrap-repo with custom channels (bsc#1099934)
 - add package python-pyudev for bootstrapping (bsc#1099311)
 - Feat: allow cleanup of bootstrap repo (bsc#1096204)
