@@ -55,6 +55,10 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     this.props.onDateTimeChanged(date);
   }
 
+  onSelectEarliest = () => {
+    this.onDateTimeChanged(this.state.earliest);
+  }
+
   onActionChainChanged = (selectedItem: ActionChain) => {
     let newActionChain: ActionChain;
 
