@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 25 09:30:31 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.5.4-1
 - fix ordering of channel data (bsc#1083294)
 - add RHEL 6.10 channel definitions
 
