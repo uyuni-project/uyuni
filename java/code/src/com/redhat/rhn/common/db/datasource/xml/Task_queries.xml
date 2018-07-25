@@ -130,6 +130,13 @@ SELECT AT.name as type,
     AND SA.action_id = A.id
     AND A.action_type = AT.id
 GROUP BY AT.name, AStat.name, E.advisory_name, E.synopsis
+    UNION
+    SELECT ra.name, ras.name,  count(*), NULL, NULL FROM rhnactionstatus ras
+    JOIN rhnserveraction rsa on ras.id = rsa.status
+    JOIN rhnaction ra on rsa.action_id = ra.id
+    WHERE (ra.name LIKE '%(Dry Run)' OR ra.name LIKE '%in test-mode')
+    AND date_diff_in_days(rsa.modified, current_timestamp) &lt; 1
+    GROUP BY ras.name, ra.name;
   </query>
 </mode>
 

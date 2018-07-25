@@ -315,6 +315,12 @@ public class DailySummary extends RhnJavaJob {
             }
             else {
                 if (!nonErrataActions.containsKey(am.getType())) {
+                    if (am.getType().equals("Service Pack Migration")) {
+                        am.setType("Service Pack Migration (Total)");
+                    }
+                    if (am.getType().equals("Apply states")) {
+                        am.setType("Apply states (total)");
+                    }
                     nonErrataActions.put(am.getType(), new HashMap());
                     if (am.getType().length() + HEADER_SPACER > longestActionLength) {
                         longestActionLength = am.getType().length() + HEADER_SPACER;
