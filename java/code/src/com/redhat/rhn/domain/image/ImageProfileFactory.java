@@ -160,12 +160,12 @@ public class ImageProfileFactory extends HibernateFactory {
      */
     public static ImageStoreType getStoreTypeForProfile(ImageProfile profile) {
         switch (profile.getImageType()) {
-        case ImageProfile.TYPE_DOCKERFILE:
-            return ImageStoreFactory.TYPE_REGISTRY;
-        case ImageProfile.TYPE_KIWI:
-            return ImageStoreFactory.TYPE_OS_IMAGE;
-        default:
-            throw new IllegalArgumentException("Invalid type for image profile: " + profile.getImageType());
+            case ImageProfile.TYPE_DOCKERFILE:
+                return ImageStoreFactory.TYPE_REGISTRY;
+            case ImageProfile.TYPE_KIWI:
+                return ImageStoreFactory.TYPE_OS_IMAGE;
+            default:
+                throw new IllegalArgumentException("Invalid type for image profile: " + profile.getImageType());
         }
     }
 

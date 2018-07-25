@@ -553,18 +553,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Return <code>true</code> if OS on this system supports Containerization,
-     * <code>false</code> otherwise.
-     * @return <code>true</code> if OS supports Containerization
+     * Disabled for non-minions servers. @see com.redhat.rhn.domain.server.MinionServer
+     * @return <code>false</code>.
      */
     public boolean doesOsSupportsContainerization() {
         return false;
     }
 
     /**
-     * Return <code>true</code> if OS on this system supports OS Image building,
-     * <code>false</code> otherwise.
-     * @return <code>true</code> if OS supports OS Image building
+     * Disabled for non-minions servers. @see com.redhat.rhn.domain.server.MinionServer
+     * @return <code>false</code>.
      */
     public boolean doesOsSupportsOSImageBuilding() {
         return false;

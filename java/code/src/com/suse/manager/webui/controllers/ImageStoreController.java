@@ -30,6 +30,9 @@ import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
@@ -40,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -107,7 +109,7 @@ public class ImageStoreController {
             res.redirect("/rhn/manager/cm/imagestores/create");
         }
         else if (store.get().getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
-            log.warn("Updating OS Image stores are not allowed.");
+            log.warn("Updating OS Image store is not allowed.");
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 
@@ -288,7 +290,7 @@ public class ImageStoreController {
         JsonResult result = store.map(s -> {
 
             if (s.getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
-                log.warn("Updating OS Image stores are not allowed.");
+                log.warn("Updating OS Image store is not allowed.");
                 throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
             }
 
@@ -335,7 +337,7 @@ public class ImageStoreController {
         }
 
         if (storeType.get().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
-            log.warn("Creating OS Image stores are not allowed.");
+            log.warn("Creating OS Image store is not allowed.");
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 

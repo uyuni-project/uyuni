@@ -23,15 +23,6 @@ mgr_buildimage_prepare_source:
     - source: {{ source }}
     - root: {{ root_dir }}
 
-{%- if pillar.get('use_build') %}
-mgr_buildimage_build:
-  cmd.run:
-   - name: "/usr/bin/build {{ kvm }} --dist {{ dist }} --kiwi-parameter \"{{ kiwi_params }}\" --root {{ chroot_dir }} {{ build_repos }} {{ source_dir }}"
-   - require:
-     - mgr_buildimage_prepare_source
-
-{%- else %}
-
 mgr_buildimage_kiwi_prepare:
   cmd.run:
     - name: "kiwi --nocolor --force-new-root --prepare {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params }}"
@@ -70,6 +61,4 @@ mgr_buildimage_info:
       - mgr_buildimage_kiwi_collect_image
 {%- else %}
       - mgr_buildimage_kiwi_bundle
-{%- endif %}
-
 {%- endif %}

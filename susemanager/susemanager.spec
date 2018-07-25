@@ -166,14 +166,6 @@ if [ ! -d /srv/www/os-images ]; then
   chmod g+w /srv/www/os-images
 fi
 
-if [ ! -d /srv/susemanager/pillar_data/images ]; then
-  mkdir -p /srv/susemanager/pillar_data/images
-  chown -R tomcat:susemanager /srv/susemanager/pillar_data
-  chown -R salt:susemanager /srv/susemanager/pillar_data/images
-  chmod g+w /srv/susemanager/pillar_data
-fi
-
-
 %postun
 %{insserv_cleanup}
 

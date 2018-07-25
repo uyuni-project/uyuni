@@ -91,6 +91,13 @@ EOF
     fi
 fi
 
+if [ ! -d /srv/susemanager/pillar_data/images ]; then
+  mkdir -p /srv/susemanager/pillar_data/images
+  chown -R tomcat:susemanager /srv/susemanager/pillar_data
+  chown -R salt:susemanager /srv/susemanager/pillar_data/images
+  chmod g+w /srv/susemanager/pillar_data
+fi
+
 %files
 %defattr(-,root,root)
 %dir /usr/share/susemanager

@@ -75,9 +75,9 @@ public class DockerfileProfile extends ImageProfile {
     }
 
     /**
-     * Converts this profile to a DockerfileProfile if it is one.
+     * Converts this profile to a <code>DockerfileProfile</code> if it is one.
      *
-     * @return optional of DockerfileProfile
+     * @return optional of <code>DockerfileProfile</code>
      */
     @Override
     public Optional<DockerfileProfile> asDockerfileProfile() {
