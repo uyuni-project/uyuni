@@ -48,7 +48,8 @@ type SystemChannelsState = {
   selectedChildrenIds: Map<number, Set<number>>, // base channel id -> set<child channel id>
   availableBase: Array<ChannelDto>,
   // mapping channel ids to their DTOs
-  availableChildren: Map<number, ChannelDto>,
+  availableChildren: Map<number, Map<number, ChannelDto>>,
+  mandatoryChannelsRaw: Object,
   // channel dependencies: which child channels are required by a child channel?
   requiredChannels: Map<number, Set<number>>,
   // channel dependencies: by which child channels is a child channel required?
@@ -69,12 +70,13 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       selectedBase: null,
       selectedChildrenIds: new Map(),
       availableBase: [],
-      availableChildren: new Map(),
+      availableChildren: new Map([[this.getNoBase().id, new Map([])]]),
       requiredChannels: new Map(),
       requiredByChannels: new Map(),
-      assignedChildrenIds : new Set(),
+      assignedChildrenIds: new Set(),
       page: 1,
       scheduled: false,
+      mandatoryChannelsRaw: {[this.getNoBase().id]: []},
       dependencyDataAvailable: false
     };
   }
@@ -90,7 +92,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         this.setState({
           selectedBase: base,
           selectedChildrenIds: new Map([[base.id, new Set(data.data.children.map(c => c.id))]]),
-          assignedChildrenIds : new Set(data.data.children.map(c => c.id))
+          assignedChildrenIds : new Set(data.data.children.map(c => c.id)),
         });
         if (data.data && data.data.base) {
           this.getAccessibleChildren(data.data.base.id);
@@ -107,35 +109,52 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       .catch(this.handleResponseError);
   }
 
-  getAccessibleChildren = (baseId) => {
-    // TODO cache children to avoid repeated calls
-    Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${baseId}/accessible-children`).promise
-      .then((data : JsonResult<Array<ChannelDto>>) => {
-        const availableChildren = new Map(data.data
-          .sort((a, b) => a.name.localeCompare(b.name))
-          .map(channel => [channel.id, channel]));
-        this.setState({
-          // sort child channels by name to have a consistent order in the UI
-          availableChildren: availableChildren
-        });
-        const channelIds : Array<number> = Array.from(availableChildren.keys());
-        channelIds.push(baseId);
-        return Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(channelIds), "application/json").promise;
-      })
-      .then((data : JsonResult<Map<number, Array<number>>>) => {
-        let numericBaseId = Number(baseId)
-        let channelDependencies = ChannelUtils.processChannelDependencies(data.data);
+  getAccessibleChildren = (baseId: number) => {
+    if (!this.state.availableChildren.has(baseId)) {
+      Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${baseId}/accessible-children`).promise
+        .then((data: JsonResult<Array<ChannelDto>>) => {
+          const newChildren = new Map(
+            data.data
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map(channel => [channel.id, channel])
+          );
+          this.state.availableChildren.set(baseId, newChildren);
+          this.setState({
+            availableChildren: this.state.availableChildren,
+          });
+          const channelIds: Array<number> = Array.from(newChildren.keys());
+          channelIds.push(baseId);
+          this.fetchMandatoryChannelsByChannelIds(channelIds);
+        })
+        .catch(this.handleResponseError);
+    } else {
+      const channelIds: Array<number> = Array.from(this.state.availableChildren.get(baseId).keys());
+      channelIds.push(baseId);
+      this.fetchMandatoryChannelsByChannelIds(channelIds);
+    }
+  }
 
-        if (!channelDependencies.selectedChildrenIds) {
-          channelDependencies.selectedChildrenIds = this.state.selectedChildrenIds;
-        }
-        let prevSelectedChildren = this.state.selectedChildrenIds.get(numericBaseId) ? this.state.selectedChildrenIds.get(numericBaseId) : new Set();
-        let newSelectedChildren = new Set([...prevSelectedChildren, ...channelDependencies.requiredChannels.get(numericBaseId)]);
+  fetchMandatoryChannelsByChannelIds(channelIds: Array<number>) {
+    const mandatoryChannelsNotCached = channelIds.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
+    if(mandatoryChannelsNotCached.length > 0) {
+      Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
+        .then((data : JsonResult<Map<number, Array<number>>>) => {
+          const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
+          let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
 
-        this.setState(channelDependencies);
-        this.setState({dependencyDataAvailable: true});
+          this.setState({
+            dependencyDataAvailable: true,
+            mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
+            requiredChannels,
+            requiredByChannels,
+          });
+        })
+        .catch(this.handleResponseError);
+    } else {
+      this.setState({
+        dependencyDataAvailable: true,
       })
-      .catch(this.handleResponseError);
+    }
   }
 
   handleResponseError = (jqXHR, arg = "") => {
@@ -153,12 +172,11 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       selectedBase: baseId > -1 ?
           this.state.availableBase.find(c => c.id == baseId) :
           this.getNoBase(),
-      availableChildren: new Map(),
       selectedChildrenIds: this.state.selectedChildrenIds,
       dependencyDataAvailable: baseId > -1 ? false : true
     });
 
-    this.getAccessibleChildren(event.target.value);
+    this.getAccessibleChildren(Number(event.target.value));
   }
 
   getNoBase =() => {
@@ -170,7 +188,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   selectChildChannel = (childChannelId, select) => {
-    const child : ?ChannelDto = this.state.availableChildren.get(childChannelId);
+    const child : ?ChannelDto = this.getAvailableChildren().get(childChannelId);
     if (child == null || this.state.selectedBase == null) {
       return;
     }
@@ -210,11 +228,19 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   getSelectedChildren = () : ?Array<ChannelDto> => {
     if (this.state.selectedBase && this.state.selectedBase.id) {
       const selectedChildrenIds = this.state.selectedChildrenIds.get(this.state.selectedBase.id);
+      const availableChildren = this.getAvailableChildren();
       return Array.from(selectedChildrenIds)
-        .map(channelId => this.state.availableChildren.get(channelId))
+        .map(channelId => availableChildren.get(channelId))
         .filter(channel => channel !== undefined);
     }
     return null;
+  }
+
+  getAvailableChildren = () => {
+    if (this.state.selectedBase && this.state.selectedBase.id && this.state.availableChildren.has(this.state.selectedBase.id)) {
+      return this.state.availableChildren.get(this.state.selectedBase.id);
+    }
+    return new Map();
   }
 
   areAllMandatoryChildrenSelected = () => {
@@ -232,7 +258,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       selectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, false));
     } else {
       const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id);
-      const unselectedRecommendedChildren = Array.from(this.state.availableChildren.values())
+      const availableChildren = this.getAvailableChildren();
+      const unselectedRecommendedChildren = Array.from(availableChildren.values())
           .filter(channel => channel.recommended && !selectedChildrenIds.includes(channel.id))
       unselectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, true));
     }
@@ -240,7 +267,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   areRecommendedChildrenSelected = () : Boolean => {
     const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id);
-    const recommendedChildren = Array.from(this.state.availableChildren.values()).filter(channel => channel.recommended);
+    const availableChildren = this.getAvailableChildren();
+    const recommendedChildren = Array.from(availableChildren.values()).filter(channel => channel.recommended);
     const selectedRecommendedChildren = recommendedChildren.filter(channel => selectedChildrenIds.includes(channel.id));
     const unselectedRecommendedChildren = recommendedChildren.filter(channel => !selectedChildrenIds.includes(channel.id));
 
@@ -276,9 +304,10 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   dependenciesTooltip = (channelId) => {
+    const availableChildren = this.getAvailableChildren();
     const resolveChannelNames = (channelIds) => {
       return Array.from(channelIds || new Set())
-        .map(channelId => this.state.availableChildren.get(channelId))
+        .map(channelId => availableChildren.get(channelId))
         .filter(channel => channel != null)
         .map(channel => channel.name);
     }
@@ -345,12 +374,13 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       }
     }
 
-    if (this.state.availableChildren && this.state.dependencyDataAvailable == true) {
+    const availableChildren = this.getAvailableChildren();
+    if (availableChildren && this.state.dependencyDataAvailable == true) {
       let selectedChildrenList = this.getSelectedChildren();
       let mandatoryChannels = this.state.requiredChannels.get(this.state.selectedBase.id);
       let alreadyAssignedChildrenIds = this.state.assignedChildrenIds;
 
-      childChannels = Array.from(this.state.availableChildren.values()).map(c => <div className="checkbox">
+      childChannels = Array.from(availableChildren.values()).map(c => <div className="checkbox">
         <input type="checkbox" value={c.id} id={"child_" + c.id}
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id) }
           disabled={!c.subscribable || (mandatoryChannels.has(c.id) && alreadyAssignedChildrenIds.has(c.id)) }
@@ -407,7 +437,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                         <div style={{"float": "right"}}>
                           <Toggler.WithRecommended
                              enabled={this.areRecommendedChildrenSelected()}
-                             muted={!Array.from(this.state.availableChildren.values()).some(channel => channel.recommended)}
+                             muted={!Array.from(availableChildren.values()).some(channel => channel.recommended)}
                              handler={() => this.toggleRecommended()} />
                         </div>
                       </div>
@@ -464,6 +494,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   renderConfirmPage = () => {
     const selectedChildrenList = this.getSelectedChildren();
+    const availableChildren = this.getAvailableChildren();
+
     return (
       <BootstrapPanel
         title={t("Confirm Software Channel Change")}
@@ -494,7 +526,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                  <hr/>
             </div>
             <div>{
-              this.state.availableChildren && Array.from(this.state.availableChildren.values()).map(c => <div className="checkbox">
+              availableChildren && Array.from(availableChildren.values()).map(c => <div className="checkbox">
                   <input type="checkbox" value={c.id}
                     checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
                     disabled={true}/>
@@ -502,7 +534,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                   <ChannelAnchorLink id={c.id}/>
               </div>)
             }
-            {  this.state.availableChildren.length == 0 && this.state.selectedBase && this.state.selectedBase.id > -1 ?
+            {  availableChildren.length == 0 && this.state.selectedBase && this.state.selectedBase.id > -1 ?
                 <div><i className="fa fa-exclamation-triangle fa-1-5x" title={t("No child channels available.")}/>
                     {t("No child channels available.")}</div> :
                 undefined }
