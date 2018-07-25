@@ -1,5 +1,5 @@
--- oracle equivalent source sha1 875bc633871ac1804746e207d2369187cf157b41
+-- oracle equivalent source sha1 48da9fbf9bc87d2e76bec988520167c547510589
 
-ALTER TABLE suseImageInfo ADD image_type VARCHAR(32) DEFAULT 'dockerfile';
+ALTER TABLE suseImageInfo ADD image_type VARCHAR(32) NOT NULL DEFAULT 'dockerfile';
 ALTER TABLE suseImageInfo ALTER COLUMN image_type DROP DEFAULT;
 
