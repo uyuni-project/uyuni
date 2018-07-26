@@ -295,8 +295,6 @@ public class ConfigChannelSaltManager {
             filePath = filePath.getRoot().relativize(filePath);
         }
 
-        String saltUri = SALT_FS_PREFIX + getChannelRelativePath(file.getConfigChannel())
-                .resolve(filePath);
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
         fileParams.add(singletonMap("source", getSaltUriForConfigFile(file)));
