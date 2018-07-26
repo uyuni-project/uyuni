@@ -180,7 +180,7 @@ public class ImageInfoHandler extends BaseHandler {
                 ImageProfileFactory.lookupByLabelAndOrg(profileLabel, loggedInUser.getOrg())
                         .orElseThrow(NoSuchImageProfileException::new);
 
-        validateBuildHost(buildHostId, loggedInUser.getOrg(), profile.getTargetStore().getLabel());
+        validateBuildHost(buildHostId, loggedInUser.getOrg(), profile.getTargetStore().getStoreType().getLabel());
 
         try {
             return ImageInfoFactory.scheduleBuild(buildHostId, version, profile,

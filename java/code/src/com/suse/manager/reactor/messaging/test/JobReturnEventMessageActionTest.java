@@ -1083,7 +1083,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Openscap.OpenscapResult openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
                 .orElseThrow(() -> new RuntimeException("missiong scap result"));
 
-        SaltService saltServiceMock = mock(SaltService.class);
         context().checking(new Expectations() {{
             oneOf(saltServiceMock).storeMinionScapFiles(
                     with(any(MinionServer.class)),

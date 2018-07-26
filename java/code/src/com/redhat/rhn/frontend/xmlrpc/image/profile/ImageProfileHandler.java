@@ -129,7 +129,7 @@ public class ImageProfileHandler extends BaseHandler {
             throw new InvalidParameterException("Label cannot contain colons (:).");
         }
         else if (ImageProfileFactory.lookupByLabelAndOrg(label, loggedInUser.getOrg()).isPresent()) {
-            throw new InvalidParameterException("Image already exist.");
+            throw new InvalidParameterException("Image already exists.");
         }
         if (StringUtils.isEmpty(type)) {
             throw new InvalidParameterException("Type cannot be empty.");
@@ -145,7 +145,7 @@ public class ImageProfileHandler extends BaseHandler {
         }
         Optional<ActivationKey> ak = Optional.empty();
         if (StringUtils.isNotEmpty(activationKey)) {
-            ak = Optional.of(ActivationKeyFactory.lookupByKey(activationKey));
+            ak = Optional.ofNullable(ActivationKeyFactory.lookupByKey(activationKey));
             if (!ak.isPresent()) {
                 throw new InvalidParameterException("Activation key does not exist.");
             }
