@@ -36,6 +36,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 ExcludeArch: ia64 aarch64
 
+Requires(pre): susemanager
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: classpathx-mail
@@ -687,7 +688,8 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT/srv/susemanager/salt
 install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh
-install -d $RPM_BUILD_ROOT/srv/susemanager/pillar_data
+install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data
+install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data/images
 install -d $RPM_BUILD_ROOT/srv/susemanager/formula_data
 install -d $RPM_BUILD_ROOT/srv/susemanager/tmp
 
@@ -842,7 +844,8 @@ fi
 %attr(775, root, tomcat) %dir %{appdir}
 %dir /srv/susemanager
 %dir /srv/susemanager/salt
-%dir /srv/susemanager/pillar_data
+%attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data
+%attr(775,salt,susemanager) %dir /srv/susemanager/pillar_data/images
 %dir /srv/susemanager/formula_data
 %attr(750, tomcat, salt) %dir /srv/susemanager/tmp
 %dir %{appdir}/rhn/
