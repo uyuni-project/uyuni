@@ -93,6 +93,7 @@ install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/lo
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
 make -C src install PREFIX=$RPM_BUILD_ROOT MANDIR=%{_mandir}
+install -d -m 755 %{buildroot}/srv/www/os-images/
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
@@ -160,12 +161,6 @@ if [ $POST_ARG -eq 2 ] ; then
 fi
 # else new install and the systems dir should be created by spacewalk-setup
 
-if [ ! -d /srv/www/os-images ]; then
-  mkdir -p /srv/www/os-images
-  chown salt:susemanager /srv/www/os-images
-  chmod g+w /srv/www/os-images
-fi
-
 %postun
 %{insserv_cleanup}
 
@@ -189,6 +184,7 @@ fi
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
 %{_sysconfdir}/init.d/susemanager
 %{_datadir}/applications/YaST2/susemanager_setup.desktop
+%attr(775,salt,susemanager) %dir /srv/www/os-images/
 
 %files tools
 %defattr(-,root,root,-)
