@@ -1,3 +1,4 @@
+- Disallow '.' in config channel names (bsc#1100731)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - Apply State Result - use different color for applied changes
 - Fix checking for salt pkg upgrade when generating action chain sls
