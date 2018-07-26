@@ -188,6 +188,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             assertEquals("Activation key does not exist.", e.getMessage());
         }
 
+        createImageStore("myosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
+
         try {
             handler.create(admin, "newprofile", "kiwi", "myosimagestore", "/path/to/dockerfile/", "");
             fail("No activation key provided for Kiwi profile.");
