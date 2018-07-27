@@ -101,14 +101,14 @@ public class SaltStateGeneratorTest extends TestCase {
     public void testSLSPackageInstalledVersion() throws IOException {
         String ver = "24.5.1";
         SaltPkgInstalled obj = new SaltPkgInstalled();
-        obj.addPackage("emacs", ver);
+        obj.addPackageNameArchVersion("emacs", "x86_64", ver);
         this.generator.generate(obj);
 
         List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString()));
 
         assertEquals(ver,
-                (String) ((Map) ((List) data.get(1).get("pkgs")).get(0)).get("emacs"));
+                (String) ((Map) ((List) data.get(1).get("pkgs")).get(0)).get("emacs.x86_64"));
     }
 
     /**
@@ -119,12 +119,12 @@ public class SaltStateGeneratorTest extends TestCase {
     public void testSLSPackageInstalledOpVersion() throws IOException {
         String ver = "24.5.1";
         SaltPkgInstalled obj = new SaltPkgInstalled();
-        obj.addPackage("emacs", ver, ">");
+        obj.addPackageNameArchVersionOp("emacs", "x86_64", ver, ">");
         this.generator.generate(obj);
         List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString()));
         assertEquals(">" + ver,
-                (String) ((Map) ((List) data.get(1).get("pkgs")).get(0)).get("emacs"));
+                (String) ((Map) ((List) data.get(1).get("pkgs")).get(0)).get("emacs.x86_64"));
     }
 
     /**
@@ -157,9 +157,9 @@ public class SaltStateGeneratorTest extends TestCase {
     @SuppressWarnings("unchecked")
     public void testSLSPackagesInstalledVersion() throws IOException {
         SaltPkgInstalled obj = new SaltPkgInstalled();
-        obj.addPackage("emacs", "24.5.1");
-        obj.addPackage("jed", "1.2.3");
-        obj.addPackage("mutt", "5.0.5");
+        obj.addPackageNameArchVersion("emacs", "x86_64", "24.5.1");
+        obj.addPackageNameArchVersion("jed", "x86_64", "1.2.3");
+        obj.addPackageNameArchVersion("mutt", "x86_64", "5.0.5");
         this.generator.generate(obj);
 
         List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
@@ -169,17 +169,17 @@ public class SaltStateGeneratorTest extends TestCase {
         assertEquals(pkgs.size(), 3);
         assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
             {
-                put("emacs", "24.5.1");
+                put("emacs.x86_64", "24.5.1");
             }
         }));
         assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
             {
-                put("jed", "1.2.3");
+                put("jed.x86_64", "1.2.3");
             }
         }));
         assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
             {
-                put("mutt", "5.0.5");
+                put("mutt.x86_64", "5.0.5");
             }
         }));
     }
@@ -191,9 +191,9 @@ public class SaltStateGeneratorTest extends TestCase {
     @SuppressWarnings("unchecked")
     public void testSLSPackagesInstalledOpVersion() throws IOException {
         SaltPkgInstalled obj = new SaltPkgInstalled();
-        obj.addPackage("emacs", "24.5.1", ">");
-        obj.addPackage("jed", "1.2.3", ">");
-        obj.addPackage("mutt", "5.0.5", ">");
+        obj.addPackageNameArchVersionOp("emacs", "x86_64", "24.5.1", ">");
+        obj.addPackageNameArchVersionOp("jed", "x86_64", "1.2.3", ">");
+        obj.addPackageNameArchVersionOp("mutt", "x86_64", "5.0.5", ">");
         this.generator.generate(obj);
 
         List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
@@ -203,17 +203,17 @@ public class SaltStateGeneratorTest extends TestCase {
         assertEquals(pkgs.size(), 3);
         assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
             {
-                put("emacs", ">24.5.1");
+                put("emacs.x86_64", ">24.5.1");
             }
         }));
         assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
             {
-                put("jed", ">1.2.3");
+                put("jed.x86_64", ">1.2.3");
             }
         }));
         assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
             {
-                put("mutt", ">5.0.5");
+                put("mutt.x86_64", ">5.0.5");
             }
         }));
     }

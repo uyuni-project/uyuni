@@ -29,12 +29,14 @@ public class SaltPkgInstalled extends AbstractSaltRequisites implements SaltStat
      */
     static class Package {
         private final String name;
+        private final String arch;
         private final String version;
         private final String operator;
 
-        Package(String nameIn, String versionIn, String operatorIn) {
+        Package(String nameIn, String archIn, String versionIn, String operatorIn) {
             this.name = nameIn;
             this.version = versionIn;
+            this.arch = archIn;
             this.operator = operatorIn;
         }
 
@@ -48,6 +50,13 @@ public class SaltPkgInstalled extends AbstractSaltRequisites implements SaltStat
 
         public String getVersion() {
             return version;
+        }
+
+        /**
+         * @return arch to get
+         */
+        public String getArch() {
+            return arch;
         }
     }
 
@@ -67,7 +76,7 @@ public class SaltPkgInstalled extends AbstractSaltRequisites implements SaltStat
      * @return this
      */
     public SaltPkgInstalled addPackage(String name) {
-        return this.addPackage(name, null, null);
+        return this.addPackageNameArchVersionOp(name, null, null, null);
     }
 
     /**
@@ -75,22 +84,24 @@ public class SaltPkgInstalled extends AbstractSaltRequisites implements SaltStat
      *
      * @param name package name
      * @param version package version
+     * @param arch package arch
      * @return this
      */
-    public SaltPkgInstalled addPackage(String name, String version) {
-        return this.addPackage(name, version, null);
+    public SaltPkgInstalled addPackageNameArchVersion(String name, String arch, String version) {
+        return this.addPackageNameArchVersionOp(name, arch, version, null);
     }
 
     /**
      * Add package.
      *
      * @param name package name
+     * @param arch package arch
      * @param version package version
      * @param operator package operator
      * @return this
      */
-    public SaltPkgInstalled addPackage(String name, String version, String operator) {
-        this.packages.put(name, new SaltPkgInstalled.Package(name, version, operator));
+    public SaltPkgInstalled addPackageNameArchVersionOp(String name, String arch, String version, String operator) {
+        this.packages.put(name, new SaltPkgInstalled.Package(name, arch, version, operator));
         return this;
     }
 
@@ -118,7 +129,7 @@ public class SaltPkgInstalled extends AbstractSaltRequisites implements SaltStat
                 version.append(pkg.getVersion());
                 pkgsList.add(new HashMap<String, Object>() {
                     {
-                        put(pkg.getName(), version.toString());
+                        put(pkg.getName() + "." + pkg.getArch(), version.toString());
                     }
                 });
             }
