@@ -22,7 +22,7 @@ class XMLRPCConfigChannelTest < XMLRPCBaseTest
                        "group" => "root",
                        "permissions" => "644"
                      }
-                   )
+                    )
   end
 
   def deploy_all_systems(channel)
