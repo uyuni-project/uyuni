@@ -503,7 +503,7 @@ if [ "$INSTALLER" == zypper ]; then
       fi
       zypper --non-interactive --no-gpg-checks in $Z_MISSING
       for P in $Z_MISSING; do
-	rpm -q "$P" || {{
+	rpm -q --whatprovides "$P" || {{
 	  echo "ERROR: Failed to install all missing packages."
 	  exit 1
 	}}
@@ -517,7 +517,7 @@ if [ "$INSTALLER" == zypper ]; then
       # install missing packages
       zypper --non-interactive in $Z_MISSING
       for P in $Z_MISSING; do
-	rpm -q "$P" || {{
+	rpm -q --whatprovides "$P" || {{
 	  echo "ERROR: Failed to install all missing packages."
 	  exit 1
 	}}
