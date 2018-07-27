@@ -1234,6 +1234,7 @@ public class SaltServerActionService {
 
                         String repoPath = profile.getTargetStore().getUri() + "/" + profile.getLabel();
                         String tag = version.orElse("");
+                        String certificate = "";
                         // salt 2016.11 dockerng require imagename while salt 2018.3 docker requires it separate
                         pillar.put("imagerepopath", repoPath);
                         pillar.put("imagetag", tag);
@@ -1241,15 +1242,15 @@ public class SaltServerActionService {
                         pillar.put("builddir", dockerfileProfile.getPath());
                         try {
                             //TODO: maybe from the database
-                            String certificate = Files.readAllLines(
+                            certificate = Files.readAllLines(
                                     Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"),
                                     Charset.defaultCharset()
                             ).stream().collect(Collectors.joining("\n\n"));
-                            pillar.put("cert", certificate);
                         }
                         catch (IOException e) {
                             LOG.error("Could not read certificate", e);
                         }
+                        pillar.put("cert", certificate);
                         String repocontent = "";
                         if (profile.getToken() != null) {
                             repocontent = profile.getToken().getChannels().stream().map(s ->
