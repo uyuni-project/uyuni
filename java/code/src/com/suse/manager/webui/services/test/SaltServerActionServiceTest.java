@@ -208,6 +208,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                         reboot.getId());
                 assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + highstateActionId,
                         highstate.getId());
+
+                assertEquals(true, scriptRun.getKwargs().get("queue"));
+                assertEquals(true, highstate.getKwargs().get("queue"));
                 return null;
             }
         };
