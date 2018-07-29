@@ -87,8 +87,11 @@ public class ApplyStatesAction extends Action {
             if (!entry.isResult()) {
                 retval.append("<strong><span class='text-danger'>");
             }
+            else if (!entry.getChanges().equals("{}")) {
+                retval.append("<strong><span class='text-info'>");
+            }
             retval.append(StringEscapeUtils.escapeHtml4(entry.toString()));
-            if (!entry.isResult()) {
+            if (!entry.isResult() || !entry.getChanges().equals("{}")) {
                 retval.append("</span></strong>");
             }
         });
