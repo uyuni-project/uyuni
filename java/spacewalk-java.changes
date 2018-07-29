@@ -1,3 +1,4 @@
+- Apply State Result - use different color for applied changes
 - Fix missing acl to toggle notifications in user prefs in salt clients (bsc#1100131)
 
 -------------------------------------------------------------------
