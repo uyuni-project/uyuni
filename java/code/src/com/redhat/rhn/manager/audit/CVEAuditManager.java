@@ -887,8 +887,13 @@ public class CVEAuditManager {
         boolean usesLivePatchingDefault = false;
         boolean usesLivePatchingXen = false;
         Optional<Long> lowestRank = Optional.empty();
+
+        // The codepath will iterate on the list elaborating each system in the loop, but when the systemId changes
+        // the current system elaboration will finish and it will be added to the ouput. This means the result list
+        // must be ordered by systemId first, keeping different systems grouped in the order.
         List<Wrapper> sorted = results.stream()
-                .sorted(Comparator.comparing(s -> s.getChannelRank().orElse(Long.MAX_VALUE)))
+                .sorted(Comparator.comparing(Wrapper::getId)
+                        .thenComparing(s -> s.getChannelRank().orElse(Long.MAX_VALUE)))
                 .collect(Collectors.toList());
         for (Wrapper result : sorted) {
             // Get the server id first
@@ -931,6 +936,11 @@ public class CVEAuditManager {
                     // clear up the package list for the next system
                     patchedPackageNames.clear();
                     channelAssignedPackageNames.clear();
+
+                    // reset the lowestRank to the default value
+                    // (without the reset, the next system would rely on the lowest value
+                    // found for the current system)
+                    lowestRank = Optional.empty();
 
                     // Check if the patch status is contained in the filter
                     if (patchStatuses.contains(currentSystem.getPatchStatus())) {
