@@ -127,7 +127,6 @@ cp -pR img %{buildroot}/%{wwwdocroot}/
 # Appplication expects two favicon's for some reason, copy it so there's just
 # one in source:
 cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
-cp -pR setup  %{buildroot}%{_datadir}/spacewalk/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
 
