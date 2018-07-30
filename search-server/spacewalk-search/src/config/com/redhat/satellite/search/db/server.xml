@@ -55,14 +55,14 @@
                 LEFT OUTER JOIN rhnServerDmi dmi ON s.id = dmi.server_id
                 LEFT OUTER JOIN rhnCPU cpu on s.id = cpu.server_id
                 LEFT OUTER JOIN rhnVirtualInstance vi on s.id = vi.virtual_system_id
-                LEFT OUTER JOIN (SELECT rsni.server_id, rsna4.address as ipaddr, rsna6.address as ip6addr
+                LEFT OUTER JOIN (SELECT rsni.server_id, rsni.modified, rsna4.address as ipaddr, rsna6.address as ip6addr
                                     FROM rhnservernetinterface rsni
                                         LEFT OUTER JOIN rhnservernetaddress4 rsna4 ON rsni.id = rsna4.interface_id
                                         LEFT OUTER JOIN rhnservernetaddress6 rsna6 ON rsni.id = rsna6.interface_id
                                     WHERE is_primary = 'Y') AS addresses ON addresses.server_id = s.id
             WHERE (
                 s.modified &gt;= #{last_modified}
-                or rsni.modified &gt;= #{last_modified}
+                or addresses.modified &gt;= #{last_modified}
                 or si.checkin &gt;= #{last_modified}
                 or rr.modified &gt;= #{last_modified}
                 or sl.modified &gt;= #{last_modified}
