@@ -18,7 +18,7 @@ function generateFormulaComponentForId(element, value, formulaForm, id, wrapper)
 
     var isDisabled = (formulaForm.props.scope !== element.$scope && element.$scope !== "system");
 
-    if ("$visibleIf" in element && !checkVisibilityCondition(element.$visibleIf, formulaForm))
+    if ("$visibleIf" in element && !checkVisibilityCondition(id, element.$visibleIf, formulaForm))
         return null;
 
     if (BASIC_INPUT_TYPES.indexOf(element.$type) >= 0) //Element is a basic html input type
@@ -99,14 +99,29 @@ function getConditionValue(value) {
     return value;
 }
 
-function checkVisibilityCondition(condition, formulaForm) {
+function getConditionId(element_id, path) {
+    path = path.trim();
+    if (path.startsWith(".")) {
+        let relpath = path;
+        let base = element_id.split('#');
+        while (relpath.startsWith(".")) {
+            relpath = relpath.substring(1); // remove first dot
+            base.pop(); // remove last element
+        }
+        base.push(relpath);
+        path = base.join("#");
+    }
+    return path;
+}
+
+function checkVisibilityCondition(id, condition, formulaForm) {
     if (condition.includes("!=")) {
         condition = condition.split("!=");
-        return String(formulaForm.getValueById(condition[0].trim())) !== getConditionValue(condition[1]);
+        return String(formulaForm.getValueById(getConditionId(id, condition[0]))) !== getConditionValue(condition[1]);
     }
     else if (condition.includes("==")) {
         condition = condition.split("==");
-        return String(formulaForm.getValueById(condition[0].trim())) === getConditionValue(condition[1]);
+        return String(formulaForm.getValueById(getConditionId(id, condition[0]))) === getConditionValue(condition[1]);
     }
     return false;
 }
