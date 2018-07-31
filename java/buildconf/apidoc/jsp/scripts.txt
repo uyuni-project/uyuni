@@ -35,7 +35,7 @@ $client->call('auth.logout', $session);</br>
 </code>
 <hr />
 <p />
-<h3>Python example:</h3><br />
+<h3>Python 2 example:</h3><br />
 Below is an example of the user.listUsers call being used.  Only the login of each user is printed. 
 <p />
 
@@ -87,6 +87,50 @@ client.auth.logout(key)<br />
 <hr />
 
 <p />
+<h3>Python 3 with SSL example:</h3><br />
+Below is an example of the user.listUsers call being used.
+<p />
+<code>
+#!/usr/bin/env python3<br />
+from xmlrpc.client import ServerProxy<br />
+import ssl<br />
+<br />
+MANAGER_URL = "https://manager.example.com/rpc/api"<br />
+MANAGER_LOGIN = "username"<br />
+MANAGER_PASSWORD = "password"<br />
+<br />
+# You might need to set to set other options depending on your<br />
+# server SSL configuartion and your local SSL configuration<br />
+context = ssl.create_default_context()<br />
+client = ServerProxy(MANAGER_URL, context=context)<br />
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)<br />
+<br />
+print(client.user.list_users(key))<br />
+<br />
+client.auth.logout(key)<br />
+</code>
+
+<h3>Python 3 example:</h3><br />
+Below is an example of the user.listUsers call being used.
+<p />
+
+<code>
+#!/usr/bin/env python3<br />
+from xmlrpc.client import ServerProxy<br />
+<br />
+MANAGER_URL = "http://manager.example.com/rpc/api"<br />
+MANAGER_LOGIN = "username"  <br />
+MANAGER_PASSWORD = "password"<br />
+<br />
+client = ServerProxy(MANAGER_URL)<br />
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)<br />
+<br />
+print(client.user.list_users(key))<br />
+<br />
+client.auth.logout(key)<br />
+<br />
+</code>
+
 <h3>Ruby example:</h3><br />
 Below is an example of the channel.listAllChannels API call. List of channel labels is printed.
 <p />
