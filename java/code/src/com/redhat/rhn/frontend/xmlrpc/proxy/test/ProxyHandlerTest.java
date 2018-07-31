@@ -54,6 +54,22 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         assertEquals(1, rc);
     }
 
+    public void testActivateSaltProxy() throws Exception {
+        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        ProxyHandler ph = new ProxyHandler();
+
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_NORMAL);
+
+        ClientCertificate cert = SystemManager.createClientCertificate(server);
+        cert.validate(server.getSecret());
+
+        int rc = ph.activateProxy(cert.toString(), "5.0");
+        assertEquals(1, rc);
+    }
+
     public void testDeactivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
