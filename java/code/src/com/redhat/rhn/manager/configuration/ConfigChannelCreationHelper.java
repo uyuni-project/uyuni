@@ -36,7 +36,7 @@ public class ConfigChannelCreationHelper {
     private static final String DESCRIPTION = "cofDescription";
     private static final String ERROR_REQUIRED = "errors.required";
     private static final String ERROR_MAXSIZE = "errors.maxsize";
-    private static final String ERROR_POSIX = "errors.posix";
+    private static final String ERROR_CONFIG_CHANNEL_LABEL = "errors.config_channel_label";
 
     public static final int MAX_NAME_LENGTH = 128;
     public static final int MAX_LABEL_LENGTH = 64;
@@ -94,8 +94,8 @@ public class ConfigChannelCreationHelper {
                                             ls.getMessage(LABEL),
                                             MAX_LABEL_LENGTH));
         }
-        else if (label.startsWith("-") || !label.matches("^[a-zA-Z0-9\\-_.]+$")) {
-            result.addError(new ValidatorError(ERROR_POSIX,
+        else if (label.startsWith("-") || !label.matches("^[a-zA-Z0-9\\-_]+$")) {
+            result.addError(new ValidatorError(ERROR_CONFIG_CHANNEL_LABEL,
                                                 ls.getMessage(LABEL)));
         }
         else if (form != null) {
