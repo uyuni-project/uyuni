@@ -35,11 +35,18 @@ spacecmd -s server1 -- softwarechannel_create -n \\'My Channel\\' \\
 .fi
 .SH OPTIONS
 .TP
+.TP
 .B \-u USERNAME, \-\-username=USERNAME
 use this username to connect to the server
 .TP
 .B \-p PASSWORD, \-\-password=PASSWORD
-use this password to connect to the server
+use this password to connect to the server (insecure).
+.nf
+This option is insecure because process listing tools like ps will
+show it as part of command line visible for all user.
+If no password is provided, spacecmd will try to read it from the
+config file or ask for it.
+.fi
 .TP
 .B \-s SERVER, \-\-server=SERVER
 connect to this server [default: localhost]

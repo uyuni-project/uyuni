@@ -52,7 +52,7 @@ if __name__ == '__main__':
         Option('-u', '--username', action='store',
                help='use this username to connect to the server'),
         Option('-p', '--password', action='store',
-               help='use this password to connect to the server'),
+               help='use this password to connect to the server (insecure). Use config instead or spacecmd will ask.'),
         Option('-s', '--server', action='store',
                help='connect to this server [default: local hostname]'),
         Option('--nossl', action='store_true',
