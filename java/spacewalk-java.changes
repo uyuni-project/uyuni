@@ -1,3 +1,4 @@
+- Disallow '.' in config channel names (bsc#1100731)
 - Fix missing acl to toggle notifications in user prefs in salt clients (bsc#1100131)
 - Fix race condition when applying patches to systems (bsc#1097250)
 - Fix: errata id should be unique (bsc#1089662)
