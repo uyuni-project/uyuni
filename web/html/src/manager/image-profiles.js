@@ -9,8 +9,8 @@ const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
-const DeleteDialog = require("../components/dialogs").DeleteDialog;
-const ModalButton = require("../components/dialogs").ModalButton;
+const DeleteDialog = require("../components/dialog/DeleteDialog").DeleteDialog;
+const ModalButton = require("../components/dialog/ModalButton").ModalButton;
 
 /* global isAdmin */
 
