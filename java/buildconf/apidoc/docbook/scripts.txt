@@ -26,7 +26,7 @@ $client->call('auth.logout', $session);</programlisting>
 </example>
 
 <example>
-    <title>Python Example</title>
+    <title>Python 2 Example</title>
     <para>Below is an example of the <function>user.listUsers</function> call being used. Only the login of each
 user is printed.</para>
     <programlisting>#!/usr/bin/python
@@ -61,6 +61,46 @@ package_list = client.packages.findByNvrea(key, 'rhnlib', '2.5.22', '9.el6', '',
 today = datetime.today()
 earliest_occurrence = xmlrpclib.DateTime(today)
 client.system.schedulePackageInstall(key, 1000000001, package_list[0]['id'], earliest_occurrence)
+
+client.auth.logout(key)</programlisting>
+</example>
+
+<example>
+    <title>Python 3 with SSL Example</title>
+    <para>Below is an example of the <function>user.listUsers</function> call being called.</para>
+    <programlisting>#!/usr/bin/env python3
+from xmlrpc.client import ServerProxy
+import ssl
+
+MANAGER_URL = "https://manager.example.com/rpc/api"
+MANAGER_LOGIN = "username"
+MANAGER_PASSWORD = "password"
+
+# You might need to set to set other options depending on your
+# server SSL configuartion and your local SSL configuration
+context = ssl.create_default_context()
+client = ServerProxy(MANAGER_URL, context=context)
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)
+
+print(client.user.list_users(key))
+
+client.auth.logout(key)</programlisting>
+</example>
+
+<example>
+    <title>Python 3 Example</title>
+    <para>Below is an example of the <function>user.listUsers</function> call being called.</para>
+    <programlisting>#!/usr/bin/env python3
+from xmlrpc.client import ServerProxy
+
+MANAGER_URL = "http://manager.example.com/rpc/api"
+MANAGER_LOGIN = "username"
+MANAGER_PASSWORD = "password"
+
+client = ServerProxy(MANAGER_URL)
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)
+
+print(client.user.list_users(key))
 
 client.auth.logout(key)</programlisting>
 </example>
