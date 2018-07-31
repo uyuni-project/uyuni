@@ -1,3 +1,4 @@
+- Allow salt systems to be registered as proxies (FATE#323069)
 - Fix behavior when canceling actions (bsc#1098993)
 - add DNS name to cobbler network interface (FATE#326501, bsc#1104020)
 - speedup listing systems of a group (bsc#1102009)
