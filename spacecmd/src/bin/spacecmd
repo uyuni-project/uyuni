@@ -61,7 +61,7 @@ if __name__ == '__main__':
     parser.add_argument('-u', '--username',
                         help='use this username to connect to the server')
     parser.add_argument('-p', '--password',
-                        help='use this password to connect to the server')
+                        help='use this password to connect to the server (insecure). Use config instead or spacecmd will ask.')
     parser.add_argument('-s', '--server',
                         help='connect to this server [default: local hostname]')
     parser.add_argument('--nossl', action='store_true',
