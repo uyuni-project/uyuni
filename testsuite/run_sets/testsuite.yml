@@ -22,7 +22,6 @@
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
 - features/core_min_docker_build_image.feature
-- features/core_min_osimage_build_image.feature
 - features/core_min_salt_ssh.feature
 - features/core_centos_tradclient.feature
 - features/core_centos_salt.feature
@@ -73,6 +72,7 @@
 - features/srv_docker_auth_test.feature
 - features/srv_docker_advanced_test.feature
 - features/srv_docker_cve_audit.feature
+- features/min_osimage_build_image.feature
 - features/min_salt_install_package.feature
 - features/srv_power_management.feature
 - features/srv_datepicker.feature

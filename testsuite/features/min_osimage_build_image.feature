@@ -1,8 +1,13 @@
 # Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# Basic images do not contain zypper nor the name of the server,
-# so the inspect functionality is not tested here.
+# This feature relies on having properly configured
+#   /etc/rhn/rhn.conf
+# file on your SUSE Manager server.
+#
+# For the scope of these tests, we configure it as follows:
+#   java.kiwi_os_image_building_enabled = true
+# which means "Enable Kiwi OS Image building"
 
 Feature: Build OS images
 
@@ -46,22 +51,22 @@ Feature: Build OS images
   And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
   And I should see a "System properties changed" text
 
-  Scenario: Apply the highstate to container build host
+  Scenario: Apply the highstate to OS image build host
   Given I am on the Systems overview page of this "sle-minion"
   Then I should see a "[OS Image Build Host]" text
   And I wait until no Salt job is running on "sle-minion"
 
-  Scenario: Create an image profile with activation key
+  Scenario: Create an OS image profile with activation key
   Given I am authorized as "admin" with password "admin"
   And I follow "Images" in the left menu
   And I follow "Profiles" in the left menu
   And I follow "Create"
   And I enter "suse_osimage_real_simple" as "label"
   And I select "1-KIWI-TEST" from "activationKey"
-  And I enter "https://gitlab.suse.de/oholecek/kiwi_test_image#master:." as "path" # TODO simple repo with packages from Test-Channel-x86_64
+  And I enter "https://github.com/SUSE/manager-build-profiles#master:OSImage/POS_Image-JeOS6" as "path"
   And I click on "create-btn"
 
-  Scenario: Build some images via GUI
+  Scenario: Build OS images via GUI
   Given I am authorized as "admin" with password "admin"
   And I navigate to images build webpage
   And I select "suse_osimage_real_simple" from "profileId"
