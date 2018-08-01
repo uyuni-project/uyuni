@@ -20,7 +20,6 @@
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
 - features/core_min_docker_build_image.feature
-- features/core_min_osimage_build_image.feature
 - features/core_min_salt_ssh.feature
   #- features/core_centos_tradclient.feature
 - features/core_centos_salt.feature
