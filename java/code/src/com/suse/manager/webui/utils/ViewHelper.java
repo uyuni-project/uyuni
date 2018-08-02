@@ -25,7 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import spark.Request;
 
@@ -68,8 +70,10 @@ public enum ViewHelper {
     public String renderNavigationMenu(Request request, String menuDefinition) {
         String rendererClass = "com.redhat.rhn.frontend.nav.DialognavRenderer";
         try {
+            Map<String, String> sparkParams = request.params().entrySet().stream().collect(
+                    Collectors.toMap(entry -> entry.getKey().substring(1), entry -> entry.getValue()));
             return RenderUtils.INSTANCE.renderNavigationMenu(
-                    request.raw(), menuDefinition, rendererClass, 0, 3);
+                    request.raw(), menuDefinition, rendererClass, 0, 3, sparkParams);
         }
         catch (Exception e) {
             throw new RuntimeException("Error rendering the navigation menu.", e);
