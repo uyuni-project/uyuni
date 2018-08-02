@@ -60,7 +60,9 @@ function sortById(aRaw: Object, bRaw: Object): number {
 }
 
 function sortByText(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number): number {
-  var result = aRaw[columnKey].toLowerCase().localeCompare(bRaw[columnKey].toLowerCase());
+  var a = aRaw[columnKey];
+  var b = bRaw[columnKey];
+  var result = (a == null ? "" : a).toLowerCase().localeCompare((b == null ? "" : b).toLowerCase());
   return (result || sortById(aRaw, bRaw)) * sortDirection;
 }
 

@@ -131,10 +131,30 @@ function BootstrapPanel(props) {
     );
 }
 
+function SmallPanel(props) {
+    return (
+        <div className="panel panel-default">
+            { props.title &&
+            <div className="panel-heading">
+                <h4>
+                  { props.icon && <i className={"fa " + props.icon}></i> }
+                  {props.title}
+                  { props.editUrl && <span> (<a href={props.editUrl}>{t("Edit")}</a>)</span> }
+                </h4>
+            </div>
+            }
+            <div className="panel-body">
+                { props.children }
+            </div>
+        </div>
+    );
+}
+
 module.exports = {
     Panel : Panel,
     PanelButton : PanelButton,
     InnerPanel : InnerPanel,
     PanelRow : PanelRow,
-    BootstrapPanel : BootstrapPanel
+    BootstrapPanel : BootstrapPanel,
+    SmallPanel: SmallPanel
 }
