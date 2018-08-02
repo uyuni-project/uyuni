@@ -2,7 +2,8 @@
 
 const React = require("react");
 const {Button} = require("../components/buttons");
-const { ModalButton, DeleteDialog} = require("../components/dialogs");
+const {ModalButton} = require("../components/dialog/ModalButton");
+const {DeleteDialog} = require("../components/dialog/DeleteDialog");
 const BootstrapPanel = require("../components/panel").BootstrapPanel;
 const {Utils} = require("../utils/functions");
 const Network = require("../utils/network");

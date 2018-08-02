@@ -1,0 +1,35 @@
+// Common header part for System pages
+// Needs the Server object passed as 'server' and 'inSSM' value to be set
+include common.jade
+
+- var system_icon = "fa-desktop"
+if server.bootstrap
+  - var system_icon = "spacewalk-icon-bare-metal"
+else
+  if server.virtualGuest
+    - var system_icon = "spacewalk-icon-virtual-guest"
+  else
+    if server.virtualHost
+      - var system_icon = "spacewalk-icon-virtual-host"
+
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{server.id}")
+        i.fa.fa-trash-o(title='Delete System')
+        | #{l.t("Delete System")}
+    if inSSM
+      a(href="/rhn/systems/details/RemoveFromSSM.do?sid=#{server.id}")
+          i.fa.fa-minus-circle(title='Remove from SSM')
+          | #{l.t("Remove from SSM")}
+    else
+      a(href="/rhn/systems/details/AddToSSM.do?sid=#{server.id}")
+          i.fa.fa-plus-circle(title='Add to SSM')
+          | #{l.t("Add to SSM")}
+
+  h1
+    i(class="fa #{system_icon}")
+    | #{" " + server.name + " "}
+    a(href="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-details" target="_blank")
+      i.fa.fa-question-circle.spacewalk-help-link()
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/system_detail.xml")}

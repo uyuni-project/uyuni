@@ -3,7 +3,9 @@
 const React = require("react");
 const {LinkButton, Button} = require("../components/buttons");
 const DateTime = require("../components/datetime").DateTime;
-const {ModalButton, ModalLink, DeleteDialog} = require("../components/dialogs");
+const {ModalButton} = require("../components/dialog/ModalButton");
+const {ModalLink} = require("../components/dialog/ModalLink");
+const {DeleteDialog} = require("../components/dialog/DeleteDialog");
 const PopUp = require("../components/popup").PopUp;
 const Input = require("../components/input");
 const Functions = require("../utils/functions");

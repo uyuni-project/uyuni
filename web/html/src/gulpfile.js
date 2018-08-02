@@ -89,7 +89,7 @@ gulp.task("watch", function(event) {
     watcher1.on('change', function(event) {
         gutil.log('File changed: ' + event.path);
     });
-    var watcher1 = gulp.watch(["./components/*.js"], ["bundle-manager"]);
+    var watcher1 = gulp.watch(["./components/**/*.js"], ["bundle-manager"]);
     watcher1.on('change', function(event) {
         gutil.log('File changed: ' + event.path);
     })
