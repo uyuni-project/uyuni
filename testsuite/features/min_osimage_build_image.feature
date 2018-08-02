@@ -24,7 +24,7 @@ Feature: Build OS images
   And I click on "Create Login"
   Then I should see a "Account kiwikiwi created" text
   And I should see a "kiwikiwi" link
-  And I should see a "kiwikiwi user" text
+  And I should see a "normal user" text
   And I follow "kiwikiwi"
   And I check "role_image_admin"
   And I click on "Update"
@@ -73,8 +73,7 @@ Feature: Build OS images
   And I select "suse_osimage_real_simple" from "profileId"
   And I select sle-minion hostname in Build Host
   And I click on "submit-btn"
-  And I wait for "5" seconds
-  Then I should see a "Building the image has been scheduled" text
+  Then I wait until I see "suse_osimage_real_simple" text
 
   Scenario: Login as Kiwi image administrator and build an image
   Given I am authorized as "kiwikiwi" with password "kiwikiwi"
@@ -82,5 +81,4 @@ Feature: Build OS images
   And I select "suse_osimage_real_simple" from "profileId"
   And I select sle-minion hostname in Build Host
   And I click on "submit-btn"
-  And I wait for "5" seconds
-  Then I should see a "Building the image has been scheduled" text
+  Then I wait until I see "suse_osimage_real_simple" text
