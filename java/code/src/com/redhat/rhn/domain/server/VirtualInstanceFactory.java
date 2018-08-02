@@ -130,7 +130,8 @@ public class VirtualInstanceFactory extends HibernateFactory {
      */
     public VirtualInstance lookupById(final Long id) {
         return (VirtualInstance)execute(new HibernateCallback() {
-           public Object executeInSession(Session session) {
+           @Override
+        public Object executeInSession(Session session) {
                 return session.get(VirtualInstance.class, id);
             }
         });
@@ -351,7 +352,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return VirtualInstance with given uuid
      */
     public List<VirtualInstance> lookupVirtualInstanceByUuid(String uuid) {
-        return (List<VirtualInstance>) getSession()
+        return getSession()
                 .getNamedQuery("VirtualInstance.lookupVirtualInstanceByUuid")
                 .setParameter("uuid", uuid)
             .list();
@@ -366,6 +367,20 @@ public class VirtualInstanceFactory extends HibernateFactory {
         return (VirtualInstance) getSession()
                 .getNamedQuery("VirtualInstance.lookupHostVirtInstanceByHostId")
                 .setParameter("hostId", hostId)
+            .uniqueResult();
+    }
+
+    /**
+     * Returns a VirtualInstance with given uuid and host id.
+     * @param hostId - id of the host system
+     * @param uuid - uuid of the guest
+     * @return VirtualInstance with uuid running on host matching hostId
+     */
+    public VirtualInstance lookupVirtualInstanceByHostIdAndUuid(Long hostId, String uuid) {
+        return (VirtualInstance) getSession()
+                .getNamedQuery("VirtualInstance.lookupHostVirtInstanceByHostId")
+                .setParameter("hostId", hostId)
+                .setParameter("uuid", uuid)
             .uniqueResult();
     }
 }

@@ -274,4 +274,14 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
         assertEquals(fromDb, hostVirtInstance);
     }
+
+    public void testLookupGuestByHostIdAndUuid() throws Exception {
+        Server host = ServerTestUtils.createVirtHostWithGuest();
+        VirtualInstance guest = host.getGuests().iterator().next();
+
+        VirtualInstance fromDb = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByHostIdAndUuid(host.getId(), guest.getUuid());
+
+        assertEquals(guest, fromDb);
+    }
 }

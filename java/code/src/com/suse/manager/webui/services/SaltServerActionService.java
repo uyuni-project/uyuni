@@ -54,6 +54,14 @@ import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
@@ -68,6 +76,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -261,6 +271,47 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
             SubscribeChannelsAction subscribeAction = (SubscribeChannelsAction)actionIn;
             return subscribeChanelsAction(minions, subscribeAction.getDetails());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN.equals(actionType)) {
+            VirtualizationShutdownAction virtAction =
+                    (VirtualizationShutdownAction)actionIn;
+            return virtStateChangeAction(minions, virtAction.getUuid(), "stopped");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_START.equals(actionType)) {
+            VirtualizationStartAction virtAction = (VirtualizationStartAction)actionIn;
+            return virtStateChangeAction(minions, virtAction.getUuid(), "running");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_SUSPEND.equals(actionType)) {
+            VirtualizationSuspendAction virtAction =
+                    (VirtualizationSuspendAction)actionIn;
+            return virtStateChangeAction(minions, virtAction.getUuid(), "suspended");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_RESUME.equals(actionType)) {
+            VirtualizationResumeAction virtAction =
+                    (VirtualizationResumeAction)actionIn;
+            return virtStateChangeAction(minions, virtAction.getUuid(), "resumed");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_REBOOT.equals(actionType)) {
+            VirtualizationRebootAction virtAction =
+                    (VirtualizationRebootAction)actionIn;
+            return virtStateChangeAction(minions, virtAction.getUuid(), "rebooted");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_DELETE.equals(actionType)) {
+            VirtualizationDeleteAction virtAction =
+                    (VirtualizationDeleteAction)actionIn;
+            return virtStateChangeAction(minions, virtAction.getUuid(), "deleted");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS.equals(actionType)) {
+            VirtualizationSetVcpusAction virtAction =
+                    (VirtualizationSetVcpusAction)actionIn;
+            return virtSetterAction(minions, virtAction.getUuid(),
+                                    "vcpus", virtAction.getVcpu());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY.equals(actionType)) {
+            VirtualizationSetMemoryAction virtAction =
+                    (VirtualizationSetMemoryAction)actionIn;
+            return virtSetterAction(minions, virtAction.getUuid(),
+                                    "mem", virtAction.getMemory());
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1357,6 +1408,81 @@ public class SaltServerActionService {
         ret.put(State.apply(singletonList("scap"),
                 Optional.of(singletonMap("mgr_scap_params", (Object)parameters))),
                 minions);
+        return ret;
+    }
+
+    private String virtGetDomainNameFromUuid(MinionServer minion, String uuid) {
+        String domainName = null;
+        VirtualInstance domain = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByHostIdAndUuid(minion.getId(), uuid);
+        if (domain != null) {
+            domainName = domain.getName();
+        }
+        return domainName;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> virtStateChangeAction(
+            List<MinionServer> minions, String uuid, String state) {
+        Map<LocalCall<?>, List<MinionServer>> ret = minions.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    String domainName = virtGetDomainNameFromUuid(minion, uuid);
+                    if (domainName != null) {
+                        Map<String, Object> pillar = new HashMap<>();
+                        pillar.put("domain_name", domainName);
+
+                        String[] states = {"deleted", "suspended", "resumed"};
+                        if (Arrays.asList(states).contains(state)) {
+                            return State.apply(
+                                    Collections.singletonList("virt." + state),
+                                    Optional.of(pillar));
+                        }
+                        else {
+                            pillar.put("domain_state", state);
+
+                            return State.apply(
+                                    Collections.singletonList("virt.statechange"),
+                                    Optional.of(pillar));
+                        }
+                    }
+                    else {
+                        LOG.error("Failed to retrieve domain name for server " + minion.getId() + " uuid " + uuid);
+                    }
+                    return null;
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> virtSetterAction(
+            List<MinionServer> minions, String uuid, String property, int value) {
+        Map<LocalCall<?>, List<MinionServer>> ret = minions.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    String domainName = virtGetDomainNameFromUuid(minion, uuid);
+                    if (domainName != null) {
+                        Map<String, Object> pillar = new HashMap<>();
+                        pillar.put("domain_name", domainName);
+                        pillar.put("domain_" + property, value);
+
+                        return State.apply(
+                                Collections.singletonList("virt.set" + property),
+                                Optional.of(pillar));
+                    }
+                    else {
+                        LOG.error("Failed to retrieve domain name for server " + minion.getId() + " uuid " + uuid);
+                    }
+                    return null;
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
         return ret;
     }
 
