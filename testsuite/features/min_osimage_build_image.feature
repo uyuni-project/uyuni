@@ -22,10 +22,10 @@ Feature: Build OS images
   And I enter "TestKiwi" as "lastName"
   And I enter "kiwi@susy.de" as "email"
   And I click on "Create Login"
-  Then I should see a "Account kiwi created" text
-  And I should see a "kiwi" link
-  And I should see a "kiwi user" text
-  And I follow "kiwi"
+  Then I should see a "Account kiwikiwi created" text
+  And I should see a "kiwikiwi" link
+  And I should see a "kiwikiwi user" text
+  And I follow "kiwikiwi"
   And I check "role_image_admin"
   And I click on "Update"
 
