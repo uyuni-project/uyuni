@@ -1,16 +1,16 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: XML-RPC image namespace for containers
 
-  Scenario: Turn the SLES minion into a container build host
+  Scenario: Turn the SLES minion into a container build host before XML-RPC tests
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "container_build_host" if not checked
     And I click on "Update Properties"
 
-  Scenario: Apply the highstate to ensure container build host is ready
+  Scenario: Apply the highstate to container build host before XML-RPC tests
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
     And I enable SUSE container repository, but not for SLES11 systems
@@ -46,6 +46,9 @@ Feature: XML-RPC image namespace for containers
     And I follow "arancio"
     And I follow "Delete Key"
     And I click on "Delete Key"
-    And I disable SUSE container repository, but not for SLES11 systems
+
+  Scenario: Cleanup: reset channels on the SLES minion after XML-RPC tests
+    Given I am authorized as "admin" with password "admin"
+    When I disable SUSE container repository, but not for SLES11 systems
     And I disable SLES pool and update repository on "sle-minion"
     And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
