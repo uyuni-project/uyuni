@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.server.test.VirtualInstanceManufacturer;
 import com.redhat.rhn.domain.user.User;
@@ -86,7 +87,7 @@ public class ServerTestUtils {
         Channel baseChannel = ChannelTestUtils.createBaseChannel(creator);
         retval.addChannel(baseChannel);
         ServerFactory.save(retval);
-        retval = (Server) TestUtils.reload(retval);
+        retval = TestUtils.reload(retval);
         return retval;
     }
 
@@ -126,7 +127,7 @@ public class ServerTestUtils {
         serverPackages.add(testInstPack);
 
         ServerFactory.save(addTo);
-        return (Server) TestUtils.reload(addTo);
+        return TestUtils.reload(addTo);
     }
 
     /**
@@ -148,9 +149,31 @@ public class ServerTestUtils {
      */
     public static Server createVirtHostWithGuests(User user, int numberOfGuests)
         throws Exception {
+        return createVirtHostWithGuests(user, numberOfGuests, false);
+    }
+
+    /**
+     * Create a system with associated guest systems associated with it.
+     *
+     * @param user to own system
+     * @param numberOfGuests number of guests to create
+     * @param salt true to create a salt-managed host
+     * @return Server with guest.
+     * @throws Exception if error
+     */
+    public static Server createVirtHostWithGuests(User user, int numberOfGuests, boolean salt)
+        throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(user);
-        Server s = createTestSystem(user);
+        Server s = null;
+        if (salt) {
+            s = MinionServerFactoryTest.createTestMinionServer(user);
+            Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+            s.addChannel(baseChannel);
+        }
+        else {
+            s = createTestSystem(user);
+        }
 
         // Lets give the org/server virt.
         UserTestUtils.addVirtualization(user.getOrg());

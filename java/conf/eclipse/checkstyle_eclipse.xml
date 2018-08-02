@@ -22,14 +22,14 @@
       <property name="processJavadoc" value="true"/>
     </module>
     <module name="LeftCurly">
-      <property name="maxLineLength" value="92"/>
+      <property name="maxLineLength" value="120"/>
     </module>
     <module name="RightCurly">
       <property name="option" value="alone"/>
     </module>
     <module name="LineLength">
       <property name="ignorePattern" value="@version"/>
-      <property name="max" value="92"/>
+      <property name="max" value="120"/>
     </module>
     <module name="JavadocMethod">
       <property name="scope" value="public"/>
