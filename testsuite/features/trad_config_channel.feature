@@ -47,7 +47,7 @@ Feature: Configuration management of traditional clients
     And I enter "!testchannel" as "cofLabel"
     And I enter "This is a test channel 2" as "cofDescription"
     And I click on "Create Config Channel"
-    Then I should see a "Configuration channel label contains invalid characters. In addition to alphanumeric characters, '-', '_', and '.' are allowed." text
+    Then I should see a "Configuration channel label contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed." text
     And I should see a "Update Channel" button
 
   Scenario: Successfully create a new configuration channel
