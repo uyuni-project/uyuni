@@ -411,7 +411,9 @@ public class ImageProfileController {
      */
     private static String getActivationKeys(User user) {
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
-        return GSON.toJson(akm.findAll(user).stream().map(ActivationKey::getKey)
+        return GSON.toJson(akm.findAll(user).stream()
+                .filter(ak -> ak.getBaseChannel() != null)
+                .map(ActivationKey::getKey)
                 .collect(Collectors.toList()));
     }
 
