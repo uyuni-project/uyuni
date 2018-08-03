@@ -1,3 +1,4 @@
+- speedup listing systems of a group (bsc#1102009)
 - Add python3 xmlrpc api example to docs.
 - Fix copyright for the package specfile (bsc#1103696)
 - Add Salt actions for virtual guests
