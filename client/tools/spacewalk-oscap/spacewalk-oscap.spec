@@ -1,4 +1,21 @@
+#
+# spec file for package spacewalk-oscap
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
@@ -11,28 +28,28 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
-Name:		spacewalk-oscap
-Version:	2.8.8.2
-Release:	1%{?dist}
-Summary:	OpenSCAP plug-in for rhn-check
+Name:           spacewalk-oscap
+Version:        2.8.8.2
+Release:        1%{?dist}
+Summary:        OpenSCAP plug-in for rhn-check
+License:        GPL-2.0-only
+Group:          Applications/System
 
-Group:		Applications/System
-License:	GPLv2
-URL:		https://github.com/spacewalkproject/spacewalk
-Source0:	https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
 BuildRequires:  libxslt
 %if ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
-Requires: openscap-utils
+Requires:       openscap-utils
 %else
-Requires:	openscap-scanner
+Requires:       openscap-scanner
 %endif
-Requires:	libxslt
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
+Requires:       libxslt
 
 %description
 spacewalk-oscap is a plug-in for rhn-check. With this plugin, user is able
@@ -40,26 +57,30 @@ to run OpenSCAP scan from Spacewalk or Red Hat Satellite server.
 
 %if 0%{?build_py2}
 %package -n python2-%{name}
-Summary:	OpenSCAP plug-in for rhn-check
+Summary:        OpenSCAP plug-in for rhn-check
+Group:          Applications/System
 Provides:       python-%{name} = %{version}-%{release}
 Obsoletes:      python-%{name} < %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
-Requires:       rhnlib >= 2.8.3
 Requires:       python2-rhn-check >= 2.8.4
-BuildRequires:	python-devel
-BuildRequires:	rhnlib >= 2.8.3
+Requires:       rhnlib >= 2.8.3
+BuildRequires:  python-devel
+BuildRequires:  rhnlib >= 2.8.3
+
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
 %endif
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
-Summary:	OpenSCAP plug-in for rhn-check
+Summary:        OpenSCAP plug-in for rhn-check
+Group:          Applications/System
 Requires:       %{name} = %{version}-%{release}
-Requires:       python3-rhnlib >= 2.8.3
 Requires:       python3-rhn-check >= 2.8.4
-BuildRequires:	python3-devel
-BuildRequires:	python3-rhnlib >= 2.8.3
+Requires:       python3-rhnlib >= 2.8.3
+BuildRequires:  python3-devel
+BuildRequires:  python3-rhnlib >= 2.8.3
+
 %description -n python3-%{name}
 Python 3 specific files for %{name}.
 %endif
@@ -67,10 +88,8 @@ Python 3 specific files for %{name}.
 %prep
 %setup -q
 
-
 %build
 make -f Makefile.spacewalk-oscap
-
 
 %install
 %if 0%{?build_py2}
@@ -86,7 +105,6 @@ make -f Makefile.spacewalk-oscap install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{pyt
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif
-
 
 %files
 %defattr(-,root,root)
@@ -110,7 +128,6 @@ make -f Makefile.spacewalk-oscap install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{pyt
 %endif
 %endif
 
-
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %defattr(-,root,root)
@@ -123,65 +140,3 @@ make -f Makefile.spacewalk-oscap install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{pyt
 %endif
 
 %changelog
-* Tue Mar 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.8-1
-- don't build python2 subpackages on systems with default python3
-
-* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.7-1
-- use python3 on rhel8 in spacewalk-oscap
-
-* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.6-1
-- move spacewalk-oscap to tools directory as it's not rhel package
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
-- spacewalk-oscap: add missing directories to filelist and enable py3 build for
-  Tumbleweed
-
-* Fri Sep 29 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
-- require new version of rhn-client-tools and rhnlib
-- move client actions to rhn namespace
-
-* Fri Sep 22 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
-- install files into python_sitelib/python3_sitelib
-- split spacewalk-oscap into python2/python3 specific packages
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- Bumping package versions for 2.8.
-
-* Thu May 18 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.1-1
-- 1451778 - require openscap-utils on rhel for backward compatibility
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-- Bumping package versions for 2.7.
-
-* Mon Sep 12 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.1-1
-- Increasing required version of rhnlib in due to ImportError module i18n in
-  scap.py
-- Bumping package versions for 2.6.
-
-* Mon May 23 2016 Gennadii Altukhov <galt@redhat.com> 2.5.3-1
-- convert code to work in python 2/3
-
-* Fri May 20 2016 Grant Gainey 2.5.2-1
-- spacewalk-oscap: build on openSUSE
-
-* Fri Jan 22 2016 Tomas Lestach <tlestach@redhat.com> 2.5.1-1
-- 1232596 - still require openscap-utils on RHEL5
-- Bumping package versions for 2.5.
-
-* Fri Jun 19 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.1-1
-- rhbz#1232596: Require just openscap-scanner package everywhere
-- Bumping package versions for 2.4.
-
-* Mon Sep 22 2014 Matej Kollar <mkollar@redhat.com> 2.3.1-1
-- 1107841 - Avoid creating profile with empty id
-- Typo
-- Retab
-- Bumping package versions for 2.3.
-- Bumping package versions for 2.2.
-

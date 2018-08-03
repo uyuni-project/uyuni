@@ -1,38 +1,55 @@
+#
+# spec file for package rhn-custom-info
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %endif
 
-Name: rhn-custom-info
-Summary: Set and list custom values for Spacewalk-enabled machines
-Version: 5.4.43.2
-Release: 1%{?dist}
-Group: Applications/System
-License: GPLv2
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-URL:     https://github.com/spacewalkproject/spacewalk
+Name:           rhn-custom-info
+Summary:        Set and list custom values for Spacewalk-enabled machines
+License:        GPL-2.0-only
+Group:          Applications/System
+Version:        5.4.43.2
+Release:        1%{?dist}
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+URL:            https://github.com/spacewalkproject/spacewalk
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
-BuildArch: noarch
+BuildArch:      noarch
 %endif
-BuildRoot: %{_tmppath}/%{name}-%{version}-build
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?build_py3}
-BuildRequires: python3-devel
-Requires: python3-rhnlib
+BuildRequires:  python3-devel
+Requires:       python3-rhnlib
 %else
-BuildRequires: python-devel
-Requires: rhnlib
+BuildRequires:  python-devel
+Requires:       rhnlib
 %endif
 
 %if 0%{?fedora} || 0%{?rhel} >= 8
-Requires: dnf-plugin-spacewalk
+Requires:       dnf-plugin-spacewalk
 %else
 %if 0%{?suse_version}
-Requires: zypp-plugin-spacewalk
+Requires:       zypp-plugin-spacewalk
 # provide rhn directories for filelist check
-BuildRequires: spacewalk-client-tools
+BuildRequires:  spacewalk-client-tools
 %else
-Requires: yum-rhn-plugin
+Requires:       yum-rhn-plugin
 %endif
 %endif
 
@@ -67,77 +84,3 @@ ln -s rhn-custom-info $RPM_BUILD_ROOT/%{_bindir}/mgr-custom-info
 %{_mandir}/man8/rhn-custom-info.*
 
 %changelog
-* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 5.4.43-1
-- require dnf-plugin-spacewalk on rhel8 instead of yum
-- use python3 on rhel8 in rhncustominfo
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.4.42-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-
-* Tue Oct 10 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.41-1
-- extra path is not needed anymore
-
-* Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.40-1
-- install files into python_sitelib/python3_sitelib
-
-* Thu Sep 07 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.39-1
-- removed unnecessary BuildRoot tag
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.38-1
-- purged changelog entries for Spacewalk 2.0 and older
-
-* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.37-1
-- fixed python3 buildrequires
-
-* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.36-1
-- precompile py3 bytecode on Fedora 23+
-- use standard brp-python-bytecompile
-
-* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.35-1
-- move version and release before sources
-
-* Mon Jul 17 2017 Jan Dobes 5.4.34-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-
-* Tue Dec 06 2016 Eric Herget <eherget@redhat.com> 5.4.33-1
-- 1386615 - rhn-custom-info should not require CA cert for non-https server
-
-* Tue Jun 07 2016 Jan Dobes 5.4.32-1
-- print() prints '()' in python 2 instead of expected empty line
-- fix fedora macro usage
-
-* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 5.4.31-1
-- updating copyright years
-
-* Thu May 12 2016 Tomas Kasparek <tkasparek@redhat.com> 5.4.30-1
-- use python-devel in buildtime on all OS
-
-* Tue Apr 12 2016 Gennadii Altukhov <galt@redhat.com> 5.4.29-1
-- Wrong dependency for building on Fedora 23
-- basestring is str and bytes in python3
-- removed unused module string in  rhn-custom-info
-- modified rhn-custom-info to work in python 2/3
-
-* Mon Jun 08 2015 Michael Mraka <michael.mraka@redhat.com> 5.4.28-1
-- switch to dnf on Fedora 22
-
-* Wed Jan 14 2015 Matej Kollar <mkollar@redhat.com> 5.4.27-1
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.4.26-1
-- fix copyright years
-
-* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.4.25-1
-- spec file polish
-
-* Mon Apr 14 2014 Michael Mraka <michael.mraka@redhat.com> 5.4.24-1
-- 1066163 - rhn-custom-info man page is incomplete.
-
-* Fri Mar 14 2014 Michael Mraka <michael.mraka@redhat.com> 5.4.23-1
-- Don't print newline after 'Username:' prompt
-
-* Fri Feb 14 2014 Tomas Lestach <tlestach@redhat.com> 5.4.22-1
-- 1063808 - Custom info with empty value added
-

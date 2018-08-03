@@ -1,22 +1,38 @@
+#
+# spec file for package spacewalk-ssl-cert-check
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
 
-Name: spacewalk-ssl-cert-check
-Epoch:	 1
-Version: 2.8.2
-Release: 1%{?dist}
-Summary: Check ssl certs for impending expiration
-Group:   Applications/System
-License: GPLv2
-URL:     https://github.com/spacewalkproject/spacewalk
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Source1: %{name}-rpmlintrc
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch: noarch
-Obsoletes: rhn-ssl-cert-check < %{version}
-Provides:  rhn-ssl-cert-check = %{version}
-Requires:  python-cryptography
-Requires:  python-setuptools
-Requires:  cron
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
+Name:           spacewalk-ssl-cert-check
+Version:        2.8.2
+Release:        1%{?dist}
+Summary:        Check ssl certs for impending expiration
+License:        GPL-2.0-only
+Group:          Applications/System
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source1:        %{name}-rpmlintrc
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+Obsoletes:      rhn-ssl-cert-check < %{version}
+Provides:       rhn-ssl-cert-check = %{version}
+Requires:       cron
+Requires:       python-cryptography
+Requires:       python-setuptools
 
 %description
 Runs a check once a day to see if the ssl certificates installed on this
@@ -51,32 +67,3 @@ install -m644 ssl-cert-check.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 %doc LICENSE
 
 %changelog
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.7-1
-- purged changelog entries for Spacewalk 2.0 and older
-
-* Mon Jul 31 2017 Michael Mraka <michael.mraka@redhat.com> 2.6-1
-- move version and release before sources
-
-* Mon Jul 17 2017 Jan Dobes 2.5-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-
-* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.4-1
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
-
-* Tue Oct 30 2012 Jan Pazdziora 2.3-1
-- Update the copyright year.
-
-* Thu Jun 07 2012 Jan Pazdziora 2.2-1
-- 788972 - for multiple recipient email addresses, join them with comma.
-- %%defattr is not needed since rpm 4.4
-
-* Tue Nov 02 2010 Jan Pazdziora 2.1-1
-- Update copyright years in the rest of the repo.
-

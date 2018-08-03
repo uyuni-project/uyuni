@@ -1,4 +1,21 @@
+#
+# spec file for package spacewalk-proxy-html
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 %if 0%{?suse_version}
 %global htmldir /srv/www/htdocs
@@ -6,19 +23,19 @@
 %global htmldir %{_var}/www/html
 %endif
 
-Name: spacewalk-proxy-html
-Summary: The HTML component for Spacewalk Proxy
-Version: 2.8.2.2
-Release: 1%{?dist}
-Group:   Applications/Internet
-License: GPLv2
-URL:     https://github.com/spacewalkproject/spacewalk
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-root-%(%{__id_u} -n)
-BuildArch: noarch
-Obsoletes: rhns-proxy-html < 5.3.0
-Provides: rhns-proxy-html = 5.3.0
-Requires: httpd
+Name:           spacewalk-proxy-html
+Summary:        The HTML component for Spacewalk Proxy
+License:        GPL-2.0-only
+Group:          Applications/Internet
+Version:        2.8.2.2
+Release:        1%{?dist}
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+Obsoletes:      rhns-proxy-html < 5.3.0
+Provides:       rhns-proxy-html = 5.3.0
+Requires:       httpd
 
 %description
 This package contains placeholder html pages, which the Spacewalk Server
@@ -47,32 +64,3 @@ install -m 644 _rhn_proxy/* $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy/
 %endif
 
 %changelog
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- Bumping package versions for 2.8.
-
-* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
-- move version and release before sources
-
-* Mon Jul 17 2017 Jan Dobes 2.7.1-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-- Bumping package versions for 2.7.
-- Bumping package versions for 2.6.
-
-* Fri May 20 2016 Grant Gainey 2.5.1-1
-- spacewalk-proxy-html: build on openSUSE
-- Bumping package versions for 2.5.
-- Bumping package versions for 2.4.
-
-* Wed Jan 14 2015 Matej Kollar <mkollar@redhat.com> 2.3.1-1
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-- Bumping package versions for 2.3.
-- Bumping package versions for 2.2.
-- Bumping package versions for 2.1.
-

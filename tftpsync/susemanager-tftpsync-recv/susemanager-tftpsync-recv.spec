@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-tftpsync-recv
 #
-# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,24 +15,24 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+
 Name:           susemanager-tftpsync-recv
 Version:        3.2.2
 Release:        1%{?dist}
 Summary:        Reciever for SUSE Manager tftp sync
-Url:            http://www.suse.com
-License:        GPLv2
+License:        GPL-2.0-only
 Group:          Applications/System
-Source0:	%{name}-%{version}.tar.gz
+Url:            http://www.suse.com
+Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  apache2
 Requires:       apache2-mod_wsgi
 Requires(pre):  tftp(server)
+Requires:       python
 Requires:       spacewalk-backend
 Requires:       spacewalk-proxy-common
-Requires:       python
 Requires(pre):  coreutils
-
 
 %description
 Use SUSE Manager Proxy as installation server. Provide the capability
@@ -52,7 +52,6 @@ install -p -D -m 644 add.wsgi    %{buildroot}/srv/www/tftpsync/add
 install -p -D -m 644 delete.wsgi %{buildroot}/srv/www/tftpsync/delete
 install -p -D -m 755 configure-tftpsync.sh %{buildroot}%{_sbindir}/configure-tftpsync.sh
 install -p -D -m 644 rhn_tftpsync.conf %{buildroot}/%{_datadir}/rhn/config-defaults/rhn_tftpsync.conf
-
 
 %post
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
@@ -77,4 +76,3 @@ fi
 %{_datadir}/rhn/config-defaults/rhn_tftpsync.conf
 
 %changelog
-

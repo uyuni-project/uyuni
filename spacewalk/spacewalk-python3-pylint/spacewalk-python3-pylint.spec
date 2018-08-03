@@ -1,31 +1,47 @@
+#
+# spec file for package spacewalk-python3-pylint
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
 
-Name:		spacewalk-python3-pylint
-Version:	2.8.5.3
-Release:	1%{?dist}
-Summary:	Pylint configuration for python3 spacewalk python packages
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
 
-Group:  	Development/Debuggers
-License:	GPLv2
-URL:		https://github.com/spacewalkproject/spacewalk
-Source0:	https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildArch:	noarch
+
+Name:           spacewalk-python3-pylint
+Version:        2.8.5.3
+Release:        1%{?dist}
+Summary:        Pylint configuration for python3 spacewalk python packages
+License:        GPL-2.0-only
+Group:          Development/Debuggers
+
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildArch:      noarch
 
 %if 0%{?suse_version} >= 1320
-Requires:	python3-pylint > 1.1
+Requires:       python3-pylint > 1.1
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 7
-Requires:	python3-pylint > 1.5
+Requires:       python3-pylint > 1.5
 %else
-Requires:	python3-pylint < 1.0
+Requires:       python3-pylint < 1.0
 %endif
 %endif
-BuildRequires:	asciidoc
-BuildRequires:	libxslt
+BuildRequires:  asciidoc
+BuildRequires:  libxslt
 %if 0%{?rhel} && 0%{?rhel} < 6
-BuildRequires:	docbook-style-xsl
+BuildRequires:  docbook-style-xsl
 %endif
-
 
 %description
 Pylint configuration fine tuned to check coding style of spacewalk python
@@ -58,7 +74,6 @@ sed -i '/disable=/ s/,bad-continuation//g;' \
 mkdir -p %{buildroot}/%{_mandir}/man8
 install -m 644 spacewalk-python3-pylint.8 %{buildroot}/%{_mandir}/man8
 
-
 %files
 %{_bindir}/spacewalk-python3-pylint
 %config(noreplace)  %{_sysconfdir}/spacewalk-python3-pylint.rc
@@ -66,6 +81,3 @@ install -m 644 spacewalk-python3-pylint.8 %{buildroot}/%{_mandir}/man8
 %doc LICENSE
 
 %changelog
-* Mon Feb 12 2018 Eric Herget <eherget@redhat.com> 2.8.5-1
-- Split spacewalk-pylint into spacewalk-python2-pylint and spacewalk-python3-pylint.  Original changelog maintained in spacewalk-python2-pylint package.
-

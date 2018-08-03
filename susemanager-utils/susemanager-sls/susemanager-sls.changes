@@ -1,3 +1,4 @@
+- Fix copyright for the package specfile (bsc#1103696)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - Use custom Salt capabilities to prevent breaking backward compatibility (bsc#1096514)
 - Update profileupdate.sls to report all versions installed (bsc#1089526)

@@ -1,4 +1,21 @@
+#
+# spec file for package spacewalk-config
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 %if 0%{?suse_version}
 %define apacheconfdir %{_sysconfdir}/apache2
@@ -12,21 +29,21 @@
 
 %global rhnconfigdefaults %{_prefix}/share/rhn/config-defaults
 
-Name: spacewalk-config
-Summary: Spacewalk Configuration
-Version: 2.8.5.2
-Release: 1%{?dist}
-URL: https://github.com/spacewalkproject/spacewalk
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-License: GPLv2
-Group: Applications/System
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Buildarch: noarch
-Requires: perl(Satcon)
-Obsoletes: rhn-satellite-config < 5.3.0
-Provides: rhn-satellite-config = 5.3.0
+Name:           spacewalk-config
+Summary:        Spacewalk Configuration
+License:        GPL-2.0-only
+Group:          Applications/System
+Version:        2.8.5.2
+Release:        1%{?dist}
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+Requires:       perl(Satcon)
+Obsoletes:      rhn-satellite-config < 5.3.0
+Provides:       rhn-satellite-config = 5.3.0
 %if 0%{?fedora} > 24
-BuildRequires: perl-generators
+BuildRequires:  perl-generators
 %endif
 %if 0%{?rhel} || 0%{?fedora}
 Requires(post): chkconfig
@@ -36,14 +53,14 @@ Requires(preun): initscripts
 %endif
 # We need package httpd to be able to assign group apache in files section
 Requires(pre): %{apachepkg}
-Requires: openssl
+Requires:       openssl
 
 %global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 
 %if 0%{?suse_version}
-BuildRequires: openssl
-BuildRequires: sudo
-Requires: apache2-mod_xsendfile
+BuildRequires:  openssl
+BuildRequires:  sudo
+Requires:       apache2-mod_xsendfile
 %endif
 
 %description
@@ -170,154 +187,3 @@ if [ -e %{apacheconfdir}/vhosts.d/vhost-ssl.conf ]; then
 fi
 
 %changelog
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Fri Jan 05 2018 Jiri Dostal <jdostal@redhat.com> 2.8.4-1
-- Remove whitespace from rhn.conf
-
-* Thu Jan 04 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.3-1
-- Updated man page for rhn.conf file to include information on setting
-  Satellite's SMTP server
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
-- purged changelog entries for Spacewalk 2.0 and older
-
-* Tue Aug 22 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.1-1
-- Corrected variables for Taskomatic memory in rhn.conf and added documentation
-  for taskomatic.java.initmemory
-- Bumping package versions for 2.8.
-
-* Mon Jul 17 2017 Jan Dobes 2.7.3-1
-- 1447296 - add package_import_skip_changelog option to speed reposync up
-
-* Fri May 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
-- move sudoers configuration to /etc/sudoers.d/spacewalk
-- Use HTTPS in all Github links
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-
-* Mon Jan 23 2017 Jan Dobes 2.7.1-1
-- Mandatory Perl build-requires added
-  <https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl>
-- Bumping package versions for 2.7.
-
-* Thu Nov 10 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.5-1
-- 1373067 - Modified option for fonts directory
-
-* Mon Nov 07 2016 Jan Dobes 2.6.4-1
-- adding development key to keyring
-
-* Tue Oct 25 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.3-1
-- 1373067 - Prevent Apache directory listing
-
-* Wed Oct 05 2016 Jan Dobes 2.6.2-1
-- adding candlepin CA certificate to check manifest signature
-
-* Tue Jun 14 2016 Jan Dobes 2.6.1-1
-- create the symlink directly and point to correct destination on SUSE
-- Bumping package versions for 2.6.
-
-* Tue May 10 2016 Grant Gainey 2.5.3-1
-- spacewalk-config: build on openSUSE
-
-* Thu Dec 17 2015 Jan Dobes 2.5.2-1
-- removing unused enable_solaris_support configuration parameter
-- removing unused force_unentitlement configuration parameter
-
-* Tue Nov 24 2015 Jan Dobes 2.5.1-1
-- rhn-satellite-activate: manual references removed
-- Bumping package versions for 2.5.
-
-* Wed Aug 12 2015 Tomas Lestach <tlestach@redhat.com> 2.4.1-1
-- Fixed typo on the rhn.conf man page
-- Bumping package versions for 2.4.
-
-* Thu Mar 19 2015 Grant Gainey 2.3.17-1
-- remove unused dependency
-
-* Fri Mar 13 2015 Tomas Lestach <tlestach@redhat.com> 2.3.16-1
-- preparations for mod_perl removal
-
-* Fri Mar 13 2015 Tomas Lestach <tlestach@redhat.com> 2.3.15-1
-- do not reference Apache2::SizeLimit
-
-* Thu Mar 12 2015 Tomas Lestach <tlestach@redhat.com> 2.3.14-1
-- satellite-rules do not seem to be used, removing
-
-* Thu Mar 12 2015 Tomas Lestach <tlestach@redhat.com> 2.3.13-1
-- removing RHN::Cleansers
-- removing RHN::Access and PXT::ACL
-- remove apache PXT configuration
-- no more pxt pages
-
-* Mon Mar 09 2015 Tomas Lestach <tlestach@redhat.com> 2.3.12-1
-- stop using permission.pxt error document
-
-* Thu Mar 05 2015 Tomas Lestach <tlestach@redhat.com> 2.3.11-1
-- we do not have /var/www/html/network anymore
-
-* Wed Mar 04 2015 Tomas Lestach <tlestach@redhat.com> 2.3.10-1
-- removing unused pxt error pages
-- removing packages/package_map_raw as it isn't referenced
-- removing packages/view_readme as it isn't referenced
-
-* Tue Mar 03 2015 Tomas Lestach <tlestach@redhat.com> 2.3.9-1
-- start using the jsp error pages
-
-* Fri Feb 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.8-1
-- removing system_list/proxy.pxt as it isn't referenced anymore
-- remove unused raw_script_output.txt
-
-* Wed Feb 25 2015 Tomas Lestach <tlestach@redhat.com> 2.3.7-1
-- removing subscribers.pxt as it was ported to java
-
-* Tue Feb 24 2015 Tomas Lestach <tlestach@redhat.com> 2.3.6-1
-- removing activation.pxt as it was ported to java
-
-* Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.5-1
-- spacewalk-config etc/rhn-satellite-httpd dir no longer exists after
-  monitoring removal
-
-* Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.4-1
-- remove monitoring artefacts from spacewalk-config
-
-* Tue Jan 13 2015 Matej Kollar <mkollar@redhat.com> 2.3.3-1
-- Getting rid of trailing spaces in Perl
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-
-* Wed Dec 17 2014 Stephen Herr <sherr@redhat.com> 2.3.2-1
-- drop monitoring code and monitoring schema
-- 1170064 - equality is too strict
-
-* Thu Dec 11 2014 Matej Kollar <mkollar@redhat.com> 2.3.1-1
-- 1020952 - Include SSL configuration in setup
-- Bumping package versions for 2.3.
-
-* Tue Jul 08 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.2-1
-- make JSESSIONID cookie httpOnly
-
-* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.1-1
-- spec file polish
-
-* Mon Jan 06 2014 Tomas Lestach <tlestach@redhat.com> 2.1.5-1
-- rewrite Login2.do to Login.do page
-
-* Thu Dec 19 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.4-1
-- updated links to system group delete page
-
-* Mon Dec 16 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.3-1
-- Remove groups/errata_list.pxt
-- system group edit properties - linking + cleanup
-- system group details - linking + cleanup
-
-* Tue Sep 17 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
-- Updating rhn.conf man page for taskomatic.maxmemory option
-- Changes to rhn.conf man page for ISS settings
-
-* Thu Aug 22 2013 Tomas Lestach <tlestach@redhat.com> 2.1.1-1
-- update webapp-keyring.gpg with pgp public key valid until 2023-02-05
-- Bumping package versions for 2.1.
-

@@ -1,3 +1,4 @@
+- Fix copyright for the package specfile (bsc#1103696)
 - Sync with Spacewalk (bsc#1083294)
 
 -------------------------------------------------------------------

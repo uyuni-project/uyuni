@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sls
 #
-# Copyright (c) 2015-2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,11 +15,12 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+
 Name:           susemanager-sls
 Version:        3.2.13
-Release:        1
-License:        GPL-2.0
+Release:        0
 Summary:        Static Salt state files for SUSE Manager
+License:        GPL-2.0-only
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
@@ -105,3 +106,5 @@ fi
 /usr/share/susemanager/scap
 /srv/formula_metadata
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+
+%changelog

@@ -1,4 +1,21 @@
+#
+# spec file for package osad
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 %global rhnroot /usr/share/rhn
 %global rhnconf /etc/sysconfig/rhn
@@ -26,29 +43,29 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
-Name: osad
-Summary: Open Source Architecture Daemon
-Group:   System Environment/Daemons
-License: GPLv2
-Version: 5.11.102.2
-Release: 1%{?dist}
-URL:     https://github.com/spacewalkproject/spacewalk
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Source1: %{name}-rpmlintrc
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Name:           osad
+Summary:        Open Source Architecture Daemon
+License:        GPL-2.0-only
+Group:          System Environment/Daemons
+Version:        5.11.102.2
+Release:        1%{?dist}
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source1:        %{name}-rpmlintrc
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
-BuildArch: noarch
+BuildArch:      noarch
 %endif
 %if 0%{?fedora} > 26
-BuildRequires: perl-interpreter
+BuildRequires:  perl-interpreter
 %else
-BuildRequires: perl
+BuildRequires:  perl
 %endif
-Requires: %{pythonX}-%{name} = %{version}-%{release}
-Conflicts: osa-dispatcher < %{version}-%{release}
-Conflicts: osa-dispatcher > %{version}-%{release}
+Requires:       %{pythonX}-%{name} = %{version}-%{release}
+Conflicts:      osa-dispatcher < %{version}-%{release}
+Conflicts:      osa-dispatcher > %{version}-%{release}
 %if 0%{?suse_version} >= 1210
-BuildRequires: systemd
+BuildRequires:  systemd
 %{?systemd_requires}
 %endif
 %if 0%{?suse_version}
@@ -56,9 +73,11 @@ BuildRequires: systemd
 Requires(post): aaa_base
 Requires(preun): aaa_base
 # to make chkconfig test work during build
-BuildRequires: sysconfig syslog
+BuildRequires:  sysconfig
+BuildRequires:  syslog
 %if 0%{?suse_version} < 1210
-Requires: %fillup_prereq %insserv_prereq
+Requires:       %fillup_prereq
+Requires:       %insserv_prereq
 %endif
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -68,7 +87,7 @@ Requires(post): systemd-sysv
 Requires(preun): systemd-sysv
 Requires(post): systemd-units
 Requires(preun): systemd-units
-BuildRequires: systemd-units
+BuildRequires:  systemd-units
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
@@ -86,71 +105,77 @@ only poll the Spacewalk Server from time to time.
 
 %if 0%{?build_py2}
 %package -n python2-%{name}
-Summary: Open Source Architecture Daemon
-Provides: python-%{name} = %{version}-%{release}
-Obsoletes: python-%{name} < %{version}-%{release}
-Requires: %{name} = %{version}-%{release}
-Requires: python
-Requires: rhnlib >= 2.8.3
-Requires: spacewalk-usix
-Requires: python-jabberpy
-Requires: python2-rhn-client-tools >= 2.8.4
-Requires: python2-osa-common = %{version}
+Summary:        Open Source Architecture Daemon
+Group:          System Environment/Daemons
+Provides:       python-%{name} = %{version}-%{release}
+Obsoletes:      python-%{name} < %{version}-%{release}
+Requires:       %{name} = %{version}-%{release}
+Requires:       python
+Requires:       python-jabberpy
+Requires:       python2-osa-common = %{version}
+Requires:       python2-rhn-client-tools >= 2.8.4
+Requires:       rhnlib >= 2.8.3
+Requires:       spacewalk-usix
 %if 0%{?rhel} && 0%{?rhel} <= 5
-Requires: python-hashlib
+Requires:       python-hashlib
 %endif
-BuildRequires: python-devel
+BuildRequires:  python-devel
+
 %description -n python2-%{name}
 Python 2 specific files for %{name}
 %endif
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
-Summary: Open Source Architecture Daemon
-Requires: %{name} = %{version}-%{release}
-Requires: python3
-Requires: python3-rhnlib >= 2.8.3
-Requires: python3-spacewalk-usix
-Requires: python3-jabberpy
-Requires: python3-rhn-client-tools >= 2.8.4
-Requires: python3-osa-common = %{version}
-BuildRequires: python3-devel
+Summary:        Open Source Architecture Daemon
+Group:          System Environment/Daemons
+Requires:       %{name} = %{version}-%{release}
+Requires:       python3
+Requires:       python3-jabberpy
+Requires:       python3-osa-common = %{version}
+Requires:       python3-rhn-client-tools >= 2.8.4
+Requires:       python3-rhnlib >= 2.8.3
+Requires:       python3-spacewalk-usix
+BuildRequires:  python3-devel
+
 %description -n python3-%{name}
 Python 3 specific files for %{name}
 %endif
 
 %package -n python2-osa-common
-Summary: OSA common files
-Group:    System Environment/Daemons
-Requires: python-jabberpy
-Conflicts: %{name} < %{version}-%{release}
-Conflicts: %{name} > %{version}-%{release}
-Obsoletes: osa-common < %{version}-%{release}
-Provides:  osa-common = %{version}-%{release}
+Summary:        OSA common files
+Group:          System Environment/Daemons
+Requires:       python-jabberpy
+Conflicts:      %{name} < %{version}-%{release}
+Conflicts:      %{name} > %{version}-%{release}
+Obsoletes:      osa-common < %{version}-%{release}
+Provides:       osa-common = %{version}-%{release}
+
 %description -n python2-osa-common
 Python 2 common files needed by osad and osa-dispatcher
 
 %if 0%{?build_py3}
 %package -n python3-osa-common
-Summary: OSA common files
-Group:    System Environment/Daemons
-Requires: python3-jabberpy
-Conflicts: %{name} < %{version}-%{release}
-Conflicts: %{name} > %{version}-%{release}
-Obsoletes: osa-common < %{version}-%{release}
-Provides:  osa-common = %{version}-%{release}
+Summary:        OSA common files
+Group:          System Environment/Daemons
+Requires:       python3-jabberpy
+Conflicts:      %{name} < %{version}-%{release}
+Conflicts:      %{name} > %{version}-%{release}
+Obsoletes:      osa-common < %{version}-%{release}
+Provides:       osa-common = %{version}-%{release}
+
 %description -n python3-osa-common
 Python 3 common files needed by osad and osa-dispatcher
 %endif
 
 %package -n osa-dispatcher
-Summary: OSA dispatcher
-Group:    System Environment/Daemons
-Requires: spacewalk-backend-server >= 1.2.32
-Requires: python2-osa-dispatcher = %{version}-%{release}
-Requires: lsof
-Conflicts: %{name} < %{version}-%{release}
-Conflicts: %{name} > %{version}-%{release}
+Summary:        OSA dispatcher
+Group:          System Environment/Daemons
+Requires:       lsof
+Requires:       python2-osa-dispatcher = %{version}-%{release}
+Requires:       spacewalk-backend-server >= 1.2.32
+Conflicts:      %{name} < %{version}-%{release}
+Conflicts:      %{name} > %{version}-%{release}
 %if 0%{?suse_version} >= 1210
 %{?systemd_requires}
 %endif
@@ -171,26 +196,30 @@ from the Spacewalk server that some command needs to be execute on the client;
 that message is transported via jabber protocol to OSAD agent on the clients.
 
 %package -n python2-osa-dispatcher
-Summary: OSA dispatcher
+Summary:        OSA dispatcher
+Group:          System Environment/Daemons
 %if 0%{?fedora} >= 28
-BuildRequires: python2-devel
-Requires: python2
+BuildRequires:  python2-devel
+Requires:       python2
 %else
-BuildRequires: python-devel
-Requires: python
+BuildRequires:  python-devel
+Requires:       python
 %endif
-Requires: python-jabberpy
-Requires: python2-osa-common = %{version}-%{release}
+Requires:       python-jabberpy
+Requires:       python2-osa-common = %{version}-%{release}
+
 %description -n python2-osa-dispatcher
 Python 2 specific files for osa-dispatcher.
 
 %if 0%{?build_py3}
 %package -n python3-osa-dispatcher
-Summary: OSA dispatcher
-BuildRequires: python3-devel
-Requires: python3
-Requires: python3-jabberpy
-Requires: python3-osa-common = %{version}-%{release}
+Summary:        OSA dispatcher
+Group:          System Environment/Daemons
+BuildRequires:  python3-devel
+Requires:       python3
+Requires:       python3-jabberpy
+Requires:       python3-osa-common = %{version}-%{release}
+
 %description -n python3-osa-dispatcher
 Python 3 specific files for osa-dispatcher.
 %endif
@@ -204,21 +233,23 @@ Python 3 specific files for osa-dispatcher.
 %global moduletype apps
 %global modulename osa-dispatcher
 
-Summary: SELinux policy module supporting osa-dispatcher
-Group: System Environment/Base
-BuildRequires: checkpolicy, selinux-policy-devel, hardlink
-BuildRequires: policycoreutils >= %{POLICYCOREUTILSVER}
-Requires: spacewalk-selinux
+Summary:        SELinux policy module supporting osa-dispatcher
+Group:          System Environment/Base
+BuildRequires:  checkpolicy
+BuildRequires:  hardlink
+BuildRequires:  policycoreutils >= %{POLICYCOREUTILSVER}
+BuildRequires:  selinux-policy-devel
+Requires:       spacewalk-selinux
 
 %if "%{selinux_policyver}" != ""
-Requires: selinux-policy >= %{selinux_policyver}
+Requires:       selinux-policy >= %{selinux_policyver}
 %endif
 %if 0%{?rhel} == 5
-Requires:        selinux-policy >= 2.4.6-114
+Requires:       selinux-policy >= 2.4.6-114
 %endif
 Requires(post): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled, /usr/sbin/semanage
 Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/semanage, spacewalk-selinux
-Requires: osa-dispatcher
+Requires:       osa-dispatcher
 
 %description -n osa-dispatcher-selinux
 SELinux policy module supporting osa-dispatcher.
@@ -331,11 +362,9 @@ ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcosa-dispatcher
 %endif
 %endif
 
-
 %{!?systemd_post: %global systemd_post() if [ $1 -eq 1 ] ; then /usr/bin/systemctl enable %%{?*} >/dev/null 2>&1 || : ; fi; }
 %{!?systemd_preun: %global systemd_preun() if [ $1 -eq 0 ] ; then /usr/bin/systemctl --no-reload disable %%{?*} > /dev/null 2>&1 || : ; /usr/bin/systemctl stop %%{?*} >/dev/null 2>&1 || : ; fi; }
 %{!?systemd_postun_with_restart: %global systemd_postun_with_restart() /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : ; if [ $1 -ge 1 ] ; then /usr/bin/systemctl try-restart %%{?*} >/dev/null 2>&1 || : ; fi; }
-
 
 %post
 ARG=$1
@@ -598,271 +627,3 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
-* Tue Mar 20 2018 Tomas Kasparek <tkasparek@redhat.com> 5.11.102-1
-- remove osad files when packaging only for python3
-- osa-dispatcher is dependent on spacewalk-backend which is in python2
-
-* Mon Mar 19 2018 Tomas Kasparek <tkasparek@redhat.com> 5.11.101-1
-- run osa-dispatcher on python3 when possible
-- don't build python2 subpackages on F28 + update python requires
-
-* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 5.11.100-1
-- use python3 for rhel8 in osad
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.11.99-1
-- removed %%%%defattr from specfile
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.98-1
-- osad: add missing directory to filelist
-
-* Fri Oct 20 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.97-1
-- use sssd macros only on Fedora 26
-
-* Wed Oct 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.96-1
-- 1501866 - osa-dispatcher is now link to actual executable
-
-* Mon Oct 09 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.95-1
-- 1451770 - simplify expression using format_exc
-
-* Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.94-1
-- install files into python_sitelib/python3_sitelib
-- move osa-dispatcher files into proper python2/python3 subpackages
-- move osa-common files into proper python2/python3 subpackages
-- move osad files into proper python2/python3 subpackages
-- split osa-dispatcher into python2/python3 specific packages
-- split osa-common into python2/python3 specific packages
-- split osad into python2/python3 specific packages
-
-* Thu Oct 05 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.93-1
-- (bz#1491451) osad: set KillMode=process in systemd unit
-- 1494389 - Revert "[1260527] RHEL7 reboot loop"
-
-* Tue Oct 03 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.92-1
-- Revert "(bz#1491451) osad: set KillMode=process in systemd unit"
-- (bz#1491451) osad: set KillMode=process in systemd unit
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.91-1
-- purged changelog entries for Spacewalk 2.0 and older
-- fixed selinux error messages during package install, see related BZ#1446487
-
-* Mon Aug 21 2017 Jan Dobes 5.11.90-1
-- 1373789 - fixing permissions for logrotate file
-
-* Thu Aug 10 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.89-1
-- make sure osa_dispatcher_upstream_notif_server_port_t has been removed
-
-* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.88-1
-- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
-  27
-
-* Mon Aug 07 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.87-1
-- recompile osa-dispatcher with py2 even on F23+
-
-* Thu Aug 03 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.86-1
-- 1477753 - use standard brp-python-bytecompile to make proper .pyc/.pyo
-
-* Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 5.11.85-1
-- update copyright year
-
-* Thu Jul 27 2017 Eric Herget <eherget@redhat.com> 5.11.84-1
-- 1446487 - spacewalk-selinux error messages during package install
-
-* Tue Jul 25 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.83-1
-- 1471946 - allow osad to work with older RHEL6 and RHEL7 rhnlib
-
-* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.82-1
-- move version and release before sources
-
-* Mon Jul 17 2017 Jan Dobes 5.11.81-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-- fix TypeError: descriptor 'with_traceback'
-
-* Thu Feb 16 2017 Eric Herget <eherget@redhat.com> 5.11.80-1
-- BZ1410781 - osad doesn't pick up tasks following a reboot event
-
-* Wed Feb 15 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.79-1
-- require spacewalk-usix indead of spacewalk-backend-usix
-
-* Tue Feb 07 2017 Eric Herget <eherget@redhat.com> 5.11.78-1
-- 1419199 - fix osa_dispatcher so it can successfully register with jabberd
-
-* Mon Jan 23 2017 Jan Dobes 5.11.77-1
-- removing selinux port requirements
-- Drop code used from the Perl stack to 'trickle' OSAD
-
-* Tue Nov 29 2016 Jan Dobes 5.11.76-1
-- perl isn't in Fedora 25 buildroot
-
-* Mon Nov 21 2016 Gennadii Altukhov <galt@redhat.com> 5.11.75-1
-- 1397078: fix python2/3 StringIO import
-
-* Fri Nov 11 2016 Jiri Dostal <jdostal@redhat.com> 5.11.74-1
-- [1260527] RHEL7 reboot loop
-
-* Thu Sep 29 2016 Jiri Dostal <jdostal@redhat.com> 5.11.73-1
-- Fix of verification of /etc/sysconfig/rhn/osad-auth.conf file
-
-* Fri Sep 23 2016 Grant Gainey 5.11.72-1
-- 1277448 - Link ssl-failure-log to associated solution-article
-
-* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 5.11.71-1
-- updating copyright years
-
-* Thu May 12 2016 Gennadii Altukhov <galt@redhat.com> 5.11.70-1
-- change interpreter on python2 for osa-dispatcher
-
-* Tue May 10 2016 Grant Gainey 5.11.69-1
-- osad: fix permissions on directories
-
-* Wed May 04 2016 Gennadii Altukhov <galt@redhat.com> 5.11.68-1
-- 1332224 - service osad doesn't work with selinux
-
-* Tue May 03 2016 Gennadii Altukhov <galt@redhat.com> 5.11.67-1
-- Adapt osad to work  in python 2/3
-- remove local ConfigParser which was used for Python 1.5
-
-* Fri Apr 29 2016 Tomas Kasparek <tkasparek@redhat.com> 5.11.66-1
-- fix typo in error message
-
-* Tue Apr 26 2016 Tomas Kasparek <tkasparek@redhat.com> 5.11.65-1
-- provide Knowledgebase article hint in case of connection fails
-
-* Fri Feb 12 2016 Gennadii Altukhov <galt@redhat.com> 5.11.64-1
-- 1306541 - Add possibility for OSAD to work in failover mode
-
-* Thu Nov 19 2015 Tomas Kasparek <tkasparek@redhat.com> 5.11.63-1
-- osad: re-send subscription stanzas after a while
-
-* Tue Jun 23 2015 Tomas Kasparek <tkasparek@redhat.com> 5.11.62-1
-- allow exexmem to osa-dispatcher
-
-* Fri Jun 19 2015 Tomas Kasparek <tkasparek@redhat.com> 5.11.61-1
-- auto-healing for duplicate jabber ids
-
-* Fri Jun 05 2015 Tomas Kasparek <tkasparek@redhat.com> 5.11.60-1
-- Add logging of error stanzas
-- Add error logging to debug log
-- Refactoring: inline method used only once
-- Refactoring: remove modification to unused variable
-
-* Thu May 14 2015 Stephen Herr <sherr@redhat.com> 5.11.59-1
-- define the order of pending clients
-- explain the new notify_threshold param
-- introduce notify_threshold for osa-dispatcher (bsc#915581)
-
-* Fri Apr 10 2015 Matej Kollar <mkollar@redhat.com> 5.11.58-1
-- Improve osad's handling of the rhn_check process.
-
-* Wed Mar 25 2015 Grant Gainey 5.11.57-1
-- Move common files shared between osad and osa-dispatcher its own package.
-  This allows osad and osa-dispatcher to coexist.
-
-* Thu Mar 19 2015 Grant Gainey 5.11.56-1
-- Updating copyright info for 2015
-
-* Thu Mar 05 2015 Stephen Herr <sherr@redhat.com> 5.11.55-1
-- osa-dispatcher: check for reboot type only
-
-* Mon Feb 09 2015 Matej Kollar <mkollar@redhat.com> 5.11.54-1
-- Updating function names
-
-* Fri Jan 30 2015 Stephen Herr <sherr@redhat.com> 5.11.53-1
-- Apply needed SElinux fix for RHEL7 and make use of systemd unit files
-
-* Fri Jan 16 2015 Tomas Lestach <tlestach@redhat.com> 5.11.52-1
-- move %%pre section down and eliminate an %%if
-
-* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 5.11.51-1
-- Getting rid of Tabs and trailing spaces in Python
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-
-* Fri Dec 05 2014 Stephen Herr <sherr@redhat.com> 5.11.50-1
-- fix osad postun section
-
-* Thu Nov 20 2014 Tomas Kasparek <tkasparek@redhat.com> 5.11.49-1
-- Revert "autostart osad after package installation"
-
-* Wed Nov 12 2014 Tomas Kasparek <tkasparek@redhat.com> 5.11.48-1
-- autostart osad after package installation
-
-* Tue Nov 04 2014 Stephen Herr <sherr@redhat.com> 5.11.47-1
-- 1117343 - fix osad through unauthenticated proxy case
-
-* Thu Sep 25 2014 Stephen Herr <sherr@redhat.com> 5.11.46-1
-- 1125432 - self-heal jabberd connection to proxies if satellite restarts
-
-* Thu Jul 31 2014 Michael Mraka <michael.mraka@redhat.com> 5.11.45-1
-- increasing osad version to be above builds in SPACEWALK-2.2
-
-* Thu Jul 17 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.41-1
-- osad: fix traceback if http proxy is not configured
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.40-1
-- fix copyright years
-
-* Tue Jul 08 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.39-1
-- 1117343 - osad: support communication over proxy
-
-* Fri Jun 20 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.38-1
-- start osad after package installation on sysvinit systems
-
-* Tue Jun 10 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.37-1
-- RHEL-5 python doesn't support -s option
-
-* Mon Jun 09 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.36-1
-- don't add user site dir to sys.path
-
-* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.35-1
-- spec file polish
-
-* Mon Mar 31 2014 Stephen Herr <sherr@redhat.com> 5.11.34-1
-- make reboot_in_progress a public function
-- do not notify osad of a server which reboot is in progress
-
-* Thu Feb 06 2014 Jan Dobes 5.11.33-1
-- 1056515 - adapting to different logrotate version in fedora and rhel
-
-* Mon Nov 11 2013 Milan Zazrivec <mzazrivec@redhat.com> 5.11.32-1
-- remove extraneous 'except'
-
-* Fri Nov 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 5.11.31-1
-- 917070 - catch jabberd connection errors
-
-* Thu Oct 10 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.30-1
-- cleaning up old svn Ids
-
-* Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.29-1
-- removed trailing whitespaces
-
-* Tue Aug 06 2013 Tomas Kasparek <tkasparek@redhat.com> 5.11.28-1
-- Branding clean-up of proxy stuff in client dir
-
-* Mon Jun 17 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.27-1
-- more branding cleanup
-
-* Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 5.11.26-1
-- rebranding RHN Proxy to Red Hat Proxy in client stuff
-- rebranding RHN Satellite to Red Hat Satellite in client stuff
-
-* Fri Apr 26 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.25-1
-- new logrotate complains about permissions
-
-* Thu Apr 25 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.24-1
-- enable osad.service after installation
-
-* Mon Apr 08 2013 Tomas Lestach <tlestach@redhat.com> 5.11.23-1
-- setting default attributes for osa-dispatcher files
-
-* Wed Mar 27 2013 Stephen Herr <sherr@redhat.com> 5.11.22-1
-- 860937 - somehow I managed to get wrong the version required in rhel 5
-
-* Wed Mar 27 2013 Stephen Herr <sherr@redhat.com> 5.11.21-1
-- 860937 - correct requires on RHEL 5
-
-* Tue Mar 26 2013 Stephen Herr <sherr@redhat.com> 5.11.20-1
-- 860937 - update osad requires versions for rhel 5 and 6
-

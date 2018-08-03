@@ -1,3 +1,4 @@
+- Fix copyright for the package specfile (bsc#1103696)
 - Disable Oracle support for openSUSE (bsc#1095804)
 
 -------------------------------------------------------------------
