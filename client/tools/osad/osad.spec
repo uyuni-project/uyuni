@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %global rhnroot /usr/share/rhn
 %global rhnconf /etc/sysconfig/rhn
 %global client_caps_dir /etc/sysconfig/rhn/clientCaps.d

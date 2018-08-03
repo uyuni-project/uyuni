@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 Name:           spacewalk-setup-postgresql
 Version:        2.8.4.1
 Release:        1%{?dist}

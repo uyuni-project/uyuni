@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %if 0%{?suse_version}
 %define www_path /srv/
 %define apache_user wwwrun

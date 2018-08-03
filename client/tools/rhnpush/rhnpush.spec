@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 
 %{!?pylint_check: %global pylint_check 0}
 

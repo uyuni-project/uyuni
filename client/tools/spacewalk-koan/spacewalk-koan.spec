@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 # package renaming fun :(
 %define rhn_check	 spacewalk-check
 #

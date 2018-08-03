@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes

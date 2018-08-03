@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 Name:		spacewalk-python2-pylint
 Version:	2.8.6.3
 Release:	1%{?dist}

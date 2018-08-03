@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %if  0%{?rhel} && 0%{?rhel} < 6
 %global tomcat_path %{_var}/lib/tomcat5
 %global wwwdocroot %{_var}/www/html
