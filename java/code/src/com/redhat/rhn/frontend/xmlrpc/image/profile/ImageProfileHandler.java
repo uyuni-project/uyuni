@@ -149,6 +149,13 @@ public class ImageProfileHandler extends BaseHandler {
             if (!ak.isPresent()) {
                 throw new InvalidParameterException("Activation key does not exist.");
             }
+            ak.ifPresent(akey -> {
+                if (akey.getBaseChannel() == null) {
+                    throw new InvalidParameterException(
+                            "Activation key does not have any base channel associated " +
+                                    "(do not use SUSE Manager default).");
+                }
+            });
         }
         else if (ImageProfile.TYPE_KIWI.equals(type)) {
             throw new InvalidParameterException("Activation key cannot be empty for Kiwi profiles.");
