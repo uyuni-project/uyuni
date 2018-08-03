@@ -63,6 +63,7 @@ import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -1356,6 +1357,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+            allowing(saltServiceMock).generateOSImagePillar(with(equal("/srv/susemanager/pillar_data/images/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls")),
+                    with(any(OSImageInspectSlsResult.class)), with(any(String.class)));
             will(returnValue(Optional.of(mockResult)));
         }});
         SaltUtils.INSTANCE.setSaltService(saltServiceMock);
@@ -1367,6 +1370,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         doTestKiwiImageInspect(server, "my-kiwi-image", profile, (info) -> {
             assertNotNull(info.getInspectAction().getId());
+            assertEquals(286, info.getPackages().size());
         });
     }
 
@@ -1426,12 +1430,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         assertTrue(ImageInfoFactory.lookupById(imgInfoBuild.get().getId()).isPresent());
         ImageInfo imgInfo = TestUtils.reload(imgInfoBuild.get());
-        assertNotNull(imgInfo.getInspectAction().getId());
 
-        // other assertions after build
-        assertions.accept(imgInfoBuild.get());
+        assertions.accept(imgInfo);
 
-        return imgInfoBuild.get();
+        return imgInfo;
     }
 
     public TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
