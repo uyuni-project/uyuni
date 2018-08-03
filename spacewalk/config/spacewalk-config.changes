@@ -1,3 +1,4 @@
+- Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - remove not needed build dependency to cobbler (bsc#1102137)
 
 -------------------------------------------------------------------

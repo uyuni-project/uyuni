@@ -1,3 +1,4 @@
+- Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - Enable Spacewalk 2.8 client tools for using with Uyuni
 
 -------------------------------------------------------------------
