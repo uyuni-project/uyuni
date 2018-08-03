@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 Name: spacewalk-proxy-docs
 Summary: Spacewalk Proxy Server Documentation
 Version: 2.8.2.2

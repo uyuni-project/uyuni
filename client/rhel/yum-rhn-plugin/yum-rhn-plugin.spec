@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 # package renaming fun :(
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup

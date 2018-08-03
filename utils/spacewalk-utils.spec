@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %define rhnroot %{_prefix}/share/rhn
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}

@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %define cobprofdir      %{_localstatedir}/lib/rhn/kickstarts
 %define cobprofdirup    %{_localstatedir}/lib/rhn/kickstarts/upload
 %define cobprofdirwiz   %{_localstatedir}/lib/rhn/kickstarts/wizard

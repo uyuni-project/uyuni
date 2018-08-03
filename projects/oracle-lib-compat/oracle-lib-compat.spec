@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 Name:           oracle-lib-compat
 Version:        12.1.0.2.6
 Release:        1%{?dist}

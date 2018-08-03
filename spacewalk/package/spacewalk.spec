@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %define release_name Smile
 %if 0%{?suse_version}
 %global postgresql postgresql >= 8.4

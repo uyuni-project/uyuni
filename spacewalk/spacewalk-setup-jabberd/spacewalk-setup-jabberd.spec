@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 Name:           spacewalk-setup-jabberd
 Version:        2.8.5.1
 Release:        1%{?dist}

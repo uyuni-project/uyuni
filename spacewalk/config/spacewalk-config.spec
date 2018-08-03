@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %if 0%{?suse_version}
 %define apacheconfdir %{_sysconfdir}/apache2
 %define apachepkg apache2

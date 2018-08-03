@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 Name: spacewalk-ssl-cert-check
 Epoch:	 1
 Version: 2.8.2

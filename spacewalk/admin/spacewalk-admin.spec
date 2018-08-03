@@ -1,3 +1,5 @@
+# Copyright (c) 2008-2018 Red Hat, Inc.
+
 %global rhnroot /%{_datadir}/rhn
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
