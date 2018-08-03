@@ -1,3 +1,4 @@
+- Fix behavior when canceling actions (bsc#1098993)
 - speedup listing systems of a group (bsc#1102009)
 - Disallow '.' in config channel names (bsc#1100731)
 - Add python3 xmlrpc api example to docs.
