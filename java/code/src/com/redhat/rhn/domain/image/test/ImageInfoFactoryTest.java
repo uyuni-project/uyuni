@@ -251,11 +251,16 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageStore store = ImageTestUtils.createImageStore("mystore", user);
         ImageStore anotherStore = ImageTestUtils.createImageStore("myotherstore", user);
         ImageInfo image = createImageInfo("myimage", "1.0.0", store, user);
+        ImageInfo image2 = createImageInfo("myimage2", null, store, user);
 
         ImageInfo result =
                 ImageInfoFactory.lookupByName("myimage", "1.0.0", store.getId()).get();
 
         assertEquals(image, result);
+
+        result = ImageInfoFactory.lookupByName("myimage2", null, store.getId()).get();
+
+        assertEquals(image2, result);
 
         assertFalse(ImageInfoFactory
                 .lookupByName("non-existent-name", "1.0.0", store.getId()).isPresent());

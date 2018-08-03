@@ -164,7 +164,9 @@ public class ImageInfoFactory extends HibernateFactory {
         }
 
         ImageInspectAction action = ActionManager.scheduleImageInspect(user,
-                Collections.singletonList(server.getId()), Optional.of(image.getBuildAction().getId()), image.getVersion(),
+                Collections.singletonList(server.getId()),
+                Optional.ofNullable(image.getBuildAction() == null ? null : image.getBuildAction().getId()),
+                image.getVersion(),
                 image.getName(), image.getStore(), earliest);
         taskomaticApi.scheduleActionExecution(action);
 
