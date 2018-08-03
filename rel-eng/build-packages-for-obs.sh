@@ -117,18 +117,6 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   # Remove everything what prevents us from submitting
   sed -i 's/^Release.*$/Release:    1/i' $SRPM_DIR/$PKG_NAME/*.spec
 
-  #
-  # change BuildRoot: in spec files to SUSE flavor.
-  # The buildservice requires it this way.
-  # Otherwise some errors are not seen during build
-  #
-  if [ -x /usr/lib/obs/service/format_spec_file ]; then
-    pushd $SRPM_DIR/$PKG_NAME/
-    /usr/lib/obs/service/format_spec_file -outdir .
-    popd
-  else
-    sed -i 's/^BuildRoot.*$/BuildRoot:    %{_tmppath}\/%{name}-%{version}-build/i' $SRPM_DIR/$PKG_NAME/*.spec
-  fi
   SUCCEED_CNT=$(($SUCCEED_CNT+1))
   break
  done
