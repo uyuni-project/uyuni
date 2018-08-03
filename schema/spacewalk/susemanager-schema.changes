@@ -1,3 +1,5 @@
+- Enable system preferences for Salt minions (bsc#1098388)
+
 -------------------------------------------------------------------
 Wed Jul 04 09:18:32 CEST 2018 - jgonzalez@suse.com
 
