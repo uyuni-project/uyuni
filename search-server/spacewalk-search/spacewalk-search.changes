@@ -1,3 +1,4 @@
+- Fix copyright for the package specfile (bsc#1103696)
 - Apply correct patch for "Fix the search when server is missing primary interface" (bsc#1103044)
 - Fix the search when server is missing primary interface (bsc#1099638)
 

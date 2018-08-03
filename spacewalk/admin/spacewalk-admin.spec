@@ -1,29 +1,46 @@
+#
+# spec file for package spacewalk-admin
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 %global rhnroot /%{_datadir}/rhn
-Summary: Various utility scripts and data files for Spacewalk installations
-Name: spacewalk-admin
-URL:     https://github.com/spacewalkproject/spacewalk
-Version: 2.8.4.2
-Release: 1%{?dist}
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-License: GPLv2
-Group: Applications/Internet
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires: spacewalk-base
-Requires: perl(MIME::Base64)
-Requires: lsof
-BuildRequires: /usr/bin/pod2man
+Summary:        Various utility scripts and data files for Spacewalk installations
+License:        GPL-2.0-only
+Group:          Applications/Internet
+Name:           spacewalk-admin
+URL:            https://github.com/spacewalkproject/spacewalk
+Version:        2.8.4.2
+Release:        1%{?dist}
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Requires:       lsof
+Requires:       spacewalk-base
+Requires:       perl(MIME::Base64)
+BuildRequires:  /usr/bin/pod2man
 %if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
-BuildRequires: systemd
+BuildRequires:  systemd
 %endif
-Obsoletes: satellite-utils < 5.3.0
-Provides: satellite-utils = 5.3.0
-Obsoletes: rhn-satellite-admin < 5.3.0
-Provides: rhn-satellite-admin = 5.3.0
-BuildArch: noarch
+Obsoletes:      satellite-utils < 5.3.0
+Provides:       satellite-utils = 5.3.0
+Obsoletes:      rhn-satellite-admin < 5.3.0
+Provides:       rhn-satellite-admin = 5.3.0
+BuildArch:      noarch
 %if 0%{?suse_version}
-BuildRequires: spacewalk-config
+BuildRequires:  spacewalk-config
 %endif
 
 %description
@@ -92,90 +109,3 @@ ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 %endif
 
 %changelog
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Fri Dec 15 2017 Jan Dobes <jdobes@redhat.com> 2.8.3-1
-- 1524221 - ship systemd target on RHEL 7 too
-
-* Mon Nov 13 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.2-1
-- don't use systemctl pager for output as we have "| less"
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- Bumping package versions for 2.8.
-
-* Mon Jul 17 2017 Jan Dobes 2.7.1-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-- Bumping package versions for 2.7.
-
-* Wed Oct 12 2016 Grant Gainey 2.6.1-1
-- Update specfile to be consistent about referring to both SW and Satellite
-- Bumping package versions for 2.6.
-
-* Fri May 20 2016 Grant Gainey 2.5.3-1
-- remove monitoring from SUSE spacewalk target
-
-* Tue May 10 2016 Grant Gainey 2.5.2-1
-- spacewalk-admin: build on openSUSE
-
-* Tue Nov 24 2015 Jan Dobes 2.5.1-1
-- spacewalk-admin.spec: incorrect cd removed
-- spacewalk-admin: drop validate-sat-cert.pl
-- Bumping package versions for 2.5.
-
-* Thu Sep 24 2015 Jan Dobes 2.4.2-1
-- Bumping copyright year.
-
-* Wed Aug 05 2015 Jan Dobes 2.4.1-1
-- trust spacewalk CA certificate
-- Bumping package versions for 2.4.
-
-* Thu Mar 19 2015 Grant Gainey 2.3.4-1
-- drop requires for perl-URI - seems to be unused
-- Updating copyright info for 2015
-
-* Fri Jan 16 2015 Tomas Lestach <tlestach@redhat.com> 2.3.3-1
-- remove Monitoring and MonitoringScout from spacewalk.target and spacewalk-
-  service
-
-* Tue Jan 13 2015 Matej Kollar <mkollar@redhat.com> 2.3.2-1
-- Getting rid of trailing spaces in Perl
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-
-* Wed Jan 07 2015 Jan Dobes 2.3.1-1
-- 1179374 - do not crash if rhn.conf does not exist
-- Bumping package versions for 2.3.
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.7-1
-- we need to call restorecon with full path
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.6-1
-- fix copyright years
-
-* Tue Jul 08 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.5-1
-- restorecon may have different path
-
-* Wed Jun 18 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.4-1
-- Set correct SELinux context on the target file
-
-* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.3-1
-- Do not look at processes in containers.
-
-* Thu May 22 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.2-1
-- 1064287 - Use systemctl to get the pid since /var/run/tomcat.pid is empty.
-
-* Mon Apr 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
-- Add support to ConfigureSatelliteCommand to remove keys
-
-* Mon Oct 14 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
-- cleaning up old svn Ids
-
-* Thu Aug 08 2013 Jan Dobes 2.1.1-1
-- fixing decrementation
-- 972626 - general waiting function
-- Bumping package versions for 2.1.
-

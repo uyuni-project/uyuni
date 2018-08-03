@@ -1,97 +1,114 @@
+#
+# spec file for package spacewalk-search
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 %{!?__redhat_release:%define __redhat_release UNKNOWN}
 
-Name: spacewalk-search
-Summary: Spacewalk Full Text Search Server
-Group: Applications/Internet
-License: GPL-2.0 and Apache-2.0
-Version: 2.8.3.3
-Release: 1%{?dist}
+Name:           spacewalk-search
+Summary:        Spacewalk Full Text Search Server
+License:        GPL-2.0-only AND Apache-2.0
+Group:          Applications/Internet
+Version:        2.8.3.3
+Release:        1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git
 # cd search-server
 # make test-srpm
-URL: https://github.com/spacewalkproject/spacewalk
-Source0: %{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch: noarch
-ExcludeArch: aarch64
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        %{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+ExcludeArch:    aarch64
 
-BuildRequires: hadoop
-BuildRequires: nutch-core
-BuildRequires: picocontainer
-BuildRequires: lucene
-BuildRequires: apache-mybatis
-Requires: hadoop
-Requires: nutch-core
-Requires: picocontainer
-Requires: lucene
-Requires: apache-mybatis
+BuildRequires:  apache-mybatis
+BuildRequires:  hadoop
+BuildRequires:  lucene
+BuildRequires:  nutch-core
+BuildRequires:  picocontainer
+Requires:       apache-mybatis
+Requires:       hadoop
+Requires:       lucene
+Requires:       nutch-core
+Requires:       picocontainer
 
-BuildRequires: junit
+BuildRequires:  junit
 #Requires: apache-ibatis-sqlmap
-Requires: c3p0 >= 0.9.1
-Requires: cglib
+Requires:       c3p0 >= 0.9.1
+Requires:       cglib
 Requires(pre): doc-indexes
-Requires: jakarta-commons-httpclient
-Requires: jakarta-oro
-Requires: javapackages-tools
+Requires:       jakarta-commons-httpclient
+Requires:       jakarta-oro
+Requires:       javapackages-tools
 #Requires: lucene
-Requires: objectweb-asm
+Requires:       objectweb-asm
 %if 0%{?fedora} || 0%{?rhel} >=7
-Requires: mchange-commons
+Requires:       mchange-commons
 %endif
-Requires: quartz >= 2.0
-Requires: redstone-xmlrpc
+Requires:       quartz >= 2.0
+Requires:       redstone-xmlrpc
 #Requires: picocontainer
-Requires: tanukiwrapper
-Requires: simple-core
-Obsoletes: rhn-search < 5.3.0
-BuildRequires: ant
+Requires:       simple-core
+Requires:       tanukiwrapper
+Obsoletes:      rhn-search < 5.3.0
+BuildRequires:  ant
 #BuildRequires: apache-ibatis-sqlmap
-BuildRequires: c3p0 >= 0.9.1
-BuildRequires: cglib
-BuildRequires: jakarta-commons-httpclient
-BuildRequires: jakarta-oro
-BuildRequires: java-devel >= 1.8.0
-BuildRequires: javapackages-tools
+BuildRequires:  c3p0 >= 0.9.1
+BuildRequires:  cglib
+BuildRequires:  jakarta-commons-httpclient
+BuildRequires:  jakarta-oro
+BuildRequires:  java-devel >= 1.8.0
+BuildRequires:  javapackages-tools
 #BuildRequires: lucene
-BuildRequires: objectweb-asm
-BuildRequires: quartz >= 2.0
-BuildRequires: redstone-xmlrpc
+BuildRequires:  objectweb-asm
+BuildRequires:  quartz >= 2.0
+BuildRequires:  redstone-xmlrpc
 #BuildRequires: picocontainer
-BuildRequires: tanukiwrapper
-BuildRequires: slf4j
-BuildRequires: simple-core
+BuildRequires:  simple-core
+BuildRequires:  slf4j
+BuildRequires:  tanukiwrapper
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1315
-Requires: apache-commons-cli
-Requires: apache-commons-codec
-Requires: apache-commons-lang3
-Requires: apache-commons-logging
-BuildRequires: apache-commons-cli
-BuildRequires: apache-commons-codec
-BuildRequires: apache-commons-lang3
-BuildRequires: apache-commons-logging
+Requires:       apache-commons-cli
+Requires:       apache-commons-codec
+Requires:       apache-commons-lang3
+Requires:       apache-commons-logging
+BuildRequires:  apache-commons-cli
+BuildRequires:  apache-commons-codec
+BuildRequires:  apache-commons-lang3
+BuildRequires:  apache-commons-logging
 %else
-Requires: jakarta-commons-cli
-Requires: jakarta-commons-codec
-Requires: jakarta-commons-lang
-Requires: jakarta-commons-logging
-BuildRequires: jakarta-commons-cli
-BuildRequires: jakarta-commons-codec
-BuildRequires: jakarta-commons-lang
-BuildRequires: jakarta-commons-logging
+Requires:       jakarta-commons-cli
+Requires:       jakarta-commons-codec
+Requires:       jakarta-commons-lang
+Requires:       jakarta-commons-logging
+BuildRequires:  jakarta-commons-cli
+BuildRequires:  jakarta-commons-codec
+BuildRequires:  jakarta-commons-lang
+BuildRequires:  jakarta-commons-logging
 %endif
 %if 0%{?fedora} && 0%{?fedora} >= 21
-Requires: log4j12
-BuildRequires: log4j12
+Requires:       log4j12
+BuildRequires:  log4j12
 %else
-Requires: log4j
-BuildRequires: log4j
+Requires:       log4j
+BuildRequires:  log4j
 %endif
-BuildRequires: zip
+BuildRequires:  zip
 %if 0%{?rhel} && 0%{?rhel} < 7
 Requires(post): chkconfig
 Requires(preun): chkconfig
@@ -99,11 +116,11 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 %endif
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
-BuildRequires: systemd
+BuildRequires:  systemd
 %endif
 %if 0%{?suse_version}
-BuildRequires: doc-indexes
-Requires:      nutch-core
+BuildRequires:  doc-indexes
+Requires:       nutch-core
 %endif
 
 %description
@@ -259,166 +276,3 @@ fi
 %endif
 
 %changelog
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Thu Sep 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
-- 1483503 - disable ibm java coredumps in tanukiwrapper
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- Bumping package versions for 2.8.
-
-* Mon Jul 17 2017 Jan Dobes 2.7.6-1
-- Remove more fedorahosted links
-
-* Wed May 03 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.5-1
-- recompile all packages with the same (latest) version of java
-
-* Mon Apr 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.4-1
-- use java 1.8.0
-- use default RHEL6 jakarta-commons-* packages
-
-* Wed Apr 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.3-1
-- updated RHEL6 Requires after jpackage removal
-- use simple logging
-
-* Thu Mar 30 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
-- simplified Requires/Buildrequires ifdefs
-- added missing requires
-
-* Thu Mar 30 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.1-1
-- simplify rhn-search jar list
-
-* Mon Jun 13 2016 Grant Gainey 2.6.1-1
-- spacewalk-search: use apache-nutch 1.9
-- spacewalk-search: build on openSUSE
-- Bumping package versions for 2.6.
-
-* Fri Jan 08 2016 Jan Dobes 2.5.2-1
-- require log4j12, it will not download in build time on Fedora 23 otherwise
-
-* Thu Oct 22 2015 Tomas Kasparek <tkasparek@redhat.com> 2.5.1-1
-- run indexing tasks only after previous one finishes
-- Bumping package versions for 2.5.
-
-* Thu Sep 24 2015 Jan Dobes 2.4.2-1
-- Bumping copyright year.
-
-* Tue Apr 28 2015 Tomas Lestach <tlestach@redhat.com> 2.4.1-1
-- fix snapshot tag rhn-search issue
-- instantiate insert query only when needed
-- Bumping package versions for 2.4.
-
-* Thu Mar 19 2015 Grant Gainey 2.3.7-1
-- Updating copyright info for 2015
-
-* Thu Feb 26 2015 Tomas Lestach <tlestach@redhat.com> 2.3.6-1
-- missing value PIDFile for systemd
-
-* Thu Jan 29 2015 Tomas Lestach <tlestach@redhat.com> 2.3.5-1
-- fix spec condition error
-
-* Wed Jan 28 2015 Tomas Lestach <tlestach@redhat.com> 2.3.4-1
-- link the compatibility log4j jar on fc21
-- move jpackage.jars to a separate file
-
-* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.3.3-1
-- Getting rid of trailing spaces in XML
-- Getting rid of trailing spaces in Java
-
-* Wed Sep 24 2014 Tomas Lestach <tlestach@redhat.com> 2.3.2-1
-- use StringUtils for checking non-empty values
-- 1085033 - set newly constructed "db_name" even if db_ssl_enabled is disabled
-
-* Thu Aug 14 2014 Stephen Herr <sherr@redhat.com> 2.3.1-1
-- 1129827 - fix package searching in shared channels
-- Bumping package versions for 2.3.
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.8-1
-- fix copyright years
-
-* Wed Jun 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.7-1
-- fixed apache vs. jakarta  -commons-{codec,lang} build requires
-
-* Wed Jun 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.6-1
-- fixed apache vs. jakarta  -commons-{codec,lang} conflict
-
-* Tue Jun 24 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.5-1
-- updated deps on RHEL7
-
-* Mon Jun 23 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.4-1
-- use javapackages-tools instead of jpackage-utils on RHEL7
-
-* Fri May 30 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.3-1
-- Use maxDoc() to actually iterate over all documents
-- Do not skip in case the last record has been deleted
-- De-duplicate handleDeletedRecords() implementations
-
-* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.2-1
-- spec file polish
-
-* Tue Mar 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
-- make taskomatic and rhn-search configuration overrideable via rhn.conf
-
-* Wed Feb 12 2014 Stephen Herr <sherr@redhat.com> 2.1.14-1
-- 1061425 - make package search faster
-
-* Thu Jan 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.13-1
-- %%attr() mode not applicaple to symlink
-- resolve conflict between {apache,jakarta}-commons-cli on Fedora 20
-
-* Wed Jan 08 2014 Tomas Lestach <tlestach@redhat.com> 2.1.12-1
-- let spacewalk-search buildrequire javapackages-tools
-
-* Tue Jan 07 2014 Tomas Lestach <tlestach@redhat.com> 2.1.11-1
-- jpackage-utils were replaced with javapackages-tools in fc20
-
-* Mon Jan 06 2014 Tomas Lestach <tlestach@redhat.com> 2.1.10-1
-- fix rhn-search on fedoras
-
-* Thu Dec 12 2013 Tomas Lestach <tlestach@redhat.com> 2.1.9-1
-- do not let cleanindex log into the console
-- there're no objectweb-asm on rhel5
-- let spacewalk-search require c3p0 >= 0.9.1
-
-* Wed Dec 11 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.8-1
-- 1040540 - have package search return all matching results
-
-* Fri Dec 06 2013 Tomas Lestach <tlestach@redhat.com> 2.1.7-1
-- 1023669 - have unique id for SnapshotTag
-- 1023669 - remove unused logger
-- 1023669 - start using verifyServerVisibility
-- 1023669 - start using errata visibility
-- 1023669 - fix list iterations as query parameters
-- 1023669 - add connection customizer
-- 1023669 - introduce C3P0DataSourceFactory
-- 1023669 - link cglib-node and objectweb-asm for DelteIndexes
-- 1023669 - require and link c3p0
-- 1023669 - require and link cglib-nodep and objectweb-asm
-- 1023669 - replace ibatis jar with mybatis
-- 1023669 - adapt code for mybatis
-- 1023669 - migrate to mybatis
-- 1023669 - remove original setSessionTimeZone
-
-* Fri Nov 15 2013 Tomas Lestach <tlestach@redhat.com> 2.1.6-1
-- Fix custom info value index removal in advanced search
-
-* Thu Oct 31 2013 Matej Kollar <mkollar@redhat.com> 2.1.5-1
-- 1020952 - Single db root cert + option name change
-
-* Thu Oct 31 2013 Tomas Lestach <tlestach@redhat.com> 2.1.4-1
-- 1023669 - set Session Time Zone for Oracle connections
-- Unchecked conversion removed in rhnsearch
-- 1020952 - SSL for Postgresql: Java (rhn-search)
-
-* Wed Oct 02 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.3-1
-- 1002590 - unified way how we call rhn-search cleanindex
-
-* Tue Oct 01 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
-- 1013629 - clean up old help links
-
-* Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.1-1
-- removed trailing whitespaces

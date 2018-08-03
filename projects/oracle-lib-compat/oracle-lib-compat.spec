@@ -1,19 +1,36 @@
+#
+# spec file for package oracle-lib-compat
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 Name:           oracle-lib-compat
 Version:        12.1.0.2.6
 Release:        1%{?dist}
 Summary:        Compatibility package so that perl-DBD-Oracle will install
-Group:          Applications/Multimedia
-License:        GPLv2
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git
 # cd spec-tree/oracle-lib-compat
 # make srpm
+License:        GPL-2.0-only
+Group:          Applications/Multimedia
 URL:            https://github.com/spacewalkproject/spacewalk
-Source0:	https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 ExclusiveArch:  %ix86 x86_64 s390x ppc64le
 
 %define debug_package %{nil}
@@ -26,16 +43,16 @@ ExclusiveArch:  %ix86 x86_64 s390x ppc64le
 # The customer should extract it to
 #   /usr/lib/oracle/%{icdir}/client64/lib/
 # but we use our package as BuildRequires only
-BuildRequires:       oracle-instantclient12.1-basic >= %{icversion}
-BuildRequires:       oracle-instantclient12.1-sqlplus >= %{icversion}
+BuildRequires:  oracle-instantclient12.1-basic >= %{icversion}
+BuildRequires:  oracle-instantclient12.1-sqlplus >= %{icversion}
 %else
 %define icversion 12.1.0
 %define icdir 12.1
 %define soversion 12.1
 Requires(pre):       oracle-instantclient12.1-basic >= %{icversion}
 Requires(pre):       oracle-instantclient12.1-sqlplus >= %{icversion}
-BuildRequires:       oracle-instantclient12.1-basic >= %{icversion}
-BuildRequires:       oracle-instantclient12.1-sqlplus >= %{icversion}
+BuildRequires:  oracle-instantclient12.1-basic >= %{icversion}
+BuildRequires:  oracle-instantclient12.1-sqlplus >= %{icversion}
 %endif
 
 %if 0%{?suse_version}
@@ -56,8 +73,8 @@ Provides:       libclntsh.so.%{soversion}%{?lib64}
 Provides:       libclntshcore.so.%{soversion}%{?lib64}
 Provides:       libnnz12.so%{?lib64}
 Provides:       libocci.so.%{soversion}%{?lib64}
-Provides:       libocijdbc12.so%{?lib64}
 Provides:       libociei.so%{?lib64}
+Provides:       libocijdbc12.so%{?lib64}
 Provides:       ojdbc14                    = %{version}
 Obsoletes:      rhn-oracle-jdbc           <= 1.0
 Requires:       libstdc++.so.6%{?lib64}
@@ -94,7 +111,6 @@ mkdir -p $RPM_BUILD_ROOT/%{_javadir}
 ln -s ../../lib/oracle/%{icdir}/client64/lib/ojdbc7.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
 %endif
 
-
 %files
 %defattr(-,root,root,-)
 %ifarch x86_64 s390x ppc64le
@@ -111,32 +127,3 @@ ln -s ../../lib/oracle/%{icdir}/client64/lib/ojdbc7.jar $RPM_BUILD_ROOT/%{_javad
 ldconfig
 
 %changelog
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 11.2.0.16-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 11.2.0.15-1
-- purged changelog entries for Spacewalk 2.0 and older
-
-* Mon Jul 17 2017 Jan Dobes 11.2.0.14-1
-- Remove more fedorahosted links
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-
-* Tue Nov 10 2015 Tomas Kasparek <tkasparek@redhat.com> 11.2.0.13-1
-- don't build debug package for oracle-lib-compat
-
-* Thu Jan 29 2015 Tomas Lestach <tlestach@redhat.com> 11.2.0.12-1
-- we need to use the exact oracle instantclient version
-
-* Thu Jan 29 2015 Tomas Lestach <tlestach@redhat.com> 11.2.0.11-1
-- do not require exact version of oracle instantclient
-
-* Wed Oct 22 2014 Michael Mraka <michael.mraka@redhat.com> 11.2.0.10-1
-- oracle-instantclient11.2 requires libstdc++.so.6
-
-* Wed Jan 22 2014 Michael Mraka <michael.mraka@redhat.com> 11.2.0.9-1
-- LD_PRELOAD setup has been moved to spacewalk-setup-tomcat
-- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
-

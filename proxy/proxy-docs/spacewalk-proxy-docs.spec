@@ -1,21 +1,38 @@
+#
+# spec file for package spacewalk-proxy-docs
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
 
-Name: spacewalk-proxy-docs
-Summary: Spacewalk Proxy Server Documentation
-Version: 2.8.2.2
-Release: 1%{?dist}
-Group: Applications/Internet
-License: OPL-1.0
-URL:     https://github.com/spacewalkproject/spacewalk
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch: noarch
-BuildRequires: susemanager-advanced-topics_en-pdf
-BuildRequires: susemanager-reference_en-pdf
-BuildRequires: xerces-j2
-Obsoletes: rhns-proxy-docs < 5.3.0
-Provides: rhns-proxy-docs = 5.3.0
-ExcludeArch: aarch64
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
+Name:           spacewalk-proxy-docs
+Summary:        Spacewalk Proxy Server Documentation
+License:        OPL-1.0
+Group:          Applications/Internet
+Version:        2.8.2.2
+Release:        1%{?dist}
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+BuildRequires:  susemanager-advanced-topics_en-pdf
+BuildRequires:  susemanager-reference_en-pdf
+BuildRequires:  xerces-j2
+Obsoletes:      rhns-proxy-docs < 5.3.0
+Provides:       rhns-proxy-docs = 5.3.0
+ExcludeArch:    aarch64
 
 %description
 This package includes the SUSE Manager Proxy Quick Start guide
@@ -48,29 +65,3 @@ install -m 644 squid.conf.sample $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
 %_defaultdocdir/%{name}/*
 
 %changelog
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- Bumping package versions for 2.8.
-
-* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
-- move version and release before sources
-
-* Mon Jul 17 2017 Jan Dobes 2.7.1-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-- Bumping package versions for 2.7.
-- Bumping package versions for 2.6.
-- Bumping package versions for 2.5.
-- Bumping package versions for 2.4.
-
-* Wed Jan 14 2015 Matej Kollar <mkollar@redhat.com> 2.3.1-1
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-- Bumping package versions for 2.3.
-- Bumping package versions for 2.2.
-- Bumping package versions for 2.1.
-

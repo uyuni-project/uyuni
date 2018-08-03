@@ -1,30 +1,34 @@
 #
-# spec file for package supportutils-plugin-susemanager-proxy (Version 1.0.0-1)
+# spec file for package supportutils-plugin-susemanager-proxy
 #
-# Copyright (C) 2013 SUSE
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-# norootforbuild
-# neededforbuild
 
-Name:         supportutils-plugin-susemanager-proxy
-License:      GPLv2
-Group:        Documentation/SuSE
-Autoreqprov:  on
-Version:      3.2.1
-Release:      1%{?dist}
-Source:       %{name}-%{version}.tar.gz
-Summary:      Supportconfig Plugin for SUSE Manager Proxy
-BuildRoot:    %{_tmppath}/%{name}-%{version}-build
-BuildArch:    noarch
-Distribution: Novell NTS
-Vendor:       Novell Technical Services
-Requires:     supportconfig-plugin-resource
-Requires:     supportconfig-plugin-tag
-Requires:     spacewalk-proxy-common
-Supplements:  packageand(spacewalk-proxy-installer:supportutils)
+Name:           supportutils-plugin-susemanager-proxy
+Version:        3.2.1
+Release:        1%{?dist}
+Source:         %{name}-%{version}.tar.gz
+Summary:        Supportconfig Plugin for SUSE Manager Proxy
+License:        GPL-2.0-only
+Group:          Documentation/SuSE
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+Requires:       spacewalk-proxy-common
+Requires:       supportconfig-plugin-resource
+Requires:       supportconfig-plugin-tag
+Supplements:    packageand(spacewalk-proxy-installer:supportutils)
 
 %description
 Extends supportconfig functionality to include system information about
@@ -57,4 +61,3 @@ install -m 0644 susemanagerproxy-plugin.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
-

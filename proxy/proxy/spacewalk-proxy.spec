@@ -1,29 +1,46 @@
+#
+# spec file for package spacewalk-proxy
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
-Name: spacewalk-proxy
-Summary: Spacewalk Proxy Server
-Version: 2.8.5.3
-Release: 1%{?dist}
-Group:   Applications/Internet
-License: GPLv2
-URL:     https://github.com/spacewalkproject/spacewalk
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: python
-BuildArch: noarch
-Requires: httpd
+Name:           spacewalk-proxy
+Summary:        Spacewalk Proxy Server
+License:        GPL-2.0-only
+Group:          Applications/Internet
+Version:        2.8.5.3
+Release:        1%{?dist}
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRequires:  python
+BuildArch:      noarch
+Requires:       httpd
 %if 0%{?pylint_check}
-BuildRequires: spacewalk-python2-pylint
+BuildRequires:  spacewalk-python2-pylint
 %endif
-BuildRequires: rhnpush >= 5.5.74
+BuildRequires:  rhnpush >= 5.5.74
 # proxy isn't Python 3 yet
-BuildRequires: python2-rhnpush
-BuildRequires: spacewalk-backend-libs >= 1.7.24
-BuildRequires: spacewalk-backend >= 1.7.24
+BuildRequires:  python2-rhnpush
+BuildRequires:  spacewalk-backend >= 1.7.24
+BuildRequires:  spacewalk-backend-libs >= 1.7.24
 
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
@@ -42,72 +59,72 @@ BuildRequires: spacewalk-backend >= 1.7.24
 This package is never built.
 
 %package management
-Summary: Packages required by the Spacewalk Management Proxy
-Group:   Applications/Internet
+Summary:        Packages required by the Spacewalk Management Proxy
+Group:          Applications/Internet
 %if 0%{?suse_version}
-Requires: http_proxy
-Requires: openslp-server
+Requires:       http_proxy
+Requires:       openslp-server
 %else
-Requires: squid
+Requires:       squid
 %endif
-Requires: spacewalk-backend >= 1.7.24
-Requires: %{name}-broker = %{version}
-Requires: %{name}-redirect = %{version}
-Requires: %{name}-common >= %{version}
-Requires: %{name}-docs
-Requires: %{name}-html
-Requires: jabberd spacewalk-setup-jabberd
-Requires: httpd
+Requires:       %{name}-broker = %{version}
+Requires:       %{name}-common >= %{version}
+Requires:       %{name}-docs
+Requires:       %{name}-html
+Requires:       %{name}-redirect = %{version}
+Requires:       httpd
+Requires:       jabberd
+Requires:       spacewalk-backend >= 1.7.24
+Requires:       spacewalk-setup-jabberd
 %if 0%{?fedora} || 0%{?rhel}
-Requires: spacewalk-proxy-selinux
-Requires: sos
+Requires:       sos
+Requires:       spacewalk-proxy-selinux
 Requires(preun): initscripts
 %endif
-Obsoletes: rhns-proxy < 5.3.0
-Obsoletes: rhns-proxy-management < 5.3.0
-BuildRequires: /usr/bin/docbook2man
-Obsoletes: rhns-proxy-tools < 5.3.0
-Provides: rhns-proxy-tools = 5.3.0
-Obsoletes: spacewalk-proxy-tools < 0.5.3
-Provides: spacewalk-proxy-tools = %{version}
-Obsoletes: rhns-auth-daemon < 5.2.0
-Provides: rhns-auth-daemon = 1:%{version}
-Obsoletes: rhn-modssl < 2.9.0
-Provides: rhn-modssl = 1:%{version}
-Obsoletes: rhn-modpython < 2.8.0
-Provides: rhn-modpython = 1:%{version}
-Obsoletes: rhn-apache < 1.4.0
-Provides: rhn-apache = 1:%{version}
+Obsoletes:      rhns-proxy < 5.3.0
+Obsoletes:      rhns-proxy-management < 5.3.0
+BuildRequires:  /usr/bin/docbook2man
+Obsoletes:      rhns-proxy-tools < 5.3.0
+Provides:       rhns-proxy-tools = 5.3.0
+Obsoletes:      spacewalk-proxy-tools < 0.5.3
+Provides:       spacewalk-proxy-tools = %{version}
+Obsoletes:      rhns-auth-daemon < 5.2.0
+Provides:       rhns-auth-daemon = 1:%{version}
+Obsoletes:      rhn-modssl < 2.9.0
+Provides:       rhn-modssl = 1:%{version}
+Obsoletes:      rhn-modpython < 2.8.0
+Provides:       rhn-modpython = 1:%{version}
+Obsoletes:      rhn-apache < 1.4.0
+Provides:       rhn-apache = 1:%{version}
 
 %description management
 This package require all needed packages for Spacewalk Proxy Server.
 
 %package broker
-Group:   Applications/Internet
-Summary: The Broker component for the Spacewalk Proxy Server
-Requires: spacewalk-certs-tools
-Requires: spacewalk-proxy-package-manager
-Requires: spacewalk-ssl-cert-check
-Requires: httpd
+Summary:        The Broker component for the Spacewalk Proxy Server
+Group:          Applications/Internet
+Requires:       httpd
+Requires:       spacewalk-certs-tools
+Requires:       spacewalk-proxy-package-manager
+Requires:       spacewalk-ssl-cert-check
 %if 0%{?suse_version}
-Requires: apache2-prefork
-Requires: http_proxy
+Requires:       apache2-prefork
+Requires:       http_proxy
 %else
-Requires: mod_ssl
-Requires: squid
+Requires:       mod_ssl
+Requires:       squid
 %endif
 %if 0%{?suse_version} > 1320
-Requires: apache2-mod_wsgi-python3
+Requires:       apache2-mod_wsgi-python3
 %else
-Requires: mod_wsgi
+Requires:       mod_wsgi
 %endif
 Requires(post): %{name}-common
-Conflicts: %{name}-redirect < %{version}-%{release}
-Conflicts: %{name}-redirect > %{version}-%{release}
+Conflicts:      %{name}-redirect < %{version}-%{release}
+Conflicts:      %{name}-redirect > %{version}-%{release}
 # We don't want proxies and satellites on the same box
-Conflicts: rhns-satellite-tools
-Obsoletes: rhns-proxy-broker < 5.3.0
-
+Conflicts:      rhns-satellite-tools
+Obsoletes:      rhns-proxy-broker < 5.3.0
 
 %description broker
 The Spacewalk Proxy Server allows package caching
@@ -120,11 +137,11 @@ be sent to Squid and which should be sent directly to parent Spacewalk
 server.
 
 %package redirect
-Group:   Applications/Internet
-Summary: The SSL Redirect component for the Spacewalk Proxy Server
-Requires: spacewalk-proxy-broker = %{version}-%{release}
-Requires: httpd
-Obsoletes: rhns-proxy-redirect < 5.3.0
+Summary:        The SSL Redirect component for the Spacewalk Proxy Server
+Group:          Applications/Internet
+Requires:       httpd
+Requires:       spacewalk-proxy-broker = %{version}-%{release}
+Obsoletes:      rhns-proxy-redirect < 5.3.0
 
 %description redirect
 The Spacewalk Proxy Server allows package caching
@@ -137,23 +154,23 @@ and assures a fully secure SSL connection is established and maintained
 between an Spacewalk Proxy Server and parent Spacewalk server.
 
 %package common
-Group:   Applications/Internet
-Summary: Modules shared by Spacewalk Proxy components
+Summary:        Modules shared by Spacewalk Proxy components
+Group:          Applications/Internet
 %if 0%{?suse_version}
-BuildRequires: apache2
+BuildRequires:  apache2
 %else
-Requires: mod_ssl
+Requires:       mod_ssl
 %endif
-Requires: curl
+Requires:       curl
 %if 0%{?suse_version} > 1320
-Requires: apache2-mod_wsgi-python3
+Requires:       apache2-mod_wsgi-python3
 %else
-Requires: mod_wsgi
+Requires:       mod_wsgi
 %endif
-Requires: %{name}-broker >= %{version}
-Requires: spacewalk-backend >= 1.7.24
+Requires:       %{name}-broker >= %{version}
+Requires:       spacewalk-backend >= 1.7.24
 Requires(pre): policycoreutils
-Obsoletes: rhns-proxy-common < 5.3.0
+Obsoletes:      rhns-proxy-common < 5.3.0
 
 %description common
 The Spacewalk Proxy Server allows package caching
@@ -165,18 +182,18 @@ This package contains the files shared by various
 Spacewalk Proxy components.
 
 %package package-manager
-Summary: Custom Channel Package Manager for the Spacewalk Proxy Server
-Group:   Applications/Internet
-Requires: spacewalk-backend >= 1.7.24
-Requires: rhnlib >= 2.5.56
-Requires: python
-Requires: rhnpush >= 5.5.74
+Summary:        Custom Channel Package Manager for the Spacewalk Proxy Server
+Group:          Applications/Internet
+Requires:       python
+Requires:       rhnlib >= 2.5.56
+Requires:       rhnpush >= 5.5.74
+Requires:       spacewalk-backend >= 1.7.24
 # proxy isn't Python 3 yet
-Requires: python2-rhnpush
-BuildRequires: /usr/bin/docbook2man
-BuildRequires: python-devel
-Obsoletes: rhn_package_manager < 5.3.0
-Obsoletes: rhns-proxy-package-manager < 5.3.0
+Requires:       python2-rhnpush
+BuildRequires:  /usr/bin/docbook2man
+BuildRequires:  python-devel
+Obsoletes:      rhn_package_manager < 5.3.0
+Obsoletes:      rhns-proxy-package-manager < 5.3.0
 
 %description package-manager
 The Spacewalk Proxy Server allows package caching
@@ -195,7 +212,7 @@ Requires(pre):  salt
 Requires(pre):  %{name}-common
 
 %if 0%{?suse_version} >= 1210
-BuildRequires: systemd-rpm-macros
+BuildRequires:  systemd-rpm-macros
 %endif
 
 %{?systemd_requires}
@@ -368,14 +385,12 @@ if [ $1 = 0 ] ; then
 %endif
 fi
 
-
 %posttrans common
 if [ -n "$1" ] ; then # anything but uninstall
     mkdir /var/cache/rhn/proxy-auth 2>/dev/null
     chown %{apache_user}:root /var/cache/rhn/proxy-auth
     restorecon /var/cache/rhn/proxy-auth
 fi
-
 
 %files salt
 %defattr(-,root,root)
@@ -475,237 +490,4 @@ fi
 %dir %{_sysconfdir}/slp.reg.d
 %config %{_sysconfdir}/slp.reg.d/susemanagerproxy.reg
 
-
 %changelog
-* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 2.8.5-1
-- run pylint on rhel 7 builds
-
-* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 2.8.4-1
-- Update to use newly separated spacewalk-python[2|3]-pylint packages
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Mon Nov 13 2017 Jan Dobes 2.8.2-1
-- proxy isn't Python 3 yet, still require Python 2 rhnpush
-- removing useless condition
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- use standard brp-python-bytecompile
-- Bumping package versions for 2.8.
-
-* Mon Aug 07 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.7-1
-- python-hashlib is included in python-libs since RHEL 6
-
-* Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 2.7.6-1
-- update copyright year
-
-* Wed Jul 19 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.5-1
-- ignore unknown pylint checks
-
-* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.4-1
-- disable pylint warnings
-- fixed pylint warnings
-
-* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.3-1
-- move version and release before sources
-
-* Mon Jul 17 2017 Jan Dobes 2.7.2-1
-- add some small pep8 fixes for proxy code
-
-* Thu Mar 16 2017 Ondrej Gajdusek <ogajduse@redhat.com> 2.7.1-1
-- wrong-import-position is not present in pylint on Fedora 23
-- pylint fixes - proxy
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-- Bumping package versions for 2.7.
-
-* Tue Sep 20 2016 Jan Dobes 2.6.2-1
-- header can be changed here, this method was added for pylint anyway
-
-* Tue Sep 20 2016 Gennadii Altukhov <galt@redhat.com> 2.6.1-1
-- proxy 'ValueError: Invalid header value' fixing
-- proxy - fix build on Fedora 24
-- Bumping package versions for 2.6.
-
-* Fri May 20 2016 Grant Gainey 2.5.2-1
-- spacewalk-proxy: build on openSUSE
-
-* Fri Nov 27 2015 Jan Dobes 2.5.1-1
-- removing old dependency
-- Bumping package versions for 2.5.
-
-* Wed May 27 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.3-1
-- fix pylint warning on Fedora 22
-
-* Wed May 13 2015 Stephen Herr <sherr@redhat.com> 2.4.2-1
-- Break up long line to make pylint happy
-
-* Mon May 11 2015 Stephen Herr <sherr@redhat.com> 2.4.1-1
-- 1220399 - make proxy able to understand (bad) requests from ubuntu clients
-- Bumping package versions for 2.4.
-
-* Fri Mar 27 2015 Stephen Herr <sherr@redhat.com> 2.3.23-1
-- 1206350 - another checkstyl fix :(
-
-* Fri Mar 27 2015 Stephen Herr <sherr@redhat.com> 2.3.22-1
-- 1206350 - make checkstyle happy
-
-* Fri Mar 27 2015 Stephen Herr <sherr@redhat.com> 2.3.21-1
-- 1206350 - Proxy needs to correctly pass around -Auth-Error headers on SSL GET
-  requests
-- 1206350 - teach Proxy to auth up to Satellite if it doesn't recognize client
-  token
-
-* Mon Mar 23 2015 Grant Gainey 2.3.20-1
-- Standardize pylint-check to only happen on Fedora
-
-* Thu Mar 19 2015 Grant Gainey 2.3.19-1
-- Updating copyright info for 2015
-
-* Wed Mar 18 2015 Stephen Herr <sherr@redhat.com> 2.3.18-1
-- 1194056 - pylint is barfing over perfectly valid pep-8 compliant code. Oh
-  well.
-
-* Wed Mar 18 2015 Stephen Herr <sherr@redhat.com> 2.3.17-1
-- 1194056 - Fedora pylint is even pickier, space change
-
-* Tue Mar 17 2015 Stephen Herr <sherr@redhat.com> 2.3.16-1
-- 1194056 - IOException is not a thing :(
-
-* Tue Mar 17 2015 Stephen Herr <sherr@redhat.com> 2.3.15-1
-- 1194056 - another checkstyle fix
-
-* Tue Mar 17 2015 Stephen Herr <sherr@redhat.com> 2.3.14-1
-- 1201380 - make checkstyle happy
-
-* Mon Mar 16 2015 Stephen Herr <sherr@redhat.com> 2.3.13-1
-- 1188868 - wsgi.input is only guaranteed to be readable once. We read it twice
-- 1194056 - make checkstyle happy
-
-* Mon Mar 09 2015 Stephen Herr <sherr@redhat.com> 2.3.12-1
-- 1194056 - Proxy should recover from corrupt cached channel lists
-
-* Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.11-1
-- drop monitoring from proxy setup
-
-* Wed Feb 04 2015 Stephen Herr <sherr@redhat.com> 2.3.10-1
-- 1189184 - prevent squid 3.2 from detecting forwarding loops
-
-* Fri Jan 23 2015 Stephen Herr <sherr@redhat.com> 2.3.9-1
-- Leave condrestart command in rhn-proxy script for backwards-compatibility
-- spacewalk-proxy: do not use subsys anymore does not exist on all systems
-- spacewalk-proxy: make rhn-proxy systemd aware
-
-* Fri Jan 23 2015 Matej Kollar <mkollar@redhat.com> 2.3.8-1
-- Fix Pylint on Fedora 21: manual fixes
-- Autopep8
-
-* Fri Jan 16 2015 Tomas Lestach <tlestach@redhat.com> 2.3.7-1
-- Fix 403 errors for proxy wsgi requests
-
-* Thu Dec 11 2014 Stephen Herr <sherr@redhat.com> 2.3.6-1
-- 1172738 - checkstyle fix
-
-* Thu Dec 11 2014 Stephen Herr <sherr@redhat.com> 2.3.5-1
-- 1172738 - empty base channels incompatible with pre-cache, fall back to
-  Spacewalk
-
-* Fri Nov 21 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.4-1
-- 1166045 - read systemid path from configuration
-
-* Tue Nov 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.3-1
-- 1158155 - fixed renaming of deb packages
-
-* Thu Oct 30 2014 Stephen Herr <sherr@redhat.com> 2.3.2-1
-- 1158644 - prevent infinite redirect if using spacewalk webui through proxy
-
-* Tue Oct 28 2014 Stephen Herr <sherr@redhat.com> 2.3.1-1
-- 1158193 - configure proxy max memory file size separately from buffer_size
-- Bumping package versions for 2.3.
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.10-1
-- fix copyright years
-
-* Mon Jun 23 2014 Stephen Herr <sherr@redhat.com> 2.2.9-1
-- 1108370 - checkstyle fix
-
-* Mon Jun 23 2014 Stephen Herr <sherr@redhat.com> 2.2.8-1
-- 1108370 - add more user-friendly caching option to package_manager
-
-* Fri Jun 20 2014 Stephen Herr <sherr@redhat.com> 2.2.7-1
-- 1108370 - checkstyle fix and error handling
-
-* Fri Jun 20 2014 Stephen Herr <sherr@redhat.com> 2.2.6-1
-- 1108370 - enable proxy to serve files from its cache for kickstarts
-- 1108370 - enable proxy to correctly respond to partial http requests
-
-* Wed Jun 11 2014 Stephen Herr <sherr@redhat.com> 2.2.5-1
-- 1108370 - add --from-export option to rhn_package_manager
-- make rhnpush backwards-compatible with old spacewalk-proxy
-
-* Sat Jun 07 2014 Stephen Herr <sherr@redhat.com> 2.2.4-1
-- 1104375 - checkstyle fixes
-
-* Fri Jun 06 2014 Stephen Herr <sherr@redhat.com> 2.2.3-1
-- 1104375 - add default path structure to proxy lookaside that avoids
-  collisions
-- 1105273 - rhn_package_manager should not force md5; use package hearders
-
-* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.2-1
-- spec file polish
-
-* Fri Mar 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
-- Proxy should not make bogus fqdn:port DNS queries
-
-* Tue Jan 14 2014 Matej Kollar <mkollar@redhat.com> 2.1.15-1
-- Updating the copyright years info
-
-* Wed Jan 08 2014 Stephen Herr <sherr@redhat.com> 2.1.14-1
-- Fixing typo in 70e86d8d47
-
-* Thu Dec 19 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.13-1
-- Fixed client registration via proxy
-
-* Tue Oct 01 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.12-1
-- fixed pylint deprecated-lambda warning
-
-* Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.11-1
-- removed trailing whitespaces
-
-* Fri Aug 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.10-1
-- fixed pylint error
-
-* Fri Aug 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.9-1
-- 1002007 - don't send empty data
-- 1002007 - python 2.4 HTTPConnection can't read directly from object
-
-* Fri Aug 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.8-1
-- 1002007 - use mod_wsgi even on RHEL5
-
-* Wed Aug 28 2013 Tomas Lestach <tlestach@redhat.com> 2.1.7-1
-- 1001997 - let spacewalk-proxy-management require spacewalk-base-minimal-
-  config
-
-* Fri Aug 23 2013 Stephen Herr <sherr@redhat.com> 2.1.6-1
-- 1000586 - fixing line lenth error
-
-* Fri Aug 23 2013 Stephen Herr <sherr@redhat.com> 2.1.5-1
-- 1000586 - pylint errors
-
-* Fri Aug 23 2013 Stephen Herr <sherr@redhat.com> 2.1.4-1
-- 1000586 - fix checkstyle errors
-
-* Fri Aug 23 2013 Stephen Herr <sherr@redhat.com> 2.1.3-1
-- 1000586 - /etc/hosts doesn't work with proxies
-
-* Tue Aug 06 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.2-1
-- typo fix
-
-* Tue Aug 06 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.1-1
-- Branding clean-up of proxy stuff in proxy dir
-- Bumping package versions for 2.1.
-

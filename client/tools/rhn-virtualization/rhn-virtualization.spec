@@ -1,4 +1,21 @@
+#
+# spec file for package rhn-virtualization
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
 
 # package renaming fun :(
 %define rhn_client_tools spacewalk-client-tools
@@ -23,22 +40,23 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
+License:        GPL-2.0-only
+Group:          System Environment/Base
 Version:        5.4.72.2
 Release:        1%{?dist}
 
-Group:          System Environment/Base
-License:        GPLv2
 URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
 %if 0%{?suse_version}
 # make chkconfig work in OBS
-BuildRequires: sysconfig syslog
+BuildRequires:  sysconfig
+BuildRequires:  syslog
 %endif
 
 %description
@@ -47,22 +65,24 @@ virtual machine guest images.
 
 %if 0%{?build_py2}
 %package -n python2-%{name}-common
-Summary: Files needed by rhn-virtualization-host
+Summary:        Files needed by rhn-virtualization-host
+Group:          System Environment/Base
 %{?python_provide:%python_provide python2-%{name}-common}
-Provides: python-%{name}-common = %{version}-%{release}
-Obsoletes: python-%{name}-common < %{version}-%{release}
-Provides: %{name}-common = %{version}-%{release}
-Obsoletes: %{name}-common < %{version}-%{release}
-Requires: python2-rhn-client-tools
-Requires: spacewalk-usix
-BuildRequires: python
+Provides:       python-%{name}-common = %{version}-%{release}
+Obsoletes:      python-%{name}-common < %{version}-%{release}
+Provides:       %{name}-common = %{version}-%{release}
+Obsoletes:      %{name}-common < %{version}-%{release}
+Requires:       python2-rhn-client-tools
+Requires:       spacewalk-usix
+BuildRequires:  python
 %if 0%{?suse_version}
 # aaa_base provide chkconfig
-Requires: aaa_base
+Requires:       aaa_base
 # provide directories for filelist check in obs
-BuildRequires: rhn-client-tools rhn-check
+BuildRequires:  rhn-check
+BuildRequires:  rhn-client-tools
 %else
-Requires: chkconfig
+Requires:       chkconfig
 %endif
 %description -n python2-%{name}-common
 This package contains files that are needed by the rhn-virtualization-host
@@ -71,24 +91,26 @@ package.
 
 %if 0%{?build_py3}
 %package -n python3-%{name}-common
-Summary: Files needed by rhn-virtualization-host
-Obsoletes: %{name}-common < %{version}-%{release}
-Requires: python3-spacewalk-usix
-Requires: python3-rhn-client-tools
-BuildRequires: python3-devel
+Summary:        Files needed by rhn-virtualization-host
+Group:          System Environment/Base
+Obsoletes:      %{name}-common < %{version}-%{release}
+Requires:       python3-rhn-client-tools
+Requires:       python3-spacewalk-usix
+BuildRequires:  python3-devel
+
 %description -n python3-%{name}-common
 This package contains files that are needed by the rhn-virtualization-host
 package.
 %endif
 
 %package host
-Summary: Spacewalk Virtualization support specific to the Host system
-Group: System Environment/Base
-Requires: %{pythonX}-%{name}-host = %{version}-%{release}
+Summary:        Spacewalk Virtualization support specific to the Host system
+Group:          System Environment/Base
+Requires:       %{pythonX}-%{name}-host = %{version}-%{release}
 %if 0%{?suse_version}
-Requires: cron
+Requires:       cron
 %else
-Requires: /usr/sbin/crond
+Requires:       /usr/sbin/crond
 %endif
 
 %description host
@@ -97,14 +119,15 @@ that is specific to the Host system (a.k.a. Dom0).
 
 %if 0%{?build_py2}
 %package -n python2-%{name}-host
-Summary: RHN/Spacewalk Virtualization support specific to the Host system
-Requires: %{name}-host = %{version}-%{release}
-Requires: libvirt-python
-Requires: python2-%{name}-common = %{version}-%{release}
+Summary:        RHN/Spacewalk Virtualization support specific to the Host system
+Group:          System Environment/Base
+Requires:       %{name}-host = %{version}-%{release}
+Requires:       libvirt-python
+Requires:       python2-%{name}-common = %{version}-%{release}
 %if 0%{?suse_version}
-Requires: python-curl
+Requires:       python-curl
 %else
-Requires: python-pycurl
+Requires:       python-pycurl
 %endif
 %description -n python2-%{name}-host
 Python 2 files for %{name}-host.
@@ -112,15 +135,17 @@ Python 2 files for %{name}-host.
 
 %if 0%{?build_py3}
 %package -n python3-%{name}-host
-Summary: RHN/Spacewalk Virtualization support specific to the Host system
-Requires: %{name}-host = %{version}-%{release}
+Summary:        RHN/Spacewalk Virtualization support specific to the Host system
+Group:          System Environment/Base
+Requires:       %{name}-host = %{version}-%{release}
 %if 0%{?suse_version}
-Requires: python3-libvirt-python
+Requires:       python3-libvirt-python
 %else
-Requires: libvirt-python3
+Requires:       libvirt-python3
 %endif
-Requires: python3-%{name}-common = %{version}-%{release}
-Requires: python3-pycurl
+Requires:       python3-%{name}-common = %{version}-%{release}
+Requires:       python3-pycurl
+
 %description -n python3-%{name}-host
 Python 3 files for %{name}-host.
 %endif
@@ -130,7 +155,6 @@ Python 3 files for %{name}-host.
 
 %build
 make -f Makefile.rhn-virtualization
-
 
 %install
 %if 0%{?build_py2}
@@ -169,7 +193,6 @@ rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif
-
 
 %if 0%{?suse_version}
 %post host
@@ -318,107 +341,3 @@ fi
 %endif
 
 %changelog
-* Tue Mar 20 2018 Tomas Kasparek <tkasparek@redhat.com> 5.4.72-1
-- don't build python2 subpackages on systems with default python3
-
-* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 5.4.71-1
-- use python3 for rhel8 in rhn-virtualization
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.4.70-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Fri Nov 03 2017 Jan Dobes 5.4.69-1
-- simplify status check
-
-* Fri Nov 03 2017 Jan Dobes 5.4.68-1
-- open cache file in binary mode
-
-* Fri Nov 03 2017 Jan Dobes 5.4.67-1
-- fixing traceback from poller.py on Python 3
-
-* Thu Nov 02 2017 Jan Dobes 5.4.66-1
-- fixing a bytes-like object is required, not 'str'
-
-* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.65-1
-- rhn-virtualization: do not install sys-v init script on SUSE
-- rhn-virtualization: add missing dirs to filelist for SUSE and enable build
-  for Tumbleweed
-
-* Wed Oct 18 2017 Jan Dobes 5.4.64-1
-- rhn-virtualization - removing usage of string module not available in Python
-  3
-
-* Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.63-1
-- virt modules (and deps) are now in standard python path
-
-* Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.62-1
-- install files into python_sitelib/python3_sitelib
-- move rhn-virtualization-host files into proper python2/python3 subpackages
-- move rhn-virtualization-common files into proper python2/python3 subpackages
-- split rhn-virtualization-host into python2/python3 specific packages
-- split rhn-virtualization into python2/python3 specific packages
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.61-1
-- purged changelog entries for Spacewalk 2.0 and older
-
-* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.60-1
-- precompile py3 bytecode on Fedora 23+
-- use standard brp-python-bytecompile
-
-* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.59-1
-- move version and release before sources
-
-* Mon Jul 17 2017 Jan Dobes 5.4.58-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-
-* Wed Feb 15 2017 Tomas Kasparek <tkasparek@redhat.com> 5.4.57-1
-- require spacewalk-usix indead of spacewalk-backend-usix
-
-* Wed Oct 19 2016 Gennadii Altukhov <galt@redhat.com> 5.4.56-1
-- 1379891 - make rhn-virtualization code compatible with Python 2/3
-
-* Tue Jan 13 2015 Matej Kollar <mkollar@redhat.com> 5.4.55-1
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.4.54-1
-- fix copyright years
-
-* Wed Apr 23 2014 Stephen Herr <sherr@redhat.com> 5.4.53-1
-- 1089715 - some systems to not have /sbin in path
-
-* Tue Apr 22 2014 Stephen Herr <sherr@redhat.com> 5.4.52-1
-- 1089715 - service location is not platform independent
-
-* Mon Apr 21 2014 Stephen Herr <sherr@redhat.com> 5.4.51-1
-- 1089715 - rhn-virt-host should not spam root if libvirtd is stopped
-
-* Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 5.4.50-1
-- removed trailing whitespaces
-
-* Tue Sep 17 2013 Michael Mraka <michael.mraka@redhat.com> 5.4.49-1
-- Grammar error occurred
-
-* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 5.4.48-1
-- updating copyright years
-
-* Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 5.4.47-1
-- rebranding RHN Satellite to Red Hat Satellite in client stuff
-
-* Fri May 03 2013 Tomas Lestach <tlestach@redhat.com> 5.4.46-1
-- 915287 - python 2.4 does not know 'exit'
-- 915287 - define a utf8_encode wrapper
-
-* Thu Mar 28 2013 Jan Pazdziora 5.4.45-1
-- isInstallerConfig should check for autoyast in commandline
-- catch libvirtError to return meaningfull error messages
-
-* Thu Feb 07 2013 Stephen Herr <sherr@redhat.com> 5.4.44-1
-- 908899 - rhn-virtualization-host needs to consistantly use the new function
-  definition
-
-* Wed Feb 06 2013 Jan Pazdziora 5.4.43-1
-- support studio KVM image type
-

@@ -1,72 +1,90 @@
+#
+# spec file for package susemanager
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
 Name:           susemanager
 Version:        3.2.10
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
+License:        GPL-2.0-only
 Group:          Applications/System
-License:        GPLv2
 URL:            http://www.suse.com
 Source0:        %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!
 BuildRequires:  python-devel
 
 # check section
-BuildRequires:  python-mock
 BuildRequires:  python-curl
+BuildRequires:  python-mock
+BuildRequires:  pyxml
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
-BuildRequires:  pyxml
 
 PreReq:         %fillup_prereq %insserv_prereq tftp(server)
 Requires(pre):  tomcat salt
-Requires:       openslp-server
-Requires:       spacewalk-setup
-Requires:       spacewalk-admin
 Requires:       cobbler
+Requires:       openslp-server
+Requires:       spacewalk-admin
+Requires:       spacewalk-setup
 %ifarch %ix86 x86_64
 Requires:       syslinux
 %endif
 %ifarch s390x ppc64le
 Requires:       syslinux-x86_64
 %endif
+Requires:       less
+Requires:       rsync
 Requires:       spacewalk-schema
-Requires:       rsync less
 Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
 Requires:       spacewalk-db-virtual
 Requires:       susemanager-branding
 # yast module dependency
-Requires:       yast2-users
 Requires:       SuSEfirewall2
 Requires:       postfix
+Requires:       yast2-users
 # mgr-setup want to call mksubvolume
 Requires:       snapper
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %global pythonsmroot %{python_sitelib}/spacewalk
-
 
 %description
 A collection of scripts for managing SUSE Manager's initial
 setup tasks, re-installation, upgrades and managing.
 
 %package tools
-Summary:    SUSE Manager Tools
-Group:      Productivity/Other
+Summary:        SUSE Manager Tools
+Group:          Productivity/Other
+Requires:       createrepo
+Requires:       python
+Requires:       python-argparse
+Requires:       python-configobj
+Requires:       spacewalk-backend >= 2.1.55.11
+Requires:       spacewalk-backend-sql
 Requires:       suseRegisterInfo
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
-Requires:       spacewalk-backend >= 2.1.55.11
-Requires:       spacewalk-backend-sql
-Requires:       python
-Requires:       createrepo
-Requires:       python-argparse
-Requires:       python-configobj
 BuildRequires:  python-configobj
 Requires:       python-enum34
-BuildRequires:  python-enum34
 BuildRequires:  docbook-utils
+BuildRequires:  python-enum34
 
 %description tools
 This package contains SUSE Manager tools
