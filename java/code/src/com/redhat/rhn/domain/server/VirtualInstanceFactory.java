@@ -378,7 +378,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      */
     public VirtualInstance lookupVirtualInstanceByHostIdAndUuid(Long hostId, String uuid) {
         return (VirtualInstance) getSession()
-                .getNamedQuery("VirtualInstance.lookupHostVirtInstanceByHostId")
+                .getNamedQuery("VirtualInstance.lookupHostVirtInstanceByHostIdAndUuid")
                 .setParameter("hostId", hostId)
                 .setParameter("uuid", uuid)
             .uniqueResult();
