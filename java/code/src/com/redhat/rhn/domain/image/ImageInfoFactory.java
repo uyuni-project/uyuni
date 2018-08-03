@@ -26,13 +26,13 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA1Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA384Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA512Checksum;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
@@ -41,7 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -368,15 +367,15 @@ public class ImageInfoFactory extends HibernateFactory {
      * @param imageStoreId the image store id
      * @return the optional
      */
-    public static Optional<ImageInfo> lookupByName(String name, String version,
-            long imageStoreId) {
+    public static Optional<ImageInfo> lookupByName(String name, String version, long imageStoreId) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
 
         Root<ImageInfo> root = query.from(ImageInfo.class);
         query.where(builder.and(
                 builder.equal(root.get("name"), name),
-                builder.equal(root.get("version"), version),
+                StringUtils.isEmpty(version) ?
+                        builder.isNull(root.get("version")) : builder.equal(root.get("version"), version),
                 builder.equal(root.get("store"), imageStoreId)));
 
         return getSession().createQuery(query).uniqueResultOptional();
