@@ -173,6 +173,16 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         }
 
         try {
+            ActivationKey tmp = createActivationKey(admin);
+            tmp.setBaseChannel(null);
+            handler.create(admin, "newprofile", "dockerfile", "mystore", "/path/to/dockerfile/", tmp.getKey());
+            fail("Activation Key with no base channel provided for Kiwi profile");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Activation key does not have any base channel associated (do not use SUSE Manager default).", e.getMessage());
+        }
+
+        try {
             handler.create(admin, "newprofile", "dockerfile", "mystore",
                     "/path/to/dockerfile/", key.getKey());
             fail("Invalid store provided.");
@@ -196,6 +206,16 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         }
         catch (InvalidParameterException e) {
             assertEquals("Activation key cannot be empty for Kiwi profiles.", e.getMessage());
+        }
+
+        try {
+            ActivationKey tmp = createActivationKey(admin);
+            tmp.setBaseChannel(null);
+            handler.create(admin, "newprofile", "kiwi", "myosimagestore", "/path/to/kiwiconfig", tmp.getKey());
+            fail("Activation Key with no base channel provided for Kiwi profile");
+        }
+        catch (InvalidParameterException e) {
+            assertEquals("Activation key does not have any base channel associated (do not use SUSE Manager default).", e.getMessage());
         }
 
         try {
