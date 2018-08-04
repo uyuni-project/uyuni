@@ -209,9 +209,13 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  output = sshcmd("cobbler system report --name #{$client.full_hostname}:1", ignore_err: true)[:stdout]
+Then(/^the cobbler report contains "([^"]*)" for system "([^"]*)"$/) do |arg1, system|
+  output = sshcmd("cobbler system report --name #{system}:1", ignore_err: true)[:stdout]
   raise "Not found: #{output}" unless output.include?(arg1)
+end
+
+Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
+  step %(the cobbler report contains "#{arg1}" for system "#{$client.full_hostname}:1")
 end
 
 Then(/^I clean the search index on the server$/) do

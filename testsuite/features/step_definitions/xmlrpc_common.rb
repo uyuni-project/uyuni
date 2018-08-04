@@ -66,10 +66,14 @@ When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)
   systest.remove_channels([ node_id1, node_id2 ], [ channel ])
 end
 
+When(/^I create a System Record$/) do
+  dev = { 'name' => 'eth0', 'ip' => '1.1.1.1', 'mac' => '00:22:22:77:EE:CC', 'dnsname' => 'testserver.example.com' }
+  systest.create_system_record('testserver', 'fedora_kickstart_profile_upload', '', 'my test server', [dev])
+end
+
 When(/^I logout from XML\-RPC system namespace$/) do
   systest.logout
 end
-
 
 # user namespace
 
