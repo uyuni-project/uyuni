@@ -57,4 +57,8 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   def remove_channels(servers, channels)
     @connection.call('system.config.remove_channels', @sid, servers, channels)
   end
+
+  def create_system_record(name, kslabel, koptions, comment, netdevices)
+    @connection.call('system.createSystemRecord', @sid, name, kslabel, koptions, comment, netdevices)
+  end
 end
