@@ -1,3 +1,4 @@
+- add DNS name to cobbler network interface (FATE#326501, bsc#1104020)
 - speedup listing systems of a group (bsc#1102009)
 - Add python3 xmlrpc api example to docs.
 - Bump version to 4.0.0 (bsc#1104034)
