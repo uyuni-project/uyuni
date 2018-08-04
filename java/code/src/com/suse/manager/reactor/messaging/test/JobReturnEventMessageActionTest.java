@@ -1338,7 +1338,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
             assertEquals(1, info.getRevisionNumber());
-            assertTrue(StringUtils.isEmpty(info.getVersion()));
+            assertEquals("foo123", info.getVersion());
             assertNotNull(info.getChecksum());
             assertEquals("a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
                     info.getChecksum().getChecksum());
@@ -1378,7 +1378,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                                            ImageProfile profile, Consumer<ImageInfo> assertions)
             throws Exception {
         // schedule the build
-        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile, new Date(), user);
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), "foo123", profile, new Date(), user);
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
         TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
