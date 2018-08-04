@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import org.cobbler.SystemRecord;
 
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.user.User;
 
 /**
@@ -87,12 +89,23 @@ public class CobblerUnregisteredSystemCreateCommand extends
          */
         public void setIpaddr(String ip) {
             this.ipAddress = ip;
+            ServerNetAddress4 netAddr = new ServerNetAddress4();
+            netAddr.setAddress(this.ipAddress);
+            ArrayList<ServerNetAddress4> iplist = new ArrayList<>();
+            iplist.add(netAddr);
+            this.setSa4(iplist);
         }
 
         /**
          * {@inheritDoc}
          */
         public String getIpaddr() {
+            if (this.ipAddress == null || this.ipAddress.isEmpty()) {
+                if (this.getIPv4Addresses().isEmpty()) {
+                    return null;
+                }
+                this.ipAddress = this.getIPv4Addresses().get(0).getAddress();
+            }
             return this.ipAddress;
         }
     }
