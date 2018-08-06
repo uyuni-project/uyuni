@@ -675,10 +675,11 @@ if [ $USING_SSL -eq 1 ] ; then
 
     ### Check for Dynamic CA-Trust Updates - applies to RedHat and SLE-ES systems ###
     if [ -x /usr/bin/update-ca-trust ] ; then
-        /usr/bin/update-ca-trust check | grep "PEM/JAVA Status: DISABLED" 2>&1 > /dev/null && \
-        echo "ERROR: Dynamic CA-Trust > Updates are disabled. Enable Dynamic CA-Trust Updates with '/usr/bin/update-ca-trust force-enable'" && \
-        echo "Finally, restart the onboarding sequence." && \
-        exit 1
+        if [ "$(/usr/bin/update-ca-trust check | grep 'PEM/JAVA Status: DISABLED')" != "" ]; then
+            echo "ERROR: Dynamic CA-Trust > Updates are disabled. Enable Dynamic CA-Trust Updates with '/usr/bin/update-ca-trust force-enable'"
+            echo "Finally, restart the onboarding sequence."
+            exit 1
+        fi
     fi
 
     test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
