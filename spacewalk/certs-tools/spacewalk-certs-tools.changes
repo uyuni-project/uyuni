@@ -1,3 +1,4 @@
+- Feat: check for Dynamic CA-Trust Updates while bootstrapping on RES (FATE #325588)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 -------------------------------------------------------------------
 Tue Jun 05 10:08:50 CEST 2018 - jgonzalez@suse.com
