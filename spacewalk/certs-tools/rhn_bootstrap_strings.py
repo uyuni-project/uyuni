@@ -673,6 +673,14 @@ if [ $USING_SSL -eq 1 ] ; then
 
     echo "* attempting to install corporate public CA cert"
 
+    ### Check for SUSE Expanded Support 6.x platforms dynamic CA-Trust updates ###
+    if [ -x /usr/bin/update-ca-trust ] ; then
+        /usr/bin/update-ca-trust check | grep "PEM/JAVA Status: DISABLED" 2>&1 > /dev/null && \
+        echo "ERROR: Dynamic CA-Trust > Updates are disabled. Enable Dynamic CA-Trust Updates with '/usr/bin/update-ca-trust force-enable'" && \
+        echo "Finally, restart the onboarding sequence." && \
+        exit
+    fi
+
     test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
     rm -f ${ORG_CA_CERT}
     $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
