@@ -1,30 +1,34 @@
 #
-# spec file for package supportutils-plugin-susemanager (Version 1.0.0-1)
+# spec file for package supportutils-plugin-susemanager
 #
-# Copyright (C) 2013 SUSE
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-# norootforbuild
-# neededforbuild  
 
-Name:         supportutils-plugin-susemanager
-License:      GPLv2
-Group:        Documentation/SuSE
-Autoreqprov:  on
-Version:      3.2.1
-Release:      1%{?dist}
-Source:       %{name}-%{version}.tar.gz
-Summary:      Supportconfig Plugin for SUSE Manager
-BuildRoot:    %{_tmppath}/%{name}-%{version}-build
-BuildArch:    noarch
-Distribution: Novell NTS
-Vendor:       Novell Technical Services
-Requires:     supportconfig-plugin-resource
-Requires:     supportconfig-plugin-tag
-Requires:     susemanager
-Supplements:  packageand(spacewalk-common:supportutils)
+Name:           supportutils-plugin-susemanager
+Version:        3.2.1
+Release:        1%{?dist}
+Source:         %{name}-%{version}.tar.gz
+Summary:        Supportconfig Plugin for SUSE Manager
+License:        GPL-2.0-only
+Group:          Documentation/SuSE
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+Requires:       supportconfig-plugin-resource
+Requires:       supportconfig-plugin-tag
+Requires:       susemanager
+Supplements:    packageand(spacewalk-common:supportutils)
 
 %description
 Extends supportconfig functionality to include system information about 
@@ -63,6 +67,3 @@ install -m 0644 susemanager-plugin.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/susem
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
-* Thu Apr 04 2013 sbogner@suse.com
-- initial release
-

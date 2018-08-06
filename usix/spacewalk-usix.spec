@@ -1,3 +1,22 @@
+#
+# spec file for package spacewalk-usix
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %endif
@@ -13,35 +32,35 @@
 
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
-Name:	    spacewalk-usix
-Version:	2.8.3.1
-Release:	1%{?dist}
-Summary:	Spacewalk server and client nano six library
+Name:           spacewalk-usix
+Version:        2.8.3.1
+Release:        1%{?dist}
+Summary:        Spacewalk server and client nano six library
+License:        GPL-2.0-only
+Group:          Applications/Internet
 
-Group:		Applications/Internet
-License:	GPLv2
-URL:		  https://github.com/spacewalkproject/spacewalk
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
-BuildArch: noarch
+BuildArch:      noarch
 %endif
 
-Provides:	spacewalk-backend-usix = %{version}-%{release}
 Provides:       python2-spacewalk-usix = %{version}-%{release}
-Obsoletes: spacewalk-backend-usix < 2.8
-BuildRequires: python-devel
+Provides:       spacewalk-backend-usix = %{version}-%{release}
+Obsoletes:      spacewalk-backend-usix < 2.8
+BuildRequires:  python-devel
 
 %description
 Library for writing code that runs on Python 2 and 3
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
-Summary: Spacewalk client micro six library
-Group: Applications/Internet
-Provides: python3-spacewalk-backend-usix = %{version}-%{release}
-Obsoletes: python3-spacewalk-backend-usix < 2.8
-BuildRequires: python3-devel
+Summary:        Spacewalk client micro six library
+Group:          Applications/Internet
+Provides:       python3-spacewalk-backend-usix = %{version}-%{release}
+Obsoletes:      python3-spacewalk-backend-usix < 2.8
+BuildRequires:  python3-devel
 
 %description -n python3-%{name}
 Library for writing code that runs on Python 2 and 3
@@ -50,7 +69,6 @@ Library for writing code that runs on Python 2 and 3
 
 %prep
 %setup -q
-
 
 %build
 %define debug_package %{nil}
@@ -104,43 +122,3 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{python3rhnroo
 %endif
 
 %changelog
-* Thu Mar 01 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.3-1
-- empty %%files section is required for a package to build as a metapackage
-
-* Wed Feb 28 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.2-1
-- split spacewalk-usix into python2 and python3 variants
-- build python3-spacewalk-usix also on rhel8
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.8-1
-- 1477753 - precompile py3 bytecode
-
-* Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 2.7.7-1
-- update copyright year
-
-* Mon Jul 17 2017 Jan Dobes 2.7.6-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-
-* Fri Feb 24 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.5-1
-- Revert "do checks to match latest __init__.py from spacewalk-backend-libs"
-- don't package pyc and pyo files
-
-* Thu Feb 23 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.4-1
-- do checks to match latest __init__.py from spacewalk-backend-libs
-- don't rely on module initialization on backend-libs
-
-* Fri Feb 17 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.3-1
-- require python3 version of backend-libs on fedoras
-
-* Fri Feb 17 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.2-1
-- require spacewalk-backend-libs for usix functionality
-
-* Wed Feb 15 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.1-1
-- new package built with tito
-
-

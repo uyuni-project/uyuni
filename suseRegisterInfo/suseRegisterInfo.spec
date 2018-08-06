@@ -1,7 +1,7 @@
 #
 # spec file for package suseRegisterInfo
 #
-# Copyright (c) 2014 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,6 +15,7 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %if 0%{?fedora} || 0%{?suse_version} > 1320
 %global build_py3   1
@@ -27,7 +28,7 @@ Name:           suseRegisterInfo
 Version:        3.2.2
 Release:        1%{?dist}
 Summary:        Tool to get informations from the local system
-License:        GPL-2.0
+License:        GPL-2.0-only
 Group:          Productivity/Other
 Url:            http://www.suse.com
 Source0:        %{name}-%{version}.tar.gz
@@ -68,7 +69,6 @@ Python 2 specific files for %{name}.
 
 %endif
 
-
 %prep
 %setup -q
 
@@ -90,7 +90,6 @@ make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib
 %endif
 %endif
 
-
 %files
 %defattr(-,root,root,-)
 %dir /usr/lib/suseRegister
@@ -101,13 +100,11 @@ make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib
 %defattr(-,root,root)
 %{python_sitelib}/suseRegister
 
-
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %defattr(-,root,root)
 %{python3_sitelib}/suseRegister
 
 %endif
-
 
 %changelog
