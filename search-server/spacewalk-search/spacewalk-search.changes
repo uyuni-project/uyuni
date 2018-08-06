@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 30 14:13:29 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.3.5-1
+- Apply correct patch for "Fix the search when server is missing primary interface" (bsc#1103044)
+
+-------------------------------------------------------------------
 Wed Jul 25 09:30:54 CEST 2018 - jgonzalez@suse.com
 
 - version 2.8.3.4-1
