@@ -287,7 +287,7 @@ function clean_up_old_salt_repos() {{
 function clean_up_old_repos() {{
   local suse_os_repos_path="/etc/zypp/repos.d"
   local redhat_os_repos_path="/etc/yum.repos.d"
-  
+
   clean_up_old_salt_repos $suse_os_repos_path
   clean_up_old_salt_repos $redhat_os_repos_path
 
@@ -683,7 +683,7 @@ if [ $USING_SSL -eq 1 ] ; then
         /usr/bin/update-ca-trust check | grep "PEM/JAVA Status: DISABLED" 2>&1 > /dev/null && \
         echo "ERROR: Dynamic CA-Trust > Updates are disabled. Enable Dynamic CA-Trust Updates with '/usr/bin/update-ca-trust force-enable'" && \
         echo "Finally, restart the onboarding sequence." && \
-        exit
+        exit 1
     fi
 
     test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
