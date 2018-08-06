@@ -34,6 +34,8 @@ import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
+import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
+import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
@@ -43,6 +45,7 @@ import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
+import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
 import com.suse.salt.netapi.exception.SaltException;
 import org.apache.log4j.Logger;
 
@@ -96,6 +99,8 @@ public class SaltReactor implements EventListener {
                 RunnableEventMessage.class);
         MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
                 VirtpollerBeaconEventMessage.class);
+        MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
+                SystemIdGenerateEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -191,7 +196,8 @@ public class SaltReactor implements EventListener {
         Runnable runnable =
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
                 JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
-                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> { })));
+                BeaconEvent.parse(event).map(this::onBeaconEvent).orElseGet(() ->
+                SystemIdGenerateEvent.parse(event).map(this::onSystemIdGenerateEvent).orElse(() -> { }))));
         executorService.submit(runnable);
     }
 
@@ -254,6 +260,23 @@ public class SaltReactor implements EventListener {
                         beaconEvent.getData(VirtpollerData.class)
                 ));
             }
+        };
+    }
+
+    /**
+     * Trigger handling of systemid generate event.
+     *
+     * @param systemIdGenerateEvent the suse/systemid/generate event as we get it from salt
+     * @return event handler runnable
+     */
+    private Runnable onSystemIdGenerateEvent(SystemIdGenerateEvent systemIdGenerateEvent) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Generate systemid file for minion: " + (String) systemIdGenerateEvent.getData().get("id"));
+        }
+        return () -> {
+            MessageQueue.publish(
+                new SystemIdGenerateEventMessage((String) systemIdGenerateEvent.getData().get("id"))
+            );
         };
     }
 
