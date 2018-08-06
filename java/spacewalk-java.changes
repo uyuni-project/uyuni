@@ -1,3 +1,4 @@
+- Generate systemid certificate on suse/systemid/generate event (FATE#323069)
 - Fix system group overview patch status (bsc#1102478)
 - Allow salt systems to be registered as proxies (FATE#323069)
 - add DNS name to cobbler network interface (FATE#326501, bsc#1104020)
