@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-tftpsync
 #
-# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,21 +15,21 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           susemanager-tftpsync
 Version:        3.2.3
 Release:        1%{?dist}
 Summary:        Sync cobbler created tftp enviroment to SUSE Manager Proxies
-Url:            http://www.suse.com
-License:        LGPL-2.1
+License:        LGPL-2.1-only
 Group:          Applications/System
+Url:            http://www.suse.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 Requires(pre):  cobbler
 Requires:       python
-
 
 %description
 Add a cobbler trigger module which sync the cobbler created tftp enviroment
@@ -67,4 +67,3 @@ fi
 %{_sbindir}/configure-tftpsync.sh
 
 %changelog
-

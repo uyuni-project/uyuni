@@ -1,3 +1,22 @@
+#
+# spec file for package spacewalk-koan
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
 # package renaming fun :(
 %define rhn_check	 spacewalk-check
 #
@@ -12,38 +31,38 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
-Summary: Support package for spacewalk koan interaction
-Name: spacewalk-koan
-Version: 2.8.8.1
-Release: 1%{?dist}
-Group: System Environment/Kernel
-License: GPLv2
-Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Source1: %{name}-rpmlintrc
+Summary:        Support package for spacewalk koan interaction
+License:        GPL-2.0-only
+Group:          System Environment/Kernel
+Name:           spacewalk-koan
+Version:        2.8.8.1
+Release:        1%{?dist}
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source1:        %{name}-rpmlintrc
 URL:            https://github.com/spacewalkproject/spacewalk
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       koan
 Requires:       xz
-Conflicts: rhn-kickstart
-Conflicts: rhn-kickstart-common
-Conflicts: rhn-kickstart-virtualization
+Conflicts:      rhn-kickstart
+Conflicts:      rhn-kickstart-common
+Conflicts:      rhn-kickstart-virtualization
 
-Requires: %{rhn_check}
-
+Requires:       %{rhn_check}
 
 %description
 Support package for spacewalk koan interaction.
 
 %if 0%{?build_py2}
 %package -n python2-%{name}
-Summary: Support package for spacewalk koan interaction
+Summary:        Support package for spacewalk koan interaction
+Group:          System Environment/Kernel
 BuildRequires:  python
-Requires:       python
 Requires:       %{name} = %{version}-%{release}
+Requires:       python
 
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
@@ -51,11 +70,12 @@ Python 2 specific files for %{name}.
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
-Summary: Support package for spacewalk koan interaction
+Summary:        Support package for spacewalk koan interaction
+Group:          System Environment/Kernel
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
-Requires:       python3
 Requires:       %{name} = %{version}-%{release}
+Requires:       python3
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}.
@@ -84,7 +104,6 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif
-
 
 %files
 %defattr(-,root,root,-)
@@ -117,93 +136,3 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
 %endif
 
 %changelog
-* Tue Mar 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.8-1
-- don't build python2 subpackages on systems with default python3
-
-* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.7-1
-- use python3 on rhel8 in spacewalk-koan
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.6-1
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
-- spacewalk-koan: add missing directories to filelist on SUSE and build py3 on
-  Tumbleweed
-
-* Wed Oct 18 2017 Jan Dobes 2.8.4-1
-- spacewalk-koan - removing usage of string module not available in Python 3
-
-* Mon Oct 16 2017 Jan Dobes 2.8.3-1
-- upstream koan is not compatible with cobbler20, require our build for now
-
-* Tue Oct 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
-- install files into python_sitelib/python3_sitelib
-- split spacewalk-koan into python2/python3 specific packages
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- use standard brp-python-bytecompile
-- Bumping package versions for 2.8.
-
-* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
-- move version and release before sources
-
-* Mon Jul 17 2017 Jan Dobes 2.7.1-1
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-- Bumping package versions for 2.7.
-
-* Mon Sep 26 2016 Jan Dobes 2.6.1-1
-- embed_kickstart was renamed to embed_autoinst in koan upstream
-- Bumping package versions for 2.6.
-
-* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.2-1
-- updating copyright years
-
-* Tue Apr 26 2016 Gennadii Altukhov <galt@redhat.com> 2.5.1-1
-- Adapt spacewalk-koan for Python 2/3 compatibility
-- Bumping package versions for 2.5.
-
-* Wed Sep 16 2015 Jan Dobes 2.4.2-1
-- 1253464 - switch to KVM if possible
-
-* Fri May 29 2015 Jan Dobes 2.4.1-1
-- fixing duplicate BuildArch
-- Bumping package versions for 2.4.
-
-* Thu Mar 19 2015 Grant Gainey 2.3.2-1
-- Updating copyright info for 2015
-
-* Fri Jan 30 2015 Stephen Herr <sherr@redhat.com> 2.3.1-1
-- 1187482 - make file preservation work again with new upstream koan
-- spacewalk-koan: improved merge-rd
-- Bumping package versions for 2.3.
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.4-1
-- fix copyright years
-
-* Fri Jun 13 2014 Stephen Herr <sherr@redhat.com> 2.2.3-1
-- 1109276 - make cobbler20 guest kickstart work with new koan
-
-* Wed Mar 26 2014 Stephen Herr <sherr@redhat.com> 2.2.2-1
-- 1063409 - guest provisioned on RHEL 7 host have no graphical console
-- Merge pull request #9 from dyordano/1071657
-
-* Fri Mar 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
-- remove unneded imports
-
-* Fri Dec 20 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.4-1
-- 967503 - use new Koan attribute
-
-* Mon Oct 14 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.3-1
-- cleaning up old svn Ids
-
-* Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
-- removed trailing whitespaces
-
-* Thu Jul 25 2013 Stephen Herr <sherr@redhat.com> 2.1.1-1
-- 988428 - Mark spacewalk-koan as correctly requiring the xz package
-- Bumping package versions for 2.1.
-

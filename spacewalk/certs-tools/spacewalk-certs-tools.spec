@@ -1,5 +1,22 @@
+#
+# spec file for package spacewalk-certs-tools
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
 
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
 # needsbinariesforbuild
+
 
 # package renaming fun :(
 %define rhn_client_tools spacewalk-client-tools
@@ -21,49 +38,52 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
-Name: spacewalk-certs-tools
-Summary: Spacewalk SSL Key/Cert Tool
-Group: Applications/Internet
-License: GPLv2
-Version: 2.8.8.5
-Release: 1%{?dist}
-URL:      https://github.com/spacewalkproject/spacewalk
-Source0:  https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch: noarch
-Requires: %{pythonX}-%{name} = %{version}-%{release}
-Requires: openssl rpm-build spacewalk-base-minimal-config
+Name:           spacewalk-certs-tools
+Summary:        Spacewalk SSL Key/Cert Tool
+License:        GPL-2.0-only
+Group:          Applications/Internet
+Version:        2.8.8.5
+Release:        1%{?dist}
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+Requires:       %{pythonX}-%{name} = %{version}-%{release}
+Requires:       openssl
+Requires:       rpm-build
+Requires:       spacewalk-base-minimal-config
 %if 0%{?suse_version} || 0%{?rhel} >= 5
-Requires: %{rhn_client_tools}
+Requires:       %{rhn_client_tools}
 %endif
-Requires: tar
-Requires: sudo
-BuildRequires: docbook-utils
+Requires:       sudo
+Requires:       tar
+BuildRequires:  docbook-utils
 %if 0%{?suse_version}
-BuildRequires: filesystem
-Requires: susemanager-build-keys-web
+BuildRequires:  filesystem
+Requires:       susemanager-build-keys-web
 %endif
-BuildRequires: python
+BuildRequires:  python
 Requires(post): spacewalk-backend-libs
 Requires(post): rhnlib
 Requires(post): rpm-python
-Obsoletes: rhns-certs < 5.3.0
-Obsoletes: rhns-certs-tools < 5.3.0
+Obsoletes:      rhns-certs < 5.3.0
+Obsoletes:      rhns-certs-tools < 5.3.0
 # can not provides = %{version} since some old packages expect > 3.6.0
-Provides:  rhns-certs = 5.3.0
-Provides:  rhns-certs-tools = 5.3.0
+Provides:       rhns-certs = 5.3.0
+Provides:       rhns-certs-tools = 5.3.0
 
 %description
 This package contains tools to generate the SSL certificates required by
 Spacewalk.
 
 %package -n python2-%{name}
-Summary: Spacewalk SSL Key/Cert Tool
-Requires: %{name} = %{version}-%{release}
-Requires: python2-rhn-client-tools
-Requires: spacewalk-backend-libs >= 0.8.28
+Summary:        Spacewalk SSL Key/Cert Tool
+Group:          Applications/Internet
+Requires:       %{name} = %{version}-%{release}
+Requires:       python2-rhn-client-tools
+Requires:       spacewalk-backend-libs >= 0.8.28
 %if 0%{?rhel} && 0%{?rhel} <= 5
-Requires: python-hashlib
+Requires:       python-hashlib
 %endif
 
 %description -n python2-%{name}
@@ -71,12 +91,13 @@ Python 2 specific files for %{name}.
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
-Summary: Spacewalk SSL Key/Cert Tool
-Requires: %{name} = %{version}-%{release}
-Requires: python3-rhn-client-tools
-Requires: python3-spacewalk-backend-libs
-BuildRequires: python3-rpm-macros
-BuildRequires: python3
+Summary:        Spacewalk SSL Key/Cert Tool
+Group:          Applications/Internet
+Requires:       %{name} = %{version}-%{release}
+Requires:       python3-rhn-client-tools
+Requires:       python3-spacewalk-backend-libs
+BuildRequires:  python3
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}.
@@ -176,116 +197,3 @@ esac
 %endif
 
 %changelog
-* Wed Mar 21 2018 Jiri Dostal <jdostal@redhat.com> 2.8.8-1
-- Updating copyright years for 2018
-
-* Tue Feb 27 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.7-1
-- options are not defined
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.6-1
-- removed %%%%defattr from specfile
-- remove install/clean section initial cleanup
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Thu Dec 14 2017 Eric Herget <eherget@redhat.com> 2.8.5-1
-- 1456471 - PR570 - Using own certificates for installer
-- 1456471 - PR570 - [RFE] Using own certifications for installer (CA, private
-  key)
-
-* Fri Oct 27 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
-- python3 is missing in buildroot on Fedora 25
-
-* Wed Oct 25 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
-- python3 compatibility fixes
-
-* Fri Oct 20 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
-- made code python3 compatible
-- install files into python_sitelib/python3_sitelib
-- splitted spacewalk-certs-tools into python2/python3 specific packages
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- use standard brp-python-bytecompile
-- Bumping package versions for 2.8.
-
-* Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 2.7.3-1
-- update copyright year
-
-* Thu Jun 22 2017 Grant Gainey 2.7.2-1
-- Allow passing multiple GPG keys to rhn-bootstrap
-
-* Tue May 16 2017 Grant Gainey 2.7.1-1
-- 1030013 - fix minor typos in bootstrap.sh
-- Remove unused imports.
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-- Bumping package versions for 2.7.
-- Bumping package versions for 2.6.
-
-* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.3-1
-- updating copyright years
-
-* Tue May 10 2016 Grant Gainey 2.5.2-1
-- spacewalk-certs-tools: build on openSUSE
-
-* Wed Feb 03 2016 Jan Dobes 2.5.1-1
-- 1302900 - not run on EL5 systems
-- Bumping package versions for 2.5.
-
-* Thu Sep 24 2015 Jan Dobes 2.4.7-1
-- Bumping copyright year.
-
-* Fri Aug 07 2015 Jan Dobes 2.4.6-1
-- add file to RPM
-
-* Fri Aug 07 2015 Jan Dobes 2.4.5-1
-- add file to RPM
-
-* Thu Aug 06 2015 Jan Dobes 2.4.4-1
-- trust CA certificate when client RPM is installed
-
-* Tue Jul 14 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.3-1
-- remove Except KeyboardInterrupt from imports
-
-* Fri May 08 2015 Stephen Herr <sherr@redhat.com> 2.4.2-1
-- 1219946 - We need python-hashlib for doing sha256 on RHEL 5
-- 1219946 - Make rhn-ssl-tool use sha256 by default for crt / csr signatures
-
-* Fri Apr 24 2015 Matej Kollar <mkollar@redhat.com> 2.4.1-1
-- remove whitespace from .sgml files
-- Bumping package versions for 2.4.
-
-* Fri Mar 27 2015 Grant Gainey 2.3.3-1
-- tuple assignment should be list in client_config_update.py
-
-* Thu Mar 19 2015 Grant Gainey 2.3.2-1
-- Updating copyright info for 2015
-
-* Wed Jan 14 2015 Matej Kollar <mkollar@redhat.com> 2.3.1-1
-- Getting rid of Tabs and trailing spaces in Python
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-- Bumping package versions for 2.3.
-
-* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.1-1
-- fix copyright years
-- Bumping package versions for 2.2.
-
-* Tue Jan 14 2014 Matej Kollar <mkollar@redhat.com> 2.1.6-1
-- Updating the copyright years info
-
-* Fri Jan 10 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.5-1
-- 1040682 - older Proxies don't implement PRODUCT_NAME
-
-* Mon Oct 14 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.4-1
-- cleaning up old svn Ids
-
-* Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.3-1
-- removed trailing whitespaces
-
-* Tue Sep 17 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
-- Grammar error occurred
-
-* Tue Aug 06 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.1-1
-- Branding clean-up of proxy stuff in cert-tools dir
-- Bumping package versions for 2.1.

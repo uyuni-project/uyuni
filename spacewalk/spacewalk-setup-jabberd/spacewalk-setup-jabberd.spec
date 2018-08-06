@@ -1,21 +1,40 @@
+#
+# spec file for package spacewalk-setup-jabberd
+#
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2008-2018 Red Hat, Inc.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
 Name:           spacewalk-setup-jabberd
 Version:        2.8.5.1
 Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
+License:        GPL-2.0-only
 Group:          Applications/System
-License:        GPLv2
 URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 PreReq:         sqlite3
 %if 0%{?fedora} && 0%{?fedora} > 26
 BuildRequires:  perl-interpreter
 %else
 BuildRequires:  perl
 %endif
-BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  jabberd
-BuildRequires:	 sqlite3
+BuildRequires:  sqlite3
+BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildArch:      noarch
 %if 0%{?fedora} && 0%{?fedora} > 26
 Requires:       perl-interpreter
@@ -34,11 +53,9 @@ Spacewalk server or Spacewalk proxy.
 %prep
 %setup -q
 
-
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
 make %{?_smp_mflags}
-
 
 %install
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
@@ -56,7 +73,6 @@ install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/spacewalk/jabberd
 %check
 make test
 
-
 %files
 %defattr(-,root,root,-)
 %doc LICENSE
@@ -71,46 +87,3 @@ make test
 /usr/share/spacewalk/setup/jabberd/manage_database -s >/dev/null ||:
 
 %changelog
-* Tue Mar 27 2018 Jiri Dostal <jdostal@redhat.com> 2.8.5-1
-- Revert "1533052 - Add FQDN detection to setup and config utilities."
-
-* Tue Mar 27 2018 Jiri Dostal <jdostal@redhat.com> 2.8.4-1
-- 1533052 - Add FQDN detection to setup and config utilities.
-
-* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
-- removed Group from specfile
-- removed BuildRoot from specfiles
-
-* Mon Nov 27 2017 Jan Dobes <jdobes@redhat.com> 2.8.2-1
-- sqlite is not installed by default on Fedora
-
-* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
-- purged changelog entries for Spacewalk 2.0 and older
-- Bumping package versions for 2.8.
-
-* Wed Aug 16 2017 Eric Herget <eherget@redhat.com> 2.7.4-1
-- SW 2.7 Release prep - update copyright year (3rd pass)
-
-* Mon Aug 14 2017 Eric Herget <eherget@redhat.com> 2.7.3-1
-- 1480697 - Need to initialize the jabberd sqlite database during setup
-
-* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.2-1
-- 1479849 - Requires: perl has been renamed to perl-interpreter on Fedora 27
-- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
-  27
-
-* Fri May 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.1-1
-- use sqlite as default osad database backend
-- Updated links to github in spec files
-- Migrating Fedorahosted to GitHub
-
-* Thu Mar 19 2015 Grant Gainey 2.3.2-1
-- Updating copyright info for 2015
-
-* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.3.1-1
-- Getting rid of trailing spaces in Perl
-- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
-- Bumping package versions for 2.3.
-- Bumping package versions for 2.2.
-- Bumping package versions for 2.1.
-

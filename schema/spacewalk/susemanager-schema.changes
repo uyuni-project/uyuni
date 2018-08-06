@@ -1,4 +1,5 @@
 - Enable system preferences for Salt minions (bsc#1098388)
+- Fix copyright for the package specfile (bsc#1103696)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - copy missing action-chain schema migration to correct directory
   (bsc#1100760)
