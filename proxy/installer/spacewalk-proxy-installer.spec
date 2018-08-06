@@ -104,6 +104,7 @@ install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/i
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhn-proxy-activate.py
 %endif
 install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT%{_bindir}/rhn-proxy-activate
+install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_bindir}/fetch-certificate
 
 %check
 %if 0%{?pylint_check}
@@ -124,6 +125,7 @@ spacewalk-python2-pylint .
 %{_usr}/share/rhn/installer/jabberd/*.xml
 %{_usr}/share/rhn/get_system_id.xslt
 %{_bindir}/rhn-proxy-activate
+%{_bindir}/fetch-certificate
 %doc LICENSE answers.txt
 %dir %{_usr}/share/doc/proxy
 %dir %{_usr}/share/rhn

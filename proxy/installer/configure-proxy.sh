@@ -324,6 +324,7 @@ SQUID_DIR=/etc/squid
 UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
+/usr/sbin/fetch-certificate $SYSTEMID_PATH
 
 if [ ! -r $SYSTEMID_PATH ]; then
     echo ERROR: SUSE Manager Proxy does not appear to be registered
