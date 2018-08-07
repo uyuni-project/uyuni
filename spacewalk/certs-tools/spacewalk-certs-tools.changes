@@ -1,3 +1,4 @@
+- Bump version to 4.0.0 (bsc#1104034)
 - Feat: check for Dynamic CA-Trust Updates while bootstrapping on RES (FATE #325588)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - Fix copyright for the package specfile (bsc#1103696)

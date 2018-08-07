@@ -27,7 +27,7 @@ Summary:        Spacewalk support for yum
 License:        GPL-2.0-only
 Group:          System Environment/Base
 Name:           yum-rhn-plugin
-Version:        2.8.9.1
+Version:        4.0.0
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 URL:            https://github.com/spacewalkproject/spacewalk

@@ -1,3 +1,4 @@
+- Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 - Suggest not to use password option for spacecmd (bsc#1103090)
 

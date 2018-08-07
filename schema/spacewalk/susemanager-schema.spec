@@ -24,7 +24,7 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        3.2.11
+Version:        4.0.0
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
