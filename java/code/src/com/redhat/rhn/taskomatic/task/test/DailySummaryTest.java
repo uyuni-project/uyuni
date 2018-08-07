@@ -14,12 +14,25 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.hamcrest.Matchers.containsString;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.task.DailySummary;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.utils.MailHelper;
+import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +40,13 @@ import java.util.Map;
  * DailySummaryTest
  * @version $Rev$
  */
-public class DailySummaryTest extends RhnBaseTestCase {
+public class DailySummaryTest extends JMockBaseTestCaseWithUser {
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     public void testDequeueOrg() {
         WriteMode clear = ModeFactory.getWriteMode("test_queries",
@@ -70,8 +89,35 @@ public class DailySummaryTest extends RhnBaseTestCase {
         return;
     }
 
-    public void testQueueOrgEmails() {
-        return;
+    public void testQueueOrgEmails() throws Exception {
+        // set up an AWOL system beloning to one Org, accessible by one User
+        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser("test", oid);
+        user.setEmailNotify(1);
+        user.setTaskoNotify(true);
+        WriteMode m = ModeFactory.getWriteMode("test_queries",
+                "insert_into_daily_summary_queue");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("org_id", oid);
+        m.executeUpdate(params);
+        user.setEmailNotify(1);
+        Server s = ServerTestUtils.createTestSystem(user);
+        s.getServerInfo().setCheckin(new Date(System.currentTimeMillis()- 2 * 24 * 60 * 60 * 1000));
+        HibernateFactory.getSession().flush();
+
+        // set up a mock for the mailer
+        MailHelper mailHelper = mock(MailHelper.class);
+
+        // set expectations on the mail sending method
+        context().checking(new Expectations() { {
+            exactly(1).of(mailHelper)
+                    .sendEmail(with(any(String.class)), with(any(String.class)), with(containsString("balalala")));
+        } });
+
+
+        // run test
+        DailySummary ds = new DailySummary();
+        ds.queueOrgEmails(oid, () -> mailHelper);
     }
 
     public void aTestExcecute() {
