@@ -1,5 +1,6 @@
 - speedup listing systems of a group (bsc#1102009)
 - Add python3 xmlrpc api example to docs.
+- Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 - Add Salt actions for virtual guests
 - Disallow '.' in config channel names (bsc#1100731)
