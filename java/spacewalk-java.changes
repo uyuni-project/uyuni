@@ -1,3 +1,4 @@
+- add DNS name to cobbler network interface (FATE#326501, bsc#1104020)
 - Fix behavior when canceling actions (bsc#1098993)
 - speedup listing systems of a group (bsc#1102009)
 - Disallow '.' in config channel names (bsc#1100731)
