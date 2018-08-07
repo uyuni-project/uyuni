@@ -1,5 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 9a34ea4be2... added required changelog entry 
 - Missing link to LDAP instructions (bsc#1102464)
 - Fix copyright for the package specfile (bsc#1103696)
 >>>>>>> 9a34ea4be2... added required changelog entry 
