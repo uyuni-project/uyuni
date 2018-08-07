@@ -301,7 +301,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Autoinstalling</source>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference">
-        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/rhn/help/best-practices/en-US/bp-chapt-audit-security-pam-auth.jsp"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/rhn/help/best-practices/en-US/bp.authentication.with.pam.and.ad.jsp"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
       </trans-unit>
       <trans-unit id="upgradable.jsp.errata">
         <source>Related Patches</source>
