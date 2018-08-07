@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-pylint
-Version:        2.8.4.2
+Version:        4.0.0
 Release:        1%{?dist}
 Summary:        Pylint configuration for spacewalk python packages
 License:        GPL-2.0-only

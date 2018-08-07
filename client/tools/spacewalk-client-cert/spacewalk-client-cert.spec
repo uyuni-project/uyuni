@@ -22,7 +22,7 @@
 %endif
 
 Name:           spacewalk-client-cert
-Version:        2.8.3.2
+Version:        4.0.0
 Release:        1%{?dist}
 Summary:        Package allowing manipulation with Spacewalk client certificates
 License:        GPL-2.0-only

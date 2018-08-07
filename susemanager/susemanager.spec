@@ -17,7 +17,7 @@
 
 
 Name:           susemanager
-Version:        3.2.10
+Version:        4.0.0
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only

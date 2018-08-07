@@ -1,3 +1,4 @@
+- Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 - fix ordering of channel data (bsc#1083294)
 - add RHEL 6.10 channel definitions

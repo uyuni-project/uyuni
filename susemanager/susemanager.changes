@@ -1,3 +1,4 @@
+- Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - fix mgr-create-bootstrap-repo with custom channels (bsc#1099934)
