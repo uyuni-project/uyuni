@@ -26,8 +26,6 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.InvalidFormulaException;
-import com.suse.utils.Json;
-
 
 /**
  * FormulaHandler
@@ -166,14 +164,16 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.doc Get the saved data for the specific formula against specific server
      *
      * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "systemId")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param #param("Integer", "systemId")
-     * @xmlrpc.returntype string - Json data string
+     * @xmlrpc.returntype
+     *   #struct("content")
+     *   #struct_end()
      */
-    public String getSystemFormulaData(User loggedInUser, String formulaName, Integer systemId) {
+    public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
         FormulaManager manager = FormulaManager.getInstance();
         Map<String, Object> savedData = manager.getSystemFormulaData(loggedInUser, formulaName, systemId.longValue());
-        return Json.GSON.toJson(savedData);
+        return savedData;
     }
 
     /**
@@ -185,18 +185,20 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.doc Get the saved data for the specific formula against specific group
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.param #param("int", "groupId")
-     * @xmlrpc.returntype string - Json data
+     * @xmlrpc.param #param("string", "formulaName")
+     * @xmlrpc.returntype
+     *   #struct("content")
+     *   #struct_end()
      */
-    public String getGroupFormulaData(User loggedInUser, String formulaName, Integer groupId) {
+    public Map<String, Object> getGroupFormulaData(User loggedInUser, Integer groupId, String formulaName) {
         FormulaManager manager = FormulaManager.getInstance();
         Map<String, Object> savedData = manager.getGroupFormulaData(loggedInUser, formulaName, groupId.longValue());
-        return Json.GSON.toJson(savedData);
+        return savedData;
     }
 
     /**
-     * Populate the formula form data for the specified servers
+     * Set the formula form data for the specified servers
      * @param loggedInUser The current user
      * @param systemId Id of the server
      * @param formulaName name of the formula that should be populated.
@@ -205,19 +207,17 @@ public class FormulaHandler extends BaseHandler {
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
-     * @xmlrpc.doc Populate the formula form for the specified server.
+     * @xmlrpc.doc Set the formula form for the specified server.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int","systemId")
+     * @xmlrpc.param #param("int", "systemId")
      * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.param
      * #struct("content")
-     *   #prop("string", "field")
-     *   #prop("string", "data")
      * #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    public int populateSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
+    public int setSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
                 Object> content) throws IOFaultException, InvalidParameterException {
         try {
             FormulaManager manager = FormulaManager.getInstance();
@@ -241,7 +241,7 @@ public class FormulaHandler extends BaseHandler {
     }
 
     /**
-     * Populate the formula form  data for the group
+     * Set the formula form  data for the group
      * @param loggedInUser The current user
      * @param groupId  Id of the group
      * @param formulaName name of the formula that should be populated.
@@ -250,19 +250,17 @@ public class FormulaHandler extends BaseHandler {
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
-     * @xmlrpc.doc Populate the formula form for the specified group.
+     * @xmlrpc.doc Set the formula form for the specified group.
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int","groupId")
      * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.param
      * #struct("content")
-     *   #prop("string", "field")
-     *   #prop("string", "data")
      * #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    public int populateGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
+    public int setGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
             Object> content) throws IOFaultException, InvalidParameterException {
         try {
             FormulaManager manager = FormulaManager.getInstance();
