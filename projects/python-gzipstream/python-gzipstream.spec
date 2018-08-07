@@ -29,7 +29,7 @@ Summary:        Streaming zlib (gzip) support for python
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
 Name:           python-gzipstream
-Version:        2.8.6.1
+Version:        4.0.0
 Release:        1%{?dist}
 URL:            https://github.com/spacewalkproject/spacewalk/wiki/Projects_python-gzipstream
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/python-gzipstream-%{version}.tar.gz

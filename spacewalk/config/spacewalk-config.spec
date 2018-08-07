@@ -33,7 +33,7 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        2.8.5.2
+Version:        4.0.0
 Release:        1%{?dist}
 URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
