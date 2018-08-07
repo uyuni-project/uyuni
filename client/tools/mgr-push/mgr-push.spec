@@ -1,5 +1,5 @@
 #
-# spec file for package rhnpush
+# spec file for package mgr-push
 #
 # Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
@@ -17,6 +17,9 @@
 #
 
 
+# Old name and version+1 before renaming to mgr-push
+%define oldname rhnpush
+%define oldversion 5.5.113.3
 %{!?pylint_check: %global pylint_check 0}
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
@@ -28,12 +31,14 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
-Name:           rhnpush
+Name:           mgr-push
 Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 URL:            https://github.com/spacewalkproject/spacewalk
-Version:        5.5.113.2
+Version:        4.0.0
+Provides:       %{oldname} = %{oldversion}
+Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -63,6 +68,8 @@ per channel.
 %package -n python2-%{name}
 Summary:        Package uploader for the Spacewalk or Red Hat Satellite Server
 Group:          Applications/System
+Provides:       python2-%{oldname} = %{oldversion}
+Obsoletes:      python2-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 %if 0%{?fedora} >= 28
 Requires:       python2-rpm
@@ -86,6 +93,8 @@ Python 2 specific files for rhnpush.
 %package -n python3-%{name}
 Summary:        Package uploader for the Spacewalk or Red Hat Satellite Server
 Group:          Applications/System
+Provides:       python3-%{oldname} = %{oldversion}
+Obsoletes:      python3-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       python3-rpm
