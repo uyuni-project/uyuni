@@ -43,7 +43,7 @@ Group:          System Environment/Base
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 URL:            https://fedorahosted.org/spacewalk
-Version:        2.8.22.3
+Version:        4.0.0
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210

@@ -17,7 +17,7 @@
 
 
 Name:           susemanager-proxy
-Version:        3.2.4
+Version:        4.0.0
 Release:        1%{?dist}
 Summary:        SUSE Manager Proxy specific scripts
 License:        GPL-2.0-only

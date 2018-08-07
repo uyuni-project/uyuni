@@ -1,3 +1,4 @@
+- Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 - Allow relative path in visibleIf tag in formulas
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
