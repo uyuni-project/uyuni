@@ -1,5 +1,5 @@
 #
-# spec file for package rhn-custom-info
+# spec file for package mgr-custom-info
 #
 # Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
@@ -21,11 +21,14 @@
 %global build_py3   1
 %endif
 
-Name:           rhn-custom-info
+Name:           mgr-custom-info
 Summary:        Set and list custom values for Spacewalk-enabled machines
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        5.4.43.2
+Version:        4.0.0
+# 5.4.43.2 was the last version+1 before renaming to mgr-custom-info
+Provides:       rhn-custom-info = 5.4.43.3
+Obsoletes:      rhn-custom-info < 5.4.43.3
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 URL:            https://github.com/spacewalkproject/spacewalk

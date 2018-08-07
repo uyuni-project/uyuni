@@ -1,5 +1,5 @@
 #
-# spec file for package rhncfg
+# spec file for package mgr-cfg
 #
 # Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
@@ -22,6 +22,9 @@
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
 %define rhnsd		 spacewalksd
+# Old name and version+1 before renaming to mgr-cfg
+%define oldname          rhncfg
+%define oldversion       5.10.122.3
 #
 %global rhnroot %{_datadir}/rhn
 %global rhnconf %{_sysconfdir}/sysconfig/rhn
@@ -38,8 +41,10 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
-Name:           rhncfg
-Version:        5.10.122.2
+Name:           mgr-cfg
+Version:        4.0.0
+Provides:       %{oldname} = %{oldversion}
+Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
 Summary:        Spacewalk Configuration Client Libraries
 License:        GPL-2.0-only
@@ -66,14 +71,16 @@ Requires:       libselinux-python
 %endif
 
 %description
-The base libraries and functions needed by all rhncfg-* packages.
+The base libraries and functions needed by all mgr-cfg-* packages.
 
 %if 0%{?build_py2}
 %package -n python2-%{name}
 Summary:        Spacewalk Configuration Client Libraries
 Group:          Applications/System
-Provides:       python-%{name} = %{version}-%{release}
-Obsoletes:      python-%{name} < %{version}-%{release}
+Provides:       python-%{name} = %{oldversion}
+Obsoletes:      python-%{name} < %{oldversion}
+Provides:       python-%{oldname} = %{oldversion}
+Obsoletes:      python-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python2-rhn-client-tools >= 2.8.4
@@ -93,6 +100,8 @@ Python 2 specific files for %{name}.
 Summary:        Spacewalk Configuration Client Libraries
 Group:          Applications/System
 Requires:       %{name} = %{version}-%{release}
+Provides:       python3-%{oldname} = %{oldversion}
+Obsoletes:      python3-%{oldname} < %{oldversion}
 Requires:       python3
 Requires:       python3-rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib >= 2.8.3
@@ -107,6 +116,8 @@ Python 3 specific files for %{name}.
 %package client
 Summary:        Spacewalk Configuration Client
 Group:          Applications/System
+Provides:       %{oldname}-client = %{oldversion}
+Obsoletes:      %{oldname}-client < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{pythonX}-%{name}-client = %{version}-%{release}
 
@@ -118,8 +129,10 @@ Management system.
 %package -n python2-%{name}-client
 Summary:        Spacewalk Configuration Client
 Group:          Applications/System
-Provides:       python-%{name}-client = %{version}-%{release}
-Obsoletes:      python-%{name}-client < %{version}-%{release}
+Provides:       python-%{name}-client = %{oldversion}
+Obsoletes:      python-%{name}-client < %{oldversion}
+Provides:       python-%{oldname}-client = %{oldversion}
+Obsoletes:      python-%{oldname}-client < %{oldversion}
 Requires:       %{name}-client = %{version}-%{release}
 
 %description -n python2-%{name}-client
@@ -130,6 +143,8 @@ Python 2 specific files for %{name}-client.
 %package -n python3-%{name}-client
 Summary:        Spacewalk Configuration Client
 Group:          Applications/System
+Provides:       python3-%{oldname}-client = %{oldversion}
+Obsoletes:      python3-%{oldname}-client < %{oldversion}
 Requires:       %{name}-client = %{version}-%{release}
 
 %description -n python3-%{name}-client
@@ -139,6 +154,8 @@ Python 3 specific files for %{name}-client.
 %package management
 Summary:        Spacewalk Configuration Management Client
 Group:          Applications/System
+Provides:       %{oldname}-management = %{oldversion}
+Obsoletes:      %{oldname}-management < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{pythonX}-%{name}-management = %{version}-%{release}
 
@@ -149,8 +166,10 @@ A command line interface used to manage Spacewalk configuration.
 %package -n python2-%{name}-management
 Summary:        Spacewalk Configuration Management Client
 Group:          Applications/System
-Provides:       python-%{name}-management = %{version}-%{release}
-Obsoletes:      python-%{name}-management < %{version}-%{release}
+Provides:       python-%{name}-management = %{oldversion}
+Obsoletes:      python-%{name}-management < %{oldversion}
+Provides:       python-%{oldname}-management = %{oldversion}
+Obsoletes:      python-%{oldname}-management < %{oldversion}
 Requires:       %{name}-management = %{version}-%{release}
 
 %description -n python2-%{name}-management
@@ -161,6 +180,8 @@ Python 2 specific files for python2-%{name}-management.
 %package -n python3-%{name}-management
 Summary:        Spacewalk Configuration Management Client
 Group:          Applications/System
+Provides:       python3-%{oldname}-management = %{oldversion}
+Obsoletes:      python3-%{oldname}-management < %{oldversion}
 Requires:       %{name}-management = %{version}-%{release}
 
 %description -n python3-%{name}-management
@@ -170,6 +191,8 @@ Python 2 specific files for python3-%{name}-management.
 %package actions
 Summary:        Spacewalk Configuration Client Actions
 Group:          Applications/System
+Provides:       %{oldname}-actions = %{oldversion}
+Obsoletes:      %{oldname}-actions < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{pythonX}-%{name}-actions = %{version}-%{release}
 
@@ -180,8 +203,10 @@ The code required to run configuration actions scheduled via Spacewalk.
 %package -n python2-%{name}-actions
 Summary:        Spacewalk Configuration Client Actions
 Group:          Applications/System
-Provides:       python-%{name}-actions = %{version}-%{release}
-Obsoletes:      python-%{name}-actions < %{version}-%{release}
+Provides:       python-%{name}-actions = %{oldversion}
+Obsoletes:      python-%{name}-actions < %{oldversion}
+Provides:       python-%{oldname}-actions = %{oldversion}
+Obsoletes:      python-%{oldname}-actions < %{oldversion}
 Requires:       %{name}-actions = %{version}-%{release}
 Requires:       python2-%{name}-client
 
@@ -193,6 +218,8 @@ Python 2 specific files for python2-%{name}-actions.
 %package -n python3-%{name}-actions
 Summary:        Spacewalk Configuration Client Actions
 Group:          Applications/System
+Provides:       python3-%{oldname}-actions = %{oldversion}
+Obsoletes:      python3-%{oldname}-actions < %{oldversion}
 Requires:       %{name}-actions = %{version}-%{release}
 Requires:       python3-%{name}-client
 
