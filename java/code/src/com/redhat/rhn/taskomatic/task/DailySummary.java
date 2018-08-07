@@ -40,6 +40,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Supplier;
 
 /**
  * DailySummary task.
@@ -73,7 +74,7 @@ public class DailySummary extends RhnJavaJob {
                 if (log.isDebugEnabled()) {
                     log.debug("dealing with org: " + oiw.toLong());
                 }
-                queueOrgEmails(oiw.toLong());
+                queueOrgEmails(oiw.toLong(), MailHelper::withSmtp);
             }
             catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -111,8 +112,9 @@ public class DailySummary extends RhnJavaJob {
      * DO NOT CALL FROM OUTSIDE THIS CLASS. Queues up the Org Emails for
      * mailing.
      * @param orgId Org Id to be processed.
+     * @param mailHelper MailHelper instance
      */
-    public void queueOrgEmails(Long orgId) {
+    public void queueOrgEmails(Long orgId, Supplier<MailHelper> mailHelper) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_USERS_WANTING_REPORTS);
         Map<String, Object> params = new HashMap<String, Object>();
@@ -143,7 +145,7 @@ public class DailySummary extends RhnJavaJob {
             LocalizationService ls = LocalizationService.getInstance();
             String subject = ls.getMessage(
                     "dailysummary.email.subject", ls.formatShortDate(new Date()));
-            MailHelper.withSmtp().sendEmail(ru.getAddress(), subject, emailMsg);
+            mailHelper.get().sendEmail(ru.getAddress(), subject, emailMsg);
         }
         watch.stop();
         if (log.isDebugEnabled()) {
