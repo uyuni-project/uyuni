@@ -709,6 +709,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Get the contact method label.
+     *
+     * @return contact method label
+     */
+    public Optional<String> getContactMethodLabel() {
+        String label = (this.contactMethod == null) ? null : this.contactMethod.getLabel();
+        return Optional.ofNullable(label);
+    }
+
+    /**
      * Set the contact method.
      *
      * @param contactMethodIn method to set
