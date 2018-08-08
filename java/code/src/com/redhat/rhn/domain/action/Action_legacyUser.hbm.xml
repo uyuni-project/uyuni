@@ -512,6 +512,16 @@ select {ra.*}
     ]]>
     </query>
 
+    <query name="Action.findTradClientServerActions">
+    <![CDATA[
+        SELECT sa
+            FROM ServerAction AS sa
+                JOIN sa.server AS s
+            WHERE s.class != com.redhat.rhn.domain.server.MinionServer
+                AND action_id = :id
+    ]]>
+    </query>
+    
    <sql-query name="Action.findServerIds">
         <![CDATA[
 select sa.server_id
