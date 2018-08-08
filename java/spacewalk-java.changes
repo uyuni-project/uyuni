@@ -1,3 +1,4 @@
+- Optimize execution of actions in minions (bsc#1099857)
 - Make Kiwi OS Image building enabled by default
 - Increase Java API version
 - check valid postgresql database version
