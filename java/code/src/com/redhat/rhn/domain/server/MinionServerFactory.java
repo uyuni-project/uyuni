@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -167,4 +168,18 @@ public class MinionServerFactory extends HibernateFactory {
                         "ssh-push", "ssh-push-tunnel"))
                 .list();
     }
+
+   /**
+    * Find all the serverActions that involve a traditional client, given an Action Id.
+    *
+    * @param actionId the Action Id
+    * @return a list of server actions
+    */
+   @SuppressWarnings("unchecked")
+   public static List<ServerAction> findTradClientServerActions(long actionId) {
+       return HibernateFactory.getSession()
+               .getNamedQuery("Action.findTradClientServerActions")
+               .setParameter("id", actionId)
+               .getResultList();
+   }
 }
