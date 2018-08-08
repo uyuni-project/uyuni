@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
@@ -839,8 +840,8 @@ public class SaltSSHService {
      * @param statesPerMinion states for each minion
      * @return a comma separated list of all the salt:// file refs
      */
-    public String findStatesExtraFilerefs(long actionChainId, Map<MinionServer, Integer> chunksPerMinion,
-                                          Map<MinionServer, List<SaltState>> statesPerMinion) {
+    public String findStatesExtraFilerefs(long actionChainId, Map<MinionSummary, Integer> chunksPerMinion,
+                                          Map<MinionSummary, List<SaltState>> statesPerMinion) {
         Set<String> fileRefs = statesPerMinion.entrySet().stream()
                 .flatMap(entry ->
                         entry.getValue().stream()
@@ -920,7 +921,7 @@ public class SaltSSHService {
      * @param statesPerMinion states for each minion
      * @return the apply highstate action ids for each minion
      */
-    public Map<MinionServer, List<Long>> findApplyHighstateActionsPerMinion(Map<MinionServer,
+    public Map<MinionSummary, List<Long>> findApplyHighstateActionsPerMinion(Map<MinionSummary,
             List<SaltState>> statesPerMinion) {
         return statesPerMinion.entrySet().stream()
                 .filter(entry -> entry.getValue().stream().anyMatch(state -> isApplyHighstate(state)))
@@ -947,10 +948,9 @@ public class SaltSSHService {
      * Generate the top file to use for applying highstate actions in action chains executed via salt-ssh.
      * @param actionChainId the action chain id
      * @param actionId the action id
-     * @param minionServer the minion
      * @return a tuple containing the salt:// reference to the top file and the content of the top
      */
-    public Pair<String, List<String>> generateTopFile(long actionChainId, long actionId, MinionServer minionServer) {
+    public Pair<String, List<String>> generateTopFile(long actionChainId, long actionId) {
         String saltTopPath = saltActionChainGeneratorService
                 .generateTop(actionChainId, actionId, new SaltTop(DEFAULT_TOPS));
         return new ImmutablePair<>(saltTopPath, DEFAULT_TOPS);

@@ -14,19 +14,24 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -182,4 +187,32 @@ public class MinionServerFactory extends HibernateFactory {
                .setParameter("id", actionId)
                .getResultList();
    }
+
+    /**
+     * Retrieve a summary of the minions involved in one Action.
+     *
+     * @param actionId the Action id
+     * @return a list minion summaries of the minions involved in the given Action
+     */
+    @SuppressWarnings("unchecked")
+    public static List<MinionSummary> findMinionSummaries(Long actionId) {
+        return ((List<Object[]>) HibernateFactory.getSession()
+                .getNamedQuery("Action.findMinionSummaries")
+                .setParameter("id", actionId)
+                .getResultList()).stream()
+                .map(row -> new MinionSummary((Long)row[0], row[1].toString(), row[2].toString(), row[3].toString(),
+                        Optional.ofNullable(row[4].toString())))
+                .collect(toList());
+    }
+
+    /**
+     * Find all minions by a their server ids.
+     *
+     * @param serverIds the list of server ids
+     * @return a list of minions
+     */
+    public static List<MinionServer> findMinionsByServerIds(List<Long> serverIds) {
+        return !serverIds.isEmpty() ?
+                ServerFactory.lookupByServerIds(serverIds, "Server.findMinionsByServerIds") : Collections.emptyList();
+    }
 }
