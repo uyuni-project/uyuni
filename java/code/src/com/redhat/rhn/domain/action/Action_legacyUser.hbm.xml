@@ -520,13 +520,24 @@ select {ra.*}
         WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
     ]]>
     </query>
-
+    
     <query name="Action.findTradClientServerActions">
     <![CDATA[
         SELECT sa
             FROM ServerAction AS sa
                 JOIN sa.server AS s
             WHERE s.class != com.redhat.rhn.domain.server.MinionServer
+                AND action_id = :id
+    ]]>
+    </query>
+    
+    <query name="Action.findMinionSummaries">
+    <![CDATA[
+        SELECT sa.server.id, s.minionId, s.digitalServerId, s.machineId, c.label
+            FROM ServerAction AS sa
+                JOIN sa.server AS s
+                JOIN s.contactMethod AS c
+            WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer
                 AND action_id = :id
     ]]>
     </query>

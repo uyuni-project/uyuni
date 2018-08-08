@@ -432,9 +432,21 @@ public class ServerFactory extends HibernateFactory {
      * @return the Servers found
      */
     public static List<Server> lookupByIds(List<Long> ids) {
+        return lookupByServerIds(ids, "Server.findByIds");
+    }
+
+    /**
+     * Lookup Servers by their ids
+     * @param <T> the type of the returned servers
+     * @param ids the ids to search for
+     * @param queryName the name of the query to be executed
+     * @return the Servers found
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Server> List<T> lookupByServerIds(List<Long> ids, String queryName) {
         Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery("Server.findByIds");
-        List<Server> results = new LinkedList<Server>();
+        Query query = session.getNamedQuery(queryName);
+        List<T> results = new LinkedList<T>();
 
         if (ids.size() == 0) {
             return results;
@@ -714,7 +726,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", user.getId());
         params.put("label", RhnSetDecl.SYSTEMS.getLabel());
-        return (List<Server>) singleton.listObjectsByNamedQuery("Server.findInSet", params);
+        return singleton.listObjectsByNamedQuery("Server.findInSet", params);
     }
 
     /**
@@ -942,7 +954,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<SnapshotTag> getSnapshotTags(ServerSnapshot snap) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("snap", snap);
-        return (List<SnapshotTag>) singleton.listObjectsByNamedQuery("ServerSnapshot.findTags", params);
+        return singleton.listObjectsByNamedQuery("ServerSnapshot.findTags", params);
     }
 
     /**
