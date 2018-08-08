@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionIds;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.dto.SystemPendingEventDto;
@@ -42,7 +43,6 @@ import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -242,8 +242,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
             sa.setRemainingTries(sa.getRemainingTries() - 1);
 
-            Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE
-                    .callsForAction(action, Arrays.asList(minion));
+            Map<LocalCall<?>, List<MinionIds>> calls = SaltServerActionService.INSTANCE
+                    .callsForAction(action, Optional.of(new MinionIds(minion)));
 
             calls.keySet().forEach(call -> {
                 Optional<JsonElement> result;

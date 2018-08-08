@@ -511,7 +511,7 @@ select {ra.*}
         WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
     ]]>
     </query>
-
+    
     <query name="Action.findTradClientServerActions">
     <![CDATA[
         SELECT sa
@@ -519,6 +519,18 @@ select {ra.*}
                 JOIN sa.server AS s
             WHERE s.class != com.redhat.rhn.domain.server.MinionServer
                 AND action_id = :id
+    ]]>
+    </query>
+    
+    <query name="Action.findRegularMinionIds">
+    <![CDATA[
+        SELECT sa.server.id, s.minionId
+            FROM ServerAction AS sa
+                JOIN sa.server AS s
+                JOIN s.contactMethod AS c
+            WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer
+                AND action_id = :id
+                AND c.label = 'default'
     ]]>
     </query>
     

@@ -37,7 +37,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
@@ -45,6 +44,7 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionIds;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
@@ -93,6 +93,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ServerFactoryTest
@@ -996,7 +997,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(e1);
 
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
-        Map<LocalCall<?>, List<MinionServer>> localCallListMap = SaltServerActionService.INSTANCE.errataAction(minions, Collections.singleton(e1.getId()));
+        List<MinionIds> minionIds = minions.stream().map(MinionIds::new).collect(Collectors.toList());
+
+        Map<LocalCall<?>, List<MinionIds>> localCallListMap =
+                SaltServerActionService.INSTANCE.errataAction(minionIds, Collections.singleton(e1.getId()));
 
         assertEquals(1, localCallListMap.size());
         localCallListMap.entrySet().forEach(result -> {

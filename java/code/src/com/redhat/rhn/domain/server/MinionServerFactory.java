@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -181,5 +184,21 @@ public class MinionServerFactory extends HibernateFactory {
                 .getNamedQuery("Action.findTradClientServerActions")
                 .setParameter("id", actionId)
                 .getResultList();
+    }
+
+    /**
+     * Find all Ids of the regular minions involved in one Action.
+     *
+     * @param actionId the Action id
+     * @return a list of regular minions ids involved in the given Action
+     */
+    @SuppressWarnings("unchecked")
+    public static List<MinionIds> findRegularMinionIds(Long actionId) {
+        return ((List<Object[]>) HibernateFactory.getSession()
+                .getNamedQuery("Action.findRegularMinionIds")
+                .setParameter("id", actionId)
+                .getResultList()).stream()
+                .map(row -> new MinionIds((Long)row[0], row[1].toString()))
+                .collect(toList());
     }
 }

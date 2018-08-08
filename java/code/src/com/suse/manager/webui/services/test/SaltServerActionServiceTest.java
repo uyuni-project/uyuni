@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.MinionIds;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -56,6 +57,9 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
         List<MinionServer> mins = new ArrayList<>();
         mins.add(minion);
 
+        List<MinionIds> minionIds = mins.stream().
+                map(MinionIds::new).collect(Collectors.toList());
+
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
@@ -78,11 +82,14 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
+
+        ActionFactory.addServerToAction(minion, action);
+
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
-        Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction, mins);
+        Map<LocalCall<?>, List<MinionIds>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction);
         assertNotEmpty(result.values());
     }
 
@@ -91,7 +98,6 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
         MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minion3 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minion4 = MinionServerFactoryTest.createTestMinionServer(user);
-        List<MinionServer> minions = Arrays.asList(minion1,minion2, minion3, minion4);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ConfigAction configAction = ActionManager.createConfigAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY,
@@ -117,7 +123,11 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
 
         ActionFactory.addConfigRevisionToAction(revision1, minion3, configAction);
         ActionFactory.addConfigRevisionToAction(revision3, minion4, configAction);
-        Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(configAction, minions);
+
+        TestUtils.saveAndReload(configAction);
+
+        Map<LocalCall<?>, List<MinionIds>> result =
+                SaltServerActionService.INSTANCE.callsForAction(configAction);
         assertEquals(result.size(), 3);
     }
 
@@ -146,7 +156,7 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
         ActionFactory.addServerToAction(minion1, action);
 
         SaltServerActionService.INSTANCE.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE.callsForAction(action, Arrays.asList(minion1));
+        Map<LocalCall<?>, List<MinionIds>> calls = SaltServerActionService.INSTANCE.callsForAction(action);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
