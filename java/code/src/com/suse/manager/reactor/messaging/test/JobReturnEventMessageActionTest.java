@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -1519,7 +1520,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         action.addServerAction(sa);
 
         SaltServerActionService.INSTANCE.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE.callsForAction(action, Arrays.asList(minion));
+        Map<LocalCall<?>, List<MinionSummary>> calls = SaltServerActionService.INSTANCE.callsForAction(action);
 
         HibernateFactory.getSession().flush();
 
@@ -1580,7 +1581,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         action.addServerAction(sa);
 
         SaltServerActionService.INSTANCE.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE.callsForAction(action, Arrays.asList(minion));
+        Map<LocalCall<?>, List<MinionSummary>> calls = SaltServerActionService.INSTANCE.callsForAction(action);
 
         // artifically expire tokens
         action.getDetails().getAccessTokens().stream().forEach(t -> t.setMinion(null));

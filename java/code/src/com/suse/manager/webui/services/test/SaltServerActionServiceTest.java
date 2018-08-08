@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -114,6 +115,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         List<MinionServer> mins = new ArrayList<>();
         mins.add(minion);
 
+        List<MinionSummary> minionSummaries = mins.stream().
+                map(MinionSummary::new).collect(Collectors.toList());
+
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
@@ -136,11 +140,14 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
+
+        ActionFactory.addServerToAction(minion, action);
+
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
-        Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction, mins);
+        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction, minionSummaries);
         RhnBaseTestCase.assertNotEmpty(result.values());
     }
 
@@ -149,7 +156,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minion3 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minion4 = MinionServerFactoryTest.createTestMinionServer(user);
-        List<MinionServer> minions = Arrays.asList(minion1,minion2, minion3, minion4);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ConfigAction configAction = ActionManager.createConfigAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY,
@@ -175,7 +181,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         ActionFactory.addConfigRevisionToAction(revision1, minion3, configAction);
         ActionFactory.addConfigRevisionToAction(revision3, minion4, configAction);
-        Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(configAction, minions);
+
+        TestUtils.saveAndReload(configAction);
+
+        Map<LocalCall<?>, List<MinionSummary>> result =
+                SaltServerActionService.INSTANCE.callsForAction(configAction);
         assertEquals(result.size(), 3);
     }
 
@@ -184,22 +194,23 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         SaltActionChainGeneratorService generatorService = new SaltActionChainGeneratorService() {
             @Override
-            public Map<MinionServer, Integer> createActionChainSLSFiles(ActionChain actionChain, MinionServer minion, List<SaltState> states, Optional<String> extraFileRefs) {
+            public Map<MinionSummary, Integer> createActionChainSLSFiles(ActionChain actionChain, MinionSummary minion,
+                    List<SaltState> states, Optional<String> extraFileRefs) {
                 assertEquals(3, states.size());
                 SaltModuleRun scriptRun = (SaltModuleRun)states.get(0);
                 SaltSystemReboot reboot = (SaltSystemReboot)states.get(1);
                 SaltModuleRun highstate = (SaltModuleRun)states.get(2);
 
                 long scriptActionId = actionChain.getEntries().stream()
-                        .filter(ace -> ace.getServer().equals(minion) && ace.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
+                        .filter(ace -> ace.getServerId().equals(minion.getServerId()) && ace.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
                         .map(ace -> ace.getActionId())
                         .findFirst().get();
                 long rebootActionId = actionChain.getEntries().stream()
-                        .filter(ace -> ace.getServer().equals(minion) && ace.getAction().getActionType().equals(ActionFactory.TYPE_REBOOT))
+                        .filter(ace -> ace.getServerId().equals(minion.getServerId()) && ace.getAction().getActionType().equals(ActionFactory.TYPE_REBOOT))
                         .map(ace -> ace.getActionId())
                         .findFirst().get();
                 long highstateActionId = actionChain.getEntries().stream()
-                        .filter(ace -> ace.getServer().equals(minion) && ace.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
+                        .filter(ace -> ace.getServerId().equals(minion.getServerId()) && ace.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
                         .map(ace -> ace.getActionId())
                         .findFirst().get();
                 assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + scriptActionId,
@@ -254,6 +265,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
             allowing(saltServiceMock).callAsync(with(any(LocalCall.class)), with(any(Target.class)));
             will(returnValue(new LocalAsyncResult() {
+                @Override
                 public List<String> getMinions() {
                     return Collections.emptyList(); // results are not important for this test
                 }
@@ -290,7 +302,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         ActionFactory.addServerToAction(minion1, action);
 
         SaltServerActionService.INSTANCE.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE.callsForAction(action, Arrays.asList(minion1));
+        Map<LocalCall<?>, List<MinionSummary>> calls = SaltServerActionService.INSTANCE.callsForAction(action);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();

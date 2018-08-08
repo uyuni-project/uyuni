@@ -26,6 +26,7 @@ import static com.suse.manager.webui.services.impl.SaltSSHService.DEFAULT_TOPS;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.AbstractSaltRequisites;
@@ -109,7 +110,7 @@ public class SaltActionChainGeneratorService {
      * @param minionStates the states for each minion
      * @return a map with the number of chunks for each minion
      */
-    public Map<MinionServer, Integer> getChunksPerMinion(Map<MinionServer, List<SaltState>> minionStates) {
+    public Map<MinionSummary, Integer> getChunksPerMinion(Map<MinionSummary, List<SaltState>> minionStates) {
         return minionStates.entrySet().stream().collect(
                         Collectors.toMap(
                                 entry -> entry.getKey(),
@@ -126,7 +127,7 @@ public class SaltActionChainGeneratorService {
      *                         be stored on the minion to be available for subsequent calls.
      * @return map containing minions and the corresponding number of generated chunks
      */
-    public Map<MinionServer, Integer> createActionChainSLSFiles(ActionChain actionChain, MinionServer minion,
+    public Map<MinionSummary, Integer> createActionChainSLSFiles(ActionChain actionChain, MinionSummary minion,
                                                                 List<SaltState> states,
                                                                 Optional<String> sshExtraFileRefs) {
         int chunk = 1;
@@ -309,7 +310,7 @@ public class SaltActionChainGeneratorService {
         return false;
     }
 
-    private boolean mustSplit(SaltState state, MinionServer minion) {
+    private boolean mustSplit(SaltState state, MinionSummary minion) {
         boolean split = false;
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun)state;
@@ -318,7 +319,7 @@ public class SaltActionChainGeneratorService {
 
             if (mods.isPresent() &&
                     mods.get().contains(PACKAGES_PKGINSTALL) && isSaltUpgrade(state) &&
-                    !MinionServerUtils.isSshPushMinion(minion)) {
+                    !minion.isSshPush()) {
                 // split only for regular minions, salt-ssh minions don't have a salt-minion process
                 split = true;
             }
@@ -364,7 +365,7 @@ public class SaltActionChainGeneratorService {
         MinionServerFactory.findByMinionId(minionId).ifPresent(minionServer -> {
             Path targetDir = getTargetDir();
             Path targetFilePath = Paths.get(targetDir.toString(),
-                    getActionChainSLSFileName(actionChainId, minionServer, chunk));
+                    getActionChainSLSFileName(actionChainId, new MinionSummary(minionServer), chunk));
             // Add specified SLS chunk file to remove list
             deleteSlsAndRefs(targetDir, targetFilePath);
 
@@ -479,12 +480,12 @@ public class SaltActionChainGeneratorService {
      * @param chunk a chunk number
      * @return the file name
      */
-    public static String getActionChainSLSFileName(Long actionChainId, MinionServer minionServer, int chunk) {
+    public static String getActionChainSLSFileName(Long actionChainId, MinionSummary minionServer, int chunk) {
         return (ACTIONCHAIN_SLS_FILE_PREFIX + Long.toString(actionChainId) +
                 "_" + minionServer.getMachineId() + "_" + Integer.toString(chunk) + ".sls");
     }
 
-    private void saveChunkSLS(List<SaltState> states, MinionServer minion, long actionChainId, int chunk) {
+    private void saveChunkSLS(List<SaltState> states, MinionSummary minion, long actionChainId, int chunk) {
         Path targetDir = createActionChainsDir();
         Path targetFilePath = Paths.get(targetDir.toString(),
                 getActionChainSLSFileName(actionChainId, minion, chunk));
