@@ -17,9 +17,9 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -33,7 +33,6 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Execute SUSE Manager actions via Salt.
@@ -109,7 +108,11 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
 
         log.info("Executing action: " + actionId);
-        handleTraditionalClients(user, action);
+
+        if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(action.getActionType())) {
+            handleTraditionalClients(user, (SubscribeChannelsAction) action);
+        }
+
         saltServerActionService.execute(action, forcePackageListRefresh,
                 isStagingJob, Optional.ofNullable(stagingJobMinionServerId));
 
@@ -121,26 +124,13 @@ public class MinionActionExecutor extends RhnJavaJob {
 
     // for traditional systems only the subscribe channels action will be handled here
     // all other actions are still handled like before
-    private void handleTraditionalClients(User user, Action action) {
-        List<ServerAction> serverActions = action.getServerActions().stream()
-                // skip minions, they're handled by the job return event
-                .filter(sa -> !sa.getServer().asMinionServer().isPresent())
-                .collect(Collectors.toList());
+    private void handleTraditionalClients(User user, SubscribeChannelsAction sca) {
+        List<ServerAction> serverActions = MinionServerFactory.findTradClientServerActions(sca.getId());
+
         serverActions.forEach(sa -> {
-            ActionType actionType = action.getActionType();
-            if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
-                SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
-                SystemManager.updateServerChannels(user, sa.getServer(),
-                        Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                        sca.getDetails().getChannels(),
-                        null);
-            }
-            else {
-                log.warn("Action type " +
-                        (actionType != null ? actionType.getName() : "") +
-                        " is not supported by " + this.getClass().getSimpleName());
-                return;
-            }
+            SystemManager.updateServerChannels(user, sa.getServer(),
+                    Optional.ofNullable(sca.getDetails().getBaseChannel()),
+                    sca.getDetails().getChannels(), null);
             sa.setStatus(ActionFactory.STATUS_COMPLETED);
             sa.setCompletionTime(new Date());
             sa.setResultCode(0L);
