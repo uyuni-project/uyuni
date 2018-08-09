@@ -8,7 +8,7 @@
 	<family default_nodecount="0" label="ATI" name="ATI"/>
 	<family default_nodecount="-1" label="SLE-M-T" name="SUSE Manager Tools"/>
 	<family default_nodecount="0" label="SLE-TC" name="SUSE Linux Enterprise Thin Client"/>
-	<family default_nodecount="0" label="SES" name="SUSE Enterprise Storage"/>
+	<family default_nodecount="0" label="SLE-LP-PPC" name="SUSE Linux Enterprise Live Patching PPC"/>
 	<family default_nodecount="0" label="SUSE_CLOUD" name="SUSE Cloud"/>
 	<family default_nodecount="-1" label="SUSE" name="openSUSE"/>
 	<family default_nodecount="0" label="SLES12-GA-LTSS-X86" name="SUSE Linux Enterprise Server 12 LTSS (x86)"/>
@@ -22,6 +22,7 @@
 	<family default_nodecount="0" label="MONO" name="SUSE Linux Enterprise Mono Extension"/>
 	<family default_nodecount="0" label="7261" name="SUSE Linux Enterprise Server"/>
 	<family default_nodecount="0" label="7260" name="SUSE Linux Enterprise Desktop"/>
+	<family default_nodecount="0" label="SES" name="SUSE Enterprise Storage"/>
 	<family default_nodecount="0" label="VMDP" name="SUSE Linux Enterprise Virtual Machine Driver Pack"/>
 	<family default_nodecount="0" label="SLE-HAS" name="SUSE Linux Enterprise HA Server"/>
 	<family default_nodecount="-1" label="SLE-SDK" name="SUSE Linux Enterprise Software Development Kit"/>
