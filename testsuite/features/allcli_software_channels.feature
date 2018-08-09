@@ -127,7 +127,7 @@ Feature: Chanel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I check radio button "Test-Channel-x86_64"
-    And I wait for "3" seconds
+    And I wait until I see "Test-Channel-x86_64 Child Channel" text
     And I uncheck "Test-Channel-x86_64 Child Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -141,7 +141,7 @@ Feature: Chanel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I check radio button "Test-Channel-x86_64"
-    And I wait for "3" seconds
+    And I wait until I see "Test-Channel-x86_64 Child Channel" text
     And I uncheck "Test-Channel-x86_64 Child Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
