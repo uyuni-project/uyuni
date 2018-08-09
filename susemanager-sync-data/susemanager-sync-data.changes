@@ -1,3 +1,5 @@
+- Add product class for Live Patching on PPC (bsc#1104025)
+
 -------------------------------------------------------------------
 Mon May 21 13:35:20 CEST 2018 - jgonzalez@suse.com
 
