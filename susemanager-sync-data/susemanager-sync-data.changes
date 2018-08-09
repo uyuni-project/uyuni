@@ -1,3 +1,4 @@
+- Add product class for Live Patching on PPC (bsc#1104025)
 - Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 
