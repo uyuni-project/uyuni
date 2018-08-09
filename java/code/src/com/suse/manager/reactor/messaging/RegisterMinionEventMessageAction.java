@@ -35,10 +35,12 @@ import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.state.PackageState;
@@ -174,7 +176,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             MinionServer registeredMinion = optMinion.get();
             String oldMinionId = registeredMinion.getMinionId();
 
-            if (!minionId.equals(oldMinionId)) {
+            if (!minionId.equals(oldMinionId)) { // todo test this in the POS lifecycle too
                 LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
                         "profile to '" + minionId + "' [" + machineId + "]");
                 registeredMinion.setName(minionId);
@@ -187,6 +189,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     SALT_SERVICE.deleteKey(oldMinionId);
                 }
             }
+
+            // POS treatment
+            // check if already assigned to a hw group -> proceed with (B)
+
             return;
         }
 
@@ -199,6 +205,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         try {
             minionServer = migrateTraditionalOrGetNew(minionId,
                     isSaltSSH, activationKeyOverride, machineId);
+            boolean isNewMinion = minionServer.getId() == null; // todo, i don't like this
 
             MinionServer server = minionServer;
 
@@ -209,6 +216,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             ValueMap grains = new ValueMap(
                     SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
+
 
             //apply activation key properties that can be set before saving the server
             Optional<String> activationKeyFromGrains = grains
@@ -331,12 +339,47 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 });
             });
 
+            // POS treatment - minion is new AND we get initrd grain -> do (A)
+            if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
+                Optional<String> manufacturer = grains.getOptionalAsString("manufacturer");
+                Optional<String> productName = grains.getOptionalAsString("productname");
+
+                if (!manufacturer.isPresent() || !productName.isPresent()) {
+                    throw new IllegalStateException("Missing machine manufacturer or product name on POS registration!");
+                }
+
+                // both manufacturer and product name are present
+                String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
+                Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
+
+                // todo org, user
+                // todo rewrite
+                lookupManagedServerGroupByNameAndOrg(hwType, org).ifPresent(sg -> {
+                    SystemManager.addServerToServerGroup(minionServer, sg);
+                    LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
+                });
+                lookupManagedServerGroupByNameAndOrg("TERMINALS", org).ifPresent(sg -> {
+                    SystemManager.addServerToServerGroup(minionServer, sg);
+                    LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
+                });
+                Org finalOrg = org;
+                branchId.ifPresent(bid ->
+                        lookupManagedServerGroupByNameAndOrg(bid, finalOrg).ifPresent(sg -> {
+                            SystemManager.addServerToServerGroup(minionServer, sg);
+                            LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
+                        }));
+
+                minionServer.asMinionServer().ifPresent(
+                        SaltStateGeneratorService.INSTANCE::generatePillar);
+
+
+                LOG.info("Finished initial POS registration for minion " + minionId);
+                return;
+            }
+
             // get hardware and network async
             triggerHardwareRefresh(server);
 
-            Map<String, String> data = new HashMap<>();
-            data.put("minionId", minionId);
-            data.put("machineId", machineId);
             LOG.info("Finished minion registration: " + minionId);
 
             StatesAPI.generateServerPackageState(server);
@@ -402,6 +445,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
         }
+    }
+
+    // todo rewrite
+    private static Optional<ManagedServerGroup> lookupManagedServerGroupByNameAndOrg(String name, Org org) {
+        return ServerGroupFactory.listManagedGroups(org).stream()
+                .filter(grp -> grp.getName().equals(name))
+                .findFirst();
     }
 
     /**
