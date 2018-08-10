@@ -17,6 +17,7 @@ package com.suse.manager.reactor.messaging;
 import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
 import static java.util.Optional.ofNullable;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
@@ -66,6 +67,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
@@ -86,6 +88,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -372,6 +375,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 minionServer.asMinionServer().ifPresent(
                         SaltStateGeneratorService.INSTANCE::generatePillar);
 
+                LOG.info("POS registration: minion " + minionId + " assigned to HW groups. Proceeding with saltboot...");
+                LocalCall<List<String>> call = new LocalCall<>("saltutil.sync_states", Optional.empty(), // todo async!
+                        Optional.empty(), new TypeToken<List<String>>() {
+                });
+                SaltService.INSTANCE.callSync(call, minionId);
+                SaltService.INSTANCE.applyState(minionId, "saltboot"); // todo do this async!
 
                 LOG.info("Finished initial POS registration for minion " + minionId);
                 return;
