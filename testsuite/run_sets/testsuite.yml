@@ -69,6 +69,7 @@
 - features/min_action_chain.feature
 - features/minssh_action_chain.feature
 - features/min_salt_formulas.feature
+- features/min_salt_formulas_advanced.feature
 - features/srv_docker_auth_test.feature
 - features/srv_docker_advanced_test.feature
 - features/srv_docker_cve_audit.feature
