@@ -1,7 +1,4 @@
-- renamed xmlrpc api calls populateSystemFormulaData and populateGroupFormulaData
-  to setSystemFormulaData and setGroupFormulaData
-- changed order of parameters of xmlrpc api calls getSystemFormulaData
-  and getGroupFormulaData
+- Avoid an NPE on expired tokens (bsc#1104503)
 - Generate systemid certificate on suse/systemid/generate event (FATE#323069)
 - Fix system group overview patch status (bsc#1102478)
 
