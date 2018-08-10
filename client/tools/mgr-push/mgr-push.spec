@@ -36,7 +36,7 @@ Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 URL:            https://github.com/spacewalkproject/spacewalk
-Version:        4.0.0
+Version:        4.0.1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
