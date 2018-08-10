@@ -23,7 +23,7 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 URL:            https://github.com/spacewalkproject/spacewalk
-Version:        4.0.0
+Version:        4.0.1
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
