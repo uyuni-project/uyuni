@@ -70,13 +70,14 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         // execute
         List<Integer> actionIds = new ArrayList<Integer>();
         actionIds.add(a1.getId().intValue());
+        actionIds.add(a2.getId().intValue());
         actionIds.add(a3.getId().intValue());
         int result = handler.cancelActions(admin, actionIds);
 
         // verify
         assertEquals(1, result);
         apiActions = handler.listAllActions(admin);
-        assertEquals(numActions + 1, apiActions.length);
+        assertEquals(numActions + 2, apiActions.length);
     }
 
     public void testListAllActions() throws Exception {
