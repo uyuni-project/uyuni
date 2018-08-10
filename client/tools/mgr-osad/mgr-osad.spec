@@ -272,7 +272,7 @@ Requires(post): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxena
 Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/semanage, spacewalk-selinux
 Requires:       osa-dispatcher
 
-%description -n osa-dispatcher-selinux
+%description -n mgr-osa-dispatcher-selinux
 SELinux policy module supporting osa-dispatcher.
 %endif
 
