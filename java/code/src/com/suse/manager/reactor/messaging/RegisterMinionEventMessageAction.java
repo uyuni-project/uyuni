@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.messaging;
 
 import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
+import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 import com.google.gson.reflect.TypeToken;
@@ -195,7 +196,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // POS treatment
             // check if already assigned to a hw group -> proceed with (B)
-
+            // todo don't get grains all the time!
+            // todo maybe also check if minion is in a HW group and fail the process if it isn't
+            ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
+            if (grains.getOptionalAsBoolean("initrd")
+                    .map(initrd -> initrd == false)
+                    .orElse(false)) {
+                LOG.info("POS registration: Finishing registration for minion " + minionId);
+                finishRegistration(minionId, isSaltSSH, registeredMinion, empty(), empty()); // todo take care about the optional params
+            }
             return;
         }
 
@@ -385,54 +394,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 LOG.info("Finished initial POS registration for minion " + minionId);
                 return;
             }
-
-            // get hardware and network async
-            triggerHardwareRefresh(server);
-
-            LOG.info("Finished minion registration: " + minionId);
-
-            StatesAPI.generateServerPackageState(server);
-
-            // Asynchronously get the uptime of this minion
-            MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
-
-            // Generate pillar data
-            try {
-                SaltStateGeneratorService.INSTANCE.generatePillar(server);
-
-                // Subscribe to config channels assigned to the activation key or initialize empty channel profile
-                server.subscribeConfigChannels(
-                        activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
-                        creator.orElse(null));
-            }
-            catch (RuntimeException e) {
-                LOG.error("Error generating Salt files for server '" + minionId +
-                        "':" + e.getMessage());
-            }
-
-            // Should we apply the highstate?
-            boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
-
-            // Apply initial states asynchronously
-            List<String> statesToApply = new ArrayList<>();
-            statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
-            statesToApply.add(ApplyStatesEventMessage.CHANNELS);
-            statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
-            statesToApply.add(ApplyStatesEventMessage.PACKAGES);
-            if (!isSaltSSH) {
-                statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
-            }
-            MessageQueue.publish(new ApplyStatesEventMessage(
-                    server.getId(),
-                    server.getCreator() != null ? server.getCreator().getId() : null,
-                    !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
-                    statesToApply
-            ));
-
-            // Call final highstate to deploy config channels if required
-            if (applyHighstate) {
-                MessageQueue.publish(new ApplyStatesEventMessage(server.getId(), true, Collections.emptyList()));
-            }
+            finishRegistration(minionId, isSaltSSH, server, activationKey, creator);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -453,6 +415,56 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
+        }
+    }
+
+    private void finishRegistration(String minionId, boolean isSaltSSH, MinionServer server, Optional<ActivationKey> activationKey, Optional<User> creator) {
+        // get hardware and network async
+        triggerHardwareRefresh(server);
+
+        LOG.info("Finished minion registration: " + minionId);
+
+        StatesAPI.generateServerPackageState(server);
+
+        // Asynchronously get the uptime of this minion
+        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
+
+        // Generate pillar data
+        try {
+            SaltStateGeneratorService.INSTANCE.generatePillar(server);
+
+            // Subscribe to config channels assigned to the activation key or initialize empty channel profile
+            server.subscribeConfigChannels(
+                    activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
+                    creator.orElse(null));
+        }
+        catch (RuntimeException e) {
+            LOG.error("Error generating Salt files for server '" + minionId +
+                    "':" + e.getMessage());
+        }
+
+        // Should we apply the highstate?
+        boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
+
+        // Apply initial states asynchronously
+        List<String> statesToApply = new ArrayList<>();
+        statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
+        statesToApply.add(ApplyStatesEventMessage.CHANNELS);
+        statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
+        statesToApply.add(ApplyStatesEventMessage.PACKAGES);
+        if (!isSaltSSH) {
+            statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
+        }
+        MessageQueue.publish(new ApplyStatesEventMessage(
+                server.getId(),
+                server.getCreator() != null ? server.getCreator().getId() : null,
+                !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
+                statesToApply
+        ));
+
+        // Call final highstate to deploy config channels if required
+        if (applyHighstate) {
+            MessageQueue.publish(new ApplyStatesEventMessage(server.getId(), true, Collections.emptyList()));
         }
     }
 
