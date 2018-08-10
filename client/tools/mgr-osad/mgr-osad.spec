@@ -1,5 +1,5 @@
 #
-# spec file for package osad
+# spec file for package mgr-osad
 #
 # Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
@@ -17,6 +17,9 @@
 #
 
 
+# Old name and version+1 before switching to mgr-osad
+%define oldname osad
+%define oldversion 5.11.102.3
 %global rhnroot /usr/share/rhn
 %global rhnconf /etc/sysconfig/rhn
 %global client_caps_dir /etc/sysconfig/rhn/clientCaps.d
@@ -43,11 +46,13 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
-Name:           osad
+Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        5.11.102.2
+Version:        4.0.0
+Provides:       %{oldname} = %{oldversion}
+Obsoletes:      %{oldname} = %{oldversion}
 Release:        1%{?dist}
 URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -107,8 +112,10 @@ only poll the Spacewalk Server from time to time.
 %package -n python2-%{name}
 Summary:        Open Source Architecture Daemon
 Group:          System Environment/Daemons
-Provides:       python-%{name} = %{version}-%{release}
-Obsoletes:      python-%{name} < %{version}-%{release}
+Provides:       python-%{name} = %{oldversion}
+Obsoletes:      python-%{name} < %{oldversion}
+Provides:       python-%{oldname} = %{oldversion}
+Obsoletes:      python-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python-jabberpy
@@ -129,6 +136,8 @@ Python 2 specific files for %{name}
 %package -n python3-%{name}
 Summary:        Open Source Architecture Daemon
 Group:          System Environment/Daemons
+Provides:       python3-%{oldname} = %{oldversion}
+Obsoletes:      python3-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3
 Requires:       python3-jabberpy
@@ -142,35 +151,41 @@ BuildRequires:  python3-devel
 Python 3 specific files for %{name}
 %endif
 
-%package -n python2-osa-common
+%package -n python2-mgr-osa-common
 Summary:        OSA common files
 Group:          System Environment/Daemons
 Requires:       python-jabberpy
 Conflicts:      %{name} < %{version}-%{release}
 Conflicts:      %{name} > %{version}-%{release}
-Obsoletes:      osa-common < %{version}-%{release}
-Provides:       osa-common = %{version}-%{release}
+Obsoletes:      osa-common < %{oldversion}
+Provides:       osa-common = %{oldversion}
+Obsoletes:      python2-osa-common < %{oldversion}
+Provides:       python2-osa-common = %{oldversion}
 
-%description -n python2-osa-common
-Python 2 common files needed by osad and osa-dispatcher
+%description -n python2-mgr-osa-common
+Python 2 common files needed by mgr-osad and mgr-osa-dispatcher
 
 %if 0%{?build_py3}
-%package -n python3-osa-common
+%package -n python3-mgr-osa-common
 Summary:        OSA common files
 Group:          System Environment/Daemons
 Requires:       python3-jabberpy
 Conflicts:      %{name} < %{version}-%{release}
 Conflicts:      %{name} > %{version}-%{release}
-Obsoletes:      osa-common < %{version}-%{release}
-Provides:       osa-common = %{version}-%{release}
+Obsoletes:      osa-common < %{oldversion}
+Provides:       osa-common = %{oldversion}
+Obsoletes:      python3-osa-common < %{oldversion}
+Provides:       python3-osa-common = %{oldversion}
 
-%description -n python3-osa-common
-Python 3 common files needed by osad and osa-dispatcher
+%description -n python3-mgr-osa-common
+Python 3 common files needed by mgr-osad and mgr-osa-dispatcher
 %endif
 
-%package -n osa-dispatcher
+%package -n mgr-osa-dispatcher
 Summary:        OSA dispatcher
 Group:          System Environment/Daemons
+Obsoletes:      osa-dispatcher < %{oldversion}
+Provides:       osa-dispatcher = %{oldversion}
 Requires:       lsof
 Requires:       python2-osa-dispatcher = %{version}-%{release}
 Requires:       spacewalk-backend-server >= 1.2.32
@@ -190,14 +205,16 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 %endif
 
-%description -n osa-dispatcher
+%description -n mgr-osa-dispatcher
 OSA dispatcher is supposed to run on the Spacewalk server. It gets information
 from the Spacewalk server that some command needs to be execute on the client;
 that message is transported via jabber protocol to OSAD agent on the clients.
 
-%package -n python2-osa-dispatcher
+%package -n python2-mgr-osa-dispatcher
 Summary:        OSA dispatcher
 Group:          System Environment/Daemons
+Obsoletes:      python2-osa-dispatcher < %{oldversion}
+Provides:       python2-osa-dispatcher = %{oldversion}
 %if 0%{?fedora} >= 28
 BuildRequires:  python2-devel
 Requires:       python2
@@ -208,24 +225,26 @@ Requires:       python
 Requires:       python-jabberpy
 Requires:       python2-osa-common = %{version}-%{release}
 
-%description -n python2-osa-dispatcher
+%description -n python2-mgr-osa-dispatcher
 Python 2 specific files for osa-dispatcher.
 
 %if 0%{?build_py3}
-%package -n python3-osa-dispatcher
+%package -n python3-mgr-osa-dispatcher
 Summary:        OSA dispatcher
 Group:          System Environment/Daemons
+Obsoletes:      python3-osa-dispatcher < %{oldversion}
+Provides:       python3-osa-dispatcher = %{oldversion}
 BuildRequires:  python3-devel
 Requires:       python3
 Requires:       python3-jabberpy
 Requires:       python3-osa-common = %{version}-%{release}
 
-%description -n python3-osa-dispatcher
+%description -n python3-mgr-osa-dispatcher
 Python 3 specific files for osa-dispatcher.
 %endif
 
 %if 0%{?include_selinux_package}
-%package -n osa-dispatcher-selinux
+%package -n mgr-osa-dispatcher-selinux
 %global selinux_variants mls strict targeted
 %global selinux_policyver %(sed -e 's,.*selinux-policy-\\([^/]*\\)/.*,\\1,' /usr/share/selinux/devel/policyhelp 2> /dev/null)
 %global POLICYCOREUTILSVER 1.33.12-1
@@ -235,6 +254,8 @@ Python 3 specific files for osa-dispatcher.
 
 Summary:        SELinux policy module supporting osa-dispatcher
 Group:          System Environment/Base
+Obsoletes:      osa-dispatcher-selinux < %{oldversion}
+Provides:       osa-dispatcher-selinux = %{oldversion}
 BuildRequires:  checkpolicy
 BuildRequires:  hardlink
 BuildRequires:  policycoreutils >= %{POLICYCOREUTILSVER}
@@ -439,15 +460,15 @@ fi
 %pre
 %service_add_pre osad.service
 
-%pre -n osa-dispatcher
+%pre -n mgr-osa-dispatcher
 %service_add_pre osa-dispatcher.service
 
-%postun -n osa-dispatcher
+%postun -n mgr-osa-dispatcher
 %service_del_postun osa-dispatcher.service
 
 %endif
 
-%post -n osa-dispatcher
+%post -n mgr-osa-dispatcher
 %if 0%{?suse_version} >= 1210
 %service_add_post osa-dispatcher.service
 %else
@@ -466,7 +487,7 @@ if [ -f %{_unitdir}/osa-dispatcher.service ]; then
 fi
 %endif
 
-%preun -n osa-dispatcher
+%preun -n mgr-osa-dispatcher
 %if 0%{?suse_version} >= 1210
 %service_del_preun osa-dispatcher.service
 %else
@@ -481,19 +502,19 @@ fi
 %endif
 
 %if 0%{?include_selinux_package}
-%post -n osa-dispatcher-selinux
+%post -n mgr-osa-dispatcher-selinux
 if /usr/sbin/selinuxenabled ; then
    %{_sbindir}/osa-dispatcher-selinux-enable
 fi
 
-%posttrans -n osa-dispatcher-selinux
+%posttrans -n mgr-osa-dispatcher-selinux
 #this may be safely remove when BZ 505066 is fixed
 if /usr/sbin/selinuxenabled ; then
   rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
   /sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
 fi
 
-%postun -n osa-dispatcher-selinux
+%postun -n mgr-osa-dispatcher-selinux
 # Clean up after package removal
 if [ $1 -eq 0 ]; then
   for selinuxvariant in %{selinux_variants}
@@ -552,7 +573,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{python3_sitelib}/osad/__pycache__/osad_config.*
 %endif
 
-%files -n osa-dispatcher
+%files -n mgr-osa-dispatcher
 %defattr(0644,root,root,0755)
 %{_sbindir}/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/sysconfig/osa-dispatcher
@@ -579,7 +600,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 
-%files -n python2-osa-dispatcher
+%files -n python2-mgr-osa-dispatcher
 %defattr(-,root,root)
 %attr(755,root,root) %{_sbindir}/osa-dispatcher-%{python_version}
 %dir %{python_sitelib}/osad
@@ -587,7 +608,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{python_sitelib}/osad/dispatcher_client.py*
 
 %if 0%{?build_py3}
-%files -n python3-osa-dispatcher
+%files -n python3-mgr-osa-dispatcher
 %defattr(-,root,root)
 %attr(755,root,root) %{_sbindir}/osa-dispatcher-%{python3_version}
 %dir %{python3_sitelib}/osad
@@ -597,14 +618,14 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{python3_sitelib}/osad/__pycache__/dispatcher_client.*
 %endif
 
-%files -n python2-osa-common
+%files -n python2-mgr-osa-common
 %defattr(-,root,root)
 %{python_sitelib}/osad/__init__.py*
 %{python_sitelib}/osad/jabber_lib.py*
 %{python_sitelib}/osad/rhn_log.py*
 
 %if 0%{?build_py3}
-%files -n python3-osa-common
+%files -n python3-mgr-osa-common
 %defattr(-,root,root)
 %{python3_sitelib}/osad/__init__.py*
 %{python3_sitelib}/osad/jabber_lib.py*
@@ -615,7 +636,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %if 0%{?include_selinux_package}
-%files -n osa-dispatcher-selinux
+%files -n mgr-osa-dispatcher-selinux
 %defattr(-,root,root)
 %doc osa-dispatcher-selinux/%{modulename}.fc
 %doc osa-dispatcher-selinux/%{modulename}.if
