@@ -5479,6 +5479,7 @@ public class SystemHandler extends BaseHandler {
      *              #prop("string", "name")
      *              #prop("string", "mac")
      *              #prop("string", "ip")
+     *              #prop("string", "dnsname")
      *          #struct_end()
      *      #array_end()
      * @xmlrpc.returntype #return_int_success()
@@ -5506,6 +5507,7 @@ public class SystemHandler extends BaseHandler {
             device.setName(map.get("name"));
             device.setIpaddr(map.get("ip"));
             device.setHwaddr(map.get("mac"));
+            device.setDnsname(map.get("dnsname"));
             // Only add this interface, if either MAC or IP is valid
             if (device.isMacValid() || device.isIpValid()) {
                 if (device.getName() == null || device.getName().isEmpty()) {
