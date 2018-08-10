@@ -684,6 +684,7 @@ public class SaltUtils {
             // activate the new tokens
             List<Long> newTokenIds = sca.getDetails().getAccessTokens()
                     .stream()
+                    .filter(ac -> ac.getMinion() != null)
                     .filter(ac -> ac.getMinion().getId().equals(serverAction.getServer().getId()))
                     .map(AccessToken::getId)
                     .collect(Collectors.toList());
