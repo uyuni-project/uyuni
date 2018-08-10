@@ -3,6 +3,7 @@ from __future__ import print_function
 import sys
 import os
 import shutil
+import logging
 from spacewalk.server import rhnSQL
 from spacewalk.common import usix
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -165,9 +166,13 @@ def create_repo(label, flush, additional=[]):
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids, pdids)))
     packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
     packagelist.extend(additional)
+    logging.debug("The bootstrap repo should contain the following packages: {0}".format(packagelist))
+
     for pkgname in packagelist:
         h.execute(pkgname=pkgname)
         pkgs = h.fetchall_dict() or []
+        logging.debug("Package {0} found {1} resulting packages:".format(
+            pkgname, len(pkgs)))
         if len(pkgs) == 0:
             messages.append("ERROR: package '%s' not found" % pkgname)
             errors += 1
@@ -178,10 +183,12 @@ def create_repo(label, flush, additional=[]):
                                               'Both should be fully synched before running the mgr-create-bootstrap script.')
             continue
         for p in pkgs:
+            logging.debug(p)
             rpmdir = os.path.join(destdir, p['arch'])
             if not os.path.exists(rpmdir):
                 os.makedirs(rpmdir)
             print("copy '%s'" % p['nvrea'])
+            logging.debug("copy {0} / {1} to {2}".format(basepath, p['path'], rpmdir))
             if not dryrun:
                 shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
 
@@ -217,8 +224,13 @@ parser.add_option('', '--datamodule', action="store", dest='datamodule',
                   help='Use an own datamodule (Default: mgr_bootstrap_data)')
 parser.add_option('', '--with-custom-channels', action='store_true', dest='usecustomchannels',
                   help='Take custom channels into account when searching for newest package versions')
+parser.add_option('-d', '--debug', action='store_true', dest='debug',
+                  help='Enable debug mode')
 
 (options, args) = parser.parse_args()
+
+if options.debug:
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 modulename = "mgr_bootstrap_data"
 if options.datamodule and options.datamodule != '':
