@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Aug 10 15:14:30 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.1-1
 - Bump version to 4.0.0 (bsc#1104034)
 - Feat: check for Dynamic CA-Trust Updates while bootstrapping on RES (FATE #325588)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
