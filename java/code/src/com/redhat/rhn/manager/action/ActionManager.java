@@ -110,7 +110,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
-import static com.suse.manager.utils.MinionServerUtils.isSshPushMinion;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -345,6 +344,8 @@ public class ActionManager extends BaseManager {
 
         Set<ServerAction> serverActions = actionsToDelete.stream()
                 .flatMap(a -> a.getServerActions().stream())
+                .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()) ||
+                        ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus()))
                 .filter(Opt.fold(serverIds,
                         // if serverIds is not specified, do not filter at all
                         () -> (a -> true),
@@ -365,7 +366,8 @@ public class ActionManager extends BaseManager {
                 .map(a -> new ImmutablePair<>(
                         a,
                         a.getServerActions().stream()
-                            .filter(sa -> isMinionServer(sa.getServer()) && !(isSshPushMinion(sa.getServer())))
+                            .filter(sa -> isMinionServer(sa.getServer()))
+                            .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
                             .map(sa -> sa.getServer())
                             .collect(toSet())
                         )
@@ -380,11 +382,18 @@ public class ActionManager extends BaseManager {
             taskomaticApi.deleteScheduledActions(actionMap);
         }
 
-        // delete ServerActions from the database
         serverActions.stream()
-                .forEach(serverAction -> {
-                    serverAction.getParentAction().getServerActions().remove(serverAction);
-                    ActionFactory.delete(serverAction);
+                .forEach(sa -> {
+                    // Delete ServerActions from the database only if QUEUED
+                    if (ActionFactory.STATUS_QUEUED.equals(sa.getStatus())) {
+                        sa.getParentAction().getServerActions().remove(sa);
+                        ActionFactory.delete(sa);
+                    }
+                    // Set to FAILED if the state is PICKED_UP
+                    else if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
+                        failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(),
+                                "Canceled by " + user.getLogin());
+                    }
                 });
 
         // run post-actions
