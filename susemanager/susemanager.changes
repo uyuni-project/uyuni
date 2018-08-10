@@ -1,3 +1,4 @@
+- add debug mode for mgr-create-bootstrap-repo
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 -------------------------------------------------------------------
 Wed Jul 25 09:31:55 CEST 2018 - jgonzalez@suse.com
