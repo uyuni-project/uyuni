@@ -30,6 +30,7 @@ public class Network {
     private String netmask;
     private String ipAddress;
     private String ipv6Address;
+    private String dnsname;
     private ArrayList<String> ipv6Secondaries;
     private boolean isStatic;
     private String macAddress;
@@ -81,6 +82,7 @@ public class Network {
         addToMap(inet, "static-" + name, isStatic);
         addToMap(inet, "ipv6address-" + name, ipv6Address);
         addToMap(inet, "ipv6secondaries-" + name, ipv6Secondaries);
+        addToMap(inet, "dnsname-" + name, dnsname);
         addToMap(inet, bondingTypeVariableName + "-" + name, bonding);
         addToMap(inet, bondingMasterVariableName + "-" + name, bondingMaster);
         addToMap(inet, "bondingopts-" + name, bondingOptions);
@@ -123,6 +125,7 @@ public class Network {
 
         net.setIpv6Address((String) ifaceInfo.get("ipv6_address"));
         net.setIpv6Secondaries((ArrayList<String>) ifaceInfo.get("ipv6_secondaries"));
+        net.setDnsname((String) ifaceInfo.get("dnsname"));
         net.setBondingOptions((String) ifaceInfo.get("bonding_opts"));
 
         return net;
@@ -175,6 +178,20 @@ public class Network {
      */
     public void setIpv6Address(String addressIn) {
         this.ipv6Address = addressIn;
+    }
+
+    /**
+     * @return Returns the dnsname
+     */
+    public String getDnsname() {
+        return dnsname;
+    }
+
+    /**
+     * @param dnsnameIn The dnsname set.
+     */
+    public void setDnsname(String dnsnameIn) {
+        this.dnsname = dnsnameIn;
     }
 
     /**
