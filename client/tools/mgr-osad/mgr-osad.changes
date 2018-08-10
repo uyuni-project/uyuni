@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Aug 10 17:04:37 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.2-1
 - Fix SPEC issue for subpackage mgr-osa-dispatcher-selinux (bsc#11040346)
 
 -------------------------------------------------------------------
