@@ -23,7 +23,7 @@ mount tmpfs -t tmpfs -o defaults /dev/shm
 
 # Database schema creation
 
-rpm -ivh /root/susemanager-schema-3.0.14-6.1.noarch.rpm
+rpm -ivh /root/susemanager-schema-3.1.8-1.2.noarch.rpm
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
@@ -61,13 +61,13 @@ fi
 
 # guessing the link to next major version
 # THE NEXT BLOCK CAN BE COMMENTED OUT WHEN WE HAVE THE LINK PACKAGED
-for v in `seq 30 -1 2`; do
+for v in `seq 30 -1 1`; do
     minusone=$(($v-1))
-    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.1.$minusone-to-susemanager-schema-3.1.$v ]; then
-        if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.1.$v-to-susemanager-schema-3.2.0 ]; then
-            mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.1.$v-to-susemanager-schema-3.2.0
+    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$minusone-to-susemanager-schema-3.2.$v ]; then
+        if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0 ]; then
+            mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0
             # set hard this destination
-            #export SUMA_TEST_SCHEMA_VERSION="3.2.1"
+            export SUMA_TEST_SCHEMA_VERSION="4.0.1"
         fi
         break
     fi
