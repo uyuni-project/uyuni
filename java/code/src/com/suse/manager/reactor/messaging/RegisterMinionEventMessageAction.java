@@ -199,7 +199,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // todo don't get grains all the time!
             // todo maybe also check if minion is in a HW group and fail the process if it isn't
             ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-            if (grains.getOptionalAsBoolean("initrd")
+            if (grains.getOptionalAsBoolean("initrd") // todo extract string (maybe rename?), also in tests!
                     .map(initrd -> initrd == false)
                     .orElse(false)) {
                 LOG.info("POS registration: Finishing registration for minion " + minionId);
@@ -388,8 +388,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 LocalCall<List<String>> call = new LocalCall<>("saltutil.sync_states", Optional.empty(), // todo async!
                         Optional.empty(), new TypeToken<List<String>>() {
                 });
-                SaltService.INSTANCE.callSync(call, minionId);
-                SaltService.INSTANCE.applyState(minionId, "saltboot"); // todo do this async!
+                SALT_SERVICE.callSync(call, minionId);
+                SALT_SERVICE.applyState(minionId, "saltboot"); // todo do this async!
 
                 LOG.info("Finished initial POS registration for minion " + minionId);
                 return;
