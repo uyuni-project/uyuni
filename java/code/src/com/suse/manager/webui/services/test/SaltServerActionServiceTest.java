@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services.test;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -57,8 +59,7 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
         List<MinionServer> mins = new ArrayList<>();
         mins.add(minion);
 
-        List<MinionIds> minionIds = mins.stream().
-                map(MinionIds::new).collect(Collectors.toList());
+        List<MinionIds> minionIds = mins.stream().map(MinionIds::new).collect(toList());
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
