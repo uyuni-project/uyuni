@@ -16,6 +16,9 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
+
+import java.io.IOException;
+
 import org.quartz.JobExecutionContext;
 
 
@@ -37,6 +40,14 @@ public class MinionActionCleanup extends RhnJavaJob {
         // Measure time and calculate the total duration
         long start = System.currentTimeMillis();
         MinionActionUtils.cleanupMinionActions(SaltService.INSTANCE);
+
+        // Delete script files for script actions that have completed
+        try {
+            MinionActionUtils.cleanupScriptActions();
+        }
+        catch (IOException e) {
+            log.error("Could not cleanup script files: " + e.getMessage(), e);
+        }
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

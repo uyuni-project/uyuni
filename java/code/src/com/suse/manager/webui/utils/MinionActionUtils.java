@@ -19,9 +19,13 @@ import static com.suse.utils.Opt.flatMap;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -50,6 +54,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -306,5 +312,21 @@ public class MinionActionUtils {
         });
     }
 
-
+    /**
+     * Delete script files corresponding to script run actions.
+     * @throws IOException in case of problems listing the scripts
+     */
+    public static void cleanupScriptActions() throws IOException {
+        Pattern p = Pattern.compile("script_(\\d*).sh");
+        Files.list(SaltUtils.INSTANCE.getScriptsDir()).forEach(file -> {
+            Matcher m = p.matcher(file.getFileName().toString());
+            if (m.find()) {
+                long actionId = Long.parseLong(m.group(1));
+                if (ActionFactory.lookupById(actionId).allServersFinished()) {
+                    LOG.info("Deleting script file: " + file);
+                    FileUtils.deleteFile(file);
+                }
+            }
+        });
+    }
 }

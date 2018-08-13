@@ -120,11 +120,9 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -541,15 +539,6 @@ public class SaltUtils {
                         jid + "]");
             }
             scriptResult.setOutput(printStdMessages(result.getStderr(), result.getStdout()).getBytes());
-
-            Path scriptPath = getScriptPath(action.getId());
-            try {
-                Files.deleteIfExists(scriptPath);
-            }
-            catch (IOException e) {
-                LOG.warn("Could not delete script file " + scriptPath, e);
-            }
-
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
             handleImageBuildData(serverAction, jsonResult);
@@ -1685,6 +1674,14 @@ public class SaltUtils {
      */
     public void setScriptsDir(Path scriptsDirIn) {
         scriptsDir = scriptsDirIn;
+    }
+
+    /**
+     * Return the scripts directory.
+     * @return scripts directory
+     */
+    public Path getScriptsDir() {
+        return scriptsDir;
     }
 
     /**
