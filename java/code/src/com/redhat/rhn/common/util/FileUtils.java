@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 
 /**
@@ -196,5 +198,18 @@ public class FileUtils {
             sb.append(System.getProperty("line.separator"));
         }
         return sb.toString();
+    }
+
+    /**
+     * Delete file with a given path.
+     * @param path path of the file to be deleted
+     */
+    public static void deleteFile(Path path) {
+        try {
+            Files.deleteIfExists(path);
+        }
+        catch (IOException e) {
+            log.warn("Could not delete file: " + path, e);
+        }
     }
 }

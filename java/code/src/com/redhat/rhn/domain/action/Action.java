@@ -336,6 +336,17 @@ public class Action extends BaseDomainHelper implements Serializable {
     }
 
     /**
+     * @return true if all servers have finished the action as either COMPLETED or FAILED
+     */
+    public boolean allServersFinished() {
+        if (getServerActions() == null) {
+            return true;
+        }
+        return getServerActions().stream().allMatch(sa -> ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()) ||
+                ActionFactory.STATUS_FAILED.equals(sa.getStatus()));
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
