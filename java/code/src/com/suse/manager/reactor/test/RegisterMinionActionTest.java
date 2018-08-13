@@ -21,6 +21,8 @@ import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -60,7 +62,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -961,12 +962,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 map.put("minion_id_prefix", "Branch001");
                                 return map;
                             })));
-                    List<ProductInfo> pil = new ArrayList<>();
                     allowing(saltServiceMock).callSync(
                             with(any(LocalCall.class)),
                             with(any(String.class)));
-                    allowing(saltServiceMock).applyState(MINION_ID, "saltboot");
-                    will(returnValue(Optional.of(pil)));
+                    exactly(1).of(saltServiceMock).applyState(MINION_ID, "saltboot");
                 }},
                 (contactMethod) -> null, // no AK
                 (optMinion, machineId, key) -> {
@@ -975,6 +974,111 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getManagedGroups().contains(hwGroup));
                     assertTrue(minion.getManagedGroups().contains(terminalsGroup));
                     assertTrue(minion.getManagedGroups().contains(branchGroup));
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Tests a first boot of a deployed terminal machine
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testFirstStartRetailTerminal() throws Exception {
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-EETCruncher", "HW group",
+                OrgFactory.getSatelliteOrg());
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
+                OrgFactory.getSatelliteOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
+                OrgFactory.getSatelliteOrg());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setOrg(OrgFactory.getSatelliteOrg());
+        SystemManager.addServerToServerGroup(server, hwGroup);
+        SystemManager.addServerToServerGroup(server, terminalsGroup);
+        SystemManager.addServerToServerGroup(server, branchGroup);
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    server.setMachineId(MACHINE_ID);
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", false);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "EETCruncher");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    // check that HW refresh was scheduled
+                    assertEquals(1, ActionFactory.listServerActionsForServer(minion).stream()
+                                    .filter(sa -> ((ServerAction) sa).getParentAction().getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST))
+                                    .count());
+                    // todo research how to test a MessageQueue - i think there is currently nothing more to test here :/
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+
+    /**
+     * Tests a redeploy of a terminal
+     * (initrd grain == true, but the system profile already exists)
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testTerminalRedeploy() throws Exception {
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-EETCruncher", "HW group",
+                OrgFactory.getSatelliteOrg());
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
+                OrgFactory.getSatelliteOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
+                OrgFactory.getSatelliteOrg());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setOrg(OrgFactory.getSatelliteOrg());
+        SystemManager.addServerToServerGroup(server, hwGroup);
+        SystemManager.addServerToServerGroup(server, terminalsGroup);
+        SystemManager.addServerToServerGroup(server, branchGroup);
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    server.setMachineId(MACHINE_ID);
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "EETCruncher");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    List<ProductInfo> pil = new ArrayList<>();
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                    exactly(1).of(saltServiceMock).applyState(MINION_ID, "saltboot");
+                    will(returnValue(Optional.of(pil)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    // nothing to check here, we only check that "saltboot" state was applied in the expectations
                 }, DEFAULT_CONTACT_METHOD);
     }
 
