@@ -1,3 +1,4 @@
+- Change dependencies from rhncfg to mgr-cfg (bsc#1104034)
 - Add script for retrieving the systemid file in  configure-proxy.sh for minions (FATE#323069)
 
 -------------------------------------------------------------------
