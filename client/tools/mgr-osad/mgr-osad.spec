@@ -67,8 +67,8 @@ BuildRequires:  perl-interpreter
 BuildRequires:  perl
 %endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
-Conflicts:      osa-dispatcher < %{version}-%{release}
-Conflicts:      osa-dispatcher > %{version}-%{release}
+Conflicts:      mgr-osa-dispatcher < %{version}-%{release}
+Conflicts:      mgr-osa-dispatcher > %{version}-%{release}
 %if 0%{?suse_version} >= 1210
 BuildRequires:  systemd
 %{?systemd_requires}
@@ -119,7 +119,7 @@ Obsoletes:      python-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python
 Requires:       python-jabberpy
-Requires:       python2-osa-common = %{version}
+Requires:       python2-mgr-osa-common = %{version}
 Requires:       python2-rhn-client-tools >= 2.8.4
 Requires:       rhnlib >= 2.8.3
 Requires:       spacewalk-usix
@@ -141,7 +141,7 @@ Obsoletes:      python3-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3
 Requires:       python3-jabberpy
-Requires:       python3-osa-common = %{version}
+Requires:       python3-mgr-osa-common = %{version}
 Requires:       python3-rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib >= 2.8.3
 Requires:       python3-spacewalk-usix
@@ -187,7 +187,7 @@ Group:          System Environment/Daemons
 Obsoletes:      osa-dispatcher < %{oldversion}
 Provides:       osa-dispatcher = %{oldversion}
 Requires:       lsof
-Requires:       python2-osa-dispatcher = %{version}-%{release}
+Requires:       python2-mgr-osa-dispatcher = %{version}-%{release}
 Requires:       spacewalk-backend-server >= 1.2.32
 Conflicts:      %{name} < %{version}-%{release}
 Conflicts:      %{name} > %{version}-%{release}
@@ -223,7 +223,7 @@ BuildRequires:  python-devel
 Requires:       python
 %endif
 Requires:       python-jabberpy
-Requires:       python2-osa-common = %{version}-%{release}
+Requires:       python2-mgr-osa-common = %{version}-%{release}
 
 %description -n python2-mgr-osa-dispatcher
 Python 2 specific files for osa-dispatcher.
@@ -237,7 +237,7 @@ Provides:       python3-osa-dispatcher = %{oldversion}
 BuildRequires:  python3-devel
 Requires:       python3
 Requires:       python3-jabberpy
-Requires:       python3-osa-common = %{version}-%{release}
+Requires:       python3-mgr-osa-common = %{version}-%{release}
 
 %description -n python3-mgr-osa-dispatcher
 Python 3 specific files for osa-dispatcher.
@@ -270,7 +270,7 @@ Requires:       selinux-policy >= 2.4.6-114
 %endif
 Requires(post): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled, /usr/sbin/semanage
 Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/semanage, spacewalk-selinux
-Requires:       osa-dispatcher
+Requires:       mgr-osa-dispatcher
 
 %description -n mgr-osa-dispatcher-selinux
 SELinux policy module supporting osa-dispatcher.
