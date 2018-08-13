@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.task.sshpush;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -240,8 +241,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
             sa.setRemainingTries(sa.getRemainingTries() - 1);
 
-            Map<LocalCall<?>, List<MinionIds>> calls = SaltServerActionService.INSTANCE
-                    .callsForAction(action, Optional.of(new MinionIds(minion)));
+            Map<LocalCall<?>, List<MinionIds>> calls = SaltServerActionService.INSTANCE.callsForAction(action, of(new MinionIds(minion)));
 
             calls.keySet().forEach(call -> {
                 Optional<JsonElement> result;
