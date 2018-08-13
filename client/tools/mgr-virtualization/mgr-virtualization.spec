@@ -135,8 +135,8 @@ that is specific to the Host system (a.k.a. Dom0).
 %package -n python2-%{name}-host
 Summary:        RHN/Spacewalk Virtualization support specific to the Host system
 Group:          System Environment/Base
-Provides:       python2-%{oldname}-host < %{oldversion}
-Obsoletes:      python2-%{oldname}-host = %{oldversion}
+Provides:       python2-%{oldname}-host = %{oldversion}
+Obsoletes:      python2-%{oldname}-host < %{oldversion}
 Requires:       %{name}-host = %{version}-%{release}
 Requires:       libvirt-python
 Requires:       python2-%{name}-common = %{version}-%{release}
