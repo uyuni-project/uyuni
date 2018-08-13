@@ -199,12 +199,16 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // todo don't get grains all the time!
             // todo maybe also check if minion is in a HW group and fail the process if it isn't
             ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-            if (grains.getOptionalAsBoolean("initrd") // todo extract string (maybe rename?), also in tests!
-                    .map(initrd -> initrd == false)
-                    .orElse(false)) {
-                LOG.info("POS registration: Finishing registration for minion " + minionId);
-                finishRegistration(minionId, isSaltSSH, registeredMinion, empty(), empty()); // todo take care about the optional params
-            }
+
+            grains.getOptionalAsBoolean("initrd").ifPresent(initrd -> {
+                if (initrd) {
+                    // todo verify that saltboot is defensive and checks for partitioning pillar
+                    LOG.info("POS registration: Applying saltboot state " + minionId);
+                    applySaltboot(minionId);
+                } else if (imageRedeployed()) { // todo ask Vladimir how to find out an image has been redeployed
+                    LOG.info("POS registration: Finishing registration for minion " + minionId);
+                    finishRegistration(minionId, isSaltSSH, registeredMinion, empty(), empty()); // todo take care about the optional params
+                }});
             return;
         }
 
@@ -353,45 +357,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // POS treatment - minion is new AND we get initrd grain -> do (A)
             if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
-                Optional<String> manufacturer = grains.getOptionalAsString("manufacturer");
-                Optional<String> productName = grains.getOptionalAsString("productname");
-
-                if (!manufacturer.isPresent() || !productName.isPresent()) {
-                    throw new IllegalStateException("Missing machine manufacturer or product name on POS registration!");
-                }
-
-                // both manufacturer and product name are present
-                String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
-                Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
-
-                // todo org, user
-                // todo rewrite
-                lookupManagedServerGroupByNameAndOrg(hwType, org).ifPresent(sg -> {
-                    SystemManager.addServerToServerGroup(minionServer, sg);
-                    LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
-                });
-                lookupManagedServerGroupByNameAndOrg("TERMINALS", org).ifPresent(sg -> {
-                    SystemManager.addServerToServerGroup(minionServer, sg);
-                    LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
-                });
-                Org finalOrg = org;
-                branchId.ifPresent(bid ->
-                        lookupManagedServerGroupByNameAndOrg(bid, finalOrg).ifPresent(sg -> {
-                            SystemManager.addServerToServerGroup(minionServer, sg);
-                            LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
-                        }));
-
-                minionServer.asMinionServer().ifPresent(
-                        SaltStateGeneratorService.INSTANCE::generatePillar);
-
-                LOG.info("POS registration: minion " + minionId + " assigned to HW groups. Proceeding with saltboot...");
-                LocalCall<List<String>> call = new LocalCall<>("saltutil.sync_states", Optional.empty(), // todo async!
-                        Optional.empty(), new TypeToken<List<String>>() {
-                });
-                SALT_SERVICE.callSync(call, minionId);
-                SALT_SERVICE.applyState(minionId, "saltboot"); // todo do this async!
-
-                LOG.info("Finished initial POS registration for minion " + minionId);
+                initializePosRegistration(minionId, minionServer, org, grains);
                 return;
             }
             finishRegistration(minionId, isSaltSSH, server, activationKey, creator);
@@ -416,6 +382,57 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
         }
+    }
+
+    private void initializePosRegistration(String minionId, MinionServer minionServer, Org org, ValueMap grains) {
+        Optional<String> manufacturer = grains.getOptionalAsString("manufacturer");
+        Optional<String> productName = grains.getOptionalAsString("productname");
+
+        // todo adjust according to Vladimin, test!
+        if (!manufacturer.isPresent() || !productName.isPresent()) {
+            throw new IllegalStateException("Missing machine manufacturer or product name on POS registration!");
+        }
+
+        // both manufacturer and product name are present
+        String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
+        Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
+
+        // todo org, user
+        // todo rewrite
+        lookupManagedServerGroupByNameAndOrg(hwType, org).ifPresent(sg -> {
+            SystemManager.addServerToServerGroup(minionServer, sg);
+            LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
+        });
+        lookupManagedServerGroupByNameAndOrg("TERMINALS", org).ifPresent(sg -> {
+            SystemManager.addServerToServerGroup(minionServer, sg);
+            LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
+        });
+        branchId.ifPresent(bid ->
+                lookupManagedServerGroupByNameAndOrg(bid, org).ifPresent(sg -> {
+                    SystemManager.addServerToServerGroup(minionServer, sg);
+                    LOG.info("POS registration: system profile " + minionId + " added to HW group " + sg); // todo debug
+                }));
+
+        minionServer.asMinionServer().ifPresent(
+                SaltStateGeneratorService.INSTANCE::generatePillar);
+
+        applySaltboot(minionId);
+
+        LOG.info("Finished initial POS registration for minion " + minionId); // todo unify log messages
+        return;
+    }
+
+    private void applySaltboot(String minionId) {
+        LOG.info("POS registration: minion " + minionId + " assigned to HW groups. Proceeding with saltboot...");
+        LocalCall<List<String>> call = new LocalCall<>("saltutil.sync_states", Optional.empty(), // todo async!
+                Optional.empty(), new TypeToken<List<String>>() {
+        });
+        SALT_SERVICE.callSync(call, minionId);
+        SALT_SERVICE.applyState(minionId, "saltboot"); // todo do this async!
+    }
+
+    private boolean imageRedeployed() {
+        return true;
     }
 
     private void finishRegistration(String minionId, boolean isSaltSSH, MinionServer server, Optional<ActivationKey> activationKey, Optional<User> creator) {
