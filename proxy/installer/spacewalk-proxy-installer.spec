@@ -37,10 +37,10 @@ Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
-Requires:       rhncfg
-Requires:       rhncfg-actions
-Requires:       rhncfg-client
-Requires:       rhncfg-management
+Requires:       mgr-cfg
+Requires:       mgr-cfg-actions
+Requires:       mgr-cfg-client
+Requires:       mgr-cfg-management
 %if 0%{?suse_version}
 Requires:       aaa_base
 Requires:       apache2

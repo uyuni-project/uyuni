@@ -1,3 +1,6 @@
+- Change dependencies for subpackages to python2-mgr-osa-*
+  python3-mgr-osa-* and mgr-osa-* (bsc#1104034)
+
 -------------------------------------------------------------------
 Fri Aug 10 17:04:37 CEST 2018 - jgonzalez@suse.com
 
