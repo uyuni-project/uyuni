@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task.sshpush;
 
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -30,15 +34,13 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Test;
-
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-
 import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
@@ -49,10 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static java.util.Optional.ofNullable;
 
 /**
  * SSH push worker executing scheduled actions via Salt SSH.
