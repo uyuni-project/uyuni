@@ -262,8 +262,7 @@ public class SaltServerActionService {
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
         // now prepare each call
-        for (Map.Entry<LocalCall<?>, List<MinionIds>> entry :
-                callsForAction(actionIn).entrySet()) {
+        for (Map.Entry<LocalCall<?>, List<MinionIds>> entry : callsForAction(actionIn).entrySet()) {
             LocalCall<?> call = entry.getKey();
             final List<MinionIds> targetMinions;
             Map<Boolean, List<MinionIds>> results;
@@ -272,8 +271,7 @@ public class SaltServerActionService {
                 targetMinions = new ArrayList<>();
                 stagingJobMinionServerId
                         .ifPresent(serverId -> MinionServerFactory.lookupById(serverId)
-                                .ifPresent(server ->
-                                targetMinions.add(new MinionIds(server))));
+                                .ifPresent(server -> targetMinions.add(new MinionIds(server))));
                 call = prepareStagingTargets(actionIn, targetMinions);
             }
             else {
@@ -321,12 +319,13 @@ public class SaltServerActionService {
      * @param errataIds list of errata ids
      * @return minionsIds grouped by local call
      */
-    public Map<LocalCall<?>, List<MinionIds>> errataAction(List<MinionIds> minionIds,
-            Set<Long> errataIds) {
-        Set<Long> minionServerIds = minionIds.stream().map(MinionIds::getServerId).collect(toSet());
+    public Map<LocalCall<?>, List<MinionIds>> errataAction(List<MinionIds> minionIds, Set<Long> errataIds) {
+        Set<Long> minionServerIds = minionIds.stream()
+                .map(MinionIds::getServerId)
+                .collect(toSet());
 
-        Map<Long, Map<Long, Set<ErrataInfo>>> errataInfos = ServerFactory
-                .listErrataNamesForServers(minionServerIds, errataIds);
+        Map<Long, Map<Long, Set<ErrataInfo>>> errataInfos =
+                ServerFactory.listErrataNamesForServers(minionServerIds, errataIds);
 
         // Group targeted minions by errata names
         Map<Set<ErrataInfo>, List<MinionIds>> collect = minionIds.stream()
@@ -363,38 +362,40 @@ public class SaltServerActionService {
             Map.Entry::getValue));
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> packagesUpdateAction(
-            List<MinionIds> minionIds, PackageUpdateAction action) {
+    private Map<LocalCall<?>, List<MinionIds>> packagesUpdateAction(List<MinionIds> minionIds,
+            PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
+
         List<List<String>> pkgs = action.getDetails().stream().map(
                 d -> asList(d.getPackageName().getName(), d.getArch().getName(), d.getEvr().toString())
         ).collect(toList());
-        ret.put(State.apply(asList(PACKAGES_PKGINSTALL),
-                of(singletonMap(PARAM_PKGS, pkgs))), minionIds);
+
+        ret.put(State.apply(asList(PACKAGES_PKGINSTALL), of(singletonMap(PARAM_PKGS, pkgs))), minionIds);
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> packagesRemoveAction(
-            List<MinionIds> minionIds, PackageRemoveAction action) {
+    private Map<LocalCall<?>, List<MinionIds>> packagesRemoveAction(List<MinionIds> minionIds,
+            PackageRemoveAction action) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
+
         List<List<String>> pkgs = action.getDetails().stream().map(
                 d -> asList(d.getPackageName().getName(), d.getArch().getName(), d.getEvr().toString())
         ).collect(toList());
-        ret.put(State.apply(asList(PACKAGES_PKGREMOVE),
-                of(singletonMap(PARAM_PKGS, pkgs))), minionIds);
+
+        ret.put(State.apply(asList(PACKAGES_PKGREMOVE), of(singletonMap(PARAM_PKGS, pkgs))), minionIds);
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> packagesRefreshListAction(
-            List<MinionIds> minionIds) {
+    private Map<LocalCall<?>, List<MinionIds>> packagesRefreshListAction(List<MinionIds> minionIds) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
-        ret.put(State.apply(asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
-                empty()), minionIds);
+
+        ret.put(State.apply(asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE), empty()), minionIds);
+
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> hardwareRefreshListAction(
-            List<MinionIds> minionIds, Optional<MinionIds> limitToSSHPushMinion) {
+    private Map<LocalCall<?>, List<MinionIds>> hardwareRefreshListAction(List<MinionIds> minionIds,
+            Optional<MinionIds> limitToSSHPushMinion) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
 
         if (limitToSSHPushMinion.isPresent()) {
@@ -414,8 +415,9 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionIds>> rebootAction(List<MinionIds> minionIds) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.System
-                .reboot(of(3)), minionIds);
+
+        ret.put(com.suse.salt.netapi.calls.modules.System.reboot(of(3)), minionIds);
+
         return ret;
     }
 
@@ -442,6 +444,7 @@ public class SaltServerActionService {
                 .stream()
                 .collect(Collectors.groupingBy(entry -> entry.getValue(),
                         Collectors.mapping(entry -> entry.getKey(), toSet())));
+
         revsServersMap.forEach((configRevisions, selectedServers) -> {
             List<Map<String, Object>> fileStates = configRevisions
                     .stream()
@@ -451,6 +454,7 @@ public class SaltServerActionService {
                     of(singletonMap(PARAM_FILES, fileStates))),
                     selectedServers.stream().collect(toList()));
         });
+
         return ret;
     }
 
@@ -463,6 +467,7 @@ public class SaltServerActionService {
      */
     private Map<LocalCall<?>, List<MinionIds>> diffFiles(List<MinionIds> minionIds, ConfigAction action) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
+
         List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
                 .map(revAction -> revAction.getConfigRevision())
                 .filter(revision -> revision.isFile() ||
@@ -470,34 +475,39 @@ public class SaltServerActionService {
                         revision.isSymlink())
                 .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
                 .collect(toList());
+
         ret.put(com.suse.salt.netapi.calls.modules.State.apply(
                 asList(CONFIG_DIFF_FILES),
                 of(singletonMap(PARAM_FILES, fileStates)),
                 of(true), of(true)), minionIds);
+
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> remoteCommandAction(
-            List<MinionIds> minionIds, String script) {
+    private Map<LocalCall<?>, List<MinionIds>> remoteCommandAction(List<MinionIds> minionIds, String script) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
+
         // FIXME: This supports only bash at the moment
         ret.put(Cmd.execCodeAll(
                 "bash",
                 // remove \r or bash will fail
                 script.replaceAll("\r\n", "\n")), minionIds);
+
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> applyStatesAction(
-            List<MinionIds> minionIds, List<String> mods, boolean test) {
+    private Map<LocalCall<?>, List<MinionIds>> applyStatesAction(List<MinionIds> minionIds, List<String> mods,
+            boolean test) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
+
         ret.put(com.suse.salt.netapi.calls.modules.State.apply(mods, empty(), of(true),
                 test ? of(test) : empty()), minionIds);
+
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> subscribeChanelsAction(
-            List<MinionIds> minionIds, SubscribeChannelsActionDetails actionDetails) {
+    private Map<LocalCall<?>, List<MinionIds>> subscribeChanelsAction(List<MinionIds> minionIds,
+            SubscribeChannelsActionDetails actionDetails) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
 
         Stream<MinionServer> minions = MinionServerFactory.lookupByIds(
@@ -570,22 +580,22 @@ public class SaltServerActionService {
         return dockerRegistries;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> imageInspectAction(
-            List<MinionIds> minionIds, String version,
+    private Map<LocalCall<?>, List<MinionIds>> imageInspectAction(List<MinionIds> minionIds, String version,
             String name, ImageStore store) {
         Map<String, Object> pillar = new HashMap<>();
         pillar.put("imagename", store.getUri() + "/" + name + ":" + version);
+
         Map<LocalCall<?>, List<MinionIds>> result = new HashMap<>();
         LocalCall<Map<String, ApplyResult>> apply = State.apply(
                 singletonList("images.profileupdate"),
                 of(pillar)
         );
         result.put(apply, minionIds);
+
         return result;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> imageBuildAction(
-            List<MinionIds> minionIds, Optional<String> version,
+    private Map<LocalCall<?>, List<MinionIds>> imageBuildAction(List<MinionIds> minionIds, Optional<String> version,
             DockerfileProfile profile, User user) {
         List<ImageStore> imageStores = new LinkedList<>();
         imageStores.add(profile.getTargetStore());
@@ -675,9 +685,7 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> distUpgradeAction(
-            DistUpgradeAction action,
-            List<MinionIds> minionIds) {
+    private Map<LocalCall<?>, List<MinionIds>> distUpgradeAction(DistUpgradeAction action,  List<MinionIds> minionIds) {
         Map<Boolean, List<Channel>> collect = action.getDetails().getChannelTasks()
                 .stream().collect(Collectors.partitioningBy(
                         ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
@@ -720,12 +728,14 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionIds>> scapXccdfEvalAction(
-            List<MinionIds> minionIds, ScapActionDetails scapActionDetails) {
+    private Map<LocalCall<?>, List<MinionIds>> scapXccdfEvalAction(List<MinionIds> minionIds,
+            ScapActionDetails scapActionDetails) {
         Map<LocalCall<?>, List<MinionIds>> ret = new HashMap<>();
+
         String parameters = "eval " +
             scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
         ret.put(Openscap.xccdf(parameters), minionIds);
+
         return ret;
     }
 
@@ -776,9 +786,8 @@ public class SaltServerActionService {
      * @param isStagingJob if the job is a staging job
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, List<MinionIds>> execute(Action actionIn, LocalCall<?> call,
-            List<MinionIds> minionIds, boolean forcePackageListRefresh,
-            boolean isStagingJob) {
+    private Map<Boolean, List<MinionIds>> execute(Action actionIn, LocalCall<?> call, List<MinionIds> minionIds,
+            boolean forcePackageListRefresh, boolean isStagingJob) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
 

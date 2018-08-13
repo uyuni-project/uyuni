@@ -241,7 +241,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
             sa.setRemainingTries(sa.getRemainingTries() - 1);
 
-            Map<LocalCall<?>, List<MinionIds>> calls = SaltServerActionService.INSTANCE.callsForAction(action, of(new MinionIds(minion)));
+            Map<LocalCall<?>, List<MinionIds>> calls =
+                    SaltServerActionService.INSTANCE.callsForAction(action, of(new MinionIds(minion)));
 
             calls.keySet().forEach(call -> {
                 Optional<JsonElement> result;
