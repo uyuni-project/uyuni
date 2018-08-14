@@ -1,3 +1,4 @@
+- Hide "Auto Patch Update" for salt systems
 - Avoid an NPE on expired tokens (bsc#1104503)
 - Fix behavior when canceling actions (bsc#1098993)
 - speedup listing systems of a group (bsc#1102009)

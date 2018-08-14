@@ -60,13 +60,14 @@
                 <td align="center"><input type="radio" name="summary" value="no_change" checked="1" /></td>
             </tr>
 
-            <tr class="list-row-odd">
-                <td><bean:message key="ssm.misc.index.syspref.update"/></td>
-                <td align="center"><input type="radio" name="update" value="yes" /></td>
-                <td align="center"><input type="radio" name="update" value="no" /></td>
-                <td align="center"><input type="radio" name="update" value="no_change" checked="1" /></td>
-            </tr>
-
+            <rhn:require acl="all_systems_in_set_have_feature(ftr_auto_errata_updates)">
+                <tr class="list-row-odd">
+                    <td><bean:message key="ssm.misc.index.syspref.update"/></td>
+                    <td align="center"><input type="radio" name="update" value="yes" /></td>
+                    <td align="center"><input type="radio" name="update" value="no" /></td>
+                    <td align="center"><input type="radio" name="update" value="no_change" checked="1" /></td>
+                </tr>
+            </rhn:require>
         </table>
 
         <div class="text-right">
