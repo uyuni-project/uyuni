@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 9a34ea4be2... added required changelog entry 
 - Missing link to LDAP instructions (bsc#1102464)
 - Fix copyright for the package specfile (bsc#1103696)
->>>>>>> 9a34ea4be2... added required changelog entry 
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 -------------------------------------------------------------------
 Wed Jul 25 09:29:23 CEST 2018 - jgonzalez@suse.com
