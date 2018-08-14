@@ -1,3 +1,8 @@
+- fix /etc/sudoers.d/spacewalk file (related to bsc#1099517)
+  NOTE: In case there have been custom modifications to this file,
+        it will be saved in /root/sudoers-spacewalk.save as sudo
+        will fail on duplicate definitions
+
 -------------------------------------------------------------------
 Fri Aug 10 15:20:22 CEST 2018 - jgonzalez@suse.com
 
