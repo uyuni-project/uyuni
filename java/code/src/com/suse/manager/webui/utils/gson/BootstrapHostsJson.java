@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * Class representation of JSON data as sent by the minion bootstrapping UI.
  */
-public class JSONBootstrapHosts {
+public class BootstrapHostsJson {
 
     /** Host IP address or DNS name */
     private String host;
@@ -38,7 +38,7 @@ public class JSONBootstrapHosts {
     /**
      * Default constructor.
      */
-    public JSONBootstrapHosts() {
+    public BootstrapHostsJson() {
     }
 
     /**
@@ -51,8 +51,8 @@ public class JSONBootstrapHosts {
      * @param activationKey activation key
      * @param proxyIn system ID of proxy server to use
      */
-    public JSONBootstrapHosts(String hostIn, Integer portIn, String userIn,
-            String passwordIn, String activationKey, Long proxyIn) {
+    public BootstrapHostsJson(String hostIn, Integer portIn, String userIn,
+                              String passwordIn, String activationKey, Long proxyIn) {
         host = hostIn;
         port = String.valueOf(portIn);
         user = userIn;

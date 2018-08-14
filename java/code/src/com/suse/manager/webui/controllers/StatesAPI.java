@@ -64,12 +64,12 @@ import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.gson.JSONConfigChannel;
-import com.suse.manager.webui.utils.gson.JSONPackageState;
-import com.suse.manager.webui.utils.gson.JSONServerApplyHighstate;
-import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
-import com.suse.manager.webui.utils.gson.JSONServerConfigChannels;
-import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
+import com.suse.manager.webui.utils.gson.ConfigChannelJson;
+import com.suse.manager.webui.utils.gson.PackageStateJson;
+import com.suse.manager.webui.utils.gson.ServerApplyHighstateJson;
+import com.suse.manager.webui.utils.gson.ServerApplyStatesJson;
+import com.suse.manager.webui.utils.gson.ServerConfigChannelsJson;
+import com.suse.manager.webui.utils.gson.ServerPackageStatesJson;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -174,15 +174,15 @@ public class StatesAPI {
 
         // Find matches among this server's current packages states
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));
-        Set<JSONPackageState> matching = latestPackageStatesJSON(server).stream()
+        Set<PackageStateJson> matching = latestPackageStatesJSON(server).stream()
                 .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
                 .collect(Collectors.toSet());
 
         // Find matches among available packages and convert to JSON objects
-        Set<JSONPackageState> matchingAvailable = PackageManager
+        Set<PackageStateJson> matchingAvailable = PackageManager
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
                 .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
-                .map(p -> new JSONPackageState(p.getName(), new PackageEvr(
+                .map(p -> new PackageStateJson(p.getName(), new PackageEvr(
                         p.getEpoch(), p.getVersion(), p.getRelease()), p.getArch()))
                 .collect(Collectors.toSet());
 
@@ -225,14 +225,14 @@ public class StatesAPI {
                 .collect(Collectors.toList());
 
         // Find matches among this currently assigned salt states
-        Set<JSONConfigChannel> result = new HashSet<>(); // use a set to avoid duplicates
+        Set<ConfigChannelJson> result = new HashSet<>(); // use a set to avoid duplicates
 
-        result.addAll(JSONConfigChannel.listOrdered(assignedStates));
+        result.addAll(ConfigChannelJson.listOrdered(assignedStates));
 
         // Find matches among available channels
         ConfigurationManager.getInstance().listGlobalChannels(user).stream()
                 .filter(s -> s.getName().toLowerCase().contains(targetLowerCase))
-                .map(JSONConfigChannel::new)
+                .map(ConfigChannelJson::new)
                 .forEach(result::add);
 
         return json(response, result);
@@ -249,7 +249,7 @@ public class StatesAPI {
      */
     public static String saveConfigChannels(Request request, Response response, User user) {
         ConfigurationManager configManager = ConfigurationManager.getInstance();
-        JSONServerConfigChannels json = GSON.fromJson(request.body(), JSONServerConfigChannels.class);
+        ServerConfigChannelsJson json = GSON.fromJson(request.body(), ServerConfigChannelsJson.class);
 
         List<ConfigChannel> channels = json.getChannels().stream()
                 .sorted((a, b) -> a.getPosition() - b.getPosition())
@@ -277,7 +277,7 @@ public class StatesAPI {
             );
             entity.setConfigChannels(channels, user);
             StateRevision revision = StateRevisionService.INSTANCE.getLatest(entity).get();
-            return json(response, JSONConfigChannel.listOrdered(revision.getConfigChannels()));
+            return json(response, ConfigChannelJson.listOrdered(revision.getConfigChannels()));
         }
         catch (Throwable t) {
             LOG.error(t.getMessage(), t);
@@ -343,8 +343,8 @@ public class StatesAPI {
      */
     public static Object savePackages(Request request, Response response, User user) {
         response.type("application/json");
-        JSONServerPackageStates json = GSON.fromJson(request.body(),
-                JSONServerPackageStates.class);
+        ServerPackageStatesJson json = GSON.fromJson(request.body(),
+                ServerPackageStatesJson.class);
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(json.getServerId()));
         checkUserHasPermissionsOnServer(server, user);
 
@@ -387,8 +387,8 @@ public class StatesAPI {
                 .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
                 .create();
 
-        JSONServerApplyHighstate json = gson.fromJson(req.body(),
-                JSONServerApplyHighstate.class);
+        ServerApplyHighstateJson json = gson.fromJson(req.body(),
+                ServerApplyHighstateJson.class);
 
         try {
             List<Long> minionIds =
@@ -437,8 +437,8 @@ public class StatesAPI {
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
                 .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
                 .create();
-        JSONServerApplyStates json = gson.fromJson(request.body(),
-                JSONServerApplyStates.class);
+        ServerApplyStatesJson json = gson.fromJson(request.body(),
+                ServerApplyStatesJson.class);
         try {
             ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(),
                     json.getTargetId(),
@@ -497,7 +497,7 @@ public class StatesAPI {
         }
     }
 
-    private static Date getScheduleDate(JSONServerApplyStates json) {
+    private static Date getScheduleDate(ServerApplyStatesJson json) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
         return Date.from(
             json.getEarliest().map(t -> t.atZone(zoneId).toInstant())
@@ -505,7 +505,7 @@ public class StatesAPI {
         );
     }
 
-    private static Date getScheduleDate(JSONServerApplyHighstate json) {
+    private static Date getScheduleDate(ServerApplyHighstateJson json) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
         return Date.from(
             json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
@@ -530,27 +530,27 @@ public class StatesAPI {
     }
 
     /**
-     * Get the current set of package states for a given server as {@link JSONPackageState}
+     * Get the current set of package states for a given server as {@link PackageStateJson}
      * objects ready for serialization.
      *
      * @param server the server
      * @return the current set of package states
      */
-    private static Set<JSONPackageState> latestPackageStatesJSON(MinionServer server) {
+    private static Set<PackageStateJson> latestPackageStatesJSON(MinionServer server) {
         return convertToJSON(StateFactory.latestPackageStates(server)
                 .orElse(Collections.emptySet()));
     }
 
     /**
      * Convert a given set of {@link PackageState} objects into a set of
-     * {@link JSONPackageState} objects.
+     * {@link PackageStateJson} objects.
      *
      * @param packageStates the set of package states
      * @return set of JSON objects
      */
-    private static Set<JSONPackageState> convertToJSON(Set<PackageState> packageStates) {
+    private static Set<PackageStateJson> convertToJSON(Set<PackageState> packageStates) {
         return packageStates.stream().map(state ->
-            new JSONPackageState(
+            new PackageStateJson(
                     state.getName().getName(),
                     Optional.ofNullable(state.getEvr())
                             .orElse(new PackageEvr("", "", "")),

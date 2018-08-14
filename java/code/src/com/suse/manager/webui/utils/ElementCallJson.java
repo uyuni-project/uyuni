@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.utils;
 
+import static java.util.Optional.ofNullable;
+
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -22,20 +24,18 @@ import com.suse.salt.netapi.calls.LocalCall;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Optional.ofNullable;
-
 /**
  * Manipulate a given {@link LocalCall} object to return a {@link JsonElement} instead
  * of the specified return type.
  */
-public class JsonElementCall extends LocalCall<JsonElement> {
+public class ElementCallJson extends LocalCall<JsonElement> {
 
     /**
      * Constructor.
      * @param call the call to manipulate.
      */
     @SuppressWarnings("unchecked")
-    public JsonElementCall(LocalCall<?> call) {
+    public ElementCallJson(LocalCall<?> call) {
         super((String) call.getPayload().get("fun"),
                 ofNullable((List<?>) call.getPayload().get("arg")),
                 ofNullable((Map<String, ?>) call.getPayload().get("kwarg")),

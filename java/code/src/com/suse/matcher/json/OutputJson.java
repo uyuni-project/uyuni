@@ -23,19 +23,19 @@ import java.util.Map;
 /**
  * JSON representation of the matcher's output.
  */
-public class JsonOutput {
+public class OutputJson {
 
     /** Date and time of the match. */
     private Date timestamp;
 
     /** All matches, possible and confirmed. */
-    private List<JsonMatch> matches = new LinkedList<>();
+    private List<MatchJson> matches = new LinkedList<>();
 
     /** Mapping from subscription id to its policy */
     private Map<Long, String> subscriptionPolicies = new HashMap<>();
 
     /** The messages. */
-    private List<JsonMessage> messages = new LinkedList<>();
+    private List<MessageJson> messages = new LinkedList<>();
 
     /**
      * Standard constructor.
@@ -45,8 +45,8 @@ public class JsonOutput {
      * @param messagesIn the messages
      * @param subscriptionPoliciesIn mapping from subscription id to its policy
      */
-    public JsonOutput(Date timestampIn, List<JsonMatch> matchesIn,
-            List<JsonMessage> messagesIn, Map<Long, String> subscriptionPoliciesIn) {
+    public OutputJson(Date timestampIn, List<MatchJson> matchesIn,
+                      List<MessageJson> messagesIn, Map<Long, String> subscriptionPoliciesIn) {
         timestamp = timestampIn;
         matches = matchesIn;
         messages = messagesIn;
@@ -76,7 +76,7 @@ public class JsonOutput {
      *
      * @return the matches
      */
-    public List<JsonMatch> getMatches() {
+    public List<MatchJson> getMatches() {
         return matches;
     }
 
@@ -85,7 +85,7 @@ public class JsonOutput {
      *
      * @param matchesIn the new matches
      */
-    public void setMatches(List<JsonMatch> matchesIn) {
+    public void setMatches(List<MatchJson> matchesIn) {
         matches = matchesIn;
     }
 
@@ -110,7 +110,7 @@ public class JsonOutput {
      *
      * @return the messages
      */
-    public List<JsonMessage> getMessages() {
+    public List<MessageJson> getMessages() {
         return messages;
     }
 
@@ -119,7 +119,7 @@ public class JsonOutput {
      *
      * @param messagesIn the new messages
      */
-    public void setMessages(List<JsonMessage> messagesIn) {
+    public void setMessages(List<MessageJson> messagesIn) {
         messages = messagesIn;
     }
 }

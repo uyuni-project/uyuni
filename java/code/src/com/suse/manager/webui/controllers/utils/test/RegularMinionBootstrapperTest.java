@@ -10,7 +10,7 @@ import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.Boots
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
@@ -42,7 +42,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
      * @throws Exception if something goes wrong
      */
     public void testKeysDeletedAfterFailure() throws Exception {
-        JSONBootstrapHosts input = mockStandardInput();
+        BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
 
         Key.Pair keyPair = mockKeyPair();

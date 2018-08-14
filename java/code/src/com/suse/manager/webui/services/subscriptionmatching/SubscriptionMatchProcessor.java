@@ -25,10 +25,10 @@ import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
-import com.suse.matcher.json.JsonInput;
-import com.suse.matcher.json.JsonMatch;
-import com.suse.matcher.json.JsonMessage;
-import com.suse.matcher.json.JsonOutput;
+import com.suse.matcher.json.InputJson;
+import com.suse.matcher.json.MatchJson;
+import com.suse.matcher.json.MessageJson;
+import com.suse.matcher.json.OutputJson;
 
 import java.util.Collections;
 import java.util.Date;
@@ -52,7 +52,7 @@ public class SubscriptionMatchProcessor {
      * @param output matcher output
      * @return the data
      */
-    public Object getData(Optional<JsonInput> input, Optional<JsonOutput> output) {
+    public Object getData(Optional<InputJson> input, Optional<OutputJson> output) {
         TaskoRun latestRun = TaskoFactory.getLatestRun("gatherer-matcher-bunch");
         Date latestStart = latestRun == null ? null : latestRun.getStartTime();
         Date latestEnd = latestRun == null ? null : latestRun.getEndTime();
@@ -74,7 +74,7 @@ public class SubscriptionMatchProcessor {
         }
     }
 
-    private Map<String, System> systems(JsonInput input, JsonOutput output) {
+    private Map<String, System> systems(InputJson input, OutputJson output) {
         return input.getSystems().stream()
                 .map(s -> new System(
                     s.getId(),
@@ -105,7 +105,7 @@ public class SubscriptionMatchProcessor {
      * @param output matcher output
      * @return the data
      */
-    public List<PinnedMatch> pinnedMatches(JsonInput input, JsonOutput output) {
+    public List<PinnedMatch> pinnedMatches(InputJson input, OutputJson output) {
         return PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().stream()
                 .map(ps -> new PinnedMatch(
                     ps.getId(),
@@ -115,8 +115,8 @@ public class SubscriptionMatchProcessor {
                 .collect(toList());
     }
 
-    private static String deriveMatchStatus(PinnedSubscription ps, JsonInput input,
-            JsonOutput output) {
+    private static String deriveMatchStatus(PinnedSubscription ps, InputJson input,
+            OutputJson output) {
         boolean known = input.getPinnedMatches().stream()
                 .anyMatch(m -> m.getSystemId().equals(ps.getSystemId()) &&
                           m.getSubscriptionId().equals(ps.getSubscriptionId()));
@@ -137,13 +137,13 @@ public class SubscriptionMatchProcessor {
         return "unsatisfied";
     }
 
-    private List<JsonMessage> messages(JsonInput input, JsonOutput output) {
+    private List<MessageJson> messages(InputJson input, OutputJson output) {
         return output.getMessages().stream()
                 .filter(m -> !m.getType().equals("unsatisfied_pinned_match"))
                 .map(m -> translateMessage(m, input)) .collect(toList());
     }
 
-    private Map<String, Subscription> subscriptions(JsonInput input, JsonOutput output) {
+    private Map<String, Subscription> subscriptions(InputJson input, OutputJson output) {
         Map<Long, Integer> matchedQuantity = matchedQuantity(output);
         return input.getSubscriptions().stream()
                 .filter(s -> s.getQuantity() != null)
@@ -163,7 +163,7 @@ public class SubscriptionMatchProcessor {
                  ));
     }
 
-    private Map<Long, Integer> matchedQuantity(JsonOutput output) {
+    private Map<Long, Integer> matchedQuantity(OutputJson output) {
         // check what about ids which are in input, but not in output (currently we set them
         // to 0)
         // compute cents by subscription id
@@ -180,34 +180,34 @@ public class SubscriptionMatchProcessor {
         return matchedQuantity;
     }
 
-    private static JsonMessage translateMessage(JsonMessage message, JsonInput input) {
+    private static MessageJson translateMessage(MessageJson message, InputJson input) {
         if (message.getType().equals("unknown_part_number")) {
-            return new JsonMessage("unknownPartNumber", new HashMap<String, String>() { {
+            return new MessageJson("unknownPartNumber", new HashMap<String, String>() { {
                 put("partNumber", message.getData().get("part_number"));
             } });
         }
         if (message.getType().equals("physical_guest")) {
-            return new JsonMessage("physicalGuest", message.getData());
+            return new MessageJson("physicalGuest", message.getData());
         }
         if (message.getType().equals("guest_with_unknown_host")) {
-            return new JsonMessage("guestWithUnknownHost", message.getData());
+            return new MessageJson("guestWithUnknownHost", message.getData());
         }
         if (message.getType().equals("unknown_cpu_count")) {
-            return new JsonMessage("unknownCpuCount", message.getData());
+            return new MessageJson("unknownCpuCount", message.getData());
         }
 
         // pass it through
-        return new JsonMessage(message.getType(), message.getData());
+        return new MessageJson(message.getType(), message.getData());
     }
 
-    private Map<String, Product> products(JsonInput input, JsonOutput output) {
+    private Map<String, Product> products(InputJson input, OutputJson output) {
         Set<Long> freeProducts = input.getProducts().stream()
                 .filter(p -> p.getFree())
                 .map(p -> p.getId())
                 .collect(toSet());
 
         Set<Pair<Long, Long>> confirmedProductSystemPairs = output.getMatches().stream()
-                .filter(JsonMatch::getConfirmed)
+                .filter(MatchJson::getConfirmed)
                 .map(m -> Pair.of(m.getProductId(), m.getSystemId()))
                 .collect(toSet());
 

@@ -59,7 +59,7 @@ public class BootstrapParameters {
      *
      * @param json JSON input
      */
-    public BootstrapParameters(JSONBootstrapHosts json) {
+    public BootstrapParameters(BootstrapHostsJson json) {
         this(json.getHost(), json.getPortInteger(), json.getUser(),
                 json.maybeGetPassword(), json.getActivationKeys(),
                 json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));

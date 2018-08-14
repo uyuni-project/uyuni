@@ -40,7 +40,7 @@ public class Extension {
 
     private final String identifier;
 
-    private final Set<JsonChannel> channels;
+    private final Set<ChannelJson> channels;
 
     private final MgrSyncStatus status;
 
@@ -58,7 +58,7 @@ public class Extension {
      * @param extensionsIn the set of extensions in
      */
     public Extension(Long idIn, String identifierIn, String labelIn, String archIn, Boolean recommendedIn,
-                     MgrSyncStatus statusIn, Set<JsonChannel> channelsIn, Set<Extension> extensionsIn) {
+                     MgrSyncStatus statusIn, Set<ChannelJson> channelsIn, Set<Extension> extensionsIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
@@ -110,7 +110,7 @@ public class Extension {
     /**
      * @return the set of channels
      */
-    public Set<JsonChannel> getChannels() {
+    public Set<ChannelJson> getChannels() {
         return channels;
     }
 

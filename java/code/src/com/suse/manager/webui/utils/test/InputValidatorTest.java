@@ -16,7 +16,7 @@ package com.suse.manager.webui.utils.test;
 
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.utils.InputValidator;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputUserEmpty() {
         String json = "{user: ''}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 2);
         assertTrue(validationErrors.contains(HOST_ERROR_MESSAGE));
@@ -50,7 +50,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputUserBackslash() {
         String json = "{user: 'domain\\\\admin', host: 'host.domain.com'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
     }
@@ -60,7 +60,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputUserInvalid() {
         String json = "{user: '$(execme)', host: 'host.domain.com'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
         assertTrue(validationErrors.contains(USER_ERROR_MESSAGE));
@@ -71,7 +71,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputHostInvalid() {
         String json = "{user: 'toor', host: '`execme`'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
         assertTrue(validationErrors.contains(HOST_ERROR_MESSAGE));
@@ -82,7 +82,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputHostIPv4() {
         String json = "{user: 'toor', host: '192.168.1.1'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
     }
@@ -92,7 +92,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputHostIPv6() {
         String json = "{user: 'toor', host: '[2001:0db8:0000:0000:0000:0000:1428:57ab]'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
     }
@@ -102,7 +102,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputDefaultUser() {
         String json = "{}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
         assertTrue(validationErrors.contains(HOST_ERROR_MESSAGE));
@@ -113,7 +113,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputMinimal() {
         String json = "{host: 'host.domain.com', user: 'root'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
     }
@@ -123,7 +123,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputPortEmpty() {
         String json = "{host: 'host.domain.com', user: 'root', port: ''}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
     }
@@ -133,7 +133,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputPortNotNumeric() {
         String json = "{host: 'host.domain.com', user: 'root', port: 'abcdef'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
         assertTrue(validationErrors.contains(PORT_ERROR_MESSAGE));
@@ -144,13 +144,13 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputPortRange() {
         String json = "{host: 'host.domain.com', user: 'root', port: '99999'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
         assertTrue(validationErrors.contains(PORT_ERROR_MESSAGE));
 
         json = "{host: 'host.domain.com', user: 'root', port: '-1'}";
-        input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
         assertTrue(validationErrors.contains(PORT_ERROR_MESSAGE));
@@ -161,7 +161,7 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputPortValid() {
         String json = "{host: 'host.domain.com', user: 'root', port: '8888'}";
-        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
     }

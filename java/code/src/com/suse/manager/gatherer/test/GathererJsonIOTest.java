@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.gatherer.GathererJsonIO;
-import com.suse.manager.gatherer.JSONHost;
+import com.suse.manager.gatherer.HostJson;
 import com.suse.manager.model.gatherer.GathererModule;
 
 import java.util.ArrayList;
@@ -113,12 +113,12 @@ public class GathererJsonIOTest extends TestCase {
 
     public void testReadGathererOutput() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData(GATHEREROUT).getPath());
-        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(json);
+        Map<String, Map<String, HostJson>> hosts = new GathererJsonIO().readHosts(json);
 
         assertEquals(3, hosts.keySet().size());
 
         assertTrue(hosts.containsKey("1"));
-        JSONHost h = hosts.get("1").get("10.162.186.111");
+        HostJson h = hosts.get("1").get("10.162.186.111");
         assertEquals(16, h.getTotalCpuCores().intValue());
         assertEquals("x86_64", h.getCpuArch());
         assertEquals("AMD Opteron(tm) Processor 4386", h.getCpuDescription());
@@ -137,12 +137,12 @@ public class GathererJsonIOTest extends TestCase {
 
     public void testReadGathererOutputWithVmAddiotnalData() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData(GATHEREROUT).getPath());
-        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(json);
+        Map<String, Map<String, HostJson>> hosts = new GathererJsonIO().readHosts(json);
 
         assertEquals(3, hosts.keySet().size());
 
         assertTrue(hosts.containsKey("9c84c119-cb23-439b-b479-327e81d53988"));
-        JSONHost h = hosts.get("9c84c119-cb23-439b-b479-327e81d53988").get("abcdefg.suse.de");
+        HostJson h = hosts.get("9c84c119-cb23-439b-b479-327e81d53988").get("abcdefg.suse.de");
         assertNotNull(h.getOptionalVmData());
         assertEquals("running", h.getOptionalVmData().get("SUSE-Manager-Reference").get("vmState"));
     }

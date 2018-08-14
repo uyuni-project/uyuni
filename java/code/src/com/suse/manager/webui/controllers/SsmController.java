@@ -34,7 +34,7 @@ import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.manager.webui.utils.gson.ResultJson;
 import com.redhat.rhn.manager.ssm.SsmServerDto;
 import com.suse.manager.webui.utils.gson.SsmAllowedBaseChannelsJson;
 import com.redhat.rhn.manager.ssm.SsmAllowedChildChannelsDto;
@@ -112,7 +112,7 @@ public class SsmController {
         createAllowedBaseChannelsForUnbasedSystems(user)
                 .ifPresent(nobase -> result.add(0, nobase));
 
-        return json(GSON, response, JsonResult.success(result));
+        return json(GSON, response, ResultJson.success(result));
     }
 
     /**
@@ -159,7 +159,7 @@ public class SsmController {
     public static String computeAllowedChannelChanges(Request request, Response response, User user) {
         SsmBaseChannelChangesDto changes = GSON.fromJson(request.body(), SsmBaseChannelChangesDto.class);
         List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
-        return json(GSON, response, JsonResult.success(result));
+        return json(GSON, response, ResultJson.success(result));
     }
 
     /**
@@ -189,7 +189,7 @@ public class SsmController {
                 Optional.ofNullable(actionChain).map(ActionChain::getId),
                 scheduleResult
         );
-        return json(GSON, response, JsonResult.success(result));
+        return json(GSON, response, ResultJson.success(result));
     }
 
 }

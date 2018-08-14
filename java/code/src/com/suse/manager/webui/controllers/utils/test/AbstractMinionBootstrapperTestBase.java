@@ -6,10 +6,9 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
-import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.results.Result;
@@ -49,7 +48,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * @throws Exception if something goes wrong
      */
     public void testBootstrapFailsWhenKeysExist() throws Exception {
-        JSONBootstrapHosts input = mockStandardInput();
+        BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
 
         context().checking(new Expectations() {{
@@ -61,8 +60,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         assertFalse(bootstrap.isSuccess());
     }
 
-    protected JSONBootstrapHosts mockStandardInput() {
-        JSONBootstrapHosts input = mock(JSONBootstrapHosts.class);
+    protected BootstrapHostsJson mockStandardInput() {
+        BootstrapHostsJson input = mock(BootstrapHostsJson.class);
         context().checking(new Expectations() {{
             allowing(input).getHost();
             will(returnValue("myhost"));
@@ -84,7 +83,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         return input;
     }
 
-    protected void setEmptyActivationKeys(JSONBootstrapHosts mock) {
+    protected void setEmptyActivationKeys(BootstrapHostsJson mock) {
         context().checking(new Expectations() {{
             allowing(mock).getActivationKeys();
             will(returnValue(Collections.emptyList()));
@@ -104,7 +103,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("myhost");
 
-        JSONBootstrapHosts input = mockStandardInput();
+        BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
 
         context().checking(new Expectations() {{
@@ -145,7 +144,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             atMost(0).of(saltServiceMock).deleteKey("myhost");
         }});
 
-        JSONBootstrapHosts input = mockStandardInput();
+        BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
         BootstrapResult bootstrap = bootstrapper.bootstrap(input, user, getDefaultContactMethod());
         assertTrue(bootstrap.isSuccess());
@@ -158,7 +157,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * @throws Exception if anything goes wrong
      */
     protected void testIncompatibleActivationKeysBase(ActivationKey key) throws Exception {
-        JSONBootstrapHosts input = mockStandardInput();
+        BootstrapHostsJson input = mockStandardInput();
         context().checking(new Expectations() {{
             allowing(input).getFirstActivationKey();
             will(returnValue(of(key.getKey())));
@@ -174,7 +173,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * @throws Exception if anything goes wrong
      */
     protected void testCompatibleActivationKeysBase(ActivationKey key) throws Exception {
-        JSONBootstrapHosts input = mockStandardInput();
+        BootstrapHostsJson input = mockStandardInput();
         context().checking(new Expectations() {{
             allowing(input).getActivationKeys();
             will(returnValue(Collections.singletonList(key.getKey())));

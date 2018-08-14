@@ -27,9 +27,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Date;
 
 /**
- * A notification JSONNotificationMessage Object.
+ * A notification NotificationMessageJson Object.
  */
-public class JSONNotificationMessage {
+public class NotificationMessageJson {
 
     private Long id;
     private NotificationMessage.NotificationMessageSeverity severity;
@@ -42,15 +42,15 @@ public class JSONNotificationMessage {
     /**
      * Empty constructor
      */
-    public JSONNotificationMessage() {
+    public NotificationMessageJson() {
     }
 
     /**
-     * Default constructor for a JSONNotificationMessage
+     * Default constructor for a NotificationMessageJson
      *@param nm the {@link NotificationMessage} source object
      *@param isReadIn the read/unread flag
      */
-    public JSONNotificationMessage(NotificationMessage nm, boolean isReadIn) {
+    public NotificationMessageJson(NotificationMessage nm, boolean isReadIn) {
         this.id = nm.getId();
         this.severity = nm.getNotificationData().getSeverity();
         this.data = nm.getNotificationData();
@@ -148,10 +148,10 @@ public class JSONNotificationMessage {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof JSONNotificationMessage)) {
+        if (!(other instanceof NotificationMessageJson)) {
             return false;
         }
-        JSONNotificationMessage otherNotificationMessage = (JSONNotificationMessage) other;
+        NotificationMessageJson otherNotificationMessage = (NotificationMessageJson) other;
         return new EqualsBuilder()
             .append(getId(), otherNotificationMessage.getId())
             .append(getData(), otherNotificationMessage.getData())
