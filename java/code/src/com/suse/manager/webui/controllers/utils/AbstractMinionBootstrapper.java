@@ -26,7 +26,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.SSHResult;
@@ -67,8 +67,8 @@ public abstract class AbstractMinionBootstrapper {
      *                             key does not specify any other
      * @return map containing success flag and error messages.
      */
-    public BootstrapResult bootstrap(JSONBootstrapHosts input, User user,
-                                         String defaultContactMethod) {
+    public BootstrapResult bootstrap(BootstrapHostsJson input, User user,
+                                     String defaultContactMethod) {
         List<String> errMessages = validateBootstrap(input);
         if (!errMessages.isEmpty()) {
             return new BootstrapResult(false, Optional.empty(),
@@ -84,7 +84,7 @@ public abstract class AbstractMinionBootstrapper {
      * @param input json input
      * @return bootstrap parameters
      */
-    protected BootstrapParameters createBootstrapParams(JSONBootstrapHosts input) {
+    protected BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
         return new BootstrapParameters(input);
     }
 
@@ -143,7 +143,7 @@ public abstract class AbstractMinionBootstrapper {
      * @param input the json input
      * @return the result of the validation
      */
-    protected abstract List<String> validateJsonInput(JSONBootstrapHosts input);
+    protected abstract List<String> validateJsonInput(BootstrapHostsJson input);
 
     /**
      * Implementation-specific salt state modules that should be applied during bootstrap.
@@ -206,7 +206,7 @@ public abstract class AbstractMinionBootstrapper {
                         .orElseGet(() -> "No result for " + host));
     }
 
-    private List<String> validateBootstrap(JSONBootstrapHosts input) {
+    private List<String> validateBootstrap(BootstrapHostsJson input) {
         List<String> errors = validateJsonInput(input);
         if (!errors.isEmpty()) {
             return errors;

@@ -15,7 +15,7 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.validator.HostPortValidator;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -42,7 +42,7 @@ public enum InputValidator {
      * @param input the data as entered in the form
      * @return list of validation error messages
      */
-    public List<String> validateBootstrapInput(JSONBootstrapHosts input) {
+    public List<String> validateBootstrapInput(BootstrapHostsJson input) {
         List<String> errors = new LinkedList<>();
 
         errors.addAll(validateBootstrapSSHManagedInput(input));
@@ -68,7 +68,7 @@ public enum InputValidator {
      * @param input the data as entered in the form
      * @return list of validation error messages
      */
-    public List<String> validateBootstrapSSHManagedInput(JSONBootstrapHosts input) {
+    public List<String> validateBootstrapSSHManagedInput(BootstrapHostsJson input) {
         List<String> errors = new LinkedList<>();
 
         String host = input.getHost();

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,30 +14,32 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 /**
- * JSON representation of a server and a list of package states.
+ * JSON representation of multiple server ids with a list of states to be applied.
  */
-public class JSONServerPackageStates {
+public class ServerApplyHighstateJson {
 
     /** Server id */
-    private long sid;
+    private List<Long> ids;
 
-    /** List of package states */
-    private Set<JSONPackageState> packageStates;
+    /** The earliest execution date */
+    private Optional<LocalDateTime> earliest = Optional.empty();
 
     /**
      * @return the server id
      */
-    public long getServerId() {
-        return sid;
+    public List<Long> getIds() {
+        return ids;
     }
 
     /**
-     * @return the package states
+     * @return the date of earliest execution
      */
-    public Set<JSONPackageState> getPackageStates() {
-        return packageStates;
+    public Optional<LocalDateTime> getEarliest() {
+        return earliest;
     }
 }

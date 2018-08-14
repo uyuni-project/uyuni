@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.utils.gson.test;
 
-import com.suse.manager.webui.utils.gson.JSONSaltMinion;
+import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import org.jmock.Expectations;
@@ -29,7 +29,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class JSONSaltMinionTest extends MockObjectTestCase {
+public class SaltMinionTestJson extends MockObjectTestCase {
 
     @Override
     public void setUp() throws Exception {
@@ -69,15 +69,15 @@ public class JSONSaltMinionTest extends MockObjectTestCase {
             return visibleToUser.containsKey(minionId) || !registered.containsKey(minionId);
         };
 
-        List<JSONSaltMinion> minions = JSONSaltMinion.fromFingerprints(fingerprints, visibleToUser, isVisible);
+        List<SaltMinionJson> minions = SaltMinionJson.fromFingerprints(fingerprints, visibleToUser, isVisible);
 
         assertNotNull(minions);
         assertEquals(3, minions.size());
 
-        Map<String, JSONSaltMinion> minionMap = minions.stream()
-                .collect(Collectors.toMap(JSONSaltMinion::getId, Function.identity()));
+        Map<String, SaltMinionJson> minionMap = minions.stream()
+                .collect(Collectors.toMap(SaltMinionJson::getId, Function.identity()));
 
-        JSONSaltMinion minion = minionMap.get("m1");
+        SaltMinionJson minion = minionMap.get("m1");
         assertEquals("fingerprint1", minion.getFingerprint());
         assertEquals(1L, (long)minion.getSid());
         assertEquals("accepted", minion.getState());

@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 /**
  * JSON representation of a state config channel.
  */
-public class JSONConfigChannel {
+public class ConfigChannelJson {
 
     private Long id;
     private String name;
@@ -54,7 +54,7 @@ public class JSONConfigChannel {
      *
      * @param channelIn the channel
      */
-    public JSONConfigChannel(ConfigChannel channelIn) {
+    public ConfigChannelJson(ConfigChannel channelIn) {
         this.id = channelIn.getId();
         this.name = channelIn.getName();
         this.label = channelIn.getLabel();
@@ -69,7 +69,7 @@ public class JSONConfigChannel {
      * @param channelIn the channel
      * @param positionIn the ordering of the channel
      */
-    public JSONConfigChannel(ConfigChannel channelIn, int positionIn) {
+    public ConfigChannelJson(ConfigChannel channelIn, int positionIn) {
         this(channelIn);
         this.position = positionIn;
         this.assigned = true;
@@ -146,22 +146,22 @@ public class JSONConfigChannel {
     }
 
     /**
-     * Creates a list of {@link JSONConfigChannel} objects with position values in the order of input
+     * Creates a list of {@link ConfigChannelJson} objects with position values in the order of input
      * @param channelsIn list of config channels to be included in the list
-     * @return the list of {@link JSONConfigChannel} objects
+     * @return the list of {@link ConfigChannelJson} objects
      */
-    public static List<JSONConfigChannel> listOrdered(List<ConfigChannel> channelsIn) {
+    public static List<ConfigChannelJson> listOrdered(List<ConfigChannel> channelsIn) {
         return IntStream.range(0, channelsIn.size())
-                .mapToObj(i -> new JSONConfigChannel(channelsIn.get(i), i + 1))
+                .mapToObj(i -> new ConfigChannelJson(channelsIn.get(i), i + 1))
                 .collect(Collectors.toList());
     }
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof JSONConfigChannel)) {
+        if (!(other instanceof ConfigChannelJson)) {
             return false;
         }
-        JSONConfigChannel castOther = (JSONConfigChannel) other;
+        ConfigChannelJson castOther = (ConfigChannelJson) other;
         return new EqualsBuilder()
                 .append(name, castOther.name)
                 .append(label, castOther.label)

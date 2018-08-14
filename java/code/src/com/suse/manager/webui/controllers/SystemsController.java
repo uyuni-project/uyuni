@@ -40,7 +40,7 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
-import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.http.HttpStatus;
@@ -96,7 +96,7 @@ public class SystemsController {
             sid = Long.parseLong(sidStr);
         }
         catch (NumberFormatException e) {
-            return json(response, HttpStatus.SC_BAD_REQUEST, JsonResult.success());
+            return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.success());
         }
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
@@ -106,7 +106,7 @@ public class SystemsController {
                         SaltService.INSTANCE.
                                 cleanupMinion(server.asMinionServer().get(), 300);
                 if (cleanupErr.isPresent()) {
-                    return json(response, JsonResult.error(cleanupErr.get()));
+                    return json(response, ResultJson.error(cleanupErr.get()));
                 }
             }
         }
@@ -140,7 +140,7 @@ public class SystemsController {
             }
         }
         FlashScopeHelper.flash(request, "Deleted successfully");
-        return json(response, JsonResult.success());
+        return json(response, ResultJson.success());
     }
 
     /**
@@ -160,7 +160,7 @@ public class SystemsController {
                 jsonChannels.setChildren(server.getChildChannels().stream());
             }
 
-            return json(response, JsonResult.success(jsonChannels));
+            return json(response, ResultJson.success(jsonChannels));
         });
     }
 
@@ -184,7 +184,7 @@ public class SystemsController {
                             ))
                     .collect(Collectors.toList());
 
-            return json(response, JsonResult.success(baseChannels));
+            return json(response, ResultJson.success(baseChannels));
         });
     }
 
@@ -196,13 +196,13 @@ public class SystemsController {
         catch (NumberFormatException e) {
             return json(response,
                     HttpStatus.SC_BAD_REQUEST,
-                    JsonResult.error("invalid_server_id"));
+                    ResultJson.error("invalid_server_id"));
         }
         Server server = ServerFactory.lookupById(serverId);
         if (server == null) {
             return json(response,
                     HttpStatus.SC_NOT_FOUND,
-                    JsonResult.error("server_not_found"));
+                    ResultJson.error("server_not_found"));
         }
         return handler.apply(server);
     }
@@ -222,7 +222,7 @@ public class SystemsController {
         catch (NumberFormatException e) {
             return json(response,
                     HttpStatus.SC_BAD_REQUEST,
-                    JsonResult.error("invalid_server_id"));
+                    ResultJson.error("invalid_server_id"));
         }
         SubscribeChannelsJson json = GSON.fromJson(request.body(), SubscribeChannelsJson.class);
         Optional<Channel> base = Optional.empty();
@@ -234,7 +234,7 @@ public class SystemsController {
             if (!base.isPresent()) {
                 return json(response,
                         HttpStatus.SC_FORBIDDEN,
-                        JsonResult.error("base_not_found_or_not_authorized"));
+                        ResultJson.error("base_not_found_or_not_authorized"));
             }
         }
         try {
@@ -252,7 +252,7 @@ public class SystemsController {
         catch (IllegalArgumentException e) {
             return json(response,
                     HttpStatus.SC_FORBIDDEN,
-                    JsonResult.error("child_not_found_or_not_authorized", e.getMessage()));
+                    ResultJson.error("child_not_found_or_not_authorized", e.getMessage()));
         }
 
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
@@ -266,11 +266,11 @@ public class SystemsController {
                     base,
                     children,
                     earliest);
-            return json(response, JsonResult.success(sca.getId()));
+            return json(response, ResultJson.success(sca.getId()));
         }
         catch (TaskomaticApiException e) {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    JsonResult.error("taskomatic_error"));
+                    ResultJson.error("taskomatic_error"));
         }
     }
 
@@ -307,7 +307,7 @@ public class SystemsController {
             catch (NumberFormatException e) {
                 return json(response,
                         HttpStatus.SC_BAD_REQUEST,
-                        JsonResult.error("invalid_channel_id"));
+                        ResultJson.error("invalid_channel_id"));
             }
             try {
                 if (channelId < 0) {
@@ -319,7 +319,7 @@ public class SystemsController {
                 if (!baseChannel.isBaseChannel()) {
                     return json(response,
                             HttpStatus.SC_BAD_REQUEST,
-                            JsonResult.error("not_a_base_channel"));
+                            ResultJson.error("not_a_base_channel"));
                 }
 
                 List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
@@ -336,12 +336,12 @@ public class SystemsController {
                                 c.isSubscribable(user.getOrg(), server),
                                 channelRecommendedFlags.get(c.getId())))
                         .collect(Collectors.toList());
-                return json(response, JsonResult.success(jsonList));
+                return json(response, ResultJson.success(jsonList));
             }
             catch (LookupException e) {
                 return json(response,
                         HttpStatus.SC_NOT_FOUND,
-                        JsonResult.error("invalid_channel_id"));
+                        ResultJson.error("invalid_channel_id"));
             }
         });
     }

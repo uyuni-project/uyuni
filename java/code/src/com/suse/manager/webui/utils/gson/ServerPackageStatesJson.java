@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,37 +17,27 @@ package com.suse.manager.webui.utils.gson;
 import java.util.Set;
 
 /**
- * JSON representation of a server and a list of Salty config channels.
+ * JSON representation of a server and a list of package states.
  */
-public class JSONServerConfigChannels {
+public class ServerPackageStatesJson {
 
     /** Server id */
-    private long id;
+    private long sid;
 
-    private StateTargetType type;
-
-    private Set<JSONConfigChannel> channels;
+    /** List of package states */
+    private Set<PackageStateJson> packageStates;
 
     /**
-     * @return the sever id
+     * @return the server id
      */
-    public Long getTargetId() {
-        return id;
+    public long getServerId() {
+        return sid;
     }
 
     /**
-     * @return the target type
+     * @return the package states
      */
-    public StateTargetType getTargetType() {
-        return type;
+    public Set<PackageStateJson> getPackageStates() {
+        return packageStates;
     }
-
-    /**
-     * @return the custom Salt states
-     */
-    public Set<JSONConfigChannel> getChannels() {
-        return channels;
-    }
-
-
 }

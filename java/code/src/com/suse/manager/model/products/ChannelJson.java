@@ -18,9 +18,9 @@ package com.suse.manager.model.products;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 
 /**
- * JsonChannel
+ * ChannelJson
  */
-public class JsonChannel {
+public class ChannelJson {
 
     private final String name;
     private final String label;
@@ -37,9 +37,9 @@ public class JsonChannel {
      * @param optionalIn if the channel is mandatory or optional
      * @param statusIn the status of the channel
      */
-    public JsonChannel(String nameIn, String labelIn,
-            String summaryIn, boolean optionalIn,
-            SetupWizardProductDto.SyncStatus.SyncStage statusIn) {
+    public ChannelJson(String nameIn, String labelIn,
+                       String summaryIn, boolean optionalIn,
+                       SetupWizardProductDto.SyncStatus.SyncStage statusIn) {
         this.name = nameIn;
         this.label = labelIn;
         this.summary = summaryIn;

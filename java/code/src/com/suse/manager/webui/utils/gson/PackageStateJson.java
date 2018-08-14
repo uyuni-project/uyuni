@@ -32,10 +32,10 @@ import java.util.Optional;
 /**
  * JSON representation of a package state.
  */
-public class JSONPackageState {
+public class PackageStateJson {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(JSONPackageState.class);
+    private static final Logger LOG = Logger.getLogger(PackageStateJson.class);
 
     /** Name of the package */
     private final String name;
@@ -65,8 +65,8 @@ public class JSONPackageState {
      * @param packageStateIdIn the state type id
      * @param versionConstraintIdIn the version constraint id
      */
-    public JSONPackageState(String nameIn, PackageEvr evrIn, String archIn,
-            Optional<Integer> packageStateIdIn, Optional<Integer> versionConstraintIdIn) {
+    public PackageStateJson(String nameIn, PackageEvr evrIn, String archIn,
+                            Optional<Integer> packageStateIdIn, Optional<Integer> versionConstraintIdIn) {
         this.name = nameIn;
         this.epoch = evrIn.getEpoch();
         this.version = evrIn.getVersion();
@@ -81,7 +81,7 @@ public class JSONPackageState {
      * @param evrIn the package evr
      * @param archIn the package arch
      */
-    public JSONPackageState(String nameIn, PackageEvr evrIn, String archIn) {
+    public PackageStateJson(String nameIn, PackageEvr evrIn, String archIn) {
         this.name = nameIn;
         this.epoch = evrIn.getEpoch();
         this.version = evrIn.getVersion();
@@ -188,10 +188,10 @@ public class JSONPackageState {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof JSONPackageState)) {
+        if (!(other instanceof PackageStateJson)) {
             return false;
         }
-        JSONPackageState otherState = (JSONPackageState) other;
+        PackageStateJson otherState = (PackageStateJson) other;
         return new EqualsBuilder()
                 .append(getName(), otherState.getName())
                 .isEquals();

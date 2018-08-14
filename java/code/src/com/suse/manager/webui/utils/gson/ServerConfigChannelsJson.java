@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,51 +14,40 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 /**
- * JSON representation of a server id with a list of states to be applied.
+ * JSON representation of a server and a list of Salty config channels.
  */
-public class JSONServerApplyStates {
+public class ServerConfigChannelsJson {
 
     /** Server id */
     private long id;
 
     private StateTargetType type;
 
-    /** List of states to be applied */
-    private List<String> states;
-
-    /** The earliest execution date */
-    private Optional<LocalDateTime> earliest = Optional.empty();
+    private Set<ConfigChannelJson> channels;
 
     /**
-     * @return the server id
+     * @return the sever id
      */
-    public long getTargetId() {
+    public Long getTargetId() {
         return id;
     }
 
     /**
-     * @return the target type (server/group/org)
+     * @return the target type
      */
     public StateTargetType getTargetType() {
         return type;
     }
 
     /**
-     * @return the states to be applied
+     * @return the custom Salt states
      */
-    public List<String> getStates() {
-        return states;
+    public Set<ConfigChannelJson> getChannels() {
+        return channels;
     }
 
-    /**
-     * @return the date of earliest execution
-     */
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
-    }
+
 }

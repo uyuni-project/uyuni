@@ -25,7 +25,7 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -66,7 +66,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected List<String> validateJsonInput(JSONBootstrapHosts input) {
+    protected List<String> validateJsonInput(BootstrapHostsJson input) {
         return InputValidator.INSTANCE.validateBootstrapSSHManagedInput(input);
     }
 
@@ -131,7 +131,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
      * @return the bootstrap parameters
      */
     @Override
-    protected BootstrapParameters createBootstrapParams(JSONBootstrapHosts input) {
+    protected BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
         return new BootstrapParameters(input.getHost(),
                 Optional.of(SSH_PUSH_PORT), getSSHUser(), input.maybeGetPassword(),
                 input.getActivationKeys(), input.getIgnoreHostKeys(),

@@ -37,7 +37,7 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ImageProfileCreateRequest;
 import com.suse.manager.webui.utils.gson.ImageProfileJson;
-import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
@@ -147,11 +147,11 @@ public class ImageProfileController {
         List<ImageProfile> profiles =
                 ImageProfileFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (profiles.size() < ids.size()) {
-            return json(res, JsonResult.error("not_found"));
+            return json(res, ResultJson.error("not_found"));
         }
 
         profiles.forEach(ImageProfileFactory::delete);
-        return json(res, JsonResult.success(profiles.size()));
+        return json(res, ResultJson.success(profiles.size()));
     }
 
     /**
@@ -191,8 +191,8 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         return profile.map(
-                p -> json(res, JsonResult.success(ImageProfileJson.fromImageProfile(p))))
-                .orElseGet(() -> json(res, JsonResult.error("not_found")));
+                p -> json(res, ResultJson.success(ImageProfileJson.fromImageProfile(p))))
+                .orElseGet(() -> json(res, ResultJson.error("not_found")));
     }
 
     /**
@@ -210,8 +210,8 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByLabelAndOrg(profileLabel, user.getOrg());
 
         return profile.map(
-                p -> json(res, JsonResult.success(ImageProfileJson.fromImageProfile(p))))
-                .orElseGet(() -> json(res, JsonResult.error("not_found")));
+                p -> json(res, ResultJson.success(ImageProfileJson.fromImageProfile(p))))
+                .orElseGet(() -> json(res, ResultJson.error("not_found")));
     }
 
     /**
@@ -250,12 +250,12 @@ public class ImageProfileController {
         Optional<ImageProfile> profile =
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
-        JsonResult result = profile.map(p -> {
+        ResultJson result = profile.map(p -> {
             String label = reqData.getLabel();
             if (!p.getLabel().equals(label)) {
                 // Check if the label is valid
                 if (label.contains(":") || ImageProfileFactory.lookupByLabelAndOrg(label, p.getOrg()).isPresent()) {
-                    return JsonResult.error("invalid_label");
+                    return ResultJson.error("invalid_label");
                 }
             }
 
@@ -276,8 +276,8 @@ public class ImageProfileController {
             ImageProfileFactory.save(p);
             updateCustomDataValues(p, reqData, user);
 
-            return JsonResult.success();
-        }).orElseGet(() -> JsonResult.error("not_found"));
+            return ResultJson.success();
+        }).orElseGet(() -> ResultJson.error("not_found"));
 
         return json(res, result);
     }
@@ -303,7 +303,7 @@ public class ImageProfileController {
         // Check if the label is valid
         String label = reqData.getLabel();
         if (label.contains(":") || ImageProfileFactory.lookupByLabelAndOrg(label, user.getOrg()).isPresent()) {
-            return json(res, JsonResult.error("invalid_label"));
+            return json(res, ResultJson.error("invalid_label"));
         }
 
         ImageProfile profile;
@@ -323,13 +323,13 @@ public class ImageProfileController {
             profile = dockerfileProfile;
         }
         else {
-            return json(res, JsonResult.error("invalid_type"));
+            return json(res, ResultJson.error("invalid_type"));
         }
 
         ImageProfileFactory.save(profile);
         updateCustomDataValues(profile, reqData, user);
 
-        return json(res, JsonResult.success());
+        return json(res, ResultJson.success());
     }
 
     /**

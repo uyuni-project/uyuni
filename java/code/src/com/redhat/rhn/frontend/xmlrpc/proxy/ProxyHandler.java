@@ -111,7 +111,7 @@ public class ProxyHandler extends BaseHandler {
      * @throws ProxySystemIsSatelliteException thrown if client certificate is
      * for a satellite
      * @throws InvalidProxyVersionException thrown if version is not supported.
-     * @throws ProxyNeedManagementException thrown if system does not have the
+     * @throws com.redhat.rhn.frontend.xmlrpc.ProxyNeedManagementException thrown if system does not have the
      * management entitlement.
      *
      * @xmlrpc.doc Activates the proxy identified by the given client

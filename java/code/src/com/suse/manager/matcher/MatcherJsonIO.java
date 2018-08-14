@@ -41,13 +41,13 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.matcher.json.JsonInput;
-import com.suse.matcher.json.JsonMatch;
-import com.suse.matcher.json.JsonOutput;
-import com.suse.matcher.json.JsonProduct;
-import com.suse.matcher.json.JsonSubscription;
-import com.suse.matcher.json.JsonSystem;
-import com.suse.matcher.json.JsonVirtualizationGroup;
+import com.suse.matcher.json.InputJson;
+import com.suse.matcher.json.MatchJson;
+import com.suse.matcher.json.OutputJson;
+import com.suse.matcher.json.ProductJson;
+import com.suse.matcher.json.SubscriptionJson;
+import com.suse.matcher.json.SystemJson;
+import com.suse.matcher.json.VirtualizationGroupJson;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -126,15 +126,15 @@ public class MatcherJsonIO {
      * @return an object representation of the JSON input for the matcher
      * about systems on this Server
      */
-    public List<JsonSystem> getJsonSystems(boolean includeSelf, String arch) {
-        Stream<JsonSystem> systems = ServerFactory.list(true, true).stream()
+    public List<SystemJson> getJsonSystems(boolean includeSelf, String arch) {
+        Stream<SystemJson> systems = ServerFactory.list(true, true).stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
                 Set<String> entitlements = system.getEntitlementLabels();
                 boolean virtualHost = entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED) ||
                         !system.getGuests().isEmpty();
                 Set<Long> productIds = productIdsForServer(system, entitlements).collect(toSet());
-                return new JsonSystem(
+                return new SystemJson(
                     system.getId(),
                     system.getName(),
                     cpus == null ? null : cpus.intValue(),
@@ -159,9 +159,9 @@ public class MatcherJsonIO {
      * @return an object representation of the JSON input for the matcher
      * about SUSE products on this Server
      */
-    public List<JsonProduct> getJsonProducts() {
+    public List<ProductJson> getJsonProducts() {
         return SUSEProductFactory.findAllSUSEProducts().stream()
-                .map(p -> new JsonProduct(
+                .map(p -> new ProductJson(
                         p.getProductId(),
                         p.getFriendlyName(),
                         p.getChannelFamily() != null ? p.getChannelFamily().getLabel() : "",
@@ -174,12 +174,12 @@ public class MatcherJsonIO {
      * @return an object representation of the JSON input for the matcher
      * about subscriptions on this Server
      */
-    public List<JsonSubscription> getJsonSubscriptions() {
+    public List<SubscriptionJson> getJsonSubscriptions() {
         return SCCCachingFactory.lookupOrderItems().stream()
             .map(order -> {
                 SCCSubscription subscription = order.getSubscription();
                 Credentials credentials = order.getCredentials();
-                return new JsonSubscription(
+                return new SubscriptionJson(
                     order.getSccId(),
                     order.getSku(),
                     subscription == null ? null : subscription.getName(),
@@ -201,10 +201,10 @@ public class MatcherJsonIO {
      * about pinned matches
      */
     @SuppressWarnings("unchecked")
-    public List<JsonMatch> getJsonMatches() {
+    public List<MatchJson> getJsonMatches() {
         return ((List<PinnedSubscription>) HibernateFactory.getSession()
                 .createCriteria(PinnedSubscription.class).list()).stream()
-                .map(p -> new JsonMatch(
+                .map(p -> new MatchJson(
                     p.getSystemId(), p.getSubscriptionId(), null, null, null))
                 .collect(toList());
     }
@@ -225,7 +225,7 @@ public class MatcherJsonIO {
      * @return an object representation of the JSON input for the matcher
      */
     public String generateMatcherInput(boolean includeSelf, String arch) {
-        return gson.toJson(new JsonInput(
+        return gson.toJson(new InputJson(
             new Date(),
             getJsonSystems(includeSelf, arch),
             getJsonVirtualizationGroups(),
@@ -240,10 +240,10 @@ public class MatcherJsonIO {
      *
      * @return virtualization groups
      */
-    public List<JsonVirtualizationGroup> getJsonVirtualizationGroups() {
+    public List<VirtualizationGroupJson> getJsonVirtualizationGroups() {
         // only group we currently support is by virtual host manager
         return VirtualHostManagerFactory.getInstance().listVirtualHostManagers().stream()
-                .map(vhm -> new JsonVirtualizationGroup(
+                .map(vhm -> new VirtualizationGroupJson(
                         vhm.getId(),
                         vhm.getLabel(),
                         "virtual_host_manager_" + vhm.getGathererModule().toLowerCase(),
@@ -257,22 +257,22 @@ public class MatcherJsonIO {
      * Returns the latest matcher input (that was used for the latest matcher run)
      * @return the input data or empty in case the corresponding data is missing
      */
-    public Optional<JsonInput> getLastMatcherInput() {
+    public Optional<InputJson> getLastMatcherInput() {
         MatcherRunData data = MatcherRunDataFactory.getSingle();
         return ofNullable(gson.fromJson(
                 data == null ? null : data.getInput(),
-                JsonInput.class));
+                InputJson.class));
     }
 
     /**
      * Gets the latest matcher output data
      * @return the output or empty in case the matcher did not run yet
      */
-    public Optional<JsonOutput> getLastMatcherOutput() {
+    public Optional<OutputJson> getLastMatcherOutput() {
         MatcherRunData data = MatcherRunDataFactory.getSingle();
         return ofNullable(gson.fromJson(
                 data == null ? null : data.getOutput(),
-                JsonOutput.class));
+                OutputJson.class));
     }
 
     /**
@@ -354,11 +354,11 @@ public class MatcherJsonIO {
     }
 
     /**
-     * Returns an optional JsonSystem for the SUSE Manager server.
+     * Returns an optional SystemJson for the SUSE Manager server.
      */
-    private Stream<JsonSystem> jsonSystemForSelf(boolean includeSelf, String arch) {
+    private Stream<SystemJson> jsonSystemForSelf(boolean includeSelf, String arch) {
         if (includeSelf) {
-            return of(new JsonSystem(
+            return of(new SystemJson(
                 SELF_SYSTEM_ID,
                 "SUSE Manager Server system",
                 1,

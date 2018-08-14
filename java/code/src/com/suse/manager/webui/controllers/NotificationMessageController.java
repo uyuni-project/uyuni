@@ -24,7 +24,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.gson.JSONNotificationMessage;
+import com.suse.manager.webui.utils.gson.NotificationMessageJson;
 import com.suse.manager.webui.websocket.Notification;
 import com.suse.utils.Json;
 
@@ -223,15 +223,15 @@ public class NotificationMessageController {
     }
 
     /**
-     * Convert a list of {@link UserNotification} to a {@link JSONNotificationMessage}
+     * Convert a list of {@link UserNotification} to a {@link NotificationMessageJson}
      *
      * @param list of UserNotification
      * @param user the current user
      * @return a list of JSONNotificationMessages
      */
-    public static List<JSONNotificationMessage> getJSONNotificationMessages(List<UserNotification> list, User user) {
+    public static List<NotificationMessageJson> getJSONNotificationMessages(List<UserNotification> list, User user) {
         return list.stream()
-                .map(un -> new JSONNotificationMessage(un.getMessage(), un.getRead()))
+                .map(un -> new NotificationMessageJson(un.getMessage(), un.getRead()))
                 .collect(Collectors.toList());
     }
 }

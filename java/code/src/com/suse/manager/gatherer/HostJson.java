@@ -22,7 +22,7 @@ import java.util.Collections;
 /**
  * Json representation of a Virtual Host system.
  */
-public class JSONHost {
+public class HostJson {
 
     /** Host name. */
     private String name;

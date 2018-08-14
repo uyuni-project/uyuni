@@ -27,7 +27,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
-import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 import org.apache.http.HttpStatus;
 import spark.ModelAndView;
@@ -130,11 +130,11 @@ public class ImageStoreController {
 
         List<ImageStore> stores = ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (stores.size() < ids.size()) {
-            return json(res, JsonResult.error("not_found"));
+            return json(res, ResultJson.error("not_found"));
         }
 
         stores.forEach(ImageStoreFactory::delete);
-        return json(res, JsonResult.success(stores.size()));
+        return json(res, ResultJson.success(stores.size()));
     }
 
     /**
@@ -175,8 +175,8 @@ public class ImageStoreController {
                 json.addProperty("useCredentials", false);
             }
 
-            return json(res, JsonResult.success(json));
-        }).orElseGet(() -> json(res, JsonResult.error("not_found")));
+            return json(res, ResultJson.success(json));
+        }).orElseGet(() -> json(res, ResultJson.error("not_found")));
     }
 
     /**
@@ -211,8 +211,8 @@ public class ImageStoreController {
                 json.addProperty("useCredentials", false);
             }
 
-            return json(res, JsonResult.success(json));
-        }).orElseGet(() -> json(res, JsonResult.error("not_found")));
+            return json(res, ResultJson.success(json));
+        }).orElseGet(() -> json(res, ResultJson.error("not_found")));
     }
 
     /**
@@ -266,7 +266,7 @@ public class ImageStoreController {
         Optional<ImageStore> store =
                 ImageStoreFactory.lookupByIdAndOrg(storeId, user.getOrg());
 
-        JsonResult result = store.map(s -> {
+        ResultJson result = store.map(s -> {
             s.setLabel(updateRequest.getLabel());
             s.setUri(updateRequest.getUri());
             s.setOrg(user.getOrg());
@@ -274,8 +274,8 @@ public class ImageStoreController {
 
             ImageStoreFactory.save(s);
 
-            return JsonResult.success();
-        }).orElseGet(() -> JsonResult.error("not_found"));
+            return ResultJson.success();
+        }).orElseGet(() -> ResultJson.error("not_found"));
 
         return json(res, result);
     }
@@ -309,7 +309,7 @@ public class ImageStoreController {
 
         ImageStoreFactory.save(imageStore);
 
-        return json(res, JsonResult.success());
+        return json(res, ResultJson.success());
     }
 
     /**
