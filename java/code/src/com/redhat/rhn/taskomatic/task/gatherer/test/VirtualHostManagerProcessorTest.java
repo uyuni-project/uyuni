@@ -13,7 +13,8 @@ import com.redhat.rhn.taskomatic.task.gatherer.VirtualHostManagerProcessor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.gatherer.JSONHost;
+
+import com.suse.manager.gatherer.HostJson;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * gatherer).
      */
     public void testCreateServer() {
-        Map<String, JSONHost> data = createHostData("esxi_host_1_id", null);
+        Map<String, HostJson> data = createHostData("esxi_host_1_id", null);
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
@@ -62,7 +63,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * for a host reported from gatherer.
      */
     public void testCreateVirtualInstance() {
-        Map<String, JSONHost> data = createHostData("esxi_host_1_id", null);
+        Map<String, HostJson> data = createHostData("esxi_host_1_id", null);
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
@@ -94,7 +95,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         // gatherer reports this host (name even doesn't have to be the same, important
         // thing is the digital server id is equal)
-        Map<String, JSONHost> data = createHostData("esxi_host_1_id", null);
+        Map<String, HostJson> data = createHostData("esxi_host_1_id", null);
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
         assertContains(virtualHostManager.getServers(), existingHost);
@@ -112,7 +113,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 .createForeignSystem(user, "101-existing_host_id");
 
         // gatherer reports this host
-        Map<String, JSONHost> data = createHostData("existing_host_id", null);
+        Map<String, HostJson> data = createHostData("existing_host_id", null);
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // check if a VirtualInstance is created
@@ -145,7 +146,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstanceFactory.getInstance().saveVirtualInstance(virtualInstance);
 
         // gatherer reports this host
-        Map<String, JSONHost> data = createHostData("existing_host_id", null);
+        Map<String, HostJson> data = createHostData("existing_host_id", null);
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // check if a VirtualInstance of the host is the same after processing
@@ -163,7 +164,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * the host server.
      */
     public void testGuestVirtInstanceInserted() {
-        Map<String, JSONHost> data = createHostData("esxi_host_1",
+        Map<String, HostJson> data = createHostData("esxi_host_1",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
@@ -201,7 +202,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         createRegisteredGuestWithForeignHost("42309db29d991a2f681f74f4c851f4bd", "101-existing_host_id");
 
         // do the mapping
-        Map<String, JSONHost> data = createHostData("existing_host_id",
+        Map<String, HostJson> data = createHostData("existing_host_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
@@ -236,7 +237,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testGuestNameUpdated() {
-        Map<String, JSONHost> data = createHostData("my-host-id",
+        Map<String, HostJson> data = createHostData("my-host-id",
                 pairsToMap("old name", "38a4e1c14d8e440780b3b59745ba9ce5"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
         data = createHostData("my-host-id", pairsToMap("new name", "38a4e1c14d8e440780b3b59745ba9ce5"));
@@ -259,7 +260,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         guest.setName("guestname");
         guest.setState(VirtualInstanceFactory.getInstance().getStoppedState());
 
-        Map<String, JSONHost> data = createHostData("hostid",
+        Map<String, HostJson> data = createHostData("hostid",
                 pairsToMap("guestname", "1d7d250e9fca4d3ebb04099fe9a3e129"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
@@ -292,7 +293,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         String foreignSystemId = "foreign_system_id" + TestUtils.randomString();
         Server hostServer = ServerTestUtils
                 .createForeignSystem(user, "101-" + foreignSystemId);
-        Map<String, JSONHost> data = createHostData(foreignSystemId,
+        Map<String, HostJson> data = createHostData(foreignSystemId,
                 pairsToMap("vm name", vmUuid));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
@@ -319,7 +320,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     @SuppressWarnings("unchecked")
     public void testTwoVHMsSameVM() {
-        Map<String, JSONHost> data = createHostData("esxi_host_id",
+        Map<String, HostJson> data = createHostData("esxi_host_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         VirtualHostManager virtualHostManager2 = new VirtualHostManager();
@@ -348,11 +349,11 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     public void testGuestVirtualizationType() {
         VirtualInstanceType fullyVirtType =
                 VirtualInstanceFactory.getInstance().getFullyVirtType();
-        Map<String, JSONHost> data = createHostData("esxi_host_id",
+        Map<String, HostJson> data = createHostData("esxi_host_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         // adjust virtualization type for the host in the data
-        JSONHost host = data.entrySet().iterator().next().getValue();
+        HostJson host = data.entrySet().iterator().next().getValue();
         host.setType(fullyVirtType.getLabel());
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
@@ -372,7 +373,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * Tests that VirtualHostManagerProcessor removes hyphens from UUIDs from guests.
      */
     public void testUuidNormalization() {
-        Map<String, JSONHost> data = createHostData("foreign_system_id",
+        Map<String, HostJson> data = createHostData("foreign_system_id",
                 pairsToMap("my vm", "06b6-0065-9810-4186b513b33bd6190360"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
@@ -398,7 +399,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         createRegisteredGuestWithHost(guestUuid);
 
         String newVmName = "new name";
-        Map<String, JSONHost> data = createHostData("existing_host_id",
+        Map<String, HostJson> data = createHostData("existing_host_id",
                 pairsToMap(newVmName, guestUuid));
 
         // do the mapping
@@ -434,7 +435,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         createRegisteredGuestWithHost(swappedUuid);
 
         String newVmName = "new name";
-        Map<String, JSONHost> data = createHostData("existing_host_id",
+        Map<String, HostJson> data = createHostData("existing_host_id",
                 pairsToMap(newVmName, guestUuid));
 
         // do the mapping
@@ -466,7 +467,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * guest still belongs to the first host and the name of this host is unchanged.
      */
     public void testRenameServer() {
-        Map<String, JSONHost> data = createHostData("esxi_host_1_id",
+        Map<String, HostJson> data = createHostData("esxi_host_1_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
@@ -496,9 +497,9 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testGuestRemoved() {
 
-        JSONHost myHost = createMinimalHost("esx_host_1",
+        HostJson myHost = createMinimalHost("esx_host_1",
                 pairsToMap("vm1", "de5629cb8c5a4de485a8fc8d1b170412", "vm2", "6888aafa999048038bbb26afb9264db1"));
-        Map<String, JSONHost> data = new HashMap<>();
+        Map<String, HostJson> data = new HashMap<>();
         data.put(TestUtils.randomString(), myHost);
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
@@ -537,7 +538,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * for a Kubernetes virtual host manager.
      */
     public void testCreateNodeInfo() {
-        Map<String, JSONHost> data = createHostData("kubernetes_host_1_id", "Kubernetes",null);
+        Map<String, HostJson> data = createHostData("kubernetes_host_1_id", "Kubernetes",null);
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // check that aServer was not created
@@ -558,7 +559,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testRemoveNodeInfo() {
-        Map<String, JSONHost> dataCreate = new HashMap<>();
+        Map<String, HostJson> dataCreate = new HashMap<>();
         dataCreate.putAll(createHostData("kubernetes_host_1_id", "Kubernetes",null));
         dataCreate.putAll(createHostData("kubernetes_host_2_id", "Kubernetes",null));
         new VirtualHostManagerProcessor(virtualHostManager, dataCreate).processMapping();
@@ -577,7 +578,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 .filter(node -> node.getIdentifier().equals("kubernetes_host_2_id"))
                 .findFirst().isPresent());
 
-        Map<String, JSONHost> dataUpdate = new HashMap<>();
+        Map<String, HostJson> dataUpdate = new HashMap<>();
         dataUpdate.putAll(createHostData("kubernetes_host_2_id", "Kubernetes",null));
         new VirtualHostManagerProcessor(virtualHostManager, dataUpdate).processMapping();
 
@@ -596,43 +597,43 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @param vms - virtual machines
      * @return map with corresponding data
      */
-    private Map<String, JSONHost> createHostData(String hostIdentifier,
-            Map<String, String> vms) {
+    private Map<String, HostJson> createHostData(String hostIdentifier,
+                                                 Map<String, String> vms) {
         return createHostData(hostIdentifier, "para_virtualized", vms);
     }
 
-    private Map<String, JSONHost> createHostData(String hostIdentifier,
+    private Map<String, HostJson> createHostData(String hostIdentifier,
                                                  String type,
                                                  Map<String, String> vms) {
-        Map<String, JSONHost> data = new HashMap<>();
+        Map<String, HostJson> data = new HashMap<>();
         data.put(TestUtils.randomString(), createMinimalHost(hostIdentifier, type, vms));
         return data;
     }
 
     /**
-     * Create a JSONHost instance filled with test data representing results from virtual
+     * Create a HostJson instance filled with test data representing results from virtual
      * host gatherer.
      * @param hostId - host identifier
      * @param vms - map of virtual machines
-     * @return JSONHost instance
+     * @return HostJson instance
      */
-    private JSONHost createMinimalHost(String hostId, Map<String, String> vms) {
+    private HostJson createMinimalHost(String hostId, Map<String, String> vms) {
         return createMinimalHost(hostId, "para_virtualized", vms);
     }
 
     /**
-     * Create a JSONHost instance filled with test data representing results from virtual
+     * Create a HostJson instance filled with test data representing results from virtual
      * host gatherer.
      * @param hostId - host identifier
      * @param type - type of the vhm
      * @param vms - map of virtual machinesty
-     * @return JSONHost instance
+     * @return HostJson instance
      */
-    private JSONHost createMinimalHost(String hostId, String type, Map<String, String> vms) {
+    private HostJson createMinimalHost(String hostId, String type, Map<String, String> vms) {
         if (vms == null) {
             vms = new HashMap<>();
         }
-        JSONHost minimalHost = new JSONHost();
+        HostJson minimalHost = new HostJson();
         minimalHost.setHostIdentifier(hostId);
         minimalHost.setVms(vms);
         minimalHost.setType(type);

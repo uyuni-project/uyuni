@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching;
 
-import com.suse.matcher.json.JsonMessage;
+import com.suse.matcher.json.MessageJson;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class MatcherUiData {
     private Map<String, Subscription> subscriptions = new HashMap<>();
 
     /** The messages. */
-    private List<JsonMessage> messages = new LinkedList<>();
+    private List<MessageJson> messages = new LinkedList<>();
 
     /** Products. */
     private Map<String, Product> products = new HashMap<>();
@@ -70,7 +70,7 @@ public class MatcherUiData {
      * @param systemsIn - list of systems
      */
     public MatcherUiData(boolean matcherDataAvailableIn, Date latestStartIn,
-            Date latestEndIn, List<JsonMessage> messagesIn,
+            Date latestEndIn, List<MessageJson> messagesIn,
             Map<String, Subscription> subscriptionsIn,
             Map<String, Product> productsIn,
             Set<Long> unmatchedProductIdsIn,
@@ -121,7 +121,7 @@ public class MatcherUiData {
      *
      * @return the messages
      */
-    public List<JsonMessage> getMessages() {
+    public List<MessageJson> getMessages() {
         return messages;
     }
 
@@ -130,7 +130,7 @@ public class MatcherUiData {
      *
      * @param messagesIn the messages
      */
-    public void setMessages(List<JsonMessage> messagesIn) {
+    public void setMessages(List<MessageJson> messagesIn) {
         messages = messagesIn;
     }
 

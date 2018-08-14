@@ -151,7 +151,7 @@ import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -6448,7 +6448,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int bootstrap(User user, String host, Integer sshPort, String sshUser,
             String sshPassword, String activationKey, boolean saltSSH) {
-        JSONBootstrapHosts input = new JSONBootstrapHosts(
+        BootstrapHostsJson input = new BootstrapHostsJson(
                 host, sshPort, sshUser, sshPassword, activationKey, null);
         return XmlRpcSystemHelper.getInstance().bootstrap(user, input, saltSSH);
     }
@@ -6479,7 +6479,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int bootstrap(User user, String host, Integer sshPort, String sshUser,
             String sshPassword, String activationKey, Integer proxyId, boolean saltSSH) {
-        JSONBootstrapHosts input = new JSONBootstrapHosts(
+        BootstrapHostsJson input = new BootstrapHostsJson(
                 host, sshPort, sshUser, sshPassword, activationKey, proxyId.longValue());
         return XmlRpcSystemHelper.getInstance().bootstrap(user, input, saltSSH);
     }

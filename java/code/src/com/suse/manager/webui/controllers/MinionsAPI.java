@@ -25,8 +25,8 @@ import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
-import com.suse.manager.webui.utils.gson.JSONSaltMinion;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 import org.apache.log4j.Logger;
 import spark.Request;
@@ -94,7 +94,7 @@ public class MinionsAPI {
         Predicate<String> isVisible = (minionId) ->
             visibleToUser.containsKey(minionId) || !serverIdMapping.containsKey(minionId);
 
-        data.put("minions", JSONSaltMinion.fromFingerprints(
+        data.put("minions", SaltMinionJson.fromFingerprints(
                 fingerprints, visibleToUser, isVisible));
         return json(response, data);
     }
@@ -184,7 +184,7 @@ public class MinionsAPI {
         return json(
                 response,
                 RegularMinionBootstrapper.getInstance().bootstrap(
-                        GSON.fromJson(request.body(), JSONBootstrapHosts.class),
+                        GSON.fromJson(request.body(), BootstrapHostsJson.class),
                         user, ContactMethodUtil.getRegularMinionDefault()).asMap());
     }
 
@@ -206,7 +206,7 @@ public class MinionsAPI {
         return json(
                 response,
                 SSHMinionBootstrapper.getInstance().bootstrap(
-                        GSON.fromJson(request.body(), JSONBootstrapHosts.class),
+                        GSON.fromJson(request.body(), BootstrapHostsJson.class),
                         user, ContactMethodUtil.getSSHMinionDefault()).asMap());
     }
 

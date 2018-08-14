@@ -27,8 +27,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.gatherer.JSONHost;
 import org.apache.commons.lang3.RandomStringUtils;
+import com.suse.manager.gatherer.HostJson;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -45,20 +45,20 @@ import java.util.Set;
 public class VirtualHostManagerProcessor {
 
     private final VirtualHostManager virtualHostManager;
-    private final Map<String, JSONHost> virtualHosts;
+    private final Map<String, HostJson> virtualHosts;
     private Set<Server> serversToDelete;
     private Set<VirtualHostManagerNodeInfo> nodesToDelete;
     private Logger log;
 
     /**
      * Instantiates a new virtual host manager processor, will update a virtual
-     * host manager with information coming from a JSONHost.
+     * host manager with information coming from a HostJson.
      *
      * @param managerIn the virtual host manager
      * @param virtualHostsIn the virtual hosts information from JSON
      */
     public VirtualHostManagerProcessor(VirtualHostManager managerIn,
-            Map<String, JSONHost> virtualHostsIn) {
+            Map<String, HostJson> virtualHostsIn) {
         this.log = Logger.getLogger(VirtualHostManagerProcessor.class);
         this.virtualHostManager = managerIn;
         this.virtualHosts = virtualHostsIn;
@@ -105,13 +105,13 @@ public class VirtualHostManagerProcessor {
      * - for each VM (guest) reported to be running on this host, update the mapping
      *
      * @param hostLabel name of the Server (corresponds to label of Virtual Host Manager)
-     * @param jsonHost object containing the information about the host and its VMs
+     * @param host object containing the information about the host and its VMs
      */
-    private void processVirtualHost(String hostLabel, JSONHost jsonHost) {
-        Server server = updateAndGetServer(hostLabel, jsonHost,
+    private void processVirtualHost(String hostLabel, HostJson host) {
+        Server server = updateAndGetServer(hostLabel, host,
                 VirtualHostManagerFactory.KUBERNETES);
         if (server == null) {
-            VirtualHostManagerNodeInfo nodeInfo = updateAndGetNodeInfo(hostLabel, jsonHost);
+            VirtualHostManagerNodeInfo nodeInfo = updateAndGetNodeInfo(hostLabel, host);
             if (!virtualHostManager.getNodes().contains(nodeInfo)) {
                 virtualHostManager.getNodes().add(nodeInfo);
             }
@@ -129,37 +129,37 @@ public class VirtualHostManagerProcessor {
             serversToDelete.remove(server);
         }
 
-        VirtualInstanceType virtType = extractVirtualInstanceType(jsonHost.getType());
+        VirtualInstanceType virtType = extractVirtualInstanceType(host.getType());
         VirtualInstanceManager.updateHostVirtualInstance(server, virtType);
         VirtualInstanceManager.updateGuestsVirtualInstances(server, virtType,
-                jsonHost.getVms(), jsonHost.getOptionalVmData());
+                host.getVms(), host.getOptionalVmData());
     }
 
     private VirtualHostManagerNodeInfo updateAndGetNodeInfo(String hostLabel,
-                                                            JSONHost jsonHost) {
+                                                            HostJson host) {
         return VirtualHostManagerFactory.getInstance()
-                .lookupNodeInfoByIdentifier(jsonHost.getHostIdentifier())
-                .map(i -> updateNodeInfo(i, hostLabel, jsonHost))
-                .orElse(createNewNodeInfo(hostLabel, jsonHost));
+                .lookupNodeInfoByIdentifier(host.getHostIdentifier())
+                .map(i -> updateNodeInfo(i, hostLabel, host))
+                .orElse(createNewNodeInfo(hostLabel, host));
     }
 
     private VirtualHostManagerNodeInfo updateNodeInfo(VirtualHostManagerNodeInfo info,
-            String hostLabel, JSONHost jsonHost) {
+            String hostLabel, HostJson host) {
         info.setName(hostLabel);
-        info.setNodeArch(ServerFactory.lookupServerArchByName(jsonHost.getCpuArch()));
-        info.setCpuSockets(jsonHost.getTotalCpuSockets());
-        info.setCpuCores(jsonHost.getTotalCpuCores());
-        info.setRam(jsonHost.getRamMb());
-        info.setOs(jsonHost.getOs());
-        info.setOsVersion(jsonHost.getOsVersion());
+        info.setNodeArch(ServerFactory.lookupServerArchByName(host.getCpuArch()));
+        info.setCpuSockets(host.getTotalCpuSockets());
+        info.setCpuCores(host.getTotalCpuCores());
+        info.setRam(host.getRamMb());
+        info.setOs(host.getOs());
+        info.setOsVersion(host.getOsVersion());
         return info;
     }
 
     private VirtualHostManagerNodeInfo createNewNodeInfo(String hostLabel,
-                                                         JSONHost jsonHost) {
+                                                         HostJson host) {
         VirtualHostManagerNodeInfo info = new VirtualHostManagerNodeInfo();
-        info.setIdentifier(jsonHost.getHostIdentifier());
-        return updateNodeInfo(info, hostLabel, jsonHost);
+        info.setIdentifier(host.getHostIdentifier());
+        return updateNodeInfo(info, hostLabel, host);
     }
 
     /**
@@ -181,31 +181,31 @@ public class VirtualHostManagerProcessor {
     }
 
     /**
-     * Updates server with given hostId according to data in jsonHost.
+     * Updates server with given hostId according to data in host.
      * If such server doesn't exist, create it beforehand unless the type
      * of the server matches skipCreateForType.
      *
      * @param hostId - id of server to update
-     * @param jsonHost - data for updating
+     * @param host - data for updating
      * @param skipCreateForType - don't create a new server for the given host type
      * @return the updated server
      */
     private Server updateAndGetServer(String hostId,
-                                      JSONHost jsonHost,
+                                      HostJson host,
                                       String skipCreateForType) {
         Server server = ServerFactory.lookupForeignSystemByDigitalServerId(
-                buildServerFullDigitalId(jsonHost.getHostIdentifier()));
+                buildServerFullDigitalId(host.getHostIdentifier()));
         if (server == null) {
-            if (skipCreateForType.equalsIgnoreCase(jsonHost.getType())) {
+            if (skipCreateForType.equalsIgnoreCase(host.getType())) {
                 return null;
             }
-            server = createNewServer(hostId, jsonHost);
+            server = createNewServer(hostId, host);
         }
         else {
-            updateServerMiscFields(server, jsonHost);
+            updateServerMiscFields(server, host);
         }
 
-        updateServerCpu(server, jsonHost);
+        updateServerCpu(server, host);
         server.updateServerInfo();
         updateServerNetwork(server, hostId);
 
@@ -231,20 +231,20 @@ public class VirtualHostManagerProcessor {
         return virtualHostManager.getId() + "-" + hostIdentifier;
     }
 
-    private Server createNewServer(String hostId, JSONHost jsonHost) {
+    private Server createNewServer(String hostId, HostJson host) {
         Server server = ServerFactory.createServer();
         // Create the server
         server.setName(hostId);
         // All new servers belong to org of the virtualHostManager
         server.setOrg(virtualHostManager.getOrg());
         server.setCreated(new Date());
-        server.setDigitalServerId(buildServerFullDigitalId(jsonHost.getHostIdentifier()));
+        server.setDigitalServerId(buildServerFullDigitalId(host.getHostIdentifier()));
         server.setSecret(RandomStringUtils.randomAlphanumeric(64));
 
         String serverDescription = "Initial Registration Parameters:\n";
-        serverDescription += "OS: " + jsonHost.getOs() + "\n";
-        serverDescription += "Release: " + jsonHost.getOsVersion() + "\n";
-        serverDescription += "CPU Arch: " + jsonHost.getCpuArch() + "\n";
+        serverDescription += "OS: " + host.getOs() + "\n";
+        serverDescription += "Release: " + host.getOsVersion() + "\n";
+        serverDescription += "CPU Arch: " + host.getCpuArch() + "\n";
         server.setDescription(serverDescription);
         server.setAutoUpdate("N");
         server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
@@ -254,35 +254,35 @@ public class VirtualHostManagerProcessor {
         // this result into inserting duplicate entries into
         // suseServerVirtualHostManager table
         server.setLastBoot(System.currentTimeMillis() / 1000);
-        server.setOs(jsonHost.getOs());
-        server.setRelease(jsonHost.getOsVersion());
+        server.setOs(host.getOs());
+        server.setRelease(host.getOsVersion());
 
-        updateServerMiscFields(server, jsonHost);
+        updateServerMiscFields(server, host);
 
         ServerFactory.save(server);
         return server;
     }
 
-    private void updateServerMiscFields(Server server, JSONHost jsonHost) {
+    private void updateServerMiscFields(Server server, HostJson host) {
         // fields that need to be updated on both create (before ServerFactory.save)
         // and update server
         server.setModified(new Date());
-        server.setRam(jsonHost.getRamMb());
-        server.setServerArch(ServerFactory.lookupServerArchByName(jsonHost.getCpuArch()));
+        server.setRam(host.getRamMb());
+        server.setServerArch(ServerFactory.lookupServerArchByName(host.getCpuArch()));
     }
 
-    private void updateServerCpu(Server server, JSONHost jsonHost) {
+    private void updateServerCpu(Server server, HostJson host) {
         CPU cpu = server.getCpu();
         if (cpu == null) {
             cpu = new CPU();
         }
 
-        cpu.setArch(ServerFactory.lookupCPUArchByName(jsonHost.getCpuArch()));
-        cpu.setMHz(new Long(Math.round(jsonHost.getCpuMhz())).toString());
-        cpu.setNrCPU(jsonHost.getTotalCpuCores().longValue());
-        cpu.setNrsocket(jsonHost.getTotalCpuSockets().longValue());
-        cpu.setVendor(jsonHost.getCpuVendor());
-        cpu.setModel(jsonHost.getCpuDescription());
+        cpu.setArch(ServerFactory.lookupCPUArchByName(host.getCpuArch()));
+        cpu.setMHz(new Long(Math.round(host.getCpuMhz())).toString());
+        cpu.setNrCPU(host.getTotalCpuCores().longValue());
+        cpu.setNrsocket(host.getTotalCpuSockets().longValue());
+        cpu.setVendor(host.getCpuVendor());
+        cpu.setModel(host.getCpuDescription());
 
         cpu.setServer(server);
         server.setCpu(cpu);

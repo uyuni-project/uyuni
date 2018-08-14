@@ -21,7 +21,7 @@ import java.util.Set;
  * JSON representation of a group of virtual guests which belong to the same
  * cloud, VMWare vCenter, etc.
  */
-public class JsonVirtualizationGroup {
+public class VirtualizationGroupJson {
 
     private Long id;
     private String name;
@@ -35,8 +35,8 @@ public class JsonVirtualizationGroup {
      * @param typeIn a type label
      * @param virtualGuestIdsIn set of ids of Virtual guests in this group
      */
-    public JsonVirtualizationGroup(Long idIn, String nameIn, String typeIn,
-            Set<Long> virtualGuestIdsIn) {
+    public VirtualizationGroupJson(Long idIn, String nameIn, String typeIn,
+                                   Set<Long> virtualGuestIdsIn) {
         id = idIn;
         name = nameIn;
         type = typeIn;

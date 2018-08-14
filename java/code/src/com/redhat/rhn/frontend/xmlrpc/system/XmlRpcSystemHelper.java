@@ -25,7 +25,7 @@ import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.Boots
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -127,7 +127,7 @@ public class XmlRpcSystemHelper {
      * @return 1 on success, 0 on failure
      * @throws BootstrapException if any error occurs
      */
-    public int bootstrap(User user, JSONBootstrapHosts input, boolean saltSSH)
+    public int bootstrap(User user, BootstrapHostsJson input, boolean saltSSH)
             throws BootstrapException {
         BootstrapResult result = Stream.of(saltSSH).map(ssh -> {
             if (ssh) {

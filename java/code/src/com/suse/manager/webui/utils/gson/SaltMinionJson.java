@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 /**
  * JSON representation of a Salt Minion.
  */
-public class JSONSaltMinion {
+public class SaltMinionJson {
     public static final String STATE_ACCEPTED = "accepted";
     public static final String STATE_PENDING = "pending";
     public static final String STATE_REJECTED = "rejected";
@@ -40,30 +40,30 @@ public class JSONSaltMinion {
     private Long sid;
 
     /**
-     * All-arg constructor for JSONSaltMinion.
+     * All-arg constructor for SaltMinionJson.
      *
      * @param idIn minion id
      * @param fingerprintIn minion fingerprint
      * @param stateIn minion state
      * @param sidIn associated server id (only if exists, null otherwise)
      */
-    public JSONSaltMinion(String idIn, String fingerprintIn, String stateIn, Long sidIn) {
+    public SaltMinionJson(String idIn, String fingerprintIn, String stateIn, Long sidIn) {
         this.id = idIn;
         this.fingerprint = fingerprintIn;
         this.state = stateIn;
         this.sid = sidIn;
     }
 
-    private static Stream<JSONSaltMinion> fromFingerprints(Map<String, String> fingerprints,
-            Map<String, Long> serverIds, String state, Predicate<String> isVisible) {
+    private static Stream<SaltMinionJson> fromFingerprints(Map<String, String> fingerprints,
+        Map<String, Long> serverIds, String state, Predicate<String> isVisible) {
         return fingerprints.entrySet().stream()
                 .filter(s -> isVisible.test(s.getKey()))
-                .map(m -> new JSONSaltMinion(m.getKey(), m.getValue(), state,
+                .map(m -> new SaltMinionJson(m.getKey(), m.getValue(), state,
                         serverIds.get(m.getKey())));
     }
 
     /**
-     * Creates a list of {@link JSONSaltMinion} objects from a {@link Key.Fingerprints}
+     * Creates a list of {@link SaltMinionJson} objects from a {@link Key.Fingerprints}
      * instance.
      *
      * @param fp result of a {@code salt.wheel.key.finger} call
@@ -72,8 +72,8 @@ public class JSONSaltMinion {
      *             corresponding server records
      * @return a list of Salt minions
      */
-    public static List<JSONSaltMinion> fromFingerprints(Key.Fingerprints fp,
-        Map<String, Long> sids, Predicate<String> isVisible) {
+    public static List<SaltMinionJson> fromFingerprints(Key.Fingerprints fp,
+                                                        Map<String, Long> sids, Predicate<String> isVisible) {
         return Stream.of(
                 fromFingerprints(fp.getMinions(), sids, STATE_ACCEPTED, isVisible),
                 fromFingerprints(fp.getDeniedMinions(), sids, STATE_DENIED, isVisible),

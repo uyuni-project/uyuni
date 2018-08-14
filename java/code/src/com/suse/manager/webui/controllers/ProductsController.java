@@ -30,9 +30,9 @@ import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.suse.manager.model.products.Extension;
-import com.suse.manager.model.products.JsonChannel;
+import com.suse.manager.model.products.ChannelJson;
 import com.suse.manager.model.products.Product;
-import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.mgrsync.XMLChannel;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
@@ -251,11 +251,11 @@ public class ProductsController {
                                 .collect(Collectors.toList())
             ));
 
-            return json(response, JsonResult.success(result));
+            return json(response, ResultJson.success(result));
         }
         catch (ContentSyncException e) {
             log.error("content sync error: ", e);
-            return json(response, JsonResult.error("content sync error. See logs for more info."));
+            return json(response, ResultJson.error("content sync error. See logs for more info."));
         }
     }
     /**
@@ -286,7 +286,7 @@ public class ProductsController {
                                 s.isRecommended(),
                                 s.getStatus(),
                                 s.getChannels().stream().map(c ->
-                                        new JsonChannel(
+                                        new ChannelJson(
                                                 c.getName(),
                                                 c.getLabel(),
                                                 c.getSummary(),
@@ -327,7 +327,7 @@ public class ProductsController {
                         syncProduct.getStatus(),
                         rootExtensions,
                         syncProduct.getChannels().stream().map(c ->
-                                new JsonChannel(
+                                new ChannelJson(
                                         c.getName(),
                                         c.getLabel(),
                                         c.getSummary(),

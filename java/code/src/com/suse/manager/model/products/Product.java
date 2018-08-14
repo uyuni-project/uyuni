@@ -42,7 +42,7 @@ public class Product {
 
     private final Set<Extension> extensions;
 
-    private final Set<JsonChannel> channels;
+    private final Set<ChannelJson> channels;
 
     private final MgrSyncStatus status;
 
@@ -60,7 +60,7 @@ public class Product {
     public Product(Long idIn, String identifierIn,
                    String labelIn, String archIn, Boolean recommendedIn,
                    MgrSyncStatus statusIn, Set<Extension> extensionsIn,
-                   Set<JsonChannel> channelsIn) {
+                   Set<ChannelJson> channelsIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
@@ -123,7 +123,7 @@ public class Product {
      * Gets the channels set.
      * @return the channels set
      */
-    public Set<JsonChannel> getChannels() {
+    public Set<ChannelJson> getChannels() {
         return channels;
     }
 

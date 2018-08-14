@@ -78,7 +78,7 @@ import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.JsonElementCall;
+import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -1532,7 +1532,7 @@ public class SaltServerActionService {
                 Optional<JsonElement> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
-                    result = saltService.callSync(new JsonElementCall(call), minion.getMinionId());
+                    result = saltService.callSync(new ElementCallJson(call), minion.getMinionId());
                 }
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: " + action.getName() +

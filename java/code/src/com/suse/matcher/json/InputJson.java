@@ -20,25 +20,25 @@ import java.util.List;
 /**
  * JSON representation of the matcher's input.
  */
-public class JsonInput {
+public class InputJson {
 
     /** Date and time of the match (as it influences subscriptions). */
     private Date timestamp;
 
     /** The systems */
-    private List<JsonSystem> systems;
+    private List<SystemJson> systems;
 
     /** Groups of virtual guests. */
-    private List<JsonVirtualizationGroup> virtualizationGroups;
+    private List<VirtualizationGroupJson> virtualizationGroups;
 
     /** The products */
-    private List<JsonProduct> products;
+    private List<ProductJson> products;
 
     /** The subscriptions */
-    private List<JsonSubscription> subscriptions;
+    private List<SubscriptionJson> subscriptions;
 
     /** The pinned matches */
-    private List<JsonMatch> pinnedMatches;
+    private List<MatchJson> pinnedMatches;
 
     /**
      * Standard constructor.
@@ -50,10 +50,10 @@ public class JsonInput {
      * @param subscriptionsIn the subscriptions
      * @param pinnedMatchesIn the pinned matches
      */
-    public JsonInput(Date timestampIn, List<JsonSystem> systemsIn,
-            List<JsonVirtualizationGroup> virtualizationGroupsIn,
-            List<JsonProduct> productsIn, List<JsonSubscription> subscriptionsIn,
-            List<JsonMatch> pinnedMatchesIn) {
+    public InputJson(Date timestampIn, List<SystemJson> systemsIn,
+                     List<VirtualizationGroupJson> virtualizationGroupsIn,
+                     List<ProductJson> productsIn, List<SubscriptionJson> subscriptionsIn,
+                     List<MatchJson> pinnedMatchesIn) {
         timestamp = timestampIn;
         systems = systemsIn;
         virtualizationGroups = virtualizationGroupsIn;
@@ -67,7 +67,7 @@ public class JsonInput {
      *
      * @return the systems
      */
-    public List<JsonSystem> getSystems() {
+    public List<SystemJson> getSystems() {
         return systems;
     }
 
@@ -76,7 +76,7 @@ public class JsonInput {
      *
      * @param systemsIn the new systems
      */
-    public void setSystems(List<JsonSystem> systemsIn) {
+    public void setSystems(List<SystemJson> systemsIn) {
         systems = systemsIn;
     }
 
@@ -85,7 +85,7 @@ public class JsonInput {
      *
      * @return the groups of virtual guests
      */
-    public List<JsonVirtualizationGroup> getVirtualizationGroups() {
+    public List<VirtualizationGroupJson> getVirtualizationGroups() {
         return virtualizationGroups;
     }
 
@@ -95,7 +95,7 @@ public class JsonInput {
      * @param virtualizationGroupsIn the new groups of virtual guests
      */
     public void setVirtualizationGroups(
-            List<JsonVirtualizationGroup> virtualizationGroupsIn) {
+            List<VirtualizationGroupJson> virtualizationGroupsIn) {
         virtualizationGroups = virtualizationGroupsIn;
     }
 
@@ -104,7 +104,7 @@ public class JsonInput {
      *
      * @return the products
      */
-    public List<JsonProduct> getProducts() {
+    public List<ProductJson> getProducts() {
         return products;
     }
 
@@ -113,7 +113,7 @@ public class JsonInput {
      *
      * @param productsIn the new products
      */
-    public void setProducts(List<JsonProduct> productsIn) {
+    public void setProducts(List<ProductJson> productsIn) {
         products = productsIn;
     }
 
@@ -122,7 +122,7 @@ public class JsonInput {
      *
      * @return the subscriptions
      */
-    public List<JsonSubscription> getSubscriptions() {
+    public List<SubscriptionJson> getSubscriptions() {
         return subscriptions;
     }
 
@@ -131,7 +131,7 @@ public class JsonInput {
      *
      * @param subscriptionsIn the new subscriptions
      */
-    public void setSubscriptions(List<JsonSubscription> subscriptionsIn) {
+    public void setSubscriptions(List<SubscriptionJson> subscriptionsIn) {
         subscriptions = subscriptionsIn;
     }
 
@@ -140,7 +140,7 @@ public class JsonInput {
      *
      * @return the pinned matches
      */
-    public List<JsonMatch> getPinnedMatches() {
+    public List<MatchJson> getPinnedMatches() {
         return pinnedMatches;
     }
 
@@ -149,7 +149,7 @@ public class JsonInput {
      *
      * @param pinnedMatchesIn the new pinned matches
      */
-    public void setPinnedMatches(List<JsonMatch> pinnedMatchesIn) {
+    public void setPinnedMatches(List<MatchJson> pinnedMatchesIn) {
         pinnedMatches = pinnedMatchesIn;
     }
 

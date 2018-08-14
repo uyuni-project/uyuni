@@ -26,7 +26,7 @@ import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
@@ -122,17 +122,17 @@ public class CVEAuditController {
                     cveAuditServers.forEach(serv -> {
                             serv.setSelected(systemSet.contains(serv.getId()));
                     });
-                    return json(res, JsonResult.success(cveAuditServers));
+                    return json(res, ResultJson.success(cveAuditServers));
                 case IMAGE:
                     List<CVEAuditImage> cveAuditImages = CVEAuditManager
                     .listImagesByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
-                    return json(res, JsonResult.success(cveAuditImages));
+                    return json(res, ResultJson.success(cveAuditImages));
                     default: throw new RuntimeException("unreachable");
             }
         }
         catch (UnknownCVEIdentifierException e) {
-            return json(res, JsonResult.error("The specified CVE number was not" +
+            return json(res, ResultJson.error("The specified CVE number was not" +
                     " found. This can happen for very old or yet-unknown numbers, please" +
                     " also check it for possible typing errors."));
         }

@@ -17,7 +17,7 @@ package com.suse.matcher.json;
 /**
  * JSON representation of a product.
  */
-public class JsonProduct {
+public class ProductJson {
 
     /** The id. */
     private Long id;
@@ -43,8 +43,8 @@ public class JsonProduct {
      * @param baseIn true if this is a base product
      * @param freeIn true if this is a free product
      */
-    public JsonProduct(Long idIn, String nameIn, String productClassIn,
-            Boolean baseIn, Boolean freeIn) {
+    public ProductJson(Long idIn, String nameIn, String productClassIn,
+                       Boolean baseIn, Boolean freeIn) {
         id = idIn;
         name = nameIn;
         productClass = productClassIn;

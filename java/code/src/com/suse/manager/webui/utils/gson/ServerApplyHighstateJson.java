@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,40 +19,27 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * JSON representation of a server id with a list of states to be applied.
+ * JSON representation of multiple server ids with a list of states to be applied.
  */
-public class JSONServerApplyStates {
+public class ServerApplyHighstateJson {
 
     /** Server id */
-    private long id;
-
-    private StateTargetType type;
-
-    /** List of states to be applied */
-    private List<String> states;
+    private List<Long> ids;
 
     /** The earliest execution date */
     private Optional<LocalDateTime> earliest = Optional.empty();
 
+    /** The action chain to which to add */
+    private Optional<String> actionChain = Optional.empty();
+
+    /** test mode */
+    private boolean test = false;
+
     /**
      * @return the server id
      */
-    public long getTargetId() {
-        return id;
-    }
-
-    /**
-     * @return the target type (server/group/org)
-     */
-    public StateTargetType getTargetType() {
-        return type;
-    }
-
-    /**
-     * @return the states to be applied
-     */
-    public List<String> getStates() {
-        return states;
+    public List<Long> getIds() {
+        return ids;
     }
 
     /**
@@ -60,5 +47,19 @@ public class JSONServerApplyStates {
      */
     public Optional<LocalDateTime> getEarliest() {
         return earliest;
+    }
+
+    /**
+     * @return the action chain to which to add the action
+     */
+    public Optional<String> getActionChain() {
+        return actionChain;
+    }
+
+    /**
+     * @return true if test mode is called
+     */
+    public boolean isTest() {
+        return test;
     }
 }

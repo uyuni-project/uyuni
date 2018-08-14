@@ -15,6 +15,10 @@
 package com.suse.manager.webui.utils;
 
 
+import static com.suse.utils.Opt.flatMap;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -48,10 +52,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.suse.utils.Opt.flatMap;
-import static java.util.stream.Collectors.toMap;
-import static java.util.function.Function.identity;
 
 /**
  * Utilities for minion actions
@@ -113,9 +113,9 @@ public class MinionActionUtils {
                     .map(info -> {
                         Optional<JsonElement> result = info
                                 .getResult(server.getMinionId(), JsonElement.class);
-                        // the result should only be missing if its still running
-                        // since we know at this point that its not running result
-                        // being empty means something went horribly wrong.
+                            // the result should only be missing if its still running
+                            // since we know at this point that its not running result
+                            // being empty means something went horribly wrong.
                         return result.map(o -> {
                             // If it is a string its likely to be an error because our
                             // actions so far don't have String as a result type

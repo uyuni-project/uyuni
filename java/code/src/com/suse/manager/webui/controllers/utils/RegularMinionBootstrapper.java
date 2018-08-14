@@ -23,7 +23,7 @@ import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 import org.apache.log4j.Logger;
 
@@ -61,7 +61,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected List<String> validateJsonInput(JSONBootstrapHosts input) {
+    protected List<String> validateJsonInput(BootstrapHostsJson input) {
         return InputValidator.INSTANCE.validateBootstrapInput(input);
     }
 

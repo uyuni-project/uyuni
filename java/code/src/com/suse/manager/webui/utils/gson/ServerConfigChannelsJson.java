@@ -19,14 +19,14 @@ import java.util.Set;
 /**
  * JSON representation of a server and a list of Salty config channels.
  */
-public class JSONServerConfigChannels {
+public class ServerConfigChannelsJson {
 
     /** Server id */
     private long id;
 
     private StateTargetType type;
 
-    private Set<JSONConfigChannel> channels;
+    private Set<ConfigChannelJson> channels;
 
     /**
      * @return the sever id
@@ -45,7 +45,7 @@ public class JSONServerConfigChannels {
     /**
      * @return the custom Salt states
      */
-    public Set<JSONConfigChannel> getChannels() {
+    public Set<ConfigChannelJson> getChannels() {
         return channels;
     }
 

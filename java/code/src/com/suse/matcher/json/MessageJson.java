@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * JSON representation of a user message generated during the match (error, warning, etc.).
  */
-public class JsonMessage {
+public class MessageJson {
 
     /** A label identifying the message type. */
     private String type;
@@ -34,7 +34,7 @@ public class JsonMessage {
      * @param typeIn the type
      * @param dataIn the data
      */
-    public JsonMessage(String typeIn, Map<String, String> dataIn) {
+    public MessageJson(String typeIn, Map<String, String> dataIn) {
         type = typeIn;
         data = dataIn;
     }
