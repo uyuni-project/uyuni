@@ -2169,6 +2169,9 @@ public class ActionManager extends BaseManager {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
         String states = mods.isEmpty() ? "highstate" : "states " + mods.toString();
+        if (states.equals("highstate")) {
+            states += (test.isPresent() && test.get()) ? " in test-mode" : "";
+        }
         action.setName("Apply " + states);
         action.setOrg(scheduler != null ?
                 scheduler.getOrg() : OrgFactory.getSatelliteOrg());
