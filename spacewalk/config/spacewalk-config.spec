@@ -107,7 +107,7 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %config(noreplace) %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config(noreplace) %{apacheconfdir}/conf.d/os-images.conf
 %config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
-%attr(440,root,root) %config(noreplace) %{_sysconfdir}/sudoers.d/spacewalk
+%attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
 %dir %{_var}/lib/cobbler/snippets/
@@ -158,8 +158,8 @@ chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf 2> /dev/null || :
 # the past.
 chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
 
-%if 0%{?suse_version}
 %post
+%if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES access_compat
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
@@ -185,5 +185,10 @@ if [ -e %{apacheconfdir}/vhosts.d/vhost-ssl.conf ]; then
     sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/pki/tls/private/spacewalk.key|' %{apacheconfdir}/vhosts.d/vhost-ssl.conf
   fi
 fi
+# sudo is reading every file here! So ensure we do not have duplicate definitions!
+if [ -e /etc/sudoers.d/spacewalk.rpmsave ]; then
+  mv /etc/sudoers.d/spacewalk.rpmsave /root/sudoers-spacewalk.save
+fi
+rm -f /etc/sudoers.d/spacewalk.{rpmnew,rpmorig,rpmsave}
 
 %changelog
