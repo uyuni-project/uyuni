@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 import com.suse.manager.gatherer.GathererRunner;
-import com.suse.manager.gatherer.JSONHost;
+import com.suse.manager.gatherer.HostJson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
@@ -67,7 +67,7 @@ public class GathererJob extends RhnJavaJob {
                 managers.size()));
 
         try {
-            Map<String, Map<String, JSONHost>> results = new GathererRunner().run(managers);
+            Map<String, Map<String, HostJson>> results = new GathererRunner().run(managers);
             if (results == null) {
                 return;
             }

@@ -19,13 +19,13 @@ import java.util.Set;
 /**
  * JSON representation of a server and a list of package states.
  */
-public class JSONServerPackageStates {
+public class ServerPackageStatesJson {
 
     /** Server id */
     private long sid;
 
     /** List of package states */
-    private Set<JSONPackageState> packageStates;
+    private Set<PackageStateJson> packageStates;
 
     /**
      * @return the server id
@@ -37,7 +37,7 @@ public class JSONServerPackageStates {
     /**
      * @return the package states
      */
-    public Set<JSONPackageState> getPackageStates() {
+    public Set<PackageStateJson> getPackageStates() {
         return packageStates;
     }
 }

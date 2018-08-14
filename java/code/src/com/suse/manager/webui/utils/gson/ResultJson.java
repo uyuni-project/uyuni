@@ -21,7 +21,7 @@ import java.util.List;
  * Generic JSON response wrapper class
  * @param <T> Type of the data class which will be included in the response
  */
-public class JsonResult<T> {
+public class ResultJson<T> {
 
     private final boolean success;
     private final List<String> messages;
@@ -31,9 +31,9 @@ public class JsonResult<T> {
      * Create an error result with the given messages.
      *
      * @param messagesIn a list of messages
-     * @return a JsonResult
+     * @return a ResultJson
      */
-    public static JsonResult error(String... messagesIn) {
+    public static ResultJson error(String... messagesIn) {
         return error(Arrays.asList(messagesIn));
     }
 
@@ -41,10 +41,10 @@ public class JsonResult<T> {
      * Create an error result with the given messages.
      *
      * @param messagesIn a list of messages
-     * @return a JsonResult
+     * @return a ResultJson
      */
-    public static JsonResult error(List<String> messagesIn) {
-        return new JsonResult<>(false, messagesIn, null);
+    public static ResultJson error(List<String> messagesIn) {
+        return new ResultJson<>(false, messagesIn, null);
     }
 
     /**
@@ -53,18 +53,18 @@ public class JsonResult<T> {
      * @param messagesIn a list of messages
      * @param dataIn the data
      * @param <T> the type of data
-     * @return a JsonResult
+     * @return a ResultJson
      */
-    public static <T> JsonResult<T> error(List<String> messagesIn, T dataIn) {
-        return new JsonResult<>(false, messagesIn, dataIn);
+    public static <T> ResultJson<T> error(List<String> messagesIn, T dataIn) {
+        return new ResultJson<>(false, messagesIn, dataIn);
     }
 
     /**
      * Create a success result without data.
      *
-     * @return a JsonResult
+     * @return a ResultJson
      */
-    public static JsonResult success() {
+    public static ResultJson success() {
         return success(null);
     }
 
@@ -73,10 +73,10 @@ public class JsonResult<T> {
      *
      * @param dataIn the data
      * @param <T> the type of data
-     * @return a JsonResult
+     * @return a ResultJson
      */
-    public static <T> JsonResult<T> success(T dataIn) {
-        return new JsonResult<>(true, null, dataIn);
+    public static <T> ResultJson<T> success(T dataIn) {
+        return new ResultJson<>(true, null, dataIn);
     }
 
     /**
@@ -84,10 +84,10 @@ public class JsonResult<T> {
      *
      * @param messagesIn the messages
      * @param <T> the type of data
-     * @return a JsonResult
+     * @return a ResultJson
      */
-    public static <T> JsonResult<T> successMessage(String... messagesIn) {
-        return new JsonResult<>(true, Arrays.asList(messagesIn), null);
+    public static <T> ResultJson<T> successMessage(String... messagesIn) {
+        return new ResultJson<>(true, Arrays.asList(messagesIn), null);
     }
 
     /**
@@ -97,7 +97,7 @@ public class JsonResult<T> {
      * @param messagesIn the messages
      * @param dataIn     the data
      */
-    public JsonResult(boolean successIn, List<String> messagesIn, T dataIn) {
+    public ResultJson(boolean successIn, List<String> messagesIn, T dataIn) {
         this.success = successIn;
         this.messages = messagesIn;
         this.data = dataIn;

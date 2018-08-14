@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * JSON representation of a subscription.
  */
-public class JsonSubscription {
+public class SubscriptionJson {
 
     /** The id. */
     private Long id;
@@ -59,9 +59,9 @@ public class JsonSubscription {
      * @param sccUsernameIn the SCC username
      * @param productIdsIn the product ids
      */
-    public JsonSubscription(Long idIn, String partNumberIn, String nameIn,
-            Integer quantityIn, Date startDateIn, Date endDateIn,
-            String sccUsernameIn, Set<Long> productIdsIn) {
+    public SubscriptionJson(Long idIn, String partNumberIn, String nameIn,
+                            Integer quantityIn, Date startDateIn, Date endDateIn,
+                            String sccUsernameIn, Set<Long> productIdsIn) {
         id = idIn;
         partNumber = partNumberIn;
         name = nameIn;

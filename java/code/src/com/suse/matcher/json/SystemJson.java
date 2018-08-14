@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * JSON representation of a system.
  */
-public class JsonSystem {
+public class SystemJson {
 
     /** The id. */
     private Long id;
@@ -54,8 +54,8 @@ public class JsonSystem {
      * @param virtualSystemIdsIn the virtual system ids
      * @param productIdsIn the product ids
      */
-    public JsonSystem(Long idIn, String nameIn, Integer cpusIn, Boolean physicalIn,
-            Boolean virtualHostIn, Set<Long> virtualSystemIdsIn, Set<Long> productIdsIn) {
+    public SystemJson(Long idIn, String nameIn, Integer cpusIn, Boolean physicalIn,
+                      Boolean virtualHostIn, Set<Long> virtualSystemIdsIn, Set<Long> productIdsIn) {
         id = idIn;
         name = nameIn;
         cpus = cpusIn;
