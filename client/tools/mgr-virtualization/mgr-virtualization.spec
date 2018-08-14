@@ -1,5 +1,5 @@
 #
-# spec file for package rhn-virtualization
+# spec file for package mgr-virtualization
 #
 # Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
@@ -22,6 +22,9 @@
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
 %define rhnsd		 spacewalksd
+# Old name and version+1 before renaming to mgr-push
+%define oldname          rhn-virtualization
+%define oldversion       5.4.72.3
 #
 %define rhn_dir %{_datadir}/rhn
 %define rhn_conf_dir %{_sysconfdir}/sysconfig/rhn
@@ -38,11 +41,13 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
-Name:           rhn-virtualization
+Name:           mgr-virtualization
 Summary:        Spacewalk action support for virualization
 License:        GPL-2.0-only
 Group:          System Environment/Base
-Version:        5.4.72.2
+Version:        4.0.1
+Provides:       rhn-virtualization = %{oldversion}
+Obsoletes:      rhn-virtualization < %{oldversion}
 Release:        1%{?dist}
 
 URL:            https://github.com/spacewalkproject/spacewalk
@@ -68,10 +73,14 @@ virtual machine guest images.
 Summary:        Files needed by rhn-virtualization-host
 Group:          System Environment/Base
 %{?python_provide:%python_provide python2-%{name}-common}
-Provides:       python-%{name}-common = %{version}-%{release}
-Obsoletes:      python-%{name}-common < %{version}-%{release}
-Provides:       %{name}-common = %{version}-%{release}
-Obsoletes:      %{name}-common < %{version}-%{release}
+Provides:       python-%{name}-common = %{oldversion}
+Obsoletes:      python-%{name}-common < %{oldversion}
+Provides:       python-%{oldname}-common = %{oldversion}
+Obsoletes:      python-%{oldname}-common < %{oldversion}
+Provides:       %{name}-common = %{oldversion}
+Obsoletes:      %{name}-common < %{oldversion}
+Provides:       %{oldname}-common = %{oldversion}
+Obsoletes:      %{oldname}-common < %{oldversion}
 Requires:       python2-rhn-client-tools
 Requires:       spacewalk-usix
 BuildRequires:  python
@@ -93,7 +102,10 @@ package.
 %package -n python3-%{name}-common
 Summary:        Files needed by rhn-virtualization-host
 Group:          System Environment/Base
-Obsoletes:      %{name}-common < %{version}-%{release}
+Provides:       python3-%{oldname}-common = %{oldversion}
+Obsoletes:      python3-%{oldname}-common < %{oldversion}
+Obsoletes:      %{name}-common < %{oldversion}
+Obsoletes:      %{oldname}-common < %{oldversion}
 Requires:       python3-rhn-client-tools
 Requires:       python3-spacewalk-usix
 BuildRequires:  python3-devel
@@ -106,6 +118,8 @@ package.
 %package host
 Summary:        Spacewalk Virtualization support specific to the Host system
 Group:          System Environment/Base
+Provides:       %{oldname}-host = %{oldversion}
+Obsoletes:      %{oldname}-host < %{oldversion}
 Requires:       %{pythonX}-%{name}-host = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       cron
@@ -121,6 +135,8 @@ that is specific to the Host system (a.k.a. Dom0).
 %package -n python2-%{name}-host
 Summary:        RHN/Spacewalk Virtualization support specific to the Host system
 Group:          System Environment/Base
+Provides:       python2-%{oldname}-host = %{oldversion}
+Obsoletes:      python2-%{oldname}-host < %{oldversion}
 Requires:       %{name}-host = %{version}-%{release}
 Requires:       libvirt-python
 Requires:       python2-%{name}-common = %{version}-%{release}
@@ -137,6 +153,8 @@ Python 2 files for %{name}-host.
 %package -n python3-%{name}-host
 Summary:        RHN/Spacewalk Virtualization support specific to the Host system
 Group:          System Environment/Base
+Provides:       python3-%{oldname}-host = %{oldversion}
+Obsoletes:      python3-%{oldname}-host < %{oldversion}
 Requires:       %{name}-host = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       python3-libvirt-python

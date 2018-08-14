@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Fri Aug 10 15:42:19 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.1-1
+- add debug mode for mgr-create-bootstrap-repo
 - Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056

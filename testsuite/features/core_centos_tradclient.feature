@@ -17,7 +17,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
      And  I run "sed s/enabled=.*/enabled=1/g /etc/yum.repos.d/SLE-Manager-Tools-RES-7-x86_64.repo -i" on "ceos-traditional-client" without error control
      And  I run "sed s/enabled=.*/enabled=1/g /etc/yum.repos.d/CentOS-Base.repo -i" on "ceos-traditional-client" without error control
      And  I run "yum repolist" on "ceos-traditional-client"
-     And  I run "yum install -y --nogpgcheck rhn-client-tools rhn-check rhn-setup rhnsd hwdata m2crypto wget osad rhncfg-actions" on "ceos-traditional-client"
+     And  I run "yum install -y --nogpgcheck spacewalk-client-tools spacewal-check spacewalk-client-setup mgr-daemon hwdata m2crypto wget mgr-osad mgr-cfg-actions" on "ceos-traditional-client"
      And  I run "yum install -y --nogpgcheck spacewalk-oscap scap-security-guide" on "ceos-traditional-client"
      And  I register "ceos-traditional-client" as traditional client
      And  I run "rhn-actions-control --enable-all" on "ceos-traditional-client"

@@ -1,3 +1,10 @@
+- Change dependencies from osa-dispatcher to mgr-osa-dispatcher and
+  from rhnpush to mgr-push (bsc#1104034)
+
+-------------------------------------------------------------------
+Fri Aug 10 15:11:04 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.1-1
 - Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 - Disable Oracle support for openSUSE (bsc#1095804)

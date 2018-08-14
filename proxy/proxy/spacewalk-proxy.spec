@@ -25,7 +25,7 @@ Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.0
+Version:        4.0.1
 Release:        1%{?dist}
 URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -36,9 +36,9 @@ Requires:       httpd
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python2-pylint
 %endif
-BuildRequires:  rhnpush >= 5.5.74
+BuildRequires:  mgr-push >= 4.0.0
 # proxy isn't Python 3 yet
-BuildRequires:  python2-rhnpush
+BuildRequires:  python2-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
 BuildRequires:  spacewalk-backend-libs >= 1.7.24
 
@@ -186,10 +186,10 @@ Summary:        Custom Channel Package Manager for the Spacewalk Proxy Server
 Group:          Applications/Internet
 Requires:       python
 Requires:       rhnlib >= 2.5.56
-Requires:       rhnpush >= 5.5.74
+Requires:       mgr-push >= 4.0.0
 Requires:       spacewalk-backend >= 1.7.24
 # proxy isn't Python 3 yet
-Requires:       python2-rhnpush
+Requires:       python2-mgr-push
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  python-devel
 Obsoletes:      rhn_package_manager < 5.3.0

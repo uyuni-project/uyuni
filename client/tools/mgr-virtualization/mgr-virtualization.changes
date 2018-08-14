@@ -1,3 +1,12 @@
+- Fix Obsolete/Provides for subpackage python2-mgr-virtualization-host
+  (bsc#1104034)
+
+-------------------------------------------------------------------
+Fri Aug 10 16:03:24 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.1-1
+- Bump version to 4.0.0 (bsc#11040346)
+- Rename package to mgr-virtualization to allow version 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 
 -------------------------------------------------------------------

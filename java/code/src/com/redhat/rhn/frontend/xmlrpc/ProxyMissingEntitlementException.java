@@ -18,15 +18,15 @@ package com.redhat.rhn.frontend.xmlrpc;
 import com.redhat.rhn.FaultException;
 
 /**
- * Proxy needs management entitlement in order to be activated, this Exception
+ * Proxy needs management or salt entitlement in order to be activated, this Exception
  * is thrown otherwise.
  */
-public class ProxyNeedManagementException extends FaultException {
+public class ProxyMissingEntitlementException extends FaultException {
 
     /**
      * Default constructor
      */
-    public ProxyNeedManagementException() {
-        super(1047, "proxyNeedManagement", "Proxy need management entitlement.");
+    public ProxyMissingEntitlementException() {
+        super(1047, "proxyMissingEntitlement", "Proxy needs management or salt entitlement.");
     }
 }
