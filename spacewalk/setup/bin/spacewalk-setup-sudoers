@@ -21,7 +21,7 @@ sub setup_sudoers {
   my $answers = shift;
 
   my ($sudoers_content_orig, $sudoers_content);
-  my $sudoers_path = '/etc/sudoers.d/spacewalk';
+  my $sudoers_path = '/etc/sudoers';
 
   local *FILE;
   if (-e $sudoers_path) {

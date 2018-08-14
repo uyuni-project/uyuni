@@ -1,4 +1,6 @@
+- clean up correct system sudoers file (bsc#1099517)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
+
 -------------------------------------------------------------------
 Wed Jul 25 09:31:22 CEST 2018 - jgonzalez@suse.com
 
