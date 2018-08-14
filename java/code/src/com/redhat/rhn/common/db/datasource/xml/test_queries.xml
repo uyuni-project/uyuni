@@ -464,6 +464,20 @@ INSERT INTO rhnDailySummaryQueue (org_id) VALUES (:org_id)
     </query>
 </write-mode>
 
+<write-mode name="create_actions_dailysummary">
+    <query params="org_id, server_id">
+      with first as  (
+      insert into rhnaction (id, org_id, action_type, name,  earliest_action)
+values (300, :org_id, 501, 'Service Pack Migration (Dry Run)', '2018-08-10 08:04:00+02'),
+(301, :org_id, 501, 'Service Pack Migration', '2018-08-10 08:04:00+02'))
+insert into rhnserveraction (
+  server_id, action_id, status
+)
+values (:server_id, 300, 0),
+       (:server_id, 301, 0);
+    </query>
+</write-mode>
+
 <write-mode name="delete_from_daily_summary_queue">
     <query>
 DELETE FROM rhnDailySummaryQueue
@@ -489,6 +503,7 @@ SELECT * from rhntransactionpackage where
   id in (select transaction_package_id from rhnPackageDeltaElement where PACKAGE_DELTA_ID =
   (select id from rhnPackageDelta where id = (select PACKAGE_DELTA_ID from rhnActionPackageDelta
   where action_id = :action_id)))
+
     </query>
 </mode>
 

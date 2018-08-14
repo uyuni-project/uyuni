@@ -14,27 +14,29 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import static org.hamcrest.Matchers.containsString;
-
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.test.SystemHandlerTestUtils;
 import com.redhat.rhn.taskomatic.task.DailySummary;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import com.suse.manager.utils.MailHelper;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.hamcrest.Matchers.stringContainsInOrder;
 
 /**
  * DailySummaryTest
@@ -42,6 +44,8 @@ import java.util.Map;
  */
 public class DailySummaryTest extends JMockBaseTestCaseWithUser {
 
+    private SystemHandler handler = new SystemHandler();
+    private SystemHandlerTestUtils shtu = new SystemHandlerTestUtils();
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -102,8 +106,24 @@ public class DailySummaryTest extends JMockBaseTestCaseWithUser {
         m.executeUpdate(params);
         user.setEmailNotify(1);
         Server s = ServerTestUtils.createTestSystem(user);
+        Server ms = MinionServerFactoryTest.createTestMinionServer(user);
         s.getServerInfo().setCheckin(new Date(System.currentTimeMillis()- 2 * 24 * 60 * 60 * 1000));
+        Date scheduleDate = new Date();
+        WriteMode fm = ModeFactory.getWriteMode("test_queries",
+                "create_actions_dailysummary");
+        Map<String, Object> fparams = new HashMap<String, Object>();
+        fparams.put("org_id", oid);
+        fparams.put("server_id", s.getId());
+        fm.executeUpdate(fparams);
+
+        SystemHandler mh =  shtu.getMockedHandler();
+        mh.scheduleApplyHighstate(user, ms.getId().intValue(), scheduleDate, false);
+        mh.scheduleApplyHighstate(user, ms.getId().intValue(), scheduleDate, true);
+
+        TestUtils.saveAndFlush(ms);
+        TestUtils.saveAndFlush(s);
         HibernateFactory.getSession().flush();
+        HibernateFactory.commitTransaction();
 
         // set up a mock for the mailer
         MailHelper mailHelper = mock(MailHelper.class);
@@ -111,14 +131,19 @@ public class DailySummaryTest extends JMockBaseTestCaseWithUser {
         // set expectations on the mail sending method
         context().checking(new Expectations() { {
             exactly(1).of(mailHelper)
-                    .sendEmail(with(any(String.class)), with(any(String.class)), with(containsString("balalala")));
+                    .sendEmail(with(any(String.class)),
+                            with(any(String.class)),
+                            with(stringContainsInOrder(Arrays.asList("Apply highstate in test-mode              1",
+                                                                     "Apply states (total)                      2",
+                                                                     "Service Pack Migration (Dry Run)          1",
+                                                                     "Service Pack Migration (Total)            2"))));
         } });
-
 
         // run test
         DailySummary ds = new DailySummary();
         ds.queueOrgEmails(oid, () -> mailHelper);
     }
+
 
     public void aTestExcecute() {
         // using jesusr_redhat orgid for this test.  Run only on hosted.
