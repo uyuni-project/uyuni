@@ -73,7 +73,12 @@ Feature: Build OS images
     And I select "suse_osimage_real_simple" from "profileId"
     And I select sle-minion hostname in Build Host
     And I click on "submit-btn"
-    And I wait until event "Image Build suse_osimage_real_simple scheduled by admin" is completed
+
+  Scenario: Check the OS image built via GUI
+    Given I am on the Systems overview page of this "sle-minion"
+    When I wait until event "Image Build suse_osimage_real_simple scheduled by admin" is completed
+    And I navigate to "os-images/1/" page
+    Then I should see a "POS_Image-JeOS6" text
 
   Scenario: Login as Kiwi image administrator and build an image
     Given I am authorized as "kiwikiwi" with password "kiwikiwi"
@@ -81,8 +86,9 @@ Feature: Build OS images
     And I select "suse_osimage_real_simple" from "profileId"
     And I select sle-minion hostname in Build Host
     And I click on "submit-btn"
-    And I wait until event "Image Build suse_osimage_real_simple scheduled by kiwikiwi" is completed
 
-  Scenario: Check the availability of the new image
-    When I navigate to "os-images/1/" page
+  Scenario: Check the OS image built as Kiwi image administrator
+    Given I am on the Systems overview page of this "sle-minion"
+    When I wait until event "Image Build suse_osimage_real_simple scheduled by kiwikiwi" is completed
+    And I navigate to "os-images/1/" page
     Then I should see a "POS_Image-JeOS6" text
