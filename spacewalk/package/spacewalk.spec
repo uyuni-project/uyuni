@@ -28,7 +28,7 @@
 %endif
 
 Name:           spacewalk
-Version:        4.0.0
+Version:        4.0.1
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -60,7 +60,7 @@ Requires:       spacewalk-base
 Requires:       spacewalk-html
 
 # Python
-Requires:       rhnpush
+Requires:       mgr-push
 Requires:       spacewalk-backend
 Requires:       spacewalk-backend-app
 Requires:       spacewalk-backend-applet
@@ -88,13 +88,13 @@ Recommends:     virtual-host-gatherer-VMware
 Requires:       subscription-matcher
 Requires:       susemanager-sls
 
-# Requires:       osa-dispatcher
+# Requires:       mgr-osa-dispatcher
 # Requires:       jabberpy
 Obsoletes:      spacewalk-monitoring < 2.3
 
 %if 0%{?rhel} || 0%{?fedora}
 # SELinux
-Requires:       osa-dispatcher-selinux
+Requires:       mgr-osa-dispatcher-selinux
 Requires:       spacewalk-selinux
 Obsoletes:      spacewalk-monitoring-selinux < 2.3
 %endif

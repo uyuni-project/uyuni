@@ -30,17 +30,17 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.0
+Version:        4.0.1
 Release:        1%{?dist}
 URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
-Requires:       rhncfg
-Requires:       rhncfg-actions
-Requires:       rhncfg-client
-Requires:       rhncfg-management
+Requires:       mgr-cfg
+Requires:       mgr-cfg-actions
+Requires:       mgr-cfg-client
+Requires:       mgr-cfg-management
 %if 0%{?suse_version}
 Requires:       aaa_base
 Requires:       apache2
@@ -123,6 +123,7 @@ install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/i
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhn-proxy-activate.py
 %endif
 install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT%{_bindir}/rhn-proxy-activate
+install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_bindir}/fetch-certificate
 
 %check
 %if 0%{?pylint_check}
@@ -143,6 +144,7 @@ spacewalk-python2-pylint .
 %{_usr}/share/rhn/installer/jabberd/*.xml
 %{_usr}/share/rhn/get_system_id.xslt
 %{_bindir}/rhn-proxy-activate
+%{_bindir}/fetch-certificate
 %doc LICENSE answers.txt
 %dir %{_usr}/share/doc/proxy
 %dir %{_usr}/share/rhn

@@ -1,5 +1,5 @@
 #
-# spec file for package spacewalksd
+# spec file for package mgr-daemon
 #
 # Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
@@ -23,8 +23,8 @@
 %define rhn_check	 spacewalk-check
 %define rhnsd		 spacewalksd
 #
-Name:           spacewalksd
-Version:        5.0.37.1
+Name:           mgr-daemon
+Version:        4.0.1
 Release:        1%{?dist}
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
@@ -35,8 +35,11 @@ URL:            https://fedorahosted.org/spacewalk
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:  gettext
-Provides:       rhnsd = %{version}-%{release}
-Obsoletes:      rhnsd < %{version}-%{release}
+# 5.0.37.2 was last version+1 of spacewalksd before renaming to mgr-daemon
+Provides:       rhnsd = 5.0.37.2
+Obsoletes:      rhnsd < 5.0.37.2
+Provides:       spacewalksd = 5.0.37.2
+Obsoletes:      spacewalksd < 5.0.37.2
 
 Requires:       %{rhn_check} >= 0.0.8
 BuildRequires:  gcc

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +24,9 @@ import org.cobbler.SystemRecord;
 
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredSystemCreateCommand.CobblerNetworkInterface;
 
 /**
  * Create a cobbler system record for a bare metal system (via XMLRPC) that is
@@ -54,7 +57,8 @@ public class CobblerUnregisteredSystemCreateCommand extends
     protected void processNetworkInterfaces(SystemRecord rec, Server serverIn) {
         List<Network> ifaces = new LinkedList<Network>();
         if (serverIn.getNetworkInterfaces() != null) {
-            for (NetworkInterface n : serverIn.getNetworkInterfaces()) {
+            for (NetworkInterface ni : serverIn.getNetworkInterfaces()) {
+                CobblerNetworkInterface n = (CobblerNetworkInterface) ni;
                 if (n.getIPv4Addresses().isEmpty()) {
                     continue;
                 }
@@ -62,6 +66,7 @@ public class CobblerUnregisteredSystemCreateCommand extends
                 net.setIpAddress(n.getIPv4Addresses().get(0).getAddress());
                 net.setMacAddress(n.getHwaddr());
                 net.setNetmask(n.getIPv4Addresses().get(0).getNetmask());
+                net.setDnsname(n.getDnsname());
                 if (!StringUtils.isBlank(networkInterface) &&
                         n.getName().equals(networkInterface)) {
                     net.setStaticNetwork(!isDhcp);
@@ -80,6 +85,21 @@ public class CobblerUnregisteredSystemCreateCommand extends
 
         private static final long serialVersionUID = -8764861534739929941L;
         private String ipAddress;
+        private String dnsname;
+
+        /**
+         * @return Returns the dnsname.
+         */
+        public String getDnsname() {
+            return dnsname;
+        }
+
+        /**
+         * @param dnsnameIn The dnsname to set.
+         */
+        public void setDnsname(String dnsnameIn) {
+            this.dnsname = dnsnameIn;
+        }
 
         /**
          * Allow to set the IP directly for passing it on to cobbler.
@@ -87,12 +107,23 @@ public class CobblerUnregisteredSystemCreateCommand extends
          */
         public void setIpaddr(String ip) {
             this.ipAddress = ip;
+            ServerNetAddress4 netAddr = new ServerNetAddress4();
+            netAddr.setAddress(this.ipAddress);
+            ArrayList<ServerNetAddress4> iplist = new ArrayList<>();
+            iplist.add(netAddr);
+            this.setSa4(iplist);
         }
 
         /**
          * {@inheritDoc}
          */
         public String getIpaddr() {
+            if (this.ipAddress == null || this.ipAddress.isEmpty()) {
+                if (this.getIPv4Addresses().isEmpty()) {
+                    return null;
+                }
+                this.ipAddress = this.getIPv4Addresses().get(0).getAddress();
+            }
             return this.ipAddress;
         }
     }

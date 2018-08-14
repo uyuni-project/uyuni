@@ -1,3 +1,9 @@
+- Change dependencies from rhnpush to mgr-push (bsc#1104034)
+
+-------------------------------------------------------------------
+Fri Aug 10 15:24:07 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.1-1
 - Bump version to 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 
