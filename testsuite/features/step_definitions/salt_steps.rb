@@ -285,6 +285,16 @@ When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package
   $server.run("zypper --non-interactive remove -y #{package}-formula")
 end
 
+When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/srv/formula_metadata/" + formula + '/' + file
+
+  $server.run("mkdir -p /srv/formula_metadata/" + formula)
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  $server.run("chmod 644 " + dest)
+end
+
 When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
@@ -347,7 +357,7 @@ When(/^I refresh the pillar data$/) do
   $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar")
 end
 
-Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
   node = get_target(minion)
   if minion == 'sle-minion'
     cmd = 'salt'
@@ -360,10 +370,16 @@ Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key
     raise 'Invalid target'
   end
   output, _code = $server.run("#{cmd} '#{node.full_hostname}' pillar.get '#{key}' #{extra_cmd}")
-  if value == ''
+  if verb == 'be' && value == ''
     raise unless output.split("\n").length == 1
-  else
+  elsif verb == 'be'
     raise unless output.split("\n")[1].strip == value
+  elsif verb == 'contain'
+    raise unless output.include? value
+  elsif verb == 'not contain'
+    raise if output.include? value
+  else
+    raise 'Invalid verb'
   end
 end
 

@@ -1,0 +1,140 @@
+testing:
+    #$type: namespace  # currently broken
+    $type: group
+
+    # normal string, generates "" if empty
+    str:
+        $type: text
+
+    # normal string with default
+    str_def:
+        $type: text
+        $default: defvalue
+
+    # string or null if empty
+    str_or_null:
+        $type: text
+        $ifEmpty: null
+
+    # string present only if not empty
+    str_opt:
+        $type: text
+        $optional: true
+
+    # normal number, generates "" if empty
+    num:
+        $type: number
+
+    # normal number, generates "0" as default
+    num_def:
+        $type: number
+        $default: 0
+
+    # number or null if empty
+    num_or_null:
+        $type: number
+        $ifEmpty: null
+
+    # number present only if not empty
+    num_opt:
+        $type: number
+        $optional: true
+
+    # normal password, generates '' if empty
+    pw:
+        $type: password
+
+    # password or null if empty
+    pw_or_null:
+        $type: password
+        $ifEmpty: null
+
+    # password present only if not empty
+    pw_opt:
+        $type: password
+        $optional: true
+
+
+    list_of_strings:
+        $type: edit-group
+        $minItems: 1
+        $prototype:
+            $type: text
+        $default:
+            - def_item1
+            - def_item2
+
+    dict_of_strings:
+        $type: edit-group
+        $minItems: 1
+        $prototype:
+            $key:
+                $type: text
+            $type: text
+        $default:
+            name1: def_value1
+            name2: def_value2
+
+    list_of_dicts:
+        $type: edit-group
+        $minItems: 1
+        $prototype:
+            $type: group
+            name:
+                $type: text
+            password:
+                $type: password
+            full_name:
+                $type: text
+                $optional: true
+        $default:
+            - name: def_user
+              password: secret1
+
+    dict_of_dicts:
+        $type: edit-group
+        $minItems: 1
+        $prototype:
+            $type: group
+            $key:
+                $type: text
+            name:
+                $type: text
+            password:
+                $type: password
+            full_name:
+                $type: text
+                $ifEmpty: null
+        $default:
+            def_user:
+                name: root
+                password: secret2
+
+
+    recursive_dict_of_dicts:
+        $type: edit-group
+        $minItems: 1
+        $prototype:
+            $type: group
+            $key:
+                $type: text
+            group_name:
+                $type: text
+            entries:
+                $type: edit-group
+                $minItems: 1
+                $prototype:
+                    $key:
+                        $type: text
+                    entry_name:
+                        $type: text
+                    entry_desc:
+                        $type: text
+        $default:
+            def_gr1:
+                group_name: default group 1
+                entries:
+                    def_entry1:
+                        entry_name: default entry 1
+                        entry_desc: some text
+
