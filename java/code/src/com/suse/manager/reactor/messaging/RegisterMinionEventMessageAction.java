@@ -359,7 +359,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // Saltboot treatment - prepare and apply saltboot
             if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
-                prepareRetailMinionForSaltboot(minionId, minionServer, org, grains);
+                prepareRetailMinionForSaltboot(minionServer, org, grains);
                 applySaltboot(minionServer);
                 LOG.info("Applying saltboot for minion " + minionId);
                 return;
@@ -400,13 +400,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      *  - assign needed groups
      *  - generate pillar
      *
-     * @param minionId - the minion id
-     * @param minionServer - the minion
-     * @param org - the org
+     * @param minion - the minion
+     * @param org - the organization in which minion is to be registered
      * @param grains - grains
      */
-    // todo org param needed ? mId needed?
-    private void prepareRetailMinionForSaltboot(String minionId, MinionServer minionServer, Org org, ValueMap grains) {
+    private void prepareRetailMinionForSaltboot(MinionServer minion, Org org, ValueMap grains) {
         Optional<String> manufacturer = grains.getOptionalAsString("manufacturer");
         Optional<String> productName = grains.getOptionalAsString("productname");
         Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
@@ -429,14 +427,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     "\")! Aborting registration.");
         }
 
-        SystemManager.addServerToServerGroup(minionServer, terminalsGroup);
-        SystemManager.addServerToServerGroup(minionServer, branchIdGroup);
+        SystemManager.addServerToServerGroup(minion, terminalsGroup);
+        SystemManager.addServerToServerGroup(minion, branchIdGroup);
         if (hwGroup != null) {
-            SystemManager.addServerToServerGroup(minionServer, hwGroup);
+            SystemManager.addServerToServerGroup(minion, hwGroup);
         }
 
-        minionServer.asMinionServer().ifPresent(
-                SaltStateGeneratorService.INSTANCE::generatePillar);
+        minion.asMinionServer().ifPresent(SaltStateGeneratorService.INSTANCE::generatePillar);
     }
 
     private void applySaltboot(MinionServer minion) {
