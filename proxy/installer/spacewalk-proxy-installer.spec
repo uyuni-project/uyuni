@@ -124,8 +124,8 @@ spacewalk-python2-pylint .
 %dir %{_usr}/share/rhn/installer
 %{_usr}/share/rhn/installer/jabberd/*.xml
 %{_usr}/share/rhn/get_system_id.xslt
-%{_bindir}/rhn-proxy-activate
-%{_bindir}/fetch-certificate
+%{_usr}/sbin/rhn-proxy-activate
+%{_usr}/sbin/fetch-certificate
 %doc LICENSE answers.txt
 %dir %{_usr}/share/doc/proxy
 %dir %{_usr}/share/rhn
