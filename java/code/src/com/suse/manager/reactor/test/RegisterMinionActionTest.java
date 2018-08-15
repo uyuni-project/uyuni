@@ -965,7 +965,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).callSync(
                             with(any(LocalCall.class)),
                             with(any(String.class)));
-                    exactly(1).of(saltServiceMock).applyState(MINION_ID, "saltboot");
                 }},
                 (contactMethod) -> null, // no AK
                 (optMinion, machineId, key) -> {
@@ -1013,7 +1012,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         allowing(saltServiceMock).callSync(
                                 with(any(LocalCall.class)),
                                 with(any(String.class)));
-                        exactly(1).of(saltServiceMock).applyState(MINION_ID, "saltboot");
                     }},
                     (contactMethod) -> null, // no AK
                     (optMinion, machineId, key) -> {
@@ -1106,58 +1104,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 },
                 null,
                 DEFAULT_CONTACT_METHOD);
-    }
-
-
-    /**
-     * Tests a redeploy of a retail minion
-     * (initrd grain == true, but the system profile already exists)
-     *
-     * @throws Exception - if anything goes wrong
-     */
-    public void testTerminalRedeploy() throws Exception {
-        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk03", "HW group",
-                OrgFactory.getSatelliteOrg());
-        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
-                OrgFactory.getSatelliteOrg());
-        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
-                OrgFactory.getSatelliteOrg());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setMinionId(MINION_ID);
-        server.setOrg(OrgFactory.getSatelliteOrg());
-        SystemManager.addServerToServerGroup(server, hwGroup);
-        SystemManager.addServerToServerGroup(server, terminalsGroup);
-        SystemManager.addServerToServerGroup(server, branchGroup);
-
-        executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
-                    server.setMachineId(MACHINE_ID);
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
-                            .map(map -> {
-                                map.put("initrd", true);
-                                map.put("manufacturer", "QEMU");
-                                map.put("productname", "CashDesk03");
-                                map.put("minion_id_prefix", "Branch001");
-                                return map;
-                            })));
-                    List<ProductInfo> pil = new ArrayList<>();
-                    allowing(saltServiceMock).callSync(
-                            with(any(LocalCall.class)),
-                            with(any(String.class)));
-                    exactly(1).of(saltServiceMock).applyState(MINION_ID, "saltboot");
-                    will(returnValue(Optional.of(pil)));
-                }},
-                (contactMethod) -> null, // no AK
-                (optMinion, machineId, key) -> {
-                    // nothing to check here, we only check that "saltboot" state was applied in the expectations
-                }, DEFAULT_CONTACT_METHOD);
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,

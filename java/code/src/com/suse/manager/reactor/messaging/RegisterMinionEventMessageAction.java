@@ -53,6 +53,7 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ActionMessage;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -205,7 +206,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     if (initrd) {
                         // todo verify that saltboot is defensive and checks for partitioning pillar
                         LOG.info("Applying saltboot for minion " + minionId);
-                        applySaltboot(minionId);
+                        applySaltboot(registeredMinion);
                     } else if (imageRedeployed()) { // todo ask Vladimir how to find out an image has been redeployed
                         LOG.info("Finishing registration for minion " + minionId);
                         finishRegistration(minionId, isSaltSSH, registeredMinion, empty(), empty()); // todo take care about the optional params
@@ -362,7 +363,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // Saltboot treatment - prepare and apply saltboot
             if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
                 prepareRetailMinionForSaltboot(minionId, minionServer, org, grains);
-                applySaltboot(minionId);
+                applySaltboot(minionServer);
                 LOG.info("Applying saltboot for minion " + minionId);
                 return;
             }
@@ -440,12 +441,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 SaltStateGeneratorService.INSTANCE::generatePillar);
     }
 
-    private void applySaltboot(String minionId) {
-        LocalCall<List<String>> call = new LocalCall<>("saltutil.sync_states", Optional.empty(), // todo async!
-                Optional.empty(), new TypeToken<List<String>>() {
-        });
-        SALT_SERVICE.callSync(call, minionId);
-        SALT_SERVICE.applyState(minionId, "saltboot"); // todo do this async!
+    private void applySaltboot(MinionServer minion) {
+        List<String> states = new ArrayList<>();
+        states.add(ApplyStatesEventMessage.SYNC_STATES);
+        states.add(ApplyStatesEventMessage.SALTBOOT);
+
+        MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), false, states));
     }
 
     private boolean imageRedeployed() {
