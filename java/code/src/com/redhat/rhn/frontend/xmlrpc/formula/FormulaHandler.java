@@ -156,6 +156,7 @@ public class FormulaHandler extends BaseHandler {
 
     /**
      * Get the saved data for the specific formula against specific server
+     *
      * @param loggedInUser user
      * @param formulaName formula name
      * @param systemId system id
@@ -166,9 +167,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemId")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.returntype
-     *   #struct("content")
-     *   #struct_end()
+     * @xmlrpc.returntype struct with saved formula data
      */
     public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
         FormulaManager manager = FormulaManager.getInstance();
@@ -177,7 +176,8 @@ public class FormulaHandler extends BaseHandler {
     }
 
     /**
-     *  Get the saved data for the specific formula against specific group
+     * Get the saved data for the specific formula against specific group
+     *
      * @param loggedInUser user
      * @param formulaName formula name
      * @param groupId group id
@@ -187,9 +187,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "groupId")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.returntype
-     *   #struct("content")
-     *   #struct_end()
+     * @xmlrpc.returntype struct with saved formula data
      */
     public Map<String, Object> getGroupFormulaData(User loggedInUser, Integer groupId, String formulaName) {
         FormulaManager manager = FormulaManager.getInstance();
@@ -212,9 +210,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemId")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param
-     * #struct("content")
-     * #struct_end()
+     * @xmlrpc.param struct content with the values for each field in the form
      * @xmlrpc.returntype #return_int_success()
      */
     public int setSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
@@ -255,9 +251,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int","groupId")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param
-     * #struct("content")
-     * #struct_end()
+     * @xmlrpc.param struct containing the values for each field in the form
      * @xmlrpc.returntype #return_int_success()
      */
     public int setGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
