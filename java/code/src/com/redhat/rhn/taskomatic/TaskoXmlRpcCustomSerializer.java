@@ -29,7 +29,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * that when it happens, so we can fix it.
  *
  */
-public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerializer {
+public abstract class TaskoXmlRpcCustomSerializer implements XmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}

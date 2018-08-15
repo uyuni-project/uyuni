@@ -15,7 +15,7 @@
 package com.redhat.rhn.taskomatic.serializer;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import com.redhat.rhn.taskomatic.RhnXmlRpcCustomSerializer;
+import com.redhat.rhn.taskomatic.TaskoXmlRpcCustomSerializer;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * TaskoRunSerializer
  * @version $Rev$
  */
-public class TaskoRunSerializer extends RhnXmlRpcCustomSerializer {
+public class TaskoRunSerializer extends TaskoXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
