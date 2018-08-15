@@ -15,13 +15,62 @@
 import os
 import shutil
 import sys
+import xmlrpclib
+import datetime
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
 from spacewalk.server import rhnSQL
+from socket import gethostname
 
-def __serverCheck(labels, unsubscribe):
+class RemoteApi:
+
+    """ Class for connecting to the XMLRPC spacewalk interface"""
+
+    cache = {}
+
+    def __init__(self, server_url, username, password):
+        self.client = xmlrpclib.Server(server_url)
+        self.auth_time = None
+        self.auth_token = None
+        try:
+            self.username = username
+            self.password = password
+            self.__login()
+        except xmlrpclib.Fault, e:
+            raise UserError(e.faultString)
+
+    def auth_check(self):
+        """ makes sure that more than an hour hasn't passed since we
+             logged in and will relogin if it has
+        """
+        if not self.auth_time or (datetime.datetime.now()
+                                  - self.auth_time).seconds > 60 * 15:  # 15 minutes
+            self.__login()
+
+    def __login(self):
+        self.auth_token = self.client.auth.login(self.username, self.password)
+        self.auth_time = datetime.datetime.now()
+    def list_channel_labels(self):
+        self.auth_check()
+        key = "chan_labels"
+        if self.cache.has_key(key):
+            return self.cache[key]
+
+        chan_list = self.client.channel.listAllChannels(self.auth_token)
+        to_ret = []
+        for item in chan_list:
+            to_ret.append(item["label"])
+        self.cache[key] = to_ret
+        return to_ret
+    def unsubscribe_channels(self, server_ids, base_channel, channel_labels):
+        self.auth_check()
+        child_channels = [channel_label for channel_label in channel_labels if channel_label != base_channel]
+        earliest_occurrence = datetime.datetime.now()
+        result = self.client.channel.software.unsubscribeChannels(self.auth_token, server_ids, base_channel, child_channels)
+
+def __serverCheck(labels, unsubscribe, base_channel, username, password):
     sql = """
         select distinct S.org_id, S.id, S.name
         from rhnChannel c inner join
@@ -38,20 +87,19 @@ def __serverCheck(labels, unsubscribe):
         return 0
 
     if unsubscribe:
+        server_ids = map(lambda s: s['id'], server_list)
+        xmlrpc = RemoteApi("https://" + gethostname() + "/rpc/api", username, password)
+        xmlrpc.unsubscribe_channels(server_ids, base_channel, labels)
         return __unsubscribeServers(labels)
 
     print("\nCurrently there are systems subscribed to one or more of the specified channels.")
     print("If you would like to automatically unsubscribe these systems, simply use the --unsubscribe flag.\n")
     print("The following systems were found to be subscribed:")
 
-    print 'org_id'.ljust(8),
-    print 'id'.ljust(14),
-    print('name')
-    print ("-" * 32)
+    print("%-8s %-14s name" % ('org_id', 'id'))
+    print("-" * 32)
     for server in server_list:
-        print str(server['org_id']).ljust(8),
-        print str(server['id']).ljust(14),
-        print(server['name'])
+        print("%-8s %-14s %s" % (server['org_id'], server['id'], server['name']))
 
     return len(server_list)
 
@@ -69,6 +117,9 @@ def __unsubscribeServers(labels):
     h.execute(**params)
     server_channel_list = h.fetchall_dict()
 
+    if server_channel_list is None:
+        server_channel_list = {}
+
     channel_counts = {}
     for i in server_channel_list:
         if i['label'] in channel_counts:
@@ -79,8 +130,7 @@ def __unsubscribeServers(labels):
     channel_list = channel_counts.keys()
     channel_list.sort()
     for i in channel_list:
-        print(i.ljust(40)),
-        print(str(channel_counts[i]).ljust(8))
+        print("%-40s %-8s" % (i, channel_counts[i]))
 
     pb = ProgressBar(prompt='Unsubscribing:    ', endTag=' - complete',
                      finalSize=len(server_channel_list), finalBarLength=40, stream=sys.stdout)
@@ -114,12 +164,10 @@ def __kickstartCheck(labels):
 
     print("The following kickstarts are associated with one of the specified channels. " +
           "Please remove these or change their associated base channel.\n")
-    print('org_id'.ljust(8)),
-    print('label')
+    print("%-8s label" % 'org_id')
     print("-" * 20)
     for kickstart in kickstart_list:
-        print str(kickstart['org_id']).ljust(8),
-        print(kickstart['label'])
+        print("%-8s %s" % (kickstart['org_id'], kickstart['label']))
 
     return len(kickstart_list)
 
@@ -506,3 +554,11 @@ def _delete_ks_files(channel_labels):
             log_debug(1, "Not removing %s: no such file" % path)
             continue
         shutil.rmtree(path)
+class UserError(Exception):
+
+    def __init__(self, msg):
+        Exception.__init__(self)
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
