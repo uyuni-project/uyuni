@@ -416,17 +416,17 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         // todo org, user
         // todo rewrite
         lookupManagedServerGroupByNameAndOrg(hwType, org).ifPresent(sg -> {
+            LOG.debug("Adding retail system + '" + minionId + " to group '" + sg + "'.");
             SystemManager.addServerToServerGroup(minionServer, sg);
-            LOG.debug("Retail minion registration: system profile " + minionId + " added to HW group " + sg);
         });
         lookupManagedServerGroupByNameAndOrg("TERMINALS", org).ifPresent(sg -> {
+            LOG.debug("Adding retail system + '" + minionId + " to group '" + sg + "'.");
             SystemManager.addServerToServerGroup(minionServer, sg);
-            LOG.debug("Retail minion registration: system profile " + minionId + " added to HW group " + sg);
         });
         branchId.ifPresent(bid ->
                 lookupManagedServerGroupByNameAndOrg(bid, org).ifPresent(sg -> {
+                    LOG.debug("Adding retail system + '" + minionId + " to group '" + sg + "'.");
                     SystemManager.addServerToServerGroup(minionServer, sg);
-                    LOG.debug("Retail minion registration: system profile " + minionId + " added to HW group " + sg);
                 }));
 
         minionServer.asMinionServer().ifPresent(
