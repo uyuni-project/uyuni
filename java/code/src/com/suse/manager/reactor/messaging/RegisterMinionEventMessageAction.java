@@ -193,24 +193,26 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 }
             }
 
-            // check if already assigned to a hw group -> proceed with (B)
-            // todo don't get grains all the time!
-            // todo maybe also check if minion is in a HW group and fail the process if it isn't
             // Saltboot treatment
-            ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
+            // HACK: try to guess if the minion is a retail minion based on its groups.
+            // This way we don't need to call grains for each register minion event.
+            if (isRetailMinion(registeredMinion)) {
+                ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
+                grains.getOptionalAsBoolean("initrd").ifPresent(initrd -> {
+                    // if we have the "initrd" grain we want to re-deploy an image via saltboot,
+                    // otherwise the image has been already fully deployed and we want to finalize the registration
+                    LOG.info("\"initrd\" present for minion " + minionId);
+                    if (initrd) {
+                        // todo verify that saltboot is defensive and checks for partitioning pillar
+                        LOG.info("Applying saltboot for minion " + minionId);
+                        applySaltboot(minionId);
+                    } else if (imageRedeployed()) { // todo ask Vladimir how to find out an image has been redeployed
+                        LOG.info("Finishing registration for minion " + minionId);
+                        finishRegistration(minionId, isSaltSSH, registeredMinion, empty(), empty()); // todo take care about the optional params
+                    }
+                });
+            }
 
-            grains.getOptionalAsBoolean("initrd").ifPresent(initrd -> {
-                // if we have the "initrd" grain we want to re-deploy an image via saltboot,
-                // otherwise the image has been already fully deployed and we want to finalize the registration
-                LOG.info("\"initrd\" present for minion " + minionId);
-                if (initrd) {
-                    // todo verify that saltboot is defensive and checks for partitioning pillar
-                    LOG.info("Applying saltboot for minion " + minionId);
-                    applySaltboot(minionId);
-                } else if (imageRedeployed()) { // todo ask Vladimir how to find out an image has been redeployed
-                    LOG.info("Finishing registration for minion " + minionId);
-                    finishRegistration(minionId, isSaltSSH, registeredMinion, empty(), empty()); // todo take care about the optional params
-                }});
             return;
         }
 
@@ -387,6 +389,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
         }
+    }
+
+    private boolean isRetailMinion(MinionServer registeredMinion) {
+        // for now, a retail minion is detected when it belongs to a compulsory "TERMINALS" group
+        return registeredMinion.getManagedGroups().stream()
+                .anyMatch(group -> group.getName().equals("TERMINALS"));
     }
 
     /**

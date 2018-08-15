@@ -1028,6 +1028,31 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+
+    /**
+     * Tests that grains aren't queried for an existing non-retail minion.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testNoGrainsQueryForNonRetailMinion() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setMachineId(MACHINE_ID);
+        executeTest((saltServiceMock, key) ->
+                        new Expectations(){ {
+                            allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                            will(returnValue(Optional.of(MINION_ID)));
+                            allowing(saltServiceMock).getMachineId(MINION_ID);
+                            will(returnValue(Optional.of(MACHINE_ID)));
+                            never(saltServiceMock).getGrains(MINION_ID); // we test that grains aren't queried here!
+                            allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                        } },
+                null,
+                (minion, machineId, key) -> { },
+                null,
+                DEFAULT_CONTACT_METHOD);
+    }
+
     /**
      * Tests a first boot of a deployed retail minion
      *
@@ -1042,6 +1067,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 OrgFactory.getSatelliteOrg());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId(MINION_ID);
+        server.setMachineId(MACHINE_ID);
         server.setOrg(OrgFactory.getSatelliteOrg());
         SystemManager.addServerToServerGroup(server, hwGroup);
         SystemManager.addServerToServerGroup(server, terminalsGroup);
@@ -1049,7 +1075,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
-                    server.setMachineId(MACHINE_ID);
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
@@ -1078,7 +1103,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                     .filter(sa -> ((ServerAction) sa).getParentAction().getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST))
                                     .count());
                     // todo research how to test a MessageQueue - i think there is currently nothing more to test here :/
-                }, DEFAULT_CONTACT_METHOD);
+                },
+                null,
+                DEFAULT_CONTACT_METHOD);
     }
 
 
