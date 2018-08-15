@@ -978,6 +978,57 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Test registering retail machine in a specific org
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailTerminalNonDefaultOrg() throws Exception {
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
+                user.getOrg());
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
+                user.getOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
+                user.getOrg());
+
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+
+        try {
+            executeTest(
+                    (saltServiceMock, key) -> new Expectations() {{
+                        allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                        will(returnValue(Optional.of(MINION_ID)));
+                        allowing(saltServiceMock).getMachineId(MINION_ID);
+                        will(returnValue(Optional.of(MACHINE_ID)));
+                        allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                        allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                        allowing(saltServiceMock).getGrains(MINION_ID);
+                        will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                                .map(map -> {
+                                    map.put("initrd", true);
+                                    map.put("manufacturer", "QEMU");
+                                    map.put("productname", "CashDesk01");
+                                    map.put("minion_id_prefix", "Branch001");
+                                    return map;
+                                })));
+                        allowing(saltServiceMock).callSync(
+                                with(any(LocalCall.class)),
+                                with(any(String.class)));
+                        exactly(1).of(saltServiceMock).applyState(MINION_ID, "saltboot");
+                    }},
+                    (contactMethod) -> null, // no AK
+                    (optMinion, machineId, key) -> {
+                        assertTrue(optMinion.isPresent());
+                        MinionServer minion = optMinion.get();
+                        assertTrue(minion.getManagedGroups().contains(hwGroup));
+                        assertTrue(minion.getManagedGroups().contains(terminalsGroup));
+                        assertTrue(minion.getManagedGroups().contains(branchGroup));
+                    }, DEFAULT_CONTACT_METHOD);
+        } finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+    }
+
+    /**
      * Tests a first boot of a deployed retail minion
      *
      * @throws Exception - if anything goes wrong
