@@ -40,26 +40,7 @@ public class SystemIdGenerateEventMessageAction implements MessageAction {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SystemIdGenerateEventMessageAction.class);
 
-    // Reference to the SaltService instance
-    private final SaltService SALT_SERVICE;
-
-    private final String EVENT_TAG = "suse/systemid/generated";
-
-    /**
-     * Default constructor.
-     */
-    public SystemIdGenerateEventMessageAction() {
-        this(SaltService.INSTANCE);
-    }
-
-    /**
-     * Constructor taking a {@link SaltService} instance.
-     *
-     * @param saltService the salt service to use
-     */
-    public SystemIdGenerateEventMessageAction(SaltService saltService) {
-        SALT_SERVICE = saltService;
-    }
+    private static final String EVENT_TAG = "suse/systemid/generated";
 
     /**
      * {@inheritDoc}
@@ -72,7 +53,7 @@ public class SystemIdGenerateEventMessageAction implements MessageAction {
                 ClientCertificate cert = SystemManager.createClientCertificate(minion);
                 Map<String, Object> data = new HashMap<>();
                 data.put("data", cert.toString());
-                SALT_SERVICE.callAsync(Event.fire(data, EVENT_TAG), new MinionList(minionId));
+                SaltService.INSTANCE.callAsync(Event.fire(data, EVENT_TAG), new MinionList(minionId));
             }
             catch (InstantiationException e) {
                 LOG.warn(String.format("Unable to generate certificate: : %s", minionId));
