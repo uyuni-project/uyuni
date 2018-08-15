@@ -15,14 +15,62 @@
 import os
 import shutil
 import sys
+import xmlrpclib
+import datetime
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
 from spacewalk.server import rhnSQL
+from socket import gethostname
 
+class RemoteApi:
 
-def __serverCheck(labels, unsubscribe):
+    """ Class for connecting to the XMLRPC spacewalk interface"""
+
+    cache = {}
+
+    def __init__(self, server_url, username, password):
+        self.client = xmlrpclib.Server(server_url)
+        self.auth_time = None
+        self.auth_token = None
+        try:
+            self.username = username
+            self.password = password
+            self.__login()
+        except xmlrpclib.Fault, e:
+            raise UserError(e.faultString)
+
+    def auth_check(self):
+        """ makes sure that more than an hour hasn't passed since we
+             logged in and will relogin if it has
+        """
+        if not self.auth_time or (datetime.datetime.now()
+                                  - self.auth_time).seconds > 60 * 15:  # 15 minutes
+            self.__login()
+
+    def __login(self):
+        self.auth_token = self.client.auth.login(self.username, self.password)
+        self.auth_time = datetime.datetime.now()
+    def list_channel_labels(self):
+        self.auth_check()
+        key = "chan_labels"
+        if self.cache.has_key(key):
+            return self.cache[key]
+
+        chan_list = self.client.channel.listAllChannels(self.auth_token)
+        to_ret = []
+        for item in chan_list:
+            to_ret.append(item["label"])
+        self.cache[key] = to_ret
+        return to_ret
+    def unsubscribe_channels(self, server_ids, base_channel, channel_labels):
+        self.auth_check()
+        child_channels = [channel_label for channel_label in channel_labels if channel_label != base_channel]
+        earliest_occurrence = datetime.datetime.now()
+        result = self.client.channel.software.unsubscribeChannels(self.auth_token, server_ids, base_channel, child_channels)
+
+def __serverCheck(labels, unsubscribe, base_channel, username, password):
     sql = """
         select distinct S.org_id, S.id, S.name
         from rhnChannel c inner join
@@ -39,6 +87,9 @@ def __serverCheck(labels, unsubscribe):
         return 0
 
     if unsubscribe:
+        server_ids = map(lambda s: s['id'], server_list)
+        xmlrpc = RemoteApi("https://" + gethostname() + "/rpc/api", username, password)
+        xmlrpc.unsubscribe_channels(server_ids, base_channel, labels)
         return __unsubscribeServers(labels)
 
     print("\nCurrently there are systems subscribed to one or more of the specified channels.")
@@ -65,6 +116,9 @@ def __unsubscribeServers(labels):
     h = rhnSQL.prepare(sql % (bind_params))
     h.execute(**params)
     server_channel_list = h.fetchall_dict()
+
+    if server_channel_list is None:
+        server_channel_list = {}
 
     channel_counts = {}
     for i in server_channel_list:
@@ -500,3 +554,11 @@ def _delete_ks_files(channel_labels):
             log_debug(1, "Not removing %s: no such file" % path)
             continue
         shutil.rmtree(path)
+class UserError(Exception):
+
+    def __init__(self, msg):
+        Exception.__init__(self)
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
