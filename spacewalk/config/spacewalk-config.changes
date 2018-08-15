@@ -1,4 +1,9 @@
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
+- fix /etc/sudoers.d/spacewalk file (related to bsc#1099517)
+  NOTE: In case there have been custom modifications to this file,
+        it will be saved in /root/sudoers-spacewalk.save as sudo
+        will fail on duplicate definitions
+
 -------------------------------------------------------------------
 Wed Jul 25 09:30:02 CEST 2018 - jgonzalez@suse.com
 
