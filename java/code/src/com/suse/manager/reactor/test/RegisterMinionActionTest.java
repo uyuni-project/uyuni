@@ -938,7 +938,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testRegisterRetailTerminal() throws Exception {
-        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-EETCruncher", "HW group",
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
                 OrgFactory.getSatelliteOrg());
         ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
                 OrgFactory.getSatelliteOrg());
@@ -958,7 +958,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             .map(map -> {
                                 map.put("initrd", true);
                                 map.put("manufacturer", "QEMU");
-                                map.put("productname", "EETCruncher");
+                                map.put("productname", "CashDesk01");
                                 map.put("minion_id_prefix", "Branch001");
                                 return map;
                             })));
@@ -978,12 +978,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Tests a first boot of a deployed terminal machine
+     * Tests a first boot of a deployed retail minion
      *
      * @throws Exception - if anything goes wrong
      */
     public void testFirstStartRetailTerminal() throws Exception {
-        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-EETCruncher", "HW group",
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk02", "HW group",
                 OrgFactory.getSatelliteOrg());
         ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
                 OrgFactory.getSatelliteOrg());
@@ -1010,7 +1010,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             .map(map -> {
                                 map.put("initrd", false);
                                 map.put("manufacturer", "QEMU");
-                                map.put("productname", "EETCruncher");
+                                map.put("productname", "CashDesk02");
                                 map.put("minion_id_prefix", "Branch001");
                                 return map;
                             })));
@@ -1032,13 +1032,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
 
     /**
-     * Tests a redeploy of a terminal
+     * Tests a redeploy of a retail minion
      * (initrd grain == true, but the system profile already exists)
      *
      * @throws Exception - if anything goes wrong
      */
     public void testTerminalRedeploy() throws Exception {
-        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-EETCruncher", "HW group",
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk03", "HW group",
                 OrgFactory.getSatelliteOrg());
         ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
                 OrgFactory.getSatelliteOrg());
@@ -1065,7 +1065,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             .map(map -> {
                                 map.put("initrd", true);
                                 map.put("manufacturer", "QEMU");
-                                map.put("productname", "EETCruncher");
+                                map.put("productname", "CashDesk03");
                                 map.put("minion_id_prefix", "Branch001");
                                 return map;
                             })));
