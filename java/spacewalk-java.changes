@@ -1,3 +1,4 @@
+- Enable auto patch updates for salt clients
 - Fix ACLs for system details settings
 - Fix: delete old custom OS images pillar before generation (bsc#1105107)
 - Fix an error in the system software channels UI due to SUSE product channels missing a
