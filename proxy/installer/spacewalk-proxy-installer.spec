@@ -103,8 +103,8 @@ install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/i
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhn-proxy-activate.py
 %endif
-install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT%{_bindir}/rhn-proxy-activate
-install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_bindir}/fetch-certificate
+install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT/%{_usr}/sbin/rhn-proxy-activate
+install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certificate
 
 %check
 %if 0%{?pylint_check}
