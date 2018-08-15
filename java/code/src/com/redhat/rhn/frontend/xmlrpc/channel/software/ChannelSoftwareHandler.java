@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
@@ -63,6 +64,7 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelEditor;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
@@ -87,6 +89,8 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -94,8 +98,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 /**
  * ChannelSoftwareHandler
  * @version $Rev$
@@ -3321,6 +3326,48 @@ public class ChannelSoftwareHandler extends BaseHandler {
         ChannelFactory.clearContentSourceFilters(cs.getId());
 
         return 1;
+    }
+    /**
+     * Trigger immediate channels update state
+     * @param user The current user
+     * @param sids channel labels
+     * @param baseChannelLabel channel labels
+     * @param childLabels channel labels
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Trigger immediate repo synchronization
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("string", "channelLabels")
+     * @xmlrpc.returntype  #return_int_success()
+     */
+    public int unsubscribeChannels(User user, List<Integer> sids, String baseChannelLabel, List<String> childLabels) {
+        try {
+            Set<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toSet());
+            ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+            Date earliest = Date.from(LocalDateTime.now().atZone(zoneId).toInstant());
+            //If baseChannelLabel is there then we subscribe to nothing
+            if (StringUtils.isNotEmpty(baseChannelLabel)) {
+                ActionChainManager.scheduleSubscribeChannelsAction(user, serverIds, Optional.empty(),
+                       Collections.EMPTY_SET, earliest, null);
+            }
+            else {
+                List<Channel> childChannelsToRemove = childLabels.stream()
+                        .map(clabel -> lookupChannelByLabel(user, clabel))
+                        .collect(Collectors.toList());
+
+                for (Long serverId : serverIds) {
+                    Server server = SystemManager.lookupByIdAndUser(serverId, user);
+                    Set<Channel> childChannels = server.getChildChannels();
+                    childChannels.removeAll(childChannelsToRemove);
+                    ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(serverId),
+                            Optional.of(server.getBaseChannel()), childChannels, earliest, null);
+                }
+            }
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+        return BaseHandler.VALID;
     }
 
     private ContentSource lookupContentSourceById(Long repoId, Org org) {
