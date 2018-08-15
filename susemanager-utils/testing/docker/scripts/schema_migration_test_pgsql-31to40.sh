@@ -67,7 +67,7 @@ for v in `seq 30 -1 1`; do
         if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0 ]; then
             mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0
             # set hard this destination
-            export SUMA_TEST_SCHEMA_VERSION="4.0.1"
+            #export SUMA_TEST_SCHEMA_VERSION="4.0.1"
         fi
         break
     fi
