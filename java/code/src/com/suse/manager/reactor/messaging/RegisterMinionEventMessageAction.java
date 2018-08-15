@@ -211,7 +211,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     }
                     else if (imageRedeployed) {
                         LOG.info("Finishing registration for minion " + minionId);
-                        finishRegistration(registeredMinion, empty(), empty(), isSaltSSH); // todo take care about the optional params
+                        finishRegistration(registeredMinion, empty(), empty(), !isSaltSSH);
                     }
                 });
             }
@@ -370,7 +370,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 return;
             }
 
-            finishRegistration(server, activationKey, creator, isSaltSSH);
+            finishRegistration(server, activationKey, creator, !isSaltSSH);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -455,9 +455,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * @param minion the minion
      * @param activationKey the activation key
      * @param creator user performing the registration
-     * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     * @param enableMinionService true if salt-minion service should be enabled and running
      */
-    private void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator, boolean isSaltSSH) {
+    private void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator,
+            boolean enableMinionService) {
         String minionId = minion.getMinionId();
         // get hardware and network async
         triggerHardwareRefresh(minion);
@@ -492,7 +493,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         statesToApply.add(ApplyStatesEventMessage.CHANNELS);
         statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
         statesToApply.add(ApplyStatesEventMessage.PACKAGES);
-        if (!isSaltSSH) {
+        if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
         }
         MessageQueue.publish(new ApplyStatesEventMessage(
