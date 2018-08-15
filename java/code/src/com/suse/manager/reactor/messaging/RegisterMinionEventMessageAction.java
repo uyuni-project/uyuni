@@ -171,6 +171,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         //in so many places.
         String machineId = optMachineId.get();
         MinionServer minionServer;
+        Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
 
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
@@ -211,7 +212,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     }
                     else if (imageRedeployed) {
                         LOG.info("Finishing registration for minion " + minionId);
-                        finishRegistration(registeredMinion, empty(), empty(), !isSaltSSH);
+                        finishRegistration(registeredMinion, empty(), creator, !isSaltSSH);
                     }
                 });
             }
@@ -249,8 +250,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     activationKeyOverride : activationKeyFromGrains;
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
-
-            Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
 
             org = activationKey.map(ActivationKey::getOrg)
                     .orElse(creator.map(User::getOrg)
