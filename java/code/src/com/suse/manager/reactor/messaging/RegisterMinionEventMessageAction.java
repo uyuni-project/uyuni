@@ -200,11 +200,16 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     // if we have the "initrd" grain we want to re-deploy an image via saltboot,
                     // otherwise the image has been already fully deployed and we want to finalize the registration
                     LOG.info("\"initrd\" present for minion " + minionId);
+
+                    // TODO this is to be implemented in the future
+                    // for now we don't have any means to detect if the image has been redeployed and we simply
+                    // call the 'finishRegistration' on every minion start
+                    boolean imageRedeployed = true;
                     if (initrd) {
-                        // todo verify that saltboot is defensive and checks for partitioning pillar
                         LOG.info("Applying saltboot for minion " + minionId);
                         applySaltboot(registeredMinion);
-                    } else if (imageRedeployed()) { // todo ask Vladimir how to find out an image has been redeployed
+                    }
+                    else if (imageRedeployed) {
                         LOG.info("Finishing registration for minion " + minionId);
                         finishRegistration(registeredMinion, empty(), empty(), isSaltSSH); // todo take care about the optional params
                     }
@@ -442,10 +447,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         states.add(ApplyStatesEventMessage.SALTBOOT);
 
         MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), false, states));
-    }
-
-    private boolean imageRedeployed() {
-        return true;
     }
 
     /**
