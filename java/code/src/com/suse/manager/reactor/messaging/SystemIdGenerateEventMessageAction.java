@@ -16,14 +16,16 @@ package com.suse.manager.reactor.messaging;
 
 import org.apache.log4j.Logger;
 
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.common.client.ClientCertificate;
 
 
+import java.util.Map;
 import java.util.HashMap;
+
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.calls.modules.Event;
@@ -33,13 +35,15 @@ import com.suse.manager.webui.services.impl.SaltService;
 /**
  * Handler class for {@link SystemIdGenerateEventMessage}.
  */
-public class SystemIdGenerateEventMessageAction extends AbstractDatabaseAction {
+public class SystemIdGenerateEventMessageAction implements MessageAction {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SystemIdGenerateEventMessageAction.class);
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
+
+    private final String EVENT_TAG = "suse/systemid/generated";
 
     /**
      * Default constructor.
@@ -61,15 +65,14 @@ public class SystemIdGenerateEventMessageAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     @Override
-    public void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         String minionId = ((SystemIdGenerateEventMessage) msg).getMinionId();
         MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
             try {
                 ClientCertificate cert = SystemManager.createClientCertificate(minion);
-                HashMap data = new HashMap<String, String>();
+                Map<String, Object> data = new HashMap<>();
                 data.put("data", cert.toString());
-                SALT_SERVICE.callAsync(
-                    Event.fire(data, "suse/systemid/generated"), new MinionList(minionId));
+                SALT_SERVICE.callAsync(Event.fire(data, EVENT_TAG), new MinionList(minionId));
             }
             catch (InstantiationException e) {
                 LOG.warn(String.format("Unable to generate certificate: : %s", minionId));
