@@ -1,3 +1,4 @@
+- Method to Unsubscribe channel from system(bsc#1104120)
 - Fix 'Compare Config Files' task hanging (bsc#1103218)
 - Fix: delete old custom OS images pillar before generation (bsc#1105107)
 - Fix an error in the system software channels UI due to SUSE product channels missing a
