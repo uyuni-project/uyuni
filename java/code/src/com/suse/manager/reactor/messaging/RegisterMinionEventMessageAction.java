@@ -413,7 +413,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
         Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
 
-        // todo org, user
         // todo rewrite
         lookupManagedServerGroupByNameAndOrg(hwType, org).ifPresent(sg -> {
             LOG.debug("Adding retail system + '" + minionId + " to group '" + sg + "'.");
