@@ -5,6 +5,10 @@ if [ 0$UID -gt 0 ]; then
     exit 1
 fi
 
+if [ ! -e /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT -a -e /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT ]; then
+    ln -s /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT
+fi
+
 print_help() {
     cat <<HELP
 usage: configure-proxy.sh [options]
@@ -255,7 +259,7 @@ default_or_input() {
 config_error() {
     if [ $1 -gt 0 ]; then
         echo "$2 Installation interrupted."
-        /usr/bin/rhn-proxy-activate \
+        /usr/sbin/rhn-proxy-activate \
             --server="$RHN_PARENT" \
             --http-proxy="$HTTP_PROXY" \
             --http-proxy-username="$HTTP_USERNAME" \
@@ -392,7 +396,7 @@ default_or_input "Do you want to import existing certificates?" \
     USE_EXISTING_CERTS "y/N"
 USE_EXISTING_CERTS=$(yes_no $USE_EXISTING_CERTS)
 
-/usr/bin/rhn-proxy-activate --server="$RHN_PARENT" \
+/usr/sbin/rhn-proxy-activate --server="$RHN_PARENT" \
                             --http-proxy="$HTTP_PROXY" \
                             --http-proxy-username="$HTTP_USERNAME" \
                             --http-proxy-password="$HTTP_PASSWORD" \
