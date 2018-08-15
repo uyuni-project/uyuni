@@ -977,6 +977,121 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Test registering a terminal machine when a required group is missing.
+     * In this case we want the minion NOT to be registered.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailMinionTerminalGroupMissing() throws Exception {
+        ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group", OrgFactory.getSatelliteOrg());
+        ServerGroupFactory.create("Branch001", "Branch group", OrgFactory.getSatelliteOrg());
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertFalse(optMinion.isPresent());
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+
+    /**
+     * Test registering a terminal machine when a required group is missing.
+     * In this case we want the minion NOT to be registered.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailMinionBranchGroupMissing() throws Exception {
+        ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group", OrgFactory.getSatelliteOrg());
+        ServerGroupFactory.create("TERMINALS", "All terminals group", OrgFactory.getSatelliteOrg());
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertFalse(optMinion.isPresent());
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test registering a terminal machine when a non-required group (HW group) is missing
+     * In this case we want the minion to be registered.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailMinionHwGroupMissing() throws Exception {
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group", OrgFactory.getSatelliteOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group", OrgFactory.getSatelliteOrg());
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertTrue(minion.getManagedGroups().contains(terminalsGroup));
+                    assertTrue(minion.getManagedGroups().contains(branchGroup));
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
      * Test registering retail machine in a specific org
      *
      * @throws Exception - if anything goes wrong

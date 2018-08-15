@@ -412,30 +412,31 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     private void prepareRetailMinionForSaltboot(String minionId, MinionServer minionServer, Org org, ValueMap grains) {
         Optional<String> manufacturer = grains.getOptionalAsString("manufacturer");
         Optional<String> productName = grains.getOptionalAsString("productname");
-
-        // todo adjust according to Vladimin, test!
-        if (!manufacturer.isPresent() || !productName.isPresent()) {
-            throw new IllegalStateException("Missing machine manufacturer or product name on retail minion registration!");
-        }
-
-        // both manufacturer and product name are present
-        String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
         Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
 
-        // todo rewrite
-        lookupManagedServerGroupByNameAndOrg(hwType, org).ifPresent(sg -> {
-            LOG.debug("Adding retail system + '" + minionId + " to group '" + sg + "'.");
-            SystemManager.addServerToServerGroup(minionServer, sg);
-        });
-        lookupManagedServerGroupByNameAndOrg("TERMINALS", org).ifPresent(sg -> {
-            LOG.debug("Adding retail system + '" + minionId + " to group '" + sg + "'.");
-            SystemManager.addServerToServerGroup(minionServer, sg);
-        });
-        branchId.ifPresent(bid ->
-                lookupManagedServerGroupByNameAndOrg(bid, org).ifPresent(sg -> {
-                    LOG.debug("Adding retail system + '" + minionId + " to group '" + sg + "'.");
-                    SystemManager.addServerToServerGroup(minionServer, sg);
-                }));
+        if (!manufacturer.isPresent() || !productName.isPresent() || !branchId.isPresent()) {
+            throw new IllegalStateException("Missing machine manufacturer, product name or minion_id_prefix " +
+                    "on retail minion registration! Aborting registration.");
+        }
+
+        String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
+
+        String terminalsGroupName = "TERMINALS";
+        String branchIdGroupName = branchId.get();
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.lookupByNameAndOrg(terminalsGroupName, org);
+        ManagedServerGroup branchIdGroup = ServerGroupFactory.lookupByNameAndOrg(branchIdGroupName, org);
+        ManagedServerGroup hwGroup = ServerGroupFactory.lookupByNameAndOrg(hwType, org);
+
+        if (terminalsGroup == null || branchIdGroup == null) {
+            throw new IllegalStateException("Missing required server groups (\"TERMINALS\" or \"" + branchIdGroupName +
+                    "\")! Aborting registration.");
+        }
+
+        SystemManager.addServerToServerGroup(minionServer, terminalsGroup);
+        SystemManager.addServerToServerGroup(minionServer, branchIdGroup);
+        if (hwGroup != null) {
+            SystemManager.addServerToServerGroup(minionServer, hwGroup);
+        }
 
         minionServer.asMinionServer().ifPresent(
                 SaltStateGeneratorService.INSTANCE::generatePillar);
@@ -503,7 +504,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    // todo rewrite
     private static Optional<ManagedServerGroup> lookupManagedServerGroupByNameAndOrg(String name, Org org) {
         return ServerGroupFactory.listManagedGroups(org).stream()
                 .filter(grp -> grp.getName().equals(name))
