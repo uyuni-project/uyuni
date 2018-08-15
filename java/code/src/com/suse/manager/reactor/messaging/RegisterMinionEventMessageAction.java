@@ -206,7 +206,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         applySaltboot(registeredMinion);
                     } else if (imageRedeployed()) { // todo ask Vladimir how to find out an image has been redeployed
                         LOG.info("Finishing registration for minion " + minionId);
-                        finishRegistration(minionId, isSaltSSH, registeredMinion, empty(), empty()); // todo take care about the optional params
+                        finishRegistration(registeredMinion, empty(), empty(), isSaltSSH); // todo take care about the optional params
                     }
                 });
             }
@@ -365,7 +365,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 return;
             }
 
-            finishRegistration(minionId, isSaltSSH, server, activationKey, creator);
+            finishRegistration(server, activationKey, creator, isSaltSSH);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -451,28 +451,37 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         return true;
     }
 
-    private void finishRegistration(String minionId, boolean isSaltSSH, MinionServer server, Optional<ActivationKey> activationKey, Optional<User> creator) {
+    /**
+     * Perform the final registration steps for the minion.
+     *
+     * @param minion the minion
+     * @param activationKey the activation key
+     * @param creator user performing the registration
+     * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     */
+    private void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator, boolean isSaltSSH) {
+        String minionId = minion.getMinionId();
         // get hardware and network async
-        triggerHardwareRefresh(server);
+        triggerHardwareRefresh(minion);
 
         LOG.info("Finished minion registration: " + minionId);
 
-        StatesAPI.generateServerPackageState(server);
+        StatesAPI.generateServerPackageState(minion);
 
         // Asynchronously get the uptime of this minion
         MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
 
         // Generate pillar data
         try {
-            SaltStateGeneratorService.INSTANCE.generatePillar(server);
+            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
 
             // Subscribe to config channels assigned to the activation key or initialize empty channel profile
-            server.subscribeConfigChannels(
+            minion.subscribeConfigChannels(
                     activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
                     creator.orElse(null));
         }
         catch (RuntimeException e) {
-            LOG.error("Error generating Salt files for server '" + minionId +
+            LOG.error("Error generating Salt files for minion '" + minionId +
                     "':" + e.getMessage());
         }
 
@@ -489,15 +498,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
         }
         MessageQueue.publish(new ApplyStatesEventMessage(
-                server.getId(),
-                server.getCreator() != null ? server.getCreator().getId() : null,
+                minion.getId(),
+                minion.getCreator() != null ? minion.getCreator().getId() : null,
                 !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
                 statesToApply
         ));
 
         // Call final highstate to deploy config channels if required
         if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(server.getId(), true, Collections.emptyList()));
+            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, Collections.emptyList()));
         }
     }
 
