@@ -89,7 +89,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -180,7 +179,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             MinionServer registeredMinion = optMinion.get();
             String oldMinionId = registeredMinion.getMinionId();
 
-            if (!minionId.equals(oldMinionId)) { // todo test this in the POS lifecycle too
+            if (!minionId.equals(oldMinionId)) {
                 LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
                         "profile to '" + minionId + "' [" + machineId + "]");
                 registeredMinion.setName(minionId);
@@ -194,13 +193,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 }
             }
 
-            // POS treatment
             // check if already assigned to a hw group -> proceed with (B)
             // todo don't get grains all the time!
             // todo maybe also check if minion is in a HW group and fail the process if it isn't
+            // Saltboot treatment
             ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
 
             grains.getOptionalAsBoolean("initrd").ifPresent(initrd -> {
+                // if we have the "initrd" grain we want to re-deploy an image via saltboot,
+                // otherwise the image has been already fully deployed and we want to finalize the registration
                 if (initrd) {
                     // todo verify that saltboot is defensive and checks for partitioning pillar
                     LOG.info("POS registration: Applying saltboot state " + minionId);
@@ -221,7 +222,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         try {
             minionServer = migrateTraditionalOrGetNew(minionId,
                     isSaltSSH, activationKeyOverride, machineId);
-            boolean isNewMinion = minionServer.getId() == null; // todo, i don't like this
+            boolean isNewMinion = minionServer.getId() == null;
 
             MinionServer server = minionServer;
 
@@ -355,9 +356,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 });
             });
 
-            // POS treatment - minion is new AND we get initrd grain -> do (A)
+            // Saltboot treatment - prepare and apply saltboot
             if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
-                initializePosRegistration(minionId, minionServer, org, grains);
+                prepareMinionForSaltboot(minionId, minionServer, org, grains);
+                applySaltboot(minionId);
+                LOG.info("Applying saltboot for minion " + minionId);
                 return;
             }
             finishRegistration(minionId, isSaltSSH, server, activationKey, creator);
@@ -384,7 +387,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private void initializePosRegistration(String minionId, MinionServer minionServer, Org org, ValueMap grains) {
+    private void prepareMinionForSaltboot(String minionId, MinionServer minionServer, Org org, ValueMap grains) {
         Optional<String> manufacturer = grains.getOptionalAsString("manufacturer");
         Optional<String> productName = grains.getOptionalAsString("productname");
 
@@ -416,10 +419,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         minionServer.asMinionServer().ifPresent(
                 SaltStateGeneratorService.INSTANCE::generatePillar);
 
-        applySaltboot(minionId);
-
-        LOG.info("Finished initial POS registration for minion " + minionId); // todo unify log messages
-        return;
     }
 
     private void applySaltboot(String minionId) {
