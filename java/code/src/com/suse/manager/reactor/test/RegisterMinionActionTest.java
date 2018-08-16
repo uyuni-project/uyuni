@@ -930,8 +930,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         );
     }
 
-    // Retail tests below (todo extract them to a separate file, some test refactoring will be needed)
-
     /**
      * Initial test of a registering a terminal machine
      *
@@ -1215,7 +1213,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(1, ActionFactory.listServerActionsForServer(minion).stream()
                                     .filter(sa -> ((ServerAction) sa).getParentAction().getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST))
                                     .count());
-                    // todo research how to test a MessageQueue - i think there is currently nothing more to test here :/
                 },
                 null,
                 DEFAULT_CONTACT_METHOD);
