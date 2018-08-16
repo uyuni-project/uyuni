@@ -350,6 +350,8 @@ if [ "$RHN_PARENT" == "rhn.redhat.com" ]; then
 WARNING
 fi
 
+sed -i -e "s/^serverURL=.*/serverURL=https:\/\/$RHN_PARENT\/XMLRPC/" /etc/sysconfig/rhn/up2date
+
 CA_CHAIN=$(awk -F'[=;]' '/sslCACert=/ {a=$2} END {print a}' $UP2DATE_FILE)
 echo "Using CA Chain (from $UP2DATE_FILE): $CA_CHAIN"
 
