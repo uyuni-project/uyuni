@@ -32,22 +32,6 @@ Feature: Prepare server for using Kiwi
     And I click on "Create Activation Key"
     Then I should see a "Activation key Kiwi testing has been created" text
 
-  Scenario: Turn the SLES minion into a OS Image build host
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "osimage_build_host"
-    And I click on "Update Properties"
-    Then I should see a "OS Image Build Host type has been applied." text
-    And I should see a "Note: This action will not result in state application" text
-    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
-    And I should see a "System properties changed" text
-
-  Scenario: Check that the minion is now a OS image build host
-    Given I am on the Systems overview page of this "sle-minion"
-    Then I should see a "[OS Image Build Host]" text
-    When I wait until no Salt job is running on "sle-minion"
-
   Scenario: Create an OS image profile with activation key
     Given I am authorized as "admin" with password "admin"
     When I follow "Images" in the left menu
