@@ -16,6 +16,7 @@
 - features/core_srv_systemspage.feature
 - features/core_srv_users.feature
 - features/core_srv_create_activationkey.feature
+- features/core_srv_osimage_profiles.feature
 # initialize SUSE Manager proxy
 - features/core_proxy.feature
 # initialize clients
