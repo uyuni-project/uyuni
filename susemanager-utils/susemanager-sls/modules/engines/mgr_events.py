@@ -17,25 +17,30 @@ import tornado.ioloop
 
 log = logging.getLogger(__name__)
 
-FREQUENCY_MIN = 0.2
-FREQUENCY_MAX = 10
-ATTENUATION_FACTOR = 0.9
+SCALING_FACTOR = 0.1
+COMMIT_INTERVAL_MAX = 10
+COMMIT_INTERVAL_MIN = 0.1
+QUEUE_SIZE_LIMIT = 5000
+
+# DELAY FACTOR VALUES
+# 0.9 would be approx. averaging time difference between the last 10 events -> higher fluctuation
+# 0.98 would be approx. averaging time difference between the last 50 events -> lower fluctuation
+DELAY_FACTOR = 0.1
 
 
 class Responder:
     def __init__(self, event_bus):
         self.queue = []
-        self.time_of_last_event = time.time()
-        self.frequency_average = FREQUENCY_MIN
+        self.frequency_average = 0.2
         self.commit_interval = 1 / self.frequency_average
         self.event_bus = event_bus
-        self.event_bus.io_loop.call_later(self.commit_interval, self.commit)
+        self.commit_timer_handle = self.event_bus.io_loop.call_later(self.commit_interval, self.commit)
 
     def debug_log(self):
         log.debug("####################################################################################")
-        log.debug("******** time_of_last_event: {}".format(self.time_of_last_event))
+        log.debug("******** queue_size: {}".format(len(self.queue)))
         log.debug("******** fequency_average: {}".format(self.frequency_average))
-        log.debug("******** fequency_commit_interval: {}".format(self.commit_interval))
+        log.debug("******** fequency_commit_interval: {}".format(self.apply_limits(self.commit_interval)))
 
     @tornado.gen.coroutine
     def add_event_to_queue(self, raw):
@@ -43,27 +48,37 @@ class Responder:
         tag, data = self.event_bus.unpack(raw, self.event_bus.serial)
         log.debug("******** Adding event to queue: {}".format(tag))
         self.queue.append(raw)
-        current_time = time.time()
-        self.frequency_average = ATTENUATION_FACTOR * self.frequency_average + (1 - ATTENUATION_FACTOR) * (current_time - self.time_of_last_event)
-        self.commit_interval = min(0.5 / self.frequency_average, FREQUENCY_MAX)
-        self.time_of_last_event = current_time
-        self.debug_log()
+        # Checking, if we are above the max. queue size.
+        if (len(self.queue)) >= QUEUE_SIZE_LIMIT:
+            # Unschedule next commit, so that we don't get two commits at the
+            # same time. Is re-scheduled after the commit.
+            self.event_bus.io_loop.remove_timeout(self.commit_timer_handle)
+            self.commit()
+	    self.commit_timer_handle = self.event_bus.io_loop.call_later(COMMIT_INTERVAL_MAX, self.commit)
+            
+
+    @staticmethod
+    def apply_limits(commit_interval):
+	return max(min(commit_interval, COMMIT_INTERVAL_MAX), COMMIT_INTERVAL_MIN)
 
     @tornado.gen.coroutine
     def commit(self):
         """
         Committing to the database.
         """
+        log.debug("************** COMMIT! ")
+        time_between_events = self.commit_interval / (len(self.queue) or 0.1)
+        commit_interval_limited = 1 / time_between_events * SCALING_FACTOR
+        self.commit_interval = DELAY_FACTOR * self.commit_interval + (1 - DELAY_FACTOR) * commit_interval_limited
+        self.debug_log()
         while len(self.queue) > 0:
             entry = self.queue.pop()
             tag, data = self.event_bus.unpack(entry, self.event_bus.serial)
             ret = {'data': data, 'tag': tag}
             log.debug("******* INSERT INTO suseSaltEvent ({});".format(tag))
-        log.debug("************** COMMIT! ")
-        # Slowly decrease (speed up) the `commit_interval` again. This is
-        # important for cases where new events come in very slowly.
-        self.commit_interval = max(0.9 * self.commit_interval, 0.1)
-        self.event_bus.io_loop.call_later(self.commit_interval, self.commit)
+
+	self.commit_timer_handle = self.event_bus.io_loop.call_later(
+	    self.apply_limits(self.commit_interval), self.commit)
 
 
 def start():
@@ -79,5 +94,5 @@ def start():
     log.debug('mgr_events engine started')
     responder = Responder(event_bus)
     event_bus.set_event_handler(responder.add_event_to_queue)
-
     io_loop.start()
+
