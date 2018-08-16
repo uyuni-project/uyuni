@@ -92,18 +92,33 @@ Feature: Management of minion keys
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
-  Scenario: Turn the SLES minion into a container build host after new bootstrap
+  Scenario: Cleanup: Turn the SLES minion into a container build host after new bootstrap
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "container_build_host"
     And I click on "Update Properties"
 
-  Scenario: Apply the highstate to container build host after new bootstrap
+  Scenario: Cleanup: Apply the highstate to container build host after new bootstrap
     Given I am on the Systems overview page of this "sle-minion"
-    Then I should see a "[Container Build Host]" text
     When I wait until no Salt job is running on "sle-minion"
     And I enable repositories before installing Docker
     And I apply highstate on "sle-minion"
     And I wait until "docker" service is up and running on "sle-minion"
     And I disable repositories after installing Docker
+
+  Scenario: Cleanup: Turn the SLES minion into a OS image build host after new bootstrap
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Details" in the content area
+    And I follow "Properties" in the content area
+    And I check "osimage_build_host"
+    And I click on "Update Properties"
+    Then I should see a "OS Image Build Host type has been applied." text
+    And I should see a "Note: This action will not result in state application" text
+    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
+    And I should see a "System properties changed" text
+
+  Scenario: Cleanup: Check that the minion is now a build host after new bootstrap
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I should see a "[Container Build Host]" text
+    Then I should see a "[OS Image Build Host]" text
