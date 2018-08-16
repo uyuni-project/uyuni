@@ -8,8 +8,12 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,10 +24,13 @@ import java.util.Optional;
  */
 public class SaltServiceTest extends JMockBaseTestCaseWithUser {
 
+    private Path tempDir;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
+        tempDir = Files.createTempDirectory("saltservice");
     }
 
     public void testfilterSSHMinionIdsNoSSHMinions() {
@@ -73,5 +80,23 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(
                 Collections.singletonList(sshMinion.getMinionId()),
                 SaltService.partitionMinionsByContactMethod(minionIds).get(true));
+    }
+
+    public void testGenerateSSHKeyExists() throws IOException {
+        Path keyFile = Files.createFile(tempDir.resolve("mgr_ssh_id.pub"));
+        String keyPath = keyFile.toFile().getCanonicalPath();
+        Optional<MgrUtilRunner.ExecResult> res = SaltService.INSTANCE
+                .generateSSHKey(keyPath.substring(0, keyPath.length() - 4));
+        assertTrue(res.isPresent());
+        assertEquals(0, res.get().getReturnCode());
+    }
+
+    @Override
+    public void tearDown() {
+        try {
+            Files.deleteIfExists(tempDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
