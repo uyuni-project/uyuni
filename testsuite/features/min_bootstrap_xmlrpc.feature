@@ -61,18 +61,33 @@ Feature: Register a Salt minion via XML-RPC API
     When I call system.bootstrap() on a salt minion with saltSSH = true, but with activation key with Default contact method, I should get an XML-RPC fault with code -1
     And I logout from XML-RPC system namespace
 
-  Scenario: Turn the SLES minion into a container build host after XML bootstrap
+  Scenario: Cleanup: Turn the SLES minion into a container build host after XML bootstrap
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "container_build_host"
     And I click on "Update Properties"
 
-  Scenario: Apply the highstate to container build host after XML bootstrap
+  Scenario: Cleanup: Apply the highstate to container build host after XML bootstrap
     Given I am on the Systems overview page of this "sle-minion"
-    Then I should see a "[Container Build Host]" text
     When I wait until no Salt job is running on "sle-minion"
     And I enable repositories before installing Docker
     And I apply highstate on "sle-minion"
     And I wait until "docker" service is up and running on "sle-minion"
     And I disable repositories after installing Docker
+
+  Scenario: Cleanup: Turn the SLES minion into a OS image build host after XML bootstrap
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Details" in the content area
+    And I follow "Properties" in the content area
+    And I check "osimage_build_host"
+    And I click on "Update Properties"
+    Then I should see a "OS Image Build Host type has been applied." text
+    And I should see a "Note: This action will not result in state application" text
+    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
+    And I should see a "System properties changed" text
+
+  Scenario: Cleanup: Check that the minion is now a build host after XML bootstrap
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I should see a "[Container Build Host]" text
+    Then I should see a "[OS Image Build Host]" text
