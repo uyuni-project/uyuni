@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
+import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
 
@@ -35,6 +36,9 @@ import spark.Response;
  * Generate and retrieve the salt-ssh public key.
  */
 public class SaltSSHController {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(SaltSSHController.class);
 
     private SaltSSHController() { }
 
@@ -52,10 +56,12 @@ public class SaltSSHController {
                 .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
 
         if (!res.isPresent()) {
-            halt(500, "Could not retrieve salt-ssh public key.");
+            LOG.error("Could not generate salt-ssh public key.");
+            halt(500, "Could not generate salt-ssh public key.");
         }
         if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
-            halt(500, res.get().getStderr() + "");
+            LOG.error("Generating salt-ssh public key failed: " + res.get().getStderr());
+            halt(500, res.get().getStderr());
         }
 
         response.header("Content-Type", "application/octet-stream");
@@ -65,6 +71,7 @@ public class SaltSSHController {
             return IOUtils.toByteArray(fin);
         }
         catch (IOException e) {
+            LOG.error("Could not read salt-ssh public key " + pubKey, e);
             halt(500, e.getMessage());
         }
         return null;

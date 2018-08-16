@@ -1,3 +1,5 @@
+- Fix retrieving salt-ssh pub key for proxy setup when key already exists
+  (bsc#105062)
 - Implement the 2-phase registration of saltbooted minions (SUMA for Retail)
 - Avoid an NPE on expired tokens (bsc#1104503)
 - Generate systemid certificate on suse/systemid/generate event (FATE#323069)
