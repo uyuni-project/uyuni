@@ -12,6 +12,13 @@ As a standard status, we require that traditional clients and Salt minions have 
 If you remove a traditional client or minion, **always re-add** the base channel, otherwise all package and patch tests will fail.
 
 
+## Container build host
+
+The Salt minion must always be ready to build containers.
+
+Always re-enable this entitlement when you remove it and re-register it.
+
+
 ## Other
 
 For more prerequisites, look at the core features.
