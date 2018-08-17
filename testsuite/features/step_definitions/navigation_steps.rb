@@ -73,13 +73,13 @@ When(/^I wait until I see the state is completed, refreshing the page$/) do
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_content?("This action's status is: Completed.")
-        raise 'Action Failed' if page.has_content?("This action's status is: Failed.")
+        raise 'Event failed' if page.has_content?("This action's status is: Failed.")
         sleep 1
         page.evaluate_script 'window.location.reload()'
       end
     end
   rescue Timeout::Error
-    raise "Couldn't find the #{text} in webpage"
+    raise "Event not yet completed"
   end
 end
 
