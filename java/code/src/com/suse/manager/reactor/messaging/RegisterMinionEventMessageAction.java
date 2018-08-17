@@ -507,12 +507,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private static Optional<ManagedServerGroup> lookupManagedServerGroupByNameAndOrg(String name, Org org) {
-        return ServerGroupFactory.listManagedGroups(org).stream()
-                .filter(grp -> grp.getName().equals(name))
-                .findFirst();
-    }
-
     /**
      * If exists, migrate a traditional Server instance to MinionServer.
      * Otherwise return a new MinionServer instance.
