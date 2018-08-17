@@ -56,3 +56,7 @@ Feature: Build image with authenticated registry
     And I click on "Delete"
     And I click on the css "button.btn-danger"
     And I should see a "Image store has been deleted." text
+
+  Scenario: Cleanup: delete portus image
+    Given I am authorized as "admin" with password "admin"
+    When I delete the image "portus_profile" with version "latest" via XML-RPC calls

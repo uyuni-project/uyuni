@@ -16,12 +16,12 @@
 - features/core_srv_systemspage.feature
 - features/core_srv_users.feature
 - features/core_srv_create_activationkey.feature
+- features/core_srv_docker_profiles.feature
 # initialize SUSE Manager proxy
 - features/core_proxy.feature
 # initialize clients
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
-- features/core_min_docker_build_image.feature
 - features/core_min_salt_ssh.feature
 - features/core_centos_tradclient.feature
 - features/core_centos_salt.feature
@@ -49,6 +49,7 @@
 - features/min_salt_software_states.feature
 # min_docker_xmlrpc feature takes quite some and was the reason for issue#4679.
 - features/min_docker_xmlrpc.feature
+- features/min_docker_build_image.feature
 - features/trad_metadata_check.feature
 - features/srv_clone_channel_npn.feature
 - features/trad_cve_id_new_syntax.feature
@@ -66,8 +67,8 @@
 - features/trad_baremetal_discovery.feature
 - features/trad_action_chain.feature
 - features/min_salt_formulas.feature
-- features/srv_docker_auth_test.feature
-- features/srv_docker_advanced_test.feature
+- features/min_docker_auth_registry.feature
+- features/srv_docker_advanced_content_management.feature
 - features/srv_docker_cve_audit.feature
 - features/min_salt_install_package.feature
 - features/srv_power_management.feature

@@ -156,12 +156,17 @@ And(/^I delete the image "([^"]*)" with version "([^"]*)" via XML-RPC calls$/) d
   cont_op.login('admin', 'admin')
   images_list = cont_op.list_images
   refute_nil(images_list, 'ERROR: no images at all were retrieved.')
+  image_id = 0
   images_list.each do |element|
     if element['name'] == image_name_todel.strip && element['version'] == version.strip
-      $image_id = element['id']
+      image_id = element['id']
     end
   end
-  cont_op.delete_image($image_id)
+  if image_id.zero?
+    puts "Image #{image_name_todel} with version #{version} does not exist, skipping"
+  else
+    cont_op.delete_image(image_id)
+  end
 end
 
 And(/^the image "([^"]*)" with version "([^"]*)" doesn't exist via XML-RPC calls$/) do |image_non_exist, version|
