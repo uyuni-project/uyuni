@@ -68,9 +68,9 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   end
 end
 
-When(/^I wait until I see the state is completed, refreshing the page$/) do
+When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    Timeout.timeout(timeout) do
       loop do
         break if page.has_content?("This action's status is: Completed.")
         raise 'Event failed' if page.has_content?("This action's status is: Failed.")
@@ -79,7 +79,7 @@ When(/^I wait until I see the state is completed, refreshing the page$/) do
       end
     end
   rescue Timeout::Error
-    raise "Event not yet completed"
+    raise "Event not completed in #{timeout} seconds"
   end
 end
 
