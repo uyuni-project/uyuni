@@ -71,7 +71,7 @@
 - features/min_action_chain.feature
 - features/minssh_action_chain.feature
 - features/min_salt_formulas.feature
-- features/srv_docker_auth_registry.feature
+- features/min_docker_auth_registry.feature
 - features/srv_docker_advanced_content_management.feature
 - features/srv_docker_cve_audit.feature
 - features/min_osimage_build_image.feature
