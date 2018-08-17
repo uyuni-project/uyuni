@@ -70,7 +70,7 @@ end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   begin
-    Timeout.timeout(timeout) do
+    Timeout.timeout(timeout.to_i) do
       loop do
         break if page.has_content?("This action's status is: Completed.")
         raise 'Event failed' if page.has_content?("This action's status is: Failed.")
