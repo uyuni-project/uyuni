@@ -202,15 +202,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     // otherwise the image has been already fully deployed and we want to finalize the registration
                     LOG.info("\"initrd\" present for minion " + minionId);
 
-                    // TODO this is to be implemented in the future
-                    // for now we don't have any means to detect if the image has been redeployed and we simply
-                    // call the 'finishRegistration' on every minion start
-                    boolean imageRedeployed = true;
                     if (initrd) {
                         LOG.info("Applying saltboot for minion " + minionId);
                         applySaltboot(registeredMinion);
                     }
-                    else if (imageRedeployed) {
+                    else {
+                        // TODO this is to be implemented in the future
+                        // for now we don't have any means to detect if the image has been redeployed and we simply
+                        // call the 'finishRegistration' on every minion start
                         LOG.info("Finishing registration for minion " + minionId);
                         finishRegistration(registeredMinion, empty(), creator, !isSaltSSH);
                     }
