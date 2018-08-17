@@ -42,7 +42,7 @@ end
 
 # events
 
-When(/^I wait until event "([^"]*)" is completed$/) do |event|
+When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
   # The code below is not perfect because there might be other events with the
   # same name in the events history - however, that's the best we have so far.
   steps %(
@@ -54,7 +54,13 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
     And I wait for "1" second
     And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
-    And I wait until I see the state is completed, refreshing the page
+    And I wait at most #{final_timeout} seconds until the event is completed, refreshing the page
+  )
+end
+
+When(/^I wait until event "([^"]*)" is completed$/) do |event|
+  steps %(
+    When I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed
   )
 end
 

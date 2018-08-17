@@ -68,18 +68,18 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   end
 end
 
-When(/^I wait until I see the state is completed, refreshing the page$/) do
+When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    Timeout.timeout(timeout) do
       loop do
         break if page.has_content?("This action's status is: Completed.")
-        raise 'Action Failed' if page.has_content?("This action's status is: Failed.")
+        raise 'Event failed' if page.has_content?("This action's status is: Failed.")
         sleep 1
         page.evaluate_script 'window.location.reload()'
       end
     end
   rescue Timeout::Error
-    raise "Couldn't find the #{text} in webpage"
+    raise "Event not completed in #{timeout} seconds"
   end
 end
 
