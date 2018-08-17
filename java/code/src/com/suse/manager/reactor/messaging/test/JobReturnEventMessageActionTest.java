@@ -1546,11 +1546,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         channels.add(ch1);
         channels.add(ch2);
 
-        SubscribeChannelsAction action = ActionManager.scheduleSubscribeChannelsAction(user,
+        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(user,
                 Collections.singleton(minion.getId()),
                 baseChannel,
                 channels,
-                new Date());
+                new Date(),
+                null);
+
+        SubscribeChannelsAction action = (SubscribeChannelsAction) actions.stream().findFirst().get();
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
