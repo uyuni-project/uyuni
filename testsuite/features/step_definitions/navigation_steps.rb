@@ -748,3 +748,9 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
     find(:xpath, ".//button[@title = \"#{btn}\"]", visible: :all).click
   end
 end
+
+When(/^I enter uri, username and password for portus$/) do
+  step %(I enter "#{ENV['PORTUS_URI']}" as "uri")
+  step %(I enter "#{ENV['PORTUS_USER']}" as "username")
+  step %(I enter "#{ENV['PORTUS_PASS']}" as "password")
+end
