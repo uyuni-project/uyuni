@@ -112,6 +112,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                "osad")
     );
 
+    private static final String TERMINALS_GROUP_NAME = "TERMINALS";
+
     /**
      * Default constructor.
      */
@@ -395,7 +397,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     private boolean isRetailMinion(MinionServer registeredMinion) {
         // for now, a retail minion is detected when it belongs to a compulsory "TERMINALS" group
         return registeredMinion.getManagedGroups().stream()
-                .anyMatch(group -> group.getName().equals("TERMINALS"));
+                .anyMatch(group -> group.getName().equals(TERMINALS_GROUP_NAME));
     }
 
     /**
@@ -419,15 +421,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
         String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
 
-        String terminalsGroupName = "TERMINALS";
         String branchIdGroupName = branchId.get();
-        ManagedServerGroup terminalsGroup = ServerGroupFactory.lookupByNameAndOrg(terminalsGroupName, org);
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.lookupByNameAndOrg(TERMINALS_GROUP_NAME, org);
         ManagedServerGroup branchIdGroup = ServerGroupFactory.lookupByNameAndOrg(branchIdGroupName, org);
         ManagedServerGroup hwGroup = ServerGroupFactory.lookupByNameAndOrg(hwType, org);
 
         if (terminalsGroup == null || branchIdGroup == null) {
-            throw new IllegalStateException("Missing required server groups (\"TERMINALS\" or \"" + branchIdGroupName +
-                    "\")! Aborting registration.");
+            throw new IllegalStateException("Missing required server groups (\"" + TERMINALS_GROUP_NAME + "\" or \"" +
+                    branchIdGroupName + "\")! Aborting registration.");
         }
 
         SystemManager.addServerToServerGroup(minion, terminalsGroup);
