@@ -363,9 +363,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // Saltboot treatment - prepare and apply saltboot
             if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
+                LOG.info("\"initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
                 prepareRetailMinionForSaltboot(minionServer, org, grains);
                 applySaltboot(minionServer);
-                LOG.info("Applying saltboot for minion " + minionId);
                 return;
             }
 
