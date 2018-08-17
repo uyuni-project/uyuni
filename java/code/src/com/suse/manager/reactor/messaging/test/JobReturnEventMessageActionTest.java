@@ -1524,6 +1524,60 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTokenChannel(minion, ch2);
     }
 
+    public void testSubscribeChannelsActionNullTokens() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
+                    with(any(SubscribeChannelsAction.class)));
+        } });
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("dev-minsles12sp2.test.local");
+
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch1.setParentChannel(base);
+        ch2.setParentChannel(base);
+
+        Optional<Channel> baseChannel = Optional.of(base);
+        Set<Channel> channels = new HashSet<>();
+        channels.add(ch1);
+        channels.add(ch2);
+
+        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(user,
+                Collections.singleton(minion.getId()),
+                baseChannel,
+                channels,
+                new Date(),
+                null);
+
+        SubscribeChannelsAction action = (SubscribeChannelsAction) actions.stream().findFirst().get();
+
+        ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
+        action.addServerAction(sa);
+
+        SaltServerActionService.INSTANCE.setCommitTransaction(false);
+        Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE.callsForAction(action, Arrays.asList(minion));
+
+        // artifically expire tokens
+        action.getDetails().getAccessTokens().stream().forEach(t -> t.setMinion(null));
+        HibernateFactory.getSession().flush();
+
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("subscribe.channels.success.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        // check that tokens are really gone
+        assertEquals(0, minion.getAccessTokens().size());
+    }
+
     private void assertTokenChannel(MinionServer minion, Channel channel) {
         assertTrue(channel.getLabel(), minion.getAccessTokens().stream()
                 .filter(token -> token.getChannels().size() == 1 && token.getChannels().contains(channel))
