@@ -30,4 +30,4 @@ Feature: Build OS images
 #    TBD
 
   Scenario: Cleanup: remove the image from build host
-    When I run "rm /srv/www/os-images/1/*" on "sle-minion"
+    When I run "rm /srv/www/os-images/1/*" on "server"
