@@ -1,4 +1,4 @@
-VERSION = 3.2.0
+VERSION = 3.2.1
 REGISTRY = registry.mgr.suse.de
 ORATARGET = suma-3.2-ora
 SHELL := /bin/bash
@@ -39,8 +39,8 @@ suma-3.2-gatherer::
 	@echo "=================================="
 	pushd $@; \
 	docker build $(BUILDOPTS) -t $@ . || exit 1; \
-	docker tag $@ $@:$(VERSION):latest; \
-	docker tag $@ $(REGISTRY)/$@; \
+	docker tag $@ $@:$(VERSION); \
+	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
 	docker push $(REGISTRY)/$@:latest ; \
 	docker push $(REGISTRY)/$@:$(VERSION); \
@@ -52,8 +52,8 @@ suma-3.2-spacewalkkoan::
 	@echo "=================================="
 	pushd $@; \
 	docker build $(BUILDOPTS) -t $@ . || exit 1; \
-	docker tag $@ $@:$(VERSION):latest; \
-	docker tag $@ $(REGISTRY)/$@; \
+	docker tag $@ $@:$(VERSION); \
+	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
 	docker push $(REGISTRY)/$@:latest ; \
 	docker push $(REGISTRY)/$@:$(VERSION); \

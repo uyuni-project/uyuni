@@ -43,8 +43,8 @@ suma-head-gatherer::
 	@echo "=================================="
 	pushd $@; \
 	docker build $(BUILDOPTS) -t $@ . || exit 1; \
-	docker tag $@ $@:$(VERSION):latest; \
-	docker tag $@ $(REGISTRY)/$@; \
+	docker tag $@ $@:$(VERSION); \
+	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
 	docker push $(REGISTRY)/$@:latest ; \
 	docker push $(REGISTRY)/$@:$(VERSION); \
@@ -56,8 +56,8 @@ suma-head-spacewalkkoan::
 	@echo "=================================="
 	pushd $@; \
 	docker build $(BUILDOPTS) -t $@ . || exit 1; \
-	docker tag $@ $@:$(VERSION):latest; \
-	docker tag $@ $(REGISTRY)/$@; \
+	docker tag $@ $@:$(VERSION); \
+	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
 	docker push $(REGISTRY)/$@:latest ; \
 	docker push $(REGISTRY)/$@:$(VERSION); \
