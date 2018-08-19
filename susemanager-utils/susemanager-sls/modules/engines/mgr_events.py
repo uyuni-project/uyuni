@@ -7,6 +7,7 @@ A simple test engine, not intended for real use but as an example
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import time
+import fnmatch
 import psycopg2
 
 # Import salt libs
@@ -42,6 +43,14 @@ class Responder:
         self.cursor = self.connection.cursor()
 
     def _insert(self, tag, data):
+        if not (
+            fnmatch.fnmatch(tag, "salt/minion/*/start") or
+            fnmatch.fnmatch(tag, "salt/job/*/ret/*") or
+            fnmatch.fnmatch(tag, "salt/beacon/*") or
+            fnmatch.fnmatch(tag, "suse/systemid/generate")
+        ):
+            log.debug("******** DISCARDING: {}".format(tag))
+            return
         self.cursor.execute(
             'INSERT INTO suseSaltEvent (tag, data) VALUES (%s, %s);',
             (tag, salt.utils.json.dumps(data))
