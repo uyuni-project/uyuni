@@ -84,6 +84,9 @@ class Responder:
         self.commit_interval = DELAY_FACTOR * self.commit_interval + (1 - DELAY_FACTOR) * commit_interval_limited
         self.debug_log()
         self.connection.commit()
+        self.cursor.execute(
+            'NOTIFY suseSaltEvent;'
+        )
         self.counter = 0
         self.commit_timer_handle = self.event_bus.io_loop.call_later(
         self.apply_limits(self.commit_interval), self.commit)
