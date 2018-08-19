@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -13,7 +13,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Create the bootstrap script for the proxy
     When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date --traditional"
     Then I should get "* bootstrap script (written):"
-     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
+    And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
 
 @proxy
   Scenario: Register the proxy, copy the keys and configure the proxy
@@ -31,5 +31,5 @@ Feature: Setup SUSE Manager proxy
 
 @proxy
   Scenario: Cleanup: remove proxy bootstrap scripts
-   Then I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh" on "server"
-   And I run "rm /root/bootstrap-proxy.sh" on "proxy"
+    When I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh" on "server"
+    And I run "rm /root/bootstrap-proxy.sh" on "proxy"

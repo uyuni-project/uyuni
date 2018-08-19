@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2017 SUSE-LINUX
+# Copyright (c) 2010-2018 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -74,9 +74,13 @@ Before('@SLE15_MINION') do |scenario|
   scenario.skip_invoke! unless $sle15_minion
 end
 
-# skip tests if we run with fromdir option
+# do some tests only if certain options are activated
 Before('@notwithfromdir') do |scenario|
   scenario.skip_invoke! if ENV['NOTWITHFROMDIR']
+end
+
+Before('@retail') do |scenario|
+  scenario.skip_invoke! unless $retail
 end
 
 ## this is for having more infos about the errors.

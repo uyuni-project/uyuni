@@ -278,15 +278,17 @@ Then(/^I should see "(.*?)" in the output$/) do |arg1|
   assert_includes(@command_output, arg1)
 end
 
-Then(/^service "([^"]*)" is enabled on the server$/) do |service|
-  output = sshcmd("systemctl is-enabled '#{service}'", ignore_err: true)[:stdout]
-  output.chomp!
+Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  output, _code = node.run("systemctl is-enabled '#{service}'", false)
+  output = output.split(/\n+/)[-1]
   raise if output != 'enabled'
 end
 
-Then(/^service "([^"]*)" is running on the server$/) do |service|
-  output = sshcmd("systemctl is-active '#{service}'", ignore_err: true)[:stdout]
-  output.chomp!
+Then(/^service "([^"]*)" is running on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  output, _code = node.run("systemctl is-active '#{service}'", false)
+  output = output.split(/\n+/)[-1]
   raise if output != 'active'
 end
 
@@ -517,6 +519,14 @@ And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/)
   $server.run(cmd, false)
 end
 
+When(/^I open SSH and avahi ports on the proxy$/) do
+  # Work around bsc#1100505
+  sed = 's/FW_DEV_EXT=""/FW_DEV_EXT="eth0"/'
+  $proxy.run("sed -i '#{sed}' /etc/sysconfig/SuSEfirewall2")
+  sed = 's/FW_CONFIGURATIONS_EXT=""/FW_CONFIGURATIONS_EXT="avahi sshd"/'
+  $proxy.run("sed -i '#{sed}' /etc/sysconfig/SuSEfirewall2")
+end
+
 When(/^I copy server\'s keys to the proxy$/) do
   ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
     return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
@@ -525,6 +535,39 @@ When(/^I copy server\'s keys to the proxy$/) do
     return_code = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
     raise 'File injection failed' unless return_code.zero?
   end
+end
+
+When(/^I set up the private network on the terminals$/) do
+  file = 'ifcfg-eth1'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/etc/sysconfig/network/" + file
+  nodes = [$client, $minion, $ceos_minion, $ssh_minion]
+  for node in nodes do
+    next if node.nil?
+    return_code = file_inject(node, source, dest)
+    raise 'File injection failed' unless return_code.zero?
+    node.run('ifup eth1')
+  end
+  #
+  file = 'resolv.conf'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/etc/" + file
+  for node in nodes do
+    next if node.nil?
+    return_code = file_inject(node, source, dest)
+  end
+end
+
+Then(/^terminal "([^"]*)" got a retail network IP address$/) do |host|
+  node = get_target(host)
+  output, return_code = node.run("ip -4 address show eth1")
+  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? "192.168.5."
+end
+
+Then(/^name resolution works on terminal "([^"]*)"$/) do |host|
+  node = get_target(host)
+  output, return_code = node.run("ping -c1 client.example.org")
+  raise "Name resolution for branch network on terminal #{host} doesn't work: #{output}" unless return_code.zero?
 end
 
 When(/^I configure the proxy$/) do
