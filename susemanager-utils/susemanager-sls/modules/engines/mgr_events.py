@@ -52,8 +52,8 @@ class Responder:
             log.debug("******** DISCARDING: {}".format(tag))
             return
         self.cursor.execute(
-            'INSERT INTO suseSaltEvent (tag, data) VALUES (%s, %s);',
-            (tag, salt.utils.json.dumps(data))
+            'INSERT INTO suseSaltEvent (data) VALUES (%s);',
+            (salt.utils.json.dumps({"tag": tag, "data": data}),)
         )
         log.debug("******** Adding event to queue: {}".format(tag))
         log.debug(self.cursor.query)
