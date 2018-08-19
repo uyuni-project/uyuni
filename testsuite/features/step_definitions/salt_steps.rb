@@ -278,11 +278,11 @@ end
 
 # salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
-  $server.run("zypper --non-interactive install -y #{package}-formula")
+  $server.run("zypper --non-interactive install --force #{package}-formula")
 end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
-  $server.run("zypper --non-interactive remove -y #{package}-formula")
+  $server.run("zypper --non-interactive remove #{package}-formula")
 end
 
 When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
@@ -321,13 +321,104 @@ end
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   boxid = case box
           when 'timezone name'
-            "timezone\#name"
+            'timezone#name'
           when 'language'
-            "keyboard_and_language\#language"
+            'keyboard_and_language#language'
           when 'keyboard layout'
-            "keyboard_and_language\#keyboard_layout"
+            'keyboard_and_language#keyboard_layout'
           end
   select(value, from: boxid)
+end
+
+When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
+  fieldid = case field
+          when 'IP'
+            'branch_network#ip'
+          when 'NIC'
+            'branch_network#nic'
+          when 'domain name'
+            'dhcpd#domain_name'
+          when 'listen interfaces'
+            'dhcpd#listen_interfaces#0'
+          when 'network IP'
+            'dhcpd#subnets#0#$key'
+          when 'network mask'
+            'dhcpd#subnets#0#netmask'
+          when 'dynamic IP range begin'
+            'dhcpd#subnets#0#range#0'
+          when 'dynamic IP range end'
+            'dhcpd#subnets#0#range#1'
+          when 'broadcast address'
+            'dhcpd#subnets#0#broadcast_address'
+          when 'routers'
+            'dhcpd#subnets#0#routers#0'
+          when 'next server'
+            'dhcpd#subnets#0#next_server'
+          when 'configured zone name'
+            'bind#configured_zones#0#$key'
+          when 'available zone name'
+            'bind#available_zones#0#$key'
+          when 'file name'
+            'bind#available_zones#0#file'
+          when 'name server'
+            'bind#available_zones#0#soa#ns'
+          when 'contact'
+            'bind#available_zones#0#soa#contact'
+          when 'first A name'
+            'bind#available_zones#0#records#A#0#0'
+          when 'first A address'
+            'bind#available_zones#0#records#A#0#1'
+          when 'second A name'
+            'bind#available_zones#0#records#A#1#0'
+          when 'second A address'
+            'bind#available_zones#0#records#A#1#1'
+          when 'third A name'
+            'bind#available_zones#0#records#A#2#0'
+          when 'third A address'
+            'bind#available_zones#0#records#A#2#1'
+          when 'fourth A name'
+            'bind#available_zones#0#records#A#3#0'
+          when 'fourth A address'
+            'bind#available_zones#0#records#A#3#1'
+          when 'NS'
+            'bind#available_zones#0#records#NS#@#0'
+          when 'generate reverse network'
+            'bind#available_zones#0#generate_reverse#net'
+          when 'for zones'
+            'bind#available_zones#0#generate_reverse#for_zones#0'
+          end
+  fill_in fieldid, with: value
+end
+
+When (/^I enter the hostname of "([^"]*)" in (.*) field$/) do |host, field|
+  node = get_target(host)
+  fieldid = case field
+         when 'domain name server'
+           "dhcpd#domain_name_servers#0"
+         end
+  fill_in fieldid, with: node.full_hostname
+end
+
+When(/^I press "([^"]*)" in (.*) section$/) do |value, section|
+  sectionid = case section
+          when 'A'
+            'bind#available_zones#0#records#A'
+          when 'NS'
+            'bind#available_zones#0#records#NS'
+          when 'for zones'
+            'bind#available_zones#0#generate_reverse#for_zones'
+          end
+  within(:xpath, "//div[@id='#{sectionid}']") do
+    click_button value
+  end
+end
+
+When (/^I check (.*) box$/) do |box|
+  boxid = case box
+         when 'include forwarders'
+           'bind#config#include_forwarders'
+  end
+  check boxid
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
@@ -535,9 +626,9 @@ Then(/^I enter remote ssh-minion hostname as "(.*?)"$/) do |hostname|
 end
 
 # minion bootstrap steps
-When(/^I enter the hostname of "([^"]*)" as hostname$/) do |host|
+When(/^I enter the hostname of "([^"]*)" as "(.*?)"$/) do |host, hostname|
   node = get_target(host)
-  step %(I enter "#{node.full_hostname}" as "hostname")
+  step %(I enter "#{node.full_hostname}" as "#{hostname}")
 end
 
 When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
