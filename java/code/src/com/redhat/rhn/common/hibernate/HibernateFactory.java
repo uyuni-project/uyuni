@@ -619,9 +619,6 @@ public abstract class HibernateFactory {
      */
     public static <T> T doWithoutAutoFlushing(Supplier<T> body) {
         FlushModeType old = getSession().getFlushMode();
-        if (old.equals(FlushModeType.AUTO)) {
-            getSession().flush();
-        }
         getSession().setFlushMode(FlushModeType.COMMIT);
         try {
             return body.get();
