@@ -215,7 +215,7 @@ Then(/^the cobbler report contains "([^"]*)" for system "([^"]*)"$/) do |arg1, s
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  step %(the cobbler report contains "#{arg1}" for system "#{$client.full_hostname}:1")
+  step %(the cobbler report contains "#{arg1}" for system "#{$client.full_hostname}")
 end
 
 Then(/^I clean the search index on the server$/) do
