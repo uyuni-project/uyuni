@@ -25,6 +25,8 @@ Feature: XML-RPC image namespace for containers
   Scenario: Create and build multiple random images
     Given I am authorized as "admin" with password "admin"
     Then I create "5" random "suse_real_key" containers
+    And I wait for "240" seconds
+    And I wait until no Salt job is running on "sle-minion"
 
   Scenario: Cleanup: remove custom system info key
     Given I am authorized as "admin" with password "admin"
