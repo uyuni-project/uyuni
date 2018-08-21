@@ -17,8 +17,6 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import org.hibernate.FlushMode;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
@@ -41,18 +39,16 @@ public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerialize
      * {@inheritDoc}
      */
     public void serialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-                    throws XmlRpcException, IOException {
-        try {
-            HibernateFactory.getSessionIfPresent().ifPresent(session -> {
-                session.setHibernateFlushMode(FlushMode.COMMIT);
-            });
-            doSerialize(obj, writer, serializer);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            throw new XmlRpcException(
-                            "ERROR IN SERIALIZER FOR " + getSupportedClass().getName(), e);
-        }
+            throws XmlRpcException, IOException {
+        HibernateFactory.doWithoutAutoFlushing(() -> {
+            try {
+                doSerialize(obj, writer, serializer);
+            }
+            catch (Exception e) {
+                throw new XmlRpcException(
+                        "ERROR IN SERIALIZER FOR " + getSupportedClass().getName(), e);
+            }
+        }, false);
     }
 
     /**
