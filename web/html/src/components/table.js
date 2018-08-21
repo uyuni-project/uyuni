@@ -248,7 +248,7 @@ const Table = React.createClass({
 
     if(this.state.selectable) {
         const allSelected = currIds.length > 0 && currIds.every(id => this.state.selectedItems.includes(id));
-        const checkbox = <Header><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
+        const checkbox = <Header key="check"><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
         headers.unshift(checkbox);
     }
 
@@ -269,7 +269,7 @@ const Table = React.createClass({
         );
 
         if(this.state.selectable) {
-          const checkbox = <Column cell={
+          const checkbox = <Column key="check" cell={
             <input type="checkbox"
                 checked={this.state.selectedItems.includes(this.props.identifier(datum))}
                 onChange={(e) => handleSelect(this.props.identifier(datum), e.target.checked)}
