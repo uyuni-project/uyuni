@@ -4,7 +4,6 @@
 require 'xmlrpc/client'
 require 'time'
 require 'date'
-require 'securerandom'
 require 'timeout'
 
 # this module test image_profile
@@ -210,35 +209,5 @@ And(/^I run image.store tests via XML-RPC$/) do
   cont_op.delete_store('Norimberga')
 end
 
-And(/^I create "([^"]*)" random image stores$/) do |count|
-  cont_op.login('admin', 'admin')
-  $labels = []
-  count.to_i.times do
-    label = SecureRandom.urlsafe_base64(10)
-    $labels.push(label)
-    uri = SecureRandom.urlsafe_base64(13)
-    cont_op.create_store(label, uri, 'registry')
-  end
-end
-
-And(/^I delete the random image stores$/) do
-  cont_op.login('admin', 'admin')
-  $labels.each do |label|
-    cont_op.delete_store(label)
-  end
-end
-
 # Profiles tests using module
 And(/^I run image.profiles tests via XML-RPC$/, :image_profiles_xmlrpc)
-
-Then(/I create "([^"]*)" random "([^"]*)" containers$/) do |count, image_input|
-  cont_op.login('admin', 'admin')
-  image = image_input
-  build_hostid = retrieve_minion_id
-  count.to_i.times do
-    version_build = SecureRandom.urlsafe_base64(10)
-    now = DateTime.now
-    date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
-    cont_op.schedule_image_build(image, version_build, build_hostid, date_build)
-  end
-end
