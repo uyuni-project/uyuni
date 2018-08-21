@@ -1,6 +1,6 @@
 ## What does this PR change?
 
-Port of # **remove rest of file if this is a port**
+**add description**
 
 ## GUI diff
 
@@ -28,11 +28,6 @@ After:
 ## Links
 
 Fixes #
-
-Relevant branches (GitHub automatic links expected below):
- - Manager-3.0
- - Manager-3.1
- - Manager-3.2
- - Manager
+Tracks # **add downstream PR, if any**
 
 - [ ] **DONE**
