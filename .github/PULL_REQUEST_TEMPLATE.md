@@ -1,30 +1,38 @@
 ## What does this PR change?
 
+Port of # **remove rest of file if this is a port**
+
 ## GUI diff
-*REMOVE THIS SECTION if it does not apply*
+
+No difference.
 
 Before:
 
 After:
 
- - [ ] documentation team has been contacted
+- [ ] **DONE**
 
 ## Documentation
-- [ ] No documentation needed: *add explanation why*
-- [ ] Wiki page: *add link*
-- [ ] Documentation issue: #123
+- No documentation needed: **add explanation. This can't be used if there is a GUI diff**
+- [doc-susemanager](https://github.com/SUSE/doc-susemanager) PR or issue was created (GitHub automatic link expected below)
+
+- [ ] **DONE**
 
 ## Test coverage
-- [ ] No tests: *add explanation why*
-- [ ] Unit tests
-- [ ] Cucumber tests
-- [ ] After merge: Cucumber testsuite passes
+- No tests: **add explanation**
+- Unit tests were added
+- Cucumber tests were added
+
+- [ ] **DONE**
 
 ## Links
 
-Related issues:
- - #123
+Fixes #
 
-Related PRs:
- - [ ] Manager-3.0: #123
- - [ ] Manager-3.1: #123
+Relevant branches (GitHub automatic links expected below):
+ - Manager-3.0
+ - Manager-3.1
+ - Manager-3.2
+ - Uyuni
+
+- [ ] **DONE**
