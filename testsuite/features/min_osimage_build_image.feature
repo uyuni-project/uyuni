@@ -25,9 +25,5 @@ Feature: Build OS images
     And I navigate to "os-images/1/" page
     Then I should see a "POS_Image_JeOS6" text
 
-#@retail
-#  Scenario: Move the image to the build server
-#    TBD
-
-  Scenario: Cleanup: remove the image from build host
+  Scenario: Cleanup: remove the image from SUSE Manager server
     When I run "rm /srv/www/os-images/1/*" on "server"

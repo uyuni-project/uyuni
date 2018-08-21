@@ -49,7 +49,6 @@
 - features/trad_ssh_push.feature
 - features/srv_change_password.feature
 - features/min_salt_software_states.feature
-# min_docker_xmlrpc feature takes quite some and was the reason for issue#4679.
 - features/min_docker_xmlrpc.feature
 - features/min_docker_build_image.feature
 - features/trad_metadata_check.feature
