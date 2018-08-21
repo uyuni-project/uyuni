@@ -31,7 +31,6 @@ import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 
-import javax.persistence.FlushModeType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,8 +45,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import javax.persistence.FlushModeType;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -319,6 +320,15 @@ public abstract class HibernateFactory {
      */
     public static Session getSession() {
         return connectionManager.getSession();
+    }
+
+    /**
+     * Returns the Hibernate session stored in ThreadLocal storage, if it exists
+     *
+     * @return Session a session
+     */
+    public static Optional<Session> getSessionIfPresent() {
+        return connectionManager.getSessionIfPresent();
     }
 
     /**
