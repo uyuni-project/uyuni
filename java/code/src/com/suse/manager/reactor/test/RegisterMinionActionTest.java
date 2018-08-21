@@ -21,6 +21,8 @@ import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -926,6 +928,294 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 },
                 DEFAULT_CONTACT_METHOD
         );
+    }
+
+    /**
+     * Initial test of a registering a terminal machine
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailTerminal() throws Exception {
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
+                OrgFactory.getSatelliteOrg());
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
+                OrgFactory.getSatelliteOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
+                OrgFactory.getSatelliteOrg());
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertTrue(minion.getManagedGroups().contains(hwGroup));
+                    assertTrue(minion.getManagedGroups().contains(terminalsGroup));
+                    assertTrue(minion.getManagedGroups().contains(branchGroup));
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test registering a terminal machine when a required group is missing.
+     * In this case we want the minion NOT to be registered.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailMinionTerminalGroupMissing() throws Exception {
+        ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group", OrgFactory.getSatelliteOrg());
+        ServerGroupFactory.create("Branch001", "Branch group", OrgFactory.getSatelliteOrg());
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertFalse(optMinion.isPresent());
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+
+    /**
+     * Test registering a terminal machine when a required group is missing.
+     * In this case we want the minion NOT to be registered.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailMinionBranchGroupMissing() throws Exception {
+        ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group", OrgFactory.getSatelliteOrg());
+        ServerGroupFactory.create("TERMINALS", "All terminals group", OrgFactory.getSatelliteOrg());
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertFalse(optMinion.isPresent());
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test registering a terminal machine when a non-required group (HW group) is missing
+     * In this case we want the minion to be registered.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailMinionHwGroupMissing() throws Exception {
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group", OrgFactory.getSatelliteOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group", OrgFactory.getSatelliteOrg());
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertTrue(minion.getManagedGroups().contains(terminalsGroup));
+                    assertTrue(minion.getManagedGroups().contains(branchGroup));
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test registering retail machine in a specific org
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailTerminalNonDefaultOrg() throws Exception {
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
+                user.getOrg());
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
+                user.getOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
+                user.getOrg());
+
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+
+        try {
+            executeTest(
+                    (saltServiceMock, key) -> new Expectations() {{
+                        allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                        will(returnValue(Optional.of(MINION_ID)));
+                        allowing(saltServiceMock).getMachineId(MINION_ID);
+                        will(returnValue(Optional.of(MACHINE_ID)));
+                        allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                        allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                        allowing(saltServiceMock).getGrains(MINION_ID);
+                        will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                                .map(map -> {
+                                    map.put("initrd", true);
+                                    map.put("manufacturer", "QEMU");
+                                    map.put("productname", "CashDesk01");
+                                    map.put("minion_id_prefix", "Branch001");
+                                    return map;
+                                })));
+                        allowing(saltServiceMock).callSync(
+                                with(any(LocalCall.class)),
+                                with(any(String.class)));
+                    }},
+                    (contactMethod) -> null, // no AK
+                    (optMinion, machineId, key) -> {
+                        assertTrue(optMinion.isPresent());
+                        MinionServer minion = optMinion.get();
+                        assertTrue(minion.getManagedGroups().contains(hwGroup));
+                        assertTrue(minion.getManagedGroups().contains(terminalsGroup));
+                        assertTrue(minion.getManagedGroups().contains(branchGroup));
+                    }, DEFAULT_CONTACT_METHOD);
+        } finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+    }
+
+
+    /**
+     * Tests that grains aren't queried for an existing non-retail minion.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testNoGrainsQueryForNonRetailMinion() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setMachineId(MACHINE_ID);
+        executeTest((saltServiceMock, key) ->
+                        new Expectations(){ {
+                            allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                            will(returnValue(Optional.of(MINION_ID)));
+                            allowing(saltServiceMock).getMachineId(MINION_ID);
+                            will(returnValue(Optional.of(MACHINE_ID)));
+                            never(saltServiceMock).getGrains(MINION_ID); // we test that grains aren't queried here!
+                            allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                        } },
+                null,
+                (minion, machineId, key) -> { },
+                null,
+                DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Tests a first boot of a deployed retail minion
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testFirstStartRetailTerminal() throws Exception {
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk02", "HW group",
+                OrgFactory.getSatelliteOrg());
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
+                OrgFactory.getSatelliteOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
+                OrgFactory.getSatelliteOrg());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setMachineId(MACHINE_ID);
+        server.setOrg(OrgFactory.getSatelliteOrg());
+        SystemManager.addServerToServerGroup(server, hwGroup);
+        SystemManager.addServerToServerGroup(server, terminalsGroup);
+        SystemManager.addServerToServerGroup(server, branchGroup);
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", false);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk02");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    // check that HW refresh was scheduled
+                    assertEquals(1, ActionFactory.listServerActionsForServer(minion).stream()
+                                    .filter(sa -> ((ServerAction) sa).getParentAction().getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST))
+                                    .count());
+                },
+                null,
+                DEFAULT_CONTACT_METHOD);
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,

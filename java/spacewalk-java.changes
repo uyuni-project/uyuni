@@ -1,3 +1,4 @@
+- Implement the 2-phase registration of saltbooted minions (SUMA for Retail)
 - Avoid an NPE on expired tokens (bsc#1104503)
 - Generate systemid certificate on suse/systemid/generate event (FATE#323069)
 - Fix system group overview patch status (bsc#1102478)
