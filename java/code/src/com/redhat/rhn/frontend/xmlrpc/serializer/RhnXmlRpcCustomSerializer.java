@@ -14,10 +14,15 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import org.hibernate.FlushMode;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
+
 import redstone.xmlrpc.XmlRpcCustomSerializer;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
@@ -38,6 +43,9 @@ public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerialize
     public void serialize(Object obj, Writer writer, XmlRpcSerializer serializer)
                     throws XmlRpcException, IOException {
         try {
+            HibernateFactory.getSessionIfPresent().ifPresent(session -> {
+                session.setHibernateFlushMode(FlushMode.COMMIT);
+            });
             doSerialize(obj, writer, serializer);
         }
         catch (Exception e) {
