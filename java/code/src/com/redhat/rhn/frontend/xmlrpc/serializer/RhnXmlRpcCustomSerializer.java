@@ -16,9 +16,11 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
+
 import redstone.xmlrpc.XmlRpcCustomSerializer;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
@@ -37,17 +39,16 @@ public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerialize
      * {@inheritDoc}
      */
     public void serialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-                    throws XmlRpcException, IOException {
+            throws XmlRpcException, IOException {
         HibernateFactory.doWithoutAutoFlushing(() -> {
             try {
                 doSerialize(obj, writer, serializer);
             }
             catch (Exception e) {
-                e.printStackTrace();
                 throw new XmlRpcException(
                         "ERROR IN SERIALIZER FOR " + getSupportedClass().getName(), e);
             }
-        });
+        }, false);
     }
 
     /**
