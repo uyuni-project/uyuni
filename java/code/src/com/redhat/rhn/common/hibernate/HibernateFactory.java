@@ -31,7 +31,6 @@ import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 
-import javax.persistence.FlushModeType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,8 +45,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import javax.persistence.FlushModeType;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -319,6 +320,15 @@ public abstract class HibernateFactory {
      */
     public static Session getSession() {
         return connectionManager.getSession();
+    }
+
+    /**
+     * Returns the Hibernate session stored in ThreadLocal storage, if it exists
+     *
+     * @return Session a session
+     */
+    public static Optional<Session> getSessionIfPresent() {
+        return connectionManager.getSessionIfPresent();
     }
 
     /**
@@ -617,6 +627,40 @@ public abstract class HibernateFactory {
      * @return the value of supplier
      */
     public static <T> T doWithoutAutoFlushing(Supplier<T> body) {
+        return doWithoutAutoFlushing(body, true);
+    }
+
+    /**
+     * Disables Hibernate's automatic flushing, runs <code>body</code>, and then
+     * enables it again. Returns the result from <code>body</code>.
+     *
+     * You might want this in order to improve performance by skipping automatic
+     * flushes, which might be costly if the number of objects in the Hibernate
+     * cache is high. As of hibernate 5.1 the algorithm is quadratic in the
+     * number of objects.
+     *
+     * WARNING: this might result in queries returning stale data -
+     * modifications to Hibernate objects before or in this call will not be
+     * seen by queries called from <code>body</code>!
+     *
+     * Only use with code that does not make assumptions about Hibernate cache
+     * modifications being reflected in the database. Also it is recommended to
+     * make sure via profiling that your method is spending too much CPU time in
+     * automatic flushing before attempting to use this method.
+     *
+     * Optionally do not open a session if one does not exist.
+     *
+     * @param <T> return type
+     * @param body code to run in FlushModeType.COMMIT
+     * @param createSession whether to create a session if one does not exist
+     * @return the value of supplier
+     */
+    public static <T> T doWithoutAutoFlushing(Supplier<T> body, boolean createSession) {
+        Optional<Session> session = getSessionIfPresent();
+        if (!session.isPresent() && !createSession) {
+            return body.get();
+        }
+
         FlushModeType old = getSession().getFlushMode();
         getSession().setFlushMode(FlushModeType.COMMIT);
         try {
@@ -648,10 +692,37 @@ public abstract class HibernateFactory {
      * @param body code to run in FlushModeType.COMMIT
      */
     public static void doWithoutAutoFlushing(Runnable body) {
+        doWithoutAutoFlushing(body, true);
+    }
+
+    /**
+     * Disables Hibernate's automatic flushing, runs <code>body</code>, and then
+     * enables it again.
+     *
+     * You might want this in order to improve performance by skipping automatic
+     * flushes, which might be costly if the number of objects in the Hibernate
+     * cache is high. As of Hibernate 5.1 the algorithm is quadratic in the
+     * number of objects.
+     *
+     * WARNING: this might result in queries returning stale data -
+     * modifications to Hibernate objects before or in this call will not be
+     * seen by queries called from <code>body</code>!
+     *
+     * Only use with code that does not make assumptions about Hibernate cache
+     * modifications being reflected in the database. Also it is recommended to
+     * make sure via profiling that your method is spending too much CPU time in
+     * automatic flushing before attempting to use this method.
+     *
+     * Optionally do not open a session if one does not exist.
+     *
+     * @param body code to run in FlushModeType.COMMIT
+     * @param createSession whether to create a session if one does not exist
+     */
+    public static void doWithoutAutoFlushing(Runnable body, boolean createSession) {
         doWithoutAutoFlushing(() -> {
             body.run();
             return 0;
-        });
+        }, createSession);
     }
 
     /**

@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.finder.FinderFactory;
-
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -33,6 +35,7 @@ import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -47,6 +50,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
@@ -290,10 +294,6 @@ class ConnectionManager {
         if (!isInitialized()) {
             initialize();
         }
-        return getInternalSession();
-    }
-
-    private Session getInternalSession() {
         SessionInfo info = threadSessionInfo();
         if (info == null || info.getSession() == null) {
             try {
@@ -314,7 +314,19 @@ class ConnectionManager {
         }
 
         return info.getSession();
+    }
 
+    /**
+     * Returns the Hibernate session stored in ThreadLocal storage, if it exists
+     *
+     * @return Session a session
+     */
+    public Optional<Session> getSessionIfPresent() {
+        SessionInfo info = threadSessionInfo();
+        if (info == null) {
+            return empty();
+        }
+        return ofNullable(info.getSession());
     }
 
     /**
