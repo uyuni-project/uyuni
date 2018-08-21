@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.messaging;
 
 import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
+import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -35,10 +36,12 @@ import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.state.PackageState;
@@ -109,6 +112,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                "osad")
     );
 
+    private static final String TERMINALS_GROUP_NAME = "TERMINALS";
+
     /**
      * Default constructor.
      */
@@ -168,6 +173,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         //in so many places.
         String machineId = optMachineId.get();
         MinionServer minionServer;
+        Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
 
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
@@ -187,6 +193,31 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     SALT_SERVICE.deleteKey(oldMinionId);
                 }
             }
+
+            // Saltboot treatment
+            // HACK: try to guess if the minion is a retail minion based on its groups.
+            // This way we don't need to call grains for each register minion event.
+            if (isRetailMinion(registeredMinion)) {
+                ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
+                grains.getOptionalAsBoolean("initrd").ifPresent(initrd -> {
+                    // if we have the "initrd" grain we want to re-deploy an image via saltboot,
+                    // otherwise the image has been already fully deployed and we want to finalize the registration
+                    LOG.info("\"initrd\" present for minion " + minionId);
+
+                    if (initrd) {
+                        LOG.info("Applying saltboot for minion " + minionId);
+                        applySaltboot(registeredMinion);
+                    }
+                    else {
+                        // TODO this is to be implemented in the future
+                        // for now we don't have any means to detect if the image has been redeployed and we simply
+                        // call the 'finishRegistration' on every minion start
+                        LOG.info("Finishing registration for minion " + minionId);
+                        finishRegistration(registeredMinion, empty(), creator, !isSaltSSH);
+                    }
+                });
+            }
+
             return;
         }
 
@@ -199,6 +230,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         try {
             minionServer = migrateTraditionalOrGetNew(minionId,
                     isSaltSSH, activationKeyOverride, machineId);
+            boolean isNewMinion = minionServer.getId() == null;
 
             MinionServer server = minionServer;
 
@@ -210,6 +242,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             ValueMap grains = new ValueMap(
                     SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
 
+
             //apply activation key properties that can be set before saving the server
             Optional<String> activationKeyFromGrains = grains
                     .getMap("susemanager")
@@ -218,8 +251,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     activationKeyOverride : activationKeyFromGrains;
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
-
-            Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
 
             org = activationKey.map(ActivationKey::getOrg)
                     .orElse(creator.map(User::getOrg)
@@ -331,56 +362,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 });
             });
 
-            // get hardware and network async
-            triggerHardwareRefresh(server);
-
-            Map<String, String> data = new HashMap<>();
-            data.put("minionId", minionId);
-            data.put("machineId", machineId);
-            LOG.info("Finished minion registration: " + minionId);
-
-            StatesAPI.generateServerPackageState(server);
-
-            // Asynchronously get the uptime of this minion
-            MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
-
-            // Generate pillar data
-            try {
-                SaltStateGeneratorService.INSTANCE.generatePillar(server);
-
-                // Subscribe to config channels assigned to the activation key or initialize empty channel profile
-                server.subscribeConfigChannels(
-                        activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
-                        creator.orElse(null));
-            }
-            catch (RuntimeException e) {
-                LOG.error("Error generating Salt files for server '" + minionId +
-                        "':" + e.getMessage());
+            // Saltboot treatment - prepare and apply saltboot
+            if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
+                LOG.info("\"initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
+                prepareRetailMinionForSaltboot(minionServer, org, grains);
+                applySaltboot(minionServer);
+                return;
             }
 
-            // Should we apply the highstate?
-            boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
-
-            // Apply initial states asynchronously
-            List<String> statesToApply = new ArrayList<>();
-            statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
-            statesToApply.add(ApplyStatesEventMessage.CHANNELS);
-            statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
-            statesToApply.add(ApplyStatesEventMessage.PACKAGES);
-            if (!isSaltSSH) {
-                statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
-            }
-            MessageQueue.publish(new ApplyStatesEventMessage(
-                    server.getId(),
-                    server.getCreator() != null ? server.getCreator().getId() : null,
-                    !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
-                    statesToApply
-            ));
-
-            // Call final highstate to deploy config channels if required
-            if (applyHighstate) {
-                MessageQueue.publish(new ApplyStatesEventMessage(server.getId(), true, Collections.emptyList()));
-            }
+            finishRegistration(server, activationKey, creator, !isSaltSSH);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -401,6 +391,120 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
+        }
+    }
+
+    private boolean isRetailMinion(MinionServer registeredMinion) {
+        // for now, a retail minion is detected when it belongs to a compulsory "TERMINALS" group
+        return registeredMinion.getManagedGroups().stream()
+                .anyMatch(group -> group.getName().equals(TERMINALS_GROUP_NAME));
+    }
+
+    /**
+     * Prepare a retail minion to be registered in SUMA:
+     *  - assign needed groups
+     *  - generate pillar
+     *
+     * @param minion - the minion
+     * @param org - the organization in which minion is to be registered
+     * @param grains - grains
+     */
+    private void prepareRetailMinionForSaltboot(MinionServer minion, Org org, ValueMap grains) {
+        Optional<String> manufacturer = grains.getOptionalAsString("manufacturer");
+        Optional<String> productName = grains.getOptionalAsString("productname");
+        Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
+
+        if (!manufacturer.isPresent() || !productName.isPresent() || !branchId.isPresent()) {
+            throw new IllegalStateException("Missing machine manufacturer, product name or minion_id_prefix " +
+                    "on retail minion registration! Aborting registration.");
+        }
+
+        String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
+
+        String branchIdGroupName = branchId.get();
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.lookupByNameAndOrg(TERMINALS_GROUP_NAME, org);
+        ManagedServerGroup branchIdGroup = ServerGroupFactory.lookupByNameAndOrg(branchIdGroupName, org);
+        ManagedServerGroup hwGroup = ServerGroupFactory.lookupByNameAndOrg(hwType, org);
+
+        if (terminalsGroup == null || branchIdGroup == null) {
+            throw new IllegalStateException("Missing required server groups (\"" + TERMINALS_GROUP_NAME + "\" or \"" +
+                    branchIdGroupName + "\")! Aborting registration.");
+        }
+
+        SystemManager.addServerToServerGroup(minion, terminalsGroup);
+        SystemManager.addServerToServerGroup(minion, branchIdGroup);
+        if (hwGroup != null) {
+            SystemManager.addServerToServerGroup(minion, hwGroup);
+        }
+
+        minion.asMinionServer().ifPresent(SaltStateGeneratorService.INSTANCE::generatePillar);
+    }
+
+    private void applySaltboot(MinionServer minion) {
+        List<String> states = new ArrayList<>();
+        states.add(ApplyStatesEventMessage.SYNC_STATES);
+        states.add(ApplyStatesEventMessage.SALTBOOT);
+
+        MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), false, states));
+    }
+
+    /**
+     * Perform the final registration steps for the minion.
+     *
+     * @param minion the minion
+     * @param activationKey the activation key
+     * @param creator user performing the registration
+     * @param enableMinionService true if salt-minion service should be enabled and running
+     */
+    private void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator,
+            boolean enableMinionService) {
+        String minionId = minion.getMinionId();
+        // get hardware and network async
+        triggerHardwareRefresh(minion);
+
+        LOG.info("Finished minion registration: " + minionId);
+
+        StatesAPI.generateServerPackageState(minion);
+
+        // Asynchronously get the uptime of this minion
+        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
+
+        // Generate pillar data
+        try {
+            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+
+            // Subscribe to config channels assigned to the activation key or initialize empty channel profile
+            minion.subscribeConfigChannels(
+                    activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
+                    creator.orElse(null));
+        }
+        catch (RuntimeException e) {
+            LOG.error("Error generating Salt files for minion '" + minionId +
+                    "':" + e.getMessage());
+        }
+
+        // Should we apply the highstate?
+        boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
+
+        // Apply initial states asynchronously
+        List<String> statesToApply = new ArrayList<>();
+        statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
+        statesToApply.add(ApplyStatesEventMessage.CHANNELS);
+        statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
+        statesToApply.add(ApplyStatesEventMessage.PACKAGES);
+        if (enableMinionService) {
+            statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
+        }
+        MessageQueue.publish(new ApplyStatesEventMessage(
+                minion.getId(),
+                minion.getCreator() != null ? minion.getCreator().getId() : null,
+                !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
+                statesToApply
+        ));
+
+        // Call final highstate to deploy config channels if required
+        if (applyHighstate) {
+            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, Collections.emptyList()));
         }
     }
 

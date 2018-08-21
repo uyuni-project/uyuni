@@ -1,3 +1,4 @@
+- Implement the 2-phase registration of saltbooted minions (SUMA for Retail)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 -------------------------------------------------------------------
 Wed Jul 25 09:38:59 CEST 2018 - jgonzalez@suse.com
