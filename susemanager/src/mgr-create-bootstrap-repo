@@ -158,7 +158,7 @@ def create_repo(label, flush, additional=[]):
         print("Creating bootstrap repo for latest Service Pack of {0}".format(label))
     else:
         print("Creating bootstrap repo for {0}".format(label))
-    print
+    print()
 
     if options.usecustomchannels:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_with_custom_channels % (pdids, pdids)))

@@ -12,6 +12,7 @@
 # SUSE trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
+from __future__ import print_function
 
 from spacewalk.susemanager.helpers import cli_ask
 from spacewalk.susemanager.helpers import timeout
@@ -121,7 +122,7 @@ class Authenticator(object):
         Get credentials from CLI interactively.
         """
 
-        print "Please enter the credentials of SUSE Manager Administrator."
+        print("Please enter the credentials of SUSE Manager Administrator.")
         self.user = cli_ask("Login")
         self.password = cli_ask("Password", password=True)
 

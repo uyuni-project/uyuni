@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+from __future__ import print_function
+
 import re
 import sys
 
@@ -27,7 +29,7 @@ class Cleaner:
         self.debug = debug
 
         if not all and not channel:
-            print "You need to specify either --all or --channel"
+            print("You need to specify either --all or --channel")
             sys.exit(1)
 
         initCFG("server.susemanager")
@@ -109,5 +111,5 @@ class Cleaner:
 
 def _printLog(msg):
     log_debug(0, msg)
-    print msg
+    print(msg)
 
