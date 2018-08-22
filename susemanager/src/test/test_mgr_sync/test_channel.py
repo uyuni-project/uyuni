@@ -58,7 +58,7 @@ class ChannelTest(unittest.TestCase):
 
         self.assertEqual(sorted(channels.keys()),
                          sorted(expected_hierarchy.keys()))
-        for label, bc in channels.items():
+        for label, bc in list(channels.items()):
             self.assertEqual(label, bc.label)
             self.assertEqual(
                 bc.status,

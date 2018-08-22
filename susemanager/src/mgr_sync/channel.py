@@ -100,11 +100,11 @@ def find_channel_by_label(label, channels, log):
 
     log.info("Searching for channels with label '{0}'".format(label))
 
-    if label in channels.keys():
+    if label in list(channels.keys()):
         log.debug("Found '{0}'".format(channels[label]))
         return channels[label]
 
-    for bc in channels.values():
+    for bc in list(channels.values()):
         matches = [c for c in bc.children if c.label == label]
         if len(matches) == 1:
             log.debug("Found '{0}'".format(matches[0]))

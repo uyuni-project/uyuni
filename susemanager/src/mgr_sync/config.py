@@ -72,7 +72,7 @@ class Config(object):
             self._config.merge(ConfigObj(Config.DOTFILE))
 
         # Remove unnesessary items
-        for key in self._config.keys():
+        for key in list(self._config.keys()):
             if not key.startswith(Config.K_PREF):
                 del self._config[key]
 

@@ -125,7 +125,7 @@ def list_labels():
     label_map = {}
     synced_products = [x['id'] for x in rhnSQL.fetchall_dict(_sql_synced_proucts) or []]
     label_index = 1
-    for label in sorted(mgr_bootstrap_data.DATA.iterkeys()):
+    for label in sorted(mgr_bootstrap_data.DATA.keys()):
         if int(mgr_bootstrap_data.DATA[label]['PDID'][0]) in synced_products:
             print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label

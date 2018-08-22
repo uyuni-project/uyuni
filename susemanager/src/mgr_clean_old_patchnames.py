@@ -45,7 +45,7 @@ class Cleaner:
     def run(self):
         channels = []
         if self.all:
-            channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
+            channels = list(rhnSQL.Table("RHNCHANNEL", "LABEL").keys())
         else:
             channels = [self.channel]
 
