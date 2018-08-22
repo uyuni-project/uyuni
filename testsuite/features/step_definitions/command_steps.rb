@@ -162,6 +162,26 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
+When(/^I reboot the JeOS minion$/) do
+  file = 'reboot-jeos.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  $proxy.run("expect -f /tmp/#{file}")
+end
+
+When(/^I install the GPG key of the server on the JeOS minion$/) do
+  file = 'galaxy.key'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  system_name = get_system_name('jeos-minion')
+  $server.run("salt-cp #{system_name} #{dest} #{dest}")
+  $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
+end
+
 When(/^the server starts mocking an IPMI host$/) do
   ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -286,6 +306,20 @@ end
 Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}'", false)
+  output = output.split(/\n+/)[-1]
+  raise if output != 'active'
+end
+
+Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  output, _code = node.run("systemctl is-enabled '#{service}.socket'", false)
+  output = output.split(/\n+/)[-1]
+  raise if output != 'enabled'
+end
+
+Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  output, _code = node.run("systemctl is-active '#{service}.socket'", false)
   output = output.split(/\n+/)[-1]
   raise if output != 'active'
 end
@@ -531,6 +565,13 @@ And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/)
   $server.run(cmd, false)
 end
 
+When(/^I open avahi port on the proxy$/) do
+  sed = 's/FW_DEV_EXT=""/FW_DEV_EXT="eth0"/'
+  $proxy.run("sed -i '#{sed}' /etc/sysconfig/SuSEfirewall2")
+  sed = 's/FW_CONFIGURATIONS_EXT=""/FW_CONFIGURATIONS_EXT="avahi"/'
+  $proxy.run("sed -i '#{sed}' /etc/sysconfig/SuSEfirewall2")
+end
+
 When(/^I copy server\'s keys to the proxy$/) do
   ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
     return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
@@ -539,6 +580,56 @@ When(/^I copy server\'s keys to the proxy$/) do
     return_code = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
     raise 'File injection failed' unless return_code.zero?
   end
+end
+
+# rubocop:disable Metrics/BlockLength
+When(/^I set up the private network on the terminals$/) do
+  nodes = [$client, $minion, $ssh_minion]
+  # /etc/sysconfig/network/ifcfg-eth1
+  file = 'ifcfg-eth1'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file + "-suse"
+  dest = "/etc/sysconfig/network/" + file
+  nodes.each do |node|
+    next if node.nil?
+    return_code = file_inject(node, source, dest)
+    raise 'File injection failed' unless return_code.zero?
+    node.run('ifup eth1')
+  end
+  # /etc/sysconfig/network-scripts/ifcfg-eth1
+  nodes = [$ceos_minion]
+  file = 'ifcfg-eth1'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file + "-centos"
+  dest = "/etc/sysconfig/network-scripts/" + file
+  nodes.each do |node|
+    next if node.nil?
+    return_code = file_inject(node, source, dest)
+    raise 'File injection failed' unless return_code.zero?
+    node.run('systemctl restart NetworkManager')
+  end
+  # /etc/resolv.conf
+  nodes = [$client, $minion, $ssh_minion]
+  file = 'resolv.conf'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/etc/" + file
+  nodes.each do |node|
+    next if node.nil?
+    return_code = file_inject(node, source, dest)
+    raise 'File injection failed' unless return_code.zero?
+  end
+end
+# rubocop:enable Metrics/BlockLength
+
+Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
+  node = get_target(host)
+  output, return_code = node.run("ip -4 address show eth1")
+  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? "192.168.5."
+end
+
+Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
+  # We ping the traditional client, using its domain name provided by the branch server
+  node = get_target(host)
+  output, return_code = node.run("ping -c1 client.example.org")
+  raise "Name resolution for branch network on terminal #{host} doesn't work: #{output}" unless return_code.zero?
 end
 
 When(/^I configure the proxy$/) do

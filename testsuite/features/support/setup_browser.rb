@@ -65,6 +65,9 @@ end
 Before('@centos_minion') do |scenario|
   scenario.skip_invoke! unless $ceos_minion
 end
+Before('@jeos_minion') do |scenario|
+  scenario.skip_invoke! unless $jeos_mac
+end
 Before('@ssh_minion') do |scenario|
   scenario.skip_invoke! unless $ssh_minion
 end

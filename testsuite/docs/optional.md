@@ -150,3 +150,67 @@ to the controller declaration that looks like:
 ```
 git_profiles_repo="https://github.com#mybranch:myprofiles"
 ```
+
+
+### Testing SUSE Manager for Retail
+
+Testing SUSE Manager for Retail is optional. To test it, you need:
+* a private network;
+* a JeOS minion.
+
+The JeOS minion will reside in the private network only.
+The proxy will route between the private network and the
+outer world.
+
+#### Private network
+
+If you do not want a private network, do not define `PRIVATENET`
+environment variable before you run the testsuite. That's all.
+If you want that optional network, make this variable contain
+`yes` or `true`:
+```bash
+export PRIVATENET=yes
+```
+and then run the testsuite.
+
+Sumaform declares the `$PRIVATENET`
+variable on the controller (in `/root/.bashrc`).
+To create the private network in your `main.tf` file, add a line
+to the base declaration that looks like:
+```
+additional_network=true
+```
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@private_net
+```
+are executed only when there is a private network.
+
+If you do not want a JeOS minion, do not define `JEOSMAC`
+environment variable before you run the testsuite. That's all.
+If you want a JeOS minion, make this variable contain
+the MAC address of the JeOS minion:
+```bash
+export JEOSMAC=52:54:00:01:02:03
+```
+and then run the testsuite.
+
+#### JeOS minion
+
+The JeOS minion can be reached only from the proxy and
+via the private network. It has a fixed IP address and
+domain name:
+`192.168.5.4` and `terminal.example.org`.
+
+This is needed to be able to reboot it and then
+to trigger a complete reinstallation with help of PXE.
+
+Summaform cannot prepare yet the JeOS virtual machine.
+This is work in progress (github issue #5952).
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@jeos_minion
+```
+are executed only if the JeOS minion is available.

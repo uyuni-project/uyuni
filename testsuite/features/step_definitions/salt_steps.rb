@@ -58,19 +58,20 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
-  system_name = get_system_name(minion)
   cmd = "salt-key --list #{key_type}"
-  output = ''
   begin
     Timeout.timeout(key_timeout.to_i) do
       loop do
-        output, return_code = $server.run(cmd, false)
-        break if return_code.zero? && output.include?(system_name)
+        system_name = get_system_name(minion)
+        unless system_name.empty?
+          output, return_code = $server.run(cmd, false)
+          break if return_code.zero? && output.include?(system_name)
+        end
         sleep 1
       end
     end
   rescue Timeout::Error
-    raise "Minion #{system_name} is not listed among #{key_type} keys on Salt master after #{key_timeout} seconds"
+    raise "Minion \"#{minion}\" is not listed among #{key_type} keys on Salt master after #{key_timeout} seconds"
   end
 end
 
@@ -126,6 +127,11 @@ Then(/^it should contain a "(.*?)" text$/) do |content|
   assert_match(/#{content}/, $output)
 end
 
+When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
+  system_name = get_system_name(host)
+  $server.run("salt #{system_name} state.apply #{state}")
+end
+
 Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
   $output, _code = $server.run("ss -nta | grep #{port}")
   assert_match(/127.0.0.1:#{port}/, $output)
@@ -152,6 +158,12 @@ Then(/^"(.*?)" should be registered$/) do |host|
   @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
   assert_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
+end
+
+Then(/^the JeOS minion should have been reformatted$/) do
+  system_name = get_system_name('jeos-minion')
+  output, _code = $server.run("salt #{system_name} file.file_exists /intact")
+  raise 'Minion is intact' unless output.include? 'False'
 end
 
 # user salt steps
@@ -295,10 +307,144 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
-  boxids = { 'timezone name'   => 'timezone#name',
-             'language'        => 'keyboard_and_language#language',
-             'keyboard layout' => 'keyboard_and_language#keyboard_layout' }
+  boxids = { 'timezone name'            => 'timezone#name',
+             'language'                 => 'keyboard_and_language#language',
+             'keyboard layout'          => 'keyboard_and_language#keyboard_layout',
+             'disk label'               => 'partitioning#0#disklabel',
+             'first filesystem format'  => 'partitioning#0#partitions#0#format',
+             'first partition flags'    => 'partitioning#0#partitions#0#flags',
+             'second filesystem format' => 'partitioning#0#partitions#1#format',
+             'second partition flags'   => 'partitioning#0#partitions#1#flags' }
   select(value, from: boxids[box])
+end
+
+# rubocop:disable Metrics/BlockLength
+When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
+  fieldids = { 'IP'                              => 'branch_network#ip',
+               'NIC'                             => 'branch_network#nic',
+               'domain name'                     => 'dhcpd#domain_name',
+               'listen interfaces'               => 'dhcpd#listen_interfaces#0',
+               'network IP'                      => 'dhcpd#subnets#0#$key',
+               'network mask'                    => 'dhcpd#subnets#0#netmask',
+               'dynamic IP range begin'          => 'dhcpd#subnets#0#range#0',
+               'dynamic IP range end'            => 'dhcpd#subnets#0#range#1',
+               'broadcast address'               => 'dhcpd#subnets#0#broadcast_address',
+               'routers'                         => 'dhcpd#subnets#0#routers#0',
+               'next server'                     => 'dhcpd#subnets#0#next_server',
+               'filename'                        => 'dhcpd#subnets#0#filename',
+               'first reserved hostname'         => 'dhcpd#hosts#0#$key',
+               'first reserved IP'               => 'dhcpd#hosts#0#fixed_address',
+               'second reserved hostname'        => 'dhcpd#hosts#1#$key',
+               'second reserved IP'              => 'dhcpd#hosts#1#fixed_address',
+               'third reserved hostname'         => 'dhcpd#hosts#2#$key',
+               'third reserved IP'               => 'dhcpd#hosts#2#fixed_address',
+               'first configured zone name'      => 'bind#configured_zones#0#$key',
+               'first available zone name'       => 'bind#available_zones#0#$key',
+               'first file name'                 => 'bind#available_zones#0#file',
+               'first name server'               => 'bind#available_zones#0#soa#ns',
+               'first contact'                   => 'bind#available_zones#0#soa#contact',
+               'first A name'                    => 'bind#available_zones#0#records#A#0#0',
+               'first A address'                 => 'bind#available_zones#0#records#A#0#1',
+               'second A name'                   => 'bind#available_zones#0#records#A#1#0',
+               'second A address'                => 'bind#available_zones#0#records#A#1#1',
+               'third A name'                    => 'bind#available_zones#0#records#A#2#0',
+               'third A address'                 => 'bind#available_zones#0#records#A#2#1',
+               'fourth A name'                   => 'bind#available_zones#0#records#A#3#0',
+               'fourth A address'                => 'bind#available_zones#0#records#A#3#1',
+               'first NS'                        => 'bind#available_zones#0#records#NS#@#0',
+               'first CNAME alias'               => 'bind#available_zones#0#records#CNAME#0#0',
+               'first CNAME name'                => 'bind#available_zones#0#records#CNAME#0#1',
+               'second CNAME alias'              => 'bind#available_zones#0#records#CNAME#1#0',
+               'second CNAME name'               => 'bind#available_zones#0#records#CNAME#1#1',
+               'third CNAME alias'               => 'bind#available_zones#0#records#CNAME#2#0',
+               'third CNAME name'                => 'bind#available_zones#0#records#CNAME#2#1',
+               'second configured zone name'     => 'bind#configured_zones#1#$key',
+               'second available zone name'      => 'bind#available_zones#1#$key',
+               'second file name'                => 'bind#available_zones#1#file',
+               'second name server'              => 'bind#available_zones#1#soa#ns',
+               'second contact'                  => 'bind#available_zones#1#soa#contact',
+               'second NS'                       => 'bind#available_zones#1#records#NS#@#0',
+               'second generate reverse network' => 'bind#available_zones#1#generate_reverse#net',
+               'second for zones'                => 'bind#available_zones#1#generate_reverse#for_zones#0',
+               'third configured zone name'      => 'bind#configured_zones#2#$key',
+               'third available zone name'       => 'bind#available_zones#2#$key',
+               'third file name'                 => 'bind#available_zones#2#file',
+               'third name server'               => 'bind#available_zones#2#soa#ns',
+               'third contact'                   => 'bind#available_zones#2#soa#contact',
+               'internal network address'        => 'tftpd#listen_ip',
+               'TFTP base directory'             => 'tftpd#root_dir',
+               'branch id'                       => 'pxe#branch_id',
+               'disk id'                         => 'partitioning#0#$key',
+               'disk device'                     => 'partitioning#0#device',
+               'first partition id'              => 'partitioning#0#partitions#0#$key',
+               'first partition size'            => 'partitioning#0#partitions#0#size_MiB',
+               'first mount point'               => 'partitioning#0#partitions#0#mountpoint',
+               'first OS image'                  => 'partitioning#0#partitions#0#image',
+               'second partition id'             => 'partitioning#0#partitions#1#$key',
+               'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
+               'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
+               'second OS image'                 => 'partitioning#0#partitions#1#image' }
+  fill_in fieldids[field], with: value
+end
+# rubocop:enable Metrics/BlockLength
+
+When(/^I enter the hostname of "([^"]*)" in (.*) field$/) do |host, field|
+  system_name = get_system_name(host)
+  fieldids = { 'domain name server' => 'dhcpd#domain_name_servers#0',
+               'third CNAME name'   => 'bind#available_zones#0#records#CNAME#2#1',
+               'third name server'  => 'bind#available_zones#2#soa#ns',
+               'fifth A name'       => 'bind#available_zones#2#records#A#0#0',
+               'third NS'           => 'bind#available_zones#2#records#NS#@#0' }
+  fill_in fieldids[field], with: "#{system_name}."
+end
+
+When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
+  node = get_target(host)
+  output, _code = node.run("ip address show dev eth0")
+  ip = output.split("\n")[2].split[1].split('/')[0]
+  fieldids = { 'fifth A address' => 'bind#available_zones#2#records#A#0#1' }
+  fill_in fieldids[field], with: ip
+end
+
+When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
+  if host == 'jeos-minion'
+    mac = $jeos_mac
+  else
+    node = get_target(host)
+    output, _code = node.run("ip link show dev eth1")
+    mac = output.split("\n")[1].split[1]
+  end
+  fieldids = { 'first reserved MAC'  => 'dhcpd#hosts#0#hardware',
+               'second reserved MAC' => 'dhcpd#hosts#1#hardware',
+               'third reserved MAC'  => 'dhcpd#hosts#2#hardware' }
+  fill_in fieldids[field], with: 'ethernet ' + mac
+end
+
+When(/^I press "Add Item" in (.*) section$/) do |section|
+  sectionids = { 'host reservations' => 'dhcpd#hosts#add_item',
+                 'configured zones'  => 'bind#configured_zones#add_item',
+                 'available zones'   => 'bind#available_zones#add_item',
+                 'first A'           => 'bind#available_zones#0#records#A#add_item',
+                 'first NS'          => 'bind#available_zones#0#records#NS#@#add_item',
+                 'first CNAME'       => 'bind#available_zones#0#records#CNAME#add_item',
+                 'second NS'         => 'bind#available_zones#1#records#NS#@#add_item',
+                 'second for zones'  => 'bind#available_zones#1#generate_reverse#for_zones#add_item',
+                 'third A'           => 'bind#available_zones#2#records#A#add_item',
+                 'third NS'          => 'bind#available_zones#2#records#NS#@#add_item',
+                 'partitions'        => 'partitioning#0#partitions#add_item' }
+  find(:xpath, "//button[@id='#{sectionids[section]}']").click
+end
+
+When(/^I press "Remove Item" in (.*) section$/) do |section|
+  sectionids = { 'first CNAME'       => 'bind#available_zones#0#records#CNAME#0',
+                 'second CNAME'      => 'bind#available_zones#0#records#CNAME#0',
+                 'third CNAME'       => 'bind#available_zones#0#records#CNAME#0' }
+  find(:xpath, "//div[@id='#{sectionids[section]}']/button").click
+end
+
+When(/^I check (.*) box$/) do |box|
+  boxids = { 'include forwarders' => 'bind#config#include_forwarders' }
+  check boxids[box]
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|

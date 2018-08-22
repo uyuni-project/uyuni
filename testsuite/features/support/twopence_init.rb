@@ -67,9 +67,20 @@ def get_target(host)
 end
 
 # This function gets the system name, as displayed in systems list
+# * for the usual clients, it is the full hostname, e.g. ebi2-centos.tf.local
+# * for the PXE booted clients, it is derived from the branch name, the hardware type,
+#   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 def get_system_name(host)
-  node = get_target(host)
-  system_name = node.full_hostname
+  if host == 'jeos-minion'
+    # The JeOS minion is not directly accessible on the network,
+    # therefore it is not represented by a twopence node
+    output, _code = $server.run('salt-key')
+    system_name = output.split.find { |word| word =~ /example.Intel-Genuine-None-/ }
+    system_name = '' if system_name.nil?
+  else
+    node = get_target(host)
+    system_name = node.full_hostname
+  end
   system_name
 end
 
@@ -99,6 +110,7 @@ end
 
 # Other global variables
 $sle15_minion = minion_is_sle15
+$jeos_mac = ENV['JEOSMAC']
 $private_net = !ENV['PRIVATENET'].nil?
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']

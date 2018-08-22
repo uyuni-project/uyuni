@@ -1,0 +1,6 @@
+# Retail: interface to private network on the terminals
+
+DEVICE='eth1'
+STARTMODE='auto'
+BOOTPROTO='dhcp'
+DNS1='192.168.5.254'
