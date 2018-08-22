@@ -21,6 +21,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
+import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -205,7 +206,7 @@ public class SaltReactor implements EventListener {
 
     private Runnable onImageDeployed(ImageDeployedEvent imageDeployedEvent) {
         return () -> {
-            LOG.error("test" + imageDeployedEvent);
+            MessageQueue.publish(new ImageDeployedEventMessage(imageDeployedEvent));
         };
     }
 
