@@ -10,6 +10,11 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from optparse import OptionParser
 import textwrap
 
+try:
+   input = raw_input
+except NameError:
+   pass
+
 msg_wrapper = textwrap.TextWrapper()
 msg_wrapper.initial_indent = '- '
 msg_wrapper.width = 75
@@ -261,7 +266,7 @@ if options.interactive:
     elabel = None
     while True:
         try:
-            elabel = label_map.get(int(raw_input("Enter a number of a product label: ")), '')
+            elabel = label_map.get(int(input("Enter a number of a product label: ")), '')
             break
         except Exception:
             print("Please enter a number.")

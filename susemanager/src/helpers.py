@@ -20,6 +20,10 @@ import errno
 import os
 import signal
 
+try:
+   input = raw_input
+except NameError:
+   pass
 
 def cli_ask(msg, password=False, validator=None):
     """
@@ -35,7 +39,7 @@ def cli_ask(msg, password=False, validator=None):
     msg += ": "
     value = None
     while True:
-        value = (password and getpass.getpass(msg) or raw_input(msg))
+        value = (password and getpass.getpass(msg) or input(msg))
         if not validator and value:
             break
         elif validator:

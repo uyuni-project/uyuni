@@ -22,6 +22,11 @@ from spacewalk.susemanager import errata_helper
 
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
+try:
+   input = raw_input
+except NameError:
+   pass
+
 class Cleaner:
     def __init__(self, debug):
         self.debug = debug
@@ -65,7 +70,7 @@ class Cleaner:
 
         reply = None
         while not reply in ('y', 'n'):
-            reply = raw_input("Do you want to continue? (Y/n) ")
+            reply = input("Do you want to continue? (Y/n) ")
             if not reply:
                 reply = "y"
             reply = reply.lower()
