@@ -90,7 +90,15 @@ public abstract class RhnJavaJob implements RhnJob {
         run.finished();
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
+        finishJob();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
     }
+
+    /**
+     * Finish the job after the main DB transaction has been committed.
+     */
+    protected void finishJob() { }
 
     protected void executeExtCmd(String[] args)
         throws JobExecutionException {
