@@ -16,7 +16,10 @@
 from spacewalk.susemanager.helpers import cli_ask
 from spacewalk.susemanager.helpers import timeout
 
-import xmlrpclib
+try:
+    import xmlrpc.client as xmlrpc_client
+except ImportError:
+    import xmlrpclib as xmlrpc_client
 
 
 class MaximumNumberOfAuthenticationFailures(Exception):
@@ -67,7 +70,7 @@ class Authenticator(object):
 
             try:
                 self._token = self.connection.auth.login(self.user, self.password)
-            except xmlrpclib.Fault as ex:
+            except xmlrpc_client.Fault as ex:
                 if ex.faultCode == 2950 and "Either the password or username is incorrect" in ex.faultString:
                     if self.has_credentials() and not self.cached_credentials_used:
                         # Try to reuse the credentials stored into the configuration file

@@ -28,7 +28,7 @@ import sys
 from spacewalk.susemanager.helpers import cli_ask
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import FakeStdin
+from .helper import FakeStdin
 
 def fake_user_input(*args):
     for ret_value in args:

@@ -15,7 +15,10 @@
 
 import re
 import sys
-import xmlrpclib
+try:
+    import xmlrpc.client as xmlrpc_client
+except ImportError:
+    import xmlrpclib as xmlrpc_client
 
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
@@ -39,7 +42,7 @@ class MgrSync(object):
         url = "http://{0}:{1}{2}".format(self.config.host,
                                   self.config.port,
                                   self.config.uri)
-        self.conn = xmlrpclib.ServerProxy(url)
+        self.conn = xmlrpc_client.ServerProxy(url)
         self.auth = Authenticator(connection=self.conn,
                                   user=self.config.user,
                                   password=self.config.password,
@@ -330,7 +333,7 @@ class MgrSync(object):
                                         "syncRepo",
                                         self.auth.token(),
                                         channels)
-        except xmlrpclib.Fault as ex:
+        except xmlrpc_client.Fault as ex:
             if ex.faultCode == 2802:
                 self.log.error("Error, unable to schedule channel reposync: Taskomatic is not responding.")
                 sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
@@ -618,7 +621,7 @@ class MgrSync(object):
         if self.conn.sync.master.hasMaster() or schedule:
             try:
                 self._schedule_taskomatic_refresh(enable_reposync)
-            except xmlrpclib.Fault as e:
+            except xmlrpc_client.Fault as e:
                 self.log.error("Error scheduling refresh: {0}".format(e))
                 sys.stderr.write("Error scheduling refresh: {0}\n".format(e))
                 return False
@@ -674,7 +677,7 @@ class MgrSync(object):
         return True
 
     def _schedule_taskomatic_refresh(self, enable_reposync):
-         client = xmlrpclib.Server(TASKOMATIC_XMLRPC_URL)
+         client = xmlrpc_client.Server(TASKOMATIC_XMLRPC_URL)
          params = {}
          params['noRepoSync'] = not enable_reposync
 
@@ -698,7 +701,7 @@ class MgrSync(object):
             self.log.debug("Invoking remote method {0} with auth_token {1}".format(
                 method, auth_token))
             return getattr(endpoint, method)(auth_token, *params)
-        except xmlrpclib.Fault as ex:
+        except xmlrpc_client.Fault as ex:
             if retry_on_session_failure and self._check_session_fail(ex):
                 self.log.info("Retrying after session failure: {0}".format(ex))
                 self.auth.discard_token()
