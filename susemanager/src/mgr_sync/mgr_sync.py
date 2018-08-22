@@ -60,7 +60,7 @@ class MgrSync(object):
         self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
 
-        if self.conn.sync.master.hasMaster() and not vars(options).has_key('refresh'):
+        if self.conn.sync.master.hasMaster() and 'refresh' not in vars(options):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
@@ -114,7 +114,7 @@ class MgrSync(object):
         self.quiet = not options.verbose
         self.exit_with_error = False
 
-        if vars(options).has_key('list_target'):
+        if 'list_target' in vars(options):
             if 'channel' in options.list_target:
                 self.log.info("Listing channels...")
                 self._list_channels(expand=options.expand,
@@ -128,7 +128,7 @@ class MgrSync(object):
                 self.log.info("Listing products...")
                 self._list_products(expand=options.expand,
                                     filter=options.filter)
-        elif vars(options).has_key('add_target'):
+        elif 'add_target' in vars(options):
             if 'channel' in options.add_target:
                 self._add_channels(channels=options.target,
                                    mirror=options.mirror,
@@ -137,12 +137,12 @@ class MgrSync(object):
                 self._add_credentials(options.primary, options.target)
             elif 'product' in options.add_target:
                 self._add_products(mirror="", no_recommends=options.no_recommends)
-        elif vars(options).has_key('refresh'):
+        elif 'refresh' in vars(options):
             self.exit_with_error = not self._refresh(
                 enable_reposync=options.refresh_channels,
                 mirror=options.mirror,
                 schedule=options.schedule)
-        elif vars(options).has_key('delete_target'):
+        elif 'delete_target' in vars(options):
             if 'credentials' in options.delete_target:
                 self._delete_credentials(options.target)
 
