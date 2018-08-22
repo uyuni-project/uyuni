@@ -1723,11 +1723,14 @@ public class SaltUtils {
             sb.append("stderr:\n\n");
             sb.append(stderr);
             sb.append("\n");
+            if (StringUtils.isNotEmpty(stdout)) {
+                sb.append("stdout:\n\n");
+                sb.append(stdout);
+                sb.append("\n");
+            }
         }
-        if (StringUtils.isNotEmpty(stdout)) {
-            sb.append("stdout:\n\n");
+        else {
             sb.append(stdout);
-            sb.append("\n");
         }
         return sb.toString();
     }
