@@ -176,9 +176,8 @@ When(/^I create and delete profile custom values via XML-RPC$/) do
   pro_det = cont_op.get_profile_custom_values('fakeone')
   assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
   pro_type = cont_op.list_image_profile_types
-  assert_equal(pro_type.length, 2, 'support for Dockerfile and Kiwi profiles')
+  assert_equal(pro_type.length, 1, 'support for dockerfile profiles')
   assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
-  assert_equal(pro_type[1], 'kiwi', 'type is not kiwi?')
   key = ['arancio']
   cont_op.delete_profile_custom_values('fakeone', key)
 end
