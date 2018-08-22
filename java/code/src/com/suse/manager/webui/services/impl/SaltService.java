@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
+
+import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -455,8 +457,10 @@ public class SaltService {
      * @return the event stream
      * @throws SaltException exception occured during connection (if any)
      */
-    // Do not use the shared client object here, so we can disable the timeout (set to 0).
     public EventStream getEventStream() throws SaltException {
+        if (ConfigDefaults.get().isPostgresql()) {
+            return new PGEventStream();
+        }
         Token token = adaptException(SALT_CLIENT.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
         return SALT_CLIENT.events(token, 0, 0, 0);
     }
