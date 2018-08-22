@@ -54,6 +54,29 @@ public class ImageDeployedEvent {
         return grains;
     }
 
+    /**
+     * Convenience method for getting saltboot_initrd flag
+     * @return saltboot_initrd flag
+     */
+    public Optional<Boolean> getSaltbootInitrd() {
+        return grains.getOptionalAsBoolean("saltboot_initrd");
+    }
+
+    /**
+     * Convenience method for getting machine_id flag
+     * @return machine_id flag
+     */
+    public Optional<String> getMachineId() {
+        return grains.getOptionalAsString("machine_id");
+    }
+
+    /**
+     * Parse the generic event
+     *
+     * @param event the generic event to parse
+     * @return Optional of {@link com.suse.manager.webui.utils.salt.ImageDeployedEvent} or
+     * an empty Optional if the event data did not match the ImageDeployedEvent shape
+     */
     public static Optional<ImageDeployedEvent> parse(Event event) {
         Matcher matcher = PATTERN.matcher(event.getTag());
         Map<String, Object> data = event.getData();
