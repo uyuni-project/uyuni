@@ -54,8 +54,8 @@ class ConfigTest(unittest.TestCase):
         # only rhn config is in place
         config = Config()
 
-        self.assertEquals(rhn_user, config.user)
-        self.assertEquals(rhn_token, config.token)
+        self.assertEqual(rhn_user, config.user)
+        self.assertEqual(rhn_token, config.token)
 
         # add user config, should get higher priority at parsing time
 
@@ -66,9 +66,9 @@ class ConfigTest(unittest.TestCase):
 
         config = Config()
 
-        self.assertEquals(local_user, config.user)
-        self.assertEquals(local_password, config.password)
-        self.assertEquals(rhn_token, config.token)
+        self.assertEqual(local_user, config.user)
+        self.assertEqual(local_password, config.password)
+        self.assertEqual(rhn_token, config.token)
 
     def _create_fake_config_file(self, filename, user=None, password=None,
                                  host=None, port=None, uri=None, token=None):
