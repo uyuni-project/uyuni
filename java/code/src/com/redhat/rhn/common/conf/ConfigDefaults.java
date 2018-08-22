@@ -154,9 +154,9 @@ public class ConfigDefaults {
     private static final String DB_BACKEND_POSTGRESQL = "postgresql";
     public static final String DB_USER = "db_user";
     public static final String DB_PASSWORD = "db_password";
-    private static final String DB_NAME = "db_name";
-    private static final String DB_HOST = "db_host";
-    private static final String DB_PORT = "db_port";
+    public static final String DB_NAME = "db_name";
+    public static final String DB_HOST = "db_host";
+    public static final String DB_PORT = "db_port";
     private static final String DB_SSL_ENABLED = "db_ssl_enabled";
     private static final String DB_PROTO = "hibernate.connection.driver_proto";
     public static final String DB_CLASS = "hibernate.connection.driver_class";
