@@ -40,7 +40,7 @@ public class OSImageInspectSlsResult {
         private String version;
         private String filename;
         private String arch;
-        private Double size;
+        private Long size;
 
         /**
          * @return the hash
@@ -115,7 +115,7 @@ public class OSImageInspectSlsResult {
         /**
          * @return the image size
          */
-        public Double getSize() {
+        public Long getSize() {
             return size;
         }
     }
@@ -138,7 +138,7 @@ public class OSImageInspectSlsResult {
             private String version;
             private String hash;
             private String filename;
-            private Double size;
+            private Long size;
 
             /**
              * @return the version
@@ -164,7 +164,7 @@ public class OSImageInspectSlsResult {
             /**
              * @return the size
              */
-            public Double getSize() {
+            public Long getSize() {
                 return size;
             }
         }
@@ -211,7 +211,7 @@ public class OSImageInspectSlsResult {
             private String version;
             private String hash;
             private String filename;
-            private Double size;
+            private Long size;
 
             /**
              * @return the version
@@ -237,7 +237,7 @@ public class OSImageInspectSlsResult {
             /**
              * @return the size
              */
-            public Double getSize() {
+            public Long getSize() {
                 return size;
             }
         }
