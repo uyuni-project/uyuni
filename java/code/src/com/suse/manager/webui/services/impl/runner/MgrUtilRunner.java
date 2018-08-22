@@ -62,6 +62,16 @@ public class MgrUtilRunner {
         public String getStderr() {
             return stderr;
         }
+
+        /**
+         * Create an empty result with return code 0.
+         * @return a result with return code 0.
+         */
+        public static ExecResult success() {
+            ExecResult res = new ExecResult();
+            res.returnCode = 0;
+            return res;
+        }
     }
 
     /**
