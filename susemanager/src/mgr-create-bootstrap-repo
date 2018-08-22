@@ -123,7 +123,7 @@ def list_labels():
     :return:
     """
     label_map = {}
-    synced_products = map(lambda x: x['id'], rhnSQL.fetchall_dict(_sql_synced_proucts) or [])
+    synced_products = [x['id'] for x in rhnSQL.fetchall_dict(_sql_synced_proucts) or []]
     label_index = 1
     for label in sorted(mgr_bootstrap_data.DATA.iterkeys()):
         if int(mgr_bootstrap_data.DATA[label]['PDID'][0]) in synced_products:
@@ -201,7 +201,7 @@ def create_repo(label, flush, additional=[]):
             print(m)
         if label.startswith('RES') and not options.usecustomchannels:
             print("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
-        suggestions = list(filter(None, suggestions.values()))
+        suggestions = list([_f for _f in list(suggestions.values()) if _f])
         if suggestions:
             print("\nSuggestions:")
             for suggestion in suggestions:
@@ -240,9 +240,9 @@ try:
     mgr_bootstrap_data = __import__(modulename)
     for label in mgr_bootstrap_data.DATA:
         if not isinstance(mgr_bootstrap_data.DATA[label]['PDID'], usix.ListType):
-            mgr_bootstrap_data.DATA[label]['PDID'] = map(str, [int(mgr_bootstrap_data.DATA[label]['PDID'])])
+            mgr_bootstrap_data.DATA[label]['PDID'] = list(map(str, [int(mgr_bootstrap_data.DATA[label]['PDID'])]))
         else:
-            mgr_bootstrap_data.DATA[label]['PDID'] = map(str, [int(pdid) for pdid in mgr_bootstrap_data.DATA[label]['PDID']])
+            mgr_bootstrap_data.DATA[label]['PDID'] = list(map(str, [int(pdid) for pdid in mgr_bootstrap_data.DATA[label]['PDID']]))
 except ImportError as e:
     sys.stderr.write("Unable to load module '%s'\n" % modulename)
     sys.stderr.write(str(e) + "\n")
