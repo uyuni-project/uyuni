@@ -2378,7 +2378,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertNotNull(server.getInstalledProductSet());
 
-        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+        server.getInstalledProductSet().get().getBaseProduct().getUpgrades();
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
@@ -2418,7 +2418,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertNotNull(server.getInstalledProductSet());
 
-        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+        server.getInstalledProductSet().get().getBaseProduct().getUpgrades();
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
@@ -2467,7 +2467,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertNotNull(server.getInstalledProductSet());
 
-        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+        server.getInstalledProductSet().get().getBaseProduct().getUpgrades();
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
