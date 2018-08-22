@@ -330,7 +330,7 @@ class MgrSync(object):
                                         "syncRepo",
                                         self.auth.token(),
                                         channels)
-        except xmlrpclib.Fault, ex:
+        except xmlrpclib.Fault as ex:
             if ex.faultCode == 2802:
                 self.log.error("Error, unable to schedule channel reposync: Taskomatic is not responding.")
                 sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
@@ -618,7 +618,7 @@ class MgrSync(object):
         if self.conn.sync.master.hasMaster() or schedule:
             try:
                 self._schedule_taskomatic_refresh(enable_reposync)
-            except xmlrpclib.Fault, e:
+            except xmlrpclib.Fault as e:
                 self.log.error("Error scheduling refresh: {0}".format(e))
                 sys.stderr.write("Error scheduling refresh: {0}\n".format(e))
                 return False
@@ -642,7 +642,7 @@ class MgrSync(object):
                 self.log.info("Refreshing {0} succeeded".format(operation.rstrip()))
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
-            except Exception, ex:
+            except Exception as ex:
                 self.log.error("Refreshing {0} failed".format(operation.rstrip()))
                 self.log.error("Error: {0}".format(ex))
                 sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
@@ -698,7 +698,7 @@ class MgrSync(object):
             self.log.debug("Invoking remote method {0} with auth_token {1}".format(
                 method, auth_token))
             return getattr(endpoint, method)(auth_token, *params)
-        except xmlrpclib.Fault, ex:
+        except xmlrpclib.Fault as ex:
             if retry_on_session_failure and self._check_session_fail(ex):
                 self.log.info("Retrying after session failure: {0}".format(ex))
                 self.auth.discard_token()

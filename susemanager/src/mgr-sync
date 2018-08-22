@@ -25,15 +25,15 @@ options = get_options()
 
 try:
     sys.exit(MgrSync().run(options))
-except socket.error, ex:
+except socket.error as ex:
     sys.stderr.write("Network error: {0}\n".format(ex))
     if options.verbose:
         raise
     else:
         sys.exit(1)
-except KeyboardInterrupt, ex:
+except KeyboardInterrupt as ex:
     sys.stdout.write("\n")
-except Exception, ex:
+except Exception as ex:
     sys.stderr.write("General error: {0}\n".format(ex))
     if options.verbose:
         raise

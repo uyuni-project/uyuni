@@ -67,7 +67,7 @@ class Authenticator(object):
 
             try:
                 self._token = self.connection.auth.login(self.user, self.password)
-            except xmlrpclib.Fault, ex:
+            except xmlrpclib.Fault as ex:
                 if ex.faultCode == 2950 and "Either the password or username is incorrect" in ex.faultString:
                     if self.has_credentials() and not self.cached_credentials_used:
                         # Try to reuse the credentials stored into the configuration file

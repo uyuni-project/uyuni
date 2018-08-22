@@ -243,7 +243,7 @@ try:
             mgr_bootstrap_data.DATA[label]['PDID'] = map(str, [int(mgr_bootstrap_data.DATA[label]['PDID'])])
         else:
             mgr_bootstrap_data.DATA[label]['PDID'] = map(str, [int(pdid) for pdid in mgr_bootstrap_data.DATA[label]['PDID']])
-except ImportError, e:
+except ImportError as e:
     sys.stderr.write("Unable to load module '%s'\n" % modulename)
     sys.stderr.write(str(e) + "\n")
     sys.exit(1)

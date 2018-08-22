@@ -41,5 +41,5 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except IOError, e:
+    except IOError as e:
         print "ERROR: %s" % e

@@ -27,7 +27,7 @@ class Cleaner:
 
         try:
             rhnSQL.initDB()
-        except rhnSQL.SQLConnectError, e:
+        except rhnSQL.SQLConnectError as e:
             log_error("Could not connect to the database. %s" % e)
             raise Exception("Could not connect to the database. %s" % e)
 

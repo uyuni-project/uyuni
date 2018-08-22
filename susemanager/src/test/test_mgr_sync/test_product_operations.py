@@ -739,7 +739,7 @@ All the available products have already been installed, nothing to do"""
             with ConsoleRecorder() as recorder:
                 try:
                     self.mgr_sync.run(options)
-                except SystemExit, ex:
+                except SystemExit as ex:
                     self.assertEqual(0, ex.code)
 
         expected_output = """Available Products:
