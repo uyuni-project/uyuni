@@ -1,3 +1,4 @@
+- Store image size in image pillar as integer value
 - Reschedule Taskomatic jobs when the taskomatic.<job_type>.parallel_threads
   limit is reached (bsc#1105574)
 - Implement the 2-phase registration of saltbooted minions (SUMA for Retail)
