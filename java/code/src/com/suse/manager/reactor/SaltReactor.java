@@ -38,6 +38,7 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BeaconEvent;
@@ -197,8 +198,15 @@ public class SaltReactor implements EventListener {
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
                 JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
                 BeaconEvent.parse(event).map(this::onBeaconEvent).orElseGet(() ->
-                SystemIdGenerateEvent.parse(event).map(this::onSystemIdGenerateEvent).orElse(() -> { }))));
+                SystemIdGenerateEvent.parse(event).map(this::onSystemIdGenerateEvent).orElseGet(() ->
+                ImageDeployedEvent.parse(event).map(this::onImageDeployed).orElse(() -> { })))));
         executorService.submit(runnable);
+    }
+
+    private Runnable onImageDeployed(ImageDeployedEvent imageDeployedEvent) {
+        return () -> {
+            LOG.error("test" + imageDeployedEvent);
+        };
     }
 
     /**
