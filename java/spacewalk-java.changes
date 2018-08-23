@@ -1,3 +1,4 @@
+- Do not wrap output if stderr is not present (bsc#1105074)
 - Store image size in image pillar as integer value
 - Fix retrieving salt-ssh pub key for proxy setup when key already exists
   (bsc#105062)
