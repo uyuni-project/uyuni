@@ -49,6 +49,7 @@ remove_traditional_stack:
     - require:
       - module: disable_repo*
 {%- endif %}
+    - unless: rpm -q spacewalk-proxy-common
 
 # disable all spacewalk:* repos
 {%- for alias in repos_to_disable %}
