@@ -67,6 +67,7 @@ import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -1276,13 +1277,15 @@ public class SaltServerActionService {
                         pillar.put("source", kiwiProfile.getPath());
                         pillar.put("build_id", "build" + actionId);
                         List<String> repos = new ArrayList<>();
-                        Set<Channel> channels = ActivationKeyFactory.lookupByToken(profile.getToken()).getChannels();
+                        final ActivationKey activationKey = ActivationKeyFactory.lookupByToken(profile.getToken());
+                        Set<Channel> channels = activationKey.getChannels();
                         for (Channel channel: channels) {
                             repos.add("https://" + host +
                                     "/rhn/manager/download/" + channel.getLabel() + "?" +
                                     token);
                         }
                         pillar.put("kiwi_repositories", repos);
+                        pillar.put("activation_key", activationKey.getKey());
                     });
 
                     String saltCall = "";

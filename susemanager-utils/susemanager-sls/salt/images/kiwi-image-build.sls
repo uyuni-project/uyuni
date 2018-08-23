@@ -12,6 +12,7 @@
 {%- set dest_dir   = root_dir + '/images.build' %}
 {%- set bundle_dir = root_dir + '/images/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
+{%- set activation_key = pillar.get('activation_key') %}
 
 {%- set kiwi_params = '--add-repo ' + common_repo + ' --add-repo ' + pillar.get('kiwi_repositories')|join(' --add-repo ') %}
 mgr_buildimage_prepare_source:
@@ -22,6 +23,7 @@ mgr_buildimage_prepare_source:
     - name: kiwi_source.prepare_source
     - source: {{ source }}
     - root: {{ root_dir }}
+    - activation_key: {{ activation_key }}
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
