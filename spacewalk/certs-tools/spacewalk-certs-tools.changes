@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Thu Aug 23 09:05:36 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.0.11-1
 - Feat: check for Dynamic CA-Trust Updates while bootstrapping on RES (FATE #325588)
+
 -------------------------------------------------------------------
 Thu May 17 09:12:07 CEST 2018 - jgonzalez@suse.com
 
