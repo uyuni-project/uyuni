@@ -25,11 +25,21 @@ mgr_buildimage_prepare_source:
     - root: {{ root_dir }}
     - activation_key: {{ activation_key }}
 
+mgr_prepare_activation_key_in_source:
+  file.managed:
+    - name: {{root_dir}}/etc/salt/minion.d/kiwi_activation_key.conf
+    - makedirs: True
+    - contents: |
+        grains:
+          susemanager:
+            activation_key: {{ pillar['activation_key'] }}
+
 mgr_buildimage_kiwi_prepare:
   cmd.run:
     - name: "kiwi --nocolor --force-new-root --prepare {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params }}"
     - require:
       - module: mgr_buildimage_prepare_source
+      - module: mgr_prepare_activation_key_in_source
 
 mgr_buildimage_kiwi_create:
   cmd.run:
