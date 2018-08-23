@@ -154,8 +154,11 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
+
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -5527,6 +5530,124 @@ public class SystemHandler extends BaseHandler {
         cmd.setKernelOptions(kOptions);
         cmd.setComment(comment);
         cmd.store();
+
+        return 1;
+    }
+
+    /**
+     * Creates a system record in dabatase for a system that is not (yet) registered.
+     * @param loggedInUser the currently logged in user
+     * @param sysName server name
+     * @param comment comment
+     * @param netDevices list of network interfaces
+     * @return int - 1 on success, exception thrown otherwise.
+     *
+     * @xmlrpc.doc Creates a system record in database for a system that is not registered.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "sysName")
+     * @xmlrpc.param #param("string", "comment")
+     * @xmlrpc.param
+     *      #array()
+     *          #struct("network device")
+     *              #prop("string", "name")
+     *              #prop("string", "mac")
+     *          #struct_end()
+     *      #array_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int createSystemProfile(User loggedInUser, String sysName, String comment,
+            List<HashMap<String, String>> netDevices) {
+
+        // Create a server object
+        Server server = ServerFactory.createServer();
+        server.setName(sysName);
+        server.setOrg(loggedInUser.getOrg());
+
+        String firstMac = null;
+        // Set network device information to the server so we have something to match with
+        for (HashMap<String, String> map : netDevices) {
+            NetworkInterface device = new NetworkInterface();
+            device.setName(map.get("name"));
+            device.setHwaddr(map.get("mac"));
+            // Only add this interface, if MAC is valid and we have a name
+            if (device.isMacValid()) {
+                if (device.getName() == null || device.getName().isEmpty()) {
+                    throw new FaultException(-2, "networkDeviceError",
+                            "Network device name needs to be specified, e.g. 'eth0'");
+                }
+                if (firstMac == null) {
+                    firstMac = map.get("mac");
+                }
+                server.addNetworkInterface(device);
+            }
+            else {
+              throw new FaultException(-2, "networkDeviceError",
+                          "Network device with invalid MAC address");
+            }
+        }
+        // One device is needed at least
+        if (server.getNetworkInterfaces().size() == 0) {
+            throw new FaultException(-2, "networkDeviceError",
+                    "At least one valid network device is needed");
+        }
+
+        server.setCreator(loggedInUser);
+        server.setDigitalServerId(firstMac);
+        server.setOs("(unknown)");
+        server.setRelease("(unknown)");
+        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setAutoUpdate("N");
+        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        server.setLastBoot(new Long(0));
+        // POS usecase only AMD64 is supported
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+
+        server.updateServerInfo();
+        // Store to the database
+        try {
+            ServerFactory.save(server);
+        }
+        catch(ConstraintViolationException e) {
+            throw new FaultException(-2, "Database error: ", e.getSQLException().getLocalizedMessage());
+        }
+
+        try {
+            server.setBaseEntitlement(EntitlementManager.SALT);
+        }
+        catch (Throwable e) {
+            throw new FaultException(-2, "Entitlement error: ", e.getCause().getLocalizedMessage());
+        }
+
+        return 1;
+    }
+
+    /**
+     * Creates a system record in dabatase for a system that is not (yet) registered.
+     * @param loggedInUser the currently logged in user
+     * @param sysName server name
+     * @param comment comment
+     * @return int - 1 on success, exception thrown otherwise.
+     *
+     * @xmlrpc.doc Creates a system record in database for a system that is not registered.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "sysName")
+     * @xmlrpc.param #param("string", "comment")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int createSystemProfile(User loggedInUser, String sysName, String comment) {
+
+        // Create a server object
+        Server server = ServerFactory.createServer();
+        server.setName(sysName);
+        server.setOrg(loggedInUser.getOrg());
+
+        // Store to the database
+        try {
+            ServerFactory.save(server);
+        }
+        catch(ConstraintViolationException e) {
+            log.error("DB error: ", e.getSQLException());
+        }
 
         return 1;
     }
