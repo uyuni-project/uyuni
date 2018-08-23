@@ -13,9 +13,9 @@ Apart from Cucumber, the testsuite relies on a number of [software components](d
 
 You can run the SUSE Manager testsuite [with sumaform](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
 
-If you want to run the testsuite for [Uyuni](https://www.uyuni-project.org), you need to export the variable PRODUCTS with value Uyuni:
+If you want to run the testsuite for [Uyuni](https://www.uyuni-project.org), you need to export the variable PRODUCT with value Uyuni:
 ```bash
-export PRODUCTS=Uyuni
+export PRODUCT=Uyuni
 ```
 
 ## Core features, idempotency and tests order
