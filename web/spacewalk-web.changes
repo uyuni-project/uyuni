@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Aug 23 09:10:59 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.1.18-1
 - Refactor the fetching and cache the child channels and mandatory channels in System Details change channels page
 - Refactor buttons.js
 - Fix css issues on minion-state pages (bsc#1083295)
