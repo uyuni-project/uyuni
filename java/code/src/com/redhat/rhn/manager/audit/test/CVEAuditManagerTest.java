@@ -1578,6 +1578,50 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Verify that we didn't mess up the result from the ordering
+     * of the database during the evaluation of the result (bsc#1101033)
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testResultContainsDistinctResults() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create a channel with errata and packages
+        User user = createTestUser();
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Package unpatched = createTestPackage(user, channel, "noarch");
+        Package patched = createLaterTestPackage(user, errata, channel, unpatched);
+        List<Package> packages = new ArrayList<Package>();
+        packages.add(unpatched);
+        packages.add(patched);
+
+        // Create clones of channel and errata
+        Errata errataClone = createTestClonedErrata(user, errata, cves, patched);
+        Channel channelClone = createTestClonedChannel(user, errataClone, channel, packages);
+
+        // Subscribe two servers to channel and install unpatched package
+        Set<Channel> assignedChannels = new HashSet<Channel>();
+        assignedChannels.add(channelClone);
+        Server server1 = createTestServer(user, assignedChannels);
+        createTestInstalledPackage(unpatched, server1);
+        Server server2 = createTestServer(user, assignedChannels);
+        createTestInstalledPackage(unpatched, server2);
+
+        // Find the relevant channels and ask for the above CVE
+        CVEAuditManager.populateCVEChannels();
+        List<CVEAuditServer> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, EnumSet.allOf(PatchStatus.class));
+
+        assertEquals(true, checkSystemRecordIsUnique(server1, results));
+        assertEquals(true, checkSystemRecordIsUnique(server2, results));
+    }
+
+    /**
      * Find record for a given server in a list as returned by
      * listSystemsByPatchStatus().
      * @param server
@@ -1593,6 +1637,17 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
             }
         }
         return ret;
+    }
+
+    /**
+     * Check if the system is in the record more than one time (bsc#1101033)
+     *
+     * @param server
+     * @param results
+     * @return true if the system record is present one and only one time in the result
+     */
+    private boolean checkSystemRecordIsUnique(Server server, List<CVEAuditServer> results) {
+        return results.stream().filter(r -> r.getId() == server.getId()).count() == 1;
     }
 
     /**
