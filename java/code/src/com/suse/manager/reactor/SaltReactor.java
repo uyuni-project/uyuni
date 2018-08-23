@@ -14,6 +14,10 @@
  */
 package com.suse.manager.reactor;
 
+import static java.util.stream.Stream.empty;
+import static java.util.stream.Stream.of;
+
+import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -44,7 +48,6 @@ import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BeaconEvent;
-import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
@@ -53,13 +56,12 @@ import com.suse.salt.netapi.exception.SaltException;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.stream.Stream;
 
 /**
  * Salt event reactor.
  */
-public class SaltReactor implements EventListener {
+public class SaltReactor {
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(SaltReactor.class);
@@ -73,9 +75,6 @@ public class SaltReactor implements EventListener {
     // Indicate that the reactor has been stopped
     private volatile boolean isStopped = false;
 
-    // Executor service for handling incoming events
-    private final ExecutorService executorService =
-            Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     // Reconnecting time (in seconds) to Salt event bus
     private static final int DELAY_TIME_SECONDS = 5;
@@ -129,12 +128,9 @@ public class SaltReactor implements EventListener {
     }
 
     /**
-     * {@inheritDoc}
+     * Attempts reconnection to the event stream should it be closed for unexpected reasons.
      */
-    @Override
-    public void eventStreamClosed(int code, String phrase) {
-        LOG.warn("Event stream closed: " + phrase + " [" + code + "]");
-
+    public void eventStreamClosed() {
         if (!isStopped) {
             LOG.warn("Reconnecting to the Salt event bus...");
             connectToEventStream();
@@ -154,7 +150,7 @@ public class SaltReactor implements EventListener {
             retries++;
             try {
                 eventStream = SALT_SERVICE.getEventStream();
-                eventStream.addEventListener(this);
+                eventStream.addEventListener(new MessageQueueEventListener(this::eventStreamClosed, this::eventToMessages));
                 connected = true;
                 if (retries > 1) {
                     LOG.warn("Successfully connected to the Salt event bus after " +
@@ -186,91 +182,15 @@ public class SaltReactor implements EventListener {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void notify(Event event) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Event: " + event.getTag() + " -> " + event.getData());
-        }
-
+    private Stream<EventMessage> eventToMessages(Event event) {
         // Setup handlers for different event types
-        Runnable runnable =
-                MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
-                JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
-                BeaconEvent.parse(event).map(this::onBeaconEvent).orElseGet(() ->
-                SystemIdGenerateEvent.parse(event).map(this::onSystemIdGenerateEvent).orElseGet(() ->
-                ImageDeployedEvent.parse(event).map(this::onImageDeployed).orElse(() -> { })))));
-        executorService.submit(runnable);
-    }
-
-    private Runnable onImageDeployed(ImageDeployedEvent imageDeployedEvent) {
-        return () -> {
-            MessageQueue.publish(new ImageDeployedEventMessage(imageDeployedEvent));
-        };
-    }
-
-    /**
-     * Trigger registration on minion start events.
-     *
-     * @param minionStartEvent minion start event
-     * @return event handler runnable
-     */
-    private Runnable onMinionStartEvent(MinionStartEvent minionStartEvent) {
-        return () -> {
-            triggerMinionStart((String) minionStartEvent.getData().get("id"));
-            triggerMinionRegistration((String) minionStartEvent.getData().get("id"));
-        };
-    }
-
-    /**
-     * Trigger handling of job return events.
-     *
-     * @param jobReturnEvent the job return event as we get it from salt
-     * @return event handler runnable
-     */
-    private Runnable onJobReturnEvent(JobReturnEvent jobReturnEvent) {
-        return () -> {
-            MessageQueue.publish(new JobReturnEventMessage(jobReturnEvent));
-        };
-    }
-
-    /**
-     * Trigger handling of beacon events
-     *
-     * @param beaconEvent beacon event
-     * @return event handler runnable
-     */
-    private Runnable onBeaconEvent(BeaconEvent beaconEvent) {
-        return () -> {
-            if (beaconEvent.getBeacon().equals("pkgset") &&
-                    beaconEvent.getAdditional().equals("changed")) {
-                MessageQueue.publish(
-                        new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
-                            MinionServerFactory.findByMinionId(beaconEvent.getMinionId())
-                                    .ifPresent(minionServer -> {
-                                        try {
-                                            ActionManager.schedulePackageRefresh(
-                                                    minionServer.getOrg(), minionServer);
-                                        }
-                                        catch (TaskomaticApiException e) {
-                                            LOG.error(
-                                                    "Could not schedule package refresh " +
-                                                    "for minion: " +
-                                                            minionServer.getMinionId());
-                                            LOG.error(e);
-                                        }
-                                    });
-                        }));
-            }
-            else if (beaconEvent.getBeacon().equals("virtpoller")) {
-                MessageQueue.publish(new VirtpollerBeaconEventMessage(
-                        beaconEvent.getMinionId(),
-                        beaconEvent.getData(VirtpollerData.class)
-                ));
-            }
-        };
+        return MinionStartEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               JobReturnEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               BeaconEvent.parse(event).map(this::eventToMessages).orElse(
+               empty()
+        )))));
     }
 
     /**
@@ -279,15 +199,76 @@ public class SaltReactor implements EventListener {
      * @param systemIdGenerateEvent the suse/systemid/generate event as we get it from salt
      * @return event handler runnable
      */
-    private Runnable onSystemIdGenerateEvent(SystemIdGenerateEvent systemIdGenerateEvent) {
+    private Stream<EventMessage> eventToMessages(SystemIdGenerateEvent systemIdGenerateEvent) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Generate systemid file for minion: " + (String) systemIdGenerateEvent.getData().get("id"));
         }
-        return () -> {
-            MessageQueue.publish(
-                new SystemIdGenerateEventMessage((String) systemIdGenerateEvent.getData().get("id"))
+        return of(new SystemIdGenerateEventMessage((String) systemIdGenerateEvent.getData().get("id")));
+    }
+
+    /**
+     * Trigger ImageDeployed events.
+     *
+     * @param imageDeployedEvent image deployed event
+     * @return event handler runnable
+     */
+    private Stream<EventMessage> eventToMessages(ImageDeployedEvent imageDeployedEvent) {
+        return of(new ImageDeployedEventMessage(imageDeployedEvent));
+    }
+
+    /**
+     * Trigger registration on minion start events.
+     *
+     * @param minionStartEvent minion start event
+     * @return event handler runnable
+     */
+    private Stream<EventMessage> eventToMessages(MinionStartEvent minionStartEvent) {
+        return of(
+            triggerMinionStart((String) minionStartEvent.getData().get("id")),
+            triggerMinionRegistration((String) minionStartEvent.getData().get("id"))
+        );
+    }
+
+    /**
+     * Trigger handling of job return events.
+     *
+     * @param jobReturnEvent the job return event as we get it from salt
+     * @return event handler runnable
+     */
+    private Stream<EventMessage> eventToMessages(JobReturnEvent jobReturnEvent) {
+        return of(new JobReturnEventMessage(jobReturnEvent));
+    }
+
+    /**
+     * Trigger handling of beacon events
+     *
+     * @param beaconEvent beacon event
+     * @return event handler runnable
+     */
+    private Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
+        if (beaconEvent.getBeacon().equals("pkgset") && beaconEvent.getAdditional().equals("changed")) {
+            return of(
+                    new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
+                        MinionServerFactory.findByMinionId(beaconEvent.getMinionId()).ifPresent(minionServer -> {
+                            try {
+                                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
+                            }
+                            catch (TaskomaticApiException e) {
+                                LOG.error("Could not schedule package refresh for minion: " +
+                                        minionServer.getMinionId());
+                                LOG.error(e);
+                            }
+                        });
+                    })
             );
-        };
+        }
+        if (beaconEvent.getBeacon().equals("virtpoller")) {
+            return of(new VirtpollerBeaconEventMessage(
+                beaconEvent.getMinionId(),
+                beaconEvent.getData(VirtpollerData.class)
+            ));
+        }
+        return empty();
     }
 
     /**
@@ -295,11 +276,11 @@ public class SaltReactor implements EventListener {
      *
      * @param minionId the minion id of the minion to be registered
      */
-    private void triggerMinionRegistration(String minionId) {
+    private EventMessage triggerMinionRegistration(String minionId) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Trigger registration for minion: " + minionId);
         }
-        MessageQueue.publish(new RegisterMinionEventMessage(minionId));
+        return new RegisterMinionEventMessage(minionId);
     }
 
     /**
@@ -307,11 +288,11 @@ public class SaltReactor implements EventListener {
      *
      * @param minionId the minion id of the minion starting
      */
-    private void triggerMinionStart(String minionId) {
+    private EventMessage triggerMinionStart(String minionId) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Trigger start for minion: " + minionId);
         }
-        MessageQueue.publish(new MinionStartEventMessage(minionId));
+        return new MinionStartEventMessage(minionId);
     }
 
     /**
@@ -320,5 +301,4 @@ public class SaltReactor implements EventListener {
     public EventStream getEventStream() {
         return eventStream;
     }
-
 }
