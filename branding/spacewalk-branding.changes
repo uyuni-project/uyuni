@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Aug 23 09:04:43 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.2.14-1
 - Disable child channel selection only if channel is actually assigned (bsc#1097697)
 
 -------------------------------------------------------------------
