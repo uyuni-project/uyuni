@@ -1,3 +1,4 @@
+- Fix script is deleted too early (bsc#1105807)
 - Make Kiwi OS Image building enabled by default
 - Change Saltboot grain trigger from "initrd" to "saltboot_initrd"
 - Optimize execution of actions in minions (bsc#1099857)
