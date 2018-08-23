@@ -520,11 +520,14 @@ public class SaltUtils {
                 sb.append("stderr:\n\n");
                 sb.append(result.getStderr());
                 sb.append("\n");
+                if (StringUtils.isNotEmpty(result.getStdout())) {
+                    sb.append("stdout:\n\n");
+                    sb.append(result.getStdout());
+                    sb.append("\n");
+                }
             }
-            if (StringUtils.isNotEmpty(result.getStdout())) {
-                sb.append("stdout:\n\n");
+            else {
                 sb.append(result.getStdout());
-                sb.append("\n");
             }
             scriptResult.setOutput(sb.toString().getBytes());
         }
