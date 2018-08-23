@@ -18,7 +18,7 @@
 - features/core_srv_create_activationkey.feature
 - features/core_srv_docker_profiles.feature
 # initialize SUSE Manager proxy
-- features/core_proxy.feature
+- features/core_proxy_register_as_trad_with_script.feature
 # initialize clients
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
