@@ -40,7 +40,6 @@ search-server/spacewalk-search/rhn-search.pid
 search-server/spacewalk-search/rhn_search_daemon.log
 *~
 *#*#*
-.idea
 .project
 .pydevproject
 .zanata-cache
@@ -59,3 +58,6 @@ backend/satellite_tools/spacewalk-repo-syncc
 .idea/
 *.iml
 java/out
+out/
+java/buildconf/checkstyle.cache.src
+
