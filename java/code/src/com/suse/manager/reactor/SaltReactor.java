@@ -223,9 +223,13 @@ public class SaltReactor {
      * @return event handler runnable
      */
     private Stream<EventMessage> eventToMessages(MinionStartEvent minionStartEvent) {
+        String minionId = (String) minionStartEvent.getData().get("id");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Trigger start and registration for minion: " + minionId);
+        }
         return of(
-            triggerMinionStart((String) minionStartEvent.getData().get("id")),
-            triggerMinionRegistration((String) minionStartEvent.getData().get("id"))
+            new MinionStartEventMessage(minionId),
+            new RegisterMinionEventMessage(minionId)
         );
     }
 
@@ -269,30 +273,6 @@ public class SaltReactor {
             ));
         }
         return empty();
-    }
-
-    /**
-     * Trigger the registration of a minion in case it is not registered yet.
-     *
-     * @param minionId the minion id of the minion to be registered
-     */
-    private EventMessage triggerMinionRegistration(String minionId) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Trigger registration for minion: " + minionId);
-        }
-        return new RegisterMinionEventMessage(minionId);
-    }
-
-    /**
-     * Stuff that needs to be done on minion start like cleaning up reboot actions.
-     *
-     * @param minionId the minion id of the minion starting
-     */
-    private EventMessage triggerMinionStart(String minionId) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Trigger start for minion: " + minionId);
-        }
-        return new MinionStartEventMessage(minionId);
     }
 
     /**
