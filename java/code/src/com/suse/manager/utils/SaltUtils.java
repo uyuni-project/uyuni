@@ -68,18 +68,13 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.YamlHelper;
@@ -113,6 +108,12 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -1118,21 +1119,8 @@ public class SaltUtils {
                 if ("pxe".equals(ret.getImage().getType())) {
                     String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(
                             serverAction.getParentAction().getOrg());
-                    String generatedPillarFilename =
-                            "/srv/susemanager/pillar_data/images/image-" +
-                                    ret.getBundle().getBasename() + "-" +
-                                    ret.getBundle().getId().replace('.', '-') + ".sls";
-                    MgrUtilRunner.ExecResult generatedResult = saltService
-                            .generateOSImagePillar(generatedPillarFilename, ret, storeDirectory)
-                            .orElseThrow(
-                                    () -> new RuntimeException("Failed to register image."));
-
-                    if (generatedResult.getReturnCode() != 0) {
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        serverAction.setResultMsg(
-                                StringUtils.left(printStdMessages(generatedResult.getStderr(),
-                                        generatedResult.getStdout()), 1024));
-                    }
+                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundle(),
+                            ret.getBootImage(), storeDirectory);
                 }
             }
             else {
