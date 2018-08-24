@@ -1018,7 +1018,7 @@ public class SaltService {
             RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.generateSSHKey(path);
             return callSync(call);
         }
-        return Optional.empty();
+        return Optional.of(MgrUtilRunner.ExecResult.success());
     }
 
     /**
