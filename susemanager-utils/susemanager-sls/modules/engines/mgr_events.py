@@ -1,6 +1,72 @@
 # -*- coding: utf-8 -*-
 '''
-A simple test engine, not intended for real use but as an example
+mgr_events.py is a SaltStack engine that writes selected events to the
+SUSE Manager (PostgreSQL) database and also sends a notifications to a
+PostgreSQL pub/sub channel. This allow SUSE Manager to only query for
+events if some are coming in.
+
+mgr_events.py tries to keep the I/O low in high load scenarios. Therefore
+events are INSERTed once they come in, but only commited in a load
+dependend commit interval. This commit interval gets recalculated every
+time we commit and takes the amount of events INSERTed into account. This can
+be tweaked with the `delay_factor`. A shorter `delay_factor` takes less history
+into account when calculating the commit interval.
+The formula to approximate how many previous values are considered
+given a delay_factor value is: 1/(1-delay_factor).
+
++--------------+-------------------------------+
+| delay_factor | approx no. of previous values |
++--------------+-------------------------------+
+|     0.98     |             50                |
++--------------+-------------------------------+
+|     0.9      |             10                |
++--------------+-------------------------------+
+|     0.5      |              2                |
++--------------+-------------------------------+
+|     0.01     |              1                |
++--------------+-------------------------------+
+
+Since we are by default operating in a seconds scale, we need the
+`scaling_factor` to get this down a little bit.
+`commit_interval_max` and `commit_interval_min` are the maximum and minimum
+in seconds. Everything above and below will be capped.
+
+.. versionadded:: 2018.3.0
+
+:depends: psycopg2
+
+Minimal configuration example
+
+.. code:: yaml
+
+    engines:
+      - mgr_events:
+          postgres_db:
+              - dbname: susemanger
+              - user: spacewalk
+              - password: spacewalk
+              - host: localhost
+
+
+Full configuration example
+
+.. code:: yaml
+
+    engines:
+      - mgr_events:
+          commit_interval_max: 10
+          commit_interval_min: 0.1
+          delay_factor: 0.7
+          scaling_factor: 0.1
+          postgres_db:
+              - dbname: susemanger
+              - user: spacewalk
+              - password: spacewalk
+              - host: localhost
+              - notify_channel: suseSaltEvent
+
+Most of the values have a sane default. But we still need the login and host
+for the PostgreSQL database. Only the `notify_channel` there is optional.
 '''
 
 # Import python libs
