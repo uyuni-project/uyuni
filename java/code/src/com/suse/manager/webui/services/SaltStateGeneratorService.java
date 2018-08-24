@@ -54,6 +54,7 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -215,6 +216,12 @@ public enum SaltStateGeneratorService {
                     localPath);
             pillar.add("boot_images", bootImagePillar);
             pillar.add("images", imagePillar);
+
+            for (File f : Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).toFile().listFiles()) {
+                if (f.getName().startsWith(PILLAR_IMAGE_DATA_FILE_PREFIX + "-" + bundle.getBasename())) {
+                    f.delete();
+                }
+            }
 
             Files.createDirectories(Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH));
             Path filePath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
