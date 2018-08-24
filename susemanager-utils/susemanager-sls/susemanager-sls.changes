@@ -1,3 +1,4 @@
+- Generate OS image pillars via Java
 - Store activation key in the Kiwi built image
 - Implement the 2-phase registration of saltbooted minions (SUMA for Retail)
 
