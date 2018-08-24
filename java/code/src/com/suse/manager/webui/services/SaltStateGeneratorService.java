@@ -16,9 +16,12 @@ package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
@@ -42,11 +45,12 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
-
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.utils.SaltConfigChannelState;
 import com.suse.manager.webui.utils.SaltPillar;
+import com.suse.manager.webui.utils.SaltStateGenerator;
+import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 
 import org.apache.log4j.Logger;
 
@@ -60,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -189,6 +194,112 @@ public enum SaltStateGeneratorService {
     }
 
     /**
+     * Generate OS Image specific pillar used in terminals
+     * @param image the OS image resulting image from an inspection
+     * @param bundle the OS image bundle resulting image from an inspection
+     * @param bootImage the OS image boot image resulting image from an inspection
+     * @param urlBase the OS Image store URL
+     */
+    public void generateOSImagePillar(OSImageInspectSlsResult.Image image, OSImageInspectSlsResult.Bundle bundle,
+                                      OSImageInspectSlsResult.BootImage bootImage, String urlBase) {
+        try {
+            SaltPillar pillar = new SaltPillar();
+            String name = image.getName();
+            String version = image.getVersion();
+            String bootImageName = name + "-" + version;
+            String localPath = "image/" + bundle.getBasename() + "-" + bundle.getId();
+
+            TreeMap<String, Object> bootImagePillar = generateBootImagePillar(bootImage, bootImageName, localPath);
+
+            TreeMap<String, Object> imagePillar = generateImagePillar(image, bundle, bootImage, urlBase, name, version,
+                    localPath);
+            pillar.add("boot_images", bootImagePillar);
+            pillar.add("images", imagePillar);
+
+            Files.createDirectories(Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH));
+            Path filePath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+                    getImagePillarFileName(bundle)
+            );
+
+            SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
+            saltStateGenerator.generate(pillar);
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+    private TreeMap<String, Object> generateImagePillar(OSImageInspectSlsResult.Image image,
+                                                        OSImageInspectSlsResult.Bundle bundle,
+                                                        OSImageInspectSlsResult.BootImage bootImage, String urlBase,
+                                                        String name, String version, String localPath) {
+        TreeMap<String, Object> imagePillar = new TreeMap<String, Object>();
+        TreeMap<String, Object> imagePillarBase = new TreeMap<String, Object>();
+        TreeMap<String, Object> imagePillarDetails = new TreeMap<String, Object>();
+        TreeMap<String, Object> imagePillarDetailsSync = new TreeMap<String, Object>();
+
+        imagePillarDetailsSync.put("bundle_hash", bundle.getChecksum().getChecksum());
+        imagePillarDetailsSync.put("bundle_url", urlBase + "/" + bundle.getFilename());
+        imagePillarDetailsSync.put("local_path", localPath);
+
+        imagePillarDetails.put("arch", image.getArch());
+        imagePillarDetails.put("basename", image.getBasename());
+        imagePillarDetails.put("boot_image", bootImage.getName());
+        imagePillarDetails.put("filename", image.getFilename());
+        imagePillarDetails.put("filepath", image.getFilepath());
+        imagePillarDetails.put("fstype", image.getFstype());
+        imagePillarDetails.put("hash", image.getHash());
+        imagePillarDetails.put("inactive", Boolean.FALSE);
+        imagePillarDetails.put("name", image.getName());
+        imagePillarDetails.put("size", image.getSize());
+        imagePillarDetails.put("sync", imagePillarDetailsSync);
+        imagePillarDetails.put("type", image.getType());
+        imagePillarDetails.put("url", "tftp://tftp/" + localPath + "/" + image.getFilename());
+
+        imagePillarBase.put(version, imagePillarDetails);
+        imagePillar.put(name, imagePillarBase);
+        return imagePillar;
+    }
+
+    private TreeMap<String, Object> generateBootImagePillar(OSImageInspectSlsResult.BootImage bootImage,
+                                                            String bootImageName, String localPath) {
+        TreeMap<String, Object> bootImagePillar = new TreeMap<String, Object>();
+        TreeMap<String, Object> bootImagePillarBase = new TreeMap<String, Object>();
+        TreeMap<String, Object> bootImagePillarInitrd = new TreeMap<String, Object>();
+        TreeMap<String, Object> bootImagePillarKernel = new TreeMap<String, Object>();
+        TreeMap<String, Object> bootImagePillarSync = new TreeMap<String, Object>();
+
+        bootImagePillarBase.put("arch", bootImage.getArch());
+        bootImagePillarBase.put("basename", bootImage.getBasename());
+        bootImagePillarBase.put("name", bootImage.getName());
+
+        bootImagePillarInitrd.put("filename", bootImage.getInitrd().getFilename());
+        bootImagePillarInitrd.put("hash", bootImage.getInitrd().getHash());
+        bootImagePillarInitrd.put("size", bootImage.getInitrd().getSize());
+        bootImagePillarInitrd.put("version", bootImage.getInitrd().getVersion());
+        bootImagePillarInitrd.put("url", "tftp://tftp/boot/" + bootImageName + '/' +
+                bootImage.getInitrd().getFilename());
+
+        bootImagePillarKernel.put("filename", bootImage.getKernel().getFilename());
+        bootImagePillarKernel.put("hash", bootImage.getKernel().getHash());
+        bootImagePillarKernel.put("size", bootImage.getKernel().getSize());
+        bootImagePillarKernel.put("version", bootImage.getKernel().getVersion());
+        bootImagePillarKernel.put("url", "tftp://tftp/boot/" + bootImageName + '/' +
+                bootImage.getKernel().getFilename());
+
+        bootImagePillarSync.put("local_path", bootImageName);
+        bootImagePillarSync.put("kernel_link", "../../" + localPath + '/' + bootImage.getKernel().getFilename());
+        bootImagePillarSync.put("initrd_link", "../../" + localPath + '/' + bootImage.getInitrd().getFilename());
+
+        bootImagePillarBase.put("initrd", bootImagePillarInitrd);
+        bootImagePillarBase.put("kernel", bootImagePillarKernel);
+        bootImagePillarBase.put("sync", bootImagePillarSync);
+
+        bootImagePillar.put(bootImageName, bootImagePillarBase);
+        return bootImagePillar;
+    }
+
+    /**
      * Create channel pillar data for the given minion, access token and channel.
      * @param minion the minion
      * @param accessToken the access token
@@ -243,6 +354,11 @@ public enum SaltStateGeneratorService {
         return PILLAR_DATA_FILE_PREFIX + "_" +
             minion.getMinionId() + "." +
                 PILLAR_DATA_FILE_EXT;
+    }
+
+    private String getImagePillarFileName(OSImageInspectSlsResult.Bundle bundle) {
+        return PILLAR_IMAGE_DATA_FILE_PREFIX + "-" + bundle.getBasename() + "-" +
+                bundle.getId().replace('.', '-') + "." + PILLAR_IMAGE_DATA_FILE_EXT;
     }
 
     /**

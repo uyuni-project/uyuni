@@ -19,8 +19,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
-
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -28,10 +26,8 @@ import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.manager.webui.services.impl.runner.MgrUtilRunner.ExecResult;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.State;
-import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -59,8 +55,9 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
-import com.suse.utils.Json;
 import com.suse.utils.Opt;
+
+import com.google.gson.reflect.TypeToken;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -81,7 +78,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -1140,28 +1136,4 @@ public class SaltService {
                 MgrKiwiImageRunner.collectImage(minion.getName(), filepath, imageStore);
         return callSync(call);
     }
-
-    /**
-     * Generate custom pillars for OS images
-     *
-     * @param pillarFilename     the destination (filename) of the generate pillar
-     * @param inspectionResult      Java object representing the JSON output of the image inspection
-     * @param baseUrl  OS image store base URL
-     * @return the execution result
-     */
-    public Optional<MgrUtilRunner.ExecResult> generateOSImagePillar(String pillarFilename,
-            OSImageInspectSlsResult inspectionResult, String baseUrl) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        args.put("dest", pillarFilename);
-        args.put("image", Json.GSON.toJson(inspectionResult.getImage()));
-        args.put("bundle", Json.GSON.toJson(inspectionResult.getBundle()));
-        args.put("boot_image", Json.GSON.toJson(inspectionResult.getBootImage()));
-        args.put("url_base", baseUrl);
-        RunnerCall<ExecResult> call =
-                new RunnerCall<>("kiwi-image-register.generate_pillar", Optional.of(args),
-                        new TypeToken<MgrUtilRunner.ExecResult>() {
-                        });
-        return callSync(call);
-    }
-
 }
