@@ -14,46 +14,26 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
-        getAllRelevantChannels;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
-        getRelevantChannels;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createLaterTestPackage;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestChannel;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestChannelFamily;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestChannelProduct;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestClonedChannel;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestClonedErrata;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestCve;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestErrata;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestInstalledPackage;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestPackage;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestServer;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestUser;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestVendorBaseChannel;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    createTestVendorChildChannel;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
-        createTestSUSEProduct;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
-        createTestSUSEProductChannel;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
-        createTestSUSEUpgradePath;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
-        installSUSEProductOnServer;
+import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.getAllRelevantChannels;
+import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.getRelevantChannels;
+import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestClonedChannel;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestClonedErrata;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestCve;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestErrata;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorChildChannel;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEUpgradePath;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.installSUSEProductOnServer;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
 import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
 
@@ -359,10 +339,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createTestSUSEUpgradePath(product, productNextSP);
         // Create channels
         ChannelProduct channelProductNextSP = createTestChannelProduct();
-        Channel baseChannelNextSP =
-                createTestVendorBaseChannel(channelFamily, channelProductNextSP);
-        Channel childChannelNextSP =
-                createTestVendorChildChannel(baseChannelNextSP, channelProductNextSP);
+        Channel baseChannelNextSP = createTestVendorBaseChannel(channelFamily, channelProductNextSP);
+        Channel childChannelNextSP = createTestVendorChildChannel(baseChannelNextSP, channelProductNextSP);
         // Assign channels to SP product
         createTestSUSEProductChannel(baseChannelNextSP, productNextSP);
         createTestSUSEProductChannel(childChannelNextSP, productNextSP);
@@ -372,18 +350,15 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createTestSUSEUpgradePath(productPrevSP, product);
         // Create channels
         ChannelProduct channelProductPrevSP = createTestChannelProduct();
-        Channel baseChannelPrevSP =
-                createTestVendorBaseChannel(channelFamily, channelProductPrevSP);
-        Channel childChannelPrevSP =
-                createTestVendorChildChannel(baseChannelPrevSP, channelProductPrevSP);
+        Channel baseChannelPrevSP = createTestVendorBaseChannel(channelFamily, channelProductPrevSP);
+        Channel childChannelPrevSP = createTestVendorChildChannel(baseChannelPrevSP, channelProductPrevSP);
         // Assign channels to SP product
         createTestSUSEProductChannel(baseChannelPrevSP, productPrevSP);
         createTestSUSEProductChannel(childChannelPrevSP, productPrevSP);
 
         // Create server and install product
         User user = createTestUser();
-        List<Channel> subscribedChannels =
-                new ArrayList<Channel>(Arrays.asList(baseChannel, childChannel1));
+        List<Channel> subscribedChannels = new ArrayList<Channel>(Arrays.asList(baseChannel, childChannel1));
         Server server = createTestServer(user, subscribedChannels);
         installSUSEProductOnServer(product, server);
 
@@ -395,23 +370,16 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertEquals(7, relevantChannels.size());
 
         // Check assigned channels
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                baseChannel.getId(), 0));
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                childChannel1.getId(), 0));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), baseChannel.getId(), 0));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), childChannel1.getId(), 0));
         // Check unassigned product channels
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                childChannel2.getId(), 1));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), childChannel2.getId(), 1));
         // Check channels relevant for the next SP
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                baseChannelNextSP.getId(), 2));
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                childChannelNextSP.getId(), 2));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), baseChannelNextSP.getId(), 2));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), childChannelNextSP.getId(), 2));
         // Check channels relevant for the previous SP
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                baseChannelPrevSP.getId(), 100000));
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                childChannelPrevSP.getId(), 100000));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), baseChannelPrevSP.getId(), 100000));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), childChannelPrevSP.getId(), 100000));
     }
 
     /**
@@ -428,8 +396,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // All channels defined above should be returned
         List<Long> productIDs = new ArrayList<Long>(Arrays.asList(channelProduct.getId()));
-        List<Channel> channels =
-                CVEAuditManager.findProductChannels(productIDs, baseChannel.getId());
+        List<Channel> channels = CVEAuditManager.findProductChannels(productIDs, baseChannel.getId());
         assertEquals(3, channels.size());
         assertTrue(channels.contains(baseChannel));
         assertTrue(channels.contains(childChannel1));
@@ -482,8 +449,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.NOT_AFFECTED, results);
 
         // Everything is filtered except expected
@@ -621,8 +587,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_INAPPLICABLE, results);
 
         // Everything is filtered except expected
@@ -668,8 +633,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Test that server is not affected (eg. we do not have an applicable
         // patch for that vulnerability)
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.NOT_AFFECTED, results);
     }
 
@@ -708,8 +672,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Find the relevant channels and ask for the above CVE
         CVEAuditManager.populateCVEChannels();
         List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName,
-                        EnumSet.allOf(PatchStatus.class));
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, EnumSet.allOf(PatchStatus.class));
 
         // Verify the order of returned channels
         CVEAuditSystem result = findSystemRecord(server, results);
@@ -787,8 +750,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
 
@@ -823,8 +785,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
     }
 
@@ -857,8 +818,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
 
@@ -1057,8 +1017,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
         List<ChannelIdNameLabelTriple> channels = new ArrayList<>(results.get(0).getChannels());
         assertEquals(1, channels.size());
@@ -1131,8 +1090,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // number from an older product's LTSS channel
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
     }
 
@@ -1179,8 +1137,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server1, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
         assertSystemPatchStatus(server2, PatchStatus.PATCHED, results);
     }
@@ -1251,8 +1208,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
 
@@ -1308,8 +1264,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         TestUtils.saveAndFlush(baseChannelClone);
 
         Errata errataKgraftClone = createTestClonedErrata(user, kgraftErratum, cves, kgraftDefaultNew);
-        Channel channelClone =
-                createTestClonedChannel(user, errataKgraftClone, childChannelLP12, packagesLP);
+        Channel channelClone = createTestClonedChannel(user, errataKgraftClone, childChannelLP12, packagesLP);
 
         // server: old kernel but new kgraft-patch installed from cloned channels
         // -> PATCHED
@@ -1322,8 +1277,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
     }
 
@@ -1393,8 +1347,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_INAPPLICABLE, results);
     }
 
@@ -1457,12 +1410,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Create clones of channel and errata
         Errata errataKernelClone = createTestClonedErrata(user, kernelErratum, cvesKernel, kernelDefaultNew);
-        Channel baseChannelClone =
-                createTestClonedChannel(user, errataKernelClone, baseChannelSLES12, packagesSLES);
+        Channel baseChannelClone = createTestClonedChannel(user, errataKernelClone, baseChannelSLES12, packagesSLES);
 
         Errata errataKgraftClone = createTestClonedErrata(user, kgraftErratum, cvesKgraft, kgraftDefaultNew);
-        Channel channelClone =
-                createTestClonedChannel(user, errataKgraftClone, childChannelLP12, packagesLP);
+        Channel channelClone = createTestClonedChannel(user, errataKgraftClone, childChannelLP12, packagesLP);
 
         // server: old kernel but new kgraft-patch installed from cloned channels
         // -> PATCHED
@@ -1475,8 +1426,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditServer> results =
-                CVEAuditManager.listSystemsByPatchStatus(user, cveNameKernelExclusive, filter);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveNameKernelExclusive, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
 
         Iterator<ChannelIdNameLabelTriple> it = results.get(0).getChannels().iterator();
@@ -1628,6 +1578,50 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Verify that we didn't mess up the result from the ordering
+     * of the database during the evaluation of the result (bsc#1101033)
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testResultContainsDistinctResults() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create a channel with errata and packages
+        User user = createTestUser();
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Package unpatched = createTestPackage(user, channel, "noarch");
+        Package patched = createLaterTestPackage(user, errata, channel, unpatched);
+        List<Package> packages = new ArrayList<Package>();
+        packages.add(unpatched);
+        packages.add(patched);
+
+        // Create clones of channel and errata
+        Errata errataClone = createTestClonedErrata(user, errata, cves, patched);
+        Channel channelClone = createTestClonedChannel(user, errataClone, channel, packages);
+
+        // Subscribe two servers to channel and install unpatched package
+        Set<Channel> assignedChannels = new HashSet<Channel>();
+        assignedChannels.add(channelClone);
+        Server server1 = createTestServer(user, assignedChannels);
+        createTestInstalledPackage(unpatched, server1);
+        Server server2 = createTestServer(user, assignedChannels);
+        createTestInstalledPackage(unpatched, server2);
+
+        // Find the relevant channels and ask for the above CVE
+        CVEAuditManager.populateCVEChannels();
+        List<CVEAuditServer> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, EnumSet.allOf(PatchStatus.class));
+
+        assertEquals(true, checkSystemRecordIsUnique(server1, results));
+        assertEquals(true, checkSystemRecordIsUnique(server2, results));
+    }
+
+    /**
      * Find record for a given server in a list as returned by
      * listSystemsByPatchStatus().
      * @param server
@@ -1643,6 +1637,17 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
             }
         }
         return ret;
+    }
+
+    /**
+     * Check if the system is in the record more than one time (bsc#1101033)
+     *
+     * @param server
+     * @param results
+     * @return true if the system record is present one and only one time in the result
+     */
+    private boolean checkSystemRecordIsUnique(Server server, List<CVEAuditServer> results) {
+        return results.stream().filter(r -> r.getId() == server.getId()).count() == 1;
     }
 
     /**
