@@ -18,8 +18,13 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
-
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.taskomatic.InvalidParamException;
+import com.redhat.rhn.taskomatic.NoSuchBunchTaskException;
+import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.utils.MailHelper;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -28,12 +33,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * TaskHelper
  * Helper class to provide common functionality to tasks
  * @version $Rev$
  */
 public class TaskHelper {
+
+    private static final Logger LOG = Logger.getLogger(TaskHelper.class);
 
     /**
      * private constructor
@@ -106,4 +115,32 @@ public class TaskHelper {
         return toReturn;
     }
 
+    /**
+     * Schedule Action execution for Salt minions from within taskomatic.
+     *
+     * @param action the action to be executed
+     */
+    public static void scheduleActionExecution(Action action) {
+        boolean minionsInvolved = HibernateFactory.getSession()
+            .getNamedQuery("Action.findMinionIds")
+            .setParameter("id", action.getId())
+            .setMaxResults(1)
+            .stream()
+            .findAny()
+            .isPresent();
+        if (!minionsInvolved) {
+            return;
+        }
+
+        try {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("action_id", Long.toString(action.getId()));
+            params.put("force_pkg_list_refresh", Boolean.toString(false));
+            new TaskoXmlRpcHandler().scheduleSingleSatBunchRun(TaskomaticApi.MINION_ACTION_BUNCH_LABEL,
+                    TaskomaticApi.MINION_ACTION_JOB_PREFIX + action.getId(), params, action.getEarliestAction());
+        }
+        catch (NoSuchBunchTaskException | InvalidParamException e) {
+            LOG.error("Could not schedule action: " + action.getActionType(), e);
+        }
+    }
 }

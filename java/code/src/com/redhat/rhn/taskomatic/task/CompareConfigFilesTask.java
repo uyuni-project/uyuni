@@ -25,8 +25,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -41,7 +39,6 @@ import java.util.Set;
  */
 public class CompareConfigFilesTask extends RhnJavaJob {
 
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     private Queue<Action> actionsToSchedule = new LinkedList<>();
 
     /**
@@ -100,13 +97,6 @@ public class CompareConfigFilesTask extends RhnJavaJob {
 
     @Override
     protected void finishJob() {
-        actionsToSchedule.forEach(a -> {
-            try {
-                TASKOMATIC_API.scheduleActionExecution(a);
-            }
-            catch (TaskomaticApiException e) {
-                log.error("Could not schedule config files diff action: " + e.getMessage(), e);
-            }
-        });
+        actionsToSchedule.forEach(a -> TaskHelper.scheduleActionExecution(a));
     }
 }
