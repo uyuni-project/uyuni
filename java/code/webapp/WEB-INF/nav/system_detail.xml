@@ -179,7 +179,7 @@
   </rhn-tab>
 <!-- ENDFIX -->
 
-  <rhn-tab name="Groups" acl="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin);system_has_management_entitlement() or system_has_salt_entitlement()" url="/rhn/systems/details/groups/ListRemove.do">
+  <rhn-tab name="Groups" acl="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin);system_has_management_entitlement() or system_has_salt_entitlement() or system_has_bootstrap_entitlement()" url="/rhn/systems/details/groups/ListRemove.do">
 
     <rhn-tab name="List / Leave" url="/rhn/systems/details/groups/ListRemove.do"/>
     <rhn-tab name="Join" url="/rhn/systems/details/groups/Add.do"/>
@@ -218,7 +218,7 @@
      </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Formulas" acl="system_has_salt_entitlement(); salt_formulas_installed()">
+  <rhn-tab name="Formulas" acl="system_has_salt_entitlement() or system_has_bootstrap_entitlement(); salt_formulas_installed()">
     <rhn-tab-url>/rhn/manager/systems/details/formulas</rhn-tab-url>
   </rhn-tab>
 
