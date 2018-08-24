@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -40,9 +41,12 @@ public class PackageNameTest extends RhnBaseTestCase {
      * @return a test PackageName object.
      */
     public static PackageName createTestPackageName(String name) {
-        PackageName p = new PackageName();
-        p.setName(name);
-        TestUtils.saveAndFlush(p);
+        PackageName p = PackageFactory.lookupPackageName(name);
+        if (p == null) {
+            p = new PackageName();
+            p.setName(name);
+            TestUtils.saveAndFlush(p);
+        }
         return p;
     }
 

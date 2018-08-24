@@ -1,3 +1,4 @@
+- Logic constraint: results must be ordered and grouped by systemId first (bsc#1101033)
 - Do not wrap output if stderr is not present (bsc#1105074)
 
 -------------------------------------------------------------------
