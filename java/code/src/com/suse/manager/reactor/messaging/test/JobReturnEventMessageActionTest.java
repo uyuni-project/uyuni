@@ -1357,8 +1357,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
-            allowing(saltServiceMock).generateOSImagePillar(with(equal("/srv/susemanager/pillar_data/images/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls")),
-                    with(any(OSImageInspectSlsResult.class)), with(any(String.class)));
             will(returnValue(Optional.of(mockResult)));
         }});
         SaltUtils.INSTANCE.setSaltService(saltServiceMock);
