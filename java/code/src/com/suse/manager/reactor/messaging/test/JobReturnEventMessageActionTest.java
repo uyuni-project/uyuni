@@ -63,7 +63,6 @@ import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -83,8 +82,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -1366,9 +1369,28 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
+
         doTestKiwiImageInspect(server, "my-kiwi-image", profile, (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
+            File generatedPillar = new File("/srv/susemanager/pillar_data/images/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
+
+            assertTrue(generatedPillar.exists());
+            Map<String, Object> map;
+
+            try (FileInputStream fi = new FileInputStream(generatedPillar)) {
+                map = new Yaml().loadAs(fi, Map.class);
+                assertTrue(map.containsKey("boot_images"));
+                Map<String, HashMap<String, HashMap<String, Object>>> bootImages = (HashMap<String, HashMap<String, HashMap<String, Object>>>) map.get("boot_images");
+                assertEquals("tftp://tftp/boot/POS_Image_JeOS6-6.0.0/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz", bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
+                Map<String, HashMap<String, HashMap<String, Object>>> images = (Map<String, HashMap<String, HashMap<String, Object>>>) map.get("images");
+                assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
+                assertEquals("a64dbc025c748bde968b888db6b7b9e3", images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
+            } catch (FileNotFoundException e) {
+                fail("Cannot find OS Image generated pillar");
+            } catch (IOException e) {
+                fail("Cannot find OS Image generated pillar");
+            }
         });
     }
 
