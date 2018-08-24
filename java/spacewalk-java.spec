@@ -36,7 +36,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 ExcludeArch: ia64 aarch64
 
-Requires(pre): susemanager
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: classpathx-mail
@@ -845,7 +844,7 @@ fi
 %dir /srv/susemanager
 %dir /srv/susemanager/salt
 %attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data
-%attr(775,salt,susemanager) %dir /srv/susemanager/pillar_data/images
+%attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data/images
 %dir /srv/susemanager/formula_data
 %attr(750, tomcat, salt) %dir /srv/susemanager/tmp
 %dir %{appdir}/rhn/
