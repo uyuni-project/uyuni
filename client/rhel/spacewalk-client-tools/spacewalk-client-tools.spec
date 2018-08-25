@@ -185,7 +185,9 @@ Requires:       newt-python3
 Requires:       python3-dbus
 Requires:       python3-gobject-base
 %endif
+%ifnarch s390 s390x
 Requires:       python3-dmidecode
+%endif
 Requires:       python3-hwdata
 Requires:       python3-netifaces
 Requires:       python3-rhnlib >= 2.5.78
