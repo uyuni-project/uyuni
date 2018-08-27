@@ -3,7 +3,7 @@
 
 Feature: Build image with authenticated registry
 
-  Scenario: Create an authenticated image store as docker admin
+  Scenario: Create an authenticated image store as Docker admin
     Given I am authorized as "docker" with password "docker"
     And I follow "Images" in the left menu
     And I follow "Stores" in the left menu
@@ -13,7 +13,7 @@ Feature: Build image with authenticated registry
     And I enter uri, username and password for portus
     And I click on "create-btn"
 
-  Scenario: Create a profile for the authenticated image store as docker admin
+  Scenario: Create a profile for the authenticated image store as Docker admin
     Given I am authorized as "docker" with password "docker"
     And I follow "Images" in the left menu
     And I follow "Profiles" in the left menu
@@ -37,7 +37,7 @@ Feature: Build image with authenticated registry
     Given I am authorized as "admin" with password "admin"
     Then container "portus_profile" built successfully
 
-  Scenario: Cleanup: remove docker profile for the authenticated image store
+  Scenario: Cleanup: remove Docker profile for the authenticated image store
     Given I am authorized as "docker" with password "docker"
     When I follow "Images" in the left menu
     And I follow "Profiles" in the left menu

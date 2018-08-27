@@ -1,7 +1,7 @@
 # Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Install a patch on the contos minion via Salt through the UI
+Feature: Install a patch on the CentOS minion via Salt through the UI
 
 @centosminion
   Scenario: Pre-requisite: install virgo-dummy-1.0 packages

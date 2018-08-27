@@ -47,7 +47,7 @@ Avoid "computing style" (abbreviations, snake case and camel case.
 
 Avoid the obvious like "Check", "Test", "SUSE Manager", "Spacewalk", etc.
 
-Please use the correct capitalization for products (SLES, SUSE, Salt, zypper, etc.)
+Please use the correct capitalization for products (SLES, SUSE, Salt, zypper, Docker, etc.)
 
 Avoid reinventing function names and variables. Cucumber is all about human-readable text, factorizing or other things that make a computer program efficient are second class citizens with Cucumber.
 
@@ -78,10 +78,10 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
  * Scenario names are sentences based on verbs in imperative form
  * Don't use duplicate scenarios names (checked at commit time)
  * Scenario names describe the test
- * A scenario to prepare before the actual tests should be named: ```Scenario: Pre-requisite: ...```
- * A scenario that cleans up should be named: ```Scenario: Cleanup: ...```
+ * A scenario to prepare before the actual tests should be named: ```Scenario: pre-requisite: ...```
+ * A scenario that cleans up should be named: ```Scenario: cleanup: ...```
  * Do not detail specifics (user name, package name, etc.) in the scenario names
- * Avoid parentheses in scenario names (painful from command line)
+ * Avoid parentheses in scenario names (painful from command line), use comments (#) instead
 
 
 ### Rules for steps
@@ -94,7 +94,7 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
    * "I ..." for "When" steps (actions)
    * "... should" for "Then" steps (checks)
  * Don't use "we", use "I"
- * Put quotes (") around parameters
+ * Put quotes (") around string parameters, not around numeric parameters
  * Don't use steps parameters if unneeded
  * Don't use too many steps parameters (use cucumber tables)
  * Don't fall in the case where same step can trigger two different regular expressions

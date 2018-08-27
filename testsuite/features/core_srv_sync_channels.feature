@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to list available channels and enable them
@@ -36,21 +36,23 @@ Feature: Be able to list available channels and enable them
     And I shouldn't get "ppc64"
     And I shouldn't get "s390x"
 
-  Scenario: spacewalk-repo-sync with custom urls
+  Scenario: Run spacewalk-repo-sync with custom URLs
     When I call spacewalk-repo-sync for channel "test_base_channel" with a custom url "http://localhost/pub/TestRepo/"
     Then I should see "Channel: test_base_channel" in the output
     And I should see "Sync completed." in the output
     And I should see "Total time:" in the output
     And I should see "Repo URL:" in the output
 
-  Scenario: Enable sles12-sp3-pool-x86_64 (automatic enables all requires channels)
+  Scenario: Enable sles12-sp3-pool-x86_64
+    # This automaticaly enables all required channels
     When I execute mgr-sync "add channel sles12-sp3-pool-x86_64"
     And I execute mgr-sync "list channels"
     Then I should get "[I] SLES12-SP3-Pool for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-pool-x86_64]"
     And I should get "    [I] SLES12-SP3-Updates for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-updates-x86_64]"
     And I should get "    [ ] SLE-Module-Containers12-Pool for x86_64 SP3 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp3]"
 
-  Scenario: Enable sle-module-containers12-pool-x86_64-sp3 (automatic enables all requires channels)
+  Scenario: Enable sle-module-containers12-pool-x86_64-sp3
+    # This automatically enables all required channels
     When I execute mgr-sync "add channel sle-module-containers12-pool-x86_64-sp3"
     And I execute mgr-sync "list channels"
     Then I should get "[I] SLES12-SP3-Pool for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-pool-x86_64]"

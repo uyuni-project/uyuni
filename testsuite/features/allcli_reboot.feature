@@ -1,7 +1,7 @@
-# Copyright (c) 2017 SUSE LLC.
+# Copyright (c) 2017-2018 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-Feature: Reboot systems managed via SUSE Manager
+Feature: Reboot systems managed by SUSE Manager
 
 @sshminion
   Scenario: Reboot the SSH-managed SLES minion
@@ -12,7 +12,7 @@ Feature: Reboot systems managed via SUSE Manager
     When I click on "Reboot system"
     Then I wait and check that "ssh-minion" has rebooted
 
-  Scenario: Schedule a Reboot on a SLES Salt minion
+  Scenario: Schedule a reboot on a SLES Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
@@ -20,7 +20,7 @@ Feature: Reboot systems managed via SUSE Manager
     And I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
 
-  Scenario: Reboot Action is not COMPLETED until SLES minion is rebooted.
+  Scenario: Reboot action is not COMPLETED until SLES minion is rebooted
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Events" in the content area
     And I follow "History" in the content area
@@ -50,7 +50,7 @@ Feature: Reboot systems managed via SUSE Manager
     Then I should see a "Reboot scheduled for system" text
 
 @centosminion
-  Scenario: Reboot Action is not COMPLETED until CentOS minion is rebooted.
+  Scenario: Reboot action is not COMPLETED until CentOS minion is rebooted
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Events" in the content area
     And I follow "History" in the content area

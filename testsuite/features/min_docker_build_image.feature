@@ -43,7 +43,7 @@ Feature: Build container images
     And I click on "submit-btn"
     Then I wait until I see "GUI_BUILT_IMAGE" text
 
-  Scenario: Login as docker image administrator and build an image
+  Scenario: Login as Docker image administrator and build an image
     Given I am authorized as "docker" with password "docker"
     When I navigate to images build webpage
     And I select "suse_real_key" from "profileId"
