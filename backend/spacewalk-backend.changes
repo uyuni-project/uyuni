@@ -1,3 +1,5 @@
+- Take only text files from /srv/salt to make spacewalk-debug smaller (bsc#1103388)
+
 -------------------------------------------------------------------
 Wed Jul 25 09:28:48 CEST 2018 - jgonzalez@suse.com
 
