@@ -63,10 +63,12 @@ Full configuration example
               user: spacewalk
               password: spacewalk
               host: localhost
+              port: 5432
               notify_channel: suseSaltEvent
 
 Most of the values have a sane default. But we still need the login and host
-for the PostgreSQL database. Only the `notify_channel` there is optional.
+for the PostgreSQL database. Only the `notify_channel` there is optional. The
+default for host is 'localhost'.
 '''
 
 # Import python libs
@@ -111,6 +113,9 @@ class Responder:
         self.config.setdefault('commit_interval_max', DEFAULT_COMMIT_INTERVAL_MAX)
         self.config.setdefault('scaling_factor', DEFAULT_SCALING_FACTOR)
         self.config.setdefault('delay_factor', DEFAULT_DELAY_FACTOR)
+        self.config.setdefault('postgres_db', {})
+        self.config['postgres_db'].setdefault('host', 'localhost')
+        self.config['postgres_db'].setdefault('notify_channel', 'suseSaltEvent')
         self.counter = 0
         self.commit_interval = config['commit_interval_min']
         self.event_bus = event_bus
@@ -120,38 +125,49 @@ class Responder:
 
     def _connect_to_database(self):
         db_config = self.config.get('postgres_db')
-        conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'".format(**db_config)
-        log.debug(conn_string)
-        self.connection = psycopg2.connect(conn_string)
+        if db_config.has_key('port'):
+            conn_string = "dbname='{dbname}' user='{user}' host='{host}' port='{port}' password='{password}'".format(**db_config)
+        else:
+            conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'".format(**db_config)
+        log.debug("%s: connecting to database", __name__)
+        while True:
+            try:
+                self.connection = psycopg2.connect(conn_string)
+                break
+            except psycopg2.OperationalError as err:
+                log.error("%s: %s", __name__, err.message)
+                log.error("%s: Retrying in 5 seconds.", __name__)
+                time.sleep(5)
         self.cursor = self.connection.cursor()
 
     def _insert(self, tag, data):
+        self.db_keepalive()
         if any([
             fnmatch.fnmatch(tag, "salt/minion/*/start"),
             fnmatch.fnmatch(tag, "salt/job/*/ret/*"),
             fnmatch.fnmatch(tag, "salt/beacon/*"),
             fnmatch.fnmatch(tag, "suse/systemid/generate")
         ]):
+            log.debug("%s: Adding event to queue -> %s", __name__, tag)
+            self.cursor.execute("SAVEPOINT eventengine")
             try:
                 self.cursor.execute(
                     'INSERT INTO suseSaltEvent (data) VALUES (%s);',
                     (salt.utils.json.dumps({'tag': tag, 'data': data}),)
                 )
-                log.debug("******** Adding event to queue: %s", tag)
-                log.debug(self.cursor.query)
-            except Exception as exp:
-                # FIXME: Too broad!!!
-                log.error("******* Unexpected Exception while saving Salt event into the database. Rolling back!")
-                log.error(exp)
-                self.connection.rollback()
-            self.counter += 1
+                self.counter += 1
+            except Exception as err:
+                log.error("%s: %s", __name__, err.message)
+                log.error("%s: Rolling back to savepoint.", __name__)
+                self.cursor.execute("ROLLBACK TO SAVEPOINT eventengine")
+            finally:
+                log.debug("%s: %s", __name__, self.cursor.query)
         else:
-            log.debug("******** DISCARDING: %s", tag)
+            log.debug("%s: Discarding event -> %s", __name__, tag)
 
     def debug_log(self):
-        log.debug("####################################################################################")
-        log.debug("******** queue_size: %s", self.counter)
-        log.debug("******** fequency_commit_interval: %s", self.apply_limits(self.commit_interval))
+        log.debug("%s: queue_size -> %s", __name__, self.counter)
+        log.debug("%s: fequency_commit_interval -> %s", __name__, self.apply_limits(self.commit_interval))
 
     @tornado.gen.coroutine
     def add_event_to_queue(self, raw):
@@ -161,21 +177,30 @@ class Responder:
     def apply_limits(self, commit_interval):
         return max(min(commit_interval, self.config['commit_interval_max']), self.config['commit_interval_min'])
 
+    def db_keepalive(self):
+        if self.connection.closed:
+            log.error("%s: Diconnected from database. Trying to reconnect...", __name__)
+            self._connect_to_database()
+
+    def _compute_commit_interval(self):
+        time_between_events = self.commit_interval / (float(self.counter) or 0.1)
+        commit_interval_limited = 1 / time_between_events * self.config['scaling_factor']
+        return self.config['delay_factor'] * self.commit_interval + (1 - self.config['delay_factor']) * commit_interval_limited
+
     @tornado.gen.coroutine
     def commit(self):
         """
         Committing to the database.
         """
-        log.debug("************** COMMIT! ")
-        time_between_events = self.commit_interval / (self.counter or 0.1)
-        commit_interval_limited = 1 / time_between_events * self.config['scaling_factor']
-        self.commit_interval = self.config['delay_factor'] * self.commit_interval + (1 - self.config['delay_factor']) * commit_interval_limited
-        self.debug_log()
+        self.db_keepalive()
+        self.commit_interval = self._compute_commit_interval()
         if self.counter != 0:
+            log.debug("%s: commit", __name__)
             self.connection.commit()
             self.cursor.execute(
                 'NOTIFY {};'.format(self.config['postgres_db']['notify_channel'])
             )
+            self.debug_log()
             self.counter = 0
         self.commit_timer_handle = self.event_bus.io_loop.call_later(
             self.apply_limits(self.commit_interval), self.commit)
@@ -191,7 +216,6 @@ def start(**config):
             __opts__['sock_dir'],
             listen=True,
             io_loop=io_loop)
-    log.debug('mgr_events engine started')
     responder = Responder(event_bus, config)
     event_bus.set_event_handler(responder.add_event_to_queue)
     io_loop.start()
