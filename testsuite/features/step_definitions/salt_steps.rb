@@ -530,14 +530,10 @@ When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   end
 end
 
-Then(/^I enter remote ssh-minion hostname as "(.*?)"$/) do |hostname|
-  step %(I enter "#{ENV['SSHMINION']}" as "#{hostname}")
-end
-
 # minion bootstrap steps
-When(/^I enter the hostname of "([^"]*)" as hostname$/) do |host|
+When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
   node = get_target(host)
-  step %(I enter "#{node.full_hostname}" as "hostname")
+  step %(I enter "#{node.full_hostname}" as "#{hostname}")
 end
 
 When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
