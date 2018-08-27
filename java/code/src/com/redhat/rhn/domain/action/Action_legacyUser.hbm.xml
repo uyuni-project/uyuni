@@ -520,21 +520,6 @@ select sa.server_id
         ]]>
     </sql-query>
 
-    <sql-query name="Action.pickupTime">
-        <return-scalar type="timestamp" column="pickup_time"/>
-        SELECT SA.PICKUP_TIME AS PICKUP_TIME
-          FROM rhnServerAction SA
-         WHERE SA.action_id = :aid
-    </sql-query>
-
-    <sql-query name="Action.completionTime">
-        <return-scalar type="timestamp" column="completion_time"/>
-        SELECT SA.completion_time AS completion_time
-          FROM rhnServerAction SA
-         WHERE SA.action_id = :aid
-    </sql-query>
-
-
     <sql-query name="Action.lookupPendingMinionActions">
         <![CDATA[select {ra.*}
                      from rhnAction {ra},

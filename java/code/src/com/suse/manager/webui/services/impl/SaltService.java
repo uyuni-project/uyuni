@@ -14,18 +14,18 @@
  */
 package com.suse.manager.webui.services.impl;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.SaltReactor;
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.AuthModule;
@@ -56,7 +56,6 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
-
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -142,13 +141,6 @@ public class SaltService {
         // Set unlimited timeout
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
         saltSSHService = new SaltSSHService(SALT_CLIENT);
-    }
-
-    /**
-     * @return the Salt reactor
-     */
-    public SaltReactor getReactor() {
-        return reactor;
     }
 
     /**
