@@ -3084,14 +3084,14 @@ public class SystemHandler extends BaseHandler {
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn,
             List<Integer> errataIdsIn, Date earliestOccurrence) {
 
-        return scheduleApplyErrata(loggedInUser, serverIds, errataIds, earliestOccurrence, false);
+        return scheduleApplyErrata(loggedInUser, serverIdsIn, errataIdsIn, earliestOccurrence, false);
     }
 
     /**
      * Schedules an action to apply errata updates to multiple systems at a specified time.
      * @param loggedInUser The current user
-     * @param serverIds List of server IDs to apply the errata to (as Integers)
-     * @param errataIds List of errata IDs to apply (as Integers)
+     * @param serverIdsIn List of server IDs to apply the errata to (as Integers)
+     * @param errataIdsIn List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @param allowModules Allow this API call, despite modular content being present
      * @return list of action ids, exception thrown otherwise
@@ -3107,7 +3107,7 @@ public class SystemHandler extends BaseHandler {
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
-    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIds, List<Integer> errataIds,
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
                                           Date earliestOccurrence, boolean allowModules) {
 
         // we need long values to pass to ErrataManager.applyErrataHelper
