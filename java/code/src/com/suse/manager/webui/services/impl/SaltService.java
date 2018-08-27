@@ -61,7 +61,6 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
-
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -154,13 +153,6 @@ public class SaltService {
         // Set unlimited timeout
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
         saltSSHService = new SaltSSHService(SALT_CLIENT, SaltActionChainGeneratorService.INSTANCE);
-    }
-
-    /**
-     * @return the Salt reactor
-     */
-    public SaltReactor getReactor() {
-        return reactor;
     }
 
     /**
