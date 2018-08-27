@@ -164,18 +164,18 @@ class Responder:
         """
         Committing to the database.
         """
+        log.debug("************** COMMIT! ")
+        time_between_events = self.commit_interval / (self.counter or 0.1)
+        commit_interval_limited = 1 / time_between_events * self.config['scaling_factor']
+        self.commit_interval = self.config['delay_factor'] * self.commit_interval + (1 - self.config['delay_factor']) * commit_interval_limited
+        self.debug_log()
         if self.counter != 0:
-            log.debug("************** COMMIT! ")
-            time_between_events = self.commit_interval / (self.counter or 0.1)
-            commit_interval_limited = 1 / time_between_events * self.config['scaling_factor']
-            self.commit_interval = self.config['delay_factor'] * self.commit_interval + (1 - self.config['delay_factor']) * commit_interval_limited
-            self.debug_log()
             self.connection.commit()
             self.cursor.execute(
                 'NOTIFY {};'.format(self.config['postgres_db']['notify_channel'])
             )
             self.counter = 0
-            self.commit_timer_handle = self.event_bus.io_loop.call_later(
+        self.commit_timer_handle = self.event_bus.io_loop.call_later(
             self.apply_limits(self.commit_interval), self.commit)
 
 
