@@ -141,6 +141,8 @@ class Responder:
                 log.debug(self.cursor.query)
             except Exception as exp:
                 # FIXME: Too broad!!!
+                log.error("******* Unexpected Exception while saving Salt event into the database. Rolling back!")
+                log.error(exp)
                 self.connection.rollback()
             self.counter += 1
         else:
