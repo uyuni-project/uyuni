@@ -42,11 +42,11 @@ Minimal configuration example
     engines:
       - mgr_events:
           postgres_db:
-              - dbname: susemanger
-              - user: spacewalk
-              - password: spacewalk
-              - host: localhost
-
+              dbname: susemanger
+              user: spacewalk
+              password: spacewalk
+              host: localhost
+              notify_channel: suseSaltEvent
 
 Full configuration example
 
@@ -59,11 +59,11 @@ Full configuration example
           delay_factor: 0.7
           scaling_factor: 0.1
           postgres_db:
-              - dbname: susemanger
-              - user: spacewalk
-              - password: spacewalk
-              - host: localhost
-              - notify_channel: suseSaltEvent
+              dbname: susemanger
+              user: spacewalk
+              password: spacewalk
+              host: localhost
+              notify_channel: suseSaltEvent
 
 Most of the values have a sane default. But we still need the login and host
 for the PostgreSQL database. Only the `notify_channel` there is optional.
