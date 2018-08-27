@@ -145,7 +145,7 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Trigger the creation of a cobbler system record
     When I trigger cobbler system record
 
-  Scenario: I create a cobbler system record using XML RPC
+  Scenario: Create a cobbler system record via XML-RPC
     When I am logged in via XML-RPC system as user "admin" and password "admin"
     And I create a System Record
     Then I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server

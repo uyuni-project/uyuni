@@ -81,7 +81,7 @@ Feature: Migrate a traditional client into a Salt minion
     When I wait until file "/tmp/remote-command-on-migrated-test" exists on "sle-migrated-minion"
     And I remove "/tmp/remote-command-on-migrated-test" from "sle-migrated-minion"
 
-  Scenario: Cleanup: Migrate back to traditional client
+  Scenario: Cleanup: migrate back to traditional client
     Given I am on the Systems overview page of this "sle-migrated-minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -92,12 +92,12 @@ Feature: Migrate a traditional client into a Salt minion
     And I remove package "salt-minion" from this "sle-migrated-minion"
     And I register using "1-SUSE-DEV-x86_64" key
 
-  Scenario: Cleanup: Check that this is again a traditional client
+  Scenario: Cleanup: check that this is again a traditional client
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:     Management" text, refreshing the page
 
-  Scenario: Cleanup: Check that we have again the old activation key
+  Scenario: Cleanup: check that we have again the old activation key
     Given I am on the Systems overview page of this "sle-client"
     Then I should see a "Activation Key:	1-SUSE-DEV-x86_64" text
     And I should not see a "1-SUSE-PKG-x86_64" text
