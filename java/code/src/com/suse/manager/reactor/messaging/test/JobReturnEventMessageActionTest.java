@@ -149,7 +149,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // Verify the results
         for (InstalledPackage pkg : minion.getPackages()) {
@@ -274,7 +274,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .parse(getJobReturnEvent("packages.profileupdate.allversions.json", action.getId()))
                 .get());
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // Verify names and versions
         for (InstalledPackage pkg : minion.getPackages()) {
@@ -340,7 +340,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .parse(getJobReturnEvent("packages.profileupdate.json", action.getId()))
                 .get());
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // Verify names and versions
         for (InstalledPackage pkg : minion.getPackages()) {
@@ -371,7 +371,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         message = new JobReturnEventMessage(JobReturnEvent.parse(
                 getJobReturnEvent("packages.profileupdate.updated.json", action.getId()))
                 .get());
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // Verify names and versions
         for (InstalledPackage pkg : minion.getPackages()) {
@@ -415,7 +415,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // Verify no live patching version is returned
         assertNull(minion.getKernelLiveVersion());
@@ -425,7 +425,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .parse(getJobReturnEvent("packages.profileupdate.livepatching.json",
                         action.getId()))
                 .get());
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // Verify live patching version
         assertEquals("kgraft_patch_2_2_1", minion.getKernelLiveVersion());
@@ -435,7 +435,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .parse(getJobReturnEvent("packages.profileupdate.json",
                         action.getId()))
                 .get());
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // Verify no live patching version is returned again
         assertNull(minion.getKernelLiveVersion());
@@ -465,7 +465,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // Verify the results
         for (InstalledPackage pkg : minion.getPackages()) {
@@ -769,7 +769,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         HibernateFactory.getSession().flush();
     }
@@ -815,7 +815,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
     }
 
     public void testHardwareProfileUpdatePrimaryIPsEmptySSH()  throws Exception {
@@ -937,7 +937,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         assertions.accept(server);
         return server;
@@ -1034,7 +1034,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         assertEquals(
             Arrays.asList(sa),
@@ -1099,7 +1099,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         SaltUtils.INSTANCE.setXccdfResumeXsl(resumeXsl);
         SaltUtils.INSTANCE.setSaltService(saltServiceMock);
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
     }
@@ -1283,7 +1283,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // assertions after inspect
         assertions.accept(imgInfo);
@@ -1305,7 +1305,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // assert we have the same initial ImageInfo even after processing the event
         assertTrue(ImageInfoFactory.lookupById(imgInfoBuild.get().getId()).isPresent());
@@ -1411,7 +1411,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // assert we have the same initial ImageInfo even after processing the event
         assertTrue(ImageInfoFactory.lookupById(imgInfoBuild.get().getId()).isPresent());
@@ -1447,7 +1447,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         assertTrue(ImageInfoFactory.lookupById(imgInfoBuild.get().getId()).isPresent());
         ImageInfo imgInfo = TestUtils.reload(imgInfoBuild.get());
@@ -1480,7 +1480,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         assertEquals(initialMessageCount, MessageQueue.getMessageCount());
     }
@@ -1530,7 +1530,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
         assertEquals(0L, (long)sa.getResultCode());
@@ -1593,7 +1593,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         // check that tokens are really gone
         assertEquals(0, minion.getAccessTokens().size());
@@ -1688,7 +1688,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
+        messageAction.execute(message);
 
         applyHighstate = (ApplyStatesAction)ActionFactory.lookupById(applyHighstate.getId());
         saHighstate = applyHighstate.getServerActions().stream().findFirst().get();
