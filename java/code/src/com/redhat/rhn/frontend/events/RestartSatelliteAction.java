@@ -57,4 +57,11 @@ public class RestartSatelliteAction implements MessageAction {
         return new RestartCommand(currentUser);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
+    }
 }

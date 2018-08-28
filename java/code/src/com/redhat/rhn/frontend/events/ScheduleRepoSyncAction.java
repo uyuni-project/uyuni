@@ -74,4 +74,12 @@ public class ScheduleRepoSyncAction implements MessageAction {
             }
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
+    }
 }

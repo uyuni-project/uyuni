@@ -43,4 +43,12 @@ public class TestExceptionAction implements MessageAction  {
         tm.setMessageReceived(true);
         throw new RuntimeException("TEST: Try and kill the thread");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
+    }
 }

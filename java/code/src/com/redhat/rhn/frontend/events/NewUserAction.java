@@ -130,4 +130,11 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         return retval;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
+    }
 }
