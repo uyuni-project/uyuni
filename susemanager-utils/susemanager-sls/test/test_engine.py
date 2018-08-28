@@ -83,6 +83,10 @@ def test_connection_recovery_on_insert(db_connection, responder):
     with patch('mgr_events.psycopg2') as mock_psycopg2:
         mock_psycopg2.connect.return_value = db_connection
         responder._insert('salt/minion/2/start', {'value': 2})
+    responder.connection.commit()
+    responder.cursor.execute("SELECT * FROM suseSaltEvent")
+    resp = responder.cursor.fetchall()
+    assert len(resp) == 2
 
 
 def test_connection_recovery_on_commit(db_connection, responder):
