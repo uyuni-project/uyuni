@@ -61,6 +61,13 @@ public class TestDBAction implements MessageAction {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
+    }
 }
 
 

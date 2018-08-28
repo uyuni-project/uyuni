@@ -58,4 +58,11 @@ public class RestartSatelliteAction implements MessageAction {
         return rc;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
+    }
 }
