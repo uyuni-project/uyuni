@@ -28,8 +28,6 @@ import java.util.Date;
 
 /**
  * Implement Action for TraceBackEvents
- *
- * @version $Rev$
  */
 public class TraceBackAction extends BaseMailAction implements MessageAction {
 

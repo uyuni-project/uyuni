@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * NewCloneErrataAction
- * @version $Rev$
  */
 public class NewCloneErrataAction implements MessageAction {
 

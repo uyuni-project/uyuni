@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 
 /**
  * UpdateErrataCacheAction
- * @version $Rev$
  */
 public class UpdateErrataCacheAction implements MessageAction {
 

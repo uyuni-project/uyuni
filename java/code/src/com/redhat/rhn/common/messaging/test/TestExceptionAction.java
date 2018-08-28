@@ -20,7 +20,6 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 
 /**
  * TestExceptionAction
- * @version $Rev$
  */
 public class TestExceptionAction implements MessageAction  {
     private static MessageAction registered;
