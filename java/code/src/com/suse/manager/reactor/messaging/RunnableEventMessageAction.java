@@ -16,20 +16,21 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.common.messaging.MessageAction;
+
 import org.apache.log4j.Logger;
 
 /**
  * Action for executing RunnableEventMessageAction
  */
-public class RunnableEventMessageAction extends AbstractDatabaseAction {
+public class RunnableEventMessageAction implements MessageAction {
 
     /* Logger for this class */
     private static final Logger LOG = Logger
             .getLogger(RunnableEventMessageAction.class);
 
     @Override
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
        if (msg instanceof RunnableEventMessage) {
             RunnableEventMessage event = (RunnableEventMessage) msg;
             event.getAction().run();

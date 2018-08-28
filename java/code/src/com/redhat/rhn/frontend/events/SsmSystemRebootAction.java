@@ -19,6 +19,7 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.user.User;
@@ -34,11 +35,11 @@ import org.apache.log4j.Logger;
  * System Reboot action in the SSM/Miscellaneous.
  * @author Bo Maryniuk <bo@suse.de>
  */
-public class SsmSystemRebootAction extends AbstractDatabaseAction {
+public class SsmSystemRebootAction implements MessageAction {
     private static Logger log = Logger.getLogger(SsmSystemRebootAction.class);
 
     @Override
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         SsmSystemRebootAction.log.debug("Scheduling systems reboot in SSM.");
         SsmSystemRebootEvent event = (SsmSystemRebootEvent) msg;
         User user = UserFactory.lookupById(event.getUserId());
