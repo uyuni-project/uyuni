@@ -183,7 +183,7 @@ public class NotificationMessageController {
         String resultMessage = "Onboarding restarted of the minioniId '%s'";
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(SaltService.INSTANCE);
-        action.doExecute(new RegisterMinionEventMessage(minionId));
+        action.execute(new RegisterMinionEventMessage(minionId));
 
         Map<String, String> data = new HashMap<>();
         data.put("severity", severity);
