@@ -54,7 +54,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests doExecute().
+     * Tests execute().
      * @throws Exception if something bad happens
      */
     public void testDoExecute() throws Exception {
@@ -83,7 +83,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
         // run CloneErrataAction
         Collection<Long> errataIds = new LinkedList<Long>() { { add(errata.getId()); } };
         CloneErrataEvent event = new CloneErrataEvent(cloned, errataIds, user);
-        new CloneErrataAction().doExecute(event);
+        new CloneErrataAction().execute(event);
 
         // new errata should be in cloned channel, new repository metadata
         // generation scheduled
