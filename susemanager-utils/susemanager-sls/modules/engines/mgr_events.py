@@ -85,7 +85,7 @@ except ImportError:
 
 # Import salt libs
 import salt.utils.event
-import salt.utils.json
+import json
 
 # Import third-party libs
 import tornado.ioloop
@@ -125,7 +125,7 @@ class Responder:
 
     def _connect_to_database(self):
         db_config = self.config.get('postgres_db')
-        if db_config.has_key('port'):
+        if 'port' in db_config:
             conn_string = "dbname='{dbname}' user='{user}' host='{host}' port='{port}' password='{password}'".format(**db_config)
         else:
             conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'".format(**db_config)
@@ -135,7 +135,7 @@ class Responder:
                 self.connection = psycopg2.connect(conn_string)
                 break
             except psycopg2.OperationalError as err:
-                log.error("%s: %s", __name__, err.message)
+                log.error("%s: %s", __name__, err)
                 log.error("%s: Retrying in 5 seconds.", __name__)
                 time.sleep(5)
         self.cursor = self.connection.cursor()
@@ -153,11 +153,11 @@ class Responder:
             try:
                 self.cursor.execute(
                     'INSERT INTO suseSaltEvent (data) VALUES (%s);',
-                    (salt.utils.json.dumps({'tag': tag, 'data': data}),)
+                    (json.dumps({'tag': tag, 'data': data}),)
                 )
                 self.counter += 1
             except Exception as err:
-                log.error("%s: %s", __name__, err.message)
+                log.error("%s: %s", __name__, err)
                 log.error("%s: Rolling back to savepoint.", __name__)
                 self.cursor.execute("ROLLBACK TO SAVEPOINT eventengine")
             finally:
