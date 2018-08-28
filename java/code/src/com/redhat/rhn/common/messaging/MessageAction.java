@@ -40,6 +40,15 @@ public interface MessageAction {
     default boolean canRunConcurrently() {
         return false;
     }
+
+    /**
+     * Return true in case this action needs Hibernate session and transaction handling.
+     *
+     * @return true if this action operates on the database
+     */
+    default boolean needsTransactionHandling() {
+        return true;
+    }
 }
 
 
