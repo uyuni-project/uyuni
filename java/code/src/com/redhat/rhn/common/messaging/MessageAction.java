@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.common.messaging;
 
+import java.util.function.Consumer;
+
 /**
  * A interface representing a class that can act on a EventMessage
  *
@@ -48,6 +50,15 @@ public interface MessageAction {
      */
     default boolean needsTransactionHandling() {
         return true;
+    }
+
+    /**
+     * Returns code to be executed after a rollback in case of unexpected errors.
+     *
+     * @return a consumer
+     */
+    default Consumer<Exception> getExceptionHandler() {
+        return e -> { };
     }
 }
 
