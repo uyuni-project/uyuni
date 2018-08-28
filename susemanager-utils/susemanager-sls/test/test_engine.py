@@ -46,12 +46,9 @@ def new_connection():
 
 @pytest.fixture
 def create_tables(db_connection):
-    db_connection.cursor().execute(
-    """
-    CREATE TABLE suseSaltEvent (
-    id SERIAL NOT NULL PRIMARY KEY,
-    data TEXT NOT NULL
-    )""")
+    with open('/spacewalk/schema/spacewalk/postgres/tables/suseSaltEvent.sql', 'rb') as _file:
+        sql = _file.read()
+    db_connection.cursor().execute(sql)
     db_connection.commit()
 
 
