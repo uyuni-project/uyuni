@@ -19,8 +19,6 @@ import java.util.function.Consumer;
 
 /**
  * A interface representing a class that can act on a EventMessage
- *
- * @version $Rev$
  */
 public interface MessageAction {
 

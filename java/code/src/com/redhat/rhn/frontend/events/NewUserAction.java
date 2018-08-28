@@ -32,8 +32,6 @@ import java.util.Map;
 
 /**
  * Implement Action for TraceBackEvents
- *
- * @version $Rev: 59372 $
  */
 public class NewUserAction extends BaseMailAction implements MessageAction {
 

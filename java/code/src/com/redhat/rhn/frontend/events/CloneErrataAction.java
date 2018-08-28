@@ -36,7 +36,6 @@ import java.util.Set;
 
 /**
  * CloneErrataAction
- * @version $Rev$
  */
 public class CloneErrataAction implements MessageAction {
 
