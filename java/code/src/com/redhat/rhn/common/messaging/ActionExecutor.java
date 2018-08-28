@@ -60,12 +60,8 @@ class ActionExecutor implements Runnable {
                         Thread.sleep(10);
                     }
                     LOG.debug("Transaction finished.  Executing");
-                    action.execute(msg);
                 }
-                else {
-                    action.execute(msg);
-                }
-
+                action.execute(msg);
             }
             catch (Throwable t) {
                 LOG.error(t);
