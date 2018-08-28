@@ -1057,7 +1057,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         };
     }
 
-    private class RegisterMinionException extends RuntimeException {
+    /**
+     * Represents an Exception during the registration process.
+     */
+    public class RegisterMinionException extends RuntimeException {
         private String minionId;
         private Org org;
         RegisterMinionException(String minionIdIn, Org orgIn) {
