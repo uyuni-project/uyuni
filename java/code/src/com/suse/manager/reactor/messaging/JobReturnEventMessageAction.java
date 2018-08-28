@@ -14,28 +14,25 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
-
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
-import com.redhat.rhn.domain.server.MinionServer;
-
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.JobReturnEvent;
-
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -44,7 +41,7 @@ import java.util.Optional;
 /**
  * Handler class for {@link JobReturnEventMessage}.
  */
-public class JobReturnEventMessageAction extends AbstractDatabaseAction {
+public class JobReturnEventMessageAction implements MessageAction {
 
     /**
      * Converts an event to json
@@ -68,7 +65,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
 
     @Override
-    public void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         JobReturnEventMessage jobReturnEventMessage = (JobReturnEventMessage) msg;
         JobReturnEvent jobReturnEvent = jobReturnEventMessage.getJobReturnEvent();
 

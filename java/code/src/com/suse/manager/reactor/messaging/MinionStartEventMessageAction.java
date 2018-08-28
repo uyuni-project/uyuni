@@ -15,19 +15,19 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.utils.MinionServerUtils;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-
 import org.apache.log4j.Logger;
 
 /**
  * Event message handler for {@link MinionStartEventMessage}.
  */
-public class MinionStartEventMessageAction extends AbstractDatabaseAction {
+public class MinionStartEventMessageAction implements MessageAction {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(MinionStartEventMessageAction.class);
@@ -52,7 +52,7 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
     }
 
     @Override
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         String minionId = ((MinionStartEventMessage) msg).getMinionId();
         MinionServerFactory.findByMinionId(minionId)
                 .ifPresent(minion -> {

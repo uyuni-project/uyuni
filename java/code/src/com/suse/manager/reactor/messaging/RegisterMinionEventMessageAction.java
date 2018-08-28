@@ -18,6 +18,7 @@ import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPu
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -50,7 +51,6 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -73,7 +73,6 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Opt;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -89,13 +88,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * Event handler to create system records for salt minions.
  */
-public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
+public class RegisterMinionEventMessageAction implements MessageAction {
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(
@@ -129,7 +129,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     @Override
-    public void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
                 Optional.empty(), Optional.empty());
     }
@@ -384,18 +384,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
-            handleTransactions(false);
-            NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                    new OnboardingFailed(minionId)
-            );
-            if (org == null) {
-                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                        Collections.singleton(RoleFactory.ORG_ADMIN));
-            }
-            else {
-                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                        Collections.singleton(RoleFactory.ORG_ADMIN), org);
-            }
+            throw new RegisterMinionException(minionId, org);
         }
         finally {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
@@ -941,5 +930,34 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     @Override
     public boolean canRunConcurrently() {
         return true;
+    }
+
+    @Override
+    public Consumer<Exception> getExceptionHandler() {
+        return e -> {
+            if (e instanceof RegisterMinionException) {
+                RegisterMinionException rme = (RegisterMinionException) e;
+                NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
+                        new OnboardingFailed(rme.minionId)
+                );
+                if (rme.org == null) {
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.ORG_ADMIN));
+                }
+                else {
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.ORG_ADMIN), rme.org);
+                }
+            }
+        };
+    }
+
+    private class RegisterMinionException extends RuntimeException {
+        private String minionId;
+        private Org org;
+        RegisterMinionException(String minionIdIn, Org orgIn) {
+            minionId = minionIdIn;
+            org = orgIn;
+        }
     }
 }

@@ -179,12 +179,12 @@ public abstract class BaseSearchAction extends RhnAction {
     }
 
     /**
-     * This method invokes insureFormDefaults(), followed by doExecute().  Child classes
+     * This method invokes insureFormDefaults(), followed by execute().  Child classes
      * are expected to do "reasonable" things in those methods.
      * @param request http request
      * @param mapping action mapping
      * @param form associated form
-     * @return expected destination from doExecute
+     * @return expected destination from execute
      * @throws MalformedURLException
      * @throws XmlRpcFault
      */

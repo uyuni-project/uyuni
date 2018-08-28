@@ -28,8 +28,6 @@ import java.util.Date;
 
 /**
  * Implement Action for TraceBackEvents
- *
- * @version $Rev$
  */
 public class TraceBackAction extends BaseMailAction implements MessageAction {
 
@@ -71,4 +69,11 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
         return retval;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
+    }
 }
