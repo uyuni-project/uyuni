@@ -210,9 +210,9 @@ public enum SaltStateGeneratorService {
             String bootImageName = name + "-" + version;
             String localPath = "image/" + bundle.getBasename() + "-" + bundle.getId();
 
-            TreeMap<String, Object> bootImagePillar = generateBootImagePillar(bootImage, bootImageName, localPath);
+            Map<String, Object> bootImagePillar = generateBootImagePillar(bootImage, bootImageName, localPath);
 
-            TreeMap<String, Object> imagePillar = generateImagePillar(image, bundle, bootImage, urlBase, name, version,
+            Map<String, Object> imagePillar = generateImagePillar(image, bundle, bootImage, urlBase, name, version,
                     localPath);
             pillar.add("boot_images", bootImagePillar);
             pillar.add("images", imagePillar);
@@ -223,7 +223,6 @@ public enum SaltStateGeneratorService {
                 }
             }
 
-            Files.createDirectories(Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH));
             Path filePath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
                     getImagePillarFileName(bundle)
             );
@@ -236,14 +235,14 @@ public enum SaltStateGeneratorService {
         }
     }
 
-    private TreeMap<String, Object> generateImagePillar(OSImageInspectSlsResult.Image image,
+    private Map<String, Object> generateImagePillar(OSImageInspectSlsResult.Image image,
                                                         OSImageInspectSlsResult.Bundle bundle,
                                                         OSImageInspectSlsResult.BootImage bootImage, String urlBase,
                                                         String name, String version, String localPath) {
-        TreeMap<String, Object> imagePillar = new TreeMap<String, Object>();
-        TreeMap<String, Object> imagePillarBase = new TreeMap<String, Object>();
-        TreeMap<String, Object> imagePillarDetails = new TreeMap<String, Object>();
-        TreeMap<String, Object> imagePillarDetailsSync = new TreeMap<String, Object>();
+        Map<String, Object> imagePillar = new TreeMap<String, Object>();
+        Map<String, Object> imagePillarBase = new TreeMap<String, Object>();
+        Map<String, Object> imagePillarDetails = new TreeMap<String, Object>();
+        Map<String, Object> imagePillarDetailsSync = new TreeMap<String, Object>();
 
         imagePillarDetailsSync.put("bundle_hash", bundle.getChecksum().getChecksum());
         imagePillarDetailsSync.put("bundle_url", urlBase + "/" + bundle.getFilename());
@@ -268,13 +267,13 @@ public enum SaltStateGeneratorService {
         return imagePillar;
     }
 
-    private TreeMap<String, Object> generateBootImagePillar(OSImageInspectSlsResult.BootImage bootImage,
+    private Map<String, Object> generateBootImagePillar(OSImageInspectSlsResult.BootImage bootImage,
                                                             String bootImageName, String localPath) {
-        TreeMap<String, Object> bootImagePillar = new TreeMap<String, Object>();
-        TreeMap<String, Object> bootImagePillarBase = new TreeMap<String, Object>();
-        TreeMap<String, Object> bootImagePillarInitrd = new TreeMap<String, Object>();
-        TreeMap<String, Object> bootImagePillarKernel = new TreeMap<String, Object>();
-        TreeMap<String, Object> bootImagePillarSync = new TreeMap<String, Object>();
+        Map<String, Object> bootImagePillar = new TreeMap<String, Object>();
+        Map<String, Object> bootImagePillarBase = new TreeMap<String, Object>();
+        Map<String, Object> bootImagePillarInitrd = new TreeMap<String, Object>();
+        Map<String, Object> bootImagePillarKernel = new TreeMap<String, Object>();
+        Map<String, Object> bootImagePillarSync = new TreeMap<String, Object>();
 
         bootImagePillarBase.put("arch", bootImage.getArch());
         bootImagePillarBase.put("basename", bootImage.getBasename());
