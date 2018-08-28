@@ -27,7 +27,10 @@ except ImportError:
 import os.path
 import sys
 
-from mock import MagicMock, call, patch
+try:
+    from unittest.mock import MagicMock, call, patch
+except ImportError:
+    from mock import MagicMock, call, patch
 
 sys.path.insert(
     0,

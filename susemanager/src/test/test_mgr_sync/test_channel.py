@@ -23,7 +23,10 @@ try:
 except ImportError:
     import unittest
 
-from mock import MagicMock
+try:
+    from unittest.mock import MagicMock
+except ImportError:
+    from mock import MagicMock
 
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, \
     find_channel_by_label, Channel

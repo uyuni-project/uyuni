@@ -20,7 +20,11 @@ try:
 except ImportError:
     import unittest
 
-import mock
+try:
+    from unittest import mock
+except ImportError:
+    import mock
+
 import os
 import re
 import sys
@@ -29,10 +33,6 @@ from spacewalk.susemanager.helpers import cli_ask
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from .helper import FakeStdin
-
-def fake_user_input(*args):
-    for ret_value in args:
-        yield ret_value
 
 
 class HelpersTest(unittest.TestCase):
@@ -43,9 +43,8 @@ class HelpersTest(unittest.TestCase):
 
         with FakeStdin(None, response) as mocked_input:
             value = cli_ask(message)
-
-        self.assertEqual(response, value)
-        self.assertEqual(2, mocked_input.call_count)
+            self.assertEqual(response, value)
+            self.assertEqual(2, mocked_input.call_count)
 
     def test_cli_ask_with_tuple_validator(self):
         message = "how are you?"
@@ -54,9 +53,8 @@ class HelpersTest(unittest.TestCase):
 
         with FakeStdin("angry", response) as mocked_input:
             value = cli_ask(message, validator=validator)
-
-        self.assertEqual(response, value)
-        self.assertEqual(2, mocked_input.call_count)
+            self.assertEqual(response, value)
+            self.assertEqual(2, mocked_input.call_count)
 
     def test_cli_ask_with_list_validator(self):
         message = "how are you?"
@@ -65,9 +63,8 @@ class HelpersTest(unittest.TestCase):
 
         with FakeStdin("angry", response) as mocked_input:
             value = cli_ask(message, validator=validator)
-
-        self.assertEqual(response, value)
-        self.assertEqual(2, mocked_input.call_count)
+            self.assertEqual(response, value)
+            self.assertEqual(2, mocked_input.call_count)
 
     def test_cli_ask_with_regexp_validator(self):
         message = "how old are you?"
@@ -76,9 +73,8 @@ class HelpersTest(unittest.TestCase):
 
         with FakeStdin("young", response) as mocked_input:
             value = cli_ask(message, validator=validator)
-
-        self.assertEqual(response, value)
-        self.assertEqual(2, mocked_input.call_count)
+            self.assertEqual(response, value)
+            self.assertEqual(2, mocked_input.call_count)
 
     def test_cli_ask_with_custom_validator(self):
         message = "how old are you?"
@@ -87,7 +83,6 @@ class HelpersTest(unittest.TestCase):
 
         with FakeStdin("young", "0", "40", "10") as mocked_input:
             value = cli_ask(message, validator=validator)
-
-        self.assertEqual(response, value)
-        self.assertEqual(4, mocked_input.call_count)
+            self.assertEqual(response, value)
+            self.assertEqual(4, mocked_input.call_count)
 
