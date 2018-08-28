@@ -1366,9 +1366,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
+        new File("/srv/susemanager/pillar_data/images").mkdirs();
+
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
-
 
         doTestKiwiImageInspect(server, "my-kiwi-image", profile, (info) -> {
             assertNotNull(info.getInspectAction().getId());
@@ -1381,9 +1382,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             try (FileInputStream fi = new FileInputStream(generatedPillar)) {
                 map = new Yaml().loadAs(fi, Map.class);
                 assertTrue(map.containsKey("boot_images"));
-                Map<String, HashMap<String, HashMap<String, Object>>> bootImages = (HashMap<String, HashMap<String, HashMap<String, Object>>>) map.get("boot_images");
+                Map<String, Map<String, Map<String, Object>>> bootImages = (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
                 assertEquals("tftp://tftp/boot/POS_Image_JeOS6-6.0.0/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz", bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
-                Map<String, HashMap<String, HashMap<String, Object>>> images = (Map<String, HashMap<String, HashMap<String, Object>>>) map.get("images");
+                Map<String, Map<String, Map<String, Object>>> images = (Map<String, Map<String, Map<String, Object>>>) map.get("images");
                 assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
                 assertEquals("a64dbc025c748bde968b888db6b7b9e3", images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
             } catch (FileNotFoundException e) {
