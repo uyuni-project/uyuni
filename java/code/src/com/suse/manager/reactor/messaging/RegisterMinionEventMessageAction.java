@@ -92,6 +92,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -374,18 +375,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
-            handleTransactions(false);
-            NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                    new OnboardingFailed(minionId)
-            );
-            if (org == null) {
-                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                        Collections.singleton(RoleFactory.ORG_ADMIN));
-            }
-            else {
-                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                        Collections.singleton(RoleFactory.ORG_ADMIN), org);
-            }
+            throw new RegisterMinionException(minionId, org);
         }
         finally {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
@@ -1045,5 +1035,34 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     @Override
     public boolean canRunConcurrently() {
         return true;
+    }
+
+    @Override
+    public Consumer<Exception> getExceptionHandler() {
+        return e -> {
+            if (e instanceof RegisterMinionException) {
+                RegisterMinionException rme = (RegisterMinionException) e;
+                NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
+                        new OnboardingFailed(rme.minionId)
+                );
+                if (rme.org == null) {
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.ORG_ADMIN));
+                }
+                else {
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.ORG_ADMIN), rme.org);
+                }
+            }
+        };
+    }
+
+    private class RegisterMinionException extends RuntimeException {
+        private String minionId;
+        private Org org;
+        RegisterMinionException(String minionIdIn, Org orgIn) {
+            minionId = minionIdIn;
+            org = orgIn;
+        }
     }
 }
