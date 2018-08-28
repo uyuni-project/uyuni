@@ -14,53 +14,54 @@
  */
 package com.redhat.rhn.frontend.events;
 
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
-/**
- * Base action for any action that communicates with the database. This class will
- * take care of committing the transaction and any cleanup that is necessary.
- */
-public abstract class AbstractDatabaseAction implements MessageAction {
+import java.util.Optional;
+import java.util.function.Consumer;
 
-    private static Logger log = Logger.getLogger(AbstractDatabaseAction.class);
-    private static final String ROLLBACK_MSG = "Error during transaction. Rolling back.";
+/**
+ * Offers utility methods to handle database transactions.
+ */
+public abstract class TransactionHelper {
+
+    private static Logger log = Logger.getLogger(TransactionHelper.class);
 
     /**
-     * Performs the business logic of the action. This method should be implemented
-     * instead of overriding {@link #execute(EventMessage)}.
+     * Runs the runnable and handles the closing of the transaction and Hibernate session upon completion,
+     * rolling back in case of unexpected Exceptions.
      *
-     * @param msg event being executed; will not be <code>null</code>
+     * @param runnable code to wrap
+     * @param errorHandler called in case of unexpected Exceptions
      */
-    protected abstract void doExecute(EventMessage msg);
-
-    /** {@inheritDoc} */
-    public void execute(EventMessage msg) {
-        boolean commit = true;
+    public static void handlingTransaction(Runnable runnable, Consumer<Exception> errorHandler) {
+        Optional<Exception> exception = empty();
         try {
-            doExecute(msg);
+            runnable.run();
         }
         catch (Exception e) {
-            commit = false;
-            log.error("Error executing action " + getClass().getName(), e);
+            log.error("Unexpected error executing action", e);
+            exception = of(e);
         }
         finally {
-            handleTransactions(commit);
+            handleTransactions(!exception.isPresent());
         }
+
+        exception.ifPresent(e -> {
+            handlingTransaction(
+                    () -> errorHandler.accept(e),
+                    f -> log.error("Additional Exception during handling", f)
+            );
+        });
     }
 
-
-    /**
-     * Commits the current thread transaction, as well as close the Hibernate session.
-     * <p/>
-     * Note that this call <em>MUST</em> take place for any database operations done in
-     * a message queue action for the transaction to be committed.
-     */
-    protected void handleTransactions(boolean commit) {
+    private static void handleTransactions(boolean commit) {
         boolean committed = false;
 
         try {
@@ -74,7 +75,7 @@ public abstract class AbstractDatabaseAction implements MessageAction {
             }
         }
         catch (HibernateException e) {
-            log.error(ROLLBACK_MSG, e);
+            log.error("Error during transaction. Rolling back.", e);
         }
         finally {
             try {
@@ -93,9 +94,8 @@ public abstract class AbstractDatabaseAction implements MessageAction {
             }
             finally {
                 // cleanup the session
-                    HibernateFactory.closeSession();
+                HibernateFactory.closeSession();
             }
         }
     }
-
 }
