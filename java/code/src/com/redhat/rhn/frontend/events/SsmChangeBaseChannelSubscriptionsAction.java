@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -34,13 +35,13 @@ import java.util.Collection;
  * @see com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent
  * @version $Revision$
  */
-public class SsmChangeBaseChannelSubscriptionsAction extends AbstractDatabaseAction {
+public class SsmChangeBaseChannelSubscriptionsAction implements MessageAction {
     /** Logger instance. */
     private static Log log = LogFactory.getLog(
             SsmChangeBaseChannelSubscriptionsAction.class);
 
     /** {@inheritDoc} */
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         SsmChangeChannelSubscriptionsEvent event = (SsmChangeChannelSubscriptionsEvent) msg;
 
         User user = event.getUser();

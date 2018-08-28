@@ -18,6 +18,7 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.user.User;
@@ -33,12 +34,12 @@ import org.apache.log4j.Logger;
  *
  * @author Bo Maryniuk
  */
-public class SsmErrataAction extends AbstractDatabaseAction {
+public class SsmErrataAction implements MessageAction {
     private static Logger log = Logger.getLogger(SsmErrataAction.class);
 
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         SsmErrataAction.log.debug("Scheduling errata in SSM.");
 
         SsmErrataEvent event = (SsmErrataEvent) msg;

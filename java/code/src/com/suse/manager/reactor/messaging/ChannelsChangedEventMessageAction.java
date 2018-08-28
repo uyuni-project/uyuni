@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -25,14 +26,12 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
@@ -45,14 +44,14 @@ import java.util.stream.Collectors;
  * Handle changes of channel assignments on minions: trigger a refresh of the errata cache,
  * regenerate pillar data and propagate the changes to the minion via state application.
  */
-public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
+public class ChannelsChangedEventMessageAction implements MessageAction {
 
     private static Logger log = Logger.getLogger(ChannelsChangedEventMessageAction.class);
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     @Override
-    protected void doExecute(EventMessage event) {
+    public void execute(EventMessage event) {
         ChannelsChangedEventMessage msg = (ChannelsChangedEventMessage) event;
         long serverId = msg.getServerId();
 

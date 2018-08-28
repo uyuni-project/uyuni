@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -27,14 +28,13 @@ import java.util.List;
  * NewCloneErrataAction
  * @version $Rev$
  */
-public class NewCloneErrataAction
-extends AbstractDatabaseAction {
+public class NewCloneErrataAction implements MessageAction {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void doExecute(EventMessage msgIn) {
+    public void execute(EventMessage msgIn) {
         NewCloneErrataEvent msg = (NewCloneErrataEvent) msgIn;
         Long eid = msg.getErrata();
         List<Errata> errata = new ArrayList<Errata>();
