@@ -14,7 +14,13 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
+import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -22,7 +28,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -34,15 +40,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
-
 /**
  * Regenerate all state assignment .sls files for orgs and groups.
  */
-public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabaseAction {
+public class RefreshGeneratedSaltFilesEventMessageAction implements MessageAction {
 
     private static Logger log = Logger
             .getLogger(RefreshGeneratedSaltFilesEventMessageAction.class);
@@ -70,7 +71,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
     }
 
     @Override
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         try {
             refreshFiles();
         }

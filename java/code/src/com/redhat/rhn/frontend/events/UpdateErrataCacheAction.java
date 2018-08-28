@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
 
 import org.apache.log4j.Logger;
@@ -23,12 +24,12 @@ import org.apache.log4j.Logger;
  * UpdateErrataCacheAction
  * @version $Rev$
  */
-public class UpdateErrataCacheAction extends AbstractDatabaseAction {
+public class UpdateErrataCacheAction implements MessageAction {
 
     private static Logger log = Logger.getLogger(UpdateErrataCacheAction.class);
 
     /** {@inheritDoc} */
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         UpdateErrataCacheEvent evt = (UpdateErrataCacheEvent) msg;
         if (log.isDebugEnabled()) {
             log.debug("Updating errata cache, with type: " + evt.getUpdateType());

@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -40,12 +41,12 @@ import java.util.Map;
 /**
  * Schedules package verifications on systems in the SSM.
  */
-public class SsmVerifyPackagesAction extends AbstractDatabaseAction {
+public class SsmVerifyPackagesAction implements MessageAction {
 
     private final Log log = LogFactory.getLog(this.getClass());
 
     /** {@inheritDoc} */
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         SsmVerifyPackagesEvent event = (SsmVerifyPackagesEvent) msg;
 
         User user = UserFactory.lookupById(event.getUserId());

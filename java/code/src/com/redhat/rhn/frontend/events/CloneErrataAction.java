@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Errata;
@@ -37,15 +38,14 @@ import java.util.Set;
  * CloneErrataAction
  * @version $Rev$
  */
-public class CloneErrataAction
-        extends AbstractDatabaseAction {
+public class CloneErrataAction implements MessageAction {
 
     private static Logger log = Logger.getLogger(CloneErrataAction.class);
 
     /**
      * {@inheritDoc}
      */
-    public void doExecute(EventMessage msgIn) {
+    public void execute(EventMessage msgIn) {
 
 
         CloneErrataEvent msg = (CloneErrataEvent) msgIn;

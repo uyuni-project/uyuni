@@ -15,19 +15,18 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.utils.MinionServerUtils;
-
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -36,7 +35,7 @@ import java.util.Date;
 /**
  * Applies states to a server
  */
-public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
+public class ApplyStatesEventMessageAction implements MessageAction {
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     private static final Logger LOG = Logger.getLogger(ApplyStatesEventMessageAction.class);
@@ -48,7 +47,7 @@ public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
     }
 
     @Override
-    public void doExecute(EventMessage event) {
+    public void execute(EventMessage event) {
         ApplyStatesEventMessage applyStatesEvent = (ApplyStatesEventMessage) event;
         Server server = ServerFactory.lookupById(applyStatesEvent.getServerId());
 

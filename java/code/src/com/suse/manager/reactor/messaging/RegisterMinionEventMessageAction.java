@@ -19,6 +19,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -53,7 +54,6 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -98,7 +98,7 @@ import java.util.stream.Stream;
 /**
  * Event handler to create system records for salt minions.
  */
-public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
+public class RegisterMinionEventMessageAction implements MessageAction {
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(
@@ -134,7 +134,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     @Override
-    public void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
                 Optional.empty(), Optional.empty());
     }
