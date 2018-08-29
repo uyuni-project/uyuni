@@ -2,7 +2,10 @@ import salt.exceptions
 import logging
 import os
 from tempfile import mkdtemp
-from urlparse import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+     from urlparse import urlparse
 
 log = logging.getLogger(__name__)
 
@@ -123,4 +126,3 @@ def prepare_source(source, root):
     return _prepareGit(source, dest, root)
   else:
     raise salt.exceptions.SaltException('Unknown source format "{}"'.format(source))
-
