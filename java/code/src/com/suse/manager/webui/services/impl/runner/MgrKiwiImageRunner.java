@@ -15,8 +15,9 @@
 
 package com.suse.manager.webui.services.impl.runner;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.salt.netapi.calls.RunnerCall;
+
+import com.google.gson.reflect.TypeToken;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,15 +33,15 @@ public class MgrKiwiImageRunner {
     /**
      * Upload built Kiwi image to SUSE Manager
      *
-     * @param minion        the minion
+     * @param minionIPAddress the minion IP address
      * @param filepath      the filepath
      * @param imageStoreDir the image store location
      * @return the execution result
      */
-    public static RunnerCall<MgrUtilRunner.ExecResult> collectImage(String minion, String filepath,
+    public static RunnerCall<MgrUtilRunner.ExecResult> collectImage(String minionIPAddress, String filepath,
             String imageStoreDir) {
         Map<String, Object> args = new LinkedHashMap<>();
-        args.put("minion", minion);
+        args.put("minion", minionIPAddress);
         args.put("filepath", filepath);
         args.put("image_store_dir", imageStoreDir);
 
