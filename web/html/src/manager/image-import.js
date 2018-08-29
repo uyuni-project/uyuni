@@ -249,6 +249,7 @@ class ImageImport extends React.Component {
              <Messages items={this.state.messages}/> :
              null
         }
+        <p>{t('You can import Container images only using this feature.')}</p>
             <Form model={this.state.model} className="image-build-form"
                     onChange={this.onFormChange} onSubmit={this.onImport}
                     onValidate={this.onValidate}>
