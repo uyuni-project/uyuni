@@ -250,7 +250,7 @@ public enum SaltStateGeneratorService {
 
         imagePillarDetails.put("arch", image.getArch());
         imagePillarDetails.put("basename", image.getBasename());
-        imagePillarDetails.put("boot_image", bootImage.getName());
+        imagePillarDetails.put("boot_image", name + "-" + version);
         imagePillarDetails.put("filename", image.getFilename());
         imagePillarDetails.put("filepath", image.getFilepath());
         imagePillarDetails.put("fstype", image.getFstype());
