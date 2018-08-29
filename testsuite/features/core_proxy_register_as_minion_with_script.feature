@@ -40,7 +40,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
-    And I wait until I see "$PRODUCT Proxy" text
+    And I wait until I see "$PRODUCT Proxy" text, refreshing the page
 
 @proxy
   Scenario: Cleanup: remove proxy bootstrap scripts
