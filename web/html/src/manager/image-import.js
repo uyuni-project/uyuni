@@ -102,7 +102,7 @@ class ImageImport extends React.Component {
   }
 
   getBuildHosts() {
-    Network.get("/rhn/manager/api/cm/build/hosts").promise
+    Network.get("/rhn/manager/api/cm/build/hosts/container_build_host").promise
       .then(data => {
         this.setState({
             hosts: data
