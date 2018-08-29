@@ -9,20 +9,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
-def upload_file_from_minion(minion, filetoupload, targetdir):
-    grains = list(__salt__['cache.grains'](tgt=minion).values())[0]
-    addr4 = None
-    for addr in grains.get('ipv4'):
-      if addr == '127.0.0.1':
-        continue
-      else:
-        if __salt__['salt.cmd']('network.ping', addr, return_boolean=True):
-          addr4 = addr
-          break
-
-    if not addr4:
-      raise salt.exceptions.SaltRunnerError('Could not find reachable IPv4 address for minion {}'.format(minion))
-
+def upload_file_from_minion(addr4, filetoupload, targetdir):
     src = 'root@' + addr4 + ':' + filetoupload
     return __salt__['salt.cmd'](
       'rsync.rsync',
