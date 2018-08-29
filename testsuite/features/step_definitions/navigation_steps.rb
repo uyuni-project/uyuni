@@ -16,11 +16,9 @@ When(/^I should see a "(.*)" text in the content area$/) do |txt|
   end
 end
 
-When(/^I click on "([^"]+)" for "([^"]+)"$/) do |link, item|
-  within(:xpath, '//section') do
-    within(:xpath, "//table/tbody/tr[.//a[contains(.,'#{item}')]]") do
-      find_link(link).click
-    end
+When(/^I click on "([^"]+)" in row "([^"]+)"$/) do |link, item|
+  within(:xpath, "//tr[td[contains(.,'#{item}')]]") do
+    click_link_or_button(link)
   end
 end
 
@@ -293,6 +291,13 @@ Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
   step %(I follow "#{node.full_hostname}")
 end
 
+Given(/^I am on the "([^"]*)" page of this "(.*?)"$/) do |page, target|
+  steps %(
+    Given I am on the Systems overview page of this "#{target}"
+    And I follow "#{page}" in the content area
+  )
+end
+
 When(/^I follow this "(.*?)" link$/) do |target|
   node = get_target(target)
   step %(I follow "#{node.full_hostname}")
@@ -327,6 +332,21 @@ end
 Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]") do
     raise unless has_content?(arg2)
+  end
+end
+
+When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
+  within(:xpath, "//tr[td[contains(., '#{text}')]]") do
+    begin
+      Timeout.timeout(DEFAULT_TIMEOUT) do
+        loop do
+          break if find_button(button)
+          sleep 1
+        end
+      end
+    rescue Timeout::Error
+      raise "Couldn't find #{button} in row with #{text} text"
+    end
   end
 end
 

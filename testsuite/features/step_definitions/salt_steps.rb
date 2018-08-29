@@ -542,6 +542,12 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   $server.run("spacecmd -u admin -p admin system_listevents #{node.full_hostname}")
 end
 
+When(/^I enter "([^"]*)" password$/) do |host|
+  raise "#{host} minion password is unknown" unless ['kvm-server', 'xen-server'].include?(host)
+  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password") if host == "kvm-server"
+  step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen-server"
+end
+
 And(/^I cleanup minion "([^"]*)"$/) do |target|
   if target == 'sle-minion'
     $minion.run('rcsalt-minion stop')

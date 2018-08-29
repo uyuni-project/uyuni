@@ -11,6 +11,8 @@ raise 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 raise 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
+warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
+warn 'XEN server minion IP address or domain name variable empty' if ENV['VIRTHOST_XEN_URL'].nil?
 
 # Define twopence objects
 $client = Twopence.init("ssh:#{ENV['CLIENT']}")
@@ -19,10 +21,12 @@ $server = Twopence.init("ssh:#{ENV['SERVER']}")
 $minion = Twopence.init("ssh:#{ENV['MINION']}")
 $ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
 $ssh_minion = Twopence.init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
+$kvm_server = Twopence.init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
+$xen_server = Twopence.init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
 
 # Lavanda library module extension
 # Look at support/lavanda.rb for more details
-nodes = [$server, $proxy, $client, $minion, $ceos_minion, $ssh_minion]
+nodes = [$server, $proxy, $client, $minion, $ceos_minion, $ssh_minion, $kvm_server, $xen_server]
 nodes.each do |node|
   next if node.nil?
 
@@ -49,6 +53,8 @@ $client.init_ip(ENV['CLIENT'])
 $minion.init_ip(ENV['MINION'])
 $ceos_minion.init_ip(ENV['CENTOSMINION']) if $ceos_minion
 $ssh_minion.init_ip(ENV['SSHMINION']) if $ssh_minion
+$kvm_server.init_ip(ENV['VIRTHOST_KVM_URL']) if $kvm_server
+$xen_server.init_ip(ENV['VIRTHOST_XEN_URL']) if $xen_server
 
 # This function is used to get one of the nodes based on its type
 def get_target(host)
@@ -60,6 +66,8 @@ def get_target(host)
     'sle-minion' => $minion,
     'sle-client' => $client,
     'ceos-traditional-client' => $ceos_minion,
+    'kvm-server' => $kvm_server,
+    'xen-server' => $xen_server,
     'sle-migrated-minion' => $client
   }
   node = nodes_map[host]

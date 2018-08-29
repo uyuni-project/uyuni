@@ -15,6 +15,7 @@
     1. [Events](#b10)
     1. [Salt](#b11)
     1. [XML-RPC](#b12)
+    1. [Virtualization](b#13)
 1. [Writing new tests](#c)
     1. [Running remote commands](#c1)
     1. [Getting the FQDN of a host](#c2)
@@ -186,6 +187,12 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I am on the Systems overview page of this "sle-client"
 ```
 
+* Go to a tab page of a given client
+
+```cucumber
+  When I am on the "Virtualization" page of this "sle-client"
+```
+
 * Go to configuration of "SUSE Test" organization
 
 ```cucumber
@@ -254,7 +261,6 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I follow first "Schedule System Reboot"
   When I click on "Use in SSM" for "newgroup"
 ```
-
 
 <a name="b5" />
 
@@ -325,6 +331,12 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   Then option "Mr." is selected as "prefix"
+```
+
+* Check for a button in a given row
+
+```cucumber
+  When I wait until table row for "test-vm" contains button "Resume"
 ```
 
 
@@ -615,6 +627,40 @@ For example:
   When I call actionchain.add_package_install()
 ```
 
+<a name="b13" />
+
+#### Virtualization
+
+* Create a test virtual machine on a given host
+
+The virtual machine is created without SUSE Manager, directly on the virtual host
+using `qemu-img` and `virt-install`
+
+```cucumber
+  When I create "test-vm" virtual machine on "virt-server"
+```
+
+* Checking the state of a virtual machine
+
+```cucumber
+  Then I should see "test-vm" virtual machine shut off on "virt-server"
+  Then I should see "test-vm" virtual machine running on "virt-server"
+  Then I should see "test-vm" virtual machine paused on "virt-server"
+  Then I should not see a "test-vm" virtual machine on "virt-server"
+```
+
+The previous steps are just checking the virtual machine state in libvirt.
+To make sure the virtual machine is completely booted:
+
+```cucumber
+  When I wait until virtual machine "test-vm" on "virt-server" is started
+```
+
+* Check the amount of memory and CPUs allocated to a virtual machine
+
+```cucumber
+Then "test-vm" virtual machine on "virt-server" should have 1024MB memory and 2 vcpus
+```
 
 <a name="c" />
 

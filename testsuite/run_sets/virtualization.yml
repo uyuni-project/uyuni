@@ -1,0 +1,45 @@
+# This file describes the order of features in the virtualization testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Core features BEGIN ###
+
+# IMMUTABLE ORDER
+
+- features/core_first_settings.feature
+# initialize SUSE Manager server
+- features/core_srv_channels_add.feature
+- features/core_srv_push_package.feature
+- features/core_srv_create_repository.feature
+- features/core_srv_systemspage.feature
+- features/core_srv_users.feature
+- features/core_srv_create_activationkey.feature
+- features/core_srv_osimage_profiles.feature
+- features/core_srv_docker_profiles.feature
+# these features sync real channels (last core features)
+- features/core_srv_sync_channels.feature
+- features/core_srv_setup_wizard.feature
+
+## Core features END ###
+
+
+## Secondary features BEGIN ##
+
+# IDEMPOTENT
+- features/minkvm_guests.feature
+- features/minxen_guests.feature
+## Secondary features END ##
+
+
+## Post run features BEGIN ##
+
+# IMMUTABLE ORDER
+
+# this feature is destructive for other features, so it is better at the end
+- features/srv_smdba.feature
+# this feature is needed for gathering log/debug infos
+- features/srv_susemanager_debug.feature
+
+## Post run features END ##
