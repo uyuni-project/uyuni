@@ -267,6 +267,18 @@ public class ConfigDefaults {
      */
     public static final String SIGN_METADATA = "sign_metadata";
 
+    /**
+     * Number of threads dedicated to processing Salt events.
+     */
+    public static final String SALT_EVENT_THREAD_POOL_SIZE = "java.salt_event_thread_pool_size";
+
+    /**
+     * Maximum number of events processed before COMMITTing to the database. Raising this to any value above 1 will
+     * decrease reliability, as failures will result in the loss of more events, but can improve performance in
+     * high-scale scenarios.
+     */
+    public static final String SALT_EVENTS_PER_COMMIT = "java.salt_events_per_commit";
+
     private ConfigDefaults() {
     }
 
@@ -884,5 +896,27 @@ public class ConfigDefaults {
      */
     public int getNotificationsLifetime() {
         return Config.get().getInt(NOTIFICATIONS_LIFETIME, 30);
+    }
+
+    /**
+     * Returns the number of threads dedicated to processing Salt events.
+     * @return the number of threads
+     */
+    public int getSaltEventThreadPoolSize() {
+        return Config.get().getInt(SALT_EVENT_THREAD_POOL_SIZE, 8);
+    }
+
+    /**
+     * Maximum number of events processed before COMMITTing to the database.
+     * Each thread in the pool as defined by salt_event_thread_pool_size will process up to salt_events_per_commit
+     * events before COMMITTing to the database and return to the pool for further work.
+     *
+     * Raising this to any value above 1 will decrease reliability: in case of failure multiple events
+     * will be lost. On the other hand, this can reduce the overall number of COMMIT operation thus improving
+     * performance in high-scale scenarios.
+     * @return the number of events per commit
+     */
+    public int getSaltEventsPerCommit() {
+        return Config.get().getInt(SALT_EVENTS_PER_COMMIT, 1);
     }
 }
