@@ -56,7 +56,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "sle-minion" as hostname
+    When I enter the hostname of "sle-minion" as "hostname"
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
