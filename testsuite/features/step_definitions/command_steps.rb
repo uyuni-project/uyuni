@@ -306,11 +306,11 @@ Then(/^the command should fail$/) do
   raise 'Previous command must fail, but has NOT failed!' if $fail_code.zero?
 end
 
-When(/^I wait until file "(.*)" exists on "(.*)"$/) do |file, host|
-  step %(I wait "#{DEFAULT_TIMEOUT}" seconds until file "#{file}" exists on "#{host}")
+When(/^I wait until file "([^"]*)" exists on "([^"]*)"$/) do |file, host|
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until file "#{file}" exists on "#{host}")
 end
 
-When(/^I wait "(.*)" seconds until file "(.*)" exists on "(.*)"$/) do |seconds, file, host|
+When(/^I wait at most (\d+) seconds until file "([^"]*)" exists on "([^"]*)"$/) do |seconds, file, host|
   node = get_target(host)
   begin
     Timeout.timeout(seconds.to_i) do

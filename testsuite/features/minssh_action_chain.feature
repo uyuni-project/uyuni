@@ -180,7 +180,7 @@ Feature: Salt SSH action chain
 
   Scenario: Verify that the action chain was executed successfully
     When I wait for "virgo-dummy" to be installed on this "ssh-minion"
-    And I wait "300" seconds until file "/tmp/action_chain_one_system_done" exists on "ssh-minion"
+    And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "ssh-minion"
 
   Scenario: Add a remote command to the new action chain on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
