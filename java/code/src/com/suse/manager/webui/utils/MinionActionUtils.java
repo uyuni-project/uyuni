@@ -27,6 +27,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.util.FileUtils;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -66,6 +67,8 @@ import java.util.stream.Stream;
 public class MinionActionUtils {
 
     private static final Logger LOG = Logger.getLogger(MinionActionUtils.class);
+
+    private static final boolean POSTGRES = ConfigDefaults.get().isPostgresql();
 
     private MinionActionUtils() {
     }
@@ -151,7 +154,12 @@ public class MinionActionUtils {
                     }).orElseGet(() -> {
                         if (!sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                             sa.setCompletionTime(new Date());
-                            sa.setResultMsg("There was no job cache entry.");
+                            if (POSTGRES) {
+                                sa.setResultMsg("No job return event was received.");
+                            }
+                            else {
+                                sa.setResultMsg("There was no job cache entry.");
+                            }
                             sa.setStatus(ActionFactory.STATUS_FAILED);
                             sa.setResultCode(-1L);
                         }
@@ -229,6 +237,12 @@ public class MinionActionUtils {
      * @return an optional job information object
      */
     private static Optional<Info> infoForActionId(SaltService salt, long actionId) {
+        // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
+        // stored persistently via the database (see PGEventStream)
+        if (POSTGRES) {
+            return Optional.empty();
+        }
+
         Map<String, Object> metadata = new HashMap<>();
         metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionId);
         Optional<String> jid = salt.jobsByMetadata(metadata)
