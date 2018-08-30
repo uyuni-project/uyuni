@@ -1,3 +1,4 @@
+- add new dependency python-setuptools to bootstrap packages (bsc#1106026)
 - add debug mode for mgr-create-bootstrap-repo
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 -------------------------------------------------------------------
