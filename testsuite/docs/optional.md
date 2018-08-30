@@ -90,3 +90,14 @@ Inside of the testsuite, the scenarios that are tagged with
 @centosminion
 ```
 are executed only if the CentOS minion is available.
+
+
+### Testing with a SLE 15 system
+
+The test suite will determine whether your minion is a SLE15 or not.
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@sle15minion
+```
+are executed only if the minion is a SLE 15 minion.
