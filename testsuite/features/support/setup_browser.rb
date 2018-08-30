@@ -70,13 +70,8 @@ Before('@sshminion') do |scenario|
 end
 
 # do some tests only if node is of a given type
-Before('@SLE15_MINION') do |scenario|
+Before('@sle15minion') do |scenario|
   scenario.skip_invoke! unless $sle15_minion
-end
-
-# skip tests if we run with fromdir option
-Before('@notwithfromdir') do |scenario|
-  scenario.skip_invoke! if ENV['NOTWITHFROMDIR']
 end
 
 ## this is for having more infos about the errors.

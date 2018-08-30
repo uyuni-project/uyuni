@@ -33,7 +33,7 @@ Feature: Cobbler and distribution autoinstallation
     And I select "Fedora" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
-   And I should see a "fedora_kickstart_distro" link
+    And I should see a "fedora_kickstart_distro" link
 
   Scenario: Create a profile via the UI
     When I follow "Autoinstallation" in the left menu
