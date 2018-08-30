@@ -13,7 +13,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
      Given I am authorized
      When I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "ceos-minion" as hostname
+     When I enter the hostname of "ceos-minion" as "hostname"
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"

@@ -9,7 +9,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
-    And I enter remote ssh-minion hostname as "hostname"
+    And I enter the hostname of "ssh-minion" as "hostname"
     And I enter "linux" as "password"
     And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
