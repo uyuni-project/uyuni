@@ -149,7 +149,6 @@ class Responder:
             fnmatch.fnmatch(tag, "suse/systemid/generate")
         ]):
             log.debug("%s: Adding event to queue -> %s", __name__, tag)
-            self.cursor.execute("SAVEPOINT eventengine")
             try:
                 self.cursor.execute(
                     'INSERT INTO suseSaltEvent (data) VALUES (%s);',
@@ -158,8 +157,6 @@ class Responder:
                 self.counter += 1
             except Exception as err:
                 log.error("%s: %s", __name__, err)
-                log.error("%s: Rolling back to savepoint.", __name__)
-                self.cursor.execute("ROLLBACK TO SAVEPOINT eventengine")
             finally:
                 log.debug("%s: %s", __name__, self.cursor.query)
         else:

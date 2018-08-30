@@ -102,25 +102,6 @@ def test_connection_recovery_on_commit(db_connection, responder):
     assert len(resp) == 1
 
 
-def test_insert_exception(responder):
-    responder._insert('salt/minion/1/start', {'value': 1})
-    
-    with patch.object(responder, 'cursor') as mock_cursor:
-        mock_cursor.execute.side_effect = [
-            lambda: responder.cursor.execute("SAVEPOINT abc"),
-            Exception,
-            lambda: responder.cursor.execute("ROLLBACK SAVEPOINT abc")
-        ]
-        responder._insert('salt/minion/2/start', {'value': 2})
-    
-    responder._insert('salt/minion/3/start', {'value': 3})
-    
-    responder.connection.commit()
-    responder.cursor.execute("SELECT * FROM suseSaltEvent")
-    resp = responder.cursor.fetchall()
-    assert len(resp) == 2
-
-
 def test_insert_start_event(responder, db_connection):
     responder.event_bus.unpack.return_value = ('salt/minion/12345/start', {'value': 1})
     responder.add_event_to_queue('')
@@ -139,7 +120,7 @@ def test_insert_job_return_event(responder):
 
 def test_commit_scheduled_on_init(responder):
     assert responder.event_bus.io_loop.call_later.call_count == 1
-        
+
 
 def test_commit_empty_queue(responder):
     responder.counter = 0
