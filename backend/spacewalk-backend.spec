@@ -27,7 +27,10 @@
 %endif
 
 %if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
+%{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%global python2rhnroot %{python2_sitelib}/spacewalk
+%global python3rhnroot %{python3_sitelib}/spacewalk
 %global pythonrhnroot %{python3_sitelib}/spacewalk
 %global build_py3 1
 %endif
@@ -85,12 +88,12 @@ Requires:       rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires:       /etc/rhn
 Requires:       rhnlib >= 2.5.74
-# for Debian support
 %if 0%{?build_py3}
 Requires:       python3-%{name}-libs >= %{version}
 %else
 Requires:       %{name}-libs >= %{version}
 %endif
+# for Debian support
 Requires:       %{python_prefix}-debian
 %if 0%{?suse_version} > 1320
 Requires:       python-pyliblzma
@@ -101,6 +104,9 @@ Requires:       pyliblzma
 %endif # 0%{?suse_version} > 1320
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python2-pylint
+%if 0%{?build_py3}
+BuildRequires:  spacewalk-python3-pylint
+%endif
 %endif
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
@@ -327,14 +333,9 @@ receivers and get them enabled automatically.
 
 This package contains listener for the Server XML dumper.
 
-%if !0%{?build_py3}
 %package libs
 Summary:        Spacewalk server and client tools libraries
 Group:          Applications/Internet
-%if 0%{?build_py3}
-Requires:       python3
-BuildRequires:  python3-devel
-%else
 Requires:       python
 %if 0%{?suse_version}
 BuildRequires:  python-devel
@@ -342,19 +343,12 @@ BuildRequires:  python-devel
 BuildRequires:  python2-devel
 Conflicts:      %{name} < 1.7.0
 %endif
-%endif
-%if 0%{?build_py3}
-Requires:       python3-spacewalk-usix
-%else
 Requires:       python2-spacewalk-usix
-%endif
 
 %description libs
 Libraries required by both Spacewalk server and Spacewalk client tools.
-%endif
 
 %if 0%{?build_py3}
-
 %package -n python3-%{name}-libs
 Summary:        Spacewalk client tools libraries for python3
 Group:          Applications/Internet
@@ -365,11 +359,7 @@ Requires:       python3-base
 %else
 Requires:       python3-libs
 %endif
-%if 0%{?build_py3}
 Requires:       python3-spacewalk-usix
-%else
-Requires:       python2-spacewalk-usix
-%endif
 
 %description -n python3-%{name}-libs
 Libraries required by Spacewalk client tools on Fedora 23.
@@ -508,7 +498,7 @@ Requires:       subscription-manager
 Tools for syncing content from Red Hat CDN
 
 %prep
-%setup -q
+%setup -q -n spacewalk-backend-4.0.1devel
 
 %build
 make -f Makefile.backend all PYTHON_BIN=%{pythonX}
@@ -529,6 +519,16 @@ make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=%{pythonX}
 %if !0%{?with_oracle}
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
+%endif
+
+%if 0%{?build_py3}
+install -d $RPM_BUILD_ROOT%{python2rhnroot}/common
+cp $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py \
+    $RPM_BUILD_ROOT%{python2rhnroot}/
+cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py \
+    $RPM_BUILD_ROOT%{python2rhnroot}/common
+cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.py,rhn_pkg.py,rhn_rpm.py,stringutils.py,fileutils.py,rhnLib.py,timezone_utils.py} \
+    $RPM_BUILD_ROOT%{python2rhnroot}/common
 %endif
 
 export PYTHON_MODULE_NAME=%{name}
@@ -568,6 +568,9 @@ popd
 
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{pythonrhnroot}
+%py_compile -O %{buildroot}/%{python2rhnroot}
+rm -f $RPM_BUILD_ROOT%{python2rhnroot}/__init__.py*
+rm -f $RPM_BUILD_ROOT%{python2rhnroot}/common/__init__.py*
 %endif
 
 # prevent file conflict with spacewalk-usix
@@ -576,20 +579,30 @@ rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
 %endif
 
 %check
-ls %{pythonrhnroot}/
-ls %{pythonrhnroot}/common/
-cp %{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{pythonrhnroot}/common
 make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} PYTHON_BIN=%{pythonX} test || :
+%if 0%{?build_py3}
+make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python2_sitelib} PYTHON_BIN=python2 test || :
+%endif
 
 %if 0%{?pylint_check}
 # check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
-spacewalk-python2-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
-                         $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
-                         $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
-                         $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
-                         $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
-                         $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
+export PYTHONPATH=$RPM_BUILD_ROOT%{pythonrhnroot}:/usr/lib/rhn:/usr/share/rhn
+spacewalk-%{pythonX} $RPM_BUILD_ROOT%{pythonrhnroot}/common \
+                     $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
+                     $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
+                     $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
+                     $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
+                     $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
+
+%if 0%{?build_py3}
+export PYTHONPATH=$RPM_BUILD_ROOT%{python2rhnroot}:/usr/lib/rhn:/usr/share/rhn
+spacewalk-python2 $RPM_BUILD_ROOT%{python2rhnroot}/common \
+                  $RPM_BUILD_ROOT%{python2rhnroot}/satellite_exporter \
+                  $RPM_BUILD_ROOT%{python2rhnroot}/satellite_tools \
+                  $RPM_BUILD_ROOT%{python2rhnroot}/cdn_tools \
+                  $RPM_BUILD_ROOT%{python2rhnroot}/upload_server \
+                  $RPM_BUILD_ROOT%{python2rhnroot}/wsgi
+%endif
 %endif
 
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py*
@@ -883,8 +896,10 @@ rm -f %{rhnconf}/rhnSecret.py*
 # config files
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss-export
 
-%if !0%{?build_py3}
 %files libs
+%if 0%{?build_py3}
+%define pythonrhnroot %{python2rhnroot}
+%endif
 %defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/common/checksum.py*
@@ -897,6 +912,10 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/stringutils.py*
 %{pythonrhnroot}/common/rhnLib.py*
 %{pythonrhnroot}/common/timezone_utils.py*
+%if 0%{?build_py3}
+%{pythonrhnroot}
+%{pythonrhnroot}/common
+%define pythonrhnroot %{python3rhnroot}
 %endif
 
 %if 0%{?build_py3}
