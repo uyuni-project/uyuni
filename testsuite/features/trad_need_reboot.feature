@@ -52,6 +52,6 @@ Feature: Reboot required after patch
     And I follow "Requiring Reboot" in the left menu
     Then I should see "sle-client" as link
 
-  Scenario: Cleanup: remove packages and restore non-update repo after needing-reboot tests
+  Scenario: Cleanup: remove packages and restore non-update repo after needing reboot tests
     And I run "zypper -n rm andromeda-dummy" on "sle-client"
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client"
