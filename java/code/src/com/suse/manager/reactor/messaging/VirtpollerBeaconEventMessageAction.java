@@ -15,21 +15,21 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 /**
  * Virtpoller Beacon Event Action Handler
  */
-public class VirtpollerBeaconEventMessageAction extends AbstractDatabaseAction {
+public class VirtpollerBeaconEventMessageAction implements MessageAction {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         VirtpollerBeaconEventMessage vMsg = (VirtpollerBeaconEventMessage) msg;
 
         MinionServerFactory.findByMinionId(vMsg.getMinionId()).ifPresent(minion -> {

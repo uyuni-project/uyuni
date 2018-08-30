@@ -284,7 +284,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock);
-        action.doExecute(new RegisterMinionEventMessage(MINION_ID));
+        action.execute(new RegisterMinionEventMessage(MINION_ID));
 
         // Verify the resulting system entry
         String machineId = saltServiceMock.getMachineId(MINION_ID).get();
@@ -984,31 +984,36 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group", OrgFactory.getSatelliteOrg());
         ServerGroupFactory.create("Branch001", "Branch group", OrgFactory.getSatelliteOrg());
 
-        executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
-                            .map(map -> {
-                                map.put("initrd", true);
-                                map.put("manufacturer", "QEMU");
-                                map.put("productname", "CashDesk01");
-                                map.put("minion_id_prefix", "Branch001");
-                                return map;
-                            })));
-                    allowing(saltServiceMock).callSync(
-                            with(any(LocalCall.class)),
-                            with(any(String.class)));
-                }},
-                (contactMethod) -> null, // no AK
-                (optMinion, machineId, key) -> {
-                    assertFalse(optMinion.isPresent());
-                }, DEFAULT_CONTACT_METHOD);
+        try {
+            executeTest(
+                    (saltServiceMock, key) -> new Expectations() {{
+                        allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                        will(returnValue(Optional.of(MINION_ID)));
+                        allowing(saltServiceMock).getMachineId(MINION_ID);
+                        will(returnValue(Optional.of(MACHINE_ID)));
+                        allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                        allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                        allowing(saltServiceMock).getGrains(MINION_ID);
+                        will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                                .map(map -> {
+                                    map.put("initrd", true);
+                                    map.put("manufacturer", "QEMU");
+                                    map.put("productname", "CashDesk01");
+                                    map.put("minion_id_prefix", "Branch001");
+                                    return map;
+                                })));
+                        allowing(saltServiceMock).callSync(
+                                with(any(LocalCall.class)),
+                                with(any(String.class)));
+                    }},
+                    (contactMethod) -> null, // no AK
+                    (optMinion, machineId, key) -> {
+                        assertFalse(optMinion.isPresent());
+                    }, DEFAULT_CONTACT_METHOD);
+        } catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
+            return;
+        }
+        fail("Expected Exception not thrown");
     }
 
 
@@ -1022,31 +1027,36 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group", OrgFactory.getSatelliteOrg());
         ServerGroupFactory.create("TERMINALS", "All terminals group", OrgFactory.getSatelliteOrg());
 
-        executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
-                            .map(map -> {
-                                map.put("initrd", true);
-                                map.put("manufacturer", "QEMU");
-                                map.put("productname", "CashDesk01");
-                                map.put("minion_id_prefix", "Branch001");
-                                return map;
-                            })));
-                    allowing(saltServiceMock).callSync(
-                            with(any(LocalCall.class)),
-                            with(any(String.class)));
-                }},
-                (contactMethod) -> null, // no AK
-                (optMinion, machineId, key) -> {
-                    assertFalse(optMinion.isPresent());
-                }, DEFAULT_CONTACT_METHOD);
+        try {
+            executeTest(
+                    (saltServiceMock, key) -> new Expectations() {{
+                        allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                        will(returnValue(Optional.of(MINION_ID)));
+                        allowing(saltServiceMock).getMachineId(MINION_ID);
+                        will(returnValue(Optional.of(MACHINE_ID)));
+                        allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                        allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                        allowing(saltServiceMock).getGrains(MINION_ID);
+                        will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                                .map(map -> {
+                                    map.put("initrd", true);
+                                    map.put("manufacturer", "QEMU");
+                                    map.put("productname", "CashDesk01");
+                                    map.put("minion_id_prefix", "Branch001");
+                                    return map;
+                                })));
+                        allowing(saltServiceMock).callSync(
+                                with(any(LocalCall.class)),
+                                with(any(String.class)));
+                    }},
+                    (contactMethod) -> null, // no AK
+                    (optMinion, machineId, key) -> {
+                        assertFalse(optMinion.isPresent());
+                    }, DEFAULT_CONTACT_METHOD);
+        } catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
+            return;
+        }
+        fail("Expected Exception not thrown");
     }
 
     /**
@@ -1274,7 +1284,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         RegisterMinionEventMessageAction action =
                 new RegisterMinionEventMessageAction(saltService);
-        action.doExecute(new RegisterMinionEventMessage(MINION_ID));
+        action.execute(new RegisterMinionEventMessage(MINION_ID));
         return saltService;
     }
 

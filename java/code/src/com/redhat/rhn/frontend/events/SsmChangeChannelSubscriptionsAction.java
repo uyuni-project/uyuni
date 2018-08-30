@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.ssm.ChannelActionDAO;
 import com.redhat.rhn.manager.ssm.SsmManager;
@@ -29,14 +30,13 @@ import java.util.Collection;
  * Handles performing subscription changes for servers in the SSM.
  *
  * @see com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent
- * @version $Revision$
  */
-public class SsmChangeChannelSubscriptionsAction extends AbstractDatabaseAction {
+public class SsmChangeChannelSubscriptionsAction implements MessageAction {
     /** Logger instance. */
     private static Log log = LogFactory.getLog(SsmChangeChannelSubscriptionsAction.class);
 
     /** {@inheritDoc} */
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         SsmChangeChannelSubscriptionsEvent event = (SsmChangeChannelSubscriptionsEvent) msg;
 
         User user = event.getUser();

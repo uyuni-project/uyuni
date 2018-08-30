@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
@@ -31,14 +32,14 @@ import java.util.List;
  *
  * @see com.redhat.rhn.frontend.events.SsmDeleteServersEvent
  */
-public class SsmDeleteServersAction extends AbstractDatabaseAction {
+public class SsmDeleteServersAction implements MessageAction {
     public static final String OPERATION_NAME = "ssm.server.delete.operationname";
 
     /** Logger instance. */
     private static Log log = LogFactory.getLog(SsmDeleteServersAction.class);
 
     /** {@inheritDoc} */
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         SsmDeleteServersEvent event = (SsmDeleteServersEvent) msg;
         User user = UserFactory.lookupById(event.getUserId());
         List<Long> sids = event.getSids();

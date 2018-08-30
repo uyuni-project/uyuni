@@ -14,13 +14,8 @@
  */
 package com.redhat.rhn.frontend.events;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -30,6 +25,12 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.Date;
+import java.util.List;
+
 /**
  * Base functionality for responding to SSM package install/update/remove.
  * Handles ordering if a remote-cmd has been specified.  Subclasses are responsible
@@ -38,11 +39,14 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
  * @author ggainey
  *
  */
-public abstract class SsmPackagesAction extends AbstractDatabaseAction {
+public abstract class SsmPackagesAction implements MessageAction {
 
     private final Log log = LogFactory.getLog(this.getClass());
 
-    protected void doExecute(EventMessage msg) {
+    /**
+     * {@inheritDoc}
+     */
+    public void execute(EventMessage msg) {
         SsmPackageEvent event = (SsmPackageEvent) msg;
 
         User user = UserFactory.lookupById(event.getUserId());
