@@ -27,9 +27,7 @@
 %endif
 
 %if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
-%{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%global python2rhnroot %{python2_sitelib}/spacewalk
 %global python3rhnroot %{python3_sitelib}/spacewalk
 %global pythonrhnroot %{python3_sitelib}/spacewalk
 %global build_py3 1
@@ -66,6 +64,8 @@
 %global python_prefix python
 %endif
 
+%{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%global python2rhnroot %{python2_sitelib}/spacewalk
 %if !0%{?build_py3}
 %global pythonrhnroot %{python_sitelib}/spacewalk
 %endif
@@ -686,6 +686,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}
 %endif
 %if 0%{?build_py3}
+%dir %{pythonrhnroot}/__pycache__/
 %{pythonrhnroot}/__pycache__/*
 %{pythonrhnroot}/common/__pycache__/*
 %endif
@@ -897,52 +898,39 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss-export
 
 %files libs
-%if 0%{?build_py3}
-%define pythonrhnroot %{python2rhnroot}
-%endif
 %defattr(-,root,root)
 %doc LICENSE
-%{pythonrhnroot}/common/checksum.py*
-%{pythonrhnroot}/common/cli.py*
-%{pythonrhnroot}/common/fileutils.py*
-%{pythonrhnroot}/common/rhn_deb.py*
-%{pythonrhnroot}/common/rhn_mpm.py*
-%{pythonrhnroot}/common/rhn_pkg.py*
-%{pythonrhnroot}/common/rhn_rpm.py*
-%{pythonrhnroot}/common/stringutils.py*
-%{pythonrhnroot}/common/rhnLib.py*
-%{pythonrhnroot}/common/timezone_utils.py*
 %if 0%{?build_py3}
-%{pythonrhnroot}
-%{pythonrhnroot}/common
-%define pythonrhnroot %{python3rhnroot}
+%{python2rhnroot}
+%{python2rhnroot}/common
 %endif
+%{python2rhnroot}/common/checksum.py*
+%{python2rhnroot}/common/cli.py*
+%{python2rhnroot}/common/fileutils.py*
+%{python2rhnroot}/common/rhn_deb.py*
+%{python2rhnroot}/common/rhn_mpm.py*
+%{python2rhnroot}/common/rhn_pkg.py*
+%{python2rhnroot}/common/rhn_rpm.py*
+%{python2rhnroot}/common/stringutils.py*
+%{python2rhnroot}/common/rhnLib.py*
+%{python2rhnroot}/common/timezone_utils.py*
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-libs
 %defattr(-,root,root)
 %doc LICENSE
-%dir %{pythonrhnroot}
-%dir %{pythonrhnroot}/common
-%dir %{pythonrhnroot}/common/__pycache__
-%{pythonrhnroot}/common/checksum.py
-%{pythonrhnroot}/common/cli.py
-%{pythonrhnroot}/common/fileutils.py
-%{pythonrhnroot}/common/rhn_deb.py
-%{pythonrhnroot}/common/rhn_mpm.py
-%{pythonrhnroot}/common/rhn_pkg.py
-%{pythonrhnroot}/common/rhn_rpm.py
-%{pythonrhnroot}/common/stringutils.py
-%{pythonrhnroot}/common/rhnLib.py*
-%{pythonrhnroot}/common/timezone_utils.py*
-%{pythonrhnroot}/common/__pycache__/*
-%if 0%{?suse_version}
-%dir %{pythonrhnroot}
-%dir %{pythonrhnroot}/common
-%dir %{pythonrhnroot}/__pycache__
-%endif
-%{pythonrhnroot}/common
-%{pythonrhnroot}/common/__pycache__
+%dir %{python3rhnroot}/common/__pycache__
+%{python3rhnroot}/common/checksum.py
+%{python3rhnroot}/common/cli.py
+%{python3rhnroot}/common/fileutils.py
+%{python3rhnroot}/common/rhn_deb.py
+%{python3rhnroot}/common/rhn_mpm.py
+%{python3rhnroot}/common/rhn_pkg.py
+%{python3rhnroot}/common/rhn_rpm.py
+%{python3rhnroot}/common/stringutils.py
+%{python3rhnroot}/common/rhnLib.py*
+%{python3rhnroot}/common/timezone_utils.py*
+%{python3rhnroot}/common
 %endif
 
 %files config-files-common
