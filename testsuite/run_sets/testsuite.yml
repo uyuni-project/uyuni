@@ -22,7 +22,7 @@
   # one of: core_proxy_register_as_trad_with_script.feature
   #         core_proxy_register_as_minion_with_script.feature
   #         core_proxy_register_as_minion_with_gui.feature
-- features/core_proxy_register_as_trad_with_script.feature
+- features/core_proxy_register_as_minion_with_gui.feature
 # initialize clients
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
