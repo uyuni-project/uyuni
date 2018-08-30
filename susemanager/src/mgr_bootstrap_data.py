@@ -108,6 +108,7 @@ PKGLIST12 = [
                 "python",
                 "python-cffi",
                 "python-cryptography",
+                "python-setuptools",
                 "python-dmidecode",
                 "python-ethtool",
                 "python-gobject2",
