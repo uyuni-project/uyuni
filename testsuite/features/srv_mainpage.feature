@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Main landing page options and preferences
@@ -8,7 +8,7 @@ Feature: Main landing page options and preferences
     When I go to the home page
     Then I should see something
 
-  Scenario: Accessing the About page
+  Scenario: Access the About page
     Given I am not authorized
     When I go to the home page
     And I follow "About"

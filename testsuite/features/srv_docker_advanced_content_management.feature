@@ -3,7 +3,7 @@
 
 Feature: Advanced content management
 
-  Scenario: Create an Image Store as docker admin
+  Scenario: Create an image store as Docker admin
     Given I am authorized as "docker" with password "docker"
     And I follow "Images" in the left menu
     And I follow "Stores" in the left menu
@@ -12,7 +12,7 @@ Feature: Advanced content management
     And I enter "registry.mgr.suse.de" as "uri"
     And I click on "create-btn"
 
-  Scenario: Create a profile as docker admin
+  Scenario: Create a profile as Docker admin
     Given I am authorized as "docker" with password "docker"
     And I follow "Images" in the left menu
     And I follow "Profiles" in the left menu
@@ -38,7 +38,7 @@ Feature: Advanced content management
     And I should see a "norole" link
     And I should see a "normal user" text
 
-  Scenario: Cleanup: remove docker profile
+  Scenario: Cleanup: remove Docker profile
     Given I am authorized as "docker" with password "docker"
     When I follow "Images" in the left menu
     And I follow "Profiles" in the left menu
@@ -47,7 +47,7 @@ Feature: Advanced content management
     And I click on the css "button.btn-danger"
     And I should see a "Image profile has been deleted." text
 
-  Scenario: Cleanup: remove docker_admin" Image Store
+  Scenario: Cleanup: remove image store
     Given I am authorized as "docker" with password "docker"
     When I follow "Images" in the left menu
     And I follow "Stores" in the left menu

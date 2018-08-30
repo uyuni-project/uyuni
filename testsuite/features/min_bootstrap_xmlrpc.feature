@@ -61,14 +61,14 @@ Feature: Register a Salt minion via XML-RPC API
     When I call system.bootstrap() on a salt minion with saltSSH = true, but with activation key with Default contact method, I should get an XML-RPC fault with code -1
     And I logout from XML-RPC system namespace
 
-  Scenario: Cleanup: Turn the SLES minion into a container build host after XML bootstrap
+  Scenario: Cleanup: turn the SLES minion into a container build host after XML bootstrap
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "container_build_host"
     And I click on "Update Properties"
 
-  Scenario: Cleanup: Apply the highstate to container build host after XML bootstrap
+  Scenario: Cleanup: apply the highstate to container build host after XML bootstrap
     Given I am on the Systems overview page of this "sle-minion"
     When I wait until no Salt job is running on "sle-minion"
     And I enable repositories before installing Docker
@@ -76,6 +76,6 @@ Feature: Register a Salt minion via XML-RPC API
     And I wait until "docker" service is up and running on "sle-minion"
     And I disable repositories after installing Docker
 
-  Scenario: Cleanup: Check that the minion is now a build host after XML bootstrap
+  Scenario: Cleanup: check that the minion is now a build host after XML bootstrap
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
