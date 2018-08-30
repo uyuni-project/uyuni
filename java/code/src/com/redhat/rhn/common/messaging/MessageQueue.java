@@ -15,14 +15,6 @@
 
 package com.redhat.rhn.common.messaging;
 
-import com.redhat.rhn.frontend.events.SsmRemovePackagesAction;
-import com.redhat.rhn.frontend.events.SsmRemovePackagesEvent;
-import com.redhat.rhn.frontend.events.SsmUpgradePackagesAction;
-import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
-
-import EDU.oswego.cs.dl.util.concurrent.Channel;
-import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
-
 import com.redhat.rhn.frontend.events.CloneErrataAction;
 import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataAction;
@@ -43,18 +35,22 @@ import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.events.SsmErrataAction;
 import com.redhat.rhn.frontend.events.SsmErrataEvent;
+import com.redhat.rhn.frontend.events.SsmInstallPackagesAction;
+import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
 import com.redhat.rhn.frontend.events.SsmPowerManagementAction;
 import com.redhat.rhn.frontend.events.SsmPowerManagementEvent;
+import com.redhat.rhn.frontend.events.SsmRemovePackagesAction;
+import com.redhat.rhn.frontend.events.SsmRemovePackagesEvent;
+import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
+import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
+import com.redhat.rhn.frontend.events.SsmUpgradePackagesAction;
+import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
+import com.redhat.rhn.frontend.events.SsmVerifyPackagesAction;
+import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
-import com.redhat.rhn.frontend.events.SsmInstallPackagesAction;
-import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
-import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
-import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
-import com.redhat.rhn.frontend.events.SsmVerifyPackagesAction;
-import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
@@ -65,10 +61,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+
+import EDU.oswego.cs.dl.util.concurrent.Channel;
+import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
 
 /**
  * A class that passes messages from the sender to an action class
- *
  */
 public class MessageQueue {
 
@@ -125,6 +124,15 @@ public class MessageQueue {
         if (logger.isDebugEnabled()) {
             logger.debug("publish(EventMessage) - end");
         }
+    }
+
+    /**
+     * Returns {@link MessageAction}s corresponding to an {@link EventMessage}.
+     * @param message message
+     * @return actions
+     */
+    public static Stream<MessageAction> getActionsFor(EventMessage message) {
+        return ACTIONS.get(message.getClass()).stream();
     }
 
     static ActionExecutor popEventMessage() throws InterruptedException {
