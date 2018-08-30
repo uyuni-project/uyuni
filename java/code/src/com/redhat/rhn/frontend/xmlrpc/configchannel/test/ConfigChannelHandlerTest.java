@@ -33,6 +33,10 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.xmlrpc.ConfigFileErrorException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -90,6 +94,17 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    public void testCreateStateChannel() {
+
+        ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
+        assertEquals(LABEL, cc.getLabel());
+        assertEquals(NAME, cc.getName());
+        assertEquals(DESCRIPTION, cc.getDescription());
+        assertEquals(admin.getOrg(), cc.getOrg());
+        assertEquals(ConfigChannelType.state(), cc.getConfigChannelType());
+        assertEquals("/init.sls", cc.getConfigFiles().first().getConfigFileName().getPath());
+
+    }
 
     public void testUpdate() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
@@ -176,10 +191,29 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
             handler.lookupChannelInfo(admin, labels);
             fail("Lookup exception not raised!");
         }
-        catch (LookupException e) {
+        catch (NoSuchChannelException e) {
             // Cool could not find the item!..
         }
      }
+
+    public void testUpdateInitSls() {
+
+        ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
+        assertEquals(LABEL, cc.getLabel());
+        assertEquals(NAME, cc.getName());
+        assertEquals(DESCRIPTION, cc.getDescription());
+        assertEquals(admin.getOrg(), cc.getOrg());
+        assertEquals(ConfigChannelType.state(), cc.getConfigChannelType());
+        ConfigFile initSls = cc.getConfigFiles().first();
+        assertEquals("/init.sls", initSls.getConfigFileName().getPath());
+        assertTrue(initSls.getLatestConfigRevision().getConfigContent().getContentsString().isEmpty());
+        Map<String, Object> data = new HashMap<>();
+        String newContents = "new contents";
+        data.put("contents", newContents);
+        handler.updateInitSls(admin, cc.getLabel(),data);
+        assertEquals(newContents, initSls.getLatestConfigRevision().getConfigContent().getContentsString());
+
+    }
 
     /**
      * Checks if a given config channel is present in a list.
@@ -313,6 +347,71 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
         createSymlinkRevision(path + TestUtils.randomString(),
                 path + TestUtils.randomString(), cc, "root:root");
+    }
+
+    public void testAddPathStateChannel() throws Exception {
+        ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
+
+        String path = "/tmp/foo/path" + TestUtils.randomString();
+        String contents = "some contents";
+
+        ConfigRevision rev = createRevision(path, contents,
+                "group" + TestUtils.randomString(),
+                "owner" + TestUtils.randomString(),
+                "777",
+                false, cc, "unconfined_u:object_r:tmp_t");
+
+        //Path cannot end with "/"
+        try {
+            createRevision(path + TestUtils.randomString() + "/" , contents,
+                    "group" + TestUtils.randomString(),
+                    "owner" + TestUtils.randomString(),
+                    "744",
+                    false, cc, "unconfined_u:object_r:tmp_t");
+            fail("Validation error on the path.");
+        }
+        catch (ConfigFileErrorException e) {
+            // Can;t change.. Won't allow...
+            assertRevNotChanged(rev, cc);
+        }
+        //Directories are not allowed for state channel
+        try {
+            createRevision(path + TestUtils.randomString(), "",
+                    "group" + TestUtils.randomString(),
+                    "owner" + TestUtils.randomString(),
+                    "744",
+                    true, cc, "unconfined_u:object_r:tmp_t");
+            fail("InvalidOperationException exception not raised, **Directories/Symlinks are not supported in state channel.**");
+
+        }
+        catch (InvalidOperationException e) {
+
+        }
+        //Symlinks are not allowed for state channel
+        try {
+            createSymlinkRevision(path + TestUtils.randomString(),
+                    path + TestUtils.randomString(), cc, "root:root");
+            fail("InvalidOperationException exception not raised, **Directories/Symlinks are not supported in state channel.**");
+
+        }
+        catch (InvalidOperationException e) {
+
+        }
+        //init.sls should not be possible to update through createOrUpdatePath methods.
+        path = "/init.sls";
+        try {
+            createRevision(path, "",
+                    "group" + TestUtils.randomString(),
+                    "owner" + TestUtils.randomString(),
+                    "744",
+                    false, cc, "unconfined_u:object_r:tmp_t");
+            fail("Exception should be thrown, for init.sls file updateInitSls method should be used");
+        }
+        catch (InvalidParameterException e) {
+
+        }
+
+
     }
 
     public void testListFiles() {
