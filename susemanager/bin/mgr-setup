@@ -182,7 +182,7 @@ setup_db_postgres() {
     else
         echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
     fi
-    systemctl --quiet enable postgresql 2&>1
+    systemctl --quiet enable postgresql 2>&1
     systemctl start postgresql
     su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     # su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"   SUMA3 drops upstream auditing
