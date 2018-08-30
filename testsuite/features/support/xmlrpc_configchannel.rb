@@ -15,13 +15,15 @@ class XMLRPCConfigChannelTest < XMLRPCBaseTest
   end
 
   def create_or_update_path(channel, file, contents)
-    @connection.call('configchannel.create_or_update_path', @sid, channel, file, false,
-                     {
-                       "contents" => contents,
+    @connection.call('configchannel.create_or_update_path',
+                     @sid,
+                     channel,
+                     file,
+                     false,
+                     { "contents" => contents,
                        "owner" => "root",
                        "group" => "root",
-                       "permissions" => "644"
-                     }
+                       "permissions" => "644" }
                     )
   end
 
