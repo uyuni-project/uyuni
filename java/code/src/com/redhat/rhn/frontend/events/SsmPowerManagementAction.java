@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -34,7 +35,7 @@ import java.util.List;
 /**
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
-public class SsmPowerManagementAction extends AbstractDatabaseAction {
+public class SsmPowerManagementAction implements MessageAction {
 
     /** Logger instance */
     private static Logger log = Logger.getLogger(SsmPowerManagementAction.class);
@@ -43,7 +44,7 @@ public class SsmPowerManagementAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     @Override
-    protected void doExecute(EventMessage msgIn) {
+    public void execute(EventMessage msgIn) {
         SsmPowerManagementEvent event = (SsmPowerManagementEvent) msgIn;
         Long userId = event.getUserId();
         User user = UserFactory.lookupById(userId);

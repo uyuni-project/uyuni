@@ -38,6 +38,14 @@ public class TestAction implements MessageAction {
         TestEventMessage tm = (TestEventMessage) msg;
         tm.setMessageReceived(true);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
+    }
 }
 
 

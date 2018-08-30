@@ -14,25 +14,26 @@
  */
 package com.redhat.rhn.frontend.events;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionChainManager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Schedules config files actions for systems.
  */
-public class SsmConfigFilesAction extends AbstractDatabaseAction {
+public class SsmConfigFilesAction implements MessageAction {
 
     private final Log log = LogFactory.getLog(this.getClass());
 
     /** {@inheritDoc} */
-    protected void doExecute(EventMessage msg) {
+    public void execute(EventMessage msg) {
         SsmConfigFilesEvent event = (SsmConfigFilesEvent) msg;
 
         User user = UserFactory.lookupById(event.getUserId());

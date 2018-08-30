@@ -15,10 +15,10 @@
 
 package com.redhat.rhn.common.messaging;
 
+import java.util.function.Consumer;
+
 /**
  * A interface representing a class that can act on a EventMessage
- *
- * @version $Rev$
  */
 public interface MessageAction {
 
@@ -39,6 +39,24 @@ public interface MessageAction {
      */
     default boolean canRunConcurrently() {
         return false;
+    }
+
+    /**
+     * Return true in case this action needs Hibernate session and transaction handling.
+     *
+     * @return true if this action operates on the database
+     */
+    default boolean needsTransactionHandling() {
+        return true;
+    }
+
+    /**
+     * Returns code to be executed after a rollback in case of unexpected errors.
+     *
+     * @return a consumer
+     */
+    default Consumer<Exception> getExceptionHandler() {
+        return e -> { };
     }
 }
 

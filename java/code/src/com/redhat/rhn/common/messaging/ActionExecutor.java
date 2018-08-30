@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.messaging;
 
+import com.redhat.rhn.frontend.events.TransactionHelper;
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -60,12 +62,13 @@ class ActionExecutor implements Runnable {
                         Thread.sleep(10);
                     }
                     LOG.debug("Transaction finished.  Executing");
-                    action.execute(msg);
+                }
+                if (action.needsTransactionHandling()) {
+                    TransactionHelper.handlingTransaction(() -> action.execute(msg), action.getExceptionHandler());
                 }
                 else {
                     action.execute(msg);
                 }
-
             }
             catch (Throwable t) {
                 LOG.error(t);

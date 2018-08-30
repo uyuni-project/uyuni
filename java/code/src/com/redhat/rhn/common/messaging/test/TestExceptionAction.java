@@ -20,7 +20,6 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 
 /**
  * TestExceptionAction
- * @version $Rev$
  */
 public class TestExceptionAction implements MessageAction  {
     private static MessageAction registered;
@@ -42,5 +41,13 @@ public class TestExceptionAction implements MessageAction  {
         TestEventMessage tm = (TestEventMessage) msg;
         tm.setMessageReceived(true);
         throw new RuntimeException("TEST: Try and kill the thread");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean needsTransactionHandling() {
+        return false;
     }
 }
