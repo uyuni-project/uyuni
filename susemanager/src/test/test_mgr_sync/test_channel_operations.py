@@ -70,12 +70,12 @@ class ChannelOperationsTest(unittest.TestCase):
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        self.assertEqual(recorder.stdout, ["No channels found."])
+             self.assertEqual(recorder.stdout, ["No channels found."])
 
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
+            stubbed_xmlrpm_call.assert_called_once_with(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)
 
     def test_list_channels(self):
         """ Testing list channel output """
@@ -86,7 +86,7 @@ class ChannelOperationsTest(unittest.TestCase):
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        expected_output = """Available Channels:
+            expected_output = """Available Channels:
 
 
 Status:
@@ -100,12 +100,12 @@ Status:
     [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+            self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
+            stubbed_xmlrpm_call.assert_called_once_with(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)
 
     def test_list_channels_compact_mode_enabled(self):
         """ Testing list channel output """
@@ -116,7 +116,7 @@ Status:
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        expected_output = """Available Channels:
+            expected_output = """Available Channels:
 
 
 Status:
@@ -130,12 +130,12 @@ Status:
     [ ] sle10-sdk-sp4-pool-x86_64
     [I] sle10-sdk-sp4-updates-x86_64"""
 
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+            self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
+            stubbed_xmlrpm_call.assert_called_once_with(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)
 
     def test_list_channels_expand_enabled(self):
         """ Testing list channel output when expand option is toggled """
@@ -146,7 +146,7 @@ Status:
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        expected_output = """Available Channels (full):
+            expected_output = """Available Channels (full):
 
 
 Status:
@@ -163,12 +163,12 @@ Status:
     [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+            self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
+            stubbed_xmlrpm_call.assert_called_once_with(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)
 
     def test_list_channels_filter_set(self):
         """ Testing list channel output when a filter is set """
@@ -179,7 +179,7 @@ Status:
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        expected_output = """Available Channels:
+            expected_output = """Available Channels:
 
 
 Status:
@@ -190,12 +190,12 @@ Status:
 [ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
 [ ] RHEL x86_64 AS 4 RES 4 [rhel-x86_64-as-4]"""
 
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+            self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
+            stubbed_xmlrpm_call.assert_called_once_with(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)
 
     def test_list_channels_filter_show_parent_when_child_matches(self):
         """ Testing list channel output when a filter is set.  Should show the
@@ -210,7 +210,7 @@ Status:
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        expected_output = """Available Channels:
+            expected_output = """Available Channels:
 
 
 Status:
@@ -221,12 +221,12 @@ Status:
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+            self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
+            stubbed_xmlrpm_call.assert_called_once_with(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)
 
     def test_list_channels_interactive(self):
         """ Test listing channels when interactive more is set """
@@ -241,7 +241,7 @@ Status:
                 filter=None,
                 no_optionals=True,
                 show_interactive_numbers=True)
-        expected_output = """Available Channels:
+            expected_output = """Available Channels:
 
 
 Status:
@@ -255,15 +255,15 @@ Status:
     03) [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
         [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+            self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
+            stubbed_xmlrpm_call.assert_called_once_with(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)
 
-        self.assertEqual(['rhel-i386-as-4', 'rhel-x86_64-as-4', 'sle10-sdk-sp4-pool-x86_64'],
-                         available_channels)
+            self.assertEqual(['rhel-i386-as-4', 'rhel-x86_64-as-4', 'sle10-sdk-sp4-pool-x86_64'],
+                             available_channels)
 
     def test_add_available_base_channel_with_mirror(self):
         """ Test adding an available base channel"""
@@ -282,24 +282,24 @@ Status:
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
 
-        expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannels",
-                                        self.fake_auth_token,
-                                        channel,
-                                        mirror_url),
-            self._mock_iterator(),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-                                        "syncRepo",
-                                        self.fake_auth_token,
-                                        [channel])
-        ]
-        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                            "addChannels",
+                                            self.fake_auth_token,
+                                            channel,
+                                            mirror_url),
+                self._mock_iterator(),
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                            "syncRepo",
+                                            self.fake_auth_token,
+                                            [channel])
+            ]
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
-        expected_output = [
-            "Adding '{0}' channel".format(channel),
-            "Scheduling reposync for '{0}' channel".format(channel)
-        ]
+            expected_output = [
+                "Adding '{0}' channel".format(channel),
+                "Scheduling reposync for '{0}' channel".format(channel)
+            ]
 
     def test_add_available_base_channel(self):
         """ Test adding an available base channel"""
@@ -311,30 +311,30 @@ Status:
         self.mgr_sync._fetch_remote_channels = MagicMock(
         return_value=parse_channels(
             read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
-	stubbed_xmlrpm_call = MagicMock()
-	stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
-	self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-	with ConsoleRecorder() as recorder:
-	    self.assertEqual(0, self.mgr_sync.run(options))
-	expected_xmlrpc_calls = [
-	    call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-		                        "addChannels",
-		                        self.fake_auth_token,
-		                        channel,
-		                        ''),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-                                        "syncRepo",
+        stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with ConsoleRecorder() as recorder:
+            self.assertEqual(0, self.mgr_sync.run(options))
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "addChannels",
                                         self.fake_auth_token,
-                                        [channel])
-        ]
-        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+                                        channel,
+                                        ''),
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                                "syncRepo",
+                                                self.fake_auth_token,
+                                                [channel])
+            ]
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
-        expected_output = [
-            "Added '{0}' channel".format(channel),
-            "Scheduling reposync for following channels:",
-            "- {0}".format(channel)
-        ]
-        self.assertEqual(expected_output, recorder.stdout)
+            expected_output = [
+                "Added '{0}' channel".format(channel),
+                "Scheduling reposync for following channels:",
+                "- {0}".format(channel)
+            ]
+            self.assertEqual(expected_output, recorder.stdout)
 
     def test_add_available_channel_with_available_base_channel(self):
         """ Test adding an available channel whose parent is available.
@@ -356,30 +356,29 @@ Status:
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                            "addChannels",
+                                            self.fake_auth_token,
+                                            base_channel,
+                                            ''),
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                            "syncRepo",
+                                            self.fake_auth_token,
+                                            [base_channel]),
+                call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                            "addChannels",
+                                            self.fake_auth_token,
+                                            channel,
+                                            ''),
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                            "syncRepo",
+                                            self.fake_auth_token,
+                                            [channel])
+            ]
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
-        expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannels",
-                                        self.fake_auth_token,
-                                        base_channel,
-                                        ''),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-                                        "syncRepo",
-                                        self.fake_auth_token,
-                                        [base_channel]),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannels",
-                                        self.fake_auth_token,
-                                        channel,
-                                        ''),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-                                        "syncRepo",
-                                        self.fake_auth_token,
-                                        [channel])
-        ]
-        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
-
-        expected_output = """'res4-es-i386' depends on channel 'rhel-i386-es-4' which has not been added yet
+            expected_output = """'res4-es-i386' depends on channel 'rhel-i386-es-4' which has not been added yet
 Going to add 'rhel-i386-es-4'
 Added 'rhel-i386-es-4' channel
 Scheduling reposync for following channels:
@@ -387,7 +386,7 @@ Scheduling reposync for following channels:
 Added 'res4-es-i386' channel
 Scheduling reposync for following channels:
 - res4-es-i386"""
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+            self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
     def test_add_already_installed_channel(self):
         """Test adding an already added channel.
@@ -408,20 +407,20 @@ Scheduling reposync for following channels:
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
 
-        expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-                                        "syncRepo",
-                                        self.fake_auth_token,
-                                        [channel])
-        ]
-        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                            "syncRepo",
+                                            self.fake_auth_token,
+                                            [channel])
+            ]
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
-        expected_output = [
-            "Channel '{0}' has already been added".format(channel),
-            "Scheduling reposync for following channels:",
-            "- {0}".format(channel)
-        ]
-        self.assertEqual(expected_output, recorder.stdout)
+            expected_output = [
+                "Channel '{0}' has already been added".format(channel),
+                "Scheduling reposync for following channels:",
+                "- {0}".format(channel)
+            ]
+            self.assertEqual(expected_output, recorder.stdout)
 
     def test_add_unavailable_base_channel(self):
         """Test adding an unavailable base channel
@@ -437,10 +436,9 @@ Scheduling reposync for following channels:
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))
-
-        self.assertEqual(
-            ["Channel 'sles11-sp3-vmware-pool-i586' is not available, skipping"],
-            recorder.stdout)
+            self.assertEqual(
+                ["Channel 'sles11-sp3-vmware-pool-i586' is not available, skipping"],
+                recorder.stdout)
 
     def test_add_unavailable_child_channel(self):
         """Test adding an unavailable child channel
@@ -456,10 +454,9 @@ Scheduling reposync for following channels:
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))
-
-        self.assertEqual(
-            ["Channel 'sle10-sdk-sp4-pool-x86_64' is not available, skipping"],
-            recorder.stdout)
+            self.assertEqual(
+                ["Channel 'sle10-sdk-sp4-pool-x86_64' is not available, skipping"],
+                recorder.stdout)
 
     def test_add_available_child_channel_with_unavailable_parent(self):
         """Test adding an available child channel which has an unavailable parent.
@@ -482,13 +479,12 @@ Scheduling reposync for following channels:
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))
+            expected_output = """Error, 'res4-es-i386' depends on channel 'rhel-i386-es-4' which is not available
+    'res4-es-i386' has not been added"""
 
-        expected_output = """Error, 'res4-es-i386' depends on channel 'rhel-i386-es-4' which is not available
-'res4-es-i386' has not been added"""
-
-        self.assertFalse(recorder.stdout)
-        self.assertEqual(expected_output.split("\n"),
-                         recorder.stderr)
+            self.assertFalse(recorder.stdout)
+            self.assertEqual(expected_output.split("\n"),
+                             recorder.stderr)
 
 
     def test_add_channels_interactive(self):
@@ -506,31 +502,30 @@ Scheduling reposync for following channels:
                 available_channels.index(chosen_channel) + 1)
             with ConsoleRecorder() as recorder:
                 self.mgr_sync.run(options)
+                expected_output = [
+                    "Added '{0}' channel".format(chosen_channel),
+                    "Scheduling reposync for following channels:",
+                    "- {0}".format(chosen_channel)
+                ]
+                self.assertEqual(expected_output, recorder.stdout)
 
-        expected_output = [
-            "Added '{0}' channel".format(chosen_channel),
-            "Scheduling reposync for following channels:",
-            "- {0}".format(chosen_channel)
-        ]
-        self.assertEqual(expected_output, recorder.stdout)
+            self.mgr_sync._list_channels.assert_called_once_with(
+                expand=False, filter=None, no_optionals=False,
+                show_interactive_numbers=True, compact=False)
 
-        self.mgr_sync._list_channels.assert_called_once_with(
-            expand=False, filter=None, no_optionals=False,
-            show_interactive_numbers=True, compact=False)
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                            "addChannels",
+                                            self.fake_auth_token,
+                                            chosen_channel,
+                                            ''),
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                            "syncRepo",
+                                            self.fake_auth_token,
+                                            [chosen_channel])
+            ]
 
-        expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannels",
-                                        self.fake_auth_token,
-                                        chosen_channel,
-                                        ''),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-                                        "syncRepo",
-                                        self.fake_auth_token,
-                                        [chosen_channel])
-        ]
-
-        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
     def test_add_channels_interactive_no_optional(self):
         options = get_options("add channel --no-optional".split())
@@ -548,30 +543,30 @@ Scheduling reposync for following channels:
             with ConsoleRecorder() as recorder:
                 self.mgr_sync.run(options)
 
-        expected_output = [
-            "Added '{0}' channel".format(chosen_channel),
-            "Scheduling reposync for following channels:",
-            "- {0}".format(chosen_channel)
-        ]
-        self.assertEqual(expected_output, recorder.stdout)
+            expected_output = [
+                "Added '{0}' channel".format(chosen_channel),
+                "Scheduling reposync for following channels:",
+                "- {0}".format(chosen_channel)
+            ]
+            self.assertEqual(expected_output, recorder.stdout)
 
-        self.mgr_sync._list_channels.assert_called_once_with(
-            expand=False, filter=None, no_optionals=True,
-            show_interactive_numbers=True, compact=False)
+            self.mgr_sync._list_channels.assert_called_once_with(
+                expand=False, filter=None, no_optionals=True,
+                show_interactive_numbers=True, compact=False)
 
-        expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannels",
-                                        self.fake_auth_token,
-                                        chosen_channel,
-                                        ''),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-                                        "syncRepo",
-                                        self.fake_auth_token,
-                                        [chosen_channel])
-        ]
+            expected_xmlrpc_calls = [
+                call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                            "addChannels",
+                                            self.fake_auth_token,
+                                            chosen_channel,
+                                            ''),
+                call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                            "syncRepo",
+                                            self.fake_auth_token,
+                                            [chosen_channel])
+            ]
 
-        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+            stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
 def xmlrpc_sideeffect(*args, **kwargs):
     if args[1] == "addChannels":
