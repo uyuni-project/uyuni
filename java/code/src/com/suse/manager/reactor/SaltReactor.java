@@ -17,6 +17,7 @@ package com.suse.manager.reactor;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -150,7 +151,13 @@ public class SaltReactor {
             retries++;
             try {
                 eventStream = SALT_SERVICE.getEventStream();
-                eventStream.addEventListener(new MessageQueueEventListener(this::eventStreamClosed, this::eventToMessages));
+                if (ConfigDefaults.get().isPostgresql()) {
+                    eventStream.addEventListener(new PGEventListener(this::eventStreamClosed, this::eventToMessages));
+                }
+                else {
+                    eventStream.addEventListener(new MessageQueueEventListener(this::eventStreamClosed,
+                            this::eventToMessages));
+                }
                 connected = true;
                 if (retries > 1) {
                     LOG.warn("Successfully connected to the Salt event bus after " +
