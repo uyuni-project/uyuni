@@ -70,7 +70,7 @@ class ChannelOperationsTest(unittest.TestCase):
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-             self.assertEqual(recorder.stdout, ["No channels found."])
+            self.assertEqual(recorder.stdout, ["No channels found."])
 
             stubbed_xmlrpm_call.assert_called_once_with(
                 self.mgr_sync.conn.sync.content,
