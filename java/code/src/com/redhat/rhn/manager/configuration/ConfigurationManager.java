@@ -2007,9 +2007,6 @@ public class ConfigurationManager extends BaseManager {
     public ConfigChannel lookupGlobalConfigChannel(User user, String label) {
         Optional<ConfigChannel> configChannel =
                 ConfigurationFactory.lookupGlobalConfigChannelByLabel(label, user.getOrg());
-       /* return configChannel.filter(cc->
-            accessToChannel(user.getId(), cc.getId())
-        ).orElseThrow(()->throwChannelLookUpException(label));*/
         return configChannel.filter(cc->
                 accessToChannel(user.getId(), cc.getId())
         ).orElse(null);
@@ -2493,7 +2490,7 @@ public class ConfigurationManager extends BaseManager {
         if (cct.getLabel().equals(ConfigChannelType.STATE) ||  cct.getLabel().equals(ConfigChannelType.NORMAL)) {
             // if global channel, we want to be a bit stricter
             return channelExists(label, ConfigChannelType.state(), org) ||
-                   channelExists(label, ConfigChannelType.normal(), org);
+                    channelExists(label, ConfigChannelType.normal(), org);
         }
         else {
             return channelExists(label, cct, org);

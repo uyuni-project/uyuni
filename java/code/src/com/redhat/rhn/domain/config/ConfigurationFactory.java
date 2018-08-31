@@ -398,18 +398,15 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return the ConfigChannel found or null if not found.
      */
     public static Optional<ConfigChannel> lookupGlobalConfigChannelByLabel(String label, Org org) {
-        Session session = HibernateFactory.getSession();
-        return Optional.ofNullable(
-                (ConfigChannel) session.createCriteria(ConfigChannel.class).
-                add(Restrictions.eq("org", org)).
-                add(Restrictions.eq("label", label)).
-                add(Restrictions.or(
-                        Restrictions.eq("configChannelType", ConfigChannelType.normal()),
-                        Restrictions.eq("configChannelType", ConfigChannelType.state()))
-                ).
-                uniqueResult()
-        );
 
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ConfigChannel> criteria = builder.createQuery(ConfigChannel.class);
+        Root<ConfigChannel> root = criteria.from(ConfigChannel.class);
+        criteria.where(builder.and(
+                builder.equal(root.get("label"), label)),
+                builder.equal(root.get("org"), org),
+                root.get("configChannelType").in(ConfigChannelType.normal(), ConfigChannelType.state()));
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**
