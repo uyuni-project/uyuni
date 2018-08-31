@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.messaging;
 
 import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
-import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -210,11 +209,20 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         applySaltboot(registeredMinion);
                     }
                     else {
+                        Optional<String> activationKeyLabel = grains
+                                .getMap("susemanager")
+                                .flatMap(suma -> suma.getOptionalAsString("activation_key"));
+                        Optional<ActivationKey> activationKey = activationKeyLabel
+                                .map(ActivationKeyFactory::lookupByKey);
+
                         // TODO this is to be implemented in the future
                         // for now we don't have any means to detect if the image has been redeployed and we simply
                         // call the 'finishRegistration' on every minion start
+                        // BEWARE: this also means the activation key is applied on each retail minion start for now
                         LOG.info("Finishing registration for minion " + minionId);
-                        finishRegistration(registeredMinion, empty(), creator, !isSaltSSH);
+                        subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey, activationKeyLabel);
+                        activationKey.ifPresent(ak -> applyActivationKey(ak, registeredMinion, grains));
+                        finishRegistration(registeredMinion, activationKey, creator, !isSaltSSH);
                     }
                 });
             }
