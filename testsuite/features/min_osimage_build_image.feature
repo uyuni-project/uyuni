@@ -26,4 +26,9 @@ Feature: Build OS images
     Then I should see a "POS_Image_JeOS6" text
 
   Scenario: Cleanup: remove the image from SUSE Manager server
-    When I run "rm /srv/www/os-images/1/*" on "server"
+    Given I am authorized as "admin" with password "admin"
+    When I navigate to images webpage
+    And I check the first image
+    And I click on "Delete"
+    And I click on "Delete" in "Delete Selected Image(s)" modal
+    And I wait until I see "Deleted successfully." text
