@@ -44,7 +44,6 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -76,6 +75,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -97,6 +97,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 
 /**
  * ChannelManager
@@ -1480,20 +1484,16 @@ public class ChannelManager extends BaseManager {
         outParams.put("result", new Integer(Types.NUMERIC));
         Map<String, Object> result = sbm.execute(inParams, outParams);
 
-        Long guessedId = (Long) result.get(("result"));
+        Optional<Channel> guessedChannel = Opt.fold(ofNullable((Long) result.get("result")),
+                () -> empty(),
+                guessedId -> ofNullable(ChannelFactory.lookupByIdAndUser(guessedId, usr)));
 
-        Channel c = null;
-        if (guessedId != null) {
-            c = ChannelFactory.lookupByIdAndUser(guessedId, usr);
-        }
-
-        if (c == null) {
-            List<EssentialChannelDto> dr = listPossibleSuseBaseChannelsForServer(s);
-            if (dr != null && !dr.isEmpty()) {
-                c = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), usr);
-            }
-        }
-        return Optional.ofNullable(c);
+        return Opt.or(guessedChannel, () ->
+                Opt.fold(listPossibleSuseBaseChannelsForServer(s),
+                    () -> empty(),
+                    dr -> dr.isEmpty() ? empty() : ofNullable(ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), usr))
+                )
+        );
     }
 
     /**
@@ -1740,10 +1740,7 @@ public class ChannelManager extends BaseManager {
             channelDtos.addAll(baseEusChans);
         }
 
-        DataResult dr = listPossibleSuseBaseChannelsForServer(s);
-        if (dr != null) {
-            channelDtos.addAll(dr);
-        }
+        listPossibleSuseBaseChannelsForServer(s).ifPresent(dr -> channelDtos.addAll(dr));
 
         // Get all the possible base-channels owned by this Org
         channelDtos.addAll(listCustomBaseChannelsForServer(s));
@@ -2570,22 +2567,26 @@ public class ChannelManager extends BaseManager {
      * @param s server
      * @return result
      */
-    public static DataResult listPossibleSuseBaseChannelsForServer(Server s) {
+    public static Optional<DataResult<EssentialChannelDto>> listPossibleSuseBaseChannelsForServer(Server s) {
         log.debug("listPossibleSuseBaseChannelsForServer called");
 
-        SUSEProductSet ps = s.getInstalledProductSet();
-        if (ps == null || ps.getBaseProduct() == null) {
-            log.info("Server has no base product installed");
-            return null;
-        }
+        Optional<Long> baseProductId = s.getInstalledProductSet().flatMap(
+                ps -> ofNullable(ps.getBaseProduct())).map(SUSEProduct::getId);
 
-        Map params = new HashMap();
-        params.put("pid", ps.getBaseProduct().getId());
-        params.put("channel_arch_id", s.getServerArch().getCompatibleChannelArch().getId());
-        SelectMode m3 = ModeFactory.getMode("Channel_queries",
-                    "suse_base_channels_for_suse_product");
-        DataResult ret  = makeDataResult(params, new HashMap(), null, m3);
-        return ret;
+        return Opt.fold(baseProductId,
+                () -> {
+                    log.info("Server has no base product installed");
+                    return empty();
+                },
+                id -> {
+                    Map params = new HashMap();
+                    params.put("pid", id);
+                    params.put("channel_arch_id", s.getServerArch().getCompatibleChannelArch().getId());
+                    SelectMode m3 = ModeFactory.getMode("Channel_queries",
+                            "suse_base_channels_for_suse_product");
+                    DataResult ret  = makeDataResult(params, new HashMap(), null, m3);
+                    return of(ret);
+                });
     }
 
     /**

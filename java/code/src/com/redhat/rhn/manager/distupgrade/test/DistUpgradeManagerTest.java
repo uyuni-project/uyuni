@@ -124,7 +124,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 sourceProduct.getId(), Collections.emptyList());
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
-                sourceProducts, arch, user);
+                Optional.of(sourceProducts), arch, user);
         assertNotNull(targetProductSets);
         assertTrue(targetProductSets.isEmpty());
     }
@@ -146,7 +146,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
-                sourceProducts, arch , user);
+                Optional.of(sourceProducts), arch , user);
         assertNotNull(targetProductSets);
         assertEquals(1, targetProductSets.size());
         assertEquals(targetBaseProduct, targetProductSets.get(0).getBaseProduct());
@@ -166,7 +166,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 sourceProduct.getId(), Collections.singletonList(sourceAddonProduct.getId()));
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
-                sourceProducts, arch, user);
+                Optional.of(sourceProducts), arch, user);
         assertNotNull(targetProductSets);
         assertTrue(targetProductSets.isEmpty());
     }
@@ -211,7 +211,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Verify that target products are returned correctly
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(sourceProducts, arch, user);
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());

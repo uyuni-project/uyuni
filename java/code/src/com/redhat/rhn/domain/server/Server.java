@@ -1944,11 +1944,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Return the installed products or null in case of no products found.
      * @return installed products
      */
-    public SUSEProductSet getInstalledProductSet() {
+    public Optional<SUSEProductSet> getInstalledProductSet() {
         if (installedProducts.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
-        return new SUSEProductSet(installedProducts);
+        return Optional.of(new SUSEProductSet(installedProducts));
     }
 
     /**

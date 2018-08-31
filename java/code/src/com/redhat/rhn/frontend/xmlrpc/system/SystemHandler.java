@@ -6119,8 +6119,8 @@ public class SystemHandler extends BaseHandler {
             Integer serverId) {
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         Server server = lookupServer(loggedInUser, serverId);
-        SUSEProductSet installedProducts = server.getInstalledProductSet();
-        if (installedProducts == null) {
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        if (!installedProducts.isPresent()) {
             throw new FaultException(-1, "listMigrationTargetError",
                     "Server has no Products installed.");
         }
@@ -6233,7 +6233,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         // Find target products for the migration
-        SUSEProductSet installedProducts = server.getInstalledProductSet();
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
                 installedProducts, arch, loggedInUser);
