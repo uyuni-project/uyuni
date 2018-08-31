@@ -9,8 +9,8 @@ import logging
 
 log = logging.getLogger(__name__)
 
-def upload_file_from_minion(addr4, filetoupload, targetdir):
-    src = 'root@' + addr4 + ':' + filetoupload
+def upload_file_from_minion(hostname, filetoupload, targetdir):
+    src = 'root@' + hostname + ':' + filetoupload
     return __salt__['salt.cmd'](
       'rsync.rsync',
       src, targetdir,

@@ -1129,7 +1129,7 @@ public class SaltService {
     public Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
             String imageStore) {
         RunnerCall<MgrUtilRunner.ExecResult> call =
-                MgrKiwiImageRunner.collectImage(minion.getIpAddress(), filepath, imageStore);
+                MgrKiwiImageRunner.collectImage(minion.getMinionId(), filepath, imageStore);
         return callSync(call);
     }
 }
