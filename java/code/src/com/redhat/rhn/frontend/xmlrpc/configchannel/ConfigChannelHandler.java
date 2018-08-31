@@ -106,7 +106,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "channelLabel")
      * @xmlrpc.param #param("string", "channelName")
      * @xmlrpc.param #param("string", "channelDescription")
-     * * @xmlrpc.param #param("string", "channelType('normal', 'state')")
+     * @xmlrpc.param #param_desc("string", "channelType", "The channel type either 'normal' or 'state'.")
      * @xmlrpc.returntype
      * $ConfigChannelSerializer
      */
@@ -374,15 +374,13 @@ public class ConfigChannelHandler extends BaseHandler {
         return  list;
     }
     /**
-     * Update the init.sls file for the given state channel
-     * with the given contents in a given channel.
+     * Update the init.sls file for the given state channel with the given contents.
      * @param user The current user
      * @param channelLabel the label of the config channel.
      * @param data a map containing properties pertaining to the given path..
-     * for directory paths - 'data' will hold values for -&gt;
-     *  owner, group, permissions
-     * for file paths -  'data' will hold values for-&gt;
-     *  contents, owner, group, permissions, macro-start-delimiter, macro-end-delimiter
+     * for directory paths - 'data' will hold values for ->  owner, group, permissions
+     * for file paths -  'data' will hold values for  ->  contents, owner, group, permissions, macro-start-delimiter,
+     *            macro-end-delimiter
      * @return returns the new created or updated config revision..
      * @since 10.2
      *
