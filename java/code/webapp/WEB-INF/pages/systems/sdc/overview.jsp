@@ -169,7 +169,7 @@
                 </c:when>
                 <c:otherwise>
                   <ul class="list-group">
-                    <li class="list-group-item">${installedProducts.baseProduct.friendlyName}</li>
+                    <li class="list-group-item">${installedProducts.get().baseProduct.friendlyName}</li>
                     <c:forEach items="${installedProducts.addonProducts}" var="current" varStatus="loop">
                       <li class="list-group-item">${current.friendlyName}</li>
                     </c:forEach>
