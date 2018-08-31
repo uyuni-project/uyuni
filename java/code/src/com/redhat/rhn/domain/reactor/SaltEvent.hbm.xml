@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <sql-query name="SaltEvent.countSaltEvents">
+        <![CDATA[
+          SELECT COUNT(*) as count
+              FROM suseSaltEvent;
+        ]]>
+        <return-scalar column="count" type="long"/>
+    </sql-query>
+
+    <sql-query name="SaltEvent.popSaltEvents">
+        <!-- See https://blog.2ndquadrant.com/what-is-select-skip-locked-for-in-postgresql-9-5/ -->
+        <![CDATA[
+            DELETE FROM suseSaltEvent
+            WHERE id IN (
+              SELECT id
+              FROM suseSaltEvent
+              ORDER BY id
+              FOR UPDATE SKIP LOCKED
+              LIMIT :limit
+            )
+            RETURNING id, minion_id, data;
+        ]]>
+        <return-scalar column="id" type="long"/>
+        <return-scalar column="minion_id" type="string"/>
+        <return-scalar column="data" type="string"/>
+    </sql-query>
+
+    <sql-query name="SaltEvent.deleteSaltEvents">
+        <![CDATA[
+            DELETE FROM suseSaltEvent
+            WHERE id IN :ids
+            RETURNING id;
+        ]]>
+        <return-scalar column="id" type="long"/>
+    </sql-query>
+</hibernate-mapping>
