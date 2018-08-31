@@ -16,9 +16,9 @@
 
 
 try:
-    from io import StringIO
-except ImportError:
     from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 try:
     from unittest import mock
