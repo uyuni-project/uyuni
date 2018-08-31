@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2018 SUSE-LINUX
 # Licensed under the terms of the MIT license.
-￼
+
 require 'twopence'
 
 # Initialize SSH targets from environment variables
