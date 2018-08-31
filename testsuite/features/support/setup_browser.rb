@@ -74,6 +74,11 @@ Before('@sle15minion') do |scenario|
   scenario.skip_invoke! unless $sle15_minion
 end
 
+# skip tests if we run with fromdir option
+Before('@notwithfromdir') do |scenario|
+  scenario.skip_invoke! if ENV['NOTWITHFROMDIR']
+end
+
 # have more infos about the errors
 def debug_server_on_realtime_failure
   puts
