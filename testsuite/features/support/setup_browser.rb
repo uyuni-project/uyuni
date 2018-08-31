@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2017 SUSE-LINUX
+# Copyright (c) 2010-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -74,8 +74,7 @@ Before('@sle15minion') do |scenario|
   scenario.skip_invoke! unless $sle15_minion
 end
 
-## this is for having more infos about the errors.
-
+# have more infos about the errors
 def debug_server_on_realtime_failure
   puts
   puts '#' * 55 + 'var/log/rhn_web_ui.log' + '#' * 55
