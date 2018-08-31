@@ -266,7 +266,7 @@ def image_pillars(minion_id):
         if os.path.isfile(pillar_path) and pillar.endswith('.sls'):
             try:
                 with open(pillar_path) as p:
-                    ret.update(yaml.load(p.read()))
+                    ret = salt.utils.dictupdate.merge(ret, yaml.load(p.read()), strategy='recurse')
             except Exception as error:
                 log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
 
