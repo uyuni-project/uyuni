@@ -22,6 +22,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
+import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -103,6 +104,8 @@ public class SaltReactor implements EventListener {
                 VirtpollerBeaconEventMessage.class);
         MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
                 SystemIdGenerateEventMessage.class);
+        MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
+                ImageDeployedEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
