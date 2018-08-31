@@ -2870,7 +2870,7 @@ You may grant provisioning entitlements _here_.
         <source>init.sls file can only be edited for state channels.</source>
       </trans-unit>
       <trans-unit id="state.channel.through.apply.config.channel.method">
-        <source>State channels can be applied through api's system.config.scheduleApplyConfigChannel method or from UI.</source>
+        <source>State channels can be applied through system.config.scheduleApplyConfigChannel method or from UI.</source>
       </trans-unit>
     </body>
   </file>
