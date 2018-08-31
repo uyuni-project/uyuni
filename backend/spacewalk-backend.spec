@@ -498,7 +498,7 @@ Requires:       subscription-manager
 Tools for syncing content from Red Hat CDN
 
 %prep
-%setup -q -n spacewalk-backend-4.0.1devel
+%setup -q
 
 %build
 make -f Makefile.backend all PYTHON_BIN=%{pythonX}
