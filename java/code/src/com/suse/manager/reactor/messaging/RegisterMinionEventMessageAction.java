@@ -245,7 +245,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         // call the 'finishRegistration' on every minion start
                         // BEWARE: this also means the activation key is applied on each retail minion start for now
                         LOG.info("Finishing registration for minion " + minionId);
-                        subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey, activationKeyLabel);
+                        subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey,
+                                activationKeyLabel);
                         activationKey.ifPresent(ak -> applyActivationKeyProperties(registeredMinion, ak, grains));
                         finishRegistration(registeredMinion, activationKey, creator, !isSaltSSH);
                     }
