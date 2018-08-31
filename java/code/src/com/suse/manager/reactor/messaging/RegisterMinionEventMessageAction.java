@@ -234,11 +234,20 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         applySaltboot(registeredMinion);
                     }
                     else {
+                        Optional<String> activationKeyLabel = grains
+                                .getMap("susemanager")
+                                .flatMap(suma -> suma.getOptionalAsString("activation_key"));
+                        Optional<ActivationKey> activationKey = activationKeyLabel
+                                .map(ActivationKeyFactory::lookupByKey);
+
                         // TODO this is to be implemented in the future
                         // for now we don't have any means to detect if the image has been redeployed and we simply
                         // call the 'finishRegistration' on every minion start
+                        // BEWARE: this also means the activation key is applied on each retail minion start for now
                         LOG.info("Finishing registration for minion " + minionId);
-                        finishRegistration(registeredMinion, empty(), creator, !isSaltSSH);
+                        subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey, activationKeyLabel);
+                        activationKey.ifPresent(ak -> applyActivationKeyProperties(registeredMinion, ak, grains));
+                        finishRegistration(registeredMinion, activationKey, creator, !isSaltSSH);
                     }
                 });
             }
