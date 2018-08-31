@@ -1,3 +1,6 @@
+# Copyright (c) 2016-2018 SUSE-LINUX
+# Licensed under the terms of the MIT license.
+￼
 require 'twopence'
 
 # Initialize SSH targets from environment variables
@@ -88,4 +91,5 @@ def file_inject(node, local_file, remote_file)
   code
 end
 
+# Other global variables
 $sle15_minion = minion_is_sle15
