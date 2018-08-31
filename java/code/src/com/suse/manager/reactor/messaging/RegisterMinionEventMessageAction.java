@@ -318,50 +318,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             server.setBaseEntitlement(EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the server
-            activationKey.ifPresent(ak -> {
-                ak.getToken().getActivatedServers().add(server);
-                ActivationKeyFactory.save(ak);
-
-                ak.getServerGroups().forEach(group -> {
-                    ServerFactory.addServerToGroup(server, group);
-                });
-
-                ServerStateRevision serverStateRevision = new ServerStateRevision();
-                serverStateRevision.setServer(server);
-                serverStateRevision.setCreator(ak.getCreator());
-                serverStateRevision.setPackageStates(
-                    ak.getPackages().stream()
-                            .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
-                            .map(tp -> {
-                        PackageState state = new PackageState();
-                        state.setArch(tp.getPackageArch());
-                        state.setName(tp.getPackageName());
-                        state.setPackageState(PackageStates.INSTALLED);
-                        state.setVersionConstraint(VersionConstraints.ANY);
-                        state.setStateRevision(serverStateRevision);
-                        return state;
-                    }).collect(Collectors.toSet())
-                );
-                StateFactory.save(serverStateRevision);
-
-                // Set additional entitlements, if any
-                Set<Entitlement> validEntits = server.getOrg()
-                        .getValidAddOnEntitlementsForOrg();
-                ak.getToken().getEntitlements().forEach(sg -> {
-                    Entitlement e = sg.getAssociatedEntitlement();
-                    if (validEntits.contains(e) &&
-                        e.isAllowedOnServer(server, grains) &&
-                        SystemManager.canEntitleServer(server, e)) {
-                        ValidatorResult vr = SystemManager.entitleServer(server, e);
-                        if (vr.getWarnings().size() > 0) {
-                            LOG.warn(vr.getWarnings().toString());
-                        }
-                        if (vr.getErrors().size() > 0) {
-                            LOG.error(vr.getErrors().toString());
-                        }
-                    }
-                });
-            });
+            activationKey.ifPresent(ak -> applyActivationKey(ak, server, grains));
 
             // Saltboot treatment - prepare and apply saltboot
             if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
@@ -382,6 +339,57 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
         }
+    }
+
+    /**
+     * Assigns various assets to a minion based on given activation key
+     * @param activationKey the activation key
+     * @param minion the minion
+     * @param grains the grains
+     */
+    private void applyActivationKey(ActivationKey activationKey, MinionServer minion, ValueMap grains) {
+        activationKey.getToken().getActivatedServers().add(minion);
+        ActivationKeyFactory.save(activationKey);
+
+        activationKey.getServerGroups().forEach(group -> {
+            ServerFactory.addServerToGroup(minion, group);
+        });
+
+        ServerStateRevision serverStateRevision = new ServerStateRevision();
+        serverStateRevision.setServer(minion);
+        serverStateRevision.setCreator(activationKey.getCreator());
+        serverStateRevision.setPackageStates(
+                activationKey.getPackages().stream()
+                        .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
+                        .map(tp -> {
+                            PackageState state = new PackageState();
+                            state.setArch(tp.getPackageArch());
+                            state.setName(tp.getPackageName());
+                            state.setPackageState(PackageStates.INSTALLED);
+                            state.setVersionConstraint(VersionConstraints.ANY);
+                            state.setStateRevision(serverStateRevision);
+                            return state;
+                        }).collect(Collectors.toSet())
+        );
+        StateFactory.save(serverStateRevision);
+
+        // Set additional entitlements, if any
+        Set<Entitlement> validEntits = minion.getOrg()
+                .getValidAddOnEntitlementsForOrg();
+        activationKey.getToken().getEntitlements().forEach(sg -> {
+            Entitlement e = sg.getAssociatedEntitlement();
+            if (validEntits.contains(e) &&
+                    e.isAllowedOnServer(minion, grains) &&
+                    SystemManager.canEntitleServer(minion, e)) {
+                ValidatorResult vr = SystemManager.entitleServer(minion, e);
+                if (vr.getWarnings().size() > 0) {
+                    LOG.warn(vr.getWarnings().toString());
+                }
+                if (vr.getErrors().size() > 0) {
+                    LOG.error(vr.getErrors().toString());
+                }
+            }
+        });
     }
 
     private boolean isRetailMinion(MinionServer registeredMinion) {
