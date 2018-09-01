@@ -51,7 +51,7 @@ public class InstalledProductTest extends RhnBaseTestCase {
         server.setInstalledProducts(products);
         TestUtils.saveAndReload(server);
 
-        assertNotNull(server.getInstalledProductSet());
+        assertNotNull(server.getInstalledProductSet().orElse(null));
 
         Set<InstalledProduct> readProducts = server.getInstalledProducts();
         assertNotNull(readProducts);
