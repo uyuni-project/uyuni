@@ -77,10 +77,10 @@ Then(/^all "([^"]*)" container images are built correctly in the GUI$/) do |coun
 end
 
 When(/^I check the first image$/) do
-   within(:xpath, '//section') do
-     row = first(:xpath, '//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]')
-     row.first(:xpath, './/input[@type="checkbox"]').set(true)
-   end
+  within(:xpath, '//section') do
+    row = first(:xpath, '//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]')
+    row.first(:xpath, './/input[@type="checkbox"]').set(true)
+  end
 end
 
 When(/^I schedule the build of image "([^"]*)" via XML-RPC calls$/) do |image|
