@@ -1,13 +1,11 @@
-# Copyright 2017 SUSE LLC
+# Copyright 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: The Setup Wizard
 
-  Background:
+@nomirror
+  Scenario: Set up some credentials
     Given I am on the Admin page
-
-@notwithfromdir
-  Scenario: Set up the credentials
     When I follow "Organization Credentials" in the content area
     And I want to add a new credential
     And I enter "asdf" as "edit-user"
@@ -24,8 +22,9 @@ Feature: The Setup Wizard
     Then I should not see a "asdf" text
 
   Scenario: Play with the products page
-    When I refresh SCC
-    And I follow "SUSE Products" in the content area
+    Given I am on the Admin page
+    When I follow "SUSE Products" in the content area
+    And I refresh SCC
     And I wait until I see "Product Description" text
     And I should see a "Arch" text
     And I should see a "Channels" text
@@ -44,7 +43,8 @@ Feature: The Setup Wizard
     Then the products should be added
 
   Scenario: Select product with recommended enabled
-    And I follow "SUSE Products" in the content area
+    Given I am on the Admin page
+    When I follow "SUSE Products" in the content area
     And I wait until I see "Product Description" text
     And I enter "SUSE Linux Enterprise Server 15" in the css "input[name='product-description-filter']"
     And I select "x86_64" in the dropdown list of the architecture filter
@@ -58,6 +58,7 @@ Feature: The Setup Wizard
     Then the products should be added
 
   Scenario: View the channels list in the products page
+    Given I am on the Admin page
     When I follow "SUSE Products" in the content area
     And I wait until I see "Product Description" text
     And I enter "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" in the css "input[name='product-description-filter']"
