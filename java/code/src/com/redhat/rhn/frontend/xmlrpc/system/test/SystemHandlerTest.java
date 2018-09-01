@@ -2376,7 +2376,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server.setInstalledProducts(products);
         TestUtils.saveAndReload(server);
 
-        assertNotNull(server.getInstalledProductSet());
+        assertNotNull(server.getInstalledProductSet().orElse(null));
 
         server.getInstalledProductSet().get().getBaseProduct().getUpgrades();
 
@@ -2416,7 +2416,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server.setInstalledProducts(products);
         TestUtils.saveAndReload(server);
 
-        assertNotNull(server.getInstalledProductSet());
+        assertNotNull(server.getInstalledProductSet().orElse(null));
 
         server.getInstalledProductSet().get().getBaseProduct().getUpgrades();
 
@@ -2465,7 +2465,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server.setInstalledProducts(products);
         TestUtils.saveAndReload(server);
 
-        assertNotNull(server.getInstalledProductSet());
+        assertNotNull(server.getInstalledProductSet().orElse(null));
 
         server.getInstalledProductSet().get().getBaseProduct().getUpgrades();
 
