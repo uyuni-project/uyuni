@@ -94,10 +94,36 @@ are executed only if the CentOS minion is available.
 
 ### Testing with a SLE 15 system
 
-The test suite will determine whether your minion is a SLE15 or not.
+The test suite will determine automatically whether your minion
+is a SLE15 system or not.
 
 Inside of the testsuite, the scenarios that are tagged with
 ```
 @sle15minion
 ```
-are executed only if the minion is a SLE 15 minion.
+are executed only if the minion is a SLE 15 system.
+
+
+### Testing with a mirror
+
+Using a mirror with the testsuite is not mandatory.
+
+If you do not want a mirror, do not define `MIRROR` environment
+variable before you run the testsuite. That's all.
+If you want a mirror, let this variable be equal to
+`yes` or `true`:
+```bash
+export MIRROR=yes
+```
+and then run the testsuite.
+
+Sumaform can prepare a mirror and declare the `$MIRROR`
+variable on the controller (in `/root/.bashrc`).
+To declare a mirror in your `main.tf` file, follow the
+instructions in sumaform documentation.
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@nomirror
+```
+are executed only if you don't use a mirror.
