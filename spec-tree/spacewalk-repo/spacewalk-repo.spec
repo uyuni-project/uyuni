@@ -10,7 +10,7 @@ Group: System Environment/Base
 # cd spec-tree/spacewalk-repo
 # make test-srpm
 Source0:   %{name}-%{version}.tar.gz
-URL:          https://github.com/spacewalkproject/spacewalk
+URL:          https://github.com/uyuni-project/uyuni
 BuildArch: noarch
 %description
 This package contains the Spacewalk repository configuration for yum.

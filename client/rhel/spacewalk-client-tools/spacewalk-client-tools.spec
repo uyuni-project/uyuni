@@ -76,7 +76,7 @@ Group:          System Environment/Base
 %endif
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-URL:            https://fedorahosted.org/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Version:        4.0.1
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

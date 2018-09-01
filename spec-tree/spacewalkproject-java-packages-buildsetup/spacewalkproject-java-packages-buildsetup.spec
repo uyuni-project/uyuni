@@ -5,7 +5,7 @@ Summary:        Dist override for spacewalkproject/java-packages copr buildroot.
 
 Group:          Applications/Internet
 License:        GPLv2
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 
 %description

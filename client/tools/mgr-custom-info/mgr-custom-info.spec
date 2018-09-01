@@ -31,7 +31,7 @@ Provides:       rhn-custom-info = 5.4.43.3
 Obsoletes:      rhn-custom-info < 5.4.43.3
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif

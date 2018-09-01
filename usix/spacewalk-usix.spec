@@ -64,7 +64,7 @@ Packager:   Spacewalk Project <spacewalk-devel@redhat.com>
 Group:          Applications/Internet
 %endif
 License:        GPL-2.0-only
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:   %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?debian} || 0%{?ubuntu}

@@ -22,7 +22,7 @@ Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Productivity/Other
-URL:            http://www.suse.com
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Requires:       spacewalk-java-lib >= 2.5.59.7
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

@@ -33,7 +33,7 @@ Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
 Group:          Applications/Internet
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 

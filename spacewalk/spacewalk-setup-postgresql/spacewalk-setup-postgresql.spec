@@ -23,7 +23,7 @@ Release:        1%{?dist}
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch

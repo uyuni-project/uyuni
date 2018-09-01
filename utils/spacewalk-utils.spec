@@ -29,7 +29,7 @@ Summary:        Utilities that may be run against a Spacewalk server.
 License:        GPL-2.0-only AND GPL-3.0-or-later
 Group:          Applications/Internet
 
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch

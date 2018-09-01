@@ -54,7 +54,7 @@ Version:        4.0.2
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} = %{oldversion}
 Release:        1%{?dist}
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

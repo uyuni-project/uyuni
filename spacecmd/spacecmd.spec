@@ -39,7 +39,7 @@ Summary:        Command-line interface to Spacewalk and Red Hat Satellite server
 License:        GPL-3.0-or-later
 Group:          Applications/System
 
-URL:            https://github.com/spacewalkproject/spacewalk/wiki/spacecmd
+URL:            https://github.com/uyuni-project/uyuni
 Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210

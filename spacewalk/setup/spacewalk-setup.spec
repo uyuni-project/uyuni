@@ -35,7 +35,7 @@ Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 
-URL:            http://www.spacewalkproject.org/
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 

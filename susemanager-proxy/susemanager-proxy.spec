@@ -22,7 +22,7 @@ Release:        1%{?dist}
 Summary:        SUSE Manager Proxy specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
-URL:            http://www.suse.com
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch

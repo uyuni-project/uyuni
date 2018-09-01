@@ -31,7 +31,7 @@ Group:          Applications/Internet
 # git clone https://github.com/spacewalkproject/spacewalk.git
 # cd search-server/spacewalk-doc-indexes
 # make test-srpm
-URL:            https://fedorahosted.org/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  nutch-core

@@ -35,7 +35,7 @@ License:        GPL-2.0-only
 Group:          Applications/System
 Version:        4.0.1
 Release:        1%{?dist}
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch

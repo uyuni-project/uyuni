@@ -30,7 +30,7 @@ Release:        1%{?dist}
 # git clone https://github.com/spacewalkproject/spacewalk.git
 # cd search-server
 # make test-srpm
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch

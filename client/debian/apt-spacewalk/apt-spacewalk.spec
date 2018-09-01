@@ -18,7 +18,7 @@ Version: 1.0.14
 Release: 1%{?dist}
 License: GPLv2
 Source0: %{name}-%{version}.tar.gz
-URL: https://github.com/spacewalkproject/spacewalk
+URL: https://github.com/uyuni-project/uyuni
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: python

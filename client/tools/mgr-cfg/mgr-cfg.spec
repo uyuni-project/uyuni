@@ -80,7 +80,7 @@ Packager:   Spacewalk Project <spacewalk-devel@redhat.com>
 %else
 Group:          Applications/System
 %endif
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

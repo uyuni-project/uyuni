@@ -28,7 +28,7 @@ Summary:        Utilities to interact with a Spacewalk server remotely.
 License:        GPL-2.0-only
 Group:          Applications/System
 
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

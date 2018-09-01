@@ -43,7 +43,7 @@ Group:          System Environment/Base
 %endif
 Source0:        spacewalksd-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-URL:            https://fedorahosted.org/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %if %{_vendor} != "debbuild"
