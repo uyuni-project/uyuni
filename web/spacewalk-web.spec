@@ -31,6 +31,21 @@ This package contains the code for the Spacewalk Web Site.
 Normally this source RPM does not generate a %{name} binary package,
 but it does generate a number of sub-packages.
 
+%package -n susemanager-web-libs
+Summary:        Vendor bundles for spacewalk-web
+License:		BSD-3-Clause and MIT
+Group:          Applications/Internet
+
+BuildArch:      noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRequires:  nodejs-packaging
+BuildRequires:  susemanager-nodejs-sdk-devel
+BuildRequires:  nodejs8
+Requires:       nodejs
+
+%description -n susemanager-web-libs
+This package contains Vendor bundles needed for spacewalk-web
+
 %package -n spacewalk-html
 Summary: HTML document files for Spacewalk
 Group: Applications/Internet
@@ -119,7 +134,7 @@ make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 %if 0%{?suse_version}
 pushd html/src
 ln -sf %{nodejs_sitelib} .
-gulp
+node build
 popd
 %endif
 
@@ -141,6 +156,16 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
+
+%{__mkdir_p} %{buildroot}/srv/www/htdocs/javascript/manager
+cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript/manager
+
+%{__mkdir_p} %{buildroot}/srv/www/htdocs/vendors
+cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js
+
+%files -n susemanager-web-libs
+%dir %{www_path}/www/htdocs/vendors
+%{www_path}/www/htdocs/vendors/*
 
 %files -n spacewalk-base
 %defattr(644,root,root,755)
@@ -178,7 +203,11 @@ install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{bu
 
 %files -n spacewalk-html
 %defattr(644,root,root,755)
-%{www_path}/www/htdocs/*
+%dir %{www_path}/www/htdocs/pub
+%dir %{www_path}/www/htdocs/javascript
+%{www_path}/www/htdocs/robots.txt
+%{www_path}/www/htdocs/pub
+%{www_path}/www/htdocs/javascript/*
 %doc LICENSE
 
 %changelog
