@@ -44,6 +44,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * ConfigurationFactory.  For use when dealing with ConfigChannel, ConfigChannelType,
@@ -388,6 +389,25 @@ public class ConfigurationFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a Global('normal' or 'state') ConfigChannel by its label. A config channel
+     * is uniquely identified by label, org id and channel type
+     * @param label The label for the ConfigChannel
+     * @param org the org to which the config channel belongs.
+     * @return the ConfigChannel found or null if not found.
+     */
+    public static Optional<ConfigChannel> lookupGlobalConfigChannelByLabel(String label, Org org) {
+
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ConfigChannel> criteria = builder.createQuery(ConfigChannel.class);
+        Root<ConfigChannel> root = criteria.from(ConfigChannel.class);
+        criteria.where(builder.and(
+                builder.equal(root.get("label"), label)),
+                builder.equal(root.get("org"), org),
+                root.get("configChannelType").in(ConfigChannelType.normal(), ConfigChannelType.state()));
+        return getSession().createQuery(criteria).uniqueResultOptional();
+    }
+
+    /**
      * Lookup a ConfigFile by its id
      * @param id The identifier for the ConfigFile
      * @return the ConfigFile found or null if not found.
@@ -410,9 +430,7 @@ public class ConfigurationFactory extends HibernateFactory {
                     .setLong("channel_id", channel.longValue())
                     .setLong("name_id", name.longValue())
                     .setLong("state_id", ConfigFileState.normal().
-                                                    getId().longValue())
-                    //Retrieve from cache if there
-                    .setCacheable(true);
+                                                    getId().longValue());
         try {
             return (ConfigFile) query.uniqueResult();
         }

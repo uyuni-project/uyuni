@@ -16,6 +16,8 @@ package com.redhat.rhn.frontend.xmlrpc.configchannel;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -23,6 +25,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
+import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.config.EncodedConfigRevision;
@@ -33,6 +36,9 @@ import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigRevisionDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.ConfigFileErrorException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchConfigFilePathException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchConfigRevisionException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
@@ -40,15 +46,19 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
 import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigChannelCreationHelper;
+import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
+import com.redhat.rhn.manager.configuration.file.SLSFileData;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static java.util.Optional.empty;
@@ -62,7 +72,7 @@ import static java.util.Optional.empty;
 public class ConfigChannelHandler extends BaseHandler {
 
     /**
-     * Creates a new global config channel based on the values provided..
+     * Creates a new 'normal' config channel based on the values provided..
      * @param loggedInUser The current user
      * @param label label of the config channel
      * @param name name of the config channel
@@ -81,19 +91,44 @@ public class ConfigChannelHandler extends BaseHandler {
     public ConfigChannel create(User loggedInUser, String label,
                                             String name,
                                             String description) {
-        ensureConfigAdmin(loggedInUser);
+       return create(loggedInUser, label, name, description, ConfigChannelType.normal().getLabel());
+    }
+    /**
+     * Creates a new global config channel based on the values provided..
+     * @param user The current user
+     * @param label label of the config channel
+     * @param name name of the config channel
+     * @param description description of the config channel
+     * @param channelType type of config channel(possible values are 'state', 'normal')
+     * @return the newly created config channel
+     *
+     * @xmlrpc.doc Create a new global config channel. Caller must be at least a
+     * config admin or an organization admin.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "channelLabel")
+     * @xmlrpc.param #param("string", "channelName")
+     * @xmlrpc.param #param("string", "channelDescription")
+     * @xmlrpc.param #param_desc("string", "channelType", "The channel type either 'normal' or 'state'.")
+     * @xmlrpc.returntype
+     * $ConfigChannelSerializer
+     */
+    public ConfigChannel create(User user, String label, String name, String description, String channelType) {
+        ensureConfigAdmin(user);
 
         ConfigChannelCreationHelper helper = new ConfigChannelCreationHelper();
         try {
             helper.validate(label, name, description);
-            ConfigChannel cc = helper.create(loggedInUser);
+            ConfigChannelType ct = helper.getGlobalChannelType(channelType);
+            ConfigChannel cc = helper.create(user, ct);
             helper.update(cc, name, label, description);
             ConfigurationManager.getInstance().save(cc, empty());
+            cc  = (ConfigChannel) HibernateFactory.reload(cc);
+            helper.createInitSlsFile(user, cc, "");
             return cc;
         }
         catch (ValidatorException ve) {
             String msg = "Exception encountered during channel creation.\n" +
-                            ve.getMessage();
+                    ve.getMessage();
             throw new FaultException(1021, "ConfigChannelCreationException", msg);
         }
 
@@ -122,7 +157,9 @@ public class ConfigChannelHandler extends BaseHandler {
         ConfigChannel cc = configHelper.lookupGlobal(loggedInUser, configChannelLabel);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         ConfigFile cf = cm.lookupConfigFile(loggedInUser, cc.getId(), filePath);
-
+        if (cf == null) {
+            throw new NoSuchConfigFilePathException(filePath, configChannelLabel);
+        }
         for (Integer revId : revisions) {
             ConfigRevision cr = cm.lookupConfigRevisionByRevId(loggedInUser, cf,
                 revId.longValue());
@@ -234,9 +271,8 @@ public class ConfigChannelHandler extends BaseHandler {
      *   $ConfigChannelSerializer
      */
     public ConfigChannel getDetails(User loggedInUser, String configChannelLabel) {
-        ConfigurationManager manager = ConfigurationManager.getInstance();
-        return manager.lookupConfigChannel(loggedInUser, configChannelLabel,
-                ConfigChannelType.normal());
+        XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
+        return helper.lookupGlobal(loggedInUser, configChannelLabel);
     }
 
     /**
@@ -279,14 +315,13 @@ public class ConfigChannelHandler extends BaseHandler {
     public ConfigChannel update(User loggedInUser, String label,
                                             String name ,
                                             String description) {
-        ConfigurationManager manager = ConfigurationManager.getInstance();
-        ConfigChannel cc = manager.lookupConfigChannel(loggedInUser, label,
-                                        ConfigChannelType.normal());
+        XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
+        ConfigChannel cc = helper.lookupGlobal(loggedInUser, label);
 
-        ConfigChannelCreationHelper helper = new ConfigChannelCreationHelper();
+        ConfigChannelCreationHelper cchelper = new ConfigChannelCreationHelper();
 
         try {
-            helper.validate(label, name, description);
+            cchelper.validate(label, name, description);
             cc.setName(name);
             cc.setDescription(description);
             // we don't update label here
@@ -339,6 +374,54 @@ public class ConfigChannelHandler extends BaseHandler {
                                     listGlobalChannels(loggedInUser, null);
         list.elaborate(list.getElaborationParams());
         return  list;
+    }
+    /**
+     * Update the init.sls file for the given state channel with the given contents.
+     * @param user The current user
+     * @param channelLabel the label of the config channel.
+     * @param data a map containing 'content' and 'contents_enc64'
+     * @return returns the updated config revision..
+     *
+     * @xmlrpc.doc Update the init.sls file for the given state channel. User can only update contents, nothing else.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "configChannelLabel")
+     * @xmlrpc.param
+     *  #struct("path info")
+     *      #prop_desc("string","contents", "Contents of the init.sls file")
+     *      #prop_desc("boolean","contents_enc64", "Identifies base64 encoded content(default: disabled)")
+     *  #struct_end()
+     * @xmlrpc.returntype
+     * $ConfigRevisionSerializer
+     */
+     public ConfigRevision updateInitSls(User user, String channelLabel, Map<String, Object> data) {
+        String path = "/init.sls";
+        // confirm that the user only provided valid keys in the map
+        Set<String> validKeys = new HashSet<String>();
+        validKeys.add(ConfigRevisionSerializer.CONTENTS);
+        validateMap(validKeys, data);
+
+        XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
+        ConfigChannel channel = helper.lookupGlobal(user, channelLabel);
+        if (!channel.isStateChannel()) {
+            throw new InvalidOperationException(LocalizationService.getInstance()
+                    .getMessage("editable.init.sls.only.for.state.channels"));
+        }
+        ConfigFile configFile = ConfigurationManager.getInstance().lookupConfigFile(user, channel.getId(), path);
+        ConfigInfo configInfo = configFile.getLatestConfigRevision().getConfigInfo();
+        ConfigRevision result;
+        try {
+            SLSFileData form = new SLSFileData(helper.getContents(data));
+            //Only contents can be updated, rest is inherited from existing revision info
+            form.setGroup(configInfo.getGroupname());
+            form.setOwner(configInfo.getUsername());
+            form.setPermissions(configInfo.getFilemode().toString());
+            result = ConfigFileBuilder.getInstance().update(form, user, configFile);
+
+         }
+         catch (UnsupportedEncodingException e) {
+             throw new ConfigFileErrorException(e.getMessage());
+        }
+        return result;
     }
 
     /**
@@ -417,6 +500,15 @@ public class ConfigChannelHandler extends BaseHandler {
 
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = helper.lookupGlobal(loggedInUser, channelLabel);
+        if (channel.isStateChannel() && isDir) {
+            throw new InvalidOperationException(LocalizationService.getInstance()
+                    .getMessage("directories.symlink.not.supported.for.minions"));
+        }
+
+        if (channel.isStateChannel() && path.equals("/init.sls")) {
+            throw new InvalidParameterException(LocalizationService.getInstance()
+                    .getMessage("update.init.sls.with.updateinitsls.method"));
+        }
         return helper.createOrUpdatePath(loggedInUser, channel, path,
                             isDir ? ConfigFileType.dir() : ConfigFileType.file(), data);
     }
@@ -424,7 +516,7 @@ public class ConfigChannelHandler extends BaseHandler {
 
     /**
      * Creates a NEW symbolic link with the given path or updates an existing path
-     * with the given target_path in a given channel.
+     * with the given target_path in a given channel(Only 'normal' channels)).
      * @param loggedInUser The current user
      * @param channelLabel the label of the config channel.
      * @param path the path of the given text file.
@@ -435,7 +527,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @since 10.2
      *
      * @xmlrpc.doc Create a new symbolic link with the given path, or
-     * update an existing path.
+     * update an existing path in config channel of 'normal' type.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "configChannelLabel")
      * @xmlrpc.param #param("string", "path")
@@ -467,6 +559,10 @@ public class ConfigChannelHandler extends BaseHandler {
 
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = helper.lookupGlobal(loggedInUser, channelLabel);
+        if (channel.isStateChannel()) {
+            throw new InvalidOperationException(LocalizationService.getInstance()
+                    .getMessage("directories.symlink.not.supported.for.minions"));
+        }
         return helper.createOrUpdatePath(loggedInUser, channel, path,
                                     ConfigFileType.symlink(), data);
     }
@@ -629,11 +725,9 @@ public class ConfigChannelHandler extends BaseHandler {
      */
      public int deleteFiles(User loggedInUser, String channelLabel, List<String> paths) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
-        ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
-                                                                channelLabel);
+        ConfigChannel channel = configHelper.lookupGlobal(loggedInUser, channelLabel);
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        List<ConfigFile> cfList = new ArrayList<ConfigFile>();
-        // first pass to check, whethee config files are valid
+        List<ConfigFile> cfList = new ArrayList<>();
         for (String path : paths) {
             ConfigFile cf = cm.lookupConfigFile(loggedInUser, channel.getId(), path);
             if (cf == null) {
@@ -715,11 +809,8 @@ public class ConfigChannelHandler extends BaseHandler {
      */
     public int channelExists(User loggedInUser, String channelLabel) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
-        if (manager.conflictingChannelExists(channelLabel, ConfigChannelType.normal(),
-                loggedInUser.getOrg())) {
-            return 1;
-        }
-        return 0;
+        return Objects.isNull(manager.lookupGlobalConfigChannel(loggedInUser, channelLabel)) ? 0 : 1;
+
     }
 
 
@@ -765,6 +856,10 @@ public class ConfigChannelHandler extends BaseHandler {
 
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
                 channelLabel);
+        if (channel.isStateChannel()) {
+            throw new InvalidParameterException(LocalizationService.getInstance()
+                    .getMessage("state.channel.through.apply.config.channel.method"));
+        }
         List<ConfigSystemDto> dtos = manager.listChannelSystems(loggedInUser, channel,
                 null);
         List<Server> servers = new ArrayList<Server>();
@@ -831,6 +926,10 @@ public class ConfigChannelHandler extends BaseHandler {
 
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
                 channelLabel);
+        if (channel.isStateChannel()) {
+            throw new InvalidParameterException(LocalizationService.getInstance()
+                    .getMessage("state.channel.through.apply.config.channel.method"));
+        }
         List<ConfigSystemDto> dtos = manager.listChannelSystems(loggedInUser, channel,
                 null);
         Set<Long> servers = new HashSet<Long>();

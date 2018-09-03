@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.config;
 
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -24,26 +27,37 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchConfigFilePathException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.XmlRpcConfigChannelHelper;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigFileNameDtoSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.MissingCapabilityException;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.suse.manager.utils.MinionServerUtils;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * ServerConfigChannelHandler
@@ -53,6 +67,25 @@ import java.util.stream.Stream;
  * basically system.config name space
  */
 public class ServerConfigHandler extends BaseHandler {
+
+    private static Logger log = Logger.getLogger(ServerConfigHandler.class);
+    private final TaskomaticApi taskomaticApi;
+    /**
+     * Default constructor.
+     */
+    public ServerConfigHandler() {
+        this(new TaskomaticApi());
+    }
+
+    /**
+     * Set the {@link TaskomaticApi} instance to use, only for unit tests.
+     *
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public ServerConfigHandler(TaskomaticApi taskomaticApiIn) {
+        super();
+        taskomaticApi = taskomaticApiIn;
+    }
     /**
      * List files in a given server
      * @param loggedInUser The current user
@@ -181,6 +214,7 @@ public class ServerConfigHandler extends BaseHandler {
 
         XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
         Server server = sysHelper.lookupServer(loggedInUser, sid);
+        checkIfLocalPermissible(server);
         ConfigChannel channel;
         if (commitToLocal) {
             channel = server.getLocalOverride();
@@ -246,6 +280,7 @@ public class ServerConfigHandler extends BaseHandler {
 
         XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
         Server server = sysHelper.lookupServer(loggedInUser, sid);
+        checkIfLocalPermissible(server);
         ConfigChannel channel;
         if (commitToLocal) {
             channel = server.getLocalOverride();
@@ -347,19 +382,19 @@ public class ServerConfigHandler extends BaseHandler {
         XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = sysHelper.lookupServer(loggedInUser, sid);
-        List<ConfigFile> cfList = new ArrayList<ConfigFile>();
+        List<ConfigFile> cfList = new ArrayList<>();
         for (String path : paths) {
             ConfigFile cf;
             if (deleteFromLocal) {
                 cf = cm.lookupConfigFile(loggedInUser,
                         server.getLocalOverride().getId(), path);
-                if (cf == null) {
-                    throw new NoSuchConfigFilePathException(path);
-                }
             }
             else {
                 cf = cm.lookupConfigFile(loggedInUser,
                         server.getSandboxOverride().getId(), path);
+            }
+            if (cf == null) {
+                throw new NoSuchConfigFilePathException(path);
             }
             cfList.add(cf);
         }
@@ -416,7 +451,7 @@ public class ServerConfigHandler extends BaseHandler {
      * @return a list of global config channels associated to the given
      *          system in the order of their ranking..
      *
-     * @xmlrpc.doc List all global configuration channels associated to a
+     * @xmlrpc.doc List all global('Normal', 'State') configuration channels associated to a
      *              system in the order of their ranking.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int","serverId")
@@ -470,14 +505,19 @@ public class ServerConfigHandler extends BaseHandler {
      *
      * @xmlrpc.returntype #return_int_success()
      */
-    public int addChannels(User loggedInUser, List<Number> serverIds,
-            List<String> configChannelLabels, boolean addToTop) {
+    public int addChannels(User loggedInUser, List<Number> serverIds, List<String> configChannelLabels,
+                           boolean addToTop) {
         XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
         List<Server> servers = helper.lookupServers(loggedInUser, serverIds);
-        XmlRpcConfigChannelHelper configHelper =
-                XmlRpcConfigChannelHelper.getInstance();
-        List<ConfigChannel> channels = configHelper.
-                lookupGlobals(loggedInUser, configChannelLabels);
+        XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
+        List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser, configChannelLabels);
+
+        //A state channel cannot be assigned to a traditional system so we simply fail the call if such case appears
+        if (channels.stream().anyMatch(cc->cc.isStateChannel()) &&
+                servers.stream().anyMatch(srv->!MinionServerUtils.isMinionServer(srv))) {
+            throw new InvalidOperationException(LocalizationService.getInstance()
+                    .getMessage("state.channels.not.supported.for.traditional"));
+        }
 
         List<ConfigChannel> channelsToAdd;
         for (Server server : servers) {
@@ -566,5 +606,56 @@ public class ServerConfigHandler extends BaseHandler {
 
         int[] countsActual = servers.stream().mapToInt(Server::getConfigChannelCount).toArray();
         return Arrays.equals(countsExpected, countsActual) ? 1 : 0;
+    }
+
+    /**
+     * Schedule applying state configuration channels for a given system.
+     *
+     * @param user The current user
+     * @param serverIds The system id of the target system
+     * @param earliest Earliest occurrence
+     * @param test Run states in test-only mode
+     * @return action id or exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule highstate application for a given system.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
+     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     */
+    public Long scheduleApplyConfigChannel(User user, List<Integer> serverIds, Date earliest, boolean test) {
+        try {
+            // Validate the given system id
+            XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
+            List<Server> servers = helper.lookupServers(user, serverIds);
+
+            servers.stream().filter(srv->!MinionServerUtils.isMinionServer(srv)).findFirst().ifPresent(srv-> {
+                throw new UnsupportedOperationException("Aborting. System not managed with Salt: " + srv.getId());
+            });
+
+            List<String> states = Collections.singletonList("custom");
+            List<Long> sids = serverIds.stream().map(Integer::longValue).collect(toList());
+            Action action = ActionManager.scheduleApplyStates(user, sids, states, earliest, Optional.of(test));
+            taskomaticApi.scheduleActionExecution(action);
+            return action.getId();
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Check if operation is permissible
+     * @param server server
+     */
+    private void checkIfLocalPermissible(Server server) {
+        if (server.asMinionServer().isPresent()) {
+            throw new InvalidOperationException(LocalizationService.getInstance()
+                    .getMessage("channels.not.supported.for.minions"));
+        }
     }
 }
