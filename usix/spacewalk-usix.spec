@@ -59,7 +59,7 @@ Release:        1%{?dist}
 Summary:        Spacewalk server and client nano six library
 %if %{_vendor} == "debbuild"
 Group:      admin
-Packager:   Spacewalk Project <spacewalk-devel@redhat.com>
+Packager:   Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          Applications/Internet
 %endif

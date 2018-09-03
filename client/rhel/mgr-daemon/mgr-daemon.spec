@@ -37,7 +37,7 @@ Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
 %if %{_vendor} == "debbuild"
 Group:          utils
-Packager:       Spacewalk Project <spacewalk-devel@redhat.com>
+Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          System Environment/Base
 %endif

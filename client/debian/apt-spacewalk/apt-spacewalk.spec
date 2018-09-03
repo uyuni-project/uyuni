@@ -11,7 +11,7 @@
 Name: apt-spacewalk
 Summary: Spacewalk plugin for Advanced Packaging Tool
 %if %{_vendor} == "debbuild"
-Packager: Spacewalk Project <spacewalk-devel@redhat.com>
+Packager: Uyuni Project <uyuni-devel@opensuse.org>
 Group: admin
 %endif
 Version: 1.0.14

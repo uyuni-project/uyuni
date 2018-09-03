@@ -76,7 +76,7 @@ Summary:        Spacewalk Configuration Client Libraries
 License:        GPL-2.0-only
 %if %{_vendor} == "debbuild"
 Group:      admin
-Packager:   Spacewalk Project <spacewalk-devel@redhat.com>
+Packager:   Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          Applications/System
 %endif

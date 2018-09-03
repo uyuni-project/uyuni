@@ -45,7 +45,7 @@ Version:        4.0.1
 Release:        1%{?dist}
 %if %{_vendor} == "debbuild"
 Group:      python
-Packager:   Spacewalk Project <spacewalk-devel@redhat.com>
+Packager:   Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:      Development/Libraries
 %endif
