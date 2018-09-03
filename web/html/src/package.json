@@ -4,7 +4,12 @@
   "description": "Node.js software needed by SUSE Manager at build time.",
   "license": "UNLICENSED",
   "dependencies": {
-    "prop-types": "^15.6.1",
-    "react-select": "^2.0.0-beta.6"
+    "susemanager-nodejs-sdk-devel": "1.0.0"
+  },
+  "scripts": {
+    "validate": "node build/check-undeclared-vendors",
+    "build": "webpack --config build/webpack.config.js --mode production && yarn run validate",
+    "dev": "webpack --config build/webpack.config.js --mode development && yarn run validate",
+    "watch": "yarn dev && yarn validate && webpack --mode development --watch"
   }
 }
