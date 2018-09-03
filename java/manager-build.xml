@@ -33,7 +33,8 @@
   <property name="branding.img.dir" value="${branding.dir}/img"/>
   <property name="branding.css.dir" value="${branding.dir}/css"/>
   <property name="branding.fonts.dir" value="${branding.dir}/fonts"/>
-  <property name="js.dir" value="${basedir}/../web/html/javascript"/>
+  <property name="js.dir" value="${basedir}/../web/html/src/dist/javascript"/>
+  <property name="js.vendors.dir" value="${basedir}/../web/html/src/dist/vendors"/>
   <property name="js.components.dir" value="${basedir}/../web/html/src"/>
 
   <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
@@ -200,30 +201,18 @@
 
   </target>
 
-  <target name="is-npm-installed">
+  <target name="is-yarn-installed">
     <property environment="env" />
-    <available file="npm"
+    <available file="yarn"
                filepath="${env.PATH}"
-               property="npm.installed"/>
+               property="yarn.installed"/>
   </target>
 
-  <target name="warn-if-npm-not-installed" depends="is-npm-installed" unless="npm.installed">
-    <fail>npm is not in the PATH. Please install npm first.</fail>
+  <target name="warn-if-yarn-not-installed" depends="is-yarn-installed" unless="yarn.installed">
+    <fail>yarn is not in the PATH. Please install yarn first.</fail>
   </target>
 
-  <target name="is-gulp-installed" depends="warn-if-npm-not-installed">
-    <available file="node_modules"
-               filepath="${js.components.dir}"
-               property="gulp.installed"/>
-  </target>
-
-  <target name="install-gulp" depends="is-gulp-installed" unless="gulp.installed">
-    <exec executable="npm" dir="${js.components.dir}">
-      <arg line="install"/>
-    </exec>
-  </target>
-
-  <target name="deploy-static-resources" depends="open-ssh-socket,install-gulp" description="Deploy css/js/img/font files">
+  <target name="deploy-static-resources" depends="open-ssh-socket,warn-if-yarn-not-installed" description="Deploy css/js/img/font files">
     <condition property="spacewalk.upstream">
       <not>
         <available file="${basedir}/../susemanager" type="dir"/>
@@ -232,12 +221,9 @@
     <condition property="static.files.dir" value="/var/www/html" else="/srv/www/htdocs">
       <isset property="spacewalk.upstream"/>
     </condition>
-    <condition property="gulp.target" value="devel" else="">
-      <istrue value="${javascript.devel}"/>
-    </condition>
-    <echo message="Calling gulp ${gulp.target} ..."/>
-    <exec executable="./node_modules/gulp/bin/gulp.js" dir="${js.components.dir}">
-      <arg line="${gulp.target}"/>
+    <echo message="Calling yarn build ..."/>
+    <exec executable="yarn" dir="${js.components.dir}">
+      <arg line="build"/>
     </exec>
 
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
@@ -252,6 +238,9 @@
     </exec>
     <exec executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.vendors.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/vendors/" />
     </exec>
   </target>
 
