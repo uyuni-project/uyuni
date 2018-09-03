@@ -59,6 +59,5 @@ find %{buildroot}%{nodejs_sitelib} -name ".*" -delete
 %dir %{nodejs_modulesdir}
 %{nodejs_sitelib}/*
 %{_bindir}/*
-%{dist/vendors-manifest.json}
 
 %changelog
