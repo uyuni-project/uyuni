@@ -85,7 +85,7 @@ mkdir /var/lib/pgsql/data
 chown postgres:postgres /var/lib/pgsql/data
 
 echo "`date +"%H:%M:%S"`   Initialize new postgresql 9.6 database..."
-su - postgres -c "initdb -D /var/lib/pgsql/data"
+su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data"
 if [ $? -eq 0 ]; then
     echo "`date +"%H:%M:%S"`   Successfully initialized new postgresql 9.6 database."
 else
@@ -98,7 +98,7 @@ else
 fi
 
 echo "`date +"%H:%M:%S"`   Upgrade database to new version postgresql 9.6..."
-su - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql94/bin --new-bindir=/usr/lib/postgresql96/bin --old-datadir=/var/lib/pgsql/data-pg94 --new-datadir=/var/lib/pgsql/data --retain $FAST_UPGRADE"
+su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql94/bin --new-bindir=/usr/lib/postgresql96/bin --old-datadir=/var/lib/pgsql/data-pg94 --new-datadir=/var/lib/pgsql/data --retain $FAST_UPGRADE"
 if [ $? -eq 0 ]; then
     echo "`date +"%H:%M:%S"`   Successfully upgraded database to postgresql 9.6."
 else
