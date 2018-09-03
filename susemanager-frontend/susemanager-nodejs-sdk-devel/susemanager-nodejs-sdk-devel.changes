@@ -1,0 +1,55 @@
+- migrate obs module susemanager-nodejs-sdk-devel to git
+
+-------------------------------------------------------------------
+Mon Jun 18 11:00:00 UTC 2018 - luneves@suse.com
+
+- Add required dependency react-select and some usefull gulp dev dependency (bsc#1098029)
+
+-------------------------------------------------------------------
+Fri Jun  8 08:17:03 UTC 2018 - luneves@suse.com
+
+- Add required dev dependency watchify (bsc#1096747)
+
+-------------------------------------------------------------------
+Thu May 31 13:37:19 UTC 2018 - jgonzalez@suse.com
+
+- Bump version to sync with susemanager-frontend-libs (bsc#1095231)
+
+-------------------------------------------------------------------
+Thu Jan 25 09:49:13 UTC 2018 - jgonzalez@suse.com
+
+- Fix build for OpenSUSE 42.x
+
+-------------------------------------------------------------------
+Tue Nov 21 16:27:56 UTC 2017 - jgonzalez@suse.com
+
+- Make the package architecture dependant, since nodejs_sitelib
+  macro is architecture dependant
+- Fix shebang (was broken for SLE15 and OpenSUSE Tumbleweed)
+- Add qq to packages.json
+
+-------------------------------------------------------------------
+Wed Aug 30 15:40:14 UTC 2017 - mc@suse.com
+
+- update package.json and update the content for flow integration
+
+-------------------------------------------------------------------
+Wed Aug  9 12:32:36 UTC 2017 - dmaiocchi@suse.com
+
+- FIX: remove the 2 time contained "gulp-concat": "2.6.0" 
+
+-------------------------------------------------------------------
+Fri Feb 19 11:55:19 UTC 2016 - malbu@suse.de
+
+- Add babel-polyfill and gulp-concat 
+
+-------------------------------------------------------------------
+Wed Feb 17 16:17:17 UTC 2016 - moio@suse.com
+
+- Add plugins for minification and source maps
+
+-------------------------------------------------------------------
+Tue Feb  9 17:34:33 UTC 2016 - moio@suse.com
+
+- Initial version
+
