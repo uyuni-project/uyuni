@@ -398,6 +398,7 @@ public class ConfigChannelHandler extends BaseHandler {
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
         validKeys.add(ConfigRevisionSerializer.CONTENTS);
+        validKeys.add(ConfigRevisionSerializer.CONTENTS_ENC64);
         validateMap(validKeys, data);
 
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
