@@ -93,12 +93,14 @@ Feature: Work with Union and Intersection buttons in the group list
 
 @centosminion
   Scenario: Cleanup: remove the centos group
+    Given I am on the groups page
     When I follow "centos" in the content area
     And I follow "Delete Group" in the content area
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
 
   Scenario: Cleanup: remove the traditional group
+    Given I am on the groups page
     When I follow "traditional" in the content area
     And I follow "Delete Group" in the content area
     And I click on "Confirm Deletion"
