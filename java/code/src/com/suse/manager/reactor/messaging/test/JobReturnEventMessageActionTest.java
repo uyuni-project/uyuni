@@ -1410,7 +1410,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         action.addServerAction(sa);
 
         SaltServerActionService.INSTANCE.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE.callsForAction(action, Arrays.asList(minion));
+        Map<LocalCall<?>, List<MinionIds>> calls = SaltServerActionService.INSTANCE.callsForAction(action,
+                Optional.of(new MinionIds(minion)));
 
         // artifically expire tokens
         action.getDetails().getAccessTokens().stream().forEach(t -> t.setMinion(null));
