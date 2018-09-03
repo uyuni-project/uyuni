@@ -137,16 +137,7 @@ public class XmlRpcConfigChannelHelper {
                     }
                 }
                 else {  // TEXT FILE
-                    String content;
-                    if (BooleanUtils.isTrue((Boolean) data.get(
-                            ConfigRevisionSerializer.CONTENTS_ENC64))) {
-                        content = new String(Base64.decodeBase64(
-                                ((String)data.get(ConfigRevisionSerializer.CONTENTS))
-                                .getBytes("UTF-8")), "UTF-8");
-                    }
-                    else {
-                        content = (String)data.get(ConfigRevisionSerializer.CONTENTS);
-                    }
+                    String content = getContents(data);
                     form = new TextFileData(content);
                 }
             }
@@ -200,5 +191,19 @@ public class XmlRpcConfigChannelHelper {
                                 "Please retry. " + ie.getMessage();
             throw new FaultException(1024, "ConfgFileError", msg);
         }
+    }
+
+    protected String getContents(Map<String, Object> data) throws UnsupportedEncodingException {
+        String content;
+        if (BooleanUtils.isTrue((Boolean) data.get(
+                ConfigRevisionSerializer.CONTENTS_ENC64))) {
+            content = new String(Base64.decodeBase64(
+                    ((String)data.get(ConfigRevisionSerializer.CONTENTS))
+                    .getBytes("UTF-8")), "UTF-8");
+        }
+        else {
+            content = (String)data.get(ConfigRevisionSerializer.CONTENTS);
+        }
+        return content;
     }
 }
