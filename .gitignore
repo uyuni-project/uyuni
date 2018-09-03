@@ -53,6 +53,8 @@ web/rhn-web-*.tar.gz
 sqlnet.log
 backend/reports
 backend/satellite_tools/spacewalk-repo-syncc
+node_modules
+yarn-error.log
 
 # Intellij IDEA
 .idea/
@@ -60,4 +62,3 @@ backend/satellite_tools/spacewalk-repo-syncc
 java/out
 out/
 java/buildconf/checkstyle.cache.src
-
