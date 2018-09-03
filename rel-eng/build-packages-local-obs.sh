@@ -135,7 +135,7 @@ else
   for PACKAGE in ${PACKAGES}; do
     echo "Reverting ${PACKAGE}..."
     cd ${OSC_PROJECT_WC}/${PACKAGE}
-    ${OSC} revert * || true # Tolerate errors, in case there are untracked files 
+    ${OSC} revert * || true # Tolerate errors, in case there are untracked files
   done
 fi
 exit 0 
