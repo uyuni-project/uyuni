@@ -395,9 +395,10 @@ public class ConfigChannelHandler extends BaseHandler {
      */
      public ConfigRevision updateInitSls(User user, String channelLabel, Map<String, Object> data) {
         String path = "/init.sls";
-        // confirm that the user only provided valid keys in the map
+        //confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
         validKeys.add(ConfigRevisionSerializer.CONTENTS);
+        validKeys.add(ConfigRevisionSerializer.CONTENTS_ENC64);
         validateMap(validKeys, data);
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = helper.lookupGlobal(user, channelLabel);
