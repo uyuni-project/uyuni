@@ -36,6 +36,7 @@ import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigRevisionDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.ConfigFileErrorException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchConfigFilePathException;
@@ -50,6 +51,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -383,20 +385,16 @@ public class ConfigChannelHandler extends BaseHandler {
      * Update the init.sls file for the given state channel with the given contents.
      * @param user The current user
      * @param channelLabel the label of the config channel.
-     * @param data a map containing properties pertaining to the given path..
-     * for directory paths - 'data' will hold values for ->  owner, group, permissions
-     * for file paths -  'data' will hold values for  ->  contents, owner, group, permissions, macro-start-delimiter,
-     *            macro-end-delimiter
-     * @return returns the new created or updated config revision..
-     * @since 10.2
+     * @param data a map containing 'content' and 'contents_enc64'
+     * @return returns the updated config revision..
      *
      * @xmlrpc.doc Update the init.sls file for the given state channel. User can only update contents, nothing else.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "configChannelLabel")
      * @xmlrpc.param
      *  #struct("path info")
-     *      #prop_desc("string","contents",
-     *              "Contents of the init.sls file")
+     *      #prop_desc("string","contents", "Contents of the init.sls file")
+     *      #prop_desc("boolean","contents_enc64", "Identifies base64 encoded content(default: disabled)")
      *  #struct_end()
      * @xmlrpc.returntype
      * $ConfigRevisionSerializer
@@ -414,16 +412,22 @@ public class ConfigChannelHandler extends BaseHandler {
             throw new InvalidOperationException(LocalizationService.getInstance()
                     .getMessage("editable.init.sls.only.for.state.channels"));
         }
-
         ConfigFile configFile = ConfigurationManager.getInstance().lookupConfigFile(user, channel.getId(), path);
         ConfigInfo configInfo = configFile.getLatestConfigRevision().getConfigInfo();
-        String content = (String)data.get(ConfigRevisionSerializer.CONTENTS);
-        SLSFileData form = new SLSFileData(content);
-        //Only contents can be updated, rest is inherited from existing revision info
-        form.setGroup(configInfo.getGroupname());
-        form.setOwner(configInfo.getUsername());
-        form.setPermissions(configInfo.getFilemode().toString());
-        return ConfigFileBuilder.getInstance().update(form, user, configFile);
+        ConfigRevision result;
+        try {
+            SLSFileData form = new SLSFileData(helper.getContents(data));
+            //Only contents can be updated, rest is inherited from existing revision info
+            form.setGroup(configInfo.getGroupname());
+            form.setOwner(configInfo.getUsername());
+            form.setPermissions(configInfo.getFilemode().toString());
+            result = ConfigFileBuilder.getInstance().update(form, user, configFile);
+
+         }
+         catch (UnsupportedEncodingException e) {
+             throw new ConfigFileErrorException(e.getMessage());
+        }
+        return result;
     }
 
     /**
