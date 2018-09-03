@@ -28,7 +28,7 @@ Summary:        Compatibility package so that perl-DBD-Oracle will install
 # make srpm
 License:        GPL-2.0-only
 Group:          Applications/Multimedia
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 ExclusiveArch:  %ix86 x86_64 s390x ppc64le

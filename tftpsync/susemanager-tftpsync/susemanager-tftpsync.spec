@@ -24,7 +24,7 @@ Release:        1%{?dist}
 Summary:        Sync cobbler created tftp enviroment to SUSE Manager Proxies
 License:        LGPL-2.1-only
 Group:          Applications/System
-Url:            http://www.suse.com
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 

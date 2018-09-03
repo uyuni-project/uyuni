@@ -25,7 +25,7 @@ License:        GPL-2.0-only
 Group:          Applications/System
 Version:        4.0.1
 Release:        1%{?dist}
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))

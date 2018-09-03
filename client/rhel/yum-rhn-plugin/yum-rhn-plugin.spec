@@ -30,7 +30,7 @@ Name:           yum-rhn-plugin
 Version:        4.0.1
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if %{?suse_version: %{?suse_version} > 1110} %{!?suse_version:1}
 BuildArch:      noarch

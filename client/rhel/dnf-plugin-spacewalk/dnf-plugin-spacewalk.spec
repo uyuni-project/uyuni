@@ -36,7 +36,7 @@ Name:           dnf-plugin-spacewalk
 Version:        4.0.1
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 
 Requires:       %{pythonX}-%{name} = %{version}-%{release}

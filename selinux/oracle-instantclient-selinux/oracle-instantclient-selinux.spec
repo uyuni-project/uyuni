@@ -11,7 +11,7 @@ License:	GPLv2+
 # git clone https://github.com/spacewalkproject/spacewalk.git
 # cd spacewalk
 # make srpm TAG=%{name}-%{version}-%{release}
-URL:		https://github.com/spacewalkproject/spacewalk
+URL:		https://github.com/uyuni-project/uyuni
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 

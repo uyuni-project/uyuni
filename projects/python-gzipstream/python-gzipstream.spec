@@ -31,7 +31,7 @@ Group:          Development/Languages/Python
 Name:           python-gzipstream
 Version:        4.0.1
 Release:        1%{?dist}
-URL:            https://github.com/spacewalkproject/spacewalk/wiki/Projects_python-gzipstream
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/python-gzipstream-%{version}.tar.gz
 %if ! (0%{?suse_version} && 0%{?suse_version} <= 1110)
 BuildArch:      noarch

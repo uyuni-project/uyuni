@@ -35,7 +35,7 @@ Name:           mgr-push
 Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Version:        4.0.1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}

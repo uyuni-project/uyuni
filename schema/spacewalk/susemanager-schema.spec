@@ -29,7 +29,7 @@ Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 
-Url:            http://fedorahosted.org/spacewalk/
+URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 

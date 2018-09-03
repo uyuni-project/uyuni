@@ -30,7 +30,7 @@ Release:        1%{?dist}
 Summary:        Tool to get informations from the local system
 License:        GPL-2.0-only
 Group:          Productivity/Other
-Url:            http://www.suse.com
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210

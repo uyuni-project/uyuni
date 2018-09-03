@@ -22,7 +22,7 @@ Summary:        Various utility scripts and data files for Spacewalk installatio
 License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Version:        4.0.1
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz

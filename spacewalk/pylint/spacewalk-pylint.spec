@@ -24,7 +24,7 @@ Summary:        Pylint configuration for spacewalk python packages
 License:        GPL-2.0-only
 Group:          Development/Debuggers
 
-URL:            https://github.com/spacewalkproject/spacewalk
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
