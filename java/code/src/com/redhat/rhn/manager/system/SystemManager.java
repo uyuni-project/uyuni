@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -91,6 +92,7 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -376,6 +378,46 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         params.put("cid", cid);
         return m.execute(params);
+    }
+
+    /**
+     * Create an empty system profile with required values.
+     *
+     * @param loggedInUser
+     * @param sysName
+     * @param mac
+     */
+    public static void createSystemProfile(User loggedInUser, String sysName, String mac) {
+        MinionServer server = new MinionServer();
+        server.setName(sysName);
+        server.setOrg(loggedInUser.getOrg());
+
+        // Set network device information to the server so we have something to match with
+        server.setCreator(loggedInUser);
+        server.setDigitalServerId(mac);
+        server.setMachineId(mac);
+        server.setMinionId(mac);
+        server.setOs("(unknown)");
+        server.setRelease("(unknown)");
+        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setAutoUpdate("N");
+        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        server.setLastBoot(new Long(0));
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+
+        NetworkInterface netInterface = new NetworkInterface();
+        netInterface.setHwaddr(mac);
+        netInterface.setModule(null); // todo clarify
+        netInterface.setServer(server);
+        netInterface.setName("unknown");
+
+        ServerFactory.saveNetworkInterface(netInterface);
+
+        server.updateServerInfo();
+        // Store to the database
+        ServerFactory.save(server);
+
+        server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
     }
 
     /**
