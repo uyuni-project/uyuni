@@ -5524,27 +5524,27 @@ public class SystemHandler extends BaseHandler {
     /**
      * Creates a system record in database for a system that is not (yet) registered.
      * @param loggedInUser the currently logged in user
-     * @param sysName server name
+     * @param systemName server name
      * @param data the data about system
      * @return int - 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Creates a system record in database for a system that is not registered.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "sysName", "System name")
+     * @xmlrpc.param #param_desc("string", "systemName", "System name")
      * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
      * @xmlrpc.param
      *  #struct("data")
-     *      #prop_desc("string", "mac", "MAC address")
+     *      #prop_desc("string", "hwAddress", "The HW address of the network interface (MAC)")
      *  #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    public int createSystemProfile(User loggedInUser, String sysName, Map<String, Object> data) {
-        String mac = (String) data.get("mac");
-        if (mac == null) {
-            throw new InvalidParameterException("The data does not contain required 'mac' field.");
+    public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
+        String hwAddress = (String) data.get("hwAddress");
+        if (hwAddress == null) {
+            throw new InvalidParameterException("The data does not contain required 'hwAddress' field.");
         }
 
-        SystemManager.createSystemProfile(loggedInUser, sysName, mac);
+        SystemManager.createSystemProfile(loggedInUser, systemName, hwAddress);
 
         return 1;
     }

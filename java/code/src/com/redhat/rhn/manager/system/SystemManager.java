@@ -383,20 +383,21 @@ public class SystemManager extends BaseManager {
     /**
      * Create an empty system profile with required values.
      *
-     * @param creator
-     * @param sysName
-     * @param mac
+     * @param creator the creator user
+     * @param systemName the system name
+     * @param hwAddress the hardware address
+     * @return the created system
      */
-    public static MinionServer createSystemProfile(User creator, String sysName, String mac) {
+    public static MinionServer createSystemProfile(User creator, String systemName, String hwAddress) {
         MinionServer server = new MinionServer();
-        server.setName(sysName);
+        server.setName(systemName);
         server.setOrg(creator.getOrg());
 
         // Set network device information to the server so we have something to match with
         server.setCreator(creator);
-        server.setDigitalServerId(mac);
-        server.setMachineId(mac);
-        server.setMinionId(mac);
+        server.setDigitalServerId(hwAddress);
+        server.setMachineId(hwAddress);
+        server.setMinionId(hwAddress);
         server.setOs("(unknown)");
         server.setOsFamily("(unknown)");
         server.setRelease("(unknown)");
@@ -410,7 +411,7 @@ public class SystemManager extends BaseManager {
         server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
 
         NetworkInterface netInterface = new NetworkInterface();
-        netInterface.setHwaddr(mac);
+        netInterface.setHwaddr(hwAddress);
         netInterface.setServer(server);
         netInterface.setName("unknown");
 
