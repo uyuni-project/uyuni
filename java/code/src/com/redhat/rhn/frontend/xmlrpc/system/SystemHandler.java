@@ -154,7 +154,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
 
@@ -5545,30 +5544,7 @@ public class SystemHandler extends BaseHandler {
             throw new InvalidParameterException("The data does not contain required 'mac' field.");
         }
 
-        // Create a server object
-        MinionServer server = new MinionServer();
-        server.setName(sysName);
-        server.setOrg(loggedInUser.getOrg());
-
-        // Set network device information to the server so we have something to match with
-        server.setCreator(loggedInUser);
-        server.setDigitalServerId(mac);
-        server.setMachineId(mac);
-        server.setMinionId(mac);
-        server.setOs("(unknown)");
-        server.setRelease("(unknown)");
-        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
-        server.setAutoUpdate("N");
-        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
-        server.setLastBoot(new Long(0));
-        // POS usecase only AMD64 is supported
-        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-
-        server.updateServerInfo();
-        // Store to the database
-        ServerFactory.save(server);
-
-        server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
+        SystemManager.createSystemProfile(loggedInUser, sysName, mac);
 
         return 1;
     }
