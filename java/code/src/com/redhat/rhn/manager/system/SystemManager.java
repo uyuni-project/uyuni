@@ -43,6 +43,7 @@ import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -389,6 +390,11 @@ public class SystemManager extends BaseManager {
      * @return the created system
      */
     public static MinionServer createSystemProfile(User creator, String systemName, String hwAddress) {
+        if (NetworkInterfaceFactory.lookupNetworkInterfacesByHwAddress(hwAddress).findAny().isPresent()) {
+            throw new IllegalStateException("System(s) with network interface with HW address '" + hwAddress
+                    + "' already exists.");
+        }
+
         MinionServer server = new MinionServer();
         server.setName(systemName);
         server.setOrg(creator.getOrg());
