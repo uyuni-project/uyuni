@@ -746,12 +746,13 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   path = "//*[contains(@class, \"modal-title\") and text() = \"#{title}\"]" \
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
-  # We wait until the element becomes visible because
+  # We wait until the element becomes visible, because
   # the fade out animation might still be in progress
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_xpath?(path, visible: true)
+        sleep 1
       end
     end
   rescue Timeout::Error
