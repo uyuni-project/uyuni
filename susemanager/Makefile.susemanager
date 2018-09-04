@@ -4,7 +4,6 @@ DOCKER_REGISTRY       = registry.mgr.suse.de
 DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
 
-
 pylint ::
 	pylint --errors-only --disable=W src/
 
@@ -12,7 +11,7 @@ unittest ::
 	if test -x /usr/bin/unit2 ; then \
                 unit2 discover -s src; \
         else \
-                python -munittest discover -s src; \
+                $(PYTHON_BIN) -munittest discover -s src; \
         fi
 
 unittest_inside_docker ::

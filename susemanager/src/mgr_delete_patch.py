@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+from __future__ import print_function
+
 import re
 import sys
 
@@ -20,6 +22,11 @@ from spacewalk.susemanager import errata_helper
 
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
+try:
+   input = raw_input
+except NameError:
+   pass
+
 class Cleaner:
     def __init__(self, debug):
         self.debug = debug
@@ -27,7 +34,7 @@ class Cleaner:
 
         try:
             rhnSQL.initDB()
-        except rhnSQL.SQLConnectError, e:
+        except rhnSQL.SQLConnectError as e:
             log_error("Could not connect to the database. %s" % e)
             raise Exception("Could not connect to the database. %s" % e)
 
@@ -51,19 +58,19 @@ class Cleaner:
             clones           = errata_helper.findErrataClones(parent_errata_id)
 
             _printLog("{0} is a clone of {1}".format(errata, parent_advisory))
-            print "The tool is going to remove '{0}' and all its clones:".format(parent_advisory)
+            print("The tool is going to remove '{0}' and all its clones:".format(parent_advisory))
         else:
             clones = errata_helper.findErrataClones(errata_id)
-            print "The tool is going to remove '{0}' and all its clones:".format(errata)
+            print("The tool is going to remove '{0}' and all its clones:".format(errata))
 
         for id in clones:
             clone_advisory       = errata_helper.getAdvisory(id)
             errata_to_remove[id] = clone_advisory
-            print "  -", clone_advisory
+            print("  -", clone_advisory)
 
         reply = None
         while not reply in ('y', 'n'):
-            reply = raw_input("Do you want to continue? (Y/n) ")
+            reply = input("Do you want to continue? (Y/n) ")
             if not reply:
                 reply = "y"
             reply = reply.lower()
@@ -122,5 +129,5 @@ class Cleaner:
 
 def _printLog(msg):
     log_debug(0, msg)
-    print msg
+    print(msg)
 

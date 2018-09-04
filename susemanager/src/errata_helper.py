@@ -56,7 +56,7 @@ def deleteErrata(errata_id):
     """)
     h.execute(errata_id=errata_id)
 
-    package_ids = map(lambda x: x['id'], h.fetchall_dict() or [])
+    package_ids = [x['id'] for x in h.fetchall_dict() or []]
     for package_id in package_ids:
         package_helper.delete_package(package_id)
 
@@ -130,7 +130,7 @@ def channelsWithErrata(errata_id):
     """)
     h.execute(errata_id=errata_id)
 
-    return map(lambda x: x['channel_id'], h.fetchall_dict() or [])
+    return [x['channel_id'] for x in h.fetchall_dict() or []]
 
 def findErrataClones(errata_id):
     """ Find all the clones of this errata.
@@ -143,7 +143,7 @@ def findErrataClones(errata_id):
     """)
     h.execute(errata_id=errata_id)
 
-    clones = map(lambda x: x['id'], h.fetchall_dict() or [])
+    clones = [x['id'] for x in h.fetchall_dict() or []]
     ret    = clones[:]
 
     for clone in clones:

@@ -22,7 +22,10 @@ try:
 except ImportError:
     import unittest
 
-from mock import MagicMock
+try:
+    from unittest.mock import MagicMock
+except ImportError:
+    from mock import MagicMock
 
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync

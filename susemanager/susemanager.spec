@@ -15,6 +15,11 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%if 0%{?suse_version} > 1320
+# SLE15 builds on Python 3
+%global build_py3   1
+%endif
+%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           susemanager
 Version:        4.0.1
@@ -26,11 +31,20 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!
+
+%if 0%{?build_py3}
+BuildRequires:  python3-devel
+%else
 BuildRequires:  python-devel
+%endif
 
 # check section
+%if 0%{?build_py3}
+BuildRequires:  python3-pycurl
+%else
 BuildRequires:  python-curl
 BuildRequires:  python-mock
+%endif
 BuildRequires:  pyxml
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
@@ -62,7 +76,7 @@ Requires:       postfix
 Requires:       yast2-users
 # mgr-setup want to call mksubvolume
 Requires:       snapper
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
 %description
@@ -73,18 +87,26 @@ setup tasks, re-installation, upgrades and managing.
 Summary:        SUSE Manager Tools
 Group:          Productivity/Other
 Requires:       createrepo
+
+%if 0%{?build_py3}
+Requires:       python3
+Requires:       python3-configobj
+BuildRequires:  python3-configobj
+%else
 Requires:       python
 Requires:       python-argparse
 Requires:       python-configobj
+BuildRequires:  python-configobj
+Requires:       python-enum34
+BuildRequires:  python-enum34
+%endif
 Requires:       spacewalk-backend >= 2.1.55.11
 Requires:       spacewalk-backend-sql
 Requires:       suseRegisterInfo
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
-BuildRequires:  python-configobj
-Requires:       python-enum34
 BuildRequires:  docbook-utils
-BuildRequires:  python-enum34
+
 
 %description tools
 This package contains SUSE Manager tools
@@ -93,6 +115,14 @@ This package contains SUSE Manager tools
 %setup -q
 
 %build
+
+# Fixing shebang for Python 3
+%if 0%{?build_py3}
+for i in `find . -type f`;
+do
+    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+done
+%endif
 
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
@@ -110,7 +140,7 @@ install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{bui
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
-make -C src install PREFIX=$RPM_BUILD_ROOT MANDIR=%{_mandir}
+make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/srv/www/os-images/
 
 # YaST configuration
@@ -134,12 +164,14 @@ mkdir -p /var/tmp/fakepython/spacewalk
 cp -a %{python_sitelib}/spacewalk/* /var/tmp/fakepython/spacewalk/
 cp -a %{buildroot}%{python_sitelib}/spacewalk/* /var/tmp/fakepython/spacewalk/
 export PYTHONPATH=/var/tmp/fakepython/:%{_datadir}/rhn
-make -f Makefile.susemanager unittest
+make -f Makefile.susemanager PYTHON_BIN=%{pythonX} unittest
 unset PYTHONPATH
 rm -rf /var/tmp/fakepython
+%if !0%{?build_py3}
 pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
+%endif
 
 %pre
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager

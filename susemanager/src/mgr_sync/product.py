@@ -12,6 +12,7 @@
 # SUSE trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
+from __future__ import print_function
 
 from enum import Enum
 

@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python
 from __future__ import print_function
 import sys
 import os
@@ -9,6 +9,11 @@ from spacewalk.common import usix
 from spacewalk.common.rhnConfig import CFG, initCFG
 from optparse import OptionParser
 import textwrap
+
+try:
+   input = raw_input
+except NameError:
+   pass
 
 msg_wrapper = textwrap.TextWrapper()
 msg_wrapper.initial_indent = '- '
@@ -123,9 +128,9 @@ def list_labels():
     :return:
     """
     label_map = {}
-    synced_products = map(lambda x: x['id'], rhnSQL.fetchall_dict(_sql_synced_proucts) or [])
+    synced_products = [x['id'] for x in rhnSQL.fetchall_dict(_sql_synced_proucts) or []]
     label_index = 1
-    for label in sorted(mgr_bootstrap_data.DATA.iterkeys()):
+    for label in sorted(mgr_bootstrap_data.DATA.keys()):
         if int(mgr_bootstrap_data.DATA[label]['PDID'][0]) in synced_products:
             print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
@@ -158,7 +163,7 @@ def create_repo(label, flush, additional=[]):
         print("Creating bootstrap repo for latest Service Pack of {0}".format(label))
     else:
         print("Creating bootstrap repo for {0}".format(label))
-    print
+    print()
 
     if options.usecustomchannels:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_with_custom_channels % (pdids, pdids)))
@@ -201,7 +206,7 @@ def create_repo(label, flush, additional=[]):
             print(m)
         if label.startswith('RES') and not options.usecustomchannels:
             print("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
-        suggestions = list(filter(None, suggestions.values()))
+        suggestions = list([_f for _f in list(suggestions.values()) if _f])
         if suggestions:
             print("\nSuggestions:")
             for suggestion in suggestions:
@@ -240,10 +245,10 @@ try:
     mgr_bootstrap_data = __import__(modulename)
     for label in mgr_bootstrap_data.DATA:
         if not isinstance(mgr_bootstrap_data.DATA[label]['PDID'], usix.ListType):
-            mgr_bootstrap_data.DATA[label]['PDID'] = map(str, [int(mgr_bootstrap_data.DATA[label]['PDID'])])
+            mgr_bootstrap_data.DATA[label]['PDID'] = list(map(str, [int(mgr_bootstrap_data.DATA[label]['PDID'])]))
         else:
-            mgr_bootstrap_data.DATA[label]['PDID'] = map(str, [int(pdid) for pdid in mgr_bootstrap_data.DATA[label]['PDID']])
-except ImportError, e:
+            mgr_bootstrap_data.DATA[label]['PDID'] = list(map(str, [int(pdid) for pdid in mgr_bootstrap_data.DATA[label]['PDID']]))
+except ImportError as e:
     sys.stderr.write("Unable to load module '%s'\n" % modulename)
     sys.stderr.write(str(e) + "\n")
     sys.exit(1)
@@ -261,7 +266,7 @@ if options.interactive:
     elabel = None
     while True:
         try:
-            elabel = label_map.get(int(raw_input("Enter a number of a product label: ")), '')
+            elabel = label_map.get(int(input("Enter a number of a product label: ")), '')
             break
         except Exception:
             print("Please enter a number.")

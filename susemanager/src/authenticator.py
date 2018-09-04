@@ -12,11 +12,15 @@
 # SUSE trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
+from __future__ import print_function
 
 from spacewalk.susemanager.helpers import cli_ask
 from spacewalk.susemanager.helpers import timeout
 
-import xmlrpclib
+try:
+    import xmlrpc.client as xmlrpc_client
+except ImportError:
+    import xmlrpclib as xmlrpc_client
 
 
 class MaximumNumberOfAuthenticationFailures(Exception):
@@ -67,7 +71,7 @@ class Authenticator(object):
 
             try:
                 self._token = self.connection.auth.login(self.user, self.password)
-            except xmlrpclib.Fault, ex:
+            except xmlrpc_client.Fault as ex:
                 if ex.faultCode == 2950 and "Either the password or username is incorrect" in ex.faultString:
                     if self.has_credentials() and not self.cached_credentials_used:
                         # Try to reuse the credentials stored into the configuration file
@@ -118,7 +122,7 @@ class Authenticator(object):
         Get credentials from CLI interactively.
         """
 
-        print "Please enter the credentials of SUSE Manager Administrator."
+        print("Please enter the credentials of SUSE Manager Administrator.")
         self.user = cli_ask("Login")
         self.password = cli_ask("Password", password=True)
 

@@ -42,8 +42,8 @@ unittest ::
 		unit2 discover -s satellite_tools/test/unit; \
 		unit2 discover -s common/test/unit-test; \
 	else \
-		python -munittest discover -s satellite_tools/test/unit; \
-		python -munittest discover -s common/test/unit-test; \
+		$(PYTHON_BIN) -munittest discover -s satellite_tools/test/unit; \
+		$(PYTHON_BIN) -munittest discover -s common/test/unit-test; \
 	fi
 
 docker_no_db_tests ::

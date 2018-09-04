@@ -1,3 +1,6 @@
+- Prepare spacewalk-backend packages to build on Python 3
+- Replace PyPAM with python-python-pam
+
 -------------------------------------------------------------------
 Fri Aug 10 15:13:14 CEST 2018 - jgonzalez@suse.com
 

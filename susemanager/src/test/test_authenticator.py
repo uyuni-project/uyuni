@@ -19,11 +19,18 @@ try:
 except ImportError:
     import unittest
 
-import xmlrpclib
+try:
+    import xmlrpc.client as xmlrpc_client
+except ImportError:
+    import xmlrpclib as xmlrpc_client
+
 import os.path
 import sys
 
-from mock import MagicMock, call, patch
+try:
+    from unittest.mock import MagicMock, call, patch
+except ImportError:
+    from mock import MagicMock, call, patch
 
 sys.path.insert(
     0,
@@ -100,7 +107,7 @@ class AuthenticatorTest(unittest.TestCase):
             ["interactive_username", "interactive_password"]
         ]
         expected_token = "test token"
-        exception = xmlrpclib.Fault(
+        exception = xmlrpc_client.Fault(
             2950,
             "Either the password or username is incorrect")
         login_mocked_return_values = [
@@ -138,7 +145,7 @@ class AuthenticatorTest(unittest.TestCase):
         ]
         cached_credentials = ["cached_username", "cached_password"]
         expected_token = "test token"
-        exception = xmlrpclib.Fault(
+        exception = xmlrpc_client.Fault(
             2950,
             "Either the password or username is incorrect")
         login_mocked_return_values = [
@@ -177,7 +184,7 @@ class AuthenticatorTest(unittest.TestCase):
             ["interactive_username3", "interactive_password3"]
         ]
         expected_token = "test token"
-        exception = xmlrpclib.Fault(
+        exception = xmlrpc_client.Fault(
             2950,
             "Either the password or username is incorrect")
         login_mocked_return_values = [
@@ -216,7 +223,7 @@ class AuthenticatorTest(unittest.TestCase):
             ["interactive_username3", "interactive_password3"]
         ]
         cached_credentials = ["cached_username", "cached_password"]
-        exception = xmlrpclib.Fault(
+        exception = xmlrpc_client.Fault(
             2950,
             "Either the password or username is incorrect")
         login_mocked_return_values = [

@@ -22,7 +22,10 @@ except ImportError:
 import os.path
 import sys
 
-from mock import MagicMock, call, patch
+try:
+    from unittest.mock import MagicMock, call, patch
+except ImportError:
+    from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import ConsoleRecorder, read_data_from_fixture
@@ -739,7 +742,7 @@ All the available products have already been installed, nothing to do"""
             with ConsoleRecorder() as recorder:
                 try:
                     self.mgr_sync.run(options)
-                except SystemExit, ex:
+                except SystemExit as ex:
                     self.assertEqual(0, ex.code)
 
         expected_output = """Available Products:

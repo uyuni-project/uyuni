@@ -12,10 +12,14 @@
 # SUSE trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
+from __future__ import print_function
 
 import re
 import sys
-import xmlrpclib
+try:
+    import xmlrpc.client as xmlrpc_client
+except ImportError:
+    import xmlrpclib as xmlrpc_client
 
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
@@ -39,7 +43,7 @@ class MgrSync(object):
         url = "http://{0}:{1}{2}".format(self.config.host,
                                   self.config.port,
                                   self.config.uri)
-        self.conn = xmlrpclib.ServerProxy(url)
+        self.conn = xmlrpc_client.ServerProxy(url)
         self.auth = Authenticator(connection=self.conn,
                                   user=self.config.user,
                                   password=self.config.password,
@@ -60,7 +64,7 @@ class MgrSync(object):
         self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
 
-        if self.conn.sync.master.hasMaster() and not vars(options).has_key('refresh'):
+        if self.conn.sync.master.hasMaster() and 'refresh' not in vars(options):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
@@ -114,7 +118,7 @@ class MgrSync(object):
         self.quiet = not options.verbose
         self.exit_with_error = False
 
-        if vars(options).has_key('list_target'):
+        if 'list_target' in vars(options):
             if 'channel' in options.list_target:
                 self.log.info("Listing channels...")
                 self._list_channels(expand=options.expand,
@@ -128,7 +132,7 @@ class MgrSync(object):
                 self.log.info("Listing products...")
                 self._list_products(expand=options.expand,
                                     filter=options.filter)
-        elif vars(options).has_key('add_target'):
+        elif 'add_target' in vars(options):
             if 'channel' in options.add_target:
                 self._add_channels(channels=options.target,
                                    mirror=options.mirror,
@@ -137,12 +141,12 @@ class MgrSync(object):
                 self._add_credentials(options.primary, options.target)
             elif 'product' in options.add_target:
                 self._add_products(mirror="", no_recommends=options.no_recommends)
-        elif vars(options).has_key('refresh'):
+        elif 'refresh' in vars(options):
             self.exit_with_error = not self._refresh(
                 enable_reposync=options.refresh_channels,
                 mirror=options.mirror,
                 schedule=options.schedule)
-        elif vars(options).has_key('delete_target'):
+        elif 'delete_target' in vars(options):
             if 'credentials' in options.delete_target:
                 self._delete_credentials(options.target)
 
@@ -330,7 +334,7 @@ class MgrSync(object):
                                         "syncRepo",
                                         self.auth.token(),
                                         channels)
-        except xmlrpclib.Fault, ex:
+        except xmlrpc_client.Fault as ex:
             if ex.faultCode == 2802:
                 self.log.error("Error, unable to schedule channel reposync: Taskomatic is not responding.")
                 sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
@@ -456,10 +460,10 @@ class MgrSync(object):
         num_prod = interactive_data['num_prod']
         if num_prod:
             validator = lambda i: re.search("\d+", i) and \
-                int(i) in range(1, len(num_prod.keys()) + 1)
+                int(i) in range(1, len(list(num_prod.keys())) + 1)
             choice = cli_ask(
                 msg=("Enter product number (1-{0})".format(
-                    len(num_prod.keys()))),
+                    len(list(num_prod.keys())))),
                 validator=validator)
 
             self.log.info("Selecting product '{0} {1}' from choice '{2}'".format(
@@ -618,7 +622,7 @@ class MgrSync(object):
         if self.conn.sync.master.hasMaster() or schedule:
             try:
                 self._schedule_taskomatic_refresh(enable_reposync)
-            except xmlrpclib.Fault, e:
+            except xmlrpc_client.Fault as e:
                 self.log.error("Error scheduling refresh: {0}".format(e))
                 sys.stderr.write("Error scheduling refresh: {0}\n".format(e))
                 return False
@@ -642,7 +646,7 @@ class MgrSync(object):
                 self.log.info("Refreshing {0} succeeded".format(operation.rstrip()))
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
-            except Exception, ex:
+            except Exception as ex:
                 self.log.error("Refreshing {0} failed".format(operation.rstrip()))
                 self.log.error("Error: {0}".format(ex))
                 sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
@@ -674,7 +678,7 @@ class MgrSync(object):
         return True
 
     def _schedule_taskomatic_refresh(self, enable_reposync):
-         client = xmlrpclib.Server(TASKOMATIC_XMLRPC_URL)
+         client = xmlrpc_client.Server(TASKOMATIC_XMLRPC_URL)
          params = {}
          params['noRepoSync'] = not enable_reposync
 
@@ -698,7 +702,7 @@ class MgrSync(object):
             self.log.debug("Invoking remote method {0} with auth_token {1}".format(
                 method, auth_token))
             return getattr(endpoint, method)(auth_token, *params)
-        except xmlrpclib.Fault, ex:
+        except xmlrpc_client.Fault as ex:
             if retry_on_session_failure and self._check_session_fail(ex):
                 self.log.info("Retrying after session failure: {0}".format(ex))
                 self.auth.discard_token()

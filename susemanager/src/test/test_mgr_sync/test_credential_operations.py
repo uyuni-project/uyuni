@@ -22,7 +22,10 @@ except ImportError:
 import os.path
 import sys
 
-from mock import MagicMock, call, patch
+try:
+    from unittest.mock import MagicMock, call, patch
+except ImportError:
+    from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import ConsoleRecorder, read_data_from_fixture

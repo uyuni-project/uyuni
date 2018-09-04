@@ -15,8 +15,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 
-from cStringIO import StringIO
-import mock
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
+
+try:
+    from unittest import mock
+except ImportError:
+    import mock
+
 import os
 import sys
 
@@ -47,7 +55,10 @@ class FakeStdin():
         self.fake_input = fake_input
 
     def __enter__(self):
-        self.patcher = mock.patch('__builtin__.raw_input')
+        if sys.version_info < (3,):
+            self.patcher = mock.patch('__builtin__.raw_input')
+        else:
+            self.patcher = mock.patch('builtins.input')
         self.mock = self.patcher.start()
         self.mock.side_effect = fake_user_input(*self.fake_input)
         return self.mock

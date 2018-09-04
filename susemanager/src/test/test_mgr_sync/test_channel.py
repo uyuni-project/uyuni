@@ -23,7 +23,10 @@ try:
 except ImportError:
     import unittest
 
-from mock import MagicMock
+try:
+    from unittest.mock import MagicMock
+except ImportError:
+    from mock import MagicMock
 
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, \
     find_channel_by_label, Channel
@@ -58,7 +61,7 @@ class ChannelTest(unittest.TestCase):
 
         self.assertEqual(sorted(channels.keys()),
                          sorted(expected_hierarchy.keys()))
-        for label, bc in channels.items():
+        for label, bc in list(channels.items()):
             self.assertEqual(label, bc.label)
             self.assertEqual(
                 bc.status,

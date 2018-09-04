@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+from __future__ import print_function
+
 import re
 import sys
 
@@ -27,7 +29,7 @@ class Cleaner:
         self.debug = debug
 
         if not all and not channel:
-            print "You need to specify either --all or --channel"
+            print("You need to specify either --all or --channel")
             sys.exit(1)
 
         initCFG("server.susemanager")
@@ -38,14 +40,14 @@ class Cleaner:
 
         try:
             rhnSQL.initDB()
-        except rhnSQL.SQLConnectError, e:
+        except rhnSQL.SQLConnectError as e:
             log_error("Could not connect to the database. %s" % e)
             raise Exception("Could not connect to the database. %s" % e)
 
     def run(self):
         channels = []
         if self.all:
-            channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
+            channels = list(rhnSQL.Table("RHNCHANNEL", "LABEL").keys())
         else:
             channels = [self.channel]
 
@@ -109,5 +111,5 @@ class Cleaner:
 
 def _printLog(msg):
     log_debug(0, msg)
-    print msg
+    print(msg)
 
