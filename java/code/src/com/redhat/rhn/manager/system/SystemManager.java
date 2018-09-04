@@ -383,41 +383,39 @@ public class SystemManager extends BaseManager {
     /**
      * Create an empty system profile with required values.
      *
-     * @param loggedInUser
+     * @param creator
      * @param sysName
      * @param mac
      */
-    public static void createSystemProfile(User loggedInUser, String sysName, String mac) {
+    public static MinionServer createSystemProfile(User creator, String sysName, String mac) {
         MinionServer server = new MinionServer();
         server.setName(sysName);
-        server.setOrg(loggedInUser.getOrg());
+        server.setOrg(creator.getOrg());
 
         // Set network device information to the server so we have something to match with
-        server.setCreator(loggedInUser);
+        server.setCreator(creator);
         server.setDigitalServerId(mac);
         server.setMachineId(mac);
         server.setMinionId(mac);
         server.setOs("(unknown)");
+        server.setOsFamily("(unknown)");
         server.setRelease("(unknown)");
         server.setSecret(RandomStringUtils.randomAlphanumeric(64));
         server.setAutoUpdate("N");
         server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         server.setLastBoot(new Long(0));
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        server.updateServerInfo();
+        ServerFactory.save(server);
+        server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
 
         NetworkInterface netInterface = new NetworkInterface();
         netInterface.setHwaddr(mac);
-        netInterface.setModule(null); // todo clarify
         netInterface.setServer(server);
         netInterface.setName("unknown");
-
         ServerFactory.saveNetworkInterface(netInterface);
 
-        server.updateServerInfo();
-        // Store to the database
-        ServerFactory.save(server);
-
-        server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
+        return server;
     }
 
     /**
