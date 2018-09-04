@@ -413,6 +413,11 @@ public class SystemManager extends BaseManager {
         netInterface.setHwaddr(mac);
         netInterface.setServer(server);
         netInterface.setName("unknown");
+
+        if (!netInterface.isValid()) {
+            throw new IllegalArgumentException("Invalid network interface: " + netInterface);
+        }
+
         ServerFactory.saveNetworkInterface(netInterface);
 
         return server;
