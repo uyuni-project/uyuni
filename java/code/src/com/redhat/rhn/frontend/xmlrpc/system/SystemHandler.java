@@ -159,8 +159,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
 
-import org.hibernate.exception.ConstraintViolationException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -5934,21 +5932,27 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Creates a system record in dabatase for a system that is not (yet) registered.
+     * Creates a system record in database for a system that is not (yet) registered.
      * @param loggedInUser the currently logged in user
      * @param sysName server name
-     * @param comment comment
-     * @param mac MAC address of identifiable network interface
+     * @param data the data about system
      * @return int - 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Creates a system record in database for a system that is not registered.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("string", "sysName")
-     * @xmlrpc.param #param("string", "comment")
-     * @xmlrpc.param #param("string", "mac")
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "sysName", "System name")
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param
+     *  #struct("data")
+     *      #prop_desc("string", "mac", "MAC address")
+     *  #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    public int createSystemProfile(User loggedInUser, String sysName, String comment, String mac) {
+    public int createSystemProfile(User loggedInUser, String sysName, Map<String, Object> data) {
+        String mac = (String) data.get("mac");
+        if (mac == null) {
+            throw new InvalidParameterException("The data does not contain required 'mac' field.");
+        }
 
         // Create a server object
         Server server = ServerFactory.createServer();
@@ -5981,37 +5985,6 @@ public class SystemHandler extends BaseHandler {
         }
         catch (Throwable e) {
             throw new FaultException(-2, "Entitlement error: ", e.getCause().getLocalizedMessage());
-        }
-
-        return 1;
-    }
-
-    /**
-     * Creates a system record in dabatase for a system that is not (yet) registered.
-     * @param loggedInUser the currently logged in user
-     * @param sysName server name
-     * @param comment comment
-     * @return int - 1 on success, exception thrown otherwise.
-     *
-     * @xmlrpc.doc Creates a system record in database for a system that is not registered.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("string", "sysName")
-     * @xmlrpc.param #param("string", "comment")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    public int createSystemProfile(User loggedInUser, String sysName, String comment) {
-
-        // Create a server object
-        Server server = ServerFactory.createServer();
-        server.setName(sysName);
-        server.setOrg(loggedInUser.getOrg());
-
-        // Store to the database
-        try {
-            ServerFactory.save(server);
-        }
-        catch(ConstraintViolationException e) {
-            log.error("DB error: ", e.getSQLException());
         }
 
         return 1;
