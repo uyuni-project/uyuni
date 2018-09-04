@@ -29,6 +29,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -145,6 +147,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
@@ -2604,6 +2608,36 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         catch (UnsupportedOperationException e) {
             assertEquals("System not managed with Salt: " + server.getId(), e.getMessage());
         }
+    }
+
+    /**
+     * Tests creating a system profile with missing HW address.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateSystemProfileNoHwAddress() throws Exception {
+        try {
+            getMockedHandler().createSystemProfile(admin, "test system", Collections.emptyMap());
+            fail("An exception should have been thrown.");
+        } catch (InvalidParameterException e) {
+            // no-op
+        }
+    }
+
+    /**
+     * Tests creating a system profile.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateSystemProfile() throws Exception {
+        String hwAddress = "aa:bb:cc:dd:ee:00";
+        int result = getMockedHandler().createSystemProfile(admin, "test system",
+                Collections.singletonMap("hwAddress", hwAddress));
+        List<NetworkInterface> nics = NetworkInterfaceFactory
+                .lookupNetworkInterfacesByHwAddress(hwAddress)
+                .collect(Collectors.toList());
+
+        assertEquals(1, result);
+        assertEquals(1, nics.size());
+        assertEquals("test system", nics.get(0).getServer().getName());
     }
 
     private SystemHandler getMockedHandler() throws Exception {
