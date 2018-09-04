@@ -25,9 +25,7 @@ def check_password(username, password, service):
     try:
         auth = pam.pam()
         if not auth.authenticate(username, password, service=service):
-            e = sys.exc_info()[1]
-            resp, code = e.args[:2]
-            log_error("Password check failed (%s): %s" % (code, resp))
+            log_error("Password check failed (%s): %s" % (auth.code, auth.reason))
             return 0
         else:
             return 1
