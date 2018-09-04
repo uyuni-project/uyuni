@@ -1389,4 +1389,19 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(hwAddr, networkInterface.getHwaddr());
         assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
     }
+
+    /**
+     * Tests creating an empty system profile when there is already another profile with a NIC
+     * that has given HW address.
+     */
+    public void testCreateSystemProfileExistingHwAddress() {
+        String hwAddr = "be:b0:bc:a3:a7:ad";
+        SystemManager.createSystemProfile(user, "test system", hwAddr);
+        try {
+            SystemManager.createSystemProfile(user, "test system 2", hwAddr);
+            fail("System creation should have failed!");
+        } catch (IllegalStateException e) {
+            // no-op
+        }
+    }
 }
