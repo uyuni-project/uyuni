@@ -2854,6 +2854,24 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="channels.subscribe.target.systems.channel.scheduled">
         <source>Subscribing {0} system(s) to channel {1} has been scheduled.</source>
       </trans-unit>
+      <trans-unit id="channels.not.supported.for.minions">
+        <source>Local/Sandbox channels are not supported for minions.</source>
+      </trans-unit>
+      <trans-unit id="state.channels.not.supported.for.traditional">
+        <source>A state channel cannot be assigned to traditional system.</source>
+      </trans-unit>
+      <trans-unit id="directories.symlink.not.supported.for.minions">
+        <source>Directories/Symlinks are not supported in state channel.</source>
+      </trans-unit>
+      <trans-unit id="update.init.sls.with.updateinitsls.method">
+        <source>Please use 'updateInitSls' method for updating init.sls file.</source>
+      </trans-unit>
+      <trans-unit id="editable.init.sls.only.for.state.channels">
+        <source>init.sls file can only be edited for state channels.</source>
+      </trans-unit>
+      <trans-unit id="state.channel.through.apply.config.channel.method">
+        <source>State channels can be applied through system.config.scheduleApplyConfigChannel method or from UI.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

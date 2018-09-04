@@ -17,9 +17,13 @@ package com.redhat.rhn.frontend.xmlrpc.system.config.test;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -29,19 +33,29 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
+import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,6 +69,12 @@ import java.util.Set;
  */
 public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     private ServerConfigHandler handler = new ServerConfigHandler();
+    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }};
+
+
     public void testDeployConfiguration() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
@@ -406,4 +426,42 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
             assertEquals(1, files.size());
         }
     }
+
+    public void testScheduleApplyConfigChannel() throws Exception {
+        Server testServer = MinionServerFactoryTest.createTestMinionServer(admin);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        Long actionId = getMockedHandler().scheduleApplyConfigChannel(
+                admin, Collections.singletonList(testServer.getId().intValue()), scheduleDate, false);
+        assertNotNull(actionId);
+
+        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, schedule.size() - preScheduleSize);
+        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+
+        // Look up the action and verify the details
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertEquals(scheduleDate, action.getEarliestAction());
+
+        ApplyStatesActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertNotNull(details.getStates());
+        assertEquals(1, details.getMods().size());
+        assertFalse(details.isTest());
+    }
+
+    private ServerConfigHandler getMockedHandler() throws Exception {
+        TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
+        ServerConfigHandler serverConfigHandler = new ServerConfigHandler(taskomaticMock);
+
+        MOCK_CONTEXT.checking(new Expectations() {{
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        }});
+
+        return serverConfigHandler;
+    }
+
 }

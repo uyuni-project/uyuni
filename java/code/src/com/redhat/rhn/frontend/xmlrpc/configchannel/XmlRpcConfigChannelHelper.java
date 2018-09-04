@@ -20,7 +20,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +30,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.user.User;
@@ -63,15 +64,20 @@ public class XmlRpcConfigChannelHelper {
     public static XmlRpcConfigChannelHelper getInstance() {
         return HELPER;
     }
+
     /**
-     * Helper method to lookup a config channel from a config channel label
+     * Helper method to lookup a global('normal', 'state') config channel from a config channel label
      * @param user The user looking up the server
      * @param label The label of the config channel we're looking for
      * @return Returns the config channel corresponding to label
      */
     public ConfigChannel lookupGlobal(User user, String label) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
-        return manager.lookupConfigChannel(user, label, ConfigChannelType.normal());
+        ConfigChannel channel = manager.lookupGlobalConfigChannel(user, label);
+        if (Objects.isNull(channel)) {
+            throw new NoSuchChannelException(label);
+        }
+        return channel;
     }
 
     /**
@@ -131,16 +137,7 @@ public class XmlRpcConfigChannelHelper {
                     }
                 }
                 else {  // TEXT FILE
-                    String content;
-                    if (BooleanUtils.isTrue((Boolean) data.get(
-                            ConfigRevisionSerializer.CONTENTS_ENC64))) {
-                        content = new String(Base64.decodeBase64(
-                                ((String)data.get(ConfigRevisionSerializer.CONTENTS))
-                                .getBytes("UTF-8")), "UTF-8");
-                    }
-                    else {
-                        content = (String)data.get(ConfigRevisionSerializer.CONTENTS);
-                    }
+                    String content = getContents(data);
                     form = new TextFileData(content);
                 }
             }
@@ -194,5 +191,19 @@ public class XmlRpcConfigChannelHelper {
                                 "Please retry. " + ie.getMessage();
             throw new FaultException(1024, "ConfgFileError", msg);
         }
+    }
+
+    protected String getContents(Map<String, Object> data) throws UnsupportedEncodingException {
+        String content;
+        if (BooleanUtils.isTrue((Boolean) data.get(
+                ConfigRevisionSerializer.CONTENTS_ENC64))) {
+            content = new String(Base64.decodeBase64(
+                    ((String)data.get(ConfigRevisionSerializer.CONTENTS))
+                    .getBytes("UTF-8")), "UTF-8");
+        }
+        else {
+            content = (String)data.get(ConfigRevisionSerializer.CONTENTS);
+        }
+        return content;
     }
 }
