@@ -26,4 +26,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  where n.server = :server
                    and n.name = :name]]>
     </query>
+
+    <query name="NetworkInterface.lookupByHwAddress">
+        <![CDATA[from com.redhat.rhn.domain.server.NetworkInterface as n
+                 where lower(n.hwaddr) = lower(:hwAddress)]]>
+    </query>
 </hibernate-mapping>
