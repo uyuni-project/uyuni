@@ -5973,18 +5973,12 @@ public class SystemHandler extends BaseHandler {
 
         server.updateServerInfo();
         // Store to the database
-        try {
-            ServerFactory.save(server);
-        }
-        catch(ConstraintViolationException e) {
-            throw new FaultException(-2, "Database error: ", e.getSQLException().getLocalizedMessage());
-        }
+        ServerFactory.save(server);
 
         try {
             server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
-        }
-        catch (Throwable e) {
-            throw new FaultException(-2, "Entitlement error: ", e.getCause().getLocalizedMessage());
+        } catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new RuntimeException("Error during setting base entitlement.");
         }
 
         return 1;
