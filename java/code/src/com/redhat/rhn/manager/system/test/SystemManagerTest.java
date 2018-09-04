@@ -52,6 +52,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerArch;
@@ -91,6 +93,7 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
@@ -1354,5 +1357,36 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());
+    }
+
+    /**
+     * Tests creating an empty system profile.
+     */
+    public void testCreateSystemProfile() {
+        String hwAddr = "be:b0:bc:a3:a7:ad";
+        MinionServer minion = SystemManager.createSystemProfile(user, "test system", hwAddr);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+
+        // flush & refresh iface because generated="insert"
+        // on interfaceId does not seem to work
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().refresh(minionFromDb);
+
+        assertEquals("test system", minionFromDb.getName());
+        assertEquals(hwAddr, minion.getMinionId());
+        assertEquals(hwAddr, minion.getMachineId());
+        assertEquals(hwAddr, minion.getDigitalServerId());
+        assertEquals("(unknown)", minion.getOs());
+        assertEquals("(unknown)", minion.getOsFamily());
+        assertEquals("(unknown)", minion.getRelease());
+        assertEquals(ContactMethodUtil.DEFAULT, minion.getContactMethod().getLabel());
+        assertEquals("N", minion.getAutoUpdate());
+        assertEquals("x86_64-redhat-linux", minion.getServerArch().getLabel());
+        assertEquals(1, minionFromDb.getNetworkInterfaces().size());
+
+        NetworkInterface networkInterface = minionFromDb.getNetworkInterfaces().iterator().next();
+        assertEquals("unknown", networkInterface.getName());
+        assertEquals(hwAddr, networkInterface.getHwaddr());
+        assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
     }
 }
