@@ -4224,12 +4224,7 @@ public class SystemHandler extends BaseHandler {
             String selectedEnt = (String)details.get("base_entitlement");
             Entitlement base = EntitlementManager.getByName(selectedEnt);
             if (base != null) {
-                try {
-                    server.setBaseEntitlement(base);
-                }
-                catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-                    throw new TaskomaticApiException(e.getMessage());
-                }
+                server.setBaseEntitlement(base);
             }
             else if (selectedEnt.equals("unentitle")) {
                 SystemManager.removeAllServerEntitlements(server.getId());
@@ -4402,46 +4397,41 @@ public class SystemHandler extends BaseHandler {
 
         validateEntitlements(entitlementL);
 
-        try {
-            List<String> addOnEnts = new LinkedList<String>(entitlements);
-            // first process base entitlements
-            for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
-                if (addOnEnts.contains(en.getLabel())) {
-                    addOnEnts.remove(en.getLabel());
-                    server.setBaseEntitlement(en);
-                }
+        List<String> addOnEnts = new LinkedList<String>(entitlements);
+        // first process base entitlements
+        for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
+            if (addOnEnts.contains(en.getLabel())) {
+                addOnEnts.remove(en.getLabel());
+                server.setBaseEntitlement(en);
+            }
+        }
+
+        // put a more intelligible exception
+        if ((server.getBaseEntitlement() == null) && (!addOnEnts.isEmpty())) {
+            throw new InvalidEntitlementException("Base entitlement missing");
+        }
+
+        for (Iterator<String> it = addOnEnts.iterator(); it.hasNext();) {
+
+            Entitlement ent = EntitlementManager.getByName(it.next());
+
+            // Ignore if the system already has this entitlement:
+            if (server.hasEntitlement(ent)) {
+                log.debug("System " + server.getName() + " already has entitlement: " +
+                        ent.getLabel());
+                continue;
             }
 
-            // put a more intelligible exception
-            if ((server.getBaseEntitlement() == null) && (!addOnEnts.isEmpty())) {
-                throw new InvalidEntitlementException("Base entitlement missing");
-            }
-
-            for (Iterator<String> it = addOnEnts.iterator(); it.hasNext();) {
-
-                Entitlement ent = EntitlementManager.getByName(it.next());
-
-                // Ignore if the system already has this entitlement:
-                if (server.hasEntitlement(ent)) {
-                    log.debug("System " + server.getName() + " already has entitlement: " +
-                            ent.getLabel());
-                    continue;
-                }
-
-                if (SystemManager.canEntitleServer(server, ent)) {
-                    ValidatorResult vr = SystemManager.entitleServer(server, ent);
-                    needsSnapshot = true;
-                    if (vr.getErrors().size() > 0) {
-                        throw new InvalidEntitlementException();
-                    }
-                }
-                else {
+            if (SystemManager.canEntitleServer(server, ent)) {
+                ValidatorResult vr = SystemManager.entitleServer(server, ent);
+                needsSnapshot = true;
+                if (vr.getErrors().size() > 0) {
                     throw new InvalidEntitlementException();
                 }
             }
-        }
-        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            throw new TaskomaticApiException(e.getMessage());
+            else {
+                throw new InvalidEntitlementException();
+            }
         }
 
         if (needsSnapshot) {
@@ -5576,11 +5566,7 @@ public class SystemHandler extends BaseHandler {
         // Store to the database
         ServerFactory.save(server);
 
-        try {
-            server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
-        } catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            throw new RuntimeException("Error during setting base entitlement.");
-        }
+        server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
 
         return 1;
     }
