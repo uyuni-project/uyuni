@@ -5546,13 +5546,15 @@ public class SystemHandler extends BaseHandler {
         }
 
         // Create a server object
-        Server server = ServerFactory.createServer();
+        MinionServer server = new MinionServer();
         server.setName(sysName);
         server.setOrg(loggedInUser.getOrg());
 
         // Set network device information to the server so we have something to match with
         server.setCreator(loggedInUser);
         server.setDigitalServerId(mac);
+        server.setMachineId(mac);
+        server.setMinionId(mac);
         server.setOs("(unknown)");
         server.setRelease("(unknown)");
         server.setSecret(RandomStringUtils.randomAlphanumeric(64));
