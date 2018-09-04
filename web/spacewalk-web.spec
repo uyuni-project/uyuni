@@ -186,6 +186,7 @@ cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript/ma
 cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js
 
 %files -n susemanager-web-libs
+%defattr(644,root,root,755)
 %dir %{www_path}/www/htdocs/vendors
 %{www_path}/www/htdocs/vendors/*
 
