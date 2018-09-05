@@ -143,7 +143,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }});
         manager.saveServerFormulaData(user,minion.getId(), formulaName, contents);
         Map<String, Object> savedFormulaData =
-                FormulaFactory.getFormulaValuesByNameAndServerId(formulaName, minion.getId())
+                FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minion.getMinionId())
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
         assertEquals(contents,savedFormulaData);

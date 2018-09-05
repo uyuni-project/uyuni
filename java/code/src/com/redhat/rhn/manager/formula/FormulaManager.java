@@ -80,10 +80,11 @@ public class FormulaManager {
      */
     public void saveServerFormulaData(User user, Long systemId, String formulaName, Map<String, Object> content)
             throws IOException {
-        Optional<MinionServer> minion = MinionServerFactory.lookupById(systemId);
-        checkUserHasPermissionsOnServer(user, minion.get());
-        FormulaFactory.saveServerFormulaData(content, systemId, formulaName);
-        saltService.refreshPillar(new MinionList(minion.get().getMinionId()));
+        MinionServer minion = MinionServerFactory.lookupById(systemId)
+                .orElseThrow(() -> new IllegalArgumentException("Minion " + systemId + " not found."));
+        checkUserHasPermissionsOnServer(user, minion);
+        FormulaFactory.saveServerFormulaData(content, minion.getMinionId(), formulaName);
+        saltService.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
     /**
@@ -114,9 +115,11 @@ public class FormulaManager {
      * @return the saved data in map form
      */
     public Map<String, Object> getSystemFormulaData(User user, String formulaName, Long serverId) {
-        Optional<MinionServer> minion = MinionServerFactory.lookupById(serverId);
-        checkUserHasPermissionsOnServer(user, minion.get());
-        Optional<Map<String, Object>> data = FormulaFactory.getFormulaValuesByNameAndServerId(formulaName, serverId);
+        MinionServer minion = MinionServerFactory.lookupById(serverId)
+                .orElseThrow(() -> new IllegalArgumentException("Minion " + serverId + " not found."));
+        checkUserHasPermissionsOnServer(user, minion);
+        Optional<Map<String, Object>> data = FormulaFactory
+                .getFormulaValuesByNameAndMinionId(formulaName, minion.getMinionId());
         return data.orElse(Collections.emptyMap());
     }
 
