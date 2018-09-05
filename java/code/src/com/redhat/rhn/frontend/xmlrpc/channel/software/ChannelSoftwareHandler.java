@@ -3383,16 +3383,18 @@ public class ChannelSoftwareHandler extends BaseHandler {
         return 1;
     }
     /**
-     * Trigger immediate channels update state
+     * Unsubscribe channels from the specified systems, trigger immediate channels update state
      * @param user The current user
-     * @param sids channel labels
-     * @param baseChannelLabel channel labels
-     * @param childLabels channel labels
+     * @param sids System Ids
+     * @param baseChannelLabel base channel label
+     * @param childLabels child channels' labels
      * @return 1 on success
      *
-     * @xmlrpc.doc Trigger immediate repo synchronization
+     * @xmlrpc.doc Unsubscribe channels from the specified systems, trigger immediate channels update state
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("string", "channelLabels")
+     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "childLabels")
      * @xmlrpc.returntype  #return_int_success()
      */
     public int unsubscribeChannels(User user, List<Integer> sids, String baseChannelLabel, List<String> childLabels) {
