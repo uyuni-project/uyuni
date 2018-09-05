@@ -161,10 +161,10 @@ Requires:       postgresql84-contrib
 %else
 Requires:       postgresql-contrib >= 8.4
 %endif
-Requires:       postgresql >= 8.4
+Requires:       postgresql >= 9.6
 # we do not support postgresql versions > 9.6 yet
-Conflicts:      postgresql >= 9.7
-Conflicts:      postgresql-contrib >= 9.7
+Conflicts:      postgresql >= 11.0
+Conflicts:      postgresql-contrib >= 11.0
 
 %description postgresql
 Spacewalk is a systems management application that will 
