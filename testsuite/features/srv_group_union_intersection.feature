@@ -22,7 +22,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Add Systems"
     Then I should see a "2 systems were added to sles server group." text
 
-@centosminion
+@centos_minion
   Scenario: Create a centos group
     Given I am on the groups page
     When I follow "Create Group"
@@ -31,7 +31,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Create Group"
     Then I should see a "System group centos created." text
 
-@centosminion
+@centos_minion
   Scenario: Add systems to the centos group
     Given I am on the groups page
     When I follow "centos"
@@ -64,7 +64,7 @@ Feature: Work with Union and Intersection buttons in the group list
     Then I should see "sle-client" as link
     And I should see "sle-minion" as link
 
-@centosminion
+@centos_minion
   Scenario: Add a union of 2 groups to SSM
     Given I am on the groups page
     When I check "sles" in the list
@@ -74,7 +74,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I should see "sle-minion" as link
     And I should see "ceos-minion" as link
 
-@centosminion
+@centos_minion
   Scenario: Add an intersection of 2 groups to SSM
     Given I am on the groups page
     When I check "sles" in the list
@@ -91,7 +91,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
 
-@centosminion
+@centos_minion
   Scenario: Cleanup: remove the centos group
     Given I am on the groups page
     When I follow "centos" in the content area

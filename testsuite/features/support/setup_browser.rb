@@ -62,20 +62,20 @@ enable_assertions
 Before('@proxy') do |scenario|
   scenario.skip_invoke! unless $proxy
 end
-Before('@centosminion') do |scenario|
+Before('@centos_minion') do |scenario|
   scenario.skip_invoke! unless $ceos_minion
 end
-Before('@sshminion') do |scenario|
+Before('@ssh_minion') do |scenario|
   scenario.skip_invoke! unless $ssh_minion
 end
 
 # do some tests only if node is of a given type
-Before('@sle15minion') do |scenario|
+Before('@sle15_minion') do |scenario|
   scenario.skip_invoke! unless $sle15_minion
 end
 
 # do some tests only if we don't use a mirror
-Before('@nomirror') do |scenario|
+Before('@no_mirror') do |scenario|
   scenario.skip_invoke! if $mirror
 end
 
