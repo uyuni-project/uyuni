@@ -3,7 +3,7 @@
 
 Feature: The Setup Wizard
 
-@nomirror
+@no_mirror
   Scenario: Set up some credentials
     Given I am on the Admin page
     When I follow "Organization Credentials" in the content area

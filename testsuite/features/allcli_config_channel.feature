@@ -49,7 +49,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-@centosminion
+@centos_minion
   Scenario: Subscribe a CentOS minion to the configuration channel
     When I am on the Systems overview page of this "ceos-minion"
     And I follow "Configuration" in the content area
@@ -60,7 +60,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-@sshminion
+@ssh_minion
   Scenario: Subscribe a SSH minion to the configuration channel
     When I am on the Systems overview page of this "ssh-minion"
     And I follow "Configuration" in the content area
@@ -94,12 +94,12 @@ Feature: Management of configuration of all types of clients in a single channel
     When I wait until file "/etc/s-mgr/config" exists on "sle-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
 
-@centosminion
+@centos_minion
   Scenario: Check that file has been created on CentOS minion
     When I wait until file "/etc/s-mgr/config" exists on "ceos-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos-minion"
 
-@sshminion
+@ssh_minion
   Scenario: Check that file has been created on SSH minion
     When I wait until file "/etc/s-mgr/config" exists on "ssh-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh-minion"
@@ -109,19 +109,19 @@ Feature: Management of configuration of all types of clients in a single channel
     And I apply highstate on "sle-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
 
-@centosminion
+@centos_minion
   Scenario: Apply highstate to override changed content on CentOS minion
     When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ceos-minion"
     And I apply highstate on "ceos-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos-minion"
 
-@sshminion
+@ssh_minion
   Scenario: Apply highstate to override changed content on SSH minion
     When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ssh-minion"
     And I apply highstate on "ssh-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh-minion"
 
-@centosminion
+@centos_minion
   Scenario: Unsubscribe CentOS minion and delete configuration files
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
@@ -134,7 +134,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Successfully unsubscribed 1 system(s)." text
     And I destroy "/etc/s-mgr" directory on "ceos-minion"
 
-@sshminion
+@ssh_minion
   Scenario: Unsubscribe SSH minion and delete configuration files
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu

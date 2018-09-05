@@ -3,7 +3,7 @@
 
 Feature: Reboot systems managed by SUSE Manager
 
-@sshminion
+@ssh_minion
   Scenario: Reboot the SSH-managed SLES minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow first "Schedule System Reboot"
@@ -40,7 +40,7 @@ Feature: Reboot systems managed by SUSE Manager
     And I run "rhn_check -vvv" on "sle-client"
     Then I wait and check that "sle-client" has rebooted
 
-@centosminion
+@centos_minion
   Scenario: Reboot the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow first "Schedule System Reboot"
@@ -49,7 +49,7 @@ Feature: Reboot systems managed by SUSE Manager
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
 
-@centosminion
+@centos_minion
   Scenario: Reboot action is not COMPLETED until CentOS minion is rebooted
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Events" in the content area

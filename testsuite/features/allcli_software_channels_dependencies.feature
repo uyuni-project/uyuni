@@ -3,7 +3,7 @@
 
 Feature: Chanel subscription with recommended/required dependencies
 
-@sle15minion
+@sle15_minion
   Scenario: Play with recommended and required child channels selection for a single system
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
@@ -21,7 +21,7 @@ Feature: Chanel subscription with recommended/required dependencies
     When I click on the "disabled" recommended toggler
     Then I should see the child channel "SLE-Module-Server-Applications15-Pool for x86_64" "selected"
 
-@sle15minion
+@sle15_minion
   Scenario: Play with recommended and required child channels selection in SSM
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page

@@ -41,7 +41,7 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language:keyboard_layout" should be "French (Canada)" on "sle-minion"
      And the pillar data for "keyboard_and_language:language" should be "French" on "sle-minion"
 
-@sshminion
+@ssh_minion
   Scenario: No other minion is affected by the formula
      Then the pillar data for "formulas" should be empty on "ssh-minion"
      And the pillar data for "timezone" should be empty on "ssh-minion"
@@ -123,7 +123,7 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language:keyboard_layout" should be "English (US)" on "sle-minion"
      And the pillar data for "keyboard_and_language:language" should be "English (US)" on "sle-minion"
 
-@sshminion
+@ssh_minion
   Scenario: No other minion is affected by the group formula
      Then the pillar data for "formulas" should be empty on "ssh-minion"
      And the pillar data for "timezone" should be empty on "ssh-minion"
