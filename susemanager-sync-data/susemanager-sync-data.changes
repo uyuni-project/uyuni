@@ -1,3 +1,6 @@
+- support SLE12 SP4 product family (bsc#1107117)
+- add CaaSP 3.0 channels (bsc#1105045)
+
 -------------------------------------------------------------------
 Thu Aug 23 09:18:39 CEST 2018 - jgonzalez@suse.com
 
