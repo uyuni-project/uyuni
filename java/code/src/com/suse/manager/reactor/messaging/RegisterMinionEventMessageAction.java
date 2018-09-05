@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -83,6 +84,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -279,6 +281,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
         Collection<String> hwAddrs = extractHwAddresses(grainsMap); // todo filter out 00::
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, hwAddrs);
+        Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
         boolean isNewMinion = minion.getId() == null;
 
         minion.setMachineId(machineId);
@@ -363,10 +366,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
                 prepareRetailMinionForSaltboot(minion, org, grains);
                 applySaltboot(minion);
+                migrateMinionFormula(minionId, originalMinionId);
                 return;
             }
 
             finishRegistration(minion, activationKey, creator, !isSaltSSH);
+            migrateMinionFormula(minionId, originalMinionId);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -383,6 +388,32 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         Map<String, String> hwInterfaces = (Map<String, String>) grains
                 .getOrDefault("hwaddr_interfaces", Collections.emptyMap());
         return hwInterfaces.values();
+    }
+
+    private void migrateMinionFormula(String minionId, Optional<String> originalMinionId) {
+        // after everything is done, if minionId has changed, we want to put the formula data
+        // to the correct location on the FS
+        originalMinionId.ifPresent(oldId -> {
+            if (!oldId.equals(minionId)) {
+                try {
+                    List<String> minionFormulas = FormulaFactory.getFormulasByMinionId(oldId);
+                    FormulaFactory.saveServerFormulas(minionId, minionFormulas);
+                    for (String minionFormula : minionFormulas) {
+                        Optional<Map<String, Object>> formulaValues =
+                                FormulaFactory.getFormulaValuesByNameAndMinionId(minionFormula, oldId);
+                        if (formulaValues.isPresent()) {
+                            // handle via Optional.get because of exception handling
+                            FormulaFactory.saveServerFormulaData(formulaValues.get(), minionId, minionFormula);
+                            FormulaFactory.deleteServerFormulaData(oldId, minionFormula);
+                        }
+                        FormulaFactory.saveServerFormulas(oldId, Collections.emptyList());
+                    }
+                }
+                catch (IOException e) {
+                    LOG.warn("Error when converting formulas from minionId " + oldId + "to minionId " + minionId);
+                }
+            }
+        });
     }
 
     /**
