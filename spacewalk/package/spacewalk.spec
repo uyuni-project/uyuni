@@ -162,7 +162,7 @@ Requires:       postgresql84-contrib
 Requires:       postgresql-contrib >= 8.4
 %endif
 Requires:       postgresql >= 9.6
-# we do not support postgresql versions > 9.6 yet
+# we do not support postgresql versions > 10.x yet
 Conflicts:      postgresql >= 11.0
 Conflicts:      postgresql-contrib >= 11.0
 
