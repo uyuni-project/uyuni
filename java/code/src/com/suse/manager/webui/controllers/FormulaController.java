@@ -118,7 +118,8 @@ public class FormulaController {
         List<String> formulas;
         switch (type) {
             case SERVER:
-                if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
+                if (!checkUserHasPermissionsOnServer(user,
+                        ServerFactory.lookupById(id))) {
                     return deniedResponse(response);
                 }
                 formulas = new LinkedList<>(
@@ -150,7 +151,7 @@ public class FormulaController {
         switch (type) {
             case SERVER:
                 map.put("system_data", FormulaFactory.
-                        getFormulaValuesByNameAndServerId(formulaName, id)
+                        getFormulaValuesByNameAndMinionId(formulaName, MinionServerFactory.getMinionId(id))
                         .orElseGet(Collections::emptyMap));
                 map.put("group_data", FormulaFactory
                         .getGroupFormulaValuesByNameAndServerId(formulaName, id)
@@ -196,7 +197,7 @@ public class FormulaController {
                     if (!checkUserHasPermissionsOnServer(user, minion.get())) {
                         return deniedResponse(response);
                     }
-                    FormulaFactory.saveServerFormulaData(formData, id, formulaName);
+                    FormulaFactory.saveServerFormulaData(formData, MinionServerFactory.getMinionId(id), formulaName);
                     SaltService.INSTANCE.refreshPillar(new MinionList(minion.get().getMinionId()));
                     break;
                 case GROUP:
@@ -260,7 +261,7 @@ public class FormulaController {
                 if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
                     return deniedResponse(response);
                 }
-                data.put("selected", FormulaFactory.getFormulasByServerId(id));
+                data.put("selected", FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(id)));
                 data.put("active", FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
@@ -301,7 +302,7 @@ public class FormulaController {
                             ServerFactory.lookupById(id))) {
                         return deniedResponse(response);
                     }
-                    FormulaFactory.saveServerFormulas(id, selectedFormulas);
+                    FormulaFactory.saveServerFormulas(MinionServerFactory.getMinionId(id), selectedFormulas);
                     break;
                 case GROUP:
                     if (!checkUserHasPermissionsOnServerGroup(user,

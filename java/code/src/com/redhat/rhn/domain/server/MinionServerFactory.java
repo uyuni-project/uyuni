@@ -213,4 +213,17 @@ public class MinionServerFactory extends HibernateFactory {
         return !serverIds.isEmpty() ?
                 ServerFactory.lookupByServerIds(serverIds, "Server.findMinionsByServerIds") : Collections.emptyList();
     }
+
+    /**
+     * Returns the minion id of a given server.
+     * @param serverId the id of the server
+     * @return the minion id
+     * @throws UnsupportedOperationException if the server is not a salt minion
+     */
+    public static String getMinionId(Long serverId) throws UnsupportedOperationException {
+        return ServerFactory.lookupById(serverId)
+                .asMinionServer()
+                .map(m -> m.getMinionId())
+                .orElseThrow(() -> new UnsupportedOperationException("Salt minion not found, id: " + serverId));
+    }
 }
