@@ -17,6 +17,9 @@ package com.redhat.rhn.frontend.xmlrpc.channel.software.test;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -33,6 +36,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -43,19 +47,31 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * ChannelSoftwareHandlerTest
@@ -65,6 +81,21 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     private ChannelSoftwareHandler handler = new ChannelSoftwareHandler();
     private ErrataHandler errataHandler = new ErrataHandler();
+    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }};
+    /**
+     * {@inheritDoc}
+     */
+    public void setUp() throws Exception {
+        super.setUp();
+
+        Context ctx = Context.getCurrentContext();
+        ctx.setLocale(Locale.getDefault());
+        ctx.setTimezone(TimeZone.getDefault());
+
+    }
 
     public void ignoredtestAddRemovePackages() throws Exception {
 
@@ -1064,5 +1095,98 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         list = handler.listAllPackages(admin, chan.getLabel(), startDate,
                 endDate);
         assertTrue(list.size() == 1);
+    }
+
+    public void testUnsubscribeChildChannels() throws Exception {
+        ChannelSoftwareHandler handler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Channel child1 = ChannelFactoryTest.createTestChannel(admin);
+        Channel child2 = ChannelFactoryTest.createTestChannel(admin);
+        Channel base = ChannelFactoryTest.createTestChannel(admin);
+        child1.setParentChannel(base);
+        child2.setParentChannel(base);
+        base.setParentChannel(null);
+
+        server.addChannel(base);
+        server.addChannel(child1);
+        server.addChannel(child2);
+
+        Integer sid = new Integer(server.getId().intValue());
+
+        Date earliest = new Date();
+        SystemHandler systemHandler = new SystemHandler();
+        long actionId = systemHandler.scheduleChangeChannels(admin, sid, base.getLabel(),
+                Arrays.asList(child1.getLabel(),child2.getLabel()), earliest);
+
+        Action action = ActionFactory.lookupById(actionId);
+        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+        assertEquals(base.getId(), sca.getDetails().getBaseChannel().getId());
+        assertEquals(2, sca.getDetails().getChannels().size());
+
+
+        //unsubscribe one child channel
+        long[] actionIds = handler.unsubscribeChannels(admin, Collections.singletonList(sid), "",
+                Arrays.asList(child2.getLabel()));
+
+        action = ActionFactory.lookupById(actionIds[0]);
+        assertTrue(action instanceof SubscribeChannelsAction);
+        sca = (SubscribeChannelsAction)action;
+        assertEquals(base.getId(), sca.getDetails().getBaseChannel().getId());
+        assertEquals(1, sca.getDetails().getChannels().size());
+    }
+
+    public void testUnsubscribeBaseChannel() throws Exception {
+        ChannelSoftwareHandler handler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Channel child1 = ChannelFactoryTest.createTestChannel(admin);
+        Channel child2 = ChannelFactoryTest.createTestChannel(admin);
+        Channel base = ChannelFactoryTest.createTestChannel(admin);
+        child1.setParentChannel(base);
+        child2.setParentChannel(base);
+        base.setParentChannel(null);
+
+        server.addChannel(base);
+        server.addChannel(child1);
+        server.addChannel(child2);
+
+        Integer sid = new Integer(server.getId().intValue());
+
+        Date earliest = new Date();
+        SystemHandler systemHandler = new SystemHandler();
+        long actionId = systemHandler.scheduleChangeChannels(admin, sid, base.getLabel(),
+                Arrays.asList(child1.getLabel(),child2.getLabel()), earliest);
+        Action action = ActionFactory.lookupById(actionId);
+        assertTrue(action instanceof SubscribeChannelsAction);
+        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+        assertEquals(base.getId(), sca.getDetails().getBaseChannel().getId());
+        assertEquals(2, sca.getDetails().getChannels().size());
+
+        //unsubscribe base channel (all the child channels will be removed too)
+        long [] actionIds= handler.unsubscribeChannels(admin, Collections.singletonList(sid), base.getLabel(),
+                Collections.emptyList());
+
+        action = ActionFactory.lookupById(actionIds[0]);
+        assertTrue(action instanceof SubscribeChannelsAction);
+        sca = (SubscribeChannelsAction)action;
+        assertNull(sca.getDetails().getBaseChannel());
+        assertTrue(sca.getDetails().getChannels().isEmpty());
+        assertEquals(0, sca.getDetails().getChannels().size());
+    }
+
+    private ChannelSoftwareHandler getMockedHandler() throws Exception {
+        TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
+        ChannelSoftwareHandler systemHandler = new ChannelSoftwareHandler(taskomaticMock);
+
+        MOCK_CONTEXT.checking(new Expectations() {{
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+            allowing(taskomaticMock)
+                    .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
+        }});
+
+        return systemHandler;
     }
 }
