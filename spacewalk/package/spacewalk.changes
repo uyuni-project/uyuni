@@ -1,3 +1,5 @@
+- require postgresql 9.6 as we only support this version for
+  migration to version 10. Take into account new versioning scheme
 - Change dependencies from osa-dispatcher to mgr-osa-dispatcher and
   from rhnpush to mgr-push (bsc#1104034)
 
