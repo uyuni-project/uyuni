@@ -247,6 +247,7 @@ public class ProductsController {
                     channelId -> channelId,
                     channelId -> SUSEProductFactory.findAllMandatoryChannels(
                             ChannelFactory.lookupById(channelId).getLabel(), archByChannelLabel::get)
+                                .filter(productChannel -> productChannel.getChannel() != null)
                                 .map(productChannel -> productChannel.getChannel().getId())
                                 .collect(Collectors.toList())
             ));
