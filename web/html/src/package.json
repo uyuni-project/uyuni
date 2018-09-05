@@ -9,6 +9,7 @@
   "scripts": {
     "validate": "node build/check-undeclared-vendors",
     "build": "node build",
+    "postinstall": "yarn build",
     "dev": "webpack --config build/webpack.config.js --mode development && yarn run validate",
     "watch": "yarn dev && yarn validate && webpack --mode development --watch && yarn run validate"
   }

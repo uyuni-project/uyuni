@@ -9,6 +9,7 @@ const {getWebpackConfig} = require("./webpack.config.vendors");
 module.exports = [
   getWebpackConfig({generateLicenses: true}),
   {
+    // entry: ["@babel/polyfill", pages],
     entry: pages,
     dependencies: ["vendors"],
     output: {
