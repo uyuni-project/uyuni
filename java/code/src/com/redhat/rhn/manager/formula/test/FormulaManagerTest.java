@@ -14,21 +14,14 @@
  */
 package com.redhat.rhn.manager.formula.test;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.InvalidFormulaException;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
