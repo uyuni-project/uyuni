@@ -8,7 +8,7 @@
 
 Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
 
-@centosminion
+@centos_minion
   Scenario: Bootstrap a CentOS minion
      Given I am authorized
      When I go to the bootstrapping page
@@ -26,7 +26,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
      And I wait until onboarding is completed for "ceos-minion"
 
 @proxy
-@centosminion
+@centos_minion
   Scenario: Check connection from CentOS minion to proxy
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Details" in the content area
@@ -34,18 +34,18 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see "proxy" hostname
 
 @proxy
-@centosminion
+@centos_minion
   Scenario: Check registration on proxy of CentOS minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos-minion" hostname
 
-@centosminion
+@centos_minion
   Scenario: Detect latest Salt changes on the CentOS minion
     When I query latest Salt changes on "ceos-minion"
 
-@centosminion
+@centos_minion
   Scenario: Schedule an OpenSCAP audit job for the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Audit" in the content area
@@ -56,7 +56,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait until event "OpenSCAP xccdf scanning" is completed
 
-@centosminion
+@centos_minion
   Scenario: Run a remote command on the CentOS minion
     Given I am authorized as "testing" with password "testing"
     When I follow "Salt"
@@ -72,7 +72,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see a "rhel fedora" text
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
 
-@centosminion
+@centos_minion
   Scenario: Check the results of the OpenSCAP scan on the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Audit" in the content area

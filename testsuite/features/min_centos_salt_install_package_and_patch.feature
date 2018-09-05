@@ -3,7 +3,7 @@
 
 Feature: Install a patch on the CentOS minion via Salt through the UI
 
-@centosminion
+@centos_minion
   Scenario: Pre-requisite: install virgo-dummy-1.0 packages
     Given I am on the Systems overview page of this "ceos-minion"
     And I run "sed -i 's/enabled=.*/enabled=1/' /etc/yum.repos.d/Devel_Galaxy_BuildRepo.repo" on "ceos-minion"
@@ -21,7 +21,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-@centosminion
+@centos_minion
   Scenario: Install a patch on the minion
     Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Software" in the content area
@@ -33,7 +33,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     Then I should see a "1 patch update has been scheduled for" text
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "ceos-minion"
 
-@centosminion
+@centos_minion
   Scenario: Install a package on the minion
     Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Software" in the content area
@@ -45,7 +45,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
     Then "andromeda-dummy-2.0-1.1" should be installed on "ceos-minion"
 
-@centosminion
+@centos_minion
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos minion
     Given I am authorized as "admin" with password "admin"
     And I run "yum erase -y andromeda-dummy" on "ceos-minion" without error control

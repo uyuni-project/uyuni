@@ -278,11 +278,11 @@ end
 
 # salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
-  $server.run("zypper --non-interactive install -y #{package}-formula")
+  $server.run("zypper --non-interactive install --force #{package}-formula")
 end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
-  $server.run("zypper --non-interactive remove -y #{package}-formula")
+  $server.run("zypper --non-interactive remove #{package}-formula")
 end
 
 When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
@@ -309,15 +309,10 @@ Then(/^the "([^"]*)" formula should be ([^"]*)$/) do |formula, action|
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
-  boxid = case box
-          when 'timezone name'
-            "timezone\#name"
-          when 'language'
-            "keyboard_and_language\#language"
-          when 'keyboard layout'
-            "keyboard_and_language\#keyboard_layout"
-          end
-  select(value, from: boxid)
+  boxids = { 'timezone name'   => 'timezone#name',
+             'language'        => 'keyboard_and_language#language',
+             'keyboard layout' => 'keyboard_and_language#keyboard_layout' }
+  select(value, from: boxids[box])
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
