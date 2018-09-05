@@ -22,7 +22,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
 from spacewalk.server import rhnSQL
-from socket import gethostname
+from socket import getfqdn
 
 class RemoteApi:
 
@@ -41,6 +41,7 @@ class RemoteApi:
         except xmlrpclib.Fault, e:
             raise UserError(e.faultString)
 
+
     def auth_check(self):
         """ makes sure that more than an hour hasn't passed since we
              logged in and will relogin if it has
@@ -49,9 +50,12 @@ class RemoteApi:
                                   - self.auth_time).seconds > 60 * 15:  # 15 minutes
             self.__login()
 
+
     def __login(self):
         self.auth_token = self.client.auth.login(self.username, self.password)
         self.auth_time = datetime.datetime.now()
+
+
     def list_channel_labels(self):
         self.auth_check()
         key = "chan_labels"
@@ -88,7 +92,7 @@ def __serverCheck(labels, unsubscribe, base_channel, username, password):
 
     if unsubscribe:
         server_ids = map(lambda s: s['id'], server_list)
-        xmlrpc = RemoteApi("https://" + gethostname() + "/rpc/api", username, password)
+        xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
         xmlrpc.unsubscribe_channels(server_ids, base_channel, labels)
         return __unsubscribeServers(labels)
 
