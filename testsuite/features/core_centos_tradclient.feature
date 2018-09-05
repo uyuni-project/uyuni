@@ -10,7 +10,7 @@
 
 Feature: Be able to register a CentOS 7 traditional client and do some basic operations on it
 
-@centosminion
+@centos_minion
   Scenario: Prepare a CentOS 7 traditional client
      Given I am authorized
      When I run "sed s/enabled=.*/enabled=1/g /etc/yum.repos.d/Devel_Galaxy_Manager_Head_RES-Manager-Tools-7-x86_64.repo -i" on "ceos-traditional-client" without error control
@@ -23,7 +23,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
      And  I run "rhn-actions-control --enable-all" on "ceos-traditional-client"
 
 @proxy
-@centosminion
+@centos_minion
   Scenario: Check connection from CentOS 7 traditional to proxy
     Given I am on the Systems overview page of this "ceos-traditional-client"
     When I follow "Details" in the content area
@@ -31,14 +31,14 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see "proxy" hostname
 
 @proxy
-@centosminion
+@centos_minion
   Scenario: Check registration on proxy of traditional CentOS 7
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos-traditional-client" hostname
 
-@centosminion
+@centos_minion
   Scenario: Schedule an OpenSCAP audit job for the CentOS traditional client
     Given I am on the Systems overview page of this "ceos-traditional-client"
     When I follow "Audit" in the content area
@@ -49,7 +49,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I run "rhn_check -vvv" on "ceos-traditional-client"
     Then I should see a "XCCDF scan has been scheduled" text
 
-@centosminion
+@centos_minion
   Scenario: Check the results of the OpenSCAP scan on the CentOS traditional client
     Given I am on the Systems overview page of this "ceos-traditional-client"
     When I follow "Audit" in the content area
@@ -60,7 +60,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I should see a "pass" text or "notapplicable" text
     And I should see a "service_" link
 
-@centosminion
+@centos_minion
   Scenario: Schedule some actions on the CentOS 7 traditional client
      Given I am authorized as "admin" with password "admin"
      When I authenticate to XML-RPC
@@ -69,7 +69,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
      And I reboot "ceos-traditional-client" through XML-RPC
      And I unauthenticate from XML-RPC
 
-@centosminion
+@centos_minion
   Scenario: Delete the CentOS 7 traditional client
     Given I am on the Systems overview page of this "ceos-traditional-client"
     When I follow "Delete System"

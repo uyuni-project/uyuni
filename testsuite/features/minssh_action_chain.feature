@@ -5,7 +5,7 @@
 
 Feature: Salt SSH action chain
 
-@sshminion
+@ssh_minion
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
     Given I am authorized as "admin" with password "admin"
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "ssh-minion"
@@ -15,7 +15,7 @@ Feature: Salt SSH action chain
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "ssh-minion"
     And I run "zypper -n ref" on "ssh-minion"
 
-@sshminion
+@ssh_minion
   Scenario: Pre-requisite: refresh package list
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
@@ -23,7 +23,7 @@ Feature: Salt SSH action chain
     And I follow "Events" in the content area
     And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
 
-@sshminion
+@ssh_minion
   Scenario: Pre-requisite: wait until downgrade is finished
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
@@ -31,7 +31,7 @@ Feature: Salt SSH action chain
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
 
-@sshminion
+@ssh_minion
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on SSH minion
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
@@ -42,13 +42,13 @@ Feature: Salt SSH action chain
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-@sshminion
+@ssh_minion
   Scenario: Pre-requisite: remove all action chains before testing on SSH minion
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
 
-@sshminion
+@ssh_minion
   Scenario: Add a patch installation to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
@@ -59,7 +59,7 @@ Feature: Salt SSH action chain
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-@sshminion
+@ssh_minion
   Scenario: Add a package removal to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
@@ -72,7 +72,7 @@ Feature: Salt SSH action chain
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-@sshminion
+@ssh_minion
   Scenario: Add a package installation to an action chain on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
@@ -83,7 +83,7 @@ Feature: Salt SSH action chain
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-@sshminion
+@ssh_minion
   Scenario: Create a configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
@@ -96,7 +96,7 @@ Feature: Salt SSH action chain
     And I click on "Create Config Channel"
     Then I should see a "Action Chain Channel" text
 
-@sshminion
+@ssh_minion
   Scenario: Add a configuration file to configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
@@ -110,7 +110,7 @@ Feature: Salt SSH action chain
     Then I should see a "Revision 1 of /etc/action-chain.cnf from channel Action Chain Channel" text
     And I should see a "Update Configuration File" button
 
-@sshminion
+@ssh_minion
   Scenario: Subscribe system to configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
@@ -125,7 +125,7 @@ Feature: Salt SSH action chain
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-@sshminion
+@ssh_minion
   Scenario: Add a configuration file deployment to the action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
@@ -140,14 +140,14 @@ Feature: Salt SSH action chain
     And I click on "Deploy Files to Selected Systems"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-@sshminion
+@ssh_minion
   Scenario: Add apply highstate to action chain on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "States" in the content area
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
-@sshminion
+@ssh_minion
   Scenario: Add a reboot action to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow first "Schedule System Reboot"
@@ -155,7 +155,7 @@ Feature: Salt SSH action chain
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-@sshminion
+@ssh_minion
   Scenario: Add a remote command to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Remote Command"
@@ -168,7 +168,7 @@ Feature: Salt SSH action chain
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-@sshminion
+@ssh_minion
   Scenario: Verify the action chain list on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Schedule"
@@ -182,14 +182,14 @@ Feature: Salt SSH action chain
     And I should see a "6. Reboot 1 system" text
     And I should see a "7. Run a remote command on 1 system" text
 
-@sshminion
+@ssh_minion
   Scenario: Check that a different user cannot see the action chain for SSH minion
     Given I am authorized as "testing" with password "testing"
     When I follow "Schedule"
     And I follow "Action Chains"
     Then I should not see a "new action chain" link
 
-@sshminion
+@ssh_minion
   Scenario: Execute the action chain from the web UI on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Schedule"
@@ -198,12 +198,12 @@ Feature: Salt SSH action chain
     Then I click on "Save and Schedule"
     And I should see a "Action Chain new action chain has been scheduled for execution." text
 
-@sshminion
+@ssh_minion
   Scenario: Verify that the action chain was executed successfully
     When I wait for "virgo-dummy" to be installed on this "ssh-minion"
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "ssh-minion"
 
-@sshminion
+@ssh_minion
   Scenario: Add a remote command to the new action chain on SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Remote Command"
@@ -216,7 +216,7 @@ Feature: Salt SSH action chain
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-@sshminion
+@ssh_minion
   Scenario: Delete the action chain for SSH minion
     Given I am authorized as "admin" with password "admin"
     When I follow "Schedule"
@@ -225,7 +225,7 @@ Feature: Salt SSH action chain
     And I follow "delete action chain" in the content area
     Then I click on "Delete"
 
-@sshminion
+@ssh_minion
   Scenario: Cleanup: roll back action chain effects
     Given I am on the Systems overview page of this "ssh-minion"
     When I run "rm /tmp/action_chain_done" on "ssh-minion" without error control
@@ -249,7 +249,7 @@ Feature: Salt SSH action chain
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-@sshminion
+@ssh_minion
   Scenario: Add operations to the action chain via XML-RPC for SSH minions
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     And I want to operate on this "ssh-minion"
@@ -264,7 +264,7 @@ Feature: Salt SSH action chain
     Then the current action chain should be empty
     And I delete the action chain
 
-@sshminion
+@ssh_minion
   Scenario: Run an action chain via XML-RPC on SSH minion
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     And I want to operate on this "ssh-minion"
@@ -280,7 +280,7 @@ Feature: Salt SSH action chain
     Then file "/tmp/action_chain.log" should contain "123" on "ssh-minion"
     And there should be no more any scheduled actions
 
-@sshminion
+@ssh_minion
   Scenario: Cleanup: remove Salt client from configuration channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
@@ -292,7 +292,7 @@ Feature: Salt SSH action chain
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
-@sshminion
+@ssh_minion
   Scenario: Cleanup: remove configuration channel for SSH minion
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
@@ -302,14 +302,14 @@ Feature: Salt SSH action chain
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
-@sshminion
+@ssh_minion
   Scenario: Cleanup: remove packages and repository used in action chain for SSH minion
     When I run "zypper -n rm andromeda-dummy" on "ssh-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "ssh-minion" without error control
     And I run "zypper -n rm milkyway-dummy" on "ssh-minion" without error control
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "ssh-minion" without error control
 
-@sshminion
+@ssh_minion
   Scenario: Cleanup: remove temporary files for testing action chains on SSH minion
     When I run "rm -f /tmp/action_chain.log" on "ssh-minion" without error control
     And I run "rm -f /tmp/action_chain_done" on "ssh-minion" without error control

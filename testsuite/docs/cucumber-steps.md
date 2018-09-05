@@ -393,6 +393,8 @@ The check box can be identified by name, id or label text.
   When I shutdown the spacewalk service
   When I restart the spacewalk service
   When I wait until "salt-minion" service is up and running on "ceos-minion"
+  Then service "bind" is enabled on "proxy"
+  Then service "dhcpd" is running on "proxy"
 ```
 
 * File removal
