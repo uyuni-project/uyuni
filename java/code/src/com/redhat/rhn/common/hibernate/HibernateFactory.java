@@ -30,6 +30,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -741,5 +742,25 @@ public abstract class HibernateFactory {
     protected static void executeCallableMode(String name, String mode, Map params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
         m.execute(params, new HashMap());
+    }
+
+    /**
+     * Makes sure the specified entity, presumably loaded via Hibernate's {@link Session#get(Class, Serializable)},
+     * is not a proxy.
+     *
+     * Impelmentation is copied from Hibernate 5.2.10 and this method should be removed after that release.
+     *
+     * @param entity an entity
+     * @param <T> type of entity
+     * @return the entity and not a proxy
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T unproxy(T entity) {
+        Hibernate.initialize(entity);
+        if (entity instanceof HibernateProxy) {
+            entity = (T) ((HibernateProxy) entity).getHibernateLazyInitializer()
+                    .getImplementation();
+        }
+        return entity;
     }
 }

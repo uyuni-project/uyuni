@@ -117,8 +117,6 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -469,7 +467,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
-        Action action = unproxy(serverAction.getParentAction());
+        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
 
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
@@ -655,15 +653,6 @@ public class SaltUtils {
      */
     public Path getScriptPath(Long scriptActionId) {
         return scriptsDir.resolve("script_" + scriptActionId + ".sh");
-    }
-
-    private Action unproxy(Action entity) {
-        Hibernate.initialize(entity);
-        if (entity instanceof HibernateProxy) {
-            entity = (Action) ((HibernateProxy) entity).getHibernateLazyInitializer()
-                    .getImplementation();
-        }
-        return entity;
     }
 
     /**
