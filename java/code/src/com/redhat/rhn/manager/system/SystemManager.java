@@ -391,8 +391,8 @@ public class SystemManager extends BaseManager {
      */
     public static MinionServer createSystemProfile(User creator, String systemName, String hwAddress) {
         if (NetworkInterfaceFactory.lookupNetworkInterfacesByHwAddress(hwAddress).findAny().isPresent()) {
-            throw new IllegalStateException("System(s) with network interface with HW address '" + hwAddress
-                    + "' already exists.");
+            throw new IllegalStateException("System(s) with network interface with HW address '" + hwAddress +
+                    "' already exists.");
         }
 
         MinionServer server = new MinionServer();
