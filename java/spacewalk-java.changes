@@ -1,3 +1,5 @@
+- Fix an error in the system software channels UI due to SUSE product channels missing a
+  corresponding synced channel (bsc#1105886)
 - Fix 'Compare Config Files' task hanging (bsc#1103218)
 - Reschedule taskomatic jobs if task threads limit reached (bsc#1096511)
 - XMLRPC API for state channels
