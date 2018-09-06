@@ -7,7 +7,7 @@
 - Generate OS image pillars via Java
 - Logic constraint: results must be ordered and grouped by systemId first (bsc#1101033)
 - Fix retrieving salt-ssh pub key for proxy setup when key already exists
-  (bsc#105062)
+  (bsc#1105062)
 - Store activation key in the Kiwi built image
 - Do not wrap output if stderr is not present (bsc#1105074)
 - Store image size in image pillar as integer value
