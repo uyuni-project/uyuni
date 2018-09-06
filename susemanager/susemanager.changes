@@ -1,3 +1,4 @@
+- support postgresql migration from 9.6 to 10.x
 - add support for Python 3
 - do not fail if postgresql user has no interactive login shell
 - add new dependency python-setuptools to bootstrap packages (bsc#1106026)
