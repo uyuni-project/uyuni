@@ -1,7 +1,10 @@
 const shell = require('shelljs');
 const { fillSpecFile } = require("./build/fill-spec-file");
 
-shell.exec("webpack --config build/webpack.config.js --mode production");
+const { code } = shell.exec("webpack --config build/webpack.config.js --mode production");
+if (code !== 0) {
+  shell.exit(code);
+}
 
 fillSpecFile()
   .then(() => {
@@ -12,5 +15,5 @@ fillSpecFile()
       throw new Error("It seems the most recent spacewalk-web.spec file isn't on git, run build again and commit the new generated susemanager-web-libs.spec file ");
     }
 
-    shell.exec("node build/check-undeclared-vendors.js");
+    //shell.exec("node build/check-undeclared-vendors.js");
   });
