@@ -19,7 +19,7 @@
         <property name="modified" column="modified" type="timestamp"/>
         <many-to-one name="credentials" column="credentials_id" class="com.redhat.rhn.domain.credentials.Credentials"/>
 
-        <set name="products" lazy="true" table="suseSCCSubscriptionProduct" cascade="all">
+        <set name="products" lazy="true" table="suseSCCSubscriptionProduct" cascade="save-update">
             <key column="subscription_id"/>
             <many-to-many class="com.redhat.rhn.domain.product.SUSEProduct" column="product_id"/>
         </set>
