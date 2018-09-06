@@ -250,7 +250,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             Collection<String> hwAddrs = extractHwAddresses(grainsMap);
             minionServer = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, hwAddrs);
             originalMinionId = Optional.ofNullable(minionServer.getMinionId());
-            boolean isNewMinion = minionServer.getId() == null;
 
             MinionServer server = minionServer;
 
@@ -336,7 +335,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             activationKey.ifPresent(ak -> applyActivationKey(ak, server, grains));
 
             // Saltboot treatment - prepare and apply saltboot
-            if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
+            if (grains.getOptionalAsBoolean("initrd").orElse(false)) {
                 LOG.info("\"initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
                 prepareRetailMinionForSaltboot(minionServer, org, grains);
                 applySaltboot(minionServer);
