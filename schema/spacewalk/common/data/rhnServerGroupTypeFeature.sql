@@ -201,6 +201,11 @@ values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_errata_updates
 
 insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
                                        created, modified)
+values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_auto_errata_updates'),
+        current_timestamp,current_timestamp);
+
+insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
+                                       created, modified)
 values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_daily_summary'),
         current_timestamp,current_timestamp);
 

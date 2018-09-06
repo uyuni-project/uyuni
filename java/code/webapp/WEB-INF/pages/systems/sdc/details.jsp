@@ -82,7 +82,7 @@
                         </div>
                     </div>
 
-                    <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
+                    <rhn:require acl="system_feature(ftr_system_preferences)">
                         <div class="form-group">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="sdc.details.edit.notifications"/>
@@ -112,7 +112,9 @@
                                 </c:choose>
                             </div>
                         </div>
+                    </rhn:require>
 
+                    <rhn:require acl="system_has_management_entitlement()">
                         <div class="form-group">
                             <label class="col-lg-3 control-label" for="contact-method">
                                 <bean:message key="server.contact-method.label"/>
@@ -130,7 +132,9 @@
                                 </c:choose>
                             </div>
                         </div>
+                    </rhn:require>
 
+                    <rhn:require acl="system_feature(ftr_auto_errata_updates)">
                         <div class="form-group">
                             <label class="col-lg-3 control-label" for="autoerrataupdate">
                                 <bean:message key="sdc.details.edit.autoerrataupdate"/>
