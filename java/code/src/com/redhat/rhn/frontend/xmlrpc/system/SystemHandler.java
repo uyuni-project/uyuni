@@ -5943,7 +5943,12 @@ public class SystemHandler extends BaseHandler {
             throw new InvalidParameterException("The data does not contain required 'hwAddress' field.");
         }
 
-        SystemManager.createSystemProfile(loggedInUser, systemName, hwAddress);
+        try {
+            SystemManager.createSystemProfile(loggedInUser, systemName, hwAddress);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            throw new InvalidParameterException("Can't create system", e);
+        }
 
         return 1;
     }

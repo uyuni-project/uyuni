@@ -30,4 +30,13 @@ public class InvalidParameterException extends FaultException {
     public InvalidParameterException(String messageIn) {
         super(1213, "invalidParameter", messageIn);
     }
+
+    /**
+     * Constructor
+     * @param messageIn the message
+     * @param causeIn the cause
+     */
+    public InvalidParameterException(String messageIn, Throwable causeIn) {
+        super(1213, "invalidParameter", messageIn, causeIn);
+    }
 }

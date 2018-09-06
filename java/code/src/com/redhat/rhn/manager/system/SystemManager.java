@@ -387,6 +387,8 @@ public class SystemManager extends BaseManager {
      * @param creator the creator user
      * @param systemName the system name
      * @param hwAddress the hardware address
+     * @throws java.lang.IllegalStateException when a system with given hardware address already exists
+     * @throws java.lang.IllegalArgumentException when the format of the hardware address is invalid
      * @return the created system
      */
     public static MinionServer createSystemProfile(User creator, String systemName, String hwAddress) {
