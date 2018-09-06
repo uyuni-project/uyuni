@@ -1,3 +1,5 @@
+- Pair a new starting minion with empty profile based on its HW address (MAC)
+- Allow creating empty minion profiles via XMLRPC, allow assigning and editing formula for them
 - Added link from virtualization tab to Scheduled > Pending Actions (bsc#1037389)
 
 -------------------------------------------------------------------
