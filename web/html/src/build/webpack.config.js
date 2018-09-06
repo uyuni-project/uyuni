@@ -40,7 +40,27 @@ module.exports = (env, argv) => {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader"
+            loader: "babel-loader",
+            options: {
+              babelrc: false,
+              presets: [
+                ["@babel/preset-env", { "modules": false }],
+                "@babel/preset-react",
+                "@babel/preset-flow"
+              ],
+              plugins: ["@babel/plugin-proposal-class-properties"]
+            }
+          }
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "eslint-loader",
+            options: {
+//                      emitError: true,
+              failOnError: true
+            }
           }
         }
       ]

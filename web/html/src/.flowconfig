@@ -12,3 +12,4 @@
 [lints]
 
 [options]
+include_warnings=true
