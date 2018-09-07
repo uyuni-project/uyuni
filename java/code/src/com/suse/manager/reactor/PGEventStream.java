@@ -36,6 +36,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
@@ -76,12 +78,36 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             stmt.execute("LISTEN suseSaltEvent");
             stmt.close();
 
+            startConnectionWatchdog();
+
             LOG.debug("Listening succeeded, making sure there is no event left in queue...");
             notification(0, null, null);
         }
         catch (SQLException e) {
             throw new SaltException(e);
         }
+    }
+
+    /**
+     * Checks every 5s that the connection is alive. If not, notifies all listeners that we are shutting down.
+     *
+     * It is up to SaltReactor to create a new instance of this class and restart from scratch.
+     */
+    private void startConnectionWatchdog() {
+        new Timer("salt-event-connection-watchdog").schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    try (Statement s = connection.createStatement()) {
+                        s.execute("SELECT 'salt-event-connection-watchdog';");
+                    }
+                }
+                catch (SQLException e) {
+                    cancel();
+                    clearListeners(0, "Postgres notification connection was lost");
+                }
+            }
+        }, 0, 5_000);
     }
 
     @Override
