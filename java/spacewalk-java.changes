@@ -1,3 +1,4 @@
+- fix mgr-sync refresh when subscription was removed (bsc#1105720)
 - Fix an error in the system software channels UI due to SUSE product channels missing a
   corresponding synced channel (bsc#1105886)
 - XMLRPC API for state channels
