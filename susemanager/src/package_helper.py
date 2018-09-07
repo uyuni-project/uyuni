@@ -10,6 +10,8 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
+# pylint: disable=invalid-name
+
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import CFG
 import os

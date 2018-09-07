@@ -21,9 +21,9 @@ import os
 import signal
 
 try:
-   input = raw_input
+    input = raw_input  # pylint: disable=redefined-builtin,invalid-name
 except NameError:
-   pass
+    pass
 
 def cli_ask(msg, password=False, validator=None):
     """
@@ -59,7 +59,7 @@ class TimeoutError(Exception):
 
 def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
     def decorator(func):
-        def _handle_timeout(signum, frame):
+        def _handle_timeout(signum, frame):  # pylint: disable=unused-argument
             raise TimeoutError(error_message)
 
         def wrapper(*args, **kwargs):

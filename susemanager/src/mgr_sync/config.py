@@ -115,8 +115,9 @@ class Config(object):
     def token(self, value):  # pylint: disable=E0102
         self._config[Config.TOKEN] = value
 
+    @staticmethod
     @property
-    def dotfile(self):
+    def dotfile():
         return Config.DOTFILE
 
     @property

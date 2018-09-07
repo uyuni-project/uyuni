@@ -33,7 +33,9 @@ TASKOMATIC_XMLRPC_URL = 'http://localhost:2829/RPC2'
 
 DEFAULT_LOG_LOCATION = "/var/log/rhn/mgr-sync.log"
 
-class MgrSync(object):
+# pylint: disable=line-too-long,too-many-branches,too-many-locals,too-many-arguments,invalid-name,attribute-defined-outside-init,duplicate-code
+
+class MgrSync(object):  # pylint: disable=too-few-public-methods
     """
     App, which utilizes the XML-RPC API.
     """
@@ -41,8 +43,8 @@ class MgrSync(object):
     def __init__(self):
         self.config = Config()
         url = "http://{0}:{1}{2}".format(self.config.host,
-                                  self.config.port,
-                                  self.config.uri)
+                                         self.config.port,
+                                         self.config.uri)
         self.conn = xmlrpc_client.ServerProxy(url)
         self.auth = Authenticator(connection=self.conn,
                                   user=self.config.user,
@@ -161,7 +163,7 @@ class MgrSync(object):
     #                         #
     ###########################
 
-    def _list_channels(self, expand, filter, no_optionals,
+    def _list_channels(self, expand, filter, no_optionals,  # pylint: disable=redefined-builtin
                        compact=False, show_interactive_numbers=False):
         """
         List channels.
@@ -273,7 +275,7 @@ class MgrSync(object):
                         parent = current_channels[match.parent]
                         if parent.status == Channel.Status.UNAVAILABLE:
                             self.log.error("Error, '{0}' depends on channel '{1}' which is not available".format(
-                                    channel, parent.label))
+                                channel, parent.label))
                             self.log.error("'{0}' has not been added".format(channel))
                             sys.stderr.write(
                                 "Error, '{0}' depends on channel '{1}' which is not available\n".format(
@@ -349,7 +351,7 @@ class MgrSync(object):
             expand=False, filter=None, compact=False,
             no_optionals=no_optionals, show_interactive_numbers=True)
 
-        validator = lambda i: re.search("\d+", i) and \
+        validator = lambda i: re.search(r"\d+", i) and \
             int(i) in range(1, len(channels)+1)
         choice = cli_ask(
             msg=("Enter channel number (1-{0})".format(len(channels))),
@@ -371,7 +373,7 @@ class MgrSync(object):
             self._execute_xmlrpc_method(self.conn.sync.content,
                                         "listProducts", self.auth.token()), self.log)
 
-    def _list_products(self, filter, expand=False,
+    def _list_products(self, filter, expand=False,  # pylint: disable=redefined-builtin
                        show_interactive_numbers=False):
         """
         List products
@@ -437,7 +439,8 @@ class MgrSync(object):
         self.log.info("Product successfully added")
         print("Product successfully added")
 
-    def _find_channels_for_product(self, product, no_recommends=False):
+    @staticmethod
+    def _find_channels_for_product(product, no_recommends=False):
         ret = []
         if not product:
             return ret
@@ -459,7 +462,7 @@ class MgrSync(object):
 
         num_prod = interactive_data['num_prod']
         if num_prod:
-            validator = lambda i: re.search("\d+", i) and \
+            validator = lambda i: re.search(r"\d+", i) and \
                 int(i) in range(1, len(list(num_prod.keys())) + 1)
             choice = cli_ask(
                 msg=("Enter product number (1-{0})".format(
@@ -472,7 +475,7 @@ class MgrSync(object):
             return num_prod[int(choice)]
         else:
             self.log.info("All the available products have already been "
-                      "installed, nothing to do")
+                          "installed, nothing to do")
             print("All the available products have already been installed, "
                   "nothing to do")
             return None
@@ -486,7 +489,7 @@ class MgrSync(object):
     def _fetch_credentials(self):
         """ Returns the list of credentials as reported by the remote server """
         return self._execute_xmlrpc_method(self.conn.sync.content,
-                                    "listCredentials", self.auth.token())
+                                           "listCredentials", self.auth.token())
 
     def _list_credentials(self, show_interactive_numbers=False):
         """
@@ -498,7 +501,7 @@ class MgrSync(object):
         if credentials:
             print("Credentials:")
             for credential in credentials:
-                msg=credential['user']
+                msg = credential['user']
                 self.log.info(credential['user'])
                 if show_interactive_numbers:
                     interactive_number += 1
@@ -520,7 +523,7 @@ class MgrSync(object):
             pw = cli_ask(
                 msg=("Password to add"),
                 password=True)
-            if not pw == cli_ask(msg=("Confirm password"),password=True):
+            if not pw == cli_ask(msg=("Confirm password"), password=True):
                 self.log.error("Passwords do not match")
                 print("Passwords do not match")
                 self.exit_with_error = True
@@ -569,8 +572,8 @@ class MgrSync(object):
                                             self.auth.token(),
                                             user)
 
-                self.log.info("Successfully deleted credentials: {0}".format( user))
-                print("Successfully deleted credentials: {0}".format( user))
+                self.log.info("Successfully deleted credentials: {0}".format(user))
+                print("Successfully deleted credentials: {0}".format(user))
             else:
                 self.log.error("Credentials not found in database: {0}".format(user))
                 print("Credentials not found in database: {0}".format(user))
@@ -581,15 +584,14 @@ class MgrSync(object):
         Show saved credentials prefixed with a number, read the user input
         and return the chosen credential.
         """
-        credentials = [];
         saved_credentials = self._fetch_credentials()
-        validator = lambda i: re.search("\d+", i) and \
+        validator = lambda i: re.search(r"\d+", i) and \
             int(i) in range(1, len(saved_credentials)+1)
 
-        self._list_credentials(True);
+        self._list_credentials(True)
         number = cli_ask(
             msg=("Enter credentials number (1-{0})".format(len(saved_credentials))),
-                 validator=validator)
+            validator=validator)
 
         self.log.info("Selecting credentials '{0}' from choice '{1}'".format(
             saved_credentials[int(number)-1]['user'], number))
@@ -646,7 +648,7 @@ class MgrSync(object):
                 self.log.info("Refreshing {0} succeeded".format(operation.rstrip()))
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-except
                 self.log.error("Refreshing {0} failed".format(operation.rstrip()))
                 self.log.error("Error: {0}".format(ex))
                 sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
@@ -678,13 +680,13 @@ class MgrSync(object):
         return True
 
     def _schedule_taskomatic_refresh(self, enable_reposync):
-         client = xmlrpc_client.Server(TASKOMATIC_XMLRPC_URL)
-         params = {}
-         params['noRepoSync'] = not enable_reposync
+        client = xmlrpc_client.Server(TASKOMATIC_XMLRPC_URL)
+        params = {}
+        params['noRepoSync'] = not enable_reposync
 
-         self.log.debug("Calling Taskomatic refresh with '{0}'".format(
-             params))
-         client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
+        self.log.debug("Calling Taskomatic refresh with '{0}'".format(
+            params))
+        client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
 
     def _execute_xmlrpc_method(self, endpoint, method, auth_token, *params, **opts):
         """
@@ -714,7 +716,8 @@ class MgrSync(object):
                 self.log.error("Error: {0}".format(ex))
                 raise ex
 
-    def _check_session_fail(self, exception):
+    @staticmethod
+    def _check_session_fail(exception):
         """
         Check session failure.
         """
@@ -730,4 +733,3 @@ class MgrSync(object):
                 return True
 
         return False
-
