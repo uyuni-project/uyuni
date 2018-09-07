@@ -57,6 +57,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -76,6 +77,82 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
+
+    public void testSubscriptionDeleteCaching() throws Exception {
+        File upgradePathsXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
+        int productId = 12345;
+        assertNull(SUSEProductFactory.lookupByProductId(productId));
+        String name = TestUtils.randomString();
+        String identifier = TestUtils.randomString();
+        String version = TestUtils.randomString();
+        String releaseType = TestUtils.randomString();
+        String friendlyName = TestUtils.randomString();
+        String productClass = TestUtils.randomString();
+
+        // Setup a product as it comes from SCC
+        SCCProduct p = new SCCProduct();
+        p.setId(productId);
+        p.setName(name);
+        p.setIdentifier(identifier);
+        p.setVersion(version);
+        p.setReleaseType(releaseType);
+        p.setFriendlyName(friendlyName);
+        p.setProductClass(productClass);
+        p.setArch("i686");
+
+        List<SCCProduct> products = new ArrayList<SCCProduct>();
+        products.add(p);
+
+        // Call updateSUSEProducts()
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setUpgradePathsXML(upgradePathsXML);
+        csm.updateSUSEProducts(products);
+
+        List<SCCSubscription> subscriptions = new LinkedList<>();
+        Credentials cred1 = CredentialsFactory.createSCCCredentials();
+        cred1.setUsername("hans");
+        cred1.setPassword("pw1");
+        CredentialsFactory.storeCredentials(cred1);
+
+        SCCSubscription s1 = new SCCSubscription();
+        s1.setName("SLES");
+        s1.setProductClasses(Arrays.asList("7261"));
+        s1.setProductIds(Arrays.asList((long)productId));
+        s1.setId(1);
+        s1.setRegcode("abcdef");
+        s1.setType("full");
+        s1.setSystemLimit(5);
+
+        SCCSubscription s2 = new SCCSubscription();
+        s2.setName("SLES 12");
+        s2.setProductClasses(Arrays.asList("7261"));
+        s2.setProductIds(Arrays.asList((long)productId));
+        s2.setId(2);
+        s2.setRegcode("12345");
+        s2.setType("full");
+        s2.setSystemLimit(4);
+
+        subscriptions.add(s1);
+        subscriptions.add(s2);
+
+        csm.refreshSubscriptionCache(subscriptions, cred1);
+        HibernateFactory.getSession().flush();
+
+        com.redhat.rhn.domain.scc.SCCSubscription one = SCCCachingFactory.lookupSubscriptionBySccId(1L);
+        assertEquals(s1.getName(), one.getName());
+        com.redhat.rhn.domain.scc.SCCSubscription two = SCCCachingFactory.lookupSubscriptionBySccId(2L);
+        assertEquals(two.getName(), two.getName());
+
+        subscriptions.remove(s2);
+        csm.refreshSubscriptionCache(subscriptions, cred1);
+        HibernateFactory.getSession().flush();
+
+        one = SCCCachingFactory.lookupSubscriptionBySccId(1L);
+        assertEquals(s1.getName(), one.getName());
+        two = SCCCachingFactory.lookupSubscriptionBySccId(2L);
+        assertNull(two);
+    }
 
     public void testListSubscriptionsCaching() throws Exception {
         File subJson = new File(TestUtils.findTestData(
