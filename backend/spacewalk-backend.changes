@@ -1,3 +1,5 @@
+- Channels to be actually un-subscribed from the assigned systems when being removed
+  using spacewalk-remove-channel tool(bsc#1104120)
 - Take only text files from /srv/salt to make spacewalk-debug smaller (bsc#1103388)
 
 -------------------------------------------------------------------
