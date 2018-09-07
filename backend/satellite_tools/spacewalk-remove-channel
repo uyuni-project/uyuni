@@ -20,6 +20,7 @@
 import sys
 import os
 import fnmatch
+import getpass
 from optparse import Option, OptionParser
 
 # quick check to see if you are a super-user.
@@ -37,7 +38,7 @@ from spacewalk.common.rhnConfig import initCFG
 from spacewalk.server import rhnSQL
 
 from spacewalk.satellite_tools.contentRemove import __listChannels, __serverCheck, \
-    __kickstartCheck, delete_channels
+    __kickstartCheck, delete_channels, UserError
 
 options_table = [
     Option("-v", "--verbose",       action="count",
@@ -49,7 +50,7 @@ options_table = [
     Option("-a", "--channel-with-children",       action="append", default=[],
            help="Delete this channel and its child channels (can be present multiple times)"),
     Option("-u", "--unsubscribe",   action="store_true",
-           help="Unsubscribe systems registered to the specified channels"),
+           help="Unsubscribe systems registered to the specified channels. Note: Credentials are needed in case of minions"),
     Option("--justdb",        action="store_true",
            help="Delete only from the database, do not remove files from disk"),
     Option("--force",         action="store_true",
@@ -62,6 +63,8 @@ options_table = [
            help="Remove only the kickstart trees for the channels specified."),
     Option("--skip-channels", action="store_true",
            help="Remove only packages from channel not the channel itself."),
+    Option("--username", help="Username"),
+    Option("--password", help="Password"),
 ]
 
 LOCK = []
@@ -111,15 +114,19 @@ def main():
         sys.exit(0)
 
     # Verify if the channel is valid
+    base_channel = ""
     channels = {}
     for channel in options.channel:
         channels[channel] = None
+        if channel in dict_parents:
+            base_channel = channel
 
     for parent in options.channel_with_children:
         matchs = fnmatch.filter(dict_parents, parent)
         for parent in matchs:
             if parent in dict_parents:
                 channels[parent] = None
+                base_channel = parent
                 for ch in dict_parents[parent]:
                     channels[ch] = None
         if not matchs:
@@ -150,9 +157,14 @@ def main():
 
     if child_test_fail:
         sys.exit(-1)
+    if options.unsubscribe:
+        if not options.username:
+            raise UserError("Username not specified")
+        if not options.password:
+            options.password= getpass.getpass()
 
     if not options.skip_channels and not options.just_kickstart_trees:
-        if __serverCheck(channels.keys(), options.unsubscribe):
+        if __serverCheck(channels.keys(), options.unsubscribe, base_channel, options.username, options.password):
             sys.exit(-1)
 
         if __kickstartCheck(channels.keys()):
@@ -177,6 +189,13 @@ def releaseLOCK():
     for lock in LOCK:
         lock.release()
 
+def systemExit(code, msgs=None):
+    if msgs:
+        if type(msgs) not in [type([]), type(())]:
+            msgs = (msgs, )
+        for msg in msgs:
+            sys.stderr.write(str(msg) + '\n')
+    sys.exit(code)
 
 if __name__ == '__main__':
     try:
@@ -185,6 +204,8 @@ if __name__ == '__main__':
         sys.stderr.write("\nUser interrupted process.\n")
         releaseLOCK()
         sys.exit(0)
+    except UserError, error:
+        systemExit(-1, "\n%s" % error)
     except SystemExit:
         # Normal exit
         raise

@@ -1,3 +1,5 @@
+- Channels to be actually un-subscribed from the assigned systems when being removed
+  using spacewalk-remove-channel tool(bsc#1104120)
 - Prepare spacewalk-backend packages to build on Python 3
 - Replace PyPAM with python-python-pam
 
