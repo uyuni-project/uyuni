@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
@@ -26,8 +27,10 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * This is what automatically schedules automatic errata update actions.
@@ -45,6 +48,8 @@ import java.util.Map;
  */
 
 public class AutoErrataTask extends RhnJavaJob {
+
+    private Queue<Action> actionsToSchedule = new LinkedList<>();
 
     /**
      * {@inheritDoc}
@@ -75,6 +80,7 @@ public class AutoErrataTask extends RhnJavaJob {
                         createErrataAction(org, errata);
                 ActionManager.addServerToAction(serverId, errataAction);
                 ActionManager.storeAction(errataAction);
+                actionsToSchedule.add(errataAction);
             }
             catch (Exception e) {
                 log.error("Errata: " + errataId + ", Org Id: " + orgId + ", Server: " +
@@ -120,5 +126,10 @@ public class AutoErrataTask extends RhnJavaJob {
         @SuppressWarnings("unchecked")
         List<Map<String, Long>> results = select.execute();
         return results;
+    }
+
+    @Override
+    protected void finishJob() {
+        actionsToSchedule.forEach(a -> TaskHelper.scheduleActionExecution(a));
     }
 }
