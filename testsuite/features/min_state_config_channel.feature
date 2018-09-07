@@ -39,6 +39,14 @@ Feature: State Configuration channels
     And I should see a "Channel Information" text
     And I should see a "Configuration Actions" text
 
+  Scenario: Create a state channel with spacecmd
+    Given I am authorized as "admin" with password "admin"
+    When I create channel "statechannel3" from spacecmd of type "state"
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    Then I should see a "statechannel3" text
+    And  I update init.sls from spacecmd with content "touch /root/statechannel3:\n  cmd.run:\n    - creates: /root/statechannel3" for channel "statechannel3"
+
   Scenario: Subscribe a minion to the state channel
     When I am on the Systems overview page of this "sle-minion"
     And I follow "States" in the content area
@@ -67,6 +75,27 @@ Feature: State Configuration channels
     And I wait until file "/root/statechannel" exists on "sle-minion"
     And I wait until file "/root/statechannel2" exists on "sle-minion"
 
+  Scenario: Subscribe a minion to the state channel created through spacecmd
+    When I am on the Systems overview page of this "sle-minion"
+    And I follow "States" in the content area
+    And I follow "Configuration Channels" in the content area
+    And I click on "Search"
+    Then I should see a "My State Channel" text
+    And I should see a "statechannel3" text
+    And I check "statechannel3-cbox"
+    When I click on "Save Changes"
+    Then I should see a "Edit Channel Ranks" text
+    And I should see a "My State Channel (statechannel)" link
+    And I should see a "My State Channel (statechannel2)" link
+    And I should see a "statechannel3 (statechannel3)" link
+    When I click on "Confirm"
+    Then I should see a "State assignments have been saved." text
+
+  Scenario: Apply the new state with spacecmd
+    Given I am authorized as "admin" with password "admin"
+    When I schedule apply configchannels for "sle-minion"
+    And I wait until file "/root/statechannel3" exists on "sle-minion"
+
   Scenario: Cleanup: remove the state channel and the file
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
@@ -82,5 +111,12 @@ Feature: State Configuration channels
     Then I should see a "Are you sure you want to delete this config channel?" text
     When I click on "Delete Config Channel"
     Then I should see a "Channel 'My State Channel' has been deleted." text
+    When I follow first "statechannel3"
+    And I follow "Delete Channel"
+    Then I should see a "Are you sure you want to delete this config channel?" text
+    When I click on "Delete Config Channel"
+    Then I should see a "Channel 'statechannel3' has been deleted." text
+
     And I remove "/root/statechannel" from "sle-minion"
     And I remove "/root/statechannel2" from "sle-minion"
+    And I remove "/root/statechannel3" from "sle-minion"
