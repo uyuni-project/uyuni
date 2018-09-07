@@ -22,6 +22,7 @@ try:
 except ImportError:
     import xmlrpclib as xmlrpc_client
 
+# pylint: disable=line-too-long
 
 class MaximumNumberOfAuthenticationFailures(Exception):
     pass
@@ -32,7 +33,7 @@ class Authenticator(object):
     Cache authentication, implements password-less connect.
     """
 
-    MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED = 3
+    MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED = 3  # pylint: disable=invalid-name
 
     def __init__(self, connection, user, password, token):
         self.connection = connection
@@ -127,4 +128,3 @@ class Authenticator(object):
         self.password = cli_ask("Password", password=True)
 
         self.credentials_prompts += 1
-

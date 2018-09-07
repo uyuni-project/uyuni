@@ -28,11 +28,14 @@ class Logger(object):
     def __init__(self, debug, logfile):
         rhnLog.initLOG(logfile, int(debug))
 
-    def debug(self, msg):
+    @staticmethod
+    def debug(msg):
         log_debug(3, msg)
 
-    def info(self, msg):
+    @staticmethod
+    def info(msg):
         log_debug(2, msg)
 
-    def error(self, msg):
+    @staticmethod
+    def error(msg):
         log_debug(1, msg)

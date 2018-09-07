@@ -16,6 +16,8 @@
 import argparse
 from spacewalk.susemanager.mgr_sync.version import VERSION
 
+# pylint: disable=line-too-long
+
 
 def _create_parser():
     # create the top-level parser

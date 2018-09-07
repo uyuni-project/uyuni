@@ -13,6 +13,8 @@
 from spacewalk.server import rhnSQL
 from spacewalk.susemanager import package_helper
 
+# pylint: disable=invalid-name
+
 def deleteChannelErrata(errata_id, channel_id):
     """ Remove errata from channel """
     h = rhnSQL.prepare("""
@@ -144,7 +146,7 @@ def findErrataClones(errata_id):
     h.execute(errata_id=errata_id)
 
     clones = [x['id'] for x in h.fetchall_dict() or []]
-    ret    = clones[:]
+    ret = clones[:]
 
     for clone in clones:
         ret += findErrataClones(clone)

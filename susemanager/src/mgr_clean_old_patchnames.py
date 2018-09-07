@@ -20,10 +20,12 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.server import rhnSQL
 from spacewalk.susemanager import errata_helper
 
+# pylint: disable=invalid-name
+
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
-class Cleaner:
-    def __init__(self, all=False, channel=None, debug=0):
+class Cleaner(object):  # pylint: disable=too-few-public-methods
+    def __init__(self, all=False, channel=None, debug=0):  # pylint: disable=redefined-builtin
         self.all = all
         self.channel = channel
         self.debug = debug
@@ -78,8 +80,8 @@ class Cleaner:
                     continue
                 errata_id = patch['errata_id']
                 channel_id = patch['channel_id']
-                log_debug(1, "Remove patch '%s(%d)' from channel '%s(%d)'" %
-                    (patch['advisory'], errata_id, c, channel_id))
+                log_debug(1, "Remove patch '%s(%d)' from channel '%s(%d)'" % (
+                    patch['advisory'], errata_id, c, channel_id))
 
                 # delete channel from errata
                 errata_helper.deleteChannelErrata(errata_id, channel_id)
@@ -112,4 +114,3 @@ class Cleaner:
 def _printLog(msg):
     log_debug(0, msg)
     print(msg)
-

@@ -11,23 +11,23 @@
 #
 from __future__ import print_function
 
-import re
 import sys
 
 from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.server import rhnSQL
 from spacewalk.susemanager import errata_helper
 
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
-try:
-   input = raw_input
-except NameError:
-   pass
+# pylint: disable=invalid-name
 
-class Cleaner:
+try:
+    input = raw_input  # pylint: disable=redefined-builtin
+except NameError:
+    pass
+
+class Cleaner(object):  # pylint: disable=too-few-public-methods
     def __init__(self, debug):
         self.debug = debug
         rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-delete-patch.log', self.debug)
@@ -41,9 +41,9 @@ class Cleaner:
     def remove(self, errata):
         """ Remove an errata and all its clones """
 
-        clones           = []
+        clones = []
         errata_to_remove = {}
-        errata_id        = errata_helper.findErrataByAdvisory(errata)
+        errata_id = errata_helper.findErrataByAdvisory(errata)
 
         if not errata_id:
             log_error("Cannot find patch with advisory {0}".format(errata))
@@ -52,10 +52,10 @@ class Cleaner:
             log_debug(0, "Patch {0} found".format(errata))
 
         parent_errata_id = errata_helper.errataParent(errata_id)
-        parent_advisory  = None
+        parent_advisory = None
         if parent_errata_id != errata_id:
-            parent_advisory  = errata_helper.getAdvisory(parent_errata_id)
-            clones           = errata_helper.findErrataClones(parent_errata_id)
+            parent_advisory = errata_helper.getAdvisory(parent_errata_id)
+            clones = errata_helper.findErrataClones(parent_errata_id)
 
             _printLog("{0} is a clone of {1}".format(errata, parent_advisory))
             print("The tool is going to remove '{0}' and all its clones:".format(parent_advisory))
@@ -63,9 +63,9 @@ class Cleaner:
             clones = errata_helper.findErrataClones(errata_id)
             print("The tool is going to remove '{0}' and all its clones:".format(errata))
 
-        for id in clones:
-            clone_advisory       = errata_helper.getAdvisory(id)
-            errata_to_remove[id] = clone_advisory
+        for _id in clones:
+            clone_advisory = errata_helper.getAdvisory(_id)
+            errata_to_remove[_id] = clone_advisory
             print("  -", clone_advisory)
 
         reply = None
@@ -83,13 +83,14 @@ class Cleaner:
         else:
             errata_to_remove[errata_id] = errata
 
-        for id in errata_to_remove:
-            self.__remove_errata(id, errata_to_remove[id])
+        for _id in errata_to_remove:
+            self.__remove_errata(_id, errata_to_remove[_id])
 
         rhnSQL.commit()
         _printLog("Finished")
 
-    def __remove_errata(self, errata_id, advisory):
+    @staticmethod
+    def __remove_errata(errata_id, advisory):
         """ Remove an errata. """
 
         channel_ids = errata_helper.channelsWithErrata(errata_id)
@@ -110,7 +111,8 @@ class Cleaner:
 
         errata_helper.deleteErrata(errata_id)
 
-    def __findChannel(self, channel):
+    @staticmethod
+    def __findChannel(channel):
         """
         Search the channel using the given label.
         Returns None if the channel is not found, otherwise returns the ID of the channel.
@@ -124,10 +126,8 @@ class Cleaner:
         res = h.fetchone_dict() or None
         if res:
             return res['id']
-        else:
-            return None
+        return None
 
 def _printLog(msg):
     log_debug(0, msg)
     print(msg)
-

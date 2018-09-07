@@ -21,7 +21,7 @@ from spacewalk.susemanager.mgr_sync.channel import Channel
 
 class Product(object):
 
-    class Status(str, Enum):
+    class Status(str, Enum):  # pylint: disable=too-few-public-methods
         INSTALLED = "INSTALLED"
         AVAILABLE = "AVAILABLE"
         UNAVAILABLE = "UNAVAILABLE"
@@ -34,7 +34,7 @@ class Product(object):
         self.extensions = []
         self._parse_extensions(data["extensions"])
         self.channels = [Channel(channel) for channel in data['channels']]
-        self.isBase = False
+        self.isBase = False  # pylint: disable=invalid-name
 
     def __repr__(self):
         return self.to_ascii_row()
@@ -51,9 +51,11 @@ class Product(object):
         return "{0} {1} ({2})".format(self.short_status, self.friendly_name,
                                       self.arch)
 
-    def to_stdout(self, indentation_level=0, filter=None, expand=False,
-                  interactive_data={}):
+    def to_stdout(self, indentation_level=0, filter=None, expand=False,  # pylint: disable=redefined-builtin
+                  interactive_data=None):
         prefix = indentation_level * "  "
+        if interactive_data is None:
+            interactive_data = {}
         if interactive_data:
             if self.status in (Product.Status.INSTALLED,
                                Product.Status.UNAVAILABLE):
@@ -82,7 +84,7 @@ class Product(object):
         for extension in data:
             self.extensions.append(Product(extension))
 
-    def matches_filter(self, filter):
+    def matches_filter(self, filter):  # pylint: disable=redefined-builtin
         if not self.extensions:
             return filter in self.to_ascii_row().lower()
         else:
@@ -102,8 +104,8 @@ def parse_products(data, log):
 
     products = []
 
-    for p in data:
-        prd = Product(p)
+    for pdata in data:
+        prd = Product(pdata)
         prd.isBase = True
         log.debug("Found product '{0} {1}'".format(prd.friendly_name, prd.arch))
         products.append(prd)

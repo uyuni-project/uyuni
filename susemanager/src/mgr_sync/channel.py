@@ -15,9 +15,9 @@
 
 from enum import Enum
 
-class Channel(object):
+class Channel(object):  # pylint: disable=too-many-instance-attributes
 
-    class Status(str, Enum):
+    class Status(str, Enum):  # pylint: disable=too-few-public-methods
         INSTALLED = "INSTALLED"
         AVAILABLE = "AVAILABLE"
         UNAVAILABLE = "UNAVAILABLE"
@@ -61,7 +61,7 @@ class Channel(object):
                 self.summary_or_url(),
                 self.label)
         else:
-            return "{0} {1}".format(self.short_status,  self.label)
+            return "{0} {1}".format(self.short_status, self.label)
 
 
 def parse_channels(data, log):
@@ -76,7 +76,7 @@ def parse_channels(data, log):
 
     channels = {}
 
-    for bc in [entry for entry in data if entry['parent'] == 'BASE']:
+    for bc in [entry for entry in data if entry['parent'] == 'BASE']:  # pylint: disable=invalid-name
         base_channel = Channel(bc)
         log.debug("Found base channel '{0}'".format(base_channel.name))
         channels[base_channel.label] = base_channel
@@ -104,7 +104,7 @@ def find_channel_by_label(label, channels, log):
         log.debug("Found '{0}'".format(channels[label]))
         return channels[label]
 
-    for bc in list(channels.values()):
+    for bc in list(channels.values()):  # pylint: disable=invalid-name
         matches = [c for c in bc.children if c.label == label]
         if len(matches) == 1:
             log.debug("Found '{0}'".format(matches[0]))

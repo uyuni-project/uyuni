@@ -12,7 +12,7 @@ fi
 DOCKER_RUN_EXPORT="PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
 
 docker pull $REGISTRY/$PGSQL_CONTAINER
-docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "cd /manager/susemanager; make -f Makefile.susemanager unittest_inside_docker"
+docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "cd /manager/susemanager; make -f Makefile.susemanager unittest_inside_docker pylint_inside_docker"
 if [ $? -ne 0 ]; then
    EXIT=1
 fi
