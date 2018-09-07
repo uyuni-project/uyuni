@@ -1,7 +1,7 @@
 {
   "name": "spacewalk-web",
   "version": "1.0.0",
-  "description": "Node.js software needed by SUSE Manager at build time.",
+  "description": "Suse Manager web javascript source code",
   "license": "UNLICENSED",
   "dependencies": {
     "susemanager-nodejs-sdk-devel": "1.0.0"
