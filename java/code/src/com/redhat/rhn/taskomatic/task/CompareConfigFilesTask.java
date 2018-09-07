@@ -25,12 +25,12 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public class CompareConfigFilesTask extends RhnJavaJob {
 
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private Queue<Action> actionsToSchedule = new LinkedList<>();
 
     /**
      * Default constructor
@@ -56,6 +56,7 @@ public class CompareConfigFilesTask extends RhnJavaJob {
         log.info("running config compare");
 
         ConfigurationManager cm = ConfigurationManager.getInstance();
+        actionsToSchedule.clear();
 
         for (Server server : ServerFactory.listConfigDiffEnabledSystems()) {
             if (server.isInactive()) {
@@ -90,13 +91,12 @@ public class CompareConfigFilesTask extends RhnJavaJob {
 
             log.info("  saving comparison for " + server.getId());
             ActionFactory.save(act);
-            try {
-                TASKOMATIC_API.scheduleActionExecution(act);
-            }
-            catch (TaskomaticApiException e) {
-                log.error("Could not schedule diff action");
-                log.error(e);
-            }
+            actionsToSchedule.add(act);
         }
+    }
+
+    @Override
+    protected void finishJob() {
+        actionsToSchedule.forEach(a -> TaskHelper.scheduleActionExecution(a));
     }
 }
