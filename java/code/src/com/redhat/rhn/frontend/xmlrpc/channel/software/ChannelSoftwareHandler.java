@@ -23,6 +23,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -42,6 +43,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
@@ -66,6 +68,7 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelEditor;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
@@ -89,13 +92,18 @@ import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ChannelSoftwareHandler
@@ -106,7 +114,31 @@ import java.util.Set;
 public class ChannelSoftwareHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(ChannelSoftwareHandler.class);
+    private final TaskomaticApi taskomaticApi;
+    /**
+     * Default constructor.
+     */
+    public ChannelSoftwareHandler() {
+        this(new TaskomaticApi());
+    }
 
+    /**
+     * Set the {@link TaskomaticApi} instance to use, only for unit tests.
+     *
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn) {
+        super();
+        taskomaticApi = taskomaticApiIn;
+    }
+
+    /**
+     * Only needed for unit tests.
+     * @return the {@link TaskomaticApi} instance used by this class
+     */
+    public TaskomaticApi getTaskomaticApi() {
+        return taskomaticApi;
+    }
     /**
      * If you have satellite-synced a new channel then Red Hat Errata
      * will have been updated with the packages that are in the newly synced
@@ -3376,6 +3408,55 @@ public class ChannelSoftwareHandler extends BaseHandler {
         ChannelFactory.clearContentSourceFilters(cs.getId());
 
         return 1;
+    }
+    /**
+     * Unsubscribe channels from the specified systems, trigger immediate channels update state
+     * @param user The current user
+     * @param sids System Ids
+     * @param baseChannel base channel label
+     * @param childLabels child channels' labels
+     * @return array containing action Ids
+     *
+     * @xmlrpc.doc Unsubscribe channels from the specified systems, trigger immediate channels update state
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "childLabels")
+     * @xmlrpc.returntype  #array_single("int", "actionId")
+     */
+    public long[] unsubscribeChannels(User user, List<Integer> sids, String baseChannel, List<String> childLabels) {
+        Set<Action> actions = new HashSet<>();
+        try {
+            Set<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toSet());
+            ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+            Date earliest = Date.from(LocalDateTime.now().atZone(zoneId).toInstant());
+            //If baseChannelLabel is there then we subscribe to nothing
+            if (StringUtils.isNotEmpty(baseChannel)) {
+                Action action = ActionManager.scheduleSubscribeChannelsAction(user, serverIds, Optional.empty(),
+                        Collections.EMPTY_SET, earliest);
+                actions.add(action);
+            }
+            else {
+                List<Channel> childChannelsToRemove = childLabels.stream()
+                        .map(clabel -> lookupChannelByLabel(user, clabel))
+                        .collect(Collectors.toList());
+
+                for (Long serverId : serverIds) {
+                    Server server = SystemManager.lookupByIdAndUser(serverId, user);
+                    Set<Channel> childChannels = server.getChildChannels();
+                    childChannels.removeAll(childChannelsToRemove);
+                    Action action = ActionManager.scheduleSubscribeChannelsAction(user, Collections.singleton(serverId),
+                            Optional.of(server.getBaseChannel()), childChannels, earliest);
+                    actions.add(action);
+
+                }
+            }
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+        return actions.stream().mapToLong(a -> a.getId()).toArray();
+
     }
 
     private ContentSource lookupContentSourceById(Long repoId, Org org) {
