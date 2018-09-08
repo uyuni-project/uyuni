@@ -574,6 +574,42 @@ DATA = {
         'PDID' : 1572, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
+    'SLE-12-SP4-aarch64' : {
+        'PDID' : 1628, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
+    'SLE-12-SP4-ppc64le' : {
+        'PDID' : 1626, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
+    'SLE-12-SP4-s390x' : {
+        'PDID' : 1627, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
+    'SLE-12-SP4-x86_64' : {
+        'PDID' : 1625, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
+    'SLED-12-SP4-x86_64' : {
+        'PDID' : 1629, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
+    'SLES4SAP-12-SP4-x86_64' : {
+        'PDID' : 1755, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
+    'SLES4SAP-12-SP4-ppc64le' : {
+        'PDID' : 1754, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
+    'SLE4HPC-12-SP4-x86_64' : {
+        'PDID' : 1759, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
+    'SLE4HPC-12-SP4-aarch64' : {
+        'PDID' : 1758, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
+    },
     'OES2018-x86_64' : {
         'PDID' : 45, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
