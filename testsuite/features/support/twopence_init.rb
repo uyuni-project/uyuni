@@ -94,3 +94,4 @@ end
 # Other global variables
 $sle15_minion = minion_is_sle15
 $mirror = ENV['MIRROR']
+$git_profiles = ENV['GITPROFILES']
