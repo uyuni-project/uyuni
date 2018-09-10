@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Sep 10 10:22:14 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.7.4-1
 - clean up correct system sudoers file (bsc#1099517)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 
