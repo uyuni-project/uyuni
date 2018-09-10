@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Sep 10 10:23:51 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.12-1
 - bootstrap repos for SLE12 SP4 (bsc#1107117)
 - do not fail if postgresql user has no interactive login shell
 - fix broken stderr redirection in mgr-setup
