@@ -1,3 +1,4 @@
+- Added link from virtualization tab to Scheduled > Pending Actions (bsc#1037389)
 - Speedup package listings(bsc#1100852)
 - Method to Unsubscribe channel from system(bsc#1104120)
 - fix mgr-sync refresh when subscription was removed (bsc#1105720)
