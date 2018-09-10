@@ -1,5 +1,9 @@
+-------------------------------------------------------------------
+Mon Sep 10 10:19:31 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.78.11-1
 - fix mgr-sync refresh when subscription was removed (bsc#1105720)
-- Method to Unsubscribe channel from system(bsc#1104120)
+- Method to Unsubscribe channel from system (bsc#1104120)
 - Enable auto patch updates for salt clients
 - Fix ACLs for system details settings
 - Fix: delete old custom OS images pillar before generation (bsc#1105107)
