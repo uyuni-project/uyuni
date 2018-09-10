@@ -1424,10 +1424,25 @@ public class ConfigurationManager extends BaseManager {
         }
         //remove the channel
         ConfigChannelSaltManager.getInstance().removeConfigChannelFiles(channel);
-        StateFactory.StateRevisionsUsage usage =
-                StateFactory.latestStateRevisionsByConfigChannel(channel);
+        StateFactory.StateRevisionsUsage usage = StateFactory.latestStateRevisionsByConfigChannel(channel);
+        removeChannelFromRevision(usage, channel);
         ConfigurationFactory.removeConfigChannel(channel);
         SaltStateGeneratorService.INSTANCE.regenerateConfigStates(usage);
+    }
+
+    /**
+     * Note: This method is needed because hibernate returns null for indexed collections when element at that position
+     * doesn't exist and then later system throw NPE.
+
+     * Remove the config channel from the config channels list referenced in state revision before actually deleting
+     * from the database.
+     * @param usage StateRevisionsUsage object holding references of revisions where channels is being used
+     * @param channel channel to be removed
+     */
+    public void removeChannelFromRevision(StateFactory.StateRevisionsUsage usage, ConfigChannel channel) {
+        usage.getServerStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
+        usage.getServerGroupStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
+        usage.getOrgStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
     }
 
     /**
