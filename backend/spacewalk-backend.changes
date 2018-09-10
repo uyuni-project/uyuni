@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Sep 10 09:37:25 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.57.7-1
 - Channels to be actually un-subscribed from the assigned systems when being removed
   using spacewalk-remove-channel tool(bsc#1104120)
 - Take only text files from /srv/salt to make spacewalk-debug smaller (bsc#1103388)
