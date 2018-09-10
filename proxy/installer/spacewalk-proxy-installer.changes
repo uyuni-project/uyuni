@@ -1,4 +1,9 @@
-- Add script for retrieving the systemid file in  configure-proxy.sh for minions (FATE#323069)
+-------------------------------------------------------------------
+Mon Sep 10 10:21:02 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.6.3-1
+- Add script for retrieving the systemid file in configure-proxy.sh
+  for minions (FATE#323069)
 - fix wrong paths to scripts; ensure CA can be found
 
 -------------------------------------------------------------------
