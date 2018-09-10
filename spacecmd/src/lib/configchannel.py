@@ -1220,12 +1220,16 @@ def import_configchannel_fromdetails(self, ccdetails):
         # create the cc, we need to drop the org prefix from the cc name
         logging.info("Importing config channel  %s" % ccdetails['name'])
 
+        channeltype = 'normal'
+        if 'configChannelType' in ccdetails:
+            channeltype = ccdetails['configChannelType']['label']
+
         # Create the channel
         self.client.configchannel.create(self.session,
                                          ccdetails['label'],
                                          ccdetails['name'],
                                          ccdetails['description'],
-                                         ccdetails['configChannelType']['label'])
+                                         channeltype)
         for filedetails in ccdetails['files']:
             path = filedetails['path']
             del filedetails['path']
