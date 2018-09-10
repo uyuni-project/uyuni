@@ -1,6 +1,11 @@
+-------------------------------------------------------------------
+Mon Sep 10 09:42:10 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.5.11-1
 - Missing link to LDAP instructions (bsc#1102464)
 - Fix copyright for the package specfile (bsc#1103696)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
+
 -------------------------------------------------------------------
 Wed Jul 25 09:29:23 CEST 2018 - jgonzalez@suse.com
 
