@@ -1457,15 +1457,14 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
-     * Note: This method is needed because hibernate returns null for indexed collections when element at that position
-     * doesn't exist and then later system throw NPE.
-
+     * Note: this method cleans up the Hibernated Indexed Collection as the underlying row is deleted via
+     * ON DELETE CASCADE and Hibernate would not reflect this change in the Collection otherwise.
      * Remove the config channel from the config channels list referenced in state revision before actually deleting
      * from the database.
      * @param usage StateRevisionsUsage object holding references of revisions where channels is being used
      * @param channel channel to be removed
      */
-    public void removeChannelFromRevision(StateFactory.StateRevisionsUsage usage, ConfigChannel channel) {
+    private void removeChannelFromRevision(StateFactory.StateRevisionsUsage usage, ConfigChannel channel) {
         usage.getServerStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
         usage.getServerGroupStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
         usage.getOrgStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
