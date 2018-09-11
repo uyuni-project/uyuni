@@ -1,3 +1,5 @@
+- add /var/log/rhn/search/hadoop.log to logrotation (bsc#1107869)
+
 -------------------------------------------------------------------
 Fri Aug 10 15:30:09 CEST 2018 - jgonzalez@suse.com
 
