@@ -1,3 +1,4 @@
+- Respect $name in dictionary edit-group
 - Filter out empty values in edit-group (bsc#1104837)
 
 -------------------------------------------------------------------
