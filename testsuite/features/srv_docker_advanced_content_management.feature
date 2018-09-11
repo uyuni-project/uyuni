@@ -20,7 +20,7 @@ Feature: Advanced content management
     And I enter "suse_docker_admin" as "label"
     And I select "galaxy-registry" from "imageStore"
     And I select "1-DOCKER-TEST" from "activationKey"
-    And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
+    And I enter "Docker/serverhost" relative to profiles as "path"
     And I click on "create-btn"
 
   Scenario: Create a user without rights nor roles
