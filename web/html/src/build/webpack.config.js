@@ -9,7 +9,6 @@ const {getWebpackConfig} = require("./webpack.config.vendors");
 module.exports = [
   getWebpackConfig({generateLicenses: true}),
   {
-    // entry: ["@babel/polyfill", pages],
     entry: pages,
     dependencies: ["vendors"],
     output: {
@@ -44,7 +43,7 @@ module.exports = [
     plugins: [
       new CleanWebpackPlugin(['dist'], {  root: path.resolve(__dirname, "../")}),
       new webpack.DllReferencePlugin({
-        manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json")
+        manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json"),
       }),
     ]
 }];
