@@ -51,7 +51,7 @@ Feature: Prepare server for using Docker
     And I follow "Create"
     And I enter "suse_simple" as "label"
     And I select "galaxy-registry" from "imageStore"
-    And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
+    And I enter "Docker" relative to profiles as "path"
     And I click on "create-btn"
 
   Scenario: Create a simple real image profile without activation key
@@ -61,7 +61,7 @@ Feature: Prepare server for using Docker
     And I follow "Create"
     And I enter "suse_real_simple" as "label"
     And I select "galaxy-registry" from "imageStore"
-    And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
+    And I enter "Docker/serverhost" relative to profiles as "path"
     And I click on "create-btn"
 
   Scenario: Create an image profile with activation key
@@ -72,7 +72,7 @@ Feature: Prepare server for using Docker
     And I enter "suse_key" as "label"
     And I select "galaxy-registry" from "imageStore"
     And I select "1-DOCKER-TEST" from "activationKey"
-    And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
+    And I enter "Docker" relative to profiles as "path"
     And I click on "create-btn"
 
   Scenario: Create a simple real image profile with activation key
@@ -83,5 +83,5 @@ Feature: Prepare server for using Docker
     And I enter "suse_real_key" as "label"
     And I select "galaxy-registry" from "imageStore"
     And I select "1-DOCKER-TEST" from "activationKey"
-    And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
+    And I enter "Docker/serverhost" relative to profiles as "path"
     And I click on "create-btn"

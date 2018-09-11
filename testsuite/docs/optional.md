@@ -127,3 +127,26 @@ Inside of the testsuite, the scenarios that are tagged with
 @nomirror
 ```
 are executed only if you don't use a mirror.
+
+
+### Testing with external Docker or Kiwi profiles
+
+Normally, the profiles are stored within the testsuite itself, but
+you can also use another git repository for that.
+
+If you want to use external profiles, declare:
+```bash
+export GITPROFILES="https://github.com#mybranch:myprofiles"
+```
+and then run the testsuite.
+
+This variable needs to be set even if you don't use external
+profiles.
+
+Sumaform declares the `$GITPROFILES`
+variable on the controller (in `/root/.bashrc`).
+To declare your own external profiles in your `main.tf` file, add a line
+to the controller declaration that looks like:
+```
+git_profiles_repo="https://github.com#mybranch:myprofiles"
+```

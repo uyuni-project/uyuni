@@ -40,6 +40,5 @@ Feature: Prepare server for using Kiwi
     And I enter "suse_os_image" as "label"
     And I select "Kiwi" from "imageType"
     And I select "1-KIWI-TEST" from "activationKey"
-    # TODO: use final URL
-    And I enter "https://github.com/Bischoff/manager-build-profiles#testsuite-profile:Testsuite/OSImage/POS_Image-JeOS6" as "path"
+    And I enter "Kiwi/POS_Image-JeOS6" relative to profiles as "path"
     And I click on "create-btn"
