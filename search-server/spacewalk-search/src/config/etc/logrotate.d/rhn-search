@@ -7,3 +7,13 @@
     missingok
     size=10M
 }  
+
+/var/log/rhn/search/hadoop.log {
+    weekly
+    rotate 5
+    copytruncate
+    compress
+    notifempty
+    missingok
+    size=10M
+}
