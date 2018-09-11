@@ -20,9 +20,7 @@ const npmDependencies = [
   { name: "react", license: "BSD-3-Clause",  version: "0.14.9" }, 
   { name: "react-dom", license: "BSD-3-Clause",  version: "0.14.9" }, 
   { name: "react-input-autosize", license: "MIT",  version: "2.2.1" }, 
-  { name: "react-lifecycles-compat", license: "MIT",  version: "3.0.4" }, 
-  { name: "react-select", license: "MIT",  version: "2.0.0" }, 
-  { name: "react-transition-group", license: "BSD-3-Clause",  version: "2.4.0" }, 
+  { name: "react-select", license: "MIT",  version: "2.0.0-beta.6" }, 
   { name: "stylis-rule-sheet", license: "MIT",  version: "0.0.10" }, 
   { name: "webpack", license: "MIT",  version: "4.17.1" }, 
   

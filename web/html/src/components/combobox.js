@@ -3,7 +3,8 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-import CreatableSelect from 'react-select/lib/Creatable';
+
+import {Creatable} from 'react-select';
 
 declare function $(param: any): any;
 
@@ -70,7 +71,7 @@ class Combobox extends React.Component<ComboboxProps, ComboboxState> {
     // correctly the selected option up.
     const options: Array<ReactSelectItem> = this.props.data.map(item => ({value: item.id.toString(), id: item.id, label: item.text}));
 
-    return <CreatableSelect
+    return <Creatable
       id={this.props.id}
       name={this.props.name}
       onFocus={this.props.onFocus}
