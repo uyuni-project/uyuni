@@ -1,3 +1,4 @@
+- add SUSE Manager for Retail Branch Server (bsc#1108004)
 - support SLE12 SP4 product family (bsc#1107117)
 - add CaaSP 3.0 channels (bsc#1105045)
 
