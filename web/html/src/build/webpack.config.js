@@ -6,7 +6,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const {getWebpackConfig} = require("./webpack.config.vendors");
 
-module.exports = [
+module.exports = (env, argv) => ([
   getWebpackConfig({generateLicenses: true}),
   {
     entry: pages,
@@ -16,6 +16,7 @@ module.exports = [
         path: path.resolve(__dirname, "../dist"),
         publicPath: '/'
     },
+    devtool: argv.mode === 'development' ? "source-map" : undefined,
     optimization: {
       splitChunks: {
         cacheGroups: {
@@ -46,4 +47,4 @@ module.exports = [
         manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json"),
       }),
     ]
-}];
+}]);

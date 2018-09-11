@@ -2,7 +2,7 @@ const pages = {
   'not-found': './manager/errors/not-found.js',
   'hierarchy': './manager/visualization/hierarchy.js',
   'bootstrap-minions': './manager/bootstrap-minions.js',
-  'cveaudit': './manager/bootstrap-minions.js',
+  'cveaudit': './manager/cveaudit.js',
   'delete-system': './manager/delete-system.js',
   'delete-system-confirm': './manager/delete-system-confirm.js',
   'duplicate-systems-compare-delete': './manager/duplicate-systems-compare-delete.js',
