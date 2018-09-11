@@ -488,19 +488,24 @@ function preprocessCleanValues(values, layout) {
             if (editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES) {
                 result[key] = value
                     .map(entry => preprocessCleanValues(entry, element.$prototype))
+                    .filter(entry => entry["$key"] !== '')
                     .reduce((acc, entry) => {
                         acc[entry["$key"]] = entry;
                         delete entry["$key"];
                         return acc;
                     }, {});
             } else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
-                result[key] = value.reduce((acc, entry) => {
-                    acc[entry[0]] = entry[1];
-                    return acc;
-                }, {});
+                result[key] = value
+                    .filter(entry => entry[0] !== '')
+                    .reduce((acc, entry) => {
+                        acc[entry[0]] = entry[1];
+                        return acc;
+                    }, {});
             } else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
                 result[key] = value
                     .map(entry => preprocessCleanValues(entry, element.$prototype));
+            } else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_LIST) {
+                result[key] = value.filter(entry => entry !== '');
             // we need to recur to groups as they can contain edit-groups that need an adjustment
             } else if (element !== undefined && (element.$type === "group" || element.$type === "namespace")) {
                 result[key] = preprocessCleanValues(value, element);
