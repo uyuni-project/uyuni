@@ -540,14 +540,30 @@ function generateValues(layout, group_data, system_data) {
                 value = element.$default;
             }
 
-        if (value === null) {
-          value = "";
-        }
+            if (element.$type === "edit-group") {
+                if (!Array.isArray(value)) {
+                    // array is expected here
+                    // we can get other types if the saved data are incomplete or outdated
+                    value = [];
+                }
+                const editGroupSubType = getEditGroupSubtype(element);
+                if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES ||
+                    editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES) {
+                    // do not do merging of edit-group values,
+                    // take either system or group value based on the logic above
+                    // and process it recursively (hack: pass it always as "system" scope)
+                    value = value.map(entry => generateValuesInternal(element.$prototype, entry, {}, "system"));
+                }
+            }
 
-        result[key] = value
+            if (value === null) {
+                value = "";
+            }
+
+            result[key] = value
+        }
+        return result;
     }
-    return result;
-}
 
     return deepCopy(generateValuesInternal(layout, group_data, system_data));
 }
