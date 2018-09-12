@@ -5930,7 +5930,6 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Creates a system record in database for a system that is not registered.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "systemName", "System name")
-     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
      * @xmlrpc.param
      *  #struct("data")
      *      #prop_desc("string", "hwAddress", "The HW address of the network interface (MAC)")

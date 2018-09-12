@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.utils.Opt;
@@ -52,7 +51,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -235,7 +233,7 @@ public class FormulaFactory {
                     Collections.emptyList()));
         }
         catch (FileNotFoundException e) {
-            return new LinkedList<String>();
+            return new LinkedList<>();
         }
     }
 
@@ -415,11 +413,6 @@ public class FormulaFactory {
                 new LinkedList<>(groupFormulas.getOrDefault(groupId.toString(),
                         new LinkedList<>()));
         deletedFormulas.removeAll(selectedFormulas);
-        Stream<MinionServer> minionServerStream = ServerGroupFactory
-                .lookupByIdAndOrg(groupId, org)
-                .getServers().stream()
-                .map(Server::asMinionServer)
-                .flatMap(Opt::stream);
 
         Set<MinionServer> minions = ServerGroupFactory
                 .lookupByIdAndOrg(groupId, org)
@@ -490,8 +483,7 @@ public class FormulaFactory {
      * @param formulaName the name of the formula
      * @throws IOException if an IOException occurs while saving the data
      */
-    public static void deleteServerFormulaData(String minionId, String formulaName)
-            throws IOException {
+    public static void deleteServerFormulaData(String minionId, String formulaName) {
         try {
             File file = new File(getPillarDir() +
                     minionId + "_" + formulaName +
