@@ -38,7 +38,6 @@ except ImportError:
     import xmlrpclib
 from spacecmd.utils import *
 
-
 def help_configchannel_list(self):
     print('configchannel_list: List all configuration channels')
     print('usage: configchannel_list')
@@ -391,6 +390,7 @@ def do_configchannel_details(self, args):
         result.append('Label:       %s' % details.get('label'))
         result.append('Name:        %s' % details.get('name'))
         result.append('Description: %s' % details.get('description'))
+        result.append('Type:        %s' % details.get('configChannelType').get('label'))
 
         result.append('')
         result.append('Files')
@@ -403,13 +403,14 @@ def do_configchannel_details(self, args):
 
 
 def help_configchannel_create(self):
-    print('configchannel_create: Create a configuration channel')
+    print('configchannel_create: Create a configuration channel of specific type')
     print('''usage: configchannel_create [options])
 
 options:
   -n NAME
   -l LABEL
-  -d DESCRIPTION''')
+  -d DESCRIPTION 
+  -t TYPE('normal,'state')''')
 
 
 def do_configchannel_create(self, args):
@@ -417,6 +418,7 @@ def do_configchannel_create(self, args):
     arg_parser.add_argument('-n', '--name')
     arg_parser.add_argument('-l', '--label')
     arg_parser.add_argument('-d', '--description')
+    arg_parser.add_argument('-t', '--type')
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
@@ -424,25 +426,34 @@ def do_configchannel_create(self, args):
         options.name = prompt_user('Name:', noblank=True)
         options.label = prompt_user('Label:')
         options.description = prompt_user('Description:')
+        options.type = prompt_user('Type[normal, state]:')
 
         if options.label == '':
             options.label = options.name
         if options.description == '':
             options.description = options.name
+        if options.type not in ('normal', 'state'):
+            logging.error('Only [normal/state] values are acceptable for --type')
+            return
     else:
         if not options.name:
             logging.error('A name is required')
             return
-
         if not options.label:
             options.label = options.name
         if not options.description:
             options.description = options.name
+        if not options.type:
+            options.type = 'normal'
+        if options.type not in ('normal', 'state'):
+            logging.error('Only [normal/state] values are acceptable for --type')
+            return
 
     self.client.configchannel.create(self.session,
                                      options.label,
                                      options.name,
-                                     options.description)
+                                     options.description,
+                                     options.type)
 
 ####################
 
@@ -584,7 +595,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                     else:
                         template = ''
 
-                    contents = editor(template=template, delete=True)
+                    (contents, _ignore) = editor(template=template, delete=True)
     else:
         if not options.path:
             logging.error('The path is required')
@@ -804,6 +815,103 @@ def do_configchannel_addfile(self, args, update_path=''):
 
 ####################
 
+def help_configchannel_updateinitsls(self):
+    print('configchannel_updateinitsls: Update init.sls file')
+    print('''usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])
+
+options:
+  -c CHANNEL
+  -f local path to file contents
+  -y automatically proceed with file contents
+''')
+
+def do_configchannel_updateinitsls(self, args, update_path=''):
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-c', '--channel')
+    arg_parser.add_argument('-f', '--file')
+    arg_parser.add_argument('-y', '--yes', action='store_true')
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    file_info = None
+    path = "/init.sls"
+    interactive = is_interactive(options)
+    if interactive:
+        # the channel name can be passed in
+        if args:
+            options.channel = args[0]
+        else:
+            while True:
+                print('Configuration Channels')
+                print('----------------------')
+                print('\n'.join(sorted(self.do_configchannel_list('', True))))
+                print('')
+
+                options.channel = prompt_user('Select:', noblank=True)
+
+                # ensure the user enters a valid configuration channel
+                if options.channel in self.do_configchannel_list('', True):
+                    break
+                else:
+                    print('')
+                    logging.warning('%s is not a valid channel' %
+                                    options.channel)
+                    print('')
+        # check if this file already exists
+        try:
+            file_info = \
+               self.client.configchannel.lookupFileInfo(self.session,
+                                                         options.channel,
+                                                         [path])
+        except xmlrpclib.Fault:
+            logging.error("No existing file information found for %s" %
+                          options.path)
+            return
+        contents = file_info[0].get('contents')
+        if self.user_confirm('Read an existing file [y/N]:',
+                         nospacer=True, ignore_yes=True):
+            options.file = prompt_user('File:')
+            contents = read_file(options.file)
+            if self.file_is_binary(options.file):
+                logging.debug("Binary selected")
+        else:
+            if contents:
+                template = contents
+            else:
+                template = ''
+            (contents, _ignore) = editor(template=template, delete=True)
+
+    else:
+        if options.file:
+            contents = read_file(options.file)
+        else:
+            logging.error('You must provide the file contents')
+            return
+
+    contents = base64.b64encode(contents)
+
+    file_info = {'contents': ''.join(contents),
+                 'contents_enc64': True
+                }
+
+
+    if not options.channel:
+        logging.error("No config channel specified!")
+        self.help_configchannel_updateinitsls()
+        return
+
+    if not file_info:
+        logging.error("Error obtaining file info")
+        self.help_configchannel_updateinitsls()
+        return
+    print('contents_enc64:           %s' % file_info['contents_enc64'])
+    print('Contents')
+    print('--------')
+    print(base64.b64decode(file_info['contents']))
+    if options.yes or self.user_confirm():
+        self.client.configchannel.updateInitSls(self.session, options.channel, file_info)
+
+####################
+
 
 def help_configchannel_updatefile(self):
     self.help_configchannel_addfile()
@@ -895,6 +1003,9 @@ def do_configchannel_verifyfile(self, args):
 
     system_ids = [self.get_system_id(s) for s in systems]
 
+    if not system_ids:
+        logging.error('No valid system selected')
+        return
     action_id = \
         self.client.configchannel.scheduleFileComparisons(self.session,
                                                           channel,
@@ -1109,11 +1220,16 @@ def import_configchannel_fromdetails(self, ccdetails):
         # create the cc, we need to drop the org prefix from the cc name
         logging.info("Importing config channel  %s" % ccdetails['name'])
 
+        channeltype = 'normal'
+        if 'configChannelType' in ccdetails:
+            channeltype = ccdetails['configChannelType']['label']
+
         # Create the channel
         self.client.configchannel.create(self.session,
                                          ccdetails['label'],
                                          ccdetails['name'],
-                                         ccdetails['description'])
+                                         ccdetails['description'],
+                                         channeltype)
         for filedetails in ccdetails['files']:
             path = filedetails['path']
             del filedetails['path']

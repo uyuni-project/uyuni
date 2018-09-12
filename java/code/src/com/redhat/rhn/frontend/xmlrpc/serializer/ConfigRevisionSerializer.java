@@ -121,7 +121,7 @@ public class ConfigRevisionSerializer extends RhnXmlRpcCustomSerializer {
             helper.add(TARGET_PATH, rev.getConfigInfo().getTargetFileName().getPath());
         }
 
-        if (rev.isFile()) {
+        if (rev.isFile() || rev.isSls()) {
             helper.add(BINARY, rev.getConfigContent().isBinary());
             helper.add("sha256", rev.getConfigContent().getChecksum().getChecksum());
             if (rev instanceof EncodedConfigRevision || rev.getConfigContent().isBinary()) {
