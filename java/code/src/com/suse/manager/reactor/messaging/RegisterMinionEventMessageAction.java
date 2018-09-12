@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.messaging;
 
 import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
-import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
