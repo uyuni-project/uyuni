@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import com.suse.manager.gatherer.HostJson;
@@ -210,12 +209,7 @@ public class VirtualHostManagerProcessor {
         updateServerNetwork(server, hostId);
 
         if (server.getBaseEntitlement() == null) {
-            try {
-                server.setBaseEntitlement(EntitlementManager.FOREIGN);
-            }
-            catch (TaskomaticApiException e) {
-                // never happens for foreign
-            }
+            server.setBaseEntitlement(EntitlementManager.FOREIGN);
         }
         return server;
     }

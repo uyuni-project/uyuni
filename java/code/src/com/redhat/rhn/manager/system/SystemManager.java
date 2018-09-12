@@ -42,6 +42,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -91,6 +93,7 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -376,6 +379,57 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         params.put("cid", cid);
         return m.execute(params);
+    }
+
+    /**
+     * Create an empty system profile with required values.
+     *
+     * @param creator the creator user
+     * @param systemName the system name
+     * @param hwAddress the hardware address
+     * @throws java.lang.IllegalStateException when a system with given hardware address already exists
+     * @throws java.lang.IllegalArgumentException when the format of the hardware address is invalid
+     * @return the created system
+     */
+    public static MinionServer createSystemProfile(User creator, String systemName, String hwAddress) {
+        if (NetworkInterfaceFactory.lookupNetworkInterfacesByHwAddress(hwAddress).findAny().isPresent()) {
+            throw new IllegalStateException("System(s) with network interface with HW address '" + hwAddress +
+                    "' already exists.");
+        }
+
+        MinionServer server = new MinionServer();
+        server.setName(systemName);
+        server.setOrg(creator.getOrg());
+
+        // Set network device information to the server so we have something to match with
+        server.setCreator(creator);
+        server.setDigitalServerId(hwAddress);
+        server.setMachineId(hwAddress);
+        server.setMinionId(hwAddress);
+        server.setOs("(unknown)");
+        server.setOsFamily("(unknown)");
+        server.setRelease("(unknown)");
+        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setAutoUpdate("N");
+        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        server.setLastBoot(new Long(0));
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        server.updateServerInfo();
+        ServerFactory.save(server);
+        server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
+
+        NetworkInterface netInterface = new NetworkInterface();
+        netInterface.setHwaddr(hwAddress);
+        netInterface.setServer(server);
+        netInterface.setName("unknown");
+
+        if (!netInterface.isValid()) {
+            throw new IllegalArgumentException("Invalid network interface: " + netInterface);
+        }
+
+        ServerFactory.saveNetworkInterface(netInterface);
+
+        return server;
     }
 
     /**

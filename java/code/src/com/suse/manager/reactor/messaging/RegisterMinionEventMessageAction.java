@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -39,6 +40,7 @@ import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -80,8 +82,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -173,6 +177,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         //in so many places.
         String machineId = optMachineId.get();
         MinionServer minionServer;
+        Optional<String> originalMinionId;
         Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
 
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
@@ -238,9 +243,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         Org org = null;
 
         try {
-            minionServer = migrateTraditionalOrGetNew(minionId,
-                    isSaltSSH, activationKeyOverride, machineId);
-            boolean isNewMinion = minionServer.getId() == null;
+            Map<String, Object> grainsMap = SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new);
+            ValueMap grains = new ValueMap(grainsMap);
+
+            Collection<String> hwAddrs = extractHwAddresses(grainsMap);
+            minionServer = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, hwAddrs);
+            originalMinionId = Optional.ofNullable(minionServer.getMinionId());
 
             MinionServer server = minionServer;
 
@@ -248,10 +256,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             server.setMinionId(minionId);
             server.setName(minionId);
             server.setDigitalServerId(machineId);
-
-            ValueMap grains = new ValueMap(
-                    SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-
 
             //apply activation key properties that can be set before saving the server
             Optional<String> activationKeyFromGrains = grains
@@ -330,14 +334,16 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             activationKey.ifPresent(ak -> applyActivationKey(ak, server, grains));
 
             // Saltboot treatment - prepare and apply saltboot
-            if (isNewMinion && grains.getOptionalAsBoolean("initrd").orElse(false)) {
+            if (grains.getOptionalAsBoolean("initrd").orElse(false)) {
                 LOG.info("\"initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
                 prepareRetailMinionForSaltboot(minionServer, org, grains);
                 applySaltboot(minionServer);
+                migrateMinionFormula(minionId, originalMinionId);
                 return;
             }
 
             finishRegistration(server, activationKey, creator, !isSaltSSH);
+            migrateMinionFormula(minionId, originalMinionId);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -348,6 +354,45 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
         }
+    }
+
+    private void migrateMinionFormula(String minionId, Optional<String> originalMinionId) {
+        // after everything is done, if minionId has changed, we want to put the formula data
+        // to the correct location on the FS
+        originalMinionId.ifPresent(oldId -> {
+            if (!oldId.equals(minionId)) {
+                try {
+                    List<String> minionFormulas = FormulaFactory.getFormulasByMinionId(oldId);
+                    FormulaFactory.saveServerFormulas(minionId, minionFormulas);
+                    for (String minionFormula : minionFormulas) {
+                        Optional<Map<String, Object>> formulaValues =
+                                FormulaFactory.getFormulaValuesByNameAndMinionId(minionFormula, oldId);
+                        if (formulaValues.isPresent()) {
+                            // handle via Optional.get because of exception handling
+                            FormulaFactory.saveServerFormulaData(formulaValues.get(), minionId, minionFormula);
+                            FormulaFactory.deleteServerFormulaData(oldId, minionFormula);
+                        }
+                        FormulaFactory.saveServerFormulas(oldId, Collections.emptyList());
+                    }
+                }
+                catch (IOException e) {
+                    LOG.warn("Error when converting formulas from minionId " + oldId + "to minionId " + minionId);
+                }
+            }
+        });
+    }
+
+    /**
+     * Extract HW addresses (except the localhost one) from grains
+     * @param grains the grains
+     * @return HW addresses
+     */
+    private Set<String> extractHwAddresses(Map<String, Object> grains) {
+        Map<String, String> hwInterfaces = (Map<String, String>) grains
+                .getOrDefault("hwaddr_interfaces", Collections.emptyMap());
+        return hwInterfaces.values().stream()
+                .filter(hwAddress -> !hwAddress.equalsIgnoreCase("00:00:00:00:00:00"))
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -516,19 +561,21 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     }
 
     /**
-     * If exists, migrate a traditional Server instance to MinionServer.
+     * If exists, migrate a server (either traditional or bootstrap one, in this order) to a minion.
      * Otherwise return a new MinionServer instance.
      *
      * @param minionId the minion id
      * @param isSaltSSH true if salt-ssh minion
      * @param activationKeyOverride the activation key
      * @param machineId the machine-id
+     * @param hwAddrs collection of hardware addresses
      * @return a migrated or new MinionServer instance
      */
-    private MinionServer migrateTraditionalOrGetNew(String minionId,
-                                                    boolean isSaltSSH,
-                                                    Optional<String> activationKeyOverride,
-                                                    String machineId) {
+    private MinionServer migrateOrCreateSystem(String minionId,
+            boolean isSaltSSH,
+            Optional<String> activationKeyOverride,
+            String machineId,
+            Collection<String> hwAddrs) {
         return ServerFactory.findByMachineId(machineId)
             .flatMap(server -> {
                 // change the type of the hibernate entity from Server to MinionServer
@@ -584,7 +631,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 minion.getHistory().add(historyEvent);
 
                 return minion;
-        }).orElseGet(MinionServer::new);
+            }).orElseGet(() -> hwAddrs.stream()
+                    .flatMap(hwAddr -> NetworkInterfaceFactory.lookupNetworkInterfacesByHwAddress(hwAddr))
+                    .map(nic -> nic.getServer())
+                    .filter(server -> server.hasEntitlement(EntitlementManager.BOOTSTRAP))
+                    .findFirst()
+                    .flatMap(server -> server.asMinionServer())
+                    .orElseGet(MinionServer::new));
     }
 
     /**

@@ -167,4 +167,17 @@ public class MinionServerFactory extends HibernateFactory {
                         "ssh-push", "ssh-push-tunnel"))
                 .list();
     }
+
+    /**
+     * Returns the minion id of a given server.
+     * @param serverId the id of the server
+     * @return the minion id
+     * @throws UnsupportedOperationException if the server is not a salt minion
+     */
+    public static String getMinionId(Long serverId) throws UnsupportedOperationException {
+        return ServerFactory.lookupById(serverId)
+                .asMinionServer()
+                .map(m -> m.getMinionId())
+                .orElseThrow(() -> new UnsupportedOperationException("Salt minion not found, id: " + serverId));
+    }
 }

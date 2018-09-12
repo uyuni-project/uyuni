@@ -38,6 +38,10 @@ CREATE INDEX rhn_srv_net_iface_sid_name_idx
     ON rhnServerNetInterface (server_id, name)
     TABLESPACE [[8m_tbs]];
 
+CREATE INDEX rhn_srv_net_iface_hw_addr_idx
+    ON rhnServerNetInterface (hw_addr)
+    TABLESPACE [[8m_tbs]];
+
 ALTER TABLE rhnServerNetInterface
     ADD CONSTRAINT rhn_srv_net_iface_sid_name_uq UNIQUE (server_id, name);
 

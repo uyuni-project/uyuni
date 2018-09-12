@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
@@ -77,7 +78,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
-        return FormulaFactory.getFormulasByServerId(systemId.longValue());
+        return FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(systemId.longValue()));
     }
 
     /**
@@ -142,7 +143,7 @@ public class FormulaHandler extends BaseHandler {
     public int setFormulasOfServer(User loggedInUser, Integer systemId,
             List<String> formulas) throws IOFaultException, InvalidParameterException {
         try {
-            FormulaFactory.saveServerFormulas(systemId.longValue(), formulas);
+            FormulaFactory.saveServerFormulas(MinionServerFactory.getMinionId(systemId.longValue()), formulas);
         }
         catch (IOException e) {
             throw new IOFaultException(e);
