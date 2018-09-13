@@ -13,3 +13,5 @@ zypper ar -f http://download.suse.de/ibs/SUSE:/SLE-12-SP3:/Update:/Products:/Man
 zypper ar -f http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head:/Other/SLE_12_SP3/ "Devel:Galaxy:Manager:Head:Other"
 zypper ar -f http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/SLE_12_SP3/ "Devel:Galaxy:Manager:Head"
 zypper ar -f http://download.suse.de/ibs/Devel:/Galaxy:/pylint/SLE_12_SP3/ "pylint"
+#TODO enable zypper ar -f http://download.suse.de/ibs/Devel:/Galaxy:/nodejs/SLE_12_SP3/ "nodejs"
+

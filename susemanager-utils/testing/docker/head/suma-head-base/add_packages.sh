@@ -74,3 +74,6 @@ zypper --non-interactive in ant \
 # Packages for easier debugging
 zypper --non-interactive in vim less
 
+# Packages for Javascript tests
+# TODO enable zypper --non-interactive in nodejs8
+
