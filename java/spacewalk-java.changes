@@ -1,4 +1,4 @@
-- Remove the reference of channel from revision before deleting it(bsc#1107850)
+- Double check if the websocket connection is still open on sendText failure (bsc#1080474)
 - Enable auto patch updates for salt clients
 - Fix ACLs for system details settings
 - Method to Unsubscribe channel from system(bsc#1104120)
