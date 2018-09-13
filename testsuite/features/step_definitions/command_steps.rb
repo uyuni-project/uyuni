@@ -453,38 +453,52 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run('mv /etc/hosts.BACKUP /etc/hosts')
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
 end
-# zypper
 
-When(/^I remove package "([^"]*)" from this "(.*?)"$/) do |package, host|
+# Packages management
+When(/^I enable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   node = get_target(host)
   if file_exists?(node, '/usr/bin/zypper')
-    cmd = "zypper --non-interactive remove -y #{package}"
+    cmd = "zypper mr --enable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "yum -y remove #{package}"
+    cmd = "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
   else
-    raise 'not found: zypper or yum'
+    raise 'Not found: zypper or yum'
   end
   node.run(cmd)
 end
 
-Given(/^I enable repository "(.*?)" on this "(.*?)"$/) do |repo, host|
+When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   node = get_target(host)
-  node.run("zypper mr --enable #{repo}")
+  if file_exists?(node, '/usr/bin/zypper')
+    cmd = "zypper mr --disable #{repo}"
+  elsif file_exists?(node, '/usr/bin/yum')
+    cmd = "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+  else
+    raise 'Not found: zypper or yum'
+  end
+  node.run(cmd)
 end
 
-Then(/^I disable repository "(.*?)" on this "(.*?)"$/) do |repo, host|
-  node = get_target(host)
-  node.run("zypper mr --disable #{repo}")
-end
-
-When(/^I install package "(.*?)" on this "(.*?)"$/) do |package, host|
+When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
   node = get_target(host)
   if file_exists?(node, '/usr/bin/zypper')
     cmd = "zypper --non-interactive install -y #{package}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y install #{package}"
   else
-    raise 'not found: zypper or yum'
+    raise 'Not found: zypper or yum'
+  end
+  node.run(cmd)
+end
+
+When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
+  node = get_target(host)
+  if file_exists?(node, '/usr/bin/zypper')
+    cmd = "zypper --non-interactive remove -y #{package}"
+  elsif file_exists?(node, '/usr/bin/yum')
+    cmd = "yum -y remove #{package}"
+  else
+    raise 'Not found: zypper or yum'
   end
   node.run(cmd)
 end
