@@ -5,10 +5,13 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
 
 @centos_minion
   Scenario: Pre-requisite: install virgo-dummy-1.0 packages
+    When I enable repository "Devel_Galaxy_BuildRepo" on this "ceos-minion"
+    And I remove package "andromeda-dummy" from this "ceos-minion"
+    And I install package "virgo-dummy-1.0" on this "ceos-minion"
+
+@centos_minion
+  Scenario: Schedule errata refresh to reflect channel assignment on CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
-    And I run "sed -i 's/enabled=.*/enabled=1/' /etc/yum.repos.d/Devel_Galaxy_BuildRepo.repo" on "ceos-minion"
-    And I run "yum erase -y andromeda-dummy" on "ceos-minion" without error control
-    And I run "yum install -y virgo-dummy-1.0" on "ceos-minion" without error control
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
@@ -48,7 +51,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
 @centos_minion
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos minion
     Given I am authorized as "admin" with password "admin"
-    And I run "yum erase -y andromeda-dummy" on "ceos-minion" without error control
-    And I run "yum install -y andromeda-dummy-1.0" on "ceos-minion"
-    And I run "yum erase -y virgo-dummy" on "ceos-minion"
-    And I run "sed -i 's/enabled=.*/enabled=0/' /etc/yum.repos.d/Devel_Galaxy_BuildRepo.repo" on "ceos-minion"
+    And I remove package "andromeda-dummy" from this "ceos-minion"
+    And I install package "andromeda-dummy-1.0" on this "ceos-minion"
+    And I remove package "virgo-dummy" from this "ceos-minion"
+    And I disable repository "Devel_Galaxy_BuildRepo" on this "ceos-minion"
