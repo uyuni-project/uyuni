@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 
 const HierarchyView = require('./ui/hierarchy-view.js');

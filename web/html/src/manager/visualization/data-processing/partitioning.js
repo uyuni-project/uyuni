@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 
 // Holds functions needed for computing node partitions (user e.g. for deriving

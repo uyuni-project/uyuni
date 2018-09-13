@@ -1,3 +1,4 @@
+/* eslint-disable */
 const React = require("react");
 
 class Messages extends React.Component {

@@ -1,3 +1,5 @@
+- Add ESLint to dependencies
+- Update Babel to 7.1
 - migrate obs module susemanager-nodejs-sdk-devel to git
 
 -------------------------------------------------------------------

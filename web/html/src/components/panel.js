@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 
 // TODO rename this to panels.js

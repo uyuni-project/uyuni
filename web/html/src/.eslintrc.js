@@ -1,22 +1,16 @@
 module.exports = {
     parser: "babel-eslint",
     extends: [
-//        "plugin:flowtype/recommended"
+        "airbnb"
     ],
 
     plugins: [
-//        "flowtype",
         "flowtype-errors"
     ],
 
     rules: {
-      "flowtype-errors/show-errors": 2,
-      "flowtype-errors/show-warnings": 1
-    },
+      "flowtype-errors/show-errors": "error",
+      "flowtype-errors/show-warnings": "warn",
+    }
 
-//    settings: {
-//      flowtype: {
-//        'onlyFilesWithFlowAnnotation': true
-//      }
-//    }
 }

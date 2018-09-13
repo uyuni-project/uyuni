@@ -1,5 +1,5 @@
 const vendors = [
-    "babel-polyfill/dist/polyfill",
+    "@babel/polyfill/dist/polyfill",
     "react",
     "react-dom",
     "prop-types",

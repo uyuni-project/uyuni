@@ -1,3 +1,4 @@
+/* eslint-disable */
 // needed because of circular deps
 module.exports.generateFormulaComponent = generateFormulaComponent;
 module.exports.generateFormulaComponentForId = generateFormulaComponentForId;

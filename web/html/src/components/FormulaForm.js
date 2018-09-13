@@ -1,3 +1,4 @@
+/* eslint-disable */
 const React = require("react");
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");

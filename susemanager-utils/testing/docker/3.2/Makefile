@@ -5,7 +5,7 @@ SHELL := /bin/bash
 # --no-cache=true
 BUILDOPTS=
 
-all: suma-3.2-base suma-3.2-cobbler suma-3.2-gatherer suma-3.2-spacewalkkoan suma-3.2-pgsql suma-3.2-ora
+all: suma-3.2-base suma-3.2-cobbler suma-3.2-gatherer suma-3.2-spacewalkkoan suma-3.2-pgsql suma-3.2-ora suma-3.2-nodejs
 
 suma-3.2-base::
 	@echo "=================================="
@@ -149,3 +149,15 @@ suma-3.2-ora-4eclipse::
 	docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
+suma-3.2-nodejs::
+	@echo "=================================="
+	@echo "Building $@"
+	@echo "=================================="
+	pushd $@; \
+	docker build $(BUILDOPTS) -t $@ . || exit 1; \
+	docker tag $@ $@:$(VERSION); \
+	docker tag $@ $(REGISTRY)/$@:latest; \
+	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
+	docker push $(REGISTRY)/$@:latest ; \
+	docker push $(REGISTRY)/$@:$(VERSION); \
+	popd
