@@ -32,4 +32,7 @@ else
     a(href="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-details" target="_blank")
       i.fa.fa-question-circle.spacewalk-help-link()
 
-!{h.renderNavigationMenu(request, "/WEB-INF/nav/system_detail.xml")}
+- var sid = request.params("sid")
+if !sid
+  - var sid = request.queryParams("sid")
+!{h.renderNavigationMenuWithParams(request, "/WEB-INF/nav/system_detail.xml", {"sid": [sid]})}
