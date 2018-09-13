@@ -1,3 +1,4 @@
+- Double check if the websocket connection is still open on sendText failure (bsc#1080474)
 - Remove the reference of channel from revision before deleting it(bsc#1107850)
 - Pair a new starting minion with empty profile based on its HW address (MAC)
 - Allow creating empty minion profiles via XMLRPC, allow assigning and editing formula for them
