@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.services.test;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.common.ChecksumFactory;
@@ -24,6 +25,9 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
@@ -37,6 +41,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Random;
 
 import static java.util.Optional.empty;
@@ -72,6 +77,29 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
 
         ConfigurationManager.getInstance().deleteConfigChannel(user, channel);
         assertFalse(initSls.getParentFile().exists());
+    }
+
+    public void testRemoveAssignedChannel() throws Exception {
+        ConfigChannel channel1 = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannelSaltManagerTestUtils.addFileToChannel(channel1);
+        ConfigurationManager.getInstance().save(channel1, empty());
+        ConfigChannel channel2 = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannelSaltManagerTestUtils.addFileToChannel(channel2);
+        ConfigurationManager.getInstance().save(channel2, empty());
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setConfigChannels(Arrays.asList(channel1, channel2), user);
+        ServerFactory.save(server);
+
+        ConfigurationManager.getInstance().deleteConfigChannel(user, channel1);
+
+        try {
+            ConfigurationManager.getInstance().lookupConfigChannel(user, channel1.getId());
+            fail("Channel shouldn't be there...Error detected.");
+        }
+        catch (LookupException e) {
+            // expected
+        }
     }
 
     public void testCreatedBinaryFile() throws Exception {

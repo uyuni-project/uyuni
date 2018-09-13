@@ -1,3 +1,4 @@
+- Remove the reference of channel from revision before deleting it(bsc#1107850)
 - Enable auto patch updates for salt clients
 - Fix ACLs for system details settings
 - Method to Unsubscribe channel from system(bsc#1104120)
