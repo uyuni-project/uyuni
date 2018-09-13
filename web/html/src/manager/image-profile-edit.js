@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 
 const React = require("react");

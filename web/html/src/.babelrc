@@ -4,5 +4,5 @@
     "@babel/preset-react",
     "@babel/preset-flow"
   ],
-  "plugins": ["transform-class-properties", "transform-flow-strip-types", "transform-object-rest-spread"]
+  "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-flow-strip-types", "@babel/plugin-syntax-object-rest-spread"]
 }

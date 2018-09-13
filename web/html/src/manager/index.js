@@ -1,3 +1,4 @@
+/* eslint-disable */
 const pages = {
   'errors/not-found': './manager/errors/not-found.js',
   'visualization/hierarchy': './manager/visualization/hierarchy.js',

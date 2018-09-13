@@ -1,3 +1,5 @@
+- Add /* eslint-disable */ to all js files to ignore them
+  during linting
 - Rewrite virtual guests list page in reactjs
 - Fix applying default values to edit-group
 - Respect $name in dictionary edit-group

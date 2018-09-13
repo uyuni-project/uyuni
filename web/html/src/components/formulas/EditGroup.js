@@ -1,3 +1,4 @@
+/* eslint-disable */
 const React = require("react");
 const EditGroupSubtype = require("../../utils/functions").Formulas.EditGroupSubtype;
 const getEditGroupSubtype = require("../../utils/functions").Formulas.getEditGroupSubtype;

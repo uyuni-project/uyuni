@@ -8,7 +8,7 @@ BUILDOPTS=
 # no *-4eclipse container: we use the last released version for head
 #
 
-all: suma-head-base suma-head-cobbler suma-head-gatherer suma-head-spacewalkkoan suma-head-pgsql
+all: suma-head-base suma-head-cobbler suma-head-gatherer suma-head-spacewalkkoan suma-head-pgsql suma-head-nodejs
 
 suma-head-base::
 	@echo "=================================="
@@ -63,6 +63,19 @@ suma-head-spacewalkkoan::
 	popd
 
 suma-head-pgsql::
+	@echo "=================================="
+	@echo "Building $@"
+	@echo "=================================="
+	pushd $@; \
+	docker build $(BUILDOPTS) -t $@ . || exit 1; \
+	docker tag $@ $@:$(VERSION); \
+	docker tag $@ $(REGISTRY)/$@:latest; \
+	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
+	docker push $(REGISTRY)/$@:latest ; \
+	docker push $(REGISTRY)/$@:$(VERSION); \
+	popd
+
+suma-head-nodejs::
 	@echo "=================================="
 	@echo "Building $@"
 	@echo "=================================="
