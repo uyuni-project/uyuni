@@ -1,3 +1,4 @@
+- Double check if the websocket connection is still open on sendText failure (bsc#1080474)
 - Remove the reference of channel from revision before deleting it(bsc#1107850)
 - Added link from virtualization tab to Scheduled > Pending Actions (bsc#1037389)
 - Speedup package listings(bsc#1100852)
