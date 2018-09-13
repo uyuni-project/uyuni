@@ -68,12 +68,25 @@ public enum ViewHelper {
      * @return the navigation menu markup as string
      */
     public String renderNavigationMenu(Request request, String menuDefinition) {
+        return renderNavigationMenuWithParams(request, menuDefinition, null);
+    }
+
+    /**
+     * Generate the navigation menu defined by the given menu definition.
+     *
+     * @param request the request object
+     * @param menuDefinition the menu definition
+     * @param additionalParams parameters to add to the menu links
+     * @return the navigation menu markup as string
+     */
+    public String renderNavigationMenuWithParams(Request request, String menuDefinition,
+            Map<String, String[]> additionalParams) {
         String rendererClass = "com.redhat.rhn.frontend.nav.DialognavRenderer";
         try {
             Map<String, String> sparkParams = request.params().entrySet().stream().collect(
                     Collectors.toMap(entry -> entry.getKey().substring(1), entry -> entry.getValue()));
             return RenderUtils.INSTANCE.renderNavigationMenu(
-                    request.raw(), menuDefinition, rendererClass, 0, 3, sparkParams);
+                    request.raw(), menuDefinition, rendererClass, 0, 3, sparkParams, additionalParams);
         }
         catch (Exception e) {
             throw new RuntimeException("Error rendering the navigation menu.", e);

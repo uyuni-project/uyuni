@@ -71,7 +71,7 @@ public enum RenderUtils {
             String rendererClass, int minDepth, int maxDepth, Map<String, String> context) throws Exception {
         URL url = pageContext.getServletContext().getResource(menuDefinition);
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        return renderNavigationMenu(url, request, rendererClass, minDepth, maxDepth, context);
+        return renderNavigationMenu(url, request, rendererClass, minDepth, maxDepth, context, null);
     }
 
     /**
@@ -84,17 +84,19 @@ public enum RenderUtils {
      * @param minDepth minimal depth
      * @param maxDepth maximal depth
      * @param context additional context to be used for the ACLs
+     * @param additionalParams additional request parameters
      * @return the rendered navigation menu as string
      * @throws Exception in case of an error
      */
     public String renderNavigationMenu(HttpServletRequest request, String menuDefinition,
-            String rendererClass, int minDepth, int maxDepth, Map<String, String> context) throws Exception {
+            String rendererClass, int minDepth, int maxDepth, Map<String, String> context,
+            Map<String, String[]> additionalParams) throws Exception {
         URL url = request.getSession().getServletContext().getResource(menuDefinition);
-        return renderNavigationMenu(url, request, rendererClass, minDepth, maxDepth, context);
+        return renderNavigationMenu(url, request, rendererClass, minDepth, maxDepth, context, additionalParams);
     }
 
-    private String renderNavigationMenu(URL url, HttpServletRequest req,
-            String rendererClass, int minDepth, int maxDepth, Map<String, String> context) throws Exception {
+    private String renderNavigationMenu(URL url, HttpServletRequest req, String rendererClass, int minDepth,
+            int maxDepth, Map<String, String> context, Map<String, String[]> additionalParams) throws Exception {
         // Try to find the NavTree in the cache and index it
         NavTree navTree = NavCache.getTree(url);
         NavTreeIndex navTreeIndex = new NavTreeIndex(navTree);
@@ -134,8 +136,12 @@ public enum RenderUtils {
         RenderGuardComposite comp = new RenderGuardComposite();
         comp.addRenderGuard(new DepthGuard(minDepth, maxDepth));
         comp.addRenderGuard(guard);
+        Map<String, String[]> paramsMap = new HashMap<>(req.getParameterMap());
+        if (additionalParams != null) {
+            paramsMap.putAll(additionalParams);
+        }
 
-        return render(navTreeIndex, renderable, comp, req.getParameterMap());
+        return render(navTreeIndex, renderable, comp, paramsMap);
     }
 
     /**
