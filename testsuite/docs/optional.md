@@ -55,7 +55,7 @@ centos_configuration="${module.minsles12sp3ssh.configuration}"
 
 Inside of the testsuite, the scenarios that are tagged with
 ```
-@sshminion
+@ssh_minion
 ```
 are executed only if the SSH minion is available.
 
@@ -87,7 +87,7 @@ image = "centos7"
 
 Inside of the testsuite, the scenarios that are tagged with
 ```
-@centosminion
+@centos_minion
 ```
 are executed only if the CentOS minion is available.
 
@@ -99,7 +99,7 @@ is a SLE15 system or not.
 
 Inside of the testsuite, the scenarios that are tagged with
 ```
-@sle15minion
+@sle15_minion
 ```
 are executed only if the minion is a SLE 15 system.
 
@@ -124,7 +124,7 @@ instructions in sumaform documentation.
 
 Inside of the testsuite, the scenarios that are tagged with
 ```
-@nomirror
+@no_mirror
 ```
 are executed only if you don't use a mirror.
 
