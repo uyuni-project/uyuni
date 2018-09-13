@@ -569,3 +569,22 @@ Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "
   raise "Command failed: #{cmd}" unless return_code.zero?
   raise "Wrong buildtime in metadata: #{metadata_buildtime} != #{rpm_buildtime}" unless metadata_buildtime == rpm_buildtime
 end
+
+When(/^I create channel "([^"]*)" from spacecmd of type "([^"]*)"$/) do |name, type|
+  command = "spacecmd -u admin -p admin -- configchannel_create -n #{name} -t  #{type}"
+  $server.run(command)
+end
+
+When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]*)"$/) do |content, label|
+  filepath = "/tmp/#{label}"
+  $server.run("echo -e \"#{content}\" > #{filepath}", true, 600, 'root')
+  command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f  #{filepath} -y"
+  $server.run(command)
+  file_delete($server, filepath)
+end
+
+When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  command = "spacecmd -y -u admin -p admin -- system_scheduleapplyconfigchannels  #{node.full_hostname}"
+  $server.run(command)
+end
