@@ -4,10 +4,12 @@
 Feature: Install a patch on the client via Salt through the UI
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 packages
-    Given I am on the Systems overview page of this "sle-minion"
-    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
+    When I enable repository "Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
+
+  Scenario: Pre-requisite: ensure the errata cache is computed before patchin Salt minion
+    Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"

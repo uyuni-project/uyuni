@@ -47,7 +47,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @ssh_minion
-  Scenario: Schedule errata refresh to reflect channel assignment
+  Scenario: Schedule errata refresh to reflect channel assignment on SSH minion
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
     And I follow "Task Schedules"
