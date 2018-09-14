@@ -13,6 +13,13 @@
       <bean:message key="login.jsp.schemaupgraderequired" />
     </div>
   </c:if>
+  <c:if test="${not empty validationErrors}">
+    <div class="alert alert-danger">
+      <c:forEach items="${validationErrors}" var="err" varStatus="loop">
+        ${err}<br/>
+      </c:forEach>
+    </div>
+  </c:if>
   <div class="col-sm-6">
       <c:set var="product_name" scope="page" value="${rhn:getConfig('product_name')}" />
       <c:choose>
