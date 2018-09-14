@@ -1,3 +1,4 @@
+- Changed localization strings for file summaries (bsc#1090676)
 - Added link from virtualization tab to Scheduled > Pending Actions (bsc#1037389)
 - Double check if the websocket connection is still open on sendText failure (bsc#1080474)
 - Enable auto patch updates for salt clients

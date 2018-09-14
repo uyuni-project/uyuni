@@ -6368,19 +6368,19 @@ Follow this url to see the full list of inactive systems:
           <source>{1} file and {2} directory</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1">
-          <source>{1} file and {2} directory and {3} symlink</source>
+          <source>{1} file, {2} directory and {3} symlink</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2">
-          <source>{1} file and {2} directory and {3} symlinks</source>
+          <source>{1} file, {2} directory and {3} symlinks</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0">
           <source>{1} file and {2} directories</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1">
-          <source>{1} file and {2} directories and {3} symlink</source>
+          <source>{1} file, {2} directories and {3} symlink</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2">
-          <source>{1} file and {2} directories and {3} symlinks</source>
+          <source>{1} file, {2} directories and {3} symlinks</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0">
           <source>{1} files</source>
@@ -6395,22 +6395,25 @@ Follow this url to see the full list of inactive systems:
           <source>{1} files and {2} directory</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1">
-          <source>{1} files and {2} directory and {3} symlink</source>
+          <source>{1} files, {2} directory and {3} symlink</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2">
-          <source>{1} files and {2} directory and {3} symlinks</source>
+          <source>{1} files, {2} directory and {3} symlinks</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0">
           <source>{1} files and {2} directories</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1">
-          <source>{1} files and {2} directories and {3} symlink</source>
+          <source>{1} files, {2} directories and {3} symlink</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2">
-          <source>{1} files and {2} directories and {3} symlinks</source>
+          <source>{1} files, {2} directories and {3} symlinks</source>
+        </trans-unit>
+        <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2">
+          <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
         </trans-unit>
         <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2">
-          <source>{1} files and {2} directories and {3} symlinks</source>
+          <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
         </trans-unit>
         <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0">
           <source>{0} state</source>
