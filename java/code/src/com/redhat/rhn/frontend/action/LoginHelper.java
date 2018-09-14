@@ -14,13 +14,16 @@
  */
 package com.redhat.rhn.frontend.action;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -47,9 +50,11 @@ import org.apache.struts.action.ActionMessages;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,6 +69,8 @@ public class LoginHelper {
 
     private static Logger log = Logger.getLogger(LoginHelper.class);
     private static final String DEFAULT_KERB_USER_PASSWORD = "0";
+    private static final Long MIN_PG_DB_VERSION = 90600L;
+    private static final String MIN_PG_DB_VERSION_STRING = "9.6";
 
     /**
      * Utility classes can't be instantiated.
@@ -304,6 +311,62 @@ public class LoginHelper {
             log.debug("Finished Updating errata cache. Took [" +
                     sw.getTime() + "]");
         }
+    }
+
+    /**
+     * Validate the currently running DB version with the OS
+     * @return validation errors
+     */
+    public static List<String> validateDBVersion() {
+        List<String> validationErrors = new ArrayList<>();
+        if (ConfigDefaults.get().isPostgresql()) {
+            Long serverVersion = 0L;
+            String pgVersion = "";
+            Double osVersion = 0.0;
+            String osName = "";
+
+            SelectMode m = ModeFactory.getMode("General_queries", "pg_version_num");
+            DataResult<HashMap> dr = m.execute();
+            if (dr.size() > 0) {
+                serverVersion = Long.valueOf((String) dr.get(0).get("server_version_num"));
+            }
+            if (serverVersion == null) {
+                serverVersion = 0L;
+            }
+            m = ModeFactory.getMode("General_queries", "pg_version");
+            dr = m.execute();
+            if (dr.size() > 0) {
+                pgVersion = (String) dr.get(0).get("server_version");
+            }
+
+            String osrelease = FileUtils.readStringFromFile("/etc/os-release");
+            for (String line : osrelease.split("\\r?\\n")) {
+                String[] resultKV = line.split("=", 2);
+                if (resultKV[0].toUpperCase().equals("VERSION_ID")) {
+                    try {
+                        osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
+                    }
+                    catch (NumberFormatException e) {
+                        log.error("Unable to parse OS versionnumber " + resultKV[1]);
+                    }
+                }
+                else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
+                    osName = resultKV[1];
+                }
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("PG DB version is: " + serverVersion);
+                log.debug("OS Version is: " + osVersion);
+            }
+            LocalizationService ls = LocalizationService.getInstance();
+            if (serverVersion < MIN_PG_DB_VERSION) {
+                validationErrors.add(ls.getMessage("error.unsupported_db", pgVersion, MIN_PG_DB_VERSION_STRING));
+            }
+            else if (serverVersion < 100001 && osVersion >= 12.4) {
+                validationErrors.add(ls.getMessage("error.unsupported_db_on_os", pgVersion, osName, "10"));
+            }
+        }
+        return validationErrors;
     }
 
     /**
