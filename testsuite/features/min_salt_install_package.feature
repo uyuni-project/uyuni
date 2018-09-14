@@ -4,7 +4,7 @@
 Feature: Install a patch on the client via Salt through the UI
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 packages
-    When I enable repository "Devel_Galaxy_BuildRepo" on "sle-minion"
+    When I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
 
