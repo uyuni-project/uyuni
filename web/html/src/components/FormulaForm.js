@@ -64,7 +64,7 @@ class FormulaForm extends React.Component {
                 const layout = preprocessLayout(data.layout);
                 preprocessData(layout, get(data.system_data, {}));
                 preprocessData(layout, get(data.group_data, {}));
-                const values = generateValues(layout, get(data.group_data, {}), get(data.system_data, {}), this.props.scope);
+                const values = generateValues(layout, get(data.group_data, {}), get(data.system_data, {}));
 
                 this.setState({
                     formulaName: data.formula_name,
@@ -144,14 +144,14 @@ class FormulaForm extends React.Component {
             if (this.props.scope === "system") {
                 Network.get(this.props.dataUrl).promise.then(data => {
                     this.setState({
-                        formulaValues: generateValues(this.state.formulaLayout, get((data === null ? undefined : data.group_data), {}), {}, this.props.currentScope),
+                        formulaValues: generateValues(this.state.formulaLayout, get((data === null ? undefined : data.group_data), {}), {}),
                         formulaChanged: false
                     });
                 });
             }
             else {
                 this.setState({
-                    formulaValues: generateValues(this.state.formulaLayout, {}, {}, this.props.currentScope),
+                    formulaValues: generateValues(this.state.formulaLayout, {}, {}),
                     formulaChanged: false
                 });
             }
@@ -531,7 +531,7 @@ function generateValues(layout, group_data, system_data) {
             let element = layout[key];
 
             if (element.$type === "group" || element.$type === "namespace") {
-                value = generateValuesInternal(element, get(group_data[key], {}), get(system_data[key], {}), element.$scope);
+                value = generateValuesInternal(element, get(group_data[key], {}), get(system_data[key], {}));
             } else if (element.$scope === "system") {
                 value = get(system_data[key], get(group_data[key], element.$default));
             } else if (element.$scope === "group") {
@@ -552,7 +552,7 @@ function generateValues(layout, group_data, system_data) {
                     // do not do merging of edit-group values,
                     // take either system or group value based on the logic above
                     // and process it recursively (hack: pass it always as "system" scope)
-                    value = value.map(entry => generateValuesInternal(element.$prototype, entry, {}, "system"));
+                    value = value.map(entry => generateValuesInternal(element.$prototype, entry, {}));
                 }
             }
 
