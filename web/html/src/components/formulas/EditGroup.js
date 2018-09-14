@@ -166,13 +166,13 @@ class EditPrimitiveDictionaryGroup extends React.Component {
                         this.props.value[i][0],
                         this.props.formulaForm,
                         id + "#0",
-                        this.pairElementWrapper("Key"))}
+                        this.pairElementWrapper(this.props.element.$prototype.$key.$name))}
                     {generateFormulaComponentForId(
                         this.props.element.$prototype,
                         this.props.value[i][1],
                         this.props.formulaForm,
                         id + "#1",
-                        this.pairElementWrapper("Value"))}
+                        this.pairElementWrapper(get(this.props.element.$prototype.$name, "Value")))}
                     <RemoveButton
                         minItems={this.props.element.$minItems}
                         currentLength={this.props.value.length}
