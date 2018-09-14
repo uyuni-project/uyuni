@@ -13,7 +13,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
 @centos_minion
   Scenario: Prepare a CentOS 7 traditional client
      Given I am authorized
-     When I enable repository "Devel_Galaxy_Manager_HEAD_RES-Manager-Tools-7-x86_64" on this "ceos-traditional-client"
+     When I enable repository "Devel_Galaxy_Manager_Head_RES-Manager-Tools-7-x86_64" on this "ceos-traditional-client"
      And  I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos-traditional-client"
      And  I enable repository "CentOS-Base" on this "ceos-traditional-client"
      And  I install package "hwdata m2crypto wget" on this "ceos-traditional-client"
