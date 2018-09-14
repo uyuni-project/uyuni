@@ -17,7 +17,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
      And  I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos-traditional-client"
      And  I enable repository "CentOS-Base" on this "ceos-traditional-client"
      And  I install package "hwdata m2crypto wget" on this "ceos-traditional-client"
-     And  I install package "spacewalk-client-tools spacewalk-check spacewalk-setup spacewalksd osad spacewalkcfg-actions" on this "ceos-traditional-client"
+     And  I install package "spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions" on this "ceos-traditional-client"
      And  I install package "spacewalk-oscap scap-security-guide" on this "ceos-traditional-client"
      And  I register "ceos-traditional-client" as traditional client
      And  I run "rhn-actions-control --enable-all" on "ceos-traditional-client"
