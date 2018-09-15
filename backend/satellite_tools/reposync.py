@@ -960,6 +960,8 @@ class RepoSync(object):
                     to_disassociate[(db_pack['checksum_type'], db_pack['checksum'])] = True
 
             if to_download or to_link:
+                if pack.arch in ['src', 'nosrc']:
+                    to_link = False
                 to_process.append((pack, to_download, to_link))
 
         num_to_process = len(to_process)
