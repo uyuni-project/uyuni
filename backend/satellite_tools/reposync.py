@@ -2173,7 +2173,8 @@ class RepoSync(object):
                               and c.channel_arch_id = cpac.channel_arch_id
                               and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=channel_id)
-        arches = [k['label'] for k in  h.fetchall_dict()]
+        arches = [k['label'] for k in  h.fetchall_dict()
+                if CFG.SYNC_SOURCE_PACKAGES or k['label'] not in ['src', 'nosrc']]
         return arches
 
     @staticmethod
