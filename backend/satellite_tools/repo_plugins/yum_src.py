@@ -379,8 +379,6 @@ class ContentSource(object):
             self.num_excluded = self.num_packages - len(pkglist)
         to_return = []
         for pack in pkglist:
-            if pack.arch == 'src':
-                continue
             new_pack = ContentPackage()
             new_pack.setNVREA(pack.name, pack.version, pack.release,
                               pack.epoch, pack.arch)

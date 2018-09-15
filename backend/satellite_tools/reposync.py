@@ -916,10 +916,6 @@ class RepoSync(object):
         channel_id = int(self.channel['id'])
 
         for pack in packages:
-            if pack.arch in ['src', 'nosrc']:
-                # skip source packages
-                skipped += 1
-                continue
             if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
                 skipped += 1
@@ -2175,9 +2171,7 @@ class RepoSync(object):
                               and c.channel_arch_id = cpac.channel_arch_id
                               and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=channel_id)
-        # We do not mirror source packages. If they are listed in patches
-        # we need to know, that it is safe to skip them
-        arches = [k['label'] for k in  h.fetchall_dict() if k['label'] not in ['src', 'nosrc']]
+        arches = [k['label'] for k in  h.fetchall_dict()]
         return arches
 
     @staticmethod
