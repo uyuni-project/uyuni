@@ -1,3 +1,4 @@
+- check valid postgresql database version
 - Enable auto patch updates for Salt minions
 
 -------------------------------------------------------------------
