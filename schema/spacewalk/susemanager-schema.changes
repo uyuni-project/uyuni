@@ -1,3 +1,4 @@
+- check valid postgresql database version
 - Add index for HW address on network interface
 
 -------------------------------------------------------------------
