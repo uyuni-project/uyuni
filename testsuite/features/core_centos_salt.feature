@@ -2,28 +2,27 @@
 # Licensed under the terms of the MIT license.
 #
 # 1) register a Centos minion via GUI
-# 3) try an openscap scan
 # 2) run a remote command
-# 4) test a reboot
+# 3) try an openscap scan
 
 Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
 
 @centos_minion
   Scenario: Bootstrap a CentOS minion
-     Given I am authorized
-     When I go to the bootstrapping page
-     Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "ceos-minion" as "hostname"
-     And I enter "22" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I select "1-SUSE-PKG-x86_64" from "activationKeys"
-     And I select the hostname of the proxy from "proxies"
-     And I click on "Bootstrap"
-     And I wait until I see "Successfully bootstrapped host! " text
-     And I navigate to "rhn/systems/Overview.do" page
-     And I wait until I see the name of "ceos-minion", refreshing the page
-     And I wait until onboarding is completed for "ceos-minion"
+    Given I am authorized
+    When I go to the bootstrapping page
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "ceos-minion" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select "1-SUSE-PKG-x86_64" from "activationKeys"
+    And I select the hostname of the proxy from "proxies"
+    And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host! " text
+    And I navigate to "rhn/systems/Overview.do" page
+    And I wait until I see the name of "ceos-minion", refreshing the page
+    And I wait until onboarding is completed for "ceos-minion"
 
 @proxy
 @centos_minion
