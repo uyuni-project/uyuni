@@ -92,7 +92,7 @@ def test_beacon_update():
                 ret = virtpoller.beacon({'cache_file': CACHE_FILE,
                                          'expire_time': 2})
     assert isinstance(ret, list)
-    print "%s" % ret
+    print("%s" % ret)
     assert len(ret) == 0
 
 def test_beacon_change():

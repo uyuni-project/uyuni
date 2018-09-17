@@ -57,7 +57,7 @@ def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", option
     cmd = []
     for idx, hostname in enumerate(hosts):
         key = clientkey if idx == 0 else proxykey
-        opts = " ".join(["-o {}={}".format(opt, val) for opt, val in options.items()])
+        opts = " ".join(["-o {}={}".format(opt, val) for opt, val in list(options.items())])
         ssh = "/usr/bin/ssh -i {} {} -o User={} {}"\
             .format(key, opts, user, hostname)
         cmd.extend(shlex.split(ssh))

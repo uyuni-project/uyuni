@@ -64,11 +64,11 @@ def _prepareHTTP(source, dest):
 
   filename = os.path.join(dest, source.split("/")[-1])
   res = __salt__['state.single']('file.managed', filename, source=source, makedirs=True, skip_verify=True)
-  for s, r in res.items():
+  for s, r in list(res.items()):
     if not r['result']:
       raise salt.exceptions.SaltException(r['comment'])
   res = __salt__['state.single']('archive.extracted', name=dest, source=filename, skip_verify=True, overwrite=True)
-  for s, r in res.items():
+  for s, r in list(res.items()):
     if not r['result']:
       raise salt.exceptions.SaltException(r['comment'])
   return dest
