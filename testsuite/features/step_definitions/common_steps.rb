@@ -106,7 +106,7 @@ Then(/^I should see the CPU frequency of the client$/) do
   step %(I should see a "#{cpu.to_i / 1000} GHz" text)
 end
 
-When(/^I should see the power is "([^"]*)"$/) do |arg1|
+Then(/^I should see the power is "([^"]*)"$/) do |arg1|
   within(:xpath, "//*[@for='powerStatus']/..") do
     10.times do
       break if has_content?(arg1)
@@ -224,6 +224,22 @@ Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |a
   ct.login(arg2, arg3)
   raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
   ct.profile_create('testprofile', 'testdistro', '/install/empty.xml')
+end
+
+When(/^I remove kickstart profiles and distros$/) do
+  host = $server.full_hostname
+  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @cli.call('auth.login', 'admin', 'admin')
+  # -------------------------------
+  # cleanup kickstart profiles and distros
+  distro_name = 'fedora_kickstart_distro'
+  @cli.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
+  @cli.call('auth.logout', @sid)
+  # -------------------------------
+  # remove not from suma managed profile
+  $server.run('cobbler profile remove --name "testprofile"')
+  # remove not from suma managed distro
+  $server.run('cobbler distro remove --name "testdistro"')
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
@@ -391,7 +407,7 @@ When(/^I click the Add Product button$/) do
   raise unless find('button#addProducts').click
 end
 
-When(/^the products should be added$/) do
+Then(/^the products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
   sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 SP2 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
   raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
@@ -475,21 +491,7 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-And(/^I remove kickstart profiles and distros$/) do
-  host = $server.full_hostname
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
-  # -------------------------------
-  # cleanup kickstart profiles and distros
-  distro_name = 'fedora_kickstart_distro'
-  @cli.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
-  @cli.call('auth.logout', @sid)
-  # -------------------------------
-  # remove not from suma managed profile
-  $server.run('cobbler profile remove --name "testprofile"')
-  # remove not from suma managed distro
-  $server.run('cobbler distro remove --name "testdistro"')
-end
+# Repository steps
 
 When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |target|
   node = get_target(target)
