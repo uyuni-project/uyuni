@@ -8,6 +8,7 @@
 	<family default_nodecount="0" label="ATI" name="ATI"/>
 	<family default_nodecount="-1" label="SLE-M-T" name="SUSE Manager Tools"/>
 	<family default_nodecount="0" label="SLE-TC" name="SUSE Linux Enterprise Thin Client"/>
+	<family default_nodecount="0" label="SMRBS" name="SUSE Manager for Retail Branch Server"/>
 	<family default_nodecount="0" label="SLE-LP-PPC" name="SUSE Linux Enterprise Live Patching PPC"/>
 	<family default_nodecount="0" label="SUSE_CLOUD" name="SUSE Cloud"/>
 	<family default_nodecount="-1" label="SUSE" name="openSUSE"/>

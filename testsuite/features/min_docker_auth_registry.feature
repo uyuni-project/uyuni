@@ -21,7 +21,7 @@ Feature: Build image with authenticated registry
     And I enter "portus_profile" as "label"
     And I select "portus" from "imageStore"
     And I select "1-DOCKER-TEST" from "activationKey"
-    And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/authprofile" as "path"
+    And I enter "Docker/authprofile" relative to profiles as "path"
     And I click on "create-btn"
 
   Scenario: Build an image in the authenticated image store

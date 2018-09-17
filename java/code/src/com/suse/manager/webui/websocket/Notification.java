@@ -136,14 +136,24 @@ public class Notification {
                     session.getBasicRemote().sendText(message);
                 }
                 else {
-                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is closed.",
+                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
                             session.getId()));
                     handbreakSession(session);
                 }
             }
             catch (IOException e) {
-                LOG.error("Error sending websocket message", e);
-                handbreakSession(session);
+                if (session.isOpen()) {
+                    LOG.warn(String.format("Error sending websocket message," +
+                                           " despite the Session [id:%s] still being open",
+                                            session.getId()),
+                            e);
+                }
+                else {
+                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
+                                            session.getId()),
+                            e);
+                    handbreakSession(session);
+                }
             }
         }
     }

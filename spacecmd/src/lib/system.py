@@ -3898,3 +3898,69 @@ def do_system_setcontactmethod(self, args):
             continue
 
         self.client.system.setDetails(self.session, system_id, details)
+        ####################
+
+
+def help_system_scheduleapplyconfigchannels(self):
+    print("system_scheduleapplyconfigchannels: Schedule applying the assigned config channels to the System (Minion only)")
+    print('''usage: scheduleapplyconfigchannels <SYSTEMS> [options]
+
+    options:
+        -s START_TIME''')
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+    print('')
+    print(self.HELP_TIME_OPTS)
+
+
+def do_system_scheduleapplyconfigchannels(self, args):
+
+
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-s', '--start-time')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_system_scheduleapplyconfigchannels()
+        return
+
+    # get the start time option
+    # skip the prompt if we are running with --yes
+    # use "now" if no start time was given
+    if is_interactive(options) and self.options.yes != True:
+        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = parse_time_input(options.start_time)
+    else:
+        if not options.start_time:
+            options.start_time = parse_time_input('now')
+        else:
+            options.start_time = parse_time_input(options.start_time)
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args)
+
+    if not systems:
+        return
+
+    print('')
+    print('Start Time: %s' % options.start_time)
+    print('')
+    print('Systems')
+    print('-------')
+    print('\n'.join(sorted(systems)))
+
+    message = 'Schedule applying config channels to these systems [y/N]:'
+    if not self.user_confirm(message):
+        return
+
+    system_ids = [self.get_system_id(s) for s in systems]
+
+    actionId = self.client.system.config.scheduleApplyConfigChannel(self.session,
+                                                                    system_ids,
+                                                                    options.start_time, False)
+    print('Scheduled action id: %s' % actionId)
+    ####################

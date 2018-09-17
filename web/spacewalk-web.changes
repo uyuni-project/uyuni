@@ -1,3 +1,7 @@
+- Fix applying default values to edit-group
+- Respect $name in dictionary edit-group
+- Filter out empty values in edit-group (bsc#1104837)
+
 -------------------------------------------------------------------
 Fri Aug 10 15:40:23 CEST 2018 - jgonzalez@suse.com
 

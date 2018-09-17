@@ -756,6 +756,11 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   end
 end
 
+# Image-specific steps
+When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
+  step %(I enter "#{$git_profiles}/#{path}" as "#{field}")
+end
+
 When(/^I enter uri, username and password for portus$/) do
   step %(I enter "#{ENV['PORTUS_URI']}" as "uri")
   step %(I enter "#{ENV['PORTUS_USER']}" as "username")
