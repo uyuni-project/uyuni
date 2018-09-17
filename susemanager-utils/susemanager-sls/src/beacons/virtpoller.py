@@ -180,7 +180,7 @@ class PollerStateCache:
         # Attempt to open up the cache file.
         cache_file = None
         try:
-            cache_file = open(self.__cache_file, 'r')
+            cache_file = open(self.__cache_file, 'rb')
         except IOError as ioe:
             # Couldn't open the cache file.  That's ok, there might not be one.
             # We'll only complain if debugging is enabled.
