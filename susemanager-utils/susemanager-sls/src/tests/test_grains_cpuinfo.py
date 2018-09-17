@@ -3,7 +3,7 @@ Author: bo@suse.de
 '''
 
 from mock import MagicMock, patch
-import mockery
+from . import mockery
 mockery.setup_environment()
 
 from ..grains import cpuinfo

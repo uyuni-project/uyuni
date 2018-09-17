@@ -1,6 +1,9 @@
 import sys
 import os
-from StringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 from mock import MagicMock
 
 

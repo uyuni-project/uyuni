@@ -3,7 +3,7 @@ Author: Bo Maryniuk <bo@suse.de>
 '''
 
 from mock import MagicMock, patch
-import mockery
+from . import mockery
 mockery.setup_environment()
 
 from ..modules import udevdb
