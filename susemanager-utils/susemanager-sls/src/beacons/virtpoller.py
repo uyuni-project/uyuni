@@ -34,7 +34,11 @@ except ImportError:
     HAS_LIBVIRT = False
     libvirt = None
 
-import cPickle
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 import time
 import traceback
 import binascii
@@ -187,8 +191,8 @@ class PollerStateCache:
         state = {}
         if cache_file:
             try:
-                state = cPickle.load(cache_file)
-            except cPickle.PickleError, pe:
+                state = pickle.load(cache_file)
+            except pickle.PickleError as pe:
                 # Strange.  Possibly, the file is corrupt.  We'll load an empty
                 # state instead.
                 log.debug("Error occurred while loading state: {0}".format(str(pe)))
@@ -222,19 +226,19 @@ class PollerStateCache:
         # First, ensure that the proper parent directory is created.
         cache_dir_path = os.path.dirname(self.__cache_file)
         if not os.path.exists(cache_dir_path):
-            os.makedirs(cache_dir_path, 0700)
+            os.makedirs(cache_dir_path, 0o700)
 
         state = {}
         state['domain_data'] = self.__new_domain_data
         if self.__expire_time is None or self.is_expired():
-            state['expire_time'] = long(time.time()) + CACHE_EXPIRE_SECS
+            state['expire_time'] = int(time.time()) + CACHE_EXPIRE_SECS
         else:
             state['expire_time'] = self.__expire_time
 
         # Now attempt to open the file for writing.  We'll just overwrite
         # whatever's already there.  Also, let any exceptions bounce out.
         cache_file = open(self.__cache_file, "wb")
-        cPickle.dump(state, cache_file)
+        pickle.dump(state, cache_file)
         cache_file.close()
 
     def _compare_domain_data(self):
