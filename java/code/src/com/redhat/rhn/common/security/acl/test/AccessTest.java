@@ -23,12 +23,15 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Date;
@@ -228,6 +231,36 @@ public class AccessTest extends BaseTestCaseWithUser {
                 ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
         context.put("sid", new String[] {s.getId().toString()});
         assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));
+    }
+
+    /**
+     * Test ACL: acl_system_is_bootstrap_minion_server()
+     * @throws Exception in case of an error
+     */
+    public void testAclSystemIsBootstrapMinionServer() throws Exception {
+        Map<String, Object> context = new HashMap<>();
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+
+        // Check with a minion system w/o bootstrap entitlement
+        Server s = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeBootstrapEntitled());
+        s = TestUtils.saveAndReload(s);
+
+        context.put("sid", new String[] {s.getId().toString()});
+        context.put("user", user);
+        assertFalse(acl.evalAcl(context, "system_is_bootstrap_minion_server()"));
+
+        // Check with a minion system with bootstrap entitlement
+        SystemManager.addMinionInfoToServer(s.getId(), "testMid");
+        s = TestUtils.saveAndReload(s);
+
+        assertTrue(acl.evalAcl(context, "system_is_bootstrap_minion_server()"));
+
+        // Check with a traditional system system
+        s = ServerFactoryTest.createUnentitledTestServer(user, true,
+                ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
+        context.put("sid", new String[] {s.getId().toString()});
+        assertFalse(acl.evalAcl(context, "system_is_bootstrap_minion_server()"));
     }
 
     public void testUnimplementedMethods() {
