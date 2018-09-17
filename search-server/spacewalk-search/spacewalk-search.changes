@@ -1,3 +1,5 @@
+- limit number of old java logfiles (bsc#1107869)
+
 -------------------------------------------------------------------
 Mon Jul 30 14:13:29 CEST 2018 - jgonzalez@suse.com
 
