@@ -1713,7 +1713,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 "total 12\n" +
                 "drwxr-xr-x  2 root root 4096 Sep 21  2014 bin\n" +
                 "-rwxr-xr-x  1 root root 1636 Sep 12 17:07 netcat.py\n" +
-                "drwxr-xr-x 14 root root 4096 Jul 25  2017 salt",
+                "drwxr-xr-x 14 root root 4096 Jul 25  2017 salt\n",
                 new String(scriptResult.getOutput()));
     }
 
