@@ -68,7 +68,7 @@ def primary_ips():
     log.debug('Using master: {0}'.format(str(master)))
 
     ret = dict()
-    for sock_family, sock_descr in {socket.AF_INET: 'IPv4', socket.AF_INET6: 'IPv6'}.items():
+    for sock_family, sock_descr in list({socket.AF_INET: 'IPv4', socket.AF_INET6: 'IPv6'}.items()):
         try:
             ret['{0}'.format(sock_descr)] = __salt__['network.get_route'](get_master_ip(sock_family, master))
             log.debug("network.get_route({0}): ".format(ret['{0} source'.format(sock_descr)]))
