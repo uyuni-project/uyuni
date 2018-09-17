@@ -1,3 +1,4 @@
+- Modify acls: hide 'System details -> Groups and Formulas' tab for non-minions with bootstrap entitlement
 - Double check if the websocket connection is still open on sendText failure (bsc#1080474)
 - Remove the reference of channel from revision before deleting it(bsc#1107850)
 - Pair a new starting minion with empty profile based on its HW address (MAC)

@@ -247,6 +247,26 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Check if a system is a {@link com.redhat.rhn.domain.server.MinionServer} which has a bootstrap entitlement
+     * @param ctx Context map to pass in.
+     * @param params Parameters to use to fetch from context.
+     * @return True if system is a MinionServer with bootstrap entitlement, false otherwise.
+     */
+    public boolean aclSystemIsBootstrapMinionServer(Object ctx, String[] params) {
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        boolean ret = false;
+        if (sid != null) {
+            User user = (User) map.get("user");
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server != null) {
+                ret = server.asMinionServer().isPresent();
+            }
+        }
+        return ret && aclSystemHasBootstrapEntitlement(ctx, params);
+    }
+
+    /**
      * Check if any system has a Salt entitlement.
      * Check single system if used in an action for a single system or
      * SSM in case of an SSM action.
