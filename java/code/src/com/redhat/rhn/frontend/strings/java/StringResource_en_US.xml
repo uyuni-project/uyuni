@@ -1203,7 +1203,7 @@
          <source>Running postgresql {0} is not supported. Minimal require version is {1}.</source>
       </trans-unit>
       <trans-unit id="error.unsupported_db_on_os">
-        <source>Running postgresql {0} on {1} is unsupported. Please migrate to postgresql {2}.</source>
+        <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
       </trans-unit>
       <trans-unit id="error.invalid_login">
         <source>Either the password or username is incorrect.</source>
