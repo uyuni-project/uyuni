@@ -362,7 +362,7 @@ public class LoginHelper {
             if (serverVersion < MIN_PG_DB_VERSION) {
                 validationErrors.add(ls.getMessage("error.unsupported_db", pgVersion, MIN_PG_DB_VERSION_STRING));
             }
-            else if (serverVersion < 100001 && osVersion >= 12.4) {
+            else if (!ConfigDefaults.get().isUyuni() && serverVersion < 100001 && osVersion >= 12.4) {
                 validationErrors.add(ls.getMessage("error.unsupported_db_on_os", pgVersion, osName, "10"));
             }
         }
