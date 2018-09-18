@@ -45,6 +45,7 @@ public class LoginSetupAction extends RhnAction {
 
         request.setAttribute("schemaUpgradeRequired",
                 LoginHelper.isSchemaUpgradeRequired().toString());
+        request.setAttribute("validationErrors", LoginHelper.validateDBVersion());
 
         if (!UserManager.satelliteHasUsers()) {
             return mapping.findForward("needuser");

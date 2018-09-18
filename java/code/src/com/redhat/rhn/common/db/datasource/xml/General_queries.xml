@@ -349,5 +349,16 @@ ORDER BY UPPER(name)
   </query>
 </mode>
 
-</datasource_modes>
+<mode name="pg_version_num">
+  <query>
+    show server_version_num
+  </query>
+</mode>
 
+<mode name="pg_version">
+  <query>
+    show server_version
+  </query>
+</mode>
+
+</datasource_modes>
