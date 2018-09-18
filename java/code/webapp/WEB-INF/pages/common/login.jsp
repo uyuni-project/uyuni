@@ -13,6 +13,13 @@
       <bean:message key="login.jsp.schemaupgraderequired" />
     </div>
   </c:if>
+  <c:if test="${not empty validationErrors}">
+    <div class="alert alert-danger">
+      <c:forEach items="${validationErrors}" var="err" varStatus="loop">
+        ${err}<br/>
+      </c:forEach>
+    </div>
+  </c:if>
   <div class="col-sm-6">
       <h1 class="Raleway-font">SUSE<br/> Manager</h1>
       <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
