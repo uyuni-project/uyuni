@@ -203,16 +203,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // This way we don't need to call grains for each register minion event.
             if (isRetailMinion(registeredMinion)) {
                 ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-                grains.getOptionalAsBoolean("saltboot_initrd").ifPresent(initrd -> {
+                if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
                     // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
-                    // otherwise the image has been already fully deployed and we want to finalize the registration
-                    LOG.info("\"saltboot_initrd\" present for minion " + minionId);
-
-                    if (initrd) {
-                        LOG.info("Applying saltboot for minion " + minionId);
-                        applySaltboot(registeredMinion);
-                    }
-                });
+                    LOG.info("Applying saltboot for minion " + minionId);
+                    applySaltboot(registeredMinion);
+                }
             }
             return true;
         }
