@@ -15,6 +15,10 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%if 0%{?suse_version} > 1320
+# SLE15 builds on Python 3
+%global build_py3   1   
+%endif
 
 Name:           susemanager-tftpsync-recv
 Version:        4.0.1
@@ -29,7 +33,11 @@ BuildArch:      noarch
 Requires(pre):  apache2
 Requires:       apache2-mod_wsgi
 Requires(pre):  tftp(server)
+%if 0%{?build_py3}
+Requires:       python3
+%else
 Requires:       python
+%endif
 Requires:       spacewalk-backend
 Requires:       spacewalk-proxy-common
 Requires(pre):  coreutils
