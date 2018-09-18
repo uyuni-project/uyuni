@@ -175,7 +175,7 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler', logger=None
     needpush = True
     if _DEBUG:
         logger.debug("check_push(%s)" % fn)
-    if db.has_key(fn):
+    if fn in db:
         if db[fn][0] < mtime:
             if _DEBUG:
                 logger.debug("mtime differ - old: %s new: %s" % (db[fn][0], mtime))
@@ -245,7 +245,7 @@ class ProxySync(threading.Thread):
             params = { "file_name" : os.path.basename(self.filename), "file" : open(self.filename, "rb"), "file_type" : self.format, "directory": path }
             try:
                 response = opener.open("http://%s/tftpsync/add/" % self.proxy, params, self.timeout)
-            except Exception, e:
+            except Exception as e:
                 ret = False
                 if self.logger:
                     self.logger.error("uploading to proxy %s failed: %s" % (self.proxy, e))

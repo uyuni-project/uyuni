@@ -65,14 +65,14 @@ class MultipartPostHandler(BaseHandler):
             v_files = []
             v_vars = []
             try:
-                 for(key, value) in data.items():
+                 for(key, value) in list(data.items()):
                      if type(value) == file:
                          v_files.append((key, value))
                      else:
                          v_vars.append((key, value))
             except TypeError:
                 systype, value, traceback = sys.exc_info()
-                raise TypeError, "not a valid non-string sequence or mapping object", traceback
+                raise TypeError("not a valid non-string sequence or mapping object").with_traceback(traceback)
 
             if len(v_files) == 0:
                 data = urlencode(v_vars, doseq)
@@ -81,7 +81,7 @@ class MultipartPostHandler(BaseHandler):
                 contenttype = 'multipart/form-data; boundary=%s' % boundary
                 if(request.has_header('Content-Type')
                    and request.get_header('Content-Type').find('multipart/form-data') != 0):
-                    print "Replacing %s with %s" % (request.get_header('content-type'), 'multipart/form-data')
+                    print("Replacing %s with %s" % (request.get_header('content-type'), 'multipart/form-data'))
                 request.add_unredirected_header('Content-Type', contenttype)
 
             request.add_data(data)
@@ -124,7 +124,7 @@ def main():
         params = { "ss" : "0",            # show source
                    "doctype" : "Inline",
                    "uploaded_file" : open(temp[1], "rb") }
-        print opener.open(validatorURL, params).read()
+        print(opener.open(validatorURL, params).read())
         os.remove(temp[1])
 
     if len(sys.argv[1:]) > 0:
