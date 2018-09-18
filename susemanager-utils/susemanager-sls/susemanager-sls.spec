@@ -15,6 +15,10 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%if 0%{?suse_version} > 1320
+# SLE15 builds on Python 3
+%global build_py3   1
+%endif
 
 Name:           susemanager-sls
 Version:        4.0.1
@@ -25,6 +29,13 @@ Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
 Requires:       susemanager-build-keys-web >= 12.0.1
+%if 0%{?build_py3}
+BuildRequires:  python3-pytest
+BuildRequires:  python3-mock
+%else
+BuildRequires:  python-pytest
+BuildRequires:  python-mock
+%endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -70,6 +81,10 @@ cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgractionchains.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_info.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
+
+%check
+cd src/tests
+py.test
 
 %post
 # HACK! Create broken link when it will be replaces with the real file

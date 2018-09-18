@@ -34,7 +34,11 @@ except ImportError:
     HAS_LIBVIRT = False
     libvirt = None
 
-import cPickle
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 import time
 import traceback
 import binascii
@@ -139,7 +143,7 @@ class PollerStateCache:
         if self.__expire_time is None:
             return False
         else:
-            return long(time.time()) >= self.__expire_time
+            return int(time.time()) >= self.__expire_time
 
     def is_changed(self):
         return self.__added or self.__removed or self.__modified
@@ -176,8 +180,8 @@ class PollerStateCache:
         # Attempt to open up the cache file.
         cache_file = None
         try:
-            cache_file = open(self.__cache_file, 'r')
-        except IOError, ioe:
+            cache_file = open(self.__cache_file, 'rb')
+        except IOError as ioe:
             # Couldn't open the cache file.  That's ok, there might not be one.
             # We'll only complain if debugging is enabled.
             log.debug("Could not open cache file '{0}': {1}".format(
@@ -187,8 +191,8 @@ class PollerStateCache:
         state = {}
         if cache_file:
             try:
-                state = cPickle.load(cache_file)
-            except cPickle.PickleError, pe:
+                state = pickle.load(cache_file)
+            except pickle.PickleError as pe:
                 # Strange.  Possibly, the file is corrupt.  We'll load an empty
                 # state instead.
                 log.debug("Error occurred while loading state: {0}".format(str(pe)))
@@ -201,7 +205,7 @@ class PollerStateCache:
         if state:
             log.debug("Loaded state: {0}".format(repr(state)))
 
-            self.__expire_time = long(state['expire_time'])
+            self.__expire_time = int(state['expire_time'])
 
             # If the cache is expired, set the old data to None so we force
             # a refresh.
@@ -222,19 +226,19 @@ class PollerStateCache:
         # First, ensure that the proper parent directory is created.
         cache_dir_path = os.path.dirname(self.__cache_file)
         if not os.path.exists(cache_dir_path):
-            os.makedirs(cache_dir_path, 0700)
+            os.makedirs(cache_dir_path, 0o700)
 
         state = {}
         state['domain_data'] = self.__new_domain_data
         if self.__expire_time is None or self.is_expired():
-            state['expire_time'] = long(time.time()) + CACHE_EXPIRE_SECS
+            state['expire_time'] = int(time.time()) + CACHE_EXPIRE_SECS
         else:
             state['expire_time'] = self.__expire_time
 
         # Now attempt to open the file for writing.  We'll just overwrite
         # whatever's already there.  Also, let any exceptions bounce out.
         cache_file = open(self.__cache_file, "wb")
-        cPickle.dump(state, cache_file)
+        pickle.dump(state, cache_file)
         cache_file.close()
 
     def _compare_domain_data(self):
@@ -250,9 +254,9 @@ class PollerStateCache:
 
         # First, figure out the modified and added uuids.
         if self.__new_domain_data:
-            for (uuid, new_properties) in self.__new_domain_data.items():
+            for (uuid, new_properties) in list(self.__new_domain_data.items()):
                 if not self.__old_domain_data or \
-                    not self.__old_domain_data.has_key(uuid):
+                    uuid not in self.__old_domain_data:
 
                     self.__added[uuid] = self.__new_domain_data[uuid]
                 else:
@@ -262,9 +266,9 @@ class PollerStateCache:
 
         # Now, figure out the removed uuids.
         if self.__old_domain_data:
-            for uuid in self.__old_domain_data.keys():
+            for uuid in list(self.__old_domain_data.keys()):
                 if not self.__new_domain_data or \
-                    not self.__new_domain_data.has_key(uuid):
+                    uuid not in self.__new_domain_data:
 
                     self.__removed[uuid] = self.__old_domain_data[uuid]
 
@@ -312,7 +316,7 @@ def beacon(config):
 
     try:
         conn = libvirt.openReadOnly(None)
-    except libvirt.libvirtError, lve:
+    except libvirt.libvirtError as lve:
         log.error("Warning: Could not retrieve virtualization information! libvirtd service needs to be running.")
         conn = None
 
@@ -367,21 +371,21 @@ def beacon(config):
                     'target_type': TargetType.DOMAIN }
             plan.append(item)
 
-        for (uuid, data) in added.items():
+        for (uuid, data) in list(added.items()):
             item = {'time': int(time.time()),
                     'event_type': EventType.EXISTS,
                     'target_type': TargetType.DOMAIN,
                     'guest_properties': data}
             plan.append(item)
 
-        for (uuid, data) in modified.items():
+        for (uuid, data) in list(modified.items()):
             item = {'time': int(time.time()),
                     'event_type': EventType.EXISTS,
                     'target_type': TargetType.DOMAIN,
                     'guest_properties': data}
             plan.append(item)
 
-        for (uuid, data) in removed.items():
+        for (uuid, data) in list(removed.items()):
             item = {'time': int(time.time()),
                     'event_type': EventType.REMOVED,
                     'target_type': TargetType.DOMAIN,

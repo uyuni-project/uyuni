@@ -4,7 +4,7 @@
 '''
 
 from mock import MagicMock, patch
-import mockery
+from . import mockery
 mockery.setup_environment()
 
 import sys
@@ -20,7 +20,10 @@ TEST_MANAGER_STATIC_TOP = {
         "custom",
         "custom_groups",
         "custom_org",
-        "formulas"
+        "formulas",
+        "services.salt-minion",
+        "services.docker",
+        "services.kiwi-image-server"
     ]
 }
 

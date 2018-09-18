@@ -2,8 +2,8 @@
 Author: bo@suse.de
 '''
 
-from mock import MagicMock, patch
-import mockery
+from mock import MagicMock, patch, mock_open
+from . import mockery
 mockery.setup_environment()
 
 from ..grains import cpuinfo
@@ -54,11 +54,11 @@ def test_cpusockets_parse_cpuinfo():
     # cpuinfo parser is not applicable for non-Intel architectures, so should return nothing.
     for sample_name in ['cpuinfo.s390.sample', 'cpuinfo.ppc64le.sample']:
         with patch('os.access', MagicMock(return_value=True)):
-            with patch.object(cpuinfo, 'open', mockery.mock_open(mockery.get_test_data(sample_name)), create=True):
+            with patch.object(cpuinfo, 'open', mock_open(read_data=mockery.get_test_data(sample_name)), create=True):
                 assert cpuinfo._parse_cpuinfo([]) is None
 
     with patch('os.access', MagicMock(return_value=True)):
-        with patch.object(cpuinfo, 'open', mockery.mock_open(mockery.get_test_data('cpuinfo.sample')), create=True):
+        with patch.object(cpuinfo, 'open', mock_open(read_data=mockery.get_test_data('cpuinfo.sample')), create=True):
             out = cpuinfo._parse_cpuinfo([])
             assert type(out) == dict
             assert 'cpusockets' in out

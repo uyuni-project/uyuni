@@ -1,6 +1,9 @@
 import sys
 import os
-from StringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 from mock import MagicMock
 
 
@@ -24,20 +27,3 @@ def get_test_data(filename):
     :return:
     '''
     return open(os.path.sep.join([os.path.abspath(''), 'data', filename]), 'r').read()
-
-
-def mock_open(data=None):
-    '''
-    Mock "open" function.
-
-    :param data:
-    :return:
-    '''
-    data = StringIO(data)
-    mock = MagicMock(spec=file)
-    handle = MagicMock(spec=file)
-    handle.write.return_value = None
-    handle.__enter__.return_value = data or handle
-    mock.return_value = handle
-
-    return mock
