@@ -12,12 +12,12 @@ PARTY FROM WHICH YOU PURCHASED THE SOFTWARE TO OBTAIN A REFUND.   AN
 INDIVIDUAL ACTING ON BEHALF OF AN ENTITY REPRESENTS THAT HE OR SHE HAS THE
 AUTHORITY TO ENTER INTO THIS AGREEMENT ON BEHALF OF THAT ENTITY.
 
-This End User License Agreement ("Agreement”) is a legal agreement between
-You (an entity or a person) and SUSE LLC ("Licensor”).  The software product
+This End User License Agreement ("Agreement") is a legal agreement between
+You (an entity or a person) and SUSE LLC ("Licensor").  The software product
 identified in the title of this Agreement for which You have acquired
 licenses, any media or reproductions (physical or virtual)   and accompanying
-documentation (collectively the "Software”) is protected by the copyright
-laws and treaties of the United States ("U.S.”) and other countries and is
+documentation (collectively the "Software") is protected by the copyright
+laws and treaties of the United States ("U.S.") and other countries and is
 subject to the terms of this Agreement.  If the laws of Your principal place
 of business require contracts to be in the local language to be enforceable,
 such local language version may be obtained from Licensor upon written
@@ -66,7 +66,7 @@ SUBSCRIPTION SERVICES.  Licensor has no obligation to provide maintenance or
 support unless You purchase a subscription offering that expressly includes
 such services.  Licensor sells subscription offerings for the Software that
 entitles You to fee based technical support and/or internal use of Software
-updates provided on a specified annual period ("Subscription Offering”) and
+updates provided on a specified annual period ("Subscription Offering") and
 are subject to the terms of the Subscription Offering Terms and Conditions
 available here https://www.suse.com/products/terms_and_conditions.pdf.  In
 addition to these Subscription Offering services for the SUSE Manager Server
@@ -81,7 +81,7 @@ register more than that number of managed instances with SUSE Manager.
 
 MARKS. No right or license, express or implied, is granted under this
 Agreement with respect to any trademark, trade name or service mark of
-Licensor or its affiliates or licensors ("Mark”). This Agreement does not
+Licensor or its affiliates or licensors ("Mark"). This Agreement does not
 permit you to distribute the Software or its components using Licensor's
 trademarks, regardless of whether the copy has been modified.  You may make a
 commercial redistribution of the Programs only if (a) permitted under a
@@ -97,7 +97,7 @@ copy, modification, or merged portion shall remain with Licensor and other
 licensors, subject to the applicable license.  Licensor reserves all rights
 not expressly granted to You.  The Software is licensed for Your internal use
 only.  Except as this Agreement expressly allows and without limiting any
-rights or obligations set forth in the "Third Party/Open Source” section
+rights or obligations set forth in the "Third Party/Open Source" section
 above, You may not
 (1) remove any patent, trademark, copyright, trade secret or other proprietary
 notices or labels on the Software or its documentation;
@@ -154,7 +154,7 @@ free from defects in materials and manufacture under normal use for a period
 of sixty (60) days from the date of delivery to you.    THE FOREGOING WARRANTY
 IS YOUR SOLE AND EXCLUSIVE REMEDY AND IS IN LIEU OF ALL OTHER WARRANTIES,
 EXPRESS OR IMPLIED.  SAVE FOR THE FOREGOING WARRANTY, THE SOFTWARE IS PROVIDED
-"AS IS” WITHOUT ANY WARRANTIES OF ANY KIND.
+"AS IS" WITHOUT ANY WARRANTIES OF ANY KIND.
 
 Services.  Licensor warrants that any Services purchased will be supplied in a
 professional manner in accordance with generally accepted industry standards.
@@ -176,7 +176,7 @@ DAMAGE.
 Non-Licensor Products.  The Software may include or be bundled with hardware
 or other software programs or services licensed or sold by an entity other
 than Licensor.  LICENSOR DOES NOT WARRANT NON-LICENSOR PRODUCTS OR SERVICES.
-ANY SUCH PRODUCTS OR SERVICES ARE PROVIDED ON AN "AS IS” BASIS.  WARRANTY
+ANY SUCH PRODUCTS OR SERVICES ARE PROVIDED ON AN "AS IS" BASIS.  WARRANTY
 SERVICE IF ANY FOR NON-LICENSOR PRODUCTS IS PROVIDED BY THE PRODUCT LICENSOR
 IN ACCORDANCE WITH THEIR APPLICABLE WARRANTY.
 
@@ -290,7 +290,7 @@ to the extent necessary, to eliminate its invalidity or unenforceability, and
 the other provisions of this Agreement will remain unaffected.
 
 Export Compliance.  You acknowledge that Licensor’s products and/or technology
-are subject to the U.S. Export Administration Regulations (the "EAR”) and You
+are subject to the U.S. Export Administration Regulations (the "EAR") and You
 agree to comply with the EAR.  You will not export or re-export Licensor’s
 products, directly or indirectly, to:
 (1) any countries that are subject to US export restrictions;
