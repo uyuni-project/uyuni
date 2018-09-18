@@ -398,7 +398,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param minion the minion
      * @param grains the grains
      */
-    private void applyActivationKey(ActivationKey activationKey, MinionServer minion, ValueMap grains) {
+    private static void applyActivationKey(ActivationKey activationKey, MinionServer minion, ValueMap grains) {
         activationKey.getToken().getActivatedServers().add(minion);
         ActivationKeyFactory.save(activationKey);
 
