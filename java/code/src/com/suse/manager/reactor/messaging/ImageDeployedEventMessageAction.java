@@ -37,10 +37,18 @@ public class ImageDeployedEventMessageAction implements MessageAction {
 
     private static final Logger LOG = Logger.getLogger(ImageDeployedEventMessageAction.class);
 
+    /**
+     * Standard constructor.
+     */
     public ImageDeployedEventMessageAction() {
         this(SaltService.INSTANCE);
     }
 
+    /**
+     * Constructor allowing setting a salt service instance.
+     *
+     * @param saltServiceIn the salt service instance
+     */
     public ImageDeployedEventMessageAction(SaltService saltServiceIn) {
         this.saltService = saltServiceIn;
     }
@@ -57,7 +65,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
         }
 
         Optional<Boolean> saltbootInitrd = imageDeployedEvent.getSaltbootInitrd();
-        if (!saltbootInitrd.isPresent() || saltbootInitrd.get() == false) {
+        if (!saltbootInitrd.isPresent() || !saltbootInitrd.get()) {
             LOG.info("Saltboot initrd grain is false/not present in event data: " + imageDeployedEvent +
                     " . Skipping post image-deploy actions.");
             return;
