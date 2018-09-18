@@ -79,13 +79,12 @@ public class ImageDeployedEvent {
      */
     public static Optional<ImageDeployedEvent> parse(Event event) {
         Matcher matcher = PATTERN.matcher(event.getTag());
-        Map<String, Object> data = event.getData();
-        Object innerData = data.get("data");
 
         if (!matcher.matches()) {
             return Optional.empty();
         }
 
+        Object innerData = event.getData().get("data");
         if (innerData == null || !(innerData instanceof Map)) {
             LOG.error("Error parsing ImageDeployedEvent: event parameter 'data' in invalid format or missing.");
             return Optional.empty();
