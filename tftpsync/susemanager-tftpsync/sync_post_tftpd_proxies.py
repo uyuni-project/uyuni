@@ -22,10 +22,17 @@ import os
 import traceback
 import cobbler.utils as utils
 import time
-import MultipartPostHandler, urllib2, urllib
+import MultipartPostHandler
 import simplejson
 import clogger
 import threading
+
+try:
+    from urllib.parse import urlencode
+    from urllib.request import urlopen, build_opener
+except ImportError:
+    from urllib import urlencode
+    from urllib2 import urlopen, build_opener
 
 _DEBUG = False
 
@@ -228,7 +235,7 @@ class ProxySync(threading.Thread):
 
         if self.logger:
             self.logger.info("uploading %s to proxy %s as %s" % (self.filename, self.proxy, os.path.basename(self.filename)))
-        opener = urllib2.build_opener(MultipartPostHandler.MultipartPostHandler)
+        opener = build_opener(MultipartPostHandler.MultipartPostHandler)
         path = os.path.dirname(self.filename)
         if not path.startswith(self.tftpbootdir):
             self.logger.error("Invalid path: %s" % path)
@@ -276,12 +283,12 @@ class ProxyDelete(threading.Thread):
         elif "grub" in self.path:
             p["file_type"] = 'grub'
 
-        parameters = urllib.urlencode(p)
+        parameters = urlencode(p)
 
         try:
             url = "https://%s/tftpsync/delete/?%s" % (self.proxy, parameters)
-            data = urllib2.urlopen(url, None, self.timeout)
-        except Exception, e:
+            data = urlopen(url, None, self.timeout)
+        except Exception as e:
             ret = False
             if self.logger:
                 self.logger.info("delete from proxy %s failed: %s" % (self.proxy, e))

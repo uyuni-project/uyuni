@@ -38,8 +38,13 @@ Further Example:
   then uploads it to the W3C validator.
 """
 
-import urllib
-import urllib2
+try:
+    from urllib.parse import urlencode
+    from urllib.request import build_opener, HTTPHandler, BaseHandler
+except ImportError:
+    from urllib import urlencode
+    from urllib2 import build_opener, HTTPHandler, BaseHandler
+
 import mimetools, mimetypes
 import os, stat
 
@@ -51,8 +56,8 @@ class Callable:
 #  assigning a sequence.
 doseq = 1
 
-class MultipartPostHandler(urllib2.BaseHandler):
-    handler_order = urllib2.HTTPHandler.handler_order - 10 # needs to run first
+class MultipartPostHandler(BaseHandler):
+    handler_order = HTTPHandler.handler_order - 10 # needs to run first
 
     def http_request(self, request):
         data = request.get_data()
@@ -70,7 +75,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
                 raise TypeError, "not a valid non-string sequence or mapping object", traceback
 
             if len(v_files) == 0:
-                data = urllib.urlencode(v_vars, doseq)
+                data = urlencode(v_vars, doseq)
             else:
                 boundary, data = self.multipart_encode(v_vars, v_files)
                 contenttype = 'multipart/form-data; boundary=%s' % boundary
@@ -111,7 +116,7 @@ def main():
     import tempfile, sys
 
     validatorURL = "http://validator.w3.org/check"
-    opener = urllib2.build_opener(MultipartPostHandler)
+    opener = build_opener(MultipartPostHandler)
 
     def validateFile(url):
         temp = tempfile.mkstemp(suffix=".html")
