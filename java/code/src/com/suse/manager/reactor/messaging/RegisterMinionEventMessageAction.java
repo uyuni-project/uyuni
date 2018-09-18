@@ -21,11 +21,9 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
-import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
@@ -46,11 +44,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
-import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.ServerStateRevision;
-import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -107,11 +100,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
-
-    private static final List<String> BLACKLIST = Collections.unmodifiableList(
-       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host",
-               "osad")
-    );
 
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
 
@@ -224,7 +212,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         LOG.info("Finishing registration for minion " + minionId);
                         subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey,
                                 activationKeyLabel);
-                        activationKey.ifPresent(ak -> applyActivationKey(ak, registeredMinion, grains));
+                        activationKey.ifPresent(ak ->
+                                RegistrationUtils.applyActivationKey(ak, registeredMinion, grains));
                         RegistrationUtils.finishRegistration(registeredMinion, activationKey, creator, !isSaltSSH);
                     }
                 });
@@ -328,7 +317,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             server.setBaseEntitlement(EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the server
-            activationKey.ifPresent(ak -> applyActivationKey(ak, server, grains));
+            activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKey(ak, server, grains));
 
             // Saltboot treatment - prepare and apply saltboot
             if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
@@ -390,57 +379,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         return hwInterfaces.values().stream()
                 .filter(hwAddress -> !hwAddress.equalsIgnoreCase("00:00:00:00:00:00"))
                 .collect(Collectors.toSet());
-    }
-
-    /**
-     * Assigns various assets to a minion based on given activation key
-     * @param activationKey the activation key
-     * @param minion the minion
-     * @param grains the grains
-     */
-    private static void applyActivationKey(ActivationKey activationKey, MinionServer minion, ValueMap grains) {
-        activationKey.getToken().getActivatedServers().add(minion);
-        ActivationKeyFactory.save(activationKey);
-
-        activationKey.getServerGroups().forEach(group -> {
-            ServerFactory.addServerToGroup(minion, group);
-        });
-
-        ServerStateRevision serverStateRevision = new ServerStateRevision();
-        serverStateRevision.setServer(minion);
-        serverStateRevision.setCreator(activationKey.getCreator());
-        serverStateRevision.setPackageStates(
-                activationKey.getPackages().stream()
-                        .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
-                        .map(tp -> {
-                            PackageState state = new PackageState();
-                            state.setArch(tp.getPackageArch());
-                            state.setName(tp.getPackageName());
-                            state.setPackageState(PackageStates.INSTALLED);
-                            state.setVersionConstraint(VersionConstraints.ANY);
-                            state.setStateRevision(serverStateRevision);
-                            return state;
-                        }).collect(Collectors.toSet())
-        );
-        StateFactory.save(serverStateRevision);
-
-        // Set additional entitlements, if any
-        Set<Entitlement> validEntits = minion.getOrg()
-                .getValidAddOnEntitlementsForOrg();
-        activationKey.getToken().getEntitlements().forEach(sg -> {
-            Entitlement e = sg.getAssociatedEntitlement();
-            if (validEntits.contains(e) &&
-                    e.isAllowedOnServer(minion, grains) &&
-                    SystemManager.canEntitleServer(minion, e)) {
-                ValidatorResult vr = SystemManager.entitleServer(minion, e);
-                if (vr.getWarnings().size() > 0) {
-                    LOG.warn(vr.getWarnings().toString());
-                }
-                if (vr.getErrors().size() > 0) {
-                    LOG.error(vr.getErrors().toString());
-                }
-            }
-        });
     }
 
     private boolean isRetailMinion(MinionServer registeredMinion) {
