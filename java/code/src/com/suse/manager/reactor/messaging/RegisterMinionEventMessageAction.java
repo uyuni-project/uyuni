@@ -553,7 +553,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param creator user performing the registration
      * @param enableMinionService true if salt-minion service should be enabled and running
      */
-    private void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator,
+    private static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator,
             boolean enableMinionService) {
         String minionId = minion.getMinionId();
         // get hardware and network async
@@ -1133,7 +1133,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
     }
 
-    private void triggerHardwareRefresh(MinionServer server) {
+    private static void triggerHardwareRefresh(MinionServer server) {
         try {
             ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server,
                     new Date());
