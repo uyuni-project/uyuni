@@ -57,15 +57,12 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -252,7 +249,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey,
                                 activationKeyLabel);
                         activationKey.ifPresent(ak -> applyActivationKeyProperties(registeredMinion, ak, grains));
-                        finishRegistration(registeredMinion, activationKey, creator, !isSaltSSH);
+                        RegistrationUtils.finishRegistration(registeredMinion, activationKey, creator, !isSaltSSH);
                     }
                 });
             }
@@ -369,7 +366,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 return;
             }
 
-            finishRegistration(minion, activationKey, creator, !isSaltSSH);
+            RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH);
             migrateMinionFormula(minionId, originalMinionId);
         }
         catch (Throwable t) {
@@ -543,66 +540,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         states.add(ApplyStatesEventMessage.SALTBOOT);
 
         MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), false, states));
-    }
-
-    /**
-     * Perform the final registration steps for the minion.
-     *
-     * @param minion the minion
-     * @param activationKey the activation key
-     * @param creator user performing the registration
-     * @param enableMinionService true if salt-minion service should be enabled and running
-     */
-    private static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator,
-            boolean enableMinionService) {
-        String minionId = minion.getMinionId();
-        // get hardware and network async
-        triggerHardwareRefresh(minion);
-
-        LOG.info("Finished minion registration: " + minionId);
-
-        StatesAPI.generateServerPackageState(minion);
-
-        // Asynchronously get the uptime of this minion
-        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
-
-        // Generate pillar data
-        try {
-            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-
-            // Subscribe to config channels assigned to the activation key or initialize empty channel profile
-            minion.subscribeConfigChannels(
-                    activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
-                    creator.orElse(null));
-        }
-        catch (RuntimeException e) {
-            LOG.error("Error generating Salt files for minion '" + minionId +
-                    "':" + e.getMessage());
-        }
-
-        // Should we apply the highstate?
-        boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
-
-        // Apply initial states asynchronously
-        List<String> statesToApply = new ArrayList<>();
-        statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
-        statesToApply.add(ApplyStatesEventMessage.CHANNELS);
-        statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
-        statesToApply.add(ApplyStatesEventMessage.PACKAGES);
-        if (enableMinionService) {
-            statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
-        }
-        MessageQueue.publish(new ApplyStatesEventMessage(
-                minion.getId(),
-                minion.getCreator() != null ? minion.getCreator().getId() : null,
-                !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
-                statesToApply
-        ));
-
-        // Call final highstate to deploy config channels if required
-        if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, Collections.emptyList()));
-        }
     }
 
     /**
@@ -1131,17 +1068,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
         // for efficiency do this here
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
-    }
-
-    private static void triggerHardwareRefresh(MinionServer server) {
-        try {
-            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server,
-                    new Date());
-        }
-        catch (TaskomaticApiException e) {
-            LOG.error("Could not schedule hardware refresh for system: " + server.getId());
-            throw new RuntimeException(e);
-        }
     }
 
     /**
