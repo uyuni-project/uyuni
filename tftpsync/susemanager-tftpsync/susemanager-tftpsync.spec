@@ -33,7 +33,13 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 Requires(pre):  cobbler
+%if 0%{?build_py3}
+Requires:       python3
+BuildRequires:  python3-devel
+%else
 Requires:       python
+BuildRequires:  python-devel
+%endif
 
 %description
 Add a cobbler trigger module which sync the cobbler created tftp enviroment
@@ -81,5 +87,9 @@ fi
 %{python_sitelib}/cobbler/modules/sync_post_tftpd_proxies.py*
 %{python_sitelib}/cobbler/MultipartPostHandler.py*
 %{_sbindir}/configure-tftpsync.sh
+%if 0%{?build_py3}
+%{python_sitelib}/cobbler/__pycache__/*
+%{python_sitelib}/cobbler/modules/__pycache__/*
+%endif
 
 %changelog
