@@ -1,3 +1,4 @@
+- Fix displayed number of systems requiring reboot in Tasks pane (bsc#1106875)
 - Added link from virtualization tab to Scheduled > Pending Actions (bsc#1037389)
 - Double check if the websocket connection is still open on sendText failure (bsc#1080474)
 - Enable auto patch updates for salt clients
