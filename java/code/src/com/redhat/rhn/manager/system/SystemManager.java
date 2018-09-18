@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerLock;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -430,6 +431,24 @@ public class SystemManager extends BaseManager {
         ServerFactory.saveNetworkInterface(netInterface);
 
         return server;
+    }
+
+    /**
+     * Adds a history event to a system.
+     *
+     * @param server the system
+     * @param summary the event summary
+     * @param details the event details
+     * @return the created event
+     */
+    public static ServerHistoryEvent addHistoryEvent(Server server, String summary, String details) {
+        ServerHistoryEvent historyEvent = new ServerHistoryEvent();
+        historyEvent.setCreated(new java.util.Date());
+        historyEvent.setServer(server);
+        historyEvent.setSummary(summary);
+        historyEvent.setDetails(details);
+        server.getHistory().add(historyEvent);
+        return historyEvent;
     }
 
     /**

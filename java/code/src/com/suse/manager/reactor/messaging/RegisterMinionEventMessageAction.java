@@ -166,7 +166,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 registeredMinion.setName(minionId);
                 registeredMinion.setMinionId(minionId);
                 ServerFactory.save(registeredMinion);
-                RegistrationUtils.addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
+                SystemManager.addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
                         oldMinionId + "' has been updated to '" + minionId + "'");
 
                 if (!minionId.equals(oldMinionId)) {
@@ -256,7 +256,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         "existing server organization. " + ignoreAKMessage);
                 activationKey = Optional.empty();
                 org = server.getOrg();
-                RegistrationUtils.addHistoryEvent(server, "Invalid Server Organization",
+                SystemManager.addHistoryEvent(server, "Invalid Server Organization",
                         "The existing server organization (" + server.getOrg() + ") does not match the " +
                         "organization selected for registration (" + org + "). Keeping the " +
                         "existing server organization. " + ignoreAKMessage);
