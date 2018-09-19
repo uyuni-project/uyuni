@@ -950,6 +950,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, results.size());
     }
 
+    public void testListSystems() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin);
+        Object[] results = handler.listSystems(admin);
+        assertEquals(1, results.length);
+
+        List<Object> r = Arrays.asList(results);
+
+        for (Object o : r) {
+            SystemOverview so = (SystemOverview) o;
+            assertNotNull(so.getLastBootAsDate());
+        }
+    }
 
     public void testSetProfileName() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
