@@ -15,8 +15,10 @@
 package com.redhat.rhn.frontend.events;
 
 
+import static com.suse.utils.Opt.stream;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.stream.Stream.concat;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
@@ -41,34 +43,39 @@ public abstract class TransactionHelper {
      * @param errorHandler called in case of unexpected Exceptions
      */
     public static void handlingTransaction(Runnable runnable, Consumer<Exception> errorHandler) {
-        Optional<Exception> exception = empty();
-        try {
-            runnable.run();
-        }
-        catch (Exception e) {
-            log.error("Unexpected error executing action", e);
-            exception = of(e);
-        }
-        finally {
-            handleTransactions(!exception.isPresent());
-        }
+        Optional<Exception> applicationException = run(runnable);
 
-        exception.ifPresent(e -> {
+        boolean commit = !applicationException.isPresent();
+
+        Optional<Exception> transactionException = handleTransactions(commit);
+
+        concat(stream(applicationException), stream(transactionException)).findFirst().ifPresent(e -> {
             handlingTransaction(
                     () -> errorHandler.accept(e),
-                    f -> log.error("Additional Exception during handling", f)
+                    f -> log.error("Additional Exception during Exception handling", f)
             );
         });
     }
 
-    private static void handleTransactions(boolean commit) {
+    private static Optional<Exception> run(Runnable r) {
+        try {
+            r.run();
+            return empty();
+        }
+        catch (Exception e) {
+            log.error(e);
+            return of(e);
+        }
+    }
+
+    private static Optional<Exception> handleTransactions(boolean commit) {
         boolean committed = false;
 
         try {
             if (commit) {
                 HibernateFactory.commitTransaction();
-                committed = true;
 
+                committed = true;
                 if (log.isDebugEnabled()) {
                     log.debug("Transaction committed");
                 }
@@ -76,6 +83,7 @@ public abstract class TransactionHelper {
         }
         catch (PersistenceException e) {
             log.error("Error while committing a transaction. Rolling back", e);
+            return of(e);
         }
         finally {
             try {
@@ -88,6 +96,7 @@ public abstract class TransactionHelper {
                     }
                     catch (PersistenceException e) {
                         log.error("Additional error during rollback", e);
+                        return of(e);
                     }
                 }
             }
@@ -96,5 +105,6 @@ public abstract class TransactionHelper {
                 HibernateFactory.closeSession();
             }
         }
+        return empty();
     }
 }
