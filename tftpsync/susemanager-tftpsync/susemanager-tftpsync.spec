@@ -15,8 +15,12 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%if 0%{?suse_version} > 1320
+# SLE15 builds on Python 3
+%global build_py3   1
+%endif
+%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
+%define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 
 Name:           susemanager-tftpsync
 Version:        4.0.1
@@ -29,7 +33,13 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 Requires(pre):  cobbler
+%if 0%{?build_py3}
+Requires:       python3
+BuildRequires:  python3-devel
+%else
 Requires:       python
+BuildRequires:  python-devel
+%endif
 
 %description
 Add a cobbler trigger module which sync the cobbler created tftp enviroment
@@ -39,6 +49,13 @@ to the configured proxies.
 %setup -q
 
 %build
+# Fixing shebang for Python 3
+%if 0%{?build_py3}
+for i in `find . -type f`;
+do
+    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+done
+%endif
 
 %install
 install -p -D -m 644 sync_post_tftpd_proxies.py %{buildroot}%{python_sitelib}/cobbler/modules/sync_post_tftpd_proxies.py
@@ -46,8 +63,13 @@ install -p -D -m 644 MultipartPostHandler.py %{buildroot}%{python_sitelib}/cobbl
 install -p -D -m 755 configure-tftpsync.sh  %{buildroot}%{_sbindir}/configure-tftpsync.sh
 
 %if 0%{?suse_version}
+%if 0%{?build_py3}
+%py3_compile %{buildroot}/
+%py3_compile -O %{buildroot}/
+%else
 %py_compile %{buildroot}/
 %py_compile -O %{buildroot}/
+%endif
 %endif
 
 %post
@@ -65,5 +87,9 @@ fi
 %{python_sitelib}/cobbler/modules/sync_post_tftpd_proxies.py*
 %{python_sitelib}/cobbler/MultipartPostHandler.py*
 %{_sbindir}/configure-tftpsync.sh
+%if 0%{?build_py3}
+%{python_sitelib}/cobbler/__pycache__/*
+%{python_sitelib}/cobbler/modules/__pycache__/*
+%endif
 
 %changelog
