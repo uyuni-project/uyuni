@@ -1,3 +1,5 @@
+- removed the need for curl to be present at bootstrap phase (bsc#1095220)
+
 -------------------------------------------------------------------
 Wed Jul 04 09:19:16 CEST 2018 - jgonzalez@suse.com
 
