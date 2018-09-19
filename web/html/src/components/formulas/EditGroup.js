@@ -80,6 +80,7 @@ class EditGroup extends React.Component {
                         formulaForm={this.props.formulaForm}/>
                     <button className="btn btn-default"
                         type="button"
+                        id={this.props.id + '#add_item'}
                         title={this.props.element.$maxItems <= this.props.value.length ? "Max number of items reached" : "Add Element"}
                         onClick={this.handleAddItem}
                         disabled={this.props.element.$maxItems <= this.props.value.length}>
