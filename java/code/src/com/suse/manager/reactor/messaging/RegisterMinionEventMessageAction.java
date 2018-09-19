@@ -300,8 +300,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             subscribeMinionToChannels(minionId, server, grains, activationKey, activationKeyLabel);
 
-            server.updateServerInfo();
-
             mapHardwareGrains(server, grains);
 
             String master = SALT_SERVICE
