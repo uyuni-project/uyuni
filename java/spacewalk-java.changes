@@ -1,3 +1,4 @@
+- Change Saltboot grain trigger from "initrd" to "saltboot_initrd"
 - add last_boot to listSystems() API call
 - Changed localization strings for file summaries (bsc#1090676)
 - Added menu item entries for creating/deleting file preservation lists (bsc#1034030)
