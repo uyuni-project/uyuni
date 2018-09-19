@@ -33,9 +33,17 @@ import java.util.Optional;
  */
 public class ImageDeployedEventMessageAction implements MessageAction {
 
-    private final SaltService SALT_SERVICE = SaltService.INSTANCE;
+    private final SaltService saltService;
 
     private static final Logger LOG = Logger.getLogger(ImageDeployedEventMessageAction.class);
+
+    public ImageDeployedEventMessageAction() {
+        this(SaltService.INSTANCE);
+    }
+
+    public ImageDeployedEventMessageAction(SaltService saltServiceIn) {
+        this.saltService = saltServiceIn;
+    }
 
     @Override
     public void execute(EventMessage msg) {
@@ -73,7 +81,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
-            RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, m, grains,activationKey, activationKeyLabel);
+            RegistrationUtils.subscribeMinionToChannels(saltService, m, grains,activationKey, activationKeyLabel);
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(m, ak, grains));
             RegistrationUtils.finishRegistration(m, activationKey, Optional.empty(), false);
         });
