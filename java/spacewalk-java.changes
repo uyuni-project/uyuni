@@ -1,3 +1,4 @@
+- Added menu item entries for creating/deleting file preservation lists (bsc#1034030)
 - check valid postgresql database version
 - Fix displayed number of systems requiring reboot in Tasks pane (bsc#1106875)
 - Modify acls: hide 'System details -> Groups and Formulas' tab for non-minions with bootstrap entitlement
