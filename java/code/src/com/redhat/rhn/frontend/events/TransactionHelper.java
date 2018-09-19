@@ -21,10 +21,10 @@ import static java.util.Optional.of;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import javax.persistence.PersistenceException;
 
 /**
  * Offers utility methods to handle database transactions.
@@ -74,7 +74,7 @@ public abstract class TransactionHelper {
                 }
             }
         }
-        catch (HibernateException e) {
+        catch (PersistenceException e) {
             log.error("Error during transaction. Rolling back.", e);
         }
         finally {
@@ -86,7 +86,7 @@ public abstract class TransactionHelper {
                         }
                         HibernateFactory.rollbackTransaction();
                     }
-                    catch (HibernateException e) {
+                    catch (PersistenceException e) {
                         final String msg = "Additional error during rollback";
                         log.warn(msg, e);
                     }
