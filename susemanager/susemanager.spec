@@ -86,13 +86,14 @@ setup tasks, re-installation, upgrades and managing.
 %package tools
 Summary:        SUSE Manager Tools
 Group:          Productivity/Other
-Requires:       createrepo
 
 %if 0%{?build_py3}
+Requires:       createrepo_c
 Requires:       python3
 Requires:       python3-configobj
 BuildRequires:  python3-configobj
 %else
+Requires:       createrepo
 Requires:       python
 Requires:       python-argparse
 Requires:       python-configobj
