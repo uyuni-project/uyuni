@@ -75,7 +75,7 @@ public abstract class TransactionHelper {
             }
         }
         catch (PersistenceException e) {
-            log.error("Error during transaction. Rolling back.", e);
+            log.error("Error while committing a transaction. Rolling back", e);
         }
         finally {
             try {
@@ -87,8 +87,7 @@ public abstract class TransactionHelper {
                         HibernateFactory.rollbackTransaction();
                     }
                     catch (PersistenceException e) {
-                        final String msg = "Additional error during rollback";
-                        log.warn(msg, e);
+                        log.error("Additional error during rollback", e);
                     }
                 }
             }
