@@ -104,7 +104,7 @@ Feature: Management of minion keys
     When I wait until no Salt job is running on "sle-minion"
     And I enable repositories before installing Docker
     And I apply highstate on "sle-minion"
-    And I wait until "docker" service is up and running on "sle-minion"
+    And I wait until "docker" service is active on "sle-minion"
     And I disable repositories after installing Docker
 
   Scenario: Cleanup: check that the minion is now a build host after new bootstrap
