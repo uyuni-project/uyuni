@@ -38,7 +38,7 @@ When(/^I apply highstate on "(.*?)"$/) do |minion|
   $server.run_until_ok("#{cmd} #{node.full_hostname} state.highstate #{extra_cmd}")
 end
 
-Then(/^I wait until "([^"]*)" service is up and running on "([^"]*)"$/) do |service, target|
+Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, target|
   cmd = "systemctl is-active #{service}"
   node = get_target(target)
   node.run_until_ok(cmd)
@@ -285,11 +285,29 @@ Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   raise if output != 'enabled'
 end
 
-Then(/^service "([^"]*)" is running on "([^"]*)"$/) do |service, host|
+Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}'", false)
   output = output.split(/\n+/)[-1]
   raise if output != 'active'
+end
+
+Then(/^service or socket "([^"]*)" is enabled on "([^"]*)"$/) do |name, host|
+  node = get_target(host)
+  output_service, _code_service = node.run("systemctl is-enabled '#{name}'", false)
+  output_service = output_service.split(/\n+/)[-1]
+  output_socket, _code_socket = node.run(" systemctl is-enabled '#{name}.socket'", false)
+  output_socket = output_socket.split(/\n+/)[-1]
+  raise if output.service != 'enabled' and output.socket != 'enabled'
+end
+
+Then(/^service or socket "([^"]*)" is active on "([^"]*)"$/) do |name, host|
+  node = get_target(host)
+  output_service, _code_service = node.run("systemctl is-active '#{name}'", false)
+  output_service = output_service.split(/\n+/)[-1]
+  output_socket, _code_socket = node.run(" systemctl is-active '#{name}.socket'", false)
+  output_socket = output_socket.split(/\n+/)[-1]
+  raise if output.service != 'active' and output.socket != 'active'
 end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
