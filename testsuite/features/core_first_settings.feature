@@ -64,7 +64,7 @@ Feature: Very first settings
 
   Scenario: Check services which should run
     Then service "atftpd" is enabled on "server"
-    And service "atftpd" is running on "server"
+    And service "atftpd" is active on "server"
     And service "auditlog-keeper" is enabled on "server"
     And service "auditlog-keeper" is active on "server"
     And service "cobblerd" is enabled on "server"
