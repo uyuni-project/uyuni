@@ -601,7 +601,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setRelease("9");
         s.setSecret("12345678901234567890123456789012");
         s.setAutoUpdate("N");
-        s.setLastBoot(new Long(System.currentTimeMillis()));
+        s.setLastBoot(System.currentTimeMillis() / 1000);
         s.setServerArch(ServerFactory.lookupServerArchByLabel("i386-redhat-linux"));
         s.setCreated(new Date());
         s.setModified(new Date());
