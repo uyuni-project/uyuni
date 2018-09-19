@@ -84,7 +84,7 @@ Feature: Register a Salt minion via XML-RPC API
     When I wait until no Salt job is running on "sle-minion"
     And I enable repositories before installing Docker
     And I apply highstate on "sle-minion"
-    And I wait until "docker" service is up and running on "sle-minion"
+    And I wait until "docker" service is active on "sle-minion"
     And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle-minion"
     And I disable repositories after installing Docker
 
