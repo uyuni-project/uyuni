@@ -459,7 +459,8 @@ SELECT ES.id, S.name, 1 as selectable
 select * from (
   SELECT  DISTINCT S.id AS ID,
           S.name AS NAME,
-          INFO.checkin AS LAST_CHECKIN
+          INFO.checkin AS LAST_CHECKIN,
+          S.last_boot AS LAST_BOOT
     FROM  rhnServer S, rhnUserServerPerms USP, rhnServerInfo INFO
    WHERE  USP.user_id = :user_id
      AND  S.id = USP.server_id
@@ -474,7 +475,8 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
 select * from (
   SELECT  DISTINCT S.id AS ID,
           S.name AS NAME,
-          INFO.checkin AS LAST_CHECKIN
+          INFO.checkin AS LAST_CHECKIN,
+          S.last_boot AS LAST_BOOT
     FROM  rhnServer S, rhnUserServerPerms USP, rhnServerInfo INFO
    WHERE  USP.user_id = :user_id
      AND  S.id = USP.server_id
@@ -490,7 +492,8 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
 select * from (
   SELECT  DISTINCT S.id AS ID,
           S.name AS NAME,
-          INFO.checkin AS LAST_CHECKIN
+          INFO.checkin AS LAST_CHECKIN,
+          S.last_boot AS LAST_BOOT
     FROM  rhnServer S, rhnUserServerPerms USP, rhnServerInfo INFO
    WHERE  USP.user_id = :user_id
      AND  S.id = USP.server_id
