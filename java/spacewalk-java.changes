@@ -1,3 +1,4 @@
+- Change Saltboot grain trigger from "initrd" to "saltboot_initrd"
 - Optimize execution of actions in minions (bsc#1099857)
 - add last_boot to listSystems() API call
 - Changed localization strings for file summaries (bsc#1090676)

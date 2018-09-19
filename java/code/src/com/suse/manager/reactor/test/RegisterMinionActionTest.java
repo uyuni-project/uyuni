@@ -958,7 +958,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                             .map(map -> {
-                                map.put("initrd", true);
+                                map.put("saltboot_initrd", true);
                                 map.put("manufacturer", "QEMU");
                                 map.put("productname", "CashDesk01");
                                 map.put("minion_id_prefix", "Branch001");
@@ -1000,7 +1000,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         allowing(saltServiceMock).getGrains(MINION_ID);
                         will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                                 .map(map -> {
-                                    map.put("initrd", true);
+                                    map.put("saltboot_initrd", true);
                                     map.put("manufacturer", "QEMU");
                                     map.put("productname", "CashDesk01");
                                     map.put("minion_id_prefix", "Branch001");
@@ -1043,7 +1043,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         allowing(saltServiceMock).getGrains(MINION_ID);
                         will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                                 .map(map -> {
-                                    map.put("initrd", true);
+                                    map.put("saltboot_initrd", true);
                                     map.put("manufacturer", "QEMU");
                                     map.put("productname", "CashDesk01");
                                     map.put("minion_id_prefix", "Branch001");
@@ -1084,7 +1084,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                             .map(map -> {
-                                map.put("initrd", true);
+                                map.put("saltboot_initrd", true);
                                 map.put("manufacturer", "QEMU");
                                 map.put("productname", "CashDesk01");
                                 map.put("minion_id_prefix", "Branch001");
@@ -1130,7 +1130,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         allowing(saltServiceMock).getGrains(MINION_ID);
                         will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                                 .map(map -> {
-                                    map.put("initrd", true);
+                                    map.put("saltboot_initrd", true);
                                     map.put("manufacturer", "QEMU");
                                     map.put("productname", "CashDesk01");
                                     map.put("minion_id_prefix", "Branch001");
@@ -1189,7 +1189,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, key)
                             .map(map -> {
-                                map.put("initrd", false);
+                                map.put("saltboot_initrd", false);
                                 map.put("manufacturer", "QEMU");
                                 map.put("productname", "CashDesk02");
                                 map.put("minion_id_prefix", "Branch001");
@@ -1282,7 +1282,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                             .map(map -> {
-                                map.put("initrd", false);
+                                map.put("saltboot_initrd", false);
                                 map.put("manufacturer", "QEMU");
                                 map.put("productname", "CashDesk02");
                                 map.put("minion_id_prefix", "Branch001");
@@ -1322,7 +1322,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                             .map(map -> {
-                                map.put("initrd", false);
+                                map.put("saltboot_initrd", false);
                                 map.put("manufacturer", "QEMU");
                                 map.put("productname", "CashDesk02");
                                 map.put("minion_id_prefix", "Branch001");
@@ -1385,7 +1385,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                             .map(map -> {
-                                map.put("initrd", false);
+                                map.put("saltboot_initrd", false);
                                 map.put("manufacturer", "QEMU");
                                 map.put("productname", "CashDesk02");
                                 map.put("minion_id_prefix", "Branch001");

@@ -204,10 +204,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // This way we don't need to call grains for each register minion event.
             if (isRetailMinion(registeredMinion)) {
                 ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-                grains.getOptionalAsBoolean("initrd").ifPresent(initrd -> {
-                    // if we have the "initrd" grain we want to re-deploy an image via saltboot,
+                grains.getOptionalAsBoolean("saltboot_initrd").ifPresent(initrd -> {
+                    // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
                     // otherwise the image has been already fully deployed and we want to finalize the registration
-                    LOG.info("\"initrd\" present for minion " + minionId);
+                    LOG.info("\"saltboot_initrd\" present for minion " + minionId);
 
                     if (initrd) {
                         LOG.info("Applying saltboot for minion " + minionId);
@@ -334,8 +334,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             activationKey.ifPresent(ak -> applyActivationKey(ak, server, grains));
 
             // Saltboot treatment - prepare and apply saltboot
-            if (grains.getOptionalAsBoolean("initrd").orElse(false)) {
-                LOG.info("\"initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
+            if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
+                LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
                 prepareRetailMinionForSaltboot(minionServer, org, grains);
                 applySaltboot(minionServer);
                 migrateMinionFormula(minionId, originalMinionId);
