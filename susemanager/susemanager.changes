@@ -1,3 +1,5 @@
+- add support for postgresql10 (FATE#325659)
+
 -------------------------------------------------------------------
 Mon Sep 10 10:23:51 CEST 2018 - jgonzalez@suse.com
 
