@@ -57,56 +57,56 @@ spacewalk-service stop
 systemctl stop postgresql
 
 echo "`date +"%H:%M:%S"`   Checking postgresql version..."
-rpm -q postgresql96-server > /dev/null 2>&1
+rpm -q postgresql10-server > /dev/null 2>&1
 if [ $? -eq 0 ]; then
-    echo "`date +"%H:%M:%S"`   postgresql 9.6 is already installed. Good."
+    echo "`date +"%H:%M:%S"`   postgresql 10 is already installed. Good."
 else
-    echo "`date +"%H:%M:%S"`   Installing postgresql 9.6..."
-    zypper --non-interactive in postgresql96 postgresql96-contrib postgresql96-server
+    echo "`date +"%H:%M:%S"`   Installing postgresql 10..."
+    zypper --non-interactive in postgresql10 postgresql10-contrib postgresql10-server
 
     if [ ! $? -eq 0 ]; then
-        echo "`date +"%H:%M:%S"`   Installation of postgresql 9.6 failed!"
+        echo "`date +"%H:%M:%S"`   Installation of postgresql 10 failed!"
         exit 1
     fi
 fi
 
-echo "`date +"%H:%M:%S"`   Ensure postgresql 9.6 is being used as default..."
-/usr/sbin/update-alternatives --set postgresql /usr/lib/postgresql96
+echo "`date +"%H:%M:%S"`   Ensure postgresql 10 is being used as default..."
+/usr/sbin/update-alternatives --set postgresql /usr/lib/postgresql10
 if [ $? -eq 0 ]; then
-    echo "`date +"%H:%M:%S"`   Successfully switched to new postgresql version 9.6."
+    echo "`date +"%H:%M:%S"`   Successfully switched to new postgresql version 10."
 else
-    echo "`date +"%H:%M:%S"`   Could not switch to new postgresql version 9.6!"
+    echo "`date +"%H:%M:%S"`   Could not switch to new postgresql version 10!"
     exit 1
 fi
 
 echo "`date +"%H:%M:%S"`   Create new database directory..."
-mv /var/lib/pgsql/data /var/lib/pgsql/data-pg94
+mv /var/lib/pgsql/data /var/lib/pgsql/data-pg96
 mkdir /var/lib/pgsql/data
 chown postgres:postgres /var/lib/pgsql/data
 
-echo "`date +"%H:%M:%S"`   Initialize new postgresql 9.6 database..."
+echo "`date +"%H:%M:%S"`   Initialize new postgresql 10 database..."
 su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data"
 if [ $? -eq 0 ]; then
-    echo "`date +"%H:%M:%S"`   Successfully initialized new postgresql 9.6 database."
+    echo "`date +"%H:%M:%S"`   Successfully initialized new postgresql 10 database."
 else
-    echo "`date +"%H:%M:%S"`   Initialization of new postgresql 9.6 database failed!"
+    echo "`date +"%H:%M:%S"`   Initialization of new postgresql 10 database failed!"
     echo "`date +"%H:%M:%S"`   Trying to restore previous state..."
     mv /var/lib/pgsql/data /var/lib/pgsql/data-new-failed
-    mv /var/lib/pgsql/data-pg94 /var/lib/pgsql/data
-    /usr/sbin/update-alternatives --set postgresql /usr/lib/postgresql94
+    mv /var/lib/pgsql/data-pg96 /var/lib/pgsql/data
+    /usr/sbin/update-alternatives --set postgresql /usr/lib/postgresql96
     exit 1
 fi
 
-echo "`date +"%H:%M:%S"`   Upgrade database to new version postgresql 9.6..."
-su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql94/bin --new-bindir=/usr/lib/postgresql96/bin --old-datadir=/var/lib/pgsql/data-pg94 --new-datadir=/var/lib/pgsql/data --retain $FAST_UPGRADE"
+echo "`date +"%H:%M:%S"`   Upgrade database to new version postgresql 10..."
+su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql96/bin --new-bindir=/usr/lib/postgresql10/bin --old-datadir=/var/lib/pgsql/data-pg96 --new-datadir=/var/lib/pgsql/data $FAST_UPGRADE"
 if [ $? -eq 0 ]; then
-    echo "`date +"%H:%M:%S"`   Successfully upgraded database to postgresql 9.6."
+    echo "`date +"%H:%M:%S"`   Successfully upgraded database to postgresql 10."
 else
-    echo "`date +"%H:%M:%S"`   Upgrading database to version 9.6 failed!"
+    echo "`date +"%H:%M:%S"`   Upgrading database to version 10 failed!"
     echo "`date +"%H:%M:%S"`   Trying to restore previous state..."
     mv /var/lib/pgsql/data /var/lib/pgsql/data-new-failed
-    mv /var/lib/pgsql/data-pg94 /var/lib/pgsql/data
-    /usr/sbin/update-alternatives --set postgresql /usr/lib/postgresql94
+    mv /var/lib/pgsql/data-pg96 /var/lib/pgsql/data
+    /usr/sbin/update-alternatives --set postgresql /usr/lib/postgresql96
     exit 1
 fi
 
@@ -119,7 +119,7 @@ else
     exit 1
 fi
 
-cp /var/lib/pgsql/data-pg94/pg_hba.conf /var/lib/pgsql/data
+cp /var/lib/pgsql/data-pg96/pg_hba.conf /var/lib/pgsql/data
 chown postgres:postgres /var/lib/pgsql/data/*
 
 echo "`date +"%H:%M:%S"`   Starting spacewalk services..."
@@ -128,7 +128,7 @@ spacewalk-service start
 
 if [ $BACKUP_CONFIGURED -eq 1 ]; then
     echo
-    echo "It seems database backups via smdba had been configured for postgresql 9.4."
+    echo "It seems database backups via smdba had been configured for postgresql 9.6."
     echo "Please re-configure backup for new database version!"
     echo
 fi
