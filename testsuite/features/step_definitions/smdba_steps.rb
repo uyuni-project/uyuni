@@ -74,19 +74,16 @@ Then(/^I issue command "(.*?)"$/) do |cmd|
   $output = sshcmd(cmd, ignore_err: true)
 end
 
-Then(/^I find tablespaces "(.*?)" and "(.*?)"$/) do |suma_ts, pg_ts|
-  assert_includes($output[:stdout], suma_ts)
-  assert_includes($output[:stdout], pg_ts)
+Then(/^tablespace "([^"]*)" should be listed$/) do |ts|
+  assert_includes($output[:stdout], ts)
 end
 
-Then(/^I find core examination is "(.*?)", database analysis is "(.*?)" and space reclamation is "(.*?)"$/) do |_arg1, _arg2, _arg3|
-  refute_includes($output[:stdout], 'failed')
+Then(/^none of core examination, database analysis, and space reclamation should be "([^"]*)"$/) do |state|
+  refute_includes($output[:stdout], state)
 end
 
-Then(/^I find "(.*?)", "(.*?)" and "(.*?)" are in the list$/) do |rhn_tbl, rhn1_tbl, suse_tbl|
-  [rhn_tbl, rhn1_tbl, suse_tbl].each do |tbl|
-    assert_includes($output[:stdout], tbl)
-  end
+Then(/^table "([^"]*)" should be listed$/) do |tbl|
+  assert_includes($output[:stdout], tbl)
 end
 
 #
