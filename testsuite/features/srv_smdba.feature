@@ -44,7 +44,8 @@ Feature: SMBDA database helper tool
   Scenario: Check database utilities
     Given a postgresql database is running
     When I issue command "smdba space-overview"
-    Then I find tablespaces "susemanager" and "template0"
+    Then I find tablespaces "susemanager" and "template"
+    And I find tablespaces "susemanager" and "postgres"
     When I issue command "smdba space-reclaim"
     Then I find core examination is "finished", database analysis is "done" and space reclamation is "done"
     When I issue command "smdba space-tables"
@@ -80,6 +81,7 @@ Feature: SMBDA database helper tool
     And when I issue command "smdba backup-hot"
     And when in the database I create dummy table "dummy" with column "test" and value "bogus data"
     And I destroy "/var/lib/pgsql/data/pg_xlog" directory on server
+    And I destroy "/var/lib/pgsql/data/pg_wal" directory on server
     And when I restore database from the backup
     And when I issue command "smdba db-status"
     Given a postgresql database is running
