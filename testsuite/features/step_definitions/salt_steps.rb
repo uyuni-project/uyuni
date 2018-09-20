@@ -202,12 +202,12 @@ When(/^I click on run$/) do
   end
 end
 
-When(/^I should see "(.*)" hostname$/) do |host|
+Then(/^I should see "(.*)" hostname$/) do |host|
   node = get_target(host)
   raise unless page.has_content?(node.full_hostname)
 end
 
-When(/^I should not see "(.*)" hostname$/) do |host|
+Then(/^I should not see "(.*)" hostname$/) do |host|
   node = get_target(host)
   raise if page.has_content?(node.full_hostname)
 end
@@ -217,11 +217,11 @@ When(/^I expand the results for "(.*)"$/) do |host|
   find("div[id='#{node.full_hostname}']").click
 end
 
-Then(/^I enter command "([^"]*)"$/) do |cmd|
+When(/^I enter command "([^"]*)"$/) do |cmd|
   fill_in 'command', with: cmd
 end
 
-Then(/^I enter target "([^"]*)"$/) do |minion|
+When(/^I enter target "([^"]*)"$/) do |minion|
   fill_in 'target', with: minion
 end
 
@@ -285,7 +285,7 @@ When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package
   $server.run("zypper --non-interactive remove #{package}-formula")
 end
 
-When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
+When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
@@ -298,13 +298,13 @@ When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
   end
 end
 
-Then(/^the "([^"]*)" formula should be ([^"]*)$/) do |formula, action|
+Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'checked'
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'unchecked'
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'checked'
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   raise "Checkbox is not #{action}" if all(:xpath, xpath_query).any?
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'checked'
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'unchecked'
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
   assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
 end
 
