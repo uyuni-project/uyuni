@@ -25,6 +25,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Optional.empty;
+
 
 public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
@@ -32,7 +34,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testVisibilityForNoRoles() {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet());
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
 
         assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
@@ -42,7 +44,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testVisibilityForWrongRoles() {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
 
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
@@ -52,7 +54,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testUpdateReadFlag() {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet());
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
 
         List<UserNotification> unread = UserNotificationFactory.listUnreadByUser(user);
 

@@ -16,6 +16,7 @@ package com.suse.manager.reactor.messaging;
 
 import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -153,29 +154,52 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         registerMinion(minionId, true, proxyId, activationKeyOverride);
     }
 
+
     /**
      * Performs minion registration.
      *
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
-     * @param activationKeyOverride label of activation key to be applied to the system.
+     * @param actKeyOverride label of activation key to be applied to the system.
      *                              If left empty, activation key from grains will be used.
      */
     private void registerMinion(String minionId, boolean isSaltSSH,
                                 Optional<Long> saltSSHProxyId,
-                                Optional<String> activationKeyOverride) {
-        // Match minions via their machine id
-        Optional<String> optMachineId = SALT_SERVICE.getMachineId(minionId);
-        if (!optMachineId.isPresent()) {
-            LOG.info("Cannot find machine id for minion: " + minionId);
-            return;
-        }
-        //FIXME: refactor this whole function so we don't have to call get
-        //in so many places.
-        String machineId = optMachineId.get();
-        MinionServer minionServer;
-        Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
+                                Optional<String> actKeyOverride) {
 
+        // Match minions via their machine id
+        Opt.fold(SALT_SERVICE.getMachineId(minionId),
+            () -> {
+                LOG.info("Cannot find machine id for minion: " + minionId);
+                return false;
+            },
+            machineId -> {
+                Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
+                if (checkIfMinionAlreadyRegistered(minionId, machineId, creator, isSaltSSH)) {
+                    return true;
+                }
+                // Check if this minion id already exists
+                if (duplicateMinionNamePresent(minionId)) {
+                    return false;
+                }
+                finalizeMinionRegistration(minionId, machineId, creator, saltSSHProxyId, actKeyOverride, isSaltSSH);
+                return true;
+            }
+        );
+    }
+
+    /**
+     * Check if a minion is already registered and update it in case so
+     * @param minionId the minion id
+     * @param machineId the machine id that we are trying to register
+     * @param creator the optional User that created the minion
+     * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     * @return true if minion already registered, false otherwise
+     */
+    public boolean checkIfMinionAlreadyRegistered(String minionId,
+                                                  String machineId,
+                                                  Optional<User> creator,
+                                                  boolean isSaltSSH) {
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
             MinionServer registeredMinion = optMinion.get();
@@ -218,63 +242,64 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     }
                 });
             }
-
-            return;
+            return true;
         }
+        return false;
+    }
 
-        if (duplicateMinionNamePresent(minionId)) {
-            return;
+    /**
+     * Complete the minion registration with information from grains
+     * @param minionId the minion id
+     * @param machineId the machine id that we are trying to register
+     * @param creator the optional User that created the minion
+     * @param saltSSHProxyId optional proxy id for saltssh in case it is used
+     * @param activationKeyOverride optional label of activation key to be applied to the system
+     * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     */
+    public void finalizeMinionRegistration(String minionId,
+                                           String machineId,
+                                           Optional<User> creator,
+                                           Optional<Long> saltSSHProxyId,
+                                           Optional<String> activationKeyOverride,
+                                           boolean isSaltSSH) {
+
+        MinionServer minion = migrateTraditionalOrGetNew(minionId,
+                isSaltSSH, activationKeyOverride, machineId);
+        boolean isNewMinion = minion.getId() == null;
+
+        minion.setMachineId(machineId);
+        minion.setMinionId(minionId);
+        minion.setName(minionId);
+        minion.setDigitalServerId(machineId);
+
+        ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
+        Optional<String> activationKeyLabel = getActivationKeyLabelFromGrains(grains, activationKeyOverride);
+        Optional<ActivationKey> activationKey = activationKeyLabel.map(ActivationKeyFactory::lookupByKey);
+
+
+        Org org = activationKey.map(ActivationKey::getOrg)
+                .orElse(creator.map(User::getOrg)
+                        .orElse(OrgFactory.getSatelliteOrg()));
+        if (minion.getOrg() == null) {
+            minion.setOrg(org);
         }
-
-        Org org = null;
+        else if (!minion.getOrg().equals(org)) {
+            // only log activation key ignore message when the activation key is not empty
+            String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
+            LOG.error("The existing server organization (" + minion.getOrg() + ") does not match the " +
+                    "organization selected for registration (" + org + "). Keeping the " +
+                    "existing server organization. " + ignoreAKMessage);
+            activationKey = Optional.empty();
+            org = minion.getOrg();
+            addHistoryEvent(minion, "Invalid Server Organization",
+                    "The existing server organization (" + minion.getOrg() + ") does not match the " +
+                            "organization selected for registration (" + org + "). Keeping the " +
+                            "existing server organization. " + ignoreAKMessage);
+        }
 
         try {
-            minionServer = migrateTraditionalOrGetNew(minionId,
-                    isSaltSSH, activationKeyOverride, machineId);
-            boolean isNewMinion = minionServer.getId() == null;
-
-            MinionServer server = minionServer;
-
-            server.setMachineId(machineId);
-            server.setMinionId(minionId);
-            server.setName(minionId);
-            server.setDigitalServerId(machineId);
-
-            ValueMap grains = new ValueMap(
-                    SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-
-
-            //apply activation key properties that can be set before saving the server
-            Optional<String> activationKeyFromGrains = grains
-                    .getMap("susemanager")
-                    .flatMap(suma -> suma.getOptionalAsString("activation_key"));
-            Optional<String> activationKeyLabel = activationKeyOverride.isPresent() ?
-                    activationKeyOverride : activationKeyFromGrains;
-            Optional<ActivationKey> activationKey = activationKeyLabel
-                    .map(ActivationKeyFactory::lookupByKey);
-
-            org = activationKey.map(ActivationKey::getOrg)
-                    .orElse(creator.map(User::getOrg)
-                            .orElse(OrgFactory.getSatelliteOrg()));
-            if (server.getOrg() == null) {
-                server.setOrg(org);
-            }
-            else if (!server.getOrg().equals(org)) {
-                // only log activation key ignore message when the activation key is not empty
-                String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
-                LOG.error("The existing server organization (" + server.getOrg() + ") does not match the " +
-                        "organization selected for registration (" + org + "). Keeping the " +
-                        "existing server organization. " + ignoreAKMessage);
-                activationKey = Optional.empty();
-                org = server.getOrg();
-                addHistoryEvent(server, "Invalid Server Organization",
-                        "The existing server organization (" + server.getOrg() + ") does not match the " +
-                        "organization selected for registration (" + org + "). Keeping the " +
-                        "existing server organization. " + ignoreAKMessage);
-            }
-
             // Set creator to the user who accepted the key if available
-            server.setCreator(creator.orElse(null));
+            minion.setCreator(creator.orElse(null));
 
             String osfullname = grains.getValueAsString("osfullname");
             String osfamily = grains.getValueAsString("os_family");
@@ -283,95 +308,52 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             String kernelrelease = grains.getValueAsString("kernelrelease");
             String osarch = grains.getValueAsString("osarch");
 
-            server.setOs(osfullname);
-            server.setOsFamily(osfamily);
-            server.setRelease(osrelease);
-            server.setRunningKernel(kernelrelease);
-            server.setSecret(RandomStringUtils.randomAlphanumeric(64));
-            server.setAutoUpdate("N");
-            server.setLastBoot(System.currentTimeMillis() / 1000);
-            server.setCreated(new Date());
-            server.setModified(server.getCreated());
-            server.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
-            server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
+            minion.setOs(osfullname);
+            minion.setOsFamily(osfamily);
+            minion.setRelease(osrelease);
+            minion.setRunningKernel(kernelrelease);
+            minion.setSecret(RandomStringUtils.randomAlphanumeric(64));
+            minion.setAutoUpdate("N");
+            minion.setLastBoot(System.currentTimeMillis() / 1000);
+            minion.setCreated(new Date());
+            minion.setModified(minion.getCreated());
+            minion.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
+            minion.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
 
-            server.setServerArch(
+            minion.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            subscribeMinionToChannels(minionId, server, grains, activationKey, activationKeyLabel);
+            subscribeMinionToChannels(minionId, minion, grains, activationKey, activationKeyLabel);
 
-            server.updateServerInfo();
+            minion.updateServerInfo();
 
-            mapHardwareGrains(server, grains);
+            mapHardwareGrains(minion, grains);
 
             String master = SALT_SERVICE
                     .getMasterHostname(minionId)
                     .orElseThrow(() -> new SaltException(
                             "master not found in minion configuration"));
 
-            setServerPaths(server, master, isSaltSSH, saltSSHProxyId);
+            setServerPaths(minion, master, isSaltSSH, saltSSHProxyId);
 
-            ServerFactory.save(server);
-            giveCapabilities(server);
+            ServerFactory.save(minion);
+            giveCapabilities(minion);
 
             // Assign the Salt base entitlement by default
-            server.setBaseEntitlement(EntitlementManager.SALT);
+            minion.setBaseEntitlement(EntitlementManager.SALT);
 
-            // apply activation key properties that need to be set after saving the server
-            activationKey.ifPresent(ak -> {
-                ak.getToken().getActivatedServers().add(server);
-                ActivationKeyFactory.save(ak);
-
-                ak.getServerGroups().forEach(group -> {
-                    ServerFactory.addServerToGroup(server, group);
-                });
-
-                ServerStateRevision serverStateRevision = new ServerStateRevision();
-                serverStateRevision.setServer(server);
-                serverStateRevision.setCreator(ak.getCreator());
-                serverStateRevision.setPackageStates(
-                    ak.getPackages().stream()
-                            .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
-                            .map(tp -> {
-                        PackageState state = new PackageState();
-                        state.setArch(tp.getPackageArch());
-                        state.setName(tp.getPackageName());
-                        state.setPackageState(PackageStates.INSTALLED);
-                        state.setVersionConstraint(VersionConstraints.ANY);
-                        state.setStateRevision(serverStateRevision);
-                        return state;
-                    }).collect(Collectors.toSet())
-                );
-                StateFactory.save(serverStateRevision);
-
-                // Set additional entitlements, if any
-                Set<Entitlement> validEntits = server.getOrg()
-                        .getValidAddOnEntitlementsForOrg();
-                ak.getToken().getEntitlements().forEach(sg -> {
-                    Entitlement e = sg.getAssociatedEntitlement();
-                    if (validEntits.contains(e) &&
-                        e.isAllowedOnServer(server, grains) &&
-                        SystemManager.canEntitleServer(server, e)) {
-                        ValidatorResult vr = SystemManager.entitleServer(server, e);
-                        if (vr.getWarnings().size() > 0) {
-                            LOG.warn(vr.getWarnings().toString());
-                        }
-                        if (vr.getErrors().size() > 0) {
-                            LOG.error(vr.getErrors().toString());
-                        }
-                    }
-                });
-            });
+            // apply activation key properties that need to be set after saving the minion
+            activationKey.ifPresent(ak -> applyActivationKeyProperties(minion, ak, grains));
 
             // Saltboot treatment - prepare and apply saltboot
             if (isNewMinion && grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
                 LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
-                prepareRetailMinionForSaltboot(minionServer, org, grains);
-                applySaltboot(minionServer);
+                prepareRetailMinionForSaltboot(minion, org, grains);
+                applySaltboot(minion);
                 return;
             }
 
-            finishRegistration(server, activationKey, creator, !isSaltSSH);
+            finishRegistration(minion, activationKey, creator, !isSaltSSH);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
@@ -383,6 +365,74 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
         }
     }
+
+    /**
+     * Extract activation key label from grains
+     *
+     * @param grains
+     * @param activationKeyOverride optional label of activation key to be applied to the system
+     * @return
+     */
+    private Optional<String> getActivationKeyLabelFromGrains(ValueMap grains, Optional<String> activationKeyOverride) {
+        //apply activation key properties that can be set before saving the server
+        Optional<String> activationKeyFromGrains = grains
+                .getMap("susemanager")
+                .flatMap(suma -> suma.getOptionalAsString("activation_key"));
+        return activationKeyOverride.isPresent() ? activationKeyOverride : activationKeyFromGrains;
+    }
+
+    /**
+     * Apply activation key properties to server state
+     *
+     * @param server object representing the table rhnServer
+     * @param ak activation key
+     * @param grains map of minion grains
+     */
+    private void applyActivationKeyProperties(Server server, ActivationKey ak, ValueMap grains) {
+        ak.getToken().getActivatedServers().add(server);
+        ActivationKeyFactory.save(ak);
+
+        ak.getServerGroups().forEach(group -> {
+            ServerFactory.addServerToGroup(server, group);
+        });
+
+        ServerStateRevision serverStateRevision = new ServerStateRevision();
+        serverStateRevision.setServer(server);
+        serverStateRevision.setCreator(ak.getCreator());
+        serverStateRevision.setPackageStates(
+                ak.getPackages().stream()
+                        .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
+                        .map(tp -> {
+                            PackageState state = new PackageState();
+                            state.setArch(tp.getPackageArch());
+                            state.setName(tp.getPackageName());
+                            state.setPackageState(PackageStates.INSTALLED);
+                            state.setVersionConstraint(VersionConstraints.ANY);
+                            state.setStateRevision(serverStateRevision);
+                            return state;
+                        }).collect(Collectors.toSet())
+        );
+        StateFactory.save(serverStateRevision);
+
+        // Set additional entitlements, if any
+        Set<Entitlement> validEntits = server.getOrg()
+                .getValidAddOnEntitlementsForOrg();
+        ak.getToken().getEntitlements().forEach(sg -> {
+            Entitlement e = sg.getAssociatedEntitlement();
+            if (validEntits.contains(e) &&
+                    e.isAllowedOnServer(server, grains) &&
+                    SystemManager.canEntitleServer(server, e)) {
+                ValidatorResult vr = SystemManager.entitleServer(server, e);
+                if (vr.getWarnings().size() > 0) {
+                    LOG.warn(vr.getWarnings().toString());
+                }
+                if (vr.getErrors().size() > 0) {
+                    LOG.error(vr.getErrors().toString());
+                }
+            }
+        });
+    }
+
 
     private boolean isRetailMinion(MinionServer registeredMinion) {
         // for now, a retail minion is detected when it belongs to a compulsory "TERMINALS" group
@@ -935,7 +985,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     .entrySet()
                     .stream()
                     .findFirst()
-                    .map(e -> Optional.of(e.getValue()))
+                    .map(e -> of(e.getValue()))
                     .orElse(Optional.empty());
 
             osRelease = whatprovidesRes.flatMap(res -> res.fold(
@@ -943,7 +993,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             err2 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err3 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err4 -> rpmErrQueryRHELProvidesRelease(minionId)),
-                    r -> Optional.of(r.split("\\r?\\n")[0]) // Take the first line if multiple results return
+                    r -> of(r.split("\\r?\\n")[0]) // Take the first line if multiple results return
             ))
             .flatMap(pkgStr -> {
                 String[] pkgs = StringUtils.split(pkgStr);
@@ -963,7 +1013,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     }));
                 }
                 else {
-                    return Optional.of(pkgs[0]);
+                    return of(pkgs[0]);
                 }
             })
             .flatMap(pkg ->
@@ -979,7 +1029,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                         err2 -> rpmErrQueryRHELRelease(err2, minionId),
                                         err3 -> rpmErrQueryRHELRelease(err3, minionId),
                                         err4 -> rpmErrQueryRHELRelease(err4, minionId)),
-                                r -> Optional.of(r)
+                                r -> of(r)
                         ))
                         .map(result -> {
                             if (result.split("\\r?\\n").length > 3) {
@@ -1001,7 +1051,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                     .indexOf("system-release(releasever)");
                             if (idxReleasever > -1) {
                                 version = provideVersion.size() > idxReleasever ?
-                                        Optional.of(provideVersion.get(idxReleasever)) :
+                                        of(provideVersion.get(idxReleasever)) :
                                         Optional.empty();
                             }
                             return version;
@@ -1047,11 +1097,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 );
                 if (rme.org == null) {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.ORG_ADMIN));
+                            Collections.singleton(RoleFactory.ORG_ADMIN), empty());
                 }
                 else {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.ORG_ADMIN), rme.org);
+                            Collections.singleton(RoleFactory.ORG_ADMIN), of(rme.org));
                 }
             }
         };

@@ -25,12 +25,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
@@ -47,9 +46,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.session.SessionManager;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import org.hibernate.query.Query;
 
 /**
  * UserFactory  - the singleton class used to fetch and store
@@ -704,29 +701,19 @@ public  class UserFactory extends HibernateFactory {
     }
 
     /**
-     * Return a list of all users.
-     *
-     * @return list of users.
-     */
-    public List<User> findAllUsers() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<UserImpl> criteria = builder.createQuery(UserImpl.class);
-        criteria.from(UserImpl.class);
-        return getSession().createQuery(criteria).getResultList().stream()
-                .<User>map(Function.identity()).collect(Collectors.toList());
-    }
-
-    /**
      * Return a list of all User's who are in the given org.
      *
-     * @param inOrg Org to find users for.
+     * @param inOrg Optional Org to find users for.
      * @return list of users.
      */
-    public List<User> findAllUsers(Org inOrg) {
-        Session session = HibernateFactory.getSession();
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org_id", inOrg.getId());
-        return listObjectsByNamedQuery("User.findAllUsersByOrg", params);
+    public List<User> findAllUsers(Optional<Org> inOrg) {
+        Map<String, Object> params = new HashMap<>();
+        return Opt.fold(inOrg,
+            () -> listObjectsByNamedQuery("User.getAllUsers", params),
+            org -> {
+                params.put("org_id", org.getId());
+                return listObjectsByNamedQuery("User.findAllUsersByOrg", params);
+            });
     }
 
     /**

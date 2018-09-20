@@ -116,39 +116,11 @@ public class UserNotificationFactory extends HibernateFactory {
      * @param org org users need to be in to see the notification.
      */
     public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn,
-        Set<Role> rolesIn, Org org) {
+        Set<Role> rolesIn, Optional<Org> org) {
         // only users in the current Org
         // do not create notifications for non active users
         // only users with one role in the roles
         Stream<User> allUsers = UserFactory.getInstance().findAllUsers(org).stream()
-                .filter(user -> !user.isDisabled());
-
-        if (rolesIn.isEmpty()) {
-            storeForUsers(notificationMessageIn, allUsers.collect(Collectors.toSet()));
-        }
-        else {
-            storeForUsers(
-                    notificationMessageIn,
-                    allUsers.filter(user -> !Collections.disjoint(user.getRoles(), rolesIn)).collect(Collectors.toSet())
-            );
-        }
-
-        // Update Notification WebSocket Sessions right now
-        Notification.spreadUpdate();
-    }
-
-    /**
-     * Store {@link NotificationMessage} to the database.
-     *
-     * @param notificationMessageIn notificationMessage
-     * @param rolesIn the user roles the message is visible for
-     */
-    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Set<Role> rolesIn) {
-
-        // only users in the current Org
-        // do not create notifications for non active users
-        // only users with one role in the roles
-        Stream<User> allUsers = UserFactory.getInstance().findAllUsers().stream()
                 .filter(user -> !user.isDisabled());
 
         if (rolesIn.isEmpty()) {
