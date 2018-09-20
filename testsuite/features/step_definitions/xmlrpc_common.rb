@@ -453,16 +453,16 @@ Then(/^there should be no more my action chain$/) do
   refute_includes(rpc.list_chains, $chain_label)
 end
 
-Then(/^I wait until no more action chains$/) do
+When(/^I wait until there are no more action chains$/) do
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if rpc.list_chains.empty?
         sleep(2)
       end
     end
   rescue Timeout::Error
-    raise unless file_exists?(node, file)
+    raise unless rpc.list_chains.empty?
   end
 end
 
