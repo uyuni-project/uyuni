@@ -23,8 +23,9 @@ Feature: The Setup Wizard
 
   Scenario: Play with the products page
     Given I am on the Admin page
-    When I follow "SUSE Products" in the content area
-    And I refresh SCC
+    # Order matters here, refresh first
+    When I refresh SCC
+    And I follow "SUSE Products" in the content area
     And I wait until I see "Product Description" text
     And I should see a "Arch" text
     And I should see a "Channels" text
