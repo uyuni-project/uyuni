@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Used for syncing repos (like yum repos) to a channel.
@@ -76,11 +77,11 @@ public class RepoSyncTask extends RhnJavaJob {
                     );
                     if (channel.getOrg() == null) {
                         UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                                Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
                     }
                     else {
                         UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), channel.getOrg());
+                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.of(channel.getOrg()));
                     }
 
 
@@ -91,11 +92,11 @@ public class RepoSyncTask extends RhnJavaJob {
                 );
                 if (channel.getOrg() == null) {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
                 }
                 else {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), channel.getOrg());
+                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.of(channel.getOrg()));
                 }
             }
             else {

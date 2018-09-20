@@ -24,6 +24,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 
 import javax.security.auth.login.LoginException;
 
@@ -647,7 +648,7 @@ public class UserManager extends BaseManager {
             pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.userlist"));
             throw pex;
         }
-        return UserFactory.getInstance().findAllUsers(user.getOrg());
+        return UserFactory.getInstance().findAllUsers(Optional.of(user.getOrg()));
     }
 
     /**
