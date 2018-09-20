@@ -489,14 +489,14 @@ end
 
 Then(/^I wait until no more scheduled actions$/) do
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if scdrpc.list_in_progress_actions.empty?
         sleep(2)
       end
     end
   rescue Timeout::Error
-    raise unless file_exists?(node, file)
+    raise unless scdrpc.list_in_progress_actions.empty?
   end
 end
 
