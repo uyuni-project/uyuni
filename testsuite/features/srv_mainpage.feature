@@ -20,12 +20,13 @@ Feature: Main landing page options and preferences
     And I follow "Copyright Notice"
     Then I should see a "Copyright (c) 2011 - 2018 SUSE LLC." text
 
+  @susemanager
   Scenario: Access the EULA
     Given I am not authorized
     When I go to the home page
     And I follow "Copyright Notice"
     And I follow "SUSE MANAGER LICENSE AGREEMENT"
-    Then I should see a "$PRODUCT License Agreement" text
+    Then I should see a "SUSE Manager License Agreement" text
 
   Scenario: Log into SUSE Manager
     Given I am not authorized

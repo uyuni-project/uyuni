@@ -96,3 +96,4 @@ $sle15_minion = minion_is_sle15
 $private_net = !ENV['PRIVATENET'].nil?
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']
+$product = product

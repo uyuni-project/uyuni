@@ -55,7 +55,7 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
-  text.gsub! '$PRODUCT', product
+  text.gsub! '$PRODUCT', $product
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
@@ -419,7 +419,7 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  text.gsub! '$PRODUCT', product
+  text.gsub! '$PRODUCT', $product
   unless page.has_content?(text)
     sleep 2
     raise unless page.has_content?(text)

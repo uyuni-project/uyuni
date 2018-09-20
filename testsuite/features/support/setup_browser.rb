@@ -84,6 +84,11 @@ Before('@no_mirror') do |scenario|
   scenario.skip_invoke! if $mirror
 end
 
+# do some tests only if the server is using SUSE Manager
+Before('@susemanager') do |scenario|
+  scenario.skip_invoke! unless $product == 'SUSE Manager'
+end
+
 # have more infos about the errors
 def debug_server_on_realtime_failure
   puts

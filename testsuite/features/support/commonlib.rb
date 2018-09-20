@@ -33,12 +33,10 @@ def count_table_items
   items_label.split('of ')[1]
 end
 
-# Define the product name, depending on the environment variable
-# PRODUCT
 def product
-  if ENV['PRODUCT'] == 'Uyuni' || ENV['PRODUCT'] == 'SUSE Manager'
-    ENV['PRODUCT']
-  else
-    'SUSE Manager'
-  end
+  _product_raw, code = $server.run('rpm -q patterns-uyuni_server')
+  return 'Uyuni' if code.zero?
+  _product_raw, code = $server.run('rpm -q patterns-suma_server')
+  return 'SUSE Manager' if code.zero?
+  raise 'Could not determine product'
 end

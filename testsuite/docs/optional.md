@@ -103,6 +103,18 @@ Inside of the testsuite, the scenarios that are tagged with
 ```
 are executed only if the minion is a SLE 15 system.
 
+### Testing Uyuni
+
+The test suite will determine automatically whether your server
+is running Uyuni or SUSE Manager
+
+Inside the testsuite, the scenarios that are tagged with
+
+```
+@susemanager
+```
+are executed only if the server has SUSE Manager installed and will
+not run if Uyuni is detected.
 
 ### Testing with a mirror
 
