@@ -44,12 +44,15 @@ Feature: SMBDA database helper tool
   Scenario: Check database utilities
     Given a postgresql database is running
     When I issue command "smdba space-overview"
-    Then I find tablespaces "susemanager" and "template"
-    And I find tablespaces "susemanager" and "postgres"
+    Then tablespace "susemanager" should be listed
+    And tablespace "template" should be listed
+    And tablespace "postgres" should be listed
     When I issue command "smdba space-reclaim"
-    Then I find core examination is "finished", database analysis is "done" and space reclamation is "done"
+    Then none of core examination, database analysis and space reclamation should be "failed"
     When I issue command "smdba space-tables"
-    Then I find "public.rhnserver", "public.rhnpackage" and "public.web_contact" are in the list
+    Then table "public.rhnserver" should be listed
+    And table "public.rhnpackage" should be listed
+    And table "public.web_contact" should be listed
 
   Scenario: Check SMDBA backup setup facility
     Given a postgresql database is running
