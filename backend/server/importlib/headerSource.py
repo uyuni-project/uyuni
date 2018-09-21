@@ -232,7 +232,7 @@ class rpmBinaryPackage(Package, rpmPackage):
 
         # Now create the array of objects
         if self[tag] is None:
-	  self[tag] = []
+            self[tag] = []
 
         unique_deps = []
         for i in range(itemcount):
@@ -249,7 +249,7 @@ class rpmBinaryPackage(Package, rpmPackage):
 
             # for the old weak dependency tags
             # RPMSENSE_STRONG(1<<27) indicate recommends; if not set it is suggests only
-	    if Class in [rpmOldRecommends, rpmOldSupplements, rpmOldSuggests, rpmOldEnhances]:
+            if Class in [rpmOldRecommends, rpmOldSupplements, rpmOldSuggests, rpmOldEnhances]:
                 if tag in ['recommends', 'supplements'] and not(hash['flags'] & (1 << 27)):
                     continue
                 if tag in ['suggests', 'enhances'] and (hash['flags'] & (1 << 27)):

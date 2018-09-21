@@ -66,19 +66,19 @@ class SuseData:
   def add_suse_products(self, suse_products):
       log_debug(1, suse_products)
       if not isinstance(suse_products, dict):
-	  log_error("argument type is not  hash: %s" % suse_products)
-	  raise TypeError("This function requires a hash as an argument")
+          log_error("argument type is not  hash: %s" % suse_products)
+          raise TypeError("This function requires a hash as an argument")
       self.suse_products = suse_products
 
   def save_suse_products_byid(self, sysid):
       log_debug(1, sysid, self.suse_products )
       if len(self.suse_products) == 0: # nothing loaded
-	return 0
+          return 0
       self.create_update_suse_products(self.server["id"],
-				       self.suse_products["guid"],
-				       self.suse_products["secret"],
-				       self.suse_products["ostarget"],
-				       self.suse_products["products"])
+                                       self.suse_products["guid"],
+                                       self.suse_products["secret"],
+                                       self.suse_products["ostarget"],
+                                       self.suse_products["products"])
       return 0
 
   def create_update_suse_products(self, sysid, guid, secret, ostarget, products):
