@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui;
 
+import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
@@ -140,6 +141,9 @@ public class Router implements SparkApplication {
         post("/manager/api/systems/:sid/channels", withUser(SystemsController::subscribeChannels));
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(SystemsController::getAccessibleChannelChildren));
+
+        // Activation Keys API
+        get("/manager/api/activation-keys/:tid/channels", withUser(ActivationKeysController::getChannels));
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
