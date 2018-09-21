@@ -1,6 +1,6 @@
 const pages = {
-  'not-found': './manager/errors/not-found.js',
-  'hierarchy': './manager/visualization/hierarchy.js',
+  'errors/not-found': './manager/errors/not-found.js',
+  'visualization/hierarchy': './manager/visualization/hierarchy.js',
   'bootstrap-minions': './manager/bootstrap-minions.js',
   'cveaudit': './manager/cveaudit.js',
   'delete-system': './manager/delete-system.js',

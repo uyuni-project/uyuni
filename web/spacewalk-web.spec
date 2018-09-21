@@ -158,7 +158,7 @@ install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_RO
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 
 %{__mkdir_p} %{buildroot}/srv/www/htdocs/javascript/manager
-cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript/manager
+cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript
 
 %{__mkdir_p} %{buildroot}/srv/www/htdocs/vendors
 cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js
