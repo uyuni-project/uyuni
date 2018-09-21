@@ -43,6 +43,8 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  apache2
 BuildRequires:  nodejs-packaging
 BuildRequires:  susemanager-nodejs-sdk-devel
+BuildRequires:  nodejs8
+
 %endif
 
 %description
@@ -60,7 +62,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  nodejs-packaging
 BuildRequires:  susemanager-nodejs-sdk-devel
 BuildRequires:  nodejs8
-Requires:       nodejs
 
 %description -n susemanager-web-libs
 This package contains Vendor bundles needed for spacewalk-web
@@ -71,6 +72,7 @@ License:        GPL-2.0-only AND MIT
 Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-branding
+Requires:       susemanager-web-libs
 Obsoletes:      rhn-help < 5.3.0
 Provides:       rhn-help = 5.3.0
 Obsoletes:      rhn-html < 5.3.0
