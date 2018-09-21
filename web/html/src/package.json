@@ -4,6 +4,7 @@
   "description": "Suse Manager web javascript source code",
   "license": "UNLICENSED",
   "dependencies": {
+    "flow-bin": "^0.73.0",
     "susemanager-nodejs-sdk-devel": "1.0.0"
   },
   "scripts": {
