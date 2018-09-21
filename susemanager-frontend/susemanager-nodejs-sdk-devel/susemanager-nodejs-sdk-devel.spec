@@ -29,7 +29,6 @@ Source1:        susemanager-nodejs-modules.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  fdupes
 BuildRequires:  nodejs-packaging
-Requires:       nodejs
 
 %description
 This package contains Node.js software needed by SUSE Manager at build time.

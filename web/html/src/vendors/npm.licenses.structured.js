@@ -4,13 +4,13 @@ const npmLicensesArray = [
 ];
 
 const npmDependencies = [
-    { name: "@emotion/hash", license: "MIT",  version: "0.6.5" }, 
-  { name: "@emotion/memoize", license: "MIT",  version: "0.6.5" }, 
+    { name: "@emotion/hash", license: "MIT",  version: "0.6.6" }, 
+  { name: "@emotion/memoize", license: "MIT",  version: "0.6.6" }, 
   { name: "@emotion/stylis", license: "MIT",  version: "0.6.12" }, 
-  { name: "@emotion/unitless", license: "MIT",  version: "0.6.6" }, 
+  { name: "@emotion/unitless", license: "MIT",  version: "0.6.7" }, 
   { name: "babel-polyfill", license: "MIT",  version: "6.26.0" }, 
   { name: "create-emotion", license: "MIT",  version: "9.2.6" }, 
-  { name: "emotion", license: "MIT",  version: "9.2.8" }, 
+  { name: "emotion", license: "MIT",  version: "9.2.10" }, 
   { name: "fbjs", license: "BSD-3-Clause",  version: "0.6.1" }, 
   { name: "performance-now", license: "MIT",  version: "2.1.0" }, 
   { name: "process", license: "MIT",  version: "0.11.10" }, 
@@ -21,7 +21,7 @@ const npmDependencies = [
   { name: "react-input-autosize", license: "MIT",  version: "2.2.1" }, 
   { name: "react-select", license: "MIT",  version: "2.0.0-beta.6" }, 
   { name: "stylis-rule-sheet", license: "MIT",  version: "0.0.10" }, 
-  { name: "webpack", license: "MIT",  version: "4.17.1" }, 
+  { name: "webpack", license: "MIT",  version: "4.19.1" }, 
   
 ];
 
