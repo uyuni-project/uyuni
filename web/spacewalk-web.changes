@@ -1,3 +1,5 @@
+- Fix Sles name in base channel filter (Visualization tab) (bsc#1042184)
+
 -------------------------------------------------------------------
 Thu Aug 23 09:10:59 CEST 2018 - jgonzalez@suse.com
 

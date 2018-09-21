@@ -116,7 +116,7 @@ function initUI(tree) {
   });
 
   // Base channel filter
-  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
+  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system base channel', 'e.g., SLES12', (input) => {
     tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
