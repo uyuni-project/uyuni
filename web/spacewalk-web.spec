@@ -23,7 +23,8 @@ BuildRequires: perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
 BuildRequires:  apache2
 BuildRequires:  susemanager-nodejs-sdk-devel
-BuildRequires:  nodejs-packaging
+BuildRequires:  nodejs8
+
 %endif
 
 %description
@@ -41,7 +42,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  nodejs-packaging
 BuildRequires:  susemanager-nodejs-sdk-devel
 BuildRequires:  nodejs8
-Requires:       nodejs
 
 %description -n susemanager-web-libs
 This package contains Vendor bundles needed for spacewalk-web
