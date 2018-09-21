@@ -55,6 +55,7 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
 end
 
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
+  text.gsub! '$PRODUCT', product
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
