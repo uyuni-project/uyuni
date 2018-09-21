@@ -15,7 +15,7 @@
 # Channel import process
 #
 
-from importLib import Import, InvalidArchError, \
+from .importLib import Import, InvalidArchError, \
     InvalidChannelError, InvalidChannelFamilyError, MissingParentChannelError
 from spacewalk.satellite_tools.syncLib import log
 
@@ -169,7 +169,7 @@ class ChannelImport(Import):
 
         # Build an extra hash for the channels with unknown ids
         unknownChannels = {}
-        for k, v in parentChannels.items():
+        for k, v in list(parentChannels.items()):
             if v is None:
                 unknownChannels[k] = None
 
@@ -178,7 +178,7 @@ class ChannelImport(Import):
 
         # Copy the ids back into parentChannels, to make life easier
         missingParents = []
-        for k, v in unknownChannels.items():
+        for k, v in list(unknownChannels.items()):
             if v is None:
                 missingParents.append(k)
             else:
@@ -314,8 +314,8 @@ class DistChannelMapImport(Import):
 if __name__ == '__main__':
     import sys
     from spacewalk.server import rhnSQL
-    from backendOracle import OracleBackend
-    from importLib import Collection, ChannelFamily, DistChannelMap
+    from .backendOracle import OracleBackend
+    from .importLib import Collection, ChannelFamily, DistChannelMap
     backend = OracleBackend()
     if 1:
         batch = Collection()

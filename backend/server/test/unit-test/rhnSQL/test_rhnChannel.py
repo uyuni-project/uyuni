@@ -51,7 +51,7 @@ class Tests(unittest.TestCase):
         vdict = self._new_channel_dict(label=label, channel_family=label)
 
         c = rhnChannel.Channel()
-        for k, v in vdict.items():
+        for k, v in list(vdict.items()):
             method = getattr(c, "set_" + k)
             method(v)
         c.save()
@@ -59,7 +59,7 @@ class Tests(unittest.TestCase):
 
         c = rhnChannel.Channel()
         c.load_by_label(label)
-        for k, v in vdict.items():
+        for k, v in list(vdict.items()):
             method = getattr(c, "get_" + k)
             dbv = method()
             self.assertEqual(v, dbv)
@@ -82,7 +82,7 @@ class Tests(unittest.TestCase):
 
         c = rhnChannel.Channel()
         c.load_by_label(label)
-        for k, v in vdict.items():
+        for k, v in list(vdict.items()):
             method = getattr(c, "get_" + k)
             dbv = method()
             self.assertEqual(v, dbv)
@@ -95,7 +95,7 @@ class Tests(unittest.TestCase):
         label = vdict['label']
 
         c = rhnChannel.ChannelFamily()
-        for k, v in vdict.items():
+        for k, v in list(vdict.items()):
             method = getattr(c, "set_" + k)
             method(v)
         c.save()
@@ -103,7 +103,7 @@ class Tests(unittest.TestCase):
 
         c = rhnChannel.ChannelFamily()
         c.load_by_label(label)
-        for k, v in vdict.items():
+        for k, v in list(vdict.items()):
             method = getattr(c, "get_" + k)
             dbv = method()
             self.assertEqual(v, dbv)
@@ -122,7 +122,7 @@ class Tests(unittest.TestCase):
 
         c = rhnChannel.ChannelFamily()
         c.load_by_label(label)
-        for k, v in vdict.items():
+        for k, v in list(vdict.items()):
             method = getattr(c, "get_" + k)
             dbv = method()
             self.assertEqual(v, dbv)
@@ -132,7 +132,7 @@ class Tests(unittest.TestCase):
     def test_list_channel_families_1(self):
         """Tests rhnChannel.list_channel_families"""
         channel_families = rhnChannel.list_channel_families()
-        self.failUnless(len(channel_families) > 0)
+        self.assertTrue(len(channel_families) > 0)
 
     def test_list_channels_1(self):
         """Tests rhnChannel.list_channels"""
@@ -146,13 +146,13 @@ class Tests(unittest.TestCase):
         vdict = self._new_channel_dict(label=label, channel_family=label)
 
         c = rhnChannel.Channel()
-        for k, v in vdict.items():
+        for k, v in list(vdict.items()):
             method = getattr(c, "set_" + k)
             method(v)
         c.save()
 
         channels = rhnChannel.list_channels(pattern="rhn-unittest-%")
-        self.failUnless(len(channels) > 0)
+        self.assertTrue(len(channels) > 0)
 
     def _new_channel_dict(self, **kwargs):
         if not hasattr(self, '_counter'):
@@ -165,7 +165,7 @@ class Tests(unittest.TestCase):
 
         release = kwargs.get('release') or 'release-' + label
         os = kwargs.get('os') or 'Unittest Distro'
-        if kwargs.has_key('org_id'):
+        if 'org_id' in kwargs:
             org_id = kwargs['org_id']
         else:
             org_id = misc_functions.create_new_org()

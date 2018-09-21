@@ -10,7 +10,7 @@
 #
 # SUSE Products Import
 
-from importLib import GenericPackageImport
+from .importLib import GenericPackageImport
 from spacewalk.satellite_tools import syncCache
 
 class SuseProductsImport(GenericPackageImport):

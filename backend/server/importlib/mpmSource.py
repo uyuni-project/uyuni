@@ -16,8 +16,8 @@
 # Converts headers to the intermediate format
 #
 
-import headerSource
-import debPackage
+from . import headerSource
+from . import debPackage
 
 
 class mpmBinaryPackage(headerSource.rpmBinaryPackage):
@@ -70,7 +70,7 @@ class mpmBinaryPackage(headerSource.rpmBinaryPackage):
             'suggests': headerSource.rpmSuggests,
         }
 
-        for k, dclass in mapping.items():
+        for k, dclass in list(mapping.items()):
             unique_deps = []
             l = []
             for dinfo in header.get(k, []):

@@ -10,7 +10,7 @@ tabs = OracleBackend.tables
 utabs = {}
 
 # convert table names to uppercase
-for k, v in tabs.items():
+for k, v in list(tabs.items()):
     utabs[k.upper()] = v
 
 
@@ -30,20 +30,20 @@ ora2py = {
 }
 
 for i in rows:
-    if utabs.has_key(i['table_name']):
+    if i['table_name'] in utabs:
         # table exists in backendOracle
         cols = utabs[i['table_name']]
-        if cols.fields.has_key(i['column_name'].lower()):
+        if i['column_name'].lower() in cols.fields:
             # column defined in backendOracle
             t = cols.fields[i['column_name'].lower()]
 
             # check column type
             if not isinstance(t, eval(ora2py[i['data_type']])):
-                print("%s.%s:  %s vs. %s" % (i['table_name'],
-                                             i['column_name'], i['data_type'], t.__class__))
+                print(("%s.%s:  %s vs. %s" % (i['table_name'],
+                                             i['column_name'], i['data_type'], t.__class__)))
             elif isinstance(t, DBstring) and t.limit != i['data_length']:
                 # for VARCHAR2/DBstring check also size
-                print("%s.%s: DBstring(%d) vs. VARCHAR2(%s)" % (
-                    i['table_name'], i['column_name'], t.limit, i['data_length']))
+                print(("%s.%s: DBstring(%d) vs. VARCHAR2(%s)" % (
+                    i['table_name'], i['column_name'], t.limit, i['data_length'])))
             else:
-                print("%s.%s: OK" % (i['table_name'], i['column_name']))
+                print(("%s.%s: OK" % (i['table_name'], i['column_name'])))

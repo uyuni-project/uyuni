@@ -23,7 +23,7 @@ from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 from spacewalk.satellite_tools.syncLib import log, log2
 from spacewalk.server.importlib.importLib import ContentSource, ContentSourceSsl
 
-import constants
+from . import constants
 
 
 class CdnRepositoryManager(object):
@@ -115,7 +115,7 @@ class CdnRepositoryManager(object):
             cdn_repository.add_ssl_set(ssl_set)
 
         # Add populated repository to tree
-        for cdn_repository in cdn_repositories.values():
+        for cdn_repository in list(cdn_repositories.values()):
             self.repository_tree.add_repository(cdn_repository)
 
     def get_content_sources_regular(self, channel_label, source=False):
@@ -372,7 +372,7 @@ class CdnRepositoryTree(object):
         elif (is_leaf and keys) or (not is_leaf and not keys):
             raise CdnRepositoryNotFoundError()
         step = keys[0]
-        to_check = [x for x in node.keys() if x in self.VARIABLES or x == step]
+        to_check = [x for x in list(node.keys()) if x in self.VARIABLES or x == step]
         # Remove first step in path, create new list
         next_keys = keys[1:]
 

@@ -16,7 +16,7 @@
 # Package import process
 #
 
-from importLib import KickstartableTree, Import
+from .importLib import KickstartableTree, Import
 
 
 class KickstartableTreeImport(Import):

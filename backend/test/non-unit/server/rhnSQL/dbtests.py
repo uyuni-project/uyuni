@@ -85,8 +85,8 @@ class RhnSQLDatabaseTests(unittest.TestCase):
         cursor = rhnSQL.prepare(query)
         cursor.execute(id=TEST_IDS[0], name="Sam")  # name should be ignored
         results = cursor.fetchone()
-        self.assertEquals(TEST_IDS[0], results[0])
-        self.assertEquals(TEST_NAMES[0], results[1])
+        self.assertEqual(TEST_IDS[0], results[0])
+        self.assertEqual(TEST_NAMES[0], results[1])
 
     def test_executemany(self):
         query = "INSERT INTO %s(id, name) VALUES(:id, :name)" \
@@ -101,12 +101,12 @@ class RhnSQLDatabaseTests(unittest.TestCase):
                                % self.temp_table)
         query.execute()
         rows = query.fetchall()
-        self.assertEquals(2, len(rows))
+        self.assertEqual(2, len(rows))
 
-        self.assertEquals(1000, rows[0][0])
-        self.assertEquals(1001, rows[1][0])
-        self.assertEquals("Somebody", rows[0][1])
-        self.assertEquals("Else", rows[1][1])
+        self.assertEqual(1000, rows[0][0])
+        self.assertEqual(1001, rows[1][0])
+        self.assertEqual("Somebody", rows[0][1])
+        self.assertEqual("Else", rows[1][1])
 
     def test_executemany2(self):
         query = "SELECT * FROM %s" \
@@ -133,12 +133,12 @@ class RhnSQLDatabaseTests(unittest.TestCase):
                                % self.temp_table)
         query.execute()
         rows = query.fetchall()
-        self.assertEquals(2, len(rows))
+        self.assertEqual(2, len(rows))
 
-        self.assertEquals(1000, rows[0][0])
-        self.assertEquals(1001, rows[1][0])
-        self.assertEquals("Somebody", rows[0][1])
-        self.assertEquals("Else", rows[1][1])
+        self.assertEqual(1000, rows[0][0])
+        self.assertEqual(1001, rows[1][0])
+        self.assertEqual("Somebody", rows[0][1])
+        self.assertEqual("Else", rows[1][1])
 
     def test_numeric_columns(self):
         h = rhnSQL.prepare("SELECT num FROM %s WHERE id = %s" %
@@ -152,29 +152,29 @@ class RhnSQLDatabaseTests(unittest.TestCase):
         cursor = rhnSQL.prepare(query)
         cursor.execute()
         results = cursor.fetchone()
-        self.assertEquals(TEST_IDS[0], results[0])
-        self.assertEquals(TEST_NAMES[0], results[1])
+        self.assertEqual(TEST_IDS[0], results[0])
+        self.assertEqual(TEST_NAMES[0], results[1])
 
     def test_fetchone_dict(self):
         query = "SELECT * FROM %s WHERE id = 1 ORDER BY id" % self.temp_table
         cursor = rhnSQL.prepare(query)
         cursor.execute()
         results = cursor.fetchone_dict()
-        self.assertEquals(TEST_IDS[0], results['id'])
-        self.assertEquals(TEST_NAMES[0], results['name'])
-        self.assertEquals(TEST_NUMS[0], results['num'])
+        self.assertEqual(TEST_IDS[0], results['id'])
+        self.assertEqual(TEST_NAMES[0], results['name'])
+        self.assertEqual(TEST_NUMS[0], results['num'])
 
     def test_fetchall(self):
         query = rhnSQL.prepare("SELECT * FROM %s ORDER BY id" %
                                self.temp_table)
         query.execute()
         rows = query.fetchall()
-        self.assertEquals(len(TEST_IDS), len(rows))
+        self.assertEqual(len(TEST_IDS), len(rows))
 
         i = 0
         while i < len(TEST_IDS):
-            self.assertEquals(TEST_IDS[i], rows[i][0])
-            self.assertEquals(TEST_NAMES[i], rows[i][1])
+            self.assertEqual(TEST_IDS[i], rows[i][0])
+            self.assertEqual(TEST_NAMES[i], rows[i][1])
             i = i + 1
 
     def test_fetchall_dict(self):
@@ -182,18 +182,18 @@ class RhnSQLDatabaseTests(unittest.TestCase):
                                self.temp_table)
         query.execute()
         rows = query.fetchall_dict()
-        self.assertEquals(len(TEST_IDS), len(rows))
+        self.assertEqual(len(TEST_IDS), len(rows))
 
         i = 0
         while i < len(TEST_IDS):
-            self.assertEquals(TEST_IDS[i], rows[i]['id'])
-            self.assertEquals(TEST_NAMES[i], rows[i]['name'])
+            self.assertEqual(TEST_IDS[i], rows[i]['id'])
+            self.assertEqual(TEST_NAMES[i], rows[i]['name'])
             i = i + 1
 
     def test_unicode_string_argument(self):
         query = rhnSQL.prepare("SELECT * FROM %s WHERE name=:name" %
                                self.temp_table)
-        query.execute(name=u'blah')
+        query.execute(name='blah')
 
 #    def test_procedure(self):
 #        sp = rhnSQL.Procedure("return_int")

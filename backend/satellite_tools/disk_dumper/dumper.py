@@ -32,7 +32,7 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
 from spacewalk.satellite_tools import constants
 from spacewalk.satellite_tools.exporter import exportLib, xmlWriter
-from string_buffer import StringBuffer
+from .string_buffer import StringBuffer
 
 
 class XML_Dumper:

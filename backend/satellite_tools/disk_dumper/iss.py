@@ -26,7 +26,7 @@ try:
 except ImportError:
     #  python3
     import io as cStringIO
-import dumper
+from . import dumper
 from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnMail
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -37,9 +37,9 @@ from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.satellite_tools.exporter import xmlWriter
 from spacewalk.satellite_tools import xmlDiskSource, diskImportLib, progress_bar
 from spacewalk.satellite_tools.syncLib import initEMAIL_LOG, dumpEMAIL_LOG, log2email, log2stderr, log2stdout
-from iss_ui import UI
-from iss_actions import ActionDeps
-import iss_isos
+from .iss_ui import UI
+from .iss_actions import ActionDeps
+from . import iss_isos
 
 t = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = t.ugettext
@@ -302,7 +302,7 @@ class Dumper(dumper.XML_Dumper):
             # "incremental" dumps. So we will gather list of channel ids for channels already
             # in dump.
             channel_labels_for_families = self.fm.filemap['channels'].list()
-            print("Appending channels %s" % (channel_labels_for_families))
+            print(("Appending channels %s" % (channel_labels_for_families)))
             for ids in channel_labels_for_families:
                 ch_data.execute(label=ids)
                 ch_info = ch_data.fetchall_dict()
@@ -1269,8 +1269,8 @@ class ExporterMain:
                 self.end_date = self.options.end_date.ljust(14, '0')
 
             self.start_date = self.options.start_date.ljust(14, '0')
-            print("start date limit: %s" % self.start_date)
-            print("end date limit: %s" % self.end_date)
+            print(("start date limit: %s" % self.start_date))
+            print(("end date limit: %s" % self.end_date))
         else:
             self.start_date = None
             self.end_date = None
@@ -1390,10 +1390,10 @@ class ExporterMain:
             child_template = "C\t%s"
 
             # Print channel information.
-            for pc in channel_dict.keys():
-                print(base_template % (pc,))
+            for pc in list(channel_dict.keys()):
+                print((base_template % (pc,)))
                 for cc in channel_dict[pc]:
-                    print(child_template % (cc,))
+                    print((child_template % (cc,)))
                 print(" ")
         else:
             print("No Channels available for listing.")
@@ -1416,7 +1416,7 @@ class ExporterMain:
         if orgs:
             print("Orgs available for export:")
             for org in orgs:
-                print("Id: %s, Name: \'%s\'" % (org['id'], org['name']))
+                print(("Id: %s, Name: \'%s\'" % (org['id'], org['name'])))
         else:
             print("No Orgs available for listing.")
 

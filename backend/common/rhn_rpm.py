@@ -39,7 +39,7 @@ if not hasattr(tempfile, 'SpooledTemporaryFile'):
 error = rpm.error
 
 sym, val = None, None
-for sym, val in rpm.__dict__.items():
+for sym, val in list(rpm.__dict__.items()):
     if sym[:3] == 'RPM':
         # A constant, probably - import it into our namespace
         globals()[sym] = val
@@ -103,7 +103,7 @@ class RPM_Header:
     def __len__(self):
         return len(self.hdr)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return bool(self.hdr)
 
     __bool__ = __nonzero__
@@ -387,7 +387,7 @@ class MatchIterator:
     def pattern(self, tag_name, mode, pattern):
         self.mi.pattern(tag_name, mode, pattern)
 
-    def next(self):
+    def __next__(self):
         try:
             hdr = usix_next(self.mi)
         except StopIteration:
@@ -462,7 +462,7 @@ def getInstalledHeader(rpmName):
 
     matchiter = MatchIterator("name")
     matchiter.pattern("name", rpm.RPMMIRE_STRCMP, rpmName)
-    return matchiter.next()
+    return next(matchiter)
 
 
 if __name__ == '__main__':

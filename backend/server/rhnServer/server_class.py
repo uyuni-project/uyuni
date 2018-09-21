@@ -27,14 +27,14 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnChannel, rhnUser, rhnSQL, rhnLib, rhnAction, \
     rhnVirtualization
-from search_notify import SearchNotify
+from .search_notify import SearchNotify
 
 # Local Modules
-import server_kickstart
-import server_lib
-import server_token
-from server_certificate import Certificate, gen_secret
-from server_wrapper import ServerWrapper
+from . import server_kickstart
+from . import server_lib
+from . import server_token
+from .server_certificate import Certificate, gen_secret
+from .server_wrapper import ServerWrapper
 
 
 class Server(ServerWrapper):
@@ -167,7 +167,7 @@ class Server(ServerWrapper):
 
     # return the id of this system
     def getid(self):
-        if not self.server.has_key("id"):
+        if "id" not in self.server:
             sysid = rhnSQL.Sequence("rhn_server_id_seq")()
             self.server["digital_server_id"] = "ID-%09d" % sysid
             # we can't reset the id column, so we need to poke into
@@ -221,8 +221,7 @@ class Server(ServerWrapper):
         # Let get_server_channels deal with the errors and raise rhnFault
         target_channels = rhnChannel.guess_channels_for_server(s, none_ok=True)
         if target_channels:
-            target_base = filter(lambda x: not x['parent_channel'],
-                                 target_channels)[0]
+            target_base = [x for x in target_channels if not x['parent_channel']][0]
         else:
             target_base = None
 
@@ -536,7 +535,7 @@ class Server(ServerWrapper):
 
             # some more default values
             self.server["auto_update"] = "N"
-            if self.user and not self.server.has_key("creator_id"):
+            if self.user and "creator_id" not in self.server:
                 # save the link to the user that created it if we have
                 # that information
                 self.server["creator_id"] = self.user.getid()
@@ -730,7 +729,7 @@ class Server(ServerWrapper):
 
     # Is this server entitled?
     def check_entitlement(self):
-        if not self.server.has_key("id"):
+        if "id" not in self.server:
             return None
         log_debug(3, self.server["id"])
 
@@ -738,19 +737,19 @@ class Server(ServerWrapper):
 
     def checkin(self, commit=1):
         """ convenient wrapper for these thing until we clean the code up """
-        if not self.server.has_key("id"):
+        if "id" not in self.server:
             return 0  # meaningless if rhnFault not raised
         return server_lib.checkin(self.server["id"], commit)
 
     def throttle(self):
         """ convenient wrapper for these thing until we clean the code up """
-        if not self.server.has_key("id"):
+        if "id" not in self.server:
             return 1  # meaningless if rhnFault not raised
         return server_lib.throttle(self.server)
 
     def set_qos(self):
         """ convenient wrapper for these thing until we clean the code up """
-        if not self.server.has_key("id"):
+        if "id" not in self.server:
             return 1  # meaningless if rhnFault not raised
         return server_lib.set_qos(self.server["id"])
 

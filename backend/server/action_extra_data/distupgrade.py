@@ -59,13 +59,13 @@ def _restore_channels(serverId, action_dup_id):
     # we need to rollback the changes from action
     # therefore unsubscribe task 'S' and
     # subscribe task 'U'
-    to_unsubscribe = filter(lambda x: x['task'] == 'S', channel_changes)
-    to_subscribe = filter(lambda x: x['task'] == 'U', channel_changes)
+    to_unsubscribe = [x for x in channel_changes if x['task'] == 'S']
+    to_subscribe = [x for x in channel_changes if x['task'] == 'U']
 
     try:
         unsubscribe_channels(serverId, to_unsubscribe)
         subscribe_channels(serverId, to_subscribe)
-    except Exception, e:
+    except Exception as e:
         log_error(str(e), sys.exc_info()[2])
 
     return

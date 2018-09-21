@@ -37,9 +37,9 @@ class TestRhnpush(TestServer.TestServer):
 if __name__ == "__main__":
     server = TestRhnpush()
     app = server.getApp()
-    print(app.test_login(server.getUsername(), server.getPassword()))
-    print(app.listChannel(['wregglej-test'], "wregglej", "bm8gv5z2"))
-    print(app.listChannelSource(['wregglej-test'], "wregglej", "bm8gv5z2"))
+    print((app.test_login(server.getUsername(), server.getPassword())))
+    print((app.listChannel(['wregglej-test'], "wregglej", "bm8gv5z2")))
+    print((app.listChannelSource(['wregglej-test'], "wregglej", "bm8gv5z2")))
     server = SimpleXMLRPCServer.SimpleXMLRPCServer(addr=('', 16000))
     for func in app.functions:
         print(func)

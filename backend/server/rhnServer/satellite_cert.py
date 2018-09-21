@@ -41,7 +41,7 @@ class Item:
     def __init__(self, node=None):
         if not node:
             return
-        for attr_name, storage_name in self.attributes.items():
+        for attr_name, storage_name in list(self.attributes.items()):
             attr = node.getAttribute(attr_name)
             # Make sure we stringify the attribute - it may get out as unicode
             setattr(self, storage_name, attr)
@@ -49,7 +49,7 @@ class Item:
     def __repr__(self):
         return "<%s; %s>" % (self.pretty_name,
                              string.join(
-                                 ['%s="%s"' % (x, getattr(self, x)) for x in self.attributes.values()],
+                                 ['%s="%s"' % (x, getattr(self, x)) for x in list(self.attributes.values())],
                                  ', '
                              ))
 
@@ -134,7 +134,7 @@ class SatelliteCert:
     def __init__(self):
         for f in self.fields_scalar:
             setattr(self, f, None)
-        for f in self.fields_list.values():
+        for f in list(self.fields_list.values()):
             setattr(self, f.attribute_name, [])
         self.signature = None
         self._slots = {}
@@ -147,7 +147,7 @@ class SatelliteCert:
             raise ParseException(None, sys.exc_info()[2])
         # Now represent the slots in a more meaningful way
         self._slots.clear()
-        for slot_name, (slot_attr, factory) in self._slot_maps.items():
+        for slot_name, (slot_attr, factory) in list(self._slot_maps.items()):
             quantity = getattr(self, slot_attr)
             self._slots[slot_name] = factory(quantity)
 
@@ -203,11 +203,11 @@ class SatelliteCert:
         return self._slots[slot_type]
 
     def get_slot_types(self):
-        return self._slot_maps.keys()
+        return list(self._slot_maps.keys())
 
     def lookup_slot_by_db_label(self, db_label):
         # Given a string like 'sw_mgr_entitled', returns a string 'management'
-        for label, (_, slot_class) in self._slot_maps.items():
+        for label, (_, slot_class) in list(self._slot_maps.items()):
             if slot_class._db_label == db_label:
                 return label
         return None

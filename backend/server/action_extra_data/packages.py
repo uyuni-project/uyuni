@@ -152,7 +152,7 @@ def verify(server_id, action_id, data={}):
             hash[dict['filename']] = dict
 
         # Add the rest of the variables to the dictionaries
-        for filename, dict in hash.items():
+        for filename, dict in list(hash.items()):
             dict['server_id'] = server_id
             dict['action_id'] = action_id
 
@@ -291,7 +291,7 @@ def _parse_response_line(response, tests):
 
 def _hash_append(dst, src):
     # Append the values of src to dst
-    for k, list in dst.items():
+    for k, list in list(dst.items()):
         list.append(src[k])
 
 

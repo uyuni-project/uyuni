@@ -63,17 +63,17 @@ class Tests(unittest.TestCase):
         self.assertEqual(result, target, result + " != " + target)
 
     def testParseUrl(self):
-        self.assertEquals(('', '', '', '', '', ''),
+        self.assertEqual(('', '', '', '', '', ''),
                           rhnLib.parseUrl(''))
-        self.assertEquals(('', 'somehostname', '', '', '', ''),
+        self.assertEqual(('', 'somehostname', '', '', '', ''),
                           rhnLib.parseUrl('somehostname'))
-        self.assertEquals(('http', 'somehostname', '', '', '', ''),
+        self.assertEqual(('http', 'somehostname', '', '', '', ''),
                           rhnLib.parseUrl('http://somehostname'))
-        self.assertEquals(('https', 'somehostname', '', '', '', ''),
+        self.assertEqual(('https', 'somehostname', '', '', '', ''),
                           rhnLib.parseUrl('https://somehostname'))
-        self.assertEquals(('https', 'somehostname:123', '', '', '', ''),
+        self.assertEqual(('https', 'somehostname:123', '', '', '', ''),
                           rhnLib.parseUrl('https://somehostname:123'))
-        self.assertEquals(('https', 'somehostname:123', '/ABCDE', '', '', ''),
+        self.assertEqual(('https', 'somehostname:123', '/ABCDE', '', '', ''),
                           rhnLib.parseUrl('https://somehostname:123/ABCDE'))
 
 if __name__ == '__main__':

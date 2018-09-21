@@ -248,7 +248,7 @@ class rhnApache:
             # This has to be here, or else we blow-up.
             return None
         prefix = "x-rhn-auth"
-        tokenKeys = [x for x in headers.keys() if x[:len(prefix)].lower() == prefix]
+        tokenKeys = [x for x in list(headers.keys()) if x[:len(prefix)].lower() == prefix]
         for k in tokenKeys:
             token[k] = headers[k]
 

@@ -20,7 +20,7 @@ from optparse import Option, OptionParser
 from spacewalk.common import rhnTB
 from spacewalk.server import rhnSQL
 
-import satCerts
+from . import satCerts
 
 DEFAULT_TRUSTED_CERT = 'RHN-ORG-TRUSTED-SSL-CERT'
 
@@ -61,7 +61,7 @@ ERROR: there was a problem trying to initialize the database:
         sys.exit(11)
 
     if values.verbose:
-        print('Public CA SSL certificate:  %s' % values.ca_cert)
+        print(('Public CA SSL certificate:  %s' % values.ca_cert))
 
     return values
 

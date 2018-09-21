@@ -54,9 +54,9 @@ def send(headers, body, sender=None):
     (headers, toaddrs) = __check_headers(headers)
     if sender is None:
         sender = headers["From"]
-    joined_headers = u''
-    for h in headers.keys():
-        joined_headers += u"%s: %s\n" % (h, headers[h])
+    joined_headers = ''
+    for h in list(headers.keys()):
+        joined_headers += "%s: %s\n" % (h, headers[h])
 
     server = smtplib.SMTP('localhost')
     msg = "%s\n%s\n" % (to_string(joined_headers), to_string(body))

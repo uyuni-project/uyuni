@@ -23,9 +23,9 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnUser
 
 # Local imports
-from server_class import Server
-from server_certificate import Certificate
-from server_token import fetch_token, fetch_org_token
+from .server_class import Server
+from .server_certificate import Certificate
+from .server_token import fetch_token, fetch_org_token
 
 
 def get(system_id, load_user=1):

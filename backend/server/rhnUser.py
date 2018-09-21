@@ -26,8 +26,8 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
-import rhnSQL
-import rhnSession
+from . import rhnSQL
+from . import rhnSession
 
 
 class User:
@@ -111,7 +111,7 @@ class User:
                                    self.contact["login"])
             if data['use_pam_authentication'] == 'Y':
                 # use PAM
-                import rhnAuthPAM
+                from . import rhnAuthPAM
                 return rhnAuthPAM.check_password(self.contact["login"],
                                                  password, CFG.pam_auth_service)
         # If the entry in rhnUserInfo is 'N', perform regular authentication
@@ -131,7 +131,7 @@ class User:
         self.customer.load(int(org_id))
 
     def getid(self):
-        if not self.contact.has_key("id"):
+        if "id" not in self.contact:
             userid = rhnSQL.Sequence("web_contact_id_seq")()
             self.contact.data["id"] = userid  # kind of illegal, but hey!
         else:
@@ -202,7 +202,7 @@ class User:
             valids["Sig."] = "Sr."
             valids["Sir"] = "Mr."
             # Now check it out
-            if valids.has_key(value):
+            if value in valids:
                 self.info["prefix"] = valids[value]
                 changed = 1
             else:
@@ -387,7 +387,7 @@ def __reserve_user_db(user, password):
         # contact exists, check password
         if data['use_pam_authentication'] == 'Y' and CFG.pam_auth_service:
             # We use PAM for authentication
-            import rhnAuthPAM
+            from . import rhnAuthPAM
             if rhnAuthPAM.check_password(user, password, CFG.pam_auth_service) > 0:
                 return 1
             return -1
@@ -478,7 +478,7 @@ def __new_user_db(username, password, email, org_id, org_password):
     # Note that if the user is only reserved we don't do PAM authentication
     if data.get('use_pam_authentication') == 'Y' and CFG.pam_auth_service:
         # Check the password with PAM
-        import rhnAuthPAM
+        from . import rhnAuthPAM
         if rhnAuthPAM.check_password(username, password, CFG.pam_auth_service) <= 0:
             # Bad password
             raise rhnFault(2)

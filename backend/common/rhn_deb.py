@@ -73,7 +73,7 @@ class deb_Header:
                                  ('payload_size', 'Installed-Size')]:
                 if deb_k in debcontrol:
                     self.hdr[hdr_k] = debcontrol.get_as_string(deb_k)
-            for k in debcontrol.keys():
+            for k in list(debcontrol.keys()):
                 if k not in self.hdr:
                     self.hdr[k] = debcontrol.get_as_string(k)
 

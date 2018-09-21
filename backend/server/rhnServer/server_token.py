@@ -24,7 +24,7 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL, rhnChannel, rhnAction
 
-from server_lib import join_server_group, check_entitlement
+from .server_lib import join_server_group, check_entitlement
 
 VIRT_ENT_LABEL = 'virtualization_host'
 
@@ -123,7 +123,7 @@ def token_channels(server, server_arch, tokens_obj):
     # channel family ids used in the loop below.
     channel_family_ids = set()
 
-    for c in [a for a in chash.values() if a["parent_channel"]]:
+    for c in [a for a in list(chash.values()) if a["parent_channel"]]:
         # make sure this channel has the right parent
         if str(c["parent_channel"]) != str(sbc["id"]):
             ret.append("NOT subscribed to channel '%s' "
@@ -178,7 +178,7 @@ def token_server_groups(server_id, tokens_obj):
 
     # Now try to subscribe server to group
     ret = []
-    for server_group_id, sg in server_groups.items():
+    for server_group_id, sg in list(server_groups.items()):
         log_debug(4, "token server group", sg)
 
         try:
@@ -240,7 +240,7 @@ def token_packages(server_id, tokens_obj):
     # This action becomes the latest now
     rhnFlags.set('token_last_action_id', action_id)
 
-    for p in package_names.values():
+    for p in list(package_names.values()):
         ret.append("Scheduled for install:  '%s'" % p)
 
     rhnSQL.commit()
@@ -320,7 +320,7 @@ def deploy_configs_if_needed(server):
 
     h = rhnSQL.prepare(_query_add_revision_to_action)
     # XXX should use executemany() or execute_bulk
-    for revision_id in revisions.values():
+    for revision_id in list(revisions.values()):
         log_debug(5, action_id, revision_id)
         h.execute(server_id=server_id,
                   action_id=action_id,
@@ -526,7 +526,7 @@ class ActivationTokens:
         self.entitlements = entitlements
         self.contact_method_id = contact_method_id
 
-    def __nonzero__(self):
+    def __bool__(self):
         return (len(self.tokens) > 0)
 
     __bool__ = __nonzero__
@@ -712,7 +712,7 @@ def _categorize_token_entitlements(token_entitlements, entitlements_base,
     """ Given a hash token_entitlements, splits the base ones and puts them in
         the entitlements_base hash, and the extras in entitlements_extra
     """
-    for tup in token_entitlements.keys():
+    for tup in list(token_entitlements.keys()):
         is_base = tup[2]
         ent = (tup[0], tup[1])
         if is_base == 'Y':
@@ -817,7 +817,7 @@ def fetch_token(token_string):
             num_of_rereg += 1
 
             # Store the re-reg ents:
-            for tup in token_entitlements.keys():
+            for tup in list(token_entitlements.keys()):
                 rereg_ents.append(tup[0])
 
         # Check user_id

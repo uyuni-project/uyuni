@@ -16,8 +16,8 @@
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
-import rhnSQL
-import rhnLib
+from . import rhnSQL
+from . import rhnLib
 import rpm
 
 # QUERY PACKAGES
@@ -362,7 +362,7 @@ def solve_dependencies_with_limits(server_id, deps, version, all=0, limit_operat
                 packages_all[record['name']] = [record]
 
         # sort all the package lists so the most recent version is first
-        for pl in packages_all.keys():
+        for pl in list(packages_all.keys()):
 
             packages_all[pl].sort(cmp_evr)
             package_list = package_list + packages_all[pl]

@@ -67,7 +67,7 @@ class SuseData:
       log_debug(1, suse_products)
       if not isinstance(suse_products, dict):
 	  log_error("argument type is not  hash: %s" % suse_products)
-	  raise TypeError, "This function requires a hash as an argument"
+	  raise TypeError("This function requires a hash as an argument")
       self.suse_products = suse_products
 
   def save_suse_products_byid(self, sysid):
@@ -168,7 +168,7 @@ class SuseData:
                  ostarget_id = (select id from suseOSTarget where os = :ostarget)
            WHERE rhn_server_id = :rhn_server_id
         """)
-        apply(h.execute, (), data)
+        h.execute(*(), **data)
     # check products
     h = rhnSQL.prepare("""
       SELECT
@@ -177,7 +177,7 @@ class SuseData:
        WHERE rhn_server_id = :sysid
     """)
     h.execute(sysid=sysid)
-    existing_products = map(lambda x: x['id'], h.fetchall_dict() or [])
+    existing_products = [x['id'] for x in h.fetchall_dict() or []]
 
     for product in products:
       sipid = self.get_installed_product_id(product)
@@ -237,7 +237,7 @@ class SuseData:
          AND %s
          AND sip.is_baseproduct = :baseproduct
     """ % (version_query, release_query))
-    apply(h.execute, (), product)
+    h.execute(*(), **product)
     d = h.fetchone_dict()
     if not d:
       # not available yet, so let's create one
@@ -248,8 +248,8 @@ class SuseData:
                (SELECT id FROM rhnPackageArch WHERE label = :arch),
                :release, :baseproduct)
       """)
-      apply(n.execute, (), product)
-      apply(h.execute, (), product)
+      n.execute(*(), **product)
+      h.execute(*(), **product)
       d = h.fetchone_dict()
       if not d:
         # should never happen

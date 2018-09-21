@@ -20,10 +20,10 @@ from spacewalk.server import rhnSQL
 
 def schedule_action(action_type, action_name=None, delta_time=0,
                     scheduler=None, org_id=None, prerequisite=None):
-    action_id = rhnSQL.Sequence('rhn_event_id_seq').next()
+    action_id = next(rhnSQL.Sequence('rhn_event_id_seq'))
 
     at = rhnSQL.Table('rhnActionType', 'label')
-    if not at.has_key(action_type):
+    if action_type not in at:
         raise ValueError("Unknown action type %s" % action_type)
 
     params = {

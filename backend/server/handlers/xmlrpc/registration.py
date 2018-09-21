@@ -331,7 +331,7 @@ class Registration(rhnHandler):
                 newserv.dispose_packages()
                 # The new server may have a different base channel
                 suse_products = None
-                if data.has_key('suse_products'):
+                if 'suse_products' in data:
                     suse_products = data['suse_products']
                 newserv.change_base_channel(release, suse_products=suse_products)
 
@@ -432,9 +432,9 @@ class Registration(rhnHandler):
             try:
                 # don't commit
                 newserv.save(0, channel)
-            except (rhnChannel.NoBaseChannelError), channel_error:
+            except (rhnChannel.NoBaseChannelError) as channel_error:
                 raise_with_tb(rhnFault(70), sys.exc_info()[2])
-            except rhnChannel.BaseChannelDeniedError, channel_error:
+            except rhnChannel.BaseChannelDeniedError as channel_error:
                 raise_with_tb(rhnFault(71), sys.exc_info()[2])
             except server_lib.rhnSystemEntitlementException:
                 e = sys.exc_info()[1]
@@ -469,9 +469,9 @@ class Registration(rhnHandler):
         #   +--rhnNoSystemEntitlementsException
         try:
             newserv.save(1, channel)
-        except (rhnChannel.NoBaseChannelError), channel_error:
+        except (rhnChannel.NoBaseChannelError) as channel_error:
             raise_with_tb(rhnFault(70), sys.exc_info()[2])
-        except rhnChannel.BaseChannelDeniedError, channel_error:
+        except rhnChannel.BaseChannelDeniedError as channel_error:
             raise_with_tb(rhnFault(71), sys.exc_info()[2])
         except server_lib.rhnSystemEntitlementException:
             e = sys.exc_info()[1]
@@ -1020,13 +1020,13 @@ class Registration(rhnHandler):
         return packagesV2
 
     def extract_and_save_netinfos(self, server, hardware):
-        if 'hostname' in hardware.keys():
+        if 'hostname' in list(hardware.keys()):
             server.server["hostname"] = hardware["hostname"]
             del hardware["hostname"]
-        if 'ipaddr' in hardware.keys():
+        if 'ipaddr' in list(hardware.keys()):
             server.addr["ipaddr"] = hardware["ipaddr"]
             del hardware["ipaddr"]
-        if 'ip6addr' in hardware.keys():
+        if 'ip6addr' in list(hardware.keys()):
             server.addr["ip6addr"] = hardware["ip6addr"]
             del hardware["ip6addr"]
 

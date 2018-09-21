@@ -141,7 +141,7 @@ def process_package_data():
         # Nothing to change
         return
     if verbose:
-        print("Processing %s packages" % len(paths))
+        print(("Processing %s packages" % len(paths)))
     pb = ProgressBar(prompt='standby: ', endTag=' - Complete!',
                      finalSize=len(paths), finalBarLength=40, stream=sys.stdout)
     pb.printAll(1)
@@ -237,9 +237,9 @@ def process_package_data():
     rhnSQL.commit()
     sys.stderr.write("Transaction Committed! \n")
     if verbose:
-        print(" Skipping %s packages, paths not found" % len(skip_list))
+        print((" Skipping %s packages, paths not found" % len(skip_list)))
     if new_ok_list and verbose:
-        print(" There were %s packages found in the correct location" % len(new_ok_list))
+        print((" There were %s packages found in the correct location" % len(new_ok_list)))
     return
 
 
@@ -318,7 +318,7 @@ def process_sha256_packages():
         return
 
     if verbose:
-        print("Processing %s SHA256 capable packages" % len(packages))
+        print(("Processing %s SHA256 capable packages" % len(packages)))
 
     pb = ProgressBar(prompt='standby: ', endTag=' - Complete!',
                      finalSize=len(packages), finalBarLength=40, stream=sys.stdout)
@@ -631,7 +631,7 @@ def process_changelog():
         return
 
     if verbose:
-        print("Processing %s non-ASCII changelog entries" % nrows)
+        print(("Processing %s non-ASCII changelog entries" % nrows))
 
     pb = ProgressBar(prompt='standby: ', endTag=' - Complete!',
                      finalSize=nrows, finalBarLength=40, stream=sys.stdout)

@@ -38,14 +38,14 @@ def main():
     g = globals()
 
     for module_name in args:
-        print("Checking module %s" % module_name)
+        print(("Checking module %s" % module_name))
         pmn = proper_module_name(module_name)
         try:
             m = __import__(pmn)
             g[module_name] = m
         except ImportError:
             e = sys.exc_info()[1]
-            print("Unable to import module %s: %s" % (module_name, e))
+            print(("Unable to import module %s: %s" % (module_name, e)))
             continue
 
         comps = pmn.split('.')
@@ -57,7 +57,7 @@ def main():
                 rhnSQL.prepare(statement)
             except rhnSQL.SQLStatementPrepareError:
                 e = sys.exc_info()[1]
-                print("Error: %s.%s: %s" % (mod.__name__, name, e))
+                print(("Error: %s.%s: %s" % (mod.__name__, name, e)))
 
 
 def proper_module_name(module_name):
@@ -78,7 +78,7 @@ def get_class_instances(obj, class_obj):
         return []
     _objs_seen[id_obj] = None
     result = []
-    for k, v in obj.__dict__.items():
+    for k, v in list(obj.__dict__.items()):
         if isinstance(v, class_obj):
             result.append((obj, k, v))
         elif isinstance(v, usix.ClassType):

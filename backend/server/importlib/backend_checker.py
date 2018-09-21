@@ -15,17 +15,17 @@ q = rhnSQL.prepare("""select data_length
 
 backend = backendOracle.PostgresqlBackend()
 
-for tn, tc in backend.tables.items():
-    for cn, cv in tc.getFields().items():
+for tn, tc in list(backend.tables.items()):
+    for cn, cv in list(tc.getFields().items()):
         if isinstance(cv, DBstring):
             q.execute(tname=tn, cname=cn)
             row = q.fetchone_dict()
             if not row or row['data_length'] != cv.limit:
-                print(("ERROR: database column %s.%s is %s chars long "
+                print((("ERROR: database column %s.%s is %s chars long "
                        + "but defined as %s chars in backendOracle.py") % (
-                    tn, cn, row['data_length'], cv.limit))
+                    tn, cn, row['data_length'], cv.limit)))
                 exitval = 1
             else:
-                print("%s.%s = %d" % (tn, cn, row['data_length']))
+                print(("%s.%s = %d" % (tn, cn, row['data_length'])))
 
 sys.exit(exitval)

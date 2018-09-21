@@ -149,7 +149,7 @@ def _dump(object):
     from spacewalk.common.usix import DictType
     if isinstance(object, DictType):
         dict = {}
-        for h, v in object.items():
+        for h, v in list(object.items()):
             dict[_dump(h)] = _dump(v)
         return dict
     return str(object)

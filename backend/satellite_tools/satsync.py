@@ -52,29 +52,29 @@ from spacewalk.server.rhnLib import get_package_path
 from spacewalk.common import fileutils
 
 # __rhn sync/import imports__
-import xmlWireSource
-import xmlDiskSource
-from progress_bar import ProgressBar
-from xmlSource import FatalParseException, ParseException
-from diskImportLib import rpmsPath
+from . import xmlWireSource
+from . import xmlDiskSource
+from .progress_bar import ProgressBar
+from .xmlSource import FatalParseException, ParseException
+from .diskImportLib import rpmsPath
 
-from syncLib import log, log2, log2disk, log2stderr, log2email
-from syncLib import RhnSyncException, RpmManip, ReprocessingNeeded
-from syncLib import initEMAIL_LOG, dumpEMAIL_LOG
-from syncLib import FileCreationError, FileManip
+from .syncLib import log, log2, log2disk, log2stderr, log2email
+from .syncLib import RhnSyncException, RpmManip, ReprocessingNeeded
+from .syncLib import initEMAIL_LOG, dumpEMAIL_LOG
+from .syncLib import FileCreationError, FileManip
 
-from SequenceServer import SequenceServer
+from .SequenceServer import SequenceServer
 from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
 
 from spacewalk.server.importlib.importLib import InvalidChannelFamilyError
 from spacewalk.server.importlib.importLib import MissingParentChannelError
 from spacewalk.server.importlib.importLib import get_nevra, get_nevra_dict
 
-import satCerts
-import req_channels
-import messages
-import sync_handlers
-import constants
+from . import satCerts
+from . import req_channels
+from . import messages
+from . import sync_handlers
+from . import constants
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = translation.ugettext
@@ -314,7 +314,7 @@ class Runner:
         try:
             ret = function()
         except (xmlDiskSource.MissingXmlDiskSourceDirError,
-                xmlDiskSource.MissingXmlDiskSourceFileError), e:
+                xmlDiskSource.MissingXmlDiskSourceFileError) as e:
             log(-1, self._xml_file_dir_error_message +
                 '\n       Error message: %s\n' % e)
             return 1
@@ -424,7 +424,7 @@ def sendMail(forceEmail=0):
     if forceEmail or (OPTIONS is not None and OPTIONS.email):
         body = dumpEMAIL_LOG()
         if body:
-            print(_("+++ sending log as an email +++"))
+            print((_("+++ sending log as an email +++")))
             host_label = idn_puny_to_unicode(os.uname()[1])
             headers = {
                 'Subject' : _('SUSE Manager Inter Server sync. report from %s') % host_label,
@@ -434,7 +434,7 @@ def sendMail(forceEmail=0):
                 sndr = CFG.default_mail_from
             rhnMail.send(headers, body, sender=sndr)
         else:
-            print(_("+++ email requested, but there is nothing to send +++"))
+            print((_("+++ email requested, but there is nothing to send +++")))
         # mail was sent. Let's not allow it to be sent twice...
         OPTIONS.email = None
 
@@ -689,9 +689,9 @@ class Syncer:
             for label in requested_channels:
                 timestamp = self._channel_collection.get_channel_timestamp(label)
                 ch = self._channel_collection.get_channel(label, timestamp)
-                if ch.has_key('comps_last_modified') and ch['comps_last_modified'] is not None:
+                if 'comps_last_modified' in ch and ch['comps_last_modified'] is not None:
                     self._process_comps(importer.backend, label, sync_handlers._to_timestamp(ch['comps_last_modified']))
-                if ch.has_key('modules_last_modified') and ch['modules_last_modified'] is not None:
+                if 'modules_last_modified' in ch and ch['modules_last_modified'] is not None:
                     self._process_modules(importer.backend, label, \
                         sync_handlers._to_timestamp(ch['modules_last_modified']))
 
@@ -966,7 +966,7 @@ class Syncer:
         In an incremental approach, one may request packages that are actually
         not available in the current dump, probably because of applying an
         incremental to the wrong base"""
-        for channel_label, pids in missing_channel_packages.items():
+        for channel_label, pids in list(missing_channel_packages.items()):
             if sources:
                 avail_pids = [x[0] for x in self._avail_channel_source_packages[channel_label]]
             else:
@@ -1087,7 +1087,7 @@ class Syncer:
         # First, determine what has to be downloaded
         short_package_collection = sync_handlers.ShortPackageCollection()
         package_collection = sync_handlers.PackageCollection()
-        for channel, pids in self._missing_channel_packages.items():
+        for channel, pids in list(self._missing_channel_packages.items()):
             missing_packages[channel] = mp = []
 
             if not pids:
@@ -1121,7 +1121,7 @@ class Syncer:
 
         # Double-check that we got all the packages
         missing_packages = self._missing_not_cached_packages()
-        for channel, pids in missing_packages.items():
+        for channel, pids in list(missing_packages.items()):
             if pids:
                 # Something may have changed from the moment we started to
                 # download the packages till now
@@ -1183,7 +1183,7 @@ class Syncer:
 
         # First, determine what has to be downloaded
         sp_collection = sync_handlers.SourcePackageCollection()
-        for channel, sps in self._channel_source_packages.items():
+        for channel, sps in list(self._channel_source_packages.items()):
             missing_sps[channel] = []
             if not sps:
                 # Nothing to see here
@@ -1232,7 +1232,7 @@ class Syncer:
     def _diff_source_packages(self):
         self._missing_channel_src_packages = {}
         self._missing_fs_source_packages = {}
-        for channel_label, upids in self._channel_source_packages.items():
+        for channel_label, upids in list(self._channel_source_packages.items()):
             log(1, _("Diffing source package metadata (what's missing locally?): %s") % channel_label)
             self._missing_channel_src_packages[channel_label] = []
             self._missing_fs_source_packages[channel_label] = []
@@ -1253,14 +1253,14 @@ class Syncer:
             sync_handlers.get_source_package_handler(),
             self.xmlDataServer, 'getSourcePackageXmlStream')
 
-        for channel, pids in missing_packages.items():
+        for channel, pids in list(missing_packages.items()):
             self._process_batch(channel, pids[:], messages.package_parsing,
                                 stream_loader.process, is_slow=True)
         stream_loader.close()
 
         # Double-check that we got all the packages
         missing_packages = self._compute_not_cached_source_packages()
-        for channel, pids in missing_packages.items():
+        for channel, pids in list(missing_packages.items()):
             if pids:
                 # Something may have changed from the moment we started to
                 # download the packages till now
@@ -1342,7 +1342,7 @@ class Syncer:
             sync_handlers.get_kickstarts_handler(),
             self.xmlDataServer, 'getKickstartsXmlStream')
 
-        for channel, ktids in self._channel_kickstarts.items():
+        for channel, ktids in list(self._channel_kickstarts.items()):
             self._process_batch(channel, ktids[:], messages.kickstart_parsing,
                                 stream_loader.process)
         stream_loader.close()
@@ -1376,7 +1376,7 @@ class Syncer:
 
         missing_ks_files = {}
         # download files for the ks trees
-        for channel, ktids in self._channel_kickstarts.items():
+        for channel, ktids in list(self._channel_kickstarts.items()):
             missing_ks_files[channel] = missing = []
             for ktid in ktids:
                 # No timestamp for kickstartable trees
@@ -1429,7 +1429,7 @@ class Syncer:
 
         # First, determine what has to be downloaded
         errata_collection = sync_handlers.ErrataCollection()
-        for channel, errata in self._channel_errata.items():
+        for channel, errata in list(self._channel_errata.items()):
             missing_errata[channel] = []
             if not errata:
                 # Nothing to see here
@@ -1508,7 +1508,7 @@ class Syncer:
 
         # Uniquify the errata
         already_seen_errata = set()
-        for channel, errata in channel_errata.items():
+        for channel, errata in list(channel_errata.items()):
             uq_errata = set(errata) - already_seen_errata
             self._channel_errata[channel] = sorted(uq_errata)
             already_seen_errata.update(uq_errata)
@@ -1521,7 +1521,7 @@ class Syncer:
         errata_collection = sync_handlers.ErrataCollection()
         self._missing_channel_errata = missing_channel_errata = {}
         db_channel_errata = self._get_db_channel_errata()
-        for channel, errata in self._channel_errata.items():
+        for channel, errata in list(self._channel_errata.items()):
             ch_erratum_ids = missing_channel_errata[channel] = []
             for eid, timestamp, advisory_name in errata:
                 if timestamp is not None:
@@ -1628,7 +1628,7 @@ class Syncer:
         short_package_collection = sync_handlers.ShortPackageCollection()
         _package_collection = sync_handlers.PackageCollection()
         uq_packages = {}
-        for chn, package_ids in self._channel_packages_full.items():
+        for chn, package_ids in list(self._channel_packages_full.items()):
             for pid in package_ids:
                 package = short_package_collection.get_package(pid)
                 if not package:
@@ -2128,8 +2128,8 @@ def _getImportedChannels(withAdvisory=None):
         query += """
             inner join rhnChannelErrata ce on c.id = ce.channel_id
             inner join rhnErrata e on ce.errata_id = e.id
-				    and e.advisory_name = :advisory
-				    and e.org_id = :org_id
+                    and e.advisory_name = :advisory
+                    and e.org_id = :org_id
         """
         query_args={"advisory": withAdvisory["advisory_name"],
                     "org_id": withAdvisory["org_id"]}
@@ -2428,7 +2428,7 @@ def processCommandline():
     if OPTIONS.batch_size:
         try:
             OPTIONS.batch_size = int(OPTIONS.batch_size)
-            if OPTIONS.batch_size not in range(1, 51):
+            if OPTIONS.batch_size not in list(range(1, 51)):
                 raise ValueError(_("ERROR: --batch-size must have a value within the range: 1..50"))
         except (ValueError, TypeError):
             # int(None) --> TypeError

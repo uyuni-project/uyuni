@@ -169,7 +169,7 @@ class Errata(rhnHandler):
             row = h.fetchone_dict()
             if row is None:
                 break
-            for k in row.keys():
+            for k in list(row.keys()):
                 if row[k] is None:
                     row[k] = "N/A"
             ret.append(row)

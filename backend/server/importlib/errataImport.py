@@ -17,7 +17,7 @@
 #
 
 from spacewalk.common.rhnException import rhnFault
-from importLib import GenericPackageImport
+from .importLib import GenericPackageImport
 from spacewalk.satellite_tools.syncLib import log
 
 
@@ -45,7 +45,7 @@ class ErrataImport(GenericPackageImport):
             release = errata['advisory_rel']
             errata_hash["%s%s" % (advisory, release)] = errata
             if advisory in advisories:
-                if long(release) < long(advisories[advisory]):
+                if int(release) < int(advisories[advisory]):
                     # Seen a newer one already
                     errata.ignored = 1
                     continue
@@ -146,10 +146,10 @@ class ErrataImport(GenericPackageImport):
             self._fix_erratum_file_channels(erratum)
 
         # remove erratas that have been ignored
-        ignored_erratas = list(filter(lambda x: x.ignored, self.batch))
+        ignored_erratas = list([x for x in self.batch if x.ignored])
         if len(ignored_erratas) > 0:
             log(0, "Ignoring %d old, superseded erratas" % len(ignored_erratas))
-            self.batch = list(filter(lambda x: not x.ignored, self.batch))
+            self.batch = list([x for x in self.batch if not x.ignored])
 
     def _fixCVE(self):
         # Look up and insert the missing CVE's
@@ -235,7 +235,7 @@ class ErrataImport(GenericPackageImport):
 
             channels[channel['id']] = None
 
-        erratum['channels'] = [{'channel_id': x} for x in channels.keys()]
+        erratum['channels'] = [{'channel_id': x} for x in list(channels.keys())]
 
     def _fix_erratum_packages_lookup(self, erratum):
         # To make the packages unique
@@ -279,7 +279,7 @@ class ErrataImport(GenericPackageImport):
         # 'package in erratum['packages'].values()' here. But for (to me) unknown
         # reason it sometimes has package.id == None which makes whole import fail.
         # And self.packages[nevrao].id contains always right value.
-        for nevrao in erratum['packages'].keys():
+        for nevrao in list(erratum['packages'].keys()):
             package = self.packages[nevrao]
             if package.ignored:
                 # Ignore this package

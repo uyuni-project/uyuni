@@ -52,12 +52,12 @@ class Tests(unittest.TestCase):
         rhnCache.CACHEDIR = '/tmp/rhn'
         self._cleanup(key)
         rhnCache.set(key, content, **modifiers)
-        self.failUnless(rhnCache.has_key(key))
+        self.assertTrue(key in rhnCache)
         content2 = rhnCache.get(key, **modifiers)
         self.assertEqual(content, content2)
 
         self._cleanup(key)
-        self.failIf(rhnCache.has_key(key))
+        self.assertFalse(key in rhnCache)
         return (key, content)
 
     def test_cache_5(self):
@@ -67,9 +67,9 @@ class Tests(unittest.TestCase):
         self._cleanup(self.key)
         rhnCache.set(self.key, content, modified=timestamp)
 
-        self.failUnless(rhnCache.has_key(self.key))
-        self.failUnless(rhnCache.has_key(self.key, modified=timestamp))
-        self.failIf(rhnCache.has_key(self.key, modified='20001122112233'))
+        self.assertTrue(self.key in rhnCache)
+        self.assertTrue(rhnCache.has_key(self.key, modified=timestamp))
+        self.assertFalse(rhnCache.has_key(self.key, modified='20001122112233'))
         self._cleanup(self.key)
 
     def test_missing_1(self):
@@ -98,10 +98,10 @@ class Tests(unittest.TestCase):
       self._cleanup(self.key)
 
     def _cleanup(self, key):
-        if rhnCache.has_key(key):
+        if key in rhnCache:
             rhnCache.delete(key)
 
-        self.failIf(rhnCache.has_key(key))
+        self.assertFalse(key in rhnCache)
 
 if __name__ == '__main__':
     sys.exit(unittest.main() or 0)

@@ -31,7 +31,7 @@ t = ServerTemplatedDocument(server, start_delim='@@', end_delim='@@')
 data = open("test/template1.tmpl").read()
 
 try:
-    print("interpolated:  ", t.interpolate(data))
+    print(("interpolated:  ", t.interpolate(data)))
 except Exception:
     e = sys.exc_info()[1]
     print(e)
@@ -49,11 +49,11 @@ except Exception:
         f = f.f_back
 
     for frame in stack:
-        print("Frame %s in %s at line %s\n" % (frame.f_code.co_name,
+        print(("Frame %s in %s at line %s\n" % (frame.f_code.co_name,
                                                frame.f_code.co_filename,
-                                               frame.f_lineno))
+                                               frame.f_lineno)))
 
-        for key, value in frame.f_locals.items():
+        for key, value in list(frame.f_locals.items()):
             message = "\t%20s = " % key
             try:
                 s = str(value)
@@ -61,4 +61,4 @@ except Exception:
                 s = "<ERROR WHILE PRINTING VALUE>"
             if len(s) > 100 * 1024:
                 s = "<ERROR WHILE PRINTING VALUE: string representation too large>"
-            print(message + s)
+            print((message + s))

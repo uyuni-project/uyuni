@@ -69,7 +69,7 @@ class BaseInformation(Item):
     def __init__(self, dict=None):
         Item.__init__(self, dict)
         # Initialize attributes
-        for k in dict.keys():
+        for k in list(dict.keys()):
             self[k] = None
         # Each information object has an id (which is set by the database)
         self.id = None
@@ -499,7 +499,7 @@ class Package(IncompletePackage):
         # Inherit from IncompletePackage
         IncompletePackage.__init__(self)
         # And initialize the specific ones
-        for k in self.attributeTypes.keys():
+        for k in list(self.attributeTypes.keys()):
             self[k] = None
 
 
@@ -528,7 +528,7 @@ class SourcePackage(IncompletePackage):
         IncompletePackage.__init__(self)
         # And initialize the specific ones
         self.source_rpm = None
-        for k in self.attributeTypes.keys():
+        for k in list(self.attributeTypes.keys()):
             self[k] = None
 
     def short_str(self):
@@ -783,7 +783,7 @@ class GenericPackageImport(Import):
         if package.arch not in self.package_arches:
             self.package_arches[package.arch] = None
 
-        for type, chksum in package['checksums'].items():
+        for type, chksum in list(package['checksums'].items()):
             checksumTuple = (type, chksum)
             if not checksumTuple in self.checksums:
                 self.checksums[checksumTuple] = None

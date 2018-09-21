@@ -15,7 +15,7 @@
 
 import sys
 
-import iss_ui
+from . import iss_ui
 
 
 class ActionDeps:
@@ -148,4 +148,4 @@ class ActionDeps:
 if __name__ == "__main__":
     a = iss_ui.UI()
     b = ActionDeps(a)
-    print(b.get_actions())
+    print((b.get_actions()))

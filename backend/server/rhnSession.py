@@ -25,7 +25,7 @@ import sys
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.usix import raise_with_tb
 
-import rhnSQL
+from . import rhnSQL
 
 
 class InvalidSessionError(Exception):
@@ -46,7 +46,7 @@ class Session:
 
     def generate(self, duration=None, web_user_id=None):
         # Grabs a session ID
-        self.session_id = rhnSQL.Sequence('pxt_id_seq').next()
+        self.session_id = next(rhnSQL.Sequence('pxt_id_seq'))
         self.duration = int(duration or CFG.SESSION_LIFETIME)
         self.web_user_id(web_user_id)
         return self
@@ -54,7 +54,7 @@ class Session:
     def _get_secrets(self):
         # Reads the four secrets from the config file
         return list(map(lambda x, cfg=CFG: getattr(cfg, 'session_secret_%s' % x),
-                    range(1, 5)))
+                    list(range(1, 5))))
 
     def get_secrets(self):
         # Validates the secrets from the config file

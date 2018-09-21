@@ -37,9 +37,9 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
 # local module
-import rhnUser
-import rhnSQL
-import rhnLib
+from . import rhnUser
+from . import rhnSQL
+from . import rhnLib
 
 
 class NoBaseChannelError(Exception):
@@ -201,7 +201,7 @@ class BaseChannelObject(BaseDatabaseObject):
     def _new_row(self):
         if self._row is None:
             self._row = rhnSQL.Row(self._table_name, 'id')
-            channel_id = rhnSQL.Sequence(self._sequence_name).next()
+            channel_id = next(rhnSQL.Sequence(self._sequence_name))
             self._row.create(channel_id)
 
     def as_dict(self):
@@ -382,7 +382,7 @@ class Channel(BaseChannelObject):
 
     def get_dists(self):
         ret = []
-        for release, os in self._dists.items():
+        for release, os in list(self._dists.items()):
             ret.append({'release': release, 'os': os})
         return ret
 
@@ -585,7 +585,7 @@ def __stringify(object):
         return tuple(map(__stringify, object))
     if type(object) == type({}):
         ret = {}
-        for k, v in object.items():
+        for k, v in list(object.items()):
             ret[__stringify(k)] = __stringify(v)
         return ret
     # by default, we just str() it
@@ -1940,7 +1940,7 @@ def guess_suse_channels_for_server(server, org_id=None, user_id=None, raise_exce
                 childchannels[cc['id']] = cc
 
     channels = [bc]
-    for chan in childchannels.itervalues():
+    for chan in list(childchannels.values()):
         channels.append(chan)
 
     return __stringify(channels)
@@ -2206,7 +2206,7 @@ def system_reg_message(server):
                 (server.server["release"], server.archname))
 
     # System does have a base channel; check entitlements
-    from rhnServer import server_lib  # having this on top, cause TB due circular imports
+    from .rhnServer import server_lib  # having this on top, cause TB due circular imports
     entitlements = server_lib.check_entitlement(server_id)
     if not entitlements:
         # No entitlement

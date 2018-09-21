@@ -23,7 +23,6 @@ from shutil import rmtree
 import re
 import gzip
 import xml.etree.ElementTree as etree
-import urlparse
 import gpgme
 import time
 
@@ -96,7 +95,7 @@ class YumUpdateMetadata(UpdateMetadata):
         """ Parse a metadata from a given YumRepository, file, or filename. """
         if not obj:
             raise UpdateNoticeException
-        if isinstance(obj, (type(''), type(u''))):
+        if isinstance(obj, (type(''), type(''))):
             infile = fileutils.decompress_open(obj)
         elif isinstance(obj, YumRepository):
             if obj.id not in self._repos:
@@ -345,7 +344,7 @@ class ContentSource(object):
         """ list packages"""
         try:
             self.repo.getPackageSack().populate(self.repo, 'metadata', None, 0)
-        except yum.Errors.RepoError,e :
+        except yum.Errors.RepoError as e :
             if "No more mirrors" in str(e):
                 reqFile = re.search('failure:\s+(.+)\s+from',
                                     str(e)).groups()[0]
@@ -512,8 +511,8 @@ class ContentSource(object):
         resolved_deps = self.yumbase.findDeps(packages)
         while resolved_deps:
             next_level_deps = []
-            for deps in resolved_deps.values():
-                for _dep, dep_packages in deps.items():
+            for deps in list(resolved_deps.values()):
+                for _dep, dep_packages in list(deps.items()):
                     if _dep not in known_deps:
                         next_level_deps.extend(dep_packages)
                         packages.extend(dep_packages)
@@ -637,14 +636,14 @@ class ContentSource(object):
                                                       {}),
                                            copy_local = 1
                                            )
-                except URLGrabError, e:
+                except URLGrabError as e:
                     self.error_msg("Failed to download %s. [Errno %i] %s" %
                                    (relative, e.errno, e.strerror))
                     continue
 
                 try:
                     notices.append(etree.parse(filename).getroot())
-                except SyntaxError, e:
+                except SyntaxError as e:
                     self.error_msg("Could not parse %s. "
                                    "The file is not a valid XML document. %s" %
                                    (filename, e.msg))
@@ -704,23 +703,23 @@ class ContentSource(object):
 
                 self.gpgkey_autotrust = None
                 if not rc:
-                    raise ChannelException, "GPG key(0x%s '%s') for repo %s rejected" % (info['hexkeyid'],info['userid'],repo)
+                    raise ChannelException("GPG key(0x%s '%s') for repo %s rejected" % (info['hexkeyid'],info['userid'],repo))
 
                 # Import the key
                 result = yum.misc.import_key_to_pubring(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
                 if not result:
-                    raise ChannelException, 'GPG Key import failed'
+                    raise ChannelException('GPG Key import failed')
                 elif self._is_expired(info['keyid'], repo.gpgdir):
                     # this may happen if we reimport an expired key
-                    raise ChannelException, 'The GPG key for the "%s" repository is expired\n' % (repo)
+                    raise ChannelException('The GPG key for the "%s" repository is expired\n' % (repo))
                 key_installed = True
 
         if not key_installed:
-            raise ChannelException, 'The GPG key listed for the "%s" repository is ' \
+            raise ChannelException('The GPG key listed for the "%s" repository is ' \
                                     'already installed but metadata verification failed.\n' \
                                     'Check that the correct key URL is configured for ' \
                                     'this repository and contact the repository vendor to ' \
-                                    'fix the signature.' % (repo)
+                                    'fix the signature.' % (repo))
 
     def _is_expired(self, keyid, gpgdir):
         os.environ['GNUPGHOME'] = gpgdir
@@ -758,7 +757,7 @@ class ContentSource(object):
                 ug.opts.user_agent = default_grabber.opts.user_agent
                 rawkey = ug.urlread(url, text=repo.id + "/gpgkey")
 
-        except urlgrabber.grabber.URLGrabError, e:
+        except urlgrabber.grabber.URLGrabError as e:
             raise ChannelException('GPG key retrieval failed: ' +
                                     yum.i18n.to_unicode(str(e)))
         # Parse the key
@@ -768,11 +767,10 @@ class ContentSource(object):
             thiskey = {}
             for info in ('keyid', 'timestamp', 'userid',
                          'fingerprint', 'raw_key'):
-                if not keyinfo.has_key(info):
-                    raise ChannelException, \
-                      'GPG key parsing failed: key does not have value %s' % info
+                if info not in keyinfo:
+                    raise ChannelException('GPG key parsing failed: key does not have value %s' % info)
                 thiskey[info] = keyinfo[info]
-            thiskey['keyid'] = str("%016x" % (thiskey['keyid'] & 0xffffffffffffffffL)).upper()
+            thiskey['keyid'] = str("%016x" % (thiskey['keyid'] & 0xffffffffffffffff)).upper()
             thiskey['hexkeyid'] = yum.misc.keyIdToRPMVer(keyinfo['keyid']).upper()
             keys.append(thiskey)
 
@@ -784,16 +782,16 @@ class ContentSource(object):
             return True
 
         if self.interactive:
-          print 'Do you want to import the GPG key 0x%s "%s" from %s? [y/n]:' % (d['hexkeyid'],
-              yum.i18n.to_unicode(d['userid']), d['keyurl'],)
+          print('Do you want to import the GPG key 0x%s "%s" from %s? [y/n]:' % (d['hexkeyid'],
+              yum.i18n.to_unicode(d['userid']), d['keyurl'],))
           yn = sys.stdin.readline()
           yn = yn.strip()
 
           if yn in ['y', 'Y', 'j', 'J']:
             return True
         else:
-            raise ChannelException, 'The GPG key for this repository is not part of the keyring.\n' \
-                                    'Please run spacewalk-repo-sync in interactive mode to import it.'
+            raise ChannelException('The GPG key for this repository is not part of the keyring.\n' \
+                                    'Please run spacewalk-repo-sync in interactive mode to import it.')
 
         return False
 
@@ -918,12 +916,12 @@ class ContentSource(object):
                 elif elem.attrib.get("type") == "modules":
                     files['modules'] = (get_location(elem), get_checksum(elem))
         repomd.close()
-        return files.values()
+        return list(files.values())
 
 def _fix_encoding(text):
     if text is None:
         return None
-    if isinstance(text, unicode):
-        return unicode.encode(text, 'utf-8')
+    if isinstance(text, str):
+        return str.encode(text, 'utf-8')
     else:
         return str(text)

@@ -105,7 +105,7 @@ class Activation(object):
             try:
                 family = self.families[label]
                 family_object = ChannelFamily()
-                for k in family.keys():
+                for k in list(family.keys()):
                     family_object[k] = family[k]
                 family_object['label'] = label
                 batch.append(family_object)
@@ -179,7 +179,7 @@ class Activation(object):
                     elif content_source_ssl not in content_sources_batch[repository]['ssl-sets']:
                         content_sources_batch[repository]['ssl-sets'].append(content_source_ssl)
 
-        importer = ContentSourcesImport(content_sources_batch.values(), backend)
+        importer = ContentSourcesImport(list(content_sources_batch.values()), backend)
         importer.run()
 
     def activate(self):

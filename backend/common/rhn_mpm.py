@@ -304,7 +304,7 @@ def _replace_null(obj):
         return tuple(_replace_null(list(obj)))
     if hasattr(obj, 'items'):
         obj_dict = {}
-        for k, v in obj.items():
+        for k, v in list(obj.items()):
             obj_dict[_replace_null(k)] = _replace_null(v)
         return obj_dict
     return obj

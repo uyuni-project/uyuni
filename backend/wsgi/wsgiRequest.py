@@ -68,7 +68,7 @@ class WsgiRequest:
         if len(self.status) == 0 or self.status is None:
             self.status = "200"
         elif self.status.startswith("500"):
-            for i in self.err_headers_out.items():
+            for i in list(self.err_headers_out.items()):
                 self.headers_out.add(i[0], i[1])
 
         if hasattr(httplib, "responses"):
@@ -81,7 +81,7 @@ class WsgiRequest:
         if len(self.content_type) > 0:
             self.headers_out['Content-Type'] = self.content_type
         # default to text/xml
-        if not self.headers_out.has_key('Content-Type'):
+        if 'Content-Type' not in self.headers_out:
             self.headers_out['Content-Type'] = 'text/xml'
 
         self.start_response(self.status, list(self.headers_out.items()))
@@ -153,7 +153,7 @@ class WsgiMPtable:
 
     def items(self):
         ilist = []
-        for k, v in self.dict.items():
+        for k, v in list(self.dict.items()):
             for vi in v:
                 ilist.append((k, vi))
         return ilist
@@ -165,4 +165,4 @@ class WsgiMPtable:
         return list(self.dict.keys())
 
     def __str__(self):
-        return str(self.items())
+        return str(list(self.items()))

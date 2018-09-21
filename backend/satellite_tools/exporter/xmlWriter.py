@@ -62,7 +62,7 @@ class XMLWriter:
         self.data(name)
         # Dump the attributes, if any
         if attributes:
-            for k, v in attributes.items():
+            for k, v in list(attributes.items()):
                 self.stream.write(" ")
                 self.data(k)
                 self.stream.write('="')

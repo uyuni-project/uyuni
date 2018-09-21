@@ -16,7 +16,10 @@
 
 import os
 import unittest
-from StringIO import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    from StringIO import StringIO
 from collections import namedtuple
 
 import mock

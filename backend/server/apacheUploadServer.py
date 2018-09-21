@@ -18,7 +18,7 @@ import string
 import sys
 from spacewalk.common import apache
 
-import rhnSession
+from . import rhnSession
 
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error, log_setreq, initLOG

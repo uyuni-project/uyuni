@@ -96,7 +96,7 @@ class DebRepo(object):
                         fd.close()
                 return filename
             except requests.exceptions.RequestException:
-                print "ERROR: requests.exceptions.RequestException occured"
+                print("ERROR: requests.exceptions.RequestException occured")
                 time.sleep(RETRY_DELAY)
 
         return ''

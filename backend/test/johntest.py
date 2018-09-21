@@ -175,52 +175,52 @@ class ChannelList:
         return self._num_channels
 
     def get_last_modified(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._last_modified):
+        if self._last_modified in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._last_modified]
         return None
 
     def get_description(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._description):
+        if self._description in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._description]
         return None
 
     def get_name(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._name):
+        if self._name in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._name]
         return None
 
     def get_local_channel(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._local_channel):
+        if self._local_channel in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._local_channel]
         return None
 
     def get_arch(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._arch):
+        if self._arch in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._arch]
         return None
 
     def get_parent_channel(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._parent_channel):
+        if self._parent_channel in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._parent_channel]
         return None
 
     def get_summary(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._summary):
+        if self._summary in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._summary]
         return None
 
     def get_org_id(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._org_id):
+        if self._org_id in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._org_id]
         return None
 
     def get_id(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._id):
+        if self._id in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._id]
         return None
 
     def get_label(self, ch_index):
-        if self.channel_list[ch_index].has_key(self._label):
+        if self._label in self.channel_list[ch_index]:
             return self.channel_list[ch_index][self._label]
         return None
 
@@ -244,65 +244,65 @@ class LoginInfo:
         self.login_dict = login_dict
 
     def get_server_id(self):
-        if self.login_dict.has_key(self._server_key):
+        if self._server_key in self.login_dict:
             return str(self.login_dict[self._server_key])
         return None
 
     def get_user_id(self):
-        if self.login_dict.has_key(self._user_key):
+        if self._user_key in self.login_dict:
             return self.login_dict[self._user_key]
         return None
 
     def get_signature(self):
-        if self.login_dict.has_key(self._sig_key):
+        if self._sig_key in self.login_dict:
             return self.login_dict[self._sig_key]
         return None
 
     def get_server_time(self):
-        if self.login_dict.has_key(self._time_key):
+        if self._time_key in self.login_dict:
             return self.login_dict[self._time_key]
         return None
 
     def get_expire_offset(self):
-        if self.login_dict.has_key(self._expire_key):
+        if self._expire_key in self.login_dict:
             return self.login_dict[self._expire_key]
         return None
 
     def get_auth_channels(self):
-        if self.login_dict.has_key(self._channel_key):
+        if self._channel_key in self.login_dict:
             return self.login_dict.has_key[self._channel_key]
         return None
 
 if __name__ == "__main__":
     t = Test()
     lg = t.login()
-    print("Server ID: " + lg.get_server_id())
-    print("User ID: " + lg.get_user_id())
-    print("Server Time: " + lg.get_server_time())
-    print("Auth: " + lg.get_signature())
-    print("Expire Offset: " + lg.get_expire_offset())
+    print(("Server ID: " + lg.get_server_id()))
+    print(("User ID: " + lg.get_user_id()))
+    print(("Server Time: " + lg.get_server_time()))
+    print(("Auth: " + lg.get_signature()))
+    print(("Expire Offset: " + lg.get_expire_offset()))
 
     list = t.list_channels()
     print("\n")
     for i in range(list.get_num_channels()):
-        print("Channel Name: " + list.get_name(i))
-        print("Channel Last Modified: " + list.get_last_modified(i))
-        print("Channel Description: " + list.get_description(i))
-        print("Channel Local Channel: " + list.get_local_channel(i))
-        print("Channel Arch: " + list.get_arch(i))
-        print("Channel Parent Channel: " + list.get_parent_channel(i))
-        print("Channel Summary: " + list.get_summary(i))
-        print("Channel org_id: " + list.get_org_id(i))
-        print("Channel id: " + list.get_id(i))
-        print("Channel label: " + list.get_label(i))
+        print(("Channel Name: " + list.get_name(i)))
+        print(("Channel Last Modified: " + list.get_last_modified(i)))
+        print(("Channel Description: " + list.get_description(i)))
+        print(("Channel Local Channel: " + list.get_local_channel(i)))
+        print(("Channel Arch: " + list.get_arch(i)))
+        print(("Channel Parent Channel: " + list.get_parent_channel(i)))
+        print(("Channel Summary: " + list.get_summary(i)))
+        print(("Channel org_id: " + list.get_org_id(i)))
+        print(("Channel id: " + list.get_id(i)))
+        print(("Channel label: " + list.get_label(i)))
 
     print("")
     plist = t.list_packages()
     for j in range(plist.get_num_packages()):
-        print("Package Name: " + plist.get_name(j))
-        print("Package Version: " + plist.get_version(j))
-        print("Package Release: " + plist.get_release(j))
-        print("Package Epoch: " + plist.get_epoch(j))
+        print(("Package Name: " + plist.get_name(j)))
+        print(("Package Version: " + plist.get_version(j)))
+        print(("Package Release: " + plist.get_release(j)))
+        print(("Package Epoch: " + plist.get_epoch(j)))
         print("")
 
     #package = t.package([plist.get_name(0), plist.get_version(0), plist.get_release(0), plist.get_epoch(j)])
@@ -315,5 +315,5 @@ if __name__ == "__main__":
     org_id = raw_input("ord_id:")
     org_password = raw_input("org_password:")
 
-    print(t.reserve_user(uname, password))
-    print(t.new_user(uname, password, email, org_id, org_password))
+    print((t.reserve_user(uname, password)))
+    print((t.new_user(uname, password, email, org_id, org_password)))

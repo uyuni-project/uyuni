@@ -34,7 +34,7 @@ from spacewalk.common import rhnFlags
 from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
 
 # Local imports
-import server_class
+from . import server_class
 
 def kudzu_mapping(dict=None):
     """ this is a class we use to get the mapping for a kudzu entry """
@@ -223,7 +223,7 @@ class GenericDevice:
         self._null_columns([self.data], self._autonull)
         # make sure we have a device id
         devid = self.getid()
-        for k in self.data.keys():
+        for k in list(self.data.keys()):
             if self.data[k] is None:
                 del self.data[k]
         self.data["server_id"] = sysid
@@ -240,7 +240,7 @@ class GenericDevice:
         # clean up fields we don't want
         if self.data:
             for k in ["created", "modified"]:
-                if self.data.has_key(k):
+                if k in self.data:
                     del self.data[k]
         self.id = devid
         self.status = 0
@@ -292,13 +292,13 @@ class Device(GenericDevice):
             raise TypeError("Argument passed is not a dictionary",
                             dict, mapping)
         # make sure we have a platform
-        for k in dict.keys():
+        for k in list(dict.keys()):
             if dict[k] == '':
                 dict[k] = None
-            if self.data.has_key(k):
+            if k in self.data:
                 self.data[k] = dict[k]
                 continue
-            if mapping.has_key(k):
+            if k in mapping:
                 # the mapping dict might tell us to lose some fields
                 if mapping[k] is not None:
                     self.data[mapping[k]] = dict[k]
@@ -315,7 +315,7 @@ class Device(GenericDevice):
                     continue
         # clean up this data
         try:
-            for k in self.data.keys():
+            for k in list(self.data.keys()):
                 if type(self.data[k]) == type("") and len(self.data[k]):
                     self.data[k] = string.strip(self.data[k])
                     if not len(self.data[k]):
@@ -379,18 +379,18 @@ class CPUDevice(Device):
         if self.data.get("cpu_arch_id") is not None:
             return  # all fine, we have the arch
         # if we don't have an architecture, guess it
-        if not self.data.has_key("architecture"):
+        if "architecture" not in self.data:
             log_error("hash does not have a platform member: %s" % dict)
             raise AttributeError("Expected a hash value for member `platform'")
         # now extract the arch field, which has to come out of rhnCpuArch
         arch = self.data["architecture"]
         row = rhnSQL.Table("rhnCpuArch", "label")[arch]
-        if row is None or not row.has_key("id"):
+        if row is None or "id" not in row:
             log_error("Can not find arch %s in rhnCpuArch" % arch)
             raise AttributeError("Invalid architecture for CPU: `%s'" % arch)
         self.data["cpu_arch_id"] = row["id"]
         del self.data["architecture"]
-        if self.data.has_key("nrcpu"):  # make sure this is a number
+        if "nrcpu" in self.data:  # make sure this is a number
             try:
                 self.data["nrcpu"] = int(self.data["nrcpu"])
             except:
@@ -412,7 +412,7 @@ class NetIfaceInformation(Device):
         self._autonull = ('hw_addr', 'module')
         if not dict:
             return
-        for name, info in dict.items():
+        for name, info in list(dict.items()):
             if name == 'class':
                 # Ignore it
                 continue
@@ -420,7 +420,7 @@ class NetIfaceInformation(Device):
                 raise rhnFault(53, "Unexpected format for interface %s" %
                                name)
             vdict = {}
-            for key, mapping in self.key_mapping.items():
+            for key, mapping in list(self.key_mapping.items()):
                 # Look at the mapping first; if not found, look for the key
                 if mapping in info:
                     k = mapping
@@ -478,7 +478,7 @@ class NetIfaceInformation(Device):
             updates.append(uploaded_iface)
 
         # Everything else in self.ifaces has to be inserted
-        for name, info in ifaces.items():
+        for name, info in list(ifaces.items()):
             iface = {}
             iface['name'] = name
             iface['server_id'] = server_id
@@ -493,7 +493,7 @@ class NetIfaceInformation(Device):
         self._update(updates)
         self._insert(inserts)
         ifaces = self.ifaces.copy()
-        for name, info in ifaces.items():
+        for name, info in list(ifaces.items()):
             if not 'ipv6' in info:
                 info['ipv6'] = NetIfaceAddress6()
             info['ipv6'].save(self.get_server_id(server_id, name))
@@ -570,7 +570,7 @@ class NetIfaceInformation(Device):
             if not row:
                 break
             hval = {'primary_id': row['id'], 'name': row['name'], 'server_id': server_id}
-            for key in self.key_mapping.values():
+            for key in list(self.key_mapping.values()):
                 hval[key] = row[key]
             hval['ipv4'] = NetIfaceAddress4()
             hval['ipv4'].reload(hval['primary_id'])
@@ -615,7 +615,7 @@ class NetIfaceAddress(Device):
                 raise rhnFault(53, "Unexpected format for interface %s" %
                                info)
             vdict = {}
-            for key, mapping in self.key_mapping.items():
+            for key, mapping in list(self.key_mapping.items()):
                 # Look at the mapping first; if not found, look for the key
                 if mapping in info:
                     k = mapping
@@ -673,7 +673,7 @@ class NetIfaceAddress(Device):
             updates.append(uploaded_iface)
 
         # Everything else in self.ifaces has to be inserted
-        for name, iface in ifaces.items():
+        for name, iface in list(ifaces.items()):
             iface['address'] = iface['address']
             iface['interface_id'] = interface_id
             inserts.append(iface)
@@ -738,7 +738,7 @@ class NetIfaceAddress(Device):
             if not row:
                 break
             hval = {'interface_id': row['interface_id']}
-            for key in self.key_mapping.values():
+            for key in list(self.key_mapping.values()):
                 hval[key] = row[key]
             self.db_ifaces.append(hval)
 
@@ -784,7 +784,7 @@ class NetIfaceAddress4(NetIfaceAddress):
 def _hash_eq(h1, h2):
     """ Compares two hashes and return 1 if the first is a subset of the second """
     log_debug(5, h1, h2)
-    for k, v in h1.items():
+    for k, v in list(h1.items()):
         if k not in h2:
             return 0
         if h2[k] != v:
@@ -836,7 +836,7 @@ class MemoryInformation(Device):
             return
         # Sometimes we get sent a NNNNL number and we need to strip the L
         for k in fields:
-            if not self.data.has_key(k):
+            if k not in self.data:
                 continue
             if self.data[k] in [None, "None", ""]:
                 self.data[k] = -1
@@ -863,7 +863,7 @@ class DMIInformation(Device):
             return
 
         # deal with hardware with insanely long dmi strings...
-        for key, value in self.data.items():
+        for key, value in list(self.data.items()):
             # Some of the values may be None
             if value and isinstance(value, type("")):
                 self.data[key] = value[:256]
@@ -1146,7 +1146,7 @@ class Hardware:
 
         self.__reset_machine_id(sysid)
 
-        for device_type in hardware.keys():
+        for device_type in list(hardware.keys()):
             for hw in hardware[device_type]:
                 hw.status = 2  # deleted
 
@@ -1167,7 +1167,7 @@ class Hardware:
             return 0
         if not self.__changed:
             return 0
-        for device_type, hw_list in hardware.items():
+        for device_type, hw_list in list(hardware.items()):
             for hw in hw_list:
                 hw.save(sysid)
         self.__changed = 0

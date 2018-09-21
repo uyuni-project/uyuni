@@ -34,7 +34,7 @@ class Tests(unittest.TestCase):
             is_eq, t1, tstr, t2 = self._test(t)
             #self.assertEqual(t, t2, "%s %s %s %s" % (t, t2, ttuple, tstr))
             if not is_eq:
-                print("%s %s %s" % (t1, t2, tstr))
+                print(("%s %s %s" % (t1, t2, tstr)))
             t = t + increment
 
     def _str(self, t):
@@ -62,13 +62,13 @@ class Tests(unittest.TestCase):
 
             is_eq, t1, tstr, t2 = self._test(t)
             if not is_eq:
-                print("%s %s %s" % (t, t2, tstr))
+                print(("%s %s %s" % (t, t2, tstr)))
 
     def test_timestamp_3(self):
         t = 57739297
         dstshift = (time.localtime(t)[8] - time.daylight) * 3600
         is_eq, t1, tstr, t2 = self._test(t, dstshift)
-        self.failUnless(is_eq, "Failed: %s, %s" % (t1, t2))
+        self.assertTrue(is_eq, "Failed: %s, %s" % (t1, t2))
 
     def _test_timestamp_4(self):
         return self.test_timestamp_3()

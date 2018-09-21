@@ -38,7 +38,7 @@ from spacewalk.server import rhnSQL, rhnCapability, rhnAction
 from spacewalk.server.rhnLib import InvalidAction, EmptyAction, ShadowAction
 from spacewalk.server.rhnServer import server_kickstart
 
-import getMethod
+from . import getMethod
 
 
 class Queue(rhnHandler):
@@ -488,7 +488,7 @@ class Queue(rhnHandler):
                 rmsg = result["faultString"] + str(data)
         if type(rcode) in [type({}), type(()), type([])] \
                 or type(rcode) is not IntType:
-            rmsg = u"%s [%s]" % (UnicodeType(message), UnicodeType(rcode))
+            rmsg = "%s [%s]" % (UnicodeType(message), UnicodeType(rcode))
             rcode = -1
         # map to db codes.
         status = self.status_for_action_type_code(action_type, rcode)

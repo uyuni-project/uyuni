@@ -14,7 +14,11 @@
 
 import sys
 
-import cStringIO
+try:
+    import io as cStringIO
+except ImportError:
+    import cStringIO
+
 import json
 import zipfile
 import os
@@ -23,7 +27,7 @@ from M2Crypto import X509
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server.rhnServer.satellite_cert import SatelliteCert
 
-import constants
+from . import constants
 
 
 class Manifest(object):

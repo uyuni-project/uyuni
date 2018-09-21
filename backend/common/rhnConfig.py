@@ -176,7 +176,7 @@ class RHNOptions:
             # is going to be () and we need to override it with
             # whatever we're parsing now in the self.__defaults table
             def_dict = {}
-            for k in _dict[()].keys():
+            for k in list(_dict[()].keys()):
                 # we extract just the values and dump the line number
                 # from the (values,linno) tuples which is the hash
                 # value for _dict[()][k]
@@ -212,7 +212,7 @@ class RHNOptions:
         for k, v in vals:
             if v is None:
                 v = ""
-            print("%-20s = %s" % (k, v))
+            print(("%-20s = %s" % (k, v)))
 
     # polymorphic methods
 
@@ -275,7 +275,7 @@ class RHNOptions:
             if comp not in self.__parsedConfig:
                 # No such entry in the config file
                 continue
-            for key, (values, _lineno_) in self.__parsedConfig[comp].items():
+            for key, (values, _lineno_) in list(self.__parsedConfig[comp].items()):
                 # we don't really want to force every item in the
                 # config file to have a default value first. If we do,
                 # uncomment this section
@@ -506,7 +506,7 @@ def getAllComponents(defaultDir=None, compsTree=None):
     if compsTree is None:
         compsTree = getAllComponents_tree(defaultDir)
     l = []
-    for k, v in compsTree.items():
+    for k, v in list(compsTree.items()):
         l.extend(getAllComponents(None, v))
         l.append(k)
     return l
@@ -563,10 +563,10 @@ def runTest():
     print("=============== an erronous lookup example =======================")
     print("testing __getattr__")
     try:
-        print(test_cfg.lkasjdfxxxxxxxxxxxxxx)
+        print((test_cfg.lkasjdfxxxxxxxxxxxxxx))
     except AttributeError:
         e = sys.exc_info()[1]
-        print('Testing: "AttributeError: %s"' % e)
+        print(('Testing: "AttributeError: %s"' % e))
     print("")
     print("=============== the object's merged settings ======================")
     test_cfg.show()
@@ -602,4 +602,4 @@ if __name__ == "__main__":
     if do_list:
         cfg.show()
     else:
-        print(cfg.get(key_arg))
+        print((cfg.get(key_arg)))

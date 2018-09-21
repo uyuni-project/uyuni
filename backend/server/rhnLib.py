@@ -24,7 +24,7 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 
 # architecture work
-from rhnMapping import check_package_arch
+from .rhnMapping import check_package_arch
 
 
 def computeSignature(*fields):
@@ -217,7 +217,7 @@ def make_evr(nvre, source=False):
     if len(nvr_parts) != 3:
         raise rhnFault(err_code=21, err_text="NVRE is missing name, version, or release.")
 
-    result = dict(zip(["name", "version", "release"], nvr_parts))
+    result = dict(list(zip(["name", "version", "release"], nvr_parts)))
     result["epoch"] = epoch
 
     if source and result["release"].endswith(".src"):

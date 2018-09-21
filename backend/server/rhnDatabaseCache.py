@@ -17,8 +17,14 @@
 import math
 import gzip
 import string
-import cPickle
-import cStringIO
+try:
+    # python 3
+    import pickle as cPickle
+    import io as cStringIO
+except ImportError:
+    # python 2
+    import cPickle
+    import cStringIO
 
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -112,7 +118,7 @@ def get(name, modified = None, raw = None, compressed = None):
 
     try:
         data = v.read()
-    except (ValueError, IOError, gzip.zlib.error), e:
+    except (ValueError, IOError, gzip.zlib.error) as e:
         # XXX poking at gzip.zlib may not be that well-advised
         log_error("rhnDatabaseCache: gzip error for key %s: %s" % (
             name, e))
@@ -217,20 +223,20 @@ END;
     decl_template = "    arg_%s LONG RAW := :val_%s;"
     dbms_lob_template = "   DBMS_LOB.WRITE(blob_val, %s, %s, arg_%s);"
 
-    indices = range(chunks)
-    start_pos = map(lambda x, cs=chunk_size: x * cs + 1, indices)
+    indices = list(range(chunks))
+    start_pos = list(map(lambda x, cs=chunk_size: x * cs + 1, indices))
     sizes = [ chunk_size ] * (chunks - 1) + \
         [ 'length(rawtohex(arg_%s)) / 2' % (chunks - 1) ]
 
     query = plsql_template % (
         string.join(
-            map(lambda x, y, t=decl_template: t % (x, y),
-                indices, indices),
+            list(map(lambda x, y, t=decl_template: t % (x, y),
+                indices, indices)),
             "\n"
         ),
         string.join(
-            map(lambda x, y, z, t=dbms_lob_template: t % (x, y, z), 
-                sizes, start_pos, indices),
+            list(map(lambda x, y, z, t=dbms_lob_template: t % (x, y, z),
+                sizes, start_pos, indices)),
             "\n"
         ),
     )
@@ -249,8 +255,8 @@ END;
     while tries:
         tries = tries - 1
         try:
-            apply(h.execute, (), params)
-        except rhnSQL.SQLSchemaError, e:
+            h.execute(*(), **params)
+        except rhnSQL.SQLSchemaError as e:
             if e.errno == 1:
                 # Unique constraint violated - probably someone else was
                 # doing the same thing at the same time
