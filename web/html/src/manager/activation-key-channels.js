@@ -3,18 +3,59 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
+const Network = require("../utils/network");
 
 class ActivationKeyChannels extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      messages: [],
+      loading: true,
+      activationKeyId: this.props.activationKeyId,
+      activationKeyData: new Map()
     }
   }
 
+  componentWillMount() {
+    this.fetchActivationKeyChannels();
+  }
+
+  fetchActivationKeyChannels = () => {
+    let future;
+    if (this.props.activationKeyId != -1) {
+      this.setState({loading: true});
+
+      future = Network.get(`/rhn/manager/api/activation-keys/${this.props.activationKeyId}/channels`)
+        .promise.then(data => {
+          this.setState({
+            activationKeyData: data.data,
+            loading: false
+          });
+        })
+        .catch(this.handleResponseError);
+    }
+    else {
+      future = () => {};
+    }
+    return future;
+  }
+
+  handleResponseError = (jqXHR, arg = "") => {
+    const msg = Network.responseErrorMessage(jqXHR,
+      (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
+    this.setState((prevState) => ({
+        messages: prevState.messages.concat(msg)
+      })
+    );
+  }
+
   render() {
-    return (
-      <div>placeholder</div>
-    )
+    if (this.state.loading) {
+      return <div>loading..</div>
+    }
+    else {
+      return <div>placeholder</div>
+    }
   }
 }
 
