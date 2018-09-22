@@ -41,22 +41,22 @@ Feature: Create a group
   Scenario: Add the new group to SSM
     Given I am on the groups page
     When I click on "Use in SSM" for "newgroup"
-    And I should see a "system selected" text
+    Then I should see a "system selected" text
     And I should see a "Selected Systems List" text
-    Then I should see "sle-client" as link
+    And I should see "sle-client" as link
   
   Scenario: Remove client from new group
-   Given I am on the Systems overview page of this "sle-client"
-   When I follow "Groups"
-   And I check "newgroup" in the list
-   And I click on "Leave Selected Groups"
-   Then I should see a "1 system groups removed." text
+    Given I am on the Systems overview page of this "sle-client"
+    When I follow "Groups"
+    And I check "newgroup" in the list
+    And I click on "Leave Selected Groups"
+    Then I should see a "1 system groups removed." text
 
   Scenario: Cleanup: remove the new group
-   Given I am on the groups page
-   When I follow "newgroup" in the content area
-   And I follow "Delete Group" in the content area
-   And I click on "Confirm Deletion"
-   And I should see a "System group" text
-   And I should see a "newgroup" text
-   Then I should see a "deleted" text
+    Given I am on the groups page
+    When I follow "newgroup" in the content area
+    And I follow "Delete Group" in the content area
+    And I click on "Confirm Deletion"
+    Then I should see a "System group" text
+    And I should see a "newgroup" text
+    And I should see a "deleted" text
