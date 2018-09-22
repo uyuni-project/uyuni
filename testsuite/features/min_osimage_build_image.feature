@@ -20,8 +20,8 @@ Feature: Build OS images
 
   Scenario: Check the OS image built as Kiwi image administrator
     Given I am on the Systems overview page of this "sle-minion"
-    When I wait at most 900 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
-    And I wait at most 300 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
+    When I wait at most 2700 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
+    And I wait at most 900 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
     And I navigate to "os-images/1/" page
     Then I should see a "POS_Image_JeOS6" text
 
