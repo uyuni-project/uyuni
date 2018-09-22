@@ -51,6 +51,7 @@ else {
     my $pg_version = "";
     my $os_version = 0.0;
     my $os_name = "";
+    my $isUyuni = 0;
     $server_version = run_query("show server_version_num;");
     $pg_version = run_query("show server_version;");
 
@@ -66,13 +67,16 @@ else {
         elsif ($k eq "PRETTY_NAME") {
             $os_name = $v;
         }
+        elsif ($k eq "ID" && $v =~ m/opensuse/) {
+            $isUyuni = 1;
+        }
     }
     close $fh;
     if ($server_version < $MIN_PG_DB_VERSION) {
         print "\nRunning postgresql $pg_version is not supported. Minimal require version is $MIN_PG_DB_VERSION_STRING.\n\n";
         exit 1;
     }
-    elsif($server_version < 100001 && $os_version >= 12.4) {
+    elsif(!$isUyuni && $server_version < 100001 && $os_version >= 12.4) {
         print "\nRunning postgresql $pg_version on $os_name is unsupported. Please migrate to postgresql 10.\n\n";
         exit 1;
     }
