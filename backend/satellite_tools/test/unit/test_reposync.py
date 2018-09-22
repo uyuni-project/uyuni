@@ -156,7 +156,7 @@ class RepoSyncTest(unittest.TestCase):
                 (('http://none.host/bogus-url', 'bogus-url', True, True)))
 
         self.assertEqual(rs.import_packages.call_args,
-                ((rs.mocked_plugin, 42, "http://none.host/bogus-url"), {}))
+                ((rs.mocked_plugin, 42, "http://none.host/bogus-url", 1), {}))
         self.assertEqual(rs.import_updates.call_args,
                 ((rs.mocked_plugin,), {}))
         self.assertEqual(rs.import_products.call_args,
