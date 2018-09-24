@@ -349,6 +349,18 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a list of servers by their ids
+     * @param serverIds the server ids to search for
+     * @param org the organization who owns the server
+     * @return the list of servers
+     */
+    public static List<Server> lookupByIdsAndOrg(Set<Long> serverIds, Org org) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("orgId", org.getId());
+        return singleton.listObjectsByNamedQuery("Server.findByIdsAndOrgId", params, serverIds, "serverIds");
+    }
+
+    /**
      * Lookup a Server by their id
      * @param id the id to search for
      * @param orgIn Org who owns the server
