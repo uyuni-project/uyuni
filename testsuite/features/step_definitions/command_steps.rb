@@ -497,6 +497,18 @@ When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   node.run(cmd)
 end
 
+When(/^I enable source package syncing$/) do
+  node = get_target("server")
+  cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
+  node.run(cmd)
+end
+
+When(/^I disable source package syncing$/) do
+  node = get_target("server")
+  cmd = "sed -i 's/^server.sync_source_packages = 1.*//g' /etc/rhn/rhn.conf"
+  node.run(cmd)
+end
+
 When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
   node = get_target(host)
   if file_exists?(node, '/usr/bin/zypper')
