@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.dto.CVE;
@@ -95,6 +96,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1804,23 +1806,24 @@ public class ErrataManager extends BaseManager {
                 e -> e.hasKeyword("restart_suggested")
             ));
 
-
-        // compute server list
-        Map<Long, Server> serverMap = serverIds.stream()
-            .collect(toMap(
-                sid -> sid,
-                sid -> SystemManager.lookupByIdAndOrg(sid, user.getOrg())
-            ));
-
         // compute erratas that are both applicable and requested
         // group them by server id
         Map<Long, List<Long>> serverErrataMap =
             serverIds.stream()
+            .filter(sid -> serverApplicableErrataMap.get(sid).stream()
+                    .anyMatch(eid -> errataMap.containsKey(eid)))
             .collect(toMap(
                 sid -> sid,
                 sid -> serverApplicableErrataMap.get(sid).stream()
                     .filter(eid -> errataMap.containsKey(eid))
                     .collect(toList())
+            ));
+
+        // compute server list
+        Map<Long, Server> serverMap = ServerFactory.lookupByIdsAndOrg(serverErrataMap.keySet(), user.getOrg()).stream()
+                .collect(toMap(
+                        Server::getId,
+                        Function.identity()
             ));
 
         // separate server ids based on zypper/yum, salt/traditional
