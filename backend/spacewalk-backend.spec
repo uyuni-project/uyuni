@@ -592,9 +592,6 @@ rm -f $RPM_BUILD_ROOT%{python2rhnroot}/common/__init__.py*
 # Copy spacewalk-usix python files to allow unit tests to run
 cp %{pythonrhnroot}/common/usix* $RPM_BUILD_ROOT%{pythonrhnroot}/common/
 make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} PYTHON_BIN=%{pythonX} test
-#%if 0%{?build_py3}
-#make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python2_sitelib} PYTHON_BIN=python2 test
-#%endif
 
 %if 0%{?pylint_check}
 # check coding style
