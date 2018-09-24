@@ -1,3 +1,4 @@
+- Make Kiwi OS Image building enabled by default
 - Change Saltboot grain trigger from "initrd" to "saltboot_initrd"
 - Optimize execution of actions in minions (bsc#1099857)
 - add last_boot to listSystems() API call
