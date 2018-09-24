@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 
-import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.AbstractSaltRequisites;
 import com.suse.manager.webui.utils.ActionSaltState;
 import com.suse.manager.webui.utils.IdentifiableSaltState;
