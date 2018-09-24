@@ -503,7 +503,6 @@ SELECT * from rhntransactionpackage where
   id in (select transaction_package_id from rhnPackageDeltaElement where PACKAGE_DELTA_ID =
   (select id from rhnPackageDelta where id = (select PACKAGE_DELTA_ID from rhnActionPackageDelta
   where action_id = :action_id)))
-
     </query>
 </mode>
 
