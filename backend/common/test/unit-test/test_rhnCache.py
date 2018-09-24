@@ -52,12 +52,12 @@ class Tests(unittest.TestCase):
         rhnCache.CACHEDIR = '/tmp/rhn'
         self._cleanup(key)
         rhnCache.set(key, content, **modifiers)
-        self.assertTrue(key in rhnCache)
+        self.assertTrue(rhnCache.has_key(key))
         content2 = rhnCache.get(key, **modifiers)
         self.assertEqual(content, content2)
 
         self._cleanup(key)
-        self.assertFalse(key in rhnCache)
+        self.assertFalse(rhnCache.has_key(key))
         return (key, content)
 
     def test_cache_5(self):
@@ -67,7 +67,7 @@ class Tests(unittest.TestCase):
         self._cleanup(self.key)
         rhnCache.set(self.key, content, modified=timestamp)
 
-        self.assertTrue(self.key in rhnCache)
+        self.assertTrue(rhnCache.has_key(self.key))
         self.assertTrue(rhnCache.has_key(self.key, modified=timestamp))
         self.assertFalse(rhnCache.has_key(self.key, modified='20001122112233'))
         self._cleanup(self.key)
@@ -98,10 +98,10 @@ class Tests(unittest.TestCase):
       self._cleanup(self.key)
 
     def _cleanup(self, key):
-        if key in rhnCache:
+        if rhnCache.has_key(key):
             rhnCache.delete(key)
 
-        self.assertFalse(key in rhnCache)
+        self.assertFalse(rhnCache.has_key(key))
 
 if __name__ == '__main__':
     sys.exit(unittest.main() or 0)
