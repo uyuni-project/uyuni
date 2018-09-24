@@ -45,7 +45,6 @@ Feature: SMBDA database helper tool
     Given a postgresql database is running
     When I issue command "smdba space-overview"
     Then I find tablespaces "susemanager" and "template"
-    And I find tablespaces "susemanager" and "postgres"
     When I issue command "smdba space-reclaim"
     Then I find core examination is "finished", database analysis is "done" and space reclamation is "done"
     When I issue command "smdba space-tables"
