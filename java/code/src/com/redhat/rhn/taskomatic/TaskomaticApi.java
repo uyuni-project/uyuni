@@ -545,6 +545,30 @@ public class TaskomaticApi {
     }
 
     /**
+     * Schedule a staging job for Salt minions.
+     *
+     * @param actionId ID of the action to be executed
+     * @param minionsData scheduling time of staging for each minion
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleStagingJobs(Long actionId, Map<Long, Date> minionsData) throws TaskomaticApiException {
+
+        List<Map<String, String>> paramsList = new ArrayList<>();
+        minionsData.forEach((minionId, stagingDateTime) -> {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("action_id", Long.toString(actionId));
+            params.put("staging_job", "true");
+            params.put("staging_job_minion_server_id", Long.toString(minionId));
+            params.put("staging_date_time", stagingDateTime.toInstant().toString());
+            paramsList.add(params);
+
+        });
+        invoke("tasko.scheduleSingleSatBunchRunList", MINION_ACTION_BUNCH_LABEL,
+                MINION_ACTION_JOB_DOWNLOAD_PREFIX + actionId, paramsList);
+    }
+
+
+    /**
      * Schedule an Action execution for Salt minions, without forced
      * package refresh.
      *
