@@ -1,3 +1,4 @@
+- Make Kiwi OS Image building enabled by default
 - check valid postgresql database version
 - Change Saltboot grain trigger from "initrd" to "saltboot_initrd"
 - add last_boot to listSystems() API call
