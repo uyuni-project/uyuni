@@ -1774,6 +1774,8 @@ class RepoSync(object):
         """
         erratum_packages = existing_packages
         for pkg in packages:
+            if pkg['arch'] in ['src', 'nosrc']:
+                continue
             param_dict = {
                 'name': pkg['name'],
                 'version': pkg['version'],
