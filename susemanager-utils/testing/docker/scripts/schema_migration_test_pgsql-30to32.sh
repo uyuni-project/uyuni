@@ -2,6 +2,10 @@
 
 set -e
 
+echo "============================================================"
+echo "                      Migration test                        "
+echo "============================================================"
+
 cd /manager/susemanager-utils/testing/docker/scripts/
 
 # Move Postgres database to tmpfs to speed initialization and testing up
@@ -58,7 +62,6 @@ fi
 ####### IF A FIXED DESTINATION IS WANTED
 ################################################
 
-set -x
 # guessing the link to next major version
 # THE NEXT BLOCK CAN BE COMMENTED OUT WHEN WE HAVE THE LINK PACKAGED
 for v in `seq 30 -1 2`; do
@@ -79,17 +82,9 @@ done
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
-    if [ -e /usr/lib/postgresql-init ]; then
-        su - postgres -c "/usr/lib/postgresql-init stop"
-    else
-        rcpostgresql stop
-    fi
+    su - postgres -c "/usr/lib/postgresql-init stop"
     exit 1
 fi
 
 # Postgres shutdown (avoid stale memory by shmget())
-if [ -e /usr/lib/postgresql-init ]; then
-    su - postgres -c "/usr/lib/postgresql-init stop"
-else
-    rcpostgresql stop
-fi
+su - postgres -c "/usr/lib/postgresql-init stop"
