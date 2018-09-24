@@ -1244,6 +1244,10 @@ def clone_channel(self, channel, options, details) :
     if options.disable_gpg_check:
         details['gpg_check'] = str(not options.disable_gpg_check.lower() == "yes")
 
+    apiversion = self.client.api.getVersion()
+    if apiversion and int(apiversion) <= 19:
+        details['summary'] = details['name']
+
     # remove empty strings from the structure
     to_remove = []
     for key in details:
