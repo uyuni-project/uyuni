@@ -662,8 +662,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
             log.debug("isSatellite: " + this.isSatellite());
         }
 
-        return (SystemManager.verifyArchCompatibility(server, this) &&
-                !this.isSatellite());
+        return SystemManager.verifyArchCompatibility(server, this);
     }
 
     /**
