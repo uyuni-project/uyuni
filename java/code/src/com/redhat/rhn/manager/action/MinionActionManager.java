@@ -31,7 +31,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -121,6 +123,7 @@ public class MinionActionManager {
                 if (!stagingWindowIsAlreadyEnded && stagingWindowStartIsBeforeAction &&
                         (stagingWindowEndTime.isBefore(earliestAction) ||
                                 stagingWindowEndTime.isEqual(earliestAction))) {
+                    Map<Long, Date> minionScheduleDate = new HashMap<>();
                     for (Long minionServerId : minionServerIds) {
                         ZonedDateTime stagingTime =
                                 stagingWindowStartTime.plus(
@@ -137,10 +140,13 @@ public class MinionActionManager {
                                     action.getId() + "): " +
                                     "scheduling staging job for minion server id: " +
                                     minionServerId + " at " + stagingTime);
-                            taskomaticApi.scheduleStagingJob(action.getId(), minionServerId,
-                                    Date.from(stagingTime.toInstant()));
+                            minionScheduleDate.put(minionServerId, Date.from(stagingTime.toInstant()));
                             ret.add(stagingTime);
                         }
+                    }
+
+                    if (!minionScheduleDate.isEmpty()) {
+                       taskomaticApi.scheduleStagingJobs(action.getId(), minionScheduleDate);
                     }
                 }
             }

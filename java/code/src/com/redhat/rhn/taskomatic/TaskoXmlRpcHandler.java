@@ -23,6 +23,8 @@ import org.apache.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -263,6 +265,20 @@ public class TaskoXmlRpcHandler {
     }
 
     /**
+     * schedule a one time satellite bunch
+     * @param bunchName bunch name
+     * @param jobLabel job label
+     * @param params job parameters
+     * @return List of scheduled dates
+     * @throws NoSuchBunchTaskException thrown if bunch name not known
+     * @throws InvalidParamException shall not be thrown
+     */
+    public List<Date> scheduleSingleSatBunchRunList(String bunchName, String jobLabel,  List<Map<?, ?>> params)
+            throws NoSuchBunchTaskException, InvalidParamException {
+        return scheduleSingleBunchRunList(null, bunchName, jobLabel, params);
+    }
+
+    /**
      * schedule a one time organizational bunch
      * @param orgId organization id
      * @param bunchName bunch name
@@ -320,6 +336,51 @@ public class TaskoXmlRpcHandler {
             TaskoFactory.commitTransaction();
         }
         return scheduleDate;
+    }
+
+    /**
+     * schedule a one time organizational bunch
+     * @param orgId organization id
+     * @param bunchName bunch name
+     * @param jobLabel job label
+     * @param paramsList job parameters
+
+     * @return List of scheduled dates
+     * @throws NoSuchBunchTaskException thrown if bunch name not known
+     * @throws InvalidParamException shall not be thrown
+     */
+    public List<Date> scheduleSingleBunchRunList(Integer orgId, String bunchName, String jobLabel,
+                                                 List<Map<?, ?>> paramsList)
+            throws NoSuchBunchTaskException, InvalidParamException {
+        List<Date> scheduleDates = new ArrayList<>();
+        TaskoBunch bunch;
+        for (Map params:paramsList) {
+            String label = jobLabel + "-" + params.get("staging_job_minion_server_id");
+            try {
+                bunch = doBasicCheck(orgId, bunchName, jobLabel);
+            }
+            catch (SchedulerException se) {
+                return null;
+            }
+            // create schedule
+            String stagingDateTime = String.valueOf(params.get("staging_date_time"));
+            params.remove("staging_date_time"); // don't need it anymore.
+            Date stagingTime = Date.from(ZonedDateTime.parse(stagingDateTime)
+                    .withZoneSameInstant(ZoneId.systemDefault()).toInstant());
+            TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, label, params,
+                    stagingTime, null, null);
+            TaskoFactory.save(schedule);
+
+            // create job
+            Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
+            if (scheduleDate == null) {
+                TaskoFactory.delete(schedule);
+            }
+            scheduleDates.add(scheduleDate);
+        }
+        TaskoFactory.commitTransaction();
+        return scheduleDates;
+
     }
 
     /**
