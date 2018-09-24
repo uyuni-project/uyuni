@@ -34,8 +34,8 @@ install :: install-code install-conf
 clean :: clean-code clean-conf
 
 test    ::
-	$(MAKE) -C common/test/unit-test
-	$(MAKE) -C server/test/unit-test
+	$(MAKE) -C common/test/unit-test PYTHON_BIN=$(PYTHON_BIN)
+	$(MAKE) -C server/test/unit-test PYTHON_BIN=$(PYTHON_BIN)
 
 unittest ::
 	if test -x /usr/bin/unit2 ; then \
