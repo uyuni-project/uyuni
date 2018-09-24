@@ -1,3 +1,4 @@
+- add support for postgresql10 (FATE#325659)
 - Change dependencies from osa-dispatcher to mgr-osa-dispatcher and
   from rhnpush to mgr-push (bsc#1104034)
 

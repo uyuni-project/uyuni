@@ -130,6 +130,7 @@ mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/hooks/
 install -m 0755 bin/* %{buildroot}/%{_prefix}/lib/susemanager/bin/
 ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
+ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
