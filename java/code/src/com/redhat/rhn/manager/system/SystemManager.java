@@ -1605,13 +1605,6 @@ public class SystemManager extends BaseManager {
             Channel channel,
             boolean flush) {
 
-        // do not allow non-satellite servers to be subscribed to satellite channels.
-        if (channel.isSatellite()) {
-            if (!server.isSatellite()) {
-                return server;
-            }
-        }
-
         if (user != null && !ChannelManager.verifyChannelSubscribe(user, channel.getId())) {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
