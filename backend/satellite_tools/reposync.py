@@ -117,13 +117,20 @@ def send_mail(sync_type="Repo"):
 class KSDirParser:
     file_blacklist = ["release-notes/"]
 
-    def __init__(self, dir_html, additional_blacklist=None):
+    def __init__(self):
         self.dir_content = []
 
-        if additional_blacklist is None:
-            additional_blacklist = []
-        elif not isinstance(additional_blacklist, type([])):
-            additional_blacklist = [additional_blacklist]
+    def get_content(self):
+        return self.dir_content
+
+
+class KSDirHtmlParser(KSDirParser):
+    def __init__(self, plug, dir_name):
+        KSDirParser.__init__(self)
+
+        dir_html = plug.get_file(dir_name)
+        if dir_html is None:
+            return
 
         for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', dir_html)):
             if not (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s) or
@@ -133,11 +140,24 @@ class KSDirParser:
                 else:
                     file_type = 'FILE'
 
-                if s not in (self.file_blacklist + additional_blacklist):
+                if s not in (self.file_blacklist):
                     self.dir_content.append({'name': s, 'type': file_type})
 
-    def get_content(self):
-        return self.dir_content
+
+class KSDirLocalParser(KSDirParser):
+    def __init__(self, base_dir, dir_name):
+        KSDirParser.__init__(self)
+        dir_path = os.path.join(base_dir, dir_name)
+        for dir_item in os.listdir(dir_path):
+            if not dir_item.endswith(".rpm"):
+                dir_item_path = os.path.join(dir_path, dir_item)
+                if os.path.isdir(dir_item_path):
+                    file_type = 'DIR'
+                    dir_item = "%s/" % dir_item
+                else:
+                    file_type = 'FILE'
+                if dir_item not in self.file_blacklist:
+                    self.dir_content.append({'name': dir_item, 'type': file_type})
 
 
 class TreeInfoError(Exception):
@@ -486,6 +506,7 @@ class RepoSync(object):
                     if url.startswith("uln://"):
                         repo_type = "uln"
 
+                    is_non_local_repo = (url.find("file:/") < 0)
                     self.repo_plugin = self.load_plugin(repo_type)
 
                     if data['repo_label']:
@@ -540,7 +561,7 @@ class RepoSync(object):
                             self.import_groups(plugin)
                             if repo_type == "yum":
                                 self.import_modules(plugin)
-                            ret = self.import_packages(plugin, data['id'], url)
+                            ret = self.import_packages(plugin, data['id'], url, is_non_local_repo)
                             failed_packages += ret
 
                         if not self.no_errata:
@@ -549,7 +570,7 @@ class RepoSync(object):
                         # only for repos obtained from the DB
                         if self.sync_kickstart and data['repo_label']:
                             try:
-                                self.import_kickstart(plugin, data['repo_label'])
+                                self.import_kickstart(plugin, data['repo_label'], is_non_local_repo)
                             except:
                                 rhnSQL.rollback()
                                 raise
@@ -860,7 +881,7 @@ class RepoSync(object):
         elif notices:
             log(0, "    No new patch to sync.")
 
-    def import_packages(self, plug, source_id, url):
+    def import_packages(self, plug, source_id, url, is_non_local_repo):
         failed_packages = 0
         if (not self.filters) and source_id:
             h = rhnSQL.prepare("""
@@ -952,8 +973,6 @@ class RepoSync(object):
         else:
             log(0, "    Packages already synced:      %5d" % (num_passed - num_to_process))
             log(0, "    Packages to sync:             %5d" % num_to_process)
-
-        is_non_local_repo = (url.find("file:/") < 0)
 
         downloader = ThreadedDownloader()
         to_download_count = 0
@@ -1379,7 +1398,7 @@ class RepoSync(object):
         advisories = [row['advisory_name'] for row in h.fetchall_dict() or []]
         return advisories
 
-    def import_kickstart(self, plug, repo_label):
+    def import_kickstart(self, plug, repo_label, is_non_local_repo):
         log(0, '')
         log(0, '  Importing kickstarts.')
         ks_path = 'rhn/kickstart/'
@@ -1477,11 +1496,10 @@ class RepoSync(object):
         log(0, "    Gathering all files in kickstart repository...")
         while dirs_queue:
             cur_dir_name = dirs_queue.pop(0)
-            cur_dir_html = plug.get_file(cur_dir_name)
-            if cur_dir_html is None:
-                continue
-
-            parser = KSDirParser(cur_dir_html)
+            if is_non_local_repo:
+                parser = KSDirHtmlParser(plug, cur_dir_name)
+            else:
+                parser = KSDirLocalParser(plug.repo.urls[0].replace("file://", ""), cur_dir_name)
             for ks_file in parser.get_content():
                 repo_path = cur_dir_name + ks_file['name']
                 if ks_file['type'] == 'DIR':
