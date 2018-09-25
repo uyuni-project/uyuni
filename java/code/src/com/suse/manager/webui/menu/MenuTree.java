@@ -79,7 +79,7 @@ public class MenuTree {
             // Systems
             nodes.add(new MenuItem("Systems").withIcon("fa-desktop").withDir("/rhn/systems/details").withDir("/rhn/manager/systems/details")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/systems/Overview.do"))
-                .addChild(new MenuItem("Systems").addChild(new MenuItem("All").withPrimaryUrl("/rhn/systems/SystemList.do"))
+                .addChild(new MenuItem("System List").addChild(new MenuItem("All").withPrimaryUrl("/rhn/systems/SystemList.do"))
                     .addChild(new MenuItem("Physical Systems").withPrimaryUrl("/rhn/systems/PhysicalList.do"))
                     .addChild(new MenuItem("Virtual Systems").withPrimaryUrl("/rhn/systems/VirtualList.do"))
                     .addChild(new MenuItem("Bare Metal Systems").withPrimaryUrl("/rhn/systems/BootstrapSystemList.do"))
@@ -176,7 +176,7 @@ public class MenuTree {
 
             // Images
             nodes.add(new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")
-                .addChild(new MenuItem("Images").withPrimaryUrl("/rhn/manager/cm/images")
+                .addChild(new MenuItem("Image List").withPrimaryUrl("/rhn/manager/cm/images")
                     .withDir("/rhn/manager/cm/images"))
                 .addChild(new MenuItem("Build").withPrimaryUrl("/rhn/manager/cm/build")
                     .withDir("/rhn/manager/cm/build").withVisibility(adminRoles.get("image")))
@@ -187,7 +187,7 @@ public class MenuTree {
 
             // Patches
             nodes.add(new MenuItem("Patches").withIcon("spacewalk-icon-patches")
-                .addChild(new MenuItem("Patches").withPrimaryUrl("/rhn/errata/RelevantErrata.do").withDir("/rhn/errata")
+                .addChild(new MenuItem("Patch List").withPrimaryUrl("/rhn/errata/RelevantErrata.do").withDir("/rhn/errata")
                     .addChild(new MenuItem("Relevant").withPrimaryUrl("/rhn/errata/RelevantErrata.do")
                         .withAltUrl("/rhn/errata/RelevantBugErrata.do").withAltUrl("/rhn/errata/RelevantEnhancementErrata.do")
                         .withAltUrl("/rhn/errata/RelevantSecurityErrata.do"))
@@ -203,7 +203,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Clone Errata").withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                     .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)"))));
 
-            // Channels
+            // Software
             nodes.add(new MenuItem("Software").withIcon("spacewalk-icon-software-channels")
                 .addChild(new MenuItem("Channels").withDir("/rhn/channels")
                     .addChild(new MenuItem("channel.nav.all").withPrimaryUrl("/rhn/software/channels/All.do"))
@@ -215,14 +215,14 @@ public class MenuTree {
                     .addChild(new MenuItem("channel.nav.retired").withPrimaryUrl("/rhn/software/channels/Retired.do")))
                 .addChild(
                     new MenuItem("Package Search").withPrimaryUrl("/rhn/channels/software/Search.do").withDir("/rhn/software/packages"))
-                .addChild(new MenuItem("Manage Software Channels").withDir("/rhn/channels/manage")
-                    .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/channels/manage/Manage.do")
+                .addChild(new MenuItem("Manage").withDir("/rhn/channels/manage")
+                    .addChild(new MenuItem("Channels").withPrimaryUrl("/rhn/channels/manage/Manage.do")
                         .withAltUrl("/rhn/channels/manage/errata/Add.do").withAltUrl("/rhn/channels/manage/errata/AddRedHatErrata.do")
                         .withAltUrl("/rhn/channels/manage/errata/AddCustomErrata.do")
                         .withAltUrl("/rhn/channels/manage/errata/ConfirmErrataAdd.do"))
-                    .addChild(new MenuItem("Manage Software Packages").withPrimaryUrl("/rhn/software/manage/packages/PackageList.do")
+                    .addChild(new MenuItem("Packages").withPrimaryUrl("/rhn/software/manage/packages/PackageList.do")
                         .withDir("/rhn/software/manage/packages").withVisibility(checkAcl(user, "user_role(channel_admin)")))
-                    .addChild(new MenuItem("Manage Repositories").withPrimaryUrl("/rhn/channels/manage/repos/RepoList.do")
+                    .addChild(new MenuItem("Repositories").withPrimaryUrl("/rhn/channels/manage/repos/RepoList.do")
                         .withAltUrl("/rhn/channels/manage/repos/RepoEdit.do").withAltUrl("/rhn/channels/manage/repos/RepoCreate.do")
                         .withDir("/rhn/channels/manage/repos").withVisibility(checkAcl(user, "user_role(channel_admin)"))))
                 .addChild(new MenuItem("Distribution Channel Mapping").withPrimaryUrl("/rhn/channels/manage/DistChannelMap.do")

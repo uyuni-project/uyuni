@@ -591,14 +591,8 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Manage Software Channels">
-        <source>Manage Software Channels</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Manage Software Packages">
-        <source>Manage Software Packages</source>
+      <trans-unit id="Manage">
+        <source>Manage</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -875,6 +869,12 @@
       </trans-unit>
       <trans-unit id="Systems">
         <source>Systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="System List">
+        <source>System List</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
