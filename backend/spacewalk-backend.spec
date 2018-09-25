@@ -620,6 +620,9 @@ rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
 
 # Remove spacewalk-usix python files used for running unit-tests
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py*
+%if 0%{?build_py3}
+rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__pycache__/usix*
+%endif
 
 %if !0%{?build_py3}
 if [ -x %py_libdir/py_compile.py ]; then
