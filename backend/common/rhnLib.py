@@ -64,9 +64,10 @@ def rfc822time(arg):
            be translated to GMT in the return value.
     """
 
+
     if isinstance(arg, (usix.ListType, usix.TupleType)):
         # Convert to float.
-        arg = time.mktime(arg)
+        arg = time.mktime(tuple(arg))
 
     # Now, the arg must be a float.
 
@@ -96,7 +97,7 @@ def timestamp(s):
     timeval = list(time.strptime(s, format_string))
     # No daylight information available
     timeval[8] = -1
-    return time.mktime(timeval)
+    return time.mktime(tuple(timeval))
 
 
 def checkValue(val, *args):
