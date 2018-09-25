@@ -459,12 +459,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     "on retail minion registration! Aborting registration.");
         }
 
-        String hwType = "HWTYPE:" + manufacturer.get() + "-" + productName.get();
+        String hwType = manufacturer.get() + "-" + productName.get();
+        String hwTypeGroup = "HWTYPE:" + hwType.replaceAll("[^A-Za-z0-9_-]", "");
 
         String branchIdGroupName = branchId.get();
         ManagedServerGroup terminalsGroup = ServerGroupFactory.lookupByNameAndOrg(TERMINALS_GROUP_NAME, org);
         ManagedServerGroup branchIdGroup = ServerGroupFactory.lookupByNameAndOrg(branchIdGroupName, org);
-        ManagedServerGroup hwGroup = ServerGroupFactory.lookupByNameAndOrg(hwType, org);
+        ManagedServerGroup hwGroup = ServerGroupFactory.lookupByNameAndOrg(hwTypeGroup, org);
 
         if (terminalsGroup == null || branchIdGroup == null) {
             throw new IllegalStateException("Missing required server groups (\"" + TERMINALS_GROUP_NAME + "\" or \"" +
