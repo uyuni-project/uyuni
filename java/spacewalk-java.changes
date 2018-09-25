@@ -1,3 +1,4 @@
+- Fix NullPointerException when refreshing deleted software channel (bsc#1094992)
 - Remove special characters from HW type string
 - Fix script is deleted too early (bsc#1105807)
 - Make Kiwi OS Image building enabled by default
