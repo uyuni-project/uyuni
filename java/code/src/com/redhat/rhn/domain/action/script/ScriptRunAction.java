@@ -15,9 +15,11 @@
 package com.redhat.rhn.domain.action.script;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.download.DownloadManager;
+import com.suse.manager.utils.SaltUtils;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -76,4 +78,10 @@ public class ScriptRunAction extends ScriptAction {
         return retval.toString();
     }
 
+    @Override
+    public void onCancelAction() {
+        if (allServersFinished()) {
+            FileUtils.deleteFile(SaltUtils.INSTANCE.getScriptPath(getId()));
+        }
+    }
 }
