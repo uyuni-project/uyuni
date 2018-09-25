@@ -952,11 +952,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                     allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
                     allowing(saltServiceMock).getGrains(MINION_ID);
+                    // Notice product name has spaces in the string. It is intentional to test hw string preprocessing
                     will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                             .map(map -> {
                                 map.put("saltboot_initrd", true);
                                 map.put("manufacturer", "QEMU");
-                                map.put("productname", "CashDesk01");
+                                map.put("productname", "Cash Desk 01");
                                 map.put("minion_id_prefix", "Branch001");
                                 return map;
                             })));
