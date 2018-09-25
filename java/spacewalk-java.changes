@@ -1,3 +1,4 @@
+- Remove special characters from HW type string
 - Fix script is deleted too early (bsc#1105807)
 - Make Kiwi OS Image building enabled by default
 - Change Saltboot grain trigger from "initrd" to "saltboot_initrd"
