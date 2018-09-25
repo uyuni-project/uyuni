@@ -526,7 +526,7 @@ class ActivationTokens:
         self.entitlements = entitlements
         self.contact_method_id = contact_method_id
 
-    def __bool__(self):
+    def __nonzero__(self):
         return (len(self.tokens) > 0)
 
     __bool__ = __nonzero__
