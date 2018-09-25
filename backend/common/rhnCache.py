@@ -377,13 +377,18 @@ class ObjectCache:
         pickled = self.cache.get(name, modified)
 
         try:
+            if sys.version_info[0] >= 3 and isinstance(pickled, str):
+                 pickled = pickled.encode('latin-1')
             return cPickle.loads(pickled)
         except cPickle.UnpicklingError:
             raise_with_tb(KeyError(name), sys.exc_info()[2])
 
     def set(self, name, value, modified=None, user='root', group='root',
             mode=int('0755', 8)):
-        pickled = cPickle.dumps(value, -1)
+        if sys.version_info[0] >= 3:
+            pickled = cPickle.dumps(value, -1).decode('latin-1')
+        else:
+            pickled = cPickle.dumps(value, -1)
         self.cache.set(name, pickled, modified, user, group, mode)
 
     def has_key(self, name, modified=None):
