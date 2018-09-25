@@ -211,7 +211,7 @@ class ReadLockedFile(LockedFile):
     def get_fd(self, name, _user, _group, _mode):
         if not os.access(self.fname, os.R_OK):
             raise KeyError(name)
-        fd = open(self.fname, "r")
+        fd = open(self.fname, "rb")
 
         fcntl.lockf(fd.fileno(), fcntl.LOCK_SH)
 
@@ -237,7 +237,7 @@ class WriteLockedFile(LockedFile):
 
         # now we have the fd open, lock it
         fcntl.lockf(fd, fcntl.LOCK_EX)
-        return os.fdopen(fd, 'w')
+        return os.fdopen(fd, 'wb')
 
     def close_fd(self):
         # Set the file's mtime if necessary
@@ -358,7 +358,7 @@ class CompressedCache:
                  mode=int('0755', 8)):
         io = self.cache.set_file(name, modified, user, group, mode)
 
-        f = ClosingZipFile('w', io)
+        f = ClosingZipFile('wb', io)
         return f
 
 
