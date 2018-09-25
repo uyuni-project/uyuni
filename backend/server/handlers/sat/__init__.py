@@ -16,8 +16,8 @@
 
 __all__ = []
 
-from . import auth
-from . import cert
+import auth
+import cert
 
 rpcClasses = {
     'authentication':   auth.Authentication,

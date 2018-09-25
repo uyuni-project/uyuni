@@ -19,7 +19,7 @@ import sys
 import fnmatch
 from datetime import datetime, timedelta
 
-from . import constants
+import constants
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common import rhnLog
 from spacewalk.server import rhnSQL

@@ -43,11 +43,11 @@ from spacewalk.common.rhnTB import Traceback
 from spacewalk.server.auditlog import auditlog_xmlrpc, AuditLogException
 
 # local modules
-from . import rhnRepository
-from . import rhnImport
-from . import rhnSQL
-from . import rhnCapability
-from . import apacheAuth
+import rhnRepository
+import rhnImport
+import rhnSQL
+import rhnCapability
+import apacheAuth
 
 # Exceptions
 

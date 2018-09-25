@@ -26,7 +26,7 @@ try:
 except ImportError:
     #  python3
     import io as cStringIO
-from . import dumper
+import dumper
 from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnMail
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -39,7 +39,7 @@ from spacewalk.satellite_tools import xmlDiskSource, diskImportLib, progress_bar
 from spacewalk.satellite_tools.syncLib import initEMAIL_LOG, dumpEMAIL_LOG, log2email, log2stderr, log2stdout
 from .iss_ui import UI
 from .iss_actions import ActionDeps
-from . import iss_isos
+import iss_isos
 
 t = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = t.ugettext

@@ -24,11 +24,11 @@ from spacewalk.common.rhnException import rhnException
 from spacewalk.common.rhnTB import add_to_seclist
 
 # SQL objects
-from . import sql_table
-from . import sql_row
-from . import sql_sequence
-from . import dbi
-from . import sql_types
+import sql_table
+import sql_row
+import sql_sequence
+import dbi
+import sql_types
 types = sql_types
 
 from .const import ORACLE, POSTGRESQL, SUPPORTED_BACKENDS

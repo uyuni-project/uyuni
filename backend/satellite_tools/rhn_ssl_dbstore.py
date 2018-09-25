@@ -20,7 +20,7 @@ from optparse import Option, OptionParser
 from spacewalk.common import rhnTB
 from spacewalk.server import rhnSQL
 
-from . import satCerts
+import satCerts
 
 DEFAULT_TRUSTED_CERT = 'RHN-ORG-TRUSTED-SSL-CERT'
 

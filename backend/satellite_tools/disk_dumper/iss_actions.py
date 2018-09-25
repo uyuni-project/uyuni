@@ -15,7 +15,7 @@
 
 import sys
 
-from . import iss_ui
+import iss_ui
 
 
 class ActionDeps:

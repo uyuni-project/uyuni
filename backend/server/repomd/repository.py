@@ -35,8 +35,8 @@ from spacewalk.common import rhnCache
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
 
-from . import mapper
-from . import view
+import mapper
+import view
 from .domain import RepoMD
 from spacewalk.server import rhnChannel
 

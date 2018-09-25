@@ -52,8 +52,8 @@ from spacewalk.server.rhnLib import get_package_path
 from spacewalk.common import fileutils
 
 # __rhn sync/import imports__
-from . import xmlWireSource
-from . import xmlDiskSource
+import xmlWireSource
+import xmlDiskSource
 from .progress_bar import ProgressBar
 from .xmlSource import FatalParseException, ParseException
 from .diskImportLib import rpmsPath
@@ -70,11 +70,11 @@ from spacewalk.server.importlib.importLib import InvalidChannelFamilyError
 from spacewalk.server.importlib.importLib import MissingParentChannelError
 from spacewalk.server.importlib.importLib import get_nevra, get_nevra_dict
 
-from . import satCerts
-from . import req_channels
-from . import messages
-from . import sync_handlers
-from . import constants
+import satCerts
+import req_channels
+import messages
+import sync_handlers
+import constants
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = translation.ugettext

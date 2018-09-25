@@ -25,7 +25,7 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.usix import UnicodeType
 from spacewalk.server import rhnSQL
 
-from . import domain
+import domain
 
 
 CACHE_PREFIX = "/var/cache/rhn/"

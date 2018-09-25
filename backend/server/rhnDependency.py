@@ -16,8 +16,8 @@
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
-from . import rhnSQL
-from . import rhnLib
+import rhnSQL
+import rhnLib
 import rpm
 
 # QUERY PACKAGES

@@ -18,14 +18,14 @@
 
 __all__ = []
 
-from . import registration
-from . import up2date
-from . import queue
-from . import errata
-from . import proxy
-from . import get_handler
-from . import abrt
-from . import scap
+import registration
+import up2date
+import queue
+import errata
+import proxy
+import get_handler
+import abrt
+import scap
 
 rpcClasses = {
     "registration": registration.Registration,

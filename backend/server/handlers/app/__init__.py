@@ -17,7 +17,7 @@
 
 __all__ = []
 
-from . import packages
+import packages
 
 rpcClasses = {
     "packages": packages.Packages,

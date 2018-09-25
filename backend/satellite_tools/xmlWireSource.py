@@ -35,7 +35,7 @@ from .syncLib import log, log2, RhnSyncException
 from rhn import rpclib
 
 from spacewalk.common.suseLib import get_proxy
-from . import connection
+import connection
 
 class BaseWireSource:
 

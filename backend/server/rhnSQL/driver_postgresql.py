@@ -27,7 +27,7 @@ import psycopg2
 if not hasattr(psycopg2, 'extensions'):
     import psycopg2.extensions
 
-from . import sql_base
+import sql_base
 from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL
 

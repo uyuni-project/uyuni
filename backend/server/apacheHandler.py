@@ -24,10 +24,10 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLog import log_debug, log_error, initLOG, log_setreq
 
 # local module imports
-from . import rhnSQL
+import rhnSQL
 
 from .apacheRequest import apacheGET, apachePOST, HandlerNotFoundError
-from . import rhnCapability
+import rhnCapability
 
 # a lame timer function for pretty logs
 

@@ -13,7 +13,7 @@
 #
 
 from spacewalk.common import fileutils
-from . import constants
+import constants
 
 
 def verify_mappings():

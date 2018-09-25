@@ -20,8 +20,8 @@
 # specific exceptions and return generic ones. (or to deal with other Oracle
 # one-offs)
 
-from . import sql_base
-from . import sql_types
+import sql_base
+import sql_types
 import cx_Oracle
 import sys
 import string

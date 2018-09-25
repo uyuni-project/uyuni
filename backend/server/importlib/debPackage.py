@@ -16,7 +16,7 @@
 # Converts headers to the intermediate format
 #
 
-from . import headerSource
+import headerSource
 import time
 from .importLib import Channel
 from .backendLib import gmtime, localtime
