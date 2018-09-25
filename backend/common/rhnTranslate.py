@@ -71,7 +71,7 @@ class i18n:
         return self.cat.getlangs()
 
     def setlangs(self, langs):
-        if isinstance(langs, StringType):
+        if isinstance(langs, StringType) or type(langs) == str:
             langs = [langs]
         # Filter "C" - we will add it ourselves later anyway
         langs = [l for l in langs if l != 'C']
