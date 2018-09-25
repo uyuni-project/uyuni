@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
@@ -193,6 +194,19 @@ public class NotificationMessageController {
     }
 
     /**
+     * Get the Label of a channel
+     *
+     * @param channel the channel
+     * @return Optional containing the String of the Channel Label or empty
+     */
+    private static Optional<String> getChannelLabel(Channel channel) {
+        if (channel == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(channel.getLabel());
+    }
+
+    /**
      * Re-trigger channel reposync
      *
      * @param request the request
@@ -206,18 +220,27 @@ public class NotificationMessageController {
         String resultMessage = "Reposync restarted for the channel '%s'";
         String severity = "success";
 
-        TaskomaticApi taskomatic = new TaskomaticApi();
-        try {
-            taskomatic.scheduleSingleRepoSync(ChannelFactory.lookupById(channelId), user);
+        Channel channel = ChannelFactory.lookupById(channelId);
+        Optional<String> channelLabel = getChannelLabel(channel);
+
+        if (channel != null) {
+            TaskomaticApi taskomatic = new TaskomaticApi();
+            try {
+                taskomatic.scheduleSingleRepoSync(channel, user);
+            }
+            catch (TaskomaticApiException e) {
+                severity = "error";
+                resultMessage = "Failed to restart reposync for the channel '%s': " + e.getMessage();
+            }
         }
-        catch (TaskomaticApiException e) {
+        else {
             severity = "error";
-            resultMessage = "Failed to restart reposync for the channel '%s': " + e.getMessage();
+            resultMessage = "Failed to restart reposync. Channel ID does not exist: %s";
         }
 
         Map<String, String> data = new HashMap<>();
         data.put("severity", severity);
-        data.put("text", String.format(resultMessage, ChannelFactory.lookupById(channelId).getLabel()));
+        data.put("text", String.format(resultMessage, channelLabel.orElse(String.valueOf(channelId))));
         response.type("application/json");
         return GSON.toJson(data);
     }
