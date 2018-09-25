@@ -47,7 +47,7 @@ Feature: SMBDA database helper tool
     Then tablespace "susemanager" should be listed
     And tablespace "template" should be listed
     When I issue command "smdba space-reclaim"
-    Then none of core examination, database analysis and space reclamation should be "failed"
+    Then none of core examination, database analysis, and space reclamation should be "failed"
     When I issue command "smdba space-tables"
     Then table "public.rhnserver" should be listed
     And table "public.rhnpackage" should be listed
