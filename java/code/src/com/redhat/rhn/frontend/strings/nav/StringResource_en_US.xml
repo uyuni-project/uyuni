@@ -267,13 +267,13 @@
         </context-group>
       </trans-unit>
       <trans-unit id="config.nav.managed">
-        <source>Managed Systems</source>
+        <source>Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.nav.target">
-        <source>Target Systems</source>
+        <source>Target</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
@@ -285,25 +285,25 @@
         </context-group>
       </trans-unit>
       <trans-unit id="config.nav.channels">
-        <source>Configuration Channels</source>
+        <source>Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.nav.files">
-        <source>Configuration Files</source>
+        <source>Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles">
-        <source>Centrally Managed Files</source>
+        <source>Centrally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.nav.localfiles">
-        <source>Locally Managed Files</source>
+        <source>Locally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
@@ -657,6 +657,12 @@
       </trans-unit>
       <trans-unit id="Patches">
         <source>Patches</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Patch List">
+        <source>Patch List</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1023,6 +1029,9 @@
       </group>
       <trans-unit id="Deployment">
         <source>Deployment</source>
+      </trans-unit>
+      <trans-unit id="Image List">
+        <source>Image List</source>
       </trans-unit>
     </body>
   </file>

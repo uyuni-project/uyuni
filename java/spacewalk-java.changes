@@ -1,3 +1,4 @@
+- Changed Strings for MenuTree Items to remove redundancy (bsc#1019847)
 - Automatic cleanup of notification messages after a configurable lifetime
 - Fix 'image deployed' event data parsing (bsc#1110316)
 - Handle 'image deployed' salt event by executing post-deployment procedures
