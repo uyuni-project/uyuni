@@ -13,7 +13,6 @@
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
-from __future__ import unicode_literals
 
 import imp
 import sys
@@ -866,20 +865,20 @@ class RunScriptTest(unittest.TestCase):
             os=Mock(**{'getuid.return_value': 0}),
             open=Mock(
                 return_value=StringIO(
-                    json.dumps(
-                        {
-                            "no_errata": False,
-                            "sync_kickstart": False,
-                            "fail": True,
-                            "channel": {
-                                "chann_1": [
-                                    "http://example.com/repo1",
-                                    "http://example.com/repo2"
-                                ],
-                                "chann_2": []
-                            }
-                        }
-                    )
+					json.dumps(
+						{
+							"no_errata": False,
+							"sync_kickstart": False,
+							"fail": True,
+							"channel": {
+								"chann_1": [
+									"http://example.com/repo1",
+									"http://example.com/repo2"
+								],
+								"chann_2": []
+							}
+						}
+					).decode()
                 )
             ),
             rhnLockfile=Mock(),
@@ -925,7 +924,7 @@ class RunScriptTest(unittest.TestCase):
                     "fail": True,
                     "channel": {"chann_1": "http://example.com/repo1"}
                 }
-            )
+            ).decode()
         )
         self.assertRaises(SystemExit, self.repo_sync.main)
         self.repo_sync.systemExit.assert_called_once_with(

@@ -114,7 +114,7 @@ class YumSrcTest(unittest.TestCase):
     def test_get_updates_suse_patches(self):
         cs = self._make_dummy_cs()
 
-        patches_xml = StringIO("""<?xml version="1.0" encoding="UTF-8"?>
+        patches_xml = StringIO(u"""<?xml version="1.0" encoding="UTF-8"?>
                 <patches xmlns="http://novell.com/package/metadata/suse/patches">
                   <patch id="smcl3-cobbler-7778">
                     <checksum type="sha">ec34048ebda707a83190056d832d43c9fbb55ca6</checksum>
@@ -135,7 +135,7 @@ class YumSrcTest(unittest.TestCase):
         # returned object and then subsequent reads to the StringIO
         # object will return nothing, because the file pointer is at the
         # end of the file
-        os.path.join = Mock(side_effect=lambda *args: StringIO("<xml></xml>"))
+        os.path.join = Mock(side_effect=lambda *args: StringIO(u"<xml></xml>"))
 
         patches = cs.get_updates()
         self.assertEqual(patches[0], 'patches')
