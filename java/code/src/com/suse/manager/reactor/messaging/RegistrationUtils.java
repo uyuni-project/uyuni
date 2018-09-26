@@ -67,11 +67,13 @@ import static java.util.Optional.ofNullable;
 public class RegistrationUtils {
 
     private static final List<String> BLACKLIST = Collections.unmodifiableList(
-            Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host",
-                    "osad")
+            Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad")
     );
 
+    private static final String OS = "os";
+
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
+
 
     /**
      * Prevent instantiation.
@@ -109,8 +111,7 @@ public class RegistrationUtils {
                     creator.orElse(null));
         }
         catch (RuntimeException e) {
-            LOG.error("Error generating Salt files for minion '" + minionId +
-                    "':" + e.getMessage());
+            LOG.error("Error generating Salt files for minion '" + minionId + "':" + e.getMessage());
         }
 
         // Should we apply the highstate?
@@ -233,7 +234,7 @@ public class RegistrationUtils {
                     Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
                             .collect(Collectors.partitioningBy(SUSEProduct::isBase));
 
-                    Optional<SUSEProduct> baseProductOpt = Optional.ofNullable(baseAndExtProd.get(true))
+                    Optional<SUSEProduct> baseProductOpt = ofNullable(baseAndExtProd.get(true))
                             .flatMap(s -> s.stream().findFirst());
                     List<SUSEProduct> extProducts = baseAndExtProd.get(false);
 
@@ -245,101 +246,91 @@ public class RegistrationUtils {
                                         " and will register without base channel assignment");
                                 return Collections.emptySet();
                             },
-                            baseProduct -> {
-                                return Stream.concat(
-                                        lookupRequiredChannelsForProduct(baseProduct),
-                                        extProducts.stream()
-                                                .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                ).collect(Collectors.toSet());
-                            }
+                            baseProduct -> Stream.concat(
+                                    lookupRequiredChannelsForProduct(baseProduct),
+                                    extProducts.stream()
+                                            .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
+                            ).collect(Collectors.toSet())
                     );
                 },
-                ak -> {
-                    return Opt.<Channel, Set<Channel>>fold(
-                            Optional.ofNullable(ak.getBaseChannel()),
-                            // AktivationKey without base channel (SUSE Manager Default)
-                            () -> {
-                                Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
-                                Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                                        .collect(Collectors.partitioningBy(SUSEProduct::isBase));
+                ak -> Opt.fold(
+                        ofNullable(ak.getBaseChannel()),
+                        // ActivationKey without base channel (SUSE Manager Default)
+                        () -> {
+                            Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
+                            Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
+                                    .collect(Collectors.partitioningBy(SUSEProduct::isBase));
 
-                                Optional<SUSEProduct> baseProductOpt = Optional.ofNullable(baseAndExtProd.get(true))
-                                        .flatMap(s -> s.stream().findFirst());
-                                List<SUSEProduct> extProducts = baseAndExtProd.get(false);
+                            Optional<SUSEProduct> baseProductOpt = ofNullable(baseAndExtProd.get(true))
+                                    .flatMap(s -> s.stream().findFirst());
+                            List<SUSEProduct> extProducts = baseAndExtProd.get(false);
 
-                                return Opt.fold(
-                                        baseProductOpt,
-                                        // ActivationKey and no base product identified
-                                        () -> {
-                                            LOG.warn("Server " + minionId + "has no identifyable base product" +
-                                                    " and will register without base channel assignment");
-                                            return Collections.emptySet();
-                                        },
-                                        baseProduct -> {
-                                            return Stream.concat(
-                                                    lookupRequiredChannelsForProduct(baseProduct),
-                                                    extProducts.stream().flatMap(
-                                                            ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                            ).collect(Collectors.toSet());
-                                        }
-                                );
-                            },
-                            baseChannel -> {
-                                return Opt.fold(
-                                        SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()),
-                                        () -> {
-                                            // ActivationKey with custom channel
-                                            return Stream.concat(
-                                                    Stream.of(baseChannel),
-                                                    ak.getChannels().stream()
-                                            ).collect(Collectors.toSet());
-                                        },
-                                        baseProduct -> {
-                                            // ActivationKey with vendor or cloned vendor channel
-                                            return Stream.concat(
-                                                    lookupRequiredChannelsForProduct(baseProduct.getProduct()),
-                                                    ak.getChannels().stream()
-                                                            .filter(c ->
-                                                                    c.getParentChannel() != null &&
-                                                                            c.getParentChannel().getId()
-                                                                                    .equals(baseChannel.getId())
-                                                            )
-                                            ).collect(Collectors.toSet());
+                            return Opt.fold(
+                                    baseProductOpt,
+                                    // ActivationKey and no base product identified
+                                    () -> {
+                                        LOG.warn("Server " + minionId + "has no identifyable base product" +
+                                                " and will register without base channel assignment");
+                                        return Collections.emptySet();
+                                    },
+                                    baseProduct -> Stream.concat(
+                                            lookupRequiredChannelsForProduct(baseProduct),
+                                            extProducts.stream().flatMap(
+                                                    ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
+                                    ).collect(Collectors.toSet())
+                            );
+                        },
+                        baseChannel -> Opt.fold(
+                                SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()),
+                                () -> {
+                                    // ActivationKey with custom channel
+                                    return Stream.concat(
+                                            Stream.of(baseChannel),
+                                            ak.getChannels().stream()
+                                    ).collect(Collectors.toSet());
+                                },
+                                baseProduct -> {
+                                    // ActivationKey with vendor or cloned vendor channel
+                                    return Stream.concat(
+                                            lookupRequiredChannelsForProduct(baseProduct.getProduct()),
+                                            ak.getChannels().stream()
+                                                    .filter(c ->
+                                                            c.getParentChannel() != null &&
+                                                                    c.getParentChannel().getId()
+                                                                            .equals(baseChannel.getId())
+                                                    )
+                                    ).collect(Collectors.toSet());
 
-                                        }
-                                );
-                            }
-                    );
-                }
+                                }
+                        )
+                )
         );
 
         channelsToAssign.forEach(server::addChannel);
     }
 
     private static Set<SUSEProduct> identifyProduct(SaltService saltService, MinionServer server, ValueMap grains) {
-        if ("suse".equalsIgnoreCase(grains.getValueAsString("os"))) {
+        if ("suse".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<List<Zypper.ProductInfo>> productList =
                     saltService.callSync(Zypper.listProducts(false), server.getMinionId());
-            return Opt.stream(productList).flatMap(pl -> {
-                return pl.stream()
-                        .flatMap(pi -> {
-                            String osName = pi.getName().toLowerCase();
-                            String osVersion = pi.getVersion();
-                            String osArch = pi.getArch();
-                            String osRelease = pi.getRelease();
-                            Optional<SUSEProduct> suseProduct =
-                                    ofNullable(SUSEProductFactory.findSUSEProduct(osName,
-                                            osVersion, osRelease, osArch, true));
-                            if (!suseProduct.isPresent()) {
-                                LOG.warn("No product match found for: " + osName + " " +
-                                        osVersion + " " + osRelease + " " + osArch);
-                            }
-                            return Opt.stream(suseProduct);
-                        });
-            }).collect(Collectors.toSet());
+            return Opt.stream(productList).flatMap(pl -> pl.stream()
+                    .flatMap(pi -> {
+                        String osName = pi.getName().toLowerCase();
+                        String osVersion = pi.getVersion();
+                        String osArch = pi.getArch();
+                        String osRelease = pi.getRelease();
+                        Optional<SUSEProduct> suseProduct =
+                                ofNullable(SUSEProductFactory.findSUSEProduct(osName,
+                                        osVersion, osRelease, osArch, true));
+                        if (!suseProduct.isPresent()) {
+                            LOG.warn("No product match found for: " + osName + " " +
+                                    osVersion + " " + osRelease + " " + osArch);
+                        }
+                        return Opt.stream(suseProduct);
+                    })).collect(Collectors.toSet());
         }
-        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
+        else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
+                "centos".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<Map<String, State.ApplyResult>> applyResultMap = saltService
                     .applyState(server.getMinionId(), "packages.redhatproductinfo");
             Optional<String> centosReleaseContent = applyResultMap.map(
@@ -355,14 +346,14 @@ public class RegistrationUtils {
             Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
                     server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
             return Opt.stream(rhelProduct).flatMap(rhel -> {
-                if (!rhel.getSuseProduct().isPresent()) {
+                if (rhel.getSuseProduct().isPresent()) {
+                    return Opt.stream(rhel.getSuseProduct());
+                }
+                else {
                     LOG.warn("No product match found for: " + rhel.getName() + " " +
                             rhel.getVersion() + " " + rhel.getRelease() + " " +
                             server.getServerArch().getCompatibleChannelArch());
                     return Stream.empty();
-                }
-                else {
-                    return Opt.stream(rhel.getSuseProduct());
                 }
             }).collect(Collectors.toSet());
         }
@@ -394,16 +385,15 @@ public class RegistrationUtils {
                             .filter(c -> c.getParentChannel() == null ||
                                     c.getParentChannel().getLabel().equals(rootChannelLabel));
 
-                    Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
-                        return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
-                            if (pe.isRecommended()) {
-                                return recommendedChannelsByBaseProduct(root, ext);
-                            }
-                            else {
-                                return Stream.<Channel>empty();
-                            }
-                        }).orElseGet(Stream::empty);
-                    });
+                    Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext ->
+                            SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
+                                if (pe.isRecommended()) {
+                                    return recommendedChannelsByBaseProduct(root, ext);
+                                }
+                                else {
+                                    return Stream.<Channel>empty();
+                                }
+                    }).orElseGet(Stream::empty));
 
                     return Stream.concat(
                             channelStream,
