@@ -479,19 +479,22 @@ public class TaskomaticApi {
      *
      * @param action the action to be executed
      * @param forcePackageListRefresh is a package list is requested
+     * @param checkIfMinionInvolved check if action involves minions
      * @throws TaskomaticApiException if there was an error
      */
-    public void scheduleActionExecution(Action action, boolean forcePackageListRefresh)
+    public void scheduleActionExecution(Action action, boolean forcePackageListRefresh, boolean checkIfMinionInvolved)
         throws TaskomaticApiException {
-        boolean minionsInvolved = HibernateFactory.getSession()
-            .getNamedQuery("Action.findMinionIds")
-            .setParameter("id", action.getId())
-            .setMaxResults(1)
-            .stream()
-            .findAny()
-            .isPresent();
-        if (!minionsInvolved) {
-            return;
+        if (checkIfMinionInvolved) {
+            boolean minionsInvolved = HibernateFactory.getSession()
+                    .getNamedQuery("Action.findMinionIds")
+                    .setParameter("id", action.getId())
+                    .setMaxResults(1)
+                    .stream()
+                    .findAny()
+                    .isPresent();
+            if (!minionsInvolved) {
+                return;
+            }
         }
 
         Map<String, String> params = new HashMap<String, String>();
@@ -578,6 +581,18 @@ public class TaskomaticApi {
     public void scheduleActionExecution(Action action)
         throws TaskomaticApiException {
         scheduleActionExecution(action, false);
+    }
+
+    /**
+     * Schedule an Action execution for Salt minions.
+     *
+     * @param action the action to be executed
+     * @param forcePackageListRefresh is a package list is requested
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleActionExecution(Action action, boolean forcePackageListRefresh)
+            throws TaskomaticApiException {
+        scheduleActionExecution(action, forcePackageListRefresh, true);
     }
 
     /**
