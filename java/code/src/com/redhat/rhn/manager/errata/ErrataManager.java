@@ -1823,24 +1823,19 @@ public class ErrataManager extends BaseManager {
             .map(Server::getId)
             .collect(toSet());
 
-        Set<Long> traditionalYumClients = serverMap.entrySet().stream()
-            .filter(e -> !minions.contains(e.getKey()))
-            .filter(e ->
-                PackageFactory.lookupByNameAndServer("zypper", e.getValue()) == null)
-            .map(Map.Entry::getKey)
-            .collect(toSet());
+        List<Long> nonZypperTradClients = ServerFactory.findNonZypperTradClientsIds(serverMap.keySet());
 
         Set<Long> otherServers = serverMap.keySet().stream()
             .filter(sid -> !minions.contains(sid))
-            .filter(sid -> !traditionalYumClients.contains(sid))
+            .filter(sid -> !nonZypperTradClients.contains(sid))
             .collect(toSet());
 
         // 1- compute actions for traditional clients running yum
         // those get one Action per system, per errata (yum is known to have problems)
-        Stream<ErrataAction> traditionalYumClientActions = traditionalYumClients.stream()
+        Stream<ErrataAction> nonZypperTradClientActions = nonZypperTradClients.stream()
             .flatMap(sid -> serverErrataMap.get(sid).stream()
                 .sorted((a, b) -> updateStackMap.get(b).compareTo(updateStackMap.get(a)))
-                .map(eid -> createErrataActionForTraditionalYumClient(user,
+                .map(eid -> createErrataActionForNonZypperTradClient(user,
                     errataMap.get(eid), earliest, actionChain, serverMap.get(sid),
                     updateStackMap.get(eid))
                 )
@@ -1891,7 +1886,7 @@ public class ErrataManager extends BaseManager {
                 actionChain, errataMap, updateStackMap, serverMap, minionTargets);
         // store all actions and return ids
         List<ErrataAction> errataNonMinionActions =
-            concat(traditionalYumClientActions,
+            concat(nonZypperTradClientActions,
             concat(updateStackActions,
             nonUpdateStackActions))
             .collect(toList());
@@ -2061,7 +2056,7 @@ public class ErrataManager extends BaseManager {
     /**
      * Creates one errata action for a server and an errata.
      *
-     * Note that this is used exclusively on yum traditional clients (those are
+     * Note that this is used exclusively on non-zypper traditional clients (those are
      * known not to handle combined upgrades properly).
      *
      * @param user the user
@@ -2072,7 +2067,7 @@ public class ErrataManager extends BaseManager {
      * @param updateStack set to true if this is an update stack update
      * @return list of errata actions
      */
-    private static ErrataAction createErrataActionForTraditionalYumClient(User user,
+    private static ErrataAction createErrataActionForNonZypperTradClient(User user,
             Errata erratum, Date earliest, ActionChain actionChain, Server server,
             boolean updateStack) {
         ErrataAction errataUpdate = (ErrataAction) ActionManager.createErrataAction(
