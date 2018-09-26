@@ -1889,19 +1889,24 @@ public class ErrataManager extends BaseManager {
                 actionChain, errataMap, updateStackMap, serverMap, nonUpdateStackTargets);
         Stream<ErrataAction> minionActions = computeActions(user, earliest,
                 actionChain, errataMap, updateStackMap, serverMap, minionTargets);
-
         // store all actions and return ids
-        List<ErrataAction> errataActions =
+        List<ErrataAction> errataNonMinionActions =
             concat(traditionalYumClientActions,
             concat(updateStackActions,
-            concat(nonUpdateStackActions,
-                   minionActions)))
+            nonUpdateStackActions))
             .collect(toList());
-        List<Long> actionIds = new ArrayList<Long>();
-        for (ErrataAction errataAction : errataActions) {
-            Action action = ActionManager.storeAction(errataAction);
+        List<ErrataAction> errataMinionActions = minionActions.collect(toList());
 
-            taskomaticApi.scheduleActionExecution(action);
+        List<Long> actionIds = new ArrayList<Long>();
+
+        for (ErrataAction errataAction : errataNonMinionActions) {
+            Action action = ActionManager.storeAction(errataAction);
+            actionIds.add(action.getId());
+        }
+        //Taskomatic part is needed only for minionActions
+        for (ErrataAction errataAction : errataMinionActions) {
+            Action action = ActionManager.storeAction(errataAction);
+            taskomaticApi.scheduleActionExecution(action, false, false);
             MinionActionManager.scheduleStagingJobsForMinions(action, user);
             actionIds.add(action.getId());
         }
