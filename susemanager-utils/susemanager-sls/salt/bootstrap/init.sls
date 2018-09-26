@@ -33,7 +33,7 @@ disable_repo_{{ alias }}:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- endif %}
 
-{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True)['status'] < 300) %}
+{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
 
 bootstrap_repo:
   file.managed:
