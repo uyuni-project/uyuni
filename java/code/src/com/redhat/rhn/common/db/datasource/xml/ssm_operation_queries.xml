@@ -136,9 +136,9 @@
                FROM rhnSet s
               WHERE label = :set_label
                 AND user_id = :user_id
-                AND s.element NOT IN
+                AND NOT EXISTS
                     (
-                    SELECT sos.server_id
+                    SELECT 1
                       FROM rhnSsmOperationServer sos
                      WHERE sos.operation_id = :op_id
                        AND sos.server_id = s.element
