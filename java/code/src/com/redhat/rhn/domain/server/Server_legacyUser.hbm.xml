@@ -341,6 +341,27 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     ]]>
     </query>
 
+    <sql-query name="Server.findUnscheduledErrataByServerIds">
+        <return-scalar column="serverId" type="long"/>
+        <return-scalar column="errataId" type="long"/>
+        <![CDATA[SELECT SNPC.server_id as serverId, E.id as errataId
+                 FROM rhnErrata E, rhnServerNeededErrataCache SNPC
+                 WHERE EXISTS (SELECT 1
+                               FROM rhnUserServerPerms USP
+                               WHERE USP.user_id = :user_id AND USP.server_id = SNPC.server_id)
+                     AND SNPC.server_id in (:serverIds)
+                     AND SNPC.errata_id = E.id
+                     AND NOT EXISTS (SELECT 1
+                                     FROM rhnActionErrataUpdate AEU, rhnServerAction SA, rhnActionStatus AST
+                                     WHERE SA.server_id = SNPC.server_id
+                                         AND SA.status = AST.id
+                                         AND AST.name IN('Queued', 'Picked Up')
+                                         AND AEU.action_id = SA.action_id
+                                         AND AEU.errata_id = E.id )
+                 ORDER BY E.id
+        ]]>
+    </sql-query>
+    
     <sql-query name="Server.serverIdVirtualHostManagerId">
         <return-scalar column="server_id" type="long"/>
         <return-scalar column="vhmserver_id" type="long"/>
