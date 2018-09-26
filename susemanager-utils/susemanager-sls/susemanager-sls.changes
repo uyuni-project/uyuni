@@ -1,3 +1,4 @@
+- removed the ssl certificate verification while checking bootstrap repo URL (bsc#1095220)
 - Removed the need for curl to be present at bootstrap phase (bsc#1095220)
 - Migrate Python code to be Python 2/3 compatible 
 - Fix merging of image pillars
