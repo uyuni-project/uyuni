@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.utils.salt;
 
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.salt.netapi.datatypes.Event;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -84,13 +85,16 @@ public class ImageDeployedEvent {
             return Optional.empty();
         }
 
-        Object innerData = event.getData().get("data");
+        Map<String, Map<String, Object>> eventData =
+                event.getData(new TypeToken<Map<String, Map<String, Object>>>() { });
+        Map<String, Object> innerData = eventData.get("data");
+
         if (!(innerData instanceof Map)) {
             LOG.error("Error parsing ImageDeployedEvent: event parameter 'data' in invalid format or missing.");
             return Optional.empty();
         }
 
-        Object grains = ((Map) innerData).get("grains");
+        Object grains = innerData.get("grains");
         if (!(grains instanceof Map)) {
             LOG.error("Error parsing ImageDeployedEvent: event parameter 'grains' in invalid format or missing.");
             return Optional.empty();
