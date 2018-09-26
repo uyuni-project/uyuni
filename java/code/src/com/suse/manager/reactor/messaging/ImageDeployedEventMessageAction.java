@@ -71,8 +71,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
             return;
         }
 
-        Optional<MinionServer> minion = imageDeployedEvent.getMachineId()
-                .flatMap(MinionServerFactory::findByMachineId);
+        Optional<MinionServer> minion = imageDeployedEvent.getMachineId().flatMap(MinionServerFactory::findByMachineId);
         if (!minion.isPresent()) {
             LOG.warn("Minion id '" + imageDeployedEvent.getMachineId() +
                     "' not found. Skipping post-image deploy actions.");
@@ -86,11 +85,9 @@ public class ImageDeployedEventMessageAction implements MessageAction {
             Optional<String> activationKeyLabel = grains
                     .getMap("susemanager")
                     .flatMap(suma -> suma.getOptionalAsString("activation_key"));
-            Optional<ActivationKey> activationKey = activationKeyLabel
-                    .map(ActivationKeyFactory::lookupByKey);
+            Optional<ActivationKey> activationKey = activationKeyLabel.map(ActivationKeyFactory::lookupByKey);
 
-            RegistrationUtils.subscribeMinionToChannels(saltService, m, grains, activationKey,
-                    activationKeyLabel);
+            RegistrationUtils.subscribeMinionToChannels(saltService, m, grains, activationKey, activationKeyLabel);
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKey(ak, m, grains));
             RegistrationUtils.finishRegistration(m, activationKey, Optional.empty(), false);
         });
