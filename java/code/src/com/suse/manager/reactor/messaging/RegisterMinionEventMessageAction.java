@@ -138,7 +138,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     @Override
     public void execute(EventMessage msg) {
         registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
-                Optional.empty(), Optional.empty());
+                empty(), empty());
     }
 
     /**
@@ -298,7 +298,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             LOG.error("The existing server organization (" + minion.getOrg() + ") does not match the " +
                     "organization selected for registration (" + org + "). Keeping the " +
                     "existing server organization. " + ignoreAKMessage);
-            activationKey = Optional.empty();
+            activationKey = empty();
             org = minion.getOrg();
             addHistoryEvent(minion, "Invalid Server Organization",
                     "The existing server organization (" + minion.getOrg() + ") does not match the " +
@@ -894,7 +894,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         });
         if (!baseChannel.isPresent()) {
             LOG.warn("Product Base channel not found - refresh SCC sync?");
-            return Optional.empty();
+            return empty();
         }
         return baseChannel;
     }
@@ -905,13 +905,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
         LOG.error("No package providing 'redhat-release' found on RHEL minion " + minionId);
-        return Optional.empty();
+        return empty();
     }
 
     private Optional<String> rpmErrQueryRHELRelease(SaltError err, String minionId) {
         LOG.error("Error querying 'redhat-release' package on RHEL minion " +
                 minionId + ": " + err);
-        return Optional.empty();
+        return empty();
     }
 
     private String unknownRHELVersion(String minionId) {
@@ -996,7 +996,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     .stream()
                     .findFirst()
                     .map(e -> of(e.getValue()))
-                    .orElse(Optional.empty());
+                    .orElse(empty());
 
             osRelease = whatprovidesRes.flatMap(res -> res.fold(
                     err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
@@ -1054,7 +1054,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             Optional<String> version = Optional
                                     .ofNullable(pkgtags.get("VERSION"))
                                     .map(v -> v.stream().findFirst())
-                                    .orElse(Optional.empty());
+                                    .orElse(empty());
                             List<String> provideName = pkgtags.get("PROVIDENAME");
                             List<String> provideVersion = pkgtags.get("PROVIDEVERSION");
                             int idxReleasever = provideName
@@ -1062,11 +1062,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             if (idxReleasever > -1) {
                                 version = provideVersion.size() > idxReleasever ?
                                         of(provideVersion.get(idxReleasever)) :
-                                        Optional.empty();
+                                        empty();
                             }
                             return version;
                         })
-                        .orElse(Optional.empty())
+                        .orElse(empty())
             )
             .orElseGet(() -> unknownRHELVersion(minionId));
         }
