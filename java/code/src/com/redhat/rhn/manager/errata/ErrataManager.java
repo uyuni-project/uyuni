@@ -1770,14 +1770,8 @@ public class ErrataManager extends BaseManager {
         throws TaskomaticApiException {
 
         // compute server id to applicable errata id map
-        Map<Long, List<Long>> serverApplicableErrataMap = serverIds.stream()
-            .collect(toMap(
-                sid -> sid,
-                sid -> SystemManager.unscheduledErrata(user, sid, null).stream()
-                    .map(e -> e.getId())
-                    .collect(toList())
-            ));
-
+        Map<Long, List<Long>> serverApplicableErrataMap =
+                ServerFactory.findUnscheduledErrataByServerIds(user, serverIds);
 
         // if required, check that all specified errata ids are applicable
         // throw Exception if that's not the case
@@ -1808,16 +1802,14 @@ public class ErrataManager extends BaseManager {
 
         // compute erratas that are both applicable and requested
         // group them by server id
-        Map<Long, List<Long>> serverErrataMap =
-            serverIds.stream()
-            .filter(sid -> serverApplicableErrataMap.get(sid).stream()
-                    .anyMatch(eid -> errataMap.containsKey(eid)))
-            .collect(toMap(
-                sid -> sid,
-                sid -> serverApplicableErrataMap.get(sid).stream()
-                    .filter(eid -> errataMap.containsKey(eid))
-                    .collect(toList())
-            ));
+        Map<Long, List<Long>> serverErrataMap = serverApplicableErrataMap.entrySet().stream()
+              .filter(e -> e.getValue().stream().anyMatch(errataMap::containsKey))
+              .collect(toMap(
+                      Map.Entry::getKey,
+                      entry -> entry.getValue().stream()
+                      .filter(errataMap::containsKey)
+                      .collect(toList())
+              ));
 
         // compute server list
         Map<Long, Server> serverMap = ServerFactory.lookupByIdsAndOrg(serverErrataMap.keySet(), user.getOrg()).stream()
