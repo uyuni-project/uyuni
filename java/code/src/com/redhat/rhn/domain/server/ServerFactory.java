@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -346,6 +347,26 @@ public class ServerFactory extends HibernateFactory {
         }
 
         return null;
+    }
+
+    /**
+     * Retrieves the ids of the unscheduled erratas for a given set of servers
+     * @param serverIds the ids of the servers
+     * @return the ids of the erratas grouped by server id
+     */
+    public static Map<Long, List<Long>> findUnscheduledErrataByServerIds(User user, List<Long> serverIds) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+
+        List<Object[]> result = (singleton.listObjectsByNamedQuery("Server.findUnscheduledErrataByServerIds",
+                params, serverIds, "serverIds"));
+
+        return result.stream().collect(
+                Collectors.groupingBy(
+                        row -> Long.valueOf(row[0].toString()),
+                        Collectors.mapping(row -> Long.valueOf(row[1].toString()), Collectors.toList())
+                        )
+                );
     }
 
     /**
