@@ -279,7 +279,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         Map<String, Object> grainsMap = SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new);
         ValueMap grains = new ValueMap(grainsMap);
 
-        Collection<String> hwAddrs = extractHwAddresses(grainsMap); // todo filter out 00::
+        Collection<String> hwAddrs = extractHwAddresses(grainsMap);
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, hwAddrs);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
         boolean isNewMinion = minion.getId() == null;
@@ -383,11 +383,18 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
         }
     }
-
-    private Collection<String> extractHwAddresses(Map<String, Object> grains) {
+    /**
+     * Extract HW addresses (except the localhost one) from grains
+     * @param grains the grains
+     * @return HW addresses
+     */
+    private Set<String> extractHwAddresses(Map<String, Object> grains) {
         Map<String, String> hwInterfaces = (Map<String, String>) grains
                 .getOrDefault("hwaddr_interfaces", Collections.emptyMap());
-        return hwInterfaces.values();
+
+        return hwInterfaces.values().stream()
+                .filter(hwAddress -> !hwAddress.equalsIgnoreCase("00:00:00:00:00:00"))
+                .collect(Collectors.toSet());
     }
 
     private void migrateMinionFormula(String minionId, Optional<String> originalMinionId) {
