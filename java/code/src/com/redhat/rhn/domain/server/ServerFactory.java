@@ -382,6 +382,17 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Retrieves the ids of the non-zypper traditional clients given a set of server ids
+     * @param ids the server ids to search for
+     * @return the list of non-zypper server ids
+     */
+    public static List<Long> findNonZypperTradClientsIds(Set<Long> ids) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        return singleton.listObjectsByNamedQuery("Server.findNonZypperTradClientsIds", params, ids,
+                "serverIds");
+    }
+
+    /**
      * Lookup a Server by their id
      * @param id the id to search for
      * @param orgIn Org who owns the server
