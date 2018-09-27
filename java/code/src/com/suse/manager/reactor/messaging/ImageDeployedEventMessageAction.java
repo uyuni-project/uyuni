@@ -85,4 +85,9 @@ public class ImageDeployedEventMessageAction implements MessageAction {
             RegistrationUtils.finishRegistration(m, activationKey, Optional.empty(), false);
         });
     }
+
+    @Override
+    public boolean canRunConcurrently() {
+        return true;
+    }
 }
