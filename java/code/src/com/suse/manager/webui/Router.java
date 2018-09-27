@@ -144,6 +144,8 @@ public class Router implements SparkApplication {
 
         // Activation Keys API
         get("/manager/api/activation-keys/:tid/channels", withUser(ActivationKeysController::getChannels));
+        get("/manager/api/activation-keys/base-channels",
+                withUser(ActivationKeysController::getAccessibleBaseChannels));
         get("/manager/api/activation-keys/base-channels/:cid/child-channels",
                 withUser(ActivationKeysController::getChildChannelsByBaseId));
 

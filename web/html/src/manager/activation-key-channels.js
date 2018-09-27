@@ -14,12 +14,13 @@ class ActivationKeyChannels extends React.Component {
       activationKeyId: this.props.activationKeyId,
       activationKeyData: {base: null, children: []},
       currentEditData: {base: null, children: []},
+      availableBaseChannels: [],
       availableChannels: [{base : null, children: []}]
     }
   }
 
   componentWillMount() {
-    this.fetchActivationKeyChannels().then(this.fetchChildChannels);
+    this.fetchActivationKeyChannels().then(this.fetchBaseChannels).then(this.fetchChildChannels);
   }
 
   getDefaultBase = () => {
@@ -40,6 +41,26 @@ class ActivationKeyChannels extends React.Component {
           this.setState({
             activationKeyData: data.data,
             currentEditData: data.data,
+            loading: false
+          });
+        })
+        .catch(this.handleResponseError);
+    }
+    else {
+      future = () => {};
+    }
+    return future;
+  }
+
+  fetchBaseChannels = () => {
+    let future;
+    if (this.props.activationKeyId != -1) {
+      this.setState({loading: true});
+
+      future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
+        .promise.then(data => {
+          this.setState({
+            availableBaseChannels: data.data,
             loading: false
           });
         })
