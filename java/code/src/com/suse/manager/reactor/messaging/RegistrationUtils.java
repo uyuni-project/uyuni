@@ -60,7 +60,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Common registration logic that can be used from multiple places
@@ -106,7 +109,7 @@ public class RegistrationUtils {
 
             // Subscribe to config channels assigned to the activation key or initialize empty channel profile
             minion.subscribeConfigChannels(
-                    activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
+                    activationKey.map(ActivationKey::getAllConfigChannels).orElse(emptyList()),
                     creator.orElse(null));
         }
         catch (RuntimeException e) {
@@ -134,15 +137,13 @@ public class RegistrationUtils {
 
         // Call final highstate to deploy config channels if required
         if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true,
-                    Collections.emptyList()));
+            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
         }
     }
 
     private static void triggerHardwareRefresh(MinionServer server) {
         try {
-            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server,
-                    new Date());
+            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
         }
         catch (TaskomaticApiException e) {
             LOG.error("Could not schedule hardware refresh for system: " + server.getId());
@@ -161,9 +162,7 @@ public class RegistrationUtils {
         ak.getToken().getActivatedServers().add(server);
         ActivationKeyFactory.save(ak);
 
-        ak.getServerGroups().forEach(group -> {
-            ServerFactory.addServerToGroup(server, group);
-        });
+        ak.getServerGroups().forEach(group -> ServerFactory.addServerToGroup(server, group));
 
         ServerStateRevision serverStateRevision = new ServerStateRevision();
         serverStateRevision.setServer(server);
@@ -179,13 +178,12 @@ public class RegistrationUtils {
                             state.setVersionConstraint(VersionConstraints.ANY);
                             state.setStateRevision(serverStateRevision);
                             return state;
-                        }).collect(Collectors.toSet())
+                        }).collect(toSet())
         );
         StateFactory.save(serverStateRevision);
 
         // Set additional entitlements, if any
-        Set<Entitlement> validEntits = server.getOrg()
-                .getValidAddOnEntitlementsForOrg();
+        Set<Entitlement> validEntits = server.getOrg().getValidAddOnEntitlementsForOrg();
         ak.getToken().getEntitlements().forEach(sg -> {
             Entitlement e = sg.getAssociatedEntitlement();
             if (validEntits.contains(e) &&
@@ -216,10 +214,8 @@ public class RegistrationUtils {
         String minionId = server.getMinionId();
 
         if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
-            LOG.warn(
-                    "Default channel(s) will NOT be subscribed to: specified Activation Key " +
-                            activationKeyLabel.get() + " is not valid for minionId " +
-                            minionId);
+            LOG.warn("Default channel(s) will NOT be subscribed to: specified Activation Key " +
+                            activationKeyLabel.get() + " is not valid for minionId " + minionId);
             SystemManager.addHistoryEvent(server, "Invalid Activation Key",
                     "Specified Activation Key " + activationKeyLabel.get() +
                             " is not valid. Default channel(s) NOT subscribed to.");
@@ -232,7 +228,7 @@ public class RegistrationUtils {
                 () -> {
                     Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
                     Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                            .collect(Collectors.partitioningBy(SUSEProduct::isBase));
+                            .collect(partitioningBy(SUSEProduct::isBase));
 
                     Optional<SUSEProduct> baseProductOpt = ofNullable(baseAndExtProd.get(true))
                             .flatMap(s -> s.stream().findFirst());
@@ -250,7 +246,7 @@ public class RegistrationUtils {
                                     lookupRequiredChannelsForProduct(baseProduct),
                                     extProducts.stream()
                                         .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                            ).collect(Collectors.toSet())
+                            ).collect(toSet())
                     );
                 },
                 ak -> Opt.<Channel, Set<Channel>>fold(
@@ -259,7 +255,7 @@ public class RegistrationUtils {
                         () -> {
                             Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
                             Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                                    .collect(Collectors.partitioningBy(SUSEProduct::isBase));
+                                    .collect(partitioningBy(SUSEProduct::isBase));
 
                             Optional<SUSEProduct> baseProductOpt = ofNullable(baseAndExtProd.get(true))
                                     .flatMap(s -> s.stream().findFirst());
@@ -278,7 +274,7 @@ public class RegistrationUtils {
                                                 lookupRequiredChannelsForProduct(baseProduct),
                                                 extProducts.stream().flatMap(
                                                         ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                        ).collect(Collectors.toSet());
+                                        ).collect(toSet());
                                     }
                             );
                         },
@@ -289,19 +285,16 @@ public class RegistrationUtils {
                                     return Stream.concat(
                                             Stream.of(baseChannel),
                                             ak.getChannels().stream()
-                                    ).collect(Collectors.toSet());
+                                    ).collect(toSet());
                                 },
                                 baseProduct -> {
                                     // ActivationKey with vendor or cloned vendor channel
                                     return Stream.concat(
                                             lookupRequiredChannelsForProduct(baseProduct.getProduct()),
                                             ak.getChannels().stream()
-                                                    .filter(c ->
-                                                            c.getParentChannel() != null &&
-                                                            c.getParentChannel().getId()
-                                                                .equals(baseChannel.getId())
-                                                    )
-                                    ).collect(Collectors.toSet());
+                                                    .filter(c -> c.getParentChannel() != null &&
+                                                            c.getParentChannel().getId().equals(baseChannel.getId()))
+                                    ).collect(toSet());
 
                                 }
                         )
@@ -329,7 +322,7 @@ public class RegistrationUtils {
                                     osVersion + " " + osRelease + " " + osArch);
                         }
                         return Opt.stream(suseProduct);
-                    })).collect(Collectors.toSet());
+                    })).collect(toSet());
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                 "centos".equalsIgnoreCase(grains.getValueAsString(OS))) {
@@ -356,7 +349,7 @@ public class RegistrationUtils {
                             server.getServerArch().getCompatibleChannelArch());
                     return Stream.empty();
                 }
-            }).collect(Collectors.toSet());
+            }).collect(toSet());
         }
         return Collections.emptySet();
     }
@@ -374,10 +367,7 @@ public class RegistrationUtils {
                 .filter(c -> c.getParentChannelLabel() == null)
                 .map(SUSEProductChannel::getChannelLabel)
                 .findFirst().map(rootChannelLabel -> {
-                    List<SUSEProduct> allExtensionProductsOf =
-                            SUSEProductFactory.findAllExtensionProductsOf(base);
-
-
+                    List<SUSEProduct> allExtensionProductsOf = SUSEProductFactory.findAllExtensionProductsOf(base);
 
                     Stream<Channel> channelStream = SUSEProductFactory.findAllSUSEProductChannels().stream()
                             .filter(pc -> pc.getProduct().equals(base))
