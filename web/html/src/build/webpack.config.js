@@ -7,7 +7,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const {getWebpackConfig} = require("./webpack.config.vendors");
 
 module.exports = (env, argv) => ([
-  getWebpackConfig({generateLicenses: true}),
+  getWebpackConfig({generateLicenses: !argv.watch }),
   {
     entry: pages,
     dependencies: ["vendors"],
