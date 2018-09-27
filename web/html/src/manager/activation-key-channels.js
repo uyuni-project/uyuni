@@ -121,12 +121,17 @@ class ActivationKeyChannels extends React.Component {
       const currentBase = this.getCurrentBase();
       const childChannelList =
         Array.from(this.state.availableChannels.values()).map(g =>
-          <div>
-            <div>{g.base.name}</div>
+          <div className='child-channels-block'>
+            <h4>{g.base.name}</h4>
             {
-              g.children.map(c =>
-                <div>{c.name} {this.state.activationKeyData.children.includes(c) ? 'checked' : ''}</div>
-              )
+              g.children.length > 0 ?
+                g.children.map(c =>
+                  <div className='checkbox'>
+                    <input type='checkbox' value={c.id} id={'child_' + c.id} name='childChannels' />
+                    <label htmlFor={'child_' + c.id}>{c.name}</label>
+                  </div>
+                )
+              : <span>&nbsp;{t('no child channels')}</span>
             }
           </div>
         );
