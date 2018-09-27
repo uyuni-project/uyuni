@@ -387,7 +387,7 @@ class MatchIterator:
     def pattern(self, tag_name, mode, pattern):
         self.mi.pattern(tag_name, mode, pattern)
 
-    def __next__(self):
+    def next(self):
         try:
             hdr = usix_next(self.mi)
         except StopIteration:
@@ -462,7 +462,7 @@ def getInstalledHeader(rpmName):
 
     matchiter = MatchIterator("name")
     matchiter.pattern("name", rpm.RPMMIRE_STRCMP, rpmName)
-    return next(matchiter)
+    return matchiter.next()
 
 
 if __name__ == '__main__':
