@@ -75,5 +75,7 @@ zypper --non-interactive in ant \
 zypper --non-interactive in vim less
 
 # Packages for Javascript tests
-zypper --non-interactive in nodejs8
+zypper --non-interactive in nodejs8 npm8
 
+# Install flow-bin globally
+npm install --global flow-bin@0.73.0
