@@ -1,3 +1,4 @@
+- install all available known kiwi boot descriptions
 - Fix: Cleanup Kiwi cache in highstate (bsc#1109892)
 - removed the ssl certificate verification while checking bootstrap repo URL (bsc#1095220)
 - Removed the need for curl to be present at bootstrap phase (bsc#1095220)
