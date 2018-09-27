@@ -150,6 +150,12 @@ class ActivationKeyChannels extends React.Component {
                   )
                 }
               </select>
+              <span className="help-block">
+                {t('Choose "SUSE Manager Default" to allow systems to register to the default SUSE Manager ' +
+                    'provided channel that corresponds to the installed SUSE Linux version. Instead of the default, ' +
+                    'you may choose a particular SUSE provided channel or a custom base channel, but if a system using ' +
+                    'this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.')}
+              </span>
             </div>
           </div>
           {childChannelList}
