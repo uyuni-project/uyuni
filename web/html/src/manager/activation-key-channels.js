@@ -90,7 +90,7 @@ class ActivationKeyChannels extends React.Component {
       const currentBase = this.getCurrentBase();
       const childChannelList =
         this.state.availableChannels.children.map(c =>
-          <div>{c.name}</div>
+          <div>{c.name} {this.state.activationKeyData.children.includes(c) ? 'checked' : ''}</div>
         );
       return (
         <div>
