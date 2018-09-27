@@ -12,10 +12,10 @@ class ActivationKeyChannels extends React.Component {
       messages: [],
       loading: true,
       activationKeyId: this.props.activationKeyId,
-      activationKeyData: {base: null, children: []},
-      currentEditData: {base: null, children: []},
-      availableBaseChannels: [],
-      availableChannels: [{base : null, children: []}]
+      activationKeyData: new Map(), //{base: null, children: []},
+      currentEditData: new Map(), //{base: null, children: []},
+      availableBaseChannels: [], //[{base : null}],
+      availableChannels: [] //[{base : null, children: []}]
     }
   }
 
@@ -109,6 +109,11 @@ class ActivationKeyChannels extends React.Component {
     }
     else {
       const currentBase = this.getCurrentBase();
+
+      const baseChannelList =
+        Array.from(this.state.availableBaseChannels).map(b =>
+          <div>{b.base.name}</div>
+        );
       const childChannelList =
         Array.from(this.state.availableChannels.values()).map(g =>
           <div>
@@ -122,7 +127,10 @@ class ActivationKeyChannels extends React.Component {
         );
       return (
         <div>
-          <span>selected activation key base channel: {currentBase.name}</span>
+          <div>selected activation key base channel: {currentBase.name}</div>
+          <div>
+            {baseChannelList}
+          </div>
           {childChannelList}
         </div>
       )
