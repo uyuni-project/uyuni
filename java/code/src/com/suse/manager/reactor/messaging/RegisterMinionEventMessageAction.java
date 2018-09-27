@@ -234,7 +234,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         // call the 'finishRegistration' on every minion start
                         // BEWARE: this also means the activation key is applied on each retail minion start for now
                         LOG.info("Finishing registration for minion " + minionId);
-                        subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey,
+                        subscribeMinionToChannels(SALT_SERVICE, minionId, registeredMinion, grains, activationKey,
                                 activationKeyLabel);
                         activationKey.ifPresent(ak ->
                                 RegistrationUtils.applyActivationKeyProperties(registeredMinion, ak, grains));
@@ -324,7 +324,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            subscribeMinionToChannels(minionId, minion, grains, activationKey, activationKeyLabel);
+            subscribeMinionToChannels(SALT_SERVICE, minionId, minion, grains, activationKey, activationKeyLabel);
 
             minion.updateServerInfo();
 
@@ -581,10 +581,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .isPresent();
     }
 
-    private Set<SUSEProduct> identifyProduct(MinionServer server, ValueMap grains) {
+    public static Set<SUSEProduct> identifyProduct(SaltService saltService, MinionServer server, ValueMap grains) {
         if ("suse".equalsIgnoreCase(grains.getValueAsString("os"))) {
             Optional<List<ProductInfo>> productList =
-                    SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
+                    saltService.callSync(Zypper.listProducts(false), server.getMinionId());
             return Opt.stream(productList).flatMap(pl -> {
                 return pl.stream()
                         .flatMap(pi -> {
@@ -605,7 +605,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
                 "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE
+            Optional<Map<String, State.ApplyResult>> applyResultMap = saltService
                     .applyState(server.getMinionId(), "packages.redhatproductinfo");
             Optional<String> centosReleaseContent = applyResultMap.map(
                     map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
@@ -634,7 +634,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         return Collections.emptySet();
     }
 
-    private void subscribeMinionToChannels(String minionId, MinionServer server,
+    public static void subscribeMinionToChannels(SaltService saltService, String minionId, MinionServer server,
             ValueMap grains, Optional<ActivationKey> activationKey,
             Optional<String> activationKeyLabel) {
 
@@ -653,7 +653,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 activationKey,
                 // No ActivationKey
                 () -> {
-                    Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
+                    Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
                     Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
                             .collect(Collectors.partitioningBy(SUSEProduct::isBase));
 
@@ -683,7 +683,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             Optional.ofNullable(ak.getBaseChannel()),
                             // AktivationKey without base channel (SUSE Manager Default)
                             () -> {
-                                Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
+                                Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
                                 Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
                                         .collect(Collectors.partitioningBy(SUSEProduct::isBase));
 
@@ -740,7 +740,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         channelsToAssign.forEach(server::addChannel);
     }
 
-    private ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
+    private static ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
             String details) {
         ServerHistoryEvent historyEvent = new ServerHistoryEvent();
         historyEvent.setCreated(new Date());
@@ -811,7 +811,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         );
     }
 
-    private Optional<Channel> lookupBaseChannel(SUSEProduct sp, ChannelArch arch) {
+    private static Optional<Channel> lookupBaseChannel(SUSEProduct sp, ChannelArch arch) {
         Optional<EssentialChannelDto> productBaseChannelDto =
                 ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(), arch));
         Optional<Channel> baseChannel = productBaseChannelDto.flatMap(base -> {
@@ -828,7 +828,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         return baseChannel;
     }
 
-    private Stream<Channel> lookupRequiredChannelsForProduct(SUSEProduct sp) {
+    private static Stream<Channel> lookupRequiredChannelsForProduct(SUSEProduct sp) {
         return recommendedChannelsByBaseProduct(sp);
     }
 
@@ -872,11 +872,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .get();
     }
 
-    private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct base) {
+    private static Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct base) {
             return recommendedChannelsByBaseProduct(base, base);
     }
 
-    private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct base) {
+    private static Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct base) {
         return root.getSuseProductChannels().stream()
                 .filter(c -> c.getParentChannelLabel() == null)
                 .map(SUSEProductChannel::getChannelLabel)
