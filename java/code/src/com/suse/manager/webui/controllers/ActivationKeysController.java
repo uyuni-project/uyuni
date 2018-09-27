@@ -82,6 +82,22 @@ public class ActivationKeysController {
         });
     }
 
+    public static List<Channel> getPossibleBaseChannels(User user) {
+        return ChannelFactory.listSubscribableBaseChannels(user);
+    }
+
+    public static String getAccessibleBaseChannels(Request request, Response response, User user) {
+        return json(response, ResultJson.success(
+                getPossibleBaseChannels(user).stream()
+                        .map(b -> {
+                            ChannelsJson group = new ChannelsJson();
+                            group.setBase(b);
+                            return group;
+                        })
+                        .collect(Collectors.toList())
+        ));
+    }
+
     private static String withChannel(Request request, Response response,
                                             User user, Function<Channel, String> handler) {
         Long channelId;
@@ -106,11 +122,7 @@ public class ActivationKeysController {
         List<ChannelsJson> jsonChannels = new LinkedList<ChannelsJson>();
 
         if (request.params("cid").equals("-1")) {
-            List<Channel> baseChannels = ChannelFactory.getAccessibleChannelsByOrg(user.getOrg().getId()).stream()
-                    .filter(b -> b.isBaseChannel())
-                    .filter(b -> b.getAccessibleChildrenFor(user).size() > 0)
-                    .collect(Collectors.toList());
-            baseChannels.forEach(base ->
+            getPossibleBaseChannels(user).forEach(base ->
                     {
                         ChannelsJson jsonChannel = new ChannelsJson();
                         jsonChannel.setBase(base);
