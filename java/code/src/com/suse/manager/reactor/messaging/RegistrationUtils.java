@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -222,7 +221,7 @@ public class RegistrationUtils {
                     "Default channel(s) will NOT be subscribed to: specified Activation Key " +
                             activationKeyLabel.get() + " is not valid for minionId " +
                             minionId);
-            addHistoryEvent(server, "Invalid Activation Key",
+            SystemManager.addHistoryEvent(server, "Invalid Activation Key",
                     "Specified Activation Key " + activationKeyLabel.get() +
                             " is not valid. Default channel(s) NOT subscribed to.");
             return;
@@ -370,17 +369,6 @@ public class RegistrationUtils {
             }).collect(Collectors.toSet());
         }
         return Collections.emptySet();
-    }
-
-    public static ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
-            String details) {
-        ServerHistoryEvent historyEvent = new ServerHistoryEvent();
-        historyEvent.setCreated(new Date());
-        historyEvent.setServer(server);
-        historyEvent.setSummary(summary);
-        historyEvent.setDetails(details);
-        server.getHistory().add(historyEvent);
-        return historyEvent;
     }
 
     private static Stream<Channel> lookupRequiredChannelsForProduct(SUSEProduct sp) {
