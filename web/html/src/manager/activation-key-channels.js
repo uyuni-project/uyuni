@@ -4,6 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Network = require("../utils/network");
+const Loading = require("../components/loading").Loading;
 
 class ActivationKeyChannels extends React.Component {
   constructor(props) {
@@ -114,7 +115,9 @@ class ActivationKeyChannels extends React.Component {
   render() {
     if (this.state.loading) {
       return (
-        <div>loading..</div>
+        <div className='form-group'>
+          <Loading text='Loading..' />
+        </div>
       )
     }
     else {
@@ -158,7 +161,12 @@ class ActivationKeyChannels extends React.Component {
               </span>
             </div>
           </div>
-          {childChannelList}
+          <div className='form-group'>
+            <label className='col-lg-3 control-label'>{t('Child Channel:')}</label>
+            <div className='col-lg-6'>
+              {childChannelList}
+            </div>
+          </div>
         </div>
       )
     }
