@@ -17,6 +17,7 @@ package com.redhat.rhn.common.messaging;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.CancellationException;
@@ -44,6 +45,7 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
      */
     public MessageQueueThreadPool(int size) {
         super(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+        setThreadFactory(new BasicThreadFactory.Builder().namingPattern("message-queue-thread-%d").build());
         log.info("Started message queue thread pool (size: " + size + ")");
     }
 
