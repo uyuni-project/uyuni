@@ -85,13 +85,13 @@ public class ImageDeployedEvent {
         }
 
         Object innerData = event.getData().get("data");
-        if (innerData == null || !(innerData instanceof Map)) {
+        if (!(innerData instanceof Map)) {
             LOG.error("Error parsing ImageDeployedEvent: event parameter 'data' in invalid format or missing.");
             return Optional.empty();
         }
 
         Object grains = ((Map) innerData).get("grains");
-        if (grains == null || !(grains instanceof Map)) {
+        if (!(grains instanceof Map)) {
             LOG.error("Error parsing ImageDeployedEvent: event parameter 'grains' in invalid format or missing.");
             return Optional.empty();
         }
