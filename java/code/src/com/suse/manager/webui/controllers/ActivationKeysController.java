@@ -26,6 +26,8 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.http.HttpStatus;
@@ -101,10 +103,32 @@ public class ActivationKeysController {
     }
 
     public static String getChildChannelsByBaseId(Request request, Response response, User user) {
-        return withChannel(request, response, user, (channel) -> {
-            return json(response, ResultJson.success(ChannelsJson.fromChannelSet(
-                    channel.getAccessibleChildrenFor(user).stream().collect(Collectors.toSet())
-            )));
-        });
+        List<ChannelsJson> jsonChannels = new LinkedList<ChannelsJson>();
+
+        if (request.params("cid").equals("-1")) {
+            List<Channel> baseChannels = ChannelFactory.getAccessibleChannelsByOrg(user.getOrg().getId()).stream()
+                    .filter(b -> b.isBaseChannel())
+                    .filter(b -> b.getAccessibleChildrenFor(user).size() > 0)
+                    .collect(Collectors.toList());
+            baseChannels.forEach(base ->
+                    {
+                        ChannelsJson jsonChannel = new ChannelsJson();
+                        jsonChannel.setBase(base);
+                        jsonChannel.setChildren(ChannelFactory.getAccessibleChildChannels(base, user).stream());
+                        jsonChannels.add(jsonChannel);
+                    }
+            );
+
+            return json(response, ResultJson.success(jsonChannels));
+        }
+        else {
+            return withChannel(request, response, user, (channel) -> {
+                ChannelsJson jsonChannel = new ChannelsJson();
+                jsonChannel.setBase(channel);
+                jsonChannel.setChildren(ChannelFactory.getAccessibleChildChannels(channel, user).stream());
+                jsonChannels.add(jsonChannel);
+                return json(response, ResultJson.success(jsonChannels));
+            });
+        }
     }
 }

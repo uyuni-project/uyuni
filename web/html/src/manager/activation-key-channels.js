@@ -14,7 +14,7 @@ class ActivationKeyChannels extends React.Component {
       activationKeyId: this.props.activationKeyId,
       activationKeyData: {base: null, children: []},
       currentEditData: {base: null, children: []},
-      availableChannels: {base: null, children: []}
+      availableChannels: [{base : null, children: []}]
     }
   }
 
@@ -89,8 +89,15 @@ class ActivationKeyChannels extends React.Component {
     else {
       const currentBase = this.getCurrentBase();
       const childChannelList =
-        this.state.availableChannels.children.map(c =>
-          <div>{c.name} {this.state.activationKeyData.children.includes(c) ? 'checked' : ''}</div>
+        Array.from(this.state.availableChannels.values()).map(g =>
+          <div>
+            <div>{g.base.name}</div>
+            {
+              g.children.map(c =>
+                <div>{c.name} {this.state.activationKeyData.children.includes(c) ? 'checked' : ''}</div>
+              )
+            }
+          </div>
         );
       return (
         <div>
