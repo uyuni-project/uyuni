@@ -206,15 +206,14 @@ public class RegistrationUtils {
      * Subscribes minion to channels
      *
      * @param saltService the Salt service instance
-     * @param minionId the minion id
      * @param server the minion
      * @param grains the grains
      * @param activationKey the activation key
      * @param activationKeyLabel the activation key label
      */
-    public static void subscribeMinionToChannels(SaltService saltService, String minionId, MinionServer server,
-            ValueMap grains, Optional<ActivationKey> activationKey,
-            Optional<String> activationKeyLabel) {
+    public static void subscribeMinionToChannels(SaltService saltService, MinionServer server,
+            ValueMap grains, Optional<ActivationKey> activationKey, Optional<String> activationKeyLabel) {
+        String minionId = server.getMinionId();
 
         if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
             LOG.warn(

@@ -73,8 +73,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
-            RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, m.getMinionId(), m, grains,activationKey,
-                    activationKeyLabel);
+            RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, m, grains,activationKey, activationKeyLabel);
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(m, ak, grains));
             RegistrationUtils.finishRegistration(m, activationKey, Optional.empty(), false);
         });
