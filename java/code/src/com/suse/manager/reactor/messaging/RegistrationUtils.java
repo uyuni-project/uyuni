@@ -57,7 +57,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
@@ -343,7 +342,8 @@ public class RegistrationUtils {
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());
-                } else {
+                }
+                else {
                     LOG.warn("No product match found for: " + rhel.getName() + " " +
                             rhel.getVersion() + " " + rhel.getRelease() + " " +
                             server.getServerArch().getCompatibleChannelArch());

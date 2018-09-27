@@ -291,7 +291,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, minion, grains, activationKey, activationKeyLabel);
+            RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, minion, grains, activationKey,
+                    activationKeyLabel);
 
             minion.updateServerInfo();
 
