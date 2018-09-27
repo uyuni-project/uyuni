@@ -78,4 +78,4 @@ zypper --non-interactive in vim less
 zypper --non-interactive in nodejs8 npm8
 
 # Install flow-bin globally
-npm install --global flow-bin@0.73.0
+npm_config_prefix=/usr/lib/node_modules npm install -g flow-bin@0.73
