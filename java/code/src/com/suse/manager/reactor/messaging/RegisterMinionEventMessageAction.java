@@ -33,8 +33,6 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -54,19 +52,13 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
-import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.calls.modules.Zypper;
-import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
-import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Opt;
 
@@ -84,12 +76,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Event handler to create system records for salt minions.
@@ -200,7 +190,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 registeredMinion.setName(minionId);
                 registeredMinion.setMinionId(minionId);
                 ServerFactory.save(registeredMinion);
-                addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
+                RegistrationUtils.addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
                         oldMinionId + "' has been updated to '" + minionId + "'");
 
                 if (!minionId.equals(oldMinionId)) {
@@ -234,7 +224,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         // call the 'finishRegistration' on every minion start
                         // BEWARE: this also means the activation key is applied on each retail minion start for now
                         LOG.info("Finishing registration for minion " + minionId);
-                        subscribeMinionToChannels(SALT_SERVICE, minionId, registeredMinion, grains, activationKey,
+                        RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, minionId, registeredMinion, grains,activationKey,
                                 activationKeyLabel);
                         activationKey.ifPresent(ak ->
                                 RegistrationUtils.applyActivationKeyProperties(registeredMinion, ak, grains));
@@ -292,7 +282,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     "existing server organization. " + ignoreAKMessage);
             activationKey = empty();
             org = minion.getOrg();
-            addHistoryEvent(minion, "Invalid Server Organization",
+            RegistrationUtils.addHistoryEvent(minion, "Invalid Server Organization",
                     "The existing server organization (" + minion.getOrg() + ") does not match the " +
                             "organization selected for registration (" + org + "). Keeping the " +
                             "existing server organization. " + ignoreAKMessage);
@@ -324,7 +314,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            subscribeMinionToChannels(SALT_SERVICE, minionId, minion, grains, activationKey, activationKeyLabel);
+            RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, minionId, minion, grains, activationKey, activationKeyLabel);
 
             minion.updateServerInfo();
 
@@ -581,176 +571,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .isPresent();
     }
 
-    public static Set<SUSEProduct> identifyProduct(SaltService saltService, MinionServer server, ValueMap grains) {
-        if ("suse".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            Optional<List<ProductInfo>> productList =
-                    saltService.callSync(Zypper.listProducts(false), server.getMinionId());
-            return Opt.stream(productList).flatMap(pl -> {
-                return pl.stream()
-                        .flatMap(pi -> {
-                            String osName = pi.getName().toLowerCase();
-                            String osVersion = pi.getVersion();
-                            String osArch = pi.getArch();
-                            String osRelease = pi.getRelease();
-                            Optional<SUSEProduct> suseProduct =
-                                    ofNullable(SUSEProductFactory.findSUSEProduct(osName,
-                                            osVersion, osRelease, osArch, true));
-                            if (!suseProduct.isPresent()) {
-                                LOG.warn("No product match found for: " + osName + " " +
-                                        osVersion + " " + osRelease + " " + osArch);
-                            }
-                            return Opt.stream(suseProduct);
-                        });
-            }).collect(Collectors.toSet());
-        }
-        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            Optional<Map<String, State.ApplyResult>> applyResultMap = saltService
-                    .applyState(server.getMinionId(), "packages.redhatproductinfo");
-            Optional<String> centosReleaseContent = applyResultMap.map(
-                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
-            Optional<String> rhelReleaseContent = applyResultMap.map(
-                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
-            Optional<String> whatProvidesRes = applyResultMap.map(map -> map
-                    .get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
-
-            Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
-                    server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
-            return Opt.stream(rhelProduct).flatMap(rhel -> {
-                if (!rhel.getSuseProduct().isPresent()) {
-                    LOG.warn("No product match found for: " + rhel.getName() + " " +
-                            rhel.getVersion() + " " + rhel.getRelease() + " " +
-                            server.getServerArch().getCompatibleChannelArch());
-                    return Stream.empty();
-                }
-                else {
-                    return Opt.stream(rhel.getSuseProduct());
-                }
-            }).collect(Collectors.toSet());
-        }
-        return Collections.emptySet();
-    }
-
-    public static void subscribeMinionToChannels(SaltService saltService, String minionId, MinionServer server,
-            ValueMap grains, Optional<ActivationKey> activationKey,
-            Optional<String> activationKeyLabel) {
-
-        if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
-            LOG.warn(
-                    "Default channel(s) will NOT be subscribed to: specified Activation Key " +
-                            activationKeyLabel.get() + " is not valid for minionId " +
-                            minionId);
-            addHistoryEvent(server, "Invalid Activation Key",
-                    "Specified Activation Key " + activationKeyLabel.get() +
-                            " is not valid. Default channel(s) NOT subscribed to.");
-            return;
-        }
-
-        Set<Channel> channelsToAssign = Opt.fold(
-                activationKey,
-                // No ActivationKey
-                () -> {
-                    Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
-                    Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                            .collect(Collectors.partitioningBy(SUSEProduct::isBase));
-
-                    Optional<SUSEProduct> baseProductOpt = Optional.ofNullable(baseAndExtProd.get(true))
-                            .flatMap(s -> s.stream().findFirst());
-                    List<SUSEProduct> extProducts = baseAndExtProd.get(false);
-
-                    return Opt.fold(
-                            baseProductOpt,
-                            // No ActivationKey and no base product identified
-                            () -> {
-                                LOG.warn("Server " + minionId + " has no identifiable base product" +
-                                        " and will register without base channel assignment");
-                                return Collections.emptySet();
-                            },
-                            baseProduct -> {
-                                return Stream.concat(
-                                        lookupRequiredChannelsForProduct(baseProduct),
-                                        extProducts.stream()
-                                            .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                ).collect(Collectors.toSet());
-                            }
-                    );
-                },
-                ak -> {
-                    return Opt.<Channel, Set<Channel>>fold(
-                            Optional.ofNullable(ak.getBaseChannel()),
-                            // AktivationKey without base channel (SUSE Manager Default)
-                            () -> {
-                                Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
-                                Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                                        .collect(Collectors.partitioningBy(SUSEProduct::isBase));
-
-                                Optional<SUSEProduct> baseProductOpt = Optional.ofNullable(baseAndExtProd.get(true))
-                                        .flatMap(s -> s.stream().findFirst());
-                                List<SUSEProduct> extProducts = baseAndExtProd.get(false);
-
-                                return Opt.fold(
-                                        baseProductOpt,
-                                        // ActivationKey and no base product identified
-                                        () -> {
-                                            LOG.warn("Server " + minionId + "has no identifyable base product" +
-                                                    " and will register without base channel assignment");
-                                            return Collections.emptySet();
-                                        },
-                                        baseProduct -> {
-                                            return Stream.concat(
-                                                    lookupRequiredChannelsForProduct(baseProduct),
-                                                    extProducts.stream().flatMap(
-                                                            ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                            ).collect(Collectors.toSet());
-                                        }
-                                );
-                            },
-                            baseChannel -> {
-                                return Opt.fold(
-                                        SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()),
-                                        () -> {
-                                            // ActivationKey with custom channel
-                                            return Stream.concat(
-                                                    Stream.of(baseChannel),
-                                                    ak.getChannels().stream()
-                                            ).collect(Collectors.toSet());
-                                        },
-                                        baseProduct -> {
-                                            // ActivationKey with vendor or cloned vendor channel
-                                            return Stream.concat(
-                                                    lookupRequiredChannelsForProduct(baseProduct.getProduct()),
-                                                    ak.getChannels().stream()
-                                                            .filter(c ->
-                                                                    c.getParentChannel() != null &&
-                                                                    c.getParentChannel().getId()
-                                                                        .equals(baseChannel.getId())
-                                                            )
-                                            ).collect(Collectors.toSet());
-
-                                        }
-                                );
-                            }
-                    );
-                }
-        );
-
-        channelsToAssign.forEach(server::addChannel);
-    }
-
-    private static ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
-            String details) {
-        ServerHistoryEvent historyEvent = new ServerHistoryEvent();
-        historyEvent.setCreated(new Date());
-        historyEvent.setServer(server);
-        historyEvent.setSummary(summary);
-        historyEvent.setDetails(details);
-        server.getHistory().add(historyEvent);
-        return historyEvent;
-    }
-
     private void setServerPaths(MinionServer server, String master,
                                 boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
         if (isSaltSSH) {
@@ -828,10 +648,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         return baseChannel;
     }
 
-    private static Stream<Channel> lookupRequiredChannelsForProduct(SUSEProduct sp) {
-        return recommendedChannelsByBaseProduct(sp);
-    }
-
     private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
         LOG.error("No package providing 'redhat-release' found on RHEL minion " + minionId);
         return empty();
@@ -871,46 +687,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         new RpmVersionComparator()))
                 .get();
     }
-
-    private static Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct base) {
-            return recommendedChannelsByBaseProduct(base, base);
-    }
-
-    private static Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct base) {
-        return root.getSuseProductChannels().stream()
-                .filter(c -> c.getParentChannelLabel() == null)
-                .map(SUSEProductChannel::getChannelLabel)
-                .findFirst().map(rootChannelLabel -> {
-                    List<SUSEProduct> allExtensionProductsOf =
-                            SUSEProductFactory.findAllExtensionProductsOf(base);
-
-
-
-                    Stream<Channel> channelStream = SUSEProductFactory.findAllSUSEProductChannels().stream()
-                            .filter(pc -> pc.getProduct().equals(base))
-                            .map(SUSEProductChannel::getChannel)
-                            .filter(Objects::nonNull)
-                            .filter(c -> c.getParentChannel() == null ||
-                                    c.getParentChannel().getLabel().equals(rootChannelLabel));
-
-                    Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
-                        return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
-                            if (pe.isRecommended()) {
-                                return recommendedChannelsByBaseProduct(root, ext);
-                            }
-                            else {
-                                return Stream.<Channel>empty();
-                            }
-                        }).orElseGet(Stream::empty);
-                    });
-
-                    return Stream.concat(
-                            channelStream,
-                            stream
-                    );
-                }).orElseGet(Stream::empty);
-    }
-
 
     private String getOsRelease(String minionId, ValueMap grains) {
         // java port of up2dataUtils._getOSVersionAndRelease()
