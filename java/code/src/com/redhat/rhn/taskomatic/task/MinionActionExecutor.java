@@ -39,7 +39,8 @@ import java.util.Optional;
  */
 public class MinionActionExecutor extends RhnJavaJob {
 
-    private static final int ACTION_DATABASE_GRACE_TIME = 10000;
+    private static final int ACTION_DATABASE_GRACE_TIME = 600_000;
+    private static final int ACTION_DATABASE_POLL_TIME = 100;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
     private SaltServerActionService saltServerActionService = SaltServerActionService.INSTANCE;
@@ -77,22 +78,29 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
 
         Action action = ActionFactory.lookupById(actionId);
-        if (action == null) {
-            // give a second chance, just in case this was scheduled immediately
-            // and the scheduling transaction did not have the time to commit
+
+        // HACK: it is possible that this Taskomatic task triggered before the corresponding Action was really
+        // COMMITted in the database. Wait for some minutes checking if it appears
+        int waitedTime = 0;
+        while (action == null && waitedTime < ACTION_DATABASE_GRACE_TIME) {
+            action = ActionFactory.lookupById(actionId);
             try {
-                Thread.sleep(ACTION_DATABASE_GRACE_TIME);
+                Thread.sleep(ACTION_DATABASE_POLL_TIME);
             }
             catch (InterruptedException e) {
                 // never happens
             }
-            action = ActionFactory.lookupById(actionId);
+            waitedTime += ACTION_DATABASE_POLL_TIME;
         }
 
         if (action == null) {
             log.error("Action not found: " + actionId);
             return;
         }
+        else {
+            log.debug("Action " + actionId + " found after: " + waitedTime + "ms");
+        }
+
         // calculate offset between scheduled time of
         // actions and (now)
         long timeDelta = Duration
