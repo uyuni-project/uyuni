@@ -8,7 +8,7 @@
 # Modified:    2012 Oct 1
 #############################################################
 
-SVER=1.0.1
+SVER=1.0.2
 RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
@@ -45,6 +45,8 @@ do
     plugin_command "systemctl status $i"
 done
 
+plugin_command "psql --version"
+plugin_command "cat /var/lib/pgsql/data/PG_VERSION"
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
 plugin_command "/usr/lib/susemanager/bin/susemanager-connection-check"
