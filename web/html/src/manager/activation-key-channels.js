@@ -20,6 +20,10 @@ class ActivationKeyChannels extends React.Component {
     this.fetchActivationKeyChannels();
   }
 
+  getDefaultBase = () => {
+    return { id: -1, name: t("SUSE Manager Default"), custom: false, subscribable: true};
+  }
+
   fetchActivationKeyChannels = () => {
     let future;
     if (this.props.activationKeyId != -1) {
