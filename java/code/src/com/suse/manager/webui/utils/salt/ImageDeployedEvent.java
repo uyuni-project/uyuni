@@ -56,14 +56,6 @@ public class ImageDeployedEvent {
     }
 
     /**
-     * Convenience method for getting saltboot_initrd flag
-     * @return saltboot_initrd flag
-     */
-    public Optional<Boolean> getSaltbootInitrd() {
-        return grains.getOptionalAsBoolean("saltboot_initrd");
-    }
-
-    /**
      * Convenience method for getting machine_id flag
      * @return machine_id flag
      */

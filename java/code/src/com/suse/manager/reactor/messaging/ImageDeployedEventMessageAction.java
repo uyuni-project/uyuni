@@ -64,13 +64,6 @@ public class ImageDeployedEventMessageAction implements MessageAction {
             return;
         }
 
-        Optional<Boolean> saltbootInitrd = imageDeployedEvent.getSaltbootInitrd();
-        if (!saltbootInitrd.isPresent() || !saltbootInitrd.get()) {
-            LOG.info("Saltboot initrd grain is false/not present in event data: " + imageDeployedEvent +
-                    " . Skipping post image-deploy actions.");
-            return;
-        }
-
         Optional<MinionServer> minion = imageDeployedEvent.getMachineId().flatMap(MinionServerFactory::findByMachineId);
         if (!minion.isPresent()) {
             LOG.warn("Minion id '" + imageDeployedEvent.getMachineId() +
