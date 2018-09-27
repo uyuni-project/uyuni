@@ -54,7 +54,13 @@ class ActivationKeyChannels extends React.Component {
       return <div>loading..</div>
     }
     else {
-      return <div>placeholder</div>
+      return <div>
+        {
+          this.state.activationKeyData && this.state.activationKeyData.base ?
+            <span>selected activation key base channel: {this.state.activationKeyData.base.name}</span>
+            : <span>placeholder</span>
+        }
+      </div>
     }
   }
 }
