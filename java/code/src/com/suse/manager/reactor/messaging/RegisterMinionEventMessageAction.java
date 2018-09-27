@@ -23,11 +23,9 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
-import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
@@ -48,11 +46,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
-import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.ServerStateRevision;
-import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -109,11 +102,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
-
-    private static final List<String> BLACKLIST = Collections.unmodifiableList(
-       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host",
-               "osad")
-    );
 
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
 
@@ -248,7 +236,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         LOG.info("Finishing registration for minion " + minionId);
                         subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey,
                                 activationKeyLabel);
-                        activationKey.ifPresent(ak -> applyActivationKeyProperties(registeredMinion, ak, grains));
+                        activationKey.ifPresent(ak ->
+                                RegistrationUtils.applyActivationKeyProperties(registeredMinion, ak, grains));
                         RegistrationUtils.finishRegistration(registeredMinion, activationKey, creator, !isSaltSSH);
                     }
                 });
@@ -355,7 +344,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setBaseEntitlement(EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
-            activationKey.ifPresent(ak -> applyActivationKeyProperties(minion, ak, grains));
+            activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(minion, ak, grains));
 
             // Saltboot treatment - prepare and apply saltboot
             if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
@@ -432,58 +421,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .getMap("susemanager")
                 .flatMap(suma -> suma.getOptionalAsString("activation_key"));
         return activationKeyOverride.isPresent() ? activationKeyOverride : activationKeyFromGrains;
-    }
-
-    /**
-     * Apply activation key properties to server state
-     *
-     * @param server object representing the table rhnServer
-     * @param ak activation key
-     * @param grains map of minion grains
-     */
-    private void applyActivationKeyProperties(Server server, ActivationKey ak, ValueMap grains) {
-        ak.getToken().getActivatedServers().add(server);
-        ActivationKeyFactory.save(ak);
-
-        ak.getServerGroups().forEach(group -> {
-            ServerFactory.addServerToGroup(server, group);
-        });
-
-        ServerStateRevision serverStateRevision = new ServerStateRevision();
-        serverStateRevision.setServer(server);
-        serverStateRevision.setCreator(ak.getCreator());
-        serverStateRevision.setPackageStates(
-                ak.getPackages().stream()
-                        .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
-                        .map(tp -> {
-                            PackageState state = new PackageState();
-                            state.setArch(tp.getPackageArch());
-                            state.setName(tp.getPackageName());
-                            state.setPackageState(PackageStates.INSTALLED);
-                            state.setVersionConstraint(VersionConstraints.ANY);
-                            state.setStateRevision(serverStateRevision);
-                            return state;
-                        }).collect(Collectors.toSet())
-        );
-        StateFactory.save(serverStateRevision);
-
-        // Set additional entitlements, if any
-        Set<Entitlement> validEntits = server.getOrg()
-                .getValidAddOnEntitlementsForOrg();
-        ak.getToken().getEntitlements().forEach(sg -> {
-            Entitlement e = sg.getAssociatedEntitlement();
-            if (validEntits.contains(e) &&
-                    e.isAllowedOnServer(server, grains) &&
-                    SystemManager.canEntitleServer(server, e)) {
-                ValidatorResult vr = SystemManager.entitleServer(server, e);
-                if (vr.getWarnings().size() > 0) {
-                    LOG.warn(vr.getWarnings().toString());
-                }
-                if (vr.getErrors().size() > 0) {
-                    LOG.error(vr.getErrors().toString());
-                }
-            }
-        });
     }
 
 

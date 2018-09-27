@@ -16,20 +16,35 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Common registration logic that can be used from multiple places
@@ -37,6 +52,15 @@ import java.util.Optional;
 public class RegistrationUtils {
 
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
+    private static final List<String> BLACKLIST = Collections.unmodifiableList(
+       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host",
+               "osad")
+    );
+
+    /**
+     * Prevent instantiation.
+     */
+    private RegistrationUtils() {  }
 
     /**
      * Perform the final registration steps for the minion.
@@ -46,8 +70,8 @@ public class RegistrationUtils {
      * @param creator user performing the registration
      * @param enableMinionService true if salt-minion service should be enabled and running
      */
-    public static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator,
-            boolean enableMinionService) {
+    public static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey,
+            Optional<User> creator, boolean enableMinionService) {
         String minionId = minion.getMinionId();
         // get hardware and network async
         triggerHardwareRefresh(minion);
@@ -94,11 +118,64 @@ public class RegistrationUtils {
 
         // Call final highstate to deploy config channels if required
         if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, Collections.emptyList()));
+            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true,
+                    Collections.emptyList()));
         }
     }
 
-    public static void triggerHardwareRefresh(MinionServer server) {
+    /**
+     * Apply activation key properties to server state
+     *
+     * @param server object representing the table rhnServer
+     * @param ak activation key
+     * @param grains map of minion grains
+     */
+    public static void applyActivationKeyProperties(Server server, ActivationKey ak, ValueMap grains) {
+        ak.getToken().getActivatedServers().add(server);
+        ActivationKeyFactory.save(ak);
+
+        ak.getServerGroups().forEach(group -> {
+            ServerFactory.addServerToGroup(server, group);
+        });
+
+        ServerStateRevision serverStateRevision = new ServerStateRevision();
+        serverStateRevision.setServer(server);
+        serverStateRevision.setCreator(ak.getCreator());
+        serverStateRevision.setPackageStates(
+                ak.getPackages().stream()
+                        .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
+                        .map(tp -> {
+                            PackageState state = new PackageState();
+                            state.setArch(tp.getPackageArch());
+                            state.setName(tp.getPackageName());
+                            state.setPackageState(PackageStates.INSTALLED);
+                            state.setVersionConstraint(VersionConstraints.ANY);
+                            state.setStateRevision(serverStateRevision);
+                            return state;
+                        }).collect(Collectors.toSet())
+        );
+        StateFactory.save(serverStateRevision);
+
+        // Set additional entitlements, if any
+        Set<Entitlement> validEntits = server.getOrg()
+                .getValidAddOnEntitlementsForOrg();
+        ak.getToken().getEntitlements().forEach(sg -> {
+            Entitlement e = sg.getAssociatedEntitlement();
+            if (validEntits.contains(e) &&
+                    e.isAllowedOnServer(server, grains) &&
+                    SystemManager.canEntitleServer(server, e)) {
+                ValidatorResult vr = SystemManager.entitleServer(server, e);
+                if (vr.getWarnings().size() > 0) {
+                    LOG.warn(vr.getWarnings().toString());
+                }
+                if (vr.getErrors().size() > 0) {
+                    LOG.error(vr.getErrors().toString());
+                }
+            }
+        });
+    }
+
+    private static void triggerHardwareRefresh(MinionServer server) {
         try {
             ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server,
                     new Date());
