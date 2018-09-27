@@ -93,14 +93,11 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     }
 
     /**
-     * Happy path scenario: both saltboot_initrd and machine_id grains are present,
-     * in this case we test that at the end of the Action, the minion has correct channels
+     * Happy path scenario: machine_id grain is present.
+     * In this case we test that at the end of the Action, the minion has correct channels
      * (based on its product) assigned.
-     *
-     * @throws java.lang.Exception if anything goes wrong
      */
-    public void testChannelsAssigned() throws Exception {
-        grains.put("saltboot_initrd", true);
+    public void testChannelsAssigned() {
         grains.put("machine_id", minionWithChannels.getMachineId());
 
         ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
@@ -112,46 +109,9 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     }
 
     /**
-     * saltboot_initrd grain is missing -> no channels should be assigned
-     *
-     * @throws java.lang.Exception if anything goes wrong
-     */
-    public void testSaltbootInitrdMissing() throws Exception {
-        grains.put("machine_id", minionWithChannels.getMachineId());
-
-        ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
-        ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);
-        EventMessage message = new ImageDeployedEventMessage(event);
-        action.execute(message);
-
-        assertNull(minionWithChannels.getBaseChannel());
-    }
-
-    /**
-     * saltboot_initrd grain is false -> no channels should be assigned
-     *
-     * @throws java.lang.Exception if anything goes wrong
-     */
-    public void testSaltbootInitrdFalse() throws Exception {
-        grains.put("saltboot_initrd", false);
-        grains.put("machine_id", minionWithChannels.getMachineId());
-
-        ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
-        ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);
-        EventMessage message = new ImageDeployedEventMessage(event);
-        action.execute(message);
-
-        assertNull(minionWithChannels.getBaseChannel());
-    }
-
-    /**
      * machine_id grain is missing -> no channels should be assigned
-     *
-     * @throws java.lang.Exception if anything goes wrong
      */
-    public void testMachineIdMissing() throws Exception {
-        grains.put("saltboot_initrd", true);
-
+    public void testMachineIdMissing() {
         ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
         ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);
         EventMessage message = new ImageDeployedEventMessage(event);
