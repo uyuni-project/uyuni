@@ -16,6 +16,8 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -25,6 +27,7 @@ import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import java.time.LocalDateTime;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import spark.Request;
@@ -62,6 +65,7 @@ public class ActivationKeysController {
         }
         return handler.apply(activationKey);
     }
+
     /**
      * Get the current channels of an activation key.
      *
@@ -73,6 +77,34 @@ public class ActivationKeysController {
     public static String getChannels(Request request, Response response, User user) {
         return withActivationKey(request, response, user, (activationKey) -> {
             return json(response, ResultJson.success(ChannelsJson.fromChannelSet(activationKey.getChannels())));
+        });
+    }
+
+    private static String withChannel(Request request, Response response,
+                                            User user, Function<Channel, String> handler) {
+        Long channelId;
+        try {
+            channelId = Long.parseLong(request.params("cid"));
+        }
+        catch (NumberFormatException e) {
+            return json(response,
+                    HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("invalid_channel_id"));
+        }
+        Channel channel = ChannelFactory.lookupById(channelId);
+        if (channel == null) {
+            return json(response,
+                    HttpStatus.SC_NOT_FOUND,
+                    ResultJson.error("channel_not_found"));
+        }
+        return handler.apply(channel);
+    }
+
+    public static String getChildChannelsByBaseId(Request request, Response response, User user) {
+        return withChannel(request, response, user, (channel) -> {
+            return json(response, ResultJson.success(ChannelsJson.fromChannelSet(
+                    channel.getAccessibleChildrenFor(user).stream().collect(Collectors.toSet())
+            )));
         });
     }
 }

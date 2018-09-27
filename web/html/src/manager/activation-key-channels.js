@@ -12,16 +12,22 @@ class ActivationKeyChannels extends React.Component {
       messages: [],
       loading: true,
       activationKeyId: this.props.activationKeyId,
-      activationKeyData: new Map()
+      activationKeyData: {base: null, children: []},
+      currentEditData: {base: null, children: []},
+      availableChannels: {base: null, children: []}
     }
   }
 
   componentWillMount() {
-    this.fetchActivationKeyChannels();
+    this.fetchActivationKeyChannels().then(this.fetchChildChannels);
   }
 
   getDefaultBase = () => {
     return { id: -1, name: t("SUSE Manager Default"), custom: false, subscribable: true};
+  }
+
+  getCurrentBase = () => {
+    return this.state.currentEditData.base ? this.state.currentEditData.base : this.getDefaultBase();
   }
 
   fetchActivationKeyChannels = () => {
@@ -33,6 +39,27 @@ class ActivationKeyChannels extends React.Component {
         .promise.then(data => {
           this.setState({
             activationKeyData: data.data,
+            currentEditData: data.data,
+            loading: false
+          });
+        })
+        .catch(this.handleResponseError);
+    }
+    else {
+      future = () => {};
+    }
+    return future;
+  }
+
+  fetchChildChannels = () => {
+    let future;
+    if (this.props.activationKeyId != -1) {
+      this.setState({loading: true});
+
+      future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${this.getCurrentBase().id}/child-channels`)
+        .promise.then(data => {
+          this.setState({
+            availableChannels: data.data,
             loading: false
           });
         })
@@ -55,16 +82,22 @@ class ActivationKeyChannels extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return <div>loading..</div>
+      return (
+        <div>loading..</div>
+      )
     }
     else {
-      return <div>
-        {
-          this.state.activationKeyData && this.state.activationKeyData.base ?
-            <span>selected activation key base channel: {this.state.activationKeyData.base.name}</span>
-            : <span>placeholder</span>
-        }
-      </div>
+      const currentBase = this.getCurrentBase();
+      const childChannelList =
+        this.state.availableChannels.children.map(c =>
+          <div>{c.name}</div>
+        );
+      return (
+        <div>
+          <span>selected activation key base channel: {currentBase.name}</span>
+          {childChannelList}
+        </div>
+      )
     }
   }
 }
