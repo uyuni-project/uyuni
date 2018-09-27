@@ -14,7 +14,7 @@ class ActivationKeyChannels extends React.Component {
       activationKeyId: this.props.activationKeyId,
       activationKeyData: new Map(), //{base: null, children: []},
       currentEditData: new Map(), //{base: null, children: []},
-      availableBaseChannels: [], //[{base : null}],
+      availableBaseChannels: [], //[base1, base2],
       availableChannels: [] //[{base : null, children: []}]
     }
   }
@@ -60,7 +60,7 @@ class ActivationKeyChannels extends React.Component {
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
         .promise.then(data => {
           this.setState({
-            availableBaseChannels: data.data,
+            availableBaseChannels: Array.from(data.data).map(g => g.base),
             loading: false
           });
         })
@@ -101,6 +101,16 @@ class ActivationKeyChannels extends React.Component {
     );
   }
 
+  handleBaseChange = (event) => {
+    const newBaseId = event.target.value;
+    var currentEditData = this.state.currentEditData;
+    currentEditData.base = this.state.availableBaseChannels.find(b => b.id == newBaseId);
+    this.setState({
+      currentEditData: currentEditData
+    })
+    this.fetchChildChannels();
+  }
+
   render() {
     if (this.state.loading) {
       return (
@@ -109,11 +119,6 @@ class ActivationKeyChannels extends React.Component {
     }
     else {
       const currentBase = this.getCurrentBase();
-
-      const baseChannelList =
-        Array.from(this.state.availableBaseChannels).map(b =>
-          <div>{b.base.name}</div>
-        );
       const childChannelList =
         Array.from(this.state.availableChannels.values()).map(g =>
           <div>
@@ -127,9 +132,20 @@ class ActivationKeyChannels extends React.Component {
         );
       return (
         <div>
-          <div>selected activation key base channel: {currentBase.name}</div>
-          <div>
-            {baseChannelList}
+          <div className='form-group'>
+            <label className='col-lg-3 control-label'>{t('Base Channel:')}</label>
+            <div className='col-lg-6'>
+              <select name='selectedBaseChannel' className='form-control'
+                  value={currentBase.id}
+                  onChange={this.handleBaseChange}>
+                <option value={this.getDefaultBase().id}>{this.getDefaultBase().name}</option>
+                {
+                  this.state.availableBaseChannels.map(b =>
+                    <option value={b.id}>{b.name}</option>
+                  )
+                }
+              </select>
+            </div>
           </div>
           {childChannelList}
         </div>
