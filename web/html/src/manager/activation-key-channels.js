@@ -16,7 +16,8 @@ class ActivationKeyChannels extends React.Component {
       activationKeyData: new Map(), //{base: null, children: []},
       currentEditData: new Map(), //{base: null, children: []},
       availableBaseChannels: [], //[base1, base2],
-      availableChannels: [] //[{base : null, children: []}]
+      availableChannels: [], //[{base : null, children: []}]
+      fetchedData: new Map()
     }
   }
 
@@ -79,16 +80,30 @@ class ActivationKeyChannels extends React.Component {
 
   fetchChildChannels = () => {
     let future;
-    this.setState({loading: true});
+    const currentBaseId = this.getCurrentBase().id;
 
-    future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${this.getCurrentBase().id}/child-channels`)
-      .promise.then(data => {
-        this.setState({
-          availableChannels: data.data,
-          loading: false
-        });
-      })
-      .catch(this.handleResponseError);
+    const currentObject = this;
+    if (this.state.fetchedData && this.state.fetchedData.has(currentBaseId)) {
+      future = new Promise(function(resolve, reject) {
+        resolve(
+          currentObject.setState({
+            availableChannels: currentObject.state.fetchedData.get(currentBaseId),
+          })
+        )
+      });
+    }
+    else {
+      this.setState({loading: true});
+      future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${currentBaseId}/child-channels`)
+        .promise.then(data => {
+          this.setState({
+            availableChannels: data.data,
+            fetchedData: this.state.fetchedData.set(currentBaseId, data.data),
+            loading: false
+          });
+        })
+        .catch(this.handleResponseError);
+    }
     return future;
   }
 
