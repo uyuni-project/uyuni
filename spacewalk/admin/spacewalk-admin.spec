@@ -86,6 +86,7 @@ ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 %{_bindir}/rhn-generate-pem.pl
 %{_bindir}/rhn-deploy-ca-cert.pl
 %{_bindir}/rhn-install-ssl-cert.pl
+%{_bindir}/mgr-events-config.py
 %{_sbindir}/rhn-sat-restart-silent
 %{rhnroot}/RHN-GPG-KEY
 %{_mandir}/man8/rhn-satellite.8*
@@ -103,6 +104,7 @@ ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 %{_unitdir}/spacewalk-wait-for-salt.service
 %{_unitdir}/spacewalk-wait-for-jabberd.service
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
+%{_unitdir}/mgr-events-config.service
 %endif
 %if 0%{?suse_version}
 %attr(0750,root,www) %dir %{_sysconfdir}/rhn
