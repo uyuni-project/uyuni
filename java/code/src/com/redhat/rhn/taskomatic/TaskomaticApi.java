@@ -37,6 +37,7 @@ import com.suse.manager.utils.MinionServerUtils;
 import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -475,34 +476,37 @@ public class TaskomaticApi {
     }
 
     /**
-     * Schedule an Action execution for Salt minions.
+     * Schedule Actions execution for Salt minions. Actions which doesn't involve minions will be simply ignored
      *
-     * @param action the action to be executed
+     * @param actions the list of actions to be executed
      * @param forcePackageListRefresh is a package list is requested
      * @param checkIfMinionInvolved check if action involves minions
      * @throws TaskomaticApiException if there was an error
      */
-    public void scheduleActionExecution(Action action, boolean forcePackageListRefresh, boolean checkIfMinionInvolved)
-        throws TaskomaticApiException {
-        if (checkIfMinionInvolved) {
-            boolean minionsInvolved = HibernateFactory.getSession()
-                    .getNamedQuery("Action.findMinionIds")
-                    .setParameter("id", action.getId())
-                    .setMaxResults(1)
-                    .stream()
-                    .findAny()
-                    .isPresent();
-            if (!minionsInvolved) {
-                return;
+    public void scheduleActionsExecution(List<Action> actions, boolean forcePackageListRefresh,
+                                         boolean checkIfMinionInvolved) throws TaskomaticApiException {
+        List<Map<String, String>> paramsList = new ArrayList<>();
+        for (Action action: actions) {
+            if (checkIfMinionInvolved) {
+                boolean minionsInvolved = HibernateFactory.getSession()
+                        .getNamedQuery("Action.findMinionIds")
+                        .setParameter("id", action.getId())
+                        .setMaxResults(1)
+                        .stream()
+                        .findAny()
+                        .isPresent();
+                if (!minionsInvolved) {
+                    continue;
+                }
             }
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("action_id", Long.toString(action.getId()));
+            params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
+            params.put("earliest_action", action.getEarliestAction().toInstant().toString());
+            paramsList.add(params);
         }
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("action_id", Long.toString(action.getId()));
-        params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
-        invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
-                MINION_ACTION_JOB_PREFIX + action.getId(), params,
-                action.getEarliestAction());
+        invoke("tasko.scheduleSatBunchRunList", MINION_ACTION_BUNCH_LABEL,
+                MINION_ACTION_JOB_PREFIX, paramsList);
     }
 
     /**
@@ -549,27 +553,25 @@ public class TaskomaticApi {
 
     /**
      * Schedule a staging job for Salt minions.
-     *
-     * @param actionId ID of the action to be executed
-     * @param minionsData scheduling time of staging for each minion
+     * @param actionsData Map containing mapping between action and minions data
      * @throws TaskomaticApiException if there was an error
      */
-    public void scheduleStagingJobs(Long actionId, Map<Long, Date> minionsData) throws TaskomaticApiException {
+    public void scheduleStagingJobs(Map<Long, Map<Long, ZonedDateTime>> actionsData) throws TaskomaticApiException {
 
         List<Map<String, String>> paramsList = new ArrayList<>();
-        minionsData.forEach((minionId, stagingDateTime) -> {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("action_id", Long.toString(actionId));
-            params.put("staging_job", "true");
-            params.put("staging_job_minion_server_id", Long.toString(minionId));
-            params.put("staging_date_time", stagingDateTime.toInstant().toString());
-            paramsList.add(params);
-
+        actionsData.forEach((actionId, minionData)-> {
+            minionData.forEach((minionId, earliestAction)-> {
+                Map<String, String> params = new HashMap<>();
+                params.put("action_id", Long.toString(actionId));
+                params.put("staging_job", "true");
+                params.put("staging_job_minion_server_id", Long.toString(minionId));
+                params.put("earliest_action", earliestAction.toInstant().toString());
+                paramsList.add(params);
+            });
         });
-        invoke("tasko.scheduleSingleSatBunchRunList", MINION_ACTION_BUNCH_LABEL,
-                MINION_ACTION_JOB_DOWNLOAD_PREFIX + actionId, paramsList);
+        invoke("tasko.scheduleSatBunchRunList", MINION_ACTION_BUNCH_LABEL,
+                MINION_ACTION_JOB_DOWNLOAD_PREFIX, paramsList);
     }
-
 
     /**
      * Schedule an Action execution for Salt minions, without forced
@@ -592,7 +594,8 @@ public class TaskomaticApi {
      */
     public void scheduleActionExecution(Action action, boolean forcePackageListRefresh)
             throws TaskomaticApiException {
-        scheduleActionExecution(action, forcePackageListRefresh, true);
+
+        scheduleActionsExecution(Collections.singletonList(action), forcePackageListRefresh, true);
     }
 
     /**

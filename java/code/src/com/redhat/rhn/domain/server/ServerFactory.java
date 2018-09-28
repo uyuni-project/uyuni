@@ -351,6 +351,7 @@ public class ServerFactory extends HibernateFactory {
 
     /**
      * Retrieves the ids of the unscheduled erratas for a given set of servers
+     * @param user the ids of the servers
      * @param serverIds the ids of the servers
      * @return the ids of the erratas grouped by server id
      */
