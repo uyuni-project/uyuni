@@ -116,6 +116,11 @@ class ActivationKeyChannels extends React.Component {
     this.fetchChildChannels();
   }
 
+  handleChildChange = (event) => {
+    const childId = event.target.value;
+    const isSelected = event.target.checked;
+  }
+
   render() {
     if (this.state.loading) {
       return (
@@ -143,6 +148,7 @@ class ActivationKeyChannels extends React.Component {
                         id={'child_' + c.id}
                         name='childChannels'
                         checked={this.getSelectedChildrenIds().includes(c.id)}
+                        onChange={this.handleChildChange}
                     />
                     <label htmlFor={'child_' + c.id}>{c.name}</label>
                   </div>
