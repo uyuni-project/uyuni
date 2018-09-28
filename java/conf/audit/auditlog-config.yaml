@@ -563,10 +563,6 @@
     type: ACTION_DELETE
     required: [dispatch]
 
-/activationkeys/channels/ChildChannels.do:
-    type: ACTION_CHANGE
-    required: [dispatch]
-
 /activationkeys/packages/Packages.do:
     type: ACTION_CHANGE
     required: [dispatch]
