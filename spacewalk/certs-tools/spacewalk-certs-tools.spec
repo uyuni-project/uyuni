@@ -31,7 +31,7 @@
 %endif
 %global rhnroot %{_datadir}/rhn
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?suse_version} > 1320
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -63,6 +63,11 @@ BuildRequires:  filesystem
 Requires:       susemanager-build-keys-web
 %endif
 BuildRequires:  python
+%if 0%{?build_py3}
+Requires(post):  python3-spacewalk-backend-libs
+Requires(post):  python3-rhnlib
+Requires(post):  python3-rpm
+%endif
 Requires(post): spacewalk-backend-libs
 Requires(post): rhnlib
 Requires(post): rpm-python
