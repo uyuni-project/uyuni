@@ -41,6 +41,12 @@ module.exports = (env, argv) => ([
             }
         ]
     },
+    resolve: {
+      alias: {
+        components: path.resolve(__dirname, '../components/'),
+        utils: path.resolve(__dirname, '../utils/'),
+      }
+    },
     plugins: [
       new CleanWebpackPlugin(['dist'], {  root: path.resolve(__dirname, "../")}),
       new webpack.DllReferencePlugin({
