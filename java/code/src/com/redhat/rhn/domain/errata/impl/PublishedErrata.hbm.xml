@@ -245,4 +245,23 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="restart_suggested" type="boolean" />
     </sql-query>
 
+    <sql-query name="PublishedErrata.listAvailableToOrgByIds">
+        <![CDATA[SELECT E.*, 0 as clazz_
+                 FROM rhnErrata as E
+                 WHERE E.id in (:eids)
+                     AND (E.org_id = :orgId
+                          OR EXISTS (SELECT 1
+                                     FROM WEB_CUSTOMER ORG
+                                     INNER JOIN rhnTrustedOrgs TORG ON ORG.id = TORG.org_id
+                                     WHERE ORG.id = :orgId
+                                         AND E.org_id = TORG.org_trust_id)
+                          OR EXISTS (SELECT 1
+                                     FROM rhnAvailableChannels AC,
+                                     rhnChannelErrata CE
+                                     WHERE CE.errata_id = E.id
+                                         AND CE.channel_id = AC.channel_id
+                                         AND AC.org_id = :orgId))
+                          ]]>
+        <return alias="E" class="com.redhat.rhn.domain.errata.impl.PublishedErrata" />
+    </sql-query>
 </hibernate-mapping>

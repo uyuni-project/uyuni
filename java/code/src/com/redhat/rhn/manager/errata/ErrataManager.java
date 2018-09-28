@@ -20,7 +20,9 @@ package com.redhat.rhn.manager.errata;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Stream.concat;
+import static java.util.Arrays.asList;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -95,6 +97,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -688,46 +691,30 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Returns the errata with given id
-     * @param eid errata id
+     * Returns the erratas with given a list of errata ids
+     * @param eids the errata ids
      * @param user The user performing the lookup
-     * @return Errata the requested errata
+     * @return the requested erratas
      */
-    public static Errata lookupErrata(Long eid, User user) {
-        Errata returnedErrata = null;
-        if (eid == null) {
-            return null;
+    public static List<Errata> lookupErrataByIds(List<Long> eids, User user) {
+        if (eids.isEmpty()) {
+            return Collections.EMPTY_LIST;
         }
 
-        returnedErrata = ErrataFactory.lookupById(eid);
+        List<Errata> erratas = ErrataFactory.listErrata(eids, user.getOrg().getId());
 
-        SelectMode m = ModeFactory.getMode("Errata_queries", "available_to_org");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org_id", user.getOrg().getId());
-        params.put("eid", eid);
+        HashSet<Long> foundErrataIds = erratas.stream().map(Errata::getId).collect(toCollection(HashSet::new));
 
-        // If we didn't find an errata, throw a lookup exception
-        if (returnedErrata == null) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find errata: " + eid);
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.errata"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.errata"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.errata"));
-            throw e;
-        }
+        List<Long> notFoundIds = eids.stream()
+                .filter(id -> !foundErrataIds.contains(id))
+                .collect(Collectors.toList());
 
-        // If the errata is available to the users org, return the errata
-        if (!m.execute(params).isEmpty()) {
-            return returnedErrata;
-        }
-
-        // If this is a non-accessible RH errata or the errata belongs to another org,
+        // If we didn't find an errata or
+        // it's a non-accessible RH errata or the errata belongs to another org,
         // throw a lookup exception
-        if (returnedErrata.getOrg() == null ||
-                (returnedErrata.getOrg().getId() != user.getOrg().getId() &&
-                !user.getOrg().getTrustedOrgs().contains(returnedErrata.getOrg()))) {
+        if (!notFoundIds.isEmpty()) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find errata: " + eid);
+            LookupException e = new LookupException("Could not find errata: " + notFoundIds);
             e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.errata"));
             e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.errata"));
             e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.errata"));
@@ -735,7 +722,20 @@ public class ErrataManager extends BaseManager {
         }
 
         // The errata belongs to the users org
-        return returnedErrata;
+        return erratas;
+    }
+
+    /**
+     * Returns the errata with given id
+     * @param eid errata id
+     * @param user The user performing the lookup
+     * @return Errata the requested errata
+     */
+    public static Errata lookupErrata(Long eid, User user) {
+        if (eid == null) {
+            return null;
+        }
+        return lookupErrataByIds(asList(eid), user).stream().findFirst().orElse(null);
     }
 
     /**
@@ -1786,10 +1786,12 @@ public class ErrataManager extends BaseManager {
         }
 
         // compute id to errata map
-        Map<Long, Errata> errataMap = errataIds.stream()
+        List<Errata> errataList = ErrataManager.lookupErrataByIds(errataIds, user);
+
+        Map<Long, Errata> errataMap = errataList.stream()
             .collect(toMap(
-                eid -> eid,
-                eid -> ErrataManager.lookupErrata(eid, user)
+                Errata::getId,
+                Function.identity()
             ));
 
 
