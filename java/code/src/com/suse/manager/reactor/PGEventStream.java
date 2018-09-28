@@ -14,6 +14,9 @@
  */
 package com.suse.manager.reactor;
 
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsLast;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.conf.Config;
@@ -132,7 +135,8 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
      * @param uncommittedEvents used to keep track of events being processed
      */
     private void processEvents(List<SaltEvent> uncommittedEvents) {
-        Stream<SaltEvent> events = SaltEventFactory.popSaltEvents(MAX_EVENTS_PER_COMMIT);
+        Stream<SaltEvent> events = SaltEventFactory.popSaltEvents(MAX_EVENTS_PER_COMMIT)
+                .sorted(comparing(SaltEvent::getMinionId, nullsLast(naturalOrder())).thenComparing(SaltEvent::getId));
 
         events.forEach(event -> {
             if (LOG.isTraceEnabled()) {
