@@ -32,6 +32,10 @@ class ActivationKeyChannels extends React.Component {
     return this.state.currentEditData.base ? this.state.currentEditData.base : this.getDefaultBase();
   }
 
+  getSelectedChildrenIds = () => {
+    return this.state.activationKeyData.children.map(c => c.id);
+  }
+
   fetchActivationKeyChannels = () => {
     let future;
     if (this.props.activationKeyId != -1) {
@@ -125,17 +129,27 @@ class ActivationKeyChannels extends React.Component {
       const childChannelList =
         Array.from(this.state.availableChannels.values()).map(g =>
           <div className='child-channels-block'>
-            <h4>{g.base.name}</h4>
+            {
+              Array.from(this.state.availableChannels.values()).length > 1 ?
+                <h4>{g.base.name}</h4>
+                : null
+            }
             {
               g.children.length > 0 ?
                 g.children.map(c =>
                   <div className='checkbox'>
-                    <input type='checkbox' value={c.id} id={'child_' + c.id} name='childChannels' />
+                    <input type='checkbox'
+                        value={c.id}
+                        id={'child_' + c.id}
+                        name='childChannels'
+                        checked={this.getSelectedChildrenIds().includes(c.id)}
+                    />
                     <label htmlFor={'child_' + c.id}>{c.name}</label>
                   </div>
                 )
               : <span>&nbsp;{t('no child channels')}</span>
             }
+            <hr/>
           </div>
         );
       return (
