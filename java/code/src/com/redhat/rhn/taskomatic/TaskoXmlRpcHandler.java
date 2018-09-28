@@ -268,14 +268,14 @@ public class TaskoXmlRpcHandler {
      * schedule a one time satellite bunch
      * @param bunchName bunch name
      * @param jobLabel job label
-     * @param params job parameters
+     * @param params List of job parameters
      * @return List of scheduled dates
      * @throws NoSuchBunchTaskException thrown if bunch name not known
      * @throws InvalidParamException shall not be thrown
      */
-    public List<Date> scheduleSingleSatBunchRunList(String bunchName, String jobLabel,  List<Map<?, ?>> params)
+    public List<Date> scheduleSatBunchRunList(String bunchName, String jobLabel,  List<Map<?, ?>> params)
             throws NoSuchBunchTaskException, InvalidParamException {
-        return scheduleSingleBunchRunList(null, bunchName, jobLabel, params);
+        return scheduleBunchRunList(null, bunchName, jobLabel, params);
     }
 
     /**
@@ -349,26 +349,28 @@ public class TaskoXmlRpcHandler {
      * @throws NoSuchBunchTaskException thrown if bunch name not known
      * @throws InvalidParamException shall not be thrown
      */
-    public List<Date> scheduleSingleBunchRunList(Integer orgId, String bunchName, String jobLabel,
+     public List<Date> scheduleBunchRunList(Integer orgId, String bunchName, String jobLabel,
                                                  List<Map<?, ?>> paramsList)
             throws NoSuchBunchTaskException, InvalidParamException {
+
         List<Date> scheduleDates = new ArrayList<>();
-        TaskoBunch bunch;
+        TaskoBunch bunch = checkBunchName(orgId, bunchName);
         for (Map params:paramsList) {
-            String label = jobLabel + "-" + params.get("staging_job_minion_server_id");
+           String label = getJobLabel(params, jobLabel);
+
             try {
-                bunch = doBasicCheck(orgId, bunchName, jobLabel);
+                checkIfAlreadyScheduled(orgId, label);
             }
             catch (SchedulerException se) {
                 return null;
             }
             // create schedule
-            String stagingDateTime = String.valueOf(params.get("staging_date_time"));
-            params.remove("staging_date_time"); // don't need it anymore.
-            Date stagingTime = Date.from(ZonedDateTime.parse(stagingDateTime)
+            String earliestAction = String.valueOf(params.get("earliest_action"));
+            params.remove("earliest_action"); // don't need it anymore.
+            Date start = Date.from(ZonedDateTime.parse(earliestAction)
                     .withZoneSameInstant(ZoneId.systemDefault()).toInstant());
             TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, label, params,
-                    stagingTime, null, null);
+                    start, null, null);
             TaskoFactory.save(schedule);
 
             // create job
@@ -611,5 +613,28 @@ public class TaskoXmlRpcHandler {
             }
         }
         return schedules;
+    }
+
+    /**
+     * Get the job label by constructing using partial job label and some other parameters
+     * @param paramsMap maps containing data about actionn
+     * @param partialJobLabel partial job label
+     * @return
+     */
+    private String getJobLabel(Map<String, String> paramsMap, String partialJobLabel) {
+        StringBuilder label = new StringBuilder(partialJobLabel).append(paramsMap.get("action_id"));
+        if (paramsMap.containsKey("staging_job")) {
+            label = label.append("-").append(paramsMap.get("staging_job_minion_server_id"));
+        }
+        return label.toString();
+    }
+
+    private void checkIfAlreadyScheduled(Integer orgId, String jobLabel)
+            throws SchedulerException, InvalidParamException {
+        if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
+                (SchedulerKernel.getScheduler().getTrigger(jobLabel,
+                        TaskoQuartzHelper.getGroupName(orgId)) != null)) {
+            throw new InvalidParamException("jobLabel already in use");
+        }
     }
 }

@@ -46,6 +46,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsMapContaining;
 import org.hamcrest.core.AllOf;
 import org.jmock.Expectations;
@@ -55,12 +56,15 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 /**
  * JUnit test case for the MinionActionManager
@@ -105,13 +109,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         SystemHandler handler = new SystemHandler();
         context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(minion1.getId())
-                    );
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
                     .scheduleActionExecution(with(any(Action.class)));
-            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(any(Long.class)), with(mapMatcher));
+            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
 
         DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
@@ -154,13 +158,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         SystemHandler handler = new SystemHandler();
 
         context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(minion1.getId())
-                    );
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
                     .scheduleActionExecution(with(any(Action.class)));
-            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(any(Long.class)), with(mapMatcher));
+            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
 
         DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
@@ -251,16 +255,15 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler();
-
-        context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(minion1.getId())
-                    );
+        context().checking(new Expectations() {{
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
                     .scheduleActionExecution(with(any(Action.class)));
-            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(any(Long.class)), with(mapMatcher));
-        } });
+            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
+        }});
 
         DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
         int preScheduleSize = dr.size();
@@ -353,15 +356,14 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(minion1.getId()),
-                            IsMapContaining.hasKey(minion2.getId())
-                    );
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(minion1.getId()), IsMapContaining.hasKey(minion2.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
                     .scheduleActionExecution(with(any(Action.class)));
-            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(any(Long.class)),with(mapMatcher));
-        } });
+            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
+       } });
 
         ActionChainManager.schedulePackageInstalls(user,
                 Arrays.asList(minion1.getId(), minion2.getId()), null,
@@ -412,15 +414,14 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ErrataManager.setTaskomaticApi(taskomaticMock);
         MinionActionManager.setTaskomaticApi(taskomaticMock);
-
         context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(server1.getId())
-                    );
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(server1.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleActionExecution(with(any(Action.class)),with(any(Boolean.class)),with(any(Boolean.class)));
-            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(any(Long.class)), with(mapMatcher));
+                    .scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
         ErrataManager.applyErrata(user, errataIds,
@@ -472,13 +473,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(server1.getId())
-                    );
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(server1.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleActionExecution(with(any(Action.class)),with(any(Boolean.class)),with(any(Boolean.class)));
-            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(any(Long.class)), with(mapMatcher));
+                    .scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
         ErrataManager.applyErrata(user, errataIds,
@@ -534,13 +535,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(server1.getId())
-                    );
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(server1.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleActionExecution(with(any(Action.class)),with(any(Boolean.class)),with(any(Boolean.class)));
-            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(any(Long.class)), with(mapMatcher));
+                    .scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
         ErrataManager.applyErrata(user, errataIds,
@@ -601,13 +602,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(server1.getId())
-                    );
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(server1.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleActionExecution(with(any(Action.class)),with(any(Boolean.class)),with(any(Boolean.class)));
-            never(taskomaticMock).scheduleStagingJobs(with(any(Long.class)), with(mapMatcher));
+                    .scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+            never(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
         ErrataManager.applyErrata(user, errataIds,
@@ -659,7 +660,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
-                    .scheduleActionExecution(with(any(Action.class)), with(any(Boolean.class)), with(any(Boolean.class)));
+                    .scheduleActionsExecution(with(any(List.class)), with(any(Boolean.class)), with(any(Boolean.class)));
             never(taskomaticMock).scheduleStagingJob(with(any(Long.class)),
                     with(server1.getId()),
                     with(any(Date.class)));
@@ -699,16 +700,19 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            Matcher<Map<Long, Date>> mapMatcher =
-                    AllOf.allOf(
-                            IsMapContaining.hasKey(minion1.getId()),
-                            IsMapContaining.hasKey(minion2.getId())
-                    );
-            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(any(Long.class)), with(mapMatcher));
+            Matcher<Map<Long, ZonedDateTime>> minionMatcher =
+                    AllOf.allOf(IsMapContaining.hasKey(minion1.getId()),IsMapContaining.hasKey(minion2.getId()));
+            Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
+                    AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
+            exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
 
+        Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
         List<ZonedDateTime> scheduleTimes =
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
+                        .flatMap(List::stream).collect(Collectors.toList());
+
         assertEquals(2,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
@@ -755,9 +759,12 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(minion2.getId()),
                     with(any(Date.class)));
         } });
-
+        Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
         List<ZonedDateTime> scheduleTimes =
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
+                        .flatMap(List::stream).collect(Collectors.toList());
+
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
@@ -804,9 +811,11 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(minion2.getId()),
                     with(any(Date.class)));
         } });
-
+        Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
         List<ZonedDateTime> scheduleTimes =
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
+                        .flatMap(List::stream).collect(Collectors.toList());
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
@@ -855,8 +864,12 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
 
+        Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
         List<ZonedDateTime> scheduleTimes =
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
+                        .flatMap(List::stream).collect(Collectors.toList());
+
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
@@ -904,8 +917,11 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
 
+        Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
         List<ZonedDateTime> scheduleTimes =
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
+                        .flatMap(List::stream).collect(Collectors.toList());
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
@@ -953,8 +969,11 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
 
+        Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
         List<ZonedDateTime> scheduleTimes =
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
+                        .flatMap(List::stream).collect(Collectors.toList());
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
@@ -1001,9 +1020,11 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(s2.getId()),
                     with(any(Date.class)));
         } });
-
+        Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
         List<ZonedDateTime> scheduleTimes =
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
+                        .flatMap(List::stream).collect(Collectors.toList());
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
