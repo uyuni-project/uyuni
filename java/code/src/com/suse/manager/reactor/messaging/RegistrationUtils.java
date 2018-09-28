@@ -264,7 +264,7 @@ public class RegistrationUtils {
                                     baseProductOpt,
                                     // ActivationKey and no base product identified
                                     () -> {
-                                        LOG.warn("Server " + minionId + "has no identifyable base product" +
+                                        LOG.warn("Server " + minionId + " has no identifiable base product" +
                                                 " and will register without base channel assignment");
                                         return Collections.emptySet();
                                     },
