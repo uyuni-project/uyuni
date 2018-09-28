@@ -17,6 +17,8 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import static java.util.stream.Collectors.toCollection;
+
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -66,6 +68,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
@@ -1163,13 +1167,50 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * List errata objects by ID
+     * List errata objects by id and org
      * @param ids list of ids
+     * @param orgId the organization id
      * @return List of Errata Objects
      */
-    public static List<Errata> listErrata(Collection<Long> ids) {
-        return singleton.listObjectsByNamedQuery("PublishedErrata.listByIds",
-                new HashMap(), ids, "list");
+    public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
+        List<Errata> foundErrata = listPublishedErrata(ids, orgId);
+
+        HashSet<Long> foundErrataIds = foundErrata.stream().map(Errata::getId).collect(toCollection(HashSet::new));
+
+        List<Long> remainingIds = ids.stream()
+                .filter(id -> !foundErrataIds.contains(id))
+                .collect(Collectors.toList());
+
+        if (!remainingIds.isEmpty()) {
+            foundErrata.addAll(listUnpublishedErrata(remainingIds, orgId));
+        }
+        return foundErrata;
+    }
+
+    /**
+     * List published errata objects by ID and org
+     * @param eids list of ids
+     * @param orgId the organization id
+     * @return List of Errata Objects
+     */
+    private static List<Errata> listPublishedErrata(Collection<Long> eids, Long orgId) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("orgId", orgId);
+        return singleton.listObjectsByNamedQuery("PublishedErrata.listAvailableToOrgByIds",
+                params, eids, "eids");
+    }
+
+    /**
+     * List unpublished errata objects by ID and org
+     * @param eids list of ids
+     *  * @param orgId the organization id
+     * @return List of Errata Objects
+     */
+    private static List<Errata> listUnpublishedErrata(Collection<Long> eids, Long orgId) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("orgId", orgId);
+        return singleton.listObjectsByNamedQuery("UnpublishedErrata.listAvailableToOrgByIds",
+                params, eids, "eids");
     }
 
     /**

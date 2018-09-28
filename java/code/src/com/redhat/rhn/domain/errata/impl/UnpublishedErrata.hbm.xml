@@ -91,4 +91,17 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  where c.original = :original
                  and c.org = :org]]>
     </query>
+    <sql-query name="UnpublishedErrata.listAvailableToOrgByIds">
+        <![CDATA[SELECT E.*, 0 as clazz_
+                 FROM rhnErrataTmp as E
+                 WHERE E.id in (:eids)
+                     AND (E.org_id = :orgId
+                          OR EXISTS (SELECT 1
+                                     FROM WEB_CUSTOMER ORG
+                                     INNER JOIN rhnTrustedOrgs TORG ON ORG.id = TORG.org_id
+                                     WHERE ORG.id = :orgId
+                                         AND E.org_id = TORG.org_trust_id))
+                          ]]>
+        <return alias="E" class="com.redhat.rhn.domain.errata.impl.UnpublishedErrata" />
+    </sql-query>
 </hibernate-mapping>
