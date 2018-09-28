@@ -292,7 +292,7 @@ def figureDEFS_distinguishing(options):
               }
 
     # map config file settings to DEFS (see mapping dict above)
-    for key in conf.keys():
+    for key in list(conf.keys()):
         #print 'XXX KEY', key, repr(mapping[key])
         for v in mapping[key]:
             DEFS[v] = conf[key]
@@ -704,7 +704,7 @@ serial                  = $dir/serial
                   }
 
         rdn = {}
-        for k in d.keys():
+        for k in list(d.keys()):
             if k in mapping:
                 rdn[mapping[k]] = d[k].strip()
 

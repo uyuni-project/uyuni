@@ -563,7 +563,7 @@ def writeClientConfigOverrides(options):
 #       unchanged.
 
 """)
-        keys = d.keys()
+        keys = list(d.keys())
         keys.sort()
         for key in keys:
             if d[key] is not None:
@@ -574,7 +574,7 @@ def writeClientConfigOverrides(options):
   '%s'\n""" % _overrides)
         if options.verbose>=0:
             print("Values written:")
-            for k, v in d.items():
+            for k, v in list(d.items()):
                 print(k + ' '*(25-len(k)) + repr(v))
 
 
