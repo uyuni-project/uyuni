@@ -89,6 +89,7 @@ Requires:       spark-template-jade
 Requires:       statistics
 Requires:       sudo
 Requires:       tomcat-taglibs-standard
+Requires:       pgjdbc-ng
 BuildRequires:  apache-commons-lang
 BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
@@ -117,6 +118,7 @@ BuildRequires:  salt-netapi-client >= 0.15.0
 BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  velocity
+BuildRequires: pgjdbc-ng
 %else
 Requires:       cobbler20
 Requires:       jakarta-taglibs-standard
@@ -922,12 +924,14 @@ fi
 %{jardir}/httpasyncclient.jar
 %{jardir}/jade4j.jar
 %{jardir}/jose4j.jar
+%{jardir}/netty*.jar
 %{jardir}/salt-netapi-client.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/spark-core.jar
 %{jardir}/spark-template-jade.jar
 %{jardir}/simpleclient*.jar
+%{jardir}/pgjdbc-ng.jar
 
 # Hibernate and related
 %{jardir}/hibernate-core-5.jar
