@@ -14,6 +14,7 @@ Requires=rhn-search.service
 Requires=cobblerd.service
 Requires=taskomatic.service
 Requires=spacewalk-wait-for-taskomatic.service
+Requires=mgr-events-config.service
 
 [Install]
 WantedBy=multi-user.target
