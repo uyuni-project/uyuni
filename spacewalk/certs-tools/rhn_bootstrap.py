@@ -27,8 +27,12 @@ import sys
 import glob
 import socket
 import shutil
-import urlparse
 import operator
+
+try:
+    import urllib.parse as urlparse
+except ImportError:
+    import urlparse
 
 from optparse import Option, OptionParser, SUPPRESS_HELP
 
