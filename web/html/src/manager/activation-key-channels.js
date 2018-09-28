@@ -151,6 +151,12 @@ class ActivationKeyChannels extends React.Component {
                         onChange={this.handleChildChange}
                     />
                     <label htmlFor={'child_' + c.id}>{c.name}</label>
+                    &nbsp;
+                    {
+                      c.recommended
+                        ? <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
+                        : null
+                    }
                   </div>
                 )
               : <span>&nbsp;{t('no child channels')}</span>
