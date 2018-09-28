@@ -1,0 +1,8 @@
+[Unit]
+Description=Configures the mgr_events engine in Salt
+Before=salt-master.service
+
+[Service]
+ExecStart=/usr/bin/mgr-events-config.py
+Type=oneshot
+RemainAfterExit=yes
