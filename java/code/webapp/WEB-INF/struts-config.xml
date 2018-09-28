@@ -17,7 +17,8 @@
            <form-property name="description" type="java.lang.String"/>
            <form-property name="key" type="java.lang.String"/>
            <form-property name="usageLimit" type="java.lang.String"/>
-           <form-property name="selectedChannel" type="java.lang.Long"/>
+           <form-property name="selectedBaseChannel" type="java.lang.Long"/>
+           <form-property name="childChannels" type="java.lang.String[]"/>
            <form-property name="selectedEntitlements" type="java.lang.String[]"/>
            <form-property name="universal" type="java.lang.Boolean"/>
            <form-property name="autoDeploy" type="java.lang.Boolean"/>
@@ -27,12 +28,6 @@
        <form-bean name="activationKeyPackagesForm"
            type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
            <form-property name="packages" type="java.lang.String"/>
-           <form-property name="submitted" type="java.lang.Boolean"/>
-       </form-bean>
-       <form-bean name="activationKeyChildChannelForm"
-           type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-           <form-property name="channels" type="java.util.ArrayList"/>
-           <form-property name="childChannels" type="java.lang.String[]"/>
            <form-property name="submitted" type="java.lang.Boolean"/>
        </form-bean>
 
@@ -5567,21 +5562,6 @@
                  path="/WEB-INF/pages/activationkeys/clone.jsp"/>
         <forward name="success" redirect = "true"
                  path="/activationkeys/List.do"/>
-    </action>
-
-    <action path="/activationkeys/channels/ChildChannels"
-        name="activationKeyChildChannelForm"
-        scope="request"
-        input="/WEB-INF/pages/activationkeys/childchannels/listeditchannels.jsp"
-                type="com.redhat.rhn.frontend.action.token.ActivationKeyChildChannelsAction"
-                className="com.redhat.rhn.frontend.struts.RhnActionMapping"
-                parameter="dispatch">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/activationkeys/childchannels/listeditchannels.jsp"/>
-        <forward name="success" redirect="true"
-                 path="/activationkeys/channels/ChildChannels.do"/>
     </action>
 
     <action path="/activationkeys/packages/Packages"
