@@ -248,7 +248,7 @@ public class RegistrationUtils {
                             ).collect(toSet())
                     );
                 },
-                ak -> Opt.fold(
+                ak -> Opt.<Channel, Set<Channel>>fold(
                         ofNullable(ak.getBaseChannel()),
                         // ActivationKey without base channel (SUSE Manager Default)
                         () -> {
