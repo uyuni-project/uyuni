@@ -69,12 +69,14 @@ import static java.util.stream.Collectors.toSet;
  */
 public class RegistrationUtils {
 
-    private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
     private static final List<String> BLACKLIST = Collections.unmodifiableList(
        Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad")
     );
 
     private static final String OS = "os";
+
+    private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
+
 
     /**
      * Prevent instantiation.
@@ -214,7 +216,7 @@ public class RegistrationUtils {
 
         if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
             LOG.warn("Default channel(s) will NOT be subscribed to: specified Activation Key " +
-                            activationKeyLabel.get() + " is not valid for minionId " + minionId);
+                    activationKeyLabel.get() + " is not valid for minionId " + minionId);
             SystemManager.addHistoryEvent(server, "Invalid Activation Key",
                     "Specified Activation Key " + activationKeyLabel.get() +
                             " is not valid. Default channel(s) NOT subscribed to.");
@@ -244,13 +246,13 @@ public class RegistrationUtils {
                             baseProduct -> Stream.concat(
                                     lookupRequiredChannelsForProduct(baseProduct),
                                     extProducts.stream()
-                                        .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
+                                            .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
                             ).collect(toSet())
                     );
                 },
                 ak -> Opt.<Channel, Set<Channel>>fold(
                         ofNullable(ak.getBaseChannel()),
-                        // AktivationKey without base channel (SUSE Manager Default)
+                        // ActivationKey without base channel (SUSE Manager Default)
                         () -> {
                             Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
                             Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
@@ -268,13 +270,11 @@ public class RegistrationUtils {
                                                 " and will register without base channel assignment");
                                         return Collections.emptySet();
                                     },
-                                    baseProduct -> {
-                                        return Stream.concat(
-                                                lookupRequiredChannelsForProduct(baseProduct),
-                                                extProducts.stream().flatMap(
-                                                        ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                        ).collect(toSet());
-                                    }
+                                    baseProduct -> Stream.concat(
+                                            lookupRequiredChannelsForProduct(baseProduct),
+                                            extProducts.stream().flatMap(
+                                                    ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
+                                    ).collect(toSet())
                             );
                         },
                         baseChannel -> Opt.fold(
@@ -392,5 +392,4 @@ public class RegistrationUtils {
                     );
                 }).orElseGet(Stream::empty);
     }
-
 }

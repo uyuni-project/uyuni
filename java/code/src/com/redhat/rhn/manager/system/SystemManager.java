@@ -447,8 +447,7 @@ public class SystemManager extends BaseManager {
      * @param details the event details
      * @return the created event
      */
-    public static ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
-            String details) {
+    public static ServerHistoryEvent addHistoryEvent(Server server, String summary, String details) {
         ServerHistoryEvent historyEvent = new ServerHistoryEvent();
         historyEvent.setCreated(new java.util.Date());
         historyEvent.setServer(server);
