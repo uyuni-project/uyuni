@@ -24,7 +24,7 @@
         <type boot="oemboot/suse-SLES12" filesystem="ext3" image="oem" installiso="true"/>
     </preferences>
     <users group="root">
-      <user home="/root" name="root" password="lQxldvDc9mR/o" shell="/bin/bash"/>
+      <user home="/root" name="root" password="linux" pwdformat="plain" shell="/bin/bash"/>
     </users>
     <repository type="rpm-md" >
         <source path="http://euklid.nue.suse.com/mirror/SuSE/build.suse.de/SUSE/Products/SLE-SERVER/12-SP3/x86_64/product/"/>
