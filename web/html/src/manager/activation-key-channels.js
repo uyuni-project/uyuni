@@ -33,7 +33,12 @@ class ActivationKeyChannels extends React.Component {
   }
 
   getSelectedChildrenIds = () => {
-    return this.state.activationKeyData.children.map(c => c.id);
+    if (this.state.activationKeyData.children) {
+      return this.state.activationKeyData.children.map(c => c.id);
+    }
+    else {
+      return [];
+    }
   }
 
   fetchActivationKeyChannels = () => {
@@ -52,48 +57,38 @@ class ActivationKeyChannels extends React.Component {
         .catch(this.handleResponseError);
     }
     else {
-      future = () => {};
+      future = new Promise(function(resolve, reject) { resolve() });
     }
     return future;
   }
 
   fetchBaseChannels = () => {
     let future;
-    if (this.props.activationKeyId != -1) {
-      this.setState({loading: true});
+    this.setState({loading: true});
 
-      future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
-        .promise.then(data => {
-          this.setState({
-            availableBaseChannels: Array.from(data.data).map(g => g.base),
-            loading: false
-          });
-        })
-        .catch(this.handleResponseError);
-    }
-    else {
-      future = () => {};
-    }
+    future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
+      .promise.then(data => {
+        this.setState({
+          availableBaseChannels: Array.from(data.data).map(g => g.base),
+          loading: false
+        });
+      })
+      .catch(this.handleResponseError);
     return future;
   }
 
   fetchChildChannels = () => {
     let future;
-    if (this.props.activationKeyId != -1) {
-      this.setState({loading: true});
+    this.setState({loading: true});
 
-      future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${this.getCurrentBase().id}/child-channels`)
-        .promise.then(data => {
-          this.setState({
-            availableChannels: data.data,
-            loading: false
-          });
-        })
-        .catch(this.handleResponseError);
-    }
-    else {
-      future = () => {};
-    }
+    future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${this.getCurrentBase().id}/child-channels`)
+      .promise.then(data => {
+        this.setState({
+          availableChannels: data.data,
+          loading: false
+        });
+      })
+      .catch(this.handleResponseError);
     return future;
   }
 
@@ -205,6 +200,6 @@ window.pageRenderers = window.pageRenderers || {};
 const customValues = window.pageRenderers.customValues || {DOMid: 'activation-key-channels'};
 
 ReactDOM.render(
-  <ActivationKeyChannels activationKeyId={customValues.activationKeyId ? customValues.activationKeyId : ''} />,
+  <ActivationKeyChannels activationKeyId={customValues.activationKeyId ? customValues.activationKeyId : -1} />,
   document.getElementById(customValues.DOMid)
 );
