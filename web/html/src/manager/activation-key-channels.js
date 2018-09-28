@@ -1,48 +1,44 @@
 // @flow
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Network = require("../utils/network");
-const Loading = require("../components/loading").Loading;
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Network = require('../utils/network');
+const Loading = require('../components/loading').Loading;
 
 class ActivationKeyChannels extends React.Component {
   constructor(props) {
     super(props);
+    
+    ['getDefaultBase', 'fetchActivationKeyChannels', 'fetchBaseChannels', 'fetchChildChannels',
+    'handleResponseError', 'handleBaseChange', 'handleChildChange']
+    .forEach(method => this[method] = this[method].bind(this));
+
     this.state = {
       messages: [],
       loading: true,
       activationKeyId: this.props.activationKeyId,
-      activationKeyData: new Map(), //{base: null, children: []},
-      currentEditData: new Map(), //{base: null, children: []},
       availableBaseChannels: [], //[base1, base2],
       availableChannels: [], //[{base : null, children: []}]
-      fetchedData: new Map()
+      fetchedData: new Map(),
+      requiredChannels: new Map(),
+      requiredByChannels: new Map(),
+      currentSelectedBaseId: -1,
+      currentChildSelectedIds: [],
     }
   }
 
   componentWillMount() {
-    this.fetchActivationKeyChannels().then(this.fetchBaseChannels).then(this.fetchChildChannels);
+    this.fetchActivationKeyChannels()
+        .then(this.fetchBaseChannels)
+        .then(() => this.fetchChildChannels(this.state.currentSelectedBaseId));
   }
 
-  getDefaultBase = () => {
-    return { id: -1, name: t("SUSE Manager Default"), custom: false, subscribable: true};
+  getDefaultBase() {
+    return { id: -1, name: t('SUSE Manager Default'), custom: false, subscribable: true};
   }
 
-  getCurrentBase = () => {
-    return this.state.currentEditData.base ? this.state.currentEditData.base : this.getDefaultBase();
-  }
-
-  getSelectedChildrenIds = () => {
-    if (this.state.currentEditData.children) {
-      return this.state.currentEditData.children.map(c => c.id);
-    }
-    else {
-      return [];
-    }
-  }
-
-  fetchActivationKeyChannels = () => {
+  fetchActivationKeyChannels() {
     let future;
     if (this.props.activationKeyId != -1) {
       this.setState({loading: true});
@@ -50,8 +46,8 @@ class ActivationKeyChannels extends React.Component {
       future = Network.get(`/rhn/manager/api/activation-keys/${this.props.activationKeyId}/channels`)
         .promise.then(data => {
           this.setState({
-            activationKeyData: data.data,
-            currentEditData: data.data,
+            currentSelectedBaseId: data.data.base ? data.data.base.id : this.getDefaultBase().id,
+            currentChildSelectedIds: data.data.children ? data.data.children.map(c => c.id) : [],
             loading: false
           });
         })
@@ -63,7 +59,7 @@ class ActivationKeyChannels extends React.Component {
     return future;
   }
 
-  fetchBaseChannels = () => {
+  fetchBaseChannels() {
     let future;
     this.setState({loading: true});
 
@@ -78,27 +74,26 @@ class ActivationKeyChannels extends React.Component {
     return future;
   }
 
-  fetchChildChannels = () => {
+  fetchChildChannels(baseId) {
     let future;
-    const currentBaseId = this.getCurrentBase().id;
 
     const currentObject = this;
-    if (this.state.fetchedData && this.state.fetchedData.has(currentBaseId)) {
+    if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
       future = new Promise(function(resolve, reject) {
         resolve(
           currentObject.setState({
-            availableChannels: currentObject.state.fetchedData.get(currentBaseId),
+            availableChannels: currentObject.state.fetchedData.get(baseId),
           })
         )
       });
     }
     else {
       this.setState({loading: true});
-      future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${currentBaseId}/child-channels`)
+      future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
         .promise.then(data => {
           this.setState({
             availableChannels: data.data,
-            fetchedData: this.state.fetchedData.set(currentBaseId, data.data),
+            fetchedData: this.state.fetchedData.set(baseId, data.data),
             loading: false
           });
         })
@@ -107,7 +102,7 @@ class ActivationKeyChannels extends React.Component {
     return future;
   }
 
-  handleResponseError = (jqXHR, arg = "") => {
+  handleResponseError(jqXHR, arg = '') {
     const msg = Network.responseErrorMessage(jqXHR,
       (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
     this.setState((prevState) => ({
@@ -116,34 +111,23 @@ class ActivationKeyChannels extends React.Component {
     );
   }
 
-  handleBaseChange = (event) => {
+  handleBaseChange(event) {
     const newBaseId = event.target.value;
-    var currentEditData = this.state.currentEditData;
-    currentEditData.base = this.state.availableBaseChannels.find(b => b.id == newBaseId);
-    this.setState({
-      currentEditData: currentEditData
-    })
-    this.fetchChildChannels();
+    this.setState({currentSelectedBaseId: newBaseId});
+    this.fetchChildChannels(newBaseId);
   }
 
-  handleChildChange = (event) => {
-    const childId = event.target.value;
+  handleChildChange(event) {
+    const childId = parseInt(event.target.value);
     const isSelected = event.target.checked;
-    var currentEditData = this.state.currentEditData;
+    var selectedIds = [...this.state.currentChildSelectedIds];
     if (isSelected) {
-      currentEditData.children = [
-        this.state.availableChannels
-            .find(b => b.id == this.getCurrentBase().id)
-            .children
-            .find(c => c.id == childId), ...currentEditData.children
-        ];
+      selectedIds = [childId, ...selectedIds];
     }
     else {
-      currentEditData.children = currentEditData.children.filter(c => c.id != childId);
+      selectedIds = [...selectedIds.filter(c => c != childId)];
     }
-    this.setState({
-      currentEditData: currentEditData
-    });
+    this.setState({currentChildSelectedIds: selectedIds});
   }
 
   render() {
@@ -155,12 +139,11 @@ class ActivationKeyChannels extends React.Component {
       )
     }
     else {
-      const currentBase = this.getCurrentBase();
       const childChannelList =
-        Array.from(this.state.availableChannels.values()).map(g =>
+        this.state.availableChannels.map(g =>
           <div className='child-channels-block'>
             {
-              Array.from(this.state.availableChannels.values()).length > 1 ?
+              this.state.availableChannels.length > 1 ?
                 <h4>{g.base.name}</h4>
                 : null
             }
@@ -172,7 +155,7 @@ class ActivationKeyChannels extends React.Component {
                         value={c.id}
                         id={'child_' + c.id}
                         name='childChannels'
-                        checked={this.getSelectedChildrenIds().includes(c.id)}
+                        checked={this.state.currentChildSelectedIds.includes(c.id)}
                         onChange={this.handleChildChange}
                     />
                     <label htmlFor={'child_' + c.id}>{c.name}</label>
@@ -195,7 +178,7 @@ class ActivationKeyChannels extends React.Component {
             <label className='col-lg-3 control-label'>{t('Base Channel:')}</label>
             <div className='col-lg-6'>
               <select name='selectedBaseChannel' className='form-control'
-                  value={currentBase.id}
+                  value={this.state.currentSelectedBaseId}
                   onChange={this.handleBaseChange}>
                 <option value={this.getDefaultBase().id}>{this.getDefaultBase().name}</option>
                 {
@@ -204,7 +187,7 @@ class ActivationKeyChannels extends React.Component {
                   )
                 }
               </select>
-              <span className="help-block">
+              <span className='help-block'>
                 {t('Choose "SUSE Manager Default" to allow systems to register to the default SUSE Manager ' +
                     'provided channel that corresponds to the installed SUSE Linux version. Instead of the default, ' +
                     'you may choose a particular SUSE provided channel or a custom base channel, but if a system using ' +
