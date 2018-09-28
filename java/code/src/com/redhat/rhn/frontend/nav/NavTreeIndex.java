@@ -24,7 +24,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * NavTreeIndex
@@ -253,10 +255,16 @@ public class NavTreeIndex {
             }
             // first match by the primary url which is the
             // first rhn-tab-url definition in the sitenav.xml.
-            if (primaryURLMap.get(urls[i]) != null) {
+            String url = urls[i];
+            Optional<NavNode> result = primaryURLMap.entrySet().stream()
+                    .filter(entry -> {
+                        String key = entry.getKey().replaceAll("\\$\\{[^}]*\\}", ".*");
+                        return entry.getKey().equals(url) || !key.equals(entry.getKey()) && Pattern.matches(key, url);
+                    }).map(entry -> entry.getValue()).findFirst();
+            if (result.isPresent()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Primary node for [" + urls[i] + "] is [" +
-                            primaryURLMap.get(urls[i]) + "]");
+                    log.debug("Primary node for [" + url + "] is [" +
+                            result.get() + "]");
                 }
 
                 // we found a match, now let's make sure it is accessible
@@ -264,8 +272,8 @@ public class NavTreeIndex {
                 // nodes with the same url.  At that point they are
                 // distinguishable only by acls.
 
-                if (canViewUrl(primaryURLMap.get(urls[i]), 0)) {
-                    return primaryURLMap.get(urls[i]);
+                if (canViewUrl(result.get(), 0)) {
+                    return result.get();
                 }
             }
 
