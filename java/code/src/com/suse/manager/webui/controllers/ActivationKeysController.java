@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
@@ -28,6 +29,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.http.HttpStatus;
@@ -122,25 +124,23 @@ public class ActivationKeysController {
         List<ChannelsJson> jsonChannels = new LinkedList<ChannelsJson>();
 
         if (request.params("cid").equals("-1")) {
-            getPossibleBaseChannels(user).forEach(base ->
-                    {
-                        ChannelsJson jsonChannel = new ChannelsJson();
-                        jsonChannel.setBase(base);
-                        jsonChannel.setChildren(ChannelFactory.getAccessibleChildChannels(base, user).stream());
-                        jsonChannels.add(jsonChannel);
-                    }
-            );
-
+            getPossibleBaseChannels(user).forEach(base -> jsonChannels.add(generateChannelJson(base, user)));
             return json(response, ResultJson.success(jsonChannels));
         }
         else {
-            return withChannel(request, response, user, (channel) -> {
-                ChannelsJson jsonChannel = new ChannelsJson();
-                jsonChannel.setBase(channel);
-                jsonChannel.setChildren(ChannelFactory.getAccessibleChildChannels(channel, user).stream());
-                jsonChannels.add(jsonChannel);
+            return withChannel(request, response, user, (base) -> {
+                jsonChannels.add(generateChannelJson(base, user));
                 return json(response, ResultJson.success(jsonChannels));
             });
         }
+    }
+
+    public static ChannelsJson generateChannelJson(Channel base, User user) {
+        List<Channel> children = ChannelFactory.getAccessibleChildChannels(base, user);
+        Map<Long, Boolean> recommendedFlags = ChannelManager.computeChannelRecommendedFlags(base, children.stream());
+        ChannelsJson jsonChannel = new ChannelsJson();
+        jsonChannel.setBase(base);
+        jsonChannel.setChildrenWithRecommended(children.stream(), recommendedFlags);
+        return jsonChannel;
     }
 }
