@@ -33,8 +33,8 @@ class ActivationKeyChannels extends React.Component {
   }
 
   getSelectedChildrenIds = () => {
-    if (this.state.activationKeyData.children) {
-      return this.state.activationKeyData.children.map(c => c.id);
+    if (this.state.currentEditData.children) {
+      return this.state.currentEditData.children.map(c => c.id);
     }
     else {
       return [];
@@ -114,6 +114,21 @@ class ActivationKeyChannels extends React.Component {
   handleChildChange = (event) => {
     const childId = event.target.value;
     const isSelected = event.target.checked;
+    var currentEditData = this.state.currentEditData;
+    if (isSelected) {
+      currentEditData.children = [
+        this.state.availableChannels
+            .find(b => b.id == this.getCurrentBase().id)
+            .children
+            .find(c => c.id == childId), ...currentEditData.children
+        ];
+    }
+    else {
+      currentEditData.children = currentEditData.children.filter(c => c.id != childId);
+    }
+    this.setState({
+      currentEditData: currentEditData
+    });
   }
 
   render() {
