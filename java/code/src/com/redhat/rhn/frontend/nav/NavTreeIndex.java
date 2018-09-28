@@ -34,14 +34,14 @@ import java.util.Set;
 public class NavTreeIndex {
     private static Logger log = Logger.getLogger(NavTreeIndex.class);
 
-    private Map nodesByLabel;
-    private Map childToParentMap;
-    private Map depthMap;
-    private Map nodeDirMap; //tab dir is key, value is List of NavNodes
-    private Map nodeURLMap; //url is key, value is List of NavNodes
-    private Map primaryURLMap; //url is key, value is NavNode
-    private ArrayList nodeLevels;
-    private Set activeNodes; //The best node and its parents (all highlighted in UI)
+    private Map<String, NavNode> nodesByLabel;
+    private Map<NavNode, NavNode> childToParentMap;
+    private Map<NavNode, Integer> depthMap;
+    private Map<String, List<NavNode>> nodeDirMap; //tab dir is key, value is List of NavNodes
+    private Map<String, List<NavNode>> nodeURLMap; //url is key, value is List of NavNodes
+    private Map<String, NavNode> primaryURLMap; //url is key, value is NavNode
+    private ArrayList<List<NavNode>> nodeLevels;
+    private Set<NavNode> activeNodes; //The best node and its parents (all highlighted in UI)
     private NavNode bestNode; //The node best corresponding with the url
     private NavTree tree;
 
@@ -50,14 +50,14 @@ public class NavTreeIndex {
      * @param treeIn the tree to index
      */
     public NavTreeIndex(NavTree treeIn) {
-        nodesByLabel = new HashMap();
-        childToParentMap = new HashMap();
-        depthMap = new HashMap();
-        nodeDirMap = new HashMap();
-        nodeURLMap = new HashMap();
-        primaryURLMap = new HashMap();
-        nodeLevels = new ArrayList();
-        activeNodes = new HashSet();
+        nodesByLabel = new HashMap<String, NavNode>();
+        childToParentMap = new HashMap<NavNode, NavNode>();
+        depthMap = new HashMap<NavNode, Integer>();
+        nodeDirMap = new HashMap<String, List<NavNode>>();
+        nodeURLMap = new HashMap<String, List<NavNode>>();
+        primaryURLMap = new HashMap<String, NavNode>();
+        nodeLevels = new ArrayList<List<NavNode>>();
+        activeNodes = new HashSet<NavNode>();
 
         tree = treeIn;
         indexTree();
@@ -83,12 +83,12 @@ public class NavTreeIndex {
 
     private void indexTree() {
         int depth = 0;
-        List nodesAtCurrentDepth = new ArrayList(tree.getNodes());
+        List<NavNode> nodesAtCurrentDepth = new ArrayList<NavNode>(tree.getNodes());
         nodeLevels.add(depth, nodesAtCurrentDepth);
 
-        Iterator i = nodesAtCurrentDepth.iterator();
+        Iterator<NavNode> i = nodesAtCurrentDepth.iterator();
         while (i.hasNext()) {
-            NavNode n = (NavNode)i.next();
+            NavNode n = i.next();
             indexNode(n, depth + 1);
         }
     }
@@ -100,7 +100,7 @@ public class NavTreeIndex {
         }
         primaryURLMap.put(parent.getPrimaryURL(), parent);
 
-        List nodesAtCurrentDepth = new ArrayList(parent.getNodes());
+        List<NavNode> nodesAtCurrentDepth = new ArrayList<NavNode>(parent.getNodes());
         nodeLevels.add(depth, nodesAtCurrentDepth);
 
         addURLMaps(parent);
@@ -110,23 +110,23 @@ public class NavTreeIndex {
             nodesByLabel.put(parent.getLabel(), parent);
         }
 
-        Iterator i = nodesAtCurrentDepth.iterator();
+        Iterator<NavNode> i = nodesAtCurrentDepth.iterator();
         while (i.hasNext()) {
-            NavNode child = (NavNode)i.next();
+            NavNode child = i.next();
             childToParentMap.put(child, parent);
 
             indexNode(child, depth + 1);
         }
     }
     private void addURLMaps(NavNode node) {
-        Iterator i = node.getURLs().iterator();
+        Iterator<String> i = node.getURLs().iterator();
 
         while (i.hasNext()) {
-            String url = (String)i.next();
+            String url = i.next();
 
-            List currentNodes = (List)nodeURLMap.get(url);
+            List<NavNode> currentNodes = nodeURLMap.get(url);
             if (currentNodes == null) {
-                currentNodes = new ArrayList();
+                currentNodes = new ArrayList<NavNode>();
                 if (log.isDebugEnabled()) {
                     log.debug("adding url map [" + url + "]");
                 }
@@ -137,14 +137,14 @@ public class NavTreeIndex {
     }
 
     private void addDirMaps(NavNode node) {
-        Iterator i = node.getDirs().iterator();
+        Iterator<String> i = node.getDirs().iterator();
 
         while (i.hasNext()) {
-            String dir = (String)i.next();
+            String dir = i.next();
 
-            List currentNodes = (List)nodeDirMap.get(dir);
+            List<NavNode> currentNodes = nodeDirMap.get(dir);
             if (currentNodes == null) {
-                currentNodes = new ArrayList();
+                currentNodes = new ArrayList<NavNode>();
                 if (log.isDebugEnabled()) {
                     log.debug("adding dir map [" + dir + "]");
                 }
@@ -165,7 +165,7 @@ public class NavTreeIndex {
         String url = StringUtils.strip(urlIn, "/");
         String[] splitPath = StringUtils.split(url, "/");
 
-        List pathPrefixes = new ArrayList(splitPath.length + 1);
+        List<String> pathPrefixes = new ArrayList<String>(splitPath.length + 1);
 
         // loop through the path parts of URL, creating a new split
         // URL for each pass, starting with longest, going to shortest
@@ -184,7 +184,7 @@ public class NavTreeIndex {
 
         pathPrefixes.add("/");
 
-        return (String[])pathPrefixes.toArray(new String[] {});
+        return pathPrefixes.toArray(new String[] {});
     }
 
     /**
@@ -225,16 +225,16 @@ public class NavTreeIndex {
         bestNode = findBestNode(urls);
         if (bestNode == null) {
             // can't find an best node. assume topmost leftmost node is best
-            ArrayList depthZero = (ArrayList)nodeLevels.get(0);
-            bestNode = (NavNode)depthZero.get(0);
+            List<NavNode> depthZero = nodeLevels.get(0);
+            bestNode = depthZero.get(0);
         }
 
         NavNode walker = bestNode;
 
-        activeNodes = new HashSet();
+        activeNodes = new HashSet<NavNode>();
         while (walker != null) {
             activeNodes.add(walker);
-            walker = (NavNode)childToParentMap.get(walker);
+            walker = childToParentMap.get(walker);
         }
 
         if (log.isDebugEnabled()) {
@@ -264,8 +264,8 @@ public class NavTreeIndex {
                 // nodes with the same url.  At that point they are
                 // distinguishable only by acls.
 
-                if (canViewUrl((NavNode)primaryURLMap.get(urls[i]), 0)) {
-                    return (NavNode)primaryURLMap.get(urls[i]);
+                if (canViewUrl(primaryURLMap.get(urls[i]), 0)) {
+                    return primaryURLMap.get(urls[i]);
                 }
             }
 
@@ -273,11 +273,11 @@ public class NavTreeIndex {
             // accessible.  Let's go through the other url mappings (if any)
             // looking for an accessible url.
 
-            List nodesByUrl = (List) nodeURLMap.get(urls[i]);
+            List<NavNode> nodesByUrl = nodeURLMap.get(urls[i]);
             if (nodesByUrl != null) {
-                Iterator nodeItr = nodesByUrl.iterator();
+                Iterator<NavNode> nodeItr = nodesByUrl.iterator();
                 while (nodeItr.hasNext()) {
-                    NavNode next = (NavNode)nodeItr.next();
+                    NavNode next = nodeItr.next();
                     if (canViewUrl(next, 1)) {
                         if (log.isDebugEnabled()) {
                             log.debug("Best node for [" + urls[i] + "] is [" +
@@ -295,14 +295,14 @@ public class NavTreeIndex {
             // null.
 
             if (nodeDirMap.get(urls[i]) != null) {
-                List nodes = (List)nodeDirMap.get(urls[i]);
+                List<NavNode> nodes = nodeDirMap.get(urls[i]);
                 // what do we do with a list that contains
                 // more than one.
                 if (log.isDebugEnabled()) {
                     log.debug("Best node for [" + urls[i] + "] is [" +
                             nodes.get(0) + "]");
                 }
-                return (NavNode)nodes.get(0);
+                return nodes.get(0);
             }
         }
 
