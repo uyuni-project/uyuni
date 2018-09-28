@@ -34,9 +34,9 @@ def count_table_items
 end
 
 def product
-  _product_raw, code = $server.run('rpm -q patterns-uyuni_server')
+  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', false)
   return 'Uyuni' if code.zero?
-  _product_raw, code = $server.run('rpm -q patterns-suma_server')
+  _product_raw, code = $server.run('rpm -q patterns-suma_server', false)
   return 'SUSE Manager' if code.zero?
   raise 'Could not determine product'
 end
