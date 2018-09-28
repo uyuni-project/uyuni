@@ -126,8 +126,8 @@ class Responder:
             log.debug("%s: Adding event to queue -> %s", __name__, tag)
             try:
                 self.cursor.execute(
-                    'INSERT INTO suseSaltEvent (data) VALUES (%s);',
-                    (json.dumps({'tag': tag, 'data': data}),)
+                    'INSERT INTO suseSaltEvent (minion_id, data) VALUES (%s, %s);',
+                    (data.get("id"), json.dumps({'tag': tag, 'data': data}),)
                 )
                 self.counter += 1
                 self.attempt_commit()
