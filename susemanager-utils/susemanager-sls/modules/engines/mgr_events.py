@@ -193,10 +193,10 @@ class Responder:
         self.commit_interval = self._compute_commit_interval()
         if self.counter != 0:
             log.debug("%s: commit", __name__)
-            self.connection.commit()
             self.cursor.execute(
                 'NOTIFY {};'.format(self.config['postgres_db']['notify_channel'])
             )
+            self.connection.commit()
             self.debug_log()
             self.counter = 0
         self.commit_timer_handle = self.event_bus.io_loop.call_later(
