@@ -2,13 +2,13 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const MessageContainer = require("../components/messages").Messages;
-const {Table, Column, SearchField, Highlight} = require("../components/table");
-const Network = require("../utils/network");
-const Functions = require("../utils/functions");
+const MessageContainer = require("components/messages").Messages;
+const {Table, Column, SearchField, Highlight} = require("components/table");
+const Network = require("utils/network");
+const Functions = require("utils/functions");
 const Utils = Functions.Utils;
-const {AsyncButton, Button} = require("../components/buttons");
-const Panels = require("../components/panel");
+const {AsyncButton, Button} = require("components/buttons");
+const Panels = require("components/panel");
 const Panel = Panels.Panel;
 
 function reloadData(dataUrlSlice) {
