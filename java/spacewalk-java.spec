@@ -77,6 +77,7 @@ Requires: gnu-jaf
 Requires: objectweb-asm
 Requires: tomcat-taglibs-standard
 Requires: prometheus-client-java
+Requires: pgjdbc-ng
 BuildRequires: hibernate5
 BuildRequires: hibernate-commons-annotations
 BuildRequires: hibernate-jpa-2.1-api
@@ -105,6 +106,7 @@ BuildRequires: httpcomponents-client
 BuildRequires: httpcomponents-asyncclient
 BuildRequires: velocity
 BuildRequires: prometheus-client-java
+BuildRequires: pgjdbc-ng
 %else
 Requires: cobbler20
 Requires: java >= 1:1.7.0
@@ -905,12 +907,14 @@ fi
 %{jardir}/httpasyncclient.jar
 %{jardir}/jade4j.jar
 %{jardir}/jose4j.jar
+%{jardir}/netty*.jar
 %{jardir}/salt-netapi-client.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/spark-core.jar
 %{jardir}/spark-template-jade.jar
 %{jardir}/simpleclient*.jar
+%{jardir}/pgjdbc-ng.jar
 
 # Hibernate and related
 %{jardir}/hibernate-core-5.jar
