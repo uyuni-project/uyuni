@@ -48,7 +48,6 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -606,7 +605,7 @@ public class ErrataManager extends BaseManager {
     /**
      * Delete multiple errata
      * @param user the user deleting
-     * @param The list of errata ids
+     * @param erratas The list of errata ids
      */
     private static void deleteErrata(User user, List<OwnedErrata> erratas) {
 
@@ -1895,18 +1894,22 @@ public class ErrataManager extends BaseManager {
             .collect(toList());
         List<ErrataAction> errataMinionActions = minionActions.collect(toList());
 
-        List<Long> actionIds = new ArrayList<Long>();
+        List<Long> actionIds = new ArrayList<>();
 
         for (ErrataAction errataAction : errataNonMinionActions) {
             Action action = ActionManager.storeAction(errataAction);
             actionIds.add(action.getId());
         }
-        //Taskomatic part is needed only for minionActions
+        List<Action> minionTaskoActions = new ArrayList<>();
         for (ErrataAction errataAction : errataMinionActions) {
             Action action = ActionManager.storeAction(errataAction);
-            taskomaticApi.scheduleActionExecution(action, false, false);
-            MinionActionManager.scheduleStagingJobsForMinions(action, user);
+            minionTaskoActions.add(action);
             actionIds.add(action.getId());
+        }
+        //Taskomatic part is needed only for minionActions
+        if (!minionTaskoActions.isEmpty()) {
+            taskomaticApi.scheduleActionsExecution(minionTaskoActions, false, false);
+            MinionActionManager.scheduleStagingJobsForMinions(minionTaskoActions, user);
         }
         return actionIds;
     }

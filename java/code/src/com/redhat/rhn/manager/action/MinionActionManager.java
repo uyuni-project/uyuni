@@ -29,8 +29,6 @@ import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,16 +64,40 @@ public class MinionActionManager {
      * Staging job will be scheduled per-minion and at a random point in the time in
      * the proper range.
      *
-     * @param action related action already scheduled
+     * @param actions List of actions. related action already scheduled
      * @param user user that started the action
      * @throws TaskomaticApiException in case of failure of the scheduled staging job
      * @return A list containing the schedule time(s) for staging job(s)
      */
-    public static List<ZonedDateTime> scheduleStagingJobsForMinions(Action action,
-            User user)
-        throws TaskomaticApiException {
+    public static Map<Long, Map<Long, ZonedDateTime>> scheduleStagingJobsForMinions(List<Action> actions, User user)
+            throws TaskomaticApiException {
+        Map<Long, Map<Long, ZonedDateTime>> scheduleActionsData = new HashMap<>();
+        for (Action action: actions) {
+            Map<Long, ZonedDateTime> scheduleActionData = scheduleStagingJobsForMinions(action, user);
+            if (!scheduleActionData.isEmpty()) {
+                scheduleActionsData.put(action.getId(), scheduleActionData);
+            }
+        }
+        // Schedule the taskomatic actions
+        if (!scheduleActionsData.isEmpty()) {
+            taskomaticApi.scheduleStagingJobs(scheduleActionsData);
+        }
+        return scheduleActionsData;
+    }
+    /**
+     * Prepare data to Schedule staging jobs for minions, if:
+     * - org has enabled staging content
+     * - action is either:
+     *   - package install/update
+     *   - patch install
+     *
+     * @param action related action already scheduled
+     * @param user user that started the action
+     * @return A list containing the schedule time(s) for staging job(s)
+     */
+    private static Map<Long, ZonedDateTime> scheduleStagingJobsForMinions(Action action, User user) {
 
-        List<ZonedDateTime> ret = new ArrayList<>();
+        Map<Long, ZonedDateTime>  scheduleActionData = new HashMap<>();
 
         if (user.getOrg().getOrgConfig().isStagingContentEnabled()) {
 
@@ -123,7 +145,6 @@ public class MinionActionManager {
                 if (!stagingWindowIsAlreadyEnded && stagingWindowStartIsBeforeAction &&
                         (stagingWindowEndTime.isBefore(earliestAction) ||
                                 stagingWindowEndTime.isEqual(earliestAction))) {
-                    Map<Long, Date> minionScheduleDate = new HashMap<>();
                     for (Long minionServerId : minionServerIds) {
                         ZonedDateTime stagingTime =
                                 stagingWindowStartTime.plus(
@@ -140,17 +161,12 @@ public class MinionActionManager {
                                     action.getId() + "): " +
                                     "scheduling staging job for minion server id: " +
                                     minionServerId + " at " + stagingTime);
-                            minionScheduleDate.put(minionServerId, Date.from(stagingTime.toInstant()));
-                            ret.add(stagingTime);
+                            scheduleActionData.put(minionServerId, stagingTime);
                         }
-                    }
-
-                    if (!minionScheduleDate.isEmpty()) {
-                       taskomaticApi.scheduleStagingJobs(action.getId(), minionScheduleDate);
                     }
                 }
             }
         }
-        return ret;
+        return scheduleActionData;
     }
 }

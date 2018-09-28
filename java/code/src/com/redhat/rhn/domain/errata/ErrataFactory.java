@@ -69,7 +69,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
