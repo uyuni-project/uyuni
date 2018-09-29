@@ -17,6 +17,7 @@ class ActivationKeyChannels extends React.Component {
     this.state = {
       messages: [],
       loading: true,
+      loadingChildren: true,
       activationKeyId: this.props.activationKeyId,
       availableBaseChannels: [], //[base1, base2],
       availableChannels: [], //[{base : null, children: []}]
@@ -88,13 +89,13 @@ class ActivationKeyChannels extends React.Component {
       });
     }
     else {
-      this.setState({loading: true});
+      this.setState({loadingChildren: true});
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
         .promise.then(data => {
           this.setState({
             availableChannels: data.data,
             fetchedData: this.state.fetchedData.set(baseId, data.data),
-            loading: false
+            loadingChildren: false
           });
         })
         .catch(this.handleResponseError);
@@ -140,38 +141,41 @@ class ActivationKeyChannels extends React.Component {
     }
     else {
       const childChannelList =
-        this.state.availableChannels.map(g =>
-          <div className='child-channels-block'>
-            {
-              this.state.availableChannels.length > 1 ?
-                <h4>{g.base.name}</h4>
-                : null
-            }
-            {
-              g.children.length > 0 ?
-                g.children.map(c =>
-                  <div className='checkbox'>
-                    <input type='checkbox'
-                        value={c.id}
-                        id={'child_' + c.id}
-                        name='childChannels'
-                        checked={this.state.currentChildSelectedIds.includes(c.id)}
-                        onChange={this.handleChildChange}
-                    />
-                    <label htmlFor={'child_' + c.id}>{c.name}</label>
-                    &nbsp;
-                    {
-                      c.recommended
-                        ? <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
-                        : null
-                    }
-                  </div>
-                )
-              : <span>&nbsp;{t('no child channels')}</span>
-            }
-            <hr/>
-          </div>
-        );
+        this.state.loadingChildren ?
+          <Loading text='Loading child channels..' />
+          :
+          this.state.availableChannels.map(g =>
+            <div className='child-channels-block'>
+              {
+                this.state.availableChannels.length > 1 ?
+                  <h4>{g.base.name}</h4>
+                  : null
+              }
+              {
+                g.children.length > 0 ?
+                  g.children.map(c =>
+                    <div className='checkbox'>
+                      <input type='checkbox'
+                          value={c.id}
+                          id={'child_' + c.id}
+                          name='childChannels'
+                          checked={this.state.currentChildSelectedIds.includes(c.id)}
+                          onChange={this.handleChildChange}
+                      />
+                      <label htmlFor={'child_' + c.id}>{c.name}</label>
+                      &nbsp;
+                      {
+                        c.recommended
+                          ? <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
+                          : null
+                      }
+                    </div>
+                  )
+                : <span>&nbsp;{t('no child channels')}</span>
+              }
+              <hr/>
+            </div>
+          );
       return (
         <div>
           <div className='form-group'>
