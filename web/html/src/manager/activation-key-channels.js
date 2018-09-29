@@ -143,39 +143,15 @@ class ActivationKeyChannels extends React.Component {
       const childChannelList =
         this.state.loadingChildren ?
           <Loading text='Loading child channels..' />
-          :
-          this.state.availableChannels.map(g =>
-            <div className='child-channels-block'>
-              {
-                this.state.availableChannels.length > 1 ?
-                  <h4>{g.base.name}</h4>
-                  : null
-              }
-              {
-                g.children.length > 0 ?
-                  g.children.map(c =>
-                    <div className='checkbox'>
-                      <input type='checkbox'
-                          value={c.id}
-                          id={'child_' + c.id}
-                          name='childChannels'
-                          checked={this.state.currentChildSelectedIds.includes(c.id)}
-                          onChange={this.handleChildChange}
-                      />
-                      <label htmlFor={'child_' + c.id}>{c.name}</label>
-                      &nbsp;
-                      {
-                        c.recommended
-                          ? <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
-                          : null
-                      }
-                    </div>
-                  )
-                : <span>&nbsp;{t('no child channels')}</span>
-              }
-              <hr/>
-            </div>
-          );
+          : this.state.availableChannels.map(g =>
+              <ChildChannels
+                  channels={g.children}
+                  base={g.base}
+                  showBase={this.state.availableChannels.length > 1}
+                  selectedChannelsIds={this.state.currentChildSelectedIds}
+                  handleChannelChange={this.handleChildChange}
+              />
+            );
       return (
         <div>
           <div className='form-group'>
@@ -208,6 +184,53 @@ class ActivationKeyChannels extends React.Component {
         </div>
       )
     }
+  }
+}
+
+
+class ChildChannels extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      requiredChannels: new Map(),
+      requiredByChannels: new Map()
+    }
+  }
+
+  render() {
+    return (
+      <div className='child-channels-block'>
+        {
+          this.props.showBase ?
+            <h4>{this.props.base.name}</h4>
+            : null
+        }
+        {
+          this.props.channels.length > 0 ?
+          this.props.channels.map(c =>
+              <div className='checkbox'>
+                <input type='checkbox'
+                    value={c.id}
+                    id={'child_' + c.id}
+                    name='childChannels'
+                    checked={this.props.selectedChannelsIds.includes(c.id)}
+                    onChange={this.props.handleChannelChange}
+                />
+                <label htmlFor={'child_' + c.id}>{c.name}</label>
+                &nbsp;
+                {
+                  c.recommended
+                    ? <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
+                    : null
+                }
+              </div>
+            )
+          : <span>&nbsp;{t('no child channels')}</span>
+        }
+        <hr/>
+      </div>
+    );
   }
 }
 
