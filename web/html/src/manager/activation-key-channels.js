@@ -5,6 +5,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const Network = require('../utils/network');
 const Loading = require('../components/loading').Loading;
+const ChannelUtils = require('../utils/channels');
 
 class ActivationKeyChannels extends React.Component {
   constructor(props) {
@@ -194,8 +195,49 @@ class ChildChannels extends React.Component {
 
     this.state = {
       requiredChannels: new Map(),
-      requiredByChannels: new Map()
+      requiredByChannels: new Map(),
+      mandatoryChannelsRaw: new Map(),
     }
+  }
+
+  componentWillMount() {
+    // fetch dependencies data for all child channels and base channel as well
+    const needDepsInfoChannels = this.props.base && this.props.base.id != -1 ?
+        [this.props.base.id, ...this.props.channels.map(c => c.id)]
+      : this.props.channels.map(c => c.id);
+    this.fetchMandatoryChannelsByChannelIds(needDepsInfoChannels);
+  }
+
+  fetchMandatoryChannelsByChannelIds(channelIds: Array<number>) {
+    const mandatoryChannelsNotCached = channelIds.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
+    if(mandatoryChannelsNotCached.length > 0) {
+      Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
+        .then((data : JsonResult<Map<number, Array<number>>>) => {
+          const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
+          let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
+
+          this.setState({
+            dependencyDataAvailable: true,
+            mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
+            requiredChannels,
+            requiredByChannels,
+          });
+        })
+        .catch(this.handleResponseError);
+    } else {
+      this.setState({
+        dependencyDataAvailable: true,
+      })
+    }
+  }
+
+  handleResponseError(jqXHR, arg = '') {
+    const msg = Network.responseErrorMessage(jqXHR,
+      (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
+    this.setState((prevState) => ({
+        messages: prevState.messages.concat(msg)
+      })
+    );
   }
 
   render() {
