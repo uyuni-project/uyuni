@@ -51,6 +51,7 @@
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/srv_change_password.feature
+- features/srv_check_sync_source_packages.feature
 - features/min_salt_software_states.feature
 - features/min_docker_xmlrpc.feature
 - features/min_docker_build_image.feature
