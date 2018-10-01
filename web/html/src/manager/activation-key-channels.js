@@ -288,6 +288,15 @@ class ChildChannels extends React.Component {
                       <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
                       : null
                   }
+                  {
+                    (
+                      this.props.base &&
+                      this.state.requiredChannels.has(this.props.base.id) &&
+                      this.state.requiredChannels.get(this.props.base.id).has(c.id)
+                    )
+                      ? <span className='mandatory-tag-base' title={'This channel is mandatory'}>{t('mandatory')}</span>
+                      : null
+                  }
                 </div>
               )
           })
