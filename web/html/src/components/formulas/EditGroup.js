@@ -277,4 +277,6 @@ function get(value, default_value) {
 }
 
 
-module.exports.EditGroup = EditGroup;
+module.exports = {
+  EditGroup: EditGroup
+}
