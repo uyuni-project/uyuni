@@ -1,3 +1,4 @@
+- Fix 'image deployed' event data parsing (bsc#1110316)
 - Handle 'image deployed' salt event by executing post-deployment procedures
 - Allow listing empty system profiles via XMLRPC
 - Different methods have been refactored in tomcat/taskomatic for better performance(bsc#1106430)
