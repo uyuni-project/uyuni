@@ -16,6 +16,8 @@ package com.redhat.rhn.manager.system.test;
 
 import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
 import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -38,6 +40,7 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -103,6 +106,8 @@ import org.hibernate.type.IntegerType;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -191,6 +196,35 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         catch (LookupException e) {
             //success
         }
+    }
+
+    /**
+     * Tests that deleting a server cleans up its formula data and formula assignment.
+     *
+     * @throws java.lang.Exception if anything goes wrong
+     */
+    public void testFormulaDataCleanUp() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        String minionId = minion.getMinionId();
+
+        String formulaName = "test-formula";
+        File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
+        FormulaFactory.saveServerFormulas(minionId, singletonList(formulaName));
+        FormulaFactory.saveServerFormulaData(singletonMap("fooKey", "barVal"), minionId, formulaName);
+
+        assertNotEmpty(FormulaFactory.getFormulasByMinionId(minionId));
+        assertTrue(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
+        // Test the filesystem part:
+        assertTrue(formulaValues.exists());
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).deleteKey(minionId);
+        }});
+        SystemManager.deleteServer(user, minion.getId());
+
+        assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
+        assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
+        assertFalse(formulaValues.exists());
     }
 
     public void testDeleteVirtualServer() throws Exception {
