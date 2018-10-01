@@ -431,7 +431,7 @@ Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
 Requires:       python3-rhn-client-tools
 %else
-Requires:       python2-python-dateutil
+Requires:       python-dateutil
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
 %endif
@@ -500,7 +500,7 @@ Requires:       %{name}-server = %{version}-%{release}
 Requires:       python3-argparse
 Requires:       python3-spacewalk-usix
 %else
-Requires:       python2-argparse
+Requires:       python-argparse
 Requires:       python2-spacewalk-usix
 %endif
 Requires:       subscription-manager
