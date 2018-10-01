@@ -152,6 +152,8 @@ class ActivationKeyChannels extends React.Component {
                   showBase={this.state.availableChannels.length > 1}
                   selectedChannelsIds={this.state.currentChildSelectedIds}
                   handleChannelChange={this.handleChildChange}
+                  saveState={(state) => {this.state["ChildChannelsForBase" + g.base.id] = state;}}
+                  loadState={() => this.state["ChildChannelsForBase" + g.base.id]}
               />
             );
       return (
@@ -202,7 +204,19 @@ class ChildChannels extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this.props.saveState) {
+      this.props.saveState(this.state);
+    }
+  }
+
   componentWillMount() {
+    if (this.props.loadState) {
+      if (this.props.loadState()) {
+        this.state = this.props.loadState();
+      }
+    }
+
     // fetch dependencies data for all child channels and base channel as well
     const needDepsInfoChannels = this.props.base && this.props.base.id != -1 ?
         [this.props.base.id, ...this.props.channels.map(c => c.id)]
