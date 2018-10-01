@@ -1,5 +1,5 @@
 // @flow
-import GuestsList from "./guests-list";
+const GuestsList = require("./guests-list");
 const ReactDOM = require("react-dom");
 const React = require("react");
 window.pageRenderers = window.pageRenderers || {};

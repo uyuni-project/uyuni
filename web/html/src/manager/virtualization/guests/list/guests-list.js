@@ -11,8 +11,8 @@ const {DeleteDialog} = require("components/dialog/DeleteDialog");
 const {DangerDialog} = require("components/dialog/DangerDialog");
 const {ModalButton} = require("components/dialog/ModalButton");
 const Systems = require("components/systems");
-import VirtualizationGuestActionApi from '../virtualization-guest-action-api';
-import VirtualizationGuestsListRefreshApi from '../virtualization-guests-list-refresh-api';
+const VirtualizationGuestActionApi = require('../virtualization-guest-action-api');
+const VirtualizationGuestsListRefreshApi = require('../virtualization-guests-list-refresh-api');
 
 class GuestsList extends React.Component {
 

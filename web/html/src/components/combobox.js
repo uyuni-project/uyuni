@@ -5,7 +5,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 
-import {Creatable} from 'react-select';
+const {Creatable} = require("react-select");
 
 declare function $(param: any): any;
 

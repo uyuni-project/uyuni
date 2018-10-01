@@ -1,5 +1,5 @@
 // @flow
-import GuestsEdit from './guests-edit';
+const GuestsEdit = require("./guests-edit");
 const React = require("react");
 const ReactDOM = require("react-dom");
 
