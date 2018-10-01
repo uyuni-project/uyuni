@@ -1,3 +1,4 @@
+- Fix permissions check on formula list api call (bsc#1106626)
 - Prevent failing KickstartCommand when customPosition is null (bsc#1112121)
 - Improve return value and errors thrown for system.createEmptyProfile XMLRPC endpoint
 - Reset channel assignments when base channel changes on registration (bsc#1118917)

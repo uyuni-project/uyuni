@@ -264,7 +264,7 @@ public class Router implements SparkApplication {
 
         // Formula API
         get("/manager/api/formulas/list/:targetType/:id",
-                withOrgAdmin(FormulaController::listSelectedFormulas));
+                withUser(FormulaController::listSelectedFormulas));
         get("/manager/api/formulas/form/:targetType/:id/:formula_id",
                 withUser(FormulaController::formulaData));
         post("/manager/api/formulas/select",
