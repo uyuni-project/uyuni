@@ -1,3 +1,5 @@
+- Make suseRegisterInfo compatible with Python 2 and 3
+
 -------------------------------------------------------------------
 Fri Aug 10 15:41:44 CEST 2018 - jgonzalez@suse.com
 
