@@ -622,3 +622,90 @@ When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
   command = "spacecmd -y -u admin -p admin -- system_scheduleapplyconfigchannels  #{node.full_hostname}"
   $server.run(command)
 end
+
+When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
+  node = get_target(host)
+  disk_path = "/tmp/#{vm_name}-disk.qcow2"
+
+  # Create the throwable overlay image
+  raise 'not found: qemu-img or /var/testsuite-data/disk-image-template.qcow2' unless file_exists?(node, '/usr/bin/qemu-img') and file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
+  node.run("qemu-img create -f qcow2 -b /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
+
+  # Change the VM hostname
+  node.run("mount_path=$(mktemp -d); guestmount -m /dev/sda1 -a #{disk_path} ${mount_path}; echo '#{node.hostname}-#{vm_name}.suse' >${mount_path}/etc/hostname; umount ${mount_path}; rmdir ${mount_path}")
+
+  # Actually define the VM, but don't start it
+  raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
+  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} --network network=default --import --hvm --noautoconsole --noreboot")
+end
+
+Then(/^I should see "([^"]*)" virtual machine (shut off|running|paused) on "([^"]*)"$/) do |vm, state, host|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh domstate #{vm}")
+        break if output.strip == state
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never reached state #{state}"
+  end
+end
+
+When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm, host|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("ssh -o StrictHostKeyChecking=no #{node.hostname}-#{vm}.local ls", fatal = false)
+        break if output.include? "Permission denied"
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} OS failed to go up timely"
+  end
+end
+
+Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dominfo #{vm}", fatal = false)
+        break if output.include? "Domain not found"
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} still exists"
+  end
+end
+
+Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        has_memory = output.include? "<memory unit='KiB'>#{Integer(mem) * 1024}</memory>"
+        has_vcpus = output.include? ">#{vcpu}</vcpu>"
+        break if has_memory and has_vcpus
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus"
+  end
+end
+
+When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  source = File.dirname(__FILE__) + '/../upload_files/susemanager-virtpoller.conf'
+  dest = "/etc/salt/minion.d/susemanager-virtpoller.conf"
+  return_code = file_inject(node, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  node.run("systemctl restart salt-minion")
+end

@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.filter.DepthAware;
 
 /**
@@ -62,6 +63,21 @@ public class VirtualSystemOverview extends SystemOverview
                 i++;
             }
         }
+    }
+
+    /**
+     * Compute the system status and update the corresponding field.
+     *
+     * @param user used to calculate some entitlement info
+     */
+    @Override
+    public void updateStatusType(User user) {
+        /*
+         * Note that we are using the systemId here since the Id in VirtualSystemOverview
+         * objects contains the DB id rather than the system ID if any. This hack could be
+         * removed once we have a cleaned up hibernate setup.
+         */
+        updateStatusType(user, getSystemId());
     }
 
     /**
@@ -324,6 +340,7 @@ public class VirtualSystemOverview extends SystemOverview
     /**
      * {@inheritDoc}
      */
+    @Override
     public long depth() {
         if (getIsVirtualHost()) {
             return 0;
@@ -360,7 +377,8 @@ public class VirtualSystemOverview extends SystemOverview
     *
     * {@inheritDoc}
     */
-   public String getSelectionKey() {
+   @Override
+public String getSelectionKey() {
        return String.valueOf(getSystemId());
    }
 }

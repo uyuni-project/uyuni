@@ -860,15 +860,6 @@
 
     </form-bean>
 
-    <form-bean name="virtualGuestsForm"
-        type="com.redhat.rhn.frontend.action.systems.virtualization.VirtualGuestsForm">
-        <form-property name="submitted" type="java.lang.Boolean"/>
-        <form-property name="guestAction" type="java.lang.String"/>
-        <form-property name="actionOptions" type="java.util.Set"/>
-        <form-property name="guestSettingToModify" type="java.lang.String"/>
-        <form-property name="guestSettingValue" type="java.lang.String"/>
-    </form-bean>
-
     <form-bean name="channelRanksForm"
             type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="possibleChannels"
@@ -4332,56 +4323,6 @@
                  path="/systems/details/configuration/DiffFileConfirm.do"/>
         <forward name="success" redirect="true"
                  path="/systems/details/configuration/Overview.do"/>
-    </action>
-
-    <action path="/systems/details/virtualization/VirtualGuestsList"
-        scope="request"
-        input="/WEB-INF/pages/systems/details/virtualization/virtualguestslist.jsp"
-        name="virtualGuestsForm"
-        type="com.redhat.rhn.frontend.action.systems.virtualization.VirtualGuestsListSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="not system_is_virtual(); system_has_management_entitlement() or system_has_salt_entitlement()"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/details/virtualization/virtualguestslist.jsp"/>
-    </action>
-
-    <action path="/systems/details/virtualization/VirtualGuestsListSubmit"
-        scope="request"
-        input="/WEB-INF/pages/systems/details/virtualization/virtualguestslist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.virtualization.VirtualGuestsListAction"
-        name="virtualGuestsForm"
-        parameter="dispatch"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequired" value="true" />
-        <forward name="default"
-                path="/systems/details/virtualization/VirtualGuestsList.do"
-                redirect="true"/>
-        <forward name="confirm"
-                path="/systems/details/virtualization/VirtualGuestsConfirm.do"
-                redirect="true"/>
-    </action>
-
-    <action path="/systems/details/virtualization/VirtualGuestsConfirm"
-        scope="request"
-        input="/WEB-INF/pages/systems/details/virtualization/virtualguests_confirm.jsp"
-        type="com.redhat.rhn.frontend.action.systems.virtualization.VirtualGuestsConfirmSetupAction">
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/details/virtualization/virtualguests_confirm.jsp"/>
-    </action>
-
-    <action path="/systems/details/virtualization/VirtualGuestsConfirmSubmit"
-        scope="request"
-        input="/WEB-INF/pages/systems/details/virtualization/virtualguests_confirm.jsp"
-        type="com.redhat.rhn.frontend.action.systems.virtualization.VirtualGuestsConfirmAction"
-    parameter="dispatch"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequired" value="true" />
-        <forward name="default"
-                 path="/systems/details/virtualization/VirtualGuestsList.do"
-         redirect="true"/>
-        <forward name="success"
-                 path="/systems/details/virtualization/VirtualGuestsList.do"
-         redirect="true"/>
     </action>
 
     <!-- SDC Package Profiles -->

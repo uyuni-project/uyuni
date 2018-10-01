@@ -70,6 +70,8 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
    * "srv": feature testing server side
    * "min": feature testing SLES minions (not SSH)
    * "minssh": feature testing SSH SLES minions
+   * "minkvm": feature testing KVM host SLES minions
+   * "minxen": feature testing Xen host SLES minions
    * "centos": feature testing CentOS (should become "rhes" in the future when we start using Extended Support images)
    * "trad": feature testing tradional client
    * "allcli: feature testing all clients

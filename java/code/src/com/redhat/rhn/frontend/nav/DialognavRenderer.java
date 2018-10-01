@@ -17,8 +17,10 @@ package com.redhat.rhn.frontend.nav;
 
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 import com.redhat.rhn.frontend.html.HtmlTag;
 
@@ -116,8 +118,19 @@ public class DialognavRenderer extends Renderable {
         }
 
         String href = node.getPrimaryURL();
+        String hrefNew = href;
+        if (parameters != null) {
+            StrSubstitutor substitutor = new StrSubstitutor(
+                    ((Map<String, String[]>)parameters).entrySet().stream()
+                        .filter(entry -> entry.getValue() != null && entry.getValue().length > 0)
+                        .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()[0])));
+            hrefNew = substitutor.replace(href);
+        }
         String allowedFormVars = treeIndex.getTree().getFormvar();
-        if (allowedFormVars != null) {
+        if (!href.equals(hrefNew)) {
+            href = hrefNew;
+        }
+        else if (allowedFormVars != null) {
             StringBuilder formVars;
             if (href.indexOf('?') == -1) {
                 formVars = new StringBuilder("?");

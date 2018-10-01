@@ -45,6 +45,7 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
+import com.suse.manager.webui.controllers.VirtualGuestsController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.errors.NotFoundException;
@@ -81,6 +82,9 @@ public class Router implements SparkApplication {
         get("/manager/api/audit/cve.csv", withUser(CVEAuditController::cveAuditCSV));
 
         initContentManagementRoutes(jade);
+
+        // Virtualization Routes
+        initVirtualizationRoutes(jade);
 
         // Minions
         get("/manager/systems/keys",
@@ -318,6 +322,17 @@ public class Router implements SparkApplication {
             data.put("currentUrl", request.pathInfo());
             response.body(jade.render(new ModelAndView(data, "errors/404.jade")));
         });
+    }
+
+    private void initVirtualizationRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/virtualization/guests/:sid",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::show))), jade);
+        get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::edit))), jade);
+        get("/manager/api/systems/details/virtualization/guests/:sid/data",
+                withUser(VirtualGuestsController::data));
+        post("/manager/api/systems/details/virtualization/guests/:sid/:action",
+                withUser(VirtualGuestsController::action));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {

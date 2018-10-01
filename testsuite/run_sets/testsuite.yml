@@ -109,6 +109,8 @@
 - features/srv_sync_products.feature
 - features/allcli_reboot.feature
 - features/srv_notifications.feature
+- features/minkvm_guests.feature
+- features/minxen_guests.feature
 ## Secondary features END ##
 
 

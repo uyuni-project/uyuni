@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.nav.RenderGuard;
 import com.redhat.rhn.frontend.nav.Renderable;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.jsp.JspException;
@@ -54,7 +55,7 @@ public class NavDialogMenuTag extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             pageContext.getOut().print(RenderUtils.getInstance().renderNavigationMenu(
-                    pageContext, definition, renderer, mindepth, maxdepth));
+                    pageContext, definition, renderer, mindepth, maxdepth, new HashMap<String, String>()));
         }
         catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);

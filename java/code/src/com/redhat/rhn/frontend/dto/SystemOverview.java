@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -77,7 +80,66 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private Long totalCrashCount;
     private Long uniqueCrashCount;
     private Long lastBoot;
+    private String statusType;
 
+    public static final String STATUS_TYPE_UNENTITLED = "unentitled";
+    public static final String STATUS_TYPE_AWOL = "awol";
+    public static final String STATUS_TYPE_KICKSTARTING = "kickstarting";
+    public static final String STATUS_TYPE_UPDATES_SCHEDULED = "updates scheduled";
+    public static final String STATUS_TYPE_ACTIONS_SCHEDULED = "actions scheduled";
+    public static final String STATUS_TYPE_UP2DATE = "up2date";
+    public static final String STATUS_TYPE_CRITICAL = "critical";
+    public static final String STATUS_TYPE_UPDATES = "updates";
+
+
+    /**
+     * Compute the system status and update the corresponding field.
+     *
+     * @param user      used to calculate some entitlement info
+     */
+    public void updateStatusType(User user) {
+        updateStatusType(user, getId());
+    }
+
+    protected void updateStatusType(User user, Long sid) {
+        String type = null;
+
+        if (getEntitlement() == null ||
+            getEntitlement().isEmpty()) {
+            type = STATUS_TYPE_UNENTITLED;
+        }
+        else if (checkinOverdue()) {
+            type = STATUS_TYPE_AWOL;
+        }
+        else if (SystemManager.isKickstarting(user, sid)) {
+            type = STATUS_TYPE_KICKSTARTING;
+        }
+        else if (getEnhancementErrata() + getBugErrata() +
+                     getSecurityErrata() > 0 &&
+                     !SystemManager.hasUnscheduledErrata(user, sid)) {
+            type = STATUS_TYPE_UPDATES_SCHEDULED;
+        }
+        else if (SystemManager.countActions(sid) > 0) {
+            type = STATUS_TYPE_ACTIONS_SCHEDULED;
+        }
+        else if ((getEnhancementErrata() == null ||
+                  getEnhancementErrata() == 0) &&
+                 getBugErrata() == 0 &&
+                 getSecurityErrata() == 0 &&
+                 getOutdatedPackages() == 0 &&
+                 SystemManager.countPackageActions(sid) == 0) {
+
+            type = STATUS_TYPE_UP2DATE;
+        }
+        else if (getSecurityErrata() > 0) {
+            type = STATUS_TYPE_CRITICAL;
+        }
+        else if (getOutdatedPackages() > 0) {
+            type = STATUS_TYPE_UPDATES;
+        }
+
+        statusType = type;
+    }
 
     /**
      * @return Returns the statusDisplay.
@@ -799,4 +861,23 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return this.uniqueCrashCount;
     }
 
+    /**
+     * @return Returns the system status type as one of the STATUS_TYPE_*
+     *         constant or <code>null</code>. Note that updateStatusType()
+     *         needs to be called to get an up to date value.
+     */
+    public String getStatusType() {
+        return this.statusType;
+    }
+
+    /**
+     * @return Returns <code>true</code> if the last checkin dates too much.
+     */
+    public boolean checkinOverdue() {
+        Long threshold = new Long(Config.get().getInt(
+                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
+
+        return getLastCheckinDaysAgo() != null &&
+                getLastCheckinDaysAgo().compareTo(threshold) > 0;
+    }
 }

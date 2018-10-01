@@ -16,6 +16,7 @@ function ModalButton(props) {
             title={props.title}
             text={props.text}
             icon={props.icon}
+            disabled={props.disabled}
             handler={ () => {
                 if(props.onClick) props.onClick(props.item);
                 showDialog(props.target);
@@ -31,6 +32,7 @@ ModalButton.propTypes = {
     title: PropTypes.string,
     text: PropTypes.string,
     icon: PropTypes.string,
+    disabled: PropTypes.bool,
     item: PropTypes.object,
     onClick: PropTypes.func
 };

@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -68,6 +69,13 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -94,6 +102,7 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
+import com.suse.manager.webui.websocket.VirtNotifications;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
@@ -109,11 +118,6 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -629,6 +633,13 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
             handleSubscribeChannels(serverAction, jsonResult, action);
+        }
+        else if (action instanceof BaseVirtualizationAction) {
+            // Tell VirtNotifications that we got a change, passing actionId
+            VirtNotifications.spreadActionUpdate(action);
+            JsonObject result = jsonResult.getAsJsonObject();
+            String key = result.keySet().iterator().next();
+            serverAction.setResultMsg(result.get(key).getAsJsonObject().get("comment").getAsString());
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
