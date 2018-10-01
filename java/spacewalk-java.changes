@@ -1,3 +1,4 @@
+- Cleanup formula data and assignment when migrating formulas or when removing system
 - Remove restrictions on SUSE Manager Channel subscriptions (bsc#1105724)
 - Added shortcut for editing Software Channel
 - Fix permissions check on formula list api call (bsc#1106626)
