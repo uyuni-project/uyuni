@@ -146,6 +146,7 @@ class ActivationKeyChannels extends React.Component {
           <Loading text='Loading child channels..' />
           : this.state.availableChannels.map(g =>
               <ChildChannels
+                  key={g.base.id}
                   channels={g.children.sort((c1, c2) => c1.name > c2.name)}
                   base={g.base}
                   showBase={this.state.availableChannels.length > 1}
@@ -165,7 +166,7 @@ class ActivationKeyChannels extends React.Component {
                 {
                   this.state.availableBaseChannels
                       .sort((b1, b2) => b1.name > b2.name)
-                      .map(b => <option value={b.id}>{b.name}</option>)
+                      .map(b => <option key={b.id} value={b.id}>{b.name}</option>)
                 }
               </select>
               <span className='help-block'>
@@ -271,7 +272,7 @@ class ChildChannels extends React.Component {
                   this.state.requiredChannels.has(this.props.base.id) &&
                   this.state.requiredChannels.get(this.props.base.id).has(c.id);
               return (
-                <div className='checkbox'>
+                <div key={c.id} className='checkbox'>
                   <input type='checkbox'
                       value={c.id}
                       id={'child_' + c.id}
