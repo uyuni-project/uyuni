@@ -200,7 +200,7 @@ Group:          Applications/Internet
 Requires:       python3-psycopg2 >= 2.0.14-2
 Requires:       python3-spacewalk-usix
 %else
-Requires:       python3-psycopg2 >= 2.0.14-2
+Requires:       python-psycopg2 >= 2.0.14-2
 Requires:       python2-spacewalk-usix
 %endif
 Provides:       %{name}-sql-virtual = %{version}-%{release}
