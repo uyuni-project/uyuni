@@ -1,3 +1,4 @@
+- Fix permissions check on formula list api call (bsc#1106626)
 - Add sp migration dry runs to the daily status report (bsc#1083094)
 
 -------------------------------------------------------------------
