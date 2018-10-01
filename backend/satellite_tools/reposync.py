@@ -916,10 +916,6 @@ class RepoSync(object):
         channel_id = int(self.channel['id'])
 
         for pack in packages:
-            if pack.arch in ['src', 'nosrc']:
-                # skip source packages
-                skipped += 1
-                continue
             if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
                 skipped += 1
@@ -964,6 +960,8 @@ class RepoSync(object):
                     to_disassociate[(db_pack['checksum_type'], db_pack['checksum'])] = True
 
             if to_download or to_link:
+                if pack.arch in ['src', 'nosrc']:
+                    to_link = False
                 to_process.append((pack, to_download, to_link))
 
         num_to_process = len(to_process)
@@ -1776,6 +1774,8 @@ class RepoSync(object):
         """
         erratum_packages = existing_packages
         for pkg in packages:
+            if pkg['arch'] in ['src', 'nosrc']:
+                continue
             param_dict = {
                 'name': pkg['name'],
                 'version': pkg['version'],
@@ -2175,9 +2175,8 @@ class RepoSync(object):
                               and c.channel_arch_id = cpac.channel_arch_id
                               and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=channel_id)
-        # We do not mirror source packages. If they are listed in patches
-        # we need to know, that it is safe to skip them
-        arches = [k['label'] for k in  h.fetchall_dict() if k['label'] not in ['src', 'nosrc']]
+        arches = [k['label'] for k in  h.fetchall_dict()
+                if CFG.SYNC_SOURCE_PACKAGES or k['label'] not in ['src', 'nosrc']]
         return arches
 
     @staticmethod

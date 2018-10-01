@@ -756,6 +756,14 @@ class Import:
         package.arch = package['arch']
         package.org_id = package['org_id']
 
+    def _fix_encoding(self, text):
+        if text is None:
+            return None
+        try:
+            return text.decode('utf8')
+        except UnicodeDecodeError:
+            return text.decode('iso8859-1')
+
 
 # Any package processing import class
 class GenericPackageImport(Import):

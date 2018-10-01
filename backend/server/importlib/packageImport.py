@@ -427,14 +427,6 @@ class PackageImport(ChannelPackageSubscription):
                     server_packages.processPackageKeyAssociations(header,
                                                                   package['checksum_type'], package['checksum'])
 
-    def _fix_encoding(self, text):
-        if text is None:
-            return None
-        try:
-            return text.decode('utf8')
-        except UnicodeDecodeError:
-            return text.decode('iso8859-1')
-
 
 class SourcePackageImport(Import):
 
@@ -506,12 +498,14 @@ class SourcePackageImport(Import):
         # Fix the arch
         package.arch = 'src'
         package.source_rpm = package['source_rpm']
+        group = self._fix_encoding(package['package_group']).strip()
+        if group not in self.groups:
+            self.groups[group] = None
         sourceRPM = package['source_rpm']
         if not sourceRPM:
             # Should not happen
             raise Exception("Source RPM %s does not exist")
         self.sourceRPMs[sourceRPM] = None
-        self.groups[package['package_group']] = None
 
         checksumTuple = (package['checksum_type'], package['checksum'])
         if checksumTuple not in self.checksums:
@@ -533,7 +527,7 @@ class SourcePackageImport(Import):
 
     def __postprocessPackage(self, package):
         # Set the ids
-        package['package_group'] = self.groups[package['package_group']]
+        package['package_group'] = self.groups[self._fix_encoding(package['package_group']).strip()]
         package['source_rpm_id'] = self.sourceRPMs[package['source_rpm']]
         package['checksum_id'] = self.checksums[(package['checksum_type'],
                                                  package['checksum'])]
