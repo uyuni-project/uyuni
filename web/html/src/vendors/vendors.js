@@ -4,6 +4,7 @@ const vendors = [
     "react-dom",
     "react-select",
     "prop-types",
+    "create-react-class"
 ];
 
 module.exports = vendors;

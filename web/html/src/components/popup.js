@@ -1,23 +1,23 @@
 "use strict";
 
+const PropTypes = require('prop-types');
 const React = require("react");
-const PropTypes = React.PropTypes;
 
-const PopUp = React.createClass({
-    propTypes: {
-      id: PropTypes.string.isRequired, // the id of the html div tag
-      onClosePopUp: PropTypes.func, // a callback function with no parameters
-      className: PropTypes.string, // the css className for the 'modal-dialog' div
-      title: PropTypes.string,
-      content: PropTypes.node, // the body of the popup
-      footer: PropTypes.node,
-    },
+class PopUp extends React.Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired, // the id of the html div tag
+    onClosePopUp: PropTypes.func, // a callback function with no parameters
+    className: PropTypes.string, // the css className for the 'modal-dialog' div
+    title: PropTypes.string,
+    content: PropTypes.node, // the body of the popup
+    footer: PropTypes.node,
+  };
 
-  componentDidMount: function() {
+  componentDidMount() {
     $("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <div className="modal fade" tabIndex="-1" role="dialog" id={this.props.id}>
         <div className={"modal-dialog " + (this.props.className ? this.props.className : "")}>
@@ -35,7 +35,7 @@ const PopUp = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = {
     PopUp : PopUp

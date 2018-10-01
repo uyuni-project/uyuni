@@ -3,16 +3,14 @@
 const React = require("react");
 const Network = require("../utils/network");
 
-const MatcherRunPanel = React.createClass({
-  getInitialState: function() {
-    return {
-      latestStart: this.props.initialLatestStart,
-      latestEnd: this.props.initialLatestEnd,
-      error: false,
-    }
-  },
+class MatcherRunPanel extends React.Component {
+  state = {
+    latestStart: this.props.initialLatestStart,
+    latestEnd: this.props.initialLatestEnd,
+    error: false,
+  };
 
-  componentWillReceiveProps: function(nextProps) {
+  UNSAFE_componentWillReceiveProps = (nextProps) => {
     if (this.state.latestStart == null || nextProps.initialLatestStart >= this.state.latestStart) {
       this.setState({
         latestStart: nextProps.initialLatestStart,
@@ -20,9 +18,9 @@ const MatcherRunPanel = React.createClass({
         error: false,
       });
     }
-  },
+  };
 
-  onScheduled: function() {
+  onScheduled = () => {
     this.setState({
         latestStart: new Date().toJSON(),
         latestEnd: null,
@@ -30,13 +28,13 @@ const MatcherRunPanel = React.createClass({
       }
     );
     this.props.onMatcherRunSchedule();
-  },
+  };
 
-  onError: function() {
+  onError = () => {
     this.setState({error: true});
-  },
+  };
 
-  render: function() {
+  render() {
     if (!this.props.dataAvailable) {
       // no data available from the backend yet, avoid
       // a flash of unwanted content
@@ -56,7 +54,7 @@ const MatcherRunPanel = React.createClass({
       </div>
     );
   }
-});
+}
 
 const MatcherRunDescription = (props) => {
   if (props.error) {
@@ -87,14 +85,14 @@ const MatcherTaskDescription = () =>
   </div>
 ;
 
-const MatcherScheduleButton = React.createClass({
-  onClick: function() {
+class MatcherScheduleButton extends React.Component {
+  onClick = () => {
     Network.post("/rhn/manager/api/subscription-matching/schedule-matcher-run")
       .promise.catch(() => this.props.onError());
     this.props.onScheduled();
-  },
+  };
 
-  render: function() {
+  render() {
     const buttonClass = "btn spacewalk-btn-margin-vertical " +
       (!this.props.matcherRunning ? "btn-success" : "btn-default");
 
@@ -109,7 +107,7 @@ const MatcherScheduleButton = React.createClass({
       </button>
     );
   }
-});
+}
 
 module.exports = {
   MatcherRunPanel: MatcherRunPanel,

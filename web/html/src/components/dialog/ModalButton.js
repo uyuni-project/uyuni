@@ -1,7 +1,7 @@
 "use strict";
 
+const PropTypes = require('prop-types');
 const React = require("react");
-const PropTypes = React.PropTypes;
 const Button = require("../buttons").Button;
 const showDialog = require("./util").showDialog;
 

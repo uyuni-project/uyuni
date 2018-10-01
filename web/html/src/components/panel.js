@@ -5,13 +5,10 @@
 
 var React = require("react");
 
-var PanelButton = React.createClass({
+class PanelButton extends React.Component {
+  state = {};
 
-  getInitialState: function() {
-    return {};
-  },
-
-  render: function() {
+  render() {
       var href = this.props.action ? this.props.action : "#";
 
       return (
@@ -23,15 +20,13 @@ var PanelButton = React.createClass({
           </div>
         )
   }
-});
+}
 
 // TODO rename this to TopPanel
-var Panel = React.createClass({
-  getInitialState: function() {
-    return {};
-  },
+class Panel extends React.Component {
+  state = {};
 
-  render: function() {
+  render() {
     var help = this.props.helpUrl ?
       (
         <a href={this.props.helpUrl} target="_blank">
@@ -52,7 +47,7 @@ var Panel = React.createClass({
       </div>
     );
   }
-});
+}
 
 class InnerPanel extends React.Component {
 

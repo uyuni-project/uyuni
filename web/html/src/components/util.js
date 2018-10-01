@@ -1,7 +1,7 @@
 "use strict";
 
+const PropTypes = require('prop-types');
 const React = require("react");
-const PropTypes = React.PropTypes;
 
 // use this mixin to persist an element's state between mounts
 const StatePersistedMixin = {
@@ -16,7 +16,7 @@ const StatePersistedMixin = {
     }
   },
 
-  componentWillMount: function() {
+  UNSAFE_componentWillMount: function() {
     if (this.props.loadState) {
       if (this.props.loadState()) {
         this.state = this.props.loadState();

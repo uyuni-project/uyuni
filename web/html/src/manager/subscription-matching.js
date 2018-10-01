@@ -14,20 +14,18 @@ const Panel = require("../components/panel").Panel;
 const MessagesUtils = require("../components/messages").Utils;
 const Network = require("../utils/network");
 
-const SubscriptionMatching = React.createClass({
-  getInitialState: function() {
-    return {
-      serverData: null,
-      error: null
-    };
-  },
+class SubscriptionMatching extends React.Component {
+  state = {
+    serverData: null,
+    error: null
+  };
 
-  componentWillMount: function() {
+  UNSAFE_componentWillMount = () => {
     this.refreshServerData();
     setInterval(this.refreshServerData, this.props.refreshInterval);
-  },
+  };
 
-  refreshServerData: function() {
+  refreshServerData = () => {
     this.refreshRequest = Network.get("/rhn/manager/api/subscription-matching/data", "application/json");
     this.refreshRequest.promise
       .then(data => {
@@ -43,24 +41,24 @@ const SubscriptionMatching = React.createClass({
             null
         });
       });
-  },
+  };
 
-  onPinChanged: function(pinnedMatches) {
+  onPinChanged = (pinnedMatches) => {
     if (this.refreshRequest) {
       this.refreshRequest.cancel();
     }
     const serverData = this.state.serverData;
     serverData.pinnedMatches = pinnedMatches;
     this.setState({serverData: serverData});
-  },
+  };
 
-  onMatcherRunSchedule: function() {
+  onMatcherRunSchedule = () => {
     if (this.refreshRequest) {
       this.refreshRequest.cancel();
     }
-  },
+  };
 
-  render: function() {
+  render() {
     const data = this.state.serverData;
 
     return (
@@ -83,7 +81,7 @@ const SubscriptionMatching = React.createClass({
       </div>
     );
   }
-});
+}
 
 const ErrorMessage = (props) => <MessageContainer items={
     props.error == "authentication" ?
@@ -94,23 +92,21 @@ const ErrorMessage = (props) => <MessageContainer items={
   } />
 ;
 
-const SubscriptionMatchingTabContainer = React.createClass({
-  getInitialState: function() {
-    return {activeTabHash: document.location.hash};
-  },
+class SubscriptionMatchingTabContainer extends React.Component {
+  state = {activeTabHash: document.location.hash};
 
-  componentWillMount: function() {
+  UNSAFE_componentWillMount = () => {
     window.addEventListener("popstate", () => {
       this.setState({activeTabHash: document.location.hash});
     });
-  },
+  };
 
-  onTabHashChange: function(hash) {
+  onTabHashChange = (hash) => {
     history.pushState(null, null, hash);
     this.setState({activeTabHash: hash});
-  },
+  };
 
-  render: function() {
+  render() {
     const data = this.props.data;
 
     if (data == null || !data.matcherDataAvailable) {
@@ -160,8 +156,8 @@ const SubscriptionMatchingTabContainer = React.createClass({
         onTabHashChange={this.onTabHashChange}
       />
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(
   <SubscriptionMatching refreshInterval={60 * 1000} />,

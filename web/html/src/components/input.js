@@ -13,11 +13,11 @@ class Form extends React.Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.inputs = {};
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         this.setState({
             model: props.model
         });
@@ -176,7 +176,7 @@ class _InputBase extends React.Component {
         };
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if(!(props.value === this.props.value && props.disabled === this.props.disabled &&
               props.required === this.props.required)) {
             this.props.validate(this, props);
@@ -186,7 +186,7 @@ class _InputBase extends React.Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.registerInput(this);
     }
 

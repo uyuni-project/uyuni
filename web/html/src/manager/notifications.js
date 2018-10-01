@@ -4,26 +4,23 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 const Network = require("../utils/network");
 
-const Notifications = React.createClass({
+class Notifications extends React.Component {
+  state = {
+    unreadMessagesLength: null,
+    websocket: null,
+    classStyle: ''
+  };
 
-  getInitialState: function () {
-    return {
-      unreadMessagesLength: null,
-      websocket: null,
-      classStyle: ''
-    }
-  },
-
-  onBeforeUnload: function(e) {
+  onBeforeUnload = (e) => {
     if (this.state.websocket != null) {
       this.state.websocket.close();
     }
     this.setState({
       pageUnloading: true
     });
-  },
+  };
 
-  componentDidMount: function() {
+  componentDidMount() {
     var port = window.location.port;
     var url = "wss://" +
       window.location.hostname +
@@ -60,22 +57,22 @@ const Notifications = React.createClass({
     this.setState({
         websocket: ws
     });
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onBeforeUnload)
-  },
+  }
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.unreadMessagesLength && this.state.unreadMessagesLength > prevState.unreadMessagesLength) {
       $('#notification-counter').addClass('highlight-updated-value');
       setTimeout(function() {
         $('#notification-counter').removeClass('highlight-updated-value');
       }, 1000);
     }
-  },
+  }
 
-  render: function() {
+  render() {
     return (
         <a href="/rhn/manager/notification-messages">
           <i className={this.state.websocket == null ? 'fa fa-bell-slash' : 'fa fa-bell' }></i>
@@ -88,7 +85,7 @@ const Notifications = React.createClass({
         </a>
     );
   }
-});
+}
 
 // override the existing errorMessageByStatus from utils/network.js 
 function errorMessageByStatus(status) {

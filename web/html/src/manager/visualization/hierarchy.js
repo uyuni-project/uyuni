@@ -189,12 +189,10 @@ function initUI(tree) {
   }
 }
 
-const Hierarchy = React.createClass({
-  getInitialState: function() {
-    return { showFilters: false }
-  },
+class Hierarchy extends React.Component {
+  state = { showFilters: false };
 
-  componentDidMount: function() {
+  componentDidMount() {
     // Get data & put everything together in the graph!
     Network
       .get(endpoint, 'application/json')
@@ -203,9 +201,9 @@ const Hierarchy = React.createClass({
         (data) => $(document).ready(() => displayHierarchy(data)),
         (xhr) =>  d3.select('#svg-wrapper').text(t('There was an error fetching data from the server.'))
       );
-  },
+  }
 
-  showFilters: function() {
+  showFilters = () => {
     const filterBox = $('#visualization-filter-wrapper');
     if (filterBox.hasClass("open")) {
       filterBox.removeClass('open').slideUp('fast', () => {Utils.adjustSvgDimensions()});
@@ -215,9 +213,9 @@ const Hierarchy = React.createClass({
       filterBox.addClass('open').slideDown('fast', () => {Utils.adjustSvgDimensions()});
       this.setState({ showFilters: true});
     }
-  },
+  };
 
-  render: function() {
+  render() {
     var hurl = null;
     if (title === "Virtualization Hierarchy") {
       hurl = "/rhn/help/reference/en-US/ref.webui.systems.visualization.jsp#ref.webui.systems.visualization";
@@ -240,7 +238,7 @@ const Hierarchy = React.createClass({
       </Panel>
     );
   }
-});
+}
 
 ReactDOM.render(
   <Hierarchy />,

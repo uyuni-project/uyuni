@@ -8,39 +8,39 @@ const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const Panel = PanelComponent.Panel;
 
-var FormulaCatalog = React.createClass({
-
-    getInitialState: function() {
+class FormulaCatalog extends React.Component {
+    constructor(props) {
+        super(props);
         var st = {
             "serverData": [],
             "messages": []
         };
-        return st;
-    },
+        this.state = st;
+    }
 
-    refreshServerData: function() {
+    refreshServerData = () => {
         Network.get("/rhn/manager/api/formula-catalog/data").promise.then(data => {
           this.setState({"serverData" : data});
         });
-    },
+    };
 
-    componentWillMount: function() {
+    UNSAFE_componentWillMount = () => {
         this.refreshServerData();
-    },
+    };
 
-    sortByText: function(aRaw, bRaw, columnKey, sortDirection) {
+    sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
         return aRaw.toLowerCase().localeCompare(bRaw.toLowerCase()) * sortDirection;
-    },
+    };
 
-    rowKey: function(rowData) {
+    rowKey = (rowData) => {
         return rowData;
-    },
+    };
 
-    searchData: function(data, criteria) {
+    searchData = (data, criteria) => {
         return data.filter((row) => row.toLowerCase().includes(criteria.toLowerCase()));
-    },
+    };
 
-    render: function() {
+    render() {
         var messages = <Messages items={[{severity: "info", text:
             <p><strong>{t('This is a feature preview')}</strong>: The formula catalog page enables viewing of currently installed <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank">Salt formulas</a>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages. We would be glad to receive your feedback in the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
         }]}/>;
@@ -74,8 +74,7 @@ var FormulaCatalog = React.createClass({
             </Panel>
         );
     }
-
-});
+}
 
 ReactDOM.render(
   <FormulaCatalog flashMessages={flashMessage()}/>,

@@ -1,44 +1,42 @@
 "use strict";
 
+const PropTypes = require('prop-types');
 const React = require("react");
-const PropTypes = React.PropTypes;
 
-const TabContainer = React.createClass({
-  propTypes: {
+class TabContainer extends React.Component {
+  static propTypes = {
     labels: PropTypes.arrayOf(PropTypes.node).isRequired,
     hashes: PropTypes.arrayOf(PropTypes.string).isRequired, // must start with #
     tabs: PropTypes.arrayOf(PropTypes.node).isRequired,
     initialActiveTabHash: PropTypes.string,
     onTabHashChange: PropTypes.func, // takes a hash parameter
-  },
+  };
 
-  getInitialState: function() {
-    return {activeTabHash: this.sanitizeHash(this.props.initialActiveTabHash)};
-  },
-
-  componentWillReceiveProps: function(nextProps) {
+  UNSAFE_componentWillReceiveProps = (nextProps) => {
     this.setState({activeTabHash: this.sanitizeHash(nextProps.initialActiveTabHash, nextProps.hashes)});
-  },
+  };
 
-  sanitizeHash: function(hash, hashArr) {
+  sanitizeHash = (hash, hashArr) => {
     hashArr = hashArr || this.props.hashes;
 
     if (hashArr.indexOf(hash) >= 0) {
       return hash;
     }
     return hashArr[0];
-  },
+  };
 
-  onActiveTabChange: function(hash, event) {
+  onActiveTabChange = (hash, event) => {
     event.preventDefault();
 
     this.setState({activeTabHash: hash});
     if (this.props.onTabHashChange) {
       this.props.onTabHashChange(hash);
     }
-  },
+  };
 
-  render: function() {
+  state = {activeTabHash: this.sanitizeHash(this.props.initialActiveTabHash)};
+
+  render() {
     const labels = this.props.hashes.map((hash, i) => {
       const label = this.props.labels[i];
       return <TabLabel onClick={(event) => this.onActiveTabChange(hash, event)} text={label} active={this.state.activeTabHash == hash} hash={hash} key={hash} />;
@@ -57,7 +55,7 @@ const TabContainer = React.createClass({
       </div>
     );
   }
-});
+}
 
 const TabLabel = (props) =>
   <li className={props.active ? "active" : ""}>

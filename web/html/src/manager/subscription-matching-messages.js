@@ -1,13 +1,15 @@
 "use strict";
 
 const React = require("react");
+const createReactClass = require('create-react-class');
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const CsvLink = require("./subscription-matching-util").CsvLink;
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 
-const Messages = React.createClass({
+const Messages = createReactClass({
+  displayName: 'Messages',
   mixins: [StatePersistedMixin],
 
   buildRows: function(rawMessages, systems) {
@@ -86,7 +88,7 @@ const Messages = React.createClass({
         {body}
       </div>
     );
-  }
+  },
 });
 
 module.exports = {

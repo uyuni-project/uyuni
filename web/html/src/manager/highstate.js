@@ -24,22 +24,20 @@ function requestHighstate(id) {
     return Network.get("/rhn/manager/api/states/highstate?sid=" + id).promise;
 }
 
-var MinionHighstateSingle = React.createClass({
-    getInitialState: function() {
-        return {};
-    },
+class MinionHighstateSingle extends React.Component {
+    state = {};
 
-    getHighstate: function() {
+    getHighstate = () => {
         requestHighstate(this.props.data.id).then(data => {
             this.setState({highstate: data});
         });
-    },
+    };
 
-    componentWillMount: function() {
+    UNSAFE_componentWillMount = () => {
         this.getHighstate();
-    },
+    };
 
-    render: function() {
+    render() {
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">
@@ -56,34 +54,32 @@ var MinionHighstateSingle = React.createClass({
             </div>
         );
     }
-});
+}
 
-var MinionHighstate = React.createClass({
-    getInitialState: function() {
-        return {show: false};
-    },
+class MinionHighstate extends React.Component {
+    state = {show: false};
 
-    getHighstate: function() {
+    getHighstate = () => {
         if(this.state.loading) return;
         this.setState({loading: true});
 
         requestHighstate(this.props.data.id).then(data => {
             this.setState({highstate: data});
         });
-    },
+    };
 
-    componentDidMount: function() {
+    componentDidMount() {
         if(this.state.show) {
             this.getHighstate();
         }
-    },
+    }
 
-    expand: function() {
+    expand = () => {
         this.getHighstate();
         this.setState({show: !this.state.show});
-    },
+    };
 
-    render: function() {
+    render() {
         return (
             <div className="panel panel-default">
                 <div className="panel-heading" onClick={this.expand} style={{cursor: "pointer"}}>
@@ -110,20 +106,20 @@ var MinionHighstate = React.createClass({
             </div>
         );
     }
-});
+}
 
-var Highstate = React.createClass({
-
-    getInitialState: function() {
+class Highstate extends React.Component {
+    constructor(props) {
+        super(props);
         var state = {
             messages: [],
             earliest: Functions.Utils.dateWithTimezone(localTime),
             test: false
         };
-        return state;
-    },
+        this.state = state;
+    }
 
-    applyHighstate: function() {
+    applyHighstate = () => {
         const request = Network.post(
             "/rhn/manager/api/states/applyall",
             JSON.stringify({
@@ -151,35 +147,35 @@ var Highstate = React.createClass({
         }).catch(this.handleResponseError);
 
         return request;
-    },
+    };
 
-    handleResponseError: function(jqXHR) {
+    handleResponseError = (jqXHR) => {
       this.setState({
            messages: Network.responseErrorMessage(jqXHR)
       });
-    },
+    };
 
-    onDateTimeChanged: function(date) {
+    onDateTimeChanged = (date) => {
         this.setState({"earliest": date});
-    },
+    };
 
-    onActionChainChanged: function(actionChain) {
+    onActionChainChanged = (actionChain) => {
         this.setState({actionChain: actionChain})
-    },
+    };
 
-    toggleTestState: function() {
+    toggleTestState = () => {
         this.setState({test: !this.state.test})
-    },
+    };
 
-    renderMinions: function() {
+    renderMinions = () => {
         const minionList = [];
         for(var system of minions) {
             minionList.push(<MinionHighstate data={system}/>);
         }
         return minionList;
-    },
+    };
 
-    render: function() {
+    render() {
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
         const buttons = [
             <div className="btn-group pull-right">
@@ -220,7 +216,7 @@ var Highstate = React.createClass({
             </div>
         );
     }
-});
+}
 
 ReactDOM.render(
     <Highstate />,

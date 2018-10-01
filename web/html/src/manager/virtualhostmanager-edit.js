@@ -33,7 +33,7 @@ class VirtualHostManagerEdit extends React.Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         Network.get("/rhn/manager/api/vhms/module/" + this.props.type.toLowerCase() + "/params")
             .promise.then(data => {
                 this.setState({vhmParams: data.data});
