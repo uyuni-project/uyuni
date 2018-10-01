@@ -7,7 +7,24 @@ const Network = require('../utils/network');
 const Loading = require('../components/loading').Loading;
 const ChannelUtils = require('../utils/channels');
 
-class ActivationKeyChannels extends React.Component {
+type ActivationKeyChannelsProps = {
+  activationKeyId: number
+}
+
+type ActivationKeyChannelsState = {
+  messages: Array,
+  loading: Boolean,
+  loadingChildren: Boolean,
+  availableBaseChannels: Array, //[base1, base2],
+  availableChannels: Array, //[{base : null, children: []}]
+  fetchedData: Map,
+  requiredChannels: Map<number, Array<number>>,
+  requiredByChannels: Map<number, Array<number>>,
+  currentSelectedBaseId: number,
+  currentChildSelectedIds: Array<number>,
+}
+
+class ActivationKeyChannels extends React.Component<ActivationKeyChannelsState, ActivationKeyChannelsProps> {
   constructor(props) {
     super(props);
     
@@ -19,7 +36,6 @@ class ActivationKeyChannels extends React.Component {
       messages: [],
       loading: true,
       loadingChildren: true,
-      activationKeyId: this.props.activationKeyId,
       availableBaseChannels: [], //[base1, base2],
       availableChannels: [], //[{base : null, children: []}]
       fetchedData: new Map(),
@@ -76,7 +92,7 @@ class ActivationKeyChannels extends React.Component {
     return future;
   }
 
-  fetchChildChannels(baseId) {
+  fetchChildChannels(baseId: number) {
     let future;
 
     const currentObject = this;
@@ -113,13 +129,13 @@ class ActivationKeyChannels extends React.Component {
     );
   }
 
-  handleBaseChange(event) {
+  handleBaseChange(event: SyntheticInputEvent<*>) {
     const newBaseId = event.target.value;
     this.setState({currentSelectedBaseId: newBaseId});
     this.fetchChildChannels(newBaseId);
   }
 
-  handleChildChange(event) {
+  handleChildChange(event: SyntheticInputEvent<*>) {
     const childId = parseInt(event.target.value);
     const isSelected = event.target.checked;
     var selectedIds = [...this.state.currentChildSelectedIds];
@@ -191,8 +207,25 @@ class ActivationKeyChannels extends React.Component {
   }
 }
 
+type ChildChannelsProps = {
+  key: number,
+  channels: Array,
+  base: Object,
+  showBase: Boolean,
+  selectedChannelsIds: Array<number>,
+  handleChannelChange: Function,
+  saveState: Function,
+  loadState: Function
+}
 
-class ChildChannels extends React.Component {
+type ChildChannelsState = {
+  requiredChannels: Map<number, Array<number>>,
+  requiredByChannels: Map<number, Array<number>>,
+  mandatoryChannelsRaw: Map,
+  dependencyDataAvailable: Boolean
+}
+
+class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsProps> {
   constructor(props) {
     super(props);
 
@@ -256,8 +289,8 @@ class ChildChannels extends React.Component {
     );
   }
 
-  dependenciesTooltip = (channelId) => {
-    const resolveChannelNames = (channelIds) => {
+  dependenciesTooltip = (channelId: number) => {
+    const resolveChannelNames = (channelIds: Array<number>) => {
       return Array.from(channelIds || new Set())
         .map(channelId => this.props.channels.find(c => c.id == channelId))
         .filter(channel => channel != null)
