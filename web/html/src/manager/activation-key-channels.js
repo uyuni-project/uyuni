@@ -197,6 +197,7 @@ class ChildChannels extends React.Component {
       requiredChannels: new Map(),
       requiredByChannels: new Map(),
       mandatoryChannelsRaw: new Map(),
+      dependencyDataAvailable: false
     }
   }
 
@@ -217,10 +218,10 @@ class ChildChannels extends React.Component {
           let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
 
           this.setState({
-            dependencyDataAvailable: true,
             mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
             requiredChannels,
             requiredByChannels,
+            dependencyDataAvailable: true,
           });
         })
         .catch(this.handleResponseError);
@@ -240,7 +241,59 @@ class ChildChannels extends React.Component {
     );
   }
 
+  dependenciesTooltip = (channelId) => {
+    const resolveChannelNames = (channelIds) => {
+      return Array.from(channelIds || new Set())
+        .map(channelId => this.props.channels.find(c => c.id == channelId))
+        .filter(channel => channel != null)
+        .map(channel => channel.name);
+    }
+    return ChannelUtils.dependenciesTooltip(
+      resolveChannelNames(this.state.requiredChannels.get(channelId)),
+      resolveChannelNames(this.state.requiredByChannels.get(channelId)));
+  }
+
   render() {
+    let channels;
+    if(!this.state.dependencyDataAvailable) {
+      channels = <Loading text='Loading dependencies..' />;
+    }
+    else {
+      if (this.props.channels.length == 0) {
+        channels = <span>&nbsp;{t('no child channels')}</span>;
+      }
+      else {
+        channels =
+          this.props.channels.map(c => {
+              const toolTip = this.dependenciesTooltip(c.id);
+              return (
+                <div className='checkbox'>
+                  <input type='checkbox'
+                      value={c.id}
+                      id={'child_' + c.id}
+                      name='childChannels'
+                      checked={this.props.selectedChannelsIds.includes(c.id)}
+                      onChange={this.props.handleChannelChange}
+                  />
+                  <label title={toolTip} htmlFor={"child_" + c.id}>{c.name}</label>
+                  &nbsp;
+                  {
+                    toolTip ?
+                      <a href="#"><i className="fa fa-info-circle spacewalk-help-link" title={toolTip}></i></a>
+                      : null
+                  }
+                  &nbsp;
+                  {
+                    c.recommended ?
+                      <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
+                      : null
+                  }
+                </div>
+              )
+          })
+      }
+    }
+
     return (
       <div className='child-channels-block'>
         {
@@ -248,28 +301,7 @@ class ChildChannels extends React.Component {
             <h4>{this.props.base.name}</h4>
             : null
         }
-        {
-          this.props.channels.length > 0 ?
-          this.props.channels.map(c =>
-              <div className='checkbox'>
-                <input type='checkbox'
-                    value={c.id}
-                    id={'child_' + c.id}
-                    name='childChannels'
-                    checked={this.props.selectedChannelsIds.includes(c.id)}
-                    onChange={this.props.handleChannelChange}
-                />
-                <label htmlFor={'child_' + c.id}>{c.name}</label>
-                &nbsp;
-                {
-                  c.recommended
-                    ? <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
-                    : null
-                }
-              </div>
-            )
-          : <span>&nbsp;{t('no child channels')}</span>
-        }
+        {channels}
         <hr/>
       </div>
     );
