@@ -22,10 +22,11 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "prop-types": "^15.6.1",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "react-select": "2.0.0-beta.6"
+    "create-react-class": "^15.6.3",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-select": "^2.0.0"
   },
   "scripts": {
     "clean": "rm -rf node_modules",
