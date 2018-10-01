@@ -7,7 +7,7 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Test Channel" as "cofName"
     And I enter "testchannel" as "cofLabel"
@@ -28,7 +28,7 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Test Channel" as "cofName"
     And I enter "testchannel" as "cofLabel"
@@ -41,7 +41,7 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Test Channel2" as "cofName"
     And I enter "!testchannel" as "cofLabel"
@@ -54,7 +54,7 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "New Test Channel" as "cofName"
     And I enter "newtestchannel" as "cofLabel"
@@ -75,7 +75,7 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/mgr-test-file.cnf" as "cffPath"
@@ -98,8 +98,8 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Files" in the left menu
-    And I follow "Centrally Managed Files" in the left menu
+    And I follow "Files" in the left menu
+    And I follow "Centrally Managed" in the left menu
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
   Scenario: Check centrally managed files of SLES client
@@ -114,7 +114,7 @@ Feature: Configuration management of traditional clients
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I run "rhn-actions-control --enable-all" on "sle-client"
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/mgr-test-file.cnf" link
@@ -198,7 +198,7 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    When I follow "Configuration Channels" in the left menu
+    When I follow "Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/tmp/mycache.txt" as "cffPath"
@@ -243,8 +243,8 @@ Feature: Configuration management of traditional clients
     And I should see a "Centrally-managed Configuration Files" text
     And I should see a "Locally-managed Configuration Files" text
     And I should see a "Overview" link in the left menu
-    And I should see a "Configuration Channels" link in the left menu
-    And I should see a "Configuration Files" link in the left menu
+    And I should see a "Channels" link in the left menu
+    And I should see a "Files" link in the left menu
     And I should see a "Systems" link in the left menu
     And I should see a "View Systems with Managed Configuration Files" link
     And I should see a "View All Managed Configuration Files" link
@@ -258,8 +258,8 @@ Feature: Configuration management of traditional clients
     And I follow "Configuration" in the left menu
     And I follow "Overview" in the left menu
     And I follow "View Systems with Managed Configuration Files"
-    Then I should see a "Managed Systems" link in the left menu
-    And I should see a "Target Systems" link in the left menu
+    Then I should see a "Managed" link in the left menu
+    And I should see a "Target" link in the left menu
 
   Scenario: Show All Managed Configuration Files page
     Given I am authorized as "admin" with password "admin"
@@ -267,8 +267,8 @@ Feature: Configuration management of traditional clients
     And I follow "Configuration" in the left menu
     And I follow "Overview" in the left menu
     And I follow "View All Managed Configuration Files"
-    Then I should see a "Centrally Managed Files" link in the left menu
-    And I should see a "Locally Managed Files" link in the left menu
+    Then I should see a "Centrally Managed" link in the left menu
+    And I should see a "Locally Managed" link in the left menu
 
   Scenario: Show All Managed Configuration Channels page
     Given I am authorized as "admin" with password "admin"
@@ -284,14 +284,14 @@ Feature: Configuration management of traditional clients
     And I follow "Configuration" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Enable Configuration Management on Systems"
-    Then I should see a "Managed Systems" link in the left menu
-    And I should see a "Target Systems" link in the left menu
+    Then I should see a "Managed" link in the left menu
+    And I should see a "Target" link in the left menu
 
   Scenario: Cleanup: remove system from new configuration channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Systems" in the content area
     And I check the "sle-client" client
@@ -302,7 +302,7 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Test Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"
@@ -311,7 +311,7 @@ Feature: Configuration management of traditional clients
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"

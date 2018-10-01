@@ -9,7 +9,7 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create State Channel"
     Then I should see a "New Config Channel" text
     When I enter "My State Channel" as "cofName"
@@ -26,7 +26,7 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create State Channel"
     Then I should see a "New Config Channel" text
     When I enter "My State Channel" as "cofName"
@@ -43,7 +43,7 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I create channel "statechannel3" from spacecmd of type "state"
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     Then I should see a "statechannel3" text
     And  I update init.sls from spacecmd with content "touch /root/statechannel3:\n  cmd.run:\n    - creates: /root/statechannel3" for channel "statechannel3"
 
@@ -100,7 +100,7 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow first "My State Channel"
     And I follow "Delete Channel"
     Then I should see a "Are you sure you want to delete this config channel?" text
@@ -112,7 +112,7 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow first "My State Channel"
     And I follow "Delete Channel"
     Then I should see a "Are you sure you want to delete this config channel?" text
@@ -124,7 +124,7 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow first "statechannel3"
     And I follow "Delete Channel"
     Then I should see a "Are you sure you want to delete this config channel?" text

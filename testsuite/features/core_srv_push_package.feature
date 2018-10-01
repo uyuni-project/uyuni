@@ -17,14 +17,14 @@ Feature: Push a package with unset vendor
   Scenario: Push a package with unset vendor
     When I push package "/root/subscription-tools-1.0-0.noarch.rpm" into "test_base_channel" channel
     And I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     Then I should see package "subscription-tools-1.0-0.noarch" in channel "Test Base Channel"
 
   Scenario: Check vendor of package displayed in web UI
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "Test Base Channel"
     And I follow "Packages"
     And I follow "subscription-tools-1.0-0.noarch"

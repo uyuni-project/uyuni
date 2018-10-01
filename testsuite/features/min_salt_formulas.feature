@@ -120,7 +120,7 @@ Feature: Use salt formulas
      And I should see a "Locale" text
      When I check the "locale" formula
      And I click on "Save"
-     And I follow "Target Systems"
+     And I follow "Target"
      And I check the "sle-minion" client
      And I click on "Add Systems"
      Then I should see a "1 systems were added to locale-formula-group server group." text

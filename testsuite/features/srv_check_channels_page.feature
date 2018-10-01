@@ -9,17 +9,17 @@ Feature: The channels page
   Scenario: Completeness of the channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     Then I should see a "Full Software Channel List" text
-    And I should see a "Software Channels" link in the left menu
+    And I should see a "Channel List" link in the left menu
     And I should see a "All" link in the left menu
     And I should see a "Popular" link in the left menu
     And I should see a "My Channels" link in the left menu
     And I should see a "Shared" link in the left menu
     And I should see a "Retired" link in the left menu
     And I should see a "Package Search" link in the left menu
-    And I should see a "Manage Software Channels" link in the left menu
+    And I should see a "Manage" link in the left menu
     And I should see a "All" link in the content area
     And I should see a "Popular" link in the content area
     And I should see a "My Channels" link in the content area
@@ -29,16 +29,16 @@ Feature: The channels page
   Scenario: Popular channels
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "Popular" in the left menu
     Then I should see a "Popular" text
 
   Scenario: Check packages in test channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     Then I should see package "andromeda-dummy-2.0-1.1.noarch"
@@ -51,8 +51,8 @@ Feature: The channels page
   Scenario: Check package metadata
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -66,8 +66,8 @@ Feature: The channels page
   Scenario: Check package dependencies page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -79,8 +79,8 @@ Feature: The channels page
   Scenario: Check package change log page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -91,8 +91,8 @@ Feature: The channels page
   Scenario: Check package file list page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"

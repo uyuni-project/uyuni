@@ -7,7 +7,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Mixed Channel" as "cofName"
     And I enter "mixedchannel" as "cofLabel"
@@ -19,7 +19,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Mixed Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/s-mgr/config" as "cffPath"
@@ -76,7 +76,7 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I run "rhn-actions-control --enable-all" on "sle-client"
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Mixed Channel"
     And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/s-mgr/config" link
@@ -126,7 +126,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "ceos-minion" client
@@ -139,7 +139,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "ssh-minion" client
@@ -213,7 +213,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "sle-client" client
@@ -225,7 +225,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Mixed Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"

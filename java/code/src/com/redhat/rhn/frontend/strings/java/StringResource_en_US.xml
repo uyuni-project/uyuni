@@ -403,6 +403,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Channel List">
+        <source>Channel List</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Client Configuration">
         <source>Client Configuration</source>
         <context-group name="ctx">

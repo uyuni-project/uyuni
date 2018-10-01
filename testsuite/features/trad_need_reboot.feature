@@ -11,7 +11,7 @@ Feature: Reboot required after patch
     And I follow "Home" in the left menu
     And I follow "Systems" in the left menu
     And I follow "Overview" in the left menu
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     Then I should see a "All" link in the left menu
     And  I follow "All" in the left menu
     Then I should see a "Requiring Reboot" link in the left menu
@@ -42,13 +42,13 @@ Feature: Reboot required after patch
     And I click on "Apply Patches"
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle-client"
-    And I follow "Overview" in the left menu
-    And I click Systems, under Systems node
+    And I follow "Software" in the left menu
+    And I click System List, under Systems node
     And I follow "All" in the left menu
     And I follow this "sle-client" link
     Then I should see a "The system requires a reboot" text
-    And I follow "Overview" in the left menu
-    And I click Systems, under Systems node
+    And I follow "Software" in the left menu
+    And I click System List, under Systems node
     And I follow "Requiring Reboot" in the left menu
     Then I should see "sle-client" as link
 

@@ -271,10 +271,10 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
   page.execute_script("ace.edit('contents-editor').insert('#{arg1}')")
 end
 
-When(/^I click Systems, under Systems node$/) do
+When(/^I click System List, under Systems node$/) do
   find(:xpath, "//div[@id=\"nav\"]/nav/ul/li[contains(@class, 'active')
        and contains(@class, 'open')
-       and contains(@class,'node')]/ul/li/div/a/span[contains(.,'Systems')]").click
+       and contains(@class,'node')]/ul/li/div/a/span[contains(.,'System List')]").click
 end
 
 Given(/^I am not authorized$/) do

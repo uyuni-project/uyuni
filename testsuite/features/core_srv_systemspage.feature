@@ -27,7 +27,7 @@ Feature: Main landing page texts and links
     And I should see a Sign Out link
 
   Scenario: Check sidebar link destination for Systems
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     Then I should see a "All" link in the left menu
     And I should see a "Physical Systems" link in the left menu
     And I should see a "Virtual Systems" link in the left menu
@@ -45,63 +45,63 @@ Feature: Main landing page texts and links
     And I should see a "Systems" text
 
   Scenario: Check sidebar link destination for Systems => Physical Systems
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Physical Systems" in the left menu
     Then I should see a "Physical Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/PhysicalList.do"
 
   Scenario: Check sidebar link destination for Systems => Virtual Systems
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Virtual Systems" in the left menu
     Then I should see a "Virtual Systems" text
     And I should see a "No Virtual Systems." text
     And the current path is "/rhn/systems/VirtualList.do"
 
   Scenario: Check sidebar link destination for Systems => Out of Date
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Out of Date" in the left menu
     Then I should see a "Out of Date Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/OutOfDate.do"
 
   Scenario: Check sidebar link destination for Systems => Requiring Reboot
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Requiring Reboot" in the left menu
     Then I should see a "Systems Requiring Reboot" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/RequiringReboot.do"
 
   Scenario: Check sidebar link destination for Systems => Non Compliant
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Non Compliant" in the left menu
     Then I should see a "Non Compliant Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/ExtraPackagesSystems.do"
 
   Scenario: Check sidebar link destination for Systems => Without System Type
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Without System Type" in the left menu
     Then I should see a "Systems without System Type" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/Unentitled.do"
 
   Scenario: Check sidebar link destination for Systems => Ungrouped
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Ungrouped" in the left menu
     Then I should see a "Ungrouped Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/Ungrouped.do"
 
   Scenario: Check sidebar link destination for Systems => Inactive
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Inactive" in the left menu
     Then I should see a "Inactive Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/Inactive.do"
 
   Scenario: Check sidebar link destination for Systems => Recently Registered
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Recently Registered" in the left menu
     Then I should see a "Recently Registered Systems" text
     And I should see a "No systems." text
@@ -109,14 +109,14 @@ Feature: Main landing page texts and links
     And the current path is "/rhn/systems/Registered.do"
 
   Scenario: Check sidebar link destination for Systems => Proxy
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Proxy" in the left menu
     Then I should see a "Proxy Servers" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/ProxyList.do"
 
   Scenario: Check sidebar link destination for Systems => Duplicate Systems
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "Duplicate Systems" in the left menu
     Then I should see a "Duplicate Systems" text
     And I should see a "No systems." text
@@ -127,14 +127,14 @@ Feature: Main landing page texts and links
     And I should see a "Duplicate MAC Address" link
 
   Scenario: Check sidebar link destination for Systems => System Currency
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "System Currency" in the left menu
     Then I should see a "System Currency Report" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/SystemCurrency.do"
 
   Scenario: Check sidebar link destination for Systems => System Types
-    When I click Systems, under Systems node
+    When I click System List, under Systems node
     And I follow "System Types" in the left menu
     Then I should see a "System Types" text
     And I should see a "Management:" text
