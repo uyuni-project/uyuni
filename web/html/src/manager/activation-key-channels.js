@@ -266,6 +266,10 @@ class ChildChannels extends React.Component {
         channels =
           this.props.channels.map(c => {
               const toolTip = this.dependenciesTooltip(c.id);
+              const isMandatory =
+                  this.props.base &&
+                  this.state.requiredChannels.has(this.props.base.id) &&
+                  this.state.requiredChannels.get(this.props.base.id).has(c.id);
               return (
                 <div className='checkbox'>
                   <input type='checkbox'
@@ -273,6 +277,7 @@ class ChildChannels extends React.Component {
                       id={'child_' + c.id}
                       name='childChannels'
                       checked={this.props.selectedChannelsIds.includes(c.id)}
+                      disabled={isMandatory && this.props.selectedChannelsIds.includes(c.id)}
                       onChange={this.props.handleChannelChange}
                   />
                   <label title={toolTip} htmlFor={"child_" + c.id}>{c.name}</label>
@@ -289,12 +294,8 @@ class ChildChannels extends React.Component {
                       : null
                   }
                   {
-                    (
-                      this.props.base &&
-                      this.state.requiredChannels.has(this.props.base.id) &&
-                      this.state.requiredChannels.get(this.props.base.id).has(c.id)
-                    )
-                      ? <span className='mandatory-tag-base' title={'This channel is mandatory'}>{t('mandatory')}</span>
+                    isMandatory ?
+                      <span className='mandatory-tag-base' title={'This channel is mandatory'}>{t('mandatory')}</span>
                       : null
                   }
                 </div>
