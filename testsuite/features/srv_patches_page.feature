@@ -100,8 +100,8 @@ Feature: Patches page
   Scenario: Assert that patch is now in test base channel
     Given I am on the patches page
     And I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "Test Base Channel"
     And I follow "Patches" in the content area
     Then I should see a "Test Patch" text

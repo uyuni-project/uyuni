@@ -203,9 +203,9 @@ public class MenuTree {
                 .addChild(new MenuItem("Clone Errata").withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                     .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)"))));
 
-            // Software
+            // (Software) Channels
             nodes.add(new MenuItem("Software").withIcon("spacewalk-icon-software-channels")
-                .addChild(new MenuItem("Channels").withDir("/rhn/channels")
+                .addChild(new MenuItem("Channel List").withDir("/rhn/channels")
                     .addChild(new MenuItem("channel.nav.all").withPrimaryUrl("/rhn/software/channels/All.do"))
                     .addChild(new MenuItem("channel.nav.vendor").withPrimaryUrl("/rhn/software/channels/Vendor.do")
                         .withVisibility(checkAcl(user, "is_satellite()")))

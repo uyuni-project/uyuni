@@ -337,7 +337,7 @@ end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
   steps %(
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List > All" in the left menu
     And I follow "#{channel}"
     And I follow "Packages"
     Then I should see package "#{pkg}"

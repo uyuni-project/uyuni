@@ -15,7 +15,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Key Channel" as "cofName"
     And I enter "keychannel" as "cofLabel"
@@ -27,7 +27,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Key Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/euler.conf" as "cffPath"
@@ -118,7 +118,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Key Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"

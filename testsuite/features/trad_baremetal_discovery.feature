@@ -35,7 +35,7 @@ Feature: Bare metal discovery
 
   Scenario: See the client in unprovisioned systems list
     Given I am on the Systems page
-    And I click Systems, under Systems node 
+    And I click System List, under Systems node 
     And I follow "Unprovisioned Systems" in the left menu
     Then I should see a "Unprovisioned Systems" text
     And I should see a "Detected on" text
@@ -52,7 +52,7 @@ Feature: Bare metal discovery
 
   Scenario: Check unprovisioned system details
     Given I am on the Systems page
-    And I click Systems, under Systems node 
+    And I click System List, under Systems node 
     When I follow this "sle-client" link
     Then I should see a "Details" link in the content area
     And I should not see a "Software" link in the content area

@@ -108,14 +108,14 @@ Feature: Clone a channel
     And I click on "Delete Channel"
     Then I should see a "Clone of Test-Channel-x86_64" text
     And I should see a "has been deleted." text
-    Given I follow "Overview" in the left menu
+    Given I follow "Channels" in the left menu
     When I follow "Clone 2 of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone 2 of Test-Channel-x86_64" text
     And I should see a "has been deleted." text
-    Given I follow "Overview" in the left menu
+    Given I follow "Channels" in the left menu
     When I follow "Clone 3 of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
