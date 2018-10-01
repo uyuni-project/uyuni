@@ -431,7 +431,7 @@ Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
 Requires:       python3-rhn-client-tools
 %else
-Requires:       python2-python-ateutil
+Requires:       python2-python-dateutil
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
 %endif
