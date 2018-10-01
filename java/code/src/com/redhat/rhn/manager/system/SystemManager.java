@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -97,6 +98,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import java.io.IOException;
 import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
@@ -115,6 +117,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
 
 /**
  * SystemManager
@@ -553,13 +557,21 @@ public class SystemManager extends BaseManager {
         toRemove.stream().forEach(vi ->
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(vi));
 
-
         server.asMinionServer().ifPresent(minion -> {
             minion.getAccessTokens().forEach(token -> {
                 token.setValid(false);
                 AccessTokenFactory.save(token);
             });
+
+            // cleanup server formulas
+            try {
+                FormulaFactory.saveServerFormulas(minion.getMinionId(), emptyList());
+            }
+            catch (IOException e) {
+                log.warn("Couldn't clean up formula data and assignment for " + minion);
+            }
         });
+
 
         // remove server itself
         ServerFactory.delete(server);
@@ -3585,7 +3597,7 @@ public class SystemManager extends BaseManager {
         // if there's no base channel present the there are no child channels to set
         List<Long> childChannelIds = baseChannel.isPresent() ?
                 childChannels.stream().map(c -> c.getId()).collect(Collectors.toList()) :
-                Collections.emptyList();
+                emptyList();
 
         UpdateBaseChannelCommand baseChannelCommand =
                 new UpdateBaseChannelCommand(

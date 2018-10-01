@@ -469,7 +469,14 @@ public class FormulaFactory {
         }
 
         // Save selected Formulas
-        serverFormulas.put(minionId, orderFormulas(selectedFormulas));
+        List<String> orderedFormulas = orderFormulas(selectedFormulas);
+        if (orderedFormulas.isEmpty()) {
+            // when no formulas are assigned, we remove the entry completely for the minion
+            serverFormulas.remove(minionId);
+        }
+        else {
+            serverFormulas.put(minionId, orderedFormulas);
+        }
 
         // Write server_formulas file
         BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
