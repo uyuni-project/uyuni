@@ -1,3 +1,4 @@
+- added kickstart distribution data for RHEL 8
 - check valid postgresql database version
 - Enable auto patch updates for Salt minions
 
