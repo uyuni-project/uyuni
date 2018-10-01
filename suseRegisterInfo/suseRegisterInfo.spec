@@ -77,10 +77,10 @@ Python 2 specific files for %{name}.
 %install
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
 install -m 0755 suseRegister/parse_release_info %{buildroot}/usr/lib/suseRegister/bin/parse_release_info
-make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python_sitelib}
+make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python_sitelib} PYTHON_BIN=%{pythonX}
 
 %if 0%{?build_py3}
-make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib}
+make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib} PYTHON_BIN=%{pythonX}
 %endif
 
 %if 0%{?suse_version}
