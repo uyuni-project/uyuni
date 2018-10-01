@@ -100,7 +100,7 @@ class RequestedChannels:
 
     def _print_values(self):
         for name in self.__lists:
-            print("Contents of %s: %s" % (name, getattr(self, name)))
+            print(("Contents of %s: %s" % (name, getattr(self, name))))
         return self
 
     def compute(self):
@@ -125,7 +125,7 @@ class RequestedChannels:
             # Typo
             self._typos.append(c)
 
-        for c in available.keys():
+        for c in list(available.keys()):
             if c in imported:
                 # Available, already imported
                 del imported[c]
@@ -170,14 +170,14 @@ class Method:
 
 
 def _verify_expectations(c, expectations):
-    for k, expected in expectations.items():
+    for k, expected in list(expectations.items()):
         method_name = 'get' + k
         val = getattr(c, method_name)()
         if val == expected:
-            print("ok: %s = %s" % (method_name, expected))
+            print(("ok: %s = %s" % (method_name, expected)))
         else:
-            print("FAILED: %s: expected %s, got %s" % (method_name, expected,
-                                                       val))
+            print(("FAILED: %s: expected %s, got %s" % (method_name, expected,
+                                                       val)))
 
 
 def test1(requested, available, imported, expectations):

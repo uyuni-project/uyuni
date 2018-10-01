@@ -18,7 +18,10 @@ import imp
 import sys
 import unittest
 import json
-from StringIO import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    from StringIO import StringIO
 from datetime import datetime, timedelta
 
 from mock import Mock, patch, call
@@ -69,7 +72,7 @@ class RepoSyncTest(unittest.TestCase):
         self.stderr.close()
         sys.stderr = self.saved_stderr
 
-        reload(spacewalk.satellite_tools.reposync)
+        imp.reload(spacewalk.satellite_tools.reposync)
 
     def test_init_succeeds_with_correct_attributes(self):
         rs = self._init_reposync('Label', RTYPE)
@@ -243,9 +246,9 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(len(bugs), 3)
         for bug in bugs:
-            self.assertEqual(bug.keys(), ['bug_id', 'href', 'summary'])
+            self.assertEqual(list(bug.keys()), ['bug_id', 'href', 'summary'])
             assert set(bug.values()) in bug_values, (
-                "Bug set(%s) not in %s" % (bug.values(), bug_values))
+                "Bug set(%s) not in %s" % (list(bug.values()), bug_values))
 
     def test_update_cves(self):
         notice = {'references': [{'type': 'cve',
@@ -862,20 +865,20 @@ class RunScriptTest(unittest.TestCase):
             os=Mock(**{'getuid.return_value': 0}),
             open=Mock(
                 return_value=StringIO(
-                    json.dumps(
-                        {
-                            "no_errata": False,
-                            "sync_kickstart": False,
-                            "fail": True,
-                            "channel": {
-                                "chann_1": [
-                                    "http://example.com/repo1",
-                                    "http://example.com/repo2"
-                                ],
-                                "chann_2": []
-                            }
-                        }
-                    )
+					json.dumps(
+						{
+							"no_errata": False,
+							"sync_kickstart": False,
+							"fail": True,
+							"channel": {
+								"chann_1": [
+									"http://example.com/repo1",
+									"http://example.com/repo2"
+								],
+								"chann_2": []
+							}
+						}
+					).decode()
                 )
             ),
             rhnLockfile=Mock(),
@@ -921,7 +924,7 @@ class RunScriptTest(unittest.TestCase):
                     "fail": True,
                     "channel": {"chann_1": "http://example.com/repo1"}
                 }
-            )
+            ).decode()
         )
         self.assertRaises(SystemExit, self.repo_sync.main)
         self.repo_sync.systemExit.assert_called_once_with(

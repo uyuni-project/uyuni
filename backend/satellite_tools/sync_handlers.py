@@ -238,14 +238,14 @@ def import_channels(channels, orgid=None, master=None):
                 c_obj['org_id'] = org_map[c_obj['org_id']]
             else:
                 c_obj['org_id'] = orgid
-                if c_obj.has_key('trust_list'):
+                if 'trust_list' in c_obj:
                     del(c_obj['trust_list'])
             for family in c_obj['families']:
                 family['label'] = 'private-channel-family-' + \
                     str(c_obj['org_id'])
         # If there's a trust list on the channel, transform the org ids to
         # the local ones
-        if c_obj.has_key('trust_list') and c_obj['trust_list']:
+        if 'trust_list' in c_obj and c_obj['trust_list']:
             trusts = []
             for trust in c_obj['trust_list']:
                 if trust['org_trust_id'] in org_map:

@@ -176,7 +176,7 @@ class Cursor:
         start_chunk = 0
         while 1:
             subdict = {}
-            for k, arr in dict.items():
+            for k, arr in list(dict.items()):
                 subarr = arr[start_chunk:start_chunk + chunk_size]
                 if not subarr:
                     # Nothing more to do here - we exhausted the array(s)

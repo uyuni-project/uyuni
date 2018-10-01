@@ -102,25 +102,25 @@ def upgrade(serverId, actionId, dry_run=0):
             "dry_run"             : (row['dry_run'] == 'Y') }
         return (params)
 
-    to_subscribe = filter(lambda x: x['task'] == 'S', channel_changes)
-    to_unsubscribe = filter(lambda x: x['task'] == 'U', channel_changes)
+    to_subscribe = [x for x in channel_changes if x['task'] == 'S']
+    to_unsubscribe = [x for x in channel_changes if x['task'] == 'U']
 
     try:
         unsubscribe_channels(serverId, to_unsubscribe)
         subscribe_channels(serverId, to_subscribe)
-    except rhnFault, f:
+    except rhnFault as f:
         if f.code == 38:
             # channel is already subscribed, ignore it
             pass
         else:
-            raise InvalidAction(str(f)), None, sys.exc_info()[2]
-    except Exception, e:
-        raise InvalidAction(str(e)), None, sys.exc_info()[2]
+            raise InvalidAction(str(f)).with_traceback(sys.exc_info()[2])
+    except Exception as e:
+        raise InvalidAction(str(e)).with_traceback(sys.exc_info()[2])
 
     rhnSQL.commit()
 
     params = {
-        "dup_channel_names"   : map(lambda x: x['label'], to_subscribe),
+        "dup_channel_names"   : [x['label'] for x in to_subscribe],
         "full_update"         : (row['full_update'] == 'Y'),
         "change_product"      : do_change,
         "products"            : sle10_products,

@@ -18,6 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 ULN plugin for spacewalk-repo-sync.
 """
+from __future__ import unicode_literals
+
 # pylint: disable=E0012, C0413
 import sys
 sys.path.append('/usr/share/rhn')
@@ -56,9 +58,9 @@ class ContentSource(yum_ContentSource):
         self.uln_user = self.yumbase.conf.username
         self.uln_pass = self.yumbase.conf.password
         self.url = self.uln_url + "/XMLRPC/GET-REQ/" + label
-        print("The download URL is: " + self.url)
+        print(("The download URL is: " + self.url))
         if self.proxy_addr:
-            print("Trying proxy " + self.proxy_addr)
+            print(("Trying proxy " + self.proxy_addr))
         slist = ServerList([self.uln_url+"/rpc/api",])
         s = RetryServer(slist.server(),
                         refreshCallback=None,

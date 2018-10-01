@@ -70,18 +70,18 @@ class ByteRangeTests(unittest.TestCase):
 
     def testGoodRange(self):
         start, end = server.byterange.parse_byteranges("bytes=0-4")
-        self.assertEquals(0, start)
-        self.assertEquals(5, end)
+        self.assertEqual(0, start)
+        self.assertEqual(5, end)
 
     def testStartByteToEnd(self):
         start, end = server.byterange.parse_byteranges("bytes=12-")
-        self.assertEquals(12, start)
-        self.assertEquals(None, end)
+        self.assertEqual(12, start)
+        self.assertEqual(None, end)
 
     def testSuffixRange(self):
         start, end = server.byterange.parse_byteranges("bytes=-30")
-        self.assertEquals(-30, start)
-        self.assertEquals(None, end)
+        self.assertEqual(-30, start)
+        self.assertEqual(None, end)
 
     def testMultipleRanges(self):
         try:
@@ -92,13 +92,13 @@ class ByteRangeTests(unittest.TestCase):
 
     def testStartWithFileSize(self):
         start, end = server.byterange.parse_byteranges("bytes=23-", 50)
-        self.assertEquals(23, start)
-        self.assertEquals(50, end)
+        self.assertEqual(23, start)
+        self.assertEqual(50, end)
 
     def testSuffixWithFileSize(self):
         start, end = server.byterange.parse_byteranges("bytes=-40", 50)
-        self.assertEquals(10, start)
-        self.assertEquals(50, end)
+        self.assertEqual(10, start)
+        self.assertEqual(50, end)
 
     def testStartPastFileSize(self):
         try:

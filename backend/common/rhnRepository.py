@@ -264,7 +264,7 @@ class Repository(RPC_Base):
                 last_modified = rfc822time(last_modified)
             transport['Last-Modified'] = last_modified
         if extra_headers:
-            for k, v in extra_headers.items():
+            for k, v in list(extra_headers.items()):
                 transport[str(k)] = str(v)
         return transport
 

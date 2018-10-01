@@ -33,4 +33,4 @@ def get_utc_offset():
 
 
 if __name__ == "__main__":
-    print "UTC offset (allowing for DST if in effect): %s" % get_utc_offset()
+    print("UTC offset (allowing for DST if in effect): %s" % get_utc_offset())

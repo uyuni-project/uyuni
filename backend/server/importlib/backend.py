@@ -27,10 +27,10 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.stringutils import to_string
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
-from importLib import Diff, Package, IncompletePackage, Erratum, \
+from .importLib import Diff, Package, IncompletePackage, Erratum, \
     AlreadyUploadedError, InvalidPackageError, TransactionError, \
     SourcePackage
-from backendLib import TableCollection, sanitizeValue, TableDelete, \
+from .backendLib import TableCollection, sanitizeValue, TableDelete, \
     TableUpdate, TableLookup, addHash, TableInsert
 
 sequences = {
@@ -78,7 +78,7 @@ class Backend:
         # Initializes the database connection objects
         # This function has to be called on a newly defined Backend object
         # Initialize sequences
-        for k, v in sequences.items():
+        for k, v in list(sequences.items()):
             self.sequences[k] = self.dbmodule.Sequence(v)
         # TODO: Why do we return a reference to ourselves? If somebody called
         # this method they already have a reference...
@@ -95,7 +95,7 @@ class Backend:
     # Note: postgres-specific implementation overrides this in PostgresBackend
     def processCapabilities(self, capabilityHash):
         h = self.dbmodule.prepare("select lookup_package_capability(:name, :version) as id from dual")
-        for name, version in capabilityHash.keys():
+        for name, version in list(capabilityHash.keys()):
             ver = version
             if version is None or version == '':
                 ver = None
@@ -104,12 +104,12 @@ class Backend:
             capabilityHash[(name, version)] = row['id']
 
     def processChangeLog(self, changelogHash):
-        if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
+        if 'package_import_skip_changelog' in CFG and CFG.package_import_skip_changelog:
             return
         sql = "select id from rhnPackageChangeLogData where name = :name and time = :time and text = :text"
         h = self.dbmodule.prepare(sql)
         toinsert = [[], [], [], []]
-        for name, time, text in changelogHash.keys():
+        for name, time, text in list(changelogHash.keys()):
             val = {}
             _buildExternalValue(val, {'name': name, 'time': time, 'text': text}, self.tables['rhnPackageChangeLogData'])
             h.execute(name=val['name'], time=val['time'], text=val['text'])
@@ -118,7 +118,7 @@ class Backend:
                 changelogHash[(name, time, text)] = row['id']
                 continue
 
-            id = self.sequences['rhnPackageChangeLogData'].next()
+            id = next(self.sequences['rhnPackageChangeLogData'])
             changelogHash[(name, time, text)] = id
 
             toinsert[0].append(id)
@@ -147,7 +147,7 @@ class Backend:
         """
         h = self.dbmodule.prepare(sql)
         toinsert = [[], [], [], [], [], [], []]
-        for name, evr_id, package_arch_id, vendor, summary, description in prodfileHash.keys():
+        for name, evr_id, package_arch_id, vendor, summary, description in list(prodfileHash.keys()):
             val = {}
             _buildExternalValue(val, { 'name'        : name,
                                        'evr_id'      : evr_id,
@@ -163,7 +163,7 @@ class Backend:
                 prodfileHash[(name, evr_id, package_arch_id, vendor, summary, description)] = row['id']
                 continue
 
-            id = self.sequences['suseProductFile'].next()
+            id = next(self.sequences['suseProductFile'])
             prodfileHash[(name, evr_id, package_arch_id, vendor, summary, description)] = id
 
             toinsert[0].append(id)
@@ -198,7 +198,7 @@ class Backend:
             VALUES (:id, :text, :checksum)"""
         h_insert = self.dbmodule.prepare(query_insert, blob_map={ 'text' : 'text' })
 
-        for text, checksum in eulaHash.keys():
+        for text, checksum in list(eulaHash.keys()):
             val = {}
             _buildExternalValue(val, { 'text'     : text,
                                        'checksum' : checksum
@@ -209,7 +209,7 @@ class Backend:
                 eulaHash[(text, checksum)] = row['id']
                 continue
 
-            id = self.sequences['suseEula'].next()
+            id = next(self.sequences['suseEula'])
             eulaHash[(text, checksum)] = id
             h_insert.execute(id=id, text=to_string(val['text']), checksum=val['checksum'])
 
@@ -219,7 +219,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         toinsert = [[], []]
 
-        for cve_name in cveHash.keys():
+        for cve_name in list(cveHash.keys()):
             h.execute(name=cve_name)
             row = h.fetchone_dict()
 
@@ -228,7 +228,7 @@ class Backend:
                 continue
 
             # Generate an id
-            id = self.sequences['rhnCVE'].next()
+            id = next(self.sequences['rhnCVE'])
 
             cveHash[cve_name] = id
 
@@ -260,7 +260,7 @@ class Backend:
 
         sql = "select id from %s where label = :name" % table
         h = self.dbmodule.prepare(sql)
-        for k in archHash.keys():
+        for k in list(archHash.keys()):
             h.execute(name=str(k))
             row = h.fetchone_dict()
             if row:
@@ -283,11 +283,11 @@ class Backend:
         updates = [[], []]
         inserts = [[], [], []]
         results = {}
-        for label, name in arch_types_hash.items():
+        for label, name in list(arch_types_hash.items()):
             h.execute(label=label)
             row = h.fetchone_dict()
             if not row:
-                next_id = seq.next()
+                next_id = next(seq)
                 inserts[0].append(next_id)
                 inserts[1].append(label)
                 inserts[2].append(name)
@@ -478,7 +478,7 @@ class Backend:
             return
         sql = "select id, channel_arch_id from rhnChannel where label = :label"
         h = self.dbmodule.prepare(sql)
-        for k in hash.keys():
+        for k in list(hash.keys()):
             h.execute(label=k)
             row = h.fetchone_dict()
             if row:
@@ -493,7 +493,7 @@ class Backend:
             where channel_arch_id = :channel_arch_id
         """
         h = self.dbmodule.prepare(sql)
-        for channel_arch_id in channelArchHash.keys():
+        for channel_arch_id in list(channelArchHash.keys()):
             dict = {}
             h.execute(channel_arch_id=channel_arch_id)
             while 1:
@@ -510,7 +510,7 @@ class Backend:
              where label = :label
         """
         h = self.dbmodule.prepare(sql)
-        for sgt in entries_hash.keys():
+        for sgt in list(entries_hash.keys()):
             h.execute(label=sgt)
             row = h.fetchone_dict()
             if not row:
@@ -523,7 +523,7 @@ class Backend:
             return
         sql = "select LOOKUP_PACKAGE_NAME(:name) id from dual"
         h = self.dbmodule.prepare(sql)
-        for k in nameHash.keys():
+        for k in list(nameHash.keys()):
             h.execute(name=k)
             nameHash[k] = h.fetchone_dict()['id']
 
@@ -556,12 +556,12 @@ class Backend:
 
         h = self.dbmodule.prepare(sql)
 
-        if erratum.has_key('security_impact') and erratum['security_impact']:
+        if 'security_impact' in erratum and erratum['security_impact']:
             #concatenate the severity to reflect the db
             #bz-204374: rhnErrataSeverity tbl has lower case severity values,
             #so we convert severity in errata hash to lower case to lookup.
             severity_label = 'errata.sev.label.' + erratum['security_impact'].lower()
-        elif erratum.has_key('severity') and erratum['severity']:
+        elif 'severity' in erratum and erratum['severity']:
             severity_label = erratum['severity']
         else:
             return None
@@ -578,7 +578,7 @@ class Backend:
     def lookupEVRs(self, evrHash):
         sql = "select LOOKUP_EVR(:epoch, :version, :release) id from dual"
         h = self.dbmodule.prepare(sql)
-        for evr in evrHash.keys():
+        for evr in list(evrHash.keys()):
             epoch, version, release = evr
             if epoch == '' or epoch is None:
                 epoch = None
@@ -595,7 +595,7 @@ class Backend:
             return
         sql = "select lookup_checksum(:ctype, :csum) id from dual"
         h = self.dbmodule.prepare(sql)
-        for k in checksumHash.keys():
+        for k in list(checksumHash.keys()):
             ctype, csum = k
             if csum != '':
                 h.execute(ctype=ctype, csum=csum)
@@ -608,7 +608,7 @@ class Backend:
             return
         sql = "select id from rhnChecksumType where label = :label"
         h = self.dbmodule.prepare(sql)
-        for l in checksumTypeHash.keys():
+        for l in list(checksumTypeHash.keys()):
             h.execute(label=l)
             row = h.fetchone_dict()
             if row:
@@ -679,7 +679,7 @@ class Backend:
         for package in packages:
             # here we need to figure out which checksum we have in the database
             not_found = None
-            for type, chksum in package['checksums'].items():
+            for type, chksum in list(package['checksums'].items()):
                 package['checksum_type'] = type
                 package['checksum'] = chksum
                 package['checksum_id'] = checksums[(type, chksum)]
@@ -699,7 +699,7 @@ class Backend:
             return
         sql = "select id from rhnChannelFamily where label = :label"
         h = self.dbmodule.prepare(sql)
-        for k in hash.keys():
+        for k in list(hash.keys()):
             h.execute(label=k)
             row = h.fetchone_dict()
             if row:
@@ -720,10 +720,10 @@ class Backend:
         to_insert = []
         to_update = []
         result = {}
-        for label, name in hash.items():
+        for label, name in list(hash.items()):
             row = t[label]
             if not row:
-                row_id = seq.next()
+                row_id = next(seq)
                 result[label] = row_id
                 to_insert.append((label, name, row_id))
                 continue
@@ -830,7 +830,7 @@ class Backend:
             'susePackageEula':         'package_id',
         }
 
-        if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
+        if 'package_import_skip_changelog' in CFG and CFG.package_import_skip_changelog:
             del childTables['rhnPackageChangeLogRec']
 
         for package in packages:
@@ -876,7 +876,7 @@ class Backend:
         affected_errata_ids = {}
         for op_type in ['insert', 'update', 'delete']:
             op_values = getattr(dml, op_type)
-            for table_name, values_hash in op_values.items():
+            for table_name, values_hash in list(op_values.items()):
                 if table_name == 'rhnErrata':
                     field = 'id'
                 elif 'errata_id' in values_hash:
@@ -893,7 +893,7 @@ class Backend:
               from rhnChannelErrata
              where errata_id = :errata_id
         """)
-        for errata_id in affected_errata_ids.keys():
+        for errata_id in list(affected_errata_ids.keys()):
             h.execute(errata_id=errata_id)
 
             channel_ids = h.fetchall_dict() or []
@@ -905,7 +905,7 @@ class Backend:
         update_channel = self.dbmodule.Procedure('rhn_channel.update_channel')
         invalidate_ss = 0
 
-        for channel_id in affected_channel_ids.keys():
+        for channel_id in list(affected_channel_ids.keys()):
             update_channel(channel_id, invalidate_ss)
             h = self.dbmodule.prepare("""
                 select advisory from rhnErrata where id = :errata_id
@@ -1254,8 +1254,7 @@ class Backend:
               FROM suseMdData
         """)
         _query_keywords.execute()
-        existing_data = map(lambda x: "%s-%s-%s" % (x['channel_id'], x['package_id'], x['keyword_id']),
-                            _query_keywords.fetchall_dict() or [])
+        existing_data = ["%s-%s-%s" % (x['channel_id'], x['package_id'], x['keyword_id']) for x in _query_keywords.fetchall_dict() or []]
         toinsert = [[], [], []]
         todelete = [[], [], []]
         for item in batch:
@@ -1300,7 +1299,7 @@ class Backend:
             SELECT product_id FROM suseProducts
             """)
         _query_product.execute()
-        existing_data = map(lambda x: "%s" % (x['product_id']), _query_product.fetchall_dict() or [])
+        existing_data = ["%s" % (x['product_id']) for x in _query_product.fetchall_dict() or []]
         toinsert = [[], [], [], [], [], [], [], []]
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], []]
@@ -1314,7 +1313,7 @@ class Backend:
                 toupdate[4].append(item['release'])
                 toupdate[5].append(int(item['product_id']))
                 continue
-            toinsert[0].append(self.sequences['suseProducts'].next())
+            toinsert[0].append(next(self.sequences['suseProducts']))
             toinsert[1].append(item['name'])
             toinsert[2].append(item['version'])
             toinsert[3].append(item['friendly_name'])
@@ -1359,7 +1358,7 @@ class Backend:
             SELECT product_id, channel_label FROM suseProductChannel
             """)
         _query_pc.execute()
-        existing_data = map(lambda x: "%s-%s" % (x['product_id'], x['channel_label']), _query_pc.fetchall_dict() or [])
+        existing_data = ["%s-%s" % (x['product_id'], x['channel_label']) for x in _query_pc.fetchall_dict() or []]
         toinsert = [[], [], [], []]
         todelete = [[], []]
         toupdate = [[], [], [], []]
@@ -1407,7 +1406,7 @@ class Backend:
             SELECT from_pdid, to_pdid FROM suseUpgradePath
             """)
         _query_up.execute()
-        existing_data = map(lambda x: "%s-%s" % (x['from_pdid'], x['to_pdid']), _query_up.fetchall_dict() or [])
+        existing_data = ["%s-%s" % (x['from_pdid'], x['to_pdid']) for x in _query_up.fetchall_dict() or []]
         toinsert = [[], []]
         todelete = [[], []]
         for item in batch:
@@ -1444,7 +1443,7 @@ class Backend:
             SELECT original_id orig_id, id FROM rhnChannelCloned
             """)
         _query_cc.execute()
-        existing_data = map(lambda x: "%s-%s" % (x['orig_id'], x['id']), _query_cc.fetchall_dict() or [])
+        existing_data = ["%s-%s" % (x['orig_id'], x['id']) for x in _query_cc.fetchall_dict() or []]
         toinsert = [[], []]
         todelete = [[], []]
         for item in batch:
@@ -1476,7 +1475,7 @@ class Backend:
             SELECT channel_family_id, org_id FROM rhnPrivateChannelFamily
             """)
         _query_pcf.execute()
-        existing_data = map(lambda x: "%s-%s" % (x['channel_family_id'], x['org_id']), _query_pcf.fetchall_dict() or [])
+        existing_data = ["%s-%s" % (x['channel_family_id'], x['org_id']) for x in _query_pcf.fetchall_dict() or []]
         toinsert = [[], []]
         for item in batch:
             ident = "%s-%s" % (item['channel_family_id'], item['org_id'])
@@ -1512,7 +1511,7 @@ class Backend:
                AND cv.checksum_type = :checksum_type
         """)
 
-        for type, chksum  in package['checksums'].iteritems():
+        for type, chksum  in list(package['checksums'].items()):
             if not package['epoch']:
                 package['epoch'] = None
             statement.execute(name=package['name'],
@@ -1548,7 +1547,7 @@ class Backend:
 
         if kid:
             return kid['id']
-        kid = self.sequences['suseMdKeyword'].next()
+        kid = next(self.sequences['suseMdKeyword'])
         statement = self.dbmodule.prepare("""
             INSERT INTO suseMdKeyword (id, label)
             VALUES (:kid, :label)
@@ -1597,7 +1596,7 @@ class Backend:
         return self.createChannelProduct(channel)
 
     def createChannelProduct(self, channel):
-        id = self.sequences['rhnChannelProduct'].next()
+        id = next(self.sequences['rhnChannelProduct'])
 
         statement = self.dbmodule.prepare("""
             INSERT
@@ -1642,7 +1641,7 @@ class Backend:
                     break
                 channels[row['channel_id']] = None
 
-            for channelId in package['channels'].keys():
+            for channelId in list(package['channels'].keys()):
                 # Build the channel-package list
                 if channelId in channel_packages:
                     cp = channel_packages[channelId]
@@ -1692,7 +1691,7 @@ class Backend:
             """
 
         statement = self.dbmodule.prepare(sql)
-        for channel_id, pid_hash in channel_packages.items():
+        for channel_id, pid_hash in list(channel_packages.items()):
             statement.execute(channel_id=channel_id)
             while 1:
                 row = statement.fetchone_dict()
@@ -1722,7 +1721,7 @@ class Backend:
         # tuple (added_package_list, deleted_package_list) as values
         refresh_newest_package = self.dbmodule.Procedure('rhn_channel.refresh_newest_package')
         update_channel = self.dbmodule.Procedure('rhn_channel.update_channel')
-        for channel_id, (added_packages_list, deleted_packages_list) in affected_channels.items():
+        for channel_id, (added_packages_list, deleted_packages_list) in list(affected_channels.items()):
             try:
                 if name_ids:
                     for id in name_ids:
@@ -1767,7 +1766,7 @@ class Backend:
             return
 
         h = rhnSQL.prepare("select " + lookup + "(:name) from dual")
-        for k in hash.keys():
+        for k in list(hash.keys()):
             h.execute(name=k)
             # saving id
             hash[k] = h.fetchone_dict().popitem()[1]
@@ -1823,7 +1822,7 @@ class Backend:
             'transactional': 0,
         }
 
-        for k, v in kwargs.items():
+        for k, v in list(kwargs.items()):
             if k not in kwparams:
                 raise TypeError("Unknown keyword parameter %s" % k)
             if v is not None:
@@ -1877,7 +1876,7 @@ class Backend:
             row = h.fetchone_dict()
             if not row:
                 # Object does not exist
-                id = self.sequences[parentTable].next()
+                id = next(self.sequences[parentTable])
                 object.id = id
                 extObject = {'id': id}
                 _buildExternalValue(extObject, object, parentTableObj)
@@ -1899,7 +1898,7 @@ class Backend:
                             # in the master table is not created yet, there
                             # shouldn't be a problem with uniqueness
                             # constraints
-                            new_id = self.sequences[tbl.name].next()
+                            new_id = next(self.sequences[tbl.name])
                             extObject[seq_col] = new_id
                             # Make sure we initialize the object's sequenced
                             # column as well
@@ -1921,7 +1920,7 @@ class Backend:
             uploadedObjects[row['id']] = [object, row]
 
         # Deal with already-uploaded objects
-        for objid, (object, row) in uploadedObjects.items():
+        for objid, (object, row) in list(uploadedObjects.items()):
             # Build the external value
             extObject = {'id': row['id']}
             _buildExternalValue(extObject, object, parentTableObj)
@@ -1956,9 +1955,9 @@ class Backend:
                 localDML['update'][parentTable] = [extObject]
 
             # And transfer the local DML to the global one
-            for k, tablehash in localDML.items():
+            for k, tablehash in list(localDML.items()):
                 dmlhash = getattr(dml, k)
-                for tname, vallist in tablehash.items():
+                for tname, vallist in list(tablehash.items()):
                     for val in vallist:
                         addHash(dmlhash[tname], val)
 
@@ -2022,7 +2021,7 @@ class Backend:
                     if childTableObj.sequenceColumn:
                         # Initialize the sequence column too
                         sc = childTableObj.sequenceColumn
-                        nextid = self.sequences[childTableName].next()
+                        nextid = next(self.sequences[childTableName])
                         val[sc] = ent[sc] = nextid
                     # This entry has to be inserted
                     object.diff.append((parentattr, val, None))
@@ -2052,7 +2051,7 @@ class Backend:
                 del dbside[key]
 
             # Anything else should be deleted
-            for key, val in dbside.items():
+            for key, val in list(dbside.items()):
                 # Send only the PKs
                 hash = {}
                 for k in pks:
@@ -2172,7 +2171,7 @@ class Backend:
                     value = sanitizeValue(value, datatype)
                     key.append(value)
                 val = {}
-                for f, datatype in fields.items():
+                for f, datatype in list(fields.items()):
                     value = row[f]
                     value = sanitizeValue(value, datatype)
                     val[f] = value
@@ -2195,7 +2194,7 @@ class Backend:
         h.execute()
         deletes = {}
         inserts = {}
-        for f in fields.keys():
+        for f in list(fields.keys()):
             inserts[f] = []
             deletes[f] = []
 
@@ -2211,7 +2210,7 @@ class Backend:
                 continue
             addHash(deletes, row)
 
-        for row in incoming.values():
+        for row in list(incoming.values()):
             addHash(inserts, row)
 
         if delete_extra:
@@ -2245,7 +2244,7 @@ class Backend:
         h = self.dbmodule.prepare(query)
         updates = []
         deletes = []
-        for val, valhash in uq_col_values.items():
+        for val, valhash in list(uq_col_values.items()):
             params = {first_uq_col: val}
             h.execute(**params)
             while 1:
@@ -2331,7 +2330,7 @@ def hash2tuple(hash, fields):
     # Converts the hash into a tuple, with the fields ordered as presented in
     # the fields list
     result = []
-    for fname, ftype in fields.items():
+    for fname, ftype in list(fields.items()):
         result.append(sanitizeValue(hash[fname], ftype))
     return tuple(result)
 
@@ -2348,7 +2347,7 @@ class DML:
             setattr(self, k, dmlhash)
             for tname in tables:
                 hash = {}
-                for f in tableHash[tname].getFields().keys():
+                for f in list(tableHash[tname].getFields().keys()):
                     hash[f] = []
                 dmlhash[tname] = hash
 
@@ -2357,7 +2356,7 @@ def _buildDatabaseValue(row, fieldsHash):
     # Returns a dictionary containing the interesting values of the row,
     # sanitized
     dict = {}
-    for f, datatype in fieldsHash.items():
+    for f, datatype in list(fieldsHash.items()):
         dict[f] = sanitizeValue(row[f], datatype)
     return dict
 
@@ -2365,7 +2364,7 @@ def _buildDatabaseValue(row, fieldsHash):
 def _buildExternalValue(dict, entry, tableObj):
     # updates dict with values from entry
     # entry is a hash-like object (non-db)
-    for f, datatype in tableObj.getFields().items():
+    for f, datatype in list(tableObj.getFields().items()):
         if f in dict:
             # initialized somewhere else
             continue
@@ -2382,7 +2381,7 @@ def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
     difference = 0
     ignore_keys = ['last_modified']
 
-    for k, v in hash1.items():
+    for k, v in list(hash1.items()):
         if k in ignore_keys:
             # Dont decide the diff based on last_modified
             # as this obviously wont match due to our db

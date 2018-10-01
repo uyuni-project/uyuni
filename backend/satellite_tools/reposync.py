@@ -13,6 +13,7 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+
 import os
 import re
 import shutil
@@ -22,7 +23,10 @@ import time
 import traceback
 import base64
 from datetime import datetime
-from HTMLParser import HTMLParser
+try:
+    from html.parser import HTMLParser
+except ImportError:
+    from HTMLParser import HTMLParser
 from dateutil.parser import parse as parse_date
 from xml.dom import minidom
 import gzip
@@ -52,7 +56,7 @@ from spacewalk.satellite_tools.repo_plugins import CACHE_DIR
 from spacewalk.server import taskomatic, rhnPackageUpload
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 
-from syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
+from .syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = translation.ugettext
@@ -101,7 +105,7 @@ def send_mail(sync_type="Repo"):
     """ Send email summary """
     body = dumpEMAIL_LOG()
     if body:
-        print(_("+++ sending log as an email +++"))
+        print((_("+++ sending log as an email +++")))
         host_label = idn_puny_to_unicode(os.uname()[1])
         headers = {
             'Subject': _("%s sync. report from %s") % (sync_type, host_label),
@@ -111,7 +115,7 @@ def send_mail(sync_type="Repo"):
             sndr = CFG.default_mail_from
         rhnMail.send(headers, body, sender=sndr)
     else:
-        print(_("+++ email requested, but there is nothing to send +++"))
+        print((_("+++ email requested, but there is nothing to send +++")))
 
 
 class KSDirParser:
@@ -577,26 +581,26 @@ class RepoSync(object):
                         self.import_products(plugin)
                         self.import_susedata(plugin)
 
-                except rhnSQL.SQLError, e:
+                except rhnSQL.SQLError as e:
                     log(0, "SQLError: %s" % e)
                     raise
-                except ChannelTimeoutException, e:
+                except ChannelTimeoutException as e:
                     log(0, e)
                     self.sendErrorMail(str(e))
                     sync_error = -1
-                except ChannelException, e:
+                except ChannelException as e:
                     log(0, "ChannelException: %s" % e)
                     self.sendErrorMail("ChannelException: %s" % str(e))
                     sync_error = -1
-                except Errors.YumGPGCheckError, e:
+                except Errors.YumGPGCheckError as e:
                     log(0, "YumGPGCheckError: %s" % e)
                     self.sendErrorMail("YumGPGCheckError: %s" % e)
                     sync_error = -1
-                except Errors.RepoError, e:
+                except Errors.RepoError as e:
                     log(0, "RepoError: %s" % e)
                     self.sendErrorMail("RepoError: %s" % e)
                     sync_error = -1
-                except Errors.RepoMDError, e:
+                except Errors.RepoMDError as e:
                     if "primary not available" in str(e):
                         taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                             [self.channel_label], [], "server.app.yumreposync")
@@ -1303,7 +1307,7 @@ class RepoSync(object):
             ret = parse_date(date)
             try:
                 ret = ret.astimezone(tzutc())
-            except ValueError, e:
+            except ValueError as e:
                 log(2, e)
         return ret.isoformat(' ')[:19]  # return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds
 
@@ -1884,12 +1888,12 @@ class RepoSync(object):
             """)
             query.execute(**product)
             row = query.fetchone_dict()
-            if not row or not row.has_key('id'):
+            if not row or 'id' not in row:
                 get_id_q = rhnSQL.prepare("""SELECT sequence_nextval('suse_prod_file_id_seq') as id FROM dual""")
                 get_id_q.execute()
                 row = get_id_q.fetchone_dict() or {}
-                if not row or not row.has_key('id'):
-                    print "no id for sequence suse_prod_file_id_seq"
+                if not row or 'id' not in row:
+                    print("no id for sequence suse_prod_file_id_seq")
                     continue
 
                 h = rhnSQL.prepare("""
@@ -1925,7 +1929,7 @@ class RepoSync(object):
 
             query.execute(**params)
             packrow = query.fetchone_dict()
-            if not packrow or not packrow.has_key('id'):
+            if not packrow or 'id' not in packrow:
                 # package not in DB
                 continue
 
@@ -1960,7 +1964,7 @@ class RepoSync(object):
                           arch=package['arch'], pkgid=package['pkgid'],
                           channel_id=int(self.channel['id']))
             row = query.fetchone_dict() or None
-            if not row or not row.has_key('id'):
+            if not row or 'id' not in row:
                 # package not found in DB
                 continue
             pkgid = int(row['id'])
@@ -1998,7 +2002,7 @@ class RepoSync(object):
                     kadd.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[keyword])
                     self.regen = True
 
-            if package.has_key('eula'):
+            if 'eula' in package:
                 eula_id = suseEula.find_or_create_eula(package['eula'])
                 rhnPackage.add_eula_to_package(
                   package_id=pkgid,
@@ -2214,7 +2218,7 @@ class RepoSync(object):
                                   'summary': bz['title'] or ("Bug %s" % bz['id']),
                                   'href': bz['href']})
                     bugs[bz['id']] = bug
-        return bugs.values()
+        return list(bugs.values())
 
     @staticmethod
     def _update_cve(notice):
@@ -2292,7 +2296,7 @@ class RepoSync(object):
              WHERE errata_id = :errata_id
         """)
         h.execute(errata_id=errata_id)
-        channels = map(lambda x: x['channel_id'], h.fetchall_dict() or [])
+        channels = [x['channel_id'] for x in h.fetchall_dict() or []]
 
         # delete channel from errata
         h = rhnSQL.prepare("""

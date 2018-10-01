@@ -470,7 +470,7 @@ class Packages(RPC_Base):
         log_debug(3)
         row_list = {}
         checksum_exists = 0
-        for pkg in pkg_infos.keys():
+        for pkg in list(pkg_infos.keys()):
 
             pkg_info = pkg_infos[pkg]
             pkg_epoch = pkg_info['epoch']
@@ -529,7 +529,7 @@ class Packages(RPC_Base):
     def _MD5sum2Checksum_info(self, info):
         log_debug(5)
         pkg_infos = info.get('packages')
-        for pkg in pkg_infos.keys():
+        for pkg in list(pkg_infos.keys()):
             if 'md5sum' in pkg_infos[pkg]:
                 pkg_infos[pkg]['checksum_type'] = 'md5'
                 pkg_infos[pkg]['checksum'] = pkg_infos[pkg]['md5sum']
@@ -538,7 +538,7 @@ class Packages(RPC_Base):
     def _Checksum2MD5sum_list(self, checksum_list):
         log_debug(5)
         row_list = {}
-        for k in checksum_list.keys():
+        for k in list(checksum_list.keys()):
             if checksum_list[k] == '' or checksum_list[k] == 'on-disk':
                 row_list[k] = checksum_list[k]
             elif type(checksum_list[k]) == TupleType and checksum_list[k][0] == 'md5':
@@ -591,7 +591,7 @@ class Packages(RPC_Base):
              """
         h = rhnSQL.prepare(statement)
         row_list = {}
-        for pkg in pkg_infos.keys():
+        for pkg in list(pkg_infos.keys()):
             row_list[pkg] = self._get_package_checksum(h,
                                                        {'name': pkg, 'orgid': org_id})
         return row_list

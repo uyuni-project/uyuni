@@ -15,9 +15,13 @@
 # in this software or its documentation
 
 import unittest
-from StringIO import StringIO
+try:
+    from io import StringIO
+    from xmlrpc.client import Error
+except ImportError:
+    from StringIO import StringIO
+    from xmlrpclib import Error
 from collections import defaultdict
-from xmlrpclib import Error
 
 from mock import Mock, patch
 

@@ -14,7 +14,11 @@
 
 import sys
 
-import cStringIO
+try:
+    import io as cStringIO
+except ImportError:
+    import cStringIO
+
 import json
 import zipfile
 import os

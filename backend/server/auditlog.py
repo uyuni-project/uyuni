@@ -15,7 +15,10 @@ import inspect
 import os
 import pwd
 from socket import error
-from xmlrpclib import ServerProxy, Error
+try:
+    from xmlrpc.client import ServerProxy, Error
+except:
+    from xmlrpclib import ServerProxy, Error
 
 from spacewalk.common.rhnConfig import initCFG, CFG
 from spacewalk.common.rhnLog import log_error, log_debug
@@ -55,7 +58,7 @@ def auditlog_xmlrpc(method, method_name, args, request):
 
     try:
         server = ServerProxy(server_url)
-    except IOError, e:
+    except IOError as e:
         raise AuditLogException("Could not establish a connection to the "
                                 "AuditLog server. IOError: %s. "
                                 "Is this server url correct? %s"
@@ -88,7 +91,7 @@ def auditlog_xmlrpc(method, method_name, args, request):
                     "REQ.ORIGINAL_ADDR": headers.get("HTTP_X_RHN_IP_PATH", "")})
         try:
             server.audit.log(uid, message, hostname, extmap)
-        except (Error, error), e:
+        except (Error, error) as e:
             raise AuditLogException("Got an error while talking to the "
                                     "AuditLogging server at %s. Error was: %s"
                                     % (server_url, e))

@@ -33,14 +33,14 @@ class Tests(unittest.TestCase):
 
     def test_rfc822time_normal_tuple(self):
         "rfc822time: Simple call using a valid tuple argument."
-        test_arg = (2006, 1, 27, (14 - TIMEZONE_SHIFT), 12, 5, 4, 27, -1)
+        test_arg = (2006, 1, 27, int(14 - TIMEZONE_SHIFT), 12, 5, 4, 27, -1)
         target = "Fri, 27 Jan 2006 14:12:05 GMT"
         result = rhnLib.rfc822time(test_arg)
         self.assertEqual(result, target, result + " != " + target)
 
     def test_rfc822time_normal_list(self):
         "rfc822time: Simple call using a valid list argument."
-        test_arg = [2006, 1, 27, (14 - TIMEZONE_SHIFT), 12, 5, 4, 27, -1]
+        test_arg = [2006, 1, 27, int(14 - TIMEZONE_SHIFT), 12, 5, 4, 27, -1]
         target = "Fri, 27 Jan 2006 14:12:05 GMT"
         result = rhnLib.rfc822time(test_arg)
         self.assertEqual(result, target, result + " != " + target)
@@ -63,17 +63,17 @@ class Tests(unittest.TestCase):
         self.assertEqual(result, target, result + " != " + target)
 
     def testParseUrl(self):
-        self.assertEquals(('', '', '', '', '', ''),
+        self.assertEqual(('', '', '', '', '', ''),
                           rhnLib.parseUrl(''))
-        self.assertEquals(('', 'somehostname', '', '', '', ''),
+        self.assertEqual(('', 'somehostname', '', '', '', ''),
                           rhnLib.parseUrl('somehostname'))
-        self.assertEquals(('http', 'somehostname', '', '', '', ''),
+        self.assertEqual(('http', 'somehostname', '', '', '', ''),
                           rhnLib.parseUrl('http://somehostname'))
-        self.assertEquals(('https', 'somehostname', '', '', '', ''),
+        self.assertEqual(('https', 'somehostname', '', '', '', ''),
                           rhnLib.parseUrl('https://somehostname'))
-        self.assertEquals(('https', 'somehostname:123', '', '', '', ''),
+        self.assertEqual(('https', 'somehostname:123', '', '', '', ''),
                           rhnLib.parseUrl('https://somehostname:123'))
-        self.assertEquals(('https', 'somehostname:123', '/ABCDE', '', '', ''),
+        self.assertEqual(('https', 'somehostname:123', '/ABCDE', '', '', ''),
                           rhnLib.parseUrl('https://somehostname:123/ABCDE'))
 
 if __name__ == '__main__':

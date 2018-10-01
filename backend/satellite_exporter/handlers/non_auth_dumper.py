@@ -132,7 +132,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             # No compression
             self.compress_level = 0
             self._raw_stream.content_type = 'text/xml'
-        for h, v in self.headers_out.items():
+        for h, v in list(self.headers_out.items()):
             self._raw_stream.headers_out[h] = str(v)
         self._raw_stream.send_http_header()
         # If need be, start gzipping
@@ -571,7 +571,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
         self.headers_out['Content-Length'] = len(s)
         self._raw_stream.content_type = 'text/xml'
-        for h, v in self.headers_out.items():
+        for h, v in list(self.headers_out.items()):
             self._raw_stream.headers_out[h] = str(v)
         self._raw_stream.send_http_header()
         self._raw_stream.write(s)

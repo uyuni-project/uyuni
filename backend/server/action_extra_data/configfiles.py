@@ -62,7 +62,7 @@ def upload(server_id, action_id, data={}):
                   'quota_failed': 'insufficient_quota',
                   }
 
-    for reason in reason_map.keys():
+    for reason in list(reason_map.keys()):
         log_debug(6, 'reason', reason)
         failed_files = data.get(reason)
         log_debug(6, 'failed_files', failed_files)
@@ -235,7 +235,7 @@ def _mark_missing_diff_files(server_id, action_id, missing_files):
 
 def _process_diffs(server_id, action_id, diffs):
     _disable_old_diffs(server_id)
-    for file_path, diff in diffs.items():
+    for file_path, diff in list(diffs.items()):
         action_config_revision_id = _lookup_action_revision_id(server_id,
                                                                action_id, file_path)
         if action_config_revision_id is None:

@@ -92,12 +92,12 @@ def getCertChecksumString(sat_cert):
     for field in sat_cert.fields_scalar:
         tree[field] = getattr(sat_cert, field)
     # List attributes of sat_cert
-    for name, value in sat_cert.fields_list.items():
+    for name, value in list(sat_cert.fields_list.items()):
         field = value.attribute_name
         tree[name] = []
         for item in getattr(sat_cert, field):
             attributes = {}
-            for k, v in item.attributes.items():
+            for k, v in list(item.attributes.items()):
                 attr = getattr(item, v)
                 if attr != "":
                     attributes[k] = attr
@@ -106,7 +106,7 @@ def getCertChecksumString(sat_cert):
     # Create string from tree
     for key in sorted(tree):
         if isinstance(tree[key], list):
-            for item in sorted(tree[key], key=lambda item: "".join(sorted(item.keys() + item.values()))):
+            for item in sorted(tree[key], key=lambda item: "".join(sorted(list(item.keys()) + list(item.values())))):
                 line = "%s" % key
                 for attribute in sorted(item):
                     line += "-%s-%s" % (attribute, item[attribute])
@@ -193,14 +193,14 @@ def storeRhsmManifest(options):
     if options.manifest and options.manifest != DEFAULT_RHSM_MANIFEST_LOCATION:
         try:
             manifest = open(os.path.abspath(os.path.expanduser(options.manifest)), 'rb').read()
-        except (IOError, OSError), e:
+        except (IOError, OSError) as e:
             msg = _('"%s" (specified in commandline)\n'
                     'could not be opened and read:\n%s') % (options.manifest, str(e))
             writeError(msg)
             raise
         try:
             writeRhsmManifest(options, manifest)
-        except (IOError, OSError), e:
+        except (IOError, OSError) as e:
             msg = _('"%s" could not be opened\nand/or written to:\n%s') % (
                 DEFAULT_RHSM_MANIFEST_LOCATION, str(e))
             writeError(msg)
@@ -425,20 +425,20 @@ def main():
     # Handle RHSM manifest
     try:
         cdn_activate = cdn_activation.Activation(options.manifest)
-    except CdnMappingsLoadError, e:
+    except CdnMappingsLoadError as e:
         writeError(e)
         return 15
-    except MissingSatelliteCertificateError, e:
+    except MissingSatelliteCertificateError as e:
         writeError(e)
         return 13
-    except IncorrectEntitlementsFileFormatError, e:
+    except IncorrectEntitlementsFileFormatError as e:
         writeError(e)
         return 18
 
     # general sanity/GPG check
     try:
         validateSatCert(cdn_activate.manifest.get_satellite_certificate())
-    except RHNCertGeneralSanityException, e:
+    except RHNCertGeneralSanityException as e:
         writeError(e)
         return 10
 

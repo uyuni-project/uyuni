@@ -12,6 +12,7 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+from __future__ import unicode_literals
 
 import sys
 import os.path
@@ -96,7 +97,7 @@ class DebRepo(object):
                         fd.close()
                 return filename
             except requests.exceptions.RequestException:
-                print "ERROR: requests.exceptions.RequestException occured"
+                print("ERROR: requests.exceptions.RequestException occured")
                 time.sleep(RETRY_DELAY)
 
         return ''

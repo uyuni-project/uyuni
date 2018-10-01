@@ -27,7 +27,7 @@ from spacewalk.common import rhn_rpm
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL, rhnAction
-from server_lib import snapshot_server, check_entitlement
+from .server_lib import snapshot_server, check_entitlement
 
 UNCHANGED = 0
 ADDED = 1
@@ -392,13 +392,13 @@ class Packages:
         if not package_names:
             return None
 
-        package_arch_ids = package_names.keys()
+        package_arch_ids = list(package_names.keys())
 
         action_id = rhnAction.schedule_server_packages_update_by_arch(self.server['id'],
                                                                       package_arch_ids,
                                                                       org_id=self.server['org_id'],
                                                                       action_name="Product Package Auto-Install")
-        for p in package_names.values():
+        for p in list(package_names.values()):
             log_debug(1, "Scheduled for install:  '%s'" % p)
 
         rhnSQL.commit()

@@ -191,7 +191,7 @@ def schedule_kickstart_delta(server_id, kickstart_session_id,
         delta_time=0, scheduler=scheduler, org_id=org_id,
     )
 
-    package_delta_id = rhnSQL.Sequence('rhn_packagedelta_id_seq').next()
+    package_delta_id = next(rhnSQL.Sequence('rhn_packagedelta_id_seq'))
 
     h = rhnSQL.prepare(_query_insert_package_delta)
     h.execute(package_delta_id=package_delta_id)
@@ -588,7 +588,7 @@ def __execute_many(cursor, array, col_names, **kwargs):
         return
     # Transpose the array into a hash with col_names as keys
     params = rhnLib.transpose_to_hash(array, col_names)
-    for k, v in kwargs.items():
+    for k, v in list(kwargs.items()):
         params[k] = [v] * linecount
 
     cursor.executemany(**params)

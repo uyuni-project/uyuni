@@ -31,10 +31,10 @@ import dbi
 import sql_types
 types = sql_types
 
-from const import ORACLE, POSTGRESQL, SUPPORTED_BACKENDS
+from .const import ORACLE, POSTGRESQL, SUPPORTED_BACKENDS
 
 # expose exceptions
-from sql_base import SQLError, SQLSchemaError, SQLConnectError, \
+from .sql_base import SQLError, SQLSchemaError, SQLConnectError, \
     SQLStatementPrepareError, Statement, ModifiedRowError
 
 # ths module works with a private global __DB object that is

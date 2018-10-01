@@ -3,7 +3,10 @@
 Module for taskomatic related functions (inserting into queues, etc)
 """
 
-import xmlrpclib
+try:
+    import xmlrpc.client as xmlrpclib
+except ImportError:
+    import xmlrpclib
 from spacewalk.server import rhnSQL
 
 # see TaskoXmlRpcHandler.java for available methods

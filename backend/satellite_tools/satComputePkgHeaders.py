@@ -107,7 +107,7 @@ class Runner:
         package_ids = {}
 
         h = rhnSQL.prepare(self._query_get_packages)
-        for channel_id in self._channels_hash.values():
+        for channel_id in list(self._channels_hash.values()):
             h.execute(channel_id=channel_id)
             while 1:
                 row = h.fetchone_dict()
@@ -140,7 +140,7 @@ class Runner:
             print("Bailing out because of packages shared with other channels")
             for package_id in orphaned_packages:
                 channels = self._channel_packages[package_id]
-                print(package_id, channels)
+                print((package_id, channels))
             return None
 
         return package_ids
@@ -190,18 +190,18 @@ class Runner:
         if not package_ids:
             return
         h = rhnSQL.prepare(self._query_add_package_header_values)
-        for package_id, (path, header_start, header_end) in package_ids.items():
+        for package_id, (path, header_start, header_end) in list(package_ids.items()):
             try:
                 p_file = file(self.options.prefix + "/" + path, 'r')
             except IOError:
-                print("Error opening file %s" % path)
+                print(("Error opening file %s" % path))
                 continue
 
             try:
                 (header_start, header_end) = rhn_rpm.get_header_byte_range(p_file)
             except InvalidPackageError:
                 e = sys.exc_info()[1]
-                print("Error reading header size from file %s: %s" % (path, e))
+                print(("Error reading header size from file %s: %s" % (path, e)))
 
             try:
                 h.execute(package_id=package_id, header_start=header_start, header_end=header_end)
@@ -216,7 +216,7 @@ class Runner:
             return
 
         template = "update rhnPackage set header_start=%s and header_end=%s where id = %s;\n"
-        for package_id, (_path, header_start, header_end) in package_ids.items():
+        for package_id, (_path, header_start, header_end) in list(package_ids.items()):
             s = template % (header_start, header_end, package_id)
             f.write(s)
         f.write("commit;\n")

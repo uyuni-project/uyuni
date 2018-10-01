@@ -20,10 +20,10 @@
 # the server.Server class inherits this ServerWrapper class
 #
 
-from server_hardware import Hardware
-from server_packages import Packages
-from server_history import History
-from server_suse import SuseData
+from .server_hardware import Hardware
+from .server_packages import Packages
+from .server_history import History
+from .server_suse import SuseData
 
 from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL
@@ -111,16 +111,16 @@ class ServerWrapper(Packages, Hardware, History, SuseData):
     ### SUSE PRODUCT DATA
     ###
     def save_suse_products(self):
-	ret = self.save_suse_products_byid(self.server["id"])
+        ret = self.save_suse_products_byid(self.server["id"])
         rhnSQL.commit()
         return ret
 
     def update_suse_products(self, guid, secret, target, products):
         suse_products = {
-	  "guid" 	: guid,
-	  "secret"	: secret,
-	  "ostarget"	: target,
-	  "products"	: products
-	}
+            "guid"     : guid,
+            "secret"    : secret,
+            "ostarget"    : target,
+            "products"    : products
+        }
         self.add_suse_products(suse_products)
         return self.save_suse_products()

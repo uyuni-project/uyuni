@@ -11,12 +11,16 @@
 #
 
 try:
-    from cStringIO import StringIO
+    import urllib.parse as urlparse
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
-import re
-import urlparse
+    import urlparse
+    try:
+        from cStringIO import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
+import re
 import pycurl
 
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -44,7 +48,7 @@ class TransferException(Exception):
         return "%s" % self.value
 
     def __unicode__(self):
-        return '%s' % unicode(self.value, "utf-8")
+        return '%s' % str(self.value, "utf-8")
 
 
 class URL(object):
@@ -158,7 +162,7 @@ def send(url, sendData=None):
     connect_retries = 10
     try_counter = connect_retries
     timeout = 120
-    if CFG.is_initialized() and CFG.has_key('TIMEOUT'):
+    if CFG.is_initialized() and 'TIMEOUT' in CFG:
         timeout = CFG.TIMEOUT
     curl = pycurl.Curl()
 
@@ -173,7 +177,7 @@ def send(url, sendData=None):
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
         if (CFG.is_initialized() and
-                CFG.has_key('DISABLE_EXPECT') and
+                'DISABLE_EXPECT' in CFG and
                 CFG.DISABLE_EXPECT):
             # disable Expect header
             curl.setopt(pycurl.HTTPHEADER, ['Expect:'])
@@ -191,7 +195,7 @@ def send(url, sendData=None):
         try_counter -= 1
         try:
             curl.perform()
-        except pycurl.error, e:
+        except pycurl.error as e:
             if e[0] == 56:  # Proxy requires authentication
                 log_debug(2, e[1])
                 if not (proxy_user and proxy_pass):
@@ -239,7 +243,7 @@ def accessible(url):
 
     """
     timeout = 120
-    if CFG.is_initialized() and CFG.has_key('TIMEOUT'):
+    if CFG.is_initialized() and 'TIMEOUT' in CFG:
         timeout = CFG.TIMEOUT
     curl = pycurl.Curl()
 
@@ -263,7 +267,7 @@ def accessible(url):
         try_counter -= 1
         try:
             curl.perform()
-        except pycurl.error, e:
+        except pycurl.error as e:
             if e[0] == 56:  # Proxy requires authentication
                 log_debug(2, e[1])
                 if not (proxy_user and proxy_pass):
@@ -588,7 +592,7 @@ def _get_proxy_from_rhn_conf():
 
     """
     comp = CFG.getComponent()
-    if not CFG.has_key("http_proxy"):
+    if "http_proxy" not in CFG:
         initCFG("server.satellite")
     result = None
     if CFG.http_proxy:
@@ -625,9 +629,9 @@ def _useProxyFor(url):
     if hostname in ["localhost", "127.0.0.1", "::1"]:
         return False
     comp = CFG.getComponent()
-    if not CFG.has_key("no_proxy"):
+    if "no_proxy" not in CFG:
         initCFG("server.satellite")
-    if not CFG.has_key('no_proxy'):
+    if 'no_proxy' not in CFG:
         initCFG(comp)
         return True
     noproxy = CFG.no_proxy

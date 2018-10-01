@@ -15,7 +15,7 @@
 #
 # Product Names Import
 
-from importLib import Import
+from .importLib import Import
 
 
 class ProductNamesImport(Import):

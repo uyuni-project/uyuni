@@ -26,7 +26,7 @@ from spacewalk.common.rhnLog import log_debug, log_error, initLOG, log_setreq
 # local module imports
 import rhnSQL
 
-from apacheRequest import apacheGET, apachePOST, HandlerNotFoundError
+from .apacheRequest import apacheGET, apachePOST, HandlerNotFoundError
 import rhnCapability
 
 # a lame timer function for pretty logs

@@ -37,8 +37,8 @@ from spacewalk.satellite_tools.satCerts import get_certificate_info, verify_cert
 from spacewalk.satellite_tools.syncLib import log, log2disk, log2, initEMAIL_LOG, log2email, log2background
 from spacewalk.satellite_tools.repo_plugins import yum_src
 
-from common import CustomChannelSyncError, CountingPackagesError, verify_mappings, human_readable_size
-from repository import CdnRepositoryManager, CdnRepositoryNotFoundError
+from .common import CustomChannelSyncError, CountingPackagesError, verify_mappings, human_readable_size
+from .repository import CdnRepositoryManager, CdnRepositoryNotFoundError
 
 
 class CdnSync(object):
@@ -291,7 +291,7 @@ class CdnSync(object):
         for label in channels:
             channel = self.channel_metadata[label]
             channel_object = Channel()
-            for k in channel.keys():
+            for k in list(channel.keys()):
                 channel_object[k] = channel[k]
 
             family_object = ChannelFamily()
@@ -741,7 +741,7 @@ class CdnSync(object):
         available_base_channels = [x for x in sorted(channel_tree) if x not in not_available_channels]
         custom_cdn_channels = [ch for ch in self.synced_channels if self.synced_channels[ch]]
         longest_label = len(max(available_base_channels + custom_cdn_channels +
-                                [i for l in channel_tree.values() for i in l] + [""], key=len))
+                                [i for l in list(channel_tree.values()) for i in l] + [""], key=len))
 
         log(0, "p = previously imported/synced channel")
         log(0, ". = channel not yet imported/synced")

@@ -268,7 +268,7 @@ def build_new_system_params_with_username(**kwargs):
         'password': 'no such password',
     }
     params.update(kwargs)
-    if params.has_key('token'):
+    if 'token' in params:
         del params['token']
     return params
 

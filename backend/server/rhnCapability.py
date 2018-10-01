@@ -105,7 +105,7 @@ def update_client_capabilities(server_id):
         deletes['capability_name_id'].append(capability_name_id)
 
     # Everything else has to be inserted
-    for name, hash in caps.items():
+    for name, hash in list(caps.items()):
         inserts['server_id'].append(server_id)
         inserts['capability'].append(name)
         inserts['version'].append(hash['version'])
@@ -184,7 +184,7 @@ def _set_server_capabilities():
         'machine_info': {'version': 1, 'value': 1},
     }
     l = []
-    for name, hashval in capabilities.items():
+    for name, hashval in list(capabilities.items()):
         l.append("%s(%s)=%s" % (name, hashval['version'], hashval['value']))
 
     log_debug(4, "Setting capabilities", l)

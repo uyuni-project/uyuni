@@ -28,6 +28,7 @@
 
 %if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%global python_sitelib %{python3_sitelib}
 %global python3rhnroot %{python3_sitelib}/spacewalk
 %global pythonrhnroot %{python3_sitelib}/spacewalk
 %global build_py3 1
@@ -103,9 +104,10 @@ Requires:       pyliblzma
 %endif # %if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
 %endif # 0%{?suse_version} > 1320
 %if 0%{?pylint_check}
-BuildRequires:  spacewalk-python2-pylint
 %if 0%{?build_py3}
 BuildRequires:  spacewalk-python3-pylint
+%else
+BuildRequires:  spacewalk-python2-pylint
 %endif
 %endif
 BuildRequires:  /usr/bin/docbook2man
@@ -194,10 +196,11 @@ modules.
 %package sql-postgresql
 Summary:        Postgresql backend for Spacewalk
 Group:          Applications/Internet
-Requires:       python-psycopg2 >= 2.0.14-2
 %if 0%{?build_py3}
+Requires:       python3-psycopg2 >= 2.0.14-2
 Requires:       python3-spacewalk-usix
 %else
+Requires:       python3-psycopg2 >= 2.0.14-2
 Requires:       python2-spacewalk-usix
 %endif
 Provides:       %{name}-sql-virtual = %{version}-%{release}
@@ -211,11 +214,12 @@ Summary:        Basic code that provides Spacewalk Server functionality
 Group:          Applications/Internet
 Requires(pre): %{name}-sql = %{version}-%{release}
 Requires:       %{name}-sql = %{version}-%{release}
-Requires:       python-python-pam
 %if 0%{?build_py3}
 Requires:       python3-spacewalk-usix
+Requires:       python3-python-pam
 %else
 Requires:       python2-spacewalk-usix
+Requires:       python-python-pam
 %endif
 Requires:       spacewalk-config
 Obsoletes:      rhns-server < 5.3.0
@@ -422,9 +426,15 @@ Group:          Applications/Internet
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
-Requires:       python-dateutil
+%if 0%{?build_py3}
+Requires:       python3-python-dateutil
+Requires:       python3-gzipstream
+Requires:       python3-rhn-client-tools
+%else
+Requires:       python2-python-ateutil
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
+%endif
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 %if 0%{?suse_version}
@@ -486,10 +496,11 @@ Summary:        CDN tools
 Group:          Applications/Internet
 Requires:       %{m2crypto}
 Requires:       %{name}-server = %{version}-%{release}
-Requires:       python-argparse
 %if 0%{?build_py3}
+Requires:       python3-argparse
 Requires:       python3-spacewalk-usix
 %else
+Requires:       python2-argparse
 Requires:       python2-spacewalk-usix
 %endif
 Requires:       subscription-manager
@@ -514,7 +525,9 @@ done
 %install
 install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}
+install -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -d $RPM_BUILD_ROOT%{rhnconf}
+
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=%{pythonX}
 %if !0%{?with_oracle}
@@ -522,6 +535,7 @@ rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
 %endif
 
 %if 0%{?build_py3}
+install -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -d $RPM_BUILD_ROOT%{python2rhnroot}/common
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py \
     $RPM_BUILD_ROOT%{python2rhnroot}/
@@ -572,17 +586,12 @@ popd
 rm -f $RPM_BUILD_ROOT%{python2rhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{python2rhnroot}/common/__init__.py*
 %endif
-
-# prevent file conflict with spacewalk-usix
-rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py*
-rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
 %endif
 
 %check
-make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} PYTHON_BIN=%{pythonX} test || :
-%if 0%{?build_py3}
-make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python2_sitelib} PYTHON_BIN=python2 test || :
-%endif
+# Copy spacewalk-usix python files to allow unit tests to run
+cp %{pythonrhnroot}/common/usix* $RPM_BUILD_ROOT%{pythonrhnroot}/common/
+make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} PYTHON_BIN=%{pythonX} test
 
 %if 0%{?pylint_check}
 # check coding style
@@ -605,7 +614,15 @@ spacewalk-python2 $RPM_BUILD_ROOT%{python2rhnroot}/common \
 %endif
 %endif
 
+# prevent file conflict with spacewalk-usix
+rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py*
+rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
+
+# Remove spacewalk-usix python files used for running unit-tests
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py*
+%if 0%{?build_py3}
+rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__pycache__/usix*
+%endif
 
 %if !0%{?build_py3}
 if [ -x %py_libdir/py_compile.py ]; then

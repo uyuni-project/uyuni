@@ -82,7 +82,7 @@ class Table:
 
     def __init__(self, name, **kwargs):
         self.name = name
-        for k in kwargs.keys():
+        for k in list(kwargs.keys()):
             if k not in self.keywords:
                 raise TypeError("Unknown keyword attribute '%s'" % k)
         # Initialize stuff
@@ -102,7 +102,7 @@ class Table:
         # Sequence column - a column that is populated off a sequence
         self.sequenceColumn = None
 
-        for k, v in kwargs.items():
+        for k, v in list(kwargs.items()):
             datatype = self.keywords[k]
             if not isinstance(v, datatype):
                 raise TypeError("%s expected to be %s; got %s" % (
@@ -149,7 +149,7 @@ class Table:
         return attribute
 
     def getSeverityHash(self):
-        for field in self.fields.keys():
+        for field in list(self.fields.keys()):
             if field not in self.severityHash:
                 self.severityHash[field] = self.defaultSeverity
         return self.severityHash
@@ -297,7 +297,7 @@ class TableUpdate(BaseTableLookup):
         # should only have one element if the primary key has no nullable
         # fields
         blobValuesHash = {}
-        for key in self.whereclauses.keys():
+        for key in list(self.whereclauses.keys()):
             hash = {}
             for i in range(len(key)):
                 pk = self.pks[i]
@@ -339,7 +339,7 @@ class TableUpdate(BaseTableLookup):
         valuesHash, blobValuesHash = self._split_blob_values(values, blob_only=0)
         # And now do the actual update for non-blobs
         if self.otherfields:
-            for key, val in valuesHash.items():
+            for key, val in list(valuesHash.items()):
                 if not val[self.firstkey]:
                     # Nothing to do
                     continue
@@ -355,7 +355,7 @@ class TableUpdate(BaseTableLookup):
         # Now update BLOB fields
         template = "select %s from %s where %s for update"
         blob_fields_string = string.join(self.blob_fields, ", ")
-        for key, val in blobValuesHash.items():
+        for key, val in list(blobValuesHash.items()):
             statement = template % (blob_fields_string, self.table.name,
                                     self.whereclauses[key])
             h = self.dbmodule.prepare(statement)
@@ -366,7 +366,7 @@ class TableUpdate(BaseTableLookup):
                 if not row:
                     # XXX This should normally not happen
                     raise ValueError("BLOB query did not retrieve a value")
-                for k, v in blob_hash.items():
+                for k, v in list(blob_hash.items()):
                     blob = row[k]
                     len_v = len(v)
                     # If new value is shorter than old value, we have to trim
@@ -395,7 +395,7 @@ class TableDelete(TableLookup):
     def query(self, values):
         # Build the values hash
         valuesHash = {}
-        for key in self.whereclauses.keys():
+        for key in list(self.whereclauses.keys()):
             hash = {}
             for i in range(len(key)):
                 pk = self.pks[i]
@@ -415,8 +415,8 @@ class TableDelete(TableLookup):
             addHash(valuesHash[key], val)
 
         # And now do the actual delete
-        for key, val in valuesHash.items():
-            firstkey = val.keys()[0]
+        for key, val in list(valuesHash.items()):
+            firstkey = list(val.keys())[0]
             if not val[firstkey]:
                 # Nothing to do
                 continue
@@ -463,7 +463,7 @@ def executeStatement(statement, valuesHash, chunksize):
     count = 0
     while 1:
         tempdict = {}
-        for k, vals in valuesHash.items():
+        for k, vals in list(valuesHash.items()):
             if not vals:
                 # Empty
                 break
@@ -522,6 +522,6 @@ def sanitizeValue(value, datatype):
 def addHash(hasharray, hash):
     # hasharray is a hash of arrays
     # add hash's values to hasharray
-    for k, v in hash.items():
+    for k, v in list(hash.items()):
         if k in hasharray:
             hasharray[k].append(v)

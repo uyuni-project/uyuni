@@ -18,8 +18,8 @@
 
 import headerSource
 import time
-from importLib import Channel
-from backendLib import gmtime, localtime
+from .importLib import Channel
+from .backendLib import gmtime, localtime
 from spacewalk.common.usix import IntType, UnicodeType
 from spacewalk.common.stringutils import to_string
 
@@ -45,7 +45,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
 
         # XXX is seems to me that this is the place that 'source_rpm' is getting
         # set
-        for f in self.keys():
+        for f in list(self.keys()):
             field = f
             if f in self.tagMap:
                 field = self.tagMap[f]
@@ -126,7 +126,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
             'breaks': headerSource.rpmBreaks,
             'predepends': headerSource.rpmPredepends,
         }
-        for k, dclass in mapping.items():
+        for k, dclass in list(mapping.items()):
             l = []
             values = header[k]
             if values is not None:

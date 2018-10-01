@@ -126,7 +126,7 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
         self.__container = None
         # Reset all the containers, to make sure previous runs don't leave
         # garbage data
-        for container in self.container_dispatch.values():
+        for container in list(self.container_dispatch.values()):
             container.reset()
 
     def restoreParser(self):
@@ -319,7 +319,7 @@ class BaseItem:
 
     def populateFromAttributes(self, obj, sourceDict):
         # Populates dict with items from sourceDict
-        for key, value in sourceDict.items():
+        for key, value in list(sourceDict.items()):
             if key not in self.tagMap:
                 if key not in obj:
                     # Unsupported key
@@ -378,7 +378,7 @@ def _stringify(data):
 def _dict_to_utf8(d):
     # Convert the dictionary to have non-unocide key-value pairs
     ret = {}
-    for k, v in d.items():
+    for k, v in list(d.items()):
         if isinstance(k, usix.UnicodeType):
             k = k.encode('UTF8')
         if isinstance(v, usix.UnicodeType):

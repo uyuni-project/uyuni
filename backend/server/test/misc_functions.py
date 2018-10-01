@@ -179,10 +179,10 @@ class InvalidRoleError(Exception):
 def listdir(directory):
     directory = os.path.abspath(os.path.normpath(directory))
     if not os.access(directory, os.R_OK | os.X_OK):
-        print("Can't access %s." % (directory))
+        print(("Can't access %s." % (directory)))
         sys.exit(1)
     if not os.path.isdir(directory):
-        print("%s not valid." % (directory))
+        print(("%s not valid." % (directory)))
         sys.exit(1)
     packageList = []
     for f in os.listdir(directory):
@@ -202,7 +202,7 @@ def new_channel_dict(**kwargs):
 
     release = kwargs.get('release') or 'release-' + label
     os = kwargs.get('os') or 'Unittest Distro'
-    if kwargs.has_key('org_id'):
+    if 'org_id' in kwargs:
         org_id = kwargs['org_id']
     else:
         org_id = 'rhn-noc'
@@ -284,7 +284,7 @@ def build_sys_params_with_username(**kwargs):
         'password': 'no such password',
     }
     params.update(kwargs)
-    if params.has_key('token'):
+    if 'token' in params:
         del params['token']
     return params
 

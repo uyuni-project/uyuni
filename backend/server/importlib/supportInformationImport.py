@@ -10,7 +10,7 @@
 #
 # Support Information Import
 
-from importLib import GenericPackageImport
+from .importLib import GenericPackageImport
 from spacewalk.satellite_tools import syncCache
 
 class SupportInformationImport(GenericPackageImport):
@@ -23,10 +23,10 @@ class SupportInformationImport(GenericPackageImport):
         channelLabels = {}
         keywords = {}
         for item in self.batch:
-            if not channelLabels.has_key(item['channel']):
+            if item['channel'] not in channelLabels:
                 channelLabels[item['channel']] = None
                 self.backend.lookupChannels(channelLabels)
-            if not keywords.has_key(item['keyword']):
+            if item['keyword'] not in keywords:
                 keywords[item['keyword']] = self.backend.lookupKeyword(item['keyword'])
             pkg = self._cache.cache_get(item['pkgid'])
             if not pkg:

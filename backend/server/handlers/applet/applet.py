@@ -245,7 +245,7 @@ class Applet(rhnHandler):
         contents = {}
 
         for p in plist:
-            for k in p.keys():
+            for k in list(p.keys()):
                 if p[k] is None:
                     p[k] = ""
             p["nevr"] = "%s-%s-%s:%s" % (

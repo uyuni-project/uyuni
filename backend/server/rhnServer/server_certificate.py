@@ -33,8 +33,8 @@ except ImportError:
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.stringutils import to_string
-from server_lib import getServerSecret
-from server_lib import check_entitlement_by_machine_id
+from .server_lib import getServerSecret
+from .server_lib import check_entitlement_by_machine_id
 
 def gen_secret():
     """ Generate a secret """
@@ -166,7 +166,7 @@ class Certificate:
         else:
             s = sysid[0]
             del junk
-        if "system_id" not in s or not s.has_key("fields"):
+        if "system_id" not in s or "fields" not in s:
             log_error("Got certificate with missing entries: %s" % s)
             return -1
         # check the certificate some more
@@ -181,7 +181,7 @@ class Certificate:
 
         # at this point we know the certificate is sane enough for the
         # following processing
-        for k in s.keys():
+        for k in list(s.keys()):
             if k == "fields":
                 self.__fields = s[k]
                 continue

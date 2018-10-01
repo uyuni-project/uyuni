@@ -211,7 +211,7 @@ class ReadLockedFile(LockedFile):
     def get_fd(self, name, _user, _group, _mode):
         if not os.access(self.fname, os.R_OK):
             raise KeyError(name)
-        fd = open(self.fname, "r")
+        fd = open(self.fname, "rb")
 
         fcntl.lockf(fd.fileno(), fcntl.LOCK_SH)
 
@@ -237,7 +237,7 @@ class WriteLockedFile(LockedFile):
 
         # now we have the fd open, lock it
         fcntl.lockf(fd, fcntl.LOCK_EX)
-        return os.fdopen(fd, 'w')
+        return os.fdopen(fd, 'wb')
 
     def close_fd(self):
         # Set the file's mtime if necessary
@@ -257,12 +257,18 @@ class Cache:
         s = fd.read()
         fd.close()
 
+        if sys.version_info[0] >= 3 and isinstance(s, bytes):
+            s = s.decode('latin-1')
+
         return s
 
     def set(self, name, value, modified=None, user='root', group='root',
             mode=int('0755', 8)):
         fd = self.set_file(name, modified, user, group, mode)
 
+        if sys.version_info[0] >= 3:
+            if isinstance(value, str):
+                value = value.encode('latin-1')
         fd.write(value)
         fd.close()
 
@@ -358,7 +364,7 @@ class CompressedCache:
                  mode=int('0755', 8)):
         io = self.cache.set_file(name, modified, user, group, mode)
 
-        f = ClosingZipFile('w', io)
+        f = ClosingZipFile('wb', io)
         return f
 
 
@@ -371,13 +377,18 @@ class ObjectCache:
         pickled = self.cache.get(name, modified)
 
         try:
+            if sys.version_info[0] >= 3 and isinstance(pickled, str):
+                 pickled = pickled.encode('latin-1')
             return cPickle.loads(pickled)
         except cPickle.UnpicklingError:
             raise_with_tb(KeyError(name), sys.exc_info()[2])
 
     def set(self, name, value, modified=None, user='root', group='root',
             mode=int('0755', 8)):
-        pickled = cPickle.dumps(value, -1)
+        if sys.version_info[0] >= 3:
+            pickled = cPickle.dumps(value, -1).decode('latin-1')
+        else:
+            pickled = cPickle.dumps(value, -1)
         self.cache.set(name, pickled, modified, user, group, mode)
 
     def has_key(self, name, modified=None):

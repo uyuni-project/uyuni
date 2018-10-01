@@ -21,10 +21,10 @@ def handle(environ, start_response, server, component_type, servertype="spacewal
     # wsgi seems to capitalize incoming headers and add HTTP- to the front :/
     # so we strip out the first 5 letters, and transform it into what we want.
     replacements = {'_': '-', 'Rhn': 'RHN', 'Md5Sum': 'MD5sum', 'Xml': 'XML', 'Actualuri': 'ActualURI'}
-    for key in environ.keys():
+    for key in list(environ.keys()):
         if key[:5] == "HTTP_":
             new_key = key[5:].title()
-            for k, v in replacements.items():
+            for k, v in list(replacements.items()):
                 new_key = new_key.replace(k, v)
             environ[new_key] = environ[key]
 

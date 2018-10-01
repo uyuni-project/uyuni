@@ -19,8 +19,8 @@
 #
 
 import sys
-from backend import Backend
-from backendLib import DBint, DBstring, DBdateTime, Table, \
+from .backend import Backend
+from .backendLib import DBint, DBstring, DBdateTime, Table, \
     TableCollection, DBblob
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
@@ -688,7 +688,7 @@ class PostgresqlBackend(OracleBackend):
         try:
             self.dbmodule.execute_secondary(lock_sql)
             h = self.dbmodule.prepare_secondary(sql)
-            for name, version in capabilityHash.keys():
+            for name, version in list(capabilityHash.keys()):
                 ver = version
                 if version == '':
                     ver = None
@@ -712,7 +712,7 @@ class PostgresqlBackend(OracleBackend):
         try:
             self.dbmodule.execute_secondary(lock_sql)
             h = self.dbmodule.prepare_secondary(sql)
-            for k in checksumHash.keys():
+            for k in list(checksumHash.keys()):
                 ctype, csum = k
                 if csum != '':
                     h.execute(ctype=ctype, csum=csum)

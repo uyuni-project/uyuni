@@ -143,7 +143,7 @@ class apacheRequest:
             if sys.version_info[0] == 3:
                 exctype = sys.exc_info()[0]
             else:
-                exctype = sys.exc_type
+                exctype = sys.exc_info()[0]
 
             if exctype == UnknownXML:
                 fault = -1
@@ -208,7 +208,7 @@ class apacheRequest:
         # it will cause AuditLogException below.
         try:
             auditlog_xmlrpc(func, method, params, self.req)
-        except AuditLogException, e:
+        except AuditLogException as e:
             # if logging didn't succeed, cancel the whole action
             rhnSQL.rollback()
             Traceback(method, self.req,
@@ -405,7 +405,7 @@ class apacheRequest:
         # we're about done here, patch up the headers
         output.process(response)
         # Copy the rest of the fields
-        for k, v in output.headers.items():
+        for k, v in list(output.headers.items()):
             if string.lower(k) == 'content-type':
                 # Content-type
                 self.req.content_type = v
@@ -656,14 +656,14 @@ class GetHandler(apacheRequest):
                 self.req.headers_out.add("X-RHN-Fault-String",
                                              string.strip(line))
             # And then send all the other things
-            for k, v in rhnFlags.get('outputTransportOptions').items():
+            for k, v in list(rhnFlags.get('outputTransportOptions').items()):
                 setHeaderValue(self.req.headers_out, k, v)
             return retcode
         # Otherwise we're pretty much fine with the standard response
         # handler
 
         # Copy the fields from the transport options, if necessary
-        for k, v in rhnFlags.get('outputTransportOptions').items():
+        for k, v in list(rhnFlags.get('outputTransportOptions').items()):
             setHeaderValue(self.req.headers_out, k, v)
         # and jump into the base handler
         return apacheRequest.response(self, response)

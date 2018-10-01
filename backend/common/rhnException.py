@@ -347,7 +347,7 @@ class rhnFault(Exception):
 
         # update the templateValues in the module
         if templateOverrides:
-            for label in templateOverrides.keys():
+            for label in list(templateOverrides.keys()):
                 # only care about values we've defined defaults for...
                 if label in templateValues:
                     templateValues[label] = templateOverrides[label]

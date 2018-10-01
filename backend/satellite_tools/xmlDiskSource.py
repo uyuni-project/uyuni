@@ -406,6 +406,6 @@ class ClonedChannelsDiskSource(DiskSource):
 if __name__ == '__main__':
     # TEST CODE
     s = ChannelDiskSource("/tmp")
-    print(s.list())
+    print((s.list()))
     s.setChannel("redhat-linux-i386-7.2")
-    print(s.load())
+    print((s.load()))

@@ -75,7 +75,7 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         # Init the database connection
         rhnSQL.initDB()
         use_session = 0
-        if self.field_data.has_key('Auth-Session'):
+        if 'Auth-Session' in self.field_data:
             session_token = self.field_data['Auth-Session']
             use_session = 1
         else:

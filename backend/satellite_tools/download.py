@@ -17,15 +17,17 @@ import os
 import sys
 import re
 import time
-from Queue import Queue, Empty
 from threading import Thread, Lock
 try:
     #  python 2
     import urlparse
+    from Queue import Queue, Empty
+    from urllib import quote
 except ImportError:
     #  python3
     import urllib.parse as urlparse # pylint: disable=F0401,E0611
-from urllib import quote
+    from queue import Queue, Empty
+    from urllib.parse import quote
 import pycurl
 from urlgrabber.grabber import URLGrabberOptions, PyCurlFileObject, URLGrabError
 from spacewalk.common.checksum import getFileChecksum
@@ -309,7 +311,7 @@ class ThreadedDownloader:
 
     def run(self):
         size = 0
-        for queue in self.queues.values():
+        for queue in list(self.queues.values()):
             size += queue.qsize()
         if size <= 0:
             return

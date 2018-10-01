@@ -15,7 +15,10 @@
 import os
 import shutil
 import sys
-import xmlrpclib
+try:
+    import xmlrpc.client as xmlrpclib
+except ImportError:
+    import xmlrpclib
 import datetime
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -38,7 +41,7 @@ class RemoteApi:
             self.username = username
             self.password = password
             self.__login()
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             raise UserError(e.faultString)
 
 
@@ -59,7 +62,7 @@ class RemoteApi:
     def list_channel_labels(self):
         self.auth_check()
         key = "chan_labels"
-        if self.cache.has_key(key):
+        if key in self.cache:
             return self.cache[key]
 
         chan_list = self.client.channel.listAllChannels(self.auth_token)
@@ -91,7 +94,7 @@ def __serverCheck(labels, unsubscribe, base_channel, username, password):
         return 0
 
     if unsubscribe:
-        server_ids = map(lambda s: s['id'], server_list)
+        server_ids = [s['id'] for s in server_list]
         xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
         xmlrpc.unsubscribe_channels(server_ids, base_channel, labels)
         return __unsubscribeServers(labels)
@@ -100,10 +103,10 @@ def __serverCheck(labels, unsubscribe, base_channel, username, password):
     print("If you would like to automatically unsubscribe these systems, simply use the --unsubscribe flag.\n")
     print("The following systems were found to be subscribed:")
 
-    print("%-8s %-14s name" % ('org_id', 'id'))
-    print("-" * 32)
+    print(("%-8s %-14s name" % ('org_id', 'id')))
+    print(("-" * 32))
     for server in server_list:
-        print("%-8s %-14s %s" % (server['org_id'], server['id'], server['name']))
+        print(("%-8s %-14s %s" % (server['org_id'], server['id'], server['name'])))
 
     return len(server_list)
 
@@ -131,10 +134,10 @@ def __unsubscribeServers(labels):
         else:
             channel_counts[i['label']] = 1
     print("\nThe following channels will have their systems unsubscribed:")
-    channel_list = channel_counts.keys()
+    channel_list = list(channel_counts.keys())
     channel_list.sort()
     for i in channel_list:
-        print("%-40s %-8s" % (i, channel_counts[i]))
+        print(("%-40s %-8s" % (i, channel_counts[i])))
 
     pb = ProgressBar(prompt='Unsubscribing:    ', endTag=' - complete',
                      finalSize=len(server_channel_list), finalBarLength=40, stream=sys.stdout)
@@ -166,12 +169,12 @@ def __kickstartCheck(labels):
     if not kickstart_list:
         return 0
 
-    print("The following kickstarts are associated with one of the specified channels. " +
-          "Please remove these or change their associated base channel.\n")
-    print("%-8s label" % 'org_id')
-    print("-" * 20)
+    print(("The following kickstarts are associated with one of the specified channels. " +
+          "Please remove these or change their associated base channel.\n"))
+    print(("%-8s label" % 'org_id'))
+    print(("-" * 20))
     for kickstart in kickstart_list:
-        print("%-8s %s" % (kickstart['org_id'], kickstart['label']))
+        print(("%-8s %s" % (kickstart['org_id'], kickstart['label'])))
 
     return len(kickstart_list)
 
@@ -444,7 +447,7 @@ def _delete_rpms(packageIds):
         return
     group = 300
     toDel = packageIds[:]
-    print "Deleting package metadata (" + str(len(toDel)) + "):"
+    print("Deleting package metadata (" + str(len(toDel)) + "):")
     pb = ProgressBar(prompt='Removing:         ', endTag=' - complete',
                      finalSize=len(packageIds), finalBarLength=40, stream=sys.stdout)
     pb.printAll(1)
@@ -528,7 +531,7 @@ def _get_package_paths(package_ids, sources=0):
             continue
         pdict[row['path']] = None
 
-    return pdict.keys()
+    return list(pdict.keys())
 
 
 def _delete_ks_files(channel_labels):

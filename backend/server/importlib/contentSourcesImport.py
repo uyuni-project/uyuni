@@ -14,7 +14,7 @@
 #
 #
 
-from importLib import Import, Channel
+from .importLib import Import, Channel
 from spacewalk.server.rhnChannel import channel_info
 
 
@@ -43,7 +43,7 @@ class ContentSourcesImport(Import):
     def submit(self):
         try:
             self.backend.processContentSources(self.batch)
-            for channel in self.channels_to_link.values():
+            for channel in list(self.channels_to_link.values()):
                 self.backend.processChannelContentSources(channel)
         except:
             self.backend.rollback()

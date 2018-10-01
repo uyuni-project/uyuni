@@ -87,7 +87,7 @@ def main():
 
     sobj = rhnServer.get(systemid)
     server_id = sobj.getid()
-    print("Registered server", server_id)
+    print(("Registered server", server_id))
 
     return 0
 

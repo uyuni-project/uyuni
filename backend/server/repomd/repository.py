@@ -37,7 +37,7 @@ from spacewalk.common.rhnConfig import CFG
 
 import mapper
 import view
-from domain import RepoMD
+from .domain import RepoMD
 from spacewalk.server import rhnChannel
 
 # One meg
@@ -52,7 +52,7 @@ comps_mapping = {
     'rhel-x86_64-server-cluster-5': 'rhn/kickstart/ks-rhel-x86_64-server-5/Cluster/repodata/comps-rhel5-cluster.xml',
     'rhel-x86_64-server-cluster-storage-5': 'rhn/kickstart/ks-rhel-x86_64-server-5/ClusterStorage/repodata/comps-rhel5-cluster-st.xml',
 }
-for k in comps_mapping.keys():
+for k in list(comps_mapping.keys()):
     for arch in ('i386', 'ia64', 's390x', 'ppc'):
         comps_mapping[k.replace('x86_64', arch)] = comps_mapping[k].replace('x86_64', arch)
 

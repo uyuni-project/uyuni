@@ -109,7 +109,7 @@ class Up2date(rhnHandler):
         # Duplicate these values in the headers so that the proxy can
         # intercept and cache them without parseing the xmlrpc.
         transport = rhnFlags.get('outputTransportOptions')
-        for k, v in loginDict.items():
+        for k, v in list(loginDict.items()):
             # Special case for channels
             if string.lower(k) == string.lower('X-RHN-Auth-Channels'):
                 # Concatenate the channel information column-separated

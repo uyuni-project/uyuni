@@ -19,10 +19,10 @@
 import rpm
 import sys
 import os.path
-from importLib import GenericPackageImport, IncompletePackage, \
+from .importLib import GenericPackageImport, IncompletePackage, \
     Import, InvalidArchError, InvalidChannelError, \
     IncompatibleArchError
-from mpmSource import mpmBinaryPackage
+from .mpmSource import mpmBinaryPackage
 from spacewalk.common import rhn_pkg
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.server import taskomatic
@@ -66,7 +66,7 @@ class ChannelPackageSubscription(GenericPackageImport):
         self.backend.lookupChannels(self.channels)
         # Initialize self.channel_package_arch_compat
         self.channel_package_arch_compat = {}
-        for channel, channel_row in self.channels.items():
+        for channel, channel_row in list(self.channels.items()):
             if not channel_row:
                 # Unsupported channel
                 continue

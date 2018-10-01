@@ -18,9 +18,9 @@
 
 import time
 import string
-from importLib import File, Dependency, ChangeLog, Channel, \
+from .importLib import File, Dependency, ChangeLog, Channel, \
     IncompletePackage, Package, SourcePackage
-from backendLib import gmtime, localtime
+from .backendLib import gmtime, localtime
 from spacewalk.common.usix import ListType, TupleType, IntType, LongType, StringType, UnicodeType
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.stringutils import to_string
@@ -45,7 +45,7 @@ class rpmPackage(IncompletePackage):
 
         # XXX is seems to me that this is the place that 'source_rpm' is getting
         # set
-        for f in self.keys():
+        for f in list(self.keys()):
             field = f
             if f in self.tagMap:
                 field = self.tagMap[f]
@@ -194,11 +194,11 @@ class rpmBinaryPackage(Package, rpmPackage):
             'recommends': rpmRecommends,
         }
 
-        for k, v in mapping.items():
+        for k, v in list(mapping.items()):
             self._populateTag(header, k, v)
-        for k, v in old_weak_deps_mapping.items():
+        for k, v in list(old_weak_deps_mapping.items()):
             self._populateTag(header, k, v)
-        for k, v in new_weak_deps_mapping.items():
+        for k, v in list(new_weak_deps_mapping.items()):
             self._populateTag(header, k, v)
 
     def _populateChangeLog(self, header):
@@ -223,7 +223,7 @@ class rpmBinaryPackage(Package, rpmPackage):
         fix = {}
         itemcount = 0
 
-        for f, rf in Class.tagMap.items():
+        for f, rf in list(Class.tagMap.items()):
             v = sanitizeList(header[rf])
             ic = len(v)
             if not itemcount or ic < itemcount:
@@ -232,12 +232,12 @@ class rpmBinaryPackage(Package, rpmPackage):
 
         # Now create the array of objects
         if self[tag] is None:
-	  self[tag] = []
+            self[tag] = []
 
         unique_deps = []
         for i in range(itemcount):
             hash = {}
-            for k, v in fix.items():
+            for k, v in list(fix.items()):
                 # bugzilla 426963: fix for rpm v3 obsoletes header with
                 # empty version and flags values
                 if not len(v) and k == 'version':
@@ -249,7 +249,7 @@ class rpmBinaryPackage(Package, rpmPackage):
 
             # for the old weak dependency tags
             # RPMSENSE_STRONG(1<<27) indicate recommends; if not set it is suggests only
-	    if Class in [rpmOldRecommends, rpmOldSupplements, rpmOldSuggests, rpmOldEnhances]:
+            if Class in [rpmOldRecommends, rpmOldSupplements, rpmOldSuggests, rpmOldEnhances]:
                 if tag in ['recommends', 'supplements'] and not(hash['flags'] & (1 << 27)):
                     continue
                 if tag in ['suggests', 'enhances'] and (hash['flags'] & (1 << 27)):

@@ -105,7 +105,7 @@ class ActivationKey:
 
     def set_entitlement_level(self, val):
         entitlements = {}
-        for k, v in val.items():
+        for k, v in list(val.items()):
             entitlement_level_id = self._lookup_entitlement_level(k)
             entitlements[entitlement_level_id] = k
 
@@ -139,7 +139,7 @@ class ActivationKey:
     def _set(self, name, val):
         if self._row_reg_token is None:
             self._row_reg_token = rhnSQL.Row('rhnRegToken', 'id')
-            token_id = rhnSQL.Sequence('rhn_reg_token_seq').next()
+            token_id = next(rhnSQL.Sequence('rhn_reg_token_seq'))
             self._row_reg_token.create(token_id)
             self._row_reg_token['usage_limit'] = None
 
@@ -193,7 +193,7 @@ class ActivationKey:
         s = hashlib.new('sha1')
         s.update(str(os.getpid()))
         for field in ['org_id', 'user_id', 'server_id']:
-            if self._row_reg_token.has_key(field):
+            if field in self._row_reg_token:
                 val = self._row_reg_token[field]
             s.update(str(val))
         s.update("%.8f" % time.time())
@@ -213,7 +213,7 @@ class ActivationKey:
     def _save(self):
         h = self._row_reg_token
         k = 'entitlement_level'
-        if h.has_key(k):
+        if k in h:
             entitlements = h[k]
             del h.data[k]
         else:
@@ -314,8 +314,8 @@ class ActivationKey:
         "diffs src and dst; returns a list of (inserts, deletes)"
         inserts = []
         h1 = h1.copy()
-        for k in h2.keys():
-            if not h1.has_key(k):
+        for k in list(h2.keys()):
+            if k not in h1:
                 inserts.append(k)
                 continue
             del h1[k]

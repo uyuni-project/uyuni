@@ -60,7 +60,7 @@ class Tests1(unittest.TestCase):
         self.assertEqual(len(args), len(ret))
         self.assertEqual(args[0], ret[0])
         self.assertEqual(args[1], ret[1])
-        self.failUnless(isinstance(ret[2], usix.FloatType))
+        self.assertTrue(isinstance(ret[2], usix.FloatType))
 
     def test_procedure_2(self):
         """Run the same stored procedure twice. This should excerise the
@@ -81,7 +81,7 @@ class Tests1(unittest.TestCase):
         table_name = self.table_name + "_1"
         rhnSQL.execute("create table %s (id int)" % table_name)
         tables = self._list_tables()
-        self.failUnless(string.upper(table_name) in tables,
+        self.assertTrue(string.upper(table_name) in tables,
                         "Table %s not created" % table_name)
         rhnSQL.execute("drop table %s" % table_name)
 
