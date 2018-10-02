@@ -117,13 +117,9 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
     let dependingChannelIds;
     if (select) {
       dependingChannelIds = this.state.requiredChannels.get(channelId) || [];
-      console.log('dependingChannelIds');
-      console.log(dependingChannelIds);
     }
     else { // unselect
       dependingChannelIds = this.state.requiredByChannels.get(channelId) || [];
-      console.log('dependingByChannelIds');
-      console.log(dependingChannelIds);
     }
     return dependingChannelIds ? [channelId, ...Array.from(dependingChannelIds).filter(c => c !== channelId)] : [channelId];
   }
