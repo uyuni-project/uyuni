@@ -29,7 +29,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsState, 
     super(props);
     
     ['getDefaultBase', 'fetchActivationKeyChannels', 'fetchBaseChannels', 'fetchChildChannels',
-    'handleResponseError', 'handleBaseChange', 'handleChildChange']
+    'handleResponseError', 'handleBaseChange', 'handleChildChange', 'selectChildChannels']
     .forEach(method => this[method] = this[method].bind(this));
 
     this.state = {
@@ -136,14 +136,16 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsState, 
   }
 
   handleChildChange(event: SyntheticInputEvent<*>) {
-    const childId = parseInt(event.target.value);
-    const isSelected = event.target.checked;
+    this.selectChildChannels([parseInt(event.target.value)], event.target.checked);
+  }
+
+  selectChildChannels(channelIds: Array<number>, selectedFlag: Boolean) {
     var selectedIds = [...this.state.currentChildSelectedIds];
-    if (isSelected) {
-      selectedIds = [childId, ...selectedIds];
+    if (selectedFlag) {
+      selectedIds = [...channelIds.filter(c => !selectedIds.includes(c)), ...selectedIds];
     }
     else {
-      selectedIds = [...selectedIds.filter(c => c != childId)];
+      selectedIds = [...selectedIds.filter(c => !channelIds.includes(c))];
     }
     this.setState({currentChildSelectedIds: selectedIds});
   }
@@ -167,7 +169,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsState, 
                   base={g.base}
                   showBase={this.state.availableChannels.length > 1}
                   selectedChannelsIds={this.state.currentChildSelectedIds}
-                  handleChannelChange={this.handleChildChange}
+                  selectChannels={this.selectChildChannels}
                   saveState={(state) => {this.state["ChildChannelsForBase" + g.base.id] = state;}}
                   loadState={() => this.state["ChildChannelsForBase" + g.base.id]}
               />
