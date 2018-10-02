@@ -57,49 +57,36 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node.run('systemctl restart salt-minion', false) if minion == 'ceos-minion'
 end
 
-When(/^I list "(.*?)" keys at Salt Master$/) do |key_type|
-  $output, return_code = $server.run("salt-key --list #{key_type}", false)
-  $output.strip
-end
-
-Then(/^I wait until the list of "(.*?)" keys contains the hostname of "(.*?)"$/) do |key_type, minion|
+When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   node = get_target(minion)
+  key_name = node.full_hostname
   cmd = "salt-key --list #{key_type}"
-  # we should get the Salt key in a reasonable delay
-  # therefore we try with a short, non-standard timeout
-  key_timeout = 10
+  output = ''
   begin
-    Timeout.timeout(key_timeout) do
+    Timeout.timeout(key_timeout.to_i) do
       loop do
-        $output, return_code = $server.run(cmd, false)
-        break if return_code.zero? && $output.include?(node.full_hostname)
+        output, return_code = $server.run(cmd, false)
+        break if return_code.zero? && output.include?(key_name)
         sleep 1
       end
     end
   rescue Timeout::Error
-    raise "Minion #{node.full_hostname} is not listed among #{key_type} keys on Salt master:\n#{$output}"
+    raise "Minion #{key_name} is not listed among #{key_type} keys on Salt master after #{key_timeout} seconds"
   end
 end
 
-When(/^I wait until Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
-  steps %(
-    When I list "#{key_type}" keys at Salt Master
-    And I wait until the list of "#{key_type}" keys contains the hostname of "#{minion}"
-  )
-end
-
-When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
+When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        $output, _code = target.run('salt-call -lquiet saltutil.running')
-        break if $output == "local:\n"
+        output, _code = target.run('salt-call -lquiet saltutil.running')
+        break if output == "local:\n"
         sleep 3
       end
     end
   rescue Timeout::Error
-    raise "a Salt job is still running on #{minion} after timeout"
+    raise "A Salt job is still running on #{minion} after timeout"
   end
 end
 
@@ -112,28 +99,32 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
   )
 end
 
-When(/^I delete "(.*?)" key in the Salt master$/) do |minion|
+When(/^I delete "([^"]*)" key in the Salt master$/) do |minion|
   node = get_target(minion)
-  $output, _code = $server.run("salt-key -y -d #{node.full_hostname}", false)
+  key_name = node.full_hostname
+  $output, _code = $server.run("salt-key -y -d #{key_name}", false)
 end
 
-When(/^I accept "(.*?)" key in the Salt master$/) do |minion|
+When(/^I accept "([^"]*)" key in the Salt master$/) do |minion|
   node = get_target(minion)
-  $server.run("salt-key -y --accept=#{node.full_hostname}")
+  key_name = node.full_hostname
+  $server.run("salt-key -y --accept=#{key_name}")
 end
 
-When(/^I reject "(.*?)" key in the Salt master$/) do |minion|
+When(/^I reject "([^"]*)" key in the Salt master$/) do |minion|
   node = get_target(minion)
-  $server.run("salt-key -y --reject=#{node.full_hostname}")
+  key_name = node.full_hostname
+  $server.run("salt-key -y --reject=#{key_name}")
 end
 
 When(/^I delete all keys in the Salt master$/) do
   $server.run('salt-key -y -D')
 end
 
-When(/^I get OS information of "(.*?)" from the Master$/) do |minion|
+When(/^I get OS information of "([^"]*)" from the Master$/) do |minion|
   node = get_target(minion)
-  $output, _code = $server.run("salt #{node.full_hostname} grains.get osfullname")
+  key_name = node.full_hostname
+  $output, _code = $server.run("salt #{key_name} grains.get osfullname")
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
