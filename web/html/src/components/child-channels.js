@@ -5,6 +5,7 @@ const React = require('react');
 const Network = require('../utils/network');
 const {Loading} = require('./loading');
 const ChannelUtils = require('../utils/channels');
+const {ChannelAnchorLink} = require("./links");
 
 type ChildChannelsProps = {
   key: number,
@@ -154,6 +155,7 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
                       <span className='mandatory-tag-base' title={'This channel is mandatory'}>{t('mandatory')}</span>
                       : null
                   }
+                  <ChannelAnchorLink id={c.id} newWindow={true}/>
                 </div>
               )
           })
