@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.TestUtils;
 
+import java.util.UUID;
+
 /**
  * A factory for VirtualInstance objects.
  *
@@ -45,7 +47,7 @@ public class VirtualInstanceManufacturer {
     private VirtualInstance createVirtualInstance(VirtualInstanceState state) {
         VirtualInstance guest = new VirtualInstance();
         String unique = TestUtils.randomString();
-        guest.setUuid(unique);
+        guest.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
         guest.setName(unique);
         guest.setType(VirtualInstanceFactory.getInstance().getParaVirtType());
         guest.setTotalMemory(new Long(1024 * DEFAULT_GUEST_RAM_MB));
