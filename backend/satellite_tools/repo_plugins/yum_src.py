@@ -169,6 +169,8 @@ class ContentSource(object):
 
             if yb_cfg.has_section(self.name):
                 section_name = self.name
+            elif yb_cfg.has_section(channel_label):
+                section_name = channel_label
             elif yb_cfg.has_section('main'):
                 section_name = 'main'
 
