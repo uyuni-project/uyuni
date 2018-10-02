@@ -13,6 +13,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.2",
     "event-stream": "^4.0.0",
     "license-checker-webpack-plugin": "^0.0.4",
     "shelljs": "^0.8.2",
