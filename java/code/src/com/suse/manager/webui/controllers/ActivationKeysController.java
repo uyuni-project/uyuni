@@ -50,6 +50,7 @@ public class ActivationKeysController {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
+
     private static String withActivationKey(Request request, Response response,
                                             User user, Function<ActivationKey, String> handler) {
         Long activationKeyId;
@@ -84,10 +85,24 @@ public class ActivationKeysController {
         });
     }
 
+    /**
+     * Get a list of base {@link Channel} visible to the current user
+     *
+     * @param user the current user
+     * @return the list of base Channel the user can access
+     */
     public static List<Channel> getPossibleBaseChannels(User user) {
         return ChannelFactory.listSubscribableBaseChannels(user);
     }
 
+    /**
+     * Get available base channels for a user.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
     public static String getAccessibleBaseChannels(Request request, Response response, User user) {
         return json(response, ResultJson.success(
                 getPossibleBaseChannels(user).stream()
@@ -120,6 +135,14 @@ public class ActivationKeysController {
         return handler.apply(channel);
     }
 
+    /**
+     * Get the child channel set for a certain base channel
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return the json response
+     */
     public static String getChildChannelsByBaseId(Request request, Response response, User user) {
         List<ChannelsJson> jsonChannels = new LinkedList<ChannelsJson>();
 
@@ -135,6 +158,13 @@ public class ActivationKeysController {
         }
     }
 
+    /**
+     * Generate a {@link ChannelsJson} object with all accessible child channels for the given base channel
+     *
+     * @param base the base channel
+     * @param user the current user
+     * @return the ChannelsJson object containing all base:children channels
+     */
     public static ChannelsJson generateChannelJson(Channel base, User user) {
         List<Channel> children = ChannelFactory.getAccessibleChildChannels(base, user);
         Map<Long, Boolean> recommendedFlags = ChannelManager.computeChannelRecommendedFlags(base, children.stream());
