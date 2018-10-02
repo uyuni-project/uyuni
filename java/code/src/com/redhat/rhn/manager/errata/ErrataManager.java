@@ -1775,9 +1775,11 @@ public class ErrataManager extends BaseManager {
         // if required, check that all specified errata ids are applicable
         // throw Exception if that's not the case
         if (!onlyRelevant) {
-            boolean allRelevant = errataIds.stream()
-                .allMatch(eid -> serverApplicableErrataMap.values().stream()
-                    .allMatch(eids -> eids.contains(eid)));
+            boolean allRelevant = errataIds.isEmpty() ||
+                    (errataIds.stream()
+                    .allMatch(eid -> serverApplicableErrataMap.values().stream()
+                    .allMatch(eids -> eids.contains(eid))) &&
+                    !serverApplicableErrataMap.isEmpty());
 
             if (!allRelevant) {
                 throw new InvalidErrataException();
