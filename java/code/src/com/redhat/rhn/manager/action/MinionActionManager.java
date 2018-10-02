@@ -18,9 +18,9 @@ import static java.time.ZonedDateTime.now;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -32,8 +32,6 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 
 /**
  * Utility class for Actions related to minions.
@@ -101,15 +99,12 @@ public class MinionActionManager {
 
         if (user.getOrg().getOrgConfig().isStagingContentEnabled()) {
 
-            List<Long> minionServerIds = (List<Long>) HibernateFactory.getSession()
-                    .getNamedQuery("Action.findMinionIds")
-                    .setParameter("id", action.getId()).getResultList().stream()
-                    .collect(Collectors.toList());
+             List<MinionSummary> minionSummaries = MinionServerFactory.findMinionSummaries(action.getId());
 
             ZonedDateTime earliestAction =
                     action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
 
-            if (earliestAction.isAfter(now()) && !minionServerIds.isEmpty()) {
+            if (earliestAction.isAfter(now()) && !minionSummaries.isEmpty()) {
 
                 final float saltContentStagingAdvance =
                         ConfigDefaults.get().getSaltContentStagingAdvance();
@@ -145,24 +140,17 @@ public class MinionActionManager {
                 if (!stagingWindowIsAlreadyEnded && stagingWindowStartIsBeforeAction &&
                         (stagingWindowEndTime.isBefore(earliestAction) ||
                                 stagingWindowEndTime.isEqual(earliestAction))) {
-                    for (Long minionServerId : minionServerIds) {
+                    for (MinionSummary minionSummary : minionSummaries) {
                         ZonedDateTime stagingTime =
                                 stagingWindowStartTime.plus(
                                         (long) (SECONDS.between(stagingWindowStartTime,
                                                 stagingWindowEndTime) * Math.random()),
                                         SECONDS);
-                        if (MinionServerFactory.lookupById(minionServerId).get()
-                                .getContactMethod().getLabel().equals("default")) {
-                            // schedule an action only for non ssh-minions
-                            // ssh-minions don't have to call normal salt
-                            // but rather SSHPush Taskomatic job
-
                             log.info("Detected install/update action (id=" +
                                     action.getId() + "): " +
                                     "scheduling staging job for minion server id: " +
-                                    minionServerId + " at " + stagingTime);
-                            scheduleActionData.put(minionServerId, stagingTime);
-                        }
+                                    minionSummary.getServerId() + " at " + stagingTime);
+                            scheduleActionData.put(minionSummary.getServerId(), stagingTime);
                     }
                 }
             }
