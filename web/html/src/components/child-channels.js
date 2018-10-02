@@ -16,14 +16,16 @@ type ChildChannelsProps = {
   selectedChannelsIds: Array<number>,
   selectChannels: Function,
   saveState: Function,
-  loadState: Function
+  loadState: Function,
+  collapsed: Boolean
 }
 
 type ChildChannelsState = {
   requiredChannels: Map<number, Array<number>>,
   requiredByChannels: Map<number, Array<number>>,
   mandatoryChannelsRaw: Map,
-  dependencyDataAvailable: Boolean
+  dependencyDataAvailable: Boolean,
+  collapsed: Boolean
 }
 
 class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsProps> {
@@ -31,14 +33,15 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
     super(props);
 
     ['fetchMandatoryChannelsByChannelIds', 'handleChannelChange', 'dependenciesTooltip',
-    'toggleRecommended', 'areRecommendedChildrenSelected', 'selectChannelWithDependencies']
+    'toggleRecommended', 'areRecommendedChildrenSelected', 'selectChannelWithDependencies', 'toggleChannelVisibility']
     .forEach(method => this[method] = this[method].bind(this));
 
     this.state = {
       requiredChannels: new Map(),
       requiredByChannels: new Map(),
       mandatoryChannelsRaw: new Map(),
-      dependencyDataAvailable: false
+      dependencyDataAvailable: false,
+      collapsed: this.props.collapsed || true
     }
   }
 
@@ -54,34 +57,42 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
         this.state = this.props.loadState();
       }
     }
-
-    // fetch dependencies data for all child channels and base channel as well
-    const needDepsInfoChannels = this.props.base && this.props.base.id != -1 ?
-        [this.props.base.id, ...this.props.channels.map(c => c.id)]
-      : this.props.channels.map(c => c.id);
-    this.fetchMandatoryChannelsByChannelIds(needDepsInfoChannels);
+    this.fetchMandatoryChannelsByChannelIds();
   }
 
-  fetchMandatoryChannelsByChannelIds(channelIds: Array<number>) {
-    const mandatoryChannelsNotCached = channelIds.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
-    if(mandatoryChannelsNotCached.length > 0) {
-      Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
-        .then((data : JsonResult<Map<number, Array<number>>>) => {
-          const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
-          let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.collapsed != this.state.collapsed && !this.state.collapsed) {
+      this.fetchMandatoryChannelsByChannelIds();
+    }
+  }
 
-          this.setState({
-            mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
-            requiredChannels,
-            requiredByChannels,
-            dependencyDataAvailable: true,
-          });
+  fetchMandatoryChannelsByChannelIds() {
+    if(!this.state.collapsed) {
+      // fetch dependencies data for all child channels and base channel as well
+      const needDepsInfoChannels = this.props.base && this.props.base.id != -1 ?
+        [this.props.base.id, ...this.props.channels.map(c => c.id)]
+        : this.props.channels.map(c => c.id);
+
+      const mandatoryChannelsNotCached = needDepsInfoChannels.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
+      if(mandatoryChannelsNotCached.length > 0) {
+        Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
+          .then((data : JsonResult<Map<number, Array<number>>>) => {
+            const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
+            let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
+
+            this.setState({
+              mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
+              requiredChannels,
+              requiredByChannels,
+              dependencyDataAvailable: true,
+            });
+          })
+          .catch(this.handleResponseError);
+      } else {
+        this.setState({
+          dependencyDataAvailable: true,
         })
-        .catch(this.handleResponseError);
-    } else {
-      this.setState({
-        dependencyDataAvailable: true,
-      })
+      }
     }
   }
 
@@ -154,6 +165,10 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
     return selectedRecommendedChildren.length > 0 && unselectedRecommendedChildren.length == 0;
   }
 
+  toggleChannelVisibility() {
+    this.setState({collapsed: !this.state.collapsed});
+  }
+
   render() {
     let channels;
     if(!this.state.dependencyDataAvailable) {
@@ -183,7 +198,6 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
                       onChange={this.handleChannelChange}
                   />
                   {
-                    /** HACK **/
                     // add an hidden carbon-copy of the disabled input since the disabled one will not be included in the form submit
                     isDisabled ?
                       <input type='checkbox' value={c.id} name='childChannels'
@@ -217,19 +231,24 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
 
     return (
       <div className='child-channels-block'>
-        {
-          this.props.showBase ?
-            <h4>{this.props.base.name}</h4>
+        <h4 className='pointer' onClick={this.toggleChannelVisibility}>
+          <i className={'fa ' + (this.state.collapsed ? 'fa-angle-right' : 'fa-angle-down')} />
+          {this.props.base.name}
+        </h4>
+        {/* keep the block hidden but in the DOM to let the form submit collects checkboxes */}
+        <div className={this.state.collapsed ? 'hide' : 'col-lg-12'}>
+          {
+            this.props.channels.some(channel => channel.recommended) ?
+              <Toggler
+                  handler={this.toggleRecommended}
+                  value={this.areRecommendedChildrenSelected()}
+                  text={t("include recommended")}
+              />
             : null
-        }
-        <Toggler
-            handler={this.toggleRecommended}
-            value={this.areRecommendedChildrenSelected()}
-            text={t("include recommended")}
-            disabled={!this.props.channels.some(channel => channel.recommended)}
-        />
-        {channels}
-        <hr/>
+          }
+          {channels}
+          <hr/>
+        </div>
       </div>
     );
   }
