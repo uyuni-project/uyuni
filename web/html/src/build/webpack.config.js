@@ -3,6 +3,7 @@ const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const {pages} = require("../manager/index");
 const webpack = require("webpack");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const {getWebpackConfig} = require("./webpack.config.vendors");
 
@@ -52,5 +53,6 @@ module.exports = (env, argv) => ([
       new webpack.DllReferencePlugin({
         manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json"),
       }),
+      new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }])
     ]
 }]);
