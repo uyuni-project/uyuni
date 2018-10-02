@@ -5,6 +5,7 @@ const React = require('react');
 const Network = require('../utils/network');
 const {Loading} = require('./loading');
 const ChannelUtils = require('../utils/channels');
+const {Toggler} = require("./toggler");
 const {ChannelAnchorLink} = require("./links");
 
 type ChildChannelsProps = {
@@ -13,7 +14,7 @@ type ChildChannelsProps = {
   base: Object,
   showBase: Boolean,
   selectedChannelsIds: Array<number>,
-  handleChannelChange: Function,
+  selectChannels: Function,
   saveState: Function,
   loadState: Function
 }
@@ -28,6 +29,9 @@ type ChildChannelsState = {
 class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsProps> {
   constructor(props) {
     super(props);
+
+    ['fetchMandatoryChannelsByChannelIds', 'handleChannelChange', 'dependenciesTooltip', 'toggleRecommended', 'areRecommendedChildrenSelected']
+    .forEach(method => this[method] = this[method].bind(this));
 
     this.state = {
       requiredChannels: new Map(),
@@ -89,6 +93,10 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
     );
   }
 
+  handleChannelChange(event: SyntheticInputEvent<*>) {
+    this.props.selectChannels([parseInt(event.target.value)], event.target.checked);
+  }
+
   dependenciesTooltip = (channelId: number) => {
     const resolveChannelNames = (channelIds: Array<number>) => {
       return Array.from(channelIds || new Set())
@@ -99,6 +107,31 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
     return ChannelUtils.dependenciesTooltip(
       resolveChannelNames(this.state.requiredChannels.get(channelId)),
       resolveChannelNames(this.state.requiredByChannels.get(channelId)));
+  }
+
+  toggleRecommended = () => {
+    if (this.areRecommendedChildrenSelected()) {
+      this.props.selectChannels(
+        this.props.channels
+          .filter(channel => channel.recommended)
+          .map(channel => channel.id),
+        false);
+    }
+    else {
+      this.props.selectChannels(
+        this.props.channels
+          .filter(channel => channel.recommended && !this.props.selectedChannelsIds.includes(channel.id))
+          .map(channel => channel.id),
+        true);
+    }
+  }
+
+  areRecommendedChildrenSelected = () : Boolean => {
+    const recommendedChildren = this.props.channels.filter(channel => channel.recommended);
+    const selectedRecommendedChildren = recommendedChildren.filter(channel => this.props.selectedChannelsIds.includes(channel.id));
+    const unselectedRecommendedChildren = recommendedChildren.filter(channel => !this.props.selectedChannelsIds.includes(channel.id));
+
+    return selectedRecommendedChildren.length > 0 && unselectedRecommendedChildren.length == 0;
   }
 
   render() {
@@ -127,7 +160,7 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
                       name='childChannels'
                       checked={this.props.selectedChannelsIds.includes(c.id)}
                       disabled={isDisabled}
-                      onChange={this.props.handleChannelChange}
+                      onChange={this.handleChannelChange}
                   />
                   {
                     /** HACK **/
@@ -170,7 +203,7 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
             : null
         }
         <Toggler
-            handler={this.toggleRecommended.bind(this)}
+            handler={this.toggleRecommended}
             value={this.areRecommendedChildrenSelected()}
             text={t("include recommended")}
             disabled={!this.props.channels.some(channel => channel.recommended)}
