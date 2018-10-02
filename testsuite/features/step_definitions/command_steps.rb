@@ -161,12 +161,10 @@ When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, target|
 end
 
 Then(/^the PXE default profile should be enabled$/) do
-  sleep(1)
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT pxe-default-profile" on server)
 end
 
 Then(/^the PXE default profile should be disabled$/) do
-  sleep(1)
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 

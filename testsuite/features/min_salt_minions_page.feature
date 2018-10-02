@@ -21,7 +21,7 @@ Feature: Management of minion keys
   Scenario: Minion is visible in the Pending section
     Given I am authorized as "testing" with password "testing"
     And I restart salt-minion on "sle-minion"
-    And I wait until Salt master sees "sle-minion" as "unaccepted"
+    And I wait at most 10 seconds until Salt master sees "sle-minion" as "unaccepted"
     And I go to the minion onboarding page
     And I refresh page until I see "sle-minion" hostname as text
     Then I should see a "Fingerprint" text
@@ -32,7 +32,7 @@ Feature: Management of minion keys
     Given I am authorized as "testing" with password "testing"
     And I go to the minion onboarding page
     And I reject "sle-minion" from the Pending section
-    And I wait until Salt master sees "sle-minion" as "rejected"
+    And I wait at most 10 seconds until Salt master sees "sle-minion" as "rejected"
     Then I should see a "rejected" text
     # we stop the service so the minion does not resubmit its key spontaneously
     When I stop salt-minion on "sle-minion"
@@ -42,12 +42,12 @@ Feature: Management of minion keys
   Scenario: Accepted minion shows up as a registered system
     Given I am authorized as "testing" with password "testing"
     When I start salt-minion on "sle-minion"
-    And I wait until Salt master sees "sle-minion" as "unaccepted"
+    And I wait at most 10 seconds until Salt master sees "sle-minion" as "unaccepted"
     Then "sle-minion" should not be registered
     When I go to the minion onboarding page
     Then I should see a "pending" text
     When I accept "sle-minion" key
-    And I wait until Salt master sees "sle-minion" as "accepted"
+    And I wait at most 10 seconds until Salt master sees "sle-minion" as "accepted"
     And I wait until onboarding is completed for "sle-minion"
     Then "sle-minion" should be registered
 
