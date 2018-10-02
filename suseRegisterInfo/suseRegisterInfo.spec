@@ -22,7 +22,7 @@
 %global default_py3 1
 %endif
 
-%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
+%define pythonX %{?default_py3:python3}%{!?default_py3:python2}
 
 Name:           suseRegisterInfo
 Version:        4.0.1
