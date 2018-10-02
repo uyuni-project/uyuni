@@ -632,8 +632,8 @@ public class TaskoXmlRpcHandler {
     private void checkIfAlreadyScheduled(Integer orgId, String jobLabel)
             throws SchedulerException, InvalidParamException {
         if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
-                (SchedulerKernel.getScheduler().getTrigger(jobLabel,
-                        TaskoQuartzHelper.getGroupName(orgId)) != null)) {
+                (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
+                        TaskoQuartzHelper.getGroupName(orgId))) != null)) {
             throw new InvalidParamException("jobLabel already in use");
         }
     }
