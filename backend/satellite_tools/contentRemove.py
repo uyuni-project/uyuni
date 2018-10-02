@@ -62,7 +62,7 @@ class RemoteApi:
     def list_channel_labels(self):
         self.auth_check()
         key = "chan_labels"
-        if key in self.cache:
+        if self.cache.has_key(key):
             return self.cache[key]
 
         chan_list = self.client.channel.listAllChannels(self.auth_token)

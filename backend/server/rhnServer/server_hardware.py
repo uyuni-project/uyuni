@@ -240,7 +240,7 @@ class GenericDevice:
         # clean up fields we don't want
         if self.data:
             for k in ["created", "modified"]:
-                if k in self.data:
+                if self.data.has_key(k):
                     del self.data[k]
         self.id = devid
         self.status = 0
@@ -295,10 +295,10 @@ class Device(GenericDevice):
         for k in list(dict.keys()):
             if dict[k] == '':
                 dict[k] = None
-            if k in self.data:
+            if self.data.has_key(k):
                 self.data[k] = dict[k]
                 continue
-            if k in mapping:
+            if mapping.has_key(k):
                 # the mapping dict might tell us to lose some fields
                 if mapping[k] is not None:
                     self.data[mapping[k]] = dict[k]
@@ -379,18 +379,18 @@ class CPUDevice(Device):
         if self.data.get("cpu_arch_id") is not None:
             return  # all fine, we have the arch
         # if we don't have an architecture, guess it
-        if "architecture" not in self.data:
+        if not self.data.has_key("architecture"):
             log_error("hash does not have a platform member: %s" % dict)
             raise AttributeError("Expected a hash value for member `platform'")
         # now extract the arch field, which has to come out of rhnCpuArch
         arch = self.data["architecture"]
         row = rhnSQL.Table("rhnCpuArch", "label")[arch]
-        if row is None or "id" not in row:
+        if row is None or not row.has_key("id"):
             log_error("Can not find arch %s in rhnCpuArch" % arch)
             raise AttributeError("Invalid architecture for CPU: `%s'" % arch)
         self.data["cpu_arch_id"] = row["id"]
         del self.data["architecture"]
-        if "nrcpu" in self.data:  # make sure this is a number
+        if self.data.has_key("nrcpu"):  # make sure this is a number
             try:
                 self.data["nrcpu"] = int(self.data["nrcpu"])
             except:
@@ -836,7 +836,7 @@ class MemoryInformation(Device):
             return
         # Sometimes we get sent a NNNNL number and we need to strip the L
         for k in fields:
-            if k not in self.data:
+            if not self.data.has_key(k):
                 continue
             if self.data[k] in [None, "None", ""]:
                 self.data[k] = -1

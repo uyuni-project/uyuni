@@ -193,7 +193,7 @@ class ActivationKey:
         s = hashlib.new('sha1')
         s.update(str(os.getpid()))
         for field in ['org_id', 'user_id', 'server_id']:
-            if field in self._row_reg_token:
+            if self._row_reg_token.has_key(field):
                 val = self._row_reg_token[field]
             s.update(str(val))
         s.update("%.8f" % time.time())
@@ -213,7 +213,7 @@ class ActivationKey:
     def _save(self):
         h = self._row_reg_token
         k = 'entitlement_level'
-        if k in h:
+        if h.has_key(k):
             entitlements = h[k]
             del h.data[k]
         else:

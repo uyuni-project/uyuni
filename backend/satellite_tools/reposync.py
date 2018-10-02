@@ -1888,11 +1888,11 @@ class RepoSync(object):
             """)
             query.execute(**product)
             row = query.fetchone_dict()
-            if not row or 'id' not in row:
+            if not row or not row.has_key('id'):
                 get_id_q = rhnSQL.prepare("""SELECT sequence_nextval('suse_prod_file_id_seq') as id FROM dual""")
                 get_id_q.execute()
                 row = get_id_q.fetchone_dict() or {}
-                if not row or 'id' not in row:
+                if not row or not row.has_key('id'):
                     print("no id for sequence suse_prod_file_id_seq")
                     continue
 
@@ -1929,7 +1929,7 @@ class RepoSync(object):
 
             query.execute(**params)
             packrow = query.fetchone_dict()
-            if not packrow or 'id' not in packrow:
+            if not packrow or not packrow.has_key('id'):
                 # package not in DB
                 continue
 
@@ -1964,7 +1964,7 @@ class RepoSync(object):
                           arch=package['arch'], pkgid=package['pkgid'],
                           channel_id=int(self.channel['id']))
             row = query.fetchone_dict() or None
-            if not row or 'id' not in row:
+            if not row or not row.has_key('id'):
                 # package not found in DB
                 continue
             pkgid = int(row['id'])
@@ -2002,7 +2002,7 @@ class RepoSync(object):
                     kadd.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[keyword])
                     self.regen = True
 
-            if 'eula' in package:
+            if package.has_key('eula'):
                 eula_id = suseEula.find_or_create_eula(package['eula'])
                 rhnPackage.add_eula_to_package(
                   package_id=pkgid,
