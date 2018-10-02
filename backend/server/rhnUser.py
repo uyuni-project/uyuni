@@ -131,7 +131,7 @@ class User:
         self.customer.load(int(org_id))
 
     def getid(self):
-        if "id" not in self.contact:
+        if not self.contact.has_key("id"):
             userid = rhnSQL.Sequence("web_contact_id_seq")()
             self.contact.data["id"] = userid  # kind of illegal, but hey!
         else:
@@ -202,7 +202,7 @@ class User:
             valids["Sig."] = "Sr."
             valids["Sir"] = "Mr."
             # Now check it out
-            if value in valids:
+            if valids.has_key(value):
                 self.info["prefix"] = valids[value]
                 changed = 1
             else:

@@ -104,7 +104,7 @@ class Backend:
             capabilityHash[(name, version)] = row['id']
 
     def processChangeLog(self, changelogHash):
-        if 'package_import_skip_changelog' in CFG and CFG.package_import_skip_changelog:
+        if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
             return
         sql = "select id from rhnPackageChangeLogData where name = :name and time = :time and text = :text"
         h = self.dbmodule.prepare(sql)
@@ -556,12 +556,12 @@ class Backend:
 
         h = self.dbmodule.prepare(sql)
 
-        if 'security_impact' in erratum and erratum['security_impact']:
+        if erratum.has_key('security_impact') and erratum['security_impact']:
             #concatenate the severity to reflect the db
             #bz-204374: rhnErrataSeverity tbl has lower case severity values,
             #so we convert severity in errata hash to lower case to lookup.
             severity_label = 'errata.sev.label.' + erratum['security_impact'].lower()
-        elif 'severity' in erratum and erratum['severity']:
+        elif erratum.has_key('severity') and erratum['severity']:
             severity_label = erratum['severity']
         else:
             return None
@@ -830,7 +830,7 @@ class Backend:
             'susePackageEula':         'package_id',
         }
 
-        if 'package_import_skip_changelog' in CFG and CFG.package_import_skip_changelog:
+        if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
             del childTables['rhnPackageChangeLogRec']
 
         for package in packages:

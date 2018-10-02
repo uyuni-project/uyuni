@@ -157,7 +157,7 @@ class Cursor(sql_base.Cursor):
         # Check that all required parameters were provided:
         # NOTE: bindnames() is Oracle specific:
         for k in self._real_cursor.bindnames():
-            if k not in _p:
+            if not _p.has_key(k):
                 # Raise the fault ourselves
                 raise sql_base.SQLError(1008, 'Not all variables bound', k)
             params[k] = to_string(_p[k])
@@ -549,7 +549,7 @@ class Database(sql_base.Database):
             value = None
             # Do we have a config object?
             if rhnConfig.CFG.is_initialized():
-                if "nls_lang" in rhnConfig.CFG:
+                if rhnConfig.CFG.has_key("nls_lang"):
                     # Get the value from the configuration object
                     value = rhnConfig.CFG.nls_lang
             if not value:

@@ -766,7 +766,7 @@ class ContentSource(object):
             thiskey = {}
             for info in ('keyid', 'timestamp', 'userid',
                          'fingerprint', 'raw_key'):
-                if info not in keyinfo:
+                if not keyinfo.has_key(info):
                     raise ChannelException('GPG key parsing failed: key does not have value %s' % info)
                 thiskey[info] = keyinfo[info]
             thiskey['keyid'] = str("%016x" % (thiskey['keyid'] & 0xffffffffffffffff)).upper()

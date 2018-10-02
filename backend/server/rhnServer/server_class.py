@@ -167,7 +167,7 @@ class Server(ServerWrapper):
 
     # return the id of this system
     def getid(self):
-        if "id" not in self.server:
+        if not self.server.has_key("id"):
             sysid = rhnSQL.Sequence("rhn_server_id_seq")()
             self.server["digital_server_id"] = "ID-%09d" % sysid
             # we can't reset the id column, so we need to poke into
@@ -535,7 +535,7 @@ class Server(ServerWrapper):
 
             # some more default values
             self.server["auto_update"] = "N"
-            if self.user and "creator_id" not in self.server:
+            if self.user and not self.server.has_key("creator_id"):
                 # save the link to the user that created it if we have
                 # that information
                 self.server["creator_id"] = self.user.getid()
@@ -729,7 +729,7 @@ class Server(ServerWrapper):
 
     # Is this server entitled?
     def check_entitlement(self):
-        if "id" not in self.server:
+        if not self.server.has_key("id"):
             return None
         log_debug(3, self.server["id"])
 
@@ -737,19 +737,19 @@ class Server(ServerWrapper):
 
     def checkin(self, commit=1):
         """ convenient wrapper for these thing until we clean the code up """
-        if "id" not in self.server:
+        if not self.server.has_key("id"):
             return 0  # meaningless if rhnFault not raised
         return server_lib.checkin(self.server["id"], commit)
 
     def throttle(self):
         """ convenient wrapper for these thing until we clean the code up """
-        if "id" not in self.server:
+        if not self.server.has_key("id"):
             return 1  # meaningless if rhnFault not raised
         return server_lib.throttle(self.server)
 
     def set_qos(self):
         """ convenient wrapper for these thing until we clean the code up """
-        if "id" not in self.server:
+        if not self.server.has_key("id"):
             return 1  # meaningless if rhnFault not raised
         return server_lib.set_qos(self.server["id"])
 

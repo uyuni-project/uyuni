@@ -81,7 +81,7 @@ class WsgiRequest:
         if len(self.content_type) > 0:
             self.headers_out['Content-Type'] = self.content_type
         # default to text/xml
-        if 'Content-Type' not in self.headers_out:
+        if not self.headers_out.has_key('Content-Type'):
             self.headers_out['Content-Type'] = 'text/xml'
 
         self.start_response(self.status, list(self.headers_out.items()))

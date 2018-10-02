@@ -689,9 +689,9 @@ class Syncer:
             for label in requested_channels:
                 timestamp = self._channel_collection.get_channel_timestamp(label)
                 ch = self._channel_collection.get_channel(label, timestamp)
-                if 'comps_last_modified' in ch and ch['comps_last_modified'] is not None:
+                if ch.has_key('comps_last_modified') and ch['comps_last_modified'] is not None:
                     self._process_comps(importer.backend, label, sync_handlers._to_timestamp(ch['comps_last_modified']))
-                if 'modules_last_modified' in ch and ch['modules_last_modified'] is not None:
+                if ch.has_key('modules_last_modified') and ch['modules_last_modified'] is not None:
                     self._process_modules(importer.backend, label, \
                         sync_handlers._to_timestamp(ch['modules_last_modified']))
 
