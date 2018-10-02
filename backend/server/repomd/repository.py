@@ -37,7 +37,7 @@ from spacewalk.common.rhnConfig import CFG
 
 import mapper
 import view
-from .domain import RepoMD
+from domain import RepoMD
 from spacewalk.server import rhnChannel
 
 # One meg

@@ -34,7 +34,7 @@ from spacewalk.server import rhnSQL
 from spacewalk.common.usix import BufferType, raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
-from .const import POSTGRESQL
+from const import POSTGRESQL
 
 
 def convert_named_query_params(query):

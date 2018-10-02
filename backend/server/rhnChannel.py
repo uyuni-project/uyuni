@@ -2206,7 +2206,7 @@ def system_reg_message(server):
                 (server.server["release"], server.archname))
 
     # System does have a base channel; check entitlements
-    from .rhnServer import server_lib  # having this on top, cause TB due circular imports
+    from rhnServer import server_lib  # having this on top, cause TB due circular imports
     entitlements = server_lib.check_entitlement(server_id)
     if not entitlements:
         # No entitlement

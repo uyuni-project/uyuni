@@ -54,16 +54,16 @@ from spacewalk.common import fileutils
 # __rhn sync/import imports__
 import xmlWireSource
 import xmlDiskSource
-from .progress_bar import ProgressBar
-from .xmlSource import FatalParseException, ParseException
-from .diskImportLib import rpmsPath
+from progress_bar import ProgressBar
+from xmlSource import FatalParseException, ParseException
+from diskImportLib import rpmsPath
 
-from .syncLib import log, log2, log2disk, log2stderr, log2email
-from .syncLib import RhnSyncException, RpmManip, ReprocessingNeeded
-from .syncLib import initEMAIL_LOG, dumpEMAIL_LOG
-from .syncLib import FileCreationError, FileManip
+from syncLib import log, log2, log2disk, log2stderr, log2email
+from syncLib import RhnSyncException, RpmManip, ReprocessingNeeded
+from syncLib import initEMAIL_LOG, dumpEMAIL_LOG
+from syncLib import FileCreationError, FileManip
 
-from .SequenceServer import SequenceServer
+from SequenceServer import SequenceServer
 from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
 
 from spacewalk.server.importlib.importLib import InvalidChannelFamilyError

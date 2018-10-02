@@ -162,7 +162,7 @@ def send(url, sendData=None):
     connect_retries = 10
     try_counter = connect_retries
     timeout = 120
-    if CFG.is_initialized() and 'TIMEOUT' in CFG:
+    if CFG.is_initialized() and CFG.has_key('TIMEOUT'):
         timeout = CFG.TIMEOUT
     curl = pycurl.Curl()
 
@@ -177,7 +177,7 @@ def send(url, sendData=None):
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
         if (CFG.is_initialized() and
-                'DISABLE_EXPECT' in CFG and
+                CFG.has_key('DISABLE_EXPECT') and
                 CFG.DISABLE_EXPECT):
             # disable Expect header
             curl.setopt(pycurl.HTTPHEADER, ['Expect:'])
@@ -243,7 +243,7 @@ def accessible(url):
 
     """
     timeout = 120
-    if CFG.is_initialized() and 'TIMEOUT' in CFG:
+    if CFG.is_initialized() and CFG.has_key('TIMEOUT'):
         timeout = CFG.TIMEOUT
     curl = pycurl.Curl()
 
@@ -592,7 +592,7 @@ def _get_proxy_from_rhn_conf():
 
     """
     comp = CFG.getComponent()
-    if "http_proxy" not in CFG:
+    if not CFG.has_key("http_proxy"):
         initCFG("server.satellite")
     result = None
     if CFG.http_proxy:
@@ -629,9 +629,9 @@ def _useProxyFor(url):
     if hostname in ["localhost", "127.0.0.1", "::1"]:
         return False
     comp = CFG.getComponent()
-    if "no_proxy" not in CFG:
+    if not CFG.has_key("no_proxy"):
         initCFG("server.satellite")
-    if 'no_proxy' not in CFG:
+    if not CFG.has_key('no_proxy'):
         initCFG(comp)
         return True
     noproxy = CFG.no_proxy
