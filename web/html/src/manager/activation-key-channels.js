@@ -202,6 +202,9 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsState, 
             <label className='col-lg-3 control-label'>{t('Child Channel:')}</label>
             <div className='col-lg-6'>
               {childChannelList}
+              <span className='help-block'>
+                {t('Any system registered using this activation key will be subscribed to the selected child channels.')}
+              </span>
             </div>
           </div>
         </div>
