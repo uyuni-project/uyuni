@@ -54,10 +54,8 @@ Full configuration example
 
     engines:
       - mgr_events:
-          commit_interval_max: 10
-          commit_interval_min: 0.1
-          delay_factor: 0.7
-          scaling_factor: 0.1
+          commit_interval: 1
+          commit_burst: 100
           postgres_db:
               dbname: susemanger
               user: spacewalk
@@ -92,15 +90,8 @@ import tornado.ioloop
 
 log = logging.getLogger(__name__)
 
-DEFAULT_SCALING_FACTOR = 0.1
-DEFAULT_COMMIT_INTERVAL_MAX = 5
-DEFAULT_COMMIT_INTERVAL_MIN = 1
-
-# DELAY FACTOR VALUES
-# 0.9 would be approx. averaging time difference between the last 10 events -> higher fluctuation
-# 0.98 would be approx. averaging time difference between the last 50 events -> lower fluctuation
-DEFAULT_DELAY_FACTOR = 0.1
-
+DEFAULT_COMMIT_INTERVAL = 1
+DEFAULT_COMMIT_BURST = 100
 
 def __virtual__():
     return HAS_PSYCOPG2
@@ -109,19 +100,16 @@ def __virtual__():
 class Responder:
     def __init__(self, event_bus, config):
         self.config = config
-        self.config.setdefault('commit_interval_min', DEFAULT_COMMIT_INTERVAL_MIN)
-        self.config.setdefault('commit_interval_max', DEFAULT_COMMIT_INTERVAL_MAX)
-        self.config.setdefault('scaling_factor', DEFAULT_SCALING_FACTOR)
-        self.config.setdefault('delay_factor', DEFAULT_DELAY_FACTOR)
+        self.config.setdefault('commit_interval', DEFAULT_COMMIT_INTERVAL)
+        self.config.setdefault('commit_burst', DEFAULT_COMMIT_BURST)
         self.config.setdefault('postgres_db', {})
         self.config['postgres_db'].setdefault('host', 'localhost')
         self.config['postgres_db'].setdefault('notify_channel', 'suseSaltEvent')
         self.counter = 0
-        self.commit_interval = config['commit_interval_min']
+        self.tokens = config['commit_burst']
         self.event_bus = event_bus
-        self.commit_timer_handle = self.event_bus.io_loop.call_later(self.commit_interval, self.commit)
-        self.timer = time.time()
         self._connect_to_database()
+        self.event_bus.io_loop.call_later(config['commit_interval'], self.add_token)
 
     def _connect_to_database(self):
         db_config = self.config.get('postgres_db')
@@ -155,6 +143,7 @@ class Responder:
                     (json.dumps({'tag': tag, 'data': data}),)
                 )
                 self.counter += 1
+                self.attempt_commit()
             except Exception as err:
                 log.error("%s: %s", __name__, err)
             finally:
@@ -164,44 +153,38 @@ class Responder:
 
     def debug_log(self):
         log.debug("%s: queue_size -> %s", __name__, self.counter)
-        log.debug("%s: fequency_commit_interval -> %s", __name__, self.apply_limits(self.commit_interval))
+        log.debug("%s: tokens -> %s", __name__, self.tokens)
 
     @tornado.gen.coroutine
     def add_event_to_queue(self, raw):
         tag, data = self.event_bus.unpack(raw, self.event_bus.serial)
         self._insert(tag, data)
 
-    def apply_limits(self, commit_interval):
-        return max(min(commit_interval, self.config['commit_interval_max']), self.config['commit_interval_min'])
-
     def db_keepalive(self):
         if self.connection.closed:
             log.error("%s: Diconnected from database. Trying to reconnect...", __name__)
             self._connect_to_database()
 
-    def _compute_commit_interval(self):
-        time_between_events = self.commit_interval / (float(self.counter) or 0.1)
-        commit_interval_limited = 1 / time_between_events * self.config['scaling_factor']
-        return self.config['delay_factor'] * self.commit_interval + (1 - self.config['delay_factor']) * commit_interval_limited
-
     @tornado.gen.coroutine
-    def commit(self):
+    def add_token(self):
+        self.tokens = min(self.tokens + 1, self.config['commit_burst'])
+        self.attempt_commit()
+        self.debug_log()
+        self.event_bus.io_loop.call_later(self.config['commit_interval'], self.add_token)
+
+    def attempt_commit(self):
         """
         Committing to the database.
         """
         self.db_keepalive()
-        self.commit_interval = self._compute_commit_interval()
-        if self.counter != 0:
+        if self.tokens > 0 and self.counter > 0:
             log.debug("%s: commit", __name__)
             self.cursor.execute(
                 'NOTIFY {};'.format(self.config['postgres_db']['notify_channel'])
             )
             self.connection.commit()
-            self.debug_log()
             self.counter = 0
-        self.commit_timer_handle = self.event_bus.io_loop.call_later(
-            self.apply_limits(self.commit_interval), self.commit)
-
+            self.tokens -=1
 
 def start(**config):
     '''
