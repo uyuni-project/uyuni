@@ -30,7 +30,7 @@ from spacewalk.common import rhnLib
 from spacewalk.common.rhnConfig import CFG
 
 # local imports
-from .syncLib import log, log2, RhnSyncException
+from syncLib import log, log2, RhnSyncException
 
 from rhn import rpclib
 

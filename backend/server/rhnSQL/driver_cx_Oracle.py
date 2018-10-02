@@ -36,7 +36,7 @@ from spacewalk.common import rhnConfig
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
 from spacewalk.common.stringutils import to_string
-from .const import ORACLE
+from const import ORACLE
 
 ORACLE_TYPE_MAPPING = [
     (sql_types.NUMBER, cx_Oracle.NUMBER),
