@@ -41,7 +41,7 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
       requiredByChannels: new Map(),
       mandatoryChannelsRaw: new Map(),
       dependencyDataAvailable: false,
-      collapsed: this.props.collapsed || true
+      collapsed: this.props.collapsed
     }
   }
 

@@ -172,6 +172,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsState, 
                   selectChannels={this.selectChildChannels}
                   saveState={(state) => {this.state["ChildChannelsForBase" + g.base.id] = state;}}
                   loadState={() => this.state["ChildChannelsForBase" + g.base.id]}
+                  collapsed={Array.from(this.state.availableChannels.keys()).length > 1}
               />
             );
       return (
