@@ -1716,6 +1716,7 @@ public class SaltUtils {
         }
         else {
             sb.append(stdout);
+            sb.append("\n");
         }
         return sb.toString();
     }
