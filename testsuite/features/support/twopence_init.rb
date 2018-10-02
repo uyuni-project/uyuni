@@ -47,14 +47,11 @@ nodes.each do |node|
 end
 
 # Initialize IP address or domain name
-$server.init_ip(ENV['SERVER'])
-$proxy.init_ip(ENV['PROXY']) if $proxy
-$client.init_ip(ENV['CLIENT'])
-$minion.init_ip(ENV['MINION'])
-$ceos_minion.init_ip(ENV['CENTOSMINION']) if $ceos_minion
-$ssh_minion.init_ip(ENV['SSHMINION']) if $ssh_minion
-$kvm_server.init_ip(ENV['VIRTHOST_KVM_URL']) if $kvm_server
-$xen_server.init_ip(ENV['VIRTHOST_XEN_URL']) if $xen_server
+nodes.each do |node|
+  next if node.nil?
+
+  node.init_ip(node.full_hostname)
+end
 
 # This function is used to get one of the nodes based on its type
 def get_target(host)
