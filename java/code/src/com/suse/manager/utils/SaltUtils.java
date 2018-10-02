@@ -529,6 +529,7 @@ public class SaltUtils {
             }
             else {
                 sb.append(result.getStdout());
+                sb.append("\n");
             }
             scriptResult.setOutput(sb.toString().getBytes());
         }
