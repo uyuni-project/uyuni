@@ -505,8 +505,11 @@ public class TaskomaticApi {
             params.put("earliest_action", action.getEarliestAction().toInstant().toString());
             paramsList.add(params);
         }
-        invoke("tasko.scheduleSatBunchRunList", MINION_ACTION_BUNCH_LABEL,
-                MINION_ACTION_JOB_PREFIX, paramsList);
+
+        if (!paramsList.isEmpty()) {
+            invoke("tasko.scheduleSatBunchRunList", MINION_ACTION_BUNCH_LABEL,
+                    MINION_ACTION_JOB_PREFIX, paramsList);
+        }
     }
 
     /**
