@@ -34,7 +34,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                      column="state"
                      not-null="true"
                      cascade="none"
-                     update="false"
                      lazy="false"/>
     </class>
 </hibernate-mapping>

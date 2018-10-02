@@ -317,6 +317,24 @@ public class VirtualInstanceManager extends BaseManager {
     }
 
     /**
+     * Update the properties of a VirtualInstance.
+     *
+     * @param virtualInstance - the virtual instance
+     * @param name - guest name
+     * @param state - instance state
+     * @param vCpus - number of CPUs
+     * @param memory - total memory
+     */
+    public static void updateGuestVirtualInstanceProperties(VirtualInstance virtualInstance,
+            String name, VirtualInstanceState state, int vCpus, long memory) {
+        virtualInstance.setName(name);
+        virtualInstance.setState(state);
+        virtualInstance.setNumberOfCPUs(vCpus);
+        virtualInstance.setTotalMemory(memory);
+        VirtualInstanceFactory.getInstance().saveVirtualInstance(virtualInstance);
+    }
+
+    /**
      * Return swapped uuid in case it already exists in a virtual instance.
      *
      * @param uuid - virtual instance uuid
