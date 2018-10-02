@@ -3,7 +3,7 @@
 
 const React = require('react');
 const Network = require('../utils/network');
-const Loading = require('../components/loading').Loading;
+const {Loading} = require('./loading');
 const ChannelUtils = require('../utils/channels');
 
 type ChildChannelsProps = {
@@ -117,6 +117,7 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
                   this.props.base &&
                   this.state.requiredChannels.has(this.props.base.id) &&
                   this.state.requiredChannels.get(this.props.base.id).has(c.id);
+              const isDisabled = isMandatory && this.props.selectedChannelsIds.includes(c.id);
               return (
                 <div key={c.id} className='checkbox'>
                   <input type='checkbox'
@@ -124,9 +125,17 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
                       id={'child_' + c.id}
                       name='childChannels'
                       checked={this.props.selectedChannelsIds.includes(c.id)}
-                      disabled={isMandatory && this.props.selectedChannelsIds.includes(c.id)}
+                      disabled={isDisabled}
                       onChange={this.props.handleChannelChange}
                   />
+                  {
+                    /** HACK **/
+                    // add an hidden carbon-copy of the disabled input since the disabled one will not be included in the form submit
+                    isDisabled ?
+                      <input type='checkbox' value={c.id} name='childChannels'
+                          hidden='hidden' checked={this.props.selectedChannelsIds.includes(c.id)} readOnly={true}/>
+                      : null
+                  }
                   <label title={toolTip} htmlFor={"child_" + c.id}>{c.name}</label>
                   &nbsp;
                   {
@@ -158,6 +167,12 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
             <h4>{this.props.base.name}</h4>
             : null
         }
+        <Toggler
+            handler={this.toggleRecommended.bind(this)}
+            value={this.areRecommendedChildrenSelected()}
+            text={t("include recommended")}
+            disabled={!this.props.channels.some(channel => channel.recommended)}
+        />
         {channels}
         <hr/>
       </div>
