@@ -30,7 +30,8 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
   constructor(props) {
     super(props);
 
-    ['fetchMandatoryChannelsByChannelIds', 'handleChannelChange', 'dependenciesTooltip', 'toggleRecommended', 'areRecommendedChildrenSelected']
+    ['fetchMandatoryChannelsByChannelIds', 'handleChannelChange', 'dependenciesTooltip',
+    'toggleRecommended', 'areRecommendedChildrenSelected', 'selectChannelWithDependencies']
     .forEach(method => this[method] = this[method].bind(this));
 
     this.state = {
@@ -94,7 +95,26 @@ class ChildChannels extends React.Component<ChildChannelsState, ChildChannelsPro
   }
 
   handleChannelChange(event: SyntheticInputEvent<*>) {
-    this.props.selectChannels([parseInt(event.target.value)], event.target.checked);
+    const channelId = parseInt(event.target.value);
+    const selectedFlag = event.target.checked;
+    const channelIds: Array<number> = this.selectChannelWithDependencies(channelId, selectedFlag);
+
+    this.props.selectChannels(channelIds, selectedFlag);
+  }
+
+  selectChannelWithDependencies(channelId: number, select: Boolean) {
+    let dependingChannelIds;
+    if (select) {
+      dependingChannelIds = this.state.requiredChannels.get(channelId) || [];
+      console.log('dependingChannelIds');
+      console.log(dependingChannelIds);
+    }
+    else { // unselect
+      dependingChannelIds = this.state.requiredByChannels.get(channelId) || [];
+      console.log('dependingByChannelIds');
+      console.log(dependingChannelIds);
+    }
+    return dependingChannelIds ? [channelId, ...Array.from(dependingChannelIds).filter(c => c !== channelId)] : [channelId];
   }
 
   dependenciesTooltip = (channelId: number) => {
