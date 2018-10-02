@@ -1,35 +1,22 @@
 # -*- coding: utf-8 -*-
 '''
-mgr_events.py is a SaltStack engine that writes selected events to the
-SUSE Manager (PostgreSQL) database and also sends a notifications to a
-PostgreSQL pub/sub channel. This allow SUSE Manager to only query for
-events if some are coming in.
+mgr_events.py is a SaltStack engine that writes selected events to SUSE
+Manager's PostgreSQL database. Additionally, it sends notifications via the
+LISTEN/NOTIFY mechanism to alert SUSE Manager of newly available events.
 
 mgr_events.py tries to keep the I/O low in high load scenarios. Therefore
-events are INSERTed once they come in, but only commited in a load
-dependend commit interval. This commit interval gets recalculated every
-time we commit and takes the amount of events INSERTed into account. This can
-be tweaked with the `delay_factor`. A shorter `delay_factor` takes less history
-into account when calculating the commit interval.
-The formula to approximate how many previous values are considered
-given a delay_factor value is: 1/(1-delay_factor).
+events are INSERTed once they come in, but not necessarily COMMITted
+immediately.
 
-+--------------+-------------------------------+
-| delay_factor | approx no. of previous values |
-+--------------+-------------------------------+
-|     0.98     |             50                |
-+--------------+-------------------------------+
-|     0.9      |             10                |
-+--------------+-------------------------------+
-|     0.5      |              2                |
-+--------------+-------------------------------+
-|     0.01     |              1                |
-+--------------+-------------------------------+
-
-Since we are by default operating in a seconds scale, we need the
-`scaling_factor` to get this down a little bit.
-`commit_interval_max` and `commit_interval_min` are the maximum and minimum
-in seconds. Everything above and below will be capped.
+The algorithm is an implementation of token bucket:
+ - a COMMIT costs one token
+ - initially, commit_burst tokens are available
+ - every commit_interval seconds, one new token is generated
+   (up to commit_burst)
+ - when an event arrives and there are tokens available it is COMMITted
+   immediately
+ - when an event arrives but no tokens are available, the event is INSERTed but
+   not COMMITted yet. COMMIT will happen as soon as a token is available
 
 .. versionadded:: 2018.3.0
 
