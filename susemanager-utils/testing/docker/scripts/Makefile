@@ -1,4 +1,4 @@
-DOCKER_CONTAINER = registry.mgr.suse.de/suma-head-cobbler
+DOCKER_CONTAINER = registry.mgr.suse.de/uyuni-head-cobbler
 
 all :: cobbler_tests
 
@@ -12,4 +12,4 @@ cobbler_tests :: pull_container
 
 cobbler_tests_shell ::
 	@echo "Spawning a shell inside of the cobbler tests container"
-	docker run --rm -ti -v $(CURDIR)/../../../../cobbler_reports:/reports -v $(CURDIR)/test_cobbler.sh:/test_cobbler.sh registry.mgr.suse.de/suma-head-cobbler /bin/bash
+	docker run --rm -ti -v $(CURDIR)/../../../../cobbler_reports:/reports -v $(CURDIR)/test_cobbler.sh:/test_cobbler.sh $(DOCKER_CONTAINER) /bin/bash
