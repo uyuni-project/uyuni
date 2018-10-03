@@ -1,8 +1,47 @@
 #!/bin/bash -fue
 set -- $SSH_ORIGINAL_COMMAND
+
+ssh_control_persist=30
+debug=1
+ssh_debug=""
+
+if [ $debug -eq 1 ]; then
+    ssh_debug="-vvv -E /tmp/mgr-proxy-ssh-force-cmd.log"
+fi
+
+shopt -s huponexit
+
+
 cmd="$1"
 shift
+minion="$1"
+shift
+next_proxy=""
+
+if [ $# -gt 0 ]; then
+    next_proxy="$1"
+    shift
+fi
+
 case "$cmd" in
   '/usr/bin/scp'|'/usr/bin/ssh'|'cat') exec "$cmd" "$@" ;;
+  'ssh_fwd_tunnel')
+    if [ -z ${next_proxy:+x} ]; then
+        trap "echo 'Exiting ssh' >> /tmp/mgr-proxy-ssh-force-cmd.log ; /usr/bin/ssh $ssh_debug -O exit -o ControlPath=/var/lib/spacewalk/mgrsshtunnel/%r_%h.ctrl ${minion}" SIGHUP EXIT SIGINT
+
+        # create a reverse tunnel from minion localhost:1233 -> proxy:443
+        /usr/bin/ssh $ssh_debug -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=root \
+        -o ControlMaster=auto -o ControlPath=/var/lib/spacewalk/mgrsshtunnel/%r_%h.ctrl -o ControlPersist=${ssh_control_persist} \
+        -R 1233:${next_proxy}:443 -N $minion &
+        # forward stdio to $minion:22
+        /usr/bin/netcat ${minion} 22
+    else
+        trap "/usr/bin/ssh $ssh_debug -O exit -o ControlPath=/var/lib/spacewalk/mgrsshtunnel/%r_%h.ctrl $next_proxy" SIGHUP EXIT SIGINT
+        # ssh into next proxy and pass minion and any subsequent proxies as args
+        /usr/bin/ssh $ssh_debug -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgrsshtunnel \
+        -o ControlMaster=auto -o ControlPath=/var/lib/spacewalk/mgrsshtunnel/%r_%h.ctrl -o ControlPersist=${ssh_control_persist} \
+        $next_proxy ssh_fwd_tunnel $minion "$@"
+    fi
+    ;;
   *) echo "ERROR: command not allowed" ;;
 esac

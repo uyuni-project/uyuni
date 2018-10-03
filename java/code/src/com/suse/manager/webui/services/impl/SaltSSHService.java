@@ -382,43 +382,53 @@ public class SaltSSHService {
         boolean tunnel = ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethod);
         StringBuilder proxyCommand = new StringBuilder();
         proxyCommand.append("ProxyCommand='");
-        for (int i = 0; i < proxyPath.size(); i++) {
-            String proxyHostname = proxyPath.get(i);
-            String key;
-            String stdioFwd = "";
-            if (i == 0) {
-                key = SSH_KEY_PATH;
-            }
-            else {
-                key = PROXY_SSH_PUSH_KEY;
-            }
-            if (!tunnel && i == proxyPath.size() - 1) {
-                stdioFwd = String.format("-W %s:%s", minionHostname, SSH_PUSH_PORT);
-            }
+//        for (int i = 0; i < proxyPath.size(); i++) {
+//            String proxyHostname = proxyPath.get(i);
+//            String key;
+//            String stdioFwd = "";
+//            if (i == 0) {
+//                key = SSH_KEY_PATH;
+//            }
+//            else {
+//                key = PROXY_SSH_PUSH_KEY;
+//            }
+//            if (!tunnel && i == proxyPath.size() - 1) {
+//                stdioFwd = String.format("-W %s:%s", minionHostname, SSH_PUSH_PORT);
+//            }
+//
+//            proxyCommand.append(String.format(
+//                    "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=%s %s %s ",
+//                    key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
+//        }
+//        if (tunnel) {
+//            Map<String, String> values = new HashMap<>();
+//            values.put("pushKey", PROXY_SSH_PUSH_KEY);
+//            values.put("user", getSSHUser());
+//            values.put("pushPort", getSshPushRemotePort() + "");
+//            values.put("proxy", proxyPath.get(proxyPath.size() - 1));
+//            values.put("sslPort", SSL_PORT + "");
+//            values.put("minion", minionHostname);
+//            values.put("ownKey",
+//                    ("root".equals(getSSHUser()) ? "/root" : "/home/" + getSSHUser()) +
+//                            "/.ssh/mgr_own_id");
+//            values.put("sshPort", SSH_PUSH_PORT + "");
+//
+//            StrSubstitutor sub = new StrSubstitutor(values);
+//            proxyCommand.append(
+//                sub.replace("/usr/bin/ssh -i ${pushKey} -o StrictHostKeyChecking=no " +
+//                        "-o User=${user} -R ${pushPort}:${proxy}:${sslPort} ${minion} " +
+//                            "ssh -i ${ownKey} -W ${minion}:${sshPort} " +
+//                            "-o StrictHostKeyChecking=no -o User=${user} ${minion}"));
+//        }
+        if (!proxyPath.isEmpty()) {
+            StringBuilder cmd = new StringBuilder(tunnel ? "ssh_fwd_tunnel " : "ssh_fwd ");
+            cmd.append(minionHostname);
+            cmd.append(" ");
+            cmd.append(proxyPath.stream().collect(Collectors.joining(" ")));
 
             proxyCommand.append(String.format(
-                    "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=%s %s %s ",
-                    key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
-        }
-        if (tunnel) {
-            Map<String, String> values = new HashMap<>();
-            values.put("pushKey", PROXY_SSH_PUSH_KEY);
-            values.put("user", getSSHUser());
-            values.put("pushPort", getSshPushRemotePort() + "");
-            values.put("proxy", proxyPath.get(proxyPath.size() - 1));
-            values.put("sslPort", SSL_PORT + "");
-            values.put("minion", minionHostname);
-            values.put("ownKey",
-                    ("root".equals(getSSHUser()) ? "/root" : "/home/" + getSSHUser()) +
-                            "/.ssh/mgr_own_id");
-            values.put("sshPort", SSH_PUSH_PORT + "");
-
-            StrSubstitutor sub = new StrSubstitutor(values);
-            proxyCommand.append(
-                sub.replace("/usr/bin/ssh -i ${pushKey} -o StrictHostKeyChecking=no " +
-                        "-o User=${user} -R ${pushPort}:${proxy}:${sslPort} ${minion} " +
-                            "ssh -i ${ownKey} -W ${minion}:${sshPort} " +
-                            "-o StrictHostKeyChecking=no -o User=${user} ${minion}"));
+                    "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=%s %s %s %s",
+                    SSH_KEY_PATH, PROXY_SSH_PUSH_USER, "", proxyPath.get(0), cmd));
         }
         proxyCommand.append("'");
         return Optional.of(proxyCommand.toString());
