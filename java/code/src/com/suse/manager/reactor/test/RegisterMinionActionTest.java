@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -57,6 +58,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -89,6 +91,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -236,6 +239,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key", "d8d796b3322d65928511769d180d284d2b15158165eb83083efa02c9024aa6cc");
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve("formulas/").toString() + "/");
     }
 
     /**
@@ -1297,6 +1301,124 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(1, ActionFactory.listServerActionsForServer(minion).stream()
                                     .filter(sa -> ((ServerAction) sa).getParentAction().getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST))
                                     .count());
+                },
+                null,
+                DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Tests registration of an empty profile
+     * @throws Exception if anything goes wrong
+     */
+    public void testEmptyProfileRegistration() throws Exception {
+        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile", "00:11:22:33:44:55");
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", false);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk02");
+                                map.put("minion_id_prefix", "Branch001");
+                                Map<String, String> interfaces = new HashMap<>();
+                                interfaces.put("eth1", "00:11:22:33:44:55");
+                                map.put("hwaddr_interfaces", interfaces);
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    Set<String> expectedEntitlements = Collections.singleton(EntitlementManager.SALT_ENTITLED);
+                    assertEquals(
+                            expectedEntitlements,
+                            minion.getEntitlements().stream()
+                                    .map(e -> e.getLabel())
+                                    .collect(Collectors.toSet()));
+                    assertEquals(emptyMinion.getId(), minion.getId());
+                    assertEquals(MINION_ID, minion.getMinionId());
+                    assertEquals(MACHINE_ID, minion.getMachineId());
+                    assertEquals(MACHINE_ID, minion.getDigitalServerId());
+                    HibernateFactory.getSession().refresh(minion); // refresh minions to populate network interfaces
+                    HibernateFactory.getSession().refresh(emptyMinion);
+                    assertEquals(emptyMinion.getNetworkInterfaces(), minion.getNetworkInterfaces());
+                },
+                null,
+                DEFAULT_CONTACT_METHOD);
+    }
+
+
+    /**
+     * Tests migration of formula assignment and data for empty profile during registration
+     * @throws Exception if anything goes wrong
+     */
+    public void testMigrateFormulaDataForEmptyProfile() throws Exception {
+        final String testFormula = "testFormula";
+        final String hwAddress = "00:11:22:33:44:55";
+
+        // assign some formula
+        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile", hwAddress);
+        FormulaFactory.saveServerFormulas(hwAddress, Collections.singletonList(testFormula));
+        Map<String, Object> formulaContent = Collections.singletonMap("testKey", "testVal");
+        FormulaFactory.saveServerFormulaData(formulaContent, hwAddress, testFormula);
+
+        assertTrue(Paths.get(FormulaFactory.getPillarDir(), hwAddress + "_" + testFormula + ".json").toFile().exists());
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("initrd", false);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk02");
+                                map.put("minion_id_prefix", "Branch001");
+                                Map<String, String> interfaces = new HashMap<>();
+                                interfaces.put("eth1", hwAddress);
+                                map.put("hwaddr_interfaces", interfaces);
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    Set<String> expectedEntitlements = Collections.singleton(EntitlementManager.SALT_ENTITLED);
+                    assertEquals(
+                            expectedEntitlements,
+                            minion.getEntitlements().stream()
+                                    .map(e -> e.getLabel())
+                                    .collect(Collectors.toSet()));
+                    assertEquals(emptyMinion.getId(), minion.getId());
+                    assertEquals(MINION_ID, minion.getMinionId());
+                    assertEquals(MACHINE_ID, minion.getMachineId());
+                    assertEquals(MACHINE_ID, minion.getDigitalServerId());
+                    HibernateFactory.getSession().refresh(minion); // refresh minions to populate network interfaces
+                    HibernateFactory.getSession().refresh(emptyMinion);
+                    assertEquals(emptyMinion.getNetworkInterfaces(), minion.getNetworkInterfaces());
+
+                    assertTrue(Paths.get(FormulaFactory.getPillarDir(), MINION_ID + "_" + testFormula + ".json").toFile().exists());
+                    assertFalse(Paths.get(FormulaFactory.getPillarDir(), hwAddress + "_" + testFormula + ".json").toFile().exists());
                 },
                 null,
                 DEFAULT_CONTACT_METHOD);

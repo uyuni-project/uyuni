@@ -33,7 +33,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -47,7 +51,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -190,14 +193,14 @@ public class FormulaFactory {
     /**
      * Saves the values of a formula for a server.
      * @param formData the values to save
-     * @param serverId the id of the server
+     * @param minionId the minionId
      * @param formulaName the name of the formula
      * @throws IOException if an IOException occurs while saving the data
      * @throws UnsupportedOperationException if the server is not a salt minion
      */
-    public static void saveServerFormulaData(Map<String, Object> formData, Long serverId,
+    public static void saveServerFormulaData(Map<String, Object> formData, String minionId,
             String formulaName) throws IOException, UnsupportedOperationException {
-        File file = new File(getPillarDir() + getMinionId(serverId) +
+        File file = new File(getPillarDir() + minionId +
                 "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         try {
             file.getParentFile().mkdirs();
@@ -230,22 +233,22 @@ public class FormulaFactory {
                     Collections.emptyList()));
         }
         catch (FileNotFoundException e) {
-            return new LinkedList<String>();
+            return new LinkedList<>();
         }
     }
 
     /**
      * Returns the formulas applied to a given server
-     * @param serverId the id of the server
+     * @param minionId the minion id
      * @return the list of formulas
      */
-    public static List<String> getFormulasByServerId(Long serverId) {
+    public static List<String> getFormulasByMinionId(String minionId) {
         List<String> formulas = new LinkedList<>();
         File serverDataFile = new File(getServerDataFile());
         try {
             Map<String, List<String>> serverFormulas = GSON.fromJson(
                     new BufferedReader(new FileReader(serverDataFile)), Map.class);
-            formulas.addAll(serverFormulas.getOrDefault(getMinionId(serverId),
+            formulas.addAll(serverFormulas.getOrDefault(minionId,
                     Collections.emptyList()));
         }
         catch (FileNotFoundException | UnsupportedOperationException e) {
@@ -260,7 +263,7 @@ public class FormulaFactory {
      * @return the combined list of formulas
      */
     public static List<String> getCombinedFormulasByServerId(Long serverId) {
-        List<String> formulas = getFormulasByServerId(serverId);
+        List<String> formulas = getFormulasByMinionId(MinionServerFactory.getMinionId(serverId));
         List<String> groupFormulas = getGroupFormulasByServerId(serverId);
         formulas.removeAll(groupFormulas); // Remove duplicates
         formulas.addAll(groupFormulas);
@@ -319,14 +322,14 @@ public class FormulaFactory {
     /**
      * Returns the saved values of a given server for a given formula.
      * @param name the name of the formula
-     * @param serverId the id of the server
+     * @param minionId the minion id
      * @return the saved values or an empty optional if no values were found
      */
-    public static Optional<Map<String, Object>> getFormulaValuesByNameAndServerId(
-            String name, Long serverId) {
+    public static Optional<Map<String, Object>> getFormulaValuesByNameAndMinionId(
+            String name, String minionId) {
         try {
             File dataFile = new File(getPillarDir() +
-                    getMinionId(serverId) + "_" + name + "." + PILLAR_FILE_EXTENSION);
+                    minionId + "_" + name + "." + PILLAR_FILE_EXTENSION);
             if (dataFile.exists()) {
                 return Optional.of((Map<String, Object>) GSON.fromJson(
                         new BufferedReader(new FileReader(dataFile)), Map.class));
@@ -410,14 +413,18 @@ public class FormulaFactory {
                 new LinkedList<>(groupFormulas.getOrDefault(groupId.toString(),
                         new LinkedList<>()));
         deletedFormulas.removeAll(selectedFormulas);
-        for (Server server : ServerGroupFactory.lookupByIdAndOrg(groupId, org)
-                .getServers()) {
-            for (String deletedFormula : deletedFormulas) {
-                deleteServerFormulaData(server.getId(), deletedFormula);
+
+        Set<MinionServer> minions = ServerGroupFactory
+                .lookupByIdAndOrg(groupId, org)
+                .getServers().stream()
+                .map(server -> server.asMinionServer())
+                .flatMap(Opt::stream)
+                .collect(Collectors.toSet());
+
+        for (MinionServer minion : minions) { // foreach loop: we need to throw IOException
+            for (String f : deletedFormulas) {
+                deleteServerFormulaData(minion.getMinionId(), f);
             }
-        }
-        for (String deletedFormula : deletedFormulas) {
-            deleteGroupFormulaData(groupId, deletedFormula);
         }
 
         // Save selected Formulas
@@ -430,16 +437,15 @@ public class FormulaFactory {
     /**
      * Save the selected formulas for a server.
      * This also deletes all saved values of that formula.
-     * @param serverId the id of the server
+     * @param minionId the minion id
      * @param selectedFormulas the new selected formulas to save
      * @throws IOException if an IOException occurs while saving the data
      * @throws UnsupportedOperationException in case serverId does not represent a minion
      */
-    public static synchronized void saveServerFormulas(Long serverId,
+    public static synchronized void saveServerFormulas(String minionId,
             List<String> selectedFormulas) throws IOException,
             UnsupportedOperationException {
         File dataFile = new File(getServerDataFile());
-        String minionId = getMinionId(serverId);
 
         Map<String, List<String>> serverFormulas;
         if (!dataFile.exists()) {
@@ -459,7 +465,7 @@ public class FormulaFactory {
                         new LinkedList<>()));
         deletedFormulas.removeAll(selectedFormulas);
         for (String deletedFormula : deletedFormulas) {
-            deleteServerFormulaData(serverId, deletedFormula);
+            deleteServerFormulaData(minionId, deletedFormula);
         }
 
         // Save selected Formulas
@@ -473,15 +479,14 @@ public class FormulaFactory {
 
     /**
      * Deletes all saved values of a given server for a given formula
-     * @param serverId the id of the server
+     * @param minionId the minion id
      * @param formulaName the name of the formula
      * @throws IOException if an IOException occurs while saving the data
      */
-    public static void deleteServerFormulaData(Long serverId, String formulaName)
-            throws IOException {
+    public static void deleteServerFormulaData(String minionId, String formulaName) {
         try {
             File file = new File(getPillarDir() +
-                    getMinionId(serverId) + "_" + formulaName +
+                    minionId + "_" + formulaName +
                     "." + PILLAR_FILE_EXTENSION);
             if (file.exists()) {
                 file.delete();
@@ -586,21 +591,4 @@ public class FormulaFactory {
         return Optional.ofNullable(getMetadata(name).getOrDefault(param, null));
     }
 
-    /**
-     * Returns the minion id of a given server.
-     * @param serverId the id of the server
-     * @return the minion id
-     * @throws UnsupportedOperationException if the server is not a salt minion
-     */
-    private static String getMinionId(Long serverId) throws UnsupportedOperationException {
-        Optional<MinionServer> minionServer =
-                ServerFactory.lookupById(serverId).asMinionServer();
-        if (minionServer.isPresent()) {
-            return minionServer.get().getMinionId();
-        }
-        else {
-            throw new UnsupportedOperationException(
-                    "System is not a salt minion: " + serverId);
-        }
-    }
 }

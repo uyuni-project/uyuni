@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE create_index_if_not_exists_tmp(
+  create_index_query VARCHAR2
+) IS
+  already_exists  exception;
+  columns_indexed exception;
+  pragma exception_init( already_exists, -955 );
+  pragma exception_init(columns_indexed, -1408);
+BEGIN
+  BEGIN
+    execute immediate create_index_query;
+    dbms_output.put_line( 'index created' );
+  EXCEPTION
+    when already_exists or columns_indexed then
+    dbms_output.put_line( 'skipped creating index' );
+  END;
+END;
+/
+show errors;
+
+call create_index_if_not_exists_tmp('CREATE INDEX rhn_srv_net_iface_hw_addr_idx ON rhnServerNetInterface (hw_addr)');
+
+DROP PROCEDURE create_index_if_not_exists_tmp;

@@ -4622,12 +4622,7 @@ public class SystemHandler extends BaseHandler {
             String selectedEnt = (String)details.get("base_entitlement");
             Entitlement base = EntitlementManager.getByName(selectedEnt);
             if (base != null) {
-                try {
-                    server.setBaseEntitlement(base);
-                }
-                catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-                    throw new TaskomaticApiException(e.getMessage());
-                }
+                server.setBaseEntitlement(base);
             }
             else if (selectedEnt.equals("unentitle")) {
                 SystemManager.removeAllServerEntitlements(server.getId());
@@ -4800,46 +4795,41 @@ public class SystemHandler extends BaseHandler {
 
         validateEntitlements(entitlementL);
 
-        try {
-            List<String> addOnEnts = new LinkedList<String>(entitlements);
-            // first process base entitlements
-            for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
-                if (addOnEnts.contains(en.getLabel())) {
-                    addOnEnts.remove(en.getLabel());
-                    server.setBaseEntitlement(en);
-                }
+        List<String> addOnEnts = new LinkedList<String>(entitlements);
+        // first process base entitlements
+        for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
+            if (addOnEnts.contains(en.getLabel())) {
+                addOnEnts.remove(en.getLabel());
+                server.setBaseEntitlement(en);
+            }
+        }
+
+        // put a more intelligible exception
+        if ((server.getBaseEntitlement() == null) && (!addOnEnts.isEmpty())) {
+            throw new InvalidEntitlementException("Base entitlement missing");
+        }
+
+        for (Iterator<String> it = addOnEnts.iterator(); it.hasNext();) {
+
+            Entitlement ent = EntitlementManager.getByName(it.next());
+
+            // Ignore if the system already has this entitlement:
+            if (server.hasEntitlement(ent)) {
+                log.debug("System " + server.getName() + " already has entitlement: " +
+                        ent.getLabel());
+                continue;
             }
 
-            // put a more intelligible exception
-            if ((server.getBaseEntitlement() == null) && (!addOnEnts.isEmpty())) {
-                throw new InvalidEntitlementException("Base entitlement missing");
-            }
-
-            for (Iterator<String> it = addOnEnts.iterator(); it.hasNext();) {
-
-                Entitlement ent = EntitlementManager.getByName(it.next());
-
-                // Ignore if the system already has this entitlement:
-                if (server.hasEntitlement(ent)) {
-                    log.debug("System " + server.getName() + " already has entitlement: " +
-                            ent.getLabel());
-                    continue;
-                }
-
-                if (SystemManager.canEntitleServer(server, ent)) {
-                    ValidatorResult vr = SystemManager.entitleServer(server, ent);
-                    needsSnapshot = true;
-                    if (vr.getErrors().size() > 0) {
-                        throw new InvalidEntitlementException();
-                    }
-                }
-                else {
+            if (SystemManager.canEntitleServer(server, ent)) {
+                ValidatorResult vr = SystemManager.entitleServer(server, ent);
+                needsSnapshot = true;
+                if (vr.getErrors().size() > 0) {
                     throw new InvalidEntitlementException();
                 }
             }
-        }
-        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            throw new TaskomaticApiException(e.getMessage());
+            else {
+                throw new InvalidEntitlementException();
+            }
         }
 
         if (needsSnapshot) {
@@ -5926,6 +5916,38 @@ public class SystemHandler extends BaseHandler {
         cmd.setKernelOptions(kOptions);
         cmd.setComment(comment);
         cmd.store();
+
+        return 1;
+    }
+
+    /**
+     * Creates a system record in database for a system that is not (yet) registered.
+     * @param loggedInUser the currently logged in user
+     * @param systemName server name
+     * @param data the data about system
+     * @return int - 1 on success, exception thrown otherwise.
+     *
+     * @xmlrpc.doc Creates a system record in database for a system that is not registered.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "systemName", "System name")
+     * @xmlrpc.param
+     *  #struct("data")
+     *      #prop_desc("string", "hwAddress", "The HW address of the network interface (MAC)")
+     *  #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
+        String hwAddress = (String) data.get("hwAddress");
+        if (hwAddress == null) {
+            throw new InvalidParameterException("The data does not contain required 'hwAddress' field.");
+        }
+
+        try {
+            SystemManager.createSystemProfile(loggedInUser, systemName, hwAddress);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            throw new InvalidParameterException("Can't create system", e);
+        }
 
         return 1;
     }

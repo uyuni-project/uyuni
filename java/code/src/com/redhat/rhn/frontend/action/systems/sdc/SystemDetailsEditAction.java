@@ -143,17 +143,7 @@ public class SystemDetailsEditAction extends RhnAction {
         Entitlement base = EntitlementManager.getByName(selectedEnt);
         log.debug("base: " + base);
         if (base != null) {
-            try {
-                s.setBaseEntitlement(base);
-            }
-            catch (TaskomaticApiException e) {
-                log.error("Could not schedule entitlement change:");
-                log.error(e);
-                ActionErrors errors = new ActionErrors();
-                getStrutsDelegate().addError("taskscheduler.down", errors);
-                getStrutsDelegate().saveMessages(request, errors);
-                success = false;
-            }
+            s.setBaseEntitlement(base);
         }
         else if (selectedEnt.equals(UNENTITLE)) {
             SystemManager.removeAllServerEntitlements(s.getId());
