@@ -4,7 +4,20 @@ SHELL := /bin/bash
 # --no-cache=true
 BUILDOPTS=
 
-all: uyuni-master-base uyuni-master-cobbler uyuni-master-gatherer uyuni-master-spacewalkkoan uyuni-master-pgsql uyuni-master-pgsql-4eclipse
+all: uyuni-master-root uyuni-master-base uyuni-master-cobbler uyuni-master-gatherer uyuni-master-spacewalkkoan uyuni-master-pgsql uyuni-master-pgsql-4eclipse
+
+uyuni-master-root::
+	@echo "=================================="
+	@echo "Building $@"
+	@echo "=================================="
+	pushd $@; \
+	docker build $(BUILDOPTS) -t $@ . || exit 1; \
+	docker tag $@ $@:$(VERSION); \
+	docker tag $@ $(REGISTRY)/$@:latest; \
+	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
+	docker push $(REGISTRY)/$@:latest ; \
+	docker push $(REGISTRY)/$@:$(VERSION); \
+	popd
 
 uyuni-master-base::
 	@echo "=================================="
