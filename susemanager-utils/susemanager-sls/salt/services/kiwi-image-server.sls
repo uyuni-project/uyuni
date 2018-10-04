@@ -4,12 +4,18 @@
 
 {% if pillar['addon_group_types'] is defined and 'osimage_build_host' in pillar['addon_group_types'] %}
 {% set kiwi_dir = '/var/lib/Kiwi' %}
+{% set kiwi_boot_modules = ['kiwi-desc-netboot', 'kiwi-desc-saltboot', 'kiwi-desc-vmxboot', 'kiwi-desc-oemboot', 'kiwi-desc-isoboot'] %}
+{% set available_packages = salt['pkg.search']('kiwi*').keys() %}
 
 mgr_install_kiwi:
   pkg.installed:
     - pkgs:
       - kiwi
-    - order: first
+{% for km in kiwi_boot_modules %}
+    {% if km in available_packages %}
+      - {{ km }}
+    {% endif %}
+{% endfor %}
 
 mgr_kiwi_build_tools:
   pkg.installed:
