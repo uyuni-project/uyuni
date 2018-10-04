@@ -10,6 +10,7 @@ const {ChannelAnchorLink} = require("../../components/links");
 
 type ChildChannelsProps = {
     children: Function,
+    isFetchActivated: boolean,
     channels: Array,
     base: Object,
     selectedChannelsIds: Array<number>
@@ -39,30 +40,32 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
     }
 
     fetchMandatoryChannelsByChannelIds = () => {
-      // fetch dependencies data for all child channels and base channel as well
-      const needDepsInfoChannels = this.props.base && this.props.base.id != -1 ?
-        [this.props.base.id, ...this.props.channels.map(c => c.id)]
-        : this.props.channels.map(c => c.id);
+      if(this.props.isFetchActivated) {
+        // fetch dependencies data for all child channels and base channel as well
+        const needDepsInfoChannels = this.props.base && this.props.base.id != -1 ?
+          [this.props.base.id, ...this.props.channels.map(c => c.id)]
+          : this.props.channels.map(c => c.id);
 
-      const mandatoryChannelsNotCached = needDepsInfoChannels.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
-      if(mandatoryChannelsNotCached.length > 0) {
-        Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
-          .then((data : JsonResult<Map<number, Array<number>>>) => {
-            const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
-            let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
+        const mandatoryChannelsNotCached = needDepsInfoChannels.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
+        if(mandatoryChannelsNotCached.length > 0) {
+          Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
+            .then((data : JsonResult<Map<number, Array<number>>>) => {
+              const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
+              let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
 
-            this.setState({
-              mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
-              requiredChannels,
-              requiredByChannels,
-              dependencyDataAvailable: true,
-            });
+              this.setState({
+                mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
+                requiredChannels,
+                requiredByChannels,
+                dependencyDataAvailable: true,
+              });
+            })
+            .catch(this.handleResponseError);
+        } else {
+          this.setState({
+            dependencyDataAvailable: true,
           })
-          .catch(this.handleResponseError);
-      } else {
-        this.setState({
-          dependencyDataAvailable: true,
-        })
+        }
       }
     }
 
