@@ -165,7 +165,11 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   render() {
 
     return (
-      <MandatoryChannelsApi base={this.props.base} channels={this.props.channels} selectedChannelsIds={this.props.selectedChannelsIds}>
+      <MandatoryChannelsApi
+        base={this.props.base}
+        channels={this.props.channels}
+        isFetchActivated={!this.state.collapsed}
+        selectedChannelsIds={this.props.selectedChannelsIds}>
         {({
             requiredChannels,
             requiredByChannels,
@@ -207,6 +211,4 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   }
 }
 
-module.exports = {
-  ChildChannels: ChildChannels
-}
+export default ChildChannels;
