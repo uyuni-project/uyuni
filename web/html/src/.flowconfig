@@ -5,6 +5,7 @@
 ./manager/*
 ./components/*
 ./utils/*
+./core/*
 
 [libs]
 
