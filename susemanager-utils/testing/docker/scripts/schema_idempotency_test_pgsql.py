@@ -2,6 +2,7 @@
 import argparse
 import difflib
 import distutils.version as DV
+import glob
 import json
 import os
 import re
@@ -16,9 +17,16 @@ def get_all_files_from_pr(pr_file, schema_path):
         files = json.loads(json_file.read())['files']
         changed_files = []
         for file in files:
-            if re.search(r'^%s/susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-\d+\.\d+[\d|.]*/.+$' % schema_path, file['filename']):
-                if file['status'] in ['modified', 'added']:
-                    changed_files.append(file['filename'])
+            filename = str(file['filename'])
+            if not re.search(r'^schema\/spacewalk\/upgrade\/susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-\d+\.\d+[\d|.]*\/[^\/]+$', filename):
+                continue
+            if not file['status'] in ['modified', 'added']:
+                continue
+            # Get namefile including the migration folder itself
+            filename = '/'.join(filename.rsplit('/', 2)[1:])
+            # Include all *.sql.* files produced by Makefile.schema (for Oracle and PostgreSQL)
+            for copy_file in glob.glob(r'%s/%s*'% (schema_path, filename)):
+                changed_files.append(copy_file)
     return changed_files
 
 
@@ -78,6 +86,7 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     print("Creating: " + fake_path)
     os.mkdir(fake_path)
     for migration_file in files:
+        print("Copying %s to %s.." %(migration_file, fake_path))
         shutil.copy(migration_file, fake_path)
 
 
@@ -127,10 +136,11 @@ def dump_database(dump_name, excluded_tables=None):
 def run_upgrade(upgrade_script, new_version):
     """ Run a database upgrade up to the specified version """
     log_path = "/var/log/spacewalk/schema-upgrade/"
+    print("Upgrading to %s..." % new_version)
     command = "export SUMA_TEST_SCHEMA_VERSION=%s; %s -y" % (
         new_version, upgrade_script)
     if run_command(command):
-        print("Upgrade executed successfully:")
+        print("Upgrade executed successfully")
     else:
         for element in os.listdir(log_path):
             if re.search(r'^schema-from-.*\.log$', element):
@@ -152,7 +162,7 @@ def diff_dumps(initial_dump, migrated_dump):
 def argparser():
     """ Parse arguments from the user """
     parser = argparse.ArgumentParser(
-        description="Test idempotency of SQL scripts")
+        description="Test idempotency of SQL scripts. This script assumes a script schema_migration_test_oracle-*to*.sh ran before, and PostgreSQL is stopped")
     parser.add_argument("-s", "--schema-path", action="store", dest="schema_path",
                         help="Path where the directories with the schema upgrades are (default: /etc/sysconfig/rhn/schema-upgrade",
                         default="/etc/sysconfig/rhn/schema-upgrade")
@@ -164,9 +174,7 @@ def argparser():
                         help="Path where the spacewalk-schema-upgrade script is (default: /manager/schema/spacewalk/spacewalk-schema-upgrade)",
                         default="/manager/schema/spacewalk/spacewalk-schema-upgrade")
     args = parser.parse_args()
-    if args.schema_path is None:
-        raise RuntimeError(
-            "You need to specify the path where the schema upgrades are")
+    args.schema_path = args.schema_path.rstrip('/')
     if not os.path.isdir(args.schema_path):
         raise RuntimeError("Directory %s does not exist" % args.schema_path)
     if args.pr_file is None and args.version is None:
@@ -177,9 +185,6 @@ def argparser():
             "Only one of --from-pr or --from-version must be specified")
     if args.pr_file and not os.path.isfile(args.pr_file):
         raise RuntimeError("File %s does not exist" % args.pr_file)
-    if args.upgrade_script is None:
-        raise RuntimeError(
-            "You need to specify the path where the spacewalk-schema-upgrade script is")
     if not os.path.isfile(args.upgrade_script):
         raise RuntimeError(
             "The file %s for the upgrade script does not exist" % args.upgrade_script)
