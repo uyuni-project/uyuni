@@ -3,9 +3,9 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Network = require('../utils/network');
-const Loading = require('../components/loading').Loading;
-const ChildChannels = require('../components/child-channels').ChildChannels;
+const Network = require('../../utils/network');
+const Loading = require('../../components/loading/loading').Loading;
+const ChildChannels = require('./child-channels').ChildChannels;
 
 type ActivationKeyChannelsProps = {
   activationKeyId: number
@@ -213,12 +213,4 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsState, 
   }
 }
 
-// receive parameters from the backend
-// if nothing from the backend, fallback on defaults
-window.pageRenderers = window.pageRenderers || {};
-const customValues = window.pageRenderers.customValues || {DOMid: 'activation-key-channels'};
-
-ReactDOM.render(
-  <ActivationKeyChannels activationKeyId={customValues.activationKeyId ? customValues.activationKeyId : -1} />,
-  document.getElementById(customValues.DOMid)
-);
+export default ActivationKeyChannels;
