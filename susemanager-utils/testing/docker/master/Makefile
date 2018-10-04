@@ -4,9 +4,9 @@ SHELL := /bin/bash
 # --no-cache=true
 BUILDOPTS=
 
-all: uyuni-head-base uyuni-head-cobbler uyuni-head-gatherer uyuni-head-spacewalkkoan uyuni-head-pgsql uyuni-head-pgsql-4eclipse
+all: uyuni-master-base uyuni-master-cobbler uyuni-master-gatherer uyuni-master-spacewalkkoan uyuni-master-pgsql uyuni-master-pgsql-4eclipse
 
-uyuni-head-base::
+uyuni-master-base::
 	@echo "=================================="
 	@echo "Building $@"
 	@echo "=================================="
@@ -19,7 +19,7 @@ uyuni-head-base::
 	docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
-uyuni-head-cobbler::
+uyuni-master-cobbler::
 	@echo "=================================="
 	@echo "Building $@"
 	@echo "=================================="
@@ -32,7 +32,7 @@ uyuni-head-cobbler::
 	docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
-uyuni-head-gatherer::
+uyuni-master-gatherer::
 	@echo "=================================="
 	@echo "Building $@"
 	@echo "=================================="
@@ -45,7 +45,7 @@ uyuni-head-gatherer::
 	docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
-uyuni-head-spacewalkkoan::
+uyuni-master-spacewalkkoan::
 	@echo "=================================="
 	@echo "Building $@"
 	@echo "=================================="
@@ -58,7 +58,7 @@ uyuni-head-spacewalkkoan::
 	docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
-uyuni-head-pgsql::
+uyuni-master-pgsql::
 	@echo "=================================="
 	@echo "Building $@"
 	@echo "=================================="
@@ -71,7 +71,7 @@ uyuni-head-pgsql::
 	docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
-uyuni-head-pgsql-4eclipse::
+uyuni-master-pgsql-4eclipse::
 	@echo "=================================="
 	@echo "Building $@"
 	@echo "=================================="

@@ -1,4 +1,4 @@
-# Container used to test cobbler against suse manager head
+# Container used to test cobbler against Uyuni
 #
 # VERSION                4.0.0
 

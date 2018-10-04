@@ -82,14 +82,14 @@ to this image.
 It is recommended to use [semantic versioning](http://semver.org/) when dealing
 with tag versions.
 
-For example, let's assume `uyuni-head-pgsql:1.0.0` already exists. Suppose you
+For example, let's assume `uyuni-master-pgsql:1.0.0` already exists. Suppose you
 updated the `Dockerfile` to add a missing package to this image.
 
-After the `docker build` process is done the `uyuni-head-pgsql` image is going
+After the `docker build` process is done the `uyuni-master-pgsql` image is going
 to be the new Docker image including your package. Now you have to make sure
 the image can be referenced by an explicit version:
 
-`docker tag uyuni-head-pgsql:latest uyuni-head-pgsql:1.0.1`
+`docker tag uyuni-master-pgsql:latest uyuni-master-pgsql:1.0.1`
 
 Note well: `latest` could have been omitted; it has been written just to make
 things more explicit.

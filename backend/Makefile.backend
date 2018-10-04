@@ -12,7 +12,7 @@ EXTRA_DIRS = /var/log/rhn /var/log/rhn/reposync /var/cache/rhn /var/cache/rhn/sa
              /var/log/rhn/cdnsync
 
 # Docker tests variables
-DOCKER_CONTAINER_BASE = uyuni-head
+DOCKER_CONTAINER_BASE = uyuni-master
 DOCKER_REGISTRY       = registry.mgr.suse.de
 DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"

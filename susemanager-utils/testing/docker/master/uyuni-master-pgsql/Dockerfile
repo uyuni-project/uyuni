@@ -1,8 +1,8 @@
-# Container used to test java and python code of SUSE Manager against postgresql
+# Container used to test java and python code of Uyuni against postgresql
 #
 # VERSION                4.0.0
 
-FROM registry.mgr.suse.de/uyuni-head-base:latest
+FROM registry.mgr.suse.de/uyuni-master-base:latest
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
 # Install the required packages

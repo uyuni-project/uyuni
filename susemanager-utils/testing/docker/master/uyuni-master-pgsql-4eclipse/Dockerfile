@@ -1,8 +1,8 @@
-# Container used to test java and python code of SUSE Manager against postgresql
+# Container used to test java and python code of Uyuni against postgresql
 #
 # VERSION                4.0.0
 
-FROM registry.mgr.suse.de/uyuni-head-pgsql:latest
+FROM registry.mgr.suse.de/uyuni-master-pgsql:latest
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
 #RUN zypper --non-interactive in -n spacewalk-admin susemanager-schema smdba

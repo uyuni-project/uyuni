@@ -1,8 +1,8 @@
-# Container used to test java code of SUSE Manager
+# Container used to test spacewalk-koan for Uyuni
 #
 # VERSION                4.0.0
 
-FROM registry.mgr.suse.de/uyuni-head-base:latest
+FROM registry.mgr.suse.de/uyuni-master-base:latest
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
 # Install the required packages

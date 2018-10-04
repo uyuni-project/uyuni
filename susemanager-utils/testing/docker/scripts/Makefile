@@ -1,4 +1,4 @@
-DOCKER_CONTAINER = registry.mgr.suse.de/uyuni-head-cobbler
+DOCKER_CONTAINER = registry.mgr.suse.de/uyuni-master-cobbler
 
 all :: cobbler_tests
 

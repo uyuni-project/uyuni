@@ -1,5 +1,5 @@
 REGISTRY=registry.mgr.suse.de
-VER=head
+VER=master
 BASE_CONTAINER=uyuni-$VER-base
 PGSQL_CONTAINER=uyuni-$VER-pgsql
 ORACLE_CONTAINER=suma-$VER-ora
