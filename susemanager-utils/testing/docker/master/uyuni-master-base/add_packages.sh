@@ -22,14 +22,8 @@ zypper --non-interactive in perl \
 
 # Packages required to run the python unit tests
 zypper --non-interactive in  \
-              make \
-              python \
-              python-argparse \
-              python-base \
-              python-configobj \
               python-dateutil \
               python-debian \
-              python-devel \
               python-dmidecode \
               python-enum34 \
               python-ethtool \
@@ -37,15 +31,12 @@ zypper --non-interactive in  \
               python-gpgme \
               python-gzipstream \
               python-iniparse \
-              python-mock \
               python-newt \
-              python-nose \
               python-pam \
               python-psycopg2 \
               python-pyOpenSSL \
               python-pycrypto \
               python-pycurl \
-              python-pylint \
               python-selinux \
               python-setools \
               python-simplejson \
@@ -62,7 +53,4 @@ zypper --non-interactive in ant \
              pam-modules \
              sudo \
              tar
-
-# Packages for easier debugging
-zypper --non-interactive in vim less
 
