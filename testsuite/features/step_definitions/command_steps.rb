@@ -629,6 +629,7 @@ end
 
 When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
   node = get_target(host)
+  $server.run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -y -u admin -p admin -- system_scheduleapplyconfigchannels  #{node.full_hostname}"
   $server.run(command)
 end
