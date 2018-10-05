@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
@@ -429,6 +430,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL)) {
             retval = new KickstartGuestToolsChannelSubscriptionAction();
         }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_CREATE)) {
+            retval = new VirtualizationCreateAction();
+        }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
         }
@@ -533,7 +537,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static Action lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (Action)session.get(Action.class, id);
+        return session.get(Action.class, id);
     }
 
     /**
@@ -600,7 +604,7 @@ public class ActionFactory extends HibernateFactory {
     lookupConfigRevisionAction(Long id) {
 
         Session session = HibernateFactory.getSession();
-        return (ConfigRevisionAction) session.get(ConfigRevisionAction.class, id);
+        return session.get(ConfigRevisionAction.class, id);
     }
 
     /**
@@ -1212,5 +1216,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_DELETE =
             lookupActionTypeByLabel("virt.delete");
+
+    /**
+     * The constant representing "Creates a virtual domain." [ID:508]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_CREATE =
+            lookupActionTypeByLabel("virt.create");
 }
 

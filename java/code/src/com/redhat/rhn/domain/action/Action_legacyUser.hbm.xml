@@ -346,6 +346,36 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction"
+                discriminator-value="508" lazy="true">
+          <list name="disks" lazy="true" cascade="save-update">
+              <key column="action_id"/>
+              <list-index column="idx"/>
+              <one-to-many
+                  class="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails" />
+          </list>
+
+          <list name="interfaces" lazy="true"  cascade="save-update">
+              <key column="action_id"/>
+              <list-index column="idx"/>
+              <one-to-many
+                  class="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails" />
+          </list>
+          <join table="rhnActionVirtCreate">
+            <key column="action_id"/>
+            <property name="uuid" type="string" column="uuid"/>
+            <property name="type" type="string" column="vm_type"/>
+            <property name="name" type="string" column="vm_name"/>
+            <property name="osType" type="string" column="os_type"/>
+            <property name="memory" type="long" column="memory"/>
+            <property name="vcpus" type="long" column="vcpus"/>
+            <property name="arch" type="string" column="arch"/>
+            <property name="graphicsType" type="string" column="graphics_type"/>
+            <property name="removeDisks" type="yes_no" column="remove_disks"/>
+            <property name="removeInterfaces" type="yes_no" column="remove_interfaces"/>
+          </join>
+        </subclass>
+
 
         <!-- PackageActions: 1, 3, 4, 8, 13, 14, 33 -->
         <!-- PackageAction is abstract - the subclasses only get instantiated -->
@@ -460,7 +490,17 @@ select {ra.*}
     (select NULL as uuid from dual) ra_6_,
     (select NULL as uuid, NULL as memory from dual) ra_7_,
     (select NULL as uuid, NULL as vcpu from dual) ra_8_,
-    (select NULL as uuid from dual) ra_10_
+    (select NULL as uuid from dual) ra_10_,
+    (select NULL as uuid,
+            NULL as vm_type,
+            NULL as vm_name,
+            NULL as os_type,
+            NULL as memory,
+            NULL as vcpus,
+            NULL as arch,
+            NULL as graphics_type,
+            NULL as remove_disks,
+            NULL as remove_interfaces from dual) ra_11_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -561,7 +601,17 @@ select sa.server_id
                      (select NULL as uuid from dual) ra_6_,
                      (select NULL as uuid, NULL as memory from dual) ra_7_,
                      (select NULL as uuid, NULL as vcpu from dual) ra_8_,
-                     (select NULL as uuid from dual) ra_10_
+                     (select NULL as uuid from dual) ra_10_,
+                     (select NULL as uuid,
+                             NULL as vm_type,
+                             NULL as vm_name,
+                             NULL as os_type,
+                             NULL as memory,
+                             NULL as vcpus,
+                             NULL as arch,
+                             NULL as graphics_type,
+                             NULL as remove_disks,
+                             NULL as remove_interfaces from dual) ra_11_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id
