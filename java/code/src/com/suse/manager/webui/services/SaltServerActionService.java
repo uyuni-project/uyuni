@@ -52,8 +52,9 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.channel.AccessToken;
-import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
@@ -62,6 +63,8 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
+import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
@@ -72,17 +75,22 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.server.ErrataInfo;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
@@ -106,10 +114,6 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -146,6 +150,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -325,6 +330,11 @@ public class SaltServerActionService {
                     (VirtualizationSetMemoryAction)actionIn;
             return virtSetterAction(minions, virtAction.getUuid(),
                                     "mem", virtAction.getMemory());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_CREATE.equals(actionType)) {
+            VirtualizationCreateAction createAction =
+                    (VirtualizationCreateAction)actionIn;
+            return virtCreateAction(minions, createAction);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1493,6 +1503,81 @@ public class SaltServerActionService {
                                 " uuid " + uuid);
                     }
                     return null;
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtCreateAction(List<MinionSummary> minions,
+            VirtualizationCreateAction action) {
+        String state = action.getUuid() != null ? "virt.update-vm" : "virt.create-vm";
+
+        Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
+                Collectors.toMap(minion -> {
+                    // Some of these pillar data will be useless for update-vm, but they will just be ignored.
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("name", action.getName());
+                    pillar.put("vcpus", action.getVcpus());
+                    pillar.put("mem", action.getMemory());
+                    pillar.put("vm_type", action.getType());
+                    pillar.put("os_type", action.getOsType());
+                    pillar.put("arch", action.getArch());
+
+                    // No need to handle copying the image to the minion, salt does it for us
+                    if (!action.getDisks().isEmpty() || action.isRemoveDisks()) {
+                        pillar.put("disks", IntStream.range(0, action.getDisks().size()).mapToObj(i -> {
+                            VirtualizationCreateActionDiskDetails disk = action.getDisks().get(i);
+                            Map<String, Object> diskData = new HashMap<>();
+                            String diskName = "system";
+                            if (i > 0) {
+                                diskName = String.format("disk-%d", i);
+                            }
+                            diskData.put("name", diskName);
+                            diskData.put("format", "qcow2");
+                            if (disk.getSourceFile() != null || disk.getDevice().equals("cdrom")) {
+                                diskData.put("source_file", disk.getSourceFile() != null ? disk.getSourceFile() : "");
+                            }
+                            else {
+                                diskData.put("pool", disk.getPool());
+                                diskData.put("image", disk.getTemplate());
+                                if (disk.getSize() != 0) {
+                                    diskData.put("size", disk.getSize() * 1024);
+                                }
+                            }
+                            diskData.put("model", disk.getBus());
+                            diskData.put("device", disk.getDevice());
+                            diskData.put("type", disk.getType());
+
+                            return diskData;
+                        }).collect(Collectors.toList()));
+                    }
+
+                    if (!action.getInterfaces().isEmpty() || action.isRemoveInterfaces()) {
+                        pillar.put("interfaces",
+                                   IntStream.range(0, action.getInterfaces().size()).mapToObj(i -> {
+                            VirtualizationCreateActionInterfaceDetails iface = action.getInterfaces().get(i);
+                            Map<String, Object> ifaceData = new HashMap<>();
+                            ifaceData.put("name", String.format("eth%d", i));
+                            ifaceData.put("type", iface.getType());
+                            ifaceData.put("source", iface.getSource());
+                            if (iface.getMac() != null) {
+                                ifaceData.put("mac", iface.getMac());
+                            }
+                            return ifaceData;
+                        }).collect(Collectors.toList()));
+                    }
+
+                    Map<String, Object> graphicsData = new HashMap<>();
+                    graphicsData.put("type", action.getGraphicsType());
+                    pillar.put("graphics", graphicsData);
+
+                    return State.apply(
+                            Collections.singletonList(state),
+                            Optional.of(pillar));
                 },
                 Collections::singletonList
         ));
