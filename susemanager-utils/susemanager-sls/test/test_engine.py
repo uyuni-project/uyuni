@@ -3,7 +3,7 @@ import pytest
 import psycopg2
 import shlex
 import subprocess
-from mgr_events import Responder
+from mgr_events import Responder, DEFAULT_COMMIT_BURST
 from mock import MagicMock, patch, call
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database, drop_database
@@ -46,8 +46,11 @@ def new_connection():
 
 @pytest.fixture
 def create_tables(db_connection):
-    with open('/spacewalk/schema/spacewalk/postgres/tables/suseSaltEvent.sql', 'rb') as _file:
-        sql = _file.read()
+    sql = """CREATE TABLE suseSaltEvent (
+        id SERIAL PRIMARY KEY,
+        minion_id CHARACTER VARYING(256),
+        data TEXT NOT NULL
+    );"""
     db_connection.cursor().execute(sql)
     db_connection.commit()
 
@@ -95,7 +98,7 @@ def test_connection_recovery_on_commit(db_connection, responder):
     responder.connection.close()
     with patch('mgr_events.psycopg2') as mock_psycopg2:
         mock_psycopg2.connect.return_value = db_connection
-        responder.commit()
+        responder.attempt_commit()
     responder.connection.commit()
     responder.cursor.execute("SELECT * FROM suseSaltEvent")
     resp = responder.cursor.fetchall()
@@ -108,6 +111,7 @@ def test_insert_start_event(responder, db_connection):
     responder.cursor.execute("SELECT * FROM suseSaltEvent;")
     resp = responder.cursor.fetchall()
     assert resp
+    assert responder.tokens == DEFAULT_COMMIT_BURST - 1
 
 
 def test_insert_job_return_event(responder):
@@ -116,6 +120,7 @@ def test_insert_job_return_event(responder):
     responder.cursor.execute("SELECT * FROM suseSaltEvent;")
     resp = responder.cursor.fetchall()
     assert resp
+    assert responder.tokens == DEFAULT_COMMIT_BURST - 1
 
 
 def test_commit_scheduled_on_init(responder):
@@ -127,17 +132,38 @@ def test_commit_empty_queue(responder):
     with patch.object(responder, 'event_bus', MagicMock()):
         with patch.object(responder, 'connection') as mock_connection:
             mock_connection.closed = False
-            responder.commit()
+            responder.attempt_commit()
             assert responder.connection.commit.call_count == 0
-        assert responder.event_bus.io_loop.call_later.call_count == 1
+        assert responder.tokens == DEFAULT_COMMIT_BURST
 
 
 def test_postgres_notification(responder):
-    responder._insert('salt/minion/1/start', {'value': 1})
     with patch.object(responder, 'cursor'):
-        responder.commit()
+        responder._insert('salt/minion/1/start', {'value': 1})
         assert responder.counter == 0
-        assert responder.cursor.execute.mock_calls == [call('NOTIFY suseSaltEvent;')]
+        assert responder.tokens == DEFAULT_COMMIT_BURST -1
+        assert responder.cursor.execute.mock_calls[-1:] == [call('NOTIFY suseSaltEvent;')]
+
+def test_add_token(responder):
+    responder.tokens = 0
+    responder.add_token()
+    assert responder.tokens == 1
+
+def test_add_token_max(responder):
+    responder.add_token()
+    assert responder.tokens == DEFAULT_COMMIT_BURST
+
+def test_commit_avoidance_without_tokens(responder):
+    with patch.object(responder, 'cursor'):
+        with patch.object(responder, 'connection') as mock_connection:
+            mock_connection.closed = False
+            responder.tokens = 0
+            responder._insert('salt/minion/1/start', {'value': 1})
+            assert responder.counter == 1
+            assert responder.tokens == 0
+            assert responder.connection.commit.call_count == 0
+            assert responder.cursor.execute.mock_calls == [call('INSERT INTO suseSaltEvent (data) VALUES (%s);', ('{"tag": "salt/minion/1/start", "data": {"value": 1}}',))]
+
 
 def test_postgres_connect(db_connection, responder):
     disposable_connection = new_connection()
@@ -157,40 +183,3 @@ def test_postgres_connect_with_port(responder):
     with patch('mgr_events.psycopg2') as mock_psycopg2:
         responder._connect_to_database()
         mock_psycopg2.connect.assert_called_once_with(u"dbname='tests' user='postgres' host='localhost' port='1234' password=''")
-
-
-def test_commit_interval_computation(responder):
-    responder.commit_interval = 0.1
-    responder.counter = 10
-    responder.config['delay_factor'] = 0.1
-    responder.config['scaling_factor'] = 1
-
-    assert responder._compute_commit_interval() == 90.01
-
-
-def test_commit_interval_min_limit_applied(responder):
-    responder.counter = 1
-    responder.config['commit_interval_min'] = 0.2
-    with patch.object(responder, 'event_bus', MagicMock()):
-        responder.commit()
-        responder.event_bus.io_loop.call_later.assert_called_once_with(0.2, responder.commit)
-
-
-def test_commit_interval_max_limit_applied(responder):
-    responder.counter = 0
-    responder.commit_interval = 10
-    responder.config['commit_interval_min'] = 0.1
-    responder.config['commit_interval_max'] = 0.9
-    with patch.object(responder, 'event_bus', MagicMock()):
-        responder.commit()
-        responder.event_bus.io_loop.call_later.assert_called_once_with(0.9, responder.commit)
-
-
-def test_commit_interval_within_limits(responder):
-    responder.counter = 0
-    responder.commit_interval = 10
-    responder.config['commit_interval_min'] = 0.1
-    responder.config['commit_interval_max'] = 2
-    with patch.object(responder, 'event_bus', MagicMock()):
-        responder.commit()
-        responder.event_bus.io_loop.call_later.assert_called_once_with(responder.commit_interval, responder.commit)
