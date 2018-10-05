@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Oct 05 16:39:51 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.17-1
 - install all available known kiwi boot descriptions
 - Fix: Cleanup Kiwi cache in highstate (bsc#1109892)
 - removed the ssl certificate verification while checking bootstrap repo URL (bsc#1095220)
