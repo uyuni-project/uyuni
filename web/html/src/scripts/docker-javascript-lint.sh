@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 
-### TODO remove this section before merging PR. it's just for testing in jenkins
-zypper ar -f http://download.suse.de/ibs/home:/mateialbu:/branches:/Devel:/Galaxy:/Manager:/Head/SLE_12_SP3 "nodejs-sdk"
-
-zypper --non-interactive in --repo "nodejs-sdk" susemanager-nodejs-sdk-devel
-
-### end section
-
-# TODO uncomment when section above is removed
-#zypper --non-interactive in susemanager-nodejs-sdk-devel
+zypper --non-interactive in susemanager-nodejs-sdk-devel
 
 cd /manager/web/html/src
 
