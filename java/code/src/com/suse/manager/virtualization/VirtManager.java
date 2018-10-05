@@ -14,6 +14,7 @@
  */
 package com.suse.manager.virtualization;
 
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -44,6 +45,20 @@ public class VirtManager {
 
         Optional<String> result = saltService.callSync(call, minionId);
         return result.map(xml -> GuestDefinition.parse(xml));
+    }
+
+    /**
+     * Query virtual host and domains capabilities.
+     *
+     * @param minionId the salt minion virtual host to ask about
+     * @return the output of the salt virt.all_capabilities call in JSON
+     */
+    public static Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.all_capabilities", Optional.empty(), Optional.empty(),
+                        new TypeToken<Map<String, JsonElement>>() { });
+
+        return saltService.callSync(call, minionId);
     }
 
     /**
