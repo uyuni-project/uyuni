@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -59,6 +60,22 @@ public class VirtManager {
                         new TypeToken<Map<String, JsonElement>>() { });
 
         return saltService.callSync(call, minionId);
+    }
+
+    /**
+     * Query the list of virtual networks defined on a salt minion.
+     *
+     * @param minionId the minion to ask about
+     * @return a list of the network names
+     */
+    public static Map<String, JsonElement> getNetworks(String minionId) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.network_info", Optional.empty(), Optional.of(args),
+                        new TypeToken<Map<String, JsonElement>>() { });
+
+        Optional<Map<String, JsonElement>> nets = saltService.callSync(call, minionId);
+        return nets.orElse(new HashMap<String, JsonElement>());
     }
 
     /**
