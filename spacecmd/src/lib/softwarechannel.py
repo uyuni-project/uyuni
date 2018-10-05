@@ -1199,6 +1199,75 @@ def do_softwarechannel_addpackages(self, args):
 
 ####################
 
+def help_softwarechannel_mergepackages(self):
+    print 'softwarechannel_mergepackages: Merge packages from one software channel to another'
+    print 'usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL'
+
+def complete_softwarechannel_mergepackages(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return tab_completer(self.do_softwarechannel_list('', True),
+                             text)
+    if len(parts) == 3:
+        return tab_completer(self.do_softwarechannel_list('', True),
+                             text)
+
+def do_softwarechannel_mergepackages(self, args):
+    (args, _options) = parse_arguments(args)
+
+    if len(args) < 2:
+        self.help_softwarechannel_mergepackages()
+        return
+
+    source_channel = args[0]
+    target_channel = args[1]
+
+    if not self.check_softwarechannel(source_channel) or not self.check_softwarechannel(target_channel):
+    	return
+
+    source_packages = self.client.channel.software.listAllPackages(self.session, source_channel)
+    target_packages = self.client.channel.software.listAllPackages(self.session, target_channel)
+
+    source_package_names = set()
+    for package in source_packages:
+        package_name = self.get_package_name(package.get('id'))  
+        source_package_names.add(package_name)
+
+    target_package_names = set()
+    for package in target_packages:
+        package_name = self.get_package_name(package.get('id'))
+        target_package_names.add(package_name)
+
+    source_only = list(source_package_names.difference(target_package_names))
+    source_only.sort()
+    
+    if len(source_only) == 0:
+    	print source_channel + ' contains no packages which are not already present in ' + target_channel
+    	return
+
+    print 'packages to add to channel "' + target_channel + '":'
+    for i in source_only:
+        print i
+    print
+
+    print "summary:"
+    print "  " + source_channel + ": " + str(len(source_package_names)).rjust(5), "package(s)"
+    print "  " + target_channel + ": " + str(len(target_package_names)).rjust(5), "package(s)"
+    print "    add   ", str(
+        len(source_only)).rjust(5), "package(s) to  ", target_channel
+
+    if not self.user_confirm('Perform these changes to channel ' + target_channel + ' [y/N]:'):
+        return
+
+    for package in source_only:
+            package_id = list(self.get_package_id(package))
+            self.client.channel.software.addPackages(self.session,
+                                             target_channel,
+                                             package_id)
+
+####################
+
 
 def help_softwarechannel_removeerrata(self):
     print 'softwarechannel_removeerrata: Remove patches from a ' + \
