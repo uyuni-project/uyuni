@@ -138,6 +138,37 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should not see a "test-vm" virtual machine on "xen-server"
 
 @virthost_xen
+  Scenario: Create a paravirtualized guest
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I follow "Create Guest"
+    And I wait until I see "General" text
+    And I enter "test-vm2" as "name"
+    And I enter "/var/testsuite-data/disk-image-template-xenpv.qcow2" as "disk0_source_template"
+    And I click on "Create"
+    Then I should see a "Hosted Virtual Systems" text
+    When I wait until I see "test-vm2" text
+    And I wait until table row for "test-vm2" contains button "Stop"
+    And "test-vm2" virtual machine on "xen-server" should have 1024MB memory and 1 vcpus
+    And "test-vm2" virtual machine on "xen-server" should have 1 NIC using "default" network
+    And "test-vm2" virtual machine on "xen-server" should have a "test-vm2_system.qcow2" xen disk
+
+@virthost_xen
+  Scenario: Create a fully virtualized guest
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I follow "Create Guest"
+    And I wait until I see "General" text
+    And I enter "test-vm3" as "name"
+    And I select "Fully Virtualized" from "osType"
+    And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I click on "Create"
+    Then I should see a "Hosted Virtual Systems" text
+    When I wait until I see "test-vm3" text
+    And I wait until table row for "test-vm3" contains button "Stop"
+    And "test-vm3" virtual machine on "xen-server" should have 1024MB memory and 1 vcpus
+    And "test-vm3" virtual machine on "xen-server" should have 1 NIC using "default" network
+    And "test-vm3" virtual machine on "xen-server" should have a "test-vm3_system.qcow2" xen disk
+
+@virthost_xen
   Scenario: Cleanup: Unregister the virtualization host
     Given I am on the Systems overview page of this "xen-server"
     When I follow "Delete System"
@@ -155,6 +186,10 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I run "rm /etc/salt/pki/minion/minion_master.pub" on "xen-server" without error control
     # In case the delete VM test failed we need to clean up ourselves.
     And I run "virsh undefine --remove-all-storage test-vm" on "xen-server" without error control
+    And I run "virsh destroy test-vm2" on "xen-server" without error control
+    And I run "virsh undefine --remove-all-storage test-vm2" on "xen-server" without error control
+    And I run "virsh destroy test-vm3" on "xen-server" without error control
+    And I run "virsh undefine --remove-all-storage test-vm3" on "xen-server" without error control
     And I run "virsh net-destroy test-net0" on "xen-server" without error control
     And I run "virsh net-undefine test-net0" on "xen-server" without error control
     # Remove the virtpoller cache to avoid problems

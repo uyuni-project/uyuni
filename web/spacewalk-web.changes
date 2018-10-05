@@ -1,3 +1,4 @@
+- Add virtual machine creation dialog for salt minions
 - Add dropdown number list to jump to a specific table page
 - Fix nodejs tests
 
