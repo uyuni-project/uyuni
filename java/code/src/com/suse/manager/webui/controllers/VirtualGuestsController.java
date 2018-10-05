@@ -20,6 +20,9 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -340,6 +343,10 @@ public class VirtualGuestsController {
                                                    VirtualSystemOverview guest,
                                                    User user,
                                                    VirtualGuestsUpdateActionJson data) {
+        if (host.asMinionServer().isPresent()) {
+            return triggerGuestUpdateSaltAction(host, guest, user, data);
+        }
+
         List<String> results = new ArrayList<>();
         // Comparing against the DB data may not be accurate, but that will change with virt.running state soon
         if (data.getVcpu().longValue() != guest.getVcpus().longValue()) {
@@ -352,6 +359,68 @@ public class VirtualGuestsController {
                                                  user, data.getMemory()));
         }
         return GSON.toJson(results);
+    }
+
+    private static String triggerGuestUpdateSaltAction(Server host,
+                                                       VirtualSystemOverview guest,
+                                                       User user,
+                                                       VirtualGuestsUpdateActionJson data) {
+        String status = null;
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        // So far the salt virt.update function doesn't allow renaming a guest,
+        // and that is only possible for the KVM driver.
+        data.setName(guest != null ? guest.getName() : data.getName());
+
+        context.put(VirtualizationCreateAction.TYPE, data.getType());
+        context.put(VirtualizationCreateAction.NAME, data.getName());
+        context.put(VirtualizationCreateAction.OS_TYPE, data.getOsType());
+        context.put(VirtualizationCreateAction.MEMORY, data.getMemory());
+        context.put(VirtualizationCreateAction.VCPUS, data.getVcpu());
+        context.put(VirtualizationCreateAction.ARCH, data.getArch());
+        context.put(VirtualizationCreateAction.GRAPHICS, data.getGraphicsType());
+
+        if (data.getDisks() != null) {
+            context.put(VirtualizationCreateAction.DISKS, data.getDisks().stream().map(disk -> {
+                VirtualizationCreateActionDiskDetails details = new VirtualizationCreateActionDiskDetails();
+                details.setType(disk.getType());
+                details.setDevice(disk.getDevice());
+                details.setTemplate(disk.getTemplate());
+                details.setSize(disk.getSize());
+                details.setBus(disk.getBus());
+                details.setPool(disk.getPool());
+                details.setSourceFile(disk.getSourceFile());
+                return details;
+            }).collect(Collectors.toList()));
+        }
+
+        if (data.getInterfaces() != null) {
+            context.put(VirtualizationCreateAction.INTERFACES, data.getInterfaces().stream().map(nic -> {
+                VirtualizationCreateActionInterfaceDetails details = new VirtualizationCreateActionInterfaceDetails();
+                details.setType(nic.getType());
+                details.setSource(nic.getSource());
+                details.setMac(nic.getMac());
+                return details;
+            }).collect(Collectors.toList()));
+        }
+
+        VirtualizationActionCommand cmd
+            = new VirtualizationActionCommand(user,
+                                              new Date(),
+                                              ActionFactory.TYPE_VIRTUALIZATION_CREATE,
+                                              host,
+                                              guest != null ? guest.getUuid() : null,
+                                              context);
+        try {
+            cmd.store();
+            status = String.valueOf(cmd.getAction().getId());
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule virtualization action:");
+            log.error(e);
+            return null;
+        }
+        return status;
     }
 
     private static String triggerGuestSetterAction(Server host,
