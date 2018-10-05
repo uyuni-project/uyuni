@@ -1,3 +1,4 @@
+/* eslint-disable */
 export type Cancelable = {
   promise: Promise<any>,
   cancel: (any) => void

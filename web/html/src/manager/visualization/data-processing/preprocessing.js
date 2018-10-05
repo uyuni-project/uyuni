@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
 Preprocessors for the data retrieved from server
 

@@ -6,22 +6,22 @@ used by our testing infrastructure.
 This is the hierarchy of our containers:
 
 ```
-    +----------------+
-    |  sle-<release> |
-    +--------+-------+
-             |
-             |
-             |
-  +----------+---------+
-  | suma-<branch>-base |
-  +----------+---------+
-             |
-     +-------+--------------------+
-     |                            |
-     |                            |
-+---------------------+ +---------+---------+
-| suma-<branch>-pgsql | | suma-<branch>-ora |
-+---------------------+ +-------------------+
+                         +----------------+
+                         |  sle-<release> |
+                         +--------+-------+
+                                  |
+                                  |
+                                  |
+                       +----------+---------+
+                       | suma-<branch>-base |
+                       +----------+---------+
+                                  |
+          +-----------------------+----------------------+
+          |                       |                      |
+          |                       |                      |
++---------+-----------+ +---------+---------+ +----------+----------+
+| suma-<branch>-pgsql | | suma-<branch>-ora | |suma-<branch>-nodejs |
++---------------------+ +-------------------+ +---------------------+
 ```
 
 We have one SUMa specific base container per each branch (1.7, 2.1, ..., head).
@@ -32,10 +32,11 @@ they are built with kiwi and we do not have to maintain them.
 All the SUMa-related containers are built using
 [docker's build feature](http://docs.docker.io/en/latest/use/builder/).
 
-From the `suma-<branch>-base` container we create two more containers:
+From the `suma-<branch>-base` container we create three more containers:
 
   * `suma-<branch>-pgsql`
   * `suma-<branch>-ora`
+  * `suma-<branch>-nodejs`
 
 These containers have all the packages required to test both the Java and the
 Python codebase against either PostgreSQL or Oracle.
@@ -45,7 +46,7 @@ Python codebase against either PostgreSQL or Oracle.
 Right now the base containers are build manually, just enter their directory and
 run:
 ```
-docker build -t suma-<branch>-<base|pgsql|ora> .
+docker build -t suma-<branch>-<base|pgsql|ora|nodejs> .
 ```
 
 The Oracle container requires some extra care:
@@ -111,12 +112,12 @@ which runs on `registry.mgr.suse.de`.
 
 First you need to tag the local images:
 ```
-docker tag suma-<branch>-<base|pgsql|ora> registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora>
-docker tag suma-<branch>-<base|pgsql|ora>:<version> registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora>:<version>
+docker tag suma-<branch>-<base|pgsql|ora|nodejs> registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora|nodejs>
+docker tag suma-<branch>-<base|pgsql|ora|nodejs>:<version> registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora|nodejs>:<version>
 ```
 
 Then you can push the local image:
 ```
-docker push registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora>
-docker push registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora>:<version>
+docker push registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora|nodejs>
+docker push registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora|nodejs>:<version>
 ```

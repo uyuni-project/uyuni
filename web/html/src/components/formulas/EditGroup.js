@@ -1,3 +1,4 @@
+/* eslint-disable */
 const React = require("react");
 const EditGroupSubtype = require("../../utils/functions").Formulas.EditGroupSubtype;
 const getEditGroupSubtype = require("../../utils/functions").Formulas.getEditGroupSubtype;
@@ -276,4 +277,6 @@ function get(value, default_value) {
 }
 
 
-module.exports.EditGroup = EditGroup;
+module.exports = {
+  EditGroup: EditGroup
+}

@@ -1,7 +1,10 @@
 const shell = require('shelljs');
 const { fillSpecFile } = require("./build/fill-spec-file");
 
-shell.exec("webpack --config build/webpack.config.js --mode production");
+const { code } = shell.exec("webpack --config build/webpack.config.js --mode production");
+if (code !== 0) {
+  shell.exit(code);
+}
 
 fillSpecFile()
   .then(() => {

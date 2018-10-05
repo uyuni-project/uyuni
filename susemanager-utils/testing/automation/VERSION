@@ -3,6 +3,7 @@ VER=head
 BASE_CONTAINER=suma-$VER-base
 PGSQL_CONTAINER=suma-$VER-pgsql
 ORACLE_CONTAINER=suma-$VER-ora
+NODEJS_CONTAINER=suma-$VER-nodejs
 # Base version for the idempotency test. All PostgreSQL since this version must be idempotent for the test to pass
 # This value is is used if the file for the PR is not found (we assume we are on a branch)
 IDEMPOTENCY_SCHEMA_BASE_VERSION='4.0.1'

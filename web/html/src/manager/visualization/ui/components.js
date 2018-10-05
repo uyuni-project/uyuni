@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 
 // D3 UI "components" used for visualization

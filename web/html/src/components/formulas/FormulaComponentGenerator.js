@@ -1,6 +1,9 @@
+/* eslint-disable */
 // needed because of circular deps
-module.exports.generateFormulaComponent = generateFormulaComponent;
-module.exports.generateFormulaComponentForId = generateFormulaComponentForId;
+module.exports = {
+  generateFormulaComponent: generateFormulaComponent,
+  generateFormulaComponentForId: generateFormulaComponentForId
+}
 
 const React = require("react");
 const EditGroup = require("./EditGroup").EditGroup;

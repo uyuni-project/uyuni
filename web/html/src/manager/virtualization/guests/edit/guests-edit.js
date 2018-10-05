@@ -3,8 +3,8 @@ const React = require("react");
 const PropTypes = React.PropTypes;
 const {Panel} = require("components/panel");
 const MessagesUtils = require("components/messages").Utils;
-import GuestProperties from '../guest-properties';
-import VirtualizationGuestActionApi from '../virtualization-guest-action-api';
+const GuestProperties = require('../guest-properties');
+const VirtualizationGuestActionApi = require('../virtualization-guest-action-api');
 
 
 class GuestsEdit extends React.Component {

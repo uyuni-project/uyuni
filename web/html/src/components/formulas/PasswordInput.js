@@ -1,3 +1,4 @@
+/* eslint-disable */
 const React = require("react");
 const generatePassword = require("../../utils/functions").Utils.generatePassword;
 
