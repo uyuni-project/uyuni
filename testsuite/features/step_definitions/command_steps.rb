@@ -38,9 +38,9 @@ When(/^I apply highstate on "(.*?)"$/) do |minion|
   $server.run_until_ok("#{cmd} #{node.full_hostname} state.highstate #{extra_cmd}")
 end
 
-Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, target|
+Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
   cmd = "systemctl is-active #{service}"
-  node = get_target(target)
   node.run_until_ok(cmd)
 end
 
@@ -100,8 +100,8 @@ When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
 end
 
-When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, target|
-  node = get_target(target)
+When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
+  node = get_target(host)
   node.run("wget http://#{$server.ip}/#{file}")
 end
 
@@ -148,8 +148,8 @@ Then(/^I execute spacewalk-debug on the server$/) do
   end
 end
 
-When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, target|
-  node = get_target(target)
+When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
+  node = get_target(host)
   return_code = file_inject(node, file, File.basename(file))
   raise 'File injection failed' unless return_code.zero?
 end
@@ -335,11 +335,11 @@ When(/^I wait until file "(.*)" exists on server$/) do |file|
   end
 end
 
-Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
+Then(/^I wait and check that "([^"]*)" has rebooted$/) do |host|
   reboot_timeout = 800
-  node = get_target(target)
-  check_shutdown(node.full_hostname, reboot_timeout)
-  check_restart(node.full_hostname, get_target(target), reboot_timeout)
+  name = get_name(host)
+  check_shutdown(name, reboot_timeout)
+  check_restart(name, get_target(host), reboot_timeout)
 end
 
 When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
@@ -389,9 +389,9 @@ When(/^I wait for the openSCAP audit to finish$/) do
   end
 end
 
-And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
-  host = get_target(target)
-  cmd = "spacecmd -u admin -p admin system_listevents #{host.full_hostname} | head -n5"
+And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, host|
+  name = get_name(host)
+  cmd = "spacecmd -u admin -p admin system_listevents #{name} | head -n5"
   $server.run("spacecmd -u admin -p admin clear_caches")
   out, _code = $server.run(cmd)
   raise "#{out} should contain #{status}" unless out.include? status
@@ -517,8 +517,8 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, target|
-  node = get_target(target)
+And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, host|
+  node = get_target(host)
   os_version = get_os_version(node)
   cmd = 'false'
   if (os_version.include? '12') || (os_version.include? '15')

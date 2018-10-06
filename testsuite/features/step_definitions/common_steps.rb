@@ -27,8 +27,8 @@ When(/^I make the SSL certificate available to zypper$/) do
   $client.run('update-ca-certificates')
 end
 
-Then(/^I can see all system information for "([^"]*)"$/) do |target|
-  node = get_target(target)
+Then(/^I can see all system information for "([^"]*)"$/) do |host|
+  node = get_target(host)
   step %(I should see a "#{node.hostname}" text)
   kernel_version, _code = node.run('uname -r')
   puts 'i should see kernel version: ' + kernel_version
@@ -301,10 +301,10 @@ end
 
 Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   raise 'Invalid target.' unless host == 'sle-client'
-  target = $client
-  arch, _code = target.run('uname -m')
+  node = $client
+  arch, _code = node.run('uname -m')
   arch.chomp!
-  raise unless file_exists?(target, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
+  raise unless file_exists?(node, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
@@ -493,8 +493,8 @@ end
 
 # Repository steps
 
-When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |target|
-  node = get_target(target)
+When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |host|
+  node = get_target(host)
   out, _code = node.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
   # This enables tools development repository too if it exists
   node.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
