@@ -98,11 +98,11 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
     MANDIR=%{_mandir}
 %endif
 
-%if 0%{?suse_version}
+%if 0%{?suse_version} && 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
-%if 0%{?build_py3}
-%py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
+%if 0%{?suse_version} && 0%{?build_py3}
+%py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 
 %files
