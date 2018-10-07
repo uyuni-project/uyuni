@@ -72,6 +72,13 @@ def get_target(host)
   node
 end
 
+# This function gets the hostname of the host
+def get_name(host)
+  node = get_target(host)
+  name = node.full_hostname
+  name
+end
+
 # This function tests whether a file exists on a node
 def file_exists?(node, file)
   _out, local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
