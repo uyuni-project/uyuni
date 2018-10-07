@@ -2,7 +2,7 @@
 #
 # VERSION               1.0.0
 
-FROM registry.mgr.suse.de/suma-head-base:latest
+FROM registry.mgr.suse.de/uyuni-master-base:latest
 MAINTAINER Matei Albu "malbu@suse.de"
 
 # Add the repositories

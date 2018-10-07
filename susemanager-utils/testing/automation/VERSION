@@ -3,7 +3,7 @@ VER=master
 BASE_CONTAINER=uyuni-$VER-base
 PGSQL_CONTAINER=uyuni-$VER-pgsql
 ORACLE_CONTAINER=suma-$VER-ora
-NODEJS_CONTAINER=suma-$VER-nodejs
+NODEJS_CONTAINER=uyuni-$VER-nodejs
 # Base version for the idempotency test. All PostgreSQL since this version must be idempotent for the test to pass
 # This value is is used if the file for the PR is not found (we assume we are on a branch)
 IDEMPOTENCY_SCHEMA_BASE_VERSION='4.0.1'
