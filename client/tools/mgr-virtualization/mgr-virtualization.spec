@@ -191,8 +191,6 @@ make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir
                 $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
 %endif
 
-find $RPM_BUILD_ROOT -name "localvdsm*" -exec rm -f '{}' ';'
-
 %if 0%{?suse_version}
 rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
 %endif
