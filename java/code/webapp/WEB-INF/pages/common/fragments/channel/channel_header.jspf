@@ -1,6 +1,13 @@
 
 
-<rhn:toolbar base="h1" icon="header-channel" imgAlt="channels.jsp.alt">
+<rhn:toolbar
+            base="h1"
+            icon="header-channel"
+            imgAlt="channels.jsp.alt"
+            miscUrl="/rhn/channels/manage/Edit.do?cid=${param.cid}"
+            miscIcon="item-edit"
+            miscText="toolbar.misc.manage_channel"
+            miscAcl="user_role(org_admin)">
         <c:out value="${channel_name}" escapeXml="true"/>
 </rhn:toolbar>
 

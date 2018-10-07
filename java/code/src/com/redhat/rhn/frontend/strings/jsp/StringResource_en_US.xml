@@ -20564,6 +20564,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
       </trans-unit>
+        <trans-unit id="toolbar.misc.manage_channel">
+            <source>Manage Channel</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/channels/Managers.do</context>
+            </context-group>
+        </trans-unit>
       <trans-unit id="header.jsp.errata.add">
         <source>Add Errata</source>
         <context-group name="ctx">
