@@ -311,8 +311,8 @@ Given(/^I am logged in via XML\-RPC actionchain as user "(.*?)" and password "(.
   scdrpc.login(luser, password)
 end
 
-Given(/^I want to operate on this "(.*?)"$/) do |target|
-  hostname = get_target(target).full_hostname
+Given(/^I want to operate on this "([^"]*)"$/) do |host|
+  hostname = get_name(host)
   $client_id = syschaintest.search_by_name(hostname).first['id']
   refute_nil($client_id, "Could not find system with hostname #{hostname}")
 end

@@ -4,7 +4,7 @@ require 'open-uri'
 require 'tempfile'
 
 Given(/^the Salt master can reach "(.*?)"$/) do |minion|
-  node = get_target(minion)
+  name = get_name(minion)
   begin
     start = Time.now
     # 300 is the default 1st keepalive interval for the minion
@@ -13,8 +13,8 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
     Timeout.timeout(keepalive_timeout) do
       # only try 3 times
       3.times do
-        out, _code = $server.run("salt #{node.full_hostname} test.ping")
-        if out.include?(node.full_hostname) && out.include?('True')
+        out, _code = $server.run("salt #{name} test.ping")
+        if out.include?(name) && out.include?('True')
           finished = Time.now
           puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
           break
@@ -58,8 +58,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
-  node = get_target(minion)
-  key_name = node.full_hostname
+  key_name = get_name(minion)
   cmd = "salt-key --list #{key_type}"
   output = ''
   begin
@@ -90,30 +89,27 @@ When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   end
 end
 
-When(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
+When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   steps %(
     When I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "#{system}", refreshing the page
-    And I follow this "#{system}" link
+    And I wait until I see the name of "#{host}", refreshing the page
+    And I follow this "#{host}" link
     And I wait until event "Package List Refresh scheduled by (none)" is completed
   )
 end
 
 When(/^I delete "([^"]*)" key in the Salt master$/) do |minion|
-  node = get_target(minion)
-  key_name = node.full_hostname
+  key_name = get_name(minion)
   $output, _code = $server.run("salt-key -y -d #{key_name}", false)
 end
 
 When(/^I accept "([^"]*)" key in the Salt master$/) do |minion|
-  node = get_target(minion)
-  key_name = node.full_hostname
+  key_name = get_name(minion)
   $server.run("salt-key -y --accept=#{key_name}")
 end
 
 When(/^I reject "([^"]*)" key in the Salt master$/) do |minion|
-  node = get_target(minion)
-  key_name = node.full_hostname
+  key_name = get_name(minion)
   $server.run("salt-key -y --reject=#{key_name}")
 end
 
@@ -122,8 +118,7 @@ When(/^I delete all keys in the Salt master$/) do
 end
 
 When(/^I get OS information of "([^"]*)" from the Master$/) do |minion|
-  node = get_target(minion)
-  key_name = node.full_hostname
+  key_name = get_name(minion)
   $output, _code = $server.run("salt #{key_name} grains.get osfullname")
 end
 
@@ -146,17 +141,17 @@ Then(/^the system should have a base channel set$/) do
 end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
-  node = get_target(host)
+  name = get_name(host)
   @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
-  refute_includes(@rpc.list_systems.map { |s| s['name'] }, node.full_hostname)
+  refute_includes(@rpc.list_systems.map { |s| s['name'] }, name)
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
-  node = get_target(host)
+  name = get_name(host)
   @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
-  assert_includes(@rpc.list_systems.map { |s| s['name'] }, node.full_hostname)
+  assert_includes(@rpc.list_systems.map { |s| s['name'] }, name)
 end
 
 # user salt steps
@@ -193,19 +188,19 @@ When(/^I click on run$/) do
   end
 end
 
-Then(/^I should see "(.*)" hostname$/) do |host|
-  node = get_target(host)
-  raise unless page.has_content?(node.full_hostname)
+Then(/^I should see "([^"]*)" hostname$/) do |host|
+  name = get_name(host)
+  raise unless page.has_content?(name)
 end
 
-Then(/^I should not see "(.*)" hostname$/) do |host|
-  node = get_target(host)
-  raise if page.has_content?(node.full_hostname)
+Then(/^I should not see "([^"]*)" hostname$/) do |host|
+  name = get_name(host)
+  raise if page.has_content?(name)
 end
 
-When(/^I expand the results for "(.*)"$/) do |host|
-  node = get_target(host)
-  find("div[id='#{node.full_hostname}']").click
+When(/^I expand the results for "([^"]*)"$/) do |host|
+  name = get_name(host)
+  find("div[id='#{name}']").click
 end
 
 When(/^I enter command "([^"]*)"$/) do |cmd|
@@ -216,9 +211,9 @@ When(/^I enter target "([^"]*)"$/) do |minion|
   fill_in 'target', with: minion
 end
 
-Then(/^I should see "([^"]*)" in the command output for "(.*)"$/) do |text, minion|
-  node = get_target(minion)
-  within("pre[id='#{node.full_hostname}-results']") do
+Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
+  name = get_name(host)
+  within("pre[id='#{name}-results']") do
     raise unless page.has_content?(text)
   end
 end
@@ -344,18 +339,18 @@ When(/^I refresh the pillar data$/) do
 end
 
 Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
-  node = get_target(minion)
+  name = get_name(minion)
   if minion == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
   elsif minion == 'ssh-minion' or minion == 'ceos-minion'
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
-    $server.run("printf '#{node.full_hostname}:\n  host: #{node.full_hostname}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+    $server.run("printf '#{name}:\n  host: #{name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
     raise 'Invalid target'
   end
-  output, _code = $server.run("#{cmd} '#{node.full_hostname}' pillar.get '#{key}' #{extra_cmd}")
+  output, _code = $server.run("#{cmd} '#{name}' pillar.get '#{key}' #{extra_cmd}")
   if verb == 'be' && value == ''
     raise unless output.split("\n").length == 1
   elsif verb == 'be'
@@ -400,28 +395,28 @@ Then(/^the download should get no error$/) do
 end
 
 # Perform actions
-When(/^I reject "(.*?)" from the Pending section$/) do |minion|
-  node = get_target(minion)
-  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'Reject']"
+When(/^I reject "([^"]*)" from the Pending section$/) do |host|
+  name = get_name(host)
+  xpath_query = "//tr[td[contains(.,'#{name}')]]//button[@title = 'Reject']"
   raise unless find(:xpath, xpath_query).click
 end
 
-When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
-  node = get_target(minion)
-  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'Delete']"
+When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
+  name = get_name(host)
+  xpath_query = "//tr[td[contains(.,'#{name}')]]//button[@title = 'Delete']"
   raise unless find(:xpath, xpath_query).click
 end
 
-When(/^I see "(.*?)" fingerprint$/) do |minion|
-  node = get_target(minion)
+When(/^I see "([^"]*)" fingerprint$/) do |host|
+  node = get_target(host)
   output, _code = node.run('salt-call --local key.finger')
   fing = output.split("\n")[1].strip!
   raise unless page.has_content?(fing)
 end
 
-When(/^I accept "(.*?)" key$/) do |minion|
-  node = get_target(minion)
-  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'Accept']"
+When(/^I accept "([^"]*)" key$/) do |host|
+  name = get_name(host)
+  xpath_query = "//tr[td[contains(.,'#{name}')]]//button[@title = 'Accept']"
   raise unless find(:xpath, xpath_query).click
 end
 
@@ -518,8 +513,8 @@ end
 
 # minion bootstrap steps
 When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
-  node = get_target(host)
-  step %(I enter "#{node.full_hostname}" as "#{hostname}")
+  name = get_name(host)
+  step %(I enter "#{name}" as "#{hostname}")
 end
 
 When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
@@ -528,9 +523,9 @@ When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
 end
 
 Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
-  node = get_target(host)
+  name = get_name(host)
   $server.run('spacecmd -u admin -p admin clear_caches')
-  $server.run("spacecmd -u admin -p admin system_listevents #{node.full_hostname}")
+  $server.run("spacecmd -u admin -p admin system_listevents #{name}")
 end
 
 When(/^I enter "([^"]*)" password$/) do |host|
