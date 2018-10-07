@@ -328,8 +328,8 @@ When(/^I refresh the pillar data$/) do
   $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar")
 end
 
-Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, host|
-  name = get_name(host)
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  name = get_name(minion)
   if minion == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
