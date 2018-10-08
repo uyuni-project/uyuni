@@ -59,6 +59,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.singletonList;
+
 /**
  * An ActionManager companion to deal with Action Chains.
  *
@@ -622,7 +624,7 @@ public class ActionChainManager {
                 taskomaticApi.scheduleActionExecution(action);
             }
             if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user);
             }
         }
         else {
@@ -636,7 +638,7 @@ public class ActionChainManager {
                     nextSortOrder);
                 result.add(action);
                 if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
-                    MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                    MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user);
                 }
             }
         }

@@ -95,7 +95,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,6 +106,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -1873,7 +1873,7 @@ public class ActionManager extends BaseManager {
         addPackageActionDetails(Arrays.asList(action), pkgs);
         taskomaticApi.scheduleActionExecution(action);
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
-            MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), scheduler);
+            MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), scheduler);
         }
 
         return action;
