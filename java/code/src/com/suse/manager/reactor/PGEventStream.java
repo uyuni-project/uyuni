@@ -14,6 +14,8 @@
  */
 package com.suse.manager.reactor;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.reactor.SaltEvent;
@@ -26,6 +28,7 @@ import com.impossibl.postgres.jdbc.PGDataSource;
 import com.suse.salt.netapi.event.AbstractEventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.parser.JsonParser;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -33,6 +36,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Stream;
 
 /**
  * Listen for notifications from the Postgres database (suseSaltEvent) and react on those.
@@ -41,8 +47,13 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     private static final Logger LOG = Logger.getLogger(PGEventStream.class);
     private static final int MAX_EVENTS_PER_COMMIT = ConfigDefaults.get().getSaltEventsPerCommit();
+    private static final int THREAD_POOL_SIZE = ConfigDefaults.get().getSaltEventThreadPoolSize();
 
     private PGConnection connection;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(
+            THREAD_POOL_SIZE,
+            new BasicThreadFactory.Builder().namingPattern("salt-event-thread-%d").build()
+    );
 
     /**
      * Default constructor, connects to Postgres and waits for events.
@@ -75,10 +86,19 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     @Override
     public void notification(int processId, String channelName, String payload) {
-        List<SaltEvent> uncommittedEvents = new LinkedList<>();
-        TransactionHelper.handlingTransaction(
-                () -> processEvents(uncommittedEvents),
-                e -> handleExceptions(uncommittedEvents, e));
+        // compute the number of jobs we need to do - each job COMMITs individually
+        // jobs = events / MAX_EVENTS_PER_COMMIT (rounded up)
+        long jobs = (SaltEventFactory.countSaltEvents() + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
+
+        // queue one handlingTransaction(processEvents) call per job
+        for (int j = 0; j < jobs; j++) {
+            executorService.execute(() -> {
+                List<SaltEvent> uncommittedEvents = new LinkedList<>();
+                TransactionHelper.handlingTransaction(
+                        () -> processEvents(uncommittedEvents),
+                        e -> handleExceptions(uncommittedEvents, e));
+            });
+        }
     }
 
     /**
@@ -86,21 +106,16 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
      * @param uncommittedEvents used to keep track of events being processed
      */
     private void processEvents(List<SaltEvent> uncommittedEvents) {
-        List<SaltEvent> events = SaltEventFactory.popSaltEvents(MAX_EVENTS_PER_COMMIT);
+        Stream<SaltEvent> events = SaltEventFactory.popSaltEvents(MAX_EVENTS_PER_COMMIT);
 
-        while (!events.isEmpty()) {
-            events.forEach(event -> {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("Handling event " + event.getId());
-                    LOG.trace(event.getData());
-                }
-                uncommittedEvents.add(event);
-                notifyListeners(JsonParser.EVENTS.parse(event.getData()));
-            });
-
-            // check if any event is left
-            events = SaltEventFactory.popSaltEvents(MAX_EVENTS_PER_COMMIT);
-        }
+        events.forEach(event -> {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Handling event " + event.getId());
+                LOG.trace(event.getData());
+            }
+            uncommittedEvents.add(event);
+            notifyListeners(JsonParser.EVENTS.parse(event.getData()));
+        });
     }
 
     /**
@@ -108,9 +123,10 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
      * {@link PGEventListener}, as they may contain an exception handler.
      */
     private void handleExceptions(List<SaltEvent> uncommittedEvents, Exception exception) {
-        SaltEventFactory.deleteSaltEvents(uncommittedEvents.stream());
-        for (SaltEvent event : uncommittedEvents) {
-            LOG.error("Event " + event.getId() + " was lost");
+        if (!uncommittedEvents.isEmpty()) {
+            List<Long> ids = uncommittedEvents.stream().map(SaltEvent::getId).collect(toList());
+            List<Long> deletedIds = SaltEventFactory.deleteSaltEvents(ids);
+            LOG.error("Events " + deletedIds.toString() + " were lost");
         }
 
         if (exception instanceof PGEventListenerException) {
