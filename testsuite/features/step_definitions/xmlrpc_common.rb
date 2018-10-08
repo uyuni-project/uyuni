@@ -61,7 +61,7 @@ end
 When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
   system_name1 = get_system_name(host1)
   node_id1 = retrieve_server_id(system_name1)
-  system_name2 = get_target(host2)
+  system_name2 = get_system_name(host2)
   node_id2 = retrieve_server_id(system_name2)
   systest.remove_channels([ node_id1, node_id2 ], [ channel ])
 end
