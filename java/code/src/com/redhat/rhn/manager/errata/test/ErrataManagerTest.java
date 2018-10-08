@@ -512,7 +512,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
         } });
 
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
@@ -1145,7 +1145,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
         } });
 
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
@@ -1248,7 +1248,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
         } });
 
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);

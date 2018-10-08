@@ -46,7 +46,6 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsMapContaining;
 import org.hamcrest.core.AllOf;
 import org.jmock.Expectations;
@@ -58,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -420,7 +418,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
@@ -478,7 +476,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
@@ -540,7 +538,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
@@ -607,7 +605,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleActionsExecution(with(any(List.class)),with(any(Boolean.class)),with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
             never(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
@@ -660,7 +658,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
-                    .scheduleActionsExecution(with(any(List.class)), with(any(Boolean.class)), with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             never(taskomaticMock).scheduleStagingJob(with(any(Long.class)),
                     with(server1.getId()),
                     with(any(Date.class)));

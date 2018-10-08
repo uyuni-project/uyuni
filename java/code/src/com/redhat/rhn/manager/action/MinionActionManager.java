@@ -29,9 +29,11 @@ import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for Actions related to minions.
@@ -71,7 +73,7 @@ public class MinionActionManager {
             throws TaskomaticApiException {
         Map<Long, Map<Long, ZonedDateTime>> scheduleActionsData = new HashMap<>();
         for (Action action: actions) {
-            Map<Long, ZonedDateTime> scheduleActionData = scheduleStagingJobsForMinions(action, user);
+            Map<Long, ZonedDateTime> scheduleActionData = computeStagingTimestamps(action, user);
             if (!scheduleActionData.isEmpty()) {
                 scheduleActionsData.put(action.getId(), scheduleActionData);
             }
@@ -91,13 +93,11 @@ public class MinionActionManager {
      *
      * @param action related action already scheduled
      * @param user user that started the action
-     * @return A list containing the schedule time(s) for staging job(s)
+     * @return A Map containing the schedule time for each minion involved in this action
      */
-    private static Map<Long, ZonedDateTime> scheduleStagingJobsForMinions(Action action, User user) {
+    private static Map<Long, ZonedDateTime> computeStagingTimestamps(Action action, User user) {
 
-        Map<Long, ZonedDateTime>  scheduleActionData = new HashMap<>();
-
-        if (user.getOrg().getOrgConfig().isStagingContentEnabled()) {
+            if (user.getOrg().getOrgConfig().isStagingContentEnabled()) {
 
              List<MinionSummary> minionSummaries = MinionServerFactory.findMinionSummaries(action.getId());
 
@@ -110,51 +110,58 @@ public class MinionActionManager {
                         ConfigDefaults.get().getSaltContentStagingAdvance();
                 final float saltContentStagingWindow =
                         ConfigDefaults.get().getSaltContentStagingWindow();
+                final ZonedDateTime now = now();
 
-                ZonedDateTime stagingWindowStartTime = earliestAction
+                ZonedDateTime potentialStagingWindowStartTime = earliestAction
                         .minus((long) (saltContentStagingAdvance * 3600), SECONDS);
-                ZonedDateTime stagingWindowEndTime = stagingWindowStartTime
+
+                ZonedDateTime potentialStagingWindowEndTime = potentialStagingWindowStartTime
                         .plus((long) (saltContentStagingWindow * 3600), SECONDS);
 
-                if (now().isAfter(stagingWindowStartTime) &&
-                        stagingWindowEndTime.isAfter(now())) {
-                    log.warn(
-                            "Scheduled staging window began before now: " +
-                                    "adjusting start to now (" + now() + ")");
-                    stagingWindowStartTime = now();
+                ZonedDateTime stagingWindowStartTime;
+                if (now.isAfter(potentialStagingWindowStartTime) &&
+                        potentialStagingWindowEndTime.isAfter(now)) {
+                    log.warn("Scheduled staging window began before now: adjusting start to now (" + now + ")");
+                    stagingWindowStartTime = now;
+                }
+                else {
+                    stagingWindowStartTime = potentialStagingWindowStartTime;
                 }
 
-                if (stagingWindowEndTime.isAfter(earliestAction)) {
-                    log.warn("Ignoring salt_content_staging_window parameter: " +
-                            "expected staging window end time is after action execution!");
-                    log.warn("Expected staging window end time: " + stagingWindowEndTime);
-                    log.warn("Adjusting  window end time to earliest action execution: " +
-                            earliestAction);
+                ZonedDateTime stagingWindowEndTime;
+                if (potentialStagingWindowEndTime.isAfter(earliestAction)) {
+                    log.warn("Ignoring salt_content_staging_window parameter: expected staging window end time is " +
+                            "after action execution!");
+                    log.warn("Expected staging window end time: " + potentialStagingWindowEndTime);
+                    log.warn("Adjusting  window end time to earliest action execution: " + earliestAction);
                     stagingWindowEndTime = earliestAction;
                 }
+                else {
+                    stagingWindowEndTime = potentialStagingWindowEndTime;
+                }
 
-                boolean stagingWindowIsAlreadyEnded = stagingWindowEndTime.isBefore(now());
-                boolean stagingWindowStartIsBeforeAction =
-                        stagingWindowStartTime.isBefore(earliestAction);
+                boolean stagingWindowIsAlreadyEnded = stagingWindowEndTime.isBefore(now);
+                boolean stagingWindowStartIsBeforeAction = stagingWindowStartTime.isBefore(earliestAction);
 
                 if (!stagingWindowIsAlreadyEnded && stagingWindowStartIsBeforeAction &&
                         (stagingWindowEndTime.isBefore(earliestAction) ||
                                 stagingWindowEndTime.isEqual(earliestAction))) {
-                    for (MinionSummary minionSummary : minionSummaries) {
-                        ZonedDateTime stagingTime =
-                                stagingWindowStartTime.plus(
-                                        (long) (SECONDS.between(stagingWindowStartTime,
-                                                stagingWindowEndTime) * Math.random()),
-                                        SECONDS);
-                            log.info("Detected install/update action (id=" +
-                                    action.getId() + "): " +
-                                    "scheduling staging job for minion server id: " +
-                                    minionSummary.getServerId() + " at " + stagingTime);
-                            scheduleActionData.put(minionSummary.getServerId(), stagingTime);
-                    }
+                    Map<Long, ZonedDateTime>  scheduleActionData = minionSummaries.stream()
+                            .collect(Collectors.toMap(MinionSummary::getServerId, s -> {
+                                ZonedDateTime stagingTime = stagingWindowStartTime.plus(
+                                                    (long) (SECONDS.between(stagingWindowStartTime,
+                                                            stagingWindowEndTime) * Math.random()), SECONDS);
+                                return stagingTime;
+                            }));
+                        if (log.isDebugEnabled()) {
+                            scheduleActionData.forEach((id, stagingTime)-> log.info("Detected install/update action " +
+                                    "(id=" + action.getId() + "): scheduling staging job for minion server id: " + id +
+                                    " at " + stagingTime));
+                        }
+                    return scheduleActionData;
                 }
             }
         }
-        return scheduleActionData;
+        return Collections.EMPTY_MAP;
     }
 }
