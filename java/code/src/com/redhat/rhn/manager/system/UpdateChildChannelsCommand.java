@@ -79,7 +79,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
                 // already subscribed
                 cids.remove(c.getId());
             }
-            else if (!c.isSatellite() && !c.isBaseChannel()) {
+            else if (!c.isBaseChannel()) {
                 // Don't remove base channels or satellite subscriptions
                 // need to unsubscribe since it is not in cids
                 remove.add(c.getId());
