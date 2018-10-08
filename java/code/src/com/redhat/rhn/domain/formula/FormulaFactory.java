@@ -451,25 +451,28 @@ public class FormulaFactory {
         if (!dataFile.exists()) {
             dataFile.getParentFile().mkdirs();
             dataFile.createNewFile();
-            serverFormulas = new HashMap<String, List<String>>();
+            serverFormulas = new HashMap<>();
         }
         else {
-            serverFormulas =
-                    GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
-                            Map.class);
+            serverFormulas = GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class);
         }
 
         // Remove formula data for unselected formulas
-        List<String> deletedFormulas =
-                new LinkedList<>(serverFormulas.getOrDefault(minionId,
-                        new LinkedList<>()));
+        List<String> deletedFormulas = new LinkedList<>(serverFormulas.getOrDefault(minionId, new LinkedList<>()));
         deletedFormulas.removeAll(selectedFormulas);
         for (String deletedFormula : deletedFormulas) {
             deleteServerFormulaData(minionId, deletedFormula);
         }
 
         // Save selected Formulas
-        serverFormulas.put(minionId, orderFormulas(selectedFormulas));
+        List<String> orderedFormulas = orderFormulas(selectedFormulas);
+        if (orderedFormulas.isEmpty()) {
+            // when no formulas are assigned, we remove the entry completely for the minion
+            serverFormulas.remove(minionId);
+        }
+        else {
+            serverFormulas.put(minionId, orderedFormulas);
+        }
 
         // Write server_formulas file
         BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
