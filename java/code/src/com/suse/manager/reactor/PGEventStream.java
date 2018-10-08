@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -74,34 +75,27 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     @Override
     public void notification(int processId, String channelName, String payload) {
-        try {
-            TransactionHelper.handlingTransaction(this::processEvents, this::handleExceptions);
-        }
-        catch (Exception e) {
-            LOG.error("Unexpected Exception while handling events", e);
-        }
+        List<SaltEvent> uncommittedEvents = new LinkedList<>();
+        TransactionHelper.handlingTransaction(
+                () -> processEvents(uncommittedEvents),
+                e -> handleExceptions(uncommittedEvents, e));
     }
 
     /**
      * Reads one or more events from suseSaltEvent and notifies listeners (typically, {@link PGEventListener}).
-     * Exceptions are wrapped in {@link PGEventStreamException} so that handleExceptions can handle them.
+     * @param uncommittedEvents used to keep track of events being processed
      */
-    private void processEvents() {
+    private void processEvents(List<SaltEvent> uncommittedEvents) {
         List<SaltEvent> events = SaltEventFactory.popSaltEvents(MAX_EVENTS_PER_COMMIT);
 
         while (!events.isEmpty()) {
             events.forEach(event -> {
-                try {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("Handling event " + event.getId());
-                        LOG.trace(event.getData());
-                    }
-                    notifyListeners(JsonParser.EVENTS.parse(event.getData()));
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Handling event " + event.getId());
+                    LOG.trace(event.getData());
                 }
-                catch (Exception exception) {
-                    LOG.error("Unexpected Exception while processing message");
-                    throw new PGEventStreamException(exception, event);
-                }
+                uncommittedEvents.add(event);
+                notifyListeners(JsonParser.EVENTS.parse(event.getData()));
             });
 
             // check if any event is left
@@ -113,16 +107,15 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
      * Handles any {@link Exception} raised from processEvents. Has special code to handle those that are thrown by
      * {@link PGEventListener}, as they may contain an exception handler.
      */
-    private void handleExceptions(Exception exception) {
-        if (exception instanceof PGEventStreamException) {
-            PGEventStreamException streamException = (PGEventStreamException) exception;
-            SaltEventFactory.deleteSaltEvent(streamException.getEvent());
+    private void handleExceptions(List<SaltEvent> uncommittedEvents, Exception exception) {
+        SaltEventFactory.deleteSaltEvents(uncommittedEvents.stream());
+        for (SaltEvent event : uncommittedEvents) {
+            LOG.error("Event " + event.getId() + " was lost");
+        }
 
-            Throwable cause = streamException.getCause();
-            if (cause instanceof PGEventListenerException) {
-                PGEventListenerException listenerException = (PGEventListenerException) cause;
-                listenerException.getExceptionHandler().run();
-            }
+        if (exception instanceof PGEventListenerException) {
+            PGEventListenerException listenerException = (PGEventListenerException) exception;
+            listenerException.getExceptionHandler().run();
         }
     }
 
@@ -144,22 +137,6 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         }
         catch (SQLException e) {
             throw new IOException(e);
-        }
-    }
-
-    /**
-     * Wraps an Exception and the Salt event that caused it.
-     */
-    private class PGEventStreamException extends RuntimeException {
-        private final SaltEvent event;
-
-        PGEventStreamException(Exception causeIn, SaltEvent eventIn) {
-            super(causeIn);
-            event = eventIn;
-        }
-
-        SaltEvent getEvent() {
-            return event;
         }
     }
 }
