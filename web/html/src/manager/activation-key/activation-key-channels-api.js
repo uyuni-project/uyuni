@@ -1,9 +1,9 @@
 // @flow
-const React = require('react');
-const ReactDOM = require('react-dom');
-const Network = require('../../utils/network');
-const Loading = require('../../components/loading/loading').Loading;
-const ChildChannels = require('./child-channels').ChildChannels;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Network from '../../utils/network';
+import {Loading} from '../../components/loading/loading';
+import {ChildChannels} from './child-channels';
 
 type ActivationKeyChannelsProps = {
   activationKeyId: number,

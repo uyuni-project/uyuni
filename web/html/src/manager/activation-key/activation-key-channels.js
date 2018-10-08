@@ -2,10 +2,13 @@
 import ChildChannels from './child-channels';
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const Network = require('../../utils/network');
-const Loading = require('../../components/loading/loading').Loading;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Loading} from '../../components/loading/loading';
+import withStatePersisted from '../../components/hoc/state-persisted/with-state-persisted';
+import MandatoryChannelsApi from "../../core/api/mandatory-channels-api";
+
+const MandatoryChannelsApiStatePersisted = withStatePersisted(MandatoryChannelsApi);
 
 type ActivationKeyChannelsProps = {
   activationKeyId: number
@@ -61,20 +64,48 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
   renderChildChannels = ({loadingChildren, availableChannels}) => {
     return loadingChildren ?
       <Loading text='Loading child channels..' />
-      : availableChannels.map(g =>
-        <ChildChannels
-          key={g.base.id}
-          channels={g.children.sort((c1, c2) => c1.name > c2.name)}
-          base={g.base}
-          showBase={availableChannels.length > 1}
-          selectedChannelsIds={this.state.currentChildSelectedIds}
-          selectChannels={this.selectChildChannels}
-          // Todo: [LN->Dario] this code here is weeeird -> why not use setState and an object  ChildChannelsForBase[childchannelsforbase] ->
-          //   if we don't need to force a reUpdate, we can save this on this.things and not state
-          saveState={(state) => {this.state["ChildChannelsForBase" + g.base.id] = state;}}
-          loadState={() => this.state["ChildChannelsForBase" + g.base.id]}
-          collapsed={Array.from(availableChannels.keys()).length > 1}
-        />
+      : availableChannels.map(g => {
+          const base = g.base;
+          const channels = g.children.sort((c1, c2) => c1.name > c2.name);
+
+          return (
+            <MandatoryChannelsApiStatePersisted
+              base={base}
+              channels={channels}
+              selectedChannelsIds={this.state.currentChildSelectedIds}
+              saveState={(state) => {
+                this.state["ChildChannelsForBase" + base.id] = state
+              }}
+              loadState={() => this.state["ChildChannelsForBase" + base.id]}>
+              {({
+                  requiredChannels,
+                  requiredByChannels,
+                  dependencyDataAvailable,
+                  areRecommendedChildrenSelected,
+                  dependenciesTooltip,
+                  fetchMandatoryChannelsByChannelIds
+                }) => (
+                <ChildChannels
+                  key={base.id}
+                  channels={channels}
+                  base={base}
+                  showBase={availableChannels.length > 1}
+                  selectedChannelsIds={this.state.currentChildSelectedIds}
+                  selectChannels={this.selectChildChannels}
+                  requiredChannels={requiredByChannels}
+                  requiredByChannels={requiredByChannels}
+                  dependencyDataAvailable={dependencyDataAvailable}
+                  areRecommendedChildrenSelected={areRecommendedChildrenSelected}
+                  dependenciesTooltip={dependenciesTooltip}
+                  fetchMandatoryChannelsByChannelIds={fetchMandatoryChannelsByChannelIds}
+                  // Todo: [LN->Dario] this code here is weeeird -> why not use setState and an object  ChildChannelsForBase[childchannelsforbase] ->
+                  //   if we don't need to force a reUpdate, we can save this on this.things and not state
+                  collapsed={Array.from(availableChannels.keys()).length > 1}
+                />
+              )}
+            </MandatoryChannelsApiStatePersisted>
+          )
+        }
       );
   };
 

@@ -1,19 +1,15 @@
 // @flow
 'use strict';
 
-const React = require('react');
-const Network = require('../../utils/network');
-const {Loading} = require('../../components/loading/loading');
-const ChannelUtils = require('../../utils/channels');
-const {Toggler} = require("../../components/toggler");
-const {ChannelAnchorLink} = require("../../components/links");
+import React from 'react';
+import Network from '../../utils/network';
+import ChannelUtils from '../../utils/channels';
 
 type ChildChannelsProps = {
-    children: Function,
-    isFetchActivated: boolean,
-    channels: Array,
-    base: Object,
-    selectedChannelsIds: Array<number>
+  base: Object,
+  channels: Array,
+  selectedChannelsIds: Array<number>,
+  children: Function,
 }
 
 type ChildChannelsState = {
@@ -35,37 +31,31 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
         }
     }
 
-    componentWillMount() {
-        this.fetchMandatoryChannelsByChannelIds();
-    }
-
     fetchMandatoryChannelsByChannelIds = () => {
-      if(this.props.isFetchActivated) {
-        // fetch dependencies data for all child channels and base channel as well
-        const needDepsInfoChannels = this.props.base && this.props.base.id != -1 ?
-          [this.props.base.id, ...this.props.channels.map(c => c.id)]
-          : this.props.channels.map(c => c.id);
+      // fetch dependencies data for all child channels and base channel as well
+      const needDepsInfoChannels = this.props.base && this.props.base.id != -1 ?
+        [this.props.base.id, ...this.props.channels.map(c => c.id)]
+        : this.props.channels.map(c => c.id);
 
-        const mandatoryChannelsNotCached = needDepsInfoChannels.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
-        if(mandatoryChannelsNotCached.length > 0) {
-          Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
-            .then((data : JsonResult<Map<number, Array<number>>>) => {
-              const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
-              let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
+      const mandatoryChannelsNotCached = needDepsInfoChannels.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
+      if(mandatoryChannelsNotCached.length > 0) {
+        Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
+          .then((data : JsonResult<Map<number, Array<number>>>) => {
+            const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
+            let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
 
-              this.setState({
-                mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
-                requiredChannels,
-                requiredByChannels,
-                dependencyDataAvailable: true,
-              });
-            })
-            .catch(this.handleResponseError);
-        } else {
-          this.setState({
-            dependencyDataAvailable: true,
+            this.setState({
+              mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
+              requiredChannels,
+              requiredByChannels,
+              dependencyDataAvailable: true,
+            });
           })
-        }
+          .catch(this.handleResponseError);
+      } else {
+        this.setState({
+          dependencyDataAvailable: true,
+        })
       }
     }
 
@@ -102,7 +92,6 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
         return this.props.children({
             requiredChannels: this.state.requiredChannels,
             requiredByChannels: this.state.requiredByChannels,
-            mandatoryChannelsRaw: this.state.mandatoryChannelsRaw,
             dependencyDataAvailable: this.state.dependencyDataAvailable,
             areRecommendedChildrenSelected: this.areRecommendedChildrenSelected,
             dependenciesTooltip: this.dependenciesTooltip,

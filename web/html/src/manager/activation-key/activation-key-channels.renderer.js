@@ -1,6 +1,6 @@
 import ActivationKeyChannels from './activation-key-channels';
-const React = require('react');
-const ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 // receive parameters from the backend
 // if nothing from the backend, fallback on defaults

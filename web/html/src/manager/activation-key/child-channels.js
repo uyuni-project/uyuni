@@ -3,12 +3,10 @@
 
 import MandatoryChannelsApi from "../../core/api/mandatory-channels-api";
 
-const React = require('react');
-const Network = require('../../utils/network');
-const {Loading} = require('../../components/loading/loading');
-const ChannelUtils = require('../../utils/channels');
-const {Toggler} = require("../../components/toggler");
-const {ChannelAnchorLink} = require("../../components/links");
+import React from 'react';
+import {Loading} from '../../components/loading/loading';
+import {Toggler} from "../../components/toggler";
+import {ChannelAnchorLink} from "../../components/links";
 
 type ChildChannelsProps = {
   key: number,
@@ -17,14 +15,19 @@ type ChildChannelsProps = {
   showBase: Boolean,
   selectedChannelsIds: Array<number>,
   selectChannels: Function,
-  saveState: Function,
-  loadState: Function,
-  collapsed: Boolean
+  requiredChannels: Map<number, Array<number>>,
+  requiredByChannels: Map<number, Array<number>>,
+  dependencyDataAvailable: boolean,
+  areRecommendedChildrenSelected: Function,
+  dependenciesTooltip: Function,
+  fetchMandatoryChannelsByChannelIds: Function,
+  collapsed: boolean
 }
 
 type ChildChannelsState = {
-  collapsed: Boolean
+  collapsed: boolean
 }
+
 
 class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsState> {
   constructor(props) {
@@ -35,40 +38,30 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
     }
   }
 
-  componentWillUnmount() {
-    if (this.props.saveState) {
-      this.props.saveState(this.state);
-    }
+  componentDidMount = () => {
+    !this.state.collapsed && this.props.fetchMandatoryChannelsByChannelIds()
   }
 
-  componentWillMount() {
-    if (this.props.loadState) {
-      if (this.props.loadState()) {
-        this.state = this.props.loadState();
-      }
-    }
-  }
-
-  handleChannelChange = (event: SyntheticInputEvent<*>, requiredChannels, requiredByChannels) => {
+  handleChannelChange = (event: SyntheticInputEvent<*>) => {
     const channelId = parseInt(event.target.value);
     const selectedFlag = event.target.checked;
-    const channelIds: Array<number> = this.selectChannelWithDependencies(channelId, selectedFlag, requiredChannels, requiredByChannels);
+    const channelIds: Array<number> = this.selectChannelWithDependencies(channelId, selectedFlag);
 
     this.props.selectChannels(channelIds, selectedFlag);
   }
 
-  selectChannelWithDependencies = (channelId: number, select: Boolean, requiredChannels, requiredByChannels) => {
+  selectChannelWithDependencies = (channelId: number, select: boolean) => {
     let dependingChannelIds;
     if (select) {
-      dependingChannelIds = requiredChannels.get(channelId) || [];
+      dependingChannelIds = this.props.requiredChannels.get(channelId) || [];
     }
     else { // unselect
-      dependingChannelIds = requiredByChannels.get(channelId) || [];
+      dependingChannelIds = this.props.requiredByChannels.get(channelId) || [];
     }
     return dependingChannelIds ? [channelId, ...Array.from(dependingChannelIds).filter(c => c !== channelId)] : [channelId];
   }
 
-  toggleRecommended = (areRecommendedChildrenSelected) => {
+  toggleRecommended = (areRecommendedChildrenSelected: Function) => {
     if (areRecommendedChildrenSelected()) {
       this.props.selectChannels(
         this.props.channels
@@ -85,7 +78,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
     }
   };
 
-  toggleChannelVisibility = ({onShow})  => {
+  toggleChannelVisibility = ({onShow}: {onShow: Function})  => {
     const prevState = this.state; //TODO: [LN] review this. Which parameters are passed on the second callback
     this.setState(
         {collapsed: !this.state.collapsed},
@@ -97,14 +90,8 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
     );
   };
 
-  renderChannels = ({
-                      requiredChannels,
-                      requiredByChannels,
-                      mandatoryChannelsRaw,
-                      dependencyDataAvailable,
-                      dependenciesTooltip
-                    }) => {
-    if(!dependencyDataAvailable) {
+  renderChannels = () => {
+    if(!this.props.dependencyDataAvailable) {
       return <Loading text='Loading dependencies..' />;
     }
     else {
@@ -113,11 +100,11 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
       }
       else {
         return this.props.channels.map(c => {
-          const toolTip = dependenciesTooltip(c.id);
+          const toolTip = this.props.dependenciesTooltip(c.id);
           const isMandatory =
             this.props.base &&
-            requiredChannels.has(this.props.base.id) &&
-            requiredChannels.get(this.props.base.id).has(c.id);
+            this.props.requiredChannels.has(this.props.base.id) &&
+            this.props.requiredChannels.get(this.props.base.id).has(c.id);
           const isDisabled = isMandatory && this.props.selectedChannelsIds.includes(c.id);
           return (
             <div key={c.id} className='checkbox'>
@@ -127,7 +114,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
                      name='childChannels'
                      checked={this.props.selectedChannelsIds.includes(c.id)}
                      disabled={isDisabled}
-                     onChange={(event) => this.handleChannelChange(event, requiredChannels, requiredByChannels)}
+                     onChange={(event) => this.handleChannelChange(event)}
               />
               {
                 // add an hidden carbon-copy of the disabled input since the disabled one will not be included in the form submit
@@ -165,22 +152,8 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   render() {
 
     return (
-      <MandatoryChannelsApi
-        base={this.props.base}
-        channels={this.props.channels}
-        isFetchActivated={!this.state.collapsed}
-        selectedChannelsIds={this.props.selectedChannelsIds}>
-        {({
-            requiredChannels,
-            requiredByChannels,
-            mandatoryChannelsRaw,
-            dependencyDataAvailable,
-            areRecommendedChildrenSelected,
-            dependenciesTooltip,
-            fetchMandatoryChannelsByChannelIds
-          }) => (
           <div className='child-channels-block'>
-            <h4 className='pointer' onClick={() => this.toggleChannelVisibility({onShow: fetchMandatoryChannelsByChannelIds})}>
+            <h4 className='pointer' onClick={() => this.toggleChannelVisibility({onShow: this.props.fetchMandatoryChannelsByChannelIds})}>
               <i className={'fa ' + (this.state.collapsed ? 'fa-angle-right' : 'fa-angle-down')} />
               {this.props.base.name}
             </h4>
@@ -189,24 +162,16 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
               {
                 this.props.channels.some(channel => channel.recommended) ?
                   <Toggler
-                    handler={() => this.toggleRecommended(areRecommendedChildrenSelected)}
-                    value={areRecommendedChildrenSelected()}
+                    handler={() => this.toggleRecommended(this.props.areRecommendedChildrenSelected)}
+                    value={this.props.areRecommendedChildrenSelected()}
                     text={t("include recommended")}
                   />
                   : null
               }
-              {this.renderChannels({
-                requiredChannels,
-                requiredByChannels,
-                mandatoryChannelsRaw,
-                dependencyDataAvailable,
-                dependenciesTooltip
-              })}
+              {this.renderChannels()}
               <hr/>
             </div>
           </div>
-        )}
-      </MandatoryChannelsApi>
     );
   }
 }
