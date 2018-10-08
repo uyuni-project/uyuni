@@ -4,7 +4,7 @@ require 'open-uri'
 require 'tempfile'
 
 Given(/^the Salt master can reach "(.*?)"$/) do |minion|
-  name = get_name(minion)
+  system_name = get_system_name(minion)
   begin
     start = Time.now
     # 300 is the default 1st keepalive interval for the minion
@@ -13,8 +13,8 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
     Timeout.timeout(keepalive_timeout) do
       # only try 3 times
       3.times do
-        out, _code = $server.run("salt #{name} test.ping")
-        if out.include?(name) && out.include?('True')
+        out, _code = $server.run("salt #{system_name} test.ping")
+        if out.include?(system_name) && out.include?('True')
           finished = Time.now
           puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
           break
@@ -58,19 +58,19 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
-  key_name = get_name(minion)
+  system_name = get_system_name(minion)
   cmd = "salt-key --list #{key_type}"
   output = ''
   begin
     Timeout.timeout(key_timeout.to_i) do
       loop do
         output, return_code = $server.run(cmd, false)
-        break if return_code.zero? && output.include?(key_name)
+        break if return_code.zero? && output.include?(system_name)
         sleep 1
       end
     end
   rescue Timeout::Error
-    raise "Minion #{key_name} is not listed among #{key_type} keys on Salt master after #{key_timeout} seconds"
+    raise "Minion #{system_name} is not listed among #{key_type} keys on Salt master after #{key_timeout} seconds"
   end
 end
 
@@ -98,28 +98,28 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   )
 end
 
-When(/^I delete "([^"]*)" key in the Salt master$/) do |minion|
-  key_name = get_name(minion)
-  $output, _code = $server.run("salt-key -y -d #{key_name}", false)
+When(/^I delete "([^"]*)" key in the Salt master$/) do |host|
+  system_name = get_system_name(host)
+  $output, _code = $server.run("salt-key -y -d #{system_name}", false)
 end
 
-When(/^I accept "([^"]*)" key in the Salt master$/) do |minion|
-  key_name = get_name(minion)
-  $server.run("salt-key -y --accept=#{key_name}")
+When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
+  system_name = get_system_name(host)
+  $server.run("salt-key -y --accept=#{system_name}")
 end
 
-When(/^I reject "([^"]*)" key in the Salt master$/) do |minion|
-  key_name = get_name(minion)
-  $server.run("salt-key -y --reject=#{key_name}")
+When(/^I reject "([^"]*)" key in the Salt master$/) do |host|
+  system_name = get_system_name(host)
+  $server.run("salt-key -y --reject=#{system_name}")
 end
 
 When(/^I delete all keys in the Salt master$/) do
   $server.run('salt-key -y -D')
 end
 
-When(/^I get OS information of "([^"]*)" from the Master$/) do |minion|
-  key_name = get_name(minion)
-  $output, _code = $server.run("salt #{key_name} grains.get osfullname")
+When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
+  system_name = get_system_name(host)
+  $output, _code = $server.run("salt #{system_name} grains.get osfullname")
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
@@ -141,17 +141,17 @@ Then(/^the system should have a base channel set$/) do
 end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
-  name = get_name(host)
+  system_name = get_system_name(host)
   @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
-  refute_includes(@rpc.list_systems.map { |s| s['name'] }, name)
+  refute_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
-  name = get_name(host)
+  system_name = get_system_name(host)
   @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
-  assert_includes(@rpc.list_systems.map { |s| s['name'] }, name)
+  assert_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
 end
 
 # user salt steps
@@ -189,18 +189,18 @@ When(/^I click on run$/) do
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
-  name = get_name(host)
-  raise unless page.has_content?(name)
+  system_name = get_system_name(host)
+  raise unless page.has_content?(system_name)
 end
 
 Then(/^I should not see "([^"]*)" hostname$/) do |host|
-  name = get_name(host)
-  raise if page.has_content?(name)
+  system_name = get_system_name(host)
+  raise if page.has_content?(system_name)
 end
 
 When(/^I expand the results for "([^"]*)"$/) do |host|
-  name = get_name(host)
-  find("div[id='#{name}']").click
+  system_name = get_system_name(host)
+  find("div[id='#{system_name}']").click
 end
 
 When(/^I enter command "([^"]*)"$/) do |cmd|
@@ -212,8 +212,8 @@ When(/^I enter target "([^"]*)"$/) do |minion|
 end
 
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
-  name = get_name(host)
-  within("pre[id='#{name}-results']") do
+  system_name = get_system_name(host)
+  within("pre[id='#{system_name}-results']") do
     raise unless page.has_content?(text)
   end
 end
@@ -329,18 +329,18 @@ When(/^I refresh the pillar data$/) do
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
-  name = get_name(minion)
+  system_name = get_system_name(minion)
   if minion == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
   elsif minion == 'ssh-minion' or minion == 'ceos-minion'
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
-    $server.run("printf '#{name}:\n  host: #{name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+    $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
     raise 'Invalid target'
   end
-  output, _code = $server.run("#{cmd} '#{name}' pillar.get '#{key}' #{extra_cmd}")
+  output, _code = $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
   if value == ''
     raise unless output.split("\n").length == 1
   else
@@ -380,14 +380,14 @@ end
 
 # Perform actions
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
-  name = get_name(host)
-  xpath_query = "//tr[td[contains(.,'#{name}')]]//button[@title = 'Reject']"
+  system_name = get_system_name(host)
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject']"
   raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
-  name = get_name(host)
-  xpath_query = "//tr[td[contains(.,'#{name}')]]//button[@title = 'Delete']"
+  system_name = get_system_name(host)
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete']"
   raise unless find(:xpath, xpath_query).click
 end
 
@@ -399,8 +399,8 @@ When(/^I see "([^"]*)" fingerprint$/) do |host|
 end
 
 When(/^I accept "([^"]*)" key$/) do |host|
-  name = get_name(host)
-  xpath_query = "//tr[td[contains(.,'#{name}')]]//button[@title = 'Accept']"
+  system_name = get_system_name(host)
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
   raise unless find(:xpath, xpath_query).click
 end
 
@@ -497,8 +497,8 @@ end
 
 # minion bootstrap steps
 When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
-  name = get_name(host)
-  step %(I enter "#{name}" as "#{hostname}")
+  system_name = get_system_name(host)
+  step %(I enter "#{system_name}" as "#{hostname}")
 end
 
 When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
@@ -507,9 +507,9 @@ When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
 end
 
 Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
-  name = get_name(host)
+  system_name = get_system_name(host)
   $server.run('spacecmd -u admin -p admin clear_caches')
-  $server.run("spacecmd -u admin -p admin system_listevents #{name}")
+  $server.run("spacecmd -u admin -p admin system_listevents #{system_name}")
 end
 
 And(/^I cleanup minion "([^"]*)"$/) do |target|

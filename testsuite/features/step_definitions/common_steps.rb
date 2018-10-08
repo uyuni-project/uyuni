@@ -146,14 +146,14 @@ end
 # nagios steps
 
 When(/^I perform a nagios check patches for "([^"]*)"$/) do |host|
-  node = get_target(host)
-  command = "/usr/lib/nagios/plugins/check_suma_patches #{node.full_hostname} > /tmp/nagios.out"
+  system_name = get_system_name(host)
+  command = "/usr/lib/nagios/plugins/check_suma_patches #{system_name} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
 When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
-  node = get_target(host)
-  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{node.full_hostname} > /tmp/nagios.out"
+  system_name = get_system_name(host)
+  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{system_name} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
@@ -443,8 +443,8 @@ Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
 end
 
 Then(/^a table line should contain system "([^"]*)", "([^"]*)"$/) do |host, text|
-  node = get_target(host)
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{node.full_hostname}')]]") do
+  system_name = get_system_name(host)
+  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{system_name}')]]") do
     raise unless find_all(:xpath, "//td[contains(., '#{text}')]")
   end
 end
@@ -561,16 +561,16 @@ When(/^I register using "([^"]*)" key$/) do |key|
   $client.run(command, true, 500, 'root')
 end
 
-Then(/^I should see "(.*?)" in spacewalk$/) do |host|
+Then(/^I should see "([^"]*)" in spacewalk$/) do |host|
   steps %(
     Given I am on the Systems page
     Then I should see "#{host}" as link
     )
 end
 
-Then(/^I should see "(.*?)" as link$/) do |host|
-  node = get_target(host)
-  step %(I should see a "#{node.full_hostname}" link)
+Then(/^I should see "([^"]*)" as link$/) do |host|
+  system_name = get_system_name(host)
+  step %(I should see a "#{system_name}" link)
 end
 
 Then(/^config-actions are enabled$/) do

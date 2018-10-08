@@ -23,19 +23,19 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
 end
 
-When(/^I apply highstate on "(.*?)"$/) do |minion|
-  node = get_target(minion)
-  if minion == 'sle-minion'
+When(/^I apply highstate on "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  if host == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif minion == 'ssh-minion' or minion == 'ceos-minion'
+  elsif host == 'ssh-minion' or host == 'ceos-minion'
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
-    $server.run("printf '#{node.full_hostname}:\n  host: #{node.full_hostname}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+    $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
     raise 'Invalid target'
   end
-  $server.run_until_ok("#{cmd} #{node.full_hostname} state.highstate #{extra_cmd}")
+  $server.run_until_ok("#{cmd} #{system_name} state.highstate #{extra_cmd}")
 end
 
 Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
@@ -185,7 +185,7 @@ When(/^the server stops mocking an IPMI host$/) do
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
-  node = get_target(host)
+  system_name = get_system_name(host)
   # copy state file to server
   file = 'user_defined_state.sls'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -194,7 +194,7 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   raise 'File injection failed' unless return_code.zero?
   # generate top file and copy it to server
   script = "base:\n" \
-           "  '#{node.full_hostname}':\n" \
+           "  '#{system_name}':\n" \
            "    - user_defined_state\n"
   path = generate_temp_file('top.sls', script)
   return_code = file_inject($server, path, '/srv/salt/top.sls')
@@ -335,9 +335,9 @@ end
 
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |host|
   reboot_timeout = 800
-  name = get_name(host)
-  check_shutdown(name, reboot_timeout)
-  check_restart(name, get_target(host), reboot_timeout)
+  system_name = get_system_name(host)
+  check_shutdown(system_name, reboot_timeout)
+  check_restart(system_name, get_target(host), reboot_timeout)
 end
 
 When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
@@ -388,8 +388,8 @@ When(/^I wait for the openSCAP audit to finish$/) do
 end
 
 And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, host|
-  name = get_name(host)
-  cmd = "spacecmd -u admin -p admin system_listevents #{name} | head -n5"
+  system_name = get_system_name(host)
+  cmd = "spacecmd -u admin -p admin system_listevents #{system_name} | head -n5"
   $server.run("spacecmd -u admin -p admin clear_caches")
   out, _code = $server.run(cmd)
   raise "#{out} should contain #{status}" unless out.include? status
@@ -596,8 +596,8 @@ When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]
 end
 
 When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
-  node = get_target(host)
+  system_name = get_system_name(host)
   $server.run('spacecmd -u admin -p admin clear_caches')
-  command = "spacecmd -y -u admin -p admin -- system_scheduleapplyconfigchannels  #{node.full_hostname}"
+  command = "spacecmd -y -u admin -p admin -- system_scheduleapplyconfigchannels  #{system_name}"
   $server.run(command)
 end

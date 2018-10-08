@@ -21,9 +21,9 @@ When(/^I call system\.list_systems\(\), I should get a list of them$/) do
 end
 
 When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
+  system_name = get_system_name(host)
   salt_ssh = (salt_ssh_enabled == 'enabled')
-  node = get_target(host)
-  result = systest.bootstrap_system(node.full_hostname, '', salt_ssh)
+  result = systest.bootstrap_system(system_name, '', salt_ssh)
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
 
@@ -51,18 +51,18 @@ but with activation key with Default contact method, I should get an XML-RPC fau
 end
 
 When(/^I schedule a highstate for "([^"]*)" via XML\-RPC$/) do |host|
-  node = get_target(host)
-  node_id = retrieve_server_id(node.full_hostname)
+  system_name = get_system_name(host)
+  node_id = retrieve_server_id(system_name)
   now = DateTime.now
   date_high = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
   systest.schedule_apply_highstate(node_id, date_high, false)
 end
 
 When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
-  node1 = get_target(host1)
-  node_id1 = retrieve_server_id(node1.full_hostname)
-  node2 = get_target(host2)
-  node_id2 = retrieve_server_id(node2.full_hostname)
+  system_name1 = get_system_name(host1)
+  node_id1 = retrieve_server_id(system_name1)
+  system_name2 = get_target(host2)
+  node_id2 = retrieve_server_id(system_name2)
   systest.remove_channels([ node_id1, node_id2 ], [ channel ])
 end
 
@@ -537,15 +537,15 @@ Then(/^channel "([^"]*)" should contain file "([^"]*)"$/) do |channel, file|
 end
 
 Then(/^"([^"]*)" should be subscribed to channel "([^"]*)"$/) do |host, channel|
-  node = get_target(host)
+  system_name = get_system_name(host)
   result = cfgtest.list_subscribed_systems(channel)
-  assert_equal(1, result.count { |item| item['name'] == node.full_hostname })
+  assert_equal(1, result.count { |item| item['name'] == system_name })
 end
 
 Then(/^"([^"]*)" should not be subscribed to channel "([^"]*)"$/) do |host, channel|
-  node = get_target(host)
+  system_name = get_system_name(host)
   result = cfgtest.list_subscribed_systems(channel)
-  assert_equal(0, result.count { |item| item['name'] == node.full_hostname })
+  assert_equal(0, result.count { |item| item['name'] == system_name })
 end
 
 When(/^I add file "([^"]*)" containing "([^"]*)" to channel "([^"]*)"$/) do |file, contents, channel|
