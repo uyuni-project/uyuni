@@ -1,3 +1,4 @@
+- Cleanup formula data and assignment when migrating formulas or when removing system
 - Remove restrictions on SUSE Manager Channel subscriptions (bsc#1105724)
 - Pair a new starting minion with empty profile based on its HW address (MAC)
 - Allow creating empty minion profiles via XMLRPC, allow assigning and editing formula for them
