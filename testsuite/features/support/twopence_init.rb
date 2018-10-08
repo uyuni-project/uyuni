@@ -72,11 +72,11 @@ def get_target(host)
   node
 end
 
-# This function gets the hostname of the host
-def get_name(host)
+# This function gets the system name, as displayed in systems list
+def get_system_name(host)
   node = get_target(host)
-  name = node.full_hostname
-  name
+  system_name = node.full_hostname
+  system_name
 end
 
 # This function tests whether a file exists on a node
