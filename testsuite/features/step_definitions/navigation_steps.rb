@@ -6,8 +6,8 @@
 #
 
 When(/^I follow "(.*?)" link$/) do |host|
-  name = get_name(host)
-  step %(I follow "#{name}")
+  system_name = get_system_name(host)
+  step %(I follow "#{system_name}")
 end
 
 When(/^I should see a "(.*)" text in the content area$/) do |txt|
@@ -83,8 +83,8 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
-  name = get_name(host)
-  step %(I wait until I see "#{name}" text, refreshing the page)
+  system_name = get_system_name(host)
+  step %(I wait until I see "#{system_name}" text, refreshing the page)
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
@@ -102,8 +102,8 @@ When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text
 end
 
 When(/^I wait until I do not see the name of "([^"]*)", refreshing the page$/) do |host|
-  name = get_name(host)
-  step %(I wait until I do not see "#{name}" text, refreshing the page)
+  system_name = get_system_name(host)
+  step %(I wait until I do not see "#{system_name}" text, refreshing the page)
 end
 
 #
@@ -236,8 +236,8 @@ When(/^I follow "([^"]*)" in class "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
-  name = get_name(host)
-  xpath_query = "//tr[td[contains(.,'#{name}')]]//a[contains(., '#{text}')]"
+  system_name = get_system_name(host)
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//a[contains(., '#{text}')]"
   raise unless find(:xpath, xpath_query).click
 end
 
@@ -284,11 +284,11 @@ end
 
 # access the multi-clients/minions
 Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
-  name = get_name(host)
+  system_name = get_system_name(host)
   steps %(
     Given I am on the Systems page
   )
-  step %(I follow "#{name}")
+  step %(I follow "#{system_name}")
 end
 
 Given(/^I am on the "([^"]*)" page of this "([^"]*)"$/) do |page, host|
@@ -299,18 +299,18 @@ Given(/^I am on the "([^"]*)" page of this "([^"]*)"$/) do |page, host|
 end
 
 When(/^I follow this "([^"]*)" link$/) do |host|
-  name = get_name(host)
-  step %(I follow "#{name}")
+  system_name = get_system_name(host)
+  step %(I follow "#{system_name}")
 end
 
 When(/^I check the "([^"]*)" client$/) do |host|
-  name = get_name(host)
-  step %(I check "#{name}" in the list)
+  system_name = get_system_name(host)
+  step %(I check "#{system_name}" in the list)
 end
 
 When(/^I uncheck the "([^"]*)" client$/) do |host|
-  name = get_name(host)
-  step %(I uncheck "#{name}" in the list)
+  system_name = get_system_name(host)
+  step %(I uncheck "#{system_name}" in the list)
 end
 
 Given(/^I am on the groups page$/) do
@@ -655,8 +655,8 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
 end
 
 Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
-  name = get_name(host)
-  within(:xpath, "//tr[td[contains(., '#{name}')]]") do
+  system_name = get_system_name(host)
+  within(:xpath, "//tr[td[contains(., '#{system_name}')]]") do
     first('input[type=checkbox]').set(true)
   end
 end
