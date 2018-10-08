@@ -190,15 +190,10 @@ public class TaskoXmlRpcHandler {
                 cronExpression, params);
     }
 
-    private TaskoBunch doBasicCheck(Integer orgId, String bunchName,
-            String jobLabel)
-        throws NoSuchBunchTaskException, InvalidParamException, SchedulerException {
+    private TaskoBunch doBasicCheck(Integer orgId, String bunchName, String jobLabel) throws NoSuchBunchTaskException,
+            InvalidParamException, SchedulerException {
         TaskoBunch bunch = checkBunchName(orgId, bunchName);
-        if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
-                (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
-                        TaskoQuartzHelper.getGroupName(orgId))) != null)) {
-            throw new InvalidParamException("jobLabel already in use");
-        }
+        isAlreadyScheduled(orgId, jobLabel);
         return bunch;
     }
 
@@ -265,7 +260,7 @@ public class TaskoXmlRpcHandler {
     }
 
     /**
-     * schedule a one time satellite bunch
+     * schedule a list of jobs with the same bunch name
      * @param bunchName bunch name
      * @param jobLabel job label
      * @param params List of job parameters
@@ -273,9 +268,9 @@ public class TaskoXmlRpcHandler {
      * @throws NoSuchBunchTaskException thrown if bunch name not known
      * @throws InvalidParamException shall not be thrown
      */
-    public List<Date> scheduleSatBunchRunList(String bunchName, String jobLabel,  List<Map<?, ?>> params)
+    public List<Date> scheduleRuns(String bunchName, String jobLabel,  List<Map<?, ?>> params)
             throws NoSuchBunchTaskException, InvalidParamException {
-        return scheduleBunchRunList(null, bunchName, jobLabel, params);
+        return scheduleRuns(null, bunchName, jobLabel, params);
     }
 
     /**
@@ -339,7 +334,7 @@ public class TaskoXmlRpcHandler {
     }
 
     /**
-     * schedule a one time organizational bunch
+     * schedule a list of jobs with the same bunch name
      * @param orgId organization id
      * @param bunchName bunch name
      * @param jobLabel job label
@@ -349,17 +344,15 @@ public class TaskoXmlRpcHandler {
      * @throws NoSuchBunchTaskException thrown if bunch name not known
      * @throws InvalidParamException shall not be thrown
      */
-     public List<Date> scheduleBunchRunList(Integer orgId, String bunchName, String jobLabel,
-                                                 List<Map<?, ?>> paramsList)
-            throws NoSuchBunchTaskException, InvalidParamException {
-
+     public List<Date> scheduleRuns(Integer orgId, String bunchName, String jobLabel, List<Map<?, ?>> paramsList)
+             throws NoSuchBunchTaskException, InvalidParamException {
         List<Date> scheduleDates = new ArrayList<>();
         TaskoBunch bunch = checkBunchName(orgId, bunchName);
         for (Map params:paramsList) {
            String label = getJobLabel(params, jobLabel);
 
             try {
-                checkIfAlreadyScheduled(orgId, label);
+                isAlreadyScheduled(orgId, label);
             }
             catch (SchedulerException se) {
                 return null;
@@ -369,8 +362,7 @@ public class TaskoXmlRpcHandler {
             params.remove("earliest_action"); // don't need it anymore.
             Date start = Date.from(ZonedDateTime.parse(earliestAction)
                     .withZoneSameInstant(ZoneId.systemDefault()).toInstant());
-            TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, label, params,
-                    start, null, null);
+            TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, label, params, start, null, null);
             TaskoFactory.save(schedule);
 
             // create job
@@ -382,7 +374,6 @@ public class TaskoXmlRpcHandler {
         }
         TaskoFactory.commitTransaction();
         return scheduleDates;
-
     }
 
     /**
@@ -629,7 +620,14 @@ public class TaskoXmlRpcHandler {
         return label.toString();
     }
 
-    private void checkIfAlreadyScheduled(Integer orgId, String jobLabel)
+    /**
+     * Check if job with the given label is already scheduled
+     * @param orgId organization Id
+     * @param jobLabel job label
+     * @throws SchedulerException
+     * @throws InvalidParamException
+     */
+    private void isAlreadyScheduled(Integer orgId, String jobLabel)
             throws SchedulerException, InvalidParamException {
         if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
                 (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,

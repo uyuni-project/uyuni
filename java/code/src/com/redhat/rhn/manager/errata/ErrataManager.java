@@ -96,7 +96,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -1889,28 +1888,23 @@ public class ErrataManager extends BaseManager {
         Stream<ErrataAction> minionActions = computeActions(user, earliest,
                 actionChain, errataMap, updateStackMap, serverMap, minionTargets);
         // store all actions and return ids
-        List<ErrataAction> errataNonMinionActions =
+        List<Long> actionIds = new ArrayList<>();
+        List<ErrataAction> traditionalErrataActions =
             concat(nonZypperTradClientActions,
             concat(updateStackActions,
             nonUpdateStackActions))
             .collect(toList());
-        List<ErrataAction> errataMinionActions = minionActions.collect(toList());
-
-        List<Long> actionIds = new ArrayList<>();
-
-        for (ErrataAction errataAction : errataNonMinionActions) {
-            Action action = ActionManager.storeAction(errataAction);
-            actionIds.add(action.getId());
-        }
+        traditionalErrataActions.stream().forEach(ea-> actionIds.add(ActionManager.storeAction(ea).getId()));
+        List<ErrataAction> minionErrataActions = minionActions.collect(toList());
         List<Action> minionTaskoActions = new ArrayList<>();
-        for (ErrataAction errataAction : errataMinionActions) {
-            Action action = ActionManager.storeAction(errataAction);
-            minionTaskoActions.add(action);
-            actionIds.add(action.getId());
-        }
+        minionErrataActions.stream().forEach(ea-> {
+           Action action = ActionManager.storeAction(ea);
+           minionTaskoActions.add(action);
+           actionIds.add(action.getId());
+        });
         //Taskomatic part is needed only for minionActions
         if (!minionTaskoActions.isEmpty()) {
-            taskomaticApi.scheduleActionsExecution(minionTaskoActions, false, false);
+            taskomaticApi.scheduleMinionActionExecutions(minionTaskoActions, false);
             MinionActionManager.scheduleStagingJobsForMinions(minionTaskoActions, user);
         }
         return actionIds;

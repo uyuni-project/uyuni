@@ -43,11 +43,12 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static java.util.Collections.singletonList;
 
 /**
  * ErrataConfirmAction
@@ -130,7 +131,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
             ActionManager.storeAction(update);
             try {
                 TASKOMATIC_API.scheduleActionExecution(update);
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(update), user);
+                MinionActionManager.scheduleStagingJobsForMinions(singletonList(update), user);
             }
             catch (TaskomaticApiException e) {
                 log.error("Could not schedule errata application:");
