@@ -226,10 +226,10 @@ Feature: Action chain on traditional clients
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
-    Then there should be no more my action chain
+    Then I wait until there are no more action chains
     And I should see scheduled action, called "System reboot scheduled by admin"
     Then I cancel all scheduled actions
-    And there should be no more any scheduled actions
+    And I wait until there are no more scheduled actions
     And I delete the action chain
 
   Scenario: Run an action chain via XML-RPC on traditional client
@@ -242,10 +242,10 @@ Feature: Action chain on traditional clients
     And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
-    Then there should be no more my action chain
+    Then I wait until there are no more action chains
     When I run "rhn_check -vvv" on "sle-client"
     Then file "/tmp/action_chain.log" should contain "123" on "sle-client"
-    And there should be no more any scheduled actions
+    And I wait until there are no more scheduled actions
 
   Scenario: Cleanup: remove traditional client from configuration channel
     Given I am authorized as "admin" with password "admin"

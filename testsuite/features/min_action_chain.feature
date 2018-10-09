@@ -289,10 +289,10 @@ Feature: Action chain on salt minions
     And I call actionchain.add_script_run() with the script "touch /tmp/action_chain_done"
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
-    Then there should be no more my action chain
+    Then I wait until there are no more action chains
     When I wait until file "/tmp/action_chain_done" exists on "sle-minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle-minion"
-    And there should be no more any scheduled actions
+    And I wait until there are no more scheduled actions
 
   Scenario: Cleanup: remove Salt client from configuration channel
     Given I am authorized as "admin" with password "admin"

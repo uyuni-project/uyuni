@@ -453,6 +453,19 @@ Then(/^there should be no more my action chain$/) do
   refute_includes(rpc.list_chains, $chain_label)
 end
 
+When(/^I wait until there are no more action chains$/) do
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if rpc.list_chains.empty?
+        sleep(2)
+      end
+    end
+  rescue Timeout::Error
+    raise unless rpc.list_chains.empty?
+  end
+end
+
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
   assert_includes(
     scdrpc.list_in_progress_actions.map { |a| a['name'] }, label
@@ -472,6 +485,19 @@ end
 
 Then(/^there should be no more any scheduled actions$/) do
   assert_empty(scdrpc.list_in_progress_actions)
+end
+
+Then(/^I wait until there are no more scheduled actions$/) do
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if scdrpc.list_in_progress_actions.empty?
+        sleep(2)
+      end
+    end
+  rescue Timeout::Error
+    raise unless scdrpc.list_in_progress_actions.empty?
+  end
 end
 
 rpc_api_tester = XMLRPCApiTest.new(ENV['SERVER'])
