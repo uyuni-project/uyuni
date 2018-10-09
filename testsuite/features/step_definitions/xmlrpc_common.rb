@@ -487,7 +487,7 @@ Then(/^there should be no more any scheduled actions$/) do
   assert_empty(scdrpc.list_in_progress_actions)
 end
 
-Then(/^I wait until no more scheduled actions$/) do
+Then(/^I wait until there are no more scheduled actions$/) do
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
