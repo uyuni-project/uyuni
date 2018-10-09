@@ -16,7 +16,6 @@ Feature: Be able to manipulate activation keys
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been created." text
     And I should see a "Details" link
-    And I should see a "Child Channels" link
     And I should see a "Packages" link
     And I should see a "Configuration" link in the content area
     And I should see a "Groups" link
@@ -51,7 +50,6 @@ Feature: Be able to manipulate activation keys
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
     And I should see a "Details" link
-    And I should see a "Child Channels" link
     And I should see a "Packages" link
     And I should see a "Configuration" link in the content area
     And I should see a "Groups" link
@@ -71,7 +69,6 @@ Feature: Be able to manipulate activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
     And I should see a "Details" link
-    And I should see a "Child Channels" link
     And I should see a "Packages" link
     And I should see a "Configuration" link in the content area
     And I should see a "Groups" link
@@ -91,7 +88,6 @@ Feature: Be able to manipulate activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key i586 has been modified." text
     And I should see a "Details" link
-    And I should see a "Child Channels" link
     And I should see a "Packages" link
     And I should see a "Configuration" link in the content area
     And I should see a "Groups" link
