@@ -68,10 +68,10 @@ end
 Before('@ssh_minion') do |scenario|
   scenario.skip_invoke! unless $ssh_minion
 end
-Before('@virtualization_kvm') do |scenario|
+Before('@virthost_kvm') do |scenario|
   scenario.skip_invoke! unless $kvm_server
 end
-Before('@virtualization_xen') do |scenario|
+Before('@virthost_xen') do |scenario|
   scenario.skip_invoke! unless $xen_server
 end
 
