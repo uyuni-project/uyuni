@@ -278,7 +278,7 @@ Feature: Salt SSH action chain
     Then I wait until there are no more action chains
     When I wait until file "/tmp/action_chain_done" exists on "ssh-minion"
     Then file "/tmp/action_chain.log" should contain "123" on "ssh-minion"
-    And I wait until no more scheduled actions
+    And I wait until there are no more scheduled actions
 
 @ssh_minion
   Scenario: Cleanup: remove Salt client from configuration channel

@@ -292,7 +292,7 @@ Feature: Action chain on salt minions
     Then I wait until there are no more action chains
     When I wait until file "/tmp/action_chain_done" exists on "sle-minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle-minion"
-    And I wait until no more scheduled actions
+    And I wait until there are no more scheduled actions
 
   Scenario: Cleanup: remove Salt client from configuration channel
     Given I am authorized as "admin" with password "admin"
