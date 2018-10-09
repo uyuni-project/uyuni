@@ -5,22 +5,32 @@ import React from 'react';
 import Network from '../../utils/network';
 import ChannelUtils from '../../utils/channels';
 
+declare function t(msg: string): string;
+declare function t(msg: string, arg: string): string;
+
+type ChannelDto = {
+  id: number,
+  name: string,
+  custom: boolean,
+  subscribable: boolean,
+  recommended: boolean
+}
+
 type ChildChannelsProps = {
   base: Object,
-  channels: Array,
-  selectedChannelsIds: Array<number>,
+  channels: Array<ChannelDto>,
   children: Function,
 }
 
 type ChildChannelsState = {
     requiredChannels: Map<number, Array<number>>,
     requiredByChannels: Map<number, Array<number>>,
-    mandatoryChannelsRaw: Map,
+    mandatoryChannelsRaw: Object,
     dependencyDataAvailable: boolean,
 }
 
 class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChannelsState> {
-    constructor(props) {
+    constructor(props: ChildChannelsProps) {
         super(props);
 
         this.state = {
@@ -80,20 +90,11 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
             resolveChannelNames(this.state.requiredByChannels.get(channelId)));
     }
 
-    areRecommendedChildrenSelected = () : Boolean => {
-        const recommendedChildren = this.props.channels.filter(channel => channel.recommended);
-        const selectedRecommendedChildren = recommendedChildren.filter(channel => this.props.selectedChannelsIds.includes(channel.id));
-        const unselectedRecommendedChildren = recommendedChildren.filter(channel => !this.props.selectedChannelsIds.includes(channel.id));
-
-        return selectedRecommendedChildren.length > 0 && unselectedRecommendedChildren.length == 0;
-    }
-
     render() {
         return this.props.children({
             requiredChannels: this.state.requiredChannels,
             requiredByChannels: this.state.requiredByChannels,
             dependencyDataAvailable: this.state.dependencyDataAvailable,
-            areRecommendedChildrenSelected: this.areRecommendedChildrenSelected,
             dependenciesTooltip: this.dependenciesTooltip,
             fetchMandatoryChannelsByChannelIds: this.fetchMandatoryChannelsByChannelIds,
         })

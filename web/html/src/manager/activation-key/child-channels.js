@@ -1,24 +1,25 @@
 // @flow
 'use strict';
 
-import MandatoryChannelsApi from "../../core/api/mandatory-channels-api";
-
 import React from 'react';
 import {Loading} from '../../components/loading/loading';
 import {Toggler} from "../../components/toggler";
 import {ChannelAnchorLink} from "../../components/links";
 
+import type {ChannelDto} from "./activation-key-channels-api";
+
+declare function t(msg: string): string;
+declare function t(msg: string, arg: string): string;
+
 type ChildChannelsProps = {
-  key: number,
-  channels: Array,
+  channels: Array<ChannelDto>,
   base: Object,
-  showBase: Boolean,
+  showBase: boolean,
   selectedChannelsIds: Array<number>,
   selectChannels: Function,
   requiredChannels: Map<number, Array<number>>,
   requiredByChannels: Map<number, Array<number>>,
   dependencyDataAvailable: boolean,
-  areRecommendedChildrenSelected: Function,
   dependenciesTooltip: Function,
   fetchMandatoryChannelsByChannelIds: Function,
   collapsed: boolean
@@ -30,7 +31,7 @@ type ChildChannelsState = {
 
 
 class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsState> {
-  constructor(props) {
+  constructor(props: ChildChannelsProps) {
     super(props);
 
     this.state = {
@@ -40,7 +41,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
 
   componentDidMount = () => {
     !this.state.collapsed && this.props.fetchMandatoryChannelsByChannelIds()
-  }
+  };
 
   handleChannelChange = (event: SyntheticInputEvent<*>) => {
     const channelId = parseInt(event.target.value);
@@ -48,7 +49,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
     const channelIds: Array<number> = this.selectChannelWithDependencies(channelId, selectedFlag);
 
     this.props.selectChannels(channelIds, selectedFlag);
-  }
+  };
 
   selectChannelWithDependencies = (channelId: number, select: boolean) => {
     let dependingChannelIds;
@@ -59,10 +60,10 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
       dependingChannelIds = this.props.requiredByChannels.get(channelId) || [];
     }
     return dependingChannelIds ? [channelId, ...Array.from(dependingChannelIds).filter(c => c !== channelId)] : [channelId];
-  }
+  };
 
-  toggleRecommended = (areRecommendedChildrenSelected: Function) => {
-    if (areRecommendedChildrenSelected()) {
+  toggleRecommended = () => {
+    if (this.areRecommendedChildrenSelected()) {
       this.props.selectChannels(
         this.props.channels
           .filter(channel => channel.recommended)
@@ -88,6 +89,14 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
             }
         }
     );
+  };
+
+  areRecommendedChildrenSelected = () : boolean => {
+    const recommendedChildren = this.props.channels.filter(channel => channel.recommended);
+    const selectedRecommendedChildren = recommendedChildren.filter(channel => this.props.selectedChannelsIds.includes(channel.id));
+    const unselectedRecommendedChildren = recommendedChildren.filter(channel => !this.props.selectedChannelsIds.includes(channel.id));
+
+    return selectedRecommendedChildren.length > 0 && unselectedRecommendedChildren.length == 0;
   };
 
   renderChannels = () => {
@@ -162,8 +171,8 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
               {
                 this.props.channels.some(channel => channel.recommended) ?
                   <Toggler
-                    handler={() => this.toggleRecommended(this.props.areRecommendedChildrenSelected)}
-                    value={this.props.areRecommendedChildrenSelected()}
+                    handler={() => this.toggleRecommended()}
+                    value={this.areRecommendedChildrenSelected()}
                     text={t("include recommended")}
                   />
                   : null
