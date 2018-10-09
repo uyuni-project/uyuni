@@ -5,4 +5,4 @@ set -e
 zypper --non-interactive in nodejs8 npm8
 
 # Install flow-bin globally
-npm_config_prefix=/usr npm install -g flow-bin@0.73
+npm_config_prefix=/usr npm install -g flow-bin@0.82.0

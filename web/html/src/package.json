@@ -4,7 +4,6 @@
   "description": "Suse Manager web javascript source code",
   "license": "UNLICENSED",
   "dependencies": {
-    "flow-bin": "^0.73.0",
     "susemanager-nodejs-sdk-devel": "1.0.0"
   },
   "scripts": {
@@ -14,5 +13,8 @@
     "dev": "webpack --config build/webpack.config.js --mode development && yarn run validate",
     "watch": "webpack --config build/webpack.config.js --mode development --watch",
     "clean": "rm -rf node_modules && rm -rf dist"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.82.0"
   }
 }
