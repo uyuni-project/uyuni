@@ -1,6 +1,7 @@
 // @flow
 import ChildChannels from './child-channels';
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
+import type {ChannelDto, availableChannelsType} from "./activation-key-channels-api";
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -9,6 +10,9 @@ import withStatePersisted from '../../components/hoc/state-persisted/with-state-
 import MandatoryChannelsApi from "../../core/api/mandatory-channels-api";
 
 const MandatoryChannelsApiStatePersisted = withStatePersisted(MandatoryChannelsApi);
+
+declare function t(msg: string): string;
+declare function t(msg: string, arg: string): string;
 
 type ActivationKeyChannelsProps = {
   activationKeyId: number
@@ -28,8 +32,8 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     }
   }
 
-  getDefaultBase() {
-    return { id: -1, name: t('SUSE Manager Default'), custom: false, subscribable: true};
+  getDefaultBase(): ChannelDto {
+    return { id: -1, name: t('SUSE Manager Default'), custom: false, subscribable: true, recommended: false};
   }
 
   handleBaseChange = (event: SyntheticInputEvent<*>) => {
@@ -55,13 +59,13 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
       selectedIds = [...selectedIds.filter(c => !channelIds.includes(c))];
     }
     this.setState({currentChildSelectedIds: selectedIds});
-  }
+  };
 
   onNewBaseChannel = ({currentSelectedBaseId, currentChildSelectedIds}: ActivationKeyChannelsState) => {
     this.setState({currentSelectedBaseId, currentChildSelectedIds});
-  }
+  };
 
-  renderChildChannels = ({loadingChildren, availableChannels}) => {
+  renderChildChannels = (loadingChildren: boolean, availableChannels: availableChannelsType) => {
     return loadingChildren ?
       <Loading text='Loading child channels..' />
       : availableChannels.map(g => {
@@ -72,7 +76,6 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
             <MandatoryChannelsApiStatePersisted
               base={base}
               channels={channels}
-              selectedChannelsIds={this.state.currentChildSelectedIds}
               saveState={(state) => {
                 this.state["ChildChannelsForBase" + base.id] = state
               }}
@@ -81,7 +84,6 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   requiredChannels,
                   requiredByChannels,
                   dependencyDataAvailable,
-                  areRecommendedChildrenSelected,
                   dependenciesTooltip,
                   fetchMandatoryChannelsByChannelIds
                 }) => (
@@ -95,11 +97,8 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   requiredChannels={requiredByChannels}
                   requiredByChannels={requiredByChannels}
                   dependencyDataAvailable={dependencyDataAvailable}
-                  areRecommendedChildrenSelected={areRecommendedChildrenSelected}
                   dependenciesTooltip={dependenciesTooltip}
                   fetchMandatoryChannelsByChannelIds={fetchMandatoryChannelsByChannelIds}
-                  // Todo: [LN->Dario] this code here is weeeird -> why not use setState and an object  ChildChannelsForBase[childchannelsforbase] ->
-                  //   if we don't need to force a reUpdate, we can save this on this.things and not state
                   collapsed={Array.from(availableChannels.keys()).length > 1}
                 />
               )}
@@ -113,6 +112,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     return (
       <ActivationKeyChannelsApi
         onNewBaseChannel={this.onNewBaseChannel}
+        defaultBaseId={this.getDefaultBase().id}
         activationKeyId={this.props.activationKeyId}
         currentSelectedBaseId={this.state.currentSelectedBaseId}>
         {
@@ -161,10 +161,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                 <div className='form-group'>
                   <label className='col-lg-3 control-label'>{t('Child Channel:')}</label>
                   <div className='col-lg-6'>
-                    {this.renderChildChannels({
-                      loadingChildren,
-                      availableChannels
-                    })}
+                    {this.renderChildChannels(loadingChildren, availableChannels)}
                     <span className='help-block'>
                       {t('Any system registered using this activation key will be subscribed to the selected child channels.')}
                     </span>

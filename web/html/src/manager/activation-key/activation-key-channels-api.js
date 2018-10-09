@@ -1,25 +1,36 @@
 // @flow
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Network from '../../utils/network';
-import {Loading} from '../../components/loading/loading';
-import {ChildChannels} from './child-channels';
 
 type ActivationKeyChannelsProps = {
+  defaultBaseId: number,
   activationKeyId: number,
   currentSelectedBaseId: number,
   onNewBaseChannel: Function,
   children: Function,
 }
 
+export type ChannelDto = {
+  id: number,
+  name: string,
+  custom: boolean,
+  subscribable: boolean,
+  recommended: boolean
+}
+
+export type availableChannelsType = Array<{base: ?ChannelDto, children: Array<ChannelDto>}>;
+
 type ActivationKeyChannelsState = {
-  messages: Array,
+  messages: Array<Object>,
   loading: boolean,
   loadingChildren: boolean,
-  availableBaseChannels: Array, //[base1, base2],
-  availableChannels: Array, //[{base : null, children: []}]
+  availableBaseChannels: Array<ChannelDto>, //[base1, base2],
+  availableChannels: availableChannelsType, //[{base : null, children: []}]
   fetchedData: Map,
 }
+
+declare function t(msg: string): string;
+declare function t(msg: string, arg: string): string;
 
 class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {
@@ -63,7 +74,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
 
       future = Network.get(`/rhn/manager/api/activation-keys/${this.props.activationKeyId}/channels`)
         .promise.then(data => {
-          const currentSelectedBaseId = data.data.base ? data.data.base.id : this.getDefaultBase().id;
+          const currentSelectedBaseId = data.data.base ? data.data.base.id : this.props.defaultBaseId;
           const currentChildSelectedIds = data.data.children ? data.data.children.map(c => c.id) : [];
           this.props.onNewBaseChannel({currentSelectedBaseId, currentChildSelectedIds});
           this.setState({
