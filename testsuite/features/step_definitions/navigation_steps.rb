@@ -39,6 +39,19 @@ When(/^I wait until I see "([^"]*)" text$/) do |text|
   end
 end
 
+When(/^I wait at most "([^"]*)" seconds until I see "([^"]*)" text$/) do |seconds, text|
+  begin
+    Timeout.timeout(seconds) do
+      loop do
+        break if page.has_content?(text)
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the #{text} in webpage"
+  end
+end
+
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
