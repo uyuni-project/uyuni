@@ -39,9 +39,9 @@ When(/^I wait until I see "([^"]*)" text$/) do |text|
   end
 end
 
-When(/^I wait at most "([^"]*)" seconds until I see "([^"]*)" text$/) do |seconds, text|
+When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
   begin
-    Timeout.timeout(seconds) do
+    Timeout.timeout(seconds.to_i) do
       loop do
         break if page.has_content?(text)
         sleep 3
