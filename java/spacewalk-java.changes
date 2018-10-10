@@ -1,3 +1,4 @@
+- Add missing jar dependency 'xalan-j2-serializer'
 - Modify acls: hide 'System details -> Groups and Formulas' tab for non-minions with bootstrap entitlement
 - fix typo in messages (bsc#1111249)
 - Cleanup formula data and assignment when migrating formulas or when removing system
