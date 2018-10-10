@@ -9,4 +9,3 @@ ln -s /usr/lib/node_modules/ node_modules
 
 # execute eslint
 ./node_modules/eslint/bin/eslint.js -f codeframe .
-echo "Linting done."
