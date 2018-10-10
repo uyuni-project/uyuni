@@ -15,7 +15,7 @@ type Props = {
   host: Object,
   submitText: string,
   submit: Function,
-  getInitialModel: Function,
+  initialModel: Object,
   messages: Array<String>,
 };
 
@@ -33,15 +33,23 @@ class GuestProperties extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      model: props.getInitialModel(),
+      model: Object.assign({}, props.initialModel),
       isInvalid: false,
       messages: [],
     };
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.initialModel !== nextProps.initialModel) {
+      this.setState({
+        model: Object.assign({}, nextProps.initialModel),
+      });
+    }
+  }
+
   clearFields = () => {
     this.setState({
-      model: this.props.getInitialModel(),
+      model: Object.assign({}, this.props.initialModel),
     });
   }
 

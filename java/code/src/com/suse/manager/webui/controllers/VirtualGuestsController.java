@@ -287,7 +287,7 @@ public class VirtualGuestsController {
         data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(hostId));
 
         /* For the rest of the template */
-        data.put("guest", GSON.toJson(guest.get()));
+        data.put("guestUuid", guestUuid);
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
         return new ModelAndView(data, "virtualization/guests/edit.jade");
     }
