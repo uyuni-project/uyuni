@@ -6,6 +6,6 @@ function foo(arg: number) {
 
 var x = 1;
 x++
-console.log(x);
+console.log(x)
 
 foo("bar")
