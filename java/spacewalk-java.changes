@@ -1,3 +1,4 @@
+- Allow listing empty system profiles via XMLRPC
 - Different methods have been refactored in tomcat/taskomatic for better performance(bsc#1106430)
 - Do not try cleanup when deleting empty system profiles (bsc#1111247)
 - ActivationKey base and child channel in a reactjs component
