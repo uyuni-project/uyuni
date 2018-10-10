@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @flow
 const React = require("react");
 const Network = require("utils/network");
