@@ -79,6 +79,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
+import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
@@ -673,6 +674,26 @@ public class SystemHandler extends BaseHandler {
      */
     public Object[] listSystems(User loggedInUser) throws FaultException {
         DataResult<SystemOverview> dr = SystemManager.systemListShort(loggedInUser, null);
+        dr.elaborate();
+        return dr.toArray();
+    }
+
+    /**
+     * Returns a list of empty system profiles visible to user (created by createSystemProfile).
+     *
+     * @param loggedInUser - the user
+     * @return array of empty system profiles
+     *
+     * @xmlrpc.doc Returns a list of empty system profiles visible to user (created by the createSystemProfile method).
+     * @xmlrpc.param #session_key()
+     *
+     * @xmlrpc.returntype
+     *          #array()
+     *              $SystemOverviewSerializer
+     *          #array_end()
+     */
+    public Object[] listEmptySystemProfiles(User loggedInUser) {
+        DataResult<BootstrapSystemOverview> dr = SystemManager.listEmptySystemProfiles(loggedInUser, null);
         dr.elaborate();
         return dr.toArray();
     }
