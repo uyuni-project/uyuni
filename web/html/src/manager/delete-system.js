@@ -82,7 +82,7 @@ class DeleteSystem extends React.Component {
     </span>
     return (<span>
       <Dialog id={"delete-errors-" + this.props.serverId}
-        title={t("An error occured during cleanup")}
+        title={t("An error occurred during cleanup")}
         content={this.state.messages.length > 0 && <Messages items={this.state.messages}/>}
         buttons={buttons}
       />

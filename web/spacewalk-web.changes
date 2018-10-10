@@ -1,3 +1,4 @@
+- fix typo in messages (bsc#1111249)
 - Use require() instead of import to avoid js runtime errs
   caused by webpack
 - Add /* eslint-disable */ to all js files to ignore them
