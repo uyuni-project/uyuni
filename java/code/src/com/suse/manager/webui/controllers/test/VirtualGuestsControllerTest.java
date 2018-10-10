@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.controllers.test;
 
+import static org.hamcrest.Matchers.containsString;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -26,6 +28,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -35,7 +39,9 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SparkTestUtils;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -60,6 +66,7 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
     private Response response;
     private final String baseUri = "http://localhost:8080/rhn";
     private TaskomaticApi taskomaticMock;
+    private SaltService saltServiceMock;
     private static final Gson GSON = new GsonBuilder().create();
     private Server host;
 
@@ -77,18 +84,27 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
 
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
+        VirtualizationActionCommand.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() {{
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        host = ServerTestUtils.createVirtHostWithGuests(user, 2);
+        saltServiceMock = context().mock(SaltService.class);
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(containsString("serverfactorytest")));
+        }});
+        SystemManager.mockSaltService(saltServiceMock);
+
+        host = ServerTestUtils.createVirtHostWithGuests(user, 2, true);
+        host.asMinionServer().get().setMinionId("testminion.local");
 
         // Clean pending actions for easier checks in the tests
         DataResult<ScheduledAction> actions = ActionManager.allActions(user, null);
         for (ScheduledAction scheduledAction : actions) {
             ActionManager.failSystemAction(user, host.getId(), scheduledAction.getId(), "test clean up");
         }
-
     }
 
     /**

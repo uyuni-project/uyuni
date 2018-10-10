@@ -37,7 +37,7 @@ import java.util.Map;
 public class VirtualizationActionCommand {
 
     private static Logger log = Logger.getLogger(VirtualizationActionCommand.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private User user;
     private Date scheduleDate;
@@ -109,7 +109,7 @@ public class VirtualizationActionCommand {
 
         log.debug("saving virtAction.");
         ActionFactory.save(virtAction);
-        TASKOMATIC_API.scheduleActionExecution(virtAction);
+        taskomaticApi.scheduleActionExecution(virtAction);
         action = virtAction;
         return null;
     }
@@ -242,5 +242,12 @@ public class VirtualizationActionCommand {
         this.uuid = argUuid;
     }
 
+    /**
+     * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
+    }
 }
 
