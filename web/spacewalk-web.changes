@@ -1,3 +1,4 @@
+- fix typo in messages (bsc#1111249)
 - Fix Sles name in base channel filter (Visualization tab) (bsc#1042184)
 
 -------------------------------------------------------------------
