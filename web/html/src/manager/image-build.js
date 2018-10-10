@@ -20,7 +20,7 @@ const typeMap = {
 };
 
 const msgMap = {
-  "unknown_error": t("Some unknown error has been occurred."),
+  "unknown_error": t("An unknown error has occurred."),
   "build_scheduled": t("The image build has been scheduled."),
   "taskomatic_error": t("There was an error while scheduling a task. Please make sure that the task scheduler is running.")
 };
