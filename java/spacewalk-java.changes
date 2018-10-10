@@ -1,3 +1,4 @@
+- fix typo in messages (bsc#1111249)
 - Remove restrictions on SUSE Manager Channel subscriptions (bsc#1105724)
 - Added shortcut for editing Software Channel
 - Fix NullPointerException when refreshing deleted software channel (bsc#1094992)
