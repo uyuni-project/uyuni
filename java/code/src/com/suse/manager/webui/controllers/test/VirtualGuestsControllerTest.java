@@ -39,6 +39,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
@@ -295,8 +296,8 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
             oneOf(saltServiceMock).callSync(
                     with(any(LocalCall.class)),
                     with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(getSaltResponse("/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml",
-                    placeholders)));
+            will(returnValue(SaltTestUtils.getSaltResponse(
+                    "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", placeholders, null)));
         }});
 
         String json = VirtualGuestsController.getGuest(
@@ -333,17 +334,5 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
         Request request = SparkTestUtils.createMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
-    }
-
-    private Optional<String> getSaltResponse(String filename, Map<String, String> placeholders) throws Exception {
-        Path path = new File(TestUtils.findTestData(filename).getPath()).toPath();
-        String content = Files.lines(path).collect(Collectors.joining("\n"));
-
-        if (placeholders != null) {
-            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-                content = StringUtils.replace(content, entry.getKey(), entry.getValue());
-            }
-        }
-        return Optional.of(content);
     }
 }
