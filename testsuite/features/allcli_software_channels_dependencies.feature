@@ -10,6 +10,7 @@ Feature: Chanel subscription with recommended/required dependencies
     And I follow "Software Channels" in the content area
     # check that the required channel by the base one is selected and disabled
     And I check radio button "SLE-Product-SLES15-Pool for x86_64"
+    And I wait until I do not see "Loading..." text
     Then I should see the child channel "SLE-Product-SLES15-Updates for x86_64" "selected" and "disabled"
     And I should see the recommended toggler "disabled"
     And I should see a "SLE-Module-Basesystem15-Pool for x86_64" text
