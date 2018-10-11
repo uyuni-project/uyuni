@@ -74,7 +74,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   }
 
   fetchActivationKeyChannels = () => {
-    let future;
+    let future: Promise<void>;
     if (this.props.activationKeyId != -1) {
       this.setState({loading: true});
 
@@ -89,17 +89,19 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
         })
         .catch(this.handleResponseError);
     } else {
+      // $FlowFixMe  //  https://github.com/facebook/flow/issues/6760
       future = new Promise(function(resolve, reject) { resolve() });
     }
     return future;
   }
 
   fetchChildChannels = (baseId: number) => {
-    let future;
+    let future: Promise<void>;
 
     const currentObject: Object = this;
     if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
-      future = new Promise(function(resolve, reject) {
+      // $FlowFixMe  //  https://github.com/facebook/flow/issues/6760
+      future = new Promise((resolve, reject) => {
         resolve(
           currentObject.setState({
             availableChannels: currentObject.state.fetchedData.get(baseId),

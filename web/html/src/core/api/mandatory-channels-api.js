@@ -90,11 +90,11 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
     }
 
     dependenciesTooltip = (channelId: number) => {
-        const resolveChannelNames : Function = (channelIds: Array<number>) => {
+        const resolveChannelNames : Function = (channelIds: Array<number>): Array<?string> => {
             return Array.from(channelIds || new Set())
-                .map(channelId => this.props.channels.find(c => c.id == channelId))
-                .filter(channel => channel != null)
-                .map(channel => channel.name);
+                .map((channelId: number): ?ChannelDto  => this.props.channels.find(c => c.id == channelId))
+                .filter((channel: ?ChannelDto): boolean => channel != null)
+                .map((channel: ?ChannelDto): ?string => channel && channel.name);
         }
         return ChannelUtils.dependenciesTooltip(
             resolveChannelNames(this.state.requiredChannels.get(channelId)),
