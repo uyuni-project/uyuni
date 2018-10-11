@@ -49,6 +49,7 @@ Feature: Register a salt-ssh system via XML-RPC
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
     And I check radio button "Test-Channel-x86_64"
+    And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
