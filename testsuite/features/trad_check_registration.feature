@@ -181,6 +181,7 @@ Feature: Client display after registration
     And I follow "Software Channels" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Child Channels" text
+    And I wait until I do not see "Loading..." text
     And I should see a "Next" button
 
   Scenario: Show Configuration => View/Modify Files page

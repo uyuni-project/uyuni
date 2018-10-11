@@ -36,6 +36,7 @@ Feature: Chanel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test-Channel-x86_64" is checked
+    And I wait until I do not see "Loading..." text
     And I should see "Test-Channel-x86_64 Child Channel" as unchecked
 
   Scenario: Check SLES client is still subscribed to old channels before channel change completes
@@ -43,6 +44,7 @@ Feature: Chanel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test-Channel-x86_64" is checked
+    And I wait until I do not see "Loading..." text
     And I should see "Test-Channel-x86_64 Child Channel" as unchecked
 
   Scenario: Check old channels are still enabled on SLES minion before channel change completes
@@ -70,6 +72,7 @@ Feature: Chanel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test Base Channel" is checked
+    And I wait until I do not see "Loading..." text
     And I should see "Test Child Channel" as checked
 
   Scenario: Check the SLES client is subscribed to the new channels
@@ -77,6 +80,7 @@ Feature: Chanel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test Base Channel" is checked
+    And I wait until I do not see "Loading..." text
     And I should see "Test Child Channel" as checked
 
   Scenario: Check the new channels are enabled on the SLES minion
