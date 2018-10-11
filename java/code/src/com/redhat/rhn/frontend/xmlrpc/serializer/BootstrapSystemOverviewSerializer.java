@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2015 Red Hat, Inc.
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,21 +14,19 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-
-import java.io.IOException;
-import java.io.Writer;
-
+import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SystemSerializerUtils;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
-import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+import java.io.IOException;
+import java.io.Writer;
+
 
 /**
  *
- * SystemOverviewSerializer
- * @version $Rev$
+ * BootstrapSystemOverviewSerializer
  *
  * @xmlrpc.doc
  *
@@ -42,15 +40,16 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *     #prop_desc("int",  "extra_pkg_count", "Number of packages not belonging
  *             to any assigned channel")
  *     #prop_desc("int",  "outdated_pkg_count", "Number of out-of-date packages")
+ *     #array_single("string", "hw_addresses")
  * #struct_end()
  */
-public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class BootstrapSystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
      */
     public Class getSupportedClass() {
-        return SystemOverview.class;
+        return BootstrapSystemOverview.class;
     }
 
     /**
@@ -58,9 +57,10 @@ public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
      */
     protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
             throws XmlRpcException, IOException {
-        SystemOverview system = (SystemOverview) value;
+        BootstrapSystemOverview system = (BootstrapSystemOverview) value;
         SerializerHelper helper = new SerializerHelper(serializer);
         SystemSerializerUtils.serializeSystemOverview(system, helper);
+        helper.add("hw_addresses", system.getMacs());
         helper.writeTo(output);
     }
 }

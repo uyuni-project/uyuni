@@ -689,7 +689,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.returntype
      *          #array()
-     *              $SystemOverviewSerializer
+     *              $BootstrapSystemOverviewSerializer
      *          #array_end()
      */
     public Object[] listEmptySystemProfiles(User loggedInUser) {
