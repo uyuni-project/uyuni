@@ -1,3 +1,6 @@
+//We should integrate flow here, so we can have type-checker for all props even when decorating a component with this HOC
+//Check https://flow.org/en/docs/react/hoc/ - this seems not to be working with React14 - lets try to implement this after
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 

@@ -38,9 +38,9 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     return { id: -1, name: t('SUSE Manager Default'), custom: false, subscribable: true, recommended: false};
   }
 
-  handleBaseChange = (event: SyntheticInputEvent<*>) => {
+  handleBaseChange = (event: SyntheticInputEvent<*>): Promise<void> => {
     const newBaseId : number = parseInt(event.target.value);
-    return new Promise((resolve) =>
+    return new Promise((resolve: Function) =>
       this.setState(
         {currentSelectedBaseId: newBaseId},
         () => resolve(newBaseId)
