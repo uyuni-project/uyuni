@@ -9,6 +9,8 @@ import {Loading} from '../../components/loading/loading';
 import withStatePersisted from '../../components/hoc/state-persisted/with-state-persisted';
 import MandatoryChannelsApi from "../../core/api/mandatory-channels-api";
 
+import {Utils} from '../../utils/functions';
+
 const MandatoryChannelsApiStatePersisted = withStatePersisted(MandatoryChannelsApi);
 
 declare function t(msg: string): string;
@@ -70,16 +72,16 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
       <Loading text='Loading child channels..' />
       : availableChannels.map(g => {
           const base = g.base;
-          const channels = g.children.sort((c1, c2) => c1.name > c2.name);
+          const channels = g.children.sort((c1, c2) => Utils.sortString(c1.name, c2.name));
 
           return (
             <MandatoryChannelsApiStatePersisted
               base={base}
               channels={channels}
               saveState={(state) => {
-                this.state["ChildChannelsForBase" + base.id] = state
+                this.state["ChildChannelsForBase" + (base ? base.id : 'no-base')] = state
               }}
-              loadState={() => this.state["ChildChannelsForBase" + base.id]}>
+              loadState={() => this.state["ChildChannelsForBase" + (base ? base.id : 'no-base')]}>
               {({
                   requiredChannels,
                   requiredByChannels,
@@ -88,9 +90,9 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   fetchMandatoryChannelsByChannelIds
                 }) => (
                 <ChildChannels
-                  key={base.id}
+                  key={(base ? base.id : 'no-base')}
                   channels={channels}
-                  base={base}
+                  base={(base ? base : new Object())}
                   showBase={availableChannels.length > 1}
                   selectedChannelsIds={this.state.currentChildSelectedIds}
                   selectChannels={this.selectChildChannels}
