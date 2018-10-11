@@ -26,8 +26,14 @@ type ActivationKeyChannelsState = {
   loadingChildren: boolean,
   availableBaseChannels: Array<ChannelDto>, //[base1, base2],
   availableChannels: availableChannelsType, //[{base : null, children: []}]
-  fetchedData: Map,
+  fetchedData: Map<number, Array<number>>,
 }
+
+const msgMap = {
+  "base_not_found_or_not_authorized": t("Base channel not found or not authorized."),
+  "child_not_found_or_not_authorized": t("Child channel not found or not authorized."),
+  "invalid_channel_id": t("Invalid channel id")
+};
 
 declare function t(msg: string): string;
 declare function t(msg: string, arg: string): string;
@@ -91,7 +97,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   fetchChildChannels = (baseId: number) => {
     let future;
 
-    const currentObject = this;
+    const currentObject: Object = this;
     if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
       future = new Promise(function(resolve, reject) {
         resolve(
@@ -116,7 +122,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
     return future;
   }
 
-  handleResponseError = (jqXHR, arg = '') => {
+  handleResponseError = (jqXHR: Object, arg: string = '') => {
     const msg = Network.responseErrorMessage(jqXHR,
       (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
     this.setState((prevState) => ({

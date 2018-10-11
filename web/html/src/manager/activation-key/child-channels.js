@@ -113,7 +113,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
           const isMandatory =
             this.props.base &&
             this.props.requiredChannels.has(this.props.base.id) &&
-            this.props.requiredChannels.get(this.props.base.id).has(c.id);
+            (this.props.requiredChannels.get(this.props.base.id) || new Set()).has(c.id);
           const isDisabled = isMandatory && this.props.selectedChannelsIds.includes(c.id);
           return (
             <div key={c.id} className='checkbox'>

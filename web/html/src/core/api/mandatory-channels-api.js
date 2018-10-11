@@ -5,6 +5,15 @@ import React from 'react';
 import Network from '../../utils/network';
 import ChannelUtils from '../../utils/channels';
 
+import type JsonResult from '../../utils/network';
+import type ChannelDependencies from '../../utils/channels';
+
+const msgMap = {
+    "base_not_found_or_not_authorized": t("Base channel not found or not authorized."),
+    "child_not_found_or_not_authorized": t("Child channel not found or not authorized."),
+    "invalid_channel_id": t("Invalid channel id")
+};
+
 declare function t(msg: string): string;
 declare function t(msg: string, arg: string): string;
 
@@ -23,6 +32,7 @@ type ChildChannelsProps = {
 }
 
 type ChildChannelsState = {
+    messages: Array<Object>,
     requiredChannels: Map<number, Array<number>>,
     requiredByChannels: Map<number, Array<number>>,
     mandatoryChannelsRaw: Object,
@@ -34,6 +44,7 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
         super(props);
 
         this.state = {
+            messages: [],
             requiredChannels: new Map(),
             requiredByChannels: new Map(),
             mandatoryChannelsRaw: new Map(),
@@ -52,12 +63,12 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
         Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
           .then((data : JsonResult<Map<number, Array<number>>>) => {
             const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
-            let {requiredChannels, requiredByChannels} = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
+            let dependencies : Object = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
 
             this.setState({
               mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
-              requiredChannels,
-              requiredByChannels,
+              requiredChannels: dependencies.requiredChannels,
+              requiredByChannels: dependencies.requiredByChannels,
               dependencyDataAvailable: true,
             });
           })
@@ -69,7 +80,7 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
       }
     }
 
-    handleResponseError(jqXHR, arg = '') {
+    handleResponseError(jqXHR: Object, arg: string = '') {
         const msg = Network.responseErrorMessage(jqXHR,
             (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
         this.setState((prevState) => ({
@@ -79,7 +90,7 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
     }
 
     dependenciesTooltip = (channelId: number) => {
-        const resolveChannelNames = (channelIds: Array<number>) => {
+        const resolveChannelNames : Function = (channelIds: Array<number>) => {
             return Array.from(channelIds || new Set())
                 .map(channelId => this.props.channels.find(c => c.id == channelId))
                 .filter(channel => channel != null)
