@@ -25,6 +25,14 @@ Feature: Build OS images
     And I navigate to "os-images/1/" page
     Then I should see a "POS_Image_JeOS6" text
 
+@proxy
+@private_net
+  Scenario: Move the image to the branch server
+    When I manually install the "image-sync" formula on the server
+    And I wait for "16" seconds
+    And I apply state "image-sync" to "proxy"
+    Then the image "POS_Image_JeOS6" should exist on "proxy"
+
   Scenario: Cleanup: remove the image from SUSE Manager server
     Given I am authorized as "admin" with password "admin"
     When I navigate to images webpage

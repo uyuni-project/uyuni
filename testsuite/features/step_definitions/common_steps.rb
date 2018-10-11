@@ -491,6 +491,12 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
+Then(/^the image "([^"]*)" should exist on "([^"]*)"$/) do |image, host|
+  node = get_target(host)
+  images, _code = node.run("ls /srv/saltboot/image/")
+  raise "Image #{image} does not exist on #{host}" unless images.include? image
+end
+
 # Repository steps
 
 When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |host|
@@ -546,6 +552,22 @@ When(/^I disable repositories after installing Docker$/) do
   end
 
   $minion.run('zypper -n --gpg-auto-import-keys ref')
+end
+
+When(/^I enable repositories before installing branch server$/) do
+  # Distribution Pool and Update
+  os_version = get_os_version($proxy)
+  arch, _code = $proxy.run('uname -m')
+  puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
+  puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+end
+
+When(/^I disable repositories after installing branch server$/) do
+  # Distribution Pool and Update
+  os_version = get_os_version($proxy)
+  arch, _code = $proxy.run('uname -m')
+  puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
+  puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
 end
 
 # Register client

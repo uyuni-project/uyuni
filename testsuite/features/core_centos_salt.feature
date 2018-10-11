@@ -8,12 +8,6 @@
 Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
 
 @centos_minion
-@private_net
-  Scenario: Wait after reboot of CentOS traditional client
-    # WORKAROUND: reboot prevents SSH for some time - not sure why
-    When I wait for "30" seconds
-
-@centos_minion
   Scenario: Bootstrap a CentOS minion
     Given I am authorized
     When I go to the bootstrapping page
