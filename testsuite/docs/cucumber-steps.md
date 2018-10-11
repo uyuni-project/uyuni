@@ -218,6 +218,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```cucumber
   Then I wait until I see "Successfully bootstrapped host! " text
+  Then I wait until I do not see "Loading..." text
 ```
 
 * Same, but re-issue HTTP requests to refresh the page
