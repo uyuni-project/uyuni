@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
@@ -31,10 +30,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.ServerTestUtils;
-import com.redhat.rhn.testing.TestUtils;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -44,38 +40,23 @@ import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.SparkTestUtils;
 import com.suse.salt.netapi.calls.LocalCall;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import spark.HaltException;
-import spark.Request;
-import spark.RequestResponseFactory;
-import spark.Response;
 
 /**
  * Tests for VirtualGuestsController
  */
-public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
+public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
-    private Response response;
-    private final String baseUri = "http://localhost:8080/rhn";
     private TaskomaticApi taskomaticMock;
     private SaltService saltServiceMock;
     private static final Gson GSON = new GsonBuilder().create();
@@ -88,10 +69,6 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        setImposteriser(ClassImposteriser.INSTANCE);
-        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -308,31 +285,5 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals(uuid, def.getUuid());
         assertEquals("sles12sp2", def.getName());
         assertEquals(1024*1024, def.getMaxMemory());
-    }
-
-    /**
-     * Creates a request with csrf token.
-     *
-     * @param uri the uri
-     * @param vars the vars
-     * @return the request with csrf
-     */
-    private Request getRequestWithCsrf(String uri, Object... vars) {
-        Request request = SparkTestUtils.createMockRequest(baseUri + uri, vars);
-        request.session(true).attribute("csrf_token", "bleh");
-        return request;
-    }
-    /**
-     * Creates a request with csrf token.
-     *
-     * @param uri the uri
-     * @param vars the vars
-     * @return the request with csrf
-     */
-    private Request getPostRequestWithCsrfAndBody(String uri, String body,
-                                                  Object... vars) throws UnsupportedEncodingException {
-        Request request = SparkTestUtils.createMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
-        request.session(true).attribute("csrf_token", "bleh");
-        return request;
     }
 }
