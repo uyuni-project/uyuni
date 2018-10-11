@@ -78,7 +78,7 @@ public class TaskHelper {
     public static void sendTaskoEmail(Integer orgId, String messageBody) {
         Config c = Config.get();
         LocalizationService ls = LocalizationService.getInstance();
-        String[] recipients = null;
+        String[] recipients = MailHelper.getAdminRecipientsFromConfig();
         if (orgId != null) {
             List<String> emails = getActiveOrgAdminEmails(orgId);
             recipients = !emails.isEmpty() ?
