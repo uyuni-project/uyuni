@@ -1,0 +1,12 @@
+set address [lindex $argv 0]
+
+spawn /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $address
+match_max 100000
+expect "*?assword:*"
+send -- "linux\r"
+expect "#"
+send -- "touch /intact\r"
+expect "#"
+send -- "reboot\r"
+expect "#"
+puts "\r"

@@ -163,6 +163,7 @@ to the controller declaration that looks like:
 git_profiles_repo="https://github.com#mybranch:myprofiles"
 ```
 
+
 ### Testing virtualization features
 
 Using a virtualization host with the testsuite is not mandatory.
@@ -202,3 +203,74 @@ Inside of the testsuite, the scenarios that are tagged with one of:
 @virtualization_xen
 ```
 are executed only if the corresponding virtualization host minion is available.
+
+### Testing SUSE Manager for Retail
+
+Testing SUSE Manager for Retail is optional. To test it, you need:
+* a private network;
+* a PXE boot minion.
+
+The PXE boot minion will reside in the private network only.
+The proxy will route between the private network and the
+outer world.
+
+
+#### Private network
+
+If you do not want a private network, do not define `PRIVATENET`
+environment variable before you run the testsuite. That's all.
+If you want that optional network, make this variable contain
+`yes` or `true`:
+```bash
+export PRIVATENET=yes
+```
+and then run the testsuite.
+
+Sumaform declares the `$PRIVATENET`
+variable on the controller (in `/root/.bashrc`).
+To create the private network in your `main.tf` file, add a line
+to the base declaration that looks like:
+```
+additional_network=true
+```
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@private_net
+```
+are executed only when there is a private network.
+
+
+#### PXE boot minion
+
+The PXE boot minion can be reached only from the proxy and
+via the private network. The proxy reboots this minion
+through SSH and then triggers a complete reinstallation
+with the help of PXE.
+
+If you do not want a PXE boot minion, do not define `PXEBOOTMAC`
+environment variable before you run the testsuite. That's all.
+If you want a PXE boot minion, make this variable contain
+the MAC address of the PXE boot minion:
+```bash
+export PXEBOOTMAC=52:54:00:01:02:03
+```
+and then run the testsuite.
+
+Sumaform declares the `$PXEBOOTMAC`
+variable on the controller (in `/root/.bashrc`).
+To create the PXE boot minion in your `main.tf` file, add a line
+to the controller declaration that looks like:
+```
+pxeboot_configuration = "${module.pxeboot.configuration}
+```
+The module defining the PXE boot minion is declared accordingly to the
+"PXE boot hosts" chapter of the
+[advanced instructions](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md)
+for sumaform.
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@pxeboot_minion
+```
+are executed only if the PXE boot minion is available.
