@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @flow
 const GuestsList = require("./guests-list");
 const ReactDOM = require("react-dom");
