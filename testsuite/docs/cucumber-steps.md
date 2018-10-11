@@ -225,6 +225,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```cucumber
   Then I wait until I see "Successfully bootstrapped host! " text
+  Then I wait until I do not see "Loading..." text
   Then I wait at most 360 seconds until I see "Product Description" text
 ```
 
