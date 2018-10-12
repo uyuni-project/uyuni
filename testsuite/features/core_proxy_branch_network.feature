@@ -77,7 +77,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I check include forwarders box
     And I press "Add Item" in config options section
     And I enter "empty-zones-enable" in first option field
-    And I enter "no" if first value field
+    And I enter "no" in first value field
     And I enter "example.org" in first configured zone name field
     And I press "Add Item" in configured zones section
     And I enter "5.168.192.in-addr.arpa" in second configured zone name field
