@@ -96,7 +96,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   showBase={availableChannels.length > 1}
                   selectedChannelsIds={this.state.currentChildSelectedIds}
                   selectChannels={this.selectChildChannels}
-                  requiredChannels={requiredByChannels}
+                  requiredChannels={requiredChannels}
                   requiredByChannels={requiredByChannels}
                   dependencyDataAvailable={dependencyDataAvailable}
                   dependenciesTooltip={dependenciesTooltip}
