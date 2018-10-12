@@ -338,6 +338,8 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'second reserved IP'              => 'dhcpd#hosts#1#fixed_address',
                'third reserved hostname'         => 'dhcpd#hosts#2#$key',
                'third reserved IP'               => 'dhcpd#hosts#2#fixed_address',
+               'first option'                    => 'bind#config#options#0#0',
+               'first value'                     => 'bind#config#options#0#1',
                'first configured zone name'      => 'bind#configured_zones#0#$key',
                'first available zone name'       => 'bind#available_zones#0#$key',
                'first file name'                 => 'bind#available_zones#0#file',
@@ -422,6 +424,7 @@ end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|
   sectionids = { 'host reservations' => 'dhcpd#hosts#add_item',
+                 'config options'    => 'bind#config#options#add_item',
                  'configured zones'  => 'bind#configured_zones#add_item',
                  'available zones'   => 'bind#available_zones#add_item',
                  'first A'           => 'bind#available_zones#0#records#A#add_item',
