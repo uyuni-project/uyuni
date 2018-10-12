@@ -1,5 +1,6 @@
 /* eslint-disable */
 // @flow
+
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {SmallPanel} = require("components/panel");
@@ -113,4 +114,6 @@ GuestProperties.propTypes = {
     messages: PropTypes.array,
 };
 
-export default GuestProperties;
+module.exports = {
+  GuestProperties,
+};

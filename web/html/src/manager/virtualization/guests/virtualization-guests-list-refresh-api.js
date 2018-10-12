@@ -1,5 +1,6 @@
 /* eslint-disable */
 // @flow
+
 const React = require("react");
 const PropTypes = React.PropTypes;
 const Network = require("utils/network");
@@ -55,4 +56,6 @@ VirtualizationGuestsListRefreshApi.propTypes = {
     refreshInterval: PropTypes.number.isRequired,
 };
 
-export default VirtualizationGuestsListRefreshApi;
+module.exports = {
+  VirtualizationGuestsListRefreshApi,
+};

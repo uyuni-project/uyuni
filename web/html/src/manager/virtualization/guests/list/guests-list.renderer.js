@@ -1,6 +1,8 @@
 /* eslint-disable */
 // @flow
-const GuestsList = require("./guests-list");
+"use strict";
+
+const {GuestsList} = require("./guests-list");
 const ReactDOM = require("react-dom");
 const React = require("react");
 window.pageRenderers = window.pageRenderers || {};
