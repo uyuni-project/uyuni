@@ -1,3 +1,5 @@
+- upgrade tika-core to 0.19.1 and adjust nutch-core (bsc#1109235)
+- remove lib jar files and add them as build dependencies on spec
 - limit number of old java logfiles (bsc#1107869)
 
 -------------------------------------------------------------------

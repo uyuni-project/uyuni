@@ -10,11 +10,11 @@ License: GPL-2.0 and Apache-2.0
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
-BuildRequires: nutch
+BuildRequires: nutch-core >= 1.0.1
 BuildRequires: susemanager-jsp_en >= 1.2
 BuildRequires: release-notes-susemanager >= 1.2
 BuildRequires: xerces-j2
-Requires: nutch
+Requires: nutch-core >= 1.0.1
 Requires: susemanager-jsp_en >= 1.2
 Requires: release-notes-susemanager >= 1.2
 BuildArch: noarch
@@ -114,4 +114,3 @@ rm -rf $RPM_BUILD_ROOT
   languages
 * Thu Dec 18 2008 John Matthews <jmatthews@redhat.com> 0.4.5-1
 - initial
-

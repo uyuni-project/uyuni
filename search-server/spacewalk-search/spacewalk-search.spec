@@ -17,6 +17,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 ExcludeArch: aarch64
 
+BuildRequires: hadoop
+BuildRequires: nutch-core
+BuildRequires: picocontainer
+BuildRequires: lucene
+BuildRequires: apache-mybatis
+Requires: hadoop
+Requires: nutch-core
+Requires: picocontainer
+Requires: lucene
+Requires: apache-mybatis
+
 #Requires: apache-ibatis-sqlmap
 Requires: apache-commons-cli
 Requires: apache-commons-codec
@@ -36,7 +47,6 @@ Requires: mchange-commons
 Requires: quartz < 2.0
 Conflicts: quartz >= 2.0
 Requires: redstone-xmlrpc
-#Requires: picocontainer
 Requires: tanukiwrapper
 Requires: simple-core
 Obsoletes: rhn-search < 5.3.0
@@ -45,18 +55,15 @@ BuildRequires: apache-commons-cli
 BuildRequires: apache-commons-codec
 BuildRequires: apache-commons-lang
 BuildRequires: apache-commons-logging
-#BuildRequires: apache-ibatis-sqlmap
 BuildRequires: c3p0 >= 0.9.1
 BuildRequires: cglib
 BuildRequires: jakarta-commons-httpclient
 BuildRequires: jakarta-oro
 BuildRequires: java-devel >= 1.6.0
 BuildRequires: javapackages-tools
-#BuildRequires: lucene
 BuildRequires: objectweb-asm
 BuildRequires: quartz < 2.0
 BuildRequires: redstone-xmlrpc
-#BuildRequires: picocontainer
 BuildRequires: tanukiwrapper
 BuildRequires: simple-core
 
@@ -79,7 +86,6 @@ BuildRequires: systemd
 %endif
 %if 0%{?suse_version}
 BuildRequires: doc-indexes
-Requires:      nutch
 %endif
 
 %description
@@ -130,7 +136,7 @@ ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BU
 sed -i 's/log4j.jar/log4j-1.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %endif
 %if 0%{?suse_version} >= 1315
-sed -i 's/^wrapper.java.classpath.19=.*/wrapper.java.classpath.19=\/usr\/share\/nutch\/nutch-2008-12-01_04-01-21.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
+sed -i 's/^wrapper.java.classpath.19=.*/wrapper.java.classpath.19=\/usr\/share\/nutch-core\/nutch-core.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %endif
 
 # add rc link
@@ -562,4 +568,3 @@ fi
 
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
 - bumping spec files to 1.1 packages
-
