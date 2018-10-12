@@ -972,22 +972,6 @@ GROUP BY C.id, C.name
     </query>
 </mode>
 
-<mode name="activation_key_child_channels">
-  <query params="token_id, user_id">
-    SELECT DISTINCT c1.id as id,
-       (select name from rhnChannel C2 where c1.parent_channel = c2.id) parent,
-       c1.name as name,
-       CASE WHEN (SELECT 1 FROM rhnRegTokenChannels WHERE token_id = :token_id AND channel_id = c1.id)
-       IS NOT NULL THEN 'selected' ELSE '' END s
-    FROM rhnChannel c1 inner join rhnUserChannel UC on UC.channel_id = C1.id
-    AND c1.parent_channel IS NOT NULL
-    AND UC.user_id = :user_id
-    JOIN rhnChannelFamilyMembers cfm ON cfm.channel_id = c1.id JOIN rhnChannelFamily cf ON cf.id = cfm.channel_family_id
-    WHERE cf.label != 'rhn-proxy' AND cf.label != 'rhn-satellite'
-    ORDER BY parent, name
-  </query>
-</mode>
-
 <mode name="dist_channel_map_for_org" class="com.redhat.rhn.domain.channel.DistChannelMap">
   <query params="org_id">
   SELECT * FROM rhnOrgDistChannelMap WHERE org_id = :org_id

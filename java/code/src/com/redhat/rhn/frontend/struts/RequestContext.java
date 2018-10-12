@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import com.redhat.rhn.domain.token.TokenFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -284,11 +283,8 @@ public class RequestContext {
      */
     public ActivationKey lookupAndBindActivationKey() {
         if (request.getAttribute(ACTIVATION_KEY) == null) {
-            Long id = getRequiredParam(TOKEN_ID);
-            ActivationKey key = ActivationKeyFactory.lookupByToken(
-                    TokenFactory.lookup(id,
-                            getCurrentUser().getOrg()));
-            request.setAttribute(ACTIVATION_KEY, key);
+            request.setAttribute(ACTIVATION_KEY,
+                    ActivationKeyFactory.lookupById(getRequiredParam(TOKEN_ID), getCurrentUser().getOrg()));
         }
         return (ActivationKey) request.getAttribute(ACTIVATION_KEY);
     }

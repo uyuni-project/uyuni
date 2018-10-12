@@ -1,0 +1,14 @@
+[ignore]
+.*/node_modules/*
+
+[include]
+./manager/*
+./components/*
+./utils/*
+./core/*
+
+[libs]
+
+[lints]
+
+[options]

@@ -14,20 +14,7 @@
  */
 package com.suse.manager.webui;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-import static spark.Spark.delete;
-import static spark.Spark.exception;
-import static spark.Spark.get;
-import static spark.Spark.head;
-import static spark.Spark.notFound;
-import static spark.Spark.post;
-
+import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
@@ -48,15 +35,26 @@ import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.errors.NotFoundException;
-
-import org.apache.http.HttpStatus;
-
 import java.util.HashMap;
 import java.util.Map;
-
+import org.apache.http.HttpStatus;
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
+
+import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.delete;
+import static spark.Spark.exception;
+import static spark.Spark.get;
+import static spark.Spark.head;
+import static spark.Spark.notFound;
+import static spark.Spark.post;
 
 /**
  * Router class defining the web UI routes.
@@ -143,6 +141,13 @@ public class Router implements SparkApplication {
         post("/manager/api/systems/:sid/channels", withUser(SystemsController::subscribeChannels));
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(SystemsController::getAccessibleChannelChildren));
+
+        // Activation Keys API
+        get("/manager/api/activation-keys/:tid/channels", withUser(ActivationKeysController::getChannels));
+        get("/manager/api/activation-keys/base-channels",
+                withUser(ActivationKeysController::getAccessibleBaseChannels));
+        get("/manager/api/activation-keys/base-channels/:cid/child-channels",
+                withUser(ActivationKeysController::getChildChannelsByBaseId));
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));

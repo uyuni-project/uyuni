@@ -32,17 +32,6 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
-import org.apache.struts.util.LabelValueBean;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,9 +40,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
 
 
 /**
@@ -65,8 +61,8 @@ public class ActivationKeyDetailsAction extends RhnAction {
 
     private static final String KEY = "key";
     private static final String USAGE_LIMIT = "usageLimit";
-    private static final String POSSIBLE_CHANNELS = "possibleChannels";
-    private static final String SELECTED_CHANNEL = "selectedChannel";
+    private static final String SELECTED_BASE_CHANNEL = "selectedBaseChannel";
+    private static final String SELECTED_CHILD_CHANNELS = "childChannels";
     private static final String POSSIBLE_ENTS = "possibleEntitlements";
     private static final String SELECTED_ENTS = "selectedEntitlements";
     private static final String ORG_DEFAULT = "universal";
@@ -132,7 +128,6 @@ public class ActivationKeyDetailsAction extends RhnAction {
                 return handleFailure(mapping, context);
             }
         }
-        setupPossibleChannels(context);
         setupEntitlements(context);
         setupContactMethods(context);
         if (EDIT_MODE.equals(mapping.getParameter())) {
@@ -153,7 +148,6 @@ public class ActivationKeyDetailsAction extends RhnAction {
     private ActionForward handleFailure(ActionMapping mapping,
                                             RequestContext context) {
         RhnValidationHelper.setFailedValidation(context.getRequest());
-        setupPossibleChannels(context);
         setupEntitlements(context);
         setupContactMethods(context);
 
@@ -195,7 +189,6 @@ public class ActivationKeyDetailsAction extends RhnAction {
             manager.addEntitlements(key, selectedList);
         }
 
-
         if (StringUtils.isBlank(form.getString(DESCRIPTION))) {
             key.setNote(ActivationKeyFactory.DEFAULT_DESCRIPTION);
         }
@@ -204,6 +197,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
         }
 
         key.setBaseChannel(lookupChannel(form, user));
+        updateChildChannels(form, key);
 
         key.getToken().setOrgDefault(Boolean.TRUE.equals(form.get(ORG_DEFAULT)));
 
@@ -256,13 +250,6 @@ public class ActivationKeyDetailsAction extends RhnAction {
         }
 
         form.set(ORG_DEFAULT, key.isUniversalDefault());
-        Channel chan = key.getBaseChannel();
-        if (chan == null) {
-            form.set(SELECTED_CHANNEL, DEFAULT_CHANNEL_ID);
-        }
-        else {
-            form.set(SELECTED_CHANNEL, chan.getId());
-        }
         List<String> entitlements = new ArrayList<String>();
         for (ServerGroupType type : key.getEntitlements()) {
             entitlements.add(type.getLabel());
@@ -285,20 +272,6 @@ public class ActivationKeyDetailsAction extends RhnAction {
             form.set(KEY, key.getKey());
             context.getRequest().setAttribute(UNPREFIXED, Boolean.TRUE);
         }
-    }
-
-    private void setupPossibleChannels(RequestContext context) {
-        User user = context.getCurrentUser();
-        List<LabelValueBean> channelWidgets = new LinkedList<LabelValueBean>();
-        channelWidgets.add(lvl10n("activation-key.jsp.rh-default",
-                            String.valueOf(DEFAULT_CHANNEL_ID)));
-        List<Channel> rhChannels = ChannelFactory.listSubscribableBaseChannels(user);
-        for (Channel channel : rhChannels) {
-            channelWidgets.add(lv(channel.getName(), String.valueOf(channel.getId())));
-        }
-
-        context.getRequest().setAttribute(POSSIBLE_CHANNELS, channelWidgets.toArray());
-
     }
 
     private void setupEntitlements(RequestContext context) {
@@ -336,6 +309,8 @@ public class ActivationKeyDetailsAction extends RhnAction {
                                 lookupChannel(daForm, user),
                                 Boolean.TRUE.equals(daForm.get(ORG_DEFAULT)));
 
+        updateChildChannels(daForm, key);
+
         // Set the contact method
         long contactId = (Long) daForm.get(CONTACT_METHOD);
         if (contactId != key.getContactMethod().getId()) {
@@ -353,7 +328,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
 
 
     private Channel lookupChannel(DynaActionForm daForm, User user) {
-        Long selectedChannel = (Long)daForm.get(SELECTED_CHANNEL);
+        Long selectedChannel = (Long)daForm.get(SELECTED_BASE_CHANNEL);
 
         if (!DEFAULT_CHANNEL_ID.equals(selectedChannel)) {
             return ChannelManager.lookupByIdAndUser(
@@ -373,5 +348,23 @@ public class ActivationKeyDetailsAction extends RhnAction {
     protected void setupContactMethods(RequestContext context) {
         List<ContactMethod> contactMethods = ServerFactory.listContactMethods();
         context.getRequest().setAttribute(CONTACT_METHODS, contactMethods);
+    }
+
+    /**
+     * Update child channels with the selection set from the received form
+     *
+     * @param form the source form
+     * @param key the activation key to update with the selected child channels
+     */
+    private void updateChildChannels(DynaActionForm form, ActivationKey key) {
+        Channel base = key.getBaseChannel();
+        key.clearChannels(); // clear the current selection
+        if (base != null) {
+            key.addChannel(base); // re-add the base channel
+        }
+        for (String id : (String[])form.get(SELECTED_CHILD_CHANNELS)) {
+            key.addChannel(ChannelFactory.lookupById(Long.parseLong(id.trim()))); // add all selected child channels
+        }
+        ActivationKeyFactory.save(key);
     }
 }

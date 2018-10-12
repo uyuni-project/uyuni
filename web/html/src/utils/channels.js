@@ -3,6 +3,11 @@
 
 declare function t(msg: string): string;
 
+export type ChannelsDependencies = {
+  requiredChannels: Map<number, Set<number>>,
+  requiredByChannels: Map<number, Set<number>>
+}
+
 // Converts array of channel names into a human-readable tooltip
 // containing information about channel dependencies
 // return null if the channel is not involved in any dependencies
@@ -45,8 +50,8 @@ function computeReverseDependencies(dependencyMap : Map<number, Set<number>>) : 
       .reduce(mergeEntries, new Map());
 }
 
-function processChannelDependencies(requiredChannelsRaw) {
-  const requiredChannels = new Map(Object.entries(requiredChannelsRaw)
+function processChannelDependencies(requiredChannelsRaw) : ChannelsDependencies {
+  const requiredChannels: Map<number, Set<number>> = new Map(Object.entries(requiredChannelsRaw)
     .map(entry => {
       const channelId = parseInt(entry[0]);
       const requiredChannelList = entry[1];
@@ -56,7 +61,7 @@ function processChannelDependencies(requiredChannelsRaw) {
       ];
     }));
 
-  const requiredByChannels = computeReverseDependencies(requiredChannels);
+  const requiredByChannels: Map<number, Set<number>> = computeReverseDependencies(requiredChannels);
 
   return {
     requiredChannels: requiredChannels,
