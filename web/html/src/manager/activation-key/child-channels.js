@@ -110,7 +110,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
       else {
         return this.props.channels.map(c => {
           const toolTip = this.props.dependenciesTooltip(c.id);
-          const mandatoryChannelsForBaseId: ?Set<number> = this.props.requiredChannels.get(this.props.base.id);
+          const mandatoryChannelsForBaseId: ?Set<number> = this.props.base && this.props.requiredChannels.get(this.props.base.id);
 
           const isMandatory = mandatoryChannelsForBaseId && mandatoryChannelsForBaseId.has(c.id);
           const isDisabled = isMandatory && this.props.selectedChannelsIds.includes(c.id);
