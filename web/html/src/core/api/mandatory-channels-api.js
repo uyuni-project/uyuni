@@ -6,7 +6,7 @@ import Network from '../../utils/network';
 import ChannelUtils from '../../utils/channels';
 
 import type JsonResult from '../../utils/network';
-import type ChannelDependencies from '../../utils/channels';
+import type {ChannelsDependencies} from '../../utils/channels';
 
 const msgMap = {
     "base_not_found_or_not_authorized": t("Base channel not found or not authorized."),
@@ -33,8 +33,8 @@ type ChildChannelsProps = {
 
 type ChildChannelsState = {
     messages: Array<Object>,
-    requiredChannels: Map<number, Array<number>>,
-    requiredByChannels: Map<number, Array<number>>,
+    requiredChannels: Map<number, Set<number>>,
+    requiredByChannels: Map<number, Set<number>>,
     mandatoryChannelsRaw: Object,
     dependencyDataAvailable: boolean,
 }
@@ -63,7 +63,7 @@ class MandatoryChannelsApi extends React.Component<ChildChannelsProps, ChildChan
         Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise
           .then((data : JsonResult<Map<number, Array<number>>>) => {
             const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
-            let dependencies : Object = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
+            let dependencies : ChannelsDependencies = ChannelUtils.processChannelDependencies(allTheNewMandatoryChannelsData);
 
             this.setState({
               mandatoryChannelsRaw: allTheNewMandatoryChannelsData,
