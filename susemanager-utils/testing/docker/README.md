@@ -6,56 +6,47 @@ used by our testing infrastructure.
 This is the hierarchy of our containers:
 
 ```
-                         +----------------+
-                         |  sle-<release> |
-                         +--------+-------+
-                                  |
-                                  |
-                                  |
-                       +----------+---------+
-                       | suma-<branch>-base |
-                       +----------+---------+
-                                  |
-          +-----------------------+----------------------+
-          |                       |                      |
-          |                       |                      |
-+---------+-----------+ +---------+---------+ +----------+----------+
-| suma-<branch>-pgsql | | suma-<branch>-ora | |suma-<branch>-nodejs |
-+---------------------+ +-------------------+ +---------------------+
+    +----------------+
+    |  opensuse/leap |
+    +--------+-------+
+             |
+             |
+             |
+  +----------+----------+
+  | uyuni-<branch>-base |
+  +----------+----------+
+             |
+             +-------------------+
+             |                   |
+             |                   |
++----------------------+ +-----------------------+
+| uyuni-<branch>-pgsql | | uyuni-<branch>-nodejs |
++----------------------+ +-----------------------+
 ```
 
-We have one SUMa specific base container per each branch (1.7, 2.1, ..., head).
-This container is based on "official" SLE container for the SUSE SLE release
-user by the tested branch. These containers are external to the SUMa project,
+We have one Uyuni specific base container per each branch (head).
+This container is based on "official" opensuse container for the release
+used by the tested branch. These containers are external to the Uyuni project,
 they are built with kiwi and we do not have to maintain them.
 
-All the SUMa-related containers are built using
+All the Uyuni-related containers are built using
 [docker's build feature](http://docs.docker.io/en/latest/use/builder/).
 
-From the `suma-<branch>-base` container we create three more containers:
+From the `suma-<branch>-base` container we create two more containers:
 
-  * `suma-<branch>-pgsql`
-  * `suma-<branch>-ora`
-  * `suma-<branch>-nodejs`
+  * `uyuni-<branch>-pgsql`
+  * `uyuni-<branch>-nodejs`
 
-These containers have all the packages required to test both the Java and the
-Python codebase against either PostgreSQL or Oracle.
+This containers has all the packages required to test both the Java and the
+Python codebase against PostgreSQL.
 
 ## Building
 
 Right now the base containers are build manually, just enter their directory and
 run:
 ```
-docker build -t suma-<branch>-<base|pgsql|ora|nodejs> .
+docker build -t uyuni-<branch>-<base|pgsql|nodejs> .
 ```
-
-The Oracle container requires some extra care:
-  1) Run the following command: `docker run --privileged -t -i -v <dir containing git checkout>:/manager suma-<branch>-ora /bin/bash`
-  2) From inside of the container run the following command: `/manager/susemanager-utils/testing/docker/<branch>/suma-<branch>-ora/setup-db-oracle.sh`
-     or `/manager/susemanager-utils/testing/docker/<branch>/suma-<branch>-ora/db-setup`
-  3) Once the Oracle setup is done open a new terminal and run the following command: `docker commit <id of the container> suma-<branch>-ora`
-     The id of the container is the hostname of the running container. Otherwise you can obtain it by doing: `docker ps`
-These painful steps are going to disappear once docker's build system supports prileged containers.
 
 ## Tagging images
 
@@ -82,7 +73,7 @@ Note well: it's highly recommended to use specific versions of an image when
 writing a `Dockerfile`. Writing something like `FROM foo:1.0.0` makes you closer
 to have reproducible builds.
 
-### Tagging in the context of SUMA
+### Tagging in the context of Uyuni
 
 At the end of the build process you are going to have a Docker image with
 the `latest` tag. It's recommended to create also a new proper version pointing
@@ -91,14 +82,14 @@ to this image.
 It is recommended to use [semantic versioning](http://semver.org/) when dealing
 with tag versions.
 
-For example, let's assume `suma-head-pgsql:1.0.0` already exists. Suppose you
+For example, let's assume `uyuni-master-pgsql:1.0.0` already exists. Suppose you
 updated the `Dockerfile` to add a missing package to this image.
 
-After the `docker build` process is done the `suma-head-pgsql` image is going
+After the `docker build` process is done the `uyuni-master-pgsql` image is going
 to be the new Docker image including your package. Now you have to make sure
 the image can be referenced by an explicit version:
 
-`docker tag suma-head-pgsql:latest suma-head-pgsql:1.0.1`
+`docker tag uyuni-master-pgsql:latest uyuni-master-pgsql:1.0.1`
 
 Note well: `latest` could have been omitted; it has been written just to make
 things more explicit.
@@ -112,12 +103,12 @@ which runs on `registry.mgr.suse.de`.
 
 First you need to tag the local images:
 ```
-docker tag suma-<branch>-<base|pgsql|ora|nodejs> registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora|nodejs>
-docker tag suma-<branch>-<base|pgsql|ora|nodejs>:<version> registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora|nodejs>:<version>
+docker tag uyuni-<branch>-<base|pgsql|nodejs> registry.mgr.suse.de/uyuni-<branch>-<base|pgsql|nodejs>
+docker tag uyuni-<branch>-<base|pgsql|nodejs>:<version> registry.mgr.suse.de/uyuni-<branch>-<base|pgsql|nodejs>:<version>
 ```
 
 Then you can push the local image:
 ```
-docker push registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora|nodejs>
-docker push registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora|nodejs>:<version>
+docker push registry.mgr.suse.de/uyuni-<branch>-<base|pgsql|nodejs>
+docker push registry.mgr.suse.de/uyuni-<branch>-<base|pgsql|nodejs>:<version>
 ```
