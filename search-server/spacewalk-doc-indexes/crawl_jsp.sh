@@ -5,7 +5,7 @@ if [ "${JAVA_HOME}" = "" ]; then
     echo "Setting JAVA_HOME to: ${JAVA_HOME}"
 fi
 
-export NUTCH_HOME=/usr/share/nutch
+export NUTCH_HOME=/usr/share/nutch-core
 
 python create_urls_per_language.py --docs-dir $1
 

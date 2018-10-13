@@ -1,3 +1,4 @@
+- use nutch-core dependency instead of nutch
 -------------------------------------------------------------------
 Thu Sep 14 11:49:36 CEST 2017 - mc@suse.de
 
