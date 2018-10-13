@@ -7,6 +7,7 @@ begin
 end;
 $$ language plpgsql;
 
+drop trigger if exists rhn_avdl_mod_trig on rhnActionVirtDelete;
 create trigger
 rhn_avdl_mod_trig
 before insert or update on rhnActionVirtDelete
