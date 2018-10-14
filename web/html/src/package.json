@@ -12,7 +12,8 @@
     "postinstall": "yarn build",
     "dev": "webpack --config build/webpack.config.js --mode development && yarn run validate",
     "watch": "webpack --config build/webpack.config.js --mode development --watch",
-    "clean": "rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf node_modules && rm -rf dist",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "flow-bin": "^0.82.0"
