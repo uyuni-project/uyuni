@@ -42,7 +42,7 @@ const pages = {
 }
 
 Object.keys(pages).forEach((key) => {
-  pages[key] = ["@babel/polyfill/dist/polyfill", "core-js/fn/array/flat-map", pages[key]];
+  pages[key] = ["@babel/polyfill/dist/polyfill", "core-js/shim", "regenerator-runtime/runtime", pages[key]];
   pages["javascript/manager/" + key] = pages[key];
   delete pages[key]
 });

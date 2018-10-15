@@ -484,6 +484,13 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
+regenerator-runtime v0.11.1 - Ben Newman <bn@cs.stanford.edu>
+https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
+--------------------------------------------------------------------------------
+
+MIT
+
+--------------------------------------------------------------------------------
 stylis-rule-sheet v0.0.10 - Sultan Tarimo
 https://github.com/thysultan/stylis.js
 --------------------------------------------------------------------------------
