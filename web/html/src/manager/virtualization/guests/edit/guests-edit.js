@@ -1,51 +1,57 @@
-/* eslint-disable */
 // @flow
 
-const React = require("react");
-const PropTypes = React.PropTypes;
-const {Panel} = require("components/panel");
-const MessagesUtils = require("components/messages").Utils;
-const {GuestProperties} = require('../guest-properties');
-const {VirtualizationGuestActionApi} = require('../virtualization-guest-action-api');
+const React = require('react');
+const { Panel } = require('components/panel');
+const { GuestProperties } = require('../guest-properties');
+const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 
+declare function t(msg: string): string;
 
-class GuestsEdit extends React.Component {
+type Props = {
+  host: Object,
+  guest: Object,
+};
 
-  constructor(props) {
+class GuestsEdit extends React.Component<Props> {
+  initialGuestMemory = 1024;
+
+  initialGuestCpu = 1;
+
+  constructor(props: Props) {
     super(props);
-    this.initialGuestMemory = props.guest.memory / 1024,
-    this.initialGuestCpu = props.guest.vcpus,
-
-    this.getInitialModel = () => {
-      return {
-        memory: this.initialGuestMemory,
-        vcpu: this.initialGuestCpu,
-      }
-    };
+    this.initialGuestMemory = props.guest.memory / 1024;
+    this.initialGuestCpu = props.guest.vcpus;
   }
+
+  getInitialModel = () => ({
+    memory: this.initialGuestMemory,
+    vcpu: this.initialGuestCpu,
+  })
 
   render() {
     return (
       <VirtualizationGuestActionApi
         hostid={this.props.host.id}
-        bounce={`/rhn/manager/systems/details/virtualization/guests/${this.props.host.id}`}>
+        bounce={`/rhn/manager/systems/details/virtualization/guests/${this.props.host.id}`}
+      >
         {
           ({
             onAction,
             messages,
           }) => {
             const onSubmit = (properties) => {
-              properties.memory = properties.memory * 1024;
-              return onAction('update', [this.props.guest.uuid], properties);
+              const newProperties = Object.assign(properties, { memory: properties.memory * 1024 });
+              return onAction('update', [this.props.guest.uuid], newProperties);
             };
             return (
               <Panel title={this.props.guest.name} icon="fa spacewalk-icon-virtual-guest">
                 <GuestProperties
                   host={this.props.host}
-                  submitText={t("Update")}
+                  submitText={t('Update')}
                   submit={onSubmit}
                   messages={messages}
-                  getInitialModel={this.getInitialModel}/>
+                  getInitialModel={this.getInitialModel}
+                />
               </Panel>
             );
           }
@@ -53,11 +59,6 @@ class GuestsEdit extends React.Component {
       </VirtualizationGuestActionApi>);
   }
 }
-
-GuestsEdit.propTypes = {
-    host: PropTypes.object.isRequired,
-    guest: PropTypes.object.isRequired,
-};
 
 module.exports = {
   GuestsEdit,
