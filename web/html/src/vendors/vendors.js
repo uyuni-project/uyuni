@@ -3,7 +3,8 @@ const vendors = [
     "react",
     "react-dom",
     "prop-types",
-    "core-js/fn/array/flat-map"
+    "core-js/shim",
+    "regenerator-runtime/runtime",
 ];
 
 module.exports = vendors;
