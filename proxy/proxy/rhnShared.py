@@ -15,7 +15,12 @@
 #
 
 # language imports
-import urllib
+try:
+    # python 3
+    import urllib.parse as urllib
+except ImportError:
+    # python 2
+    import urllib
 import socket
 import sys
 from types import ListType, TupleType
@@ -137,7 +142,7 @@ class SharedHandler:
 
         try:
             self.responseContext.getConnection().connect()
-        except socket.error, e:
+        except socket.error as e:
             log_error("Error opening connection", self.rhnParent, e)
             Traceback(mail=0)
             raise rhnFault(1000,
@@ -252,7 +257,7 @@ class SharedHandler:
             # Copy the incoming headers to headers_out
             headers = self.responseContext.getHeaders()
             if headers is not None:
-                for k in headers.keys():
+                for k in list(headers.keys()):
                     rhnLib.setHeaderValue(self.req.headers_out, k,
                                           self._get_header(k))
             else:
@@ -311,7 +316,7 @@ class SharedHandler:
         """ Copy the incoming headers. """
 
         hdrs = UserDictCase()
-        for k in req.headers_in.keys():
+        for k in list(req.headers_in.keys()):
             # XXX misa: is this enough? Shouldn't we care about multivalued
             # headers?
             hdrs[k] = req.headers_in[k]
@@ -348,7 +353,7 @@ class SharedHandler:
 
         # Put the headers into the output connection object
         http_connection = self.responseContext.getConnection()
-        for (k, vals) in hdrs.items():
+        for (k, vals) in list(hdrs.items()):
             if k.lower() in ['content_length', 'content-length']:
                 try:
                     size = int(vals)
@@ -440,7 +445,7 @@ class SharedHandler:
         # Iterate over each header in the response and place it in the request
         # output area.
 
-        for k in fromResponse.msg.keys():
+        for k in list(fromResponse.msg.keys()):
             # Get the value
             v = self._get_header(k, fromResponse.msg)
 

@@ -21,7 +21,12 @@
 ## language imports
 import socket
 import sys
-from xmlrpclib import Fault
+try:
+    #  python 2
+    from xmlrpclib import Fault
+except ImportError:
+    #  python3
+    from xmlrpc.client import Fault
 
 ## local imports
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -85,7 +90,7 @@ class Shelf:
 
         try:
             sock.connect(self.serverAddr)
-        except socket.error, e:
+        except socket.error as e:
             sock.close()
             methodname = None
             log_error("Error connecting to the auth cache: %s" % str(e))
@@ -124,7 +129,7 @@ class Shelf:
         rfile = sock.makefile("r")
         try:
             params, methodname = recv(rfile)
-        except CommunicationError, e:
+        except CommunicationError as e:
             log_error(e.faultString)
             rfile.close()
             sock.close()
@@ -136,7 +141,7 @@ class Shelf:
             raise rhnFault(1000,
                            _("Spacewalk Proxy error (issues communicating to auth cache). "
                              "Please contact your system administrator")), None, sys.exc_info()[2]
-        except Fault, e:
+        except Fault as e:
             rfile.close()
             sock.close()
             # If e.faultCode is 0, it's another exception
@@ -149,7 +154,7 @@ class Shelf:
                 # Not the expected type
                 raise
 
-            if not _dict.has_key('name'):
+            if 'name' not in _dict:
                 # Doesn't look like a marshalled exception
                 raise
 
@@ -186,9 +191,9 @@ if __name__ == '__main__':
     s = Shelf(('localhost', 9999))
     s['1234'] = [1, 2, 3, 4, None, None]
     s['blah'] = 'testing 1 2 3'
-    print 'Cached object s["1234"] = %s' % str(s['1234'])
-    print 'Cached object s["blah"] = %s' % str(s['blah'])
-    print s.has_key("asdfrasdf")
+    print('Cached object s["1234"] = %s' % str(s['1234']))
+    print('Cached object s["blah"] = %s' % str(s['blah']))
+    print("asdfrasdf" in s)
 
 #    print
 #    print 'And this will bomb (attempt to get non-existant data:'
