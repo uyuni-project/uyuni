@@ -1,46 +1,53 @@
-/* eslint-disable */
 // @flow
 
-const React = require("react");
-const PropTypes = React.PropTypes;
-const Network = require("utils/network");
+const React = require('react');
+const Network = require('utils/network');
 
-class VirtualizationGuestsListRefreshApi extends React.Component {
+type Props = {
+  serverId: string,
+  refreshInterval: number,
+  children: Function,
+};
 
-  constructor(props) {
+type State = {
+  guests: Array<{}>,
+  error?: Object,
+};
+
+class VirtualizationGuestsListRefreshApi extends React.Component<Props, State> {
+  intervalId = undefined;
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       guests: [],
       error: undefined,
     };
-
-    this.refreshServerData = () => {
-      Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${this.props.server_id}/data`, "application/json").promise
-        .then(data => {
-          this.setState({
-            guests: data,
-            error: undefined,
-          });
-        })
-        .catch(response => {
-          this.setState({
-            error: response.status == 401 ? t("Session expired, please reload the page to see up-to-date data.") :
-              response.status >= 500 ? t("Server error, please check log files.") :
-              undefined
-          });
-        }
-      );
-    }
   }
 
   componentWillMount() {
     this.refreshServerData();
-    setInterval(this.refreshServerData, this.props.refreshInterval);
+    this.intervalId = setInterval(this.refreshServerData, this.props.refreshInterval);
   }
 
   componentWillUnmount() {
-    clearInterval(this.refreshInterval);
+    clearInterval(this.intervalId);
+  }
+
+  refreshServerData = () => {
+    Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${this.props.serverId}/data`, 'application/json').promise
+      .then((data) => {
+        this.setState({
+          guests: data,
+          error: undefined,
+        });
+      })
+      .catch((response) => {
+        this.setState({
+          error: Network.errorMessageByStatus(response.status),
+        });
+      });
   }
 
   render() {
@@ -50,11 +57,6 @@ class VirtualizationGuestsListRefreshApi extends React.Component {
     });
   }
 }
-
-VirtualizationGuestsListRefreshApi.propTypes = {
-    server_id: PropTypes.string.isRequired,
-    refreshInterval: PropTypes.number.isRequired,
-};
 
 module.exports = {
   VirtualizationGuestsListRefreshApi,
