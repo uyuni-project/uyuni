@@ -61,7 +61,7 @@ Feature: The Setup Wizard
   Scenario: View the channels list in the products page
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
-    And I wait at most 360 seconds until I see "Product Description" text
+    And I wait at most 420 seconds until I see "Product Description" text
     And I enter "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" in the css "input[name='product-description-filter']"
     And I select "x86_64" in the dropdown list of the architecture filter
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2"
