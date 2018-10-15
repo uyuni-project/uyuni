@@ -39,7 +39,12 @@ import os
 from xml.dom import minidom
 import sys
 import shutil
-import xmlrpclib
+try:
+    #  python 2
+    import xmlrpclib
+except ImportError:
+    #  python3
+    import xmlrpc.client as xmlrpclib
 from optparse import Option, OptionParser
 
 # RHN imports
@@ -158,7 +163,7 @@ def main():
 
     try:
         upload.uploadHeaders()
-    except UploadError, e:
+    except UploadError as e:
         sys.stderr.write("Upload error: %s\n" % e)
 
 
@@ -205,7 +210,7 @@ class UploadClass(uploadLib.UploadClass):
                                     "channel.xml.gz")
             if not os.access(xml_path, os.R_OK):
                 self.warn(0, "Could not find metadata for channel %s, skipping..." % channel)
-                print "Could not find metadata for channel %s, skipping..." % channel
+                print("Could not find metadata for channel %s, skipping..." % channel)
                 continue
             dom = minidom.parse(gzip.open(xml_path))
             # will only ever be the one
@@ -223,7 +228,7 @@ class UploadClass(uploadLib.UploadClass):
         try:
             uploadLib.UploadClass.setServer(self)
             uploadLib.call(self.server.packages.no_op, raise_protocol_error=True)
-        except xmlrpclib.ProtocolError, e:
+        except xmlrpclib.ProtocolError as e:
             if e.errcode == 404:
                 self.use_session = False
                 self.setURL('/XP')
@@ -322,7 +327,7 @@ class UploadClass(uploadLib.UploadClass):
         if not os.path.isdir(destdir):
             # Try to create it
             try:
-                os.makedirs(destdir, 0755)
+                os.makedirs(destdir, 0o755)
             except OSError:
                 self.warn(0, "Could not create directory %s" % destdir)
                 return
@@ -330,7 +335,7 @@ class UploadClass(uploadLib.UploadClass):
         shutil.copy2(filename, packagePath)
         # Make sure the file permissions are set correctly, so that Apache can
         # see the files
-        os.chmod(packagePath, 0644)
+        os.chmod(packagePath, 0o644)
 
     def _listChannelSource(self):
         self.die(1, "Listing source rpms not supported")
@@ -366,5 +371,5 @@ def rpmPackageName(p):
 if __name__ == '__main__':
     try:
         main()
-    except SystemExit, se:
+    except SystemExit as se:
         sys.exit(se.code)

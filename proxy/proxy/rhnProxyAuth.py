@@ -19,7 +19,12 @@
 import os
 import time
 import socket
-import xmlrpclib
+try:
+    #  python 2
+    import xmlrpclib
+except ImportError:
+    #  python3
+    import xmlrpc.client as xmlrpclib
 import sys
 # pylint: disable=E0611
 from hashlib import sha1
@@ -85,7 +90,7 @@ class ProxyAuth:
         mtime = None
         try:
             mtime = os.stat(ProxyAuth.__systemid_filename)[-2]
-        except IOError, e:
+        except IOError as e:
             log_error("unable to stat %s: %s" % (ProxyAuth.__systemid_filename, repr(e)))
             raise rhnFault(1000,
                       _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
@@ -102,7 +107,7 @@ class ProxyAuth:
         # get systemid
         try:
             ProxyAuth.__systemid = open(ProxyAuth.__systemid_filename, 'r').read()
-        except IOError, e:
+        except IOError as e:
             log_error("unable to read %s" % ProxyAuth.__systemid_filename)
             raise rhnFault(1000,
                       _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
@@ -247,20 +252,20 @@ problems, isn't running, or the token is somehow corrupt.
         for _i in range(self.__nRetries):
             try:
                 token = server.proxy.login(self.__systemid)
-            except (socket.error, socket.sslerror), e:
+            except (socket.error, socket.sslerror) as e:
                 if CFG.HTTP_PROXY:
                     # socket error, check to see if your HTTP proxy is running...
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     httpProxy, httpProxyPort = CFG.HTTP_PROXY.split(':')
                     try:
                         s.connect((httpProxy, int(httpProxyPort)))
-                    except socket.error, e:
+                    except socket.error as e:
                         error = ['socket.error', 'HTTP Proxy not running? '
                                  '(%s) %s' % (CFG.HTTP_PROXY, e)]
                         # rather big problem: http proxy not running.
                         log_error("*** ERROR ***: %s" % error[1])
                         Traceback(mail=0)
-                    except socket.sslerror, e:
+                    except socket.sslerror as e:
                         error = ['socket.sslerror',
                                  '(%s) %s' % (CFG.HTTP_PROXY, e)]
                         # rather big problem: http proxy not running.
@@ -277,19 +282,19 @@ problems, isn't running, or the token is somehow corrupt.
                 token = None
                 time.sleep(.25)
                 continue
-            except SSL.SSL.Error, e:
+            except SSL.SSL.Error as e:
                 token = None
                 error = ['rhn.SSL.SSL.Error', repr(e), str(e)]
                 log_error(error)
                 Traceback(mail=0)
                 time.sleep(.25)
                 continue
-            except xmlrpclib.ProtocolError, e:
+            except xmlrpclib.ProtocolError as e:
                 token = None
                 log_error('xmlrpclib.ProtocolError', e)
                 time.sleep(.25)
                 continue
-            except xmlrpclib.Fault, e:
+            except xmlrpclib.Fault as e:
                 # Report it through the mail
                 # Traceback will try to walk over all the values
                 # in each stack frame, and eventually will try to stringify
@@ -309,7 +314,7 @@ problems, isn't running, or the token is somehow corrupt.
                 raise rhnFault(1000,
                           _("SUSE Manager Proxy error (during proxy login). "
                             "Please contact your system administrator.")), None, sys.exc_info()[2]
-            except Exception, e:
+            except Exception as e:
                 token = None
                 log_error("Unhandled exception", e)
                 Traceback(mail=0)
