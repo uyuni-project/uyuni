@@ -1,4 +1,4 @@
-- Increase the Apache proxy timeout to 6 minutes
+- Increase the Apache proxy timeout to 10 minutes
 - fix /etc/sudoers.d/spacewalk file (related to bsc#1099517)
   NOTE: In case there have been custom modifications to this file,
         it will be saved in /root/sudoers-spacewalk.save as sudo
