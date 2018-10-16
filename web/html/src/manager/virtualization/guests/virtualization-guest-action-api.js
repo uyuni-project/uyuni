@@ -1,5 +1,6 @@
 /* eslint-disable */
 // @flow
+
 const React = require("react");
 const Network = require("utils/network");
 const MessagesUtils = require("components/messages").Utils;
@@ -55,4 +56,7 @@ VirtualizationGuestActionApi.propTypes = {
   bounce: React.PropTypes.string,
   callback: React.PropTypes.func,
 };
-export default VirtualizationGuestActionApi;
+
+module.exports = {
+  VirtualizationGuestActionApi,
+};

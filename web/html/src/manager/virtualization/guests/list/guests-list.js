@@ -1,5 +1,6 @@
 /* eslint-disable */
 // @flow
+
 const React = require("react");
 const PropTypes = React.PropTypes;
 const MessageContainer = require("components/messages").Messages;
@@ -12,8 +13,8 @@ const {DeleteDialog} = require("components/dialog/DeleteDialog");
 const {DangerDialog} = require("components/dialog/DangerDialog");
 const {ModalButton} = require("components/dialog/ModalButton");
 const Systems = require("components/systems");
-const VirtualizationGuestActionApi = require('../virtualization-guest-action-api');
-const VirtualizationGuestsListRefreshApi = require('../virtualization-guests-list-refresh-api');
+const {VirtualizationGuestActionApi} = require('../virtualization-guest-action-api');
+const {VirtualizationGuestsListRefreshApi} = require('../virtualization-guests-list-refresh-api');
 
 class GuestsList extends React.Component {
 
@@ -400,4 +401,6 @@ GuestsList.propTypes = {
     is_admin: PropTypes.bool.isRequired,
 };
 
-export default GuestsList;
+module.exports = {
+  GuestsList,
+};

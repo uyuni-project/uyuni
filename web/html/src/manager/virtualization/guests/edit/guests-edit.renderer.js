@@ -1,6 +1,8 @@
 /* eslint-disable */
 // @flow
-const GuestsEdit = require("./guests-edit");
+"use strict";
+
+const {GuestsEdit} = require("./guests-edit");
 const React = require("react");
 const ReactDOM = require("react-dom");
 
