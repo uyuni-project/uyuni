@@ -42,6 +42,7 @@ public class GuestDefinition {
 
     private GuestVcpuDef vcpu;
     private GuestOsDef os;
+    private GuestGraphicsDef graphics;
 
     /**
      * Create a guest definition from a virtual system overview.
@@ -177,6 +178,26 @@ public class GuestDefinition {
     }
 
     /**
+     * Note that we are only storing one graphics device definition for the guest
+     * even if libvirt schema allows more. I couldn't get libvirt to do anything
+     * useful with a second one: this limitation should make sense.
+     *
+     * @return the graphic device definition
+     */
+    public GuestGraphicsDef getGraphics() {
+        return graphics;
+    }
+
+    /**
+     * Set the graphic device definition
+     *
+     * @param graphicsIn the definition to set
+     */
+    public void setGraphics(GuestGraphicsDef graphicsIn) {
+        graphics = graphicsIn;
+    }
+
+    /**
      * Compute the virtual instance type from the VM OS definition.
      *
      * @return the VirtualInstanceType
@@ -214,6 +235,7 @@ public class GuestDefinition {
 
             def.vcpu = GuestVcpuDef.parse(domainElement.getChild("vcpu"));
             def.os = GuestOsDef.parse(domainElement.getChild("os"));
+            def.graphics = GuestGraphicsDef.parse(domainElement.getChild("devices").getChild("graphics"));
         }
         catch (Exception e) {
             LOG.error("failed to parse libvirt XML definition: " + e.getMessage());
