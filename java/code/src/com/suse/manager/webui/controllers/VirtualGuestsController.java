@@ -34,6 +34,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsBaseActionJson;
@@ -139,6 +141,35 @@ public class VirtualGuestsController {
 
         response.type("application/json");
         return GSON.toJson(data);
+    }
+
+    /**
+     * Return the definition of the virtual machine
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
+    public static String getGuest(Request request, Response response, User user) {
+        Long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        String uuid = request.params("uuid");
+        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, serverId, null);
+        VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
+                .findFirst().orElseThrow(() -> new NotFoundException());
+
+        GuestDefinition definition = VirtManager.getGuestDefinition(host.asMinionServer().get().getMinionId(),
+                guest.getName()).orElseThrow(() -> new NotFoundException());
+
+        return json(response, definition);
     }
 
     /**
