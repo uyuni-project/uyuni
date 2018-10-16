@@ -286,5 +286,9 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("sles12sp2", def.getName());
         assertEquals(1024*1024, def.getMaxMemory());
         assertEquals("spice", def.getGraphics().getType());
+
+        assertEquals(1, def.getInterfaces().size());
+        assertEquals("network", def.getInterfaces().get(0).getType());
+        assertEquals("default", def.getInterfaces().get(0).getSource());
     }
 }
