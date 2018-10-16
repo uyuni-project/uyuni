@@ -106,8 +106,9 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     When I enter command "file /tmp"
     And I click on preview
     Then I should see "sle-minion" hostname
+    And I wait until I do not see "pending" text
     When I click on run
-    And I wait for "3" seconds
+    And I wait until I do not see "pending" text
     And I expand the results for "sle-minion"
     Then I should see "/tmp: sticky, directory" in the command output for "sle-minion"
 
