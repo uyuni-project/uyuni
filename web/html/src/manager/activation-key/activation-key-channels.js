@@ -161,7 +161,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   </div>
                 </div>
                 <div className='form-group'>
-                  <label className='col-lg-3 control-label'>{t('Child Channel:')}</label>
+                  <label className='col-lg-3 control-label'>{t('Child Channels:')}</label>
                   <div className='col-lg-6'>
                     {this.renderChildChannels(loadingChildren, availableChannels)}
                     <span className='help-block'>
