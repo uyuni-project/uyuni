@@ -53,10 +53,6 @@ function LocalDateTime(date: Date): string {
            "T" + padTo(hours) + ":" + padTo(minutes) + ":" + padTo(seconds);
 }
 
-function sortString(s1: string, s2: string) {
-  return s1 > s2;
-}
-
 function sortById(aRaw: Object, bRaw: Object): number {
   const aId = aRaw["id"];
   const bId = bRaw["id"];
@@ -156,7 +152,6 @@ function deepCopy(e) {
 module.exports = {
     Utils: {
         cancelable: cancelable,
-        sortString: sortString,
         sortById: sortById,
         sortByText: sortByText,
         dateWithTimezone: dateWithTimezone,

@@ -72,7 +72,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
       <Loading text='Loading child channels..' />
       : availableChannels.map(g => {
           const base = g.base;
-          const channels = g.children.sort((c1, c2) => Utils.sortString(c1.name, c2.name));
+          const channels = g.children.sort((c1, c2) => c1.name.localeCompare(c2.name));
 
           return (
             <MandatoryChannelsApiStatePersisted
