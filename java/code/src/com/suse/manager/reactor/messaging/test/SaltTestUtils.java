@@ -1,11 +1,16 @@
 package com.suse.manager.reactor.messaging.test;
 
+import static org.hamcrest.Matchers.equalTo;
+
 import com.redhat.rhn.testing.TestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -65,5 +70,32 @@ public class SaltTestUtils {
             target = GSON.fromJson(content, type);
         }
         return Optional.of(target);
+    }
+
+    /**
+     * Function to use in expectations to match a salt call.
+     *
+     * Example usage matching <code>virt.network_info</code> calls:
+     *
+     * <pre>
+     *   context().checking(new Expectations() {{
+     *       oneOf(saltServiceMock).callSync(
+     *               with(SaltTestUtils.functionEquals("virt", "network_info")),
+     *               with(host.asMinionServer().get().getMinionId()));
+     *       will(returnValue(SaltTestUtils.getSaltResponse(
+     *               "/com/suse/manager/webui/controllers/test/virt.net.info.json",
+     *               null, new TypeToken<Map<String, JsonElement>>() { }.getType())));
+     *   }});
+     * </pre>
+     *
+     * @param module salt module to match
+     * @param func salt function to match
+     *
+     * @return the matcher for the expectations.
+     */
+    public static Matcher<LocalCall<Object>> functionEquals(String module, String func) {
+        return Matchers.allOf(
+                Matchers.hasProperty("moduleName", equalTo(module)),
+                Matchers.hasProperty("functionName", equalTo(func)));
     }
 }
