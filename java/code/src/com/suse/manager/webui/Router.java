@@ -341,6 +341,8 @@ public class Router implements SparkApplication {
                 withUser(VirtualGuestsController::action));
         get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
                 withUser(VirtualGuestsController::getGuest));
+        get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
+                withUser(VirtualGuestsController::getDomainsCapabilities));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {

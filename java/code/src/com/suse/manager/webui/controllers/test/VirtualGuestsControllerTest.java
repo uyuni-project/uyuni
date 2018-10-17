@@ -35,7 +35,9 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
+import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
@@ -55,6 +57,7 @@ import spark.HaltException;
 /**
  * Tests for VirtualGuestsController
  */
+@SuppressWarnings("serial")
 public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
     private TaskomaticApi taskomaticMock;
@@ -305,5 +308,45 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("hda", def.getDisks().get(1).getTarget());
         assertEquals("ide", def.getDisks().get(1).getBus());
         assertEquals(null, def.getDisks().get(1).getSource());
+    }
+
+    /**
+     * Test the API querying the domains capabilities of a virtual host using salt.
+     *
+     * @throws Exception if anything unexpected happens during the test
+     */
+    public void testGetDomainsCapabilities() throws Exception {
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("[\"ide\", \"fdc\", \"scsi\", \"virtio\", \"usb\"]", "[\"ide\", \"fdc\", \"scsi\", \"usb\"]");
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(SaltTestUtils.functionEquals("virt", "all_capabilities")),
+                    with(host.asMinionServer().get().getMinionId()));
+            will(returnValue(SaltTestUtils.getSaltResponse(
+                    "/com/suse/manager/webui/controllers/test/virt.guest.allcaps.json", null,
+                    new TypeToken<Map<String, JsonElement>>() { }.getType())));
+        }});
+
+        String json = VirtualGuestsController.getDomainsCapabilities(
+                getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
+                        host.getId()), response, user);
+
+        DomainsCapsJson caps = GSON.fromJson(json, new TypeToken<DomainsCapsJson>() {}.getType());
+        assertTrue(caps.osTypes.contains("hvm"));
+        assertEquals("i686", caps.domainsCaps.get(0).getArch());
+
+        assertEquals("kvm", caps.domainsCaps.get(0).getDomain());
+        assertTrue(caps.domainsCaps.get(0).getDevices().get("disk").get("bus").contains("virtio"));
+        assertFalse(caps.domainsCaps.get(1).getDevices().get("disk").get("bus").contains("virtio"));
+    }
+
+    /**
+     * Represents the output of VirtualGuestsController.getDomainsCapabilities.
+     * There is no need to share this structure since these data will only be used from Javascript.
+     */
+    private class DomainsCapsJson {
+        public List<String> osTypes;
+        public List<DomainCapabilitiesJson> domainsCaps;
     }
 }
