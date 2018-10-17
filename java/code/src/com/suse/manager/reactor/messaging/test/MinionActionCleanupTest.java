@@ -21,10 +21,8 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -48,7 +46,6 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
-
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -77,6 +74,7 @@ import java.util.stream.Collectors;
  */
 public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -112,26 +110,34 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(saltServiceMock).running(with(any(MinionList.class)));
             will(returnValue(running));
-            oneOf(saltServiceMock).jobsByMetadata(with(any(Object.class)));
-            will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId()))));
-            oneOf(saltServiceMock).listJob(with(equal("20160602085832364245")));
-            will(returnValue(Optional.of(listJobResult)));
+            if (MinionActionUtils.POSTGRES) {
+                never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
+                never(saltServiceMock).listJob(with(any(String.class)));
+            }
+            else {
+                atLeast(1).of(saltServiceMock).jobsByMetadata(with(any(Object.class)));
+                will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId()))));
+                atLeast(1).of(saltServiceMock).listJob(with(equal("20160602085832364245")));
+                will(returnValue(Optional.of(listJobResult)));
+            }
         } });
 
         MinionActionUtils.cleanupMinionActions(saltServiceMock);
 
-        action.getServerActions().stream().forEach(sa -> {
-            assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
-            assertEquals("Successfully applied state(s): [packages]", sa.getResultMsg());
-            assertEquals(0L, sa.getResultCode().longValue());
-        });
+        if (!MinionActionUtils.POSTGRES) {
+            action.getServerActions().stream().forEach(sa -> {
+                assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+                assertEquals("Successfully applied state(s): [packages]", sa.getResultMsg());
+                assertEquals(0L, sa.getResultCode().longValue());
+            });
 
-        String dump = YamlHelper.INSTANCE.dump(listJobResult.getResult(minion1.getMinionId(), Object.class).get());
+            String dump = YamlHelper.INSTANCE.dump(listJobResult.getResult(minion1.getMinionId(), Object.class).get());
 
-        action.getDetails().getResults().stream().forEach(result -> {
-            assertEquals(0L, result.getReturnCode().longValue());
-            assertEquals(dump, new String(result.getOutput()));
-        });
+            action.getDetails().getResults().stream().forEach(result -> {
+                assertEquals(0L, result.getReturnCode().longValue());
+                assertEquals(dump, new String(result.getOutput()));
+            });
+        }
     }
 
     private Jobs.Info listJob(String filename, long actionId) throws Exception {

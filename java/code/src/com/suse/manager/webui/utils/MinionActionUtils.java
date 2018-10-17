@@ -68,7 +68,8 @@ public class MinionActionUtils {
 
     private static final Logger LOG = Logger.getLogger(MinionActionUtils.class);
 
-    private static final boolean POSTGRES = ConfigDefaults.get().isPostgresql();
+    /** Whether the current database is Postgres. */
+    public static final boolean POSTGRES = ConfigDefaults.get().isPostgresql();
 
     private MinionActionUtils() {
     }
