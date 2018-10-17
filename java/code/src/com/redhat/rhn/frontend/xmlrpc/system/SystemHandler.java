@@ -79,7 +79,6 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
-import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
@@ -694,9 +693,7 @@ public class SystemHandler extends BaseHandler {
      *          #array_end()
      */
     public Object[] listEmptySystemProfiles(User loggedInUser) {
-        DataResult<EmptySystemProfileOverview> dr = SystemManager.listEmptySystemProfiles(loggedInUser, null);
-        dr.elaborate();
-        return dr.toArray();
+        return SystemManager.listEmptySystemProfiles(loggedInUser, null).toArray();
     }
 
     /**
