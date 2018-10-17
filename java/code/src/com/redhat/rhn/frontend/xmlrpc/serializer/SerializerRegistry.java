@@ -60,7 +60,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ServerPathSerializer.class);
         SERIALIZER_CLASSES.add(SystemSearchResultSerializer.class);
         SERIALIZER_CLASSES.add(SystemOverviewSerializer.class);
-        SERIALIZER_CLASSES.add(BootstrapSystemOverviewSerializer.class);
+        SERIALIZER_CLASSES.add(EmptySystemProfileSerializer.class);
         SERIALIZER_CLASSES.add(UserSerializer.class);
         SERIALIZER_CLASSES.add(KickstartTreeSerializer.class);
         SERIALIZER_CLASSES.add(KickstartTreeDetailSerializer.class);

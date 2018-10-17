@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
+import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SystemSerializerUtils;
 import redstone.xmlrpc.XmlRpcException;
@@ -26,7 +26,7 @@ import java.io.Writer;
 
 /**
  *
- * BootstrapSystemOverviewSerializer
+ * EmptySystemProfileSerializer
  *
  * @xmlrpc.doc
  *
@@ -43,13 +43,13 @@ import java.io.Writer;
  *     #array_single("string", "hw_addresses")
  * #struct_end()
  */
-public class BootstrapSystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class EmptySystemProfileSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
      */
     public Class getSupportedClass() {
-        return BootstrapSystemOverview.class;
+        return EmptySystemProfileOverview.class;
     }
 
     /**
@@ -57,7 +57,7 @@ public class BootstrapSystemOverviewSerializer extends RhnXmlRpcCustomSerializer
      */
     protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
             throws XmlRpcException, IOException {
-        BootstrapSystemOverview system = (BootstrapSystemOverview) value;
+        EmptySystemProfileOverview system = (EmptySystemProfileOverview) value;
         SerializerHelper helper = new SerializerHelper(serializer);
         SystemSerializerUtils.serializeSystemOverview(system, helper);
         helper.add("hw_addresses", system.getMacs());

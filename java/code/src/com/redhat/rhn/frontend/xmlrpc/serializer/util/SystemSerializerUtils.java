@@ -38,7 +38,6 @@ public class SystemSerializerUtils {
     public static void serializeSystemOverview(SystemOverview system, SerializerHelper helper) {
         helper.add("id", system.getId());
         helper.add("name", system.getName());
-        helper.add("last_checkin", system.getLastCheckinDate());
 
         Date regDate = system.getCreated();
         if (regDate != null) {
@@ -49,8 +48,5 @@ public class SystemSerializerUtils {
         if (lastBoot != null) {
             helper.add("last_boot", lastBoot);
         }
-
-        helper.add("extra_pkg_count", system.getExtraPkgCount());
-        helper.add("outdated_pkg_count", system.getOutdatedPackages());
     }
 }
