@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Date;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SystemSerializerUtils;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
@@ -60,8 +60,19 @@ public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
             throws XmlRpcException, IOException {
         SystemOverview system = (SystemOverview) value;
         SerializerHelper helper = new SerializerHelper(serializer);
-        SystemSerializerUtils.serializeSystemOverview(system, helper);
+        helper.add("id", system.getId());
+        helper.add("name", system.getName());
         helper.add("last_checkin", system.getLastCheckinDate());
+
+        Date regDate = system.getCreated();
+        if (regDate != null) {
+            helper.add("created", regDate);
+        }
+
+        Date lastBoot = system.getLastBootAsDate();
+        if (lastBoot != null) {
+            helper.add("last_boot", lastBoot);
+        }
         helper.add("extra_pkg_count", system.getExtraPkgCount());
         helper.add("outdated_pkg_count", system.getOutdatedPackages());
         helper.writeTo(output);
