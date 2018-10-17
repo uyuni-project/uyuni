@@ -28,7 +28,7 @@ Feature: Prepare server for using Docker
     When I enter "Docker testing" as "description"
     And I enter "DOCKER-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedChannel"
+    And I select "test-channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "orion-dummy perseus-dummy" as "packages"
