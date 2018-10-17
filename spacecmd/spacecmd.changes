@@ -1,3 +1,4 @@
+- show group id on group_details (bsc#1111542)
 - New function/Update old functions to handle state channels as well
 
 -------------------------------------------------------------------
