@@ -61,6 +61,9 @@ public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
         SystemOverview system = (SystemOverview) value;
         SerializerHelper helper = new SerializerHelper(serializer);
         SystemSerializerUtils.serializeSystemOverview(system, helper);
+        helper.add("last_checkin", system.getLastCheckinDate());
+        helper.add("extra_pkg_count", system.getExtraPkgCount());
+        helper.add("outdated_pkg_count", system.getOutdatedPackages());
         helper.writeTo(output);
     }
 }

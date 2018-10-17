@@ -73,8 +73,8 @@ import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
-import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
+import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -1439,11 +1439,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ServerTestUtils.createTestSystem(user);
         MinionServerFactoryTest.createTestMinionServer(user);
 
-        DataResult<BootstrapSystemOverview> emptyProfiles = SystemManager.listEmptySystemProfiles(user, null);
+        DataResult<EmptySystemProfileOverview> emptyProfiles = SystemManager.listEmptySystemProfiles(user, null);
         DataResult<SystemOverview> systemOverviews = SystemManager.systemList(user, null);
 
         assertEquals(1, emptyProfiles.getTotalSize());
-        BootstrapSystemOverview emptyProfile = emptyProfiles.iterator().next();
+        EmptySystemProfileOverview emptyProfile = emptyProfiles.iterator().next();
         assertEquals(emptyProfileMinion.getId(), emptyProfile.getId());
 
         List<String> macs = emptyProfile.getMacs();
@@ -1455,26 +1455,22 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     /**
      * Tests that listing empty system profile doesn't contain traditional system.
-     *
-     * @throws java.lang.Exception if anything goes wrong
      */
-    public void testListSystemProfileTradSystem() throws Exception {
+    public void testListSystemProfileTradSystem() {
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
         MinionServer emptyProfileMinion = SystemManager.createSystemProfile(user, "test system", hwAddr);
         HibernateFactory.getSession().createNativeQuery("DELETE FROM suseMinionInfo").executeUpdate();
         HibernateFactory.getSession().evict(emptyProfileMinion);
 
-        DataResult<BootstrapSystemOverview> emptyProfiles = SystemManager.listEmptySystemProfiles(user, null);
+        DataResult<EmptySystemProfileOverview> emptyProfiles = SystemManager.listEmptySystemProfiles(user, null);
         assertTrue(emptyProfiles.isEmpty());
     }
 
     /**
      * Tests listing empty system profile for users from various organizations.
-     *
-     * @throws java.lang.Exception if anything goes wrong
      */
-    public void testListSystemProfileCrossOrg() throws Exception {
+    public void testListSystemProfileCrossOrg() {
         User foreignUser = UserTestUtils.findNewUser("testUser", "anotherTestOrg" + this.getClass().getSimpleName());
         UserTestUtils.addUserRole(foreignUser, RoleFactory.ORG_ADMIN);
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);

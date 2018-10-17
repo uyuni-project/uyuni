@@ -2261,25 +2261,16 @@ SELECT channel_arch_id
   </query>
 </mode>
 
-<mode name="xmlrpc_empty_profiles" class="com.redhat.rhn.frontend.dto.BootstrapSystemOverview">
+<mode name="xmlrpc_empty_profiles" class="com.redhat.rhn.frontend.dto.EmptySystemProfileOverview">
     <query params="org_id, user_id">
         SELECT
-        1 AS selectable,
-        0 AS locked,
         rhnServer.id,
         rhnServer.name,
-        TO_CHAR(checkin, 'YYYY-MM-DD HH24:MI:SS') AS last_checkin,
-        rhnCPU.nrcpu as cpu_count,
-        rhnCPU.mhz as cpu_mhz,
-        rhnRAM.ram as ram,
-        (SELECT COUNT(*) FROM rhnDevice WHERE rhnDevice.server_id = rhnServer.id AND class = 'HD') AS disk_count
+        rhnServer.created
         FROM rhnServer
         INNER JOIN suseMinionInfo on rhnServer.id = suseMinionInfo.server_id
         INNER JOIN rhnServerEntitlementView ON rhnServerEntitlementView.server_id = rhnServer.id
         INNER JOIN rhnUserServerPerms ON rhnServer.id = rhnUserServerPerms.server_id
-        LEFT JOIN rhnServerInfo ON rhnServer.id = rhnServerInfo.server_id
-        LEFT JOIN rhnCPU on rhnServer.id = rhnCPU.server_id
-        LEFT JOIN rhnRAM on rhnServer.id = rhnRAM.server_id
         WHERE rhnServerEntitlementView.label = 'bootstrap_entitled'
         AND rhnServer.org_id = :org_id
         AND rhnUserServerPerms.user_id = :user_id

@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
+import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.HardwareDeviceDto;
@@ -463,8 +464,8 @@ public class SystemManager extends BaseManager {
      * @param pc page control
      * @return list of empty system profiles
      */
-    public static DataResult<BootstrapSystemOverview> listEmptySystemProfiles(User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "xmlrpc_empty_profiles", BootstrapSystemOverview.class);
+    public static DataResult<EmptySystemProfileOverview> listEmptySystemProfiles(User user, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "xmlrpc_empty_profiles", EmptySystemProfileOverview.class);
         Map<String, Long> params = new HashMap<String, Long>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
