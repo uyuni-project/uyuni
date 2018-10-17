@@ -40,7 +40,7 @@ Feature: The Setup Wizard
     Then I should see a "Legacy Module 12" text
     When I select the addon "Legacy Module 12"
     And I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait at most 500 seconds until I see "Selected channels/products were scheduled successfully for syncing." text
     Then the products should be added
 
   Scenario: Select product with recommended enabled
@@ -55,7 +55,7 @@ Feature: The Setup Wizard
     When I select "SUSE Linux Enterprise Server 15" as a product
     Then I should see the "Basesystem Module 15" selected
     And I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait at most 500 seconds until I see "Selected channels/products were scheduled successfully for syncing." text
     Then the products should be added
 
   Scenario: View the channels list in the products page
