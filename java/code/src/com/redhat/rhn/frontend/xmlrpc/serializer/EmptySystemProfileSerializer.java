@@ -29,17 +29,11 @@ import java.io.Writer;
  * EmptySystemProfileSerializer
  *
  * @xmlrpc.doc
- *
  * #struct("system")
  *     #prop("int", "id")
  *     #prop("string", "name")
- *     #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
- *             successfully checked in")
- *     #prop_desc("dateTime.iso8601",  "created", "Server registration time")
- *     #prop_desc("dateTime.iso8601",  "last_boot", "Last server boot time")
- *     #prop_desc("int",  "extra_pkg_count", "Number of packages not belonging
- *             to any assigned channel")
- *     #prop_desc("int",  "outdated_pkg_count", "Number of out-of-date packages")
+ *     #prop_desc("dateTime.iso8601",  "created", "Server creation time")
+ *     #prop_desc("array", "hw_addresses", "HW addresses")
  *     #array_single("string", "hw_addresses")
  * #struct_end()
  */
