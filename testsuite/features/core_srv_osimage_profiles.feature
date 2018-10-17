@@ -28,7 +28,7 @@ Feature: Prepare server for using Kiwi
     And I enter "Kiwi testing" as "description"
     And I enter "KIWI-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedChannel"
+    And I select "test-channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key Kiwi testing has been created" text
 

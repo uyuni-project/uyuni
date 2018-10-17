@@ -41,7 +41,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedChannel"
+    And I select "test-channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Configuration" in the content area
     And I follow first "Subscribe to Channels" in the content area
