@@ -16,12 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SystemSerializerUtils;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Date;
 
 
 /**
@@ -53,7 +53,12 @@ public class EmptySystemProfileSerializer extends RhnXmlRpcCustomSerializer {
             throws XmlRpcException, IOException {
         EmptySystemProfileOverview system = (EmptySystemProfileOverview) value;
         SerializerHelper helper = new SerializerHelper(serializer);
-        SystemSerializerUtils.serializeSystemOverview(system, helper);
+        helper.add("id", system.getId());
+        helper.add("name", system.getName());
+        Date regDate = system.getCreated();
+        if (regDate != null) {
+            helper.add("created", regDate);
+        }
         helper.add("hw_addresses", system.getMacs());
         helper.writeTo(output);
     }
