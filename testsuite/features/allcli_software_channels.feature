@@ -23,10 +23,10 @@ Feature: Chanel subscription via SSM
     And I click on "Next"
     Then I should see a "Channel Changes Overview" text
     And I should see a "2 system(s) to subscribe" text
-    When I schedule action to 2 minutes from now
+    When I schedule action to 3 minutes from now
     And I click on "Confirm"
     And I remember when I scheduled an action
-    Then I should see a "Channel Changes Actions" text
+    Then I wait until I see "Channel Changes Actions" text
     And I should see a "Items 1 - 2 of 2" text
     And a table line should contain system "sle-minion", "Scheduled"
     And a table line should contain system "sle-client", "Scheduled"
@@ -60,12 +60,12 @@ Feature: Chanel subscription via SSM
   Scenario: Check channel change has completed for the SLES minion
     Given I am on the Systems overview page of this "sle-minion"
     When I wait until event "Subscribe channels scheduled by admin" is completed
-    Then I should see "The client completed this action on" at least 2 minutes after I scheduled an action
+    Then I should see "The client completed this action on" at least 3 minutes after I scheduled an action
 
   Scenario: Check channel change has completed for the SLES client
     Given I am on the Systems overview page of this "sle-client"
     When I wait until event "Subscribe channels scheduled by admin" is completed
-    Then I should see "The client completed this action on" at least 2 minutes after I scheduled an action
+    Then I should see "The client completed this action on" at least 3 minutes after I scheduled an action
 
   Scenario: Check the SLES minion is subscribed to the new channels
     Given I am on the Systems overview page of this "sle-minion"
