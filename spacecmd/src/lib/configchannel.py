@@ -196,7 +196,7 @@ def do_configchannel_filedetails(self, args):
 
     try:
         revision = int(args[2])
-    except ValueError:
+    except (ValueError, IndexError):
         pass
 
     # the server return a null exception if an invalid file is passed
