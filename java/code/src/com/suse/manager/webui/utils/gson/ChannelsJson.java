@@ -133,7 +133,7 @@ public class ChannelsJson {
      * @param baseIn the base channel
      */
     public void setBase(Channel baseIn) {
-        this.base = new ChannelJson(baseIn.getId(), baseIn.getLabel(), baseIn.isCustom(), true);
+        this.base = new ChannelJson(baseIn.getId(), baseIn.getName(), baseIn.isCustom(), true);
     }
 
     /**
@@ -147,7 +147,7 @@ public class ChannelsJson {
      * @param childrenIn the child channels
      */
     public void setChildren(Stream<Channel> childrenIn) {
-        this.children = childrenIn.map((c) -> new ChannelJson(c.getId(), c.getLabel(), c.isCustom(), true))
+        this.children = childrenIn.map((c) -> new ChannelJson(c.getId(), c.getName(), c.isCustom(), true))
                 .collect(Collectors.toList());
     }
 
@@ -159,7 +159,7 @@ public class ChannelsJson {
         this.children = childrenIn.map((c) ->
                 new ChannelJson(
                         c.getId(),
-                        c.getLabel(),
+                        c.getName(),
                         c.isCustom(),
                         true,
                         recommendedFlags.get(c.getId())
