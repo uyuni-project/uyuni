@@ -1,5 +1,5 @@
 <project name="build-props-tomcat8">
-    <property name="tomcat-jars" value="tomcat tomcat-jsp-2.3-api tomcat-servlet-3.1-api tomcat-el-3.0-api" />
+    <property name="tomcat-jars" value="tomcat tomcat-jsp-2.3-api tomcat-servlet-api tomcat-el-3.0-api" />
     <property name="jasper-jars" value="tomcat/jasper tomcat/jasper-el tomcat/jasper-jdt" />
     <property name="struts-jars" value="struts" />
     <available file="/usr/share/java/struts/taglib.jar" type="file" property="struts-jars" value="struts/core struts/extras struts/taglib" />
