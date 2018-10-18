@@ -1232,6 +1232,11 @@ def import_configchannel_fromdetails(self, ccdetails):
                 logging.debug("Adding symlink %s" % filedetails)
                 ret = self.client.configchannel.createOrUpdateSymlink(
                     self.session, ccdetails['label'], path, filedetails)
+            elif filedetails['type'] == 'sls':
+                # Filter out everything except the file contents:
+                init_sls_details = {k:v for (k,v) in filedetails.items() if k in ['contents', 'contents_enc64']}
+                ret = self.client.configchannel.updateInitSls(
+                    self.session, ccdetails['label'], init_sls_details)
             else:
                 if filedetails['type'] == 'directory':
                     isdir = True
