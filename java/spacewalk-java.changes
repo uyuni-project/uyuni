@@ -1,3 +1,4 @@
+- Require openJDK in all cases, as IBM JDK will not be available at SLE15
 - Add missing jar dependency 'xalan-j2-serializer'
 - Modify acls: hide 'System details -> Groups and Formulas' tab for non-minions with bootstrap entitlement
 - fix typo in messages (bsc#1111249)
