@@ -1,3 +1,4 @@
+- Change Requires to allow installing with both Tomcat 8 (SLE-12SP3) and 9 (SLE12-SP4)
 - fix typo in messages (bsc#1111249)
 - Remove restrictions on SUSE Manager Channel subscriptions (bsc#1105724)
 - Added shortcut for editing Software Channel

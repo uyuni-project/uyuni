@@ -144,7 +144,7 @@ BuildRequires: tomcat-lib >= 7
 Requires: struts >= 1.2.9
 Requires(pre): tomcat >= 8
 Requires: tomcat-lib >= 8
-Requires: tomcat-servlet-3.1-api >= 8
+Requires: mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 BuildRequires: struts >= 1.2.9
 BuildRequires: tomcat >= 8
 BuildRequires: tomcat-lib >= 8
