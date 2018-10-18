@@ -34,7 +34,7 @@ import java.util.Date;
  *     #prop("string", "name")
  *     #prop_desc("dateTime.iso8601",  "created", "Server creation time")
  *     #prop_desc("array", "hw_addresses", "HW addresses")
- *     #array_single("string", "hw_addresses")
+ *         #array_single("string", "HW address")
  * #struct_end()
  */
 public class EmptySystemProfileSerializer extends RhnXmlRpcCustomSerializer {
