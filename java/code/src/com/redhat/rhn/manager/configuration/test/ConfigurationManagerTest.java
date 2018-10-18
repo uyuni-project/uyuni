@@ -210,7 +210,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dto.getConfigRevisionId());
     }
 
-    public void testListCurrentFiles() throws Exception {
+    public void testListCurrentFiles() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         // Channel of interest - has rev-1 of aFile
@@ -233,9 +233,41 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         RhnSetManager.store(theSet);
         dr = ConfigurationManager.getInstance().
         listCurrentFiles(user, gcc1, null,
-                RhnSetDecl.CONFIG_CHANNEL_DEPLOY_REVISIONS.getLabel());
+                RhnSetDecl.CONFIG_CHANNEL_DEPLOY_REVISIONS.getLabel(), false);
         assertNotNull(dr);
         assertEquals(1, dr.getTotalSize());
+    }
+
+    /**
+     * Tests listing files of a state config channel.
+     */
+    public void testListCurrentFilesSlsCase() {
+        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+
+        ConfigChannel configChannel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.state());
+
+        // create config files
+        ConfigFile initSls = configChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
+        ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(initSls);
+        configRevision.setConfigFileType(ConfigFileType.sls());
+
+        ConfigFile normalFile = configChannel.createConfigFile(ConfigFileState.normal(), "/my/foo2.sls");
+        ConfigRevision configRevision1 = ConfigTestUtils.createConfigRevision(normalFile);
+        configRevision1.setConfigFileType(ConfigFileType.sls());
+
+        ConfigurationFactory.commit(configChannel);
+
+        // init.sls should not be listed
+        DataResult dr = ConfigurationManager.getInstance().listCurrentFiles(user, configChannel, null);
+        assertEquals(1, dr.getTotalSize());
+
+        // init.sls should not be listed
+        dr = ConfigurationManager.getInstance().listCurrentFiles(user, configChannel, null, null, false);
+        assertEquals(1, dr.getTotalSize());
+
+        // includeInitSls is explicitly true, init.sls should be listed
+        dr = ConfigurationManager.getInstance().listCurrentFiles(user, configChannel, null, null, true);
+        assertEquals(2, dr.getTotalSize());
     }
 
     public void testGlobalFileDeployInfo() throws Exception {
