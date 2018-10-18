@@ -484,6 +484,25 @@ Then(/^I wait for "([^"]*)" to be uninstalled on "([^"]*)"$/) do |package, host|
   raise "Package removal failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless uninstalled
 end
 
+Then(/^I wait at most (\d+) seconds for "([^"]*)" to be uninstalled on "([^"]*)"$/) do |seconds, package, host|
+  node = get_target(host)
+  uninstalled = false
+  output = ''
+  begin
+    Timeout.timeout(seconds.to_i) do
+      loop do
+        output, code = node.run("rpm -q #{package}", false)
+        if code.nonzero?
+          uninstalled = true
+          break
+        end
+        sleep 1
+      end
+    end
+  end
+  raise "Package removal failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless uninstalled
+end
+
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
   node = get_target(host)
   node.run_until_ok("rpm -q #{package}")

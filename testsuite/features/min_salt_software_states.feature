@@ -44,7 +44,7 @@ Feature: Salt package states
     Then I should see a "1 Changes" text
     And I click save
     And I click apply
-    And I wait for "milkyway-dummy" to be uninstalled on "sle-minion"
+    And I wait at most 360 seconds for "milkyway-dummy" to be uninstalled on "sle-minion"
 
   Scenario: Install a package through the UI
     Given I am on the Systems overview page of this "sle-minion"
