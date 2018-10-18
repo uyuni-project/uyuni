@@ -1,3 +1,5 @@
+- Add lodash
+- Add react-hot-loader and webpack-dev-server
 - Add ESLint to dependencies
 - Update Babel to 7.1
 - migrate obs module susemanager-nodejs-sdk-devel to git

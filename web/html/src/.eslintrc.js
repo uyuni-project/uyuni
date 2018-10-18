@@ -39,6 +39,7 @@ module.exports = {
         alias: {
           map: [
             ['components', './components'],
+            ['core', './core'],
             ['utils', './utils'],
           ]
         }
