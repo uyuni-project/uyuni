@@ -14,4 +14,5 @@
 [options]
 include_warnings=true
 module.name_mapper='^components' ->'<PROJECT_ROOT>/components'
+module.name_mapper='^core' ->'<PROJECT_ROOT>/core'
 module.name_mapper='^utils' ->'<PROJECT_ROOT>/utils'
