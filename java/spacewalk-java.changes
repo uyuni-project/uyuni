@@ -1,3 +1,4 @@
+- XMLRPC API: Include init.sls in channel file list (bsc#1111191)
 - Fix the config channels assignment via SSM (bsc#1117759)
 
 -------------------------------------------------------------------
