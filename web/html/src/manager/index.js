@@ -36,6 +36,7 @@ const pages = {
   'subscription-matching': './manager/subscription-matching.js',
   'taskotop': './manager/taskotop.js',
   'virtualhostmanager': './manager/virtualhostmanager.js',
+  'activation-key/activation-key-channels.renderer': './manager/activation-key/activation-key-channels.renderer.js',
 }
 
 Object.keys(pages).forEach((key) => {
