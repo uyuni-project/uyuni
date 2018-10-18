@@ -68,15 +68,7 @@ Requires:       concurrent
 Requires:       google-gson >= 2.2.4
 Requires:       httpcomponents-client
 Requires:       jakarta-commons-digester
-%if !0%{?is_opensuse}
-%if %{suse_version} < 1500
-Requires:       java-ibm >= 1.8.0
-%else
 Requires:       java >= 1.8.0
-%endif
-%else
-Requires:       java >= 1.8.0
-%endif
 Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       gnu-jaf
@@ -624,12 +616,6 @@ find . -type f -name '*.xml' | xargs perl -CSAD -lne '
               }
           }
           END { exit $exit }'
-%endif
-
-# Crash dumps are disabled by default for openJDK, disable them
-# (only SUSE < 15 ships IBM Java with crash dumps enabled)
-%if 0%{?suse_version} >= 1500 || 0%{?is_opensuse}
-sed -i '/^wrapper\.java\.additional\.[0-9]=-Xdump:.\+/s/^/#/g' conf/default/rhn_taskomatic_daemon.conf
 %endif
 
 echo "Building apidoc docbook sources"
