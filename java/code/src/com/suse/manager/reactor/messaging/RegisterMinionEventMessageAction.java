@@ -374,8 +374,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     "on retail minion registration! Aborting registration.");
         }
 
+        String hwTypeGroupPrefix = "HWTYPE:";
         String hwType = manufacturer.get() + "-" + productName.get();
-        String hwTypeGroup = "HWTYPE:" + hwType.replaceAll("[^A-Za-z0-9_-]", "");
+        String hwTypeGroup = hwTypeGroupPrefix + hwType.replaceAll("[^A-Za-z0-9_-]", "");
 
         String branchIdGroupName = branchId.get();
         ManagedServerGroup terminalsGroup = ServerGroupFactory.lookupByNameAndOrg(TERMINALS_GROUP_NAME, org);
@@ -389,7 +390,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
         SystemManager.addServerToServerGroup(minion, terminalsGroup);
         SystemManager.addServerToServerGroup(minion, branchIdGroup);
-        if (hwGroup != null) {
+        if (hwGroup != null && minion.getManagedGroups().stream()
+                .noneMatch(g -> g.getName().startsWith(hwTypeGroupPrefix))) {
             SystemManager.addServerToServerGroup(minion, hwGroup);
         }
 

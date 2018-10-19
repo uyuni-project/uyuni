@@ -62,6 +62,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -1100,6 +1101,62 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getManagedGroups().contains(terminalsGroup));
                     assertTrue(minion.getManagedGroups().contains(branchGroup));
                 }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * When an empty profile is assigned to a HW type group (prefixed with "HWTYPE:") before registration,
+     * don't assign it to (another) HW type group on registration.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailMinionHwGroupAlreadyAssigned() throws Exception {
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group", user.getOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group", user.getOrg());
+        ManagedServerGroup hwGroupMatching = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group", user.getOrg());
+        ManagedServerGroup alreadyAssignedGroup = ServerGroupFactory.create("HWTYPE:idontmatch",
+                "HW group - assigned to empty profile beforehand", user.getOrg());
+
+        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile", "00:11:22:33:44:55");
+        ServerFactory.addServerToGroup(emptyMinion, alreadyAssignedGroup);
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("saltboot_initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                Map<String, String> interfaces = new HashMap<>();
+                                interfaces.put("eth1", "00:11:22:33:44:55");
+                                map.put("hwaddr_interfaces", interfaces);
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    // minion will stay assigned to its original HW type group after registration
+                    assertTrue(minion.getManagedGroups().contains(alreadyAssignedGroup));
+                    assertTrue(minion.getManagedGroups().contains(terminalsGroup));
+                    assertTrue(minion.getManagedGroups().contains(branchGroup));
+                    // minion won't be assigned to its matching HW type group in this case
+                    // (it's already assigned to the HW type group above)
+                    assertFalse(minion.getManagedGroups().contains(hwGroupMatching));
+                },
+                null,
+                DEFAULT_CONTACT_METHOD);
     }
 
     /**
