@@ -26,6 +26,9 @@
     <users group="root">
       <user home="/root" name="root" password="linux" pwdformat="plain" shell="/bin/bash"/>
     </users>
+    <drivers>
+      <file name="drivers/block/virtio_blk.ko" />
+    </drivers>
     <repository type="rpm-md" >
         <source path="http://euklid.nue.suse.com/mirror/SuSE/build.suse.de/SUSE/Products/SLE-SERVER/12-SP3/x86_64/product/"/>
     </repository>
