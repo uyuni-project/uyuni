@@ -109,6 +109,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I change the state of "perseus-dummy" to "Unmanaged" and ""
     Then I should see a "2 Changes" text
     When I click save
+    Then I wait until I see "Package states have been saved." text
     And I click apply
     And I remove package "orion-dummy" from this "sle-minion"
     And I remove package "perseus-dummy" from this "sle-minion"
