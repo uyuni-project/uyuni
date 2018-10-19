@@ -192,7 +192,7 @@ Feature: PXE boot a Retail terminal
     When I follow "Formulas" in the content area
     And I follow first "Saltboot" in the content area
     And I enter "disk1" in disk id field
-    And I enter "/dev/sda" in disk device field
+    And I enter "/dev/vda" in disk device field
     And I select "msdos" in disk label field
     And I enter "p1" in first partition id field
     And I enter "256" in first partition size field
