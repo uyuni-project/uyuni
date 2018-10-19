@@ -1,3 +1,5 @@
+- deploy SSL certificate during onboarding of openSUSE Leap 15.0 (bsc#1112163)
+
 -------------------------------------------------------------------
 Fri Oct 05 16:39:51 CEST 2018 - jgonzalez@suse.com
 
