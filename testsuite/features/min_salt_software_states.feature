@@ -43,6 +43,7 @@ Feature: Salt package states
     And I change the state of "milkyway-dummy" to "Removed" and ""
     Then I should see a "1 Changes" text
     And I click save
+    Then I wait until I see "Package states have been saved." text
     And I click apply
     And I wait for "milkyway-dummy" to be uninstalled on "sle-minion"
 
@@ -57,6 +58,7 @@ Feature: Salt package states
     And I change the state of "milkyway-dummy" to "Installed" and ""
     Then I should see a "1 Changes" text
     And I click save
+    Then I wait until I see "Package states have been saved." text
     And I click apply
     And I wait for "milkyway-dummy" to be installed on this "sle-minion"
 
@@ -71,6 +73,7 @@ Feature: Salt package states
     And I change the state of "virgo-dummy" to "Installed" and "Any"
     Then I should see a "1 Changes" text
     And I click save
+    Then I wait until I see "Package states have been saved." text
     And I click apply
     And I wait for "virgo-dummy-1.0" to be installed on this "sle-minion"
 
@@ -85,6 +88,7 @@ Feature: Salt package states
     And I change the state of "andromeda-dummy" to "Installed" and "Latest"
     Then I should see a "1 Changes" text
     And I click save
+    Then I wait until I see "Package states have been saved." text
     And I click apply
     And I wait for "andromeda-dummy-2.0-1.1" to be installed on this "sle-minion"
 
