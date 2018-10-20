@@ -444,7 +444,8 @@ def do_group_details(self, args, short=False):
             print(self.SEPARATOR)
         add_separator = True
 
-        print('Name               %s' % details.get('name'))
+        print('ID:                %i' % details.get('id'))
+        print('Name:              %s' % details.get('name'))
         print('Description:       %s' % details.get('description'))
         print('Number of Systems: %i' % details.get('system_count'))
 
