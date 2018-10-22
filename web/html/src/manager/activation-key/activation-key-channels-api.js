@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @flow
 import React from 'react';
 import Network from '../../utils/network';

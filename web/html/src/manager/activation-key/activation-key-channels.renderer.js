@@ -1,3 +1,4 @@
+/* eslint-disable */
 import ActivationKeyChannels from './activation-key-channels';
 import React from 'react';
 import ReactDOM from 'react-dom';
