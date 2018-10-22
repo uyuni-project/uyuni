@@ -229,7 +229,7 @@ Feature: Action chain on traditional clients
     Then I wait until there are no more action chains
     And I should see scheduled action, called "System reboot scheduled by admin"
     Then I cancel all scheduled actions
-    And I wait until no more scheduled actions
+    And I wait until there are no more scheduled actions
     And I delete the action chain
 
   Scenario: Run an action chain via XML-RPC on traditional client
@@ -245,7 +245,7 @@ Feature: Action chain on traditional clients
     Then I wait until there are no more action chains
     When I run "rhn_check -vvv" on "sle-client"
     Then file "/tmp/action_chain.log" should contain "123" on "sle-client"
-    And I wait until no more scheduled actions
+    And I wait until there are no more scheduled actions
 
   Scenario: Cleanup: remove traditional client from configuration channel
     Given I am authorized as "admin" with password "admin"
