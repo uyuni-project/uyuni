@@ -288,6 +288,15 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             minion.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
+            //ToDo Just a hacked version for ubuntu
+            if (osfamily.equals("Debian")) {
+                server.setServerArch(
+                        ServerFactory.lookupServerArchByLabel(osarch + "-debian-linux"));
+            }
+            else {
+                server.setServerArch(
+                        ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
+            }
 
             RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, minion, grains, activationKey,
                     activationKeyLabel);

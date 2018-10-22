@@ -57,6 +57,7 @@ public class DebPackageWriter {
                 f.delete();
             }
             f.createNewFile();
+            // TODO Release or InRelease file for channels having gpg check enabled
         }
         catch (Exception e) {
             log.error("Create file Packages failed " + e.toString());
@@ -140,7 +141,7 @@ public class DebPackageWriter {
                     TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_BREAKS,
                     pkgDto.getId(), "Breaks");
 
-            out.write("Filename: XMLRPC/GET-REQ/" + channelLabel + "/getPackage/");
+            out.write("Filename: " + channelLabel + "/getPackage/");
             out.write(pkgDto.getName() + "_");
             if (epoch != null && !epoch.equalsIgnoreCase("")) {
                 out.write(epoch + ":");

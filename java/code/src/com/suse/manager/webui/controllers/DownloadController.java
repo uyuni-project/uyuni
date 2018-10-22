@@ -41,10 +41,12 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Key;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static spark.Spark.halt;
 
 
@@ -94,7 +96,6 @@ public class DownloadController {
     public static Object downloadMetadata(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
-
         File file = new File(new File("/var/cache/rhn/repodata", channelLabel),
                 filename).getAbsoluteFile();
 
@@ -171,6 +172,13 @@ public class DownloadController {
         String version = StringUtils.substringAfterLast(rest, "-");
         String name = StringUtils.substringBeforeLast(rest, "-");
 
+        // Debian packages names need spacial handling
+        Channel channelBean = ChannelFactory.lookupByLabel(channel);
+        if (channelBean.getChannelArch().getArchType().getLabel().equalsIgnoreCase("deb")) {
+            version = StringUtils.substringAfterLast(rest, "_");
+            name = StringUtils.substringBeforeLast(rest, "_");
+        }
+
         if (checkTokens) {
             String token = getTokenFromRequest(request);
             validateToken(token, channel, basename);
@@ -198,6 +206,7 @@ public class DownloadController {
     private static String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
         String header = request.headers("X-Mgr-Auth");
+        header = StringUtils.isNotBlank(header) ? header : getTokenForDebian(request);
         if (queryParams.isEmpty() && StringUtils.isBlank(header)) {
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("You need a token to access %s", request.pathInfo()));
@@ -212,6 +221,20 @@ public class DownloadController {
         else {
             return header;
         }
+    }
+
+    /**
+     * For Debian, we are getting token from 'Authorization' header
+     * @param request the request object
+     * @return the token header
+     */
+    private static String getTokenForDebian(Request request) {
+        String authorizationHeader = request.headers("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Basic")) {
+            String encodedData = authorizationHeader.substring("Basic".length()).trim();
+            return new String(Base64.getDecoder().decode(encodedData), UTF_8);
+        }
+        return "";
     }
 
     /**
