@@ -952,7 +952,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testListSystems() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
-        Object[] results = handler.listSystems(admin);
+        Object[] results = getMockedHandler().listSystems(admin);
         assertEquals(1, results.length);
 
         List<Object> r = Arrays.asList(results);
