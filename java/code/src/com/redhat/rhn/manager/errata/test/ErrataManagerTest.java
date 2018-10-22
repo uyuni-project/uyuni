@@ -653,6 +653,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
 
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
 
         // we want to check that no matter how many actions were scheduled for
@@ -856,6 +863,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> serverIds = new ArrayList<Long>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
 
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
 
