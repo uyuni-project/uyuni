@@ -241,10 +241,11 @@ public class SaltUtils {
         final PackageChangeOutcome outcome;
 
         if (PKG_STATE_MODULES.contains(function)) {
-            Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = Json.GSON.fromJson(
-                callResult,
-                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
-                .getType()
+            Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>> delta = Json.GSON.fromJson(
+                    callResult,
+                    new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() {
+                    }
+                            .getType()
             );
             ErrataManager.insertErrataCacheTask(server);
             outcome = applyChangesFromStateModule(delta, server);
@@ -288,7 +289,7 @@ public class SaltUtils {
      * @return an outcome
      */
     public static PackageChangeOutcome applyChangesFromStateModule(
-            Map<String, Change<Xor<String, List<Pkg.Info>>>> changes,
+            Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>> changes,
             Server server) {
         boolean fullRefreshNeeded = changes.entrySet().stream().anyMatch(
             e ->
@@ -316,9 +317,9 @@ public class SaltUtils {
      * @param server the server
      */
     private static void applyDeltaPackageInfo(
-            Map<String, Change<Xor<String, List<Pkg.Info>>>> changes, Server server) {
+            Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>> changes, Server server) {
         // normalise salts type madness
-        Map<String, Change<List<Pkg.Info>>> collect = changes.entrySet().stream()
+        Map<String, Change<List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>> collect = changes.entrySet().stream()
                 .collect(
                 Collectors.toMap(
                         e -> e.getKey(),
@@ -333,13 +334,13 @@ public class SaltUtils {
                 ));
         collect.entrySet().stream().forEach(e -> {
             String name = e.getKey();
-            Change<List<Info>> change = e.getValue();
+            Change<List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>> change = e.getValue();
 
-            Map<String, Info> newPackages = change.getNewValue().stream()
-                .collect(Collectors.toMap(
-                    info -> packageToKey(name, info),
-                    Function.identity()
-                ));
+            Map<String, com.suse.manager.webui.utils.salt.custom.Pkg.Info> newPackages = change.getNewValue().stream()
+                    .collect(Collectors.toMap(
+                            info -> packageToKey(name, info),
+                            Function.identity()
+                    ));
 
             change.getOldValue().stream().forEach(info -> {
                 String key = packageToKey(name, info);
@@ -405,9 +406,9 @@ public class SaltUtils {
                 // we sort by run order process multiple package changing states right
                 .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
                 .collect(Collectors.toList());
-        for (StateApplyResult<JsonElement> value : collect) {
-              Map<String, Change<Xor<String, List<Pkg.Info>>>> delta =
-                      extractPackageDelta(value.getChanges());
+        for (StateApplyResult<JsonElement> value: collect) {
+            Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>> delta =
+                    extractPackageDelta(value.getChanges());
 
             if (applyChangesFromStateModule(delta, server) ==
                     PackageChangeOutcome.NEEDS_REFRESHING) {
@@ -417,21 +418,23 @@ public class SaltUtils {
         return PackageChangeOutcome.DONE;
     }
 
-    private static Map<String, Change<Xor<String, List<Info>>>> extractPackageDelta(
+    private static Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>> extractPackageDelta(
             JsonElement json) {
         if (json.getAsJsonObject().has("ret")) {
             return
-            Json.GSON.<Ret<Map<String, Change<Xor<String, List<Pkg.Info>>>>>>fromJson(
-                json,
-                new TypeToken<Ret<Map<String, Change<Xor<String, List<Pkg.Info>>>>>>() { }
-                        .getType()
-            ).getRet();
+                    Json.GSON.<Ret<Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>>>>fromJson(
+                            json,
+                            new TypeToken<Ret<Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>>>>() {
+                            }
+                                    .getType()
+                    ).getRet();
         }
         else {
             return Json.GSON.fromJson(
-                json,
-                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
-                    .getType()
+                    json,
+                    new TypeToken<Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>>>() {
+                    }
+                            .getType()
             );
         }
     }
@@ -1217,21 +1220,21 @@ public class SaltUtils {
                     Function.identity()
              ));
 
-        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap =
-            result.getInfoInstalled().getChanges().getRet()
-                .entrySet().stream()
-                .flatMap(entry ->
-                   entry.getValue().fold(Stream::of, Collection::stream)
-                        .flatMap(x -> {
-                           Map<String, Info> infoTuple = new HashMap<>();
-                           infoTuple.put(entry.getKey(), x);
-                           return infoTuple.entrySet().stream();
-                        })
-                )
-                .collect(Collectors.toMap(
-                        SaltUtils::packageToKey,
-                        Function.identity()
-                ));
+        Map<String, Map.Entry<String, com.suse.manager.webui.utils.salt.custom.Pkg.Info>> newPackageMap =
+                result.getInfoInstalled().getChanges().getRet()
+                        .entrySet().stream()
+                        .flatMap(entry ->
+                                entry.getValue().fold(Stream::of, Collection::stream)
+                                        .flatMap(x -> {
+                                            Map<String, com.suse.manager.webui.utils.salt.custom.Pkg.Info> infoTuple = new HashMap<>();
+                                            infoTuple.put(entry.getKey(), x);
+                                            return infoTuple.entrySet().stream();
+                                        })
+                        )
+                        .collect(Collectors.toMap(
+                                SaltUtils::packageToKey,
+                                Function.identity()
+                        ));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
             e -> newPackageMap.containsKey(e.getKey())
@@ -1276,7 +1279,7 @@ public class SaltUtils {
      * @param info the package info
      * @return the key
      */
-    public static String packageToKey(String name, Pkg.Info info) {
+    public static String packageToKey(String name, com.suse.manager.webui.utils.salt.custom.Pkg.Info info) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -1302,7 +1305,7 @@ public class SaltUtils {
      * @param entry the package
      * @return the key
      */
-    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
+    public static String packageToKey(Map.Entry<String, com.suse.manager.webui.utils.salt.custom.Pkg.Info> entry) {
         return packageToKey(entry.getKey(), entry.getValue());
     }
 
@@ -1315,7 +1318,7 @@ public class SaltUtils {
      * @param serverAction the server action
      */
     private static void handleHardwareProfileUpdate(MinionServer server,
-            HwProfileUpdateSlsResult result, ServerAction serverAction) {
+                                                    HwProfileUpdateSlsResult result, ServerAction serverAction) {
         Instant start = Instant.now();
 
         HardwareMapper hwMapper = new HardwareMapper(server,
@@ -1361,8 +1364,8 @@ public class SaltUtils {
      * @param server server this package will be added to
      * @return the InstalledPackage object
      */
-    private static InstalledPackage createPackageFromSalt(String name, Pkg.Info info,
-            Server server) {
+    private static InstalledPackage createPackageFromSalt(String name, com.suse.manager.webui.utils.salt.custom.Pkg.Info info,
+                                                          Server server) {
 
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
@@ -1380,7 +1383,7 @@ public class SaltUtils {
     }
 
     private static ImagePackage createImagePackageFromSalt(
-            String name, Pkg.Info info, ImageInfo imageInfo) {
+            String name, com.suse.manager.webui.utils.salt.custom.Pkg.Info info, ImageInfo imageInfo) {
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
         String version = info.getVersion().get();

@@ -41,10 +41,12 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Key;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static spark.Spark.halt;
 
 
@@ -94,7 +96,6 @@ public class DownloadController {
     public static Object downloadMetadata(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
-
         File file = new File(new File("/var/cache/rhn/repodata", channelLabel),
                 filename).getAbsoluteFile();
 
@@ -170,6 +171,13 @@ public class DownloadController {
         rest = StringUtils.substringBeforeLast(rest, "-");
         String version = StringUtils.substringAfterLast(rest, "-");
         String name = StringUtils.substringBeforeLast(rest, "-");
+        //ToDo
+        //Names and version for debian either needs to be changed when writing(DebPackageWrite.java#L143)
+        // package information or havel to handle them here as a separate case
+        if (arch.equals("amd64-deb") || arch.equals("all-deb")) {
+            version = StringUtils.substringAfterLast(rest, "_");
+            name = StringUtils.substringBeforeLast(rest, "_");
+        }
 
         if (checkTokens) {
             String token = getTokenFromRequest(request);
@@ -198,6 +206,7 @@ public class DownloadController {
     private static String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
         String header = request.headers("X-Mgr-Auth");
+        header = StringUtils.isNotBlank(header) ? header : getTokenForUbuntu(request);
         if (queryParams.isEmpty() && StringUtils.isBlank(header)) {
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("You need a token to access %s", request.pathInfo()));
@@ -212,6 +221,22 @@ public class DownloadController {
         else {
             return header;
         }
+    }
+
+    /**
+     * For Ubuntu, we are getting token from 'Authorization' header
+     * @param request the request object
+     * @return the token header
+     */
+    private static String getTokenForUbuntu(Request request) {
+        String token = "";
+        String authorizationHeader = request.headers("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Basic")) {
+            String encodedData = authorizationHeader.substring("Basic".length()).trim();
+            String tokenData = new String(Base64.getDecoder().decode(encodedData), UTF_8);
+            token = tokenData.split(":")[1];
+        }
+        return token;
     }
 
     /**
