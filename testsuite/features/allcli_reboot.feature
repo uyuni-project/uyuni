@@ -1,5 +1,11 @@
 # Copyright (c) 2017-2018 SUSE LLC.
 # Licensed under the terms of the MIT license.
+#
+# Idempotency note:
+# * this feature is idempotent
+#   (the tests of this feature can be run several times with no change in the results)
+# * However, beware that firmware, kernel or library updates might be activated by the reboot
+#   (thus making changes in the behaviour of the system after the reboot)
 
 Feature: Reboot systems managed by SUSE Manager
 

@@ -41,6 +41,8 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
+
+- features/allcli_reboot.feature
 - features/trad_config_channel.feature
 - features/trad_lock_packages.feature
 - features/min_centos_salt_install_package_and_patch.feature
@@ -108,7 +110,6 @@
 - features/allcli_software_channels.feature
 - features/allcli_software_channels_dependencies.feature
 - features/srv_sync_products.feature
-- features/allcli_reboot.feature
 - features/srv_notifications.feature
 - features/minkvm_guests.feature
 - features/minxen_guests.feature
