@@ -45,6 +45,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
+import com.suse.manager.utils.ChannelUtils;
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.utils.SaltConfigChannelState;
@@ -323,7 +324,16 @@ public enum SaltStateGeneratorService {
             chanProps.put("port", Config.get().getInt("ssh_push_port_https"));
         }
         chanProps.put("token", accessToken.getToken());
-        chanProps.put("type", "rpm-md");
+        if (ChannelUtils.isTypeRpm(chan)) {
+            chanProps.put("type", "rpm-md");
+        }
+        else if (ChannelUtils.isTypeDeb(chan)) {
+            chanProps.put("type", "deb");
+        }
+        else {
+            LOG.warn("Unknown repo type for channel " + chan.getLabel());
+        }
+
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
             chanProps.put("gpgcheck", chan.isGPGCheck() ? "1" : "0");
             // three state field. yes, no or default
