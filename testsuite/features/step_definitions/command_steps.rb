@@ -584,7 +584,7 @@ end
 
 # rubocop:disable Metrics/BlockLength
 When(/^I set up the private network on the terminals$/) do
-  nodes = [$client, $minion, $ssh_minion]
+  nodes = [$client, $minion]
   # /etc/sysconfig/network/ifcfg-eth1
   file = 'ifcfg-eth1'
   source = File.dirname(__FILE__) + '/../upload_files/' + file + "-suse"
@@ -607,7 +607,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run('systemctl restart NetworkManager')
   end
   # /etc/resolv.conf
-  nodes = [$client, $minion, $ssh_minion]
+  nodes = [$client, $minion]
   file = 'resolv.conf'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/etc/" + file
