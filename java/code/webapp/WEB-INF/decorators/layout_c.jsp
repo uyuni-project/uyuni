@@ -52,5 +52,7 @@
       </section>
       <script src='/javascript/manager/menu.bundle.js'></script>
     </div>
+    <div id='frontend-log'></div>
+    <script src='/javascript/manager/frontend-log.bundle.js'></script>
   </body>
 </html:html>

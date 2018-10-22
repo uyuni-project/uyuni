@@ -39,6 +39,7 @@ const pages = {
   'taskotop': './manager/taskotop.js',
   'virtualhostmanager': './manager/virtualhostmanager.js',
   'activation-key/activation-key-channels.renderer': './manager/activation-key/activation-key-channels.renderer.js',
+  'frontend-log': './manager/frontend-log.js'
 }
 
 Object.keys(pages).forEach((key) => {
