@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @flow
 import ChildChannels from './child-channels';
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
