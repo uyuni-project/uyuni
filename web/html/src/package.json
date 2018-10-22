@@ -17,5 +17,9 @@
   },
   "devDependencies": {
     "flow-bin": "^0.82.0"
+  },
+  "engines": {
+    "node": ">=8.0.0",
+    "yarn": ">=1.0.0"
   }
 }
