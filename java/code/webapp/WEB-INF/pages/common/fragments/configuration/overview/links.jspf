@@ -19,7 +19,7 @@
     </a>
   </li>
   <li class="list-group-item">
-    <a href="/rhn/configuration/ChannelCreate.do?editing=true">
+    <a href="/rhn/configuration/ChannelCreate.do?editing=true&type=normal">
       <bean:message key="configoverview.jsp.createchannel"/>
     </a>
   </li>
