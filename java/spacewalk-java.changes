@@ -1,3 +1,4 @@
+- Change Requires to allow installing with both Tomcat 8 (SLE-12SP3) and 9 (SLE12-SP4)
 - ActivationKey base and child channel in a reactjs component
 - fix typo in messages (bsc#1111249)
 - Cleanup formula data and assignment when migrating formulas or when removing system
