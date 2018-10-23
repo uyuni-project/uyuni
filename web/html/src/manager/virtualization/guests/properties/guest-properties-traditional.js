@@ -5,8 +5,7 @@ const { Panel } = require('components/panels/Panel');
 const { Text } = require('components/input/Text');
 const Validation = require('components/validation');
 const MessagesUtils = require('components/messages').Utils;
-const { GuestPropertiesForm } = require('./properties/guest-properties-form');
-const { GuestPropertiesTraditional } = require('./properties/guest-properties-traditional');
+const { GuestPropertiesForm } = require('./guest-properties-form');
 
 declare function t(msg: string, ...args: Array<any>): string;
 
@@ -18,10 +17,16 @@ type Props = {
   messages: Array<String>,
 };
 
+type State = {
+  model: Object,
+  isInvalid: boolean,
+  messages: Array<String>,
+};
+
 /*
  * Component editing a virtual machine properties
  */
-class GuestProperties extends React.Component<Props> {
+class GuestPropertiesTraditional extends React.Component<Props, State> {
   validationChecks = [{
     check: (model: Object) => !Number.isNaN(Number.parseInt(model.vcpu, 10))
       && (model.vcpu > this.props.host.cpu.count),
@@ -29,18 +34,6 @@ class GuestProperties extends React.Component<Props> {
   }]
 
   render() {
-    if (!this.props.host.saltEntitled) {
-      return (
-        <GuestPropertiesTraditional
-          host={this.props.host}
-          submitText={this.props.submitText}
-          submit={this.props.submit}
-          initialModel={this.props.initialModel}
-          messages={this.props.messages}
-        />
-      );
-    }
-
     return (
       <GuestPropertiesForm
         submitText={this.props.submitText}
@@ -50,8 +43,8 @@ class GuestProperties extends React.Component<Props> {
         messages={this.props.messages}
       >
         {
-          () => [
-            <Panel key="general" title={t('General')} headingLevel="h2">
+          () => (
+            <Panel title={t('General')} headingLevel="h2">
               <Text
                 name="memory"
                 label={t('Maximum Memory (MiB)')}
@@ -70,8 +63,8 @@ class GuestProperties extends React.Component<Props> {
                 divClass="col-md-6"
                 validators={[Validation.isInt({ gt: 0 })]}
               />
-            </Panel>,
-          ]
+            </Panel>
+          )
         }
       </GuestPropertiesForm>
     );
@@ -79,5 +72,5 @@ class GuestProperties extends React.Component<Props> {
 }
 
 module.exports = {
-  GuestProperties,
+  GuestPropertiesTraditional,
 };
