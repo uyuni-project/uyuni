@@ -952,12 +952,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testListSystems() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
-        Object[] results = getMockedHandler().listSystems(admin);
-        assertEquals(1, results.length);
+        List<Object> results = Arrays.asList(handler.listSystems(admin));
+        assertTrue(results.size() >= 1);
+        assertTrue(results.contains(server));
 
-        List<Object> r = Arrays.asList(results);
-
-        for (Object o : r) {
+        for (Object o : results) {
             SystemOverview so = (SystemOverview) o;
             assertNotNull(so.getLastBootAsDate());
         }
