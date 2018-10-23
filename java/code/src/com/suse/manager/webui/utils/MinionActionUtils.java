@@ -21,6 +21,7 @@ import static java.util.stream.Collectors.toMap;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -317,16 +318,19 @@ public class MinionActionUtils {
      * @throws IOException in case of problems listing the scripts
      */
     public static void cleanupScriptActions() throws IOException {
-        Pattern p = Pattern.compile("script_(\\d*).sh");
-        Files.list(SaltUtils.INSTANCE.getScriptsDir()).forEach(file -> {
-            Matcher m = p.matcher(file.getFileName().toString());
-            if (m.find()) {
-                long actionId = Long.parseLong(m.group(1));
-                if (ActionFactory.lookupById(actionId).allServersFinished()) {
-                    LOG.info("Deleting script file: " + file);
-                    FileUtils.deleteFile(file);
+        Path scriptsDir = SaltUtils.INSTANCE.getScriptsDir();
+        if (Files.isDirectory(scriptsDir)) {
+            Pattern p = Pattern.compile("script_(\\d*).sh");
+            Files.list(scriptsDir).forEach(file -> {
+                Matcher m = p.matcher(file.getFileName().toString());
+                if (m.find()) {
+                    long actionId = Long.parseLong(m.group(1));
+                    if (ActionFactory.lookupById(actionId).allServersFinished()) {
+                        LOG.info("Deleting script file: " + file);
+                        FileUtils.deleteFile(file);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }
