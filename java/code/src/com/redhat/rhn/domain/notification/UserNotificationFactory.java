@@ -27,6 +27,7 @@ import com.suse.manager.webui.websocket.Notification;
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -244,6 +246,32 @@ public class UserNotificationFactory extends HibernateFactory {
                 builder.equal(root.get("messageId"), messageIdIn));
 
         return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * List all notification messages from the database.
+     *
+     * @return list of all notifications from the database
+     */
+    public static List<NotificationMessage> listAllNotificationMessages() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<NotificationMessage> criteria = builder.createQuery(NotificationMessage.class);
+        criteria.from(NotificationMessage.class);
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Delete all notification messages that were created before a given date.
+     *
+     * @param before all notifications created before this date will be deleted
+     * @return int number of deleted notification messages
+     */
+    public static int deleteNotificationMessagesBefore(Date before) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaDelete<NotificationMessage> delete = builder.createCriteriaDelete(NotificationMessage.class);
+        Root<NotificationMessage> root = delete.from(NotificationMessage.class);
+        delete.where(builder.lessThan(root.<Date>get("created"), before));
+        return getSession().createQuery(delete).executeUpdate();
     }
 
     @Override
