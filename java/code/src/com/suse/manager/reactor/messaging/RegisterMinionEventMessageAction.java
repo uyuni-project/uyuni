@@ -374,8 +374,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     "on retail minion registration! Aborting registration.");
         }
 
+        String hwTypeGroupPrefix = "HWTYPE:";
         String hwType = manufacturer.get() + "-" + productName.get();
-        String hwTypeGroup = "HWTYPE:" + hwType.replaceAll("[^A-Za-z0-9_-]", "");
+        String hwTypeGroup = hwTypeGroupPrefix + hwType.replaceAll("[^A-Za-z0-9_-]", "");
 
         String branchIdGroupName = branchId.get();
         ManagedServerGroup terminalsGroup = ServerGroupFactory.lookupByNameAndOrg(TERMINALS_GROUP_NAME, org);
@@ -390,7 +391,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         SystemManager.addServerToServerGroup(minion, terminalsGroup);
         SystemManager.addServerToServerGroup(minion, branchIdGroup);
         if (hwGroup != null) {
-            SystemManager.addServerToServerGroup(minion, hwGroup);
+            // if the system is already assigned to some HWTYPE group, skip assignment and log this only
+            if (minion.getManagedGroups().stream().anyMatch(g -> g.getName().startsWith(hwTypeGroupPrefix))) {
+                LOG.info("Skipping assignment of the minion " + minion + " to HW group " + hwGroup +
+                        ". The minion is already in a HW group.");
+            }
+            else {
+                SystemManager.addServerToServerGroup(minion, hwGroup);
+            }
         }
 
         minion.asMinionServer().ifPresent(SaltStateGeneratorService.INSTANCE::generatePillar);
