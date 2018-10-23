@@ -38,7 +38,6 @@ import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -69,7 +68,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -93,6 +91,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
 
+    private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
 
     /**
@@ -232,8 +231,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         Map<String, Object> grainsMap = SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new);
         ValueMap grains = new ValueMap(grainsMap);
 
-        Collection<String> hwAddrs = extractHwAddresses(grainsMap);
-        MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, hwAddrs);
+        MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grainsMap);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
 
         minion.setMachineId(machineId);
@@ -286,7 +284,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setCreated(new Date());
             minion.setModified(minion.getCreated());
             minion.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
-            minion.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
+            minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
 
             minion.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
@@ -463,14 +461,17 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param isSaltSSH true if salt-ssh minion
      * @param activationKeyOverride the activation key
      * @param machineId the machine-id
-     * @param hwAddrs collection of hardware addresses
+     * @param grains the grains
      * @return a migrated or new MinionServer instance
      */
     private MinionServer migrateOrCreateSystem(String minionId,
             boolean isSaltSSH,
             Optional<String> activationKeyOverride,
             String machineId,
-            Collection<String> hwAddrs) {
+            Map<String, Object> grains) {
+        Optional<String> fqdn = ofNullable((String) grains.get(FQDN));
+        Set<String> hwAddrs = extractHwAddresses(grains);
+
         return ServerFactory.findByMachineId(machineId)
             .flatMap(server -> {
                 // change the type of the hibernate entity from Server to MinionServer
@@ -526,13 +527,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 minion.getHistory().add(historyEvent);
 
                 return minion;
-            }).orElseGet(() -> hwAddrs.stream()
-                    .flatMap(hwAddr -> NetworkInterfaceFactory.lookupNetworkInterfacesByHwAddress(hwAddr))
-                    .map(nic -> nic.getServer())
-                    .filter(server -> server.hasEntitlement(EntitlementManager.BOOTSTRAP))
-                    .findFirst()
-                    .flatMap(server -> server.asMinionServer())
-                    .orElseGet(MinionServer::new));
+            }).orElseGet(() -> SystemManager.findMatchingEmptyProfile(fqdn, hwAddrs).orElseGet(MinionServer::new));
     }
 
     /**

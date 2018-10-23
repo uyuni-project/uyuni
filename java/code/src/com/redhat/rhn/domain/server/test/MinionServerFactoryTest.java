@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
