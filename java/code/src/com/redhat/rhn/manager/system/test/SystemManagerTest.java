@@ -16,8 +16,12 @@ package com.redhat.rhn.manager.system.test;
 
 import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
 import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -115,6 +119,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1332,7 +1337,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, Optional.of(base2), Arrays.asList(ch2_1, ch2_2), null);
+        SystemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch2_1, ch2_2), null);
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(2, server.getChildChannels().size());
@@ -1361,7 +1366,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, Optional.of(base2), Collections.emptyList(), null);
+        SystemManager.updateServerChannels(user, server, of(base2), Collections.emptyList(), null);
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(0, server.getChildChannels().size());
@@ -1388,7 +1393,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, Optional.empty(), Arrays.asList(ch2_1, ch2_2), null);
+        SystemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch2_1, ch2_2), null);
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());
@@ -1399,7 +1404,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     public void testCreateSystemProfile() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        MinionServer minion = SystemManager.createSystemProfile(user, "test system", hwAddr);
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        MinionServer minion = SystemManager.createSystemProfile(user, "test system", data);
         Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
 
         // flush & refresh iface because generated="insert"
@@ -1408,9 +1414,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().refresh(minionFromDb);
 
         assertEquals("test system", minionFromDb.getName());
-        assertEquals(hwAddr, minion.getMinionId());
-        assertEquals(hwAddr, minion.getMachineId());
-        assertEquals(hwAddr, minion.getDigitalServerId());
+        assertEquals(">" + hwAddr, minion.getMinionId());
+        assertEquals(">" + hwAddr, minion.getMachineId());
+        assertEquals(">" + hwAddr, minion.getDigitalServerId());
         assertEquals("(unknown)", minion.getOs());
         assertEquals("(unknown)", minion.getOsFamily());
         assertEquals("(unknown)", minion.getRelease());
@@ -1487,12 +1493,125 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     public void testCreateSystemProfileExistingHwAddress() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        SystemManager.createSystemProfile(user, "test system", hwAddr);
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        SystemManager.createSystemProfile(user, "test system", data);
         try {
-            SystemManager.createSystemProfile(user, "test system 2", hwAddr);
+            SystemManager.createSystemProfile(user, "test system 2", data);
             fail("System creation should have failed!");
         } catch (IllegalStateException e) {
             // no-op
         }
+    }
+
+    /**
+     * Tests finding an empty profile by hostname and HW addresses with "empty" arguments.
+     */
+    public void testFindByHostnameAndHwAddrsEmptyArgs() {
+        assertFalse(SystemManager.findMatchingEmptyProfile(empty(), emptySet()).isPresent());
+    }
+
+    /**
+     * Tests finding an empty profile with no NICS.
+     */
+    public void testFindByHostnameNoHwAddrs() throws Exception {
+        MinionServer minion = createEmptyProfile(of("myhost"), empty());
+
+        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(of("myhost"), emptySet());
+        assertEquals(minion, fromDb.get());
+
+        // minion with a HW address will also match
+        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(of("myhost"), singleton("11:22:33:44:55:66"));
+        assertEquals(minion, fromDb2.get());
+    }
+
+    /**
+     * Tests finding an empty profile with no hostname.
+     */
+    public void testFindByHostnameNoHostname() throws Exception {
+        String hwAddr = "11:22:33:44:55:66";
+        MinionServer minion = createEmptyProfile(empty(), of(hwAddr));
+
+        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(empty(), singleton(hwAddr));
+        assertEquals(minion, fromDb.get());
+
+        // minion with a hostname will also match
+        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(of("myhost"), singleton(hwAddr));
+        assertEquals(minion, fromDb2.get());
+    }
+
+    /**
+     * Tests finding an empty profile by hostname and HW addresses.
+     */
+    public void testFindByHostnameAndHwAddrs() throws Exception {
+        String hwAddr = "11:22:33:44:55:66";
+        MinionServer minion = createEmptyProfile(of("myhost"), of(hwAddr));
+
+        // lookup by hostname should match
+        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(of("myhost"), emptySet());
+        assertEquals(minion, fromDb.get());
+
+        // lookup by HW addr should match
+        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(empty(), singleton(hwAddr));
+        assertEquals(minion, fromDb2.get());
+
+        // lookup by hostname and HW addr should match
+        Optional<MinionServer> fromDb3 = SystemManager.findMatchingEmptyProfile(of("myhost"), singleton(hwAddr));
+        assertEquals(minion, fromDb3.get());
+
+        // lookup by hostname and HW addrs should match
+        Set<String> moreAddrs = new HashSet<>();
+        moreAddrs.add(hwAddr);
+        moreAddrs.add("11:22:33:44:55:77");
+        Optional<MinionServer> fromDb4 = SystemManager.findMatchingEmptyProfile(of("myhost"), moreAddrs);
+        assertEquals(minion, fromDb4.get());
+    }
+
+    /**
+     * Tests finding system (with multiple NICs) by hostname and HW addresses.
+     */
+    public void testFindByHostnameAndHwAddrsMoreNics() throws Exception {
+        String hwAddr = "11:22:33:44:55:66";
+        String hwAddr2 = "11:22:33:44:55:77";
+        MinionServer minion = createEmptyProfile(of("myhost"), of(hwAddr));
+        // add an extra iface with a different hw addr
+        NetworkInterface netInterface = new NetworkInterface();
+        netInterface.setHwaddr(hwAddr2);
+        netInterface.setServer(minion);
+        netInterface.setName("unknown2");
+        ServerFactory.saveNetworkInterface(netInterface);
+
+        // lookup by hostname should match
+        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(of("myhost"), emptySet());
+        assertEquals(minion, fromDb.get());
+
+        // lookup by multiple HW addrs should match
+        Set<String> hwAddrs = new HashSet<>();
+        hwAddrs.add(hwAddr);
+        hwAddrs.add(hwAddr2);
+        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(empty(), hwAddrs);
+        assertEquals(minion, fromDb2.get());
+
+        // lookup by single HW addr should match
+        String fstAddr = hwAddrs.iterator().next();
+        Optional<MinionServer> fromDb3 = SystemManager.findMatchingEmptyProfile(empty(), singleton(fstAddr));
+        assertEquals(minion, fromDb3.get());
+    }
+
+    /**
+     * Tests lookup of (non-matching) system by hostname and HW address.
+     */
+    public void testFindByHostnameAndHwAddrsNoMatch() throws Exception {
+        createEmptyProfile(of("myhost"), empty());
+        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(empty(), singleton("00:11:22:33:44:55"));
+        assertFalse(fromDb.isPresent());
+        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(of("otherhost"), emptySet());
+        assertFalse(fromDb2.isPresent());
+    }
+
+    private MinionServer createEmptyProfile(Optional<String> hostName, Optional<String> hwAddr) throws Exception {
+        Map<String, Object> data = new HashMap<>();
+        hostName.ifPresent(n -> data.put("FQDN", n));
+        hwAddr.ifPresent(a -> data.put("hwAddress", a));
+        return SystemManager.createSystemProfile(user, hostName.orElse("test system"), data);
     }
 }

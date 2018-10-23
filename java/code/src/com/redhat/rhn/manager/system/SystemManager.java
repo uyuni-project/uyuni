@@ -43,8 +43,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
-import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -90,12 +90,11 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -122,6 +121,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 
 /**
  * SystemManager
@@ -389,20 +392,41 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Create an empty system profile with required values.
+     * Create an empty system profile with required values based on given data.
+     *
+     * The data must contain at least one of the following fields:
+     * - hwAddress - HW address of a NetworkInterface of the profile
+     * - FQDN - FQDN of the profile
      *
      * @param creator the creator user
      * @param systemName the system name
-     * @param hwAddress the hardware address
-     * @throws java.lang.IllegalStateException when a system with given hardware address already exists
-     * @throws java.lang.IllegalArgumentException when the format of the hardware address is invalid
+     * @param data the data of the new profile
+     * @throws java.lang.IllegalStateException when a system based on the input data already exists
+     * @throws java.lang.IllegalArgumentException when the input data contains insufficient information or
+     * if the format of the hardware address is invalid
      * @return the created system
      */
-    public static MinionServer createSystemProfile(User creator, String systemName, String hwAddress) {
-        if (NetworkInterfaceFactory.lookupNetworkInterfacesByHwAddress(hwAddress).findAny().isPresent()) {
-            throw new IllegalStateException("System(s) with network interface with HW address '" + hwAddress +
-                    "' already exists.");
+    public static MinionServer createSystemProfile(User creator, String systemName, Map<String, Object> data) {
+        Optional<String> hwAddress = ofNullable((String) data.get("hwAddress"));
+        Optional<String> fqdn = ofNullable((String) data.get("FQDN"));
+
+        // at least one identifier must be contained
+        if (!hwAddress.isPresent() && !fqdn.isPresent()) {
+            throw new IllegalArgumentException("hwAddress or FQDN key must be present.");
         }
+
+        Set<String> hwAddrs = hwAddress.map(a -> singleton(a)).orElse(emptySet());
+        if (findMatchingEmptyProfile(fqdn, hwAddrs).isPresent()) {
+            throw new IllegalStateException("System(s) with fqdn '" + fqdn + "' or HW address '" +
+                    hwAddress + "' already exists.");
+        }
+
+        // craft unique id based on given data
+        String uniqueId = ">" + Arrays.asList(hwAddress, fqdn)
+                .stream()
+                .flatMap(o -> Opt.stream(o))
+                .reduce((i1, i2) -> i1 + ">" + i2)
+                .get();
 
         MinionServer server = new MinionServer();
         server.setName(systemName);
@@ -410,9 +434,10 @@ public class SystemManager extends BaseManager {
 
         // Set network device information to the server so we have something to match with
         server.setCreator(creator);
-        server.setDigitalServerId(hwAddress);
-        server.setMachineId(hwAddress);
-        server.setMinionId(hwAddress);
+        fqdn.ifPresent(n -> server.setHostname(n));
+        server.setDigitalServerId(uniqueId);
+        server.setMachineId(uniqueId);
+        server.setMinionId(uniqueId);
         server.setOs("(unknown)");
         server.setOsFamily("(unknown)");
         server.setRelease("(unknown)");
@@ -425,18 +450,32 @@ public class SystemManager extends BaseManager {
         ServerFactory.save(server);
         server.setBaseEntitlement(EntitlementManager.BOOTSTRAP);
 
-        NetworkInterface netInterface = new NetworkInterface();
-        netInterface.setHwaddr(hwAddress);
-        netInterface.setServer(server);
-        netInterface.setName("unknown");
-
-        if (!netInterface.isValid()) {
-            throw new IllegalArgumentException("Invalid network interface: " + netInterface);
-        }
-
-        ServerFactory.saveNetworkInterface(netInterface);
+        hwAddress.ifPresent(addr -> {
+            NetworkInterface netInterface = new NetworkInterface();
+            netInterface.setHwaddr(addr);
+            netInterface.setServer(server);
+            netInterface.setName("unknown");
+            if (!netInterface.isValid()) {
+                throw new IllegalArgumentException("Invalid network interface: " + netInterface);
+            }
+            ServerFactory.saveNetworkInterface(netInterface);
+        });
 
         return server;
+    }
+
+    /**
+     * Find matching empty profile based on hostname and HW addresses.
+     *
+     * @param hostname the hostname
+     * @param hwAddrs the set of HW addresses
+     * @return the matching empty profile
+     */
+    public static Optional<MinionServer> findMatchingEmptyProfile(Optional<String> hostname, Set<String> hwAddrs) {
+        Optional<MinionServer> fqdnMatch = hostname.flatMap(n -> MinionServerFactory.findEmptyProfileByHostName(n));
+        Optional<MinionServer> hwAddrMatch = hwAddrs.isEmpty() ? empty() :
+                MinionServerFactory.findEmptyProfileByHwAddrs(hwAddrs);
+        return Opt.or(fqdnMatch, hwAddrMatch);
     }
 
     /**
