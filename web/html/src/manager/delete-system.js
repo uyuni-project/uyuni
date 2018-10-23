@@ -33,7 +33,7 @@ class DeleteSystem extends React.Component {
           this.props.onDeleteSuccess();
         } else {
           this.setState({
-            messages: MessagesUtils.error(data.messages)
+            messages: MessagesUtils.error(data.messages.map(m => msgMap[m]))
           });
           this.showErrorDialog();
         }
