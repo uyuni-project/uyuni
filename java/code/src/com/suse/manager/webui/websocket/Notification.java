@@ -109,12 +109,12 @@ public class Notification {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        if (err instanceof EOFException) {
+        Boolean didClientAbortedConnection = err instanceof EOFException ||
+                !session.isOpen() ||
+                err.getMessage().startsWith("Unexpected error [32]");
+
+        if (didClientAbortedConnection) {
             LOG.debug("The client aborted the connection.", err);
-        }
-        else if (err.getMessage().startsWith("Unexpected error [32]")) {
-            // [32] "Broken pipe" is caught when the client side breaks the connection.
-            LOG.debug("The client broke the connection.", err);
         }
         else {
             LOG.error("Websocket endpoint error", err);
@@ -142,18 +142,9 @@ public class Notification {
                 }
             }
             catch (IOException e) {
-                if (session.isOpen()) {
-                    LOG.warn(String.format("Error sending websocket message," +
-                                           " despite the Session [id:%s] still being open",
-                                            session.getId()),
-                            e);
-                }
-                else {
-                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
-                                            session.getId()),
-                            e);
-                    handbreakSession(session);
-                }
+                LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
+                        session.getId()));
+                handbreakSession(session);
             }
         }
     }
