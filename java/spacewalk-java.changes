@@ -1,3 +1,4 @@
+- Do not try cleanup when deleting empty system profiles (bsc#1111247)
 - ActivationKey base and child channel in a reactjs component
 
 -------------------------------------------------------------------
