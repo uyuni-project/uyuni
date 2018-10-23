@@ -92,7 +92,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
                     <label htmlFor="schedule-by-date">{t("Earliest:")}</label>
                 </div>
                 <div className="col-sm-6">
-                    <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
+                    <DateTimePicker autoUpdateTime={true} onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
                 </div>
             </div>
             <div className="form-group">

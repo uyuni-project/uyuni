@@ -142,12 +142,14 @@ class DateTimePicker extends React.Component {
 
     componentWillMount() {
        // Set 1 minute interval for updating time
-       const now = new Date();
-       const nextMinute = new Date(now);
-       nextMinute.setSeconds(0);
-       nextMinute.setMinutes(nextMinute.getMinutes() + 1)
-       this.timeOut = setTimeout(this.changeTime, nextMinute - now);
-       this.timer = setInterval(this.changeTime, 60000);
+       if(this.props.autoUpdateTime) {
+           const now = new Date();
+           const nextMinute = new Date(now);
+           nextMinute.setSeconds(0);
+           nextMinute.setMinutes(nextMinute.getMinutes() + 1)
+           this.timeOut = setTimeout(this.changeTime, nextMinute - now);
+           this.timer = setInterval(this.changeTime, 60000);
+       }
     }
 
     componentWillUnmount() {
@@ -222,6 +224,10 @@ class DateTimePicker extends React.Component {
         );
     }
 }
+
+DateTimePicker.defaultProps = {
+  autoUpdateTime: false
+};
 
 module.exports = {
     DateTimePicker : DateTimePicker
