@@ -954,7 +954,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin);
         List<Object> results = Arrays.asList(handler.listSystems(admin));
         assertTrue(results.size() >= 1);
-        assertTrue(results.contains(server));
+        assertTrue(results.stream().anyMatch(so -> ((SystemOverview) so).getId().equals(server.getId())));
 
         for (Object o : results) {
             SystemOverview so = (SystemOverview) o;
