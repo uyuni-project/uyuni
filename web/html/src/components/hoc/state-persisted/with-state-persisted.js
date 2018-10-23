@@ -18,14 +18,14 @@ function withStatePersisted(WrappedComponent) {
     componentDidMount() {
       if (this.props.loadState) {
         if (this.props.loadState()) {
-          this.refs.wrapped.state = this.props.loadState();
+          this.refs.wrapped.state = this.props.loadState();// eslint-disable-line
         }
       }
     }
 
     componentWillUnmount() {
       if (this.props.saveState) {
-        this.props.saveState(this.refs.wrapped && this.refs.wrapped.state);
+        this.props.saveState(this.refs.wrapped && this.refs.wrapped.state);// eslint-disable-line
       }
     }
 
