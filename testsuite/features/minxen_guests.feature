@@ -84,8 +84,9 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "xen-server" should have 1024MB memory and 2 vcpus
     And "test-vm" virtual machine on "xen-server" should have spice graphics device
-    And "test-vm" virtual machine on "kvm-server" should have 1 NIC using "test-net0" network
-    And "test-vm" virtual machine on "kvm-server" should have a NIC with 02:34:56:78:9a:bc MAC address
+    And "test-vm" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
+    And "test-vm" virtual machine on "xen-server" should have a NIC with 02:34:56:78:9a:bc MAC address
+    And "test-vm" virtual machine on "xen-server" should have a "test-vm_disk.qcow2" ide disk
 
 @virthost_xen
   Scenario: Add a network interface to a virtual machine
@@ -105,6 +106,29 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
+
+@virthost_xen
+  Scenario: Add a disk and a cdrom to a virtual machine
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I click on "Edit" in row "test-vm"
+    And I click on "add_disk"
+    And I click on "add_disk"
+    And I select "CDROM" from "disk2_device"
+    And I select "ide" from "disk2_bus"
+    And I click on "Update"
+    Then I should see a "Hosted Virtual Systems" text
+    And "test-vm" virtual machine on "xen-server" should have a "test-vm_disk-1.qcow2" xen disk
+    And "test-vm" virtual machine on "xen-server" should have a ide cdrom
+
+@virthost_xen
+  Scenario: Delete a disk from a virtual machine
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I click on "Edit" in row "test-vm"
+    # The libvirt disk order is not the same than for KVM
+    And I click on "remove_disk1"
+    And I click on "Update"
+    Then I should see a "Hosted Virtual Systems" text
+    And "test-vm" virtual machine on "xen-server" should have no cdrom
 
 @virthost_xen
   Scenario: Delete a virtual machine

@@ -665,6 +665,9 @@ Then "test-vm" virtual machine on "virt-server" should have 1024MB memory and 2 
 Then "test-vm" virtual machine on "virt-server" should have spice graphics device
 Then "test-vm" virtual machine on "virt-server" should have 2 NIC using "default" network
 Then "test-vm" virtual machine on "virt-server" should have a NIC with 02:34:56:78:9a:bc MAC address
+Then "test-vm" virtual machine on "virt-server" should have a "disk.qcow2" scsi disk
+Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
+Then "test-vm" virtual machine on "virt-server" should have no cdrom
 ```
 
 <a name="c" />

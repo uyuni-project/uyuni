@@ -754,7 +754,7 @@ end
 
 When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   node = get_target(host)
-  disk_path = "/tmp/#{vm_name}-disk.qcow2"
+  disk_path = "/tmp/#{vm_name}_disk.qcow2"
 
   # Create the throwable overlay image
   raise 'not found: qemu-img or /var/testsuite-data/disk-image-template.qcow2' unless file_exists?(node, '/usr/bin/qemu-img') and file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
@@ -902,6 +902,43 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a NIC with ([0-9a-zA-Z
     end
   rescue Timeout::Error
     raise "#{vm} virtual machine on #{host} never got a network interface with #{mac} MAC address"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) disk$/) do |vm, host, path, bus|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        tree = Nokogiri::XML(output)
+        disks = tree.xpath("//disk")
+        disk = disks[disks.find_index { |x| x.xpath('source/@file')[0].to_s.include? path }]
+        break if disk.xpath('target/@bus')[0].to_s == bus
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got a #{path} #{bus} disk"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$/) do |vm, host, presence, bus|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        tree = Nokogiri::XML(output)
+        disks = tree.xpath("//disk")
+        disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
+        break if (disk_index.nil? && presence == 'no') ||
+                 (!disk_index.nil? && disks[disk_index].xpath('target/@bus')[0].to_s == bus && presence == 'a')
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} #{presence == 'a' ? 'never got' : 'still has'} a #{bus} cdrom"
   end
 end
 

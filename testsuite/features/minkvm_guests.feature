@@ -76,17 +76,20 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I should see "1" in field "vcpu"
     And option "VNC" is selected as "graphicsType"
     And option "default" is selected as "network0_source"
+    And option "ide" is selected as "disk0_bus"
     When I enter "1024" as "memory"
     And I enter "2" as "vcpu"
     And I select "Spice" from "graphicsType"
     And I select "test-net0" from "network0_source"
     And I enter "02:34:56:78:9a:bc" as "network0_mac"
+    And I select "scsi" from "disk0_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "kvm-server" should have 1024MB memory and 2 vcpus
     And "test-vm" virtual machine on "kvm-server" should have spice graphics device
     And "test-vm" virtual machine on "kvm-server" should have 1 NIC using "test-net0" network
     And "test-vm" virtual machine on "kvm-server" should have a NIC with 02:34:56:78:9a:bc MAC address
+    And "test-vm" virtual machine on "kvm-server" should have a "test-vm_disk.qcow2" scsi disk
 
 @virthost_kvm
   Scenario: Add a network interface to a virtual machine
@@ -99,13 +102,35 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm-server" should have 2 NIC using "test-net0" network
 
 @virthost_kvm
-  Scenario: Delete a network interface to a virtual machine
+  Scenario: Delete a network interface from a virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
     And I click on "remove_nic1"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "kvm-server" should have 1 NIC using "test-net0" network
+
+@virthost_kvm
+  Scenario: Add a disk and a cdrom to a virtual machine
+    Given I am on the "Virtualization" page of this "kvm-server"
+    When I click on "Edit" in row "test-vm"
+    And I click on "add_disk"
+    And I click on "add_disk"
+    And I select "CDROM" from "disk2_device"
+    And I select "ide" from "disk2_bus"
+    And I click on "Update"
+    Then I should see a "Hosted Virtual Systems" text
+    And "test-vm" virtual machine on "kvm-server" should have a "test-vm_disk-1.qcow2" virtio disk
+    And "test-vm" virtual machine on "kvm-server" should have a ide cdrom
+
+@virthost_kvm
+  Scenario: Delete a disk from a virtual machine
+    Given I am on the "Virtualization" page of this "kvm-server"
+    When I click on "Edit" in row "test-vm"
+    And I click on "remove_disk2"
+    And I click on "Update"
+    Then I should see a "Hosted Virtual Systems" text
+    And "test-vm" virtual machine on "kvm-server" should have no cdrom
 
 @virthost_kvm
   Scenario: Delete a virtual machine
