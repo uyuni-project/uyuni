@@ -6,26 +6,6 @@
 
 var React = require("react");
 
-var PanelButton = React.createClass({
-
-  getInitialState: function() {
-    return {};
-  },
-
-  render: function() {
-      var href = this.props.action ? this.props.action : "#";
-
-      return (
-          <div className="spacewalk-toolbar">
-            <a id={this.props.id} href={this.props.action} onClick={this.props.handler}>
-              <i className={'fa ' + this.props.icon}></i>
-              {t(this.props.text)}
-            </a>
-          </div>
-        )
-  }
-});
-
 class PanelRow extends React.Component {
 
   constructor(props) {
@@ -90,7 +70,6 @@ function SmallPanel(props) {
 }
 
 module.exports = {
-    PanelButton : PanelButton,
     PanelRow : PanelRow,
     BootstrapPanel : BootstrapPanel,
     SmallPanel: SmallPanel
