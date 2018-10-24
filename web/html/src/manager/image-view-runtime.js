@@ -2,7 +2,7 @@
 'use strict';
 
 const React = require("react");
-const BootstrapPanel = require("../components/panel").BootstrapPanel;
+const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
 class ImageViewRuntime extends React.Component {
   constructor(props) {

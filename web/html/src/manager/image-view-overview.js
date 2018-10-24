@@ -10,7 +10,7 @@ const {DeleteDialog} = require("../components/dialog/DeleteDialog");
 const PopUp = require("../components/popup").PopUp;
 const Input = require("../components/input");
 const Functions = require("../utils/functions");
-const BootstrapPanel = require("../components/panel").BootstrapPanel;
+const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
 /* global isAdmin, localTime, timezone */
 

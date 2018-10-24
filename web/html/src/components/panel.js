@@ -6,30 +6,6 @@
 
 var React = require("react");
 
-function BootstrapPanel(props) {
-    return (
-        <div className="panel panel-default">
-            { props.title &&
-            <div className="panel-heading">
-                <h2>
-                  { props.icon && <i className={"fa " +  props.icon}></i> }
-                  {props.title}
-                </h2>
-                { props.header && <span>{props.header}</span>}
-            </div>
-            }
-            <div className="panel-body">
-                { props.children }
-            </div>
-            { props.footer &&
-              <div className="panel-footer">
-                {props.footer}
-              </div>
-            }
-        </div>
-    );
-}
-
 function SmallPanel(props) {
     return (
         <div className="panel panel-default">
@@ -50,6 +26,5 @@ function SmallPanel(props) {
 }
 
 module.exports = {
-    BootstrapPanel : BootstrapPanel,
     SmallPanel: SmallPanel
 }
