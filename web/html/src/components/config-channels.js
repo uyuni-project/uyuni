@@ -4,8 +4,8 @@
 const React = require("react");
 const AceEditor = require("../components/ace-editor").AceEditor;
 const Buttons = require("../components/buttons");
-const Panels = require("../components/panel");
 const { InnerPanel } = require('components/panels/InnerPanel');
+const { PanelRow } = require('components/panels/PanelRow');
 const Fields = require("../components/fields");
 const PopUp = require("../components/popup").PopUp;
 const Messages = require("../components/messages").Messages;
@@ -14,7 +14,6 @@ const Network = require("../utils/network");
 
 const AsyncButton = Buttons.AsyncButton;
 const LinkButton = Buttons.LinkButton;
-const PanelRow = Panels.PanelRow;
 const TextField = Fields.TextField;
 
 function channelKey(channel) {

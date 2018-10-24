@@ -6,26 +6,6 @@
 
 var React = require("react");
 
-class PanelRow extends React.Component {
-
-  constructor(props) {
-    super();
-  }
-
-  render() {
-    return (
-        <div className="row">
-            <span className="col-md-8 pull-right">
-                <span className={this.props.className}>
-                    {this.props.children}
-                </span>
-            </span>
-        </div>
-    );
-  }
-
-}
-
 function BootstrapPanel(props) {
     return (
         <div className="panel panel-default">
@@ -70,7 +50,6 @@ function SmallPanel(props) {
 }
 
 module.exports = {
-    PanelRow : PanelRow,
     BootstrapPanel : BootstrapPanel,
     SmallPanel: SmallPanel
 }
