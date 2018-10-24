@@ -26,39 +26,6 @@ var PanelButton = React.createClass({
   }
 });
 
-class InnerPanel extends React.Component {
-
-  constructor(props) {
-    super();
-  }
-
-  render() {
-    return (
-      <div>
-        <h2>
-          <i className={"fa " +  this.props.icon}></i>
-          {this.props.title}
-        </h2>
-        <div className="spacewalk-section-toolbar">
-          <div className="action-button-wrapper">
-            <div className="btn-group">
-              {this.props.buttons}
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="panel panel-default">
-            <div className="panel-body">
-                {this.props.children}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-}
-
 class PanelRow extends React.Component {
 
   constructor(props) {
@@ -124,7 +91,6 @@ function SmallPanel(props) {
 
 module.exports = {
     PanelButton : PanelButton,
-    InnerPanel : InnerPanel,
     PanelRow : PanelRow,
     BootstrapPanel : BootstrapPanel,
     SmallPanel: SmallPanel
