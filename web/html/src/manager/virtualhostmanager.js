@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Network = require("../utils/network");
-const {Panel} = require("../components/panel");
+const { TopPanel } = require('components/panels/TopPanel');
 const {DropdownButton} = require("../components/buttons");
 const {Messages} = require("../components/messages");
 const {VirtualHostManagerList} = require("./virtualhostmanager-list");
@@ -165,7 +165,7 @@ class VirtualHostManager extends React.Component {
             }
         </div>;
         return (
-            <Panel
+            <TopPanel
                 title={this.getPanelTitle()}
                 icon="spacewalk-icon-virtual-host-manager"
                 button={panelButtons}
@@ -184,7 +184,7 @@ class VirtualHostManager extends React.Component {
                 :
                     <VirtualHostManagerList data={this.state.vhms} onSelect={this.handleDetailsAction} onEdit={this.handleEditAction} onDelete={this.deleteVhm}/>
                 }
-            </Panel>
+            </TopPanel>
         );
     }
 }

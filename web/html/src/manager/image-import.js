@@ -4,7 +4,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {Panel} = require("../components/panel");
+const { TopPanel } = require('components/panels/TopPanel');
 const {Form, Select, Text} = require("../components/input");
 const {SubmitButton, Button} = require("../components/buttons");
 const Network = require("../utils/network");
@@ -245,7 +245,7 @@ class ImageImport extends React.Component {
 
   render() {
     return (
-        <Panel title={t("Import Image")} icon="fa fa-download">
+        <TopPanel title={t("Import Image")} icon="fa fa-download">
         { this.state.messages ?
              <Messages items={this.state.messages}/> :
              null
@@ -290,7 +290,7 @@ class ImageImport extends React.Component {
                     </div>
 
             </Form>
-        </Panel>
+        </TopPanel>
         );
   }
 

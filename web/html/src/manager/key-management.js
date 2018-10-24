@@ -5,7 +5,7 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 const Buttons = require("../components/buttons");
 const AsyncButton = Buttons.AsyncButton;
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
@@ -113,7 +113,7 @@ class KeyManagement extends React.Component {
     </div>;
     return (
       <span>
-        <Panel title={t("Keys")} icon="fa-desktop"
+        <TopPanel title={t("Keys")} icon="fa-desktop"
                button={ panelButtons }
                helpUrl="/rhn/help/reference/en-US/ref.webui.salt.jsp#ref.webui.salt.onboarding">
           <Table
@@ -173,7 +173,7 @@ class KeyManagement extends React.Component {
               cell={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
             />
           </Table>
-        </Panel>
+        </TopPanel>
       </span>
     );
   }

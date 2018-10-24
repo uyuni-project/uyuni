@@ -3,7 +3,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
@@ -375,7 +375,7 @@ class CreateImageProfile extends React.Component {
 
   render() {
     return (
-      <Panel title={this.isEdit() ? t("Edit Image Profile: '" + this.state.initLabel + "'") : t("Create Image Profile")} icon="fa fa-pencil">
+      <TopPanel title={this.isEdit() ? t("Edit Image Profile: '" + this.state.initLabel + "'") : t("Create Image Profile")} icon="fa fa-pencil">
         {this.state.messages}
         <Input.Form model={this.state.model} className="image-profile-form"
           onChange={this.onFormChange}
@@ -395,7 +395,7 @@ class CreateImageProfile extends React.Component {
             </div>
           </div>
         </Input.Form>
-      </Panel>
+      </TopPanel>
     )
   }
 }

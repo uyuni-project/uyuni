@@ -3,7 +3,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {AsyncButton, LinkButton} = require("../components/buttons");
@@ -166,7 +166,7 @@ class BootstrapMinions extends React.Component {
         ];
 
         return (
-        <Panel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="/rhn/help/reference/en-US/ref.webui.systems.bootstrapping.jsp#ref.webui.systems.bootstrapping">
+        <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="/rhn/help/reference/en-US/ref.webui.systems.bootstrapping.jsp#ref.webui.systems.bootstrapping">
             <p>{t('You can add systems to be managed by providing SSH credentials only. SUSE Manager will prepare the system remotely and will perform the registration.')}</p>
             {messages}
             <div className="form-horizontal">
@@ -259,7 +259,7 @@ class BootstrapMinions extends React.Component {
                     </div>
                 </div>
             </div>
-        </Panel>
+        </TopPanel>
         )
     }
 

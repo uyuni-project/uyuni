@@ -4,7 +4,7 @@
 var React = require("react");
 const ReactDOM = require("react-dom");
 
-var Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("../utils/network");
 
 var FormulaDetail = React.createClass({
@@ -62,7 +62,7 @@ var FormulaDetail = React.createClass({
 
     render: function() {
         return (
-        <Panel title={"View Formula: " + formulaName} icon="spacewalk-icon-salt-add">
+        <TopPanel title={"View Formula: " + formulaName} icon="spacewalk-icon-salt-add">
             <form className="form-horizontal">
                 <div className="form-group">
                     <label className="col-md-3 control-label">Name:</label>
@@ -73,7 +73,7 @@ var FormulaDetail = React.createClass({
                 </div>
                 {this.generateMetadata()}
             </form>
-        </Panel>
+        </TopPanel>
         )
     }
 });

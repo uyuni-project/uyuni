@@ -4,10 +4,9 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {Table, Column, SearchField} = require("../components/table");
-const PanelComponent = require("../components/panel");
+const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
-const Panel = PanelComponent.Panel;
 
 var FormulaCatalog = React.createClass({
 
@@ -51,7 +50,7 @@ var FormulaCatalog = React.createClass({
             })}/>;
         }
         return (
-            <Panel title="Formula Catalog" icon="spacewalk-icon-salt-add" helpUrl="/rhn/help/reference/en-US/ref.webui.salt.formula_catalog.jsp">
+            <TopPanel title="Formula Catalog" icon="spacewalk-icon-salt-add" helpUrl="/rhn/help/reference/en-US/ref.webui.salt.formula_catalog.jsp">
             {messages}
             <div>
               <Table
@@ -72,7 +71,7 @@ var FormulaCatalog = React.createClass({
                 />
               </Table>
             </div>
-            </Panel>
+            </TopPanel>
         );
     }
 

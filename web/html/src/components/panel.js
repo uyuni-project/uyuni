@@ -26,35 +26,6 @@ var PanelButton = React.createClass({
   }
 });
 
-// TODO rename this to TopPanel
-var Panel = React.createClass({
-  getInitialState: function() {
-    return {};
-  },
-
-  render: function() {
-    var help = this.props.helpUrl ?
-      (
-        <a href={this.props.helpUrl} target="_blank">
-          <i className="fa fa-question-circle spacewalk-help-link"></i>
-        </a>
-      ) : null;
-
-    return (
-      <div>
-        <div className="spacewalk-toolbar-h1">
-          {this.props.button}
-          <h1>
-            <i className={'fa ' + this.props.icon}></i>{t(this.props.title)}&nbsp;
-            {help}
-          </h1>
-        </div>
-        {this.props.children}
-      </div>
-    );
-  }
-});
-
 class InnerPanel extends React.Component {
 
   constructor(props) {
@@ -152,7 +123,6 @@ function SmallPanel(props) {
 }
 
 module.exports = {
-    Panel : Panel,
     PanelButton : PanelButton,
     InnerPanel : InnerPanel,
     PanelRow : PanelRow,

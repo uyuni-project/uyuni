@@ -1,7 +1,7 @@
 // @flow
 
 const React = require('react');
-const { Panel } = require('components/panel');
+const { TopPanel } = require('components/panels/TopPanel');
 const { GuestProperties } = require('../guest-properties');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 
@@ -44,7 +44,7 @@ class GuestsEdit extends React.Component<Props> {
               return onAction('update', [this.props.guest.uuid], newProperties);
             };
             return (
-              <Panel title={this.props.guest.name} icon="fa spacewalk-icon-virtual-guest">
+              <TopPanel title={this.props.guest.name} icon="fa spacewalk-icon-virtual-guest">
                 <GuestProperties
                   host={this.props.host}
                   submitText={t('Update')}
@@ -52,7 +52,7 @@ class GuestsEdit extends React.Component<Props> {
                   messages={messages}
                   getInitialModel={this.getInitialModel}
                 />
-              </Panel>
+              </TopPanel>
             );
           }
         }

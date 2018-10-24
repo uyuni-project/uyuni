@@ -4,7 +4,7 @@
 const Network = require('../../utils/network');
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Panel = require('../../components/panel').Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const DataTree = require('./data-tree.js');
 const Preprocessing = require('./data-processing/preprocessing.js');
 const UI = require('./ui/components.js');
@@ -229,7 +229,7 @@ const Hierarchy = React.createClass({
     }
 
     return (
-      <Panel title={t(title)} helpUrl={hurl}>
+      <TopPanel title={t(title)} helpUrl={hurl}>
         <button className='toggle-filter-button' onClick={this.showFilters}>
           {t((this.state.showFilters ? 'Hide' : 'Show') + ' filters')}
           <i className={"fa fa-caret-" + (this.state.showFilters ? 'up' : 'down')} aria-hidden="true"></i>
@@ -238,7 +238,7 @@ const Hierarchy = React.createClass({
         <div id='svg-wrapper'>
           <div className='detailBox'></div>
         </div>
-      </Panel>
+      </TopPanel>
     );
   }
 });

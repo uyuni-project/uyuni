@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {LinkButton,AsyncButton} = require("../components/buttons");
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
@@ -158,7 +158,7 @@ class CVEAudit extends React.Component {
   render() {
     return (
       <span>
-        <Panel title="CVE Audit" icon="fa-search" helpUrl="/rhn/help/reference/en-US/ref.webui.audit.jsp#ref.webui.audit.cve">
+        <TopPanel title="CVE Audit" icon="fa-search" helpUrl="/rhn/help/reference/en-US/ref.webui.audit.jsp#ref.webui.audit.cve">
           <Messages items={this.state.messages.map(msg => {
               return {severity: "warning", text: msg};
           })}/>
@@ -328,7 +328,7 @@ class CVEAudit extends React.Component {
                     "&target=" + this.state.resultType +
                     "&statuses=" + this.state.statuses
           }>Download CSV</a>
-        </Panel>
+        </TopPanel>
         Please note that underlying data needed for this audit is updated nightly. If systems were registered very recently or channel subscriptions have been changed in the last 24 hours it is recommended that an <a href="/rhn/admin/BunchDetail.do?label=cve-server-channels-bunch">extra CVE data update</a> is scheduled in order to ensure consistent results.
       </span>
     );

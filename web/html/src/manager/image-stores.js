@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {AsyncButton, LinkButton} = require("../components/buttons");
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
@@ -112,7 +112,7 @@ class ImageStores extends React.Component {
 
     return (
       <span>
-        <Panel title="Image Stores" icon="fa-list" helpUrl="/rhn/help/reference/en-US/ref.webui.images.stores.jsp#ref.webui.images.stores" button={ panelButtons }>
+        <TopPanel title="Image Stores" icon="fa-list" helpUrl="/rhn/help/reference/en-US/ref.webui.images.stores.jsp#ref.webui.images.stores" button={ panelButtons }>
           {this.state.messages}
           <Table
             data={this.state.imagestores}
@@ -166,7 +166,7 @@ class ImageStores extends React.Component {
               />
             }
           </Table>
-        </Panel>
+        </TopPanel>
         <DeleteDialog id="delete-modal"
           title={t("Delete Store")}
           content={<span>{t("Are you sure you want to delete store")} <strong>{this.state.selected ? this.state.selected.label : ''}</strong>?</span>}

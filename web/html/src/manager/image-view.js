@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {AsyncButton, Button} = require("../components/buttons");
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("../utils/network");
 const Utils = require("../utils/functions").Utils;
 const {Table, Column, SearchField} = require("../components/table");
@@ -328,7 +328,7 @@ class ImageView extends React.Component {
 
     return (
       <span>
-        <Panel title={this.state.selected ? this.state.selected.name : t("Images")} helpUrl="/rhn/help/reference/en-US/ref.webui.images.jsp#ref.webui.images.images"
+        <TopPanel title={this.state.selected ? this.state.selected.name : t("Images")} helpUrl="/rhn/help/reference/en-US/ref.webui.images.jsp#ref.webui.images.images"
                icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
           { this.state.messages.length > 0 && <Messages items={this.state.messages}/> }
           { this.state.selected ?
@@ -341,7 +341,7 @@ class ImageView extends React.Component {
               onSelect={this.handleDetailsAction} onDelete={this.deleteImages}
               runtimeInfoEnabled={this.props.runtimeInfoEnabled} gotRuntimeInfo={this.state.gotRuntimeInfo}/>
           }
-        </Panel>
+        </TopPanel>
 
       </span>
     );
