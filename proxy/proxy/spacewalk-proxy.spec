@@ -238,7 +238,7 @@ make -f Makefile.proxy
 
 # Fixing shebang for Python 3
 %if 0%{?build_py3}
-for i in `find . -type f`;
+for i in $(find . -type f);
 do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
