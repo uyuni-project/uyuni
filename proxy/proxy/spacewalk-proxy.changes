@@ -1,3 +1,5 @@
+- Add support for Python 3 on spacewalk-proxy
+
 -------------------------------------------------------------------
 Fri Oct 26 10:33:16 CEST 2018 - jgonzalez@suse.com
 
