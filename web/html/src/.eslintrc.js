@@ -30,6 +30,7 @@ module.exports = {
       }],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "react/destructuring-assignment": "off",
+      "jsx-a11y/label-has-for": "off",
     },
 
     settings: {
