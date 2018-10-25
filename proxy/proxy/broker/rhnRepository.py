@@ -472,8 +472,7 @@ def cache(stringObject, directory, filename, version):
     while tries > 0:
         # Try to create this new file
         try:
-            fd = os.open(tempfile, os.O_WRONLY | os.O_CREAT | os.O_EXCL,
-                         0o644)
+            fd = os.open(tempfile, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
         except OSError as e:
             if e.errno == 17:
                 # File exists; give it another try
