@@ -4,6 +4,7 @@
 const React = require("react");
 const DateTimePicker = require("./datetimepicker").DateTimePicker;
 const Functions = require("../utils/functions");
+const { FormGroup } = require('./input/FormGroup');
 
 class Form extends React.Component {
     constructor(props) {
@@ -391,14 +392,6 @@ const Label = function(props) {
     );
 }
 
-const FormGroup = function(props) {
-    return (
-        <div className={"form-group" + (props.isError ? " has-error" : "")}>
-            {props.children}
-        </div>
-    );
-}
-
 module.exports = {
     Form: Form,
     Text: Text,
@@ -406,6 +399,5 @@ module.exports = {
     Check: Check,
     Select: Select,
     DateTime: DateTime,
-    FormGroup: FormGroup,
     Label: Label
 };

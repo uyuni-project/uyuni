@@ -10,6 +10,7 @@ const Network = require("../utils/network");
 const {SubmitButton, LinkButton} = require("../components/buttons");
 const Functions = require("../utils/functions");
 const Input = require("../components/input");
+const { FormGroup } = require('components/input/FormGroup');
 const {ActionLink, ActionChainLink} = require("../components/links");
 const {ActionSchedule} = require("../components/action-schedule");
 
@@ -284,12 +285,12 @@ class BuildImage extends React.Component {
              onActionChainChanged={this.onActionChainChanged}
              onDateTimeChanged={this.onDateTimeChanged}/>
 
-          <Input.FormGroup>
+          <FormGroup>
             <div className="col-md-offset-3 col-md-9">
               <SubmitButton id="submit-btn" className="btn-success" icon="fa-cogs"
                 text={t("Build")} disabled={this.state.isInvalid}/>
             </div>
-          </Input.FormGroup>
+          </FormGroup>
 
         </Input.Form>
         { this.renderProfileSummary() }

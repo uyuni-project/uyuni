@@ -8,6 +8,7 @@ const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
+const { FormGroup } = require('components/input/FormGroup');
 const Validation = require("../components/validation");
 const Utils = require("../utils/functions").Utils;
 
@@ -319,7 +320,7 @@ class CreateImageProfile extends React.Component {
       const key = customDataKeys.find(k => k.label === d[0]);
 
       return key && (
-        <Input.FormGroup>
+        <FormGroup>
           <Input.Label className="col-md-3" name={key.label}/>
           <div className="col-md-6">
             <div className="input-group">
@@ -340,10 +341,10 @@ class CreateImageProfile extends React.Component {
               </span>
             </div>
           </div>
-        </Input.FormGroup>);
+        </FormGroup>);
     });
 
-    const select = <Input.FormGroup>
+    const select = <FormGroup>
       <Input.Label className="col-md-3" name={t("Custom Info Values")}/>
       <div className="col-md-6">
         <select value="0" onChange={(e) => this.addCustomData(e.target.value)} className="form-control">
@@ -355,7 +356,7 @@ class CreateImageProfile extends React.Component {
           }
         </select>
       </div>
-    </Input.FormGroup>;
+    </FormGroup>;
 
     return [select, fields];
   }
