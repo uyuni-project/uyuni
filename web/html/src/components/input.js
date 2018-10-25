@@ -56,11 +56,7 @@ class Form extends React.Component {
 
         const childrenCount = React.Children.count(children);
 
-        if (childrenCount > 1) {
-            return React.Children.map(children, child => this.renderChild(child));
-        } else if (childrenCount === 1) {
-            return this.renderChild(Array.isArray(children) ? children[0] : children);
-        }
+        return React.Children.map(children, child => this.renderChild(child));
     }
 
     renderChild(child) {
@@ -68,8 +64,11 @@ class Form extends React.Component {
             return child;
         }
 
-        if (child.type && child.type.prototype !== null &&
-                child.type.prototype instanceof _InputBase) {
+        // TODO [LuNeves] [Cedric] After upgrading react to v16 this could be improved with Context:
+        // formPropsProvider and a formPropsConsumer on the component inputBase
+        const fieldTypes = [Text, Password, Check, Select, DateTime];
+        if (child.type && child.type.prototype !== null
+            && fieldTypes.reduce((isField, currentType) => isField || child.type === currentType, false)) {
             let name = child.props && child.props.name;
 
             if (!name) {
@@ -86,9 +85,10 @@ class Form extends React.Component {
 
             newProps.value = this.state.model[name] || "";
 
-            return React.cloneElement(child, newProps);
+            return React.cloneElement(child, Object.assign({}, child.props, newProps), child.props.children);
         } else {
-            return React.cloneElement(child, {}, this.renderChildren(child.props && child.props.children));
+            const renderedChildren = this.renderChildren(child.props && child.props.children);
+            return React.cloneElement(child, child.props, renderedChildren);
         }
     }
 
@@ -180,7 +180,7 @@ class _InputBase extends React.Component {
     componentWillReceiveProps(props) {
         if(!(props.value === this.props.value && props.disabled === this.props.disabled &&
               props.required === this.props.required)) {
-            this.props.validate(this, props);
+            if (this.props.validate) this.props.validate(this, props);
             this.setState({
                 showErrors: false
             });
@@ -188,23 +188,27 @@ class _InputBase extends React.Component {
     }
 
     componentWillMount() {
+      if (this.props.registerInput) {
         this.props.registerInput(this);
+      }
     }
 
     componentWillUnmount() {
+      if (this.props.unregisterInput) {
         this.props.unregisterInput(this);
+      }
     }
 
-    setValue(event) {
-        const name = event.target.name;
-        const value = event.target.value;
-        this.props.onFormChange({
-            name: name,
-            value: value
-        });
+    setValue(name, value) {
+        if (this.props.onFormChange) {
+          this.props.onFormChange({
+              name: name,
+              value: value
+          });
+        }
 
         if(this.props.onChange)
-            this.props.onChange(event);
+            this.props.onChange(name, value);
     }
 
     onBlur() {
@@ -221,10 +225,12 @@ class _InputBase extends React.Component {
             <FormGroup isError={isError}>
                 { this.props.label && <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/> }
                 <div className={this.props.divClass}>
-                    <input className={"form-control" + (this.props.inputClass ? " " + this.props.inputClass : "")}
-                            type={this.type} name={this.props.name} value={this.props.value}
-                            onChange={this.setValue.bind(this)} disabled={this.props.disabled}
-                            onBlur={this.onBlur.bind(this)} placeholder={this.props.placeholder}/>
+                    {
+                      this.props.children({
+                        setValue: this.setValue.bind(this),
+                        onBlur: this.onBlur.bind(this),
+                      })
+                    }
                     { hint &&
                         <div className="help-block">
                             {hint}
@@ -236,128 +242,143 @@ class _InputBase extends React.Component {
     }
 }
 
-class Text extends _InputBase {
-    constructor(props) {
-        super(props);
-        this.type = this.props.type || "text";
-    }
+function Text(props) {
+  const {
+    type,
+    placeholder,
+    inputClass,
+    ...propsToPass
+  } = props;
+  return (
+    <_InputBase {...propsToPass}>
+      {
+        ({
+          setValue,
+          onBlur,
+        }) => {
+          const onChange = (event: Object) => {
+            setValue(event.target.name, event.target.value);
+          };
+          return (
+            <input
+              className={`form-control${inputClass ? ` ' ${inputClass}` : ''}`}
+              type={type || "text"}
+              name={props.name}
+              value={props.value}
+              onChange={onChange}
+              disabled={props.disabled}
+              onBlur={onBlur}
+              placeholder={placeholder}
+            />
+          );
+        }
+      }
+    </_InputBase>
+  );
 }
 
-class Password extends _InputBase {
-    constructor(props) {
-        super(props);
-        this.type = "password";
-    }
+function Password(props) {
+  return (<Text type="password" {...props} />);
 }
 
-class Check extends _InputBase {
-    constructor(props) {
-        super(props);
-    }
-
-    setChecked(event) {
-        const name = event.target.name;
-        const value = event.target.checked;
-        this.props.onFormChange({
-            name: name,
-            value: value
-        });
-
-        if(this.props.onChange)
-            this.props.onChange(event);
-    }
-
-    render() {
-        const isError = this.state.showErrors && !this.state.isValid;
-        const invalidHint = isError && this.props.invalidHint;
-        const hint = [this.props.hint, (invalidHint && this.props.hint && <br/>), invalidHint];
-        return (
-            <FormGroup isError={isError}>
-                <div className={this.props.divClass}>
-                    <div className="checkbox">
-                        <label>
-                            <input className={this.props.inputClass} name={this.props.name}
-                                    type="checkbox" checked={this.props.value}
-                                    onChange={this.setChecked.bind(this)} onBlur={this.onBlur.bind(this)}
-                                    disabled={this.props.disabled}/>
-                            <span>{this.props.label}</span>
-                        </label>
-                    </div>
-                    { hint &&
-                        <div className="help-block">
-                            {hint}
-                        </div>
-                    }
-                </div>
-            </FormGroup>
-        );
-    }
+function Check(props) {
+  const {
+    label,
+    inputClass,
+    ...propsToPass
+  } = props;
+  return (
+    <_InputBase {...propsToPass}>
+      {
+        ({
+          setValue,
+          onBlur,
+        }) => {
+          const setChecked = (event)  => {
+            setValue(event.target.name, event.target.checked);
+          };
+          return (
+            <div className="checkbox">
+                <label>
+                    <input
+                      className={inputClass}
+                      name={props.name}
+                      type="checkbox"
+                      checked={props.value}
+                      onChange={setChecked}
+                      onBlur={onBlur}
+                      disabled={props.disabled}
+                    />
+                    <span>{label}</span>
+                </label>
+            </div>
+          );
+        }
+      }
+    </_InputBase>
+  );
 }
 
-class Select extends _InputBase {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        const isError = this.state.showErrors && !this.state.isValid;
-        const invalidHint = isError && this.props.invalidHint;
-        const hasHint = this.props.hint || invalidHint;
-        const hint = [this.props.hint, (invalidHint && this.props.hint && <br/>), invalidHint];
-        return (
-            <FormGroup isError={isError}>
-                { this.props.label && <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/> }
-                <div className={this.props.divClass}>
-                    <select className={"form-control" + (this.props.inputClass ? " " + this.props.inputClass : "")}
-                            name={this.props.name} disabled={this.props.disabled} value={this.props.value}
-                            onBlur={this.onBlur.bind(this)} onChange={this.setValue.bind(this)}>
-                        {this.props.children}
-                    </select>
-                    { hasHint &&
-                        <div className="help-block">
-                            {hint}
-                        </div>
-                    }
-                </div>
-            </FormGroup>
-        );
-    }
+function Select(props) {
+  const {
+    inputClass,
+    children,
+    ...propsToPass
+  } = props;
+  return (
+    <_InputBase {...propsToPass}>
+      {
+        ({
+          setValue,
+          onBlur,
+        }) => {
+          const onChange = (event: Object) => {
+            setValue(event.target.name, event.target.value);
+          };
+          return (
+            <select
+              className={`form-control${inputClass ? ` ${inputClass}` : ''}`}
+              name={props.name}
+              disabled={props.disabled}
+              value={props.value}
+              onBlur={onBlur}
+              onChange={onChange}
+            >
+              {children}
+            </select>
+          );
+        }
+      }
+    </_InputBase>
+  );
 }
 
-class DateTime extends _InputBase {
-    constructor(props) {
-        super(props);
-    }
-
-    setValue(value) {
-        const name = this.props.name;
-        this.props.onFormChange({
-            name: name,
-            value: value
-        });
-
-        if(this.props.onChange)
-            this.props.onChange(value);
-    }
-
-    render() {
-        const isError = this.state.showErrors && !this.state.isValid;
-        const invalidHint = isError && this.props.invalidHint;
-        const hint = [this.props.hint, (invalidHint && this.props.hint && <br/>), invalidHint];
-        return (
-            <FormGroup isError={isError}>
-                { this.props.label && <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/> }
-                <div className={this.props.divClass}>
-                    <DateTimePicker onChange={this.setValue.bind(this)} value={this.props.value} timezone={this.props.timezone} />
-                    { hint &&
-                        <div className="help-block">
-                            {hint}
-                        </div>
-                    }
-                </div>
-            </FormGroup>
-        );
-    }
+function DateTime(props) {
+  const {
+    timezone,
+    ...propsToPass
+  } = props;
+  return (
+    <_InputBase {...propsToPass}>
+      {
+        ({
+          setValue,
+          onBlur,
+        }) => {
+          const onChange = (value) => {
+            setValue(props.name, value);
+          };
+          return (
+            <DateTimePicker
+              onChange={onChange}
+              value={props.value}
+              timezone={timezone}
+            />
+          );
+        }
+      }
+    </_InputBase>
+  );
 }
 
 const Label = function(props) {
