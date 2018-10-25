@@ -19,12 +19,12 @@ if __name__ == '__main__':
 
     try:
         from PackageManager import rhn_package_manager
-    except ImportError, e:
+    except ImportError as e:
         sys.stderr.write("Unable to find package management libraries.\n"
                          "Path not correct? '%s'\n" % LIBPATH)
         raise
 
     try:
         rhn_package_manager.main()
-    except SystemExit, e:
+    except SystemExit as e:
         sys.exit(e.code)
