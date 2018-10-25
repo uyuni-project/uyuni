@@ -1,3 +1,6 @@
+- add new option --with-parent-channel to mgr-create-bootrap-repo
+  to specify parent channel to use if multiple options are available
+  (bsc#1104487)
 - add support for postgresql10 (FATE#325659)
 - bootstrap repos for SLE12 SP4 (bsc#1107117)
 - add support for Python 3
