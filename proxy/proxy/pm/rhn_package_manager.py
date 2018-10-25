@@ -210,7 +210,7 @@ class UploadClass(uploadLib.UploadClass):
                                     "channel.xml.gz")
             if not os.access(xml_path, os.R_OK):
                 self.warn(0, "Could not find metadata for channel %s, skipping..." % channel)
-                print("Could not find metadata for channel %s, skipping..." % channel)
+                print("Could not find metadata for channel {}, skipping...".format(channel))
                 continue
             dom = minidom.parse(gzip.open(xml_path))
             # will only ever be the one
