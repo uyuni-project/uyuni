@@ -21,6 +21,12 @@
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
+%if 0%{?suse_version} > 1320
+# SLE15 builds on Python 3
+%global build_py3   1
+%endif
+%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
+
 Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
@@ -30,15 +36,14 @@ Release:        1%{?dist}
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  python
+BuildRequires:  %{pythonX}
 BuildArch:      noarch
 Requires:       httpd
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python2-pylint
 %endif
 BuildRequires:  mgr-push >= 4.0.0
-# proxy isn't Python 3 yet
-BuildRequires:  python2-mgr-push
+BuildRequires:  %{pythonX}-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
 BuildRequires:  spacewalk-backend-libs >= 1.7.24
 
@@ -54,6 +59,8 @@ BuildRequires:  spacewalk-backend-libs >= 1.7.24
 %define apache_user apache
 %define apache_group apache
 %endif
+
+%define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 
 %description
 This package is never built.
@@ -184,14 +191,14 @@ Spacewalk Proxy components.
 %package package-manager
 Summary:        Custom Channel Package Manager for the Spacewalk Proxy Server
 Group:          Applications/Internet
-Requires:       python
+Requires:       %{pythonX}
 Requires:       rhnlib >= 2.5.56
 Requires:       mgr-push >= 4.0.0
 Requires:       spacewalk-backend >= 1.7.24
 # proxy isn't Python 3 yet
-Requires:       python2-mgr-push
+Requires:       %{pythonX}-mgr-push
 BuildRequires:  /usr/bin/docbook2man
-BuildRequires:  python-devel
+BuildRequires:  %{pythonX}-devel
 Obsoletes:      rhn_package_manager < 5.3.0
 Obsoletes:      rhns-proxy-package-manager < 5.3.0
 
@@ -224,10 +231,18 @@ Conflicts:      rhns-satellite-tools
 A ZeroMQ Proxy for Salt Minions
 
 %prep
-%setup -q
+%setup -q -n spacewalk-proxy-devel
 
 %build
 make -f Makefile.proxy
+
+# Fixing shebang for Python 3
+%if 0%{?build_py3}
+for i in `find . -type f`;
+do
+    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+done
+%endif
 
 %install
 make -f Makefile.proxy install PREFIX=$RPM_BUILD_ROOT
@@ -246,9 +261,15 @@ touch $RPM_BUILD_ROOT/%{httpdconf}/cobbler-proxy.conf
 
 ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 
+
 pushd %{buildroot}
-find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+%if !0%{?build_py3}
+find -name '*.py' -print0 | xargs -0 %{pythonX} %py_libdir/py_compile.py
+%else
+%py3_compile -O %{buildroot}
+%endif
 popd
+
 
 install -m 0750 salt-broker/salt-broker %{buildroot}/%{_bindir}/
 mkdir -p %{buildroot}/%{_sysconfdir}/salt/
@@ -266,7 +287,7 @@ install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
-spacewalk-python2-pylint $RPM_BUILD_ROOT/usr/share/rhn
+spacewalk-%{pythonX}-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %endif
 
 %post broker
@@ -291,9 +312,9 @@ if [ -f $RHN_CONFIG_PY ] ; then
     # Check whether the config command supports the ability to retrieve a
     # config variable arbitrarily.  Versions of  < 4.0.6 (rhn) did not.
 
-    python $RHN_CONFIG_PY proxy.broker > /dev/null 2>&1
+    %{pythonX} $RHN_CONFIG_PY proxy.broker > /dev/null 2>&1
     if [ $? -eq 1 ] ; then
-        RHN_PKG_DIR=$(python $RHN_CONFIG_PY get proxy.broker pkg_dir)
+        RHN_PKG_DIR=$(%{pythonX} $RHN_CONFIG_PY get proxy.broker pkg_dir)
     fi
 fi
 
@@ -414,6 +435,12 @@ fi
 %if 0%{?suse_version}
 %dir %{destdir}/broker
 %endif
+%if 0%{?build_py3}
+%dir %{destdir}/__pycache__/
+%dir %{destdir}/broker/__pycache__/
+%{destdir}/__pycache__/*
+%{destdir}/broker/__pycache__/*
+%endif
 
 %files redirect
 %defattr(-,root,root)
@@ -426,6 +453,10 @@ fi
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_redirect.conf
 %if 0%{?suse_version}
 %dir %{destdir}/redirect
+%endif
+%if 0%{?build_py3}
+%dir %{destdir}/redirect/__pycache__/
+%{destdir}/redirect/__pycache__/*
 %endif
 
 %files common
@@ -464,6 +495,10 @@ fi
 %attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
 %attr(755,root,root) %dir %{_var}/lib/spacewalk
 %endif
+%if 0%{?build_py3}
+%dir %{rhnroot}/wsgi/__pycache__/
+%{rhnroot}/wsgi/__pycache__/*
+%endif
 
 %files package-manager
 %defattr(-,root,root)
@@ -475,6 +510,10 @@ fi
 %{_mandir}/man8/rhn_package_manager.8.gz
 %if 0%{?suse_version}
 %dir %{rhnroot}/PackageManager
+%endif
+%if 0%{?build_py3}
+%dir %{rhnroot}/PackageManager/__pycache__/
+%{rhnroot}/PackageManager/__pycache__/*
 %endif
 
 %files management
