@@ -163,12 +163,18 @@ Then(/^the PXE default profile should be disabled$/) do
 end
 
 When(/^I reboot the JeOS minion$/) do
+  # we might have no or any IPv4 address on that machine
+  # convert MAC address to IPv6 link-local address
+  mac = $jeos_mac.tr(':', '')
+  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
+  STDOUT.puts "Rebooting #{ipv6}..."
   file = 'reboot-jeos.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/tmp/" + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file}")
+  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
 When(/^I install the GPG key of the server on the JeOS minion$/) do
