@@ -231,7 +231,7 @@ Conflicts:      rhns-satellite-tools
 A ZeroMQ Proxy for Salt Minions
 
 %prep
-%setup -q -n spacewalk-proxy-devel
+%setup -q
 
 %build
 make -f Makefile.proxy
