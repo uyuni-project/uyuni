@@ -187,6 +187,14 @@ Inside of the testsuite, the scenarios that are tagged with
 ```
 are executed only when there is a private network.
 
+
+#### JeOS minion
+
+The JeOS minion can be reached only from the proxy and
+via the private network. The proxy reboots it through SSH
+and then triggers a complete reinstallation
+with the help of PXE.
+
 If you do not want a JeOS minion, do not define `JEOSMAC`
 environment variable before you run the testsuite. That's all.
 If you want a JeOS minion, make this variable contain
@@ -196,18 +204,17 @@ export JEOSMAC=52:54:00:01:02:03
 ```
 and then run the testsuite.
 
-#### JeOS minion
-
-The JeOS minion can be reached only from the proxy and
-via the private network. It has a fixed IP address and
-domain name:
-`192.168.5.4` and `terminal.example.org`.
-
-This is needed to be able to reboot it and then
-to trigger a complete reinstallation with help of PXE.
-
-Summaform cannot prepare yet the JeOS virtual machine.
-This is work in progress (github issue #5952).
+Sumaform declares the `$JEOSMAC`
+variable on the controller (in `/root/.bashrc`).
+To create the JeOS minion in your `main.tf` file, add a line to the controller
+declaration that looks like:
+```
+jeos_configuration = "${module.pxe_boot.configuration}
+```
+The module defining the JeOS minion is declared accordingly to the "PXE boot"
+chapter of the
+[advanced instructions](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md)
+for sumaform.
 
 Inside of the testsuite, the scenarios that are tagged with
 ```
