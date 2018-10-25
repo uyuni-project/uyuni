@@ -6,6 +6,7 @@ const ReactDOM = require("react-dom");
 const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
 const { FormGroup } = require('components/input/FormGroup');
+const { Label } = require('components/input/Label');
 const Network = require("../utils/network");
 const {Messages} = require("../components/messages");
 const MessagesUtils = require("../components/messages").Utils;
@@ -248,7 +249,7 @@ class VirtualHostManagerEdit extends React.Component {
             <div>
                 <Input.Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
                 <FormGroup>
-                    <Input.Label name={t("Kubeconfig file")} className="col-md-3" required={!this.isEdit()}/>
+                    <Label name={t("Kubeconfig file")} className="col-md-3" required={!this.isEdit()}/>
                     <div className="col-md-6">
                         <input name="module_kubeconfig" type="file" onChange={this.handleKubeconfigUpload} className="col-md-6" />
                     </div>

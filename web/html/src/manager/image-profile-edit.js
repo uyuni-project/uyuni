@@ -9,6 +9,7 @@ const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
 const { FormGroup } = require('components/input/FormGroup');
+const { Label } = require('components/input/Label');
 const Validation = require("../components/validation");
 const Utils = require("../utils/functions").Utils;
 
@@ -321,7 +322,7 @@ class CreateImageProfile extends React.Component {
 
       return key && (
         <FormGroup>
-          <Input.Label className="col-md-3" name={key.label}/>
+          <Label className="col-md-3" name={key.label}/>
           <div className="col-md-6">
             <div className="input-group">
               <input name={key.label} className="form-control input-sm" type="text" value={this.state.customData[key.label]}
@@ -345,7 +346,7 @@ class CreateImageProfile extends React.Component {
     });
 
     const select = <FormGroup>
-      <Input.Label className="col-md-3" name={t("Custom Info Values")}/>
+      <Label className="col-md-3" name={t("Custom Info Values")}/>
       <div className="col-md-6">
         <select value="0" onChange={(e) => this.addCustomData(e.target.value)} className="form-control">
           <option key="0" disabled="disabled">{t("Create additional custom info values")}</option>

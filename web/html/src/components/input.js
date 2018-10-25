@@ -5,6 +5,7 @@ const React = require("react");
 const DateTimePicker = require("./datetimepicker").DateTimePicker;
 const Functions = require("../utils/functions");
 const { FormGroup } = require('./input/FormGroup');
+const { Label } = require('./input/Label');
 
 class Form extends React.Component {
     constructor(props) {
@@ -382,16 +383,6 @@ function DateTime(props) {
   );
 }
 
-const Label = function(props) {
-    return (
-        <label className={"control-label" + (props.className ? " " + props.className : "")}>
-            {props.name}
-            { props.required ? <span className="required-form-field"> *</span> : undefined }
-            :
-        </label>
-    );
-}
-
 module.exports = {
     Form: Form,
     Text: Text,
@@ -399,5 +390,4 @@ module.exports = {
     Check: Check,
     Select: Select,
     DateTime: DateTime,
-    Label: Label
 };
