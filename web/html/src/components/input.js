@@ -4,8 +4,7 @@
 const React = require("react");
 const DateTimePicker = require("./datetimepicker").DateTimePicker;
 const Functions = require("../utils/functions");
-const { FormGroup } = require('./input/FormGroup');
-const { Label } = require('./input/Label');
+const { InputBase } = require('./input/InputBase');
 
 class Form extends React.Component {
     constructor(props) {
@@ -170,80 +169,6 @@ class Form extends React.Component {
     }
 }
 
-class _InputBase extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isValid: true,
-            showErrors: false
-        };
-    }
-
-    componentWillReceiveProps(props) {
-        if(!(props.value === this.props.value && props.disabled === this.props.disabled &&
-              props.required === this.props.required)) {
-            if (this.props.validate) this.props.validate(this, props);
-            this.setState({
-                showErrors: false
-            });
-        }
-    }
-
-    componentWillMount() {
-      if (this.props.registerInput) {
-        this.props.registerInput(this);
-      }
-    }
-
-    componentWillUnmount() {
-      if (this.props.unregisterInput) {
-        this.props.unregisterInput(this);
-      }
-    }
-
-    setValue(name, value) {
-        if (this.props.onFormChange) {
-          this.props.onFormChange({
-              name: name,
-              value: value
-          });
-        }
-
-        if(this.props.onChange)
-            this.props.onChange(name, value);
-    }
-
-    onBlur() {
-        this.setState({
-            showErrors: true
-        });
-    }
-
-    render() {
-        const isError = this.state.showErrors && !this.state.isValid;
-        const invalidHint = isError && this.props.invalidHint;
-        const hint = [this.props.hint, (invalidHint && this.props.hint && <br/>), invalidHint];
-        return (
-            <FormGroup isError={isError}>
-                { this.props.label && <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/> }
-                <div className={this.props.divClass}>
-                    {
-                      this.props.children({
-                        setValue: this.setValue.bind(this),
-                        onBlur: this.onBlur.bind(this),
-                      })
-                    }
-                    { hint &&
-                        <div className="help-block">
-                            {hint}
-                        </div>
-                    }
-                </div>
-            </FormGroup>
-        );
-    }
-}
-
 function Text(props) {
   const {
     type,
@@ -252,7 +177,7 @@ function Text(props) {
     ...propsToPass
   } = props;
   return (
-    <_InputBase {...propsToPass}>
+    <InputBase {...propsToPass}>
       {
         ({
           setValue,
@@ -275,7 +200,7 @@ function Text(props) {
           );
         }
       }
-    </_InputBase>
+    </InputBase>
   );
 }
 
@@ -290,7 +215,7 @@ function Check(props) {
     ...propsToPass
   } = props;
   return (
-    <_InputBase {...propsToPass}>
+    <InputBase {...propsToPass}>
       {
         ({
           setValue,
@@ -317,7 +242,7 @@ function Check(props) {
           );
         }
       }
-    </_InputBase>
+    </InputBase>
   );
 }
 
@@ -328,7 +253,7 @@ function Select(props) {
     ...propsToPass
   } = props;
   return (
-    <_InputBase {...propsToPass}>
+    <InputBase {...propsToPass}>
       {
         ({
           setValue,
@@ -351,7 +276,7 @@ function Select(props) {
           );
         }
       }
-    </_InputBase>
+    </InputBase>
   );
 }
 
@@ -361,7 +286,7 @@ function DateTime(props) {
     ...propsToPass
   } = props;
   return (
-    <_InputBase {...propsToPass}>
+    <InputBase {...propsToPass}>
       {
         ({
           setValue,
@@ -379,7 +304,7 @@ function DateTime(props) {
           );
         }
       }
-    </_InputBase>
+    </InputBase>
   );
 }
 
