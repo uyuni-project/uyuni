@@ -100,7 +100,7 @@ class Shelf:
             # FIXME: PROBLEM: this rhnFault will never reach the client
             raise rhnFault(1000,
                            _("Spacewalk Proxy error (issues connecting to auth cache). "
-                             "Please contact your system administrator")), None, sys.exc_info()[2]
+                             "Please contact your system administrator")).with_traceback(sys.exc_info()[2])
 
         wfile = sock.makefile("w")
 
@@ -122,7 +122,7 @@ class Shelf:
             # FIXME: PROBLEM: this rhnFault will never reach the client
             raise rhnFault(1000,
                            _("Spacewalk Proxy error (issues connecting to auth cache). "
-                             "Please contact your system administrator")), None, sys.exc_info()[2]
+                             "Please contact your system administrator")).with_traceback(sys.exc_info()[2])
 
         wfile.close()
 
@@ -140,7 +140,7 @@ class Shelf:
             # FIXME: PROBLEM: this rhnFault will never reach the client
             raise rhnFault(1000,
                            _("Spacewalk Proxy error (issues communicating to auth cache). "
-                             "Please contact your system administrator")), None, sys.exc_info()[2]
+                             "Please contact your system administrator")).with_traceback(sys.exc_info()[2])
         except Fault as e:
             rfile.close()
             sock.close()
@@ -169,7 +169,7 @@ class Shelf:
             import new
             _dict = {'args': args}
             # pylint: disable=bad-option-value,nonstandard-exception
-            raise new.instance(getattr(__builtins__, name), _dict), None, sys.exc_info()[2]
+            raise new.instance(getattr(__builtins__, name), _dict).with_traceback(sys.exc_info()[2])
 
         return params[0]
 
