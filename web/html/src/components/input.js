@@ -169,44 +169,6 @@ class Form extends React.Component {
     }
 }
 
-function Check(props) {
-  const {
-    label,
-    inputClass,
-    ...propsToPass
-  } = props;
-  return (
-    <InputBase {...propsToPass}>
-      {
-        ({
-          setValue,
-          onBlur,
-        }) => {
-          const setChecked = (event)  => {
-            setValue(event.target.name, event.target.checked);
-          };
-          return (
-            <div className="checkbox">
-                <label>
-                    <input
-                      className={inputClass}
-                      name={props.name}
-                      type="checkbox"
-                      checked={props.value}
-                      onChange={setChecked}
-                      onBlur={onBlur}
-                      disabled={props.disabled}
-                    />
-                    <span>{label}</span>
-                </label>
-            </div>
-          );
-        }
-      }
-    </InputBase>
-  );
-}
-
 function Select(props) {
   const {
     inputClass,
@@ -271,7 +233,6 @@ function DateTime(props) {
 
 module.exports = {
     Form: Form,
-    Check: Check,
     Select: Select,
     DateTime: DateTime,
 };
