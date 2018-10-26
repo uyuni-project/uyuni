@@ -48,7 +48,7 @@ Feature: Setup SUSE Manager for Retail branch network
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
     And I enter "example.org" in domain name field
-    And I enter the hostname of "proxy" in domain name server field
+    And I enter "192.168.5.254" in domain name server field
     And I enter "eth1" in listen interfaces field
     And I enter "192.168.5.0" in network IP field
     And I enter "255.255.255.0" in network mask field
