@@ -7,6 +7,7 @@ const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
 const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
+const { Text } = require('components/input/Text');
 const Network = require("../utils/network");
 const {Messages} = require("../components/messages");
 const MessagesUtils = require("../components/messages").Utils;
@@ -176,7 +177,7 @@ class VirtualHostManagerEdit extends React.Component {
             return (<Input.Password name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
                             hint={ this.isEdit() ? "Fill this field to change the password." : null }/>);
         } else {
-            return (<Input.Text name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
+            return (<Text name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
                             />);
         }
 
@@ -190,11 +191,11 @@ class VirtualHostManagerEdit extends React.Component {
             .map(param => this.paramField(param, this.state.vhmParams[param]));
 
         fields.unshift(
-            <Input.Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
+            <Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
             );
 
         fields.unshift(
-            <Input.Text name="gathererModule" label={t("Gatherer module")} disabled labelClass="col-md-3" divClass="col-md-6"/>
+            <Text name="gathererModule" label={t("Gatherer module")} disabled labelClass="col-md-3" divClass="col-md-6"/>
             );
         return (
             <div>
@@ -247,7 +248,7 @@ class VirtualHostManagerEdit extends React.Component {
 
         return (
             <div>
-                <Input.Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
+                <Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
                 <FormGroup>
                     <Label name={t("Kubeconfig file")} className="col-md-3" required={!this.isEdit()}/>
                     <div className="col-md-6">

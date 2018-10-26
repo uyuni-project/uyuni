@@ -10,6 +10,7 @@ const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
 const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
+const { Text } = require('components/input/Text');
 const Validation = require("../components/validation");
 const Utils = require("../utils/functions").Utils;
 
@@ -266,7 +267,7 @@ class CreateImageProfile extends React.Component {
     switch (type) {
     case "dockerfile":
       typeInputs.push(
-        <Input.Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/Containers">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/Containers">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(false)
@@ -274,7 +275,7 @@ class CreateImageProfile extends React.Component {
       break;
     case "kiwi":
       typeInputs.push(
-        <Input.Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/OSImage">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/OSImage">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(true)
@@ -383,7 +384,7 @@ class CreateImageProfile extends React.Component {
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
-          <Input.Text name="label" label={t("Label")} required validators={[this.isLabelValid, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
+          <Text name="label" label={t("Label")} required validators={[this.isLabelValid, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
           <Input.Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
             { this.state.imageTypes.map(k =>
               <option key={k} value={k}>{ typeMap[k].name }</option>) }

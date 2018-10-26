@@ -11,6 +11,7 @@ const {SubmitButton, LinkButton} = require("../components/buttons");
 const Functions = require("../utils/functions");
 const Input = require("../components/input");
 const { FormGroup } = require('components/input/FormGroup');
+const { Text } = require('components/input/Text');
 const {ActionLink, ActionChainLink} = require("../components/links");
 const {ActionSchedule} = require("../components/action-schedule");
 
@@ -266,7 +267,7 @@ class BuildImage extends React.Component {
           </Input.Select>
 
           { this.state.profile.imageType === "dockerfile" &&
-            <Input.Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
+            <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
           }
 
           <Input.Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9">

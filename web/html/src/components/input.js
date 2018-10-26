@@ -4,6 +4,7 @@
 const React = require("react");
 const DateTimePicker = require("./datetimepicker").DateTimePicker;
 const Functions = require("../utils/functions");
+const { Text } = require('./input/Text');
 const { InputBase } = require('./input/InputBase');
 
 class Form extends React.Component {
@@ -169,41 +170,6 @@ class Form extends React.Component {
     }
 }
 
-function Text(props) {
-  const {
-    type,
-    placeholder,
-    inputClass,
-    ...propsToPass
-  } = props;
-  return (
-    <InputBase {...propsToPass}>
-      {
-        ({
-          setValue,
-          onBlur,
-        }) => {
-          const onChange = (event: Object) => {
-            setValue(event.target.name, event.target.value);
-          };
-          return (
-            <input
-              className={`form-control${inputClass ? ` ' ${inputClass}` : ''}`}
-              type={type || "text"}
-              name={props.name}
-              value={props.value}
-              onChange={onChange}
-              disabled={props.disabled}
-              onBlur={onBlur}
-              placeholder={placeholder}
-            />
-          );
-        }
-      }
-    </InputBase>
-  );
-}
-
 function Password(props) {
   return (<Text type="password" {...props} />);
 }
@@ -310,7 +276,6 @@ function DateTime(props) {
 
 module.exports = {
     Form: Form,
-    Text: Text,
     Password: Password,
     Check: Check,
     Select: Select,

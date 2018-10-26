@@ -3,7 +3,7 @@
 const React = require('react');
 const { Panel } = require('components/panels/Panel');
 const { Form } = require('components/input');
-const { Text } = require('components/input');
+const { Text } = require('components/input/Text');
 const { SubmitButton, Button } = require('components/buttons');
 const Validation = require('components/validation');
 const { Messages } = require('components/messages');
