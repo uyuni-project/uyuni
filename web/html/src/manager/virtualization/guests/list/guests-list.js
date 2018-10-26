@@ -13,6 +13,7 @@ const { ModalButton } = require('components/dialog/ModalButton');
 const Systems = require('components/systems');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 const { VirtualizationGuestsListRefreshApi } = require('../virtualization-guests-list-refresh-api');
+const { Utils: GuestsListUtils } = require('./guests-list.utils');
 
 const { Utils } = Functions;
 
@@ -36,35 +37,6 @@ type State = {
 };
 
 class GuestsList extends React.Component<Props, State> {
-  static sortByUpdate(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number) {
-    const statusValues = {
-      critical: 0,
-      updates: 1,
-      'actions scheduled': 2,
-      'updates scheduled': 3,
-      up2date: 4,
-      kickstarting: 5,
-      awol: 6,
-      unentitled: 7,
-    };
-    const a = statusValues[aRaw[columnKey]];
-    const b = statusValues[bRaw[columnKey]];
-    return (Math.sign(a - b) || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  }
-
-  static sortByState(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number) {
-    const stateValues = {
-      running: 0,
-      stopped: 1,
-      crashed: 2,
-      paused: 3,
-      unknown: 4,
-    };
-    const a = stateValues[aRaw[columnKey]];
-    const b = stateValues[bRaw[columnKey]];
-    return (Math.sign(a - b) || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  }
-
   static searchData(datum: Object, criteria: string) {
     if (criteria) {
       return datum.name.toLowerCase().includes(criteria.toLowerCase());
@@ -327,7 +299,7 @@ class GuestsList extends React.Component<Props, State> {
                         />
                         <Column
                           columnKey="statusType"
-                          comparator={GuestsList.sortByUpdate}
+                          comparator={GuestsListUtils.sortByUpdate}
                           header={t('Updates')}
                           cell={(row) => {
                             if (row.statusType == null) {
@@ -339,7 +311,7 @@ class GuestsList extends React.Component<Props, State> {
                         <Column
                           columnKey="stateLabel"
                           header={t('State')}
-                          comparator={GuestsList.sortByState}
+                          comparator={GuestsListUtils.sortByState}
                           cell={row => row.stateName}
                         />
                         <Column
