@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Oct 26 10:06:41 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.2-1
 - support mirroring of source packages
 - Make spacewalk-backend code compatible with Python 3
 - Channels to be actually un-subscribed from the assigned systems when being removed
