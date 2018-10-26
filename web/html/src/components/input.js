@@ -169,40 +169,6 @@ class Form extends React.Component {
     }
 }
 
-function Select(props) {
-  const {
-    inputClass,
-    children,
-    ...propsToPass
-  } = props;
-  return (
-    <InputBase {...propsToPass}>
-      {
-        ({
-          setValue,
-          onBlur,
-        }) => {
-          const onChange = (event: Object) => {
-            setValue(event.target.name, event.target.value);
-          };
-          return (
-            <select
-              className={`form-control${inputClass ? ` ${inputClass}` : ''}`}
-              name={props.name}
-              disabled={props.disabled}
-              value={props.value}
-              onBlur={onBlur}
-              onChange={onChange}
-            >
-              {children}
-            </select>
-          );
-        }
-      }
-    </InputBase>
-  );
-}
-
 function DateTime(props) {
   const {
     timezone,
@@ -233,6 +199,5 @@ function DateTime(props) {
 
 module.exports = {
     Form: Form,
-    Select: Select,
     DateTime: DateTime,
 };

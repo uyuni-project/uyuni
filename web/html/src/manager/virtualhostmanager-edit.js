@@ -9,6 +9,7 @@ const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
 const { Password } = require('components/input/Password');
 const { Text } = require('components/input/Text');
+const { Select } = require('components/input/Select');
 const Network = require("../utils/network");
 const {Messages} = require("../components/messages");
 const MessagesUtils = require("../components/messages").Utils;
@@ -239,12 +240,12 @@ class VirtualHostManagerEdit extends React.Component {
     renderKubernetesForm() {
         var contextSelect;
         if (this.state.model.contexts) {
-            contextSelect = <Input.Select name="module_context" label={t("Current Context")} required labelClass="col-md-3" divClass="col-md-6"
+            contextSelect = <Select name="module_context" label={t("Current Context")} required labelClass="col-md-3" divClass="col-md-6"
                 value={this.state.model.module_context}>
                 <option value="">---</option>
             { this.state.model.contexts.map(k => k === "" ? "<default>" : k).map(k =>
                 <option key={k} value={k} selected={k === this.state.model.module_context ? true : null }>{k}</option>) }
-            </Input.Select>
+            </Select>
         }
 
         return (

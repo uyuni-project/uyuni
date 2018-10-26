@@ -11,6 +11,7 @@ const {SubmitButton, LinkButton} = require("../components/buttons");
 const Functions = require("../utils/functions");
 const Input = require("../components/input");
 const { FormGroup } = require('components/input/FormGroup');
+const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
 const {ActionLink, ActionChainLink} = require("../components/links");
 const {ActionSchedule} = require("../components/action-schedule");
@@ -255,7 +256,7 @@ class BuildImage extends React.Component {
           onChange={this.onFormChange} onSubmit={this.onBuild}
           onValidate={this.onValidate} divClass="col-md-7">
 
-          <Input.Select name="profileId" required label={t("Image Profile")}
+          <Select name="profileId" required label={t("Image Profile")}
             onChange={this.handleProfileChange} labelClass="col-md-3"
             divClass="col-md-9" invalidHint={<span>Image Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}>
             <option key="0" disabled="disabled" value="">Select an image profile</option>
@@ -264,20 +265,20 @@ class BuildImage extends React.Component {
                 <option key={k.profileId} value={k.profileId}>{ k.label }</option>
               )
             }
-          </Input.Select>
+          </Select>
 
           { this.state.profile.imageType === "dockerfile" &&
             <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
           }
 
-          <Input.Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9">
+          <Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9">
             <option key="0" disabled="disabled" value="">Select a build host</option>
             {
               this.state.hosts.map(h =>
                 <option key={h.id} value={h.id}>{ h.name }</option>
               )
             }
-          </Input.Select>
+          </Select>
 
           <ActionSchedule timezone={timezone} localTime={localTime}
              earliest={this.state.model.earliest}

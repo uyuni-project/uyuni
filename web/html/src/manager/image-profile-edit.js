@@ -10,6 +10,7 @@ const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
 const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
+const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
 const Validation = require("../components/validation");
 const Utils = require("../utils/functions").Utils;
@@ -250,7 +251,7 @@ class CreateImageProfile extends React.Component {
   renderTypeInputs(type) {
     // Type-dependent inputs
     const typeInputs = [
-      <Input.Select key="imageStore" name="imageStore" label={t("Target Image Store")} required onChange={this.handleImageStoreChange}
+      <Select key="imageStore" name="imageStore" label={t("Target Image Store")} required onChange={this.handleImageStoreChange}
         disabled={type === "kiwi"} labelClass="col-md-3" divClass="col-md-6" hint={this.state.storeUri} invalidHint={
           <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
         }
@@ -261,7 +262,7 @@ class CreateImageProfile extends React.Component {
             <option key={k.id} value={k.label}>{ k.label }</option>
           )
         }
-      </Input.Select>
+      </Select>
     ];
 
     switch (type) {
@@ -304,7 +305,7 @@ class CreateImageProfile extends React.Component {
     );
 
     return (
-      <Input.Select name="activationKey" label={t("Activation Key")}
+      <Select name="activationKey" label={t("Activation Key")}
         onChange={this.handleTokenChange} labelClass="col-md-3" divClass="col-md-6"
         hint={hint} required={isRequired}>
         <option key="0" value="">None</option>
@@ -313,7 +314,7 @@ class CreateImageProfile extends React.Component {
             <option key={k} value={k}>{k}</option>
           )
         }
-      </Input.Select>
+      </Select>
     );
   }
 
@@ -385,10 +386,10 @@ class CreateImageProfile extends React.Component {
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
           <Text name="label" label={t("Label")} required validators={[this.isLabelValid, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
-          <Input.Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
+          <Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
             { this.state.imageTypes.map(k =>
               <option key={k} value={k}>{ typeMap[k].name }</option>) }
-          </Input.Select>
+          </Select>
           { this.renderTypeInputs(this.state.model.imageType) }
           <hr/>
           { this.renderCustomDataFields() }
