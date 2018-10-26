@@ -11,7 +11,7 @@ const UnmatchedProducts =  require("./subscription-matching-unmatched-products")
 const MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
 const MessageContainer = require("../components/messages").Messages;
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const MessagesUtils = require("../components/messages").Utils;
 const Network = require("../utils/network");
 
@@ -72,7 +72,7 @@ const SubscriptionMatching = React.createClass({
               {t("Edit Virtual Host Managers")}
           </a>
         </div>
-        <Panel title={t("Subscription Matching")} icon="spacewalk-icon-subscription-counting" helpUrl="/rhn/help/reference/en-US/ref.webui.audit.subscription.jsp" />
+        <TopPanel title={t("Subscription Matching")} icon="spacewalk-icon-subscription-counting" helpUrl="/rhn/help/reference/en-US/ref.webui.audit.subscription.jsp" />
         <ErrorMessage error={this.state.error} />
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />
         <MatcherRunPanel

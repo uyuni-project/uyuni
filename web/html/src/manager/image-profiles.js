@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {AsyncButton, LinkButton} = require("../components/buttons");
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
@@ -112,7 +112,7 @@ class ImageProfiles extends React.Component {
 
     return (
       <span>
-        <Panel title="Image Profiles" icon="fa-list" helpUrl="/rhn/help/reference/en-US/ref.webui.images.profiles.jsp#ref.webui.images.profiles" button={ panelButtons }>
+        <TopPanel title="Image Profiles" icon="fa-list" helpUrl="/rhn/help/reference/en-US/ref.webui.images.profiles.jsp#ref.webui.images.profiles" button={ panelButtons }>
           {this.state.messages}
           <Table
             data={this.state.imageprofiles}
@@ -172,7 +172,7 @@ class ImageProfiles extends React.Component {
               />
             }
           </Table>
-        </Panel>
+        </TopPanel>
 
         <DeleteDialog id="delete-modal"
           title={t("Delete Profile")}

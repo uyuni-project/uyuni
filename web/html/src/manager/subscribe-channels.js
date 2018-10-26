@@ -11,7 +11,7 @@ const Functions = require("../utils/functions");
 const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
 const {Toggler} = require("../components/toggler");
-const {BootstrapPanel} = require("../components/panel");
+const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("../components/links");
 const ChannelUtils = require("../utils/channels");
 

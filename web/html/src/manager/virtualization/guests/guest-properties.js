@@ -1,7 +1,7 @@
 // @flow
 
 const React = require('react');
-const { SmallPanel } = require('components/panel');
+const { Panel } = require('components/panels/Panel');
 const { Form } = require('components/input');
 const { Text } = require('components/input');
 const { SubmitButton, Button } = require('components/buttons');
@@ -91,7 +91,7 @@ class GuestProperties extends React.Component<Props, State> {
           onChange={this.onChange}
           onSubmit={this.onSubmit}
         >
-          <SmallPanel title={t('General')}>
+          <Panel title={t('General')} headingLevel="h2">
             <Text
               name="memory"
               label={t('Maximum Memory (MiB)')}
@@ -110,7 +110,7 @@ class GuestProperties extends React.Component<Props, State> {
               divClass="col-md-6"
               validators={[Validation.isInt({ gt: 0 })]}
             />
-          </SmallPanel>
+          </Panel>
           <div className="col-md-offset-3 col-md-6">
             <SubmitButton
               id="submit-btn"

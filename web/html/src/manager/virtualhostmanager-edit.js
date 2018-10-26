@@ -3,7 +3,6 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {Panel} = require("../components/panel");
 const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
 const Network = require("../utils/network");

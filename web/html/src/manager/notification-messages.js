@@ -9,8 +9,7 @@ const Network = require("utils/network");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 const {AsyncButton, Button} = require("components/buttons");
-const Panels = require("components/panel");
-const Panel = Panels.Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 
 function reloadData(dataUrlSlice) {
   return Network.get('/rhn/manager/notification-messages/' + dataUrlSlice, "application/json").promise;
@@ -313,7 +312,7 @@ const NotificationMessages = React.createClass({
 
     if (data != null) {
       return  (
-        <Panel title={t("Notification Messages")} icon="fa-envelope">
+        <TopPanel title={t("Notification Messages")} icon="fa-envelope">
           <ErrorMessage error={this.state.error} />
 
           { messages }
@@ -384,14 +383,14 @@ const NotificationMessages = React.createClass({
               }
             />
           </Table>
-        </Panel>
+        </TopPanel>
       );
     }
     else {
       return (
-        <Panel title={t("Notification Messages")} icon="fa-envelope">
+        <TopPanel title={t("Notification Messages")} icon="fa-envelope">
           <ErrorMessage error={this.state.error} />
-        </Panel>
+        </TopPanel>
       );
     }
   }

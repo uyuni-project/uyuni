@@ -3,7 +3,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Panel = require("../components/panel").Panel;
+const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
 const Network = require("../utils/network");
@@ -247,7 +247,7 @@ class BuildImage extends React.Component {
 
   render() {
     return (
-      <Panel title={t("Build Image")} icon="fa fa-cogs" helpUrl="/rhn/help/reference/en-US/ref.webui.images.build.jsp#ref.webui.images.build">
+      <TopPanel title={t("Build Image")} icon="fa fa-cogs" helpUrl="/rhn/help/reference/en-US/ref.webui.images.build.jsp#ref.webui.images.build">
         <Messages items={this.state.messages}/>
         <Input.Form model={this.state.model} className="image-build-form"
           onChange={this.onFormChange} onSubmit={this.onBuild}
@@ -293,7 +293,7 @@ class BuildImage extends React.Component {
 
         </Input.Form>
         { this.renderProfileSummary() }
-      </Panel>
+      </TopPanel>
     )
   }
 }

@@ -9,13 +9,12 @@ const {ActionSchedule} = require("../components/action-schedule");
 const AsyncButton = require("../components/buttons").AsyncButton;
 const {Toggler} = require("../components/toggler");
 const Network = require("../utils/network");
-const Panels = require("../components/panel");
+const { InnerPanel } = require('components/panels/InnerPanel');
 const Functions = require("../utils/functions");
 const Formats = Functions.Formats;
 const {ActionLink, ActionChainLink} = require("../components/links");
 
 const messagesCounterLimit = 3;
-const InnerPanel = Panels.InnerPanel;
 
 function msg(severityIn, textIn) {
     return {severity: severityIn, text: textIn};

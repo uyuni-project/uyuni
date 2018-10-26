@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Buttons = require("../components/buttons");
-const Panels = require("../components/panel");
+const { InnerPanel } = require('components/panels/InnerPanel');
 const Network = require("../utils/network");
 const Fields = require("../components/fields");
 const Messages = require("../components/messages").Messages;
@@ -12,7 +12,6 @@ const MessagesUtils = require("../components/messages").Utils;
 
 const AsyncButton = Buttons.AsyncButton;
 const TextField = Fields.TextField;
-const InnerPanel = Panels.InnerPanel;
 
 const UNMANAGED = {};
 const INSTALLED = {value: 0};
