@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Oct 26 10:35:58 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.2-1
 - Change dependencies from rhncfg to mgr-cfg (bsc#1104034)
 - Add script for retrieving the systemid file in  configure-proxy.sh for minions (FATE#323069)
 - fix wrong paths to scripts; ensure CA can be found
