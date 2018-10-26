@@ -8,6 +8,7 @@ const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
+const { Password } = require('components/input/Password');
 const { Text } = require('components/input/Text');
 const Utils = require("../utils/functions").Utils;
 
@@ -141,7 +142,7 @@ class CreateImageStore extends React.Component {
       return [
         <Input.Check key="useCredentials" name="useCredentials" label={t("Use credentials")} divClass="col-md-6 col-md-offset-3"/>,
         <Text key="username" name="username" label={t("Username")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>,
-        <Input.Password key="password" name="password" label={t("Password")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>
+        <Password key="password" name="password" label={t("Password")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>
       ];
     case "os_image":
       // No type-specific input for Kiwi image store

@@ -7,6 +7,7 @@ const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
 const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
+const { Password } = require('components/input/Password');
 const { Text } = require('components/input/Text');
 const Network = require("../utils/network");
 const {Messages} = require("../components/messages");
@@ -174,7 +175,7 @@ class VirtualHostManagerEdit extends React.Component {
     paramField(name, defaultValue) {
         let required = this.isEdit() ? name != "password" && name != "username" : true;
         if (name.toLowerCase() === "password") {
-            return (<Input.Password name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
+            return (<Password name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
                             hint={ this.isEdit() ? "Fill this field to change the password." : null }/>);
         } else {
             return (<Text name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"

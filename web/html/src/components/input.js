@@ -4,7 +4,6 @@
 const React = require("react");
 const DateTimePicker = require("./datetimepicker").DateTimePicker;
 const Functions = require("../utils/functions");
-const { Text } = require('./input/Text');
 const { InputBase } = require('./input/InputBase');
 
 class Form extends React.Component {
@@ -170,10 +169,6 @@ class Form extends React.Component {
     }
 }
 
-function Password(props) {
-  return (<Text type="password" {...props} />);
-}
-
 function Check(props) {
   const {
     label,
@@ -276,7 +271,6 @@ function DateTime(props) {
 
 module.exports = {
     Form: Form,
-    Password: Password,
     Check: Check,
     Select: Select,
     DateTime: DateTime,
