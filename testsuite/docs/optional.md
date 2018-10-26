@@ -151,16 +151,16 @@ to the controller declaration that looks like:
 git_profiles_repo="https://github.com#mybranch:myprofiles"
 ```
 
-
 ### Testing SUSE Manager for Retail
 
 Testing SUSE Manager for Retail is optional. To test it, you need:
 * a private network;
-* a JeOS minion.
+* a PXE boot minion.
 
-The JeOS minion will reside in the private network only.
+The PXE boot minion will reside in the private network only.
 The proxy will route between the private network and the
 outer world.
+
 
 #### Private network
 
@@ -188,36 +188,36 @@ Inside of the testsuite, the scenarios that are tagged with
 are executed only when there is a private network.
 
 
-#### JeOS minion
+#### PXE boot minion
 
-The JeOS minion can be reached only from the proxy and
-via the private network. The proxy reboots it through SSH
-and then triggers a complete reinstallation
+The PXE boot minion can be reached only from the proxy and
+via the private network. The proxy reboots this minion
+through SSH and then triggers a complete reinstallation
 with the help of PXE.
 
-If you do not want a JeOS minion, do not define `JEOSMAC`
+If you do not want a PXE boot minion, do not define `PXEBOOTMAC`
 environment variable before you run the testsuite. That's all.
-If you want a JeOS minion, make this variable contain
-the MAC address of the JeOS minion:
+If you want a PXE boot minion, make this variable contain
+the MAC address of the PXE boot minion:
 ```bash
-export JEOSMAC=52:54:00:01:02:03
+export PXEBOOTMAC=52:54:00:01:02:03
 ```
 and then run the testsuite.
 
-Sumaform declares the `$JEOSMAC`
+Sumaform declares the `$PXEBOOTMAC`
 variable on the controller (in `/root/.bashrc`).
-To create the JeOS minion in your `main.tf` file, add a line to the controller
-declaration that looks like:
+To create the PXE boot minion in your `main.tf` file, add a line
+to the controller declaration that looks like:
 ```
-jeos_configuration = "${module.pxe_boot.configuration}
+pxeboot_configuration = "${module.pxeboot.configuration}
 ```
-The module defining the JeOS minion is declared accordingly to the "PXE boot"
-chapter of the
+The module defining the PXE boot minion is declared accordingly to the
+"PXE boot hosts" chapter of the
 [advanced instructions](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md)
 for sumaform.
 
 Inside of the testsuite, the scenarios that are tagged with
 ```
-@jeos_minion
+@pxeboot_minion
 ```
-are executed only if the JeOS minion is available.
+are executed only if the PXE boot minion is available.

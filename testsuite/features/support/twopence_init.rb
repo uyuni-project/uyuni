@@ -11,6 +11,7 @@ raise 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 raise 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
+warn 'PXE boot MAC address variable empty' if ENV['PXEBOOTMAC'].nil?
 
 # Define twopence objects
 $client = Twopence.init("ssh:#{ENV['CLIENT']}")
@@ -67,12 +68,12 @@ def get_target(host)
 end
 
 # This function gets the system name, as displayed in systems list
-# * for the usual clients, it is the full hostname, e.g. ebi2-centos.tf.local
+# * for the usual clients, it is the full hostname, e.g. hmu-centos.tf.local
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 def get_system_name(host)
-  if host == 'jeos-minion'
-    # The JeOS minion is not directly accessible on the network,
+  if host == 'pxeboot-minion'
+    # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
     system_name = output.split.find { |word| word =~ /example.Intel-Genuine-None-/ }
@@ -110,7 +111,7 @@ end
 
 # Other global variables
 $sle15_minion = minion_is_sle15
-$jeos_mac = ENV['JEOSMAC']
+$pxeboot_mac = ENV['PXEBOOTMAC']
 $private_net = !ENV['PRIVATENET'].nil?
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']

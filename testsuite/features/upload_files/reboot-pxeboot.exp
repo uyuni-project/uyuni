@@ -4,9 +4,9 @@ spawn /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $
 match_max 100000
 expect "*?assword:*"
 send -- "linux\r"
-expect "jeos:*"
+expect "#"
 send -- "touch /intact\r"
-expect "jeos:*"
+expect "#"
 send -- "reboot\r"
-expect "jeos:*"
+expect "#"
 puts "\r"

@@ -160,8 +160,8 @@ Then(/^"(.*?)" should be registered$/) do |host|
   assert_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
 end
 
-Then(/^the JeOS minion should have been reformatted$/) do
-  system_name = get_system_name('jeos-minion')
+Then(/^the PXE boot minion should have been reformatted$/) do
+  system_name = get_system_name('pxeboot-minion')
   output, _code = $server.run("salt #{system_name} file.file_exists /intact")
   raise 'Minion is intact' unless output.include? 'False'
 end
@@ -409,8 +409,8 @@ When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
-  if host == 'jeos-minion'
-    mac = $jeos_mac
+  if host == 'pxeboot-minion'
+    mac = $pxeboot_mac
   else
     node = get_target(host)
     output, _code = node.run("ip link show dev eth1")
