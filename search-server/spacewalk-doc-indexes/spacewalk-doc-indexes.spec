@@ -20,7 +20,7 @@
 %define crawl_output crawl_output
 
 Name:           spacewalk-doc-indexes
-Version:        4.0.1
+Version:        4.0.2
 Release:        1%{?dist}
 Summary:        Lucene indexes of help documentation for spacewalk
 License:        GPL-2.0-only AND Apache-2.0
