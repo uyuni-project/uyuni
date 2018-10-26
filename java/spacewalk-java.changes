@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Fri Oct 26 10:29:32 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.2-1
+- Reschedule taskomatic jobs if task threads limit reached (bsc#1096511)
 - Require openJDK in all cases, as IBM JDK will not be available at SLE15
 - Add missing jar dependency 'xalan-j2-serializer'
 - Modify acls: hide 'System details -> Groups and Formulas' tab for non-minions with bootstrap entitlement
