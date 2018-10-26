@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Oct 26 10:51:55 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.2-1
 - Add index for HW address on network interface
 - added kickstart distribution data for RHEL 8
 - check valid postgresql database version
