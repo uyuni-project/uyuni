@@ -2,7 +2,6 @@
 'use strict';
 
 const React = require("react");
-const DateTimePicker = require("./datetimepicker").DateTimePicker;
 const Functions = require("../utils/functions");
 const { InputBase } = require('./input/InputBase');
 
@@ -169,35 +168,6 @@ class Form extends React.Component {
     }
 }
 
-function DateTime(props) {
-  const {
-    timezone,
-    ...propsToPass
-  } = props;
-  return (
-    <InputBase {...propsToPass}>
-      {
-        ({
-          setValue,
-          onBlur,
-        }) => {
-          const onChange = (value) => {
-            setValue(props.name, value);
-          };
-          return (
-            <DateTimePicker
-              onChange={onChange}
-              value={props.value}
-              timezone={timezone}
-            />
-          );
-        }
-      }
-    </InputBase>
-  );
-}
-
 module.exports = {
     Form: Form,
-    DateTime: DateTime,
 };

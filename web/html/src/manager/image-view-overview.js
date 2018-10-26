@@ -9,6 +9,7 @@ const {ModalLink} = require("../components/dialog/ModalLink");
 const {DeleteDialog} = require("../components/dialog/DeleteDialog");
 const PopUp = require("../components/popup").PopUp;
 const Input = require("../components/input");
+const { DateTime: InputDateTime } = require('components/input/DateTime');
 const Functions = require("../utils/functions");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
@@ -477,7 +478,7 @@ class BuildDialog extends React.Component {
               <p>Schedule a rebuild for image: <strong>{this.props.data.name + ":" + this.props.data.version}</strong> on <strong>{this.props.data.buildServer.name}</strong></p>
               <Input.Form model={this.state.model} className="image-build-form"
                 onChange={this.onChange.bind(this)} divClass="col-md-12">
-                <Input.DateTime name="earliest" required timezone={timezone} />
+                <InputDateTime name="earliest" required timezone={timezone} />
               </Input.Form>
             </div>
 
@@ -536,7 +537,7 @@ class InspectDialog extends React.Component {
               <p>Schedule an inspect for image: <strong>{this.props.data.name + ":" + this.props.data.version}</strong> on <strong>{this.props.data.buildServer.name}</strong></p>
               <Input.Form model={this.state.model} className="image-inspect-form"
                 onChange={this.onChange.bind(this)} divClass="col-md-12">
-                <Input.DateTime name="earliest" required timezone={timezone} />
+                <InputDateTime name="earliest" required timezone={timezone} />
               </Input.Form>
             </div>
 
