@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {SubmitButton, Button} = require("../components/buttons");
-const Input = require("../components/input");
+const { Form } = require('components/input/Form');
 const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
 const { Password } = require('components/input/Password');
@@ -276,7 +276,7 @@ class VirtualHostManagerEdit extends React.Component {
 
     render() {
         return (
-            <Input.Form model={this.state.model} className="virtualhostmanager-form"
+            <Form model={this.state.model} className="virtualhostmanager-form"
                 onChange={this.onFormChange}
                 onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
                 onValidate={this.onValidate}
@@ -296,7 +296,7 @@ class VirtualHostManagerEdit extends React.Component {
                         {this.renderButtons()}
                     </div>
                 </div>
-            </Input.Form>
+            </Form>
         );
     }
 

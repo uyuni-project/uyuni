@@ -7,7 +7,7 @@ const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
-const Input = require("../components/input");
+const { Form } = require('components/input/Form');
 const { Check } = require('components/input/Check');
 const { Password } = require('components/input/Password');
 const { Select } = require('components/input/Select');
@@ -172,7 +172,7 @@ class CreateImageStore extends React.Component {
     return (
       <TopPanel title={this.isEdit() ? t("Edit Image Store: '" + this.state.initLabel + "'") : t("Create Image Store")} icon="fa fa-pencil">
         {this.state.messages}
-        <Input.Form model={this.state.model} className="image-store-form"
+        <Form model={this.state.model} className="image-store-form"
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
@@ -191,7 +191,7 @@ class CreateImageStore extends React.Component {
               { this.renderButtons() }
             </div>
           </div>
-        </Input.Form>
+        </Form>
       </TopPanel>
     );
   }

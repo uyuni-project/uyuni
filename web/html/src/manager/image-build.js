@@ -9,7 +9,7 @@ const MessagesUtils = require("../components/messages").Utils;
 const Network = require("../utils/network");
 const {SubmitButton, LinkButton} = require("../components/buttons");
 const Functions = require("../utils/functions");
-const Input = require("../components/input");
+const { Form } = require('components/input/Form');
 const { FormGroup } = require('components/input/FormGroup');
 const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
@@ -252,7 +252,7 @@ class BuildImage extends React.Component {
     return (
       <TopPanel title={t("Build Image")} icon="fa fa-cogs" helpUrl="/rhn/help/reference/en-US/ref.webui.images.build.jsp#ref.webui.images.build">
         <Messages items={this.state.messages}/>
-        <Input.Form model={this.state.model} className="image-build-form"
+        <Form model={this.state.model} className="image-build-form"
           onChange={this.onFormChange} onSubmit={this.onBuild}
           onValidate={this.onValidate} divClass="col-md-7">
 
@@ -294,7 +294,7 @@ class BuildImage extends React.Component {
             </div>
           </FormGroup>
 
-        </Input.Form>
+        </Form>
         { this.renderProfileSummary() }
       </TopPanel>
     )

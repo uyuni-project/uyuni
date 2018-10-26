@@ -7,7 +7,7 @@ const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
-const Input = require("../components/input");
+const { Form } = require('components/input/Form');
 const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
 const { Select } = require('components/input/Select');
@@ -381,7 +381,7 @@ class CreateImageProfile extends React.Component {
     return (
       <TopPanel title={this.isEdit() ? t("Edit Image Profile: '" + this.state.initLabel + "'") : t("Create Image Profile")} icon="fa fa-pencil">
         {this.state.messages}
-        <Input.Form model={this.state.model} className="image-profile-form"
+        <Form model={this.state.model} className="image-profile-form"
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
@@ -398,7 +398,7 @@ class CreateImageProfile extends React.Component {
               { this.renderButtons() }
             </div>
           </div>
-        </Input.Form>
+        </Form>
       </TopPanel>
     )
   }
