@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Oct 26 10:30:21 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.2-1
+- Fix building on openSUSE 15.0
+- Add Uyuni URL to package
+
+-------------------------------------------------------------------
 Fri Aug 10 15:22:31 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.1-1
