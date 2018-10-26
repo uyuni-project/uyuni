@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Oct 26 10:49:25 CEST 2018 - jgonzalez@suse.com
+
+- version 4.0.2-1
 - add new option --with-parent-channel to mgr-create-bootrap-repo
   to specify parent channel to use if multiple options are available
   (bsc#1104487)
