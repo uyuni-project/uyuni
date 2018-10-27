@@ -40,11 +40,7 @@ URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
-%if 0%{?fedora} && 0%{?fedora} <= 25
-Requires:       dnf >= 0.5.3
-%else
 Requires:       dnf >= 2.0.0
-%endif
 Requires:       dnf-plugins-core
 Requires:       librepo >= 1.7.15
 %if 0%{?fedora}
@@ -78,6 +74,7 @@ Group:          System Environment/Base
 BuildRequires:  python3-devel
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3-rhn-client-tools >= 2.8.4
+Requires:       python3-librepo
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}.
@@ -87,9 +84,6 @@ Python 3 specific files for %{name}.
 %setup -q
 
 %build
-%if 0%{?fedora} && 0%{?fedora} <= 25
-patch -p4 < dnf-plugin-spacewalk-revert-to-1.0.patch
-%endif
 
 %install
 install -d %{buildroot}%{_sysconfdir}/dnf/plugins/
