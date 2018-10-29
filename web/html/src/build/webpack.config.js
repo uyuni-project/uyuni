@@ -1,24 +1,17 @@
 const path = require('path');
-const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const {pages} = require("../manager/index");
 const webpack = require("webpack");
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const {getWebpackConfig} = require("./webpack.config.vendors");
+module.exports = (env, argv) => {
 
-module.exports = (env, argv) => ([
-  getWebpackConfig({generateLicenses: !argv.watch }),
-  {
-    entry: pages,
-    dependencies: ["vendors"],
-    output: {
-        filename: `[name].bundle.js`,
-        path: path.resolve(__dirname, "../dist"),
-        publicPath: '/'
-    },
-    devtool: argv.mode === 'development' ? "source-map" : undefined,
-    optimization: {
+  const  isProductionMode = argv && argv.mode !== "development";
+
+  let optimization = {};
+  if(isProductionMode) {
+    // If we are on production mode we want to make sure we don't mix vendors code with source code
+    optimization = {
       splitChunks: {
         cacheGroups: {
           vendor: {
@@ -30,17 +23,27 @@ module.exports = (env, argv) => ([
           }
         }
       }
+    }
+  }
+
+  return [{
+    entry: pages,
+    output: {
+      filename: `[name].bundle.js`,
+      path: path.resolve(__dirname, "../dist"),
+      publicPath: '/'
     },
+    optimization,
     module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader"
-                }
-            }
-        ]
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader"
+          }
+        }
+      ]
     },
     resolve: {
       alias: {
@@ -50,10 +53,32 @@ module.exports = (env, argv) => ([
       }
     },
     plugins: [
-      new CleanWebpackPlugin(['dist'], {  root: path.resolve(__dirname, "../")}),
+      new CleanWebpackPlugin(['extravendors.notdeclared.bundle.js', "javascript"], {  root: path.resolve(__dirname)}),
       new webpack.DllReferencePlugin({
         manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json"),
       }),
       new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }])
-    ]
-}]);
+    ],
+    devServer: {
+      contentBase: path.resolve(__dirname, "../dist"),
+      publicPath: "/",
+      progress: true,
+      https: true,
+      open: true,
+      writeToDisk: argv && argv.writeToDisk,
+      proxy: [{
+        context: ['!/sockjs-node/**'],
+        target: (argv && argv.server) || "https://suma-refhead-srv.mgr.suse.de",
+        ws: true,
+        secure: false,
+        // logLevel: "debug",
+        bypass: function(req, res, proxyOptions) {
+          //We need this little trick to serve the local vendors.bundles.js, otherwise it would have been proxied as it isn't indexed by this webpack configuration
+          if (req.url.indexOf('/vendors/vendors.bundle.js') !== -1) {
+            return '/vendors/vendors.bundle.js';
+          }
+        }
+      }]
+    },
+  }]
+};

@@ -4,5 +4,10 @@
     "@babel/preset-react",
     "@babel/preset-flow"
   ],
-  "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-flow-strip-types", "@babel/plugin-syntax-object-rest-spread"]
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-flow-strip-types",
+    "@babel/plugin-syntax-object-rest-spread",
+    "react-hot-loader/babel"
+  ]
 }
