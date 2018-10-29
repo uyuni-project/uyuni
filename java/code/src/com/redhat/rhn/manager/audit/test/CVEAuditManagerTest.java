@@ -790,6 +790,79 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Runs audit against a CVE which is covered by multiple erratas, and some of these erratas are missing in the
+     * assigned channels (see bsc#1111963).
+     * @throws Exception if anything goes wrong
+     */
+    public void testMultipleChannelsMultipleErratas() throws Exception {
+
+        // Situation: The CVE has 2 different patches assigned to it. First of these patches are already installed
+        // in the system. The later patch is only included in the original (e.g. vendor) channel and it is not
+        // assigned.
+
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<>();
+        cves.add(cve);
+
+        // Create two erratas. One exists in both channels, second exists only in the original channel
+        User user = createTestUser();
+        Errata e1 = createTestErrata(user, cves);
+        Errata e1clone = createTestErrata(user, cves);
+        Errata e2 = createTestErrata(user, cves);
+
+        // Create the original channel which includes all the erratas (up-to-date channel)
+        Channel c1 = createTestChannel(user);
+        c1.addErrata(e1);
+        c1.addErrata(e2);
+
+        // Create package p1 included in errata 1 and in both channels
+        Package p1 = createTestPackage(user, e1, c1, "noarch");
+        // Add the p1 package to the errata 1 clone
+        e1clone.addPackage(p1);
+
+        // Create package p2 as initially included in both channels
+        Package p2 = createTestPackage(user, c1, "noarch");
+        // Create a later version of p2 which is only included in e2
+        Package p2later = createLaterTestPackage(user, e2, c1, p2);
+
+        // Clone p1 and the older p2 package and the clone of errata e1 into a cloned channel
+        // Errata 2 which patches p2 package to a newer version is the only thing missing in the cloned channel
+        // This is the only difference between the two channels
+        // The cloned channel will also have a higher channel rank (lower int value)
+        Set<Package> packagesToClone = new HashSet<>();
+        packagesToClone.add(p1);
+        packagesToClone.add(p2);
+        Channel c2 = createTestClonedChannel(user, e1clone, c1, packagesToClone);
+
+        // Create the server and assign only the cloned channel into it
+        // Install p1 and older p2 packages
+        Server server = createTestServer(user, Collections.singleton(c2));
+        createTestInstalledPackage(p1, server);
+        createTestInstalledPackage(p2, server);
+
+        CVEAuditManager.populateCVEChannels();
+
+        // No filtering
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_INAPPLICABLE, results);
+
+        // Assert correct number of results
+        assertEquals(1, results.size());
+        CVEAuditServer serverResult = results.get(0);
+
+        // Assert correct (unnassigned) channel being reported
+        assertEquals(1, serverResult.getChannels().size());
+        assertEquals((long)c1.getId(), serverResult.getChannels().iterator().next().getId());
+
+        // Assert correct missing errata being reported
+        assertEquals(1, serverResult.getErratas().size());
+        assertEquals((long)e2.getId(), serverResult.getErratas().iterator().next().getId());
+    }
+
+    /**
      * Runs testMultiVersionPackage on a server bsc#903723
      * @throws Exception if anything goes wrong
      */
