@@ -2,7 +2,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Network = require("../utils/network");
+const Network = require("../../utils/network");
 
 const Notifications = React.createClass({
 
