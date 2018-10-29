@@ -1,6 +1,6 @@
 // @flow
 
-const { Utils } = require('utils/functions').Functions;
+const { Utils } = require('utils/functions');
 
 function sortByUpdate(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number) {
   const statusValues = {
