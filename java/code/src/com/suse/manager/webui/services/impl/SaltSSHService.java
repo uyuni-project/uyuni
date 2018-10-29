@@ -37,11 +37,14 @@ import com.suse.manager.webui.utils.SaltTop;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+import com.suse.salt.netapi.datatypes.AuthMethod;
+import com.suse.salt.netapi.datatypes.PasswordAuth;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.SSHTarget;
@@ -131,6 +134,11 @@ public class SaltSSHService {
             "formulas",
             "services.salt-minion",
             "services.docker");
+    private final String SALT_USER = "admin";
+    private final String SALT_PASSWORD = "";
+    private final AuthModule AUTH_MODULE = AuthModule.AUTO;
+
+    private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AuthModule.AUTO));
 
     // Shared salt client instance
     private final SaltClient saltClient;
@@ -648,9 +656,8 @@ public class SaltSSHService {
             throw new UnsupportedOperationException("Only MinionList and Glob supported.");
         }
 
-        Path rosterPath = null;
         try {
-            rosterPath = roster.persistInTempFile();
+            final Path rosterPath = roster.persistInTempFile();
             SaltSSHConfig.Builder sshConfigBuilder = new SaltSSHConfig.Builder()
                     .ignoreHostKeys(ignoreHostKeys)
                     .rosterFile(rosterPath.getFileName().toString())
@@ -660,21 +667,19 @@ public class SaltSSHService {
             extraFilerefs.ifPresent(filerefs -> sshConfigBuilder.extraFilerefs(filerefs));
             SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
-            return call.callSyncSSH(saltClient, target, sshConfig);
+            return SaltService.adaptException(call.callSyncSSH(saltClient, target, sshConfig, PW_AUTH)
+                    .whenComplete((r, e) -> {
+                        try {
+                            Files.deleteIfExists(rosterPath);
+                        }
+                        catch (IOException ex) {
+                            LOG.error("Can't delete roster file: " + ex.getMessage());
+                        }
+                    }));
         }
         catch (IOException e) {
             LOG.error("Error operating on roster file: " + e.getMessage());
             throw new SaltException(e);
-        }
-        finally {
-            if (rosterPath != null) {
-                try {
-                    Files.deleteIfExists(rosterPath);
-                }
-                catch (IOException e) {
-                    LOG.error("Can't delete roster file: " + e.getMessage());
-                }
-            }
         }
     }
 
