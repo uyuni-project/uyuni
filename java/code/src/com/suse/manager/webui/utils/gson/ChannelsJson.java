@@ -16,9 +16,9 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.channel.Channel;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -133,7 +133,7 @@ public class ChannelsJson {
      * @param baseIn the base channel
      */
     public void setBase(Channel baseIn) {
-        this.base = new ChannelJson(baseIn.getId(), baseIn.getLabel(), baseIn.isCustom(), true);
+        this.base = new ChannelJson(baseIn.getId(), baseIn.getName(), baseIn.isCustom(), true);
     }
 
     /**
@@ -147,8 +147,23 @@ public class ChannelsJson {
      * @param childrenIn the child channels
      */
     public void setChildren(Stream<Channel> childrenIn) {
-        this.children = childrenIn.map((c) -> new ChannelJson(c.getId(), c.getLabel(), c.isCustom(), true))
+        this.children = childrenIn.map((c) -> new ChannelJson(c.getId(), c.getName(), c.isCustom(), true))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * @param childrenIn the child channels
+     * @param recommendedFlags the map of channels with recommended flag value
+     */
+    public void setChildrenWithRecommended(Stream<Channel> childrenIn, Map<Long, Boolean> recommendedFlags) {
+        this.children = childrenIn.map((c) ->
+                new ChannelJson(
+                        c.getId(),
+                        c.getName(),
+                        c.isCustom(),
+                        true,
+                        recommendedFlags.get(c.getId())
+                )).collect(Collectors.toList());
     }
 
     /**

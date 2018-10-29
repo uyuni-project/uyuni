@@ -31,6 +31,7 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -307,5 +308,14 @@ public class ActivationKeyFactory extends HibernateFactory {
                                                                                     params);
     }
 
-
+    /**
+     * Get the ActivationKey object by its Id
+     *
+     * @param id the activation key id
+     * @param org the org of the activation key
+     * @return the ActivationKey object
+     */
+    public static ActivationKey lookupById(Long id, Org org) {
+        return ActivationKeyFactory.lookupByToken(TokenFactory.lookup(id, org));
+    }
 }
