@@ -405,7 +405,4 @@ const ErrorMessage = (props) => <MessageContainer items={
   } />
 ;
 
-ReactDOM.render(
-  <NotificationMessages />,
-  document.getElementById("notification-messages")
-);
+module.exports = { NotificationMessages }
