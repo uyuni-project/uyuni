@@ -7,13 +7,15 @@
     "susemanager-nodejs-sdk-devel": "1.0.0"
   },
   "scripts": {
-    "validate": "node build/check-undeclared-vendors",
-    "build": "node build",
-    "postinstall": "yarn build",
-    "dev": "webpack --config build/webpack.config.js --mode development && yarn run validate",
-    "watch": "webpack --config build/webpack.config.js --mode development --watch",
     "clean": "rm -rf node_modules && rm -rf dist",
-    "lint": "eslint ."
+    "validate": "node build/check-undeclared-vendors",
+    "vendors": "webpack --mode development --config build/webpack.config.vendors.js",
+    "dev": "yarn vendors && webpack -d --config build/webpack.config.js --mode development && yarn run validate",
+    "watch": "yarn vendors && webpack -d --config build/webpack.config.js --mode development --watch",
+    "proxy": "yarn vendors && webpack-dev-server -d --mode development --hot --inline --config build/webpack.config.js",
+    "lint": "eslint .",
+    "build": "node build",
+    "postinstall": "yarn build"
   },
   "devDependencies": {
     "flow-bin": "^0.82.0"

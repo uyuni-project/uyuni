@@ -1,9 +1,10 @@
 const shell = require('shelljs');
 const { fillSpecFile } = require("./build/fill-spec-file");
 
-const { code } = shell.exec("webpack --config build/webpack.config.js --mode production");
-if (code !== 0) {
-  shell.exit(code);
+const { code: codeVendors } = shell.exec("webpack --config build/webpack.config.vendors.js --mode production");
+const { code: codeSource } = shell.exec("webpack --config build/webpack.config.js --mode production");
+if (codeVendors !== 0 || codeSource !== 0) {
+  shell.exit(codeVendors === 0 ? codeSource : codeVendors);
 }
 
 fillSpecFile()

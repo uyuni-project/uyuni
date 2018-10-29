@@ -572,7 +572,6 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
 }
 
-ReactDOM.render(
-  <SystemChannels serverId={getServerId()} />,
-    document.getElementById("subscribe-channels-div")
-);
+module.exports = {
+  SubscribeChannels: SystemChannels
+}
