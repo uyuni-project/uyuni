@@ -1,5 +1,6 @@
 - show group id on group_details (bsc#1111542)
-- New function/Update old functions to handle state channels as well
+- State channels handling: Existing commands configchannel_create and configchannel_import were updated
+  while system_scheduleapplyconfigchannels and configchannel_updateinitsls were added.
 
 -------------------------------------------------------------------
 Thu Aug 23 09:03:53 CEST 2018 - jgonzalez@suse.com
