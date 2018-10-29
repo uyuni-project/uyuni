@@ -4,15 +4,19 @@ const vendors = require("../vendors/vendors");
 const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-function getWebpackConfig({generateLicenses}) {
+module.exports = (env, argv) => {
+
+  const  isProductionMode = argv && argv.mode !== "development";
+
   let pluginsInUse = [
+    new CleanWebpackPlugin(['dist'], {  root: path.resolve(__dirname, "../")}),
     new webpack.DllPlugin({
-      path: 'dist/vendors/[name]-manifest.json',
+      path: path.join(path.resolve(__dirname, "../dist/vendors"), '[name]-manifest.json'),
       name: '[name]_dll'
     }),
   ];
 
-  if(generateLicenses) {
+  if(isProductionMode) {
     pluginsInUse = [
       ...pluginsInUse,
       new LicenseCheckerWebpackPlugin({
@@ -25,22 +29,16 @@ function getWebpackConfig({generateLicenses}) {
     ]
   }
 
-
   return {
     name: "vendors",
-    entry: {
-      vendors
-    },
-    output:  {
+    entry: {vendors},
+    output: {
       path: path.resolve(__dirname, "../dist"),
       filename: "vendors/vendors.bundle.js",
       sourceMapFilename: "[name].map",
       pathinfo: true,
       library: '[name]_dll'
     },
-    plugins: pluginsInUse
-  };
-}
-module.exports = {
-  getWebpackConfig
+    plugins: pluginsInUse,
+  }
 };
