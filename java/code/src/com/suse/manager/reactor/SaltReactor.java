@@ -52,7 +52,6 @@ import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
 import com.suse.salt.netapi.exception.SaltException;
 import org.apache.log4j.Logger;
 
-import javax.websocket.CloseReason;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -133,9 +132,8 @@ public class SaltReactor implements EventListener {
      * {@inheritDoc}
      */
     @Override
-    public void eventStreamClosed(CloseReason closeReason) {
-        LOG.warn("Event stream closed: " + closeReason.getReasonPhrase() +
-                " [" + closeReason.getCloseCode() + "]");
+    public void eventStreamClosed(int code, String phrase) {
+        LOG.warn("Event stream closed: " + phrase + " [" + code + "]");
 
         if (!isStopped) {
             LOG.warn("Reconnecting to the Salt event bus...");
