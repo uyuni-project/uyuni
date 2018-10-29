@@ -1200,7 +1200,7 @@ def do_softwarechannel_addpackages(self, args):
 ####################
 
 def help_softwarechannel_mergepackages(self):
-    print 'softwarechannel_mergepackages: Merge packages from one software channel to another'
+    print 'softwarechannel_mergepackages: Merge packages from one software channel into another'
     print 'usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL'
 
 def complete_softwarechannel_mergepackages(self, text, line, beg, end):
@@ -1260,11 +1260,9 @@ def do_softwarechannel_mergepackages(self, args):
     if not self.user_confirm('Perform these changes to channel ' + target_channel + ' [y/N]:'):
         return
 
-    for package in source_only:
-            package_id = list(self.get_package_id(package))
-            self.client.channel.software.addPackages(self.session,
-                                             target_channel,
-                                             package_id)
+    self.client.channel.software.mergePackages(self.session,
+                                             source_channel,
+                                             target_channel)
 
 ####################
 
@@ -2382,10 +2380,8 @@ def do_softwarechannel_errata_merge(self, args):
 
     if not self.user_confirm('Perform these changes to channel ' + target_channel + ' [y/N]:'):
         return
-
-    for erratum in source_only:
-            print erratum
-            self.client.errata.publish(self.session, erratum, [target_channel])
+    
+    self.client.channel.software.mergeErrata(self.session, source_channel, target_channel, source_only)
 
 ####################
 
