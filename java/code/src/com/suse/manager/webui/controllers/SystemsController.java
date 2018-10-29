@@ -102,9 +102,10 @@ public class SystemsController {
             return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.success());
         }
         Server server = SystemManager.lookupByIdAndUser(sid, user);
+        boolean isEmptyProfile = server.hasEntitlement(EntitlementManager.BOOTSTRAP);
 
         if (server.asMinionServer().isPresent()) {
-            if (!Boolean.parseBoolean(noclean)) {
+            if (!Boolean.parseBoolean(noclean) && !isEmptyProfile) {
                 Optional<List<String>> cleanupErr =
                         SaltService.INSTANCE.
                                 cleanupMinion(server.asMinionServer().get(), 300);
