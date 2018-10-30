@@ -4,7 +4,12 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {SubmitButton, Button} = require("../components/buttons");
-const Input = require("../components/input");
+const { Form } = require('components/input/Form');
+const { FormGroup } = require('components/input/FormGroup');
+const { Label } = require('components/input/Label');
+const { Password } = require('components/input/Password');
+const { Text } = require('components/input/Text');
+const { Select } = require('components/input/Select');
 const Network = require("../utils/network");
 const {Messages} = require("../components/messages");
 const MessagesUtils = require("../components/messages").Utils;
@@ -171,10 +176,10 @@ class VirtualHostManagerEdit extends React.Component {
     paramField(name, defaultValue) {
         let required = this.isEdit() ? name != "password" && name != "username" : true;
         if (name.toLowerCase() === "password") {
-            return (<Input.Password name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
+            return (<Password name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
                             hint={ this.isEdit() ? "Fill this field to change the password." : null }/>);
         } else {
-            return (<Input.Text name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
+            return (<Text name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
                             />);
         }
 
@@ -188,11 +193,11 @@ class VirtualHostManagerEdit extends React.Component {
             .map(param => this.paramField(param, this.state.vhmParams[param]));
 
         fields.unshift(
-            <Input.Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
+            <Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
             );
 
         fields.unshift(
-            <Input.Text name="gathererModule" label={t("Gatherer module")} disabled labelClass="col-md-3" divClass="col-md-6"/>
+            <Text name="gathererModule" label={t("Gatherer module")} disabled labelClass="col-md-3" divClass="col-md-6"/>
             );
         return (
             <div>
@@ -235,23 +240,23 @@ class VirtualHostManagerEdit extends React.Component {
     renderKubernetesForm() {
         var contextSelect;
         if (this.state.model.contexts) {
-            contextSelect = <Input.Select name="module_context" label={t("Current Context")} required labelClass="col-md-3" divClass="col-md-6"
+            contextSelect = <Select name="module_context" label={t("Current Context")} required labelClass="col-md-3" divClass="col-md-6"
                 value={this.state.model.module_context}>
                 <option value="">---</option>
             { this.state.model.contexts.map(k => k === "" ? "<default>" : k).map(k =>
                 <option key={k} value={k} selected={k === this.state.model.module_context ? true : null }>{k}</option>) }
-            </Input.Select>
+            </Select>
         }
 
         return (
             <div>
-                <Input.Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
-                <Input.FormGroup>
-                    <Input.Label name={t("Kubeconfig file")} className="col-md-3" required={!this.isEdit()}/>
+                <Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
+                <FormGroup>
+                    <Label name={t("Kubeconfig file")} className="col-md-3" required={!this.isEdit()}/>
                     <div className="col-md-6">
                         <input name="module_kubeconfig" type="file" onChange={this.handleKubeconfigUpload} className="col-md-6" />
                     </div>
-                </Input.FormGroup>
+                </FormGroup>
                 { contextSelect }
             </div>
         );
@@ -271,7 +276,7 @@ class VirtualHostManagerEdit extends React.Component {
 
     render() {
         return (
-            <Input.Form model={this.state.model} className="virtualhostmanager-form"
+            <Form model={this.state.model} className="virtualhostmanager-form"
                 onChange={this.onFormChange}
                 onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
                 onValidate={this.onValidate}
@@ -291,7 +296,7 @@ class VirtualHostManagerEdit extends React.Component {
                         {this.renderButtons()}
                     </div>
                 </div>
-            </Input.Form>
+            </Form>
         );
     }
 

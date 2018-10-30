@@ -7,7 +7,11 @@ const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
-const Input = require("../components/input");
+const { Form } = require('components/input/Form');
+const { Check } = require('components/input/Check');
+const { Password } = require('components/input/Password');
+const { Select } = require('components/input/Select');
+const { Text } = require('components/input/Text');
 const Utils = require("../utils/functions").Utils;
 
 /* global storeId */
@@ -138,9 +142,9 @@ class CreateImageStore extends React.Component {
     switch (type) {
     case "registry":
       return [
-        <Input.Check key="useCredentials" name="useCredentials" label={t("Use credentials")} divClass="col-md-6 col-md-offset-3"/>,
-        <Input.Text key="username" name="username" label={t("Username")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>,
-        <Input.Password key="password" name="password" label={t("Password")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>
+        <Check key="useCredentials" name="useCredentials" label={t("Use credentials")} divClass="col-md-6 col-md-offset-3"/>,
+        <Text key="username" name="username" label={t("Username")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>,
+        <Password key="password" name="password" label={t("Password")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>
       ];
     case "os_image":
       // No type-specific input for Kiwi image store
@@ -168,26 +172,26 @@ class CreateImageStore extends React.Component {
     return (
       <TopPanel title={this.isEdit() ? t("Edit Image Store: '" + this.state.initLabel + "'") : t("Create Image Store")} icon="fa fa-pencil">
         {this.state.messages}
-        <Input.Form model={this.state.model} className="image-store-form"
+        <Form model={this.state.model} className="image-store-form"
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
-          <Input.Select labelClass="col-md-3" divClass="col-md-6" label={t("Store Type")} name="storeType" required disabled={this.isEdit()}>
+          <Select labelClass="col-md-3" divClass="col-md-6" label={t("Store Type")} name="storeType" required disabled={this.isEdit()}>
             {
               this.state.storeTypes.map(k =>
                 <option key={k} value={k}>{ typeMap[k] }</option>
               )
             }
-          </Input.Select>
-          <Input.Text name="label" label={t("Label")} required validators={this.isLabelUnique} invalidHint={t("Label is required and must be unique.")} labelClass="col-md-3" divClass="col-md-6"/>
-          <Input.Text name="uri" label={t("Store URI")} required hint={<span>The URI to the store's API endpoint</span>} labelClass="col-md-3" divClass="col-md-6"/>
+          </Select>
+          <Text name="label" label={t("Label")} required validators={this.isLabelUnique} invalidHint={t("Label is required and must be unique.")} labelClass="col-md-3" divClass="col-md-6"/>
+          <Text name="uri" label={t("Store URI")} required hint={<span>The URI to the store's API endpoint</span>} labelClass="col-md-3" divClass="col-md-6"/>
           { this.renderTypeInputs(this.state.model.storeType) }
           <div className="form-group">
             <div className="col-md-offset-3 col-md-6">
               { this.renderButtons() }
             </div>
           </div>
-        </Input.Form>
+        </Form>
       </TopPanel>
     );
   }

@@ -7,7 +7,11 @@ const { TopPanel } = require('components/panels/TopPanel');
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
-const Input = require("../components/input");
+const { Form } = require('components/input/Form');
+const { FormGroup } = require('components/input/FormGroup');
+const { Label } = require('components/input/Label');
+const { Select } = require('components/input/Select');
+const { Text } = require('components/input/Text');
 const Validation = require("../components/validation");
 const Utils = require("../utils/functions").Utils;
 
@@ -247,7 +251,7 @@ class CreateImageProfile extends React.Component {
   renderTypeInputs(type) {
     // Type-dependent inputs
     const typeInputs = [
-      <Input.Select key="imageStore" name="imageStore" label={t("Target Image Store")} required onChange={this.handleImageStoreChange}
+      <Select key="imageStore" name="imageStore" label={t("Target Image Store")} required onChange={this.handleImageStoreChange}
         disabled={type === "kiwi"} labelClass="col-md-3" divClass="col-md-6" hint={this.state.storeUri} invalidHint={
           <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
         }
@@ -258,13 +262,13 @@ class CreateImageProfile extends React.Component {
             <option key={k.id} value={k.label}>{ k.label }</option>
           )
         }
-      </Input.Select>
+      </Select>
     ];
 
     switch (type) {
     case "dockerfile":
       typeInputs.push(
-        <Input.Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/Containers">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/Containers">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(false)
@@ -272,7 +276,7 @@ class CreateImageProfile extends React.Component {
       break;
     case "kiwi":
       typeInputs.push(
-        <Input.Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/OSImage">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/OSImage">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(true)
@@ -301,7 +305,7 @@ class CreateImageProfile extends React.Component {
     );
 
     return (
-      <Input.Select name="activationKey" label={t("Activation Key")}
+      <Select name="activationKey" label={t("Activation Key")}
         onChange={this.handleTokenChange} labelClass="col-md-3" divClass="col-md-6"
         hint={hint} required={isRequired}>
         <option key="0" value="">None</option>
@@ -310,7 +314,7 @@ class CreateImageProfile extends React.Component {
             <option key={k} value={k}>{k}</option>
           )
         }
-      </Input.Select>
+      </Select>
     );
   }
 
@@ -319,8 +323,8 @@ class CreateImageProfile extends React.Component {
       const key = customDataKeys.find(k => k.label === d[0]);
 
       return key && (
-        <Input.FormGroup>
-          <Input.Label className="col-md-3" name={key.label}/>
+        <FormGroup>
+          <Label className="col-md-3" name={key.label}/>
           <div className="col-md-6">
             <div className="input-group">
               <input name={key.label} className="form-control input-sm" type="text" value={this.state.customData[key.label]}
@@ -340,11 +344,11 @@ class CreateImageProfile extends React.Component {
               </span>
             </div>
           </div>
-        </Input.FormGroup>);
+        </FormGroup>);
     });
 
-    const select = <Input.FormGroup>
-      <Input.Label className="col-md-3" name={t("Custom Info Values")}/>
+    const select = <FormGroup>
+      <Label className="col-md-3" name={t("Custom Info Values")}/>
       <div className="col-md-6">
         <select value="0" onChange={(e) => this.addCustomData(e.target.value)} className="form-control">
           <option key="0" disabled="disabled">{t("Create additional custom info values")}</option>
@@ -355,7 +359,7 @@ class CreateImageProfile extends React.Component {
           }
         </select>
       </div>
-    </Input.FormGroup>;
+    </FormGroup>;
 
     return [select, fields];
   }
@@ -377,15 +381,15 @@ class CreateImageProfile extends React.Component {
     return (
       <TopPanel title={this.isEdit() ? t("Edit Image Profile: '" + this.state.initLabel + "'") : t("Create Image Profile")} icon="fa fa-pencil">
         {this.state.messages}
-        <Input.Form model={this.state.model} className="image-profile-form"
+        <Form model={this.state.model} className="image-profile-form"
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
-          <Input.Text name="label" label={t("Label")} required validators={[this.isLabelValid, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
-          <Input.Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
+          <Text name="label" label={t("Label")} required validators={[this.isLabelValid, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
+          <Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
             { this.state.imageTypes.map(k =>
               <option key={k} value={k}>{ typeMap[k].name }</option>) }
-          </Input.Select>
+          </Select>
           { this.renderTypeInputs(this.state.model.imageType) }
           <hr/>
           { this.renderCustomDataFields() }
@@ -394,7 +398,7 @@ class CreateImageProfile extends React.Component {
               { this.renderButtons() }
             </div>
           </div>
-        </Input.Form>
+        </Form>
       </TopPanel>
     )
   }

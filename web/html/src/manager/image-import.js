@@ -5,7 +5,9 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const { TopPanel } = require('components/panels/TopPanel');
-const {Form, Select, Text} = require("../components/input");
+const { Text } = require('components/input/Text');
+const { Select } = require('components/input/Select');
+const { Form } = require('components/input/Form');
 const {SubmitButton, Button} = require("../components/buttons");
 const Network = require("../utils/network");
 const {Messages} = require("../components/messages");
