@@ -20,6 +20,8 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.integration.IntegrationService;
 import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
@@ -27,9 +29,15 @@ import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.cobbler.SystemRecord;
 import redstone.xmlrpc.XmlRpcFault;
 
 /**
@@ -188,5 +196,77 @@ public abstract class CobblerCommand {
             return CobblerXMLRPCHelper.getAutomatedConnection();
         }
         return CobblerXMLRPCHelper.getConnection(user);
+    }
+
+    /**
+     * Lookup system record 1st with id and then by mac
+     * @param server server
+     * @return system record
+     */
+    protected SystemRecord lookupExisting(Server server) {
+        if (server.getCobblerId() != null) {
+            SystemRecord rec = SystemRecord.lookupById(CobblerXMLRPCHelper.getConnection(user), server.getCobblerId());
+            if (rec != null) {
+                return rec;
+            }
+        }
+        //lookup by ID failed, so lets try by mac
+
+        Map sysmap = getSystemMapByMac(server);
+        if (sysmap != null) {
+            log.debug("getSystemHandleByMAC.found match.");
+            String uid = (String) sysmap.get("uid");
+            SystemRecord rec = SystemRecord.lookupById(CobblerXMLRPCHelper.getConnection(user), uid);
+            if (rec != null) {
+                return rec;
+            }
+        }
+        return null;
+    }
+    /**
+     * Get system map by mac address
+     * @return system Map
+     * @param server server
+     */
+    protected Map getSystemMapByMac(Server server) {
+        // Build up list of mac addrs
+        List macs = new LinkedList();
+        for (NetworkInterface n : server.getNetworkInterfaces()) {
+            // Skip localhost and non real interfaces
+            if (!n.isValid()) {
+                log.debug("Skipping.  not a real interface");
+            }
+            else {
+                macs.add(n.getHwaddr().toLowerCase());
+            }
+
+        }
+
+        List<String> args = new ArrayList();
+        args.add(xmlRpcToken);
+        List<Map> systems = (List) invokeXMLRPC("get_systems", args);
+        for (Map row : systems) {
+            Set ifacenames = ((Map) row.get("interfaces")).keySet();
+            log.debug("Ifacenames: " + ifacenames);
+            Map ifaces = (Map) row.get("interfaces");
+            log.debug("ifaces: " + ifaces);
+            Iterator names = ifacenames.iterator();
+            while (names.hasNext()) {
+                String name = (String) names.next();
+                log.debug("Name: " + name);
+                Map iface = (Map) ifaces.get(name);
+                log.debug("iface: " + iface);
+                String mac = (String) iface.get("mac_address");
+                log.debug("getSystemMapByMac.ROW: " + row +
+                        " looking for: " + macs);
+
+                if (mac != null &&
+                        macs.contains(mac.toLowerCase())) {
+                    log.debug("getSystemMapByMac.found match.");
+                    return row;
+                }
+            }
+        }
+        return null;
     }
 }

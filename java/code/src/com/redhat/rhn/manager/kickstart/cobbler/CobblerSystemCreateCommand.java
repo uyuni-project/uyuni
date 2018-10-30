@@ -39,11 +39,9 @@ import org.cobbler.XmlRpcException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -181,74 +179,6 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         profileName = nameIn;
     }
 
-    protected SystemRecord lookupExisting() {
-        if (server.getCobblerId() != null) {
-            SystemRecord rec;
-            rec = SystemRecord.lookupById(CobblerXMLRPCHelper.getConnection(user),
-                    server.getCobblerId());
-            if (rec != null) {
-                return rec;
-            }
-        }
-        //lookup by ID failed, so lets try by mac
-
-        Map sysmap = getSystemMapByMac();
-        if (sysmap != null) {
-            log.debug("getSystemHandleByMAC.found match.");
-            String uid = (String) sysmap.get("uid");
-            SystemRecord rec;
-            rec = SystemRecord.lookupById(CobblerXMLRPCHelper.getConnection(user),
-                    uid);
-            if (rec != null) {
-                return rec;
-            }
-        }
-        return null;
-    }
-
-    private Map getSystemMapByMac() {
-        // Build up list of mac addrs
-        List macs = new LinkedList();
-        for (NetworkInterface n : server.getNetworkInterfaces()) {
-            // Skip localhost and non real interfaces
-            if (!n.isValid()) {
-                log.debug("Skipping.  not a real interface");
-            }
-            else {
-                macs.add(n.getHwaddr().toLowerCase());
-            }
-
-        }
-
-        List<String> args = new ArrayList();
-        args.add(xmlRpcToken);
-        List<Map> systems = (List) invokeXMLRPC("get_systems", args);
-        for (Map row : systems) {
-            Set ifacenames = ((Map) row.get("interfaces")).keySet();
-            log.debug("Ifacenames: " + ifacenames);
-            Map ifaces = (Map) row.get("interfaces");
-            log.debug("ifaces: " + ifaces);
-            Iterator names = ifacenames.iterator();
-            while (names.hasNext()) {
-                String name = (String) names.next();
-                log.debug("Name: " + name);
-                Map iface = (Map) ifaces.get(name);
-                log.debug("iface: " + iface);
-                String mac = (String) iface.get("mac_address");
-                log.debug("getSystemMapByMac.ROW: " + row +
-                        " looking for: " + macs);
-
-                if (mac != null &&
-                        macs.contains(mac.toLowerCase())) {
-                    log.debug("getSystemMapByMac.found match.");
-                    return row;
-                }
-            }
-        }
-        return null;
-    }
-
-
     /**
      * Store the System to cobbler
      * @return ValidatorError if the store failed.
@@ -266,7 +196,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     public ValidatorError store(boolean saveCobblerId) {
         Profile profile = Profile.lookupByName(getCobblerConnection(), profileName);
         // First lookup by MAC addr
-        SystemRecord rec = lookupExisting();
+        SystemRecord rec = lookupExisting(server);
         if (rec == null) {
             // Next try by name
             rec = SystemRecord.lookupByName(getCobblerConnection(user),
