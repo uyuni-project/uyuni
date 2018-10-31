@@ -8,6 +8,7 @@ const vendors = [
     "regenerator-runtime/runtime",
     "react-hot-loader",
     "react-hot-loader/patch",
+    "lodash",
 ];
 
 module.exports = vendors;

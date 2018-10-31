@@ -2,11 +2,12 @@ module.exports = {
     parser: "babel-eslint",
     root: true,
     extends: [
-        "airbnb"
+        "airbnb",
+        "plugin:you-dont-need-lodash-underscore/compatible",
     ],
 
     plugins: [
-        "flowtype-errors"
+        "flowtype-errors", "you-dont-need-lodash-underscore"
     ],
 
     env: {
@@ -30,7 +31,7 @@ module.exports = {
       }],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "react/destructuring-assignment": "off",
-      "jsx-a11y/label-has-for": "off",
+      "jsx-a11y/label-has-for": "off"
     },
 
     settings: {
