@@ -2,3 +2,4 @@ dist/**/*
 vendors/**/*
 build/**/*
 build.js
+flow-typed/**/*
