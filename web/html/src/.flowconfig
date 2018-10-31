@@ -1,5 +1,5 @@
 [ignore]
-.*/node_modules/*
+.*/flow-typed/**
 
 [include]
 ./manager/*
@@ -13,5 +13,6 @@
 
 [options]
 include_warnings=true
+module.system.node.resolve_dirname=node_modules
 module.name_mapper='^components' ->'<PROJECT_ROOT>/components'
 module.name_mapper='^utils' ->'<PROJECT_ROOT>/utils'
