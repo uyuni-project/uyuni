@@ -1213,56 +1213,13 @@ def complete_softwarechannel_mergepackages(self, text, line, beg, end):
         return tab_completer(self.do_softwarechannel_list('', True),
                              text)
 
+'''
+Does the same thing as do_softwarechannel_sync
+with the exception of deleting packages from
+the target channel.
+'''
 def do_softwarechannel_mergepackages(self, args):
-    (args, _options) = parse_arguments(args)
-
-    if len(args) < 2:
-        self.help_softwarechannel_mergepackages()
-        return
-
-    source_channel = args[0]
-    target_channel = args[1]
-
-    if not self.check_softwarechannel(source_channel) or not self.check_softwarechannel(target_channel):
-    	return
-
-    source_packages = self.client.channel.software.listAllPackages(self.session, source_channel)
-    target_packages = self.client.channel.software.listAllPackages(self.session, target_channel)
-
-    source_package_names = set()
-    for package in source_packages:
-        package_name = self.get_package_name(package.get('id'))  
-        source_package_names.add(package_name)
-
-    target_package_names = set()
-    for package in target_packages:
-        package_name = self.get_package_name(package.get('id'))
-        target_package_names.add(package_name)
-
-    source_only = list(source_package_names.difference(target_package_names))
-    source_only.sort()
-    
-    if len(source_only) == 0:
-    	print source_channel + ' contains no packages which are not already present in ' + target_channel
-    	return
-
-    print 'packages to add to channel "' + target_channel + '":'
-    for i in source_only:
-        print i
-    print
-
-    print "summary:"
-    print "  " + source_channel + ": " + str(len(source_package_names)).rjust(5), "package(s)"
-    print "  " + target_channel + ": " + str(len(target_package_names)).rjust(5), "package(s)"
-    print "    add   ", str(
-        len(source_only)).rjust(5), "package(s) to  ", target_channel
-
-    if not self.user_confirm('Perform these changes to channel ' + target_channel + ' [y/N]:'):
-        return
-
-    self.client.channel.software.mergePackages(self.session,
-                                             source_channel,
-                                             target_channel)
+    self.do_softwarechannel_sync(args, deleteFromTarget=False)
 
 ####################
 
@@ -2057,13 +2014,14 @@ def complete_softwarechannel_sync(self, text, line, beg, end):
     return []
 
 
-def do_softwarechannel_sync(self, args):
+#Gets called from `do_softwarechannel_mergepackages` with deleteFromTarget=False
+def do_softwarechannel_sync(self, args, deleteFromTarget=True):
     options = []
 
     (args, options) = parse_arguments(args, options)
 
     if len(args) != 1 and len(args) != 2:
-        self.help_softwarechannel_sync()
+        self.help_softwarechannel_sync() if deleteFromTarget else self.help_softwarechannel_mergepackages()
         return
 
     source_channel = args[0]
@@ -2079,9 +2037,11 @@ def do_softwarechannel_sync(self, args):
             source_channel)
     if not self.check_softwarechannel(target_channel):
         return
-
-    logging.info("syncing packages from softwarechannel " +
+    
+    command = "syncing" if deleteFromTarget else "merging"
+    logging.info(command + " packages from softwarechannel " +
                  source_channel + " to " + target_channel)
+
 
     # use API call instead of spacecmd function
     # to get detailed infos about the packages
@@ -2125,7 +2085,7 @@ def do_softwarechannel_sync(self, args):
 
     # check for packages only in the target channel
     target_only = target_ids.difference(source_ids)
-    if target_only:
+    if target_only and deleteFromTarget:
         print 'packages to remove from channel "' + target_channel + '":'
         for i in target_only:
             print self.get_package_name(i)
@@ -2137,17 +2097,25 @@ def do_softwarechannel_sync(self, args):
         print "  " + target_channel + ": " + str(len(target_ids)).rjust(5), "packages"
         print "    add   ", str(
             len(source_only)).rjust(5), "packages to  ", target_channel
-        print "    remove", str(
-            len(target_only)).rjust(5), "packages from", target_channel
+
+        if(deleteFromTarget):
+            print "    remove", str(
+                len(target_only)).rjust(5), "packages from", target_channel
+
         if not self.user_confirm('Perform these changes to channel ' + target_channel + ' [y/N]:'):
             return
-
-        self.client.channel.software.addPackages(self.session,
-                                                 target_channel,
-                                                 list(source_only))
-        self.client.channel.software.removePackages(self.session,
+        
+        if(deleteFromTarget):
+            self.client.channel.software.addPackages(self.session,
                                                     target_channel,
-                                                    list(target_only))
+                                                    list(source_only))
+            self.client.channel.software.removePackages(self.session,
+                                                       target_channel,
+                                                       list(target_only))
+        else:
+            self.client.channel.software.mergePackages(self.session,
+                                                      source_channel,
+                                                      target_channel)
 
 ####################
 
