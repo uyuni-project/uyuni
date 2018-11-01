@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 01 11:12:42 CET 2018 - jgonzalez@suse.com
+
+- version 3.1.16-1
 - SUSE OpenStack Cloud 9 enablement (bsc#1113557)
 - add SUSE Manager 3.1 on SLES12 SP4
 - support SLE12 SP4 product family (bsc#1107117)
