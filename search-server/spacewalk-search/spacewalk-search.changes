@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 01 11:00:03 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.3.6-1
 - discard commons-logging.properties removal on spec file, as OBS package does not contain it
 - upgrade tika-core to 0.19.1 and adjust nutch-core (bsc#1109235)
 - remove lib jar files and add them as build dependencies on spec
