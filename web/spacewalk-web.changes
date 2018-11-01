@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 01 11:02:37 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.1.19-1
 - fix typo in messages (bsc#1111249)
 - Fix Sles name in base channel filter (Visualization tab) (bsc#1042184)
 
