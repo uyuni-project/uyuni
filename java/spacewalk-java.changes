@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 01 10:58:56 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.46.17-1
 - Change Requires to allow installing with both Tomcat 8 (SLE-12SP3) and 9 (SLE12-SP4)
 - fix typo in messages (bsc#1111249)
 - Remove restrictions on SUSE Manager Channel subscriptions (bsc#1105724)
