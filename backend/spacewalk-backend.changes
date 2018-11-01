@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 01 10:53:49 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.73.15-1
 - Channels to be actually un-subscribed from the assigned systems when being removed
   using spacewalk-remove-channel tool(bsc#1104120)
 
