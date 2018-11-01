@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 01 10:52:41 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.8.13-1
 - show group id on group_details (bsc#1111542)
 - State channels handling: Existing commands configchannel_create and configchannel_import were updated
   while system_scheduleapplyconfigchannels and configchannel_updateinitsls were added.

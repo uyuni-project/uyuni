@@ -8,7 +8,7 @@
 %endif
 
 Name:        spacecmd
-Version:     2.7.8.12
+Version:     2.7.8.13
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Red Hat Satellite servers
 
