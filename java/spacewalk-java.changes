@@ -1,3 +1,4 @@
+- Automatic cleanup of notification messages after a configurable lifetime
 - Different methods have been refactored in tomcat/taskomatic for better performance(bsc#1106430)
 - Do not try cleanup when deleting empty system profiles (bsc#1111247)
 - Better error handling when a websocket connection is aborted (bsc#1080474)
