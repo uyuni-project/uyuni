@@ -7,7 +7,9 @@ packages:
           errors: report,
           all_versions: true
 {%- else %}
+  {%- if grains['os_family'] != 'Debian' %}
           errors: report
+  {%- endif %}
 {%- endif %}
       }
 {% if grains['os_family'] == 'Suse' %}
