@@ -24,6 +24,8 @@ mgrchannels_repo:
     - name: "/etc/zypp/repos.d/susemanager:channels.repo"
 {%- elif grains['os_family'] == 'RedHat' %}
     - name: "/etc/yum.repos.d/susemanager:channels.repo"
+{%- elif grains['os_family'] == 'Debian' %}
+    - name: "/tmp/susemanager:channels.repo"
 {%- endif %}
     - source:
       - salt://channels/channels.repo
