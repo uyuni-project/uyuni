@@ -48,6 +48,7 @@ module.exports = (env, argv) => {
     resolve: {
       alias: {
         components: path.resolve(__dirname, '../components/'),
+        core: path.resolve(__dirname, '../core/'),
         utils: path.resolve(__dirname, '../utils/'),
       }
     },
