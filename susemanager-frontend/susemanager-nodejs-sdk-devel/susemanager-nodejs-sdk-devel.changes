@@ -1,12 +1,7 @@
 - migrate obs module susemanager-nodejs-sdk-devel to git
 
 -------------------------------------------------------------------
-Mon Jun 18 11:00:00 UTC 2018 - luneves@suse.com
-
-- Add required dependency react-select and some usefull gulp dev dependency (bsc#1098029)
-
--------------------------------------------------------------------
-Fri Jun  8 08:17:03 UTC 2018 - luneves@suse.com
+Thu Jun 14 20:25:52 UTC 2018 - luneves@suse.de
 
 - Add required dev dependency watchify (bsc#1096747)
 
@@ -36,12 +31,12 @@ Wed Aug 30 15:40:14 UTC 2017 - mc@suse.com
 -------------------------------------------------------------------
 Wed Aug  9 12:32:36 UTC 2017 - dmaiocchi@suse.com
 
-- FIX: remove the 2 time contained "gulp-concat": "2.6.0" 
+- FIX: remove the 2 time contained "gulp-concat": "2.6.0"
 
 -------------------------------------------------------------------
 Fri Feb 19 11:55:19 UTC 2016 - malbu@suse.de
 
-- Add babel-polyfill and gulp-concat 
+- Add babel-polyfill and gulp-concat
 
 -------------------------------------------------------------------
 Wed Feb 17 16:17:17 UTC 2016 - moio@suse.com
@@ -52,4 +47,3 @@ Wed Feb 17 16:17:17 UTC 2016 - moio@suse.com
 Tue Feb  9 17:34:33 UTC 2016 - moio@suse.com
 
 - Initial version
-
