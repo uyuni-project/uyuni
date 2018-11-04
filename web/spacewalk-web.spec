@@ -51,6 +51,7 @@ Summary: HTML document files for Spacewalk
 Group: Applications/Internet
 Requires: httpd
 Requires: spacewalk-branding
+Requires: susemanager-web-libs
 Obsoletes: rhn-help < 5.3.0
 Provides: rhn-help = 5.3.0
 Obsoletes: rhn-html < 5.3.0
