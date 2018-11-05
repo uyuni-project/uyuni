@@ -9,6 +9,7 @@ const vendors = [
     "react-hot-loader",
     "react-hot-loader/patch",
     "lodash",
+    "create-react-class"
 ];
 
 module.exports = vendors;
