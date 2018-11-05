@@ -678,6 +678,24 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Returns a list of empty system profiles visible to user (created by createSystemProfile).
+     *
+     * @param loggedInUser - the user
+     * @return array of empty system profiles
+     *
+     * @xmlrpc.doc Returns a list of empty system profiles visible to user (created by the createSystemProfile method).
+     * @xmlrpc.param #session_key()
+     *
+     * @xmlrpc.returntype
+     *          #array()
+     *              $EmptySystemProfileSerializer
+     *          #array_end()
+     */
+    public Object[] listEmptySystemProfiles(User loggedInUser) {
+        return SystemManager.listEmptySystemProfiles(loggedInUser, null).toArray();
+    }
+
+    /**
      * Gets a list of all active systems visible to user
      * @param loggedInUser The current user
      * @return Returns an array of maps representing all active systems visible to user
