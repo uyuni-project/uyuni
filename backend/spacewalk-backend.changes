@@ -1,7 +1,8 @@
+- Hide Python traceback and show only error message (bsc#1110427)
+
 -------------------------------------------------------------------
 Fri Oct 26 10:06:41 CEST 2018 - jgonzalez@suse.com
 
-- Hide Python traceback and show only error message (bsc#1110427)
 - version 4.0.2-1
 - support mirroring of source packages
 - Make spacewalk-backend code compatible with Python 3
