@@ -21,7 +21,7 @@ class SubscriptionMatching extends React.Component {
     error: null
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.refreshServerData();
     setInterval(this.refreshServerData, this.props.refreshInterval);
   }
@@ -96,7 +96,7 @@ const ErrorMessage = (props) => <MessageContainer items={
 class SubscriptionMatchingTabContainer extends React.Component {
   state = {activeTabHash: document.location.hash};
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     window.addEventListener("popstate", () => {
       this.setState({activeTabHash: document.location.hash});
     });

@@ -13,7 +13,7 @@ class TabContainer extends React.Component {
     onTabHashChange: PropTypes.func, // takes a hash parameter
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({activeTabHash: this.sanitizeHash(nextProps.initialActiveTabHash, nextProps.hashes)});
   }
 

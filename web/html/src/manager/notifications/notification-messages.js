@@ -26,11 +26,11 @@ class NotificationMessages extends React.Component {
     selectedItems: [],
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.refreshServerData(this.state.currentDataUrlTag);
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if (this.state.currentDataUrlTag != nextState.currentDataUrlTag) {
       this.refreshServerData(nextState.currentDataUrlTag);
     }

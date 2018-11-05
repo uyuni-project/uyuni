@@ -26,7 +26,7 @@ class VirtualizationGuestsListRefreshApi extends React.Component<Props, State> {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.refreshServerData();
     this.intervalId = setInterval(this.refreshServerData, this.props.refreshInterval);
   }

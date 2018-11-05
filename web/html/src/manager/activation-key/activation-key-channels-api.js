@@ -53,7 +53,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.fetchActivationKeyChannels()
       .then(this.fetchBaseChannels)
       .then(() => this.fetchChildChannels(this.props.currentSelectedBaseId));

@@ -87,7 +87,7 @@ class ProductsPageWrapper extends React.Component {
     scheduleResyncItems: []
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (!this.state.refreshRunning) {
       this.refreshServerData();
     }
@@ -554,7 +554,7 @@ class CheckListItem extends React.Component {
     withRecommended: true,
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.isSelected(nextProps.item, nextProps.bypassProps.selectedItems)) {
       this.handleWithRecommendedState(nextProps.bypassProps.selectedItems);
     }

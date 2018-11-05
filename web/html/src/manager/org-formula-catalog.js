@@ -24,7 +24,7 @@ class FormulaCatalog extends React.Component {
         });
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.refreshServerData();
     }
 

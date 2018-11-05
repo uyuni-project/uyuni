@@ -31,7 +31,7 @@ class VirtualHostManagerDetails extends React.Component {
         });
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         Network.get("/rhn/manager/api/vhms/" + this.props.data.id + "/nodes")
             .promise.then(data => {
                 this.setState({nodes: data.data});
