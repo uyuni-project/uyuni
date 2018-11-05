@@ -2,6 +2,7 @@
 "use strict";
 
 const React = require("react");
+const createReactClass = require('create-react-class');
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const PopUp = require("../components/popup").PopUp;
@@ -16,7 +17,8 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 
-const Pins = React.createClass({
+const Pins = createReactClass({
+  displayName: 'Pins',
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
@@ -71,7 +73,6 @@ const Pins = React.createClass({
     $("#addPinPopUp").modal("hide"); //to trigger popup close action
     this.closePopUp();
   },
-
 
   render: function() {
     const popUpContent = this.state.showPopUp ? <AddPinPopUp products={this.props.products} systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
@@ -161,7 +162,7 @@ const Pins = React.createClass({
         />
       </div>
     );
-  }
+  },
 });
 
 const PinStatus = (props) => {
@@ -180,45 +181,42 @@ const PinButton = (props) =>
   </button>
 ;
 
-const AddPinPopUp = React.createClass({
+class AddPinPopUp extends React.Component {
+  state = {
+    systemId: null
+  };
 
-  getInitialState:function() {
-    return {
-      systemId: null
-    };
-  },
-
-  sortByCpuCount: function(a, b, columnKey, sortDirection) {
+  sortByCpuCount = (a, b, columnKey, sortDirection) => {
     var result = a[columnKey]- b[columnKey];
     return (result || Utils.sortById(a, b)) * sortDirection;
-  },
+  };
 
-  buildRows: function() {
+  buildRows = () => {
     return Object.keys(this.props.systems).map((id) => {
       return this.props.systems[id];
     });
-  },
+  };
 
-  onBackClicked: function () {
+  onBackClicked = () => {
     this.setState({systemId: null});
-  },
+  };
 
-  onSystemSelected:function(systemId) {
+  onSystemSelected = (systemId) => {
     this.setState({systemId: systemId});
-  },
+  };
 
-  onSubscriptionSelected: function(subscriptionId) {
+  onSubscriptionSelected = (subscriptionId) => {
     this.props.onSavePin(this.state.systemId, subscriptionId);
-  },
+  };
 
-  searchData: function(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return datum.name.toLowerCase().includes(criteria.toLowerCase());
     }
     return true;
-  },
+  };
 
-  render: function() {
+  render() {
     var popUpContent;
     if (this.state.systemId == null) {
       popUpContent = (
@@ -290,7 +288,7 @@ const AddPinPopUp = React.createClass({
     }
     return (popUpContent);
   }
-});
+}
 
 const ProductTableCell = (props) => {
   const productLength = props.productIds.length;
@@ -315,9 +313,8 @@ const ProductTableCell = (props) => {
   );
 };
 
-const PinSubscriptionSelector = React.createClass({
-
-  render: function() {
+class PinSubscriptionSelector extends React.Component {
+  render() {
     if (this.props.subscriptions.length > 0) {
        return (
           <Table key="table"
@@ -358,8 +355,8 @@ const PinSubscriptionSelector = React.createClass({
     else {
       return <p>{t("No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests.")}</p>
     }
-  },
-});
+  }
+}
 
 module.exports = {
   Pins: Pins,

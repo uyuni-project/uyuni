@@ -39,30 +39,28 @@ const NodeLink = (props) =>
     }
   </div>;
 
-const Element = React.createClass({
-  getInitialState: function() {
-    return {
-      open: (this.props.element.active ? true : false),
-      visiblityForcedByParent: false
-    }
-  },
+class Element extends React.Component {
+  state = {
+    open: (this.props.element.active ? true : false),
+    visiblityForcedByParent: false
+  };
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
       open: nextProps.element.open && !nextProps.forceCollapse,
       visiblityForcedByParent: nextProps.visiblityForcedByParent
     });
-  },
+  }
 
-  isCurrentVisible(element, search) {
+  isCurrentVisible = (element, search) => {
     if (search == null || search.length == 0) {
       return true;
     }
 
     return element.label.toLowerCase().includes(search.toLowerCase());
-  },
+  };
 
-  isVisible: function(element, search) {
+  isVisible = (element, search) => {
     if (search == null || search.length == 0) {
       return true;
     }
@@ -70,25 +68,25 @@ const Element = React.createClass({
     const leafVisible = this.isCurrentVisible(element, search);
     const childrenVisible = this.isLeaf(element) ? leafVisible : element.submenu.filter(l => this.isVisible(l, search)).length > 0;
     return leafVisible || childrenVisible;
-  },
+  };
 
-  isLeaf: function(element) {
+  isLeaf = (element) => {
     return element.submenu == null;
-  },
+  };
 
-  toggleView: function() {
+  toggleView = () => {
     this.setState({open : !this.state.open});
-  },
+  };
 
-  getUrl: function(element) {
+  getUrl = (element) => {
     return element.submenu ? this.getUrl(element.submenu[0]) : element.primaryUrl;
-  },
+  };
 
-  getCompleteUrlLabel: function(element) {
+  getCompleteUrlLabel = (element) => {
     return element.submenu ? (element.label + ' > ' + this.getCompleteUrlLabel(element.submenu[0])) : element.label;
-  },
+  };
 
-  render: function() {
+  render() {
     const element = this.props.element;
     return (
       this.isVisible(element, this.props.searchString) || this.state.visiblityForcedByParent ?
@@ -117,10 +115,10 @@ const Element = React.createClass({
       : null
     );
   }
-});
+}
 
-const MenuLevel = React.createClass({
-  render: function() {
+class MenuLevel extends React.Component {
+  render() {
     var length = this.props.elements.length;
     var contentMenu = this.props.elements.map((el, i) =>
       <Element element={el}
@@ -137,26 +135,24 @@ const MenuLevel = React.createClass({
       </ul>
     );
   }
-});
+}
 
-const Nav = React.createClass({
-  getInitialState: function () {
-    return {search: '', forceCollapse: false}
-  },
+class Nav extends React.Component {
+  state = {search: '', forceCollapse: false};
 
-  onSearch: function(e) {
+  onSearch = (e) => {
     this.setState({ search: e.target.value });
-  },
+  };
 
-  closeEmAll: function() {
+  closeEmAll = () => {
     this.setState({search: '', forceCollapse: true});
-  },
+  };
 
-  scrollToTop: function() {
+  scrollToTop = () => {
     window.scrollTo(0, 0);
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <nav className={this.state.search != null && this.state.search.length > 0 ? '' : 'collapsed'}>
         <div className="nav-tool-box">
@@ -171,7 +167,7 @@ const Nav = React.createClass({
       </nav>
     );
   }
-});
+}
 
 ReactDOM.render(
   <Nav />,
@@ -179,11 +175,11 @@ ReactDOM.render(
 );
 
 
-const Breadcrumb = React.createClass({
-  componentDidMount: function() {
-  },
+class Breadcrumb extends React.Component {
+  componentDidMount() {
+  }
 
-  render: function() {
+  render() {
     var breadcrumbArray = Array();
     var level = JSONMenu.find(l => l.active);
     while (level != null) {
@@ -229,7 +225,7 @@ const Breadcrumb = React.createClass({
       </div>
     );
   }
-});
+}
 
 ReactDOM.render(
   <Breadcrumb />,

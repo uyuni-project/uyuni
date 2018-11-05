@@ -2,6 +2,7 @@
 "use strict";
 
 const React = require("react");
+const createReactClass = require('create-react-class');
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const UtilComponent = require("./subscription-matching-util");
 const ToolTip = UtilComponent.ToolTip;
@@ -12,7 +13,8 @@ const {Table, Column, SearchField, Highlight} = require("../components/table");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 
-const Subscriptions = React.createClass({
+const Subscriptions = createReactClass({
+  displayName: 'Subscriptions',
   mixins: [StatePersistedMixin],
 
   sortByPolicy: function(aRaw, bRaw, columnKey, sortDirection) {
@@ -128,7 +130,7 @@ const Subscriptions = React.createClass({
         {body}
       </div>
     );
-  }
+  },
 });
 
 const QuantityCell = (props) => {

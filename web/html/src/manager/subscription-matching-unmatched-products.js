@@ -2,6 +2,7 @@
 "use strict";
 
 const React = require("react");
+const createReactClass = require('create-react-class');
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const UtilComponent = require("./subscription-matching-util");
 const CsvLink = UtilComponent.CsvLink;
@@ -12,7 +13,8 @@ const {Table, Column, SearchField} = require("../components/table");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 
-const UnmatchedProducts = React.createClass({
+const UnmatchedProducts = createReactClass({
+  displayName: 'UnmatchedProducts',
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
@@ -104,13 +106,12 @@ const UnmatchedProducts = React.createClass({
         {body}
       </div>
     );
-  }
+  },
 });
 
 
-const UnmatchedSystemPopUp = React.createClass({
-
-  buildTableData: function(props) {
+class UnmatchedSystemPopUp extends React.Component {
+  buildTableData = (props) => {
     if (!props.selectedProductId) {
         return [];
     }
@@ -123,16 +124,16 @@ const UnmatchedSystemPopUp = React.createClass({
         type: systems[sid].type
       }
     });
-  },
+  };
 
-  searchData: function(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return datum.systemName.toLowerCase().includes(criteria.toLowerCase());
     }
     return true;
-  },
+  };
 
-  render: function() {
+  render() {
     const popUpContent = <Table
         data={this.buildTableData(this.props)}
         identifier={(row) => row.id}
@@ -160,7 +161,7 @@ const UnmatchedSystemPopUp = React.createClass({
       />
     );
   }
-});
+}
 
 module.exports = {
   UnmatchedProducts: UnmatchedProducts,

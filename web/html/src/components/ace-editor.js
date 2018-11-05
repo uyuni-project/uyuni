@@ -4,9 +4,8 @@
 const React = require("react");
 const PropTypes = React.PropTypes;
 
-const AceEditor = React.createClass({
-
-  propTypes: {
+class AceEditor extends React.Component {
+  static propTypes = {
     mode: PropTypes.string,
     content: PropTypes.string,
     className: PropTypes.string,
@@ -16,9 +15,9 @@ const AceEditor = React.createClass({
     readOnly: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
-  },
+  };
 
-  componentDidMount: function() {
+  componentDidMount() {
     const component = this;
 
     const node = React.findDOMNode(component.refs.editor);
@@ -33,16 +32,16 @@ const AceEditor = React.createClass({
     editor.getSession().on('change', function() {
       component.props.onChange(editor.getSession().getValue());
     });
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <div ref="editor" className={this.props.className} id={this.props.id}>
         {this.props.content}
       </div>
     );
   }
-});
+}
 
 module.exports = {
     AceEditor : AceEditor
