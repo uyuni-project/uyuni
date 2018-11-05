@@ -7,22 +7,23 @@ const ReactDOM = require("react-dom");
 const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("../utils/network");
 
-var FormulaDetail = React.createClass({
-
-    getInitialState: function() {
+class FormulaDetail extends React.Component {
+    constructor(props, context) {
+        super(props, context);
         this.getServerData();
-        return {
+
+        this.state = {
             metadata: {}
         };
-    },
+    }
 
-    getServerData: function() {
+    getServerData = () => {
         Network.get("/rhn/manager/api/formula-catalog/formula/"+ formulaName + "/data").promise.then(data => {
             this.setState({metadata: data});
         });
-    },
+    };
 
-    generateMetadata: function() {
+    generateMetadata = () => {
         var metadata = [];
         for (var item in this.state.metadata) {
             metadata.push(
@@ -35,9 +36,9 @@ var FormulaDetail = React.createClass({
             );
         }
         return metadata;
-    },
+    };
 
-    generateMetadataItem: function(name, item) {
+    generateMetadataItem = (name, item) => {
         if (typeof item == "string")
             return (
                 <textarea className="form-control" name={name} value={item} readOnly disabled />
@@ -58,9 +59,9 @@ var FormulaDetail = React.createClass({
                 <textarea className="form-control" name={name} value={JSON.stringify(item)} readOnly disabled />
             );
         }
-    },
+    };
 
-    render: function() {
+    render() {
         return (
         <TopPanel title={"View Formula: " + formulaName} icon="spacewalk-icon-salt-add">
             <form className="form-horizontal">
@@ -76,7 +77,7 @@ var FormulaDetail = React.createClass({
         </TopPanel>
         )
     }
-});
+}
 
 ReactDOM.render(
   <FormulaDetail />,

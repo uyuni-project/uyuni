@@ -9,21 +9,18 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 
-const TaskoTop = React.createClass({
+class TaskoTop extends React.Component {
+  state = {
+    serverData: null,
+    error: null,
+  };
 
-  getInitialState: function() {
-    return {
-      serverData: null,
-      error: null,
-    };
-  },
-
-  componentWillMount: function() {
+  componentWillMount() {
     this.refreshServerData();
     setInterval(this.refreshServerData, this.props.refreshInterval);
-  },
+  }
 
-  refreshServerData: function() {
+  refreshServerData = () => {
     var currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data", "application/json").promise
       .then(data => {
@@ -39,9 +36,9 @@ const TaskoTop = React.createClass({
             null
         });
       });
-  },
+  };
 
-  sortByEndTime: function(aRaw, bRaw, columnKey, sortDirection) {
+  sortByEndTime = (aRaw, bRaw, columnKey, sortDirection) => {
     if (aRaw[columnKey] == null || bRaw[columnKey] == null) {
       // reset the sortDirection because if 'endTime' is null it means that its status
       // it's 'running' so we want to keep it at the top of any other rows
@@ -51,31 +48,31 @@ const TaskoTop = React.createClass({
     var b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
     var result = a.toLowerCase().localeCompare(b.toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
+  };
 
-  sortByStatus: function(aRaw, bRaw, columnKey, sortDirection) {
+  sortByStatus = (aRaw, bRaw, columnKey, sortDirection) => {
     var statusValues = {'running': 0, 'ready_to_run': 1, 'failed': 2, 'interrupted': 3, 'skipped': 4, 'finished': 5 };
     var a = statusValues[aRaw[columnKey]];
     var b = statusValues[bRaw[columnKey]];
     var result = (a > b ? 1 : (a < b ? -1 : 0)) || this.sortByEndTime(aRaw, bRaw, 'endTime', sortDirection);
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
+  };
 
-  sortByNumber: function(aRaw, bRaw, columnKey, sortDirection) {
+  sortByNumber = (aRaw, bRaw, columnKey, sortDirection) => {
     var a = aRaw[columnKey];
     var b = bRaw[columnKey];
     var result = a > b ? 1 : (a < b ? -1 : 0);
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
+  };
 
-  searchData: function(datum, criteria) {
+  searchData = (datum, criteria) => {
       if (criteria) {
         return datum.name.toLowerCase().includes(criteria.toLowerCase());
       }
       return true;
-  },
+  };
 
-  decodeStatus: function(status) {
+  decodeStatus = (status) => {
     var cell;
     switch(status) {
       case 'running': cell = <div><i className="fa fa-cog fa-spin"></i>{t(' running')}</div>; break;
@@ -87,13 +84,13 @@ const TaskoTop = React.createClass({
       default: cell = null;
     }
     return cell;
-  },
+  };
 
-  buildRows: function(jobs) {
+  buildRows = (jobs) => {
     return Object.keys(jobs).map((id) => jobs[id]);
-  },
+  };
 
-  render: function() {
+  render() {
     const data = this.state.serverData;
     const title =
       <div className="spacewalk-toolbar-h1">
@@ -200,7 +197,7 @@ const TaskoTop = React.createClass({
       );
     }
   }
-});
+}
 
 const ErrorMessage = (props) => <MessageContainer items={
     props.error == "authentication" ?

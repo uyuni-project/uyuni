@@ -44,36 +44,34 @@ const _SCC_REFRESH_STEPS = [
   }
 ];
 
-const SCCDialog = React.createClass({
-  getInitialState: function() {
-    return {
-      steps: _SCC_REFRESH_STEPS,
-      errors: [],
-    }
-  },
+class SCCDialog extends React.Component {
+  state = {
+    steps: _SCC_REFRESH_STEPS,
+    errors: [],
+  };
 
-  componentWillMount: function() {
+  componentWillMount() {
     if(this.props.forceStart && // I'm told to run
         !this.isSyncRunning() && // I'm not running
         !this.hasRun() // I have never run yet
       ) {
       this.startSync(); // let's do the sync then
     }
-  },
+  }
 
   // returns if the sync is running right now
-  isSyncRunning: function() {
+  isSyncRunning = () => {
     return this.state.steps.some(s => s.inProgress);
-  },
+  };
 
   // returns if the sync has run checking if
   // there is at least one step with a valid 'success' flag value
   // or the sync is running
-  hasRun: function() {
+  hasRun = () => {
     return this.state.steps.some(s => s.success != null) || this.isSyncRunning();
-  },
+  };
 
-  startSync: function() {
+  startSync = () => {
     if (this.hasRun()) {
       // reset state
       _SCC_REFRESH_STEPS.forEach(s =>
@@ -86,13 +84,13 @@ const SCCDialog = React.createClass({
     }
     this.props.updateSccSyncRunning(true);
     this.runSccRefreshStep(this.state.steps, 0); // start from the first element
-  },
+  };
 
-  finishSync: function() {
+  finishSync = () => {
     this.props.updateSccSyncRunning(false);
-  },
+  };
 
-  runSccRefreshStep: function(stepList, i) {
+  runSccRefreshStep = (stepList, i) => {
     var currentObject = this;
 
     // if i-step exists
@@ -120,9 +118,9 @@ const SCCDialog = React.createClass({
     else {
       currentObject.finishSync();
     }
-  },
+  };
 
-  handleResponseError: function(jqXHR, arg = "") {
+  handleResponseError = (jqXHR, arg = "") => {
     this.finishSync();
     const stepList = this.state.steps;
     var currentStep = stepList.find(s => s.inProgress);
@@ -131,9 +129,9 @@ const SCCDialog = React.createClass({
     const msg = Network.responseErrorMessage(jqXHR,
       (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
     this.setState({ steps: stepList, errors: this.state.errors.concat(msg) });
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <div className='panel panel-default panel-body text-left'>
         <h4>{t('Refresh the product catalog from SUSE Customer Center')}</h4>
@@ -190,7 +188,7 @@ const SCCDialog = React.createClass({
       </div>
     )
   }
-});
+}
 
 
 module.exports = {

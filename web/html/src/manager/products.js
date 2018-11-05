@@ -72,35 +72,33 @@ function reloadData() {
  * Generate the page wrapper, tabs, scc-popup,
  * and everything around the product list except the list
 */
-const ProductsPageWrapper = React.createClass({
-  getInitialState: function() {
-    return {
-      issMaster: issMaster_flag_from_backend,
-      refreshNeeded: refreshNeeded_flag_from_backend,
-      refreshRunning: refreshRunning_flag_from_backend,
-      serverData: {_DATA_ROOT_ID : []},
-      errors: [],
-      loading: true,
-      selectedItems: [],
-      sccSyncRunning: false,
-      addingProducts: false,
-      scheduledItems: [],
-      scheduleResyncItems: []
-    }
-  },
+class ProductsPageWrapper extends React.Component {
+  state = {
+    issMaster: issMaster_flag_from_backend,
+    refreshNeeded: refreshNeeded_flag_from_backend,
+    refreshRunning: refreshRunning_flag_from_backend,
+    serverData: {_DATA_ROOT_ID : []},
+    errors: [],
+    loading: true,
+    selectedItems: [],
+    sccSyncRunning: false,
+    addingProducts: false,
+    scheduledItems: [],
+    scheduleResyncItems: []
+  };
 
-  componentWillMount: function() {
+  componentWillMount() {
     if (!this.state.refreshRunning) {
       this.refreshServerData();
     }
-  },
+  }
 
-  forceStartSccSync: function() {
+  forceStartSccSync = () => {
     // trigger the refresh at the first page load if
     return refreshNeeded_flag_from_backend && issMaster_flag_from_backend && !refreshRunning_flag_from_backend
-  },
+  };
 
-  refreshServerData: function(dataUrlTag) {
+  refreshServerData = (dataUrlTag) => {
     this.setState({loading: true});
     var currentObject = this;
     reloadData()
@@ -115,27 +113,27 @@ const ProductsPageWrapper = React.createClass({
         });
       })
       .catch(this.handleResponseError);
-  },
+  };
 
-  handleSelectedItems: function(items) {
+  handleSelectedItems = (items) => {
     let arr = this.state.selectedItems;
     // add all items those are not yet in the existsing set
     arr = arr.concat(items.filter(i => !arr.map(a => a.identifier).includes(i.identifier)));
     this.setState({selectedItems: arr});
-  },
+  };
 
-  handleUnselectedItems: function(items) {
+  handleUnselectedItems = (items) => {
     let arr = this.state.selectedItems;
     // keep all items in the existsing set those are not in the unselected items
     arr = arr.filter(a => !items.map(i => i.identifier).includes(a.identifier));
     this.setState({selectedItems: arr});
-  },
+  };
 
-  clearSelection: function() {
+  clearSelection = () => {
     this.setState({ selectedItems: [] });
-  },
+  };
 
-  updateSccSyncRunning: function(sccSyncStatus) {
+  updateSccSyncRunning = (sccSyncStatus) => {
     // if it was running and now it's finished
     if (this.state.sccSyncRunning && !sccSyncStatus) {
       this.refreshServerData(); // reload data
@@ -146,9 +144,9 @@ const ProductsPageWrapper = React.createClass({
       this.setState({ errors: MessagesUtils.info(t('The product catalog refresh is running...')) });
     }
     this.setState({ sccSyncRunning: sccSyncStatus });
-  },
+  };
 
-  submit: function() {
+  submit = () => {
     const currentObject = this;
     currentObject.setState({ addingProducts: true });
     Network.post(
@@ -175,9 +173,9 @@ const ProductsPageWrapper = React.createClass({
       this.refreshServerData();
     })
     .catch(currentObject.handleResponseError);
-  },
+  };
 
-  resyncProduct: function(id, name) {
+  resyncProduct = (id, name) => {
     const currentObject = this;
     var scheduledItemsNew = currentObject.state.scheduledItems.concat([id]);
     var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
@@ -199,15 +197,15 @@ const ProductsPageWrapper = React.createClass({
       }
     })
     .catch(currentObject.handleResponseError);
-  },
+  };
 
-  handleResponseError: function(jqXHR, arg = "") {
+  handleResponseError = (jqXHR, arg = "") => {
     const msg = Network.responseErrorMessage(jqXHR,
       (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
     this.setState({ errors: this.state.errors.concat(msg) });
-  },
+  };
 
-  render: function() {
+  render() {
     const title =
       <div className='spacewalk-toolbar-h1'>
         <h1>
@@ -368,22 +366,19 @@ const ProductsPageWrapper = React.createClass({
       </div>
     )
   }
-});
-
+}
 
 /**
  * Show the products data
 */
-const Products = React.createClass({
-  getInitialState: function() {
-    return {
-      popupItem: null,
-      archCriteria: [],
-      visibleSubList: []
-    }
-  },
+class Products extends React.Component {
+  state = {
+    popupItem: null,
+    archCriteria: [],
+    visibleSubList: []
+  };
 
-  componentDidMount: function() {
+  componentDidMount() {
     const currentObject = this;
 
     //HACK: usage of JQuery here is needed to apply the select2js plugin
@@ -399,50 +394,50 @@ const Products = React.createClass({
         });
       }
     });
-  },
+  }
 
-  getDistinctArchsFromData: function(data) {
+  getDistinctArchsFromData = (data) => {
     var archs = [];
     Object.keys(data).map((id) => data[id])
         .forEach(function(x) { if (!archs.includes(x.arch)) archs.push(x.arch); });
     return archs;
-  },
+  };
 
-  handleFilterArchChange: function(archs) {
+  handleFilterArchChange = (archs) => {
     this.setState({archCriteria: archs});
-  },
+  };
 
-  filterDataByArch: function(data) {
+  filterDataByArch = (data) => {
     if(this.state.archCriteria.length > 0) {
       return data.filter(p => this.state.archCriteria.includes(p.arch));
     }
     return data;
-  },
+  };
 
-  handleSelectedItems: function(items) {
+  handleSelectedItems = (items) => {
     this.props.handleSelectedItems(items);
-  },
+  };
 
-  handleUnselectedItems: function(items) {
+  handleUnselectedItems = (items) => {
     this.props.handleUnSelectedItems(items);
-  },
+  };
 
-  searchData: function(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return (datum.label).toLowerCase().includes(criteria.toLowerCase());
     }
     return true;
-  },
+  };
 
-  buildRows: function(message) {
+  buildRows = (message) => {
     return Object.keys(message).map((id) => message[id]);
-  },
+  };
 
-  showChannelsfor: function(item) {
+  showChannelsfor = (item) => {
     this.setState({popupItem: item});
-  },
+  };
 
-  handleVisibleSublist: function(id) {
+  handleVisibleSublist = (id) => {
     let arr = this.state.visibleSubList;
     if(arr.includes(id)) {
       arr = arr.filter(i => i !== id);
@@ -450,9 +445,9 @@ const Products = React.createClass({
       arr = arr.concat([id]);
     }
     this.setState({visibleSubList: arr});
-  },
+  };
 
-  render: function() {
+  render() {
     const archFilter =
       <div className='multiple-select-wrapper'>
         <select id='product-arch-filter' name='product-arch-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
@@ -501,17 +496,17 @@ const Products = React.createClass({
       </div>
     )
   }
-});
+}
 
 /**
  * Generate a custom list of elements for the products data
 */
-const CheckList = React.createClass({
-  isRootLevel: function(level) {
+class CheckList extends React.Component {
+  isRootLevel = (level) => {
     return level == 1;
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       this.props.data ?
         <ul className={this.props.bypassProps.listStyleClass}>
@@ -548,42 +543,40 @@ const CheckList = React.createClass({
         : null
     )
   }
-});
+}
 
 /**
  * A component to generate a list item which contains
  * all information for a single product
 */
-const CheckListItem = React.createClass({
-  getInitialState: function() {
-    return {
-      withRecommended: true,
-    }
-  },
+class CheckListItem extends React.Component {
+  state = {
+    withRecommended: true,
+  };
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.isSelected(nextProps.item, nextProps.bypassProps.selectedItems)) {
       this.handleWithRecommendedState(nextProps.bypassProps.selectedItems);
     }
-  },
+  }
 
-  isRootLevel: function(level) {
+  isRootLevel = (level) => {
     return level == 1;
-  },
+  };
 
-  isSelected: function(item, selectedItems) {
+  isSelected = (item, selectedItems) => {
     return selectedItems.filter(i => i.identifier == item.identifier).length == 1;
-  },
+  };
 
-  isInstalled: function() {
+  isInstalled = () => {
     return this.props.item.status == _PRODUCT_STATUS.installed;
-  },
+  };
 
-  isSublistVisible: function() {
+  isSublistVisible = () => {
     return this.props.bypassProps.visibleSubList.includes(this.props.item.identifier);
-  },
+  };
 
-  handleSelectedItem: function() {
+  handleSelectedItem = () => {
     const currentItem = this.props.item;
     const id = currentItem.identifier;
 
@@ -611,30 +604,30 @@ const CheckListItem = React.createClass({
       }
       this.handleSelectedItems(arr);
     }
-  },
+  };
 
-  getChildrenTree: function(item) {
+  getChildrenTree = (item) => {
     var arr = this.getNestedData(item);
     let nestedArr = [];
     arr.forEach(child => {
       nestedArr = nestedArr.concat(this.getChildrenTree(child))
     });
     return arr.concat(nestedArr);
-  },
+  };
 
-  getRecommendedChildrenTree: function(item){
+  getRecommendedChildrenTree = (item) => {
       return this.getChildrenTree(item).filter(el => el.recommended);
-  },
+  };
 
-  handleSelectedItems: function(items) {
+  handleSelectedItems = (items) => {
     this.props.handleSelectedItems(items);
-  },
+  };
 
-  handleUnselectedItems: function(items) {
+  handleUnselectedItems = (items) => {
     this.props.handleUnselectedItems(items);
-  },
+  };
 
-  handleWithRecommended: function() {
+  handleWithRecommended = () => {
     const withRecommendedNow = !this.state.withRecommended;
     this.setState({withRecommended: withRecommendedNow});
     // only if this item is already selected
@@ -649,37 +642,37 @@ const CheckListItem = React.createClass({
         this.props.handleUnselectedItems(arr);
       }
     }
-  },
+  };
 
   // check if all recommended children are in the selection set,
   // and set the 'withRecommended' flag state accordingly
-  handleWithRecommendedState: function(arr) {
+  handleWithRecommendedState = (arr) => {
     // it matters only for the root node
     if (this.props.treeLevel == 1) {
       this.setState({withRecommended:
         this.getRecommendedChildrenTree(this.props.item).every(i => arr.includes(i)) ?
           true : false});
     }
-  },
+  };
 
-  scheduleResyncInProgress: function() {
+  scheduleResyncInProgress = () => {
     return this.props.bypassProps.scheduleResyncItems.includes(this.props.item.identifier);
-  },
+  };
 
-  resyncProduct: function() {
+  resyncProduct = () => {
     if (!this.scheduleResyncInProgress()){
       this.props.bypassProps.resyncProduct(this.props.item.identifier, this.props.item.label);
     }
-  },
+  };
 
-  getNestedData: function(item) {
+  getNestedData = (item) => {
     if (item && this.props.bypassProps.nestedKey && item[this.props.bypassProps.nestedKey] != null) {
      return item[this.props.bypassProps.nestedKey];
     }
     return [];
-  },
+  };
 
-  render: function() {
+  render() {
     const currentItem = this.props.item;
     /** generate item selector content **/
     let selectorContent = null;
@@ -834,7 +827,7 @@ const CheckListItem = React.createClass({
       </li>
     )
   }
-});
+}
 
 const ChannelsPopUp = (props) => {
   const titlePopup = t('Product Channels - ') + (props.item != null ? props.item.label : '');
@@ -865,8 +858,8 @@ const ChannelsPopUp = (props) => {
   );
 }
 
-const ChannelList = React.createClass({
-  decodeChannelStatus:function(status) {
+class ChannelList extends React.Component {
+  decodeChannelStatus = (status) => {
     let decoded = '';
     switch(status) {
       case _CHANNEL_STATUS.notSynced:
@@ -879,9 +872,9 @@ const ChannelList = React.createClass({
         decoded = <span className='text-danger'>{t('sync failed')}</span>; break;
     }
     return decoded;
-  },
+  };
 
-  render:function() {
+  render() {
     return (
       this.props.items.length > 0 ?
       <div>
@@ -901,7 +894,7 @@ const ChannelList = React.createClass({
       : null
     )
   }
-});
+}
 
 ReactDOM.render(
   <ProductsPageWrapper />,

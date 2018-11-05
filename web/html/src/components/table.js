@@ -2,6 +2,7 @@
 "use strict";
 
 const React = require("react");
+const createReactClass = require('create-react-class');
 const PropTypes = React.PropTypes;
 const StatePersistedMixin = require("./util").StatePersistedMixin;
 const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
@@ -92,7 +93,8 @@ const Highlight = (props) => {
   return <span key="hl">{chunk1}{chunk2}{chunk3}</span>;
 }
 
-const Table = React.createClass({
+const Table = createReactClass({
+  displayName: 'Table',
   mixins: [StatePersistedMixin],
 
   propTypes: {
@@ -110,6 +112,7 @@ const Table = React.createClass({
     loading: PropTypes.bool, // if data is loading
     loadingText: PropTypes.string, // The message which is shown when the data is loading
   },
+
   defaultEmptyText: t('There are no entries to show.'),
   defaultLoadingText: t('Loading..'),
 
@@ -361,7 +364,7 @@ const Table = React.createClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 module.exports = {

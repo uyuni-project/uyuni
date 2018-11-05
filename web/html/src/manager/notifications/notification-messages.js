@@ -15,35 +15,32 @@ function reloadData(dataUrlSlice) {
   return Network.get('/rhn/manager/notification-messages/' + dataUrlSlice, "application/json").promise;
 }
 
-const NotificationMessages = React.createClass({
+class NotificationMessages extends React.Component {
+  state = {
+    serverData: null,
+    error: null,
+    dataUrlTags: ['#data-unread', '#data-all'],
+    currentDataUrlTag: location.hash ? location.hash : '#data-unread',
+    loading: true,
+    messages: [],
+    selectedItems: [],
+  };
 
-  getInitialState: function() {
-    return {
-      serverData: null,
-      error: null,
-      dataUrlTags: ['#data-unread', '#data-all'],
-      currentDataUrlTag: location.hash ? location.hash : '#data-unread',
-      loading: true,
-      messages: [],
-      selectedItems: [],
-    };
-  },
-
-  componentWillMount: function() {
+  componentWillMount() {
     this.refreshServerData(this.state.currentDataUrlTag);
-  },
+  }
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState) {
     if (this.state.currentDataUrlTag != nextState.currentDataUrlTag) {
       this.refreshServerData(nextState.currentDataUrlTag);
     }
-  },
+  }
 
-  changeTabUrl: function(nextDataUrlTag) {
+  changeTabUrl = (nextDataUrlTag) => {
     this.setState({currentDataUrlTag : nextDataUrlTag});
-  },
+  };
 
-  decodeDataUrlSlice: function(dataUrlTag) {
+  decodeDataUrlSlice = (dataUrlTag) => {
     let dataUrlSlice;
     // decode the tab, the data and the table to present
     switch (dataUrlTag) {
@@ -59,9 +56,9 @@ const NotificationMessages = React.createClass({
         break;
     }
     return dataUrlSlice;
-  },
+  };
 
-  refreshServerData: function(dataUrlTag) {
+  refreshServerData = (dataUrlTag) => {
     this.setState({loading: true});
     var currentObject = this;
     reloadData(this.decodeDataUrlSlice(dataUrlTag))
@@ -84,15 +81,15 @@ const NotificationMessages = React.createClass({
           selectedItems: []
         });
       });
-  },
+  };
 
-  handleSelectItems(items) {
+  handleSelectItems = (items) => {
     this.setState({
       selectedItems: items
     });
-  },
+  };
 
-  updateReadStatus: function(ids, flagAsRead) {
+  updateReadStatus = (ids, flagAsRead) => {
     var dataRequest = {};
     dataRequest.messageIds = ids;
     dataRequest.flagAsRead = flagAsRead;
@@ -121,13 +118,13 @@ const NotificationMessages = React.createClass({
             null
         });
       });
-  },
+  };
 
-  markAsRead: function(ids) {
+  markAsRead = (ids) => {
     return this.updateReadStatus(ids, true);
-  },
+  };
 
-  deleteNotifications: function(ids) {
+  deleteNotifications = (ids) => {
     return Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json").promise
       .then(data => {
         const newMessage = { severity: data.severity, text: data.text };
@@ -145,9 +142,9 @@ const NotificationMessages = React.createClass({
             null
         });
       });
-  },
+  };
 
-  decodeTypeText: function(rawType) {
+  decodeTypeText = (rawType) => {
     var typeText;
     switch(rawType) {
       case 'OnboardingFailed': typeText = t('Onboarding failed'); break;
@@ -155,9 +152,9 @@ const NotificationMessages = React.createClass({
       case 'ChannelSyncFinished': typeText = t('Channel sync finished'); break;
     }
     return typeText;
-  },
+  };
 
-  decodeIconBySeverity: function(severity) {
+  decodeIconBySeverity = (severity) => {
     var severityHtml;
     switch(severity) {
       case 'info':
@@ -171,25 +168,25 @@ const NotificationMessages = React.createClass({
         break;
     }
     return severityHtml;
-  },
+  };
 
-  sortBySeverity: function(aRaw, bRaw, columnKey, sortDirection) {
+  sortBySeverity = (aRaw, bRaw, columnKey, sortDirection) => {
     var statusValues = {'info': 0, 'warning': 1, 'error': 2};
     var a = statusValues[aRaw[columnKey]];
     var b = statusValues[bRaw[columnKey]];
     var result = (a > b ? 1 : (a < b ? -1 : 0));
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
+  };
 
-  sortByStatus: function(aRaw, bRaw, columnKey, sortDirection) {
+  sortByStatus = (aRaw, bRaw, columnKey, sortDirection) => {
     var statusValues = {'true': 0, 'false': 1};
     var a = statusValues[aRaw[columnKey]];
     var b = statusValues[bRaw[columnKey]];
     var result = (a > b ? 1 : (a < b ? -1 : 0));
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
+  };
 
-  buildTextDescription: function(row) {
+  buildTextDescription = (row) => {
     let description = null;
     switch(row['type']) {
       case 'OnboardingFailed':
@@ -204,25 +201,25 @@ const NotificationMessages = React.createClass({
       default: description = JSON.stringify(row['data']);
     }
     return description;
-  },
+  };
 
-  sortByText: function(aRaw, bRaw, columnKey, sortDirection) {
+  sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
     var result = this.buildTextDescription(aRaw).toLowerCase().localeCompare(this.buildTextDescription(bRaw).toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
+  };
 
-  searchData: function(datum, criteria) {
+  searchData = (datum, criteria) => {
       if (criteria) {
         return (this.buildTextDescription(datum)).toLowerCase().includes(criteria.toLowerCase());
       }
       return true;
-  },
+  };
 
-  buildRows: function(message) {
+  buildRows = (message) => {
     return Object.keys(message).map((id) => message[id]);
-  },
+  };
 
-  buildDescription: function(row) {
+  buildDescription = (row) => {
     let description = null;
     switch(row['type']) {
       case 'OnboardingFailed':
@@ -237,9 +234,9 @@ const NotificationMessages = React.createClass({
       default: description = JSON.stringify(row['data']);
     }
     return description;
-  },
+  };
 
-  retryOnboarding: function(minionId) {
+  retryOnboarding = (minionId) => {
     return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
       .then((data) => {
         const newMessage = { severity: data.severity, text: data.text };
@@ -247,9 +244,9 @@ const NotificationMessages = React.createClass({
       })
       .catch(response => {
       });
-  },
+  };
 
-  retryReposync: function(channelId) {
+  retryReposync = (channelId) => {
     return Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
       .then((data) => {
         const newMessage = { severity: data.severity, text: data.text };
@@ -257,9 +254,9 @@ const NotificationMessages = React.createClass({
       })
       .catch(response => {
       });
-  },
+  };
 
-  messageReaction: function(messageType, messageData) {
+  messageReaction = (messageType, messageData) => {
     let actionButton = null;
     switch(messageType) {
       case 'OnboardingFailed':
@@ -272,9 +269,9 @@ const NotificationMessages = React.createClass({
       break;
     }
     return actionButton;
-  },
+  };
 
-  render: function() {
+  render() {
     const data = this.state.serverData;
 
     const dataHashTag = location.hash;
@@ -394,7 +391,7 @@ const NotificationMessages = React.createClass({
       );
     }
   }
-});
+}
 
 const ErrorMessage = (props) => <MessageContainer items={
     props.error == "authentication" ?
