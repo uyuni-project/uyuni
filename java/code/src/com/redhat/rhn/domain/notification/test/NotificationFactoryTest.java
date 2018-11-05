@@ -22,7 +22,9 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import java.time.Instant;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static java.util.Optional.empty;
@@ -75,4 +77,25 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
     }
 
+    public final void testDeleteNotificationMessagesBefore() {
+        // Clean up all notifications that might be present
+        if (UserNotificationFactory.listAllNotificationMessages().size() > 0) {
+            UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
+        }
+        assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
+
+        // Create a notification
+        NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
+
+        // Should not be deleted
+        int result = UserNotificationFactory.deleteNotificationMessagesBefore(msg.getCreated());
+        assertEquals(0, result);
+        assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
+
+        // Should be deleted
+        result = UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
+        assertEquals(1, result);
+        assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
+    }
 }

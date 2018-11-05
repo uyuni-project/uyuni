@@ -2055,6 +2055,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="bunch.jsp.description.minion-action-cleanup-bunch">
           <source>Cleanup actions for Minions</source>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.notifications-cleanup-bunch">
+          <source>Cleanup expired notification messages</source>
+      </trans-unit>
 
       <!-- Server Contact Methods -->
       <trans-unit id="server.contact-method.label">
