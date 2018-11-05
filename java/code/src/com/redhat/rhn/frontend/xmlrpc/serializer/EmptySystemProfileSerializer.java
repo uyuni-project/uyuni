@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2015 Red Hat, Inc.
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,43 +14,36 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Date;
 
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
-
-import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  *
- * SystemOverviewSerializer
- * @version $Rev$
+ * EmptySystemProfileSerializer
  *
  * @xmlrpc.doc
- *
  * #struct("system")
  *     #prop("int", "id")
  *     #prop("string", "name")
- *     #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
- *             successfully checked in")
- *     #prop_desc("dateTime.iso8601",  "created", "Server registration time")
- *     #prop_desc("dateTime.iso8601",  "last_boot", "Last server boot time")
- *     #prop_desc("int",  "extra_pkg_count", "Number of packages not belonging
- *             to any assigned channel")
- *     #prop_desc("int",  "outdated_pkg_count", "Number of out-of-date packages")
+ *     #prop_desc("dateTime.iso8601",  "created", "Server creation time")
+ *     #prop_desc("array", "hw_addresses", "HW addresses")
+ *         #array_single("string", "HW address")
  * #struct_end()
  */
-public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class EmptySystemProfileSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
      */
     public Class getSupportedClass() {
-        return SystemOverview.class;
+        return EmptySystemProfileOverview.class;
     }
 
     /**
@@ -58,23 +51,15 @@ public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
      */
     protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
             throws XmlRpcException, IOException {
-        SystemOverview system = (SystemOverview) value;
+        EmptySystemProfileOverview system = (EmptySystemProfileOverview) value;
         SerializerHelper helper = new SerializerHelper(serializer);
         helper.add("id", system.getId());
         helper.add("name", system.getName());
-        helper.add("last_checkin", system.getLastCheckinDate());
-
         Date regDate = system.getCreated();
         if (regDate != null) {
             helper.add("created", regDate);
         }
-
-        Date lastBoot = system.getLastBootAsDate();
-        if (lastBoot != null) {
-            helper.add("last_boot", lastBoot);
-        }
-        helper.add("extra_pkg_count", system.getExtraPkgCount());
-        helper.add("outdated_pkg_count", system.getOutdatedPackages());
+        helper.add("hw_addresses", system.getMacs());
         helper.writeTo(output);
     }
 }

@@ -58,7 +58,9 @@ import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
+import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
+import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.HardwareDeviceDto;
@@ -434,6 +436,23 @@ public class SystemManager extends BaseManager {
         ServerFactory.saveNetworkInterface(netInterface);
 
         return server;
+    }
+
+    /**
+     * Lists empty system profiles (created by createSystemProfile).
+     *
+     * @param user user viewing the systems
+     * @param pc page control
+     * @return list of empty system profiles
+     */
+    public static DataResult<EmptySystemProfileOverview> listEmptySystemProfiles(User user, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "xmlrpc_empty_profiles", EmptySystemProfileOverview.class);
+        Map<String, Long> params = new HashMap<String, Long>();
+        params.put("user_id", user.getId());
+        params.put("org_id", user.getOrg().getId());
+        Map<String, Long> elabParams = new HashMap<String, Long>();
+
+        return makeDataResult(params, elabParams, pc, m, BootstrapSystemOverview.class);
     }
 
     /**
