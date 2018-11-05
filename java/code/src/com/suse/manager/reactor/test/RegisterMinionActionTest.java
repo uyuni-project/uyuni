@@ -21,8 +21,6 @@ import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -1155,80 +1153,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * When a retail terminal that already has a system profile in SUMA boots, an activation key
-     * should be applied to it.
-     *
-     * @throws Exception - if anything goes wrong
-     */
-    public void testApplyActivationKeyToRetailTerminal() throws Exception {
-        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk02", "HW group",
-                OrgFactory.getSatelliteOrg());
-        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
-                OrgFactory.getSatelliteOrg());
-        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
-                OrgFactory.getSatelliteOrg());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setMinionId(MINION_ID);
-        server.setMachineId(MACHINE_ID);
-        server.setOrg(OrgFactory.getSatelliteOrg());
-        SystemManager.addServerToServerGroup(server, hwGroup);
-        SystemManager.addServerToServerGroup(server, terminalsGroup);
-        SystemManager.addServerToServerGroup(server, branchGroup);
-
-        ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
-        Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
-
-        executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, null, key)
-                            .map(map -> {
-                                map.put("saltboot_initrd", false);
-                                map.put("manufacturer", "QEMU");
-                                map.put("productname", "CashDesk02");
-                                map.put("minion_id_prefix", "Branch001");
-                                return map;
-                            })));
-
-                    allowing(saltServiceMock).callSync(
-                            with(any(LocalCall.class)),
-                            with(any(String.class)));
-                    will(returnValue(Optional.empty()));
-                }},
-                (contactMethod) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-                    key.setBaseChannel(baseChannelX8664);
-                    baseChannelX8664.getAccessibleChildrenFor(user)
-                            .forEach(channel -> key.addChannel(channel));
-                    key.setOrg(user.getOrg());
-
-                    ActivationKeyFactory.save(key);
-                    return key.getKey();
-                },
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-
-                    assertContains(ActivationKeyFactory.lookupByKey(key).getToken().getActivatedServers(), minion);
-
-                    Set<Channel> channels = new HashSet<>();
-                    channels.add(baseChannelX8664);
-                    baseChannelX8664.getAccessibleChildrenFor(user)
-                            .forEach(channel -> channels.add(channel));
-                    assertEquals(channels, minion.getChannels());
-                },
-                null,
-                DEFAULT_CONTACT_METHOD);
-    }
-
-    /**
      * Tests that grains aren't queried for an existing non-retail minion.
      *
      * @throws Exception if anything goes wrong
@@ -1253,60 +1177,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Tests a first boot of a deployed retail minion
-     *
-     * @throws Exception - if anything goes wrong
-     */
-    public void testFirstStartRetailTerminal() throws Exception {
-        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk02", "HW group",
-                OrgFactory.getSatelliteOrg());
-        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
-                OrgFactory.getSatelliteOrg());
-        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
-                OrgFactory.getSatelliteOrg());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setMinionId(MINION_ID);
-        server.setMachineId(MACHINE_ID);
-        server.setOrg(OrgFactory.getSatelliteOrg());
-        SystemManager.addServerToServerGroup(server, hwGroup);
-        SystemManager.addServerToServerGroup(server, terminalsGroup);
-        SystemManager.addServerToServerGroup(server, branchGroup);
-
-        executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
-                            .map(map -> {
-                                map.put("saltboot_initrd", false);
-                                map.put("manufacturer", "QEMU");
-                                map.put("productname", "CashDesk02");
-                                map.put("minion_id_prefix", "Branch001");
-                                return map;
-                            })));
-                    allowing(saltServiceMock).callSync(
-                            with(any(LocalCall.class)),
-                            with(any(String.class)));
-                }},
-                (contactMethod) -> null, // no AK
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-                    // check that HW refresh was scheduled
-                    assertEquals(1, ActionFactory.listServerActionsForServer(minion).stream()
-                                    .filter(sa -> ((ServerAction) sa).getParentAction().getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST))
-                                    .count());
-                },
-                null,
-                DEFAULT_CONTACT_METHOD);
-    }
-
-    /**
      * Tests registration of an empty profile
      * @throws Exception if anything goes wrong
      */
@@ -1323,7 +1193,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                             .map(map -> {
-                                map.put("initrd", false);
+                                map.put("saltboot_initrd", false);
                                 map.put("manufacturer", "QEMU");
                                 map.put("productname", "CashDesk02");
                                 map.put("minion_id_prefix", "Branch001");
@@ -1386,7 +1256,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
                             .map(map -> {
-                                map.put("initrd", false);
+                                map.put("saltboot_initrd", false);
                                 map.put("manufacturer", "QEMU");
                                 map.put("productname", "CashDesk02");
                                 map.put("minion_id_prefix", "Branch001");

@@ -23,11 +23,9 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
-import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
@@ -35,8 +33,6 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -48,35 +44,21 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
-import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.ServerStateRevision;
-import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
-import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.calls.modules.Zypper;
-import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
-import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Opt;
 
@@ -94,12 +76,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Event handler to create system records for salt minions.
@@ -112,11 +92,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
-
-    private static final List<String> BLACKLIST = Collections.unmodifiableList(
-       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host",
-               "osad")
-    );
 
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
 
@@ -215,7 +190,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 registeredMinion.setName(minionId);
                 registeredMinion.setMinionId(minionId);
                 ServerFactory.save(registeredMinion);
-                addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
+                SystemManager.addHistoryEvent(registeredMinion, "Duplicate Machine ID", "Minion '" +
                         oldMinionId + "' has been updated to '" + minionId + "'");
 
                 if (!minionId.equals(oldMinionId)) {
@@ -228,33 +203,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // This way we don't need to call grains for each register minion event.
             if (isRetailMinion(registeredMinion)) {
                 ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
-                grains.getOptionalAsBoolean("saltboot_initrd").ifPresent(initrd -> {
+                if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
                     // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
-                    // otherwise the image has been already fully deployed and we want to finalize the registration
-                    LOG.info("\"saltboot_initrd\" present for minion " + minionId);
-
-                    if (initrd) {
-                        LOG.info("Applying saltboot for minion " + minionId);
-                        applySaltboot(registeredMinion);
-                    }
-                    else {
-                        Optional<String> activationKeyLabel = grains
-                                .getMap("susemanager")
-                                .flatMap(suma -> suma.getOptionalAsString("activation_key"));
-                        Optional<ActivationKey> activationKey = activationKeyLabel
-                                .map(ActivationKeyFactory::lookupByKey);
-
-                        // TODO this is to be implemented in the future
-                        // for now we don't have any means to detect if the image has been redeployed and we simply
-                        // call the 'finishRegistration' on every minion start
-                        // BEWARE: this also means the activation key is applied on each retail minion start for now
-                        LOG.info("Finishing registration for minion " + minionId);
-                        subscribeMinionToChannels(minionId, registeredMinion, grains, activationKey,
-                                activationKeyLabel);
-                        activationKey.ifPresent(ak -> applyActivationKeyProperties(registeredMinion, ak, grains));
-                        finishRegistration(registeredMinion, activationKey, creator, !isSaltSSH);
-                    }
-                });
+                    LOG.info("Applying saltboot for minion " + minionId);
+                    applySaltboot(registeredMinion);
+                }
             }
             return true;
         }
@@ -306,7 +259,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     "existing server organization. " + ignoreAKMessage);
             activationKey = empty();
             org = minion.getOrg();
-            addHistoryEvent(minion, "Invalid Server Organization",
+            SystemManager.addHistoryEvent(minion, "Invalid Server Organization",
                     "The existing server organization (" + minion.getOrg() + ") does not match the " +
                             "organization selected for registration (" + org + "). Keeping the " +
                             "existing server organization. " + ignoreAKMessage);
@@ -338,7 +291,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            subscribeMinionToChannels(minionId, minion, grains, activationKey, activationKeyLabel);
+            RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, minion, grains, activationKey,
+                    activationKeyLabel);
 
             minion.updateServerInfo();
 
@@ -358,7 +312,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setBaseEntitlement(EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
-            activationKey.ifPresent(ak -> applyActivationKeyProperties(minion, ak, grains));
+            activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(minion, ak, grains));
 
             // Saltboot treatment - prepare and apply saltboot
             if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
@@ -369,7 +323,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 return;
             }
 
-            finishRegistration(minion, activationKey, creator, !isSaltSSH);
+            RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH);
             migrateMinionFormula(minionId, originalMinionId);
         }
         catch (Throwable t) {
@@ -381,19 +335,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 MinionPendingRegistrationService.removeMinion(minionId);
             }
         }
-    }
-    /**
-     * Extract HW addresses (except the localhost one) from grains
-     * @param grains the grains
-     * @return HW addresses
-     */
-    private Set<String> extractHwAddresses(Map<String, Object> grains) {
-        Map<String, String> hwInterfaces = (Map<String, String>) grains
-                .getOrDefault("hwaddr_interfaces", Collections.emptyMap());
-
-        return hwInterfaces.values().stream()
-                .filter(hwAddress -> !hwAddress.equalsIgnoreCase("00:00:00:00:00:00"))
-                .collect(Collectors.toSet());
     }
 
     private void migrateMinionFormula(String minionId, Optional<String> originalMinionId) {
@@ -423,6 +364,19 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     }
 
     /**
+     * Extract HW addresses (except the localhost one) from grains
+     * @param grains the grains
+     * @return HW addresses
+     */
+    private Set<String> extractHwAddresses(Map<String, Object> grains) {
+        Map<String, String> hwInterfaces = (Map<String, String>) grains
+                .getOrDefault("hwaddr_interfaces", Collections.emptyMap());
+        return hwInterfaces.values().stream()
+                .filter(hwAddress -> !hwAddress.equalsIgnoreCase("00:00:00:00:00:00"))
+                .collect(Collectors.toSet());
+    }
+
+    /**
      * Extract activation key label from grains
      *
      * @param grains
@@ -435,58 +389,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .getMap("susemanager")
                 .flatMap(suma -> suma.getOptionalAsString("activation_key"));
         return activationKeyOverride.isPresent() ? activationKeyOverride : activationKeyFromGrains;
-    }
-
-    /**
-     * Apply activation key properties to server state
-     *
-     * @param server object representing the table rhnServer
-     * @param ak activation key
-     * @param grains map of minion grains
-     */
-    private void applyActivationKeyProperties(Server server, ActivationKey ak, ValueMap grains) {
-        ak.getToken().getActivatedServers().add(server);
-        ActivationKeyFactory.save(ak);
-
-        ak.getServerGroups().forEach(group -> {
-            ServerFactory.addServerToGroup(server, group);
-        });
-
-        ServerStateRevision serverStateRevision = new ServerStateRevision();
-        serverStateRevision.setServer(server);
-        serverStateRevision.setCreator(ak.getCreator());
-        serverStateRevision.setPackageStates(
-                ak.getPackages().stream()
-                        .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
-                        .map(tp -> {
-                            PackageState state = new PackageState();
-                            state.setArch(tp.getPackageArch());
-                            state.setName(tp.getPackageName());
-                            state.setPackageState(PackageStates.INSTALLED);
-                            state.setVersionConstraint(VersionConstraints.ANY);
-                            state.setStateRevision(serverStateRevision);
-                            return state;
-                        }).collect(Collectors.toSet())
-        );
-        StateFactory.save(serverStateRevision);
-
-        // Set additional entitlements, if any
-        Set<Entitlement> validEntits = server.getOrg()
-                .getValidAddOnEntitlementsForOrg();
-        ak.getToken().getEntitlements().forEach(sg -> {
-            Entitlement e = sg.getAssociatedEntitlement();
-            if (validEntits.contains(e) &&
-                    e.isAllowedOnServer(server, grains) &&
-                    SystemManager.canEntitleServer(server, e)) {
-                ValidatorResult vr = SystemManager.entitleServer(server, e);
-                if (vr.getWarnings().size() > 0) {
-                    LOG.warn(vr.getWarnings().toString());
-                }
-                if (vr.getErrors().size() > 0) {
-                    LOG.error(vr.getErrors().toString());
-                }
-            }
-        });
     }
 
 
@@ -543,66 +445,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         states.add(ApplyStatesEventMessage.SALTBOOT);
 
         MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), false, states));
-    }
-
-    /**
-     * Perform the final registration steps for the minion.
-     *
-     * @param minion the minion
-     * @param activationKey the activation key
-     * @param creator user performing the registration
-     * @param enableMinionService true if salt-minion service should be enabled and running
-     */
-    private void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey, Optional<User> creator,
-            boolean enableMinionService) {
-        String minionId = minion.getMinionId();
-        // get hardware and network async
-        triggerHardwareRefresh(minion);
-
-        LOG.info("Finished minion registration: " + minionId);
-
-        StatesAPI.generateServerPackageState(minion);
-
-        // Asynchronously get the uptime of this minion
-        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
-
-        // Generate pillar data
-        try {
-            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-
-            // Subscribe to config channels assigned to the activation key or initialize empty channel profile
-            minion.subscribeConfigChannels(
-                    activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
-                    creator.orElse(null));
-        }
-        catch (RuntimeException e) {
-            LOG.error("Error generating Salt files for minion '" + minionId +
-                    "':" + e.getMessage());
-        }
-
-        // Should we apply the highstate?
-        boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
-
-        // Apply initial states asynchronously
-        List<String> statesToApply = new ArrayList<>();
-        statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
-        statesToApply.add(ApplyStatesEventMessage.CHANNELS);
-        statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
-        statesToApply.add(ApplyStatesEventMessage.PACKAGES);
-        if (enableMinionService) {
-            statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
-        }
-        MessageQueue.publish(new ApplyStatesEventMessage(
-                minion.getId(),
-                minion.getCreator() != null ? minion.getCreator().getId() : null,
-                !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
-                statesToApply
-        ));
-
-        // Call final highstate to deploy config channels if required
-        if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, Collections.emptyList()));
-        }
     }
 
     /**
@@ -707,176 +549,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .isPresent();
     }
 
-    private Set<SUSEProduct> identifyProduct(MinionServer server, ValueMap grains) {
-        if ("suse".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            Optional<List<ProductInfo>> productList =
-                    SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
-            return Opt.stream(productList).flatMap(pl -> {
-                return pl.stream()
-                        .flatMap(pi -> {
-                            String osName = pi.getName().toLowerCase();
-                            String osVersion = pi.getVersion();
-                            String osArch = pi.getArch();
-                            String osRelease = pi.getRelease();
-                            Optional<SUSEProduct> suseProduct =
-                                    ofNullable(SUSEProductFactory.findSUSEProduct(osName,
-                                            osVersion, osRelease, osArch, true));
-                            if (!suseProduct.isPresent()) {
-                                LOG.warn("No product match found for: " + osName + " " +
-                                        osVersion + " " + osRelease + " " + osArch);
-                            }
-                            return Opt.stream(suseProduct);
-                        });
-            }).collect(Collectors.toSet());
-        }
-        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE
-                    .applyState(server.getMinionId(), "packages.redhatproductinfo");
-            Optional<String> centosReleaseContent = applyResultMap.map(
-                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
-            Optional<String> rhelReleaseContent = applyResultMap.map(
-                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
-            Optional<String> whatProvidesRes = applyResultMap.map(map -> map
-                    .get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
-
-            Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
-                    server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
-            return Opt.stream(rhelProduct).flatMap(rhel -> {
-                if (!rhel.getSuseProduct().isPresent()) {
-                    LOG.warn("No product match found for: " + rhel.getName() + " " +
-                            rhel.getVersion() + " " + rhel.getRelease() + " " +
-                            server.getServerArch().getCompatibleChannelArch());
-                    return Stream.empty();
-                }
-                else {
-                    return Opt.stream(rhel.getSuseProduct());
-                }
-            }).collect(Collectors.toSet());
-        }
-        return Collections.emptySet();
-    }
-
-    private void subscribeMinionToChannels(String minionId, MinionServer server,
-            ValueMap grains, Optional<ActivationKey> activationKey,
-            Optional<String> activationKeyLabel) {
-
-        if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
-            LOG.warn(
-                    "Default channel(s) will NOT be subscribed to: specified Activation Key " +
-                            activationKeyLabel.get() + " is not valid for minionId " +
-                            minionId);
-            addHistoryEvent(server, "Invalid Activation Key",
-                    "Specified Activation Key " + activationKeyLabel.get() +
-                            " is not valid. Default channel(s) NOT subscribed to.");
-            return;
-        }
-
-        Set<Channel> channelsToAssign = Opt.fold(
-                activationKey,
-                // No ActivationKey
-                () -> {
-                    Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
-                    Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                            .collect(Collectors.partitioningBy(SUSEProduct::isBase));
-
-                    Optional<SUSEProduct> baseProductOpt = Optional.ofNullable(baseAndExtProd.get(true))
-                            .flatMap(s -> s.stream().findFirst());
-                    List<SUSEProduct> extProducts = baseAndExtProd.get(false);
-
-                    return Opt.fold(
-                            baseProductOpt,
-                            // No ActivationKey and no base product identified
-                            () -> {
-                                LOG.warn("Server " + minionId + " has no identifiable base product" +
-                                        " and will register without base channel assignment");
-                                return Collections.emptySet();
-                            },
-                            baseProduct -> {
-                                return Stream.concat(
-                                        lookupRequiredChannelsForProduct(baseProduct),
-                                        extProducts.stream()
-                                            .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                ).collect(Collectors.toSet());
-                            }
-                    );
-                },
-                ak -> {
-                    return Opt.<Channel, Set<Channel>>fold(
-                            Optional.ofNullable(ak.getBaseChannel()),
-                            // AktivationKey without base channel (SUSE Manager Default)
-                            () -> {
-                                Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
-                                Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                                        .collect(Collectors.partitioningBy(SUSEProduct::isBase));
-
-                                Optional<SUSEProduct> baseProductOpt = Optional.ofNullable(baseAndExtProd.get(true))
-                                        .flatMap(s -> s.stream().findFirst());
-                                List<SUSEProduct> extProducts = baseAndExtProd.get(false);
-
-                                return Opt.fold(
-                                        baseProductOpt,
-                                        // ActivationKey and no base product identified
-                                        () -> {
-                                            LOG.warn("Server " + minionId + "has no identifyable base product" +
-                                                    " and will register without base channel assignment");
-                                            return Collections.emptySet();
-                                        },
-                                        baseProduct -> {
-                                            return Stream.concat(
-                                                    lookupRequiredChannelsForProduct(baseProduct),
-                                                    extProducts.stream().flatMap(
-                                                            ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                            ).collect(Collectors.toSet());
-                                        }
-                                );
-                            },
-                            baseChannel -> {
-                                return Opt.fold(
-                                        SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()),
-                                        () -> {
-                                            // ActivationKey with custom channel
-                                            return Stream.concat(
-                                                    Stream.of(baseChannel),
-                                                    ak.getChannels().stream()
-                                            ).collect(Collectors.toSet());
-                                        },
-                                        baseProduct -> {
-                                            // ActivationKey with vendor or cloned vendor channel
-                                            return Stream.concat(
-                                                    lookupRequiredChannelsForProduct(baseProduct.getProduct()),
-                                                    ak.getChannels().stream()
-                                                            .filter(c ->
-                                                                    c.getParentChannel() != null &&
-                                                                    c.getParentChannel().getId()
-                                                                        .equals(baseChannel.getId())
-                                                            )
-                                            ).collect(Collectors.toSet());
-
-                                        }
-                                );
-                            }
-                    );
-                }
-        );
-
-        channelsToAssign.forEach(server::addChannel);
-    }
-
-    private ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
-            String details) {
-        ServerHistoryEvent historyEvent = new ServerHistoryEvent();
-        historyEvent.setCreated(new Date());
-        historyEvent.setServer(server);
-        historyEvent.setSummary(summary);
-        historyEvent.setDetails(details);
-        server.getHistory().add(historyEvent);
-        return historyEvent;
-    }
-
     private void setServerPaths(MinionServer server, String master,
                                 boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
         if (isSaltSSH) {
@@ -937,7 +609,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         );
     }
 
-    private Optional<Channel> lookupBaseChannel(SUSEProduct sp, ChannelArch arch) {
+    private static Optional<Channel> lookupBaseChannel(SUSEProduct sp, ChannelArch arch) {
         Optional<EssentialChannelDto> productBaseChannelDto =
                 ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(), arch));
         Optional<Channel> baseChannel = productBaseChannelDto.flatMap(base -> {
@@ -952,10 +624,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             return empty();
         }
         return baseChannel;
-    }
-
-    private Stream<Channel> lookupRequiredChannelsForProduct(SUSEProduct sp) {
-        return recommendedChannelsByBaseProduct(sp);
     }
 
     private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
@@ -997,46 +665,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         new RpmVersionComparator()))
                 .get();
     }
-
-    private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct base) {
-            return recommendedChannelsByBaseProduct(base, base);
-    }
-
-    private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct base) {
-        return root.getSuseProductChannels().stream()
-                .filter(c -> c.getParentChannelLabel() == null)
-                .map(SUSEProductChannel::getChannelLabel)
-                .findFirst().map(rootChannelLabel -> {
-                    List<SUSEProduct> allExtensionProductsOf =
-                            SUSEProductFactory.findAllExtensionProductsOf(base);
-
-
-
-                    Stream<Channel> channelStream = SUSEProductFactory.findAllSUSEProductChannels().stream()
-                            .filter(pc -> pc.getProduct().equals(base))
-                            .map(SUSEProductChannel::getChannel)
-                            .filter(Objects::nonNull)
-                            .filter(c -> c.getParentChannel() == null ||
-                                    c.getParentChannel().getLabel().equals(rootChannelLabel));
-
-                    Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
-                        return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
-                            if (pe.isRecommended()) {
-                                return recommendedChannelsByBaseProduct(root, ext);
-                            }
-                            else {
-                                return Stream.<Channel>empty();
-                            }
-                        }).orElseGet(Stream::empty);
-                    });
-
-                    return Stream.concat(
-                            channelStream,
-                            stream
-                    );
-                }).orElseGet(Stream::empty);
-    }
-
 
     private String getOsRelease(String minionId, ValueMap grains) {
         // java port of up2dataUtils._getOSVersionAndRelease()
@@ -1131,17 +759,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
         // for efficiency do this here
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
-    }
-
-    private void triggerHardwareRefresh(MinionServer server) {
-        try {
-            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server,
-                    new Date());
-        }
-        catch (TaskomaticApiException e) {
-            LOG.error("Could not schedule hardware refresh for system: " + server.getId());
-            throw new RuntimeException(e);
-        }
     }
 
     /**

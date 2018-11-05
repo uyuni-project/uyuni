@@ -21,6 +21,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
+import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
+import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -38,6 +40,7 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BeaconEvent;
@@ -101,6 +104,8 @@ public class SaltReactor implements EventListener {
                 VirtpollerBeaconEventMessage.class);
         MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
                 SystemIdGenerateEventMessage.class);
+        MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
+                ImageDeployedEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -197,8 +202,15 @@ public class SaltReactor implements EventListener {
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
                 JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
                 BeaconEvent.parse(event).map(this::onBeaconEvent).orElseGet(() ->
-                SystemIdGenerateEvent.parse(event).map(this::onSystemIdGenerateEvent).orElse(() -> { }))));
+                SystemIdGenerateEvent.parse(event).map(this::onSystemIdGenerateEvent).orElseGet(() ->
+                ImageDeployedEvent.parse(event).map(this::onImageDeployed).orElse(() -> { })))));
         executorService.submit(runnable);
+    }
+
+    private Runnable onImageDeployed(ImageDeployedEvent imageDeployedEvent) {
+        return () -> {
+            MessageQueue.publish(new ImageDeployedEventMessage(imageDeployedEvent));
+        };
     }
 
     /**
