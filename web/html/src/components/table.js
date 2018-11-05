@@ -129,7 +129,7 @@ const Table = createReactClass({
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  UNSAFE_componentWillReceiveProps: function(nextProps) {
     this.onPageCountChange(nextProps.data, this.state.criteria, this.state.itemsPerPage);
     this.setState({
         selectedItems: nextProps.selectedItems || [],

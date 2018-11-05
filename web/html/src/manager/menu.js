@@ -45,7 +45,7 @@ class Element extends React.Component {
     visiblityForcedByParent: false
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       open: nextProps.element.open && !nextProps.forceCollapse,
       visiblityForcedByParent: nextProps.visiblityForcedByParent

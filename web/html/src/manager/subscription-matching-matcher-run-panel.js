@@ -11,7 +11,7 @@ class MatcherRunPanel extends React.Component {
     error: false,
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.state.latestStart == null || nextProps.initialLatestStart >= this.state.latestStart) {
       this.setState({
         latestStart: nextProps.initialLatestStart,

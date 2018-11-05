@@ -1,7 +1,7 @@
 const React = require('react');
 
 type Props = {
-  headingLevel: string,
+  HeadingLevel: string,
   title?: string,
   icon?: string,
   header?: string,
@@ -10,16 +10,16 @@ type Props = {
 };
 
 function Panel(props: Props) {
-  const { headingLevel } = props;
+  const { HeadingLevel } = props;
   return (
     <div className="panel panel-default">
       {props.title
         && (
         <div className="panel-heading">
-          <headingLevel>
+          <HeadingLevel>
             { props.icon && <i className={`fa ${props.icon}`} /> }
             { props.title }
-          </headingLevel>
+          </HeadingLevel>
           { props.header && <span>{props.header}</span>}
         </div>)
       }

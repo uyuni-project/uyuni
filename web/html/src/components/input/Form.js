@@ -45,7 +45,7 @@ class Form extends React.Component<Props, State> {
     };
   }
 
-  componentWillReceiveProps(props: Props) {
+  UNSAFE_componentWillReceiveProps(props: Props) {
     this.setState({
       model: props.model,
     });

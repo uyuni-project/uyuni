@@ -50,7 +50,7 @@ class SCCDialog extends React.Component {
     errors: [],
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if(this.props.forceStart && // I'm told to run
         !this.isSyncRunning() && // I'm not running
         !this.hasRun() // I have never run yet

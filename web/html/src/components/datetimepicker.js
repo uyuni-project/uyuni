@@ -56,7 +56,7 @@ class DatePicker extends React.Component {
         });
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         this._input.datepicker('setDate', props.value);
         this.setVisible(props.open);
     }
@@ -116,7 +116,7 @@ class TimePicker extends React.Component {
         else this._input.timepicker('hide');
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if (props.value.getTime() !== this.props.value.getTime()) {
             this._input.timepicker('setTime', props.value);
         }

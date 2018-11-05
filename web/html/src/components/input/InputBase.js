@@ -53,13 +53,13 @@ class InputBase extends React.Component<Props, State> {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (this.props.registerInput) {
       this.props.registerInput(this);
     }
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     if (!(props.value === this.props.value && props.disabled === this.props.disabled
               && props.required === this.props.required)) {
       if (this.props.validate) this.props.validate(this, props);

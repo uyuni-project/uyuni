@@ -17,7 +17,7 @@ const StatePersistedMixin = {
     }
   },
 
-  componentWillMount: function() {
+  UNSAFE_componentWillMount: function() {
     if (this.props.loadState) {
       if (this.props.loadState()) {
         this.state = this.props.loadState();
