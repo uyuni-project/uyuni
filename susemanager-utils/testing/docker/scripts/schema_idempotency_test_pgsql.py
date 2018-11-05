@@ -220,7 +220,7 @@ def main():
         sys.exit(0)
     if args.pr_file:
         raise RuntimeError(
-            "Dumps %s and %s are different! One or more scripts from the PR are not idempotent!")
+            "Dumps %s and %s are different! One or more scripts from the PR are not idempotent!" % (initial_dump, migrated_dump))
     if args.version:
         raise RuntimeError(
             "Dumps %s and %s are different! One or more of the scripts since %s are not idempotent!" % (initial_dump, migrated_dump, args.version))
