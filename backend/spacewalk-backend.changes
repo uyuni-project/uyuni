@@ -1,3 +1,5 @@
+- Hide Python traceback and show only error message (bsc#1110427)
+
 -------------------------------------------------------------------
 Fri Oct 26 10:06:41 CEST 2018 - jgonzalez@suse.com
 

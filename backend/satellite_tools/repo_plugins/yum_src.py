@@ -759,7 +759,13 @@ class ContentSource(object):
             raise ChannelException('GPG key retrieval failed: ' +
                                     yum.i18n.to_unicode(str(e)))
         # Parse the key
-        keys_info = yum.misc.getgpgkeyinfo(rawkey, multiple=True)
+        try:
+            keys_info = yum.misc.getgpgkeyinfo(rawkey, multiple=True)
+        except ValueError as err:
+            raise ChannelException('GPG key information retrieval failed: {}'.format(err))
+        except Exception as err:
+            raise ChannelException('Unhandled GPG key failure occurred: {}'.format(err))
+
         keys = []
         for keyinfo in keys_info:
             thiskey = {}
