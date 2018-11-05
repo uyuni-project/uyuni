@@ -1,6 +1,6 @@
+const PropTypes = require('prop-types');
 /* eslint-disable */
 const React = require('react');
-const PropTypes = React.PropTypes;
 
 /** @module toggler */
 
