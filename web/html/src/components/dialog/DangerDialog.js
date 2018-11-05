@@ -1,8 +1,8 @@
 /* eslint-disable */
 "use strict";
 
+const PropTypes = require('prop-types');
 const React = require("react");
-const PropTypes = React.PropTypes;
 const Button = require("../buttons").Button;
 const Dialog = require("./Dialog.js").Dialog;
 
@@ -48,15 +48,15 @@ function DangerDialog(props) {
 }
 
 DangerDialog.propTypes = {
-    id: React.PropTypes.string.isRequired,
-    onClosePopUp: React.PropTypes.func,
-    className: React.PropTypes.string,
-    title: React.PropTypes.string,
-    content: React.PropTypes.node,
-    item: React.PropTypes.object,
-    onConfirm: React.PropTypes.func,
-    submitText: React.PropTypes.string,
-    submitIcon: React.PropTypes.string,
+    id: PropTypes.string.isRequired,
+    onClosePopUp: PropTypes.func,
+    className: PropTypes.string,
+    title: PropTypes.string,
+    content: PropTypes.node,
+    item: PropTypes.object,
+    onConfirm: PropTypes.func,
+    submitText: PropTypes.string,
+    submitIcon: PropTypes.string,
 };
 
 module.exports = {

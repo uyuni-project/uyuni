@@ -1,8 +1,8 @@
 /* eslint-disable */
 "use strict";
 
+const PropTypes = require('prop-types');
 const React = require("react");
-const PropTypes = React.PropTypes;
 
 // use this mixin to persist an element's state between mounts
 const StatePersistedMixin = {

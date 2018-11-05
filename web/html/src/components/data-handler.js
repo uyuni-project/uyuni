@@ -1,9 +1,9 @@
 /* eslint-disable */
 "use strict";
 
+const PropTypes = require('prop-types');
 const React = require("react");
 const createReactClass = require('create-react-class');
-const PropTypes = React.PropTypes;
 const StatePersistedMixin = require("./util").StatePersistedMixin;
 const {PaginationBlock, ItemsPerPageSelector} = require('./pagination');
 
