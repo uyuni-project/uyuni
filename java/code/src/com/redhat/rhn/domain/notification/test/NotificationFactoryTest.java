@@ -22,9 +22,9 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import java.sql.Date;
 import java.time.Instant;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
