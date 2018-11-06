@@ -1610,7 +1610,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     private MinionServer createEmptyProfile(Optional<String> hostName, Optional<String> hwAddr) throws Exception {
         Map<String, Object> data = new HashMap<>();
-        hostName.ifPresent(n -> data.put("FQDN", n));
+        hostName.ifPresent(n -> data.put("hostname", n));
         hwAddr.ifPresent(a -> data.put("hwAddress", a));
         return SystemManager.createSystemProfile(user, hostName.orElse("test system"), data);
     }

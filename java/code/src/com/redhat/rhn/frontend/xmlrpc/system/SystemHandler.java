@@ -5541,20 +5541,20 @@ public class SystemHandler extends BaseHandler {
 
     /**
      * Creates a system record in database for a system that is not (yet) registered.
-     * Either "hwAddress" or "FQDN" prop must be specified in the "data" struct.
+     * Either "hwAddress" or "hostname" prop must be specified in the "data" struct.
      * @param loggedInUser the currently logged in user
      * @param systemName server name
      * @param data the data about system
      * @return int - 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Creates a system record in database for a system that is not registered.
-     * Either "hwAddress" or "FQDN" prop must be specified in the "data" struct.
+     * Either "hwAddress" or "hostname" prop must be specified in the "data" struct.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "systemName", "System name")
      * @xmlrpc.param
      *  #struct("data")
      *      #prop_desc("string", "hwAddress", "The HW address of the network interface (MAC)")
-     *      #prop_desc("string", "FQDN", "The hostname of the profile")
+     *      #prop_desc("string", "hostname", "The hostname of the profile")
      *  #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */

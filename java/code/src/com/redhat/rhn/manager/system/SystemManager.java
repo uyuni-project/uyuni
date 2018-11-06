@@ -123,7 +123,6 @@ import java.util.stream.Collectors;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
-import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -396,7 +395,7 @@ public class SystemManager extends BaseManager {
      *
      * The data must contain at least one of the following fields:
      * - hwAddress - HW address of a NetworkInterface of the profile
-     * - FQDN - FQDN of the profile
+     * - hostname - hostname (FQDN) of the profile
      *
      * @param creator the creator user
      * @param systemName the system name
@@ -408,21 +407,21 @@ public class SystemManager extends BaseManager {
      */
     public static MinionServer createSystemProfile(User creator, String systemName, Map<String, Object> data) {
         Optional<String> hwAddress = ofNullable((String) data.get("hwAddress"));
-        Optional<String> fqdn = ofNullable((String) data.get("FQDN"));
+        Optional<String> hostname = ofNullable((String) data.get("hostname"));
 
         // at least one identifier must be contained
-        if (!hwAddress.isPresent() && !fqdn.isPresent()) {
-            throw new IllegalArgumentException("hwAddress or FQDN key must be present.");
+        if (!hwAddress.isPresent() && !hostname.isPresent()) {
+            throw new IllegalArgumentException("hwAddress or hostname key must be present.");
         }
 
         Set<String> hwAddrs = hwAddress.map(a -> singleton(a)).orElse(emptySet());
-        if (findMatchingEmptyProfile(fqdn, hwAddrs).isPresent()) {
-            throw new IllegalStateException("System(s) with fqdn '" + fqdn + "' or HW address '" +
+        if (findMatchingEmptyProfile(hostname, hwAddrs).isPresent()) {
+            throw new IllegalStateException("System(s) with hostname '" + hostname + "' or HW address '" +
                     hwAddress + "' already exists.");
         }
 
         // craft unique id based on given data
-        String uniqueId = ">" + Arrays.asList(hwAddress, fqdn)
+        String uniqueId = ">" + Arrays.asList(hwAddress, hostname)
                 .stream()
                 .flatMap(o -> Opt.stream(o))
                 .reduce((i1, i2) -> i1 + ">" + i2)
@@ -434,7 +433,7 @@ public class SystemManager extends BaseManager {
 
         // Set network device information to the server so we have something to match with
         server.setCreator(creator);
-        fqdn.ifPresent(n -> server.setHostname(n));
+        hostname.ifPresent(n -> server.setHostname(n));
         server.setDigitalServerId(uniqueId);
         server.setMachineId(uniqueId);
         server.setMinionId(uniqueId);
@@ -465,17 +464,19 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Find matching empty profile based on hostname and HW addresses.
+     * Find matching empty profile based on hostname and HW addresses (in this order).
      *
      * @param hostname the hostname
      * @param hwAddrs the set of HW addresses
      * @return the matching empty profile
      */
     public static Optional<MinionServer> findMatchingEmptyProfile(Optional<String> hostname, Set<String> hwAddrs) {
-        Optional<MinionServer> fqdnMatch = hostname.flatMap(n -> MinionServerFactory.findEmptyProfileByHostName(n));
-        Optional<MinionServer> hwAddrMatch = hwAddrs.isEmpty() ? empty() :
-                MinionServerFactory.findEmptyProfileByHwAddrs(hwAddrs);
-        return Opt.or(fqdnMatch, hwAddrMatch);
+        Optional<MinionServer> hostnameMatch = hostname.flatMap(n -> MinionServerFactory.findEmptyProfileByHostName(n));
+        if (hostnameMatch.isPresent()) {
+            return hostnameMatch;
+        }
+        Optional<MinionServer> hwAddrMatch = MinionServerFactory.findEmptyProfileByHwAddrs(hwAddrs);
+        return hwAddrMatch;
     }
 
     /**

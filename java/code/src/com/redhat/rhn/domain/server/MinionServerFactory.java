@@ -235,16 +235,15 @@ public class MinionServerFactory extends HibernateFactory {
     }
 
     /**
-     * Find empty profile by HW addresses.
+     * Find empty profile with a HW address matching some of given HW addresses.
      *
      * @param hwAddrs the set of HW addresses
-     * @throws java.lang.IllegalArgumentException When empty HW addresses are specified
      * @throws java.lang.IllegalStateException When multiple empty profiles match given HW addresses
-     * @return the optional MinionServer matching given HW addresses
+     * @return the optional MinionServer with a HW address matching some of given HW addresses
      */
     public static Optional<MinionServer> findEmptyProfileByHwAddrs(Set<String> hwAddrs) {
         if (hwAddrs.isEmpty()) {
-            throw new IllegalArgumentException("No HW addresses specified.");
+            return Optional.empty();
         }
 
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
