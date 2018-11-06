@@ -47,7 +47,7 @@ mgrchannels_repo:
 {%- elif grains['os_family'] == 'RedHat' %}
     - name: "/etc/yum.repos.d/susemanager:channels.repo"
 {%- elif grains['os_family'] == 'Debian' %}
-    - name: "/etc/apt/sources.list.d/susemanager.list
+    - name: "/etc/apt/sources.list.d/susemanager.list"
 {%- endif %}
     - source:
       - salt://channels/channels.repo
