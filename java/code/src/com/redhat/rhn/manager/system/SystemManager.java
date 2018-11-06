@@ -1120,7 +1120,8 @@ public class SystemManager extends BaseManager {
                         "visible_to_user_and_counts");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
-        return makeDataResult(params, null, pc, m, SystemGroupOverview.class);
+        Map<String, Object> elabParams = new HashMap<String, Object>();
+        return makeDataResult(params, elabParams, pc, m, SystemGroupOverview.class);
     }
 
     /**

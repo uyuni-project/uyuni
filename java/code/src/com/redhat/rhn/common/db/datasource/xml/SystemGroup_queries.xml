@@ -71,19 +71,7 @@ ORDER BY UPPER(NAME)
            AND EXISTS (SELECT 1
                          FROM rhnServerFeaturesView SFV
                         WHERE SFV.server_id = SGM.server_id
-                          AND SFV.label = 'ftr_system_grouping')) AS SERVER_COUNT,
-      (SELECT CASE MAX(CASE E.advisory_type
-          WHEN 'Security Advisory' THEN 3
-          WHEN 'Bug Fix Advisory' THEN 2
-          WHEN 'Product Enhancement Advisory' THEN 1 END)
-          WHEN 3 THEN 'Security Advisory'
-          WHEN 2 THEN 'Bug Fix Advisory'
-          WHEN 1 THEN 'Product Enhancement Advisory' END type_value
-        FROM rhnErrata E inner join
-          rhnServerNeededCache SNPC on E.id = SNPC.errata_id inner join
-          rhnServerGroupMembers SGM on SGM.server_id = SNPC.server_id inner join
-          rhnServerFeaturesView SFV on SGM.server_id = SFV.server_id
-        WHERE sgm.server_group_id = SG.id AND SFV.label = 'ftr_system_grouping') as MOST_SEVERE_ERRATA
+                          AND SFV.label = 'ftr_system_grouping')) AS SERVER_COUNT
       FROM rhnServerGroup SG, rhnUserManagedServerGroups UMSG
      WHERE UMSG.user_id = :user_id
        AND UMSG.server_group_id = SG.id
@@ -91,8 +79,26 @@ ORDER BY UPPER(NAME)
     ) x
     ORDER BY UPPER(NAME)
   </query>
+    <elaborator name="most_severe_errata" />
 </mode>
+<query name="most_severe_errata" params="">
+    SELECT sgm.server_group_id as id,
+        CASE MAX(CASE E.advisory_type
+            WHEN 'Security Advisory' THEN 3
+            WHEN 'Bug Fix Advisory' THEN 2
+            WHEN 'Product Enhancement Advisory' THEN 1 END)
+            WHEN 3 THEN 'Security Advisory'
+            WHEN 2 THEN 'Bug Fix Advisory'
+            WHEN 1 THEN 'Product Enhancement Advisory'
+        END as MOST_SEVERE_ERRATA
+    FROM rhnErrata E
+        inner join rhnServerNeededCache SNPC on E.id = SNPC.errata_id
+        inner join rhnServerGroupMembers SGM on SGM.server_id = SNPC.server_id inner join
+        rhnServerFeaturesView SFV on SGM.server_id = SFV.server_id
+    WHERE sgm.server_group_id IN (%s) AND SFV.label = 'ftr_system_grouping'
+    group BY server_group_id
 
+</query>
 <mode name="is_visible">
         <query  params="sgid, user_id">
                 SELECT 1
