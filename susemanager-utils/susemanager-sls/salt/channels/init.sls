@@ -18,6 +18,28 @@ mgrchannels_susemanagerplugin_conf:
     - mode: 644
 {%- endif %}
 
+{%- if grains['os_family'] == 'Debian' %}
+mgrchannels_susemanagermethod:
+  file.managed:
+    - name: /usr/lib/apt/methods/susemanager
+    - source:
+      - salt://channels/apt-transport-susemanager/susemanager
+    - user: root
+    - group: root
+    - mode: 755
+    - require:
+      - file: mgrchannels_channeltokens
+
+mgrchannels_channeltokens:
+  file.managed:
+    - name: /etc/susemanager.conf
+    - source:
+      - salt://channels/debian_channel_tokens.repo
+    - user: root
+    - group: root
+    - mode: 644
+{%- endif %}
+
 mgrchannels_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
@@ -25,7 +47,7 @@ mgrchannels_repo:
 {%- elif grains['os_family'] == 'RedHat' %}
     - name: "/etc/yum.repos.d/susemanager:channels.repo"
 {%- elif grains['os_family'] == 'Debian' %}
-    - name: "/tmp/susemanager:channels.repo"
+    - name: "/etc/apt/sources.list.d/susemanager.list
 {%- endif %}
     - source:
       - salt://channels/channels.repo

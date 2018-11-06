@@ -38,6 +38,8 @@ remove_traditional_stack:
       - rhn-check
       - rhn-setup
       - rhn-client-tools
+{%- elif grains['os_family'] == 'Debian' %}
+      - apt-transport-spacewalk
 {%- endif %}
       - osad
       - osa-common
