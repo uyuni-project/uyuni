@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ServerGroupManager
@@ -439,11 +440,10 @@ public class ServerGroupManager {
     public Map errataCounts(User user, ServerGroup group) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "group_errata_counts");
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org_id", user.getOrg().getId());
         params.put("sgid", group.getId());
-
-        DataResult result = m.execute(params);
-
-        return (Map) result.get(0);
+        DataResult<Map<String, String>> result = m.execute(params);
+        Map<String, String> errataCounts = result.stream()
+                .collect(Collectors.toMap(s -> s.get("advisory_type"), s1 -> String.valueOf(s1.get("count"))));
+        return errataCounts;
     }
 }

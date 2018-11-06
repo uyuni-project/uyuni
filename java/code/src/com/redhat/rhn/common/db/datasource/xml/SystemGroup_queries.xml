@@ -150,11 +150,17 @@ ORDER BY UPPER(SG.name), SG.id
 </mode>
 
 <mode name="group_errata_counts">
-  <query params="sgid, org_id">
-SELECT  SECURITY_ERRATA as se, BUG_ERRATA as be, ENHANCEMENT_ERRATA as ee
-  FROM  rhnServerGroupOverview
- WHERE  org_id = :org_id
-   AND  group_id = :sgid
+  <query params="sgid">
+     SELECT count(distinct e.id),
+            CASE E.advisory_type
+                WHEN 'Security Advisory' THEN 'se'
+                WHEN 'Bug Fix Advisory' THEN 'be'
+                WHEN 'Product Enhancement Advisory' then 'ee'
+            END as advisory_type
+      FROM  rhnerrata e, rhnserverneededcache snc, rhnservergroupmembers sgm
+      WHERE snc.errata_id = e.id AND snc.server_id = sgm.server_id AND sgm.server_group_id = :sgid
+            AND (exists (SELECT 1 FROM rhnserverfeaturesview sfv   WHERE sfv.server_id = sgm.server_id  AND sfv.label = 'ftr_system_grouping' ))
+      GROUP BY e.advisory_type
   </query>
 </mode>
 
