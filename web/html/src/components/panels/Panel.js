@@ -7,19 +7,31 @@ type Props = {
   header?: string,
   footer?: string,
   children: React.Node,
+  buttons?: React.Node,
 };
 
 function Panel(props: Props) {
   const { headingLevel: HeadingLevel } = props;
   return (
     <div className="panel panel-default">
-      {props.title
+      {(props.title || props.header || props.buttons)
         && (
         <div className="panel-heading">
-          <HeadingLevel>
-            { props.icon && <i className={`fa ${props.icon}`} /> }
-            { props.title }
-          </HeadingLevel>
+          { props.buttons
+            && (
+              <div className="pull-right btn-group" style={{ top: '-5px' }}>
+                { props.buttons }
+              </div>
+            )
+          }
+          { props.title
+            && (
+              <HeadingLevel>
+                { props.icon && <i className={`fa ${props.icon}`} /> }
+                { props.title }
+              </HeadingLevel>
+            )
+          }
           { props.header && <span>{props.header}</span>}
         </div>)
       }
@@ -42,6 +54,7 @@ Panel.defaultProps = {
   icon: undefined,
   header: undefined,
   footer: undefined,
+  buttons: undefined,
 };
 
 module.exports = {
