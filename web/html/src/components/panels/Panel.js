@@ -10,7 +10,7 @@ type Props = {
 };
 
 function Panel(props: Props) {
-  const { HeadingLevel } = props;
+  const { headingLevel: HeadingLevel } = props;
   return (
     <div className="panel panel-default">
       {props.title
