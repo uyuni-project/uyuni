@@ -17,6 +17,7 @@ package com.suse.manager.reactor.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static java.util.Collections.singletonMap;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -720,10 +721,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(getGrains(MINION_ID, "rhel", null)));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
+                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
+                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
                             "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
 
@@ -759,10 +760,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(getGrains(MINION_ID, "rhel", key)));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
+                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
+                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
                             "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
 
@@ -803,10 +804,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(getGrains(MINION_ID, "res", null)));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server\n")))));
+                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server\n")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" sles_es-release-server"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
+                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
                             "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n")))));
 
@@ -841,11 +842,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
                     // Minion returns multiple release packages/versions
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\nsles_es-release-server\nsles_es-release-server\nredhat-release-server\n")))));
+                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\nsles_es-release-server\nsles_es-release-server\nredhat-release-server\n")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
                     // Minion returns data for multiple release packages/versions
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
+                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
                             "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n" +
                             "VERSION=7.3\n" +
@@ -1116,7 +1117,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ManagedServerGroup alreadyAssignedGroup = ServerGroupFactory.create("HWTYPE:idontmatch",
                 "HW group - assigned to empty profile beforehand", user.getOrg());
 
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile", "00:11:22:33:44:55");
+        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+                singletonMap("hwAddress", "00:11:22:33:44:55"));
         ServerFactory.addServerToGroup(emptyMinion, alreadyAssignedGroup);
 
         executeTest(
@@ -1238,7 +1240,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testEmptyProfileRegistration() throws Exception {
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile", "00:11:22:33:44:55");
+        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+               singletonMap("hwAddress", "00:11:22:33:44:55"));
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
@@ -1295,12 +1298,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         final String hwAddress = "00:11:22:33:44:55";
 
         // assign some formula
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile", hwAddress);
-        FormulaFactory.saveServerFormulas(hwAddress, Collections.singletonList(testFormula));
-        Map<String, Object> formulaContent = Collections.singletonMap("testKey", "testVal");
-        FormulaFactory.saveServerFormulaData(formulaContent, hwAddress, testFormula);
+        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+                singletonMap("hwAddress", "00:11:22:33:44:55"));
+        String minionId = ">" + hwAddress;
+        FormulaFactory.saveServerFormulas(minionId, Collections.singletonList(testFormula));
+        Map<String, Object> formulaContent = singletonMap("testKey", "testVal");
+        FormulaFactory.saveServerFormulaData(formulaContent, minionId, testFormula);
 
-        assertTrue(Paths.get(FormulaFactory.getPillarDir(), hwAddress + "_" + testFormula + ".json").toFile().exists());
+        assertTrue(Paths.get(FormulaFactory.getPillarDir(), ">" + hwAddress + "_" + testFormula + ".json").toFile().exists());
 
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{

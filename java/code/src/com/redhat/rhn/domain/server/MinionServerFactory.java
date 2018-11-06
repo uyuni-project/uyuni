@@ -20,6 +20,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
 
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -31,6 +32,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * MinionFactory - the singleton class used to fetch and store
@@ -225,5 +232,49 @@ public class MinionServerFactory extends HibernateFactory {
     public static List<MinionServer> findMinionsByServerIds(List<Long> serverIds) {
         return !serverIds.isEmpty() ?
                 ServerFactory.lookupByServerIds(serverIds, "Server.findMinionsByServerIds") : Collections.emptyList();
+    }
+
+    /**
+     * Find empty profile with a HW address matching some of given HW addresses.
+     *
+     * @param hwAddrs the set of HW addresses
+     * @throws java.lang.IllegalStateException When multiple empty profiles match given HW addresses
+     * @return the optional MinionServer with a HW address matching some of given HW addresses
+     */
+    public static Optional<MinionServer> findEmptyProfileByHwAddrs(Set<String> hwAddrs) {
+        if (hwAddrs.isEmpty()) {
+            return Optional.empty();
+        }
+
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<MinionServer> query = builder.createQuery(MinionServer.class);
+        Root<MinionServer> root = query.distinct(true).from(MinionServer.class);
+
+        Join<MinionServer, NetworkInterface> nicJoin = root.join("networkInterfaces", JoinType.INNER);
+        Predicate hwAddrPredicate = nicJoin.get("hwaddr").in(hwAddrs);
+
+        query.where(hwAddrPredicate);
+
+        return getSession().createQuery(query).list().stream()
+                .filter(s -> s.hasEntitlement(EntitlementManager.BOOTSTRAP))
+                .reduce((s1, s2) -> { throw new IllegalStateException("Multiple matching systems found"); });
+    }
+
+    /**
+     * Find empty profile by hostname
+     *
+     * @param hostname the hostname
+     * @throws java.lang.IllegalStateException When multiple empty profiles match given hostname
+     * @return the optional MinionServer matching given hostname
+     */
+    public static Optional<MinionServer> findEmptyProfileByHostName(String hostname) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<MinionServer> query = builder.createQuery(MinionServer.class);
+        Root<MinionServer> root = query.from(MinionServer.class);
+        query.where(builder.equal(root.get("hostname"), hostname));
+
+        return getSession().createQuery(query).list().stream()
+                .filter(s -> s.hasEntitlement(EntitlementManager.BOOTSTRAP))
+                .reduce((s1, s2) -> { throw new IllegalStateException("Multiple matching systems found"); });
     }
 }
