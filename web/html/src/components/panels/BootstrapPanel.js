@@ -13,7 +13,7 @@ type Props = {
 function BootstrapPanel(props: Props) {
   return (
     <Panel
-      HeadingLevel="h2"
+      headingLevel="h2"
       title={props.title}
       icon={props.icon}
       header={props.header}

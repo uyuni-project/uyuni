@@ -91,7 +91,7 @@ class GuestProperties extends React.Component<Props, State> {
           onChange={this.onChange}
           onSubmit={this.onSubmit}
         >
-          <Panel title={t('General')} HeadingLevel="h2">
+          <Panel title={t('General')} headingLevel="h2">
             <Text
               name="memory"
               label={t('Maximum Memory (MiB)')}
