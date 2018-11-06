@@ -53,12 +53,14 @@ class InputBase extends React.Component<Props, State> {
     };
   }
 
+  // eslint-disable-next-line
   UNSAFE_componentWillMount() {
     if (this.props.registerInput) {
       this.props.registerInput(this);
     }
   }
 
+  // eslint-disable-next-line
   UNSAFE_componentWillReceiveProps(props) {
     if (!(props.value === this.props.value && props.disabled === this.props.disabled
               && props.required === this.props.required)) {

@@ -1,4 +1,3 @@
-require('react-hot-loader/patch');
 const { AppContainer } = require('react-hot-loader');
 const React = require('react');
 const ReactDOM = require('react-dom');

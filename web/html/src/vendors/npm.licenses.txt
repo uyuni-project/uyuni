@@ -541,8 +541,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-hot-loader v3.1.3 - Dan Abramov
-https://github.com/gaearon/react-hot-loader.git
+react-hot-loader v4.3.12 - Dan Abramov
+https://github.com/gaearon/react-hot-loader/
 --------------------------------------------------------------------------------
 
 MIT License
