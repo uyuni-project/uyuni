@@ -45,6 +45,7 @@ class Form extends React.Component<Props, State> {
     };
   }
 
+  // eslint-disable-next-line
   UNSAFE_componentWillReceiveProps(props: Props) {
     this.setState({
       model: props.model,

@@ -7,7 +7,6 @@ const vendors = [
     "core-js/shim",
     "regenerator-runtime/runtime",
     "react-hot-loader",
-    "react-hot-loader/patch",
     "lodash",
     "create-react-class"
 ];
