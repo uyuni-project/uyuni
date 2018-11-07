@@ -14,6 +14,20 @@
  */
 package com.suse.manager.webui;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.delete;
+import static spark.Spark.exception;
+import static spark.Spark.get;
+import static spark.Spark.head;
+import static spark.Spark.notFound;
+import static spark.Spark.post;
+
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
@@ -36,28 +50,18 @@ import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VirtualNetsController;
+import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.errors.NotFoundException;
+
+import org.apache.http.HttpStatus;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.http.HttpStatus;
+
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
-
-import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-import static spark.Spark.delete;
-import static spark.Spark.exception;
-import static spark.Spark.get;
-import static spark.Spark.head;
-import static spark.Spark.notFound;
-import static spark.Spark.post;
 
 /**
  * Router class defining the web UI routes.
@@ -346,6 +350,8 @@ public class Router implements SparkApplication {
                 withUser(VirtualGuestsController::getDomainsCapabilities));
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
                 withUser(VirtualNetsController::data));
+        get("/manager/api/systems/details/virtualization/pools/:sid/data",
+                withUser(VirtualPoolsController::data));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {

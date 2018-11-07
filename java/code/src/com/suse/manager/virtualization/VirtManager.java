@@ -79,6 +79,22 @@ public class VirtManager {
     }
 
     /**
+     * Query the list of virtual networks defined on a salt minion.
+     *
+     * @param minionId the minion to ask about
+     * @return a list of the network names
+     */
+    public static Map<String, JsonElement> getPools(String minionId) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.pool_info", Optional.empty(), Optional.of(args),
+                        new TypeToken<Map<String, JsonElement>>() { });
+
+        Optional<Map<String, JsonElement>> pools = saltService.callSync(call, minionId);
+        return pools.orElse(new HashMap<String, JsonElement>());
+    }
+
+    /**
      * @param saltServiceIn to set for tests
      */
     public static void setSaltService(SaltService saltServiceIn) {
