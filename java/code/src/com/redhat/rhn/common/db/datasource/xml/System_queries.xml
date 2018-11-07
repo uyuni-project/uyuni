@@ -542,7 +542,7 @@ SELECT s1.id,
        sum(case when errata.advisory_type = 'Security Advisory' and (errata.severity = 'errata.sev.label.low' or errata.severity is null) then 1 else 0 end) low,
        sum(case when errata.advisory_type = 'Bug Fix Advisory' then 1 else 0 end) bug,
        sum(case when errata.advisory_type = 'Product Enhancement Advisory' then 1 else 0 end) enhancement
- FROM rhnServer S1
+FROM rhnServer S1
  JOIN rhnUserServerPerms USP1
    ON S1.id = USP1.server_id
  LEFT join (select distinct E.id, SNC.server_id, E.synopsis, E.advisory_type, es.label as severity
@@ -550,10 +550,8 @@ SELECT s1.id,
               join rhnServerNeededCache SNC on E.id = SNC.errata_id
               left join rhnerrataseverity es on E.SEVERITY_ID = es.id) ERRATA
    ON S1.id = errata.server_id
- JOIN rhnServerGroupMembers SGM
-   ON S1.id = SGM.server_id
 WHERE USP1.user_id = :uid
-  AND SGM.server_group_id not in (%s)
+  AND NOT EXISTS (select 1 from rhnServerGroupMembers SGM where S1.id = SGM.server_id AND SGM.server_group_id in (%s) )
 GROUP by s1.id, s1.name
 ORDER by s1.name
     </query>
