@@ -1300,12 +1300,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         // assign some formula
         MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
-        String minionId = ">" + hwAddress;
+        String minionId = "_" + hwAddress;
         FormulaFactory.saveServerFormulas(minionId, Collections.singletonList(testFormula));
         Map<String, Object> formulaContent = singletonMap("testKey", "testVal");
         FormulaFactory.saveServerFormulaData(formulaContent, minionId, testFormula);
 
-        assertTrue(Paths.get(FormulaFactory.getPillarDir(), ">" + hwAddress + "_" + testFormula + ".json").toFile().exists());
+        assertTrue(Paths.get(FormulaFactory.getPillarDir(), "_" + hwAddress + "_" + testFormula + ".json").toFile().exists());
 
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
