@@ -1,17 +1,17 @@
 require 'twopence'
 require 'timeout'
 
-# extend the objects node vms with usefull methods needed for testsuite.
-# All function added here, will be avaible like $server.run
+# Extend the objects node VMs with useful methods needed for testsuite.
+# All function added here will be available like $server.run
 #  or $minion.run_until_ok etc.
 module LavandaBasic
-  # init the hotnames, only one time
+  # init the hostnames, only one time
   def init_hostname(hostname)
     @in_hostname = hostname.strip
   end
 
-  def init_full_hostname(fqn)
-    @in_full_hostname = fqn.strip
+  def init_full_hostname(fqdn)
+    @in_full_hostname = fqdn.strip
   end
 
   def init_ip(ip)
@@ -34,7 +34,7 @@ module LavandaBasic
     @in_ip
   end
 
-  # monkeypatch the run
+  # run functions
   def run(cmd, fatal = true, timeout = DEFAULT_TIMEOUT, user = 'root')
     out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout)
     if fatal
