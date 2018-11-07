@@ -62,6 +62,12 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     this.props.submit(model);
   }
 
+  changeModel = (model: Object) => {
+    this.setState({
+      model,
+    });
+  }
+
   render() {
     return (
       <div>
@@ -73,7 +79,12 @@ class GuestPropertiesForm extends React.Component<Props, State> {
           onSubmit={this.onSubmit}
         >
           <Messages items={[].concat(this.state.messages, this.props.messages)} />
-          {this.props.children({ model: this.state.model })}
+          {
+            this.props.children({
+              model: this.state.model,
+              changeModel: this.changeModel,
+            })
+          }
           <div className="col-md-offset-3 col-md-6">
             <SubmitButton
               id="submit-btn"
