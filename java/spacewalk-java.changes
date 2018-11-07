@@ -1,3 +1,4 @@
+- increase maximum number of threads and open files for taskomatic (bsc#1111966)
 - When removing cobbler system record, lookup by mac address as well if lookup by id fails(bsc#1110361)
 - Allow listing empty system profiles via XMLRPC
 - Automatic cleanup of notification messages after a configurable lifetime
