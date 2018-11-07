@@ -1414,9 +1414,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().refresh(minionFromDb);
 
         assertEquals("test system", minionFromDb.getName());
-        assertEquals(">" + hwAddr, minion.getMinionId());
-        assertEquals(">" + hwAddr, minion.getMachineId());
-        assertEquals(">" + hwAddr, minion.getDigitalServerId());
+        assertEquals("_" + hwAddr, minion.getMinionId());
+        assertEquals("_" + hwAddr, minion.getMachineId());
+        assertEquals("_" + hwAddr, minion.getDigitalServerId());
         assertEquals("(unknown)", minion.getOs());
         assertEquals("(unknown)", minion.getOsFamily());
         assertEquals("(unknown)", minion.getRelease());
