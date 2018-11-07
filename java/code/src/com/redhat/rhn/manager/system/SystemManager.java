@@ -421,10 +421,11 @@ public class SystemManager extends BaseManager {
         }
 
         // craft unique id based on given data
-        String uniqueId = ">" + Arrays.asList(hwAddress, hostname)
+        String delimiter = "_";
+        String uniqueId = delimiter + Arrays.asList(hwAddress, hostname)
                 .stream()
                 .flatMap(o -> Opt.stream(o))
-                .reduce((i1, i2) -> i1 + ">" + i2)
+                .reduce((i1, i2) -> i1 + delimiter + i2)
                 .get();
 
         MinionServer server = new MinionServer();
