@@ -116,7 +116,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
 
 
     @Override
-    protected SystemRecord lookupExisting() {
+    protected SystemRecord lookupExisting(Server server) {
         log.debug("lookupExisting called.");
 
         return SystemRecord.lookupByName(
