@@ -213,8 +213,8 @@ class ImageImport extends React.Component {
     }
   }
 
-  handleActivationKeyChange(event) {
-    this.getChannels(event.target.value);
+  handleActivationKeyChange(name, value) {
+    this.getChannels(value);
   }
 
   renderActivationKeySelect() {

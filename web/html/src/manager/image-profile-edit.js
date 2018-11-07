@@ -75,7 +75,7 @@ class CreateImageProfile extends React.Component {
         });
         this.getChannels(data.activationKey.key);
         this.getImageStores(typeMap[data.imageType].storeType);
-        this.handleImageStoreChange({target: {value: data.store}});
+        this.handleImageStoreChange(undefined, data.store);
       } else {
         window.location = "/rhn/manager/cm/imageprofiles/create";
       }
@@ -105,17 +105,17 @@ class CreateImageProfile extends React.Component {
     });
   }
 
-  handleTokenChange(event) {
-    this.getChannels(event.target.value);
+  handleTokenChange(name, value) {
+    this.getChannels(value);
   }
 
-  handleImageTypeChange(event) {
-    const storeType = typeMap[event.target.value].storeType;
+  handleImageTypeChange(name, value) {
+    const storeType = typeMap[value].storeType;
     this.getImageStores(storeType);
   }
 
-  handleImageStoreChange(event) {
-    const storeLabel = event.target.value;
+  handleImageStoreChange(name, storeLabel) {
+    const storeLabel = value;
     Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel)
       .promise.then(res => {
         this.setState({

@@ -106,8 +106,8 @@ class BuildImage extends React.Component {
       });
   }
 
-  handleProfileChange(event) {
-    this.changeProfile(event.target.value);
+  handleProfileChange(name, value) {
+    this.changeProfile(value);
   }
 
   changeProfile(id) {
