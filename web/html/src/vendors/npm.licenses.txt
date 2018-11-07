@@ -32,6 +32,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
+@babel/runtime v7.1.5 - Sebastian McKenzie <sebmck@gmail.com>
+https://github.com/babel/babel/tree/master/packages/babel-runtime
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) 2014-2018 Sebastian McKenzie and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+--------------------------------------------------------------------------------
 @emotion/hash v0.6.6
 https://github.com/emotion-js/emotion/tree/master/next-packages/hash
 --------------------------------------------------------------------------------
@@ -226,11 +255,31 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-dom-helpers v3.3.1 - Jason Quense
+dom-helpers v3.4.0 - Jason Quense
 jquense/dom-helpers
 --------------------------------------------------------------------------------
 
-MIT
+The MIT License (MIT)
+
+Copyright (c) 2015 Jason Quense
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 --------------------------------------------------------------------------------
 emotion v9.2.12 - Kye Hohenberger
@@ -342,7 +391,7 @@ terms above.
 
 
 --------------------------------------------------------------------------------
-memoize-one v4.0.2 - Alex Reardon <alexreardon@gmail.com>
+memoize-one v4.0.3 - Alex Reardon <alexreardon@gmail.com>
 https://github.com/alexreardon/memoize-one.git
 --------------------------------------------------------------------------------
 
@@ -478,14 +527,32 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-raf v3.4.0 - Chris Dickinson <chris@neversaw.us>
+raf v3.4.1 - Chris Dickinson <chris@neversaw.us>
 git://github.com/chrisdickinson/raf.git
 --------------------------------------------------------------------------------
 
-MIT
+Copyright 2013 Chris Dickinson <chris@neversaw.us>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 --------------------------------------------------------------------------------
-react v16.6.0
+react v16.6.1
 facebook/react
 --------------------------------------------------------------------------------
 
@@ -513,7 +580,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-dom v16.6.0
+react-dom v16.6.1
 facebook/react
 --------------------------------------------------------------------------------
 
@@ -697,7 +764,7 @@ https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
 MIT
 
 --------------------------------------------------------------------------------
-scheduler v0.10.0
+scheduler v0.11.0
 facebook/react
 --------------------------------------------------------------------------------
 
@@ -732,7 +799,7 @@ https://github.com/thysultan/stylis.js
 MIT
 
 --------------------------------------------------------------------------------
-webpack v4.20.2 - Tobias Koppers @sokra
+webpack v4.25.1 - Tobias Koppers @sokra
 https://github.com/webpack/webpack.git
 --------------------------------------------------------------------------------
 
