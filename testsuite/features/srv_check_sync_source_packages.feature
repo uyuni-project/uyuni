@@ -9,8 +9,8 @@ Feature: Check if source packages were successfully synced
   Background:
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
-    And I follow "Channels" in the left menu
-    And I follow "Channels > All" in the left menu
+    And I follow "Channel List" in the left menu
+    And I follow "Channel List > All" in the left menu
 
   Scenario: Check sources for noarch package
     When I follow "Test-Channel-x86_64"
