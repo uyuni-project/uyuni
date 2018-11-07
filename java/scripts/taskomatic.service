@@ -5,6 +5,8 @@ Requires=apache2.service
 Wants=postgresql.service
 
 [Service]
+TasksMax=576
+LimitNOFILE=8192
 Type=forking
 ExecStart=/usr/sbin/taskomatic start
 ExecStop=/usr/sbin/taskomatic stop
