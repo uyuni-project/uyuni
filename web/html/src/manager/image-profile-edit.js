@@ -115,7 +115,6 @@ class CreateImageProfile extends React.Component {
   }
 
   handleImageStoreChange(name, storeLabel) {
-    const storeLabel = value;
     Network.get("/rhn/manager/api/cm/imagestores/find/" + storeLabel)
       .promise.then(res => {
         this.setState({
@@ -408,3 +407,4 @@ ReactDOM.render(
   <CreateImageProfile />,
   document.getElementById('image-profile-edit')
 )
+
