@@ -3,6 +3,7 @@ const {pages} = require("../manager/index");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, argv) => {
 
@@ -12,6 +13,7 @@ module.exports = (env, argv) => {
   if(isProductionMode) {
     // If we are on production mode we want to make sure we don't mix vendors code with source code
     optimization = {
+      minimizer: [new TerserPlugin({extractComments: true})],
       splitChunks: {
         cacheGroups: {
           vendor: {

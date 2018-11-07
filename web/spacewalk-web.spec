@@ -186,6 +186,7 @@ cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript
 
 %{__mkdir_p} %{buildroot}/srv/www/htdocs/vendors
 cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js
+cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js.LICENSE
 
 %files -n susemanager-web-libs
 %defattr(644,root,root,755)

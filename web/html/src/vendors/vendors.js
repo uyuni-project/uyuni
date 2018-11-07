@@ -8,7 +8,8 @@ const vendors = [
     "regenerator-runtime/runtime",
     "react-hot-loader",
     "lodash",
-    "create-react-class"
+    "create-react-class",
+    "webpack/buildin/harmony-module"
 ];
 
 module.exports = vendors;
