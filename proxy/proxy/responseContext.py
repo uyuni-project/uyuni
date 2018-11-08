@@ -119,23 +119,23 @@ class ResponseContext:
 
 if __name__ == "__main__":
     respContext = ResponseContext()
-    print "init   | context = " + str(respContext)
+    print("init   | context = " + str(respContext))
 
     respContext.remove()
-    print "remove | context = " + str(respContext)
+    print("remove | context = " + str(respContext))
 
     respContext.add()
-    print "add    | context = " + str(respContext)
+    print("add    | context = " + str(respContext))
 
     respContext.remove()
-    print "remove | context = " + str(respContext)
+    print("remove | context = " + str(respContext))
 
     respContext.add()
     respContext.add()
-    print "addadd | context = " + str(respContext)
+    print("addadd | context = " + str(respContext))
 
     respContext.clear()
-    print "clear  | context = " + str(respContext)
+    print("clear  | context = " + str(respContext))
 
     respContext.add()
-    print "add    | context = " + str(respContext)
+    print("add    | context = " + str(respContext))

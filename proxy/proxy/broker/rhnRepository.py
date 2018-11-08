@@ -21,11 +21,21 @@
 import os
 import time
 import glob
-import cPickle
+try:
+    # python 3
+    import pickle as cPickle
+except ImportError:
+    # python 2
+    import cPickle
 import sys
 import types
 from operator import truth
-import xmlrpclib
+try:
+    #  python 2
+    import xmlrpclib
+except ImportError:
+    #  python3
+    import xmlrpc.client as xmlrpclib
 
 ## common imports
 from spacewalk.common.rhnLib import parseRPMName
@@ -83,7 +93,7 @@ class Repository(rhnRepository.Repository):
         # If the file name has parameters, it's a different kind of package.
         # Determine the architecture requested so we can construct an
         # appropriate filename.
-        if isinstance(pkgFilename, types.ListType):
+        if isinstance(pkgFilename, list):
             arch = pkgFilename[3]
             # Not certain if anything is needed here for Debian, but since what I've tested
             # works.   Leave it alone.
@@ -94,7 +104,7 @@ class Repository(rhnRepository.Repository):
                      pkgFilename[2],
                      pkgFilename[3])
 
-        if not mapping.has_key(pkgFilename):
+        if pkgFilename not in mapping:
             log_debug(3, "Package not in mapping: %s" % pkgFilename)
             raise NotLocalError
         # A list of possible file paths. Always a list, channel mappings are
@@ -132,9 +142,10 @@ class Repository(rhnRepository.Repository):
         try:
             retval = server.proxy.package_source_in_channel(
                 pkgFilename, self.channelName, self.clientInfo)
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             raise rhnFault(1000,
                            _("Error retrieving source package: %s") % str(e)), None, sys.exc_info()[2]
+
         if not retval:
             raise rhnFault(17, _("Invalid SRPM package requested: %s")
                            % pkgFilename)
@@ -224,7 +235,7 @@ class Repository(rhnRepository.Repository):
 
         try:
             packageList = self._listPackages()
-        except xmlrpclib.ProtocolError, e:
+        except xmlrpclib.ProtocolError as e:
             errcode, errmsg = rpclib.reportError(e.headers)
             raise rhnFault(1000, "SpacewalkProxy error (xmlrpclib.ProtocolError): "
                            "errode=%s; errmsg=%s" % (errcode, errmsg)), None, sys.exc_info()[2]
@@ -461,9 +472,8 @@ def cache(stringObject, directory, filename, version):
     while tries > 0:
         # Try to create this new file
         try:
-            fd = os.open(tempfile, os.O_WRONLY | os.O_CREAT | os.O_EXCL,
-                         0644)
-        except OSError, e:
+            fd = os.open(tempfile, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+        except OSError as e:
             if e.errno == 17:
                 # File exists; give it another try
                 tries = tries - 1

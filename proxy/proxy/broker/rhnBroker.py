@@ -18,7 +18,12 @@
 import time
 import socket
 import re
-from urlparse import urlparse, urlunparse
+try:
+    # python 3
+    from urllib.parse import urlparse, urlunparse
+except ImportError:
+    # python 2
+    from urlparse import urlparse, urlunparse
 
 # common module imports
 from rhn.UserDictCase import UserDictCase
@@ -257,7 +262,7 @@ class BrokerHandler(SharedHandler):
         tokens = []
 
         _oto = rhnFlags.get('outputTransportOptions')
-        if _oto.has_key('X-RHN-Proxy-Auth'):
+        if 'X-RHN-Proxy-Auth' in _oto:
             log_debug(5, '    (auth token prior): %s' % repr(_oto['X-RHN-Proxy-Auth']))
             tokens = _oto['X-RHN-Proxy-Auth'].split(',')
 

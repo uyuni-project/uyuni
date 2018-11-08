@@ -17,7 +17,12 @@
 # language imports
 import socket
 import re
-from urlparse import urlparse, urlunparse
+try:
+    # python 3
+    from urllib.parse import urlparse, urlunparse
+except ImportError:
+    # python 2
+    from urlparse import urlparse, urlunparse
 
 # common module imports
 from spacewalk.common.rhnConfig import CFG
@@ -121,7 +126,7 @@ class RedirectHandler(SharedHandler):
             # if we redirected to ssl version of login page, send redirect directly to user
             headers = self.responseContext.getHeaders()
             if headers is not None:
-                for headerKey in headers.keys():
+                for headerKey in list(headers.keys()):
                     if headerKey == 'location':
                         location = self._get_header(headerKey)
                         relogin = re.compile(r'https?://.*(/rhn/(Re)?Login.do\?.*)')
@@ -313,7 +318,7 @@ class RedirectHandler(SharedHandler):
         log_debug(4, "Attempting to connect to 3rd party server...")
         try:
             connection.connect()
-        except socket.error, e:
+        except socket.error as e:
             log_error("Error opening redirect connection", redirectLocation, e)
             Traceback(mail=0)
             return apache.HTTP_SERVICE_UNAVAILABLE
@@ -342,7 +347,7 @@ class RedirectHandler(SharedHandler):
             # Add all the other headers in the original request in case we
             # need to re-authenticate with Hosted.
 
-            for hdr in self.req.headers_in.keys():
+            for hdr in list(self.req.headers_in.keys()):
                 if hdr.lower().startswith("x-rhn"):
                     connection.putheader(hdr, self.req.headers_in[hdr])
                     log_debug(4, "Passing request header: ",
@@ -352,7 +357,7 @@ class RedirectHandler(SharedHandler):
             connection.endheaders()
 
             response = connection.getresponse()
-        except IOError, ioe:
+        except IOError as ioe:
             # Raised by getresponse() if server closes connection on us.
             log_error("Redirect connection reset by peer.",
                       redirectLocation,
@@ -363,7 +368,7 @@ class RedirectHandler(SharedHandler):
             # will be closed when the caller pops the context.
             return apache.HTTP_SERVICE_UNAVAILABLE
 
-        except socket.error, se:
+        except socket.error as se:
             # Some socket error occurred.  Possibly a read error.
             log_error("Redirect request failed.", redirectLocation, se)
             Traceback(mail=0)
@@ -379,7 +384,7 @@ class RedirectHandler(SharedHandler):
         self.responseContext.setHeaders(response.msg)
 
         log_debug(4, "Response headers: ",
-                  self.responseContext.getHeaders().items())
+                  list(self.responseContext.getHeaders().items()))
         log_debug(4, "Got redirect response.  Status=", response.status)
 
         # Return the HTTP status to the caller.

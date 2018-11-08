@@ -19,7 +19,12 @@
 import struct
 
 ## local imports
-from xmlrpclib import dumps, loads
+try:
+    #  python 2
+    from xmlrpclib import dumps, loads
+except ImportError:
+    #  python3
+    from xmlrpc.client import dumps, loads
 
 
 class CommunicationError(Exception):

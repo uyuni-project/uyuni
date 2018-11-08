@@ -19,7 +19,12 @@
 # language imports
 import os
 import base64
-import xmlrpclib
+try:
+    #  python 2
+    import xmlrpclib
+except ImportError:
+    #  python 3
+    import xmlrpc.client as xmlrpclib
 import re
 
 # common imports
@@ -246,7 +251,7 @@ class apacheHandler(rhnApache):
         log_debug(6, "Ping URI: %s" % pingURL)
 
         hdrs = UserDictCase()
-        for k in req.headers_in.keys():
+        for k in list(req.headers_in.keys()):
             if k.lower() != 'range':  # we want checksum of whole file
                 hdrs[k] = re.sub(r'\n(?![ \t])|\r(?![ \t\n])', '', str(req.headers_in[k]))
 
@@ -361,7 +366,7 @@ class apacheHandler(rhnApache):
 
         try:
             ret = handlerObj.handler()
-        except rhnFault, e:
+        except rhnFault as e:
             return self.response(req, e)
 
         if rhnFlags.test("NeedEncoding"):
@@ -534,7 +539,7 @@ class apacheHandler(rhnApache):
             response = self.normalize(response)
             try:
                 response = rpclib.xmlrpclib.dumps(response, methodresponse=1)
-            except TypeError, e:
+            except TypeError as e:
                 log_debug(-1, "Error \"%s\" encoding response = %s" % (e, response))
                 Traceback("apacheHandler.response", req,
                           extra="Error \"%s\" encoding response = %s" % (e, response),
@@ -549,7 +554,7 @@ class apacheHandler(rhnApache):
         # we're about done here, patch up the headers
         output.process(response)
         # Copy the rest of the fields
-        for k, v in output.headers.items():
+        for k, v in list(output.headers.items()):
             if k.lower() == 'content-type':
                 # Content-type
                 req.content_type = v
@@ -586,7 +591,7 @@ class apacheHandler(rhnApache):
         for line in faultString.split('\n'):
             req.headers_out.add("X-RHN-Fault-String", line.strip())
         # And then send all the other things
-        for k, v in rhnFlags.get('outputTransportOptions').items():
+        for k, v in list(rhnFlags.get('outputTransportOptions').items()):
             setHeaderValue(req.headers_out, k, v)
         return apache.HTTP_NOT_FOUND
 
