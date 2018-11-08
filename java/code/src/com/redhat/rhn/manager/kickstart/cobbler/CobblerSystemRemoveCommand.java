@@ -21,6 +21,7 @@ import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.cobbler.SystemRecord;
 
+
 /**
  * @version $Rev$
  */
@@ -43,19 +44,11 @@ public class CobblerSystemRemoveCommand extends CobblerCommand {
      * @return ValidatorError if the remoev failed.
      */
     public ValidatorError store() {
-        String cobblerId = server.getCobblerId();
-        SystemRecord sr = null;
-
-        if (cobblerId != null) {
-            sr = SystemRecord.lookupById(CobblerXMLRPCHelper.getConnection(user),
-                cobblerId);
-        }
-
+        SystemRecord sr = lookupExisting(server);
         if (sr != null) {
             sr.remove();
             return new CobblerSyncCommand(user).store();
         }
-
         return null;
     }
 }
