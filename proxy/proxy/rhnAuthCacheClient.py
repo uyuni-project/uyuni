@@ -191,8 +191,8 @@ if __name__ == '__main__':
     s = Shelf(('localhost', 9999))
     s['1234'] = [1, 2, 3, 4, None, None]
     s['blah'] = 'testing 1 2 3'
-    print('Cached object s["1234"] = {}'.format(str(s['1234'])))
-    print('Cached object s["blah"] = {}'.format(str(s['blah'])))
+    print('Cached object s["1234"] = {}'.format(s['1234']))
+    print('Cached object s["blah"] = {}'.format(s['blah']))
     print("asdfrasdf" in s)
 
 #    print
