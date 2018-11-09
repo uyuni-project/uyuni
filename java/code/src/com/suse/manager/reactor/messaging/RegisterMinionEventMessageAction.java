@@ -351,8 +351,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             FormulaFactory.saveServerFormulaData(formulaValues.get(), minionId, minionFormula);
                             FormulaFactory.deleteServerFormulaData(oldId, minionFormula);
                         }
-                        FormulaFactory.saveServerFormulas(oldId, Collections.emptyList());
                     }
+                    FormulaFactory.saveServerFormulas(oldId, Collections.emptyList());
                 }
                 catch (IOException e) {
                     LOG.warn("Error when converting formulas from minionId " + oldId + "to minionId " + minionId);
