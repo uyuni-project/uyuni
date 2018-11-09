@@ -1,3 +1,4 @@
+- Add check if ssh-file permissions are correct (bsc#1114181)
 - When removing cobbler system record, lookup by mac address as well if lookup by id fails(bsc#1110361)
 - increase maximum number of threads and open files for taskomatic (bsc#1111966)
 - Changed Strings for MenuTree Items to remove redundancy (bsc#1019847)
