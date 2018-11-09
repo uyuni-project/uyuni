@@ -82,7 +82,7 @@ Requires:       jose4j
 Requires:       objectweb-asm
 Requires:       pam-modules
 Requires:       prometheus-client-java
-Requires:       salt-netapi-client >= 0.14.0
+Requires:       salt-netapi-client >= 0.15.0
 Requires:       snakeyaml
 Requires:       spark-core
 Requires:       spark-template-jade
@@ -109,10 +109,11 @@ BuildRequires:  statistics
 BuildRequires:  log4j
 # Spark and Salt integration
 BuildRequires:  httpcomponents-client
+BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  jade4j
 BuildRequires:  jose4j
 BuildRequires:  prometheus-client-java
-BuildRequires:  salt-netapi-client >= 0.14.0
+BuildRequires:  salt-netapi-client >= 0.15.0
 BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  velocity
@@ -917,6 +918,8 @@ fi
 %{jardir}/commons-lang3.jar
 %{jardir}/httpclient.jar
 %{jardir}/httpcore.jar
+%{jardir}/httpcore-nio.jar
+%{jardir}/httpasyncclient.jar
 %{jardir}/jade4j.jar
 %{jardir}/jose4j.jar
 %{jardir}/salt-netapi-client.jar
