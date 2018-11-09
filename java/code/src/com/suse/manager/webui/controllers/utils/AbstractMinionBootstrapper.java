@@ -33,6 +33,7 @@ import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -89,6 +90,21 @@ public abstract class AbstractMinionBootstrapper {
     }
 
     /**
+     * Check if salt is able to store ssh-key.
+     * The permissions get lost when a user manually changes the file.
+     * @return boolean about salt having correct file permissions
+     */
+    private boolean hasCorrectSSHFilePermissions() {
+        File dotSSHDir = new File("/var/lib/salt/.ssh");
+        //Directory gets created the first time a bootstrap happens - its absence is fine.
+        if (!dotSSHDir.exists()) {
+            return true;
+        }
+        File knownHostsFile = new File("/var/lib/salt/.ssh/known_hosts");
+        return knownHostsFile.exists() && knownHostsFile.canRead() && knownHostsFile.canWrite();
+    }
+
+    /**
      * Common code for performing the bootstrap.
      * Override to adjust the behavior.
      *
@@ -101,6 +117,13 @@ public abstract class AbstractMinionBootstrapper {
         List<String> bootstrapMods = getBootstrapMods();
         String contactMethod = ContactMethodUtil.getContactMethod(
                 params.getFirstActivationKey(), defaultContactMethod);
+
+        if (!hasCorrectSSHFilePermissions()) {
+            String responseMessage = "Cannot read/write '/var/lib/salt/.ssh/known_hosts'. Please check permissions.";
+            LOG.error("Error during bootstrap: " + responseMessage);
+            return new BootstrapResult(false, Optional.of(contactMethod), responseMessage);
+        }
+
         try {
             Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
             return saltService.bootstrapMinion(params, bootstrapMods, pillarData)
