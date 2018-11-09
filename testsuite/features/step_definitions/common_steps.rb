@@ -393,7 +393,7 @@ When(/^I select the addon "(.*?)"$/) do |addon|
 end
 
 And(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
-  xpath = "//span[contains(text(), '#{product}')]/../span[contains(text(), '#{recommended}')]"
+  xpath = "//span[text()[normalize-space(.) = '#{product}'] and ./span/text() = '#{recommended}']"
   raise unless find(:xpath, xpath)
 end
 
