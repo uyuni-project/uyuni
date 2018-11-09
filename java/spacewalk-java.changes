@@ -1,3 +1,5 @@
+- Add check if ssh-file permissions are correct (bsc#1114181)
+
 -------------------------------------------------------------------
 Thu Nov 01 10:58:56 CET 2018 - jgonzalez@suse.com
 
