@@ -65,9 +65,9 @@ def main():
     gen_template(SETTINGS_TEMPLATE, answers, TEMP_SETTINGS)
     gen_template(MODULES_TEMPLATE, answers, TEMP_MODULES)
     copy(TEMP_SETTINGS, SETTINGS)
-    chmod(SETTINGS, 0644)
+    chmod(SETTINGS, 0o644)
     copy(TEMP_MODULES, MODULES)
-    chmod(MODULES, 0644)
+    chmod(MODULES, 0o644)
     m = re.compile(r"^cobbler\.host\s*=\s*", re.MULTILINE)
 
     conf_lines = open(rhnConfig._CONFIG_FILE).read()

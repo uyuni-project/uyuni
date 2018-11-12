@@ -31,7 +31,7 @@ def _unique(seq):
     useq = {}
     for elem in seq:
         useq[elem] = 1
-    return useq.keys()
+    return list(useq.keys())
 
 
 def _abspath(path):
@@ -86,7 +86,7 @@ def paths2mountpoints(paths):
     for path in paths:
         mpoint = _mountpoint(path)
         pathsd[path] = mpoint
-        if not mpointsd.has_key(mpoint):
+        if mpoint not in mpointsd:
             mpointsd[mpoint] = []
         mpointsd[mpoint].append(path)
     return pathsd, mpointsd
@@ -104,7 +104,7 @@ def paths2freespace(paths):
         f_bavail = _statvfs[statvfs.F_BAVAIL] # non-super user space
         f_bsize = _statvfs[statvfs.F_BSIZE] # respective blocksize
         # build dict indexed by path
-        pathsd[path] = long(f_bavail)*f_bsize
+        pathsd[path] = int(f_bavail)*f_bsize
     return pathsd
 
 
@@ -128,13 +128,13 @@ def getNeeds(needsDict=None):
     """
 
     needsDict = needsDict or DEFAULT_NEEDS
-    mp2pMap = paths2mountpoints(needsDict.keys())[1]
-    mp2fsMap = paths2freespace(mp2pMap.keys())
+    mp2pMap = paths2mountpoints(list(needsDict.keys()))[1]
+    mp2fsMap = paths2freespace(list(mp2pMap.keys()))
 
     unfulfilled = {}
     fulfilled = {}
 
-    for mountpoint, paths in mp2pMap.items():
+    for mountpoint, paths in list(mp2pMap.items()):
         totalNeeds = 0
         for path in paths:
             totalNeeds = totalNeeds + needsDict[path]
@@ -169,7 +169,7 @@ def main(needsDict=None):
     if unfulfilled:
         sys.stderr.write("ERROR: diskspace does not meet minimum system "
                          "requirements:\n")
-        items = unfulfilled.items()
+        items = list(unfulfilled.items())
         lenItems = len(items)
         for mountpoint, data in items:
             paths, totalNeeds, freespace = data
