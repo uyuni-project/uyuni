@@ -35,11 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       %{pythonX}
 Requires:       spacewalk-branding
-%if 0%{?build_py3}
-Requires:       python3-six
-%else
-Requires:       python-six
-%endif
+Requires:       %{pythonX}-spacewalk-usix
 BuildRequires:  /usr/bin/docbook2man
 
 %description
