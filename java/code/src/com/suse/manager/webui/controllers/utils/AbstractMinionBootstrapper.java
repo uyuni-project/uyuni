@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Optional.of;
+import static com.suse.manager.webui.services.SaltConstants.SALT_SSH_DIR_PATH;
 
 /**
  * Base for bootstrapping systems using salt-ssh.
@@ -95,12 +96,12 @@ public abstract class AbstractMinionBootstrapper {
      * @return boolean about salt having correct file permissions
      */
     private boolean hasCorrectSSHFilePermissions() {
-        File dotSSHDir = new File("/var/lib/salt/.ssh");
+        File dotSSHDir = new File(SALT_SSH_DIR_PATH);
         //Directory gets created the first time a bootstrap happens - its absence is fine.
         if (!dotSSHDir.exists()) {
             return true;
         }
-        File knownHostsFile = new File("/var/lib/salt/.ssh/known_hosts");
+        File knownHostsFile = new File(SALT_SSH_DIR_PATH + "/known_hosts");
         return knownHostsFile.exists() && knownHostsFile.canRead() && knownHostsFile.canWrite();
     }
 
@@ -119,7 +120,8 @@ public abstract class AbstractMinionBootstrapper {
                 params.getFirstActivationKey(), defaultContactMethod);
 
         if (!hasCorrectSSHFilePermissions()) {
-            String responseMessage = "Cannot read/write '/var/lib/salt/.ssh/known_hosts'. Please check permissions.";
+            String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
+                                     "Please check permissions.";
             LOG.error("Error during bootstrap: " + responseMessage);
             return new BootstrapResult(false, Optional.of(contactMethod), responseMessage);
         }
