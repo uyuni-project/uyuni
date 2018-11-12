@@ -17,6 +17,12 @@
 #
 
 
+%if 0%{?suse_version} > 1320
+# SLE15 builds on Python 3
+%global build_py3   1
+%endif
+%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
+
 %if 0%{?suse_version}
 %define apache_user wwwrun
 %define apache_group www
@@ -72,7 +78,7 @@ Requires:       policycoreutils
 # to have /etc/salt/master.d
 Requires(pre):  salt-master
 # for salt to be generated into the thin
-Requires:       python-certifi
+Requires:       %{pythonX}-certifi
 BuildRequires:  perl-libwww-perl
 %else
 Requires:       %{sbinpath}/restorecon
@@ -83,7 +89,7 @@ Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
 %if 0%{?suse_version}
-Requires:       python-PyYAML
+Requires:       %{pythonX}-PyYAML
 %else
 %if 0%{?fedora} >= 22
 Recommends:     cobbler20
@@ -110,6 +116,19 @@ setup tasks, re-installation, and upgrades.
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
 make %{?_smp_mflags}
+
+# Fixing shebang for Python 3
+%if 0%{?build_py3}
+for i in $(find . -type f);
+do
+    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+done
+%endif
+
+# Fix python executable in Perl code
+%if 0%{?build_py3}
+sed -i "s/'python'/'python3'/g" lib/Spacewalk/Setup.pm
+%endif
 
 %install
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
