@@ -13,6 +13,7 @@
 import sys
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnChannel import subscribe_channels, unsubscribe_channels
 from spacewalk.server.rhnLib import InvalidAction, ShadowAction
@@ -113,9 +114,9 @@ def upgrade(serverId, actionId, dry_run=0):
             # channel is already subscribed, ignore it
             pass
         else:
-            raise InvalidAction(str(f)).with_traceback(sys.exc_info()[2])
+            raise_with_tb(InvalidAction(str(f)), sys.exc_info()[2])
     except Exception as e:
-        raise InvalidAction(str(e)).with_traceback(sys.exc_info()[2])
+        raise_with_tb(InvalidAction(str(e)), sys.exc_info()[2])
 
     rhnSQL.commit()
 

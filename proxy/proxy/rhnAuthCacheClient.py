@@ -33,6 +33,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
+from spacewalk.common.usix import raise_with_tb
 from rhnAuthProtocol import CommunicationError, send, recv
 
 #
@@ -98,9 +99,9 @@ class Shelf:
               Error connecting to the the authentication cache daemon.
               Make sure it is started on %s""" % str(self.serverAddr))
             # FIXME: PROBLEM: this rhnFault will never reach the client
-            raise rhnFault(1000,
-                           _("Spacewalk Proxy error (issues connecting to auth cache). "
-                             "Please contact your system administrator")).with_traceback(sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(1000, _("Spacewalk Proxy error (issues connecting to auth cache). "
+                                 "Please contact your system administrator")), sys.exc_info()[2])
 
         wfile = sock.makefile("w")
 
@@ -120,9 +121,9 @@ class Shelf:
                      Error sending to the authentication cache daemon.
                      Make sure the authentication cache daemon is started""")
             # FIXME: PROBLEM: this rhnFault will never reach the client
-            raise rhnFault(1000,
-                           _("Spacewalk Proxy error (issues connecting to auth cache). "
-                             "Please contact your system administrator")).with_traceback(sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(1000, _("Spacewalk Proxy error (issues connecting to auth cache). "
+                                 "Please contact your system administrator")), sys.exc_info()[2])
 
         wfile.close()
 
@@ -138,9 +139,9 @@ class Shelf:
                       Error receiving from the authentication cache daemon.
                       Make sure the authentication cache daemon is started""")
             # FIXME: PROBLEM: this rhnFault will never reach the client
-            raise rhnFault(1000,
-                           _("Spacewalk Proxy error (issues communicating to auth cache). "
-                             "Please contact your system administrator")).with_traceback(sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(1000, _("Spacewalk Proxy error (issues communicating to auth cache). "
+                                 "Please contact your system administrator")), sys.exc_info()[2])
         except Fault as e:
             rfile.close()
             sock.close()
@@ -169,7 +170,7 @@ class Shelf:
             import new
             _dict = {'args': args}
             # pylint: disable=bad-option-value,nonstandard-exception
-            raise new.instance(getattr(__builtins__, name), _dict).with_traceback(sys.exc_info()[2])
+            raise_with_tb(new.instance(getattr(__builtins__, name), _dict), sys.exc_info()[2])
 
         return params[0]
 

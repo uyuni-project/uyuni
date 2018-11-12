@@ -35,9 +35,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires(pre):  cobbler
 %if 0%{?build_py3}
 Requires:       python3
+Requires:       python3-six
 BuildRequires:  python3-devel
 %else
 Requires:       python
+Requires:       python-six
 BuildRequires:  python-devel
 %endif
 
