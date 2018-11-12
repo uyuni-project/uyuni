@@ -29,6 +29,8 @@ public class SaltConstants {
 
     public static final String SALT_FILE_GENERATION_TEMP_PATH = "/srv/susemanager/tmp";
 
+    public static final String SALT_SSH_DIR_PATH = "/var/lib/salt/.ssh";
+
     public static final String PILLAR_DATA_FILE_PREFIX = "pillar";
 
     public static final String PILLAR_IMAGE_DATA_FILE_PREFIX = "image";
