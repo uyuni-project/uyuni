@@ -1,7 +1,7 @@
 const React = require('react');
 
 type Props = {
-  HeadingLevel: string,
+  headingLevel: string,
   title?: string,
   icon?: string,
   header?: string,
