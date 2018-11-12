@@ -38,6 +38,7 @@ Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  %{pythonX}
 BuildArch:      noarch
+Requires:       %{pythonX}-spacewalk-usix
 Requires:       httpd
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python2-pylint

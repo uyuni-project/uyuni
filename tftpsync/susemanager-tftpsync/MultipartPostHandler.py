@@ -46,7 +46,7 @@ except ImportError:
     from urllib2 import build_opener, HTTPHandler, BaseHandler
 
 import mimetools, mimetypes
-import os, stat
+import os, six, stat
 
 class Callable:
     def __init__(self, anycallable):
@@ -72,7 +72,8 @@ class MultipartPostHandler(BaseHandler):
                          v_vars.append((key, value))
             except TypeError:
                 systype, value, traceback = sys.exc_info()
-                raise TypeError("not a valid non-string sequence or mapping object").with_traceback(traceback)
+                six.reraise(TypeError, "not a valid non-string sequence or mapping object", traceback)
+
 
             if len(v_files) == 0:
                 data = urlencode(v_vars, doseq)
