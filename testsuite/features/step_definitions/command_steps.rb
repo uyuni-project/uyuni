@@ -3,6 +3,7 @@
 
 require 'xmlrpc/client'
 require 'timeout'
+require 'nokogiri'
 
 Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
   node = get_target(host)
@@ -767,6 +768,35 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} --network network=default --graphics vnc --import --hvm --noautoconsole --noreboot")
 end
 
+When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
+  node = get_target(host)
+
+  networks = {
+    "default" => { "bridge" => "virbr0", "subnet" => 122 },
+    "test-net0" => { "bridge" => "virbr1", "subnet" => 124 }
+  }
+
+  net = networks[net_name]
+
+  netdef = "<network>" \
+           "  <name>#{net_name}</name>"\
+           "  <forward mode='nat'/>"\
+           "  <bridge name='#{net['bridge']}' stp='on' delay='0'/>"\
+           "  <ip address='192.168.#{net['subnet']}.1' netmask='255.255.255.0'>"\
+           "    <dhcp>"\
+           "      <range start='192.168.#{net['subnet']}.2' end='192.168.#{net['subnet']}.254'/>"\
+           "    </dhcp>"\
+           "  </ip>"\
+           "</network>"
+
+  # Some networks like the default one may already be defined.
+  _output, code = node.run("virsh net-dumpxml #{net_name}", false)
+  node.run("echo -e \"#{netdef}\" >/tmp/#{net_name}.xml && virsh net-define /tmp/#{net_name}.xml") unless code.zero?
+
+  # Ensure the network is started
+  node.run("virsh net-start #{net_name}", false)
+end
+
 Then(/^I should see "([^"]*)" virtual machine (shut off|running|paused) on "([^"]*)"$/) do |vm, state, host|
   node = get_target(host)
   begin
@@ -842,6 +872,36 @@ Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics devic
     end
   rescue Timeout::Error
     raise "#{vm} virtual machine on #{host} never got #{type} graphics device"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*) NIC using "([^"]*)" network$/) do |vm, host, count, net|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        break if Nokogiri::XML(output).xpath("//interface/source[@network='#{net}']").size == count.to_i
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got #{count} network interface using #{net}"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a NIC with ([0-9a-zA-Z:]*) MAC address$/) do |vm, host, mac|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        break if output.include? "<mac address='#{mac}'/>"
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got a network interface with #{mac} MAC address"
   end
 end
 

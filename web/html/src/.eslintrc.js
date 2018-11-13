@@ -29,6 +29,7 @@ module.exports = {
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
       }],
+      "no-underscore-dangle": "off",
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "react/destructuring-assignment": "off",
       "jsx-a11y/label-has-for": "off"

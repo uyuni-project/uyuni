@@ -33,7 +33,9 @@ Feature: Be able to manage XEN virtual machines via the GUI
 @virthost_xen
   Scenario: Prepare a test virtual machine and list it
     Given I am on the "Virtualization" page of this "xen-server"
-    When I create "test-vm" virtual machine on "xen-server"
+    When I create default virtual network on "xen-server"
+    And I create test-net0 virtual network on "xen-server"
+    And I create "test-vm" virtual machine on "xen-server"
     And I wait until I see "test-vm" text
 
 @virthost_xen
@@ -76,10 +78,33 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I enter "1024" as "memory"
     And I enter "2" as "vcpu"
     And I select "Spice" from "graphicsType"
+    And I select "test-net0" from "network0_source"
+    And I enter "02:34:56:78:9a:bc" as "network0_mac"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "xen-server" should have 1024MB memory and 2 vcpus
     And "test-vm" virtual machine on "xen-server" should have spice graphics device
+    And "test-vm" virtual machine on "kvm-server" should have 1 NIC using "test-net0" network
+    And "test-vm" virtual machine on "kvm-server" should have a NIC with 02:34:56:78:9a:bc MAC address
+
+@virthost_xen
+  Scenario: Add a network interface to a virtual machine
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I click on "Edit" in row "test-vm"
+    And I click on "add_nic"
+    And I select "test-net0" from "network1_source"
+    And I click on "Update"
+    Then I should see a "Hosted Virtual Systems" text
+    And "test-vm" virtual machine on "xen-server" should have 2 NIC using "test-net0" network
+
+@virthost_xen
+  Scenario: Delete a network interface to a virtual machine
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I click on "Edit" in row "test-vm"
+    And I click on "remove_nic1"
+    And I click on "Update"
+    Then I should see a "Hosted Virtual Systems" text
+    And "test-vm" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
 
 @virthost_xen
   Scenario: Delete a virtual machine
@@ -106,5 +131,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I run "rm /etc/salt/pki/minion/minion_master.pub" on "xen-server" without error control
     # In case the delete VM test failed we need to clean up ourselves.
     And I run "virsh undefine --remove-all-storage test-vm" on "xen-server" without error control
+    And I run "virsh net-destroy test-net0" on "xen-server" without error control
+    And I run "virsh net-undefine test-net0" on "xen-server" without error control
     # Remove the virtpoller cache to avoid problems
     And I run "rm /var/cache/virt_state.cache" on "xen-server" without error control

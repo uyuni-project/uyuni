@@ -663,6 +663,8 @@ To make sure the virtual machine is completely booted:
 ```cucumber
 Then "test-vm" virtual machine on "virt-server" should have 1024MB memory and 2 vcpus
 Then "test-vm" virtual machine on "virt-server" should have spice graphics device
+Then "test-vm" virtual machine on "virt-server" should have 2 NIC using "default" network
+Then "test-vm" virtual machine on "virt-server" should have a NIC with 02:34:56:78:9a:bc MAC address
 ```
 
 <a name="c" />

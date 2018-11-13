@@ -9,6 +9,7 @@ const { Select } = require('components/input/Select');
 const Validation = require('components/validation');
 const MessagesUtils = require('components/messages').Utils;
 const { Loading } = require('components/loading/loading');
+const { guestNicsPanel } = require('./properties/guest-nics-panel');
 const { GuestPropertiesForm } = require('./properties/guest-properties-form');
 const { GuestPropertiesTraditional } = require('./properties/guest-properties-traditional');
 const { VirtualizationDomainsCapsApi } = require('./virtualization-domains-caps-api');
@@ -84,7 +85,7 @@ class GuestProperties extends React.Component<Props> {
                         actionChains={this.props.actionChains}
                       >
                         {
-                          ({ model }) => {
+                          ({ model, changeModel }) => {
                             const vmTypes = domainsCaps.map(cap => cap.domain)
                               .filter((vmType, idx, array) => array.indexOf(vmType) === idx);
                             const vmType = model.vmType
@@ -114,6 +115,7 @@ class GuestProperties extends React.Component<Props> {
                                   validators={[Validation.isInt({ gt: 0 })]}
                                 />
                               </Panel>,
+                              guestNicsPanel(model, changeModel, networks),
                               <Panel key="graphics" title={t('Graphics')} headingLevel="h2">
                                 <Select
                                   labelClass="col-md-3"
