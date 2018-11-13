@@ -134,7 +134,7 @@ def getNeeds(needsDict=None):
     unfulfilled = {}
     fulfilled = {}
 
-    for mountpoint, paths in list(mp2pMap.items()):
+    for mountpoint, paths in mp2pMap.items():
         totalNeeds = 0
         for path in paths:
             totalNeeds = totalNeeds + needsDict[path]
@@ -169,7 +169,7 @@ def main(needsDict=None):
     if unfulfilled:
         sys.stderr.write("ERROR: diskspace does not meet minimum system "
                          "requirements:\n")
-        items = list(unfulfilled.items())
+        items = unfulfilled.items()
         lenItems = len(items)
         for mountpoint, data in items:
             paths, totalNeeds, freespace = data
