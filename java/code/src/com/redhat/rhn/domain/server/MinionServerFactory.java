@@ -255,7 +255,7 @@ public class MinionServerFactory extends HibernateFactory {
 
         query.where(hwAddrPredicate);
 
-        return getSession().createQuery(query).list().stream()
+        return getSession().createQuery(query).stream()
                 .filter(s -> s.hasEntitlement(EntitlementManager.BOOTSTRAP))
                 .reduce((s1, s2) -> { throw new IllegalStateException("Multiple matching systems found"); });
     }
@@ -273,7 +273,7 @@ public class MinionServerFactory extends HibernateFactory {
         Root<MinionServer> root = query.from(MinionServer.class);
         query.where(builder.equal(root.get("hostname"), hostname));
 
-        return getSession().createQuery(query).list().stream()
+        return getSession().createQuery(query).stream()
                 .filter(s -> s.hasEntitlement(EntitlementManager.BOOTSTRAP))
                 .reduce((s1, s2) -> { throw new IllegalStateException("Multiple matching systems found"); });
     }
