@@ -1405,7 +1405,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfile() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        MinionServer minion = SystemManager.createSystemProfile(user, "test system", data);
+        MinionServer minion = SystemManager.getOrCreateEmptySystemProfile(user, "test system", data);
         Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
 
         // flush & refresh iface because generated="insert"
@@ -1439,7 +1439,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testListSystemProfile() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        MinionServer emptyProfileMinion = SystemManager.createSystemProfile(user, "test system",
+        MinionServer emptyProfileMinion = SystemManager.getOrCreateEmptySystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
         HibernateFactory.getSession().evict(emptyProfileMinion);
 
@@ -1466,7 +1466,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testListSystemProfileTradSystem() {
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        MinionServer emptyProfileMinion = SystemManager.createSystemProfile(user, "test system",
+        MinionServer emptyProfileMinion = SystemManager.getOrCreateEmptySystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
         HibernateFactory.getSession().createNativeQuery("DELETE FROM suseMinionInfo").executeUpdate();
         HibernateFactory.getSession().evict(emptyProfileMinion);
@@ -1483,7 +1483,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         UserTestUtils.addUserRole(foreignUser, RoleFactory.ORG_ADMIN);
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        SystemManager.createSystemProfile(user, "test system", singletonMap("hwAddress", hwAddr));
+        SystemManager.getOrCreateEmptySystemProfile(user, "test system", singletonMap("hwAddress", hwAddr));
 
         assertEquals(1, SystemManager.listEmptySystemProfiles(user, null).getTotalSize());
         assertEquals(0, SystemManager.listEmptySystemProfiles(foreignUser, null).getTotalSize());
@@ -1496,13 +1496,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfileExistingHwAddress() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        SystemManager.createSystemProfile(user, "test system", data);
-        try {
-            SystemManager.createSystemProfile(user, "test system 2", data);
-            fail("System creation should have failed!");
-        } catch (IllegalStateException e) {
-            // no-op
-        }
+        MinionServer profile1 = SystemManager.getOrCreateEmptySystemProfile(user, "test system", data);
+        MinionServer profile2 = SystemManager.getOrCreateEmptySystemProfile(user, "test system 2", data);
+        assertEquals(profile1, profile2);
     }
 
     /**
@@ -1614,6 +1610,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> data = new HashMap<>();
         hostName.ifPresent(n -> data.put("hostname", n));
         hwAddr.ifPresent(a -> data.put("hwAddress", a));
-        return SystemManager.createSystemProfile(user, hostName.orElse("test system"), data);
+        return SystemManager.getOrCreateEmptySystemProfile(user, hostName.orElse("test system"), data);
     }
 }

@@ -679,12 +679,13 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Returns a list of empty system profiles visible to user (created by createSystemProfile).
+     * Returns a list of empty system profiles visible to user (created by getOrCreateEmptySystemProfile).
      *
      * @param loggedInUser - the user
      * @return array of empty system profiles
      *
-     * @xmlrpc.doc Returns a list of empty system profiles visible to user (created by the createSystemProfile method).
+     * @xmlrpc.doc Returns a list of empty system profiles visible to user
+     *     (created by the getOrCreateEmptySystemProfile method).
      * @xmlrpc.param #session_key()
      *
      * @xmlrpc.returntype
@@ -5939,7 +5940,7 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Creates a system record in database for a system that is not (yet) registered.
+     * Gets or creates a system record in database for a system that is not (yet) registered.
      * Either "hwAddress" or "hostname" prop must be specified in the "data" struct.
      * @param loggedInUser the currently logged in user
      * @param systemName server name
@@ -5956,16 +5957,15 @@ public class SystemHandler extends BaseHandler {
      *      #prop_desc("string", "hostname", "The hostname of the profile")
      *  #struct_end()
      * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype int system id - The id of the system
      */
-    public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
+    public int getOrCreateSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
         try {
-            SystemManager.createSystemProfile(loggedInUser, systemName, data);
+            return SystemManager.getOrCreateEmptySystemProfile(loggedInUser, systemName, data).getId().intValue();
         }
         catch (IllegalStateException | IllegalArgumentException e) {
             throw new InvalidParameterException("Can't create system", e);
         }
-
-        return 1;
     }
 
     /**

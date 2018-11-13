@@ -57,13 +57,11 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -1117,7 +1115,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ManagedServerGroup alreadyAssignedGroup = ServerGroupFactory.create("HWTYPE:idontmatch",
                 "HW group - assigned to empty profile beforehand", user.getOrg());
 
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+        MinionServer emptyMinion = SystemManager.getOrCreateEmptySystemProfile(user, "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
         ServerFactory.addServerToGroup(emptyMinion, alreadyAssignedGroup);
 
@@ -1240,7 +1238,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testEmptyProfileRegistration() throws Exception {
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+        MinionServer emptyMinion = SystemManager.getOrCreateEmptySystemProfile(user, "empty profile",
                singletonMap("hwAddress", "00:11:22:33:44:55"));
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
@@ -1298,7 +1296,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         final String hwAddress = "00:11:22:33:44:55";
 
         // assign some formula
-        MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
+        MinionServer emptyMinion = SystemManager.getOrCreateEmptySystemProfile(user, "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
         String minionId = "_" + hwAddress;
         FormulaFactory.saveServerFormulas(minionId, Collections.singletonList(testFormula));

@@ -405,7 +405,8 @@ public class SystemManager extends BaseManager {
      * if the format of the hardware address is invalid
      * @return the created system
      */
-    public static MinionServer createSystemProfile(User creator, String systemName, Map<String, Object> data) {
+    public static MinionServer getOrCreateEmptySystemProfile(User creator, String systemName,
+            Map<String, Object> data) {
         Optional<String> hwAddress = ofNullable((String) data.get("hwAddress"));
         Optional<String> hostname = ofNullable((String) data.get("hostname"));
 
@@ -415,9 +416,9 @@ public class SystemManager extends BaseManager {
         }
 
         Set<String> hwAddrs = hwAddress.map(a -> singleton(a)).orElse(emptySet());
-        if (findMatchingEmptyProfile(hostname, hwAddrs).isPresent()) {
-            throw new IllegalStateException("System(s) with hostname '" + hostname + "' or HW address '" +
-                    hwAddress + "' already exists.");
+        Optional<MinionServer> matchingEmptyProfile = findMatchingEmptyProfile(hostname, hwAddrs);
+        if (matchingEmptyProfile.isPresent()) {
+            return matchingEmptyProfile.get();
         }
 
         // craft unique id based on given data
@@ -499,7 +500,7 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Lists empty system profiles (created by createSystemProfile).
+     * Lists empty system profiles (created by getOrCreateEmptySystemProfile).
      *
      * @param user user viewing the systems
      * @param pc page control

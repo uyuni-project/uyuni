@@ -148,7 +148,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
@@ -2615,7 +2614,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
      */
     public void testCreateSystemProfileNoHwAddress() throws Exception {
         try {
-            getMockedHandler().createSystemProfile(admin, "test system", Collections.emptyMap());
+            getMockedHandler().getOrCreateSystemProfile(admin, "test system", Collections.emptyMap());
             fail("An exception should have been thrown.");
         } catch (InvalidParameterException e) {
             // no-op
@@ -2628,7 +2627,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
      */
     public void testCreateSystemProfile() throws Exception {
         String hwAddress = "aa:bb:cc:dd:ee:00";
-        int result = getMockedHandler().createSystemProfile(admin, "test system",
+        int result = getMockedHandler().getOrCreateSystemProfile(admin, "test system",
                 Collections.singletonMap("hwAddress", hwAddress));
         List<NetworkInterface> nics = NetworkInterfaceFactory
                 .lookupNetworkInterfacesByHwAddress(hwAddress)
