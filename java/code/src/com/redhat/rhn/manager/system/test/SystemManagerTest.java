@@ -1509,7 +1509,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * Tests finding an empty profile by hostname and HW addresses with "empty" arguments.
      */
     public void testFindByHostnameAndHwAddrsEmptyArgs() {
-        assertFalse(SystemManager.findMatchingEmptyProfile(empty(), emptySet()).isPresent());
+        assertTrue(SystemManager.findMatchingEmptyProfiles(empty(), emptySet()).isEmpty());
     }
 
     /**
@@ -1518,12 +1518,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testFindByHostnameNoHwAddrs() throws Exception {
         MinionServer minion = createEmptyProfile(of("myhost"), empty());
 
-        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(of("myhost"), emptySet());
-        assertEquals(minion, fromDb.get());
+        List<MinionServer> fromDb = SystemManager.findMatchingEmptyProfiles(of("myhost"), emptySet());
+        assertEquals(1, fromDb.size());
+        assertEquals(minion, fromDb.get(0));
 
         // minion with a HW address will also match
-        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(of("myhost"), singleton("11:22:33:44:55:66"));
-        assertEquals(minion, fromDb2.get());
+        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(of("myhost"), singleton("11:22:33:44:55:66"));
+        assertEquals(1, fromDb2.size());
+        assertEquals(minion, fromDb2.get(0));
     }
 
     /**
@@ -1533,12 +1535,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String hwAddr = "11:22:33:44:55:66";
         MinionServer minion = createEmptyProfile(empty(), of(hwAddr));
 
-        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(empty(), singleton(hwAddr));
-        assertEquals(minion, fromDb.get());
+        List<MinionServer> fromDb = SystemManager.findMatchingEmptyProfiles(empty(), singleton(hwAddr));
+        assertEquals(1, fromDb.size());
+        assertEquals(minion, fromDb.get(0));
 
         // minion with a hostname will also match
-        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(of("myhost"), singleton(hwAddr));
-        assertEquals(minion, fromDb2.get());
+        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(of("myhost"), singleton(hwAddr));
+        assertEquals(1, fromDb2.size());
+        assertEquals(minion, fromDb2.get(0));
     }
 
     /**
@@ -1549,23 +1553,27 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = createEmptyProfile(of("myhost"), of(hwAddr));
 
         // lookup by hostname should match
-        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(of("myhost"), emptySet());
-        assertEquals(minion, fromDb.get());
+        List<MinionServer> fromDb = SystemManager.findMatchingEmptyProfiles(of("myhost"), emptySet());
+        assertEquals(1, fromDb.size());
+        assertEquals(minion, fromDb.get(0));
 
         // lookup by HW addr should match
-        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(empty(), singleton(hwAddr));
-        assertEquals(minion, fromDb2.get());
+        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(empty(), singleton(hwAddr));
+        assertEquals(1, fromDb2.size());
+        assertEquals(minion, fromDb2.get(0));
 
         // lookup by hostname and HW addr should match
-        Optional<MinionServer> fromDb3 = SystemManager.findMatchingEmptyProfile(of("myhost"), singleton(hwAddr));
-        assertEquals(minion, fromDb3.get());
+        List<MinionServer> fromDb3 = SystemManager.findMatchingEmptyProfiles(of("myhost"), singleton(hwAddr));
+        assertEquals(1, fromDb3.size());
+        assertEquals(minion, fromDb3.get(0));
 
         // lookup by hostname and HW addrs should match
         Set<String> moreAddrs = new HashSet<>();
         moreAddrs.add(hwAddr);
         moreAddrs.add("11:22:33:44:55:77");
-        Optional<MinionServer> fromDb4 = SystemManager.findMatchingEmptyProfile(of("myhost"), moreAddrs);
-        assertEquals(minion, fromDb4.get());
+        List<MinionServer> fromDb4 = SystemManager.findMatchingEmptyProfiles(of("myhost"), moreAddrs);
+        assertEquals(1, fromDb4.size());
+        assertEquals(minion, fromDb4.get(0));
     }
 
     /**
@@ -1583,20 +1591,23 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ServerFactory.saveNetworkInterface(netInterface);
 
         // lookup by hostname should match
-        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(of("myhost"), emptySet());
-        assertEquals(minion, fromDb.get());
+        List<MinionServer> fromDb = SystemManager.findMatchingEmptyProfiles(of("myhost"), emptySet());
+        assertEquals(1, fromDb.size());
+        assertEquals(minion, fromDb.get(0));
 
         // lookup by multiple HW addrs should match
         Set<String> hwAddrs = new HashSet<>();
         hwAddrs.add(hwAddr);
         hwAddrs.add(hwAddr2);
-        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(empty(), hwAddrs);
-        assertEquals(minion, fromDb2.get());
+        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(empty(), hwAddrs);
+        assertEquals(1, fromDb2.size());
+        assertEquals(minion, fromDb2.get(0));
 
         // lookup by single HW addr should match
         String fstAddr = hwAddrs.iterator().next();
-        Optional<MinionServer> fromDb3 = SystemManager.findMatchingEmptyProfile(empty(), singleton(fstAddr));
-        assertEquals(minion, fromDb3.get());
+        List<MinionServer> fromDb3 = SystemManager.findMatchingEmptyProfiles(empty(), singleton(fstAddr));
+        assertEquals(1, fromDb3.size());
+        assertEquals(minion, fromDb3.get(0));
     }
 
     /**
@@ -1604,10 +1615,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     public void testFindByHostnameAndHwAddrsNoMatch() throws Exception {
         createEmptyProfile(of("myhost"), empty());
-        Optional<MinionServer> fromDb = SystemManager.findMatchingEmptyProfile(empty(), singleton("00:11:22:33:44:55"));
-        assertFalse(fromDb.isPresent());
-        Optional<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfile(of("otherhost"), emptySet());
-        assertFalse(fromDb2.isPresent());
+        List<MinionServer> fromDb = SystemManager.findMatchingEmptyProfiles(empty(), singleton("00:11:22:33:44:55"));
+        assertTrue(fromDb.isEmpty());
+        List<MinionServer> fromDb2 = SystemManager.findMatchingEmptyProfiles(of("otherhost"), emptySet());
+        assertTrue(fromDb2.isEmpty());
     }
 
     private MinionServer createEmptyProfile(Optional<String> hostName, Optional<String> hwAddr) throws Exception {
