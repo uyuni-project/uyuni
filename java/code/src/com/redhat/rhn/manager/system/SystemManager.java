@@ -444,7 +444,7 @@ public class SystemManager extends BaseManager {
         server.setSecret(RandomStringUtils.randomAlphanumeric(64));
         server.setAutoUpdate("N");
         server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
-        server.setLastBoot(new Long(0));
+        server.setLastBoot(System.currentTimeMillis() / 1000);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         server.updateServerInfo();
         ServerFactory.save(server);
