@@ -61,9 +61,9 @@ mapped as well:
 """
 
 
+from __future__ import print_function
 import os
 import sys
-import string
 import tempfile
 
 DEFAULT_CLIENT_CONFIG_OVERRIDES = 'client-config-overrides.txt'
@@ -83,7 +83,7 @@ def _parseConfigLine(line):
     The '\n' is always stripped from the value.
     """
 
-    kv = line.split('='.encode('utf8'))
+    kv = line.decode('utf8').split('=')
     if len(kv) < 2:
         # not a setting
         return None
@@ -92,14 +92,13 @@ def _parseConfigLine(line):
         # '=' is part of the value, need to rejoin it.
         kv = [kv[0], '='.join(kv[1:])]
 
-    if kv[0].find('[comment]'.encode('utf8')) > 0:
+    if kv[0].find('[comment]') > 0:
         # comment; not a setting
         return None
 
     # it's a setting, trim the '\n' and return the (key, value) pair.
-    kv[0] = string.strip(kv[0])
-    if kv[1][-1] == '\n':
-        kv[1] = kv[1][:-1]
+    kv[0] = kv[0].strip()
+    kv[1] = kv[1].strip()
     return tuple(kv)
 
 def readConfigFile(configFile):
@@ -137,7 +136,7 @@ def mapNewSettings(configFile, dnew):
             fo.write(line)
         else:
             # it's a setting, populate from the dictionary
-            if dnew.has_key(kv[0]):
+            if kv[0] in dnew:
                 if dnew[kv[0]] != kv[1]:
                     fo.write(('%s=%s\n' % (kv[0], dnew[kv[0]])).encode('utf8'))
                     changedYN = 1
@@ -153,7 +152,7 @@ def mapNewSettings(configFile, dnew):
         fout = open(configFile, 'wb')
         fo.seek(0)
         fout.write(fo.read())
-        print '*', configFile, 'written'
+        print('*', configFile, 'written')
 
 
 def parseCommandline():
@@ -164,7 +163,7 @@ def parseCommandline():
 
     # USAGE & HELP!
     if '--usage' in sys.argv or '-h' in sys.argv or '--help' in sys.argv:
-        print """\
+        print("""\
 usage: python %s CONFIG_FILENAME NEW_MAPPINGS [options]
 arguments:
   CONFIG_FILENAME       config file to alter
@@ -179,7 +178,7 @@ examples:
   python %s %s %s
 """ % (sys.argv[0],
        sys.argv[0], RHN_REGISTER, DEFAULT_CLIENT_CONFIG_OVERRIDES,
-       sys.argv[0], UP2DATE, DEFAULT_CLIENT_CONFIG_OVERRIDES)
+       sys.argv[0], UP2DATE, DEFAULT_CLIENT_CONFIG_OVERRIDES))
 
         sys.exit(0)
 
