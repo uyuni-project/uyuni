@@ -1,3 +1,5 @@
+- Fix handling of CVEs including multiple patches in CVE audit (bsc#1111963)
+
 -------------------------------------------------------------------
 Wed Nov 21 10:14:33 CET 2018 - jgonzalez@suse.com
 
