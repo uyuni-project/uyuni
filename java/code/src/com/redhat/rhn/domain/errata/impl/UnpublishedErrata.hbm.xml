@@ -93,7 +93,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
     <sql-query name="UnpublishedErrata.listAvailableToOrgByIds">
         <![CDATA[SELECT E.*, 0 as clazz_
-                 FROM rhnErrataTmp as E
+                 FROM rhnErrataTmp E
                  WHERE E.id in (:eids)
                      AND (E.org_id = :orgId
                           OR EXISTS (SELECT 1

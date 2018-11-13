@@ -247,7 +247,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <sql-query name="PublishedErrata.listAvailableToOrgByIds">
         <![CDATA[SELECT E.*, 0 as clazz_
-                 FROM rhnErrata as E
+                 FROM rhnErrata E
                  WHERE E.id in (:eids)
                      AND (E.org_id = :orgId
                           OR EXISTS (SELECT 1
