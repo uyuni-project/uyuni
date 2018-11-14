@@ -34,6 +34,8 @@ import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -92,17 +94,35 @@ public abstract class AbstractMinionBootstrapper {
 
     /**
      * Check if salt is able to store ssh-key.
-     * The permissions get lost when a user manually changes the file.
-     * @return boolean about salt having correct file permissions
+     * The ownership gets lost when a user manually changes the file.
+     * @return boolean about salt having correct file ownership
      */
-    private boolean hasCorrectSSHFilePermissions() {
+    private boolean hasCorrectSSHFileOwnership() {
         File dotSSHDir = new File(SALT_SSH_DIR_PATH);
         //Directory gets created the first time a bootstrap happens - its absence is fine.
         if (!dotSSHDir.exists()) {
             return true;
         }
+
         File knownHostsFile = new File(SALT_SSH_DIR_PATH + "/known_hosts");
-        return knownHostsFile.exists() && knownHostsFile.canRead() && knownHostsFile.canWrite();
+        try {
+            Process prc = Runtime.getRuntime().exec("sudo /usr/bin/ls -la " + knownHostsFile.getPath());
+            InputStream inStream = prc.getInputStream();
+            StringBuilder sb = new StringBuilder();
+            int character;
+            while ((character = inStream.read()) != -1) {
+                sb.append((char) character);
+            }
+            String commandOutput = sb.toString();
+
+            boolean ownerCanReadWrite  = ("rw").equals(commandOutput.substring(1, 3));
+            boolean userAndGroupSet    = commandOutput.contains("salt salt");
+
+            return userAndGroupSet && ownerCanReadWrite;
+        }
+        catch (IOException | StringIndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
     /**
@@ -119,7 +139,7 @@ public abstract class AbstractMinionBootstrapper {
         String contactMethod = ContactMethodUtil.getContactMethod(
                 params.getFirstActivationKey(), defaultContactMethod);
 
-        if (!hasCorrectSSHFilePermissions()) {
+        if (!hasCorrectSSHFileOwnership()) {
             String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
                                      "Please check permissions.";
             LOG.error("Error during bootstrap: " + responseMessage);
