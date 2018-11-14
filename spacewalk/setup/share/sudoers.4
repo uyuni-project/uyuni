@@ -1,0 +1,5 @@
+^([ \t]*#.*\n)*[ \t]*((apache|tomcat|wwwrun).+known_hosts[ \t]*\n)+
+# These two commands allow tomcat and apache to check permissions of
+# the minion bootstrap ssh-known_hosts file
+apache  ALL=(root)      NOPASSWD: /usr/bin/ls -la /var/lib/salt/.ssh/known_hosts
+tomcat  ALL=(root)      NOPASSWD: /usr/bin/ls -la /var/lib/salt/.ssh/known_hosts

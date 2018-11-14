@@ -1,3 +1,5 @@
+- Add permissions for tomcat & apache to check bootstrap ssh file (bsc#1114181)
+
 -------------------------------------------------------------------
 Wed May 03 15:54:47 CEST 2017 - michele.bologna@suse.com
 
