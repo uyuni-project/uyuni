@@ -15,7 +15,7 @@ type Props = {
   host: Object,
   submitText: string,
   submit: Function,
-  initialModel: Object,
+  initialModel: ?Object,
   messages: Array<String>,
   localTime: string,
   timezone: string,

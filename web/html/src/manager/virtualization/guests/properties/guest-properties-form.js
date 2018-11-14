@@ -15,7 +15,7 @@ declare function t(msg: string, ...args: Array<any>): string;
 type Props = {
   submitText: string,
   submit: Function,
-  initialModel: Object,
+  initialModel: ?Object,
   validationChecks: Array<{ check: (model: Object) => boolean, message: Object }>,
   messages: Array<String>,
   children: Function,
