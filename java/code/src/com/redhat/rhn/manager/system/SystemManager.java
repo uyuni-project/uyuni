@@ -400,7 +400,7 @@ public class SystemManager extends BaseManager {
      * @param creator the creator user
      * @param systemName the system name
      * @param data the data of the new profile
-     * @throws java.lang.IllegalStateException when a system based on the input data already exists
+     * @throws SystemsExistException when a system based on the input data already exists
      * @throws java.lang.IllegalArgumentException when the input data contains insufficient information or
      * if the format of the hardware address is invalid
      * @return the created system
@@ -415,9 +415,9 @@ public class SystemManager extends BaseManager {
         }
 
         Set<String> hwAddrs = hwAddress.map(a -> singleton(a)).orElse(emptySet());
-        if (!findMatchingEmptyProfiles(hostname, hwAddrs).isEmpty()) {
-            throw new IllegalStateException("System(s) with hostname '" + hostname + "' or HW address '" +
-                    hwAddress + "' already exists.");
+        List<MinionServer> matchingProfiles = findMatchingEmptyProfiles(hostname, hwAddrs);
+        if (!matchingProfiles.isEmpty()) {
+            throw new SystemsExistException(matchingProfiles.stream().map(p -> p.getId()).collect(Collectors.toList()));
         }
 
         // craft unique id based on given data

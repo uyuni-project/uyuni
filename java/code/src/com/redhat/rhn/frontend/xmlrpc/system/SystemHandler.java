@@ -116,6 +116,7 @@ import com.redhat.rhn.frontend.xmlrpc.ProfileNoBaseChannelException;
 import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.SystemIdInstantiationException;
+import com.redhat.rhn.frontend.xmlrpc.SystemsExistFaultException;
 import com.redhat.rhn.frontend.xmlrpc.SystemsNotDeletedException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.UndefinedCustomFieldsException;
@@ -145,6 +146,7 @@ import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.system.DuplicateSystemGrouping;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.SystemsExistException;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
@@ -5540,15 +5542,20 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Creates a system record in database for a system that is not (yet) registered.
+     * Creates a system profile in database for a system that is not (yet) registered.
      * Either "hwAddress" or "hostname" prop must be specified in the "data" struct.
      * @param loggedInUser the currently logged in user
-     * @param systemName server name
+     * @param systemName system name
      * @param data the data about system
-     * @return int - 1 on success, exception thrown otherwise.
+     * @throws SystemsExistFaultException - when system(s) matching given data exists
+     * @throws java.lang.IllegalArgumentException when the input data contains insufficient information or
+     * if the format of the hardware address is invalid
+     * @return int - ID of the created system on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Creates a system record in database for a system that is not registered.
      * Either "hwAddress" or "hostname" prop must be specified in the "data" struct.
+     * If a system(s) matching given data exists, a SystemsExistFaultException is thrown which
+     * contains matching system IDs in its message.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "systemName", "System name")
      * @xmlrpc.param
@@ -5556,17 +5563,18 @@ public class SystemHandler extends BaseHandler {
      *      #prop_desc("string", "hwAddress", "The HW address of the network interface (MAC)")
      *      #prop_desc("string", "hostname", "The hostname of the profile")
      *  #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype int systemId - The id of the created system
      */
     public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
         try {
-            SystemManager.createSystemProfile(loggedInUser, systemName, data);
+            return SystemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
         }
-        catch (IllegalStateException | IllegalArgumentException e) {
+        catch (SystemsExistException e) {
+            throw new SystemsExistFaultException(e.getSystemIds());
+        }
+        catch (IllegalArgumentException e) {
             throw new InvalidParameterException("Can't create system", e);
         }
-
-        return 1;
     }
 
     /**
