@@ -129,8 +129,8 @@ class Form extends React.Component<Props, State> {
         const { model } = prevState;
         model[component.props.name] = component.props.value;
         return { model };
-      });
-      this.validate(component);
+      },
+      () => this.validate(component));
     }
   }
 
@@ -165,9 +165,8 @@ class Form extends React.Component<Props, State> {
         validate: this.validate.bind(this),
         onFormChange: this.onFieldChange.bind(this),
         invalidHint: child.props.invalidHint || (child.props.required && (`${child.props.label} is required.`)),
-        value: this.state.model[name] || '',
+        value: this.state.model[name] || child.props.defaultValue || '',
       };
-
 
       return React.cloneElement(child, Object.assign({}, child.props, newProps), child.props.children);
     }
