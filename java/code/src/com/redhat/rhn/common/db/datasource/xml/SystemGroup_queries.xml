@@ -82,22 +82,21 @@ ORDER BY UPPER(NAME)
     <elaborator name="most_severe_errata" />
 </mode>
 <query name="most_severe_errata" params="">
-    SELECT sgm.server_group_id as id,
-        CASE MAX(CASE E.advisory_type
+    SELECT sgm.server_group_id AS id,
+        CASE MAX(CASE e.advisory_type
             WHEN 'Security Advisory' THEN 3
             WHEN 'Bug Fix Advisory' THEN 2
             WHEN 'Product Enhancement Advisory' THEN 1 END)
             WHEN 3 THEN 'Security Advisory'
             WHEN 2 THEN 'Bug Fix Advisory'
             WHEN 1 THEN 'Product Enhancement Advisory'
-        END as MOST_SEVERE_ERRATA
-    FROM rhnErrata E
-        inner join rhnServerNeededCache SNPC on E.id = SNPC.errata_id
-        inner join rhnServerGroupMembers SGM on SGM.server_id = SNPC.server_id inner join
-        rhnServerFeaturesView SFV on SGM.server_id = SFV.server_id
-    WHERE sgm.server_group_id IN (%s) AND SFV.label = 'ftr_system_grouping'
-    group BY server_group_id
-
+        END AS most_severe_errata
+    FROM rhnErrata e
+        INNER JOIN rhnServerNeededCache snpc ON e.id = snpc.errata_id
+        INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snpc.server_id
+        INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
+    WHERE sgm.server_group_id IN (%s) AND sfv.label = 'ftr_system_grouping'
+    GROUP BY server_group_id
 </query>
 <mode name="is_visible">
         <query  params="sgid, user_id">
@@ -151,15 +150,17 @@ ORDER BY UPPER(SG.name), SG.id
 
 <mode name="group_errata_counts">
   <query params="sgid">
-     SELECT count(distinct e.id),
-            CASE E.advisory_type
+     SELECT count(DISTINCT e.id),
+            CASE e.advisory_type
                 WHEN 'Security Advisory' THEN 'se'
                 WHEN 'Bug Fix Advisory' THEN 'be'
-                WHEN 'Product Enhancement Advisory' then 'ee'
-            END as advisory_type
-      FROM  rhnerrata e, rhnserverneededcache snc, rhnservergroupmembers sgm
-      WHERE snc.errata_id = e.id AND snc.server_id = sgm.server_id AND sgm.server_group_id = :sgid
-            AND (exists (SELECT 1 FROM rhnserverfeaturesview sfv   WHERE sfv.server_id = sgm.server_id  AND sfv.label = 'ftr_system_grouping' ))
+                WHEN 'Product Enhancement Advisory' THEN 'ee'
+            END AS advisory_type
+      FROM rhnErrata e
+        INNER JOIN rhnServerNeededCache snc ON e.id = snc.errata_id
+        INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snc.server_id
+        INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
+      WHERE sgm.server_group_id = :sgid AND sfv.label = 'ftr_system_grouping'
       GROUP BY e.advisory_type
   </query>
 </mode>

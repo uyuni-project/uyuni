@@ -437,13 +437,12 @@ public class ServerGroupManager {
      * @param group the server group object to get counts
      * @return map with counts of security, bugfix and enhancement errata
      */
-    public Map errataCounts(User user, ServerGroup group) {
+    public Map<String, String> errataCounts(User user, ServerGroup group) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "group_errata_counts");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sgid", group.getId());
         DataResult<Map<String, String>> result = m.execute(params);
-        Map<String, String> errataCounts = result.stream()
+        return result.stream()
                 .collect(Collectors.toMap(s -> s.get("advisory_type"), s1 -> String.valueOf(s1.get("count"))));
-        return errataCounts;
     }
 }
