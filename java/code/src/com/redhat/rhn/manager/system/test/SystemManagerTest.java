@@ -91,6 +91,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.SystemsExistException;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -1496,12 +1497,12 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfileExistingHwAddress() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        SystemManager.createSystemProfile(user, "test system", data);
+        MinionServer profile = SystemManager.createSystemProfile(user, "test system", data);
         try {
             SystemManager.createSystemProfile(user, "test system 2", data);
             fail("System creation should have failed!");
-        } catch (IllegalStateException e) {
-            // no-op
+        } catch (SystemsExistException e) {
+            assertEquals(singletonList(profile.getId()), e.getSystemIds());
         }
     }
 
