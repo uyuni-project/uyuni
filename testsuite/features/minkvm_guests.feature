@@ -72,11 +72,14 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I click on "Edit" in row "test-vm"
     Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
+    And option "VNC" is selected as "graphicsType"
     When I enter "1024" as "memory"
     And I enter "2" as "vcpu"
+    And I select "Spice" from "graphicsType"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "kvm-server" should have 1024MB memory and 2 vcpus
+    And "test-vm" virtual machine on "kvm-server" should have spice graphics device
 
 @virthost_kvm
   Scenario: Delete a virtual machine

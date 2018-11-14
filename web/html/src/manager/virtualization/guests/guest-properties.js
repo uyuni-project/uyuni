@@ -5,6 +5,7 @@ import type { ActionChain } from 'components/action-schedule';
 const React = require('react');
 const { Panel } = require('components/panels/Panel');
 const { Text } = require('components/input/Text');
+const { Select } = require('components/input/Select');
 const Validation = require('components/validation');
 const MessagesUtils = require('components/messages').Utils;
 const { Loading } = require('components/loading/loading');
@@ -103,6 +104,25 @@ class GuestProperties extends React.Component<Props> {
                             divClass="col-md-6"
                             validators={[Validation.isInt({ gt: 0 })]}
                           />
+                        </Panel>,
+                        <Panel key="graphics" title={t('Graphics')} headingLevel="h2">
+                          <Select
+                            labelClass="col-md-3"
+                            divClass="col-md-6"
+                            label={t('Type')}
+                            name="graphicsType"
+                          >
+                            {
+                              [{ key: 'vnc', display: 'VNC' }, { key: 'spice', display: 'Spice' }]
+                                .filter(entry => caps !== undefined
+                                  && caps.devices.graphics.type.includes(entry.key))
+                                .map(entry => (
+                                  <option key={entry.key} value={entry.key}>
+                                    {entry.display}
+                                  </option>))
+                            }
+                            <option key="" value="">{t('None')}</option>
+                          </Select>
                         </Panel>,
                       ];
                     }

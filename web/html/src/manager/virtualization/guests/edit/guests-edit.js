@@ -23,10 +23,14 @@ type Props = {
 };
 
 class GuestsEdit extends React.Component<Props> {
-  static getModelFromDefinition(definition: Object) : Object {
+  static getModelFromDefinition(definition: Object) {
     return {
       memory: definition.maxMemory / 1024,
       vcpu: definition.vcpu.max,
+      graphicsType: definition.graphics ? definition.graphics.type : '',
+      osType: definition.os.type,
+      arch: definition.os.arch,
+      vmType: definition.type,
     };
   }
 

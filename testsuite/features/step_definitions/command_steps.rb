@@ -764,7 +764,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} --network network=default --import --hvm --noautoconsole --noreboot")
+  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} --network network=default --graphics vnc --import --hvm --noautoconsole --noreboot")
 end
 
 Then(/^I should see "([^"]*)" virtual machine (shut off|running|paused) on "([^"]*)"$/) do |vm, state, host|
@@ -826,6 +826,22 @@ Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and (
     end
   rescue Timeout::Error
     raise "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus"
+  end
+end
+
+Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        check_nographics = type == "no" and not output.include? '<graphics'
+        break if output.include? "<graphics type='#{type}'" or check_nographics
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got #{type} graphics device"
   end
 end
 

@@ -658,10 +658,11 @@ To make sure the virtual machine is completely booted:
   When I wait until virtual machine "test-vm" on "virt-server" is started
 ```
 
-* Check the amount of memory and CPUs allocated to a virtual machine
+* Check the definition of a virtual machine
 
 ```cucumber
 Then "test-vm" virtual machine on "virt-server" should have 1024MB memory and 2 vcpus
+Then "test-vm" virtual machine on "virt-server" should have spice graphics device
 ```
 
 <a name="c" />
