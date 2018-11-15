@@ -53,11 +53,13 @@ class Form extends React.Component<Props, State> {
   }
 
   onFieldChange(item: Object) {
+    const component = this.inputs[item.name];
     const { model } = this.state;
     model[item.name] = item.value;
     this.setState({
       model,
-    });
+    },
+    () => this.validate(component));
 
     if (this.props.onChange) {
       this.props.onChange(this.state.model, this.state.isValid);
