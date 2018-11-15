@@ -1,3 +1,4 @@
+- increase maximum number of threads and open files for taskomatic (bsc#1111966)
 -------------------------------------------------------------------
 Mon Sep 10 10:22:14 CEST 2018 - jgonzalez@suse.com
 
