@@ -364,6 +364,7 @@ public class TaskoXmlRpcHandler {
                     .withZoneSameInstant(ZoneId.systemDefault()).toInstant());
             TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, label, params, start, null, null);
             TaskoFactory.save(schedule);
+            TaskoFactory.commitTransaction();
 
             // create job
             Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
