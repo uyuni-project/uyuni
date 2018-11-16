@@ -255,6 +255,57 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(new Date(1498636531000L), packages.get(0).getInstallTime());
     }
 
+    /**
+     * Test the processing of a packages.pkginstall job return event on an existing
+     * minion when the "arch" is part of the package name. (bsc#1114029)
+     *
+     * On RHEL systems, Salt may return updated packages which contain "arch" as
+     * part of the package name. In example: "glibc.i686". In those cases, the
+     * "arch" part is removed from the package name to successfully match the
+     * packages names as they're stored in the database.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testsPackageDeltaFromStateApplyPackageWithArchInName() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        assertEquals(0, minion.getPackages().size());
+
+        Map<String, JsonElement> apply = Json.GSON.fromJson(new InputStreamReader(getClass()
+                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/apply_pkg_multiversion.new_format.json")),
+                new TypeToken<Map<String, JsonElement>>(){}.getType());
+        SaltUtils.applyChangesFromStateApply(apply, minion);
+
+        assertEquals(2, minion.getPackages().size());
+        List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
+        assertEquals("glibc", packages.get(0).getName().getName());
+        assertEquals("i686", packages.get(0).getArch().getLabel());
+        assertEquals("2.17", packages.get(0).getEvr().getVersion());
+        assertEquals("260.el7", packages.get(0).getEvr().getRelease());
+        assertEquals(new Date(1542273206000L), packages.get(0).getInstallTime());
+        assertEquals("glibc", packages.get(1).getName().getName());
+        assertEquals("x86_64", packages.get(1).getArch().getLabel());
+        assertEquals("2.17", packages.get(1).getEvr().getVersion());
+        assertEquals("260.el7", packages.get(1).getEvr().getRelease());
+        assertEquals(new Date(1542273203000L), packages.get(1).getInstallTime());
+
+        apply = Json.GSON.fromJson(new InputStreamReader(getClass()
+                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/apply_pkg_multiversion_upgrade.new_format.json")),
+                new TypeToken<Map<String, JsonElement>>(){}.getType());
+        SaltUtils.applyChangesFromStateApply(apply, minion);
+
+        assertEquals(2, minion.getPackages().size());
+        packages = new ArrayList<>(minion.getPackages());
+        assertEquals("glibc", packages.get(0).getName().getName());
+        assertEquals("i686", packages.get(0).getArch().getLabel());
+        assertEquals("2.20", packages.get(0).getEvr().getVersion());
+        assertEquals("261.el7", packages.get(0).getEvr().getRelease());
+        assertEquals(new Date(1542273506000L), packages.get(0).getInstallTime());
+        assertEquals("glibc", packages.get(1).getName().getName());
+        assertEquals("x86_64", packages.get(1).getArch().getLabel());
+        assertEquals("2.20", packages.get(1).getEvr().getVersion());
+        assertEquals("261.el7", packages.get(1).getEvr().getRelease());
+        assertEquals(new Date(1542273503000L), packages.get(1).getInstallTime());
+    }
 
     /**
      * Test the processing of packages.profileupdate job return event on an existing

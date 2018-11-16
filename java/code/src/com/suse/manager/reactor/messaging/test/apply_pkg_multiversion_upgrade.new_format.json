@@ -1,0 +1,50 @@
+{
+  "pkg_|-pkg_installed_|-pkg_installed_|-installed": {
+    "__id__": "pkg_installed",
+    "__run_num__": 1,
+    "__sls__": "packages.pkginstall",
+    "changes": {
+      "glibc": {
+        "new": [
+          {
+            "arch": "x86_64",
+            "install_date_time_t": 1542273503,
+            "release": "261.el7",
+            "version": "2.20"
+          }
+        ],
+        "old": [
+          {
+            "arch": "x86_64",
+            "install_date_time_t": 1542273203,
+            "release": "260.el7",
+            "version": "2.17"
+          }
+        ]
+      },
+      "glibc.i686": {
+        "new": [
+          {
+            "arch": "i686",
+            "install_date_time_t": 1542273506,
+            "release": "261.el7",
+            "version": "2.20"
+          }
+        ],
+        "old": [
+          {
+            "arch": "i686",
+            "install_date_time_t": 1542273206,
+            "release": "260.el7",
+            "version": "2.17"
+          }
+        ]
+      }
+    },
+    "comment": "2 targeted packages were installed/updated.",
+    "duration": 27026.344,
+    "name": "pkg_installed",
+    "result": true,
+    "start_time": "10:13:06.485240"
+  }
+}
