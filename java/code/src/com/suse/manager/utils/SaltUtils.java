@@ -310,6 +310,24 @@ public class SaltUtils {
 
 
     /**
+     * Normalize the package name coming from a Salt package delta.
+     *
+     * @param name package name
+     * @param info package info
+     * @return normalized package name (without "arch" in the name)
+     */
+    private static String normalizePackageNameFromSalt(String name, Info info) {
+        // Packages deltas coming from RHEL systems on Salt may contain "arch" at
+        // the end of the package name. For example: "glibc.i686" (bsc#1114029)
+        //
+        // In those cases, we remove the "arch" from the package name to get the
+        // right unique key for this package without architecture.
+        return name.endsWith("." + info.getArchitecture().get()) ?
+                name.substring(0, info.getArchitecture().get().length() + 1) : name;
+    }
+
+
+    /**
      * Applies a package changeset to a server.
      *
      * @param changes the changes
@@ -1280,7 +1298,7 @@ public class SaltUtils {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(name);
+        sb.append(normalizePackageNameFromSalt(name, info));
         sb.append("-");
         sb.append(
                 new PackageEvr(
@@ -1374,7 +1392,7 @@ public class SaltUtils {
         pkg.setEvr(evr);
         pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture().get()));
         pkg.setInstallTime(new Date(info.getInstallDateUnixTime().get() * 1000));
-        pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
+        pkg.setName(PackageFactory.lookupOrCreatePackageByName(normalizePackageNameFromSalt(name, info)));
         pkg.setServer(server);
         return pkg;
     }
