@@ -2634,9 +2634,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .lookupNetworkInterfacesByHwAddress(hwAddress)
                 .collect(Collectors.toList());
 
-        assertEquals(1, result);
         assertEquals(1, nics.size());
-        assertEquals("test system", nics.get(0).getServer().getName());
+        Server server = nics.get(0).getServer();
+        assertEquals("test system", server.getName());
+        assertEquals(result, server.getId().intValue());
     }
 
     private SystemHandler getMockedHandler() throws Exception {

@@ -527,7 +527,19 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 minion.getHistory().add(historyEvent);
 
                 return minion;
-            }).orElseGet(() -> SystemManager.findMatchingEmptyProfile(fqdn, hwAddrs).orElseGet(MinionServer::new));
+            }).orElseGet(() -> findMatchingEmptyProfiles(fqdn, hwAddrs).orElseGet(MinionServer::new));
+    }
+
+    private Optional<MinionServer> findMatchingEmptyProfiles(Optional<String> hostname, Set<String> hwAddrs) {
+        List<MinionServer> matchingEmptyProfiles = SystemManager.findMatchingEmptyProfiles(hostname, hwAddrs);
+        if (matchingEmptyProfiles.isEmpty()) {
+            return empty();
+        }
+        if (matchingEmptyProfiles.size() == 1) {
+            return of(matchingEmptyProfiles.get(0));
+        }
+        throw new IllegalStateException(matchingEmptyProfiles.size() + " matching empty profiles found when matching" +
+                " with " + hostname.map(n -> "hostname: " + n + " and ").orElse("") + " HW addresseses: " + hwAddrs);
     }
 
     /**

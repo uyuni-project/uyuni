@@ -400,7 +400,7 @@ public class SystemManager extends BaseManager {
      * @param creator the creator user
      * @param systemName the system name
      * @param data the data of the new profile
-     * @throws java.lang.IllegalStateException when a system based on the input data already exists
+     * @throws SystemsExistException when a system based on the input data already exists
      * @throws java.lang.IllegalArgumentException when the input data contains insufficient information or
      * if the format of the hardware address is invalid
      * @return the created system
@@ -415,9 +415,9 @@ public class SystemManager extends BaseManager {
         }
 
         Set<String> hwAddrs = hwAddress.map(a -> singleton(a)).orElse(emptySet());
-        if (findMatchingEmptyProfile(hostname, hwAddrs).isPresent()) {
-            throw new IllegalStateException("System(s) with hostname '" + hostname + "' or HW address '" +
-                    hwAddress + "' already exists.");
+        List<MinionServer> matchingProfiles = findMatchingEmptyProfiles(hostname, hwAddrs);
+        if (!matchingProfiles.isEmpty()) {
+            throw new SystemsExistException(matchingProfiles.stream().map(p -> p.getId()).collect(Collectors.toList()));
         }
 
         // craft unique id based on given data
@@ -465,19 +465,22 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Find matching empty profile based on hostname and HW addresses (in this order).
+     * Find matching empty profiles based on hostname and HW addresses (in this order).
      *
      * @param hostname the hostname
      * @param hwAddrs the set of HW addresses
-     * @return the matching empty profile
+     * @return the List of matching empty profiles
      */
-    public static Optional<MinionServer> findMatchingEmptyProfile(Optional<String> hostname, Set<String> hwAddrs) {
-        Optional<MinionServer> hostnameMatch = hostname.flatMap(n -> MinionServerFactory.findEmptyProfileByHostName(n));
-        if (hostnameMatch.isPresent()) {
-            return hostnameMatch;
+    public static List<MinionServer> findMatchingEmptyProfiles(Optional<String> hostname, Set<String> hwAddrs) {
+        List<MinionServer> hostnameMatches = hostname
+                .map(n -> MinionServerFactory.findEmptyProfilesByHostName(n))
+                .orElse(emptyList());
+        if (!hostnameMatches.isEmpty()) {
+            return hostnameMatches;
         }
-        Optional<MinionServer> hwAddrMatch = MinionServerFactory.findEmptyProfileByHwAddrs(hwAddrs);
-        return hwAddrMatch;
+
+        List<MinionServer> hwAddrMatches = MinionServerFactory.findEmptyProfilesByHwAddrs(hwAddrs);
+        return hwAddrMatches;
     }
 
     /**

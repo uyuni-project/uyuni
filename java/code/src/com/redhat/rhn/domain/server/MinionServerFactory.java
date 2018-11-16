@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -27,7 +28,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -157,7 +157,7 @@ public class MinionServerFactory extends HibernateFactory {
     public static List<MinionServer> lookupByMinionIds(Set<String> minionIds) {
         //NOTE: this is needed since empty sets produce invalid sql statemensts
         if (minionIds.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
         else {
             return ServerFactory.getSession().createCriteria(MinionServer.class)
@@ -218,7 +218,7 @@ public class MinionServerFactory extends HibernateFactory {
      */
     public static List<MinionServer> findMinionsByServerIds(List<Long> serverIds) {
         return !serverIds.isEmpty() ?
-                ServerFactory.lookupByServerIds(serverIds, "Server.findMinionsByServerIds") : Collections.emptyList();
+                ServerFactory.lookupByServerIds(serverIds, "Server.findMinionsByServerIds") : emptyList();
     }
 
     /**
@@ -235,15 +235,14 @@ public class MinionServerFactory extends HibernateFactory {
     }
 
     /**
-     * Find empty profile with a HW address matching some of given HW addresses.
+     * Find empty profiles with a HW address matching some of given HW addresses.
      *
      * @param hwAddrs the set of HW addresses
-     * @throws java.lang.IllegalStateException When multiple empty profiles match given HW addresses
-     * @return the optional MinionServer with a HW address matching some of given HW addresses
+     * @return the List of MinionServer with a HW address matching some of given HW addresses
      */
-    public static Optional<MinionServer> findEmptyProfileByHwAddrs(Set<String> hwAddrs) {
+    public static List<MinionServer> findEmptyProfilesByHwAddrs(Set<String> hwAddrs) {
         if (hwAddrs.isEmpty()) {
-            return Optional.empty();
+            return emptyList();
         }
 
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
@@ -255,26 +254,25 @@ public class MinionServerFactory extends HibernateFactory {
 
         query.where(hwAddrPredicate);
 
-        return getSession().createQuery(query).list().stream()
+        return getSession().createQuery(query).stream()
                 .filter(s -> s.hasEntitlement(EntitlementManager.BOOTSTRAP))
-                .reduce((s1, s2) -> { throw new IllegalStateException("Multiple matching systems found"); });
+                .collect(toList());
     }
 
     /**
-     * Find empty profile by hostname
+     * Find empty profiles by hostname
      *
      * @param hostname the hostname
-     * @throws java.lang.IllegalStateException When multiple empty profiles match given hostname
-     * @return the optional MinionServer matching given hostname
+     * @return the List of MinionServer matching given hostname
      */
-    public static Optional<MinionServer> findEmptyProfileByHostName(String hostname) {
+    public static List<MinionServer> findEmptyProfilesByHostName(String hostname) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<MinionServer> query = builder.createQuery(MinionServer.class);
         Root<MinionServer> root = query.from(MinionServer.class);
         query.where(builder.equal(root.get("hostname"), hostname));
 
-        return getSession().createQuery(query).list().stream()
+        return getSession().createQuery(query).stream()
                 .filter(s -> s.hasEntitlement(EntitlementManager.BOOTSTRAP))
-                .reduce((s1, s2) -> { throw new IllegalStateException("Multiple matching systems found"); });
+                .collect(toList());
     }
 }
