@@ -96,6 +96,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -276,17 +277,19 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils.applyChangesFromStateApply(apply, minion);
 
         assertEquals(2, minion.getPackages().size());
-        List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
+        List<InstalledPackage> packages = new ArrayList<>(minion.getPackages()
+                .stream().sorted(Comparator.comparing(InstalledPackage::getInstallTime))
+                .collect(Collectors.toList()));
         assertEquals("glibc", packages.get(0).getName().getName());
-        assertEquals("i686", packages.get(0).getArch().getLabel());
+        assertEquals("x86_64", packages.get(0).getArch().getLabel());
         assertEquals("2.17", packages.get(0).getEvr().getVersion());
         assertEquals("260.el7", packages.get(0).getEvr().getRelease());
-        assertEquals(new Date(1542273206000L), packages.get(0).getInstallTime());
+        assertEquals(new Date(1542273203000L), packages.get(0).getInstallTime());
         assertEquals("glibc", packages.get(1).getName().getName());
-        assertEquals("x86_64", packages.get(1).getArch().getLabel());
+        assertEquals("i686", packages.get(1).getArch().getLabel());
         assertEquals("2.17", packages.get(1).getEvr().getVersion());
         assertEquals("260.el7", packages.get(1).getEvr().getRelease());
-        assertEquals(new Date(1542273203000L), packages.get(1).getInstallTime());
+        assertEquals(new Date(1542273206000L), packages.get(1).getInstallTime());
 
         apply = Json.GSON.fromJson(new InputStreamReader(getClass()
                         .getResourceAsStream("/com/suse/manager/reactor/messaging/test/apply_pkg_multiversion_upgrade.new_format.json")),
@@ -294,17 +297,19 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils.applyChangesFromStateApply(apply, minion);
 
         assertEquals(2, minion.getPackages().size());
-        packages = new ArrayList<>(minion.getPackages());
+        packages = new ArrayList<>(minion.getPackages()
+                .stream().sorted(Comparator.comparing(InstalledPackage::getInstallTime))
+                .collect(Collectors.toList()));
         assertEquals("glibc", packages.get(0).getName().getName());
-        assertEquals("i686", packages.get(0).getArch().getLabel());
+        assertEquals("x86_64", packages.get(0).getArch().getLabel());
         assertEquals("2.20", packages.get(0).getEvr().getVersion());
         assertEquals("261.el7", packages.get(0).getEvr().getRelease());
-        assertEquals(new Date(1542273506000L), packages.get(0).getInstallTime());
+        assertEquals(new Date(1542273503000L), packages.get(0).getInstallTime());
         assertEquals("glibc", packages.get(1).getName().getName());
-        assertEquals("x86_64", packages.get(1).getArch().getLabel());
+        assertEquals("i686", packages.get(1).getArch().getLabel());
         assertEquals("2.20", packages.get(1).getEvr().getVersion());
         assertEquals("261.el7", packages.get(1).getEvr().getRelease());
-        assertEquals(new Date(1542273503000L), packages.get(1).getInstallTime());
+        assertEquals(new Date(1542273506000L), packages.get(1).getInstallTime());
     }
 
     /**
