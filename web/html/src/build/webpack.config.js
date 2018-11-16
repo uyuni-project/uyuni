@@ -59,6 +59,7 @@ module.exports = (env, argv) => {
       new webpack.DllReferencePlugin({
         manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json"),
       }),
+      new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") }]),
       new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }])
     ],
     devServer: {
