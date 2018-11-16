@@ -1213,12 +1213,12 @@ def complete_softwarechannel_mergepackages(self, text, line, beg, end):
         return tab_completer(self.do_softwarechannel_list('', True),
                              text)
 
-'''
-Does the same thing as do_softwarechannel_sync
-with the exception of deleting packages from
-the target channel.
-'''
 def do_softwarechannel_mergepackages(self, args):
+    '''
+    Does the same thing as do_softwarechannel_sync
+    with the exception of deleting packages from
+    the target channel.
+    '''
     self.do_softwarechannel_sync(args, deleteFromTarget=False)
 
 ####################
@@ -2039,8 +2039,8 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
         return
     
     command = "syncing" if deleteFromTarget else "merging"
-    logging.info(command + " packages from softwarechannel " +
-                 source_channel + " to " + target_channel)
+    logging.info("%s packages from softwarechannel %s to %s",
+                 command, source_channel, target_channel)
 
 
     # use API call instead of spacecmd function
@@ -2098,14 +2098,14 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
         print "    add   ", str(
             len(source_only)).rjust(5), "packages to  ", target_channel
 
-        if(deleteFromTarget):
+        if deleteFromTarget:
             print "    remove", str(
                 len(target_only)).rjust(5), "packages from", target_channel
 
         if not self.user_confirm('Perform these changes to channel ' + target_channel + ' [y/N]:'):
             return
         
-        if(deleteFromTarget):
+        if deleteFromTarget:
             self.client.channel.software.addPackages(self.session,
                                                     target_channel,
                                                     list(source_only))
