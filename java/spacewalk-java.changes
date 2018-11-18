@@ -1,3 +1,4 @@
+- When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
 - fix wrong counts of systems currency reports when a system belongs to more than one group (bsc#1114362)
 - Add check if ssh-file permissions are correct (bsc#1114181)
 

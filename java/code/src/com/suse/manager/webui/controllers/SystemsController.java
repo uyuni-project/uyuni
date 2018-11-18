@@ -48,12 +48,14 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+
 import spark.Request;
 import spark.Response;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -309,6 +311,21 @@ public class SystemsController {
                         HttpStatus.SC_BAD_REQUEST,
                         ResultJson.error("invalid_channel_id"));
             }
+
+            Channel oldBaseChannel =  null;
+            try {
+                String paramOldBaseChannelId = request.queryParams("oldBaseChannelId");
+                if (paramOldBaseChannelId != null) {
+                    Long oldBaseChannelId = Long.parseLong(paramOldBaseChannelId);
+                    oldBaseChannel = ChannelManager.lookupByIdAndUser(oldBaseChannelId, user);
+                }
+            }
+            catch (Exception e) {
+                // This is not a critical feature for this request, we want to keep moving forward anyway
+                // but log that something unexpected happened
+                LOG.error("An oldBaseChannelId parameter wasn't provided when fetching childchannels", e);
+            }
+
             try {
                 if (channelId < 0) {
                     // disable base channel
@@ -322,6 +339,9 @@ public class SystemsController {
                             ResultJson.error("not_a_base_channel"));
                 }
 
+                Collection<Channel> preservations =
+                        ChannelManager.findCompatibleChildren(oldBaseChannel, baseChannel, user).values();
+
                 List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
 
                 Map<Long, Boolean> channelRecommendedFlags = ChannelManager.computeChannelRecommendedFlags(
@@ -334,7 +354,8 @@ public class SystemsController {
                                 c.getName(),
                                 c.isCustom(),
                                 c.isSubscribable(user.getOrg(), server),
-                                channelRecommendedFlags.get(c.getId())))
+                                channelRecommendedFlags.get(c.getId()),
+                                preservations.contains(c)))
                         .collect(Collectors.toList());
                 return json(response, ResultJson.success(jsonList));
             }
