@@ -4,19 +4,19 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {AsyncButton, Button} = require("../components/buttons");
-const {ActionSchedule} = require("../components/action-schedule");
-const Network = require("../utils/network");
-const Functions = require("../utils/functions");
-const Messages = require("../components/messages").Messages;
-const MessagesUtils = require("../components/messages").Utils;
-const {Toggler} = require("../components/toggler");
+const {AsyncButton, Button} = require("../../../components/buttons");
+const {ActionSchedule} = require("../../../components/action-schedule");
+const Network = require("../../../utils/network");
+const Functions = require("../../../utils/functions");
+const Messages = require("../../../components/messages").Messages;
+const MessagesUtils = require("../../../components/messages").Utils;
+const {Toggler} = require("../../../components/toggler");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("../components/links");
-const ChannelUtils = require("../utils/channels");
+const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("../../../components/links");
+const ChannelUtils = require("../../../utils/channels");
 
-import type JsonResult from "../utils/network";
-import type {ActionChain} from "../components/action-schedule";
+import type JsonResult from "../../../utils/network";
+import type {ActionChain} from "../../../components/action-schedule";
 
 declare function t(msg: string): string;
 declare function t(msg: string, arg: string): string;
@@ -362,9 +362,11 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   renderSelectionPage = () => {
     var baseChannels = [], childChannels;
+    const isNoneChecked = -1 === (this.state.selectedBase && this.state.selectedBase.id);
     baseChannels.push(<div className="radio">
         <input type="radio" value="-1" id="base_none"
-          checked={-1 === (this.state.selectedBase && this.state.selectedBase.id)}
+          checked={isNoneChecked}
+          disabled={!isNoneChecked && this.state.dependencyDataAvailable !== true}
           onChange={this.handleBaseChange}/>
         <label htmlFor="base_none">{t("(none, disable service)")}</label>
         <hr/>
@@ -379,14 +381,20 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         baseChannels.push(
           <div>
             <h4>{t("SUSE Channels")}</h4>
-            { baseOptions.map(c => <div className="radio">
-                <input type="radio" value={c.id} id={"base_" + c.id}
-                  checked={c.id === (this.state.selectedBase && this.state.selectedBase.id)}
-                  onChange={this.handleBaseChange}/>
-                <label htmlFor={"base_" + c.id}>{c.name}</label>
-                <ChannelAnchorLink id={c.id} newWindow={true}/>
-              </div>)
-            }
+            { baseOptions.map(c => {
+              const isChecked = c.id === (this.state.selectedBase && this.state.selectedBase.id);
+
+              return (
+                <div className="radio">
+                  <input type="radio" value={c.id} id={"base_" + c.id}
+                         checked={isChecked}
+                         disabled={!isChecked && this.state.dependencyDataAvailable !== true}
+                         onChange={this.handleBaseChange}/>
+                  <label disabled={!isChecked && this.state.dependencyDataAvailable !== true} htmlFor={"base_" + c.id}>{c.name}</label>
+                  <ChannelAnchorLink id={c.id} newWindow={true}/>
+                </div>
+              );
+            })}
             <hr/>
         </div>);
       }
@@ -394,14 +402,20 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         baseChannels.push(
           <div>
             <h4>{t("Custom Channels")}</h4>
-            { customOptions.map(c => <div className="radio">
-                <input type="radio" value={c.id} id={"base_" + c.id}
-                  checked={c.id === (this.state.selectedBase && this.state.selectedBase.id)}
-                  onChange={this.handleBaseChange}/>
-                <label htmlFor={"base_" + c.id}>{c.name}</label>
-                <ChannelAnchorLink id={c.id} newWindow={true}/>
-              </div>)
-            }
+            { customOptions.map(c => {
+              const isChecked = c.id === (this.state.selectedBase && this.state.selectedBase.id);
+
+              return (
+                <div className="radio">
+                  <input type="radio" value={c.id} id={"base_" + c.id}
+                         checked={isChecked}
+                         disabled={!isChecked && this.state.dependencyDataAvailable !== true}
+                         onChange={this.handleBaseChange}/>
+                  <label htmlFor={"base_" + c.id}>{c.name}</label>
+                  <ChannelAnchorLink id={c.id} newWindow={true}/>
+                </div>
+              )
+            })}
             <hr/>
         </div>);
       }
