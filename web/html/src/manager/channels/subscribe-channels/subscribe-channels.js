@@ -41,12 +41,14 @@ type ChannelDto = {
   name: string,
   custom: boolean,
   subscribable: boolean,
-  recommended: boolean
+  recommended: boolean,
+  compatibleWithPreviousSelection?: boolean,
 }
 
 type SystemChannelsState = {
   messages: Array<Object>,
   earliest: Date,
+  originalBase: ?ChannelDto,
   selectedBase: ?ChannelDto,
   selectedChildrenIds: Map<number, Set<number>>, // base channel id -> set<child channel id>
   availableBase: Array<ChannelDto>,
@@ -71,6 +73,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     this.state = {
       messages: [],
       earliest: Functions.Utils.dateWithTimezone(localTime),
+      originalBase: null,
       selectedBase: null,
       selectedChildrenIds: new Map(),
       availableBase: [],
@@ -95,6 +98,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       .promise.then(data => {
         const base : ChannelDto = data.data && data.data.base ? data.data.base : this.getNoBase();
         this.setState({
+          originalBase: base,
           selectedBase: base,
           selectedChildrenIds: new Map([[base.id, new Set(data.data.children.map(c => c.id))]]),
           assignedChildrenIds : new Set(data.data.children.map(c => c.id)),
@@ -114,28 +118,43 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       .catch(this.handleResponseError);
   }
 
-  getAccessibleChildren = (baseId: number) => {
-    if (!this.state.availableChildren.has(baseId)) {
-      Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${baseId}/accessible-children`).promise
+  getAccessibleChildren = (newBaseId: number) => {
+    if (!this.state.availableChildren.has(newBaseId)) {
+      const queryString = this.state.originalBase ? `?oldBaseChannelId=${this.state.originalBase.id}` : '';
+      Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${newBaseId}/accessible-children${queryString}`).promise
         .then((data: JsonResult<Array<ChannelDto>>) => {
           const newChildren = new Map(
             data.data
               .sort((a, b) => a.name.localeCompare(b.name))
               .map(channel => [channel.id, channel])
           );
-          this.state.availableChildren.set(baseId, newChildren);
+          this.state.availableChildren.set(newBaseId, newChildren);
           this.setState({
             availableChildren: this.state.availableChildren,
           });
           const channelIds: Array<number> = Array.from(newChildren.keys());
-          channelIds.push(baseId);
+          channelIds.push(newBaseId);
+          this.preSelectCompatibleChannels(newBaseId, Array.from(newChildren.values()))
           this.fetchMandatoryChannelsByChannelIds(channelIds);
         })
         .catch(this.handleResponseError);
     } else {
-      const channelIds: Array<number> = Array.from(this.state.availableChildren.get(baseId).keys());
-      channelIds.push(baseId);
+      const channelIdsSet = this.state.availableChildren.get(newBaseId) || new Set();
+      const channelIds: Array<number> = Array.from(channelIdsSet.keys());
+      channelIds.push(newBaseId);
       this.fetchMandatoryChannelsByChannelIds(channelIds);
+    }
+  }
+
+  preSelectCompatibleChannels = (newBaseId: number, newChildren: Array<ChannelDto>) => {
+    // we only want to apply the pre selection if it's the first time changing to that channel.
+    // After that the user selection has priority
+    if (!this.state.selectedChildrenIds.has(newBaseId)) {
+      const preSelectedChildrenIds = newChildren.filter(c => c.compatibleWithPreviousSelection).map(c => c.id);
+      this.state.selectedChildrenIds.set(newBaseId, new Set(preSelectedChildrenIds));
+      this.setState({
+        selectedChildrenIds: this.state.selectedChildrenIds,
+      });
     }
   }
 
@@ -170,14 +189,10 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   handleBaseChange = (event: SyntheticInputEvent<*>) => {
     const baseId : number = parseInt(event.target.value);
-    if (!this.state.selectedChildrenIds.has(baseId)) {
-      this.state.selectedChildrenIds.set(baseId, new Set());
-    }
     this.setState({
       selectedBase: baseId > -1 ?
           this.state.availableBase.find(c => c.id == baseId) :
           this.getNoBase(),
-      selectedChildrenIds: this.state.selectedChildrenIds,
       dependencyDataAvailable: baseId > -1 ? false : true
     });
 
