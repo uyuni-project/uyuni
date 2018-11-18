@@ -1,3 +1,4 @@
+- When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
 - fix scheduling jobs to prevent forever pending events (bsc#1114991)
 - Performance improvements for group listings and detail page (bsc#1111810)
 - fix wrong counts of systems currency reports when a system belongs to more than one group (bsc#1114362)
