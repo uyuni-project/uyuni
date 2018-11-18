@@ -28,6 +28,21 @@ module.exports = (env, argv) => {
     }
   }
 
+  let pluginsInUse = [
+    new CleanWebpackPlugin(['extravendors.notdeclared.bundle.js', "javascript"], {  root: path.resolve(__dirname)}),
+    new webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json"),
+    }),
+    new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }])
+  ];
+
+  if(!isProductionMode) {
+    pluginsInUse = [
+      ...pluginsInUse,
+      new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") }]),
+    ]
+  }
+
   return [{
     entry: pages,
     output: {
@@ -54,14 +69,7 @@ module.exports = (env, argv) => {
         utils: path.resolve(__dirname, '../utils/'),
       }
     },
-    plugins: [
-      new CleanWebpackPlugin(['extravendors.notdeclared.bundle.js', "javascript"], {  root: path.resolve(__dirname)}),
-      new webpack.DllReferencePlugin({
-        manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json"),
-      }),
-      new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") }]),
-      new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }])
-    ],
+    plugins: pluginsInUse,
     devServer: {
       contentBase: path.resolve(__dirname, "../dist"),
       publicPath: "/",
