@@ -11,6 +11,7 @@ mgr_server_localhost_alias_absent:
 {%- set repos = salt['pkg.list_repos']() %}
 {%- for alias, data in repos.items() %}
 {%- if 'susemanager:' in alias %}
+{%- if grains['os_family'] != 'Debian' %}
 {%- if data.get('enabled', true) %}
 disable_repo_{{ alias }}:
   module.run:
@@ -19,6 +20,7 @@ disable_repo_{{ alias }}:
     - kwargs:
         enabled: False
 {%- if repos_disabled.update({'disabled': true}) %}{% endif %}
+{%- endif %}
 {%- endif %}
 {%- endif %}
 {%- endfor %}
@@ -44,6 +46,7 @@ disable_repo_{{ alias }}:
 {%- endif %}
 {%- endif %}
 
+{%- if grains['os_family'] != 'Debian' %}
 {%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
 
 bootstrap_repo:
@@ -66,6 +69,7 @@ bootstrap_repo:
 {%- endif %}
     - onlyif:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
+{%- endif %}
 
 
 {%- if grains['os_family'] == 'RedHat' %}
