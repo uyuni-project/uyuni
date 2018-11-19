@@ -1,3 +1,4 @@
+- Removed 'Manage Channels' shortcut for vendor channels (bsc#1115978)
 - add OES 2018 SP1 (bsc#1116826)
 - When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
 - fix wrong counts of systems currency reports when a system belongs to more than one group (bsc#1114362)
