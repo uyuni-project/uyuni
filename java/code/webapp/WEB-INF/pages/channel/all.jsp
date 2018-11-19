@@ -20,7 +20,7 @@ function showFiltered() {
 <rhn:toolbar base="h1" icon="header-channel"
              creationUrl="/rhn/channels/manage/Edit.do"
              creationType="channel"
-             creationAcl="user_role(org_admin)"
+             creationAcl="user_role(channel_admin)"
              helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp">
   <bean:message key="channels.all.jsp.toolbar"/>
 </rhn:toolbar>

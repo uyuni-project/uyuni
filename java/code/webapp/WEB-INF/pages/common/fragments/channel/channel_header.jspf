@@ -7,7 +7,7 @@
             miscUrl="/rhn/channels/manage/Edit.do?cid=${param.cid}"
             miscIcon="item-edit"
             miscText="toolbar.misc.manage_channel"
-            miscAcl="user_role(org_admin)">
+            miscAcl="user_is_channel_admin()">
         <c:out value="${channel_name}" escapeXml="true"/>
 </rhn:toolbar>
 

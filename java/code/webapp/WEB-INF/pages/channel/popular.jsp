@@ -21,7 +21,7 @@
              helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp#s3-sm-channel-list-popular"
              creationUrl="/rhn/channels/manage/Edit.do"
              creationType="channel"
-             creationAcl="user_role(org_admin)">
+             creationAcl="user_role(channel_admin)">
     <bean:message key="channel.nav.popular"/>
 </rhn:toolbar>
 
