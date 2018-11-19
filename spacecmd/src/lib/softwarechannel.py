@@ -1361,6 +1361,30 @@ def do_softwarechannel_addpackages(self, args):
 
 ####################
 
+def help_softwarechannel_mergepackages(self):
+    print('softwarechannel_mergepackages: Merge packages from one software channel into another')
+    print('usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL')
+
+def complete_softwarechannel_mergepackages(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return tab_completer(self.do_softwarechannel_list('', True),
+                             text)
+    if len(parts) == 3:
+        return tab_completer(self.do_softwarechannel_list('', True),
+                             text)
+
+def do_softwarechannel_mergepackages(self, args):
+    '''
+    Does the same thing as do_softwarechannel_sync
+    with the exception of deleting packages from
+    the target channel.
+    '''
+    self.do_softwarechannel_sync(args, deleteFromTarget=False)
+
+####################
+
 
 def help_softwarechannel_removeerrata(self):
     print('softwarechannel_removeerrata: Remove patches from a ' +
@@ -2168,14 +2192,14 @@ def complete_softwarechannel_sync(self, text, line, beg, end):
     return []
 
 
-def do_softwarechannel_sync(self, args):
+def do_softwarechannel_sync(self, args, deleteFromTarget=True):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-q', '--quiet', action='store_true')
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
-        self.help_softwarechannel_sync()
+        self.help_softwarechannel_sync() if deleteFromTarget else self.help_softwarechannel_mergepackages()
         return
 
     source_channel = args[0]
@@ -2192,12 +2216,13 @@ def do_softwarechannel_sync(self, args):
     if not self.check_softwarechannel(target_channel):
         return
 
-    logging.info("syncing packages from softwarechannel " +
-                 source_channel + " to " + target_channel)
+    command = "syncing" if deleteFromTarget else "merging"
+    logging.info("%s packages from softwarechannel %s to %s",
+                 command, source_channel, target_channel)
 
     # use API call instead of spacecmd function
     # to get detailed infos about the packages
-    # and not just there names
+    # and not just their names
     source_packages = self.client.channel.software.listAllPackages(
         self.session,
         source_channel)
@@ -2239,7 +2264,7 @@ def do_softwarechannel_sync(self, args):
 
     # check for packages only in the target channel
     target_only = target_ids.difference(source_ids)
-    if target_only:
+    if target_only and deleteFromTarget:
         print('packages to remove from channel "' + target_channel + '":')
         for i in target_only:
             print(self.get_package_name(i))
@@ -2247,22 +2272,30 @@ def do_softwarechannel_sync(self, args):
 
     if source_only or target_only:
         print("summary:")
-        print("  " + source_channel + ": " + str(len(source_ids)).rjust(5), "packages")
-        print("  " + target_channel + ": " + str(len(target_ids)).rjust(5), "packages")
-        print("    add   ", str(
-            len(source_only)).rjust(5), "packages to  ", target_channel)
-        print("    remove", str(
-            len(target_only)).rjust(5), "packages from", target_channel)
+        print("  " + source_channel + ": " + str(len(source_ids)).rjust(5) + " packages")
+        print("  " + target_channel + ": " + str(len(target_ids)).rjust(5) + " packages")
+        print("    add    " + str(
+            len(source_only)).rjust(5) + " packages to   " + target_channel)
+
+        if deleteFromTarget:
+            print("    remove " + str(
+                len(target_only)).rjust(5) + " packages from " + target_channel)
+
         if not self.user_confirm('Perform these changes to channel ' + target_channel + ' [y/N]:'):
             return
 
-        self.client.channel.software.addPackages(self.session,
-                                                 target_channel,
-                                                 list(source_only))
-        self.client.channel.software.removePackages(self.session,
+        if deleteFromTarget:
+            self.client.channel.software.addPackages(self.session,
+                                                    target_channel,
+                                                    list(source_only))
+            self.client.channel.software.removePackages(self.session,
                                                     target_channel,
                                                     list(target_only))
-
+        else:
+            self.client.channel.software.mergePackages(self.session,
+                                                    source_channel,
+                                                    target_channel)
+            
 ####################
 
 
@@ -2382,6 +2415,120 @@ def do_softwarechannel_errata_sync(self, args):
         #    boolean removePackages - True to remove packages from the channel
         self.client.channel.software.removeErrata(self.session, target_channel,
                                                   target_only, False)
+
+####################
+
+
+def help_softwarechannel_errata_merge(self):
+    print('softwarechannel_errata_merge: ')
+    print('merge errata of one software channel into another')
+    print('')
+    print('usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL [FROM_DATE] [TO_DATE]')
+    print('example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01')
+    print('note:    Providing only FROM_DATE will merge all errata since that date.')
+    print('note:    When no date is provided, all errata will be merged.')
+
+def complete_softwarechannel_errata_merge(self, text, line, beg, end):
+    parts = shlex.split(line)
+    if line[-1] == ' ':
+        parts.append('')
+    args = len(parts)
+
+    if args == 2:
+        return tab_completer(self.do_softwarechannel_list('', True), text)
+    if args == 3:
+        return tab_completer(self.do_softwarechannel_list('', True), text)
+    return []
+
+def do_softwarechannel_errata_merge(self, args):
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
+
+    FROM_DATE = datetime.strptime("1970-01-01", "%Y-%m-%d")
+    TO_DATE   = datetime.now() + timedelta(1)   #tomorrow
+
+    if len(args) < 2 or len(args) > 4:
+        self.help_softwarechannel_errata_merge()
+        return
+
+    if len(args) >= 3:
+        try:
+            FROM_DATE = datetime.strptime(args[2], "%Y-%m-%d")
+        except ValueError:
+            print('wrong dateformat: ' + args[2] + ' please specify as: YYYY-MM-DD')
+            return
+
+    if len(args) == 4:
+        try:
+            TO_DATE = datetime.strptime(args[3], "%Y-%m-%d")
+        except ValueError:
+            print('wrong dateformat: ' + args[3] + ' please specify as: YYYY-MM-DD')
+            return
+
+    source_channel = args[0]
+    target_channel = args[1]
+
+    if not self.check_softwarechannel(source_channel) or not self.check_softwarechannel(target_channel):
+        return
+
+    logging.info("merging errata from softwarechannel " + source_channel +
+                 " to " + target_channel)
+
+    source_errata = self.client.channel.software.listErrata(
+        self.session, source_channel)
+
+    # filter out errata which are not in the specified timeframe (if given)
+    for erratum in source_errata[:]:
+        erratum_date = datetime.strptime(erratum['issue_date'].split(' ')[0], "%Y-%m-%d")
+
+        if not (FROM_DATE <= erratum_date <= TO_DATE):
+            source_errata.remove(erratum)
+
+    target_errata = self.client.channel.software.listErrata(
+        self.session, target_channel)
+
+    # store unique errata data in a set
+    source_ids = set()
+    for erratum in source_errata:
+        try:
+            source_ids.add(erratum.get('advisory_name'))
+        except KeyError:
+            logging.error("failed to read key id")
+            continue
+
+    target_ids = set()
+    for erratum in target_errata:
+        try:
+            target_ids.add(erratum.get('advisory_name'))
+        except KeyError:
+            logging.error("failed to read key id")
+            continue
+
+    # check for errata only in the source channel
+    source_only = list(source_ids.difference(target_ids))
+
+    if len(source_only) == 0:
+        print('{} contains no errata which is not already present in {}'.format(source_channel, target_channel))
+        return
+
+    source_only.sort()
+    if source_only:
+        print('errata to add to channel {}: '.format(target_channel))
+        for i in source_only:
+            print(i)
+        print('')
+
+    print("summary:")
+    print("  " + source_channel + ": " + str(len(source_ids)).rjust(5) + " errata")
+    print("  " + target_channel + ": " + str(len(target_ids)).rjust(5) + " errata")
+    print ("    add   " + str(
+        len(source_only)).rjust(5) + " errata to  " + target_channel)
+
+    if not self.user_confirm('Perform these changes to channel {} [y/N]:'.format(target_channel)):
+        return
+    
+    self.client.channel.software.mergeErrata(self.session, source_channel, target_channel, source_only)
 
 ####################
 

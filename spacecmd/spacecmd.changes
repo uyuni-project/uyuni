@@ -1,3 +1,5 @@
+- Add function to merge errata and packages through spacecmd (bsc#987798)
+
 -------------------------------------------------------------------
 Wed Nov 21 10:00:35 CET 2018 - jgonzalez@suse.com
 
