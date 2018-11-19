@@ -33,7 +33,7 @@ warnings.filterwarnings("ignore", message="the md5 module is deprecated; use has
 
 from urlparse import urlparse
 
-CHANNEL_TOKENS_CONFIG = '/etc/susemanager.conf'
+CHANNEL_TOKENS_CONFIG = '/etc/susemanager_tokens.conf'
 
 class pkg_acquire_method:
     """
@@ -122,7 +122,7 @@ class susemanager_method(pkg_acquire_method):
         self.uri_failure({'URI': self.uri,
                           'Message': message})
 
-    def __load_tokens(self):
+    def load_tokens(self):
         if self.tokens == None:
             self.tokens = {}
             f = open(CHANNEL_TOKENS_CONFIG, 'r')
@@ -176,8 +176,6 @@ class susemanager_method(pkg_acquire_method):
         self.remote_filename = re.sub(r'^.*/getPackage/(.*)$', r'\1', self.uri, 1)
         self.request_filename = self.remote_filename.replace('_', '-')
 
-        self.__load_tokens()
-
         document = self.__transform_document(self.uri_parsed.path)
 
         self.__init_headers()
@@ -230,6 +228,7 @@ class susemanager_method(pkg_acquire_method):
 if __name__ == '__main__':
     try:
         method = susemanager_method()
+        method.load_tokens()
         ret = method.run()
         sys.exit(ret)
     except KeyboardInterrupt:

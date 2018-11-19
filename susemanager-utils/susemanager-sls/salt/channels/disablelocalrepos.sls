@@ -3,12 +3,11 @@
 {% set repos = salt['pkg.list_repos']() %}
 {% for alias, data in repos.items() %}
   {% if not 'susemanager:' in alias %}
-    {% if data is sequence %}
-      {# looks like Debian system #}
+    {% if grains['os_family'] == 'Debian' %}
       {% for d in data %}
-        {% if d.get('disabled', false) %}
-        {% set repoline = d.get('line') %}
-disable_{{ alias }}:
+        {% if d['disabled'] == false %}
+        {% set repoline = d['line'] %}
+disable_{{ repoline | replace(' ', '_') }}:
   module.run:
     - name: pkg.del_repo
     - repo: "{{ repoline }}"

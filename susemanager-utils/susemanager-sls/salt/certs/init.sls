@@ -19,4 +19,11 @@
 {% else -%}
 {{ includesls(grains['os'], grains['osrelease_info']|first|string) }}
 {% endif -%}
+{% elif grains['os_family'] == 'Debian' %}
+{% set sls = includesls(grains['os'], grains['osmajorrelease']|string) -%}
+{% if sls|trim != "" -%}
+{{ sls }}
+{% else -%}
+{{ includesls(grains['os'], grains['osrelease_info']|first|string) }}
+{% endif -%}
 {% endif %}

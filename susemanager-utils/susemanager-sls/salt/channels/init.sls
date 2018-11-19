@@ -32,9 +32,10 @@ mgrchannels_susemanagermethod:
 
 mgrchannels_channeltokens:
   file.managed:
-    - name: /etc/susemanager.conf
+    - name: /etc/susemanager_tokens.conf
     - source:
       - salt://channels/debian_channel_tokens.repo
+    - template: jinja
     - user: root
     - group: root
     - mode: 644
