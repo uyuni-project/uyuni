@@ -423,7 +423,7 @@ class Products extends React.Component {
   };
 
   searchData = (datum, criteria) => {
-    if (criteria) {
+    if (criteria && datum.label) {
       return (datum.label).toLowerCase().includes(criteria.toLowerCase());
     }
     return true;
