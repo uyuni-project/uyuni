@@ -171,10 +171,10 @@ public class DownloadController {
         rest = StringUtils.substringBeforeLast(rest, "-");
         String version = StringUtils.substringAfterLast(rest, "-");
         String name = StringUtils.substringBeforeLast(rest, "-");
-        //ToDo
-        //Names and version for debian either needs to be changed when writing(DebPackageWrite.java#L143)
-        // package information or havel to handle them here as a separate case
-        if (arch.equals("amd64-deb") || arch.equals("all-deb")) {
+
+        // Debian packages names need spacial handling
+        Channel channelBean = ChannelFactory.lookupByLabel(channel);
+        if (channelBean.getChannelArch().getArchType().getLabel().equalsIgnoreCase("deb")) {
             version = StringUtils.substringAfterLast(rest, "_");
             name = StringUtils.substringBeforeLast(rest, "_");
         }
@@ -206,7 +206,7 @@ public class DownloadController {
     private static String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
         String header = request.headers("X-Mgr-Auth");
-        header = StringUtils.isNotBlank(header) ? header : getTokenForUbuntu(request);
+        header = StringUtils.isNotBlank(header) ? header : getTokenForDebian(request);
         if (queryParams.isEmpty() && StringUtils.isBlank(header)) {
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("You need a token to access %s", request.pathInfo()));
@@ -224,19 +224,17 @@ public class DownloadController {
     }
 
     /**
-     * For Ubuntu, we are getting token from 'Authorization' header
+     * For Debian, we are getting token from 'Authorization' header
      * @param request the request object
      * @return the token header
      */
-    private static String getTokenForUbuntu(Request request) {
-        String token = "";
+    private static String getTokenForDebian(Request request) {
         String authorizationHeader = request.headers("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Basic")) {
             String encodedData = authorizationHeader.substring("Basic".length()).trim();
-            String tokenData = new String(Base64.getDecoder().decode(encodedData), UTF_8);
-            token = tokenData.split(":")[1];
+            return new String(Base64.getDecoder().decode(encodedData), UTF_8);
         }
-        return token;
+        return "";
     }
 
     /**

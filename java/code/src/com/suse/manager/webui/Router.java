@@ -235,11 +235,6 @@ public class Router implements SparkApplication {
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
-        //Ubuntu Download package
-        head("/manager/download/:channel/repodata/XMLRPC/GET-REQ/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        get("/manager/download/:channel/repodata/XMLRPC/GET-REQ/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
 
         // Formula catalog
         get("/manager/formula-catalog",

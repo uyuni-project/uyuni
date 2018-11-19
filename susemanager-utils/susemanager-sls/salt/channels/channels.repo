@@ -3,7 +3,8 @@
 #
 {% for chan, args in pillar.get(pillar.get('_mgr_channels_items_name', 'channels'), {}).items() %}
 {%- if grains['os_family'] == 'Debian' %}
-deb https://token:{{ args['token'] }}@{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download/{{ chan }}/repodata ./
+{# TODO for signed repos set trusted=no #}
+deb [trusted=yes] https://{{ args['token'] }}@{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download {{ chan }} main
 {%- else %}
 [{{ args['alias'] }}]
 name={{ args['name'] }}
