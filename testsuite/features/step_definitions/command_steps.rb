@@ -614,13 +614,14 @@ When(/^I set up the private network on the terminals$/) do
   end
   # /etc/resolv.conf
   nodes = [$client, $minion]
-  file = 'resolv.conf'
+  file = 'resolv.conf.sed'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/etc/" + file
+  dest = "/tmp/" + file
   nodes.each do |node|
     next if node.nil?
     return_code = file_inject(node, source, dest)
     raise 'File injection failed' unless return_code.zero?
+    node.run('sed -i -f /tmp/resolv.conf.sed /etc/resolv.conf')
   end
 end
 # rubocop:enable Metrics/BlockLength
