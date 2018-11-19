@@ -1,3 +1,4 @@
+- Add function to merge errata and packages through spacecmd (bsc#987798)
 - show group id on group_details (bsc#1111542)
 - State channels handling: Existing commands configchannel_create and configchannel_import were updated
   while system_scheduleapplyconfigchannels and configchannel_updateinitsls were added.
