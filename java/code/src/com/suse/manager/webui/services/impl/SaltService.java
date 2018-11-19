@@ -45,7 +45,10 @@ import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
-import com.suse.salt.netapi.config.ClientConfig;
+import com.suse.salt.netapi.client.impl.HttpAsyncClientImpl;
+import com.suse.salt.netapi.datatypes.AuthMethod;
+import com.suse.salt.netapi.datatypes.PasswordAuth;
+import com.suse.salt.netapi.datatypes.Token;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
@@ -58,6 +61,11 @@ import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
 import com.google.gson.reflect.TypeToken;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -84,6 +92,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -124,10 +133,11 @@ public class SaltService {
             ConfigDefaults.get().getSaltPresencePingGatherJobTimeout();
 
     // Shared salt client instance
-    private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
+    private final SaltClient SALT_CLIENT;
 
     // executing salt-ssh calls
     private final SaltSSHService saltSSHService;
+    private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AuthModule.AUTO));
 
     private static final Predicate<? super String> SALT_MINION_PREDICATE = (mid) ->
             MinionPendingRegistrationService.containsSSHMinion(mid) ||
@@ -146,8 +156,22 @@ public class SaltService {
 
     // Prevent instantiation
     SaltService() {
-        // Set unlimited timeout
-        SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(0)
+                .setSocketTimeout(0)
+                .setConnectionRequestTimeout(0)
+                .setCookieSpec(CookieSpecs.STANDARD)
+                .build();
+        HttpAsyncClientBuilder httpClientBuilder = HttpAsyncClients.custom();
+        httpClientBuilder.setDefaultRequestConfig(requestConfig);
+
+        CloseableHttpAsyncClient asyncHttpClient = httpClientBuilder
+                .setMaxConnPerRoute(20)
+                .setMaxConnTotal(20)
+                .build();
+        asyncHttpClient.start();
+
+        SALT_CLIENT = new SaltClient(SALT_MASTER_URI, new HttpAsyncClientImpl(asyncHttpClient));
         saltSSHService = new SaltSSHService(SALT_CLIENT, SaltActionChainGeneratorService.INSTANCE);
     }
 
@@ -246,8 +270,7 @@ public class SaltService {
     public <R> Optional<R> callSync(RunnerCall<R> call,
                                     Function<SaltError, Optional<R>> errorHandler) {
         try {
-            Result<R> result = call.callSync(SALT_CLIENT,
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            Result<R> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
             return result.fold(p -> errorHandler.apply(p),
                     r -> Optional.of(r)
             );
@@ -318,8 +341,7 @@ public class SaltService {
     public <R> Optional<R> callSync(WheelCall<R> call,
                                      Function<SaltError, Optional<R>> errorHandler) {
         try {
-            WheelResult<Result<R>> result = call
-                    .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            WheelResult<Result<R>> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
             return result.getData().getResult().fold(
                     err -> errorHandler.apply(err),
                     r -> Optional.of(r));
@@ -439,10 +461,8 @@ public class SaltService {
      */
     // Do not use the shared client object here, so we can disable the timeout (set to 0).
     public EventStream getEventStream() throws SaltException {
-        SaltClient client = new SaltClient(SALT_MASTER_URI);
-        client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-        client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-        return new EventStream(client.getConfig());
+        Token token = adaptException(SALT_CLIENT.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
+        return SALT_CLIENT.events(token, 0, 0, 0);
     }
 
     /**
@@ -477,8 +497,7 @@ public class SaltService {
     private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
             LocalCall<R> call, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
-        return call.callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
-                AuthModule.AUTO, events, cancel);
+        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel));
     }
 
     /**
@@ -739,11 +758,13 @@ public class SaltService {
         }
 
         if (!regularMinionIds.isEmpty()) {
-            results.putAll(call.callSync(SALT_CLIENT,
-                    new MinionList(regularMinionIds),
-                    SALT_USER,
-                    SALT_PASSWORD,
-                    AuthModule.AUTO));
+            results.putAll(
+                adaptException(
+                    call.callSync(SALT_CLIENT,
+                            new MinionList(regularMinionIds),
+                            PW_AUTH)
+                )
+            );
         }
 
         return results;
@@ -773,8 +794,7 @@ public class SaltService {
      */
     public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target)
             throws SaltException {
-        return call.callAsync(
-                SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH));
     }
 
     /**
@@ -791,6 +811,29 @@ public class SaltService {
     }
 
     /**
+     * This is a helper for keeping the old exception behaviour until
+     * all code makes proper use of the async api.
+     * @param fn function to execute and adapt.
+     * @param <T> result of fn
+     * @return the result of fn
+     * @throws SaltException if an exception gets thrown
+     */
+    public static <T> T adaptException(CompletionStage<T> fn) throws SaltException {
+        try {
+            return fn.toCompletableFuture().join();
+        }
+        catch (CompletionException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof SaltException) {
+                throw (SaltException) cause;
+            }
+            else {
+                throw new SaltException(cause);
+            }
+        }
+    }
+
+    /**
      * Pings a target set of minions using a short timeout to check presence
      * @param targetIn the target
      * @return a Map from minion ids which responded to the ping to Boolean.TRUE
@@ -798,15 +841,14 @@ public class SaltService {
      */
     public Map<String, Result<Boolean>> presencePing(MinionList targetIn)
             throws SaltException {
-        return new LocalCall<>("test.ping",
+        return adaptException(new LocalCall<>("test.ping",
                 Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
                 Optional.of(SALT_PRESENCE_TIMEOUT),
                 Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT))
-            .callSync(SALT_CLIENT, targetIn, SALT_USER, SALT_PASSWORD, AuthModule.AUTO)
-            .entrySet().stream().filter(kv -> {
-                return kv.getValue().result().orElse(true);
-            })
-            .collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
+                .callSync(SALT_CLIENT, targetIn, PW_AUTH))
+                .entrySet().stream().filter(kv -> {
+            return kv.getValue().result().orElse(true);
+        }).collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
     }
 
     /**
