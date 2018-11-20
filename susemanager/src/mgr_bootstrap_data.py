@@ -313,7 +313,6 @@ PKGLIST15 = [
                 "python3-zypp-plugin-spacewalk",
                 "libpgm-5_2-0",
                 "libsodium23",
-                "libunwind",
                 "libzmq5",
                 "python3-Babel",
                 "python3-certifi",
@@ -335,6 +334,10 @@ PKGLIST15 = [
                 "salt",
                 "python3-salt",
                 "salt-minion",
+            ]
+
+PKGLIST15_NO_Z = [
+                "libunwind",
             ]
 
 DATA = {
@@ -615,11 +618,11 @@ DATA = {
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
                        },
     'SLE-15-aarch64' : {
-                          'PDID' : [1589, 1709], 'PKGLIST' : PKGLIST15,
+                          'PDID' : [1589, 1709], 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
                         },
     'SLE-15-ppc64le' : {
-                          'PDID' : [1588, 1710], 'PKGLIST' : PKGLIST15,
+                          'PDID' : [1588, 1710], 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
                         },
     'SLE-15-s390x' : {
@@ -627,7 +630,7 @@ DATA = {
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
                         },
     'SLE-15-x86_64' : {
-                          'PDID' : [1576, 1712], 'PKGLIST' : PKGLIST15,
+                          'PDID' : [1576, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
                         },
 }
