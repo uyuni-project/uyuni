@@ -118,16 +118,26 @@ mgr_update_basic_pkgs:
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
-/etc/salt/pki/minion/minion.pub:
+mgr_create_key_directory:
+  file.directory:
+    - user: root
+    - name: /etc/salt/pki/minion/
+    - group: root
+    - mode: 644
+    - makedirs: True
+
+mgr_create_pub_key_file:
   file.managed:
     - contents_pillar: minion_pub
+    - name: /etc/salt/pki/minion/minion.pub
     - mode: 644
     - require:
       - pkg: salt-minion-package
 
-/etc/salt/pki/minion/minion.pem:
+mgr_create_pem_key_file:
   file.managed:
     - contents_pillar: minion_pem
+    - name: /etc/salt/pki/minion/minion.pem
     - mode: 400
     - require:
       - pkg: salt-minion-package
