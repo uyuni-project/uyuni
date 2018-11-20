@@ -72,11 +72,16 @@ def main():
     chmod(SETTINGS, 0o644)
     copy(TEMP_MODULES, MODULES)
     chmod(MODULES, 0o644)
-    m = re.compile(r"^cobbler\.host\s*=\s*", re.MULTILINE)
 
-    conf_lines = open(rhnConfig._CONFIG_FILE).read()
-    if not m.search(conf_lines):
-        system("echo 'cobbler.host = %s' >> %s " % (answers['server'], rhnConfig._CONFIG_FILE))
+    cobbler_host = None
+    with open(rhnConfig._CONFIG_FILE) as fh:
+        for line in fh.readlines():
+            if line.startswith('cobbler.host = '):
+                cobbler_host = True
+                break
+    if cobbler_host is None:
+        with open(rhnConfig._CONFIG_FILE, 'a') as fh:
+            fh.write('cobbler.host = {}\n'.format(answers['server']))
     system("cobbler sync")
 
 
