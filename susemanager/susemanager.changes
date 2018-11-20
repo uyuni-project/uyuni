@@ -1,3 +1,6 @@
+- fix not found package on mgr-create-bootstrap-repo for SLE-15-s390x
+  (bsc#1116566)
+
 -------------------------------------------------------------------
 Thu Nov 01 11:03:11 CET 2018 - jgonzalez@suse.com
 
