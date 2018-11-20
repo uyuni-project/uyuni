@@ -1,14 +1,17 @@
 #!/usr/bin/python
-from yaml import load
-from Cheetah.Template import Template
-from socket import gethostbyname, gethostname
-import shutil
-from os.path import exists, join, dirname, basename, isdir, isfile
+
+# pylint: disable=invalid-name,pointless-string-statement,import-error,protected-access
+from os.path import exists, join, basename, isdir, isfile
 from os import system, chmod
+from socket import gethostname
+import shutil
 import sys
 import re
 
+from yaml import load
 from spacewalk.common import rhnConfig
+from Cheetah.Template import Template
+
 
 TEMPLATES_DIR = '/usr/share/cobbler/installer_templates'
 MODULES_TEMPLATE = join(TEMPLATES_DIR, 'modules.conf.template')
@@ -51,8 +54,8 @@ def ask_yes_no(question, default_val = None):
     return ans.lower() == 'y'
 
 def gen_template(template, answers, output):
-        t = Template(file=template, searchList=answers)
-        open(output,"w").write(t.respond())
+    t = Template(file=template, searchList=answers)
+    open(output,"w").write(t.respond())
 
 def main():
     answers = dict(loadFile(DEFAULTS))
@@ -72,8 +75,7 @@ def main():
 
     conf_lines = open(rhnConfig._CONFIG_FILE).read()
     if not m.search(conf_lines):
-        system ("echo 'cobbler.host = %s' >> %s " % (answers['server'],
-                      rhnConfig._CONFIG_FILE))
+        system("echo 'cobbler.host = %s' >> %s " % (answers['server'], rhnConfig._CONFIG_FILE))
     system("cobbler sync")
 
 

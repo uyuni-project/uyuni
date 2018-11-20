@@ -11,8 +11,7 @@
 import os
 import sys
 import stat
-import string
-import statvfs
+import statvfs  # pylint: disable=import-error
 
 # these numbers are for *after* package installation.
 DEFAULT_NEEDS = {'/rhnsat':          12*(2**30),  # 12GB
@@ -20,7 +19,7 @@ DEFAULT_NEEDS = {'/rhnsat':          12*(2**30),  # 12GB
 
 
 def _listify(seq):
-    if type(seq) not in [type([]), type(())]:
+    if type(seq) not in [type([]), type(())]:  # pylint: disable=unidiomatic-typecheck
         seq = [seq]
     return seq
 
@@ -38,9 +37,7 @@ def _abspath(path):
     # cleanup absolute path:
     if os.path.exists(path) and os.path.islink(path):
         path = os.readlink(path)
-    path = os.path.abspath(
-             os.path.expanduser(
-               os.path.expandvars(path)))
+    path = os.path.abspath(os.path.expanduser(os.path.expandvars(path)))
     return path
 
 
@@ -108,7 +105,7 @@ def paths2freespace(paths):
     return pathsd
 
 
-def getNeeds(needsDict=None):
+def getNeeds(needsDict=None):  # pylint: disable=redefined-outer-name
     """ returns two dictionaries of fulfilled and unfilled space per
         mountpoint:
 
@@ -158,7 +155,7 @@ def _humanReadable(n):
     return s
 
 
-def main(needsDict=None):
+def main(needsDict=None):  # pylint: disable=redefined-outer-name
     """ determine failed needs if any given needsDict.
         needsDict is by default DEFAULT_NEEDS (see top of module)
     """
@@ -178,7 +175,7 @@ def main(needsDict=None):
            Relevant paths serviced by mountpoint: %s
            Disk space needed:    %s bytes (app. %s)
            Disk space available: %s bytes (app. %s)
-""" % (mountpoint, string.join(paths, ', '),
+""" % (mountpoint, ", ".join(paths),
        totalNeeds, _humanReadable(totalNeeds),
        freespace, _humanReadable(freespace))
             sys.stderr.write(msg)
@@ -195,7 +192,6 @@ def main(needsDict=None):
 if __name__ == "__main__":
     needsDict = {}
     if sys.argv:
-        for i, dir in enumerate(sys.argv[1::2]):
+        for i, dir in enumerate(sys.argv[1::2]):  # pylint: disable=redefined-builtin
             needsDict[dir] = int(sys.argv[i*2+2]) * 2**20 # in MB
     sys.exit(main(needsDict) or 0)
-
