@@ -3,7 +3,7 @@ import os
 import re
 import sys
 
-from spacewalk.common.usix import raise_with_tb
+from salt.ext import six
 from spacewalk.common.rhnConfig import RHNOptions
 
 REPORT_DEFINITIONS = "/usr/share/spacewalk/reports/data"
@@ -31,7 +31,7 @@ class report:
                 try:
                         fd = open(full_path, 'r')
                 except (IOError):
-                        raise_with_tb(spacewalk_unknown_report, sys.exc_info()[2])
+                        six.reraise(spacewalk_unknown_report, None, sys.exc_info()[2])
                 tag = None
                 value = ''
                 re_comment = re.compile('^\s*#')
