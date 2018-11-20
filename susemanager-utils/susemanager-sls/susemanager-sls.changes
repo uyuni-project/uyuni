@@ -1,3 +1,4 @@
+- Add Ubuntu SSL-Cert SLS-Files
 - prevent the pkgset beacon from firing during onboarding (bsc#1122896)
 
 -------------------------------------------------------------------
