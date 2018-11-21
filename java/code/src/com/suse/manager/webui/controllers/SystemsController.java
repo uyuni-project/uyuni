@@ -55,9 +55,9 @@ import spark.Response;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -339,8 +339,17 @@ public class SystemsController {
                             ResultJson.error("not_a_base_channel"));
                 }
 
-                Collection<Channel> preservations =
-                        ChannelManager.findCompatibleChildren(oldBaseChannel, baseChannel, user).values();
+                Map<Channel, Channel> preservationsByOldChild =
+                        ChannelManager.findCompatibleChildren(oldBaseChannel, baseChannel, user);
+
+                // invert preservations
+                Map<Channel, Channel> preservationsByNewChild = new HashMap<Channel, Channel>();
+                for (Channel previousChannel : preservationsByOldChild.keySet()) {
+                    Channel newChannel = preservationsByOldChild.get(previousChannel);
+                    if (!preservationsByNewChild.containsKey(newChannel)) {
+                        preservationsByNewChild.put(newChannel, previousChannel);
+                    }
+                }
 
                 List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
 
@@ -355,7 +364,7 @@ public class SystemsController {
                                 c.isCustom(),
                                 c.isSubscribable(user.getOrg(), server),
                                 channelRecommendedFlags.get(c.getId()),
-                                preservations.contains(c)))
+                                preservationsByNewChild.get(c) != null ? preservationsByNewChild.get(c).getId() : null))
                         .collect(Collectors.toList());
                 return json(response, ResultJson.success(jsonList));
             }
