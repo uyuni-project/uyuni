@@ -35,12 +35,14 @@ nodes.each do |node|
   next if node.nil?
 
   hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  raise 'Cannot get hostname for node' if code.nonzero?
+  raise 'Cannot get hostname for node' if code.nonzero? || hostname.empty?
   node.init_hostname(hostname)
 
   fqdn, _local, _remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-  raise 'No fully qualified domain name for node' if code.nonzero?
+  raise 'No fully qualified domain name for node' if code.nonzero? || fqdn.empty?
   node.init_full_hostname(fqdn)
+
+  puts "Determined hostname #{hostname.strip} and fqdn #{fqdn.strip}"
 end
 
 # Initialize IP address or domain name
