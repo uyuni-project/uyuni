@@ -1281,4 +1281,16 @@ public class ServerFactory extends HibernateFactory {
 
     }
 
+    /**
+     * Find servers that are subscribed to the given channel.
+     * @param channelId channel id
+     * @return a list of Servers ids subscribed to the given channel
+     */
+    public static List<Long> findServersByChannel(long channelId) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("c_id", channelId);
+        return singleton.listObjectsByNamedQuery(
+                "Server.findServersByChannel", params);
+    }
+
 }
