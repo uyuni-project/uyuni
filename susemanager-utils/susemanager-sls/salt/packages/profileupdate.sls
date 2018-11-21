@@ -16,6 +16,8 @@ products:
     - name: pkg.list_products
 {% elif grains['os_family'] == 'RedHat' %}
 {% include 'packages/redhatproductinfo.sls' %}
+{% elif grains['os_family'] == 'Debian' %}
+{% include 'packages/ubuntuproductinfo.sls' %}
 {% endif %}
 
 include:
