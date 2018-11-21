@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Wed Nov 21 10:16:54 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.7.5-1
 - increase maximum number of threads and open files for taskomatic (bsc#1111966)
+
 -------------------------------------------------------------------
 Mon Sep 10 10:22:14 CEST 2018 - jgonzalez@suse.com
 
