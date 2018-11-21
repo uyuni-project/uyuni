@@ -43,7 +43,7 @@ type ChannelDto = {
   custom: boolean,
   subscribable: boolean,
   recommended: boolean,
-  compatibleWithPreviousSelection?: boolean,
+  compatibleChannelPreviousSelection?: boolean,
 }
 
 type SystemChannelsState = {
@@ -151,7 +151,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     // we only want to apply the pre selection if it's the first time changing to that channel.
     // After that the user selection has priority
     if (!this.state.selectedChildrenIds.has(newBaseId)) {
-      const preSelectedChildrenIds = newChildren.filter(c => c.compatibleWithPreviousSelection).map(c => c.id);
+      const preSelectedChildrenIds = newChildren
+        .filter(c => c.compatibleChannelPreviousSelection && this.state.assignedChildrenIds.has(c.compatibleChannelPreviousSelection))
+        .map(c => c.id);
       this.state.selectedChildrenIds.set(newBaseId, new Set(preSelectedChildrenIds));
       this.setState({
         selectedChildrenIds: this.state.selectedChildrenIds,

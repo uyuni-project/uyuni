@@ -43,7 +43,7 @@ public class ChannelsJson {
         private boolean custom;
         private boolean subscribable;
         private boolean recommended;
-        private boolean compatibleWithPreviousSelection;
+        private Long compatibleChannelPreviousSelection;
 
         /**
          * Instantiates a new Channel json.
@@ -53,16 +53,16 @@ public class ChannelsJson {
          * @param customIn custom channel flag
          * @param subscribableIn subscribable flag
          * @param recommendedIn the channel is recommended by its parent channel
-         * @param compatibleWithPreviousSelectionIn the channel was compatible with the previous selection
+         * @param compatibleChannelPreviousSelectionIn the compatible channel id of the previous selection
          */
         public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn, boolean recommendedIn,
-                           Boolean compatibleWithPreviousSelectionIn) {
+                           Long compatibleChannelPreviousSelectionIn) {
             this.id = idIn;
             this.name = nameIn;
             this.custom = customIn;
             this.subscribable = subscribableIn;
             this.recommended = recommendedIn;
-            this.compatibleWithPreviousSelection = compatibleWithPreviousSelectionIn;
+            this.compatibleChannelPreviousSelection = compatibleChannelPreviousSelectionIn;
         }
 
         /**
@@ -74,7 +74,7 @@ public class ChannelsJson {
          * @param subscribableIn subscribable flag
          */
         public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn) {
-            this(idIn, nameIn, customIn, subscribableIn, false, false);
+            this(idIn, nameIn, customIn, subscribableIn, false, null);
         }
 
         /**
@@ -113,10 +113,10 @@ public class ChannelsJson {
         }
 
         /**
-         * @return compatibleWithPreviousSelection to get
+         * @return compatibleChannelPreviousSelection to get
          */
-        public boolean isCompatibleWithPreviousSelection() {
-            return compatibleWithPreviousSelection;
+        public Long getCompatibleChannelPreviousSelection() {
+            return compatibleChannelPreviousSelection;
         }
     }
 
@@ -175,7 +175,7 @@ public class ChannelsJson {
                         c.isCustom(),
                         true,
                         recommendedFlags.get(c.getId()),
-                        false
+                        null
                 )).collect(Collectors.toList());
     }
 
