@@ -426,7 +426,7 @@ const Products = React.createClass({
   },
 
   searchData: function(datum, criteria) {
-    if (criteria) {
+    if (criteria && datum.label) {
       return (datum.label).toLowerCase().includes(criteria.toLowerCase());
     }
     return true;
