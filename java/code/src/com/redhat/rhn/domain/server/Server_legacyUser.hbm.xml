@@ -544,4 +544,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </sql-query>
 
+    <sql-query name="Server.findServersByChannel">
+        <return-scalar column="serverId" type="long"/>
+        SELECT distinct S.org_id AS orgId, S.id AS serverId, S.name As serverName
+          FROM rhnChannel c
+            JOIN rhnServerChannel sc ON c.id = sc.channel_id
+            JOIN rhnServer s ON s.id = sc.server_id
+         WHERE c.id = :c_id
+    </sql-query>
+
 </hibernate-mapping>

@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -34,9 +35,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,6 +69,9 @@ public class DeleteChannelAction extends RhnAction {
 
         // Stuff the channel object into the request so the page can use its values
         Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
+        Optional<Channel> baseChannel = channel.isBaseChannel() ? Optional.of(channel) : Optional.empty();
+        List<Channel> childChannel = !baseChannel.isPresent() ? Collections.singletonList(channel) :
+                Collections.EMPTY_LIST;
         request.setAttribute("channel", channel);
 
         // The channel doesn't carry its subscribed system count, so add this separately
@@ -87,6 +94,11 @@ public class DeleteChannelAction extends RhnAction {
             if (override || subscribedSystemsCount == 0) {
                 DataResult dr;
                 try {
+                    List<Long> sids = ServerFactory.findServersByChannel(channel.getId());
+                    if (!sids.isEmpty()) {
+                        ChannelManager.updateChannelSubscription(user, sids, baseChannel, childChannel);
+                    }
+
                     dr = PackageManager.listCustomPackageForChannel(channelId,
                             user.getOrg().getId(), false);
                     ChannelManager.deleteChannel(user, channelLabel);

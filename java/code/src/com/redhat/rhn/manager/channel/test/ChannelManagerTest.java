@@ -17,6 +17,9 @@ package com.redhat.rhn.manager.channel.test;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
@@ -35,9 +38,11 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
@@ -47,6 +52,8 @@ import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
+import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.EusReleaseComparator;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
@@ -56,18 +63,30 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * ChannelManagerTest
@@ -78,6 +97,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     private static final String TEST_OS = "TEST RHEL AS";
     private static final String MAP_RELEASE = "4AS";
+    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }};
+    private static TaskomaticApi taskomaticApi;
 
     public void testAllDownloadsTree() throws Exception {
     }
@@ -235,6 +259,40 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testChannelArches() {
         // for a more detailed test see ChannelFactoryTest
         assertNotNull(ChannelManager.getChannelArchitectures());
+    }
+
+    public void testUpdateChannelSubscription() throws Exception {
+        ActionChainManager.setTaskomaticApi(getTaskomaticApi());
+        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel child1 = ChannelFactoryTest.createTestChannel(user);
+        Channel child2 = ChannelFactoryTest.createTestChannel(user);
+        Channel base = ChannelFactoryTest.createTestChannel(user);
+        child1.setParentChannel(base);
+        base.setParentChannel(null);
+
+        server.addChannel(base);
+        server.addChannel(child1);
+        server.addChannel(child2);
+
+        Date earliest = new Date();
+        SystemHandler systemHandler = new SystemHandler();
+        long actionId = systemHandler.scheduleChangeChannels(user, server.getId().intValue(), base.getLabel(),
+                Arrays.asList(child1.getLabel(),child2.getLabel()), earliest);
+        Action action = ActionFactory.lookupById(actionId);
+        assertTrue(action instanceof SubscribeChannelsAction);
+        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+        assertEquals(base.getId(), sca.getDetails().getBaseChannel().getId());
+        assertEquals(2, sca.getDetails().getChannels().size());
+
+        Set<Action> actions = ChannelManager.updateChannelSubscription(user, Collections.singletonList(server.getId()),
+                Optional.of(base), Arrays.asList(child1, child2));
+
+        action = ActionFactory.lookupById(actions.iterator().next().getId());
+        assertTrue(action instanceof SubscribeChannelsAction);
+        sca = (SubscribeChannelsAction)action;
+        assertNull(sca.getDetails().getBaseChannel());
+        assertTrue(sca.getDetails().getChannels().isEmpty());
+        assertEquals(0, sca.getDetails().getChannels().size());
     }
 
     public void testDeleteChannel() throws Exception {
@@ -904,5 +962,19 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.clear();
         RhnSetManager.store(set);
+    }
+
+    private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
+        if (taskomaticApi == null) {
+            taskomaticApi = MOCK_CONTEXT.mock(TaskomaticApi.class);
+            MOCK_CONTEXT.checking(new Expectations() {
+                {
+                    allowing(taskomaticApi)
+                            .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
+                }
+            });
+        }
+
+        return taskomaticApi;
     }
 }

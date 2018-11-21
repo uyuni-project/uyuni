@@ -28,6 +28,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -68,6 +69,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyChannelNotFoundException;
 import com.redhat.rhn.manager.BaseManager;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -607,6 +609,39 @@ public class ChannelManager extends BaseManager {
      */
     public static List<ChannelArch> getChannelArchitectures() {
         return ChannelFactory.getChannelArchitectures();
+    }
+
+    /**
+     * Unsubscribe channel from the specified systems, trigger immediate channels update state
+     * @param user User with permission to schedule an action
+     * @param sids ids for server those have this channel assigned
+     * @param baseChannel base channel to remove
+     * @param childChannels child channels remove
+     * @return Set of scheduled Actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     * label
+     */
+    public static Set<Action> updateChannelSubscription(User user, List<Long> sids, Optional<Channel> baseChannel,
+                                                        List<Channel> childChannels) throws TaskomaticApiException {
+        Set<Action> actions = new HashSet<>();
+        Date earliest = new Date();
+        if (baseChannel.isPresent()) {
+            actions = ActionChainManager.scheduleSubscribeChannelsAction(user, new HashSet<>(sids), Optional.empty(),
+                    Collections.EMPTY_SET, earliest, null);
+        }
+        else {
+            for (Long serverId : sids) {
+                Server server = SystemManager.lookupByIdAndUser(serverId, user);
+                Set<Channel> currentChildChanels = server.getChildChannels();
+                currentChildChanels.removeAll(childChannels);
+                Set<Action> action =
+                        ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(serverId),
+                                Optional.of(server.getBaseChannel()), currentChildChanels, earliest, null);
+                actions.addAll(action);
+            }
+        }
+        return actions;
     }
 
     /**
