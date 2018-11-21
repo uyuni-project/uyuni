@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 21 10:23:42 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.18-1
 - deploy SSL certificate during onboarding of openSUSE Leap 15.0 (bsc#1112163)
 
 -------------------------------------------------------------------
