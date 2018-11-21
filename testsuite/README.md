@@ -72,3 +72,4 @@ The repositories are:
 ## Type of provided packages
 - Normal dummy packages: `andromeda-dummy`, `hoag-dummy`, `orion-dummy`, `milkyway-dummy`, etc.
 - Wrong encoding of RPM attributes `blackhole-dummy` package: This package should be successfully imported and you will see it available as part of "Test-Channel-x86_64" if reposync handled the encoding correctly.
+
