@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 21 10:11:46 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.5.12-1
 - Automatic cleanup of notification messages after a configurable lifetime
 - ActivationKey base and child channel in a reactjs component
 - New messages are added for XMLRPC API for state channels
