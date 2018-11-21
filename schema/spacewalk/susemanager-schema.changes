@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 21 10:20:08 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.15-1
 - Automatic cleanup of notification messages after a configurable lifetime
 - Add missing minion-action-chain-cleanup to db init scripts
 
