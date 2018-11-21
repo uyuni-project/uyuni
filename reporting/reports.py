@@ -82,7 +82,7 @@ class report:
                         self.column_indexes = {}
                         self.column_types = {}
                         self.column_descriptions = {}
-                        lines = [x for x in re.split('\s*\n\s*', value) if x != '']
+                        lines = filter(None, re.split('\s*\n\s*', value))
                         i = 0
                         for l in lines:
                                 description = None
@@ -101,7 +101,7 @@ class report:
                                         self.column_descriptions[c] = description
                                 i = i + 1
                 elif tag == 'params':
-                        lines = [x for x in re.split('\s*\n\s*', value) if x != '']
+                        lines = filter(None, re.split('\s*\n\s*', value))
                         for l in lines:
                                 ( p, v ) = re.split('\s+', l, 1)
                                 ( component, option ) = re.split('\.', v, 1)
@@ -116,7 +116,7 @@ class report:
                         # joined together and the second one is column
                         # whose value should be used to distinguish if
                         # we still have the same entity or not.
-                        for l in [x for x in re.split('\n', value) if x != '']:
+                        for l in filter(None, re.split('\n', value)):
                                 m = re.match('^\s*(\S+?)(\s*:\s*(\S*)\s*)?$', l)
                                 if m == None:
                                         continue
