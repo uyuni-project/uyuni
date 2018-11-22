@@ -614,7 +614,7 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * Unsubscribe channel from the specified systems, trigger immediate channels update state
+     * Schedule an action to Unsubscribe channels from the specified systems, trigger immediate channels update state
      * @param user User with permission to schedule an action
      * @param sids ids for server those have this channel assigned
      * @param baseChannel base channel to remove
@@ -633,15 +633,37 @@ public class ChannelManager extends BaseManager {
                     Collections.EMPTY_SET, earliest, null);
         }
         else {
-            for (Long serverId : sids) {
-                Server server = SystemManager.lookupByIdAndUser(serverId, user);
+
+            List<Server> servers = ServerFactory.lookupByIds(sids);
+            for (Server server : servers) {
                 Set<Channel> currentChildChanels = server.getChildChannels();
                 currentChildChanels.removeAll(childChannels);
                 Set<Action> action =
-                        ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(serverId),
+                        ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(server.getId()),
                                 Optional.of(server.getBaseChannel()), currentChildChanels, earliest, null);
                 actions.addAll(action);
             }
+        }
+        return actions;
+    }
+
+    /**
+     * Schedule an action to Unsubscribe channel from the assigned systems, trigger immediate channels update state
+     * @param user User with permission to schedule an action
+     * @param channel channel to unsubscribe
+     * @return Set of scheduled Actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     * label
+     */
+    public static Set<Action> updateChannelSubscription(User user, Channel channel) throws TaskomaticApiException {
+        Set<Action> actions = new HashSet<>();
+        List<Long> sids = ServerFactory.findServersByChannel(channel.getId());
+        if (!sids.isEmpty()) {
+            Optional<Channel> baseChannel = channel.isBaseChannel() ? of(channel) : empty();
+            List<Channel> childChannels =
+                    Opt.fold(baseChannel, () -> Collections.singletonList(channel), c -> Collections.EMPTY_LIST);
+            actions = updateChannelSubscription(user, sids, baseChannel, childChannels);
         }
         return actions;
     }
@@ -740,7 +762,11 @@ public class ChannelManager extends BaseManager {
      */
     public static boolean verifyChannelAdmin(User user, Long cid)
         throws InvalidChannelRoleException {
-        return verifyChannelRole(user, cid, QRY_ROLE_MANAGE);
+        Optional<String> result = verifyChannelRole(user.getId(), cid, QRY_ROLE_MANAGE);
+        if (result.isPresent()) {
+            throw new InvalidChannelRoleException(result.get());
+        }
+        return true;
     }
 
     /**
@@ -827,11 +853,7 @@ public class ChannelManager extends BaseManager {
      * @return Returns true if the user has permission, false otherwise
      */
     public static boolean verifyChannelSubscribe(User user, Long cid) {
-
-        try {
-            return verifyChannelRole(user, cid, QRY_ROLE_SUBSCRIBE);
-        }
-        catch (InvalidChannelRoleException e) {
+        if (verifyChannelRole(user.getId(), cid, QRY_ROLE_SUBSCRIBE).isPresent()) {
             /*
              * We don't really care what the reason is for why this user doesn't have
              * access to this channel, so catch the exception, log it, and simply
@@ -842,9 +864,10 @@ public class ChannelManager extends BaseManager {
             msg.append(" either does not have subscribe privileges to Channel: ");
             msg.append(cid);
             msg.append(" or ChannelManager.QRY_ROLE_SUBSCRIBE is defined wrong.");
-            log.debug(msg.toString(), e);
+            log.debug(msg.toString());
             return false;
         }
+        return true;
     }
 
     /**
@@ -856,10 +879,7 @@ public class ChannelManager extends BaseManager {
      */
     public static boolean verifyChannelManage(User user, Long cid) {
 
-        try {
-            return verifyChannelRole(user, cid, QRY_ROLE_MANAGE);
-        }
-        catch (InvalidChannelRoleException e) {
+        if (verifyChannelRole(user.getId(), cid, QRY_ROLE_MANAGE).isPresent()) {
             /*
              * We don't really care what the reason is for why this user doesn't have
              * access to this channel, so catch the exception, log it, and simply
@@ -867,34 +887,35 @@ public class ChannelManager extends BaseManager {
              */
             StringBuilder msg = new StringBuilder("User: ");
             msg.append(user.getLogin());
-            msg.append(" either does not have subscribe privileges to Channel: ");
+            msg.append(" either does not have manage privileges to Channel: ");
             msg.append(cid);
             msg.append(" or ChannelManager.QRY_ROLE_MANAGE is defined wrong.");
-            log.debug(msg.toString(), e);
+            log.debug(msg.toString());
             return false;
         }
+
+        return true;
     }
 
-    private static boolean verifyChannelRole(User user, Long cid, String role)
-        throws InvalidChannelRoleException {
+    /**
+     * Returns an empty optional if the specified user can use the channel with the specified role, a String with the
+     * reason otherwise.
+     *
+     * @param uid the user id
+     * @param cid the channel id
+     * @param role the role
+     * @return empty if the access is granted, a reason string otherwise
+     */
+    public static Optional<String> verifyChannelRole(Long uid, Long cid, String role) {
+        SelectMode m = ModeFactory.getMode("Channel_queries", "verify_channel_role");
+        Map<String, Object> params = new HashMap<>();
+        params.put("channel_id", cid);
+        params.put("user_id", uid);
+        params.put("role", role);
 
-        CallableMode m = ModeFactory.getCallableMode(
-                "Channel_queries", "verify_channel_role");
+        DataResult<Map<String, String>> result = m.execute(params);
 
-        Map<String, Object> inParams = new HashMap<String, Object>();
-        inParams.put("cid", cid);
-        inParams.put("user_id", user.getId());
-        inParams.put("role", role);
-
-        Map<String, Integer> outParams = new HashMap<String, Integer>();
-        outParams.put("result", new Integer(Types.VARCHAR));
-        Map<String, Object> result = m.execute(inParams, outParams);
-
-        String reason = (String) result.get("result");
-        if (reason != null) {
-            throw new InvalidChannelRoleException(reason);
-        }
-        return true;
+        return ofNullable(result.get(0).get("deny_reason"));
     }
 
     /**

@@ -100,6 +100,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.empty;
+
 /**
  * ChannelSoftwareHandler
  * @version $Rev$
@@ -539,7 +541,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Deletes a software channel
+     * Deletes a software channel and also schedule a channels.subscribe action for the server which had this channel
      * @param loggedInUser The current user
      * @param channelLabel Label of channel to be deleted.
      * @return 1 if Channel was successfully deleted.
@@ -556,13 +558,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             throws PermissionCheckFailureException, NoSuchChannelException {
         try {
             Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
-            List<Long> sids = ServerFactory.findServersByChannel(channel.getId());
-            if (!sids.isEmpty()) {
-                Optional<Channel> baseChannel = channel.isBaseChannel() ? Optional.of(channel) : Optional.empty();
-                List<Channel> childChannels = !baseChannel.isPresent() ?
-                        Collections.singletonList(channel) : Collections.EMPTY_LIST;
-                ChannelManager.updateChannelSubscription(loggedInUser, sids, baseChannel, childChannels);
-            }
+            ChannelManager.updateChannelSubscription(loggedInUser, channel);
             ChannelManager.deleteChannel(loggedInUser, channelLabel);
         }
         catch (InvalidChannelRoleException e) {
@@ -3358,14 +3354,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Unsubscribe channels from the specified systems, trigger immediate channels update state
+     * Unsubscribe channels from the specified minions, trigger immediate channels update state
      * @param user The current user
-     * @param sids System Ids
+     * @param sids System Ids for minions
      * @param base base channel label
      * @param childLabels child channels' labels
      * @return array containing action Ids
      *
-     * @xmlrpc.doc Unsubscribe channels from the specified systems, trigger immediate channels update state
+     * @xmlrpc.doc Unsubscribe channels from the specified minions, trigger immediate channels update state
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #param("string", "baseChannelLabel")
@@ -3383,7 +3379,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
                     .map(clabel -> lookupChannelByLabel(user, clabel))
                     .collect(Collectors.toList());
             Optional<Channel> baseChannel = StringUtils.isNotEmpty(base) ?
-                    Optional.ofNullable(lookupChannelByLabel(user, base)) : Optional.empty();
+                    Optional.ofNullable(lookupChannelByLabel(user, base)) : empty();
             actions = ChannelManager.updateChannelSubscription(user, minionServerIds, baseChannel, childChannels);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
