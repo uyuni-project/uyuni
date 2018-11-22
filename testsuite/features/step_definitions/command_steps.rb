@@ -777,8 +777,8 @@ Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        output, _code = node.run("virsh dominfo #{vm}", fatal = false)
-        break if output.include? "Domain not found"
+        _output, code = node.run("virsh dominfo #{vm}", fatal = false)
+        break if code == 1
         sleep 3
       end
     end
