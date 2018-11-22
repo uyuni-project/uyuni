@@ -228,7 +228,7 @@ Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) d
           break
         end
         find(css).click
-        sleep 1
+        sleep 3
       end
     end
   rescue Timeout::Error
@@ -247,6 +247,7 @@ Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |c
           break
         end
         find(css).click
+        sleep 3
       end
     end
   rescue Timeout::Error
