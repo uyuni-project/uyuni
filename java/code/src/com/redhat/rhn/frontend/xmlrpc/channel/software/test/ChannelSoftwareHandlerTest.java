@@ -1102,7 +1102,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelSoftwareHandler handler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
 
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server = MinionServerFactoryTest.createTestMinionServer(admin);
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
         Channel child2 = ChannelFactoryTest.createTestChannel(admin);
         Channel base = ChannelFactoryTest.createTestChannel(admin);

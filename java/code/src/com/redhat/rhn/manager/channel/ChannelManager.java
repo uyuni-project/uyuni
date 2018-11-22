@@ -80,6 +80,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -101,6 +102,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 /**
  * ChannelManager
@@ -612,7 +616,7 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * Unsubscribe channel from the specified systems, trigger immediate channels update state
+     * Schedule an action to Unsubscribe channels from the specified systems, trigger immediate channels update state
      * @param user User with permission to schedule an action
      * @param sids ids for server those have this channel assigned
      * @param baseChannel base channel to remove
@@ -631,15 +635,37 @@ public class ChannelManager extends BaseManager {
                     Collections.EMPTY_SET, earliest, null);
         }
         else {
-            for (Long serverId : sids) {
-                Server server = SystemManager.lookupByIdAndUser(serverId, user);
+
+            List<Server> servers = ServerFactory.lookupByIds(sids);
+            for (Server server : servers) {
                 Set<Channel> currentChildChanels = server.getChildChannels();
                 currentChildChanels.removeAll(childChannels);
                 Set<Action> action =
-                        ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(serverId),
+                        ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(server.getId()),
                                 Optional.of(server.getBaseChannel()), currentChildChanels, earliest, null);
                 actions.addAll(action);
             }
+        }
+        return actions;
+    }
+
+    /**
+     * Schedule an action to Unsubscribe channel from the assigned systems, trigger immediate channels update state
+     * @param user User with permission to schedule an action
+     * @param channel channel to unsubscribe
+     * @return Set of scheduled Actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     * label
+     */
+    public static Set<Action> updateChannelSubscription(User user, Channel channel) throws TaskomaticApiException {
+        Set<Action> actions = new HashSet<>();
+        List<Long> sids = ServerFactory.findServersByChannel(channel.getId());
+        if (!sids.isEmpty()) {
+            Optional<Channel> baseChannel = channel.isBaseChannel() ? of(channel) : empty();
+            List<Channel> childChannels =
+                    Opt.fold(baseChannel, () -> Collections.singletonList(channel), c -> Collections.EMPTY_LIST);
+            actions = updateChannelSubscription(user, sids, baseChannel, childChannels);
         }
         return actions;
     }
