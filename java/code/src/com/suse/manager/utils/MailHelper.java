@@ -20,6 +20,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.SmtpMail;
 import java.net.UnknownHostException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import java.net.InetAddress;
 
@@ -145,7 +147,7 @@ public class MailHelper {
      */
     public static String[] getAdminRecipientsFromConfig() {
         Config c = Config.get();
-        return c.getString("web.traceback_mail").equals("") ?
+        return StringUtils.isBlank(c.getString("web.traceback_mail")) ?
                 new String[]{"root@localhost"} :
                 c.getStringArray("web.traceback_mail");
     }
