@@ -155,7 +155,7 @@ const Table = React.createClass({
 
   getProcessedData: function() {
     const comparators = React.Children.toArray(this.props.children)
-      .filter((child) => child.type === Column)
+      .filter((child) => child.type === <Column />.type)
       .filter((column) => column.props.columnKey == this.state.sortColumnKey)
       .map((column) => column.props.comparator);
 
@@ -203,7 +203,7 @@ const Table = React.createClass({
 
   render: function() {
     const headers = React.Children.toArray(this.props.children)
-        .filter((child) => child.type === Column)
+        .filter((child) => child.type === <Column />.type)
         .map((column, index) => {
             if (column.props.header) {
                 const sortDirection = column.props.columnKey == this.state.sortColumnKey ?
@@ -265,7 +265,7 @@ const Table = React.createClass({
 
     const rows = currItems.map((datum, index) => {
         const cells = React.Children.toArray(this.props.children)
-          .filter((child) => child.type === Column)
+          .filter((child) => child.type === <Column />.type)
           .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
         );
 
