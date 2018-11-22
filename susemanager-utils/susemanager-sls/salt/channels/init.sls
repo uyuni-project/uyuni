@@ -47,4 +47,6 @@ mgrchannels_yum_clean_all:
     - onchanges: 
        - file: "/etc/yum.repos.d/susemanager:channels.repo"
     -  unless: "/usr/bin/yum repolist | grep \"repolist: 0$\""
+{%- elif grains['os_family'] == 'Debian' %}
+{%- include 'channels/debiankeyring.sls' %}
 {%- endif %}
