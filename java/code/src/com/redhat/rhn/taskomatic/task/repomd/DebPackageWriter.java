@@ -57,7 +57,6 @@ public class DebPackageWriter {
                 f.delete();
             }
             f.createNewFile();
-            // TODO Release or InRelease file for channels having gpg check enabled
         }
         catch (Exception e) {
             log.error("Create file Packages failed " + e.toString());

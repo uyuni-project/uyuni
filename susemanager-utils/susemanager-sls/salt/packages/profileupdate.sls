@@ -18,7 +18,6 @@ products:
     - name: pkg.list_products
 {% elif grains['os_family'] == 'RedHat' %}
 {% include 'packages/redhatproductinfo.sls' %}
-{% endif %}
 {% elif grains['os_family'] == 'Debian' %}
 ubunturelease:
   cmd.run:

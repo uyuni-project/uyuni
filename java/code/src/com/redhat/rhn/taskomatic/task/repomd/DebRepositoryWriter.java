@@ -99,6 +99,9 @@ public class DebRepositoryWriter extends RepositoryWriter {
         }
         writer.generatePackagesGz();
 
+        DebReleaseWriter releaseWriter = new DebReleaseWriter(channel, prefix);
+        releaseWriter.generateRelease();
+
         log.info("Repository metadata generation for '" +
                  channel.getLabel() + "' finished in " +
                  (int) (new Date().getTime() - start.getTime()) / 1000 + " seconds");
