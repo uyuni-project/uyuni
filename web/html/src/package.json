@@ -8,11 +8,9 @@
   },
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf dist",
-    "validate": "node build/check-undeclared-vendors",
-    "vendors": "webpack --mode development --config build/webpack.config.vendors.js",
-    "dev": "yarn vendors && webpack -d --config build/webpack.config.js --mode development && yarn run validate",
-    "watch": "yarn vendors && webpack -d --config build/webpack.config.js --mode development --watch",
-    "proxy": "yarn vendors && webpack-dev-server -d --mode development --hot --inline --config build/webpack.config.js",
+    "dev": "webpack -d --config build/webpack.config.js --mode development",
+    "watch": "webpack -d --config build/webpack.config.js --mode development --watch",
+    "proxy": "webpack-dev-server -d --mode development --hot --inline --config build/webpack.config.js",
     "lint": "eslint .",
     "build": "node build",
     "postinstall": "yarn build"

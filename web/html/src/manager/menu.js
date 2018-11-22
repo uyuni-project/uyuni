@@ -1,5 +1,8 @@
 /* eslint-disable */
 "use strict";
+require("@babel/polyfill/dist/polyfill");
+require("core-js/shim");
+require("regenerator-runtime/runtime");
 
 const React = require("react");
 const ReactDOM = require("react-dom");

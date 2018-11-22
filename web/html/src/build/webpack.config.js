@@ -1,47 +1,38 @@
 const path = require('path');
 const {pages} = require("../manager/index");
-const webpack = require("webpack");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin')
+
 
 module.exports = (env, argv) => {
 
   const  isProductionMode = argv && argv.mode !== "development";
 
-  let optimization = {};
-  if(isProductionMode) {
-    // If we are on production mode we want to make sure we don't mix vendors code with source code
-    optimization = {
-      minimizer: [new TerserPlugin({extractComments: true})],
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /node_modules/,
-            chunks: "all",
-            name: "extravendors.notdeclared",
-            priority: 10,
-            enforce: true
-          }
-        }
-      }
-    }
-  }
-
   let pluginsInUse = [
-    new CleanWebpackPlugin(['extravendors.notdeclared.bundle.js', "javascript"], {  root: path.resolve(__dirname)}),
-    new webpack.DllReferencePlugin({
-      manifest: path.resolve(__dirname, "../dist/vendors/vendors-manifest.json"),
-    }),
-    new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }])
+    new CleanWebpackPlugin(['dist'], {  root: path.resolve(__dirname, "../")}),
+    new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }]),
   ];
 
-  if(!isProductionMode) {
+  if(isProductionMode) {
+    pluginsInUse = [
+      ...pluginsInUse,
+      new LicenseCheckerWebpackPlugin({
+        outputFilename: "../vendors/npm.licenses.structured.js",
+        outputWriter: path.resolve(__dirname, "../vendors/licenses.template.ejs"),
+      }),
+      new LicenseCheckerWebpackPlugin({
+        outputFilename: "../vendors/npm.licenses.txt",
+      }),
+    ]
+  } else {
     pluginsInUse = [
       ...pluginsInUse,
       new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") }]),
     ]
   }
+
 
   return [{
     entry: pages,
@@ -50,7 +41,19 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, "../dist"),
       publicPath: '/'
     },
-    optimization,
+    optimization: {
+      minimizer: [new TerserPlugin({extractComments: true})],
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /node_modules/,
+            chunks: "all",
+            name: "vendors/vendors",
+            enforce: true
+          }
+        }
+      }
+    },
     module: {
       rules: [
         {
