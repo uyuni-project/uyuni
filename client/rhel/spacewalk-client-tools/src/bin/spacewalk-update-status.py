@@ -33,14 +33,14 @@ class StatusCli(rhncli.RhnCli):
     def __build_status_report():
         """Copied from rhn_check"""
         status_report = {}
-        status_report["uname"] = os.uname()
+        status_report["uname"] = tuple(os.uname())
 
         if os.access("/proc/uptime", os.R_OK):
             uptime = open("/proc/uptime", "r").read().split()
             try:
-                status_report["uptime"] = map(int, map(float, uptime))
+                status_report["uptime"] = list(map(int, map(float, uptime)))
             except (TypeError, ValueError):
-                status_report["uptime"] = map(lambda a: a[:-3], uptime)
+                status_report["uptime"] = list(map(lambda a: a[:-3], uptime))
             except:
                 pass
 
