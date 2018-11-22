@@ -201,7 +201,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         assertEquals(0, minion.getPackages().size());
 
-        Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
                 .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_install.new_format.json")),
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
         SaltUtils.applyChangesFromStateModule(install, minion);
@@ -214,7 +214,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(new Date(1498636531000L), packages.get(0).getInstallTime());
 
 
-        Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>> update = Json.GSON.fromJson(new InputStreamReader(getClass()
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> update = Json.GSON.fromJson(new InputStreamReader(getClass()
                         .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_update.new_format.json")),
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
 
@@ -228,7 +228,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(new Date(1498636553000L), packages1.get(0).getInstallTime());
 
 
-        Map<String, Change<Xor<String, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>> remove = Json.GSON.fromJson(new InputStreamReader(getClass()
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> remove = Json.GSON.fromJson(new InputStreamReader(getClass()
                 .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_remove.new_format.json")),
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
 

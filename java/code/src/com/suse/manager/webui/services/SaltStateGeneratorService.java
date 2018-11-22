@@ -30,7 +30,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;

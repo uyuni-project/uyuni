@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
+import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.Ret;
@@ -51,8 +52,7 @@ public class PkgProfileUpdateSlsResult {
     private StateApplyResult<Ret<List<Zypper.ProductInfo>>> listProducts;
 
     @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
-    private StateApplyResult<Ret<Map<String, Xor<Pkg.Info, List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>>>
-            infoInstalled;
+    private StateApplyResult<Ret<Map<String, Xor<Pkg.Info, List<Pkg.Info>>>>> infoInstalled;
 
     @SerializedName(PKG_PROFILE_REDHAT_RELEASE)
     private StateApplyResult<CmdExecCodeAll> rhelReleaseFile;
@@ -91,8 +91,7 @@ public class PkgProfileUpdateSlsResult {
     /**
      * @return information about installed packages
      */
-    public StateApplyResult<Ret<Map<String, Xor<com.suse.manager.webui.utils.salt.custom.Pkg.Info,
-            List<com.suse.manager.webui.utils.salt.custom.Pkg.Info>>>>> getInfoInstalled() {
+    public StateApplyResult<Ret<Map<String, Xor<Pkg.Info, List<Pkg.Info>>>>> getInfoInstalled() {
         return infoInstalled;
     }
 
