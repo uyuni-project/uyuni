@@ -6,8 +6,7 @@
 {%- set hostname = salt['pillar.get']('pkg_download_point_host', args['host'])%}
 {%- set port = salt['pillar.get']('pkg_download_point_port', args.get('port', 443))%}
 {%- if grains['os_family'] == 'Debian' %}
-{# TODO for signed repos set trusted=no #}
-deb [trusted=yes] https://{{ args['token'] }}@{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download {{ chan }} main
+deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} https://{{ args['token'] }}@{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download {{ chan }} main
 {%- else %}
 [{{ args['alias'] }}]
 name={{ args['name'] }}

@@ -2233,7 +2233,19 @@ public class ChannelManager extends BaseManager {
      * @param reason reason for queue
      */
     public static void queueChannelChange(String channelLabel, String client,
-            String reason) {
+                                          String reason) {
+        queueChannelChange(channelLabel, client, reason, false);
+    }
+
+    /**
+     * Queue regenerating the repo metadata.
+     *
+     * @param channelLabel channel label
+     * @param client client info
+     * @param reason reason for queue
+     * @param force force regen
+     */
+    public static void queueChannelChange(String channelLabel, String client, String reason, boolean force) {
         if ("".equals(client)) {
             client = null;
         }
@@ -2247,6 +2259,7 @@ public class ChannelManager extends BaseManager {
         params.put("label", channelLabel);
         params.put("client", client);
         params.put("reason", reason);
+        params.put("force", force ? "Y" : "N");
         m.executeUpdate(params);
     }
 

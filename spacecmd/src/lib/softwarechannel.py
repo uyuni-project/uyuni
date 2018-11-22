@@ -2002,7 +2002,12 @@ def help_softwarechannel_regenerateyumcache(self):
     print('softwarechannel_regenerateyumcache: ')
     print('Regenerate the YUM cache for a software channel')
     print('')
-    print('usage: softwarechannel_regenerateyumcache <CHANNEL ...>')
+    print('''usage: softwarechannel_regenerateyumcache [options] <CHANNEL ...>
+
+    options:
+      -f force cache regeneration
+    ''')
+    print('')
 
 
 def complete_softwarechannel_regenerateyumcache(self, text, line, beg, end):
@@ -2011,6 +2016,8 @@ def complete_softwarechannel_regenerateyumcache(self, text, line, beg, end):
 
 def do_softwarechannel_regenerateyumcache(self, args):
     arg_parser = get_argument_parser()
+
+    arg_parser.add_argument('-f', '--force', action="store_true")
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
@@ -2023,7 +2030,7 @@ def do_softwarechannel_regenerateyumcache(self, args):
 
     for channel in channels:
         logging.debug('Regenerating YUM cache for %s' % channel)
-        self.client.channel.software.regenerateYumCache(self.session, channel)
+        self.client.channel.software.regenerateYumCache(self.session, channel, _options.force)
 
 ####################
 # softwarechannel helper

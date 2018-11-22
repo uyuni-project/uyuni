@@ -1,3 +1,5 @@
+- Added 'mgr-sign-metadata-ctl' for repository metadata signing
+
 -------------------------------------------------------------------
 Wed Feb 27 12:59:35 CET 2019 - jgonzalez@suse.com
 

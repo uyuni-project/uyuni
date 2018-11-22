@@ -18,12 +18,14 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.task.TaskManager;
 
 /**
@@ -98,6 +100,25 @@ public class DebRepositoryWriter extends RepositoryWriter {
             writer.addPackage(pkgDto);
         }
         writer.generatePackagesGz();
+
+        DebReleaseWriter releaseWriter = new DebReleaseWriter(channel, prefix);
+        releaseWriter.generateRelease();
+
+        if (ConfigDefaults.get().isMetadataSigningEnabled()) {
+            SystemCommandExecutor sce = new SystemCommandExecutor();
+            int exitCode = sce.execute(
+                    new String[] {"/usr/bin/mgr-sign-metadata", prefix + "Release", prefix + "Release.gpg"});
+            if (exitCode != 0) {
+                log.error("Could not sign file " + prefix + "Release. " +
+                        "This will prevent the repository " + channel.getLabel() + " from working correctly. " +
+                        "Make sure a valid key exists in the /root/.gnupg keyring and that its KEYID was " +
+                        "set in /etc/rhn/signing.conf ");
+            }
+        }
+        else {
+            log.warn("Channel metadata signing is disabled. APT repository " + channel.getLabel() + " is not secure." +
+                    "Refer to the Debian apt-secure manpage.");
+        }
 
         log.info("Repository metadata generation for '" +
                  channel.getLabel() + "' finished in " +

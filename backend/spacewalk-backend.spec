@@ -1046,6 +1046,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-data-fsck
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
+%attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
