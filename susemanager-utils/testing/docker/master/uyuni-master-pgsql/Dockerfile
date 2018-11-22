@@ -18,3 +18,7 @@ RUN sh /root/setup-db-postgres.sh
 
 ADD postgresql.conf /var/lib/pgsql/data/postgresql.conf
 
+RUN zypper in -y python-pip
+
+RUN pip install --upgrade pylint==1.8 astroid==1.6.5
+
