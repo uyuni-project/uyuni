@@ -1,3 +1,4 @@
+- Prevent failing KickstartCommand when customPosition is null (bsc#1112121)
 - Automatically schedule an Action to refresh minion repos after deletion of an assigned channel (bsc#1115029)
 - Performance improvements in channel management functionalities (bsc#1114877)
 - Handle with an error message if state file fails to render (bsc#1110757)
