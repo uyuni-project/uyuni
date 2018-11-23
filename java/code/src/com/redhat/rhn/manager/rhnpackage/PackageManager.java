@@ -608,7 +608,6 @@ public class PackageManager extends BaseManager {
             session = HibernateFactory.getSession();
             return (PackageName)session.getNamedQuery("PackageName.findByName")
                                        .setString("name", name)
-                                       .setCacheable(true)
                                        .uniqueResult();
         }
         catch (HibernateException e) {
