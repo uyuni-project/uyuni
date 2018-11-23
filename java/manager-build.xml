@@ -222,7 +222,7 @@
       <isset property="spacewalk.upstream"/>
     </condition>
     <echo message="Calling yarn build ..."/>
-    <exec executable="yarn" dir="${js.components.dir}">
+    <exec failonerror="true" executable="yarn" dir="${js.components.dir}">
       <arg line="build"/>
     </exec>
 
