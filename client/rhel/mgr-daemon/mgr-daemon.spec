@@ -272,21 +272,17 @@ if [ -f %{_unitdir}/rhnsd.service ]; then
 fi
 %endif
 
-%if %{_vendor} == "debbuild"
+%if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
 %files
-%{_datadir}/locale/
+%{_unitdir}/rhnsd.service
+%{_unitdir}/rhnsd.timer
 %else
 %files -f rhnsd.lang
-%endif
 %defattr(-,root,root)
 %dir %{_sysconfdir}/sysconfig/rhn
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/rhnsd
 %{_sbindir}/rhnsd
-%if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
-%{_unitdir}/rhnsd.service
 %{_unitdir}/spacewalk-update-status.service
-%{_unitdir}/rhnsd.timer
-%else
 %{_initrddir}/rhnsd
 %endif
 %if 0%{?suse_version}
@@ -294,5 +290,8 @@ fi
 %endif
 %{_mandir}/man8/rhnsd.8*
 %doc LICENSE
+%if %{_vendor} == "debbuild"
+%{_datadir}/locale/
+%endif
 
 %changelog
