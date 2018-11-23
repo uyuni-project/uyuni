@@ -191,7 +191,7 @@ if __name__ == '__main__':
             for column in where:
                 if column not in report.columns:
                     systemExit(-6, 'Unknown column [%s] in report [%s].' % (column, report_name))
-                for v in (val for _, vals in six.iteritems(where[column]) for val in vals):
+                for v in (val for vals in col.values() for val in vals):
                     if report.column_types[column] == 'i' and not re.match('^[0-9]+$', v):
                         systemExit(-7, 'Column [%s] in report [%s] only accepts integer value.' % (column, report_name))
 
