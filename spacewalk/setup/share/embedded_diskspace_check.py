@@ -8,6 +8,8 @@
     Author: Todd Warner <taw@redhat.com>
 """
 
+from salt.ext import six
+
 import os
 import sys
 import stat
@@ -101,7 +103,7 @@ def paths2freespace(paths):
         f_bavail = _statvfs[statvfs.F_BAVAIL] # non-super user space
         f_bsize = _statvfs[statvfs.F_BSIZE] # respective blocksize
         # build dict indexed by path
-        pathsd[path] = int(f_bavail)*f_bsize
+        pathsd[path] = (six.PY3 and int or long)(f_bavail) * f_bsize
     return pathsd
 
 
