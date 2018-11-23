@@ -1,3 +1,5 @@
+- Fix XML-RPC type serialization (bsc#1116610)
+
 -------------------------------------------------------------------
 Fri Oct 26 10:10:12 CEST 2018 - jgonzalez@suse.com
 
