@@ -56,4 +56,5 @@
     <script src="/javascript/bootstrap-datepicker.js"></script>
 
     <script src='/vendors/vendors.bundle.js'></script>
+    <script src='/javascript/manager/polyfill.bundle.js'></script>
     <script src='/javascript/momentjs/moment-with-langs.min.js' type='text/javascript'></script>

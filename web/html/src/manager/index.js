@@ -1,5 +1,6 @@
 /* eslint-disable */
 const pages = {
+  'polyfill': './manager/polyfill.js',
   'errors/not-found': './manager/errors/not-found.js',
   'visualization/hierarchy': './manager/visualization/hierarchy.js',
   'bootstrap-minions': './manager/bootstrap-minions.js',
@@ -41,7 +42,6 @@ const pages = {
 }
 
 Object.keys(pages).forEach((key) => {
-  // pages[key] = ["@babel/polyfill/dist/polyfill", "core-js/shim", "regenerator-runtime/runtime", pages[key]];
   pages["javascript/manager/" + key] = pages[key];
   delete pages[key]
 });
