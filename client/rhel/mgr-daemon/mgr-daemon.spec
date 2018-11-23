@@ -46,6 +46,10 @@ Source1:        %{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
+%if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
+BuildArch: noarch
+%endif
+
 %if %{_vendor} != "debbuild"
 
 # 5.0.37.2 was last version+1 of spacewalksd before renaming to mgr-daemon
