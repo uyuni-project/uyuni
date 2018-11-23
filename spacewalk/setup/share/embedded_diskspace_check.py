@@ -21,7 +21,7 @@ DEFAULT_NEEDS = {'/rhnsat':          12*(2**30),  # 12GB
 
 
 def _listify(seq):
-    if type(seq) not in [type([]), type(())]:  # pylint: disable=unidiomatic-typecheck
+    if not isinstance(seq, (list, tuple)):
         seq = [seq]
     return seq
 
