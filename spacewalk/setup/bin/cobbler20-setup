@@ -5,7 +5,6 @@ from os.path import exists, join, basename, isdir, isfile
 from os import system, chmod
 from socket import gethostname
 import shutil
-import re
 
 from yaml import load
 from spacewalk.common import rhnConfig
