@@ -131,7 +131,7 @@ mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
 install -m 0644 rhnsd.service $RPM_BUILD_ROOT/%{_unitdir}/
 install -m 0644 spacewalk-update-status.service $RPM_BUILD_ROOT/%{_unitdir}/
 install -m 0644 rhnsd.timer $RPM_BUILD_ROOT/%{_unitdir}/
-%endif
+%else
 %if 0%{?suse_version}
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
@@ -146,10 +146,10 @@ rm -f $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
 ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
 %endif
 %endif
-
 # find_lang not available on debbuild; we'll work around this below
 %if %{_vendor} != "debbuild"
 %find_lang rhnsd
+%endif
 %endif
 
 # These will not work with debbuild
@@ -162,6 +162,7 @@ ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
 %if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/rhn/rhnsd
 rm -f $RPM_BUILD_ROOT/%{_sbindir}/rhnsd
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/locale
 %endif
 
 %if 0%{?suse_version} >= 1210
