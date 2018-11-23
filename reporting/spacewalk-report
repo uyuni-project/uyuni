@@ -240,7 +240,7 @@ if __name__ == '__main__':
                 tz.execute(tz=options.timezone)
 
             h = rhnSQL.prepare(the_sql)
-            h.execute(**dict(list(report.params.items()) + list(the_dict_where.items())))
+            h.execute(**dict(tuple(report.params.items()) + tuple(the_dict_where.items())))
 
             db_columns = [x[0].lower() for x in h.description]
             if db_columns != report.columns:
