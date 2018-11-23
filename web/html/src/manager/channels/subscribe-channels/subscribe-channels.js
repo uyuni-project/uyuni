@@ -606,6 +606,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
 }
 
+const { hot } = require('react-hot-loader');
+
 module.exports = {
-  SubscribeChannels: SystemChannels
+  SubscribeChannels: hot(module)(SystemChannels)
 }
