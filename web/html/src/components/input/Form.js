@@ -151,7 +151,7 @@ class Form extends React.Component<Props, State> {
 
     // TODO [LuNeves] [Cedric] After upgrading react to v16 this could be improved with Context:
     // formPropsProvider and a formPropsConsumer on the component inputBase
-    const fieldTypes = [<Text />.type, <Password />.type, <Check />.type, <Select />.type, <DateTime.type />];
+    const fieldTypes = [<Text />.type, <Password />.type, <Check />.type, <Select />.type, <DateTime />.type];
     if (fieldTypes.includes(child.type)) {
       const name = child.props && child.props.name;
 
