@@ -40,7 +40,7 @@ Feature: Create a group
 
   Scenario: Add the new group to SSM
     Given I am on the groups page
-    When I click on "Use in SSM" for "newgroup"
+    When I click on "Use in SSM" in row "newgroup"
     Then I should see a "system selected" text
     And I should see a "Selected Systems List" text
     And I should see "sle-client" as link
