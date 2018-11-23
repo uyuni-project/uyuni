@@ -19,6 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.ConstructorException;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -120,12 +121,17 @@ public class ApplyStatesActionResult implements Serializable {
      */
     public List<StateResult> getResult() {
         Yaml yaml = new Yaml();
-        @SuppressWarnings("unchecked")
-        Map<String, Map<String, Object>> payload = yaml.loadAs(getOutputContents(), Map.class);
         List<StateResult> result = new LinkedList<>();
-        payload.entrySet().stream().forEach(e -> {
-            result.add(new StateResult(e));
-        });
+        try {
+            @SuppressWarnings("unchecked")
+            Map<String, Map<String, Object>> payload = yaml.loadAs(getOutputContents(), Map.class);
+            payload.entrySet().stream().forEach(e -> {
+                result.add(new StateResult(e));
+            });
+        }
+        catch (ConstructorException ce) {
+            return new LinkedList<>();
+        }
         return result;
     }
 

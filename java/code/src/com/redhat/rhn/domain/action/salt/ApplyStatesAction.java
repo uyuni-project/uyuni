@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.
@@ -76,7 +77,14 @@ public class ApplyStatesAction extends Action {
 
     private String formatStateApplyResult(ApplyStatesActionResult result) {
         StringBuilder retval = new StringBuilder();
-        result.getResult().stream()
+        List<StateResult> resultList = result.getResult();
+        if (resultList.isEmpty()) {
+            retval.append("<strong><span class='text-danger'>");
+            retval.append("Error: Could not parse state file. Please check YAML syntax.");
+            retval.append("</span></strong>");
+            return retval.toString();
+        }
+        resultList.stream()
         .sorted(
                 new Comparator<StateResult>() {
                     public int compare(StateResult r1, StateResult r2) {
