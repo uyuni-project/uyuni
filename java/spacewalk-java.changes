@@ -1,3 +1,4 @@
+- Add check for yast autoinstall profiles when setting kickstartTree (bsc#1114115)
 - Fix handling of CVEs including multiple patches in CVE audit (bsc#1111963)
 - When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
 - fix scheduling jobs to prevent forever pending events (bsc#1114991)
