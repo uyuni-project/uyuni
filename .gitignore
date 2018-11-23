@@ -62,3 +62,4 @@ yarn-error.log
 java/out
 out/
 java/buildconf/checkstyle.cache.src
+reports/
