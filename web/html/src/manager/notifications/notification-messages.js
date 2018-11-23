@@ -402,4 +402,5 @@ const ErrorMessage = (props) => <MessageContainer items={
   } />
 ;
 
-module.exports = { NotificationMessages }
+const { hot } = require('react-hot-loader');
+module.exports = { NotificationMessages: hot(module)(NotificationMessages) }

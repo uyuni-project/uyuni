@@ -1,5 +1,7 @@
 // @flow
+/* global module */
 
+const { hot } = require('react-hot-loader');
 const React = require('react');
 const MessageContainer = require('components/messages').Messages;
 const MessagesUtils = require('components/messages').Utils;
@@ -409,5 +411,5 @@ class GuestsList extends React.Component<Props, State> {
 }
 
 module.exports = {
-  GuestsList,
+  GuestsList: hot(module)(GuestsList),
 };
