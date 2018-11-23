@@ -226,6 +226,23 @@ public class ProfileHandler extends BaseHandler {
         return 1;
     }
 
+    /**
+     * Adds a KickstartTree downloadUrl to a KickstartProfile
+     * @param ksdata The KickstartData of the KickstartProfile
+     * @param downloadUrl the downloadUrl of the KickstartTree
+     */
+    private void addUrlCommandToKickstartProfile(KickstartData ksdata, String downloadUrl) {
+        KickstartCommandName ksCmdName = null;
+        KickstartCommand ksCmd = null;
+
+        ksCmdName = KickstartFactory.lookupKickstartCommandName("url");
+        ksCmd = new KickstartCommand();
+        ksCmd.setCommandName(ksCmdName);
+        ksCmd.setArguments("--url " + downloadUrl);
+        ksdata.addCommand(ksCmd);
+        ksCmd.setKickstartData(ksdata);
+    }
+
 
     /**
      * Set the kickstart tree for a kickstart profile.
@@ -258,8 +275,18 @@ public class ProfileHandler extends BaseHandler {
         if (tree == null) {
             throw new NoSuchKickstartTreeException(kstreeLabel);
         }
-        KickstartCommand urlC = ksdata.getCommand("url");
-        urlC.setArguments("--url " + tree.getDefaultDownloadLocation());
+
+        boolean isAutoInstallProfile = ksdata.isSUSE();
+        if (!isAutoInstallProfile) {
+            KickstartCommand urlC = ksdata.getCommand("url");
+            if (urlC == null) {
+                addUrlCommandToKickstartProfile(ksdata, tree.getDefaultDownloadLocation());
+            }
+            else {
+                urlC.setArguments("--url " + tree.getDefaultDownloadLocation());
+            }
+        }
+
         KickstartDefaults ksdefault = ksdata.getKickstartDefaults();
         ksdefault.setKstree(tree);
         KickstartFactory.saveKickstartData(ksdata);
