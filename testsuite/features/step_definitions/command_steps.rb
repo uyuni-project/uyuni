@@ -610,7 +610,7 @@ When(/^I set up the private network on the terminals$/) do
     next if node.nil?
     return_code = file_inject(node, source, dest)
     raise 'File injection failed' unless return_code.zero?
-    node.run('systemctl restart NetworkManager')
+    node.run('systemctl restart network')
   end
   # /etc/resolv.conf
   nodes = [$client, $minion]
