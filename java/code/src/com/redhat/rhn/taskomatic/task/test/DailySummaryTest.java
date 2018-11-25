@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -94,6 +95,10 @@ public class DailySummaryTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testQueueOrgEmails() throws Exception {
+        if (ConfigDefaults.get().isOracle()) {
+            // test queries are incompatible with oracle DB - skip the test
+            return;
+        }
         // set up an AWOL system beloning to one Org, accessible by one User
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
         User user = UserTestUtils.createUser("test", oid);
