@@ -5,6 +5,8 @@ const { FormGroup } = require('./FormGroup');
 
 export type Props = {
   name: string,
+  // eslint-disable-next-line
+  defaultValue?: string,
   label?: string,
   hint?: string,
   labelClass?: string,
@@ -31,6 +33,7 @@ type State = {
 
 class InputBase extends React.Component<Props, State> {
   static defaultProps = {
+    defaultValue: undefined,
     label: undefined,
     hint: undefined,
     labelClass: undefined,
