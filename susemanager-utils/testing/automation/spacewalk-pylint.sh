@@ -133,7 +133,7 @@ manager/susemanager-utils/susemanager-sls/salt/channels/yum-susemanager-plugin/s
 manager/susemanager-utils/susemanager-sls/src/
 "
 
-PYLINT_CMD="pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/spacewalk/pylint/spacewalk-pylint.rc --reports=y"
+PYLINT_CMD="pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/spacewalk/pylint/spacewalk-pylint.rc --reports=y --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
 
 docker pull $REGISTRY/$PYLINT_CONTAINER
 docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "mkdir -p /manager/reports; $PYLINT_CMD `echo $SPACEWALK_FILES` > /manager/reports/pylint.log || :"
