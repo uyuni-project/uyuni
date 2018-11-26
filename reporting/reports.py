@@ -3,6 +3,7 @@ import os
 import re
 import sys
 
+from salt.ext import six
 from spacewalk.common.rhnConfig import RHNOptions
 
 REPORT_DEFINITIONS = "/usr/share/spacewalk/reports/data"
@@ -30,7 +31,7 @@ class report:
                 try:
                         fd = open(full_path, 'r')
                 except (IOError):
-                        raise spacewalk_unknown_report, None, sys.exc_info()[2]
+                        six.reraise(spacewalk_unknown_report, None, sys.exc_info()[2])
                 tag = None
                 value = ''
                 re_comment = re.compile('^\s*#')
@@ -81,7 +82,7 @@ class report:
                         self.column_indexes = {}
                         self.column_types = {}
                         self.column_descriptions = {}
-                        lines = filter(lambda x: x != '', re.split('\s*\n\s*', value))
+                        lines = filter(None, re.split('\s*\n\s*', value))
                         i = 0
                         for l in lines:
                                 description = None
@@ -100,7 +101,7 @@ class report:
                                         self.column_descriptions[c] = description
                                 i = i + 1
                 elif tag == 'params':
-                        lines = filter(lambda x: x != '', re.split('\s*\n\s*', value))
+                        lines = filter(None, re.split('\s*\n\s*', value))
                         for l in lines:
                                 ( p, v ) = re.split('\s+', l, 1)
                                 ( component, option ) = re.split('\.', v, 1)
@@ -115,7 +116,7 @@ class report:
                         # joined together and the second one is column
                         # whose value should be used to distinguish if
                         # we still have the same entity or not.
-                        for l in filter(lambda x: x != '', re.split('\n', value)):
+                        for l in filter(None, re.split('\n', value)):
                                 m = re.match('^\s*(\S+?)(\s*:\s*(\S*)\s*)?$', l)
                                 if m == None:
                                         continue
