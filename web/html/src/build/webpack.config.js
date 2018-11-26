@@ -82,7 +82,7 @@ module.exports = (env, argv) => {
       writeToDisk: argv && argv.writeToDisk,
       proxy: [{
         context: ['!/sockjs-node/**'],
-        target: (argv && argv.server) || "https://suma-refhead-srv.mgr.suse.de",
+        target: (argv && argv.server) || "https://suma-32-srv.prv.suse.net/",
         ws: true,
         secure: false,
         // logLevel: "debug",
