@@ -1,5 +1,4 @@
 #! /bin/bash
-BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 set -e
 #
 # For all packages in git:/rel-eng/packages (or defined in $PACKAGES)
@@ -113,22 +112,7 @@ while read PKG_NAME PKG_VER PKG_DIR; do
     continue 2
   fi
 
-  # Convert to obscpio
-  SPEC_VER=$(sed -n -e 's/^Version:\s*\(.*\)/\1/p' ${T_DIR}/${PKG_NAME}.spec)
-  SOURCE=$(sed -n -e 's/^Source0:\s*.*[[:space:]\/]\(.*\)/\1/p' ${T_DIR}/${PKG_NAME}.spec|sed -e "s/%{name}/${PKG_NAME}/"|sed -e "s/%{version}/${SPEC_VER}/")
-  FOLDER=$(tar -tf ${T_DIR}/${SOURCE}|head -1|sed -e 's/\///')
-  (cd ${T_DIR}; tar -xf ${SOURCE}; rm ${SOURCE}; mv ${FOLDER} ${PKG_NAME}; find ${PKG_NAME} | cpio --create --format=newc --reproducible > ${FOLDER}.obscpio; rm -rf ${PKG_NAME})
-  # Move to destination
   mv "$T_DIR" "$SRPM_DIR/$PKG_NAME"
-  # Copy service
-  cp ${BASE_DIR}/_service "${SRPM_DIR}/${PKG_NAME}"
-  # Create .obsinfo file
-  cat > "${SRPM_DIR}/${PKG_NAME}/${PKG_NAME}.obsinfo" <<EOF
-name: ${PKG_NAME}
-version: $(echo ${FOLDER}|sed -e "s/${PKG_NAME}-//")
-mtime: $(date +%s)
-commit: $(git rev-parse --verify HEAD)
-EOF
   # Release is handled by the Buildservice
   # Remove everything what prevents us from submitting
   sed -i 's/^Release.*$/Release:    1/i' $SRPM_DIR/$PKG_NAME/*.spec
