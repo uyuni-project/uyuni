@@ -253,7 +253,12 @@ public class ConfigDefaults {
     public static final String NOTIFICATIONS_LIFETIME = "java.notifications_lifetime";
 
     /**
-     * Indicates the salt-api host to connect to (host)
+     * Notifications types to disable
+     */
+    public static final String NOTIFICATIONS_TYPE_DISABLED = "java.notifications_type_disabled";
+
+    /**
+     * Indicates the salt-api host to connect to (host
      */
     public static final String SALT_API_HOST = "java.salt_api_host";
 
@@ -918,5 +923,14 @@ public class ConfigDefaults {
      */
     public int getSaltEventsPerCommit() {
         return Config.get().getInt(SALT_EVENTS_PER_COMMIT, 1);
+    }
+
+
+    /**
+     * Returns the notifications type disabled.
+     * @return notifications type disabled
+     */
+    public List<String> getNotificationsTypeDisabled() {
+        return Config.get().getList(NOTIFICATIONS_TYPE_DISABLED);
     }
 }
