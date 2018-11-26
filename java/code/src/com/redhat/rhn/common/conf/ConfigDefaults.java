@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * ConfigDefaults is the place to store application specific Config settings
@@ -249,6 +250,11 @@ public class ConfigDefaults {
      * Lifetime of notification messages in days
      */
     public static final String NOTIFICATIONS_LIFETIME = "java.notifications_lifetime";
+
+    /**
+     * Notifications types to disable
+     */
+    public static final String NOTIFICATIONS_TYPE_DISABLED = "java.notifications_type_disabled";
 
     /**
      * If true, signing metadata is enabled, otherwise metadata will not be signed
@@ -898,5 +904,14 @@ public class ConfigDefaults {
      */
     public int getSaltEventsPerCommit() {
         return Config.get().getInt(SALT_EVENTS_PER_COMMIT, 1);
+    }
+
+
+    /**
+     * Returns the notifications type disabled.
+     * @return notifications type disabled
+     */
+    public List<String> getNotificationsTypeDisabled() {
+        return Config.get().getList(NOTIFICATIONS_TYPE_DISABLED);
     }
 }
