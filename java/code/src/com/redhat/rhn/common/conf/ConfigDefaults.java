@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * ConfigDefaults is the place to store application specific Config settings
@@ -240,6 +241,10 @@ public class ConfigDefaults {
      */
     public static final String SALT_CHECK_DOWNLOAD_TOKENS = "java.salt_check_download_tokens";
 
+    /**
+     * Notifications types to disable
+     */
+    public static final String NOTIFICATIONS_TYPE_DISABLED = "java.notifications_type_disabled";
 
     private ConfigDefaults() {
     }
@@ -840,5 +845,13 @@ public class ConfigDefaults {
      */
     public float getSaltContentStagingAdvance() {
         return Config.get().getFloat(SALT_CONTENT_STAGING_ADVANCE, 8);
+    }
+
+    /**
+     * Returns the notifications type disabled.
+     * @return notifications type disabled
+     */
+    public List<String> getNotificationsTypeDisabled() {
+        return Config.get().getList(NOTIFICATIONS_TYPE_DISABLED);
     }
 }
