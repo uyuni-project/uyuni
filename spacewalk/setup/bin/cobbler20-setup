@@ -1,14 +1,16 @@
 #!/usr/bin/python
-from yaml import load
-from Cheetah.Template import Template
-from socket import gethostbyname, gethostname
-import shutil
-from os.path import exists, join, dirname, basename, isdir, isfile
-from os import system, chmod
-import sys
-import re
 
+# pylint: disable=invalid-name,pointless-string-statement,import-error,protected-access
+from os.path import exists, join, basename, isdir, isfile
+from os import system, chmod
+from socket import gethostname
+import shutil
+
+from yaml import load
 from spacewalk.common import rhnConfig
+from salt.ext import six
+from Cheetah.Template import Template
+
 
 TEMPLATES_DIR = '/usr/share/cobbler/installer_templates'
 MODULES_TEMPLATE = join(TEMPLATES_DIR, 'modules.conf.template')
@@ -41,6 +43,9 @@ def ask_yes_no(question, default_val = None):
         default_val = 'n'
         default_q   = '[y/N]'
 
+    if six.PY3:
+        raw_input = input
+
     ans = raw_input(question + " " + default_q + "?")
     if not ans:
         return default_val == 'y'
@@ -48,8 +53,9 @@ def ask_yes_no(question, default_val = None):
     return ans.lower() == 'y'
 
 def gen_template(template, answers, output):
-        t = Template(file=template, searchList=answers)
-        open(output,"w").write(t.respond())
+    t = Template(file=template, searchList=answers)
+    with open(output, 'w') as tfh:
+        tfh.write(t.respond())
 
 def main():
     answers = dict(loadFile(DEFAULTS))
@@ -62,15 +68,19 @@ def main():
     gen_template(SETTINGS_TEMPLATE, answers, TEMP_SETTINGS)
     gen_template(MODULES_TEMPLATE, answers, TEMP_MODULES)
     copy(TEMP_SETTINGS, SETTINGS)
-    chmod(SETTINGS, 0644)
+    chmod(SETTINGS, 0o644)
     copy(TEMP_MODULES, MODULES)
-    chmod(MODULES, 0644)
-    m = re.compile(r"^cobbler\.host\s*=\s*", re.MULTILINE)
+    chmod(MODULES, 0o644)
 
-    conf_lines = open(rhnConfig._CONFIG_FILE).read()
-    if not m.search(conf_lines):
-        system ("echo 'cobbler.host = %s' >> %s " % (answers['server'],
-                      rhnConfig._CONFIG_FILE))
+    cobbler_host = False
+    with open(rhnConfig._CONFIG_FILE) as fh:
+        for line in fh.readlines():
+            if '=' in line and line.startswith('cobbler.host'):
+                cobbler_host = True
+                break
+    if not cobbler_host:
+        with open(rhnConfig._CONFIG_FILE, 'a') as fh:
+            fh.write('cobbler.host = {}\n'.format(answers['server']))
     system("cobbler sync")
 
 
