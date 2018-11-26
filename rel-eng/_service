@@ -1,7 +1,0 @@
-<services>
-  <service name="tar" mode="buildtime"/>
-  <service name="recompress" mode="buildtime">
-    <param name="file">*.tar</param>
-    <param name="compression">gz</param>
-  </service>
-</services>

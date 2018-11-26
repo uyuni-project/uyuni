@@ -86,15 +86,10 @@ function tar_diff_p1() {
   test -d "$tdir" || { echo "No tmpdir for tar_diff '$tdir'"; return 1; }
 
   mkdir "$tdir/L";
-  case "$ltar" in
-    *.obscpio) (FDIR=${PWD}; cd $tdir/L; cpio -id < "${FDIR}/$ltar");;
-    *) tar_cat "$ltar" | tar xf - -C "$tdir/L" || return 2;;
-  esac
+  tar_cat "$ltar" | tar xf - -C "$tdir/L" || return 2
   mkdir "$tdir/R";
-  case "$ltar" in
-    *.obscpio) (FDIR=${PWD}; cd $tdir/R; cpio -id < "${FDIR}/$rtar");;
-    *) tar_cat "$rtar" | tar xf - -C "$tdir/R" || return 2;;
-  esac
+  tar_cat "$rtar" | tar xf - -C "$tdir/R" || return 2
+
   if $DIFF -r "$tdir/L"/* "$tdir/R"/*; then
     echo "Content $ltar and $rtar is the same"
     return 0
@@ -123,7 +118,7 @@ function copy_changed_package()
   for F in "$tdir"/*; do
     local stem="$(basename "$F")"
     case "$stem" in
-      *.tar.*|*.tar|*.tgz|*.tbz2|*.obscpio)
+      *.tar.*|*.tar|*.tgz|*.tbz2)
         # tarball diff or rename not necessarily implies content change!
         ttar="$tdir/$stem"
         ;;
@@ -151,11 +146,10 @@ function copy_changed_package()
   for F in "$sdir"/*; do
     local stem="$(basename "$F")"
     case "$stem" in
-      *.tar.*|*.tar|*.tgz|*.tbz2|*.obscpio)
+      *.tar.*|*.tar|*.tgz|*.tbz2)
         # tarball diff or rename not necessarily implies content change!
         star="$sdir/$stem"
         ;;
-      *.obsinfo) break;;
       *)
         if [ -f "$tdir/$stem" ]; then
 	  # In sec files ignore Source and %setup lines containing
