@@ -137,11 +137,15 @@
             SELECT system_id FROM affected_and_patched
         )
     )
-    SELECT * FROM affected_and_patched
-      UNION ALL (
-        SELECT * FROM not_affected
-    )
-    ORDER BY system_id, channel_rank, errata_id NULLS LAST
+    SELECT * FROM (
+        SELECT *
+          FROM affected_and_patched
+          UNION ALL (
+            SELECT *
+              FROM not_affected
+          )
+    ) X
+    ORDER BY X.system_id, X.channel_rank, X.errata_id NULLS LAST
   </query>
 </mode>
 
