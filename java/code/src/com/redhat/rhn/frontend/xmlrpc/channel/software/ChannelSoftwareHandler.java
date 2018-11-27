@@ -40,10 +40,12 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
@@ -65,6 +67,7 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelEditor;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
@@ -89,6 +92,8 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -99,8 +104,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.util.Optional.empty;
 
 /**
  * ChannelSoftwareHandler
@@ -3359,10 +3362,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * Unsubscribe channels from the specified minions, trigger immediate channels update state
      * @param user The current user
      * @param sids System Ids for minions
-     * @param base base channel label
+     * @param baseChannel base channel label
      * @param childLabels child channels' labels
      * @return array containing action Ids
-     *
+     * @deprecated being replaced by refreshSystemsChannelInfo
+
      * @xmlrpc.doc Unsubscribe channels from the specified minions, trigger immediate channels update state
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "serverId")
@@ -3370,25 +3374,62 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "childLabels")
      * @xmlrpc.returntype  #array_single("int", "actionId")
      */
-    public long[] unsubscribeChannels(User user, List<Integer> sids, String base, List<String> childLabels) {
-        Set<Action> actions;
+    @Deprecated
+    public long[] unsubscribeChannels(User user, List<Integer> sids, String baseChannel, List<String> childLabels) {
+        Set<Action> actions = new HashSet<>();
         try {
-            List<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+            Set<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toSet());
+            ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+            Date earliest = Date.from(LocalDateTime.now().atZone(zoneId).toInstant());
+            //If baseChannelLabel is there then we subscribe to nothing
+            if (StringUtils.isNotEmpty(baseChannel)) {
+                actions = ActionChainManager.scheduleSubscribeChannelsAction(user, serverIds, Optional.empty(),
+                        Collections.EMPTY_SET, earliest, null);
+            }
+            else {
+                List<Channel> childChannelsToRemove = childLabels.stream()
+                        .map(clabel -> lookupChannelByLabel(user, clabel))
+                        .collect(Collectors.toList());
 
-            List<Long> minionServerIds = MinionServerFactory.lookupByIds(serverIds)
-                    .map(s -> s.getId()).collect(Collectors.toList());
-            List<Channel> childChannels = childLabels.stream()
-                    .map(clabel -> lookupChannelByLabel(user, clabel))
-                    .collect(Collectors.toList());
-            Optional<Channel> baseChannel = StringUtils.isNotEmpty(base) ?
-                    Optional.ofNullable(lookupChannelByLabel(user, base)) : empty();
-            actions = ChannelManager.updateChannelSubscription(user, minionServerIds, baseChannel, childChannels);
+                for (Long serverId : serverIds) {
+                    Server server = SystemManager.lookupByIdAndUser(serverId, user);
+                    Set<Channel> childChannels = server.getChildChannels();
+                    childChannels.removeAll(childChannelsToRemove);
+                    Set<Action> action =
+                            ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(serverId),
+                                    Optional.of(server.getBaseChannel()), childChannels, earliest, null);
+                    actions.addAll(action);
+
+                }
+            }
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
         return actions.stream().mapToLong(a -> a.getId()).toArray();
 
+    }
+
+    /**
+     * Refresh pillar data and then schedule channels state on the given systems
+     * @param user The current user
+     * @param sids server ids for the minions
+     * @return action id
+
+     * @xmlrpc.doc Refresh pillar data and then schedule channels state on the provided systems
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.returntype  #array_single("int", "actionId")
+     */
+    public long refreshSystemsChannelInfo(User user, List<Integer> sids) {
+        try {
+            List<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+            List<MinionServer> minionServers = MinionServerFactory.lookupByIds(serverIds).collect(Collectors.toList());
+            return ChannelManager.updateSystemsChannelsInfo(user, minionServers).getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     private ContentSource lookupContentSourceById(Long repoId, Org org) {

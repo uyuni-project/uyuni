@@ -68,13 +68,36 @@ class RemoteApi:
             to_ret.append(item["label"])
         self.cache[key] = to_ret
         return to_ret
-    def unsubscribe_channels(self, server_ids, base_channel, channel_labels):
+    def unsubscribe_channels(self, server_ids):
         self.auth_check()
-        child_channels = [channel_label for channel_label in channel_labels if channel_label != base_channel]
-        earliest_occurrence = datetime.datetime.now()
-        result = self.client.channel.software.unsubscribeChannels(self.auth_token, server_ids, base_channel, child_channels)
+        self.client.channel.software.refreshSystemsChannelInfo(self.auth_token, server_ids)
 
-def __serverCheck(labels, unsubscribe, base_channel, username, password):
+
+def __updateServerRepos(server_ids, username, password):
+    print(server_ids)
+    xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
+    return xmlrpc.unsubscribe_channels(server_ids)
+
+def __getassignedMinions(labels):
+    sql = """
+        SELECT DISTINCT  mi.server_id
+             FROM rhnChannel c 
+             JOIN rhnServerChannel sc ON c.id = sc.channel_id 
+             JOIN suseminioninfo mi ON mi.server_id = sc.server_id 
+        WHERE c.label IN (%s)
+    """
+    params, bind_params = _bind_many(labels)
+    bind_params = ', '.join(bind_params)
+    h = rhnSQL.prepare(sql % (bind_params))
+    h.execute(**params)
+    server_list = h.fetchall_dict()
+    if not server_list:
+        return 0
+    server_ids = map(lambda s: s['server_id'], server_list)
+    return server_ids;
+
+
+def __serverCheck(labels, unsubscribe):
     sql = """
         select distinct S.org_id, S.id, S.name
         from rhnChannel c inner join
@@ -91,9 +114,6 @@ def __serverCheck(labels, unsubscribe, base_channel, username, password):
         return 0
 
     if unsubscribe:
-        server_ids = map(lambda s: s['id'], server_list)
-        xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
-        xmlrpc.unsubscribe_channels(server_ids, base_channel, labels)
         return __unsubscribeServers(labels)
 
     print("\nCurrently there are systems subscribed to one or more of the specified channels.")
@@ -146,6 +166,7 @@ def __unsubscribeServers(labels):
         pb.addTo(1)
         pb.printIncrement()
     pb.printComplete()
+    rhnSQL.commit()
 
 
 def __kickstartCheck(labels):
