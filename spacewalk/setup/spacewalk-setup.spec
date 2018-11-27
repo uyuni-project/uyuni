@@ -79,7 +79,11 @@ Requires:       policycoreutils
 # to have /etc/salt/master.d
 Requires(pre):  salt-master
 # for salt to be generated into the thin
-Requires:       %{pythonX}-certifi
+%if 0%{?build_py3}
+Requires:       python3-certifi
+%else
+Requires:       python-certifi
+%endif
 BuildRequires:  perl-libwww-perl
 %else
 Requires:       %{sbinpath}/restorecon
@@ -94,7 +98,11 @@ Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
 %if 0%{?suse_version}
-Requires:       %{pythonX}-PyYAML
+%if 0%{?build_py3}
+Requires:       python3-PyYAML
+%else
+Requires:       python-PyYAML
+%endif
 %else
 %if 0%{?fedora} >= 22
 Recommends:     cobbler20
