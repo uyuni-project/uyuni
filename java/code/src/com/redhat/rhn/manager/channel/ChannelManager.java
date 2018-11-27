@@ -47,6 +47,7 @@ import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -66,7 +67,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyChannelNotFoundException;
 import com.redhat.rhn.manager.BaseManager;
-import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -77,7 +78,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
-import com.suse.utils.Opt;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -614,58 +615,21 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * Schedule an action to Unsubscribe channels from the specified systems, trigger immediate channels update state
+     * Refreshes channel info for the systems by regenerating pillar data and then trigger immediate channels state
      * @param user User with permission to schedule an action
-     * @param sids ids for server those have this channel assigned
-     * @param baseChannel base channel to remove
-     * @param childChannels child channels remove
-     * @return Set of scheduled Actions
+     * @param minions those minions where pillar data should be re-generated and channel state should be applied
+     * @return Scheduled action
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      * label
      */
-    public static Set<Action> updateChannelSubscription(User user, List<Long> sids, Optional<Channel> baseChannel,
-                                                        List<Channel> childChannels) throws TaskomaticApiException {
-        Set<Action> actions = new HashSet<>();
-        Date earliest = new Date();
-        if (baseChannel.isPresent()) {
-            actions = ActionChainManager.scheduleSubscribeChannelsAction(user, new HashSet<>(sids), Optional.empty(),
-                    Collections.EMPTY_SET, earliest, null);
-        }
-        else {
 
-            List<Server> servers = ServerFactory.lookupByIds(sids);
-            for (Server server : servers) {
-                Set<Channel> currentChildChanels = server.getChildChannels();
-                currentChildChanels.removeAll(childChannels);
-                Set<Action> action =
-                        ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(server.getId()),
-                                Optional.of(server.getBaseChannel()), currentChildChanels, earliest, null);
-                actions.addAll(action);
-            }
+    public static Action updateSystemsChannelsInfo(User user, List<MinionServer> minions)
+            throws TaskomaticApiException {
+        for (MinionServer ms: minions) {
+            SaltStateGeneratorService.INSTANCE.generatePillar(ms, false, Collections.emptySet());
         }
-        return actions;
-    }
-
-    /**
-     * Schedule an action to Unsubscribe channel from the assigned systems, trigger immediate channels update state
-     * @param user User with permission to schedule an action
-     * @param channel channel to unsubscribe
-     * @return Set of scheduled Actions
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     * label
-     */
-    public static Set<Action> updateChannelSubscription(User user, Channel channel) throws TaskomaticApiException {
-        Set<Action> actions = new HashSet<>();
-        List<Long> sids = ServerFactory.findServersByChannel(channel.getId());
-        if (!sids.isEmpty()) {
-            Optional<Channel> baseChannel = channel.isBaseChannel() ? of(channel) : empty();
-            List<Channel> childChannels =
-                    Opt.fold(baseChannel, () -> Collections.singletonList(channel), c -> Collections.EMPTY_LIST);
-            actions = updateChannelSubscription(user, sids, baseChannel, childChannels);
-        }
-        return actions;
+        return ActionManager.scheduleChannelState(user, minions);
     }
 
     /**

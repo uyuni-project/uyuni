@@ -541,7 +541,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Deletes a software channel and also schedule a channels.subscribe action for the server which had this channel
+     * Deletes a software channel and then also schedule channel state for the servers which had this channel
      * @param loggedInUser The current user
      * @param channelLabel Label of channel to be deleted.
      * @return 1 if Channel was successfully deleted.
@@ -557,9 +557,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public int delete(User loggedInUser, String channelLabel)
             throws PermissionCheckFailureException, NoSuchChannelException {
         try {
+
             Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
-            ChannelManager.updateChannelSubscription(loggedInUser, channel);
+            List<MinionServer> minions = ServerFactory.listMinionsByChannel(channel.getId());
             ChannelManager.deleteChannel(loggedInUser, channelLabel);
+            ChannelManager.updateSystemsChannelsInfo(loggedInUser, minions);
         }
         catch (InvalidChannelRoleException e) {
             throw new PermissionCheckFailureException(e);

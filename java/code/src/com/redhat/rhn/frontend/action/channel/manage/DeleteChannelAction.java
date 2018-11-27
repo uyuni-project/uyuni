@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -30,16 +32,20 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
 
 /**
  * Handles the page display and actual deletion of a software channel.
@@ -88,8 +94,9 @@ public class DeleteChannelAction extends RhnAction {
                 DataResult dr;
                 try {
                     dr = PackageManager.listCustomPackageForChannel(channelId, user.getOrg().getId(), false);
-                    ChannelManager.updateChannelSubscription(user, channel);
+                    List<MinionServer> minions = ServerFactory.listMinionsByChannel(channel.getId());
                     ChannelManager.deleteChannel(user, channelLabel);
+                    ChannelManager.updateSystemsChannelsInfo(user, minions);
                 }
                 catch (PermissionException e) {
                     addMessage(request, e.getMessage());
