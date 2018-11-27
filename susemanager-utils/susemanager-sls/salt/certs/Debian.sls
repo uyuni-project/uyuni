@@ -1,1 +1,0 @@
-Ubuntu18_04.sls
