@@ -613,7 +613,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run('systemctl restart network')
   end
   # /etc/resolv.conf
-  nodes = [$client, $minion]
+  nodes = [$client, $minion, $ceos_minion]
   file = 'resolv.conf.sed'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/tmp/" + file
