@@ -20,6 +20,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
@@ -36,6 +38,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -54,6 +57,7 @@ import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.EusReleaseComparator;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
@@ -87,6 +91,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
+
+import static org.terracotta.context.query.Matchers.context;
 
 /**
  * ChannelManagerTest
@@ -261,38 +267,22 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNotNull(ChannelManager.getChannelArchitectures());
     }
 
-    public void testUpdateChannelSubscription() throws Exception {
-        ActionChainManager.setTaskomaticApi(getTaskomaticApi());
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel child1 = ChannelFactoryTest.createTestChannel(user);
-        Channel child2 = ChannelFactoryTest.createTestChannel(user);
-        Channel base = ChannelFactoryTest.createTestChannel(user);
-        child1.setParentChannel(base);
-        base.setParentChannel(null);
+    public void testUpdateSystemsChannelsInfo() throws Exception {
+        ActionManager.setTaskomaticApi(getTaskomaticApi());
 
-        server.addChannel(base);
-        server.addChannel(child1);
-        server.addChannel(child2);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(user);
+        testMinionServer.addChannel(base);
+        testMinionServer.addChannel(child);
+        assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(base)).isPresent());
+        assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(child)).isPresent());
+        MinionServer minionServer = TestUtils.saveAndReload(testMinionServer);
 
-        Date earliest = new Date();
-        SystemHandler systemHandler = new SystemHandler();
-        long actionId = systemHandler.scheduleChangeChannels(user, server.getId().intValue(), base.getLabel(),
-                Arrays.asList(child1.getLabel(),child2.getLabel()), earliest);
-        Action action = ActionFactory.lookupById(actionId);
-        assertTrue(action instanceof SubscribeChannelsAction);
-        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
-        assertEquals(base.getId(), sca.getDetails().getBaseChannel().getId());
-        assertEquals(2, sca.getDetails().getChannels().size());
-
-        Set<Action> actions = ChannelManager.updateChannelSubscription(user, Collections.singletonList(server.getId()),
-                Optional.of(base), Arrays.asList(child1, child2));
-
-        action = ActionFactory.lookupById(actions.iterator().next().getId());
-        assertTrue(action instanceof SubscribeChannelsAction);
-        sca = (SubscribeChannelsAction)action;
-        assertNull(sca.getDetails().getBaseChannel());
-        assertTrue(sca.getDetails().getChannels().isEmpty());
-        assertEquals(0, sca.getDetails().getChannels().size());
+        ChannelManager.deleteChannel(user, child.getLabel(), true);
+        Action action = ChannelManager.updateSystemsChannelsInfo(user, Collections.singletonList(minionServer));
+        assertEquals(1, minionServer.getChannels().size());
+        assertTrue(action instanceof ApplyStatesAction);
     }
 
     public void testDeleteChannel() throws Exception {
@@ -969,8 +959,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
             taskomaticApi = MOCK_CONTEXT.mock(TaskomaticApi.class);
             MOCK_CONTEXT.checking(new Expectations() {
                 {
-                    allowing(taskomaticApi)
-                            .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
+                    allowing(taskomaticApi).scheduleActionExecution(with(any(Action.class)));
                 }
             });
         }
