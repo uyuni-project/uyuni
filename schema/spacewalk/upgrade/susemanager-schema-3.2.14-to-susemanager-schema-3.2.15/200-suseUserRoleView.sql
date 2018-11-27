@@ -72,7 +72,7 @@ AS
           u.id AS user_id,
           u.org_id AS user_org_id,
           r.label AS role
-          FROM rhnChannel AS c, web_contact AS u, rhnChannelPermissionRole AS r
-      ) AS combination
+          FROM rhnChannel c, web_contact u, rhnChannelPermissionRole r
+      ) combination
     -- ORDER BY channel_id, user_id, role, result
 ;
