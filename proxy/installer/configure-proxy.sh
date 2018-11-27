@@ -383,7 +383,7 @@ default_or_input "Proxy version to activate" VERSION ${VERSION_FROM_PARENT:-$VER
 
 default_or_input "Traceback email" TRACEBACK_EMAIL ''
 
-default_or_input "Use SSL" USE_SSL 'Y/n'
+default_or_input "Use SSL (Y/N)?" USE_SSL 'Y'
 USE_SSL=$(yes_no $USE_SSL)
 
 
@@ -394,8 +394,8 @@ This SSL certificate will allow client systems to connect to this Spacewalk Prox
 securely. Refer to the Spacewalk Proxy Installation Guide for more information.
 SSLCERT
 
-default_or_input "Do you want to import existing certificates?" \
-    USE_EXISTING_CERTS "y/N"
+default_or_input "Do you want to import existing certificates (Y/N)?" \
+    USE_EXISTING_CERTS "N"
 USE_EXISTING_CERTS=$(yes_no $USE_EXISTING_CERTS)
 
 /usr/sbin/rhn-proxy-activate --server="$RHN_PARENT" \
@@ -629,7 +629,7 @@ sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt
     < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
 
 
-default_or_input "Do you want to use an existing ssh key for proxying ssh-push Salt minions ?" USE_EXISTING_SSH_PUSH_KEY 'y/N'
+default_or_input "Do you want to use an existing ssh key for proxying ssh-push Salt minions (Y/N)?" USE_EXISTING_SSH_PUSH_KEY 'N'
 USE_EXISTING_SSH_PUSH_KEY=$(yes_no $USE_EXISTING_SSH_PUSH_KEY)
 
 if [ "$USE_EXISTING_SSH_PUSH_KEY" -eq "1" ]; then
@@ -646,7 +646,7 @@ fi
 
 
 CHANNEL_LABEL="rhn_proxy_config_$SYSTEM_ID"
-default_or_input "Create and populate configuration channel $CHANNEL_LABEL?" POPULATE_CONFIG_CHANNEL 'Y/n'
+default_or_input "Create and populate configuration channel $CHANNEL_LABEL (Y/N)?" POPULATE_CONFIG_CHANNEL 'Y'
 POPULATE_CONFIG_CHANNEL=$(yes_no $POPULATE_CONFIG_CHANNEL)
 if [ "$POPULATE_CONFIG_CHANNEL" = "1" ]; then
     RHNCFG_STATUS=1
@@ -692,7 +692,7 @@ fi
 
 open_firewall_ports
 
-default_or_input "Activate advertising proxy via SLP?" ACTIVATE_SLP "Y/n"
+default_or_input "Activate advertising proxy via SLP (Y/N)?" ACTIVATE_SLP "Y"
 ACTIVATE_SLP=$(yes_no $ACTIVATE_SLP)
 if [ $ACTIVATE_SLP -ne 0 ]; then
     sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
