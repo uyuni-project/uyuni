@@ -42,6 +42,8 @@ disable_repo_{{ alias }}:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- else %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- endif %}
 {%- endif %}
 
@@ -86,6 +88,13 @@ trust_res_gpg_key:
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
     - runas: root
+
+{%- elif grains['os_family'] == 'Debian' %}
+/usr/share/keyrings/mgr-archive-keyring.gpg:
+  file.managed:
+    - source:
+      - salt://gpg/mgr-keyring.gpg
+    - mode: 644
 {%- endif %}
 
 salt-minion-package:
