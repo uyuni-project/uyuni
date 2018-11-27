@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.channel;
 
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
@@ -701,7 +703,11 @@ public class ChannelManager extends BaseManager {
      */
     public static boolean verifyChannelAdmin(User user, Long cid)
         throws InvalidChannelRoleException {
-        return verifyChannelRole(user, cid, QRY_ROLE_MANAGE);
+        Optional<String> result = verifyChannelRole(user, cid, QRY_ROLE_MANAGE);
+        if (result.isPresent()) {
+            throw new InvalidChannelRoleException(result.get());
+        }
+        return true;
     }
 
     /**
@@ -788,11 +794,7 @@ public class ChannelManager extends BaseManager {
      * @return Returns true if the user has permission, false otherwise
      */
     public static boolean verifyChannelSubscribe(User user, Long cid) {
-
-        try {
-            return verifyChannelRole(user, cid, QRY_ROLE_SUBSCRIBE);
-        }
-        catch (InvalidChannelRoleException e) {
+        if (verifyChannelRole(user, cid, QRY_ROLE_SUBSCRIBE).isPresent()) {
             /*
              * We don't really care what the reason is for why this user doesn't have
              * access to this channel, so catch the exception, log it, and simply
@@ -803,9 +805,10 @@ public class ChannelManager extends BaseManager {
             msg.append(" either does not have subscribe privileges to Channel: ");
             msg.append(cid);
             msg.append(" or ChannelManager.QRY_ROLE_SUBSCRIBE is defined wrong.");
-            log.debug(msg.toString(), e);
+            log.debug(msg.toString());
             return false;
         }
+        return true;
     }
 
     /**
@@ -817,10 +820,7 @@ public class ChannelManager extends BaseManager {
      */
     public static boolean verifyChannelManage(User user, Long cid) {
 
-        try {
-            return verifyChannelRole(user, cid, QRY_ROLE_MANAGE);
-        }
-        catch (InvalidChannelRoleException e) {
+        if (verifyChannelRole(user, cid, QRY_ROLE_MANAGE).isPresent()) {
             /*
              * We don't really care what the reason is for why this user doesn't have
              * access to this channel, so catch the exception, log it, and simply
@@ -828,34 +828,26 @@ public class ChannelManager extends BaseManager {
              */
             StringBuilder msg = new StringBuilder("User: ");
             msg.append(user.getLogin());
-            msg.append(" either does not have subscribe privileges to Channel: ");
+            msg.append(" either does not have manage privileges to Channel: ");
             msg.append(cid);
             msg.append(" or ChannelManager.QRY_ROLE_MANAGE is defined wrong.");
-            log.debug(msg.toString(), e);
+            log.debug(msg.toString());
             return false;
         }
+
+        return true;
     }
 
-    private static boolean verifyChannelRole(User user, Long cid, String role)
-        throws InvalidChannelRoleException {
+    private static Optional<String> verifyChannelRole(User user, Long cid, String role) {
+        SelectMode m = ModeFactory.getMode("Channel_queries", "verify_channel_role");
+        Map<String, Object> params = new HashMap<>();
+        params.put("channel_id", cid);
+        params.put("user_id", user.getId());
+        params.put("role", role);
 
-        CallableMode m = ModeFactory.getCallableMode(
-                "Channel_queries", "verify_channel_role");
+        DataResult<Map<String, String>> result = m.execute(params);
 
-        Map<String, Object> inParams = new HashMap<String, Object>();
-        inParams.put("cid", cid);
-        inParams.put("user_id", user.getId());
-        inParams.put("role", role);
-
-        Map<String, Integer> outParams = new HashMap<String, Integer>();
-        outParams.put("result", new Integer(Types.VARCHAR));
-        Map<String, Object> result = m.execute(inParams, outParams);
-
-        String reason = (String) result.get("result");
-        if (reason != null) {
-            throw new InvalidChannelRoleException(reason);
-        }
-        return true;
+        return ofNullable(result.get(0).get("deny_reason"));
     }
 
     /**
@@ -1493,7 +1485,7 @@ public class ChannelManager extends BaseManager {
                 c = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), usr);
             }
         }
-        return Optional.ofNullable(c);
+        return ofNullable(c);
     }
 
     /**
