@@ -1,4 +1,4 @@
-- Add Ubuntu SSL-Cert SLS-Files
+- Add support for Ubuntu minions
 - prevent the pkgset beacon from firing during onboarding (bsc#1122896)
 
 -------------------------------------------------------------------

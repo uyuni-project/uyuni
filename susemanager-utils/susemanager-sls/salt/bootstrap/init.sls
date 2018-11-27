@@ -7,21 +7,8 @@ mgr_server_localhost_alias_absent:
       - {{ salt['pillar.get']('mgr_server') }}
 
 # disable all susemanager:* repos
-{%- set repos_disabled = {'disabled': false} %}
-{%- set repos = salt['pkg.list_repos']() %}
-{%- for alias, data in repos.items() %}
-{%- if 'susemanager:' in alias %}
-{%- if data.get('enabled', true) %}
-disable_repo_{{ alias }}:
-  module.run:
-    - name: pkg.mod_repo
-    - repo: {{ alias }}
-    - kwargs:
-        enabled: False
-{%- if repos_disabled.update({'disabled': true}) %}{% endif %}
-{%- endif %}
-{%- endif %}
-{%- endfor %}
+{% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
+{%- include 'channels/disablelocalrepos.sls' %}
 
 {%- if grains['os_family'] == 'Suse' %}
 {%- if "." in grains['osrelease'] %}
@@ -57,7 +44,7 @@ bootstrap_repo:
     - mode: 644
     - require:
       - host: mgr_server_localhost_alias_absent
-{%- if repos_disabled.disabled %}
+{%- if repos_disabled.count > 0 %}
       - module: disable_repo_*
 {%- endif %}
     - onlyif:
