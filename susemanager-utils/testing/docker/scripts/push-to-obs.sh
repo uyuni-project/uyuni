@@ -52,7 +52,7 @@ cd ${REL_ENG_FOLDER}
 
 # If we have more than one destinations, keep SRPMS so we don't
 # need to rebuild for each submission
-if [ "$(echo ${DESTIONATIONS}|cut -d',' -f2)" != "" ]; then
+if [ "$(echo ${DESTINATIONS}|cut -d',' -f2)" != "" ]; then
   export KEEP_SRPMS=TRUE
 fi
 

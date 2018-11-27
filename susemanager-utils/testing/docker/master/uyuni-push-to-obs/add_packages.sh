@@ -6,4 +6,5 @@ zypper --non-interactive in osc \
              git \
              tito \
 	     build \
-	     npm
+	     npm \
+	     ca-certificates-suse
