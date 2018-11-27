@@ -707,7 +707,7 @@ public class ChannelManager extends BaseManager {
      */
     public static boolean verifyChannelAdmin(User user, Long cid)
         throws InvalidChannelRoleException {
-        Optional<String> result = verifyChannelRole(user, cid, QRY_ROLE_MANAGE);
+        Optional<String> result = verifyChannelRole(user.getId(), cid, QRY_ROLE_MANAGE);
         if (result.isPresent()) {
             throw new InvalidChannelRoleException(result.get());
         }
@@ -798,7 +798,7 @@ public class ChannelManager extends BaseManager {
      * @return Returns true if the user has permission, false otherwise
      */
     public static boolean verifyChannelSubscribe(User user, Long cid) {
-        if (verifyChannelRole(user, cid, QRY_ROLE_SUBSCRIBE).isPresent()) {
+        if (verifyChannelRole(user.getId(), cid, QRY_ROLE_SUBSCRIBE).isPresent()) {
             /*
              * We don't really care what the reason is for why this user doesn't have
              * access to this channel, so catch the exception, log it, and simply
@@ -824,7 +824,7 @@ public class ChannelManager extends BaseManager {
      */
     public static boolean verifyChannelManage(User user, Long cid) {
 
-        if (verifyChannelRole(user, cid, QRY_ROLE_MANAGE).isPresent()) {
+        if (verifyChannelRole(user.getId(), cid, QRY_ROLE_MANAGE).isPresent()) {
             /*
              * We don't really care what the reason is for why this user doesn't have
              * access to this channel, so catch the exception, log it, and simply
@@ -842,11 +842,20 @@ public class ChannelManager extends BaseManager {
         return true;
     }
 
-    private static Optional<String> verifyChannelRole(User user, Long cid, String role) {
+    /**
+     * Returns an empty optional if the specified user can use the channel with the specified role, a String with the
+     * reason otherwise.
+     *
+     * @param uid the user id
+     * @param cid the channel id
+     * @param role the role
+     * @return empty if the access is granted, a reason string otherwise
+     */
+    public static Optional<String> verifyChannelRole(Long uid, Long cid, String role) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "verify_channel_role");
         Map<String, Object> params = new HashMap<>();
         params.put("channel_id", cid);
-        params.put("user_id", user.getId());
+        params.put("user_id", uid);
         params.put("role", role);
 
         DataResult<Map<String, String>> result = m.execute(params);
