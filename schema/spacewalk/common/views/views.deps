@@ -90,3 +90,13 @@ rhnUserChannelFamilyPerms        :: rhnPrivateChannelFamily \
 rhnWebContactEnabled             :: web_contact rhnWebContactDisabled
 rhnOrgChannelFamilyPermissions   :: rhnPublicChannelFamily web_contact \
                                     rhnPrivateChannelFamily
+suseChannelUserRoleView          :: rhnSharedChannelView \
+                                    rhnChannelFamilyMembers \
+                                    rhnOrgChannelFamilyPermissions \
+                                    rhnUserGroupMembers \
+                                    rhnUserGroup \
+                                    rhnUserGroupType \
+                                    rhnOrgChannelSettings \
+                                    rhnOrgChannelSettingsType \
+                                    rhnChannelPermission \
+                                    rhnChannelPermissionRole
