@@ -43,7 +43,7 @@ type ChannelDto = {
   custom: boolean,
   subscribable: boolean,
   recommended: boolean,
-  compatibleChannelPreviousSelection?: boolean,
+  compatibleChannelPreviousSelection?: number,
 }
 
 type SystemChannelsState = {
@@ -98,16 +98,21 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels`)
       .promise.then(data => {
         const base : ChannelDto = data.data && data.data.base ? data.data.base : this.getNoBase();
+        const childrenIds = data.data.children ? data.data.children.map(c => c.id) : [];
         this.setState({
           originalBase: base,
           selectedBase: base,
-          selectedChildrenIds: new Map([[base.id, new Set(data.data.children.map(c => c.id))]]),
-          assignedChildrenIds : new Set(data.data.children.map(c => c.id)),
+          selectedChildrenIds: new Map([[base.id, new Set(childrenIds)]]),
+          assignedChildrenIds : new Set(childrenIds),
         });
         if (data.data && data.data.base) {
           this.getAccessibleChildren(data.data.base.id);
+        } else {
+          this.setState({
+            dependencyDataAvailable: true,
+          })
         }
-      })
+    })
       .catch(this.handleResponseError);
 
     Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels-available-base`)
