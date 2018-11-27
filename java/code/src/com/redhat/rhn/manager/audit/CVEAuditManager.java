@@ -901,15 +901,17 @@ public class CVEAuditManager {
                 results.stream().collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
 
         // Loop for each system, calculating the patch status individually
-        for (Map.Entry<Long, List<CVEPatchStatus>> systemResults : resultsBySystem.entrySet()) {
-            CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(systemResults.getKey());
+        for (Map.Entry<Long, List<CVEPatchStatus>> systemResultMap : resultsBySystem.entrySet()) {
+            CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(systemResultMap.getKey());
+            List<CVEPatchStatus> systemResults = systemResultMap.getValue();
+            system.setSystemName(systemResults.get(0).getSystemName());
 
             // The relevant channels assigned to the system
             Set<ChannelIdNameLabelTriple> assignedChannels = new HashSet<>();
 
             // Group results for the system further by package names, filtering out 'not-affected' entries
             Map<String, List<CVEPatchStatus>> resultsByPackage =
-                    systemResults.getValue().stream().filter(r -> r.getErrataId().isPresent())
+                    systemResults.stream().filter(r -> r.getErrataId().isPresent())
                             .collect(Collectors.groupingBy(r -> r.getPackageName().get()));
 
             // When live patching is available, the original kernel packages ('-default' or '-xen') must be ignored.
