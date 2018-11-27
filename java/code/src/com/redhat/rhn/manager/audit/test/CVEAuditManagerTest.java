@@ -1737,6 +1737,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         for (CVEAuditServer result : actualResults) {
             if (result.getId() == expectedServer.getId()) {
                 assertFalse(found);
+                assertEquals(expectedServer.getName(), result.getName());
                 assertEquals(expectedPatchStatus, result.getPatchStatus());
                 found = true;
             }
