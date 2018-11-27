@@ -213,11 +213,15 @@ ORDER BY UPPER(C.name)
   </query>
 </mode>
 
-<callable-mode name="verify_channel_role">
-  <query params="result, cid, user_id, role">
-      {:result = call rhn_channel.user_role_check_debug(:cid, :user_id, :role)}
+<mode name="verify_channel_role">
+  <query params="channel_id, user_id, role">
+      SELECT deny_reason
+        FROM suseChannelUserRoleView
+        WHERE channel_id = :channel_id AND
+          user_id = :user_id AND
+          role = :role
   </query>
-</callable-mode>
+</mode>
 
 <mode name="all_channel_tree" class="com.redhat.rhn.frontend.dto.ChannelTreeNode">
         <query params="user_id">
