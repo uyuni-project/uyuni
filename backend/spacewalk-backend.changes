@@ -1,3 +1,4 @@
+- honor renamed postgresql10 log directory for supportconfig
 -------------------------------------------------------------------
 Thu Nov 01 10:53:49 CET 2018 - jgonzalez@suse.com
 
