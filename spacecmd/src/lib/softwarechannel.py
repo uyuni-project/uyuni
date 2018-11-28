@@ -2538,6 +2538,11 @@ def help_softwarechannel_syncrepos(self):
     print('Sync users repos for a software channel')
     print('')
     print('usage: softwarechannel_syncrepos <CHANNEL ...>')
+    print('Options:')
+    print('    -e/--no-errata : Do not sync errata')
+    print('    -f/--fail : Terminate upon any error')
+    print('    -k/--sync-kickstart : Create kickstartable tree')
+    print('    -l/--latest : Only download latest package versions when repo syncs')
 
 
 def complete_softwarechannel_syncrepos(self, text, line, beg, end):
@@ -2546,8 +2551,14 @@ def complete_softwarechannel_syncrepos(self, text, line, beg, end):
 
 def do_softwarechannel_syncrepos(self, args):
     arg_parser = get_argument_parser()
+    arg_parser.add_argument('-e', '--no-errata', action='store_true', default=False)
+    arg_parser.add_argument('-f', '--fail', action='store_true', default=False)
+    arg_parser.add_argument('-k', '--sync-kickstart', action='store_true', default=False)
+    arg_parser.add_argument('-l', '--latest', action='store_true', default=False)
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    params = dict((i.replace('_', '-'), getattr(options, i)) for i in ['no_errata', 'fail', 'sync_kickstart', 'latest'])
 
     if not args:
         self.help_softwarechannel_syncrepos()
@@ -2558,7 +2569,7 @@ def do_softwarechannel_syncrepos(self, args):
 
     for channel in channels:
         logging.debug('Syncing repos for %s' % channel)
-        self.client.channel.software.syncRepo(self.session, channel)
+        self.client.channel.software.syncRepo(self.session, channel, params)
 
 ####################
 

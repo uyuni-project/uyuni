@@ -8,12 +8,13 @@
 # Ani Peter <apeter@redhat.com>, 2006-2007,2010
 # Miroslav Suchý <msuchy@redhat.com>, 2011-2012
 # Jan Dobes <jdobes@redhat.com>, 2016. #zanata
+# Jiri Dostal <jdostal@redhat.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-16 14:26+0100\n"
-"PO-Revision-Date: 2016-02-18 07:50-0500\n"
+"POT-Creation-Date: 2018-11-23 14:33+0100\n"
+"PO-Revision-Date: 2018-03-16 11:02+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Malayalam (http://www.transifex.com/projects/p/spacewalk/"
 "language/ml/)\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.9.6\n"
+"X-Generator: Zanata 4.6.2\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -37,7 +38,7 @@ msgstr ""
 msgid "%s was not found"
 msgstr "%s ലഭ്യമായില്ല"
 
-#: ../src/up2date_client/debUtils.py:59 ../src/up2date_client/rpmUtils.py:116
+#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:116
 msgid "Getting list of packages installed on the system"
 msgstr "സിസ്റ്റത്തില്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്ത പാക്കേജുകളുടെ ലിസ്റ്റ് ലഭ്യമാകുന്നു"
 
@@ -89,6 +90,14 @@ msgstr "പിശക്:"
 #: ../src/up2date_client/messageWindow.py:113
 msgid "Yes/No dialog:"
 msgstr "അതെ/അല്ല ഡയലോഗ്:"
+
+#: ../src/up2date_client/rhnChannel.py:102
+msgid "Unable to Locate SystemId"
+msgstr "SystemId ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
+
+#: ../src/up2date_client/rhnChannel.py:119
+msgid "This system may not be updated until it is associated with a channel."
+msgstr "ഒരു ചാനലുമായി ബന്ധപ്പെടുന്നതു വരെ സിസ്റ്റം പുതുക്കുവാന്‍ പാടില്ല."
 
 #: ../src/up2date_client/rhncli.py:68
 msgid "Show additional output"
@@ -180,13 +189,276 @@ msgstr "ഒരു പിഴവ് സംഭവിച്ചിരിക്കു�
 msgid "See /var/log/up2date for more information"
 msgstr "കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി /var/log/up2date കാണുക"
 
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "SystemId ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
+#: ../src/up2date_client/rhnreg.py:82
+#, fuzzy
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr "മുന്നറിയിപ്പ്: chkconfig-നൊപ്പം rhnsd പ്രാപ്യമാക്കുന്നതിന് സാധ്യമല്ല"
 
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "ഒരു ചാനലുമായി ബന്ധപ്പെടുന്നതു വരെ സിസ്റ്റം പുതുക്കുവാന്‍ പാടില്ല."
+#: ../src/up2date_client/rhnreg.py:88
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr "മുന്നറിയിപ്പ്: chkconfig-നൊപ്പം rhnsd പ്രാപ്യമാക്കുന്നതിന് സാധ്യമല്ല"
+
+#: ../src/up2date_client/rhnregGui.py:147
+#: ../src/up2date_client/rhnregGui.py:164
+msgid "Notice"
+msgstr "അറിയിപ്പ്"
+
+#: ../src/up2date_client/rhnregGui.py:157
+#: ../src/up2date_client/rhnregGui.py:171
+#: ../src/up2date_client/rhnreg_constants.py:245
+msgid "Warning"
+msgstr "മുന്നറിയിപ്പ്"
+
+#: ../src/up2date_client/rhnregGui.py:272
+msgid "There was an error while applying your choice."
+msgstr "നിങ്ങള്‍ തെരഞ്ഞെടുത്തതില്‍ ഒരു പിഴവ് സംഭവിച്ചിരിക്കുന്നു."
+
+#: ../src/up2date_client/rhnregGui.py:291
+msgid "You specified an invalid protocol. Only https and http are allowed."
+msgstr "നിങ്ങള്‍ തെറ്റായ സമ്പ്രദായമാണ് നല്‍കിയിരിക്കുന്നത്. https, http മാത്രമേ അനുവദിക്കൂ."
+
+#: ../src/up2date_client/rhnregGui.py:305
+#, fuzzy
+msgid ""
+"You will not be able to successfully register this system without contacting "
+"a Spacewalk server."
+msgstr ""
+"Red Hat നെറ്റ്‌വര്‍ക്കിലേക്ക് കണക്ട് ചെയ്യാതെ നിങ്ങള്‍ക്ക് ഈ സബ്സ്ക്രിപ്ഷന്‍ ആനുകൂല്യങ്ങള്‍ ലഭ്യമാകുകയില്ല."
+
+#: ../src/up2date_client/rhnregGui.py:325
+msgid "Cannot contact selected server"
+msgstr "തെരഞ്ഞെടുത്ത സര്‍വറുമായി ബന്ധപ്പെടുവാന്‍ സാധ്യമല്ല"
+
+#: ../src/up2date_client/rhnregGui.py:326
+#, python-format
+msgid "We could not contact the Satellite or Proxy at '%s.'"
+msgstr "'%s'-ല്‍ സാറ്റിലൈറ്റ് അല്ലെങ്കില്‍ പ്രൊക്സിയുമായി ബന്ധപ്പെടുവാന്‍ സാധ്യമല്ല."
+
+#: ../src/up2date_client/rhnregGui.py:328
+#, python-format
+msgid ""
+"Double-check the location - is '%s' correct? If not, you can correct it and "
+"try again."
+msgstr ""
+"നല്‍കിയിരിക്കുന്ന സ്ഥാനം '%s' ശരിയാണോ എന്ന് വീണ്ടും പരിശോധിക്കുക?ശരിയല്ലായെങ്കില്‍, അത് "
+"ശരിയാക്കി നിങ്ങള്‍ക്ക് വീണ്ടും ശ്റമിക്കാവുന്നതാണ്."
+
+#: ../src/up2date_client/rhnregGui.py:331
+msgid "Make sure the network connection on this system is operational."
+msgstr "ഈ സിസ്റ്റത്തിലുള്ള നെറ്റ്‌വര്‍ക്ക് കണക്ഷന്‍ ഓപ്പറേഷണല്‍ ആണ് എന്നുറപ്പ് വരുത്തുക."
+
+#: ../src/up2date_client/rhnregGui.py:341
+#, fuzzy
+msgid "There was an error communicating with Spacewalk server."
+msgstr "Red Hat നെറ്റ്‌വര്‍ക്കുമായി ബന്ധപ്പെടുന്നതില്‍ ഒരു തകരാറു സംഭവിച്ചിരിക്കുന്നു."
+
+#: ../src/up2date_client/rhnregGui.py:342
+msgid "The server may be in outage mode. You may have to try connecting later."
+msgstr "സര്‍വര്‍ ഔട്ട് റേജ് മോഡിലാണ്. നിങ്ങള്‍ പിന്നീട് കണക്ട് ചെയ്യുവാന്‍ ശ്റമിക്കുക."
+
+#: ../src/up2date_client/rhnregGui.py:344
+msgid "You may be running a client that is incompatible with the server."
+msgstr "സര്‍വറുമായി പൊരുത്തപ്പെടാത്ത ഒരു ക്ലൈന്റാവാം നിങ്ങള്‍ പ്രവര്‍ത്തിപ്പിക്കുന്ന."
+
+#: ../src/up2date_client/rhnregGui.py:377
+#, fuzzy, python-format
+msgid ""
+"Please enter your account information for the <b>%s</b> Spacewalk server:"
+msgstr "<b>%s</b> Red Hat നെറ്റ്‌വര്‍ക്ക് സാറ്റിലൈറ്റ് അക്കൊണ്ട് വിവരം ദയവായി നല്‍കുക:"
+
+#: ../src/up2date_client/rhnregGui.py:416
+msgid "You must enter a login."
+msgstr "ലോഗിന്‍ നല്‍കേണ്ടതാണ്."
+
+#: ../src/up2date_client/rhnregGui.py:422
+msgid "You must enter a password."
+msgstr "ഒരു രഹസ്യവാക്ക് നിങ്ങള്‍ നല്‍കേണ്ടതാണ്."
+
+#: ../src/up2date_client/rhnregGui.py:435
+msgid "There was an error while logging in."
+msgstr "പ്രവേശിക്കുമ്പോള്‍ പിശകുണ്ടായിരിയ്ക്കുന്നു."
+
+#: ../src/up2date_client/rhnregGui.py:462
+msgid ""
+"There was an error communicating with the registration server.  The message "
+"was:\n"
+msgstr "രജിസ്ട്രേഷന്‍ സര്‍വറുമായി ബന്ധപ്പെടുന്നതില്‍ പിഴവ്.  സന്ദേശം ഇതായിരുന്നു: \n"
+
+#: ../src/up2date_client/rhnregGui.py:603
+msgid "There was an error while assembling information for the profile."
+msgstr "പ്രൊഫൈലിനുള്ള വിവരം ശേഖരിക്കുമ്പോള്‍ പിശക്."
+
+#: ../src/up2date_client/rhnregGui.py:624
+msgid "Error running hardware profile"
+msgstr "ഹാര്‍ഡ്‌വെയര്‍ പ്രൊഫൈല്‍ പ്രവര്‍ത്തിക്കുന്നതില്‍ പിഴവ്"
+
+#: ../src/up2date_client/rhnregGui.py:655
+msgid "There was an error while populating the profile."
+msgstr "പ്രൊഫൈല്‍ അറിയിക്കുന്നതില്‍ പിഴവ് സംഭവിച്ചിരിക്കുന്നു."
+
+#: ../src/up2date_client/rhnregGui.py:675
+msgid "You must choose a name for this profile."
+msgstr "ഈ പ്രൊഫൈലിന് നിങ്ങള്‍ ഒരു പേര് തിരഞ്ഞെടുക്കുക."
+
+#: ../src/up2date_client/rhnregGui.py:689
+msgid "There was an error while creating the profile."
+msgstr "പ്രൊഫൈല്‍ തയ്യാറാക്കുമ്പോള്‍ പിശക്."
+
+#: ../src/up2date_client/rhnregGui.py:700
+msgid "Registering system and sending profile information.  Please wait."
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:719
+msgid "Registering System"
+msgstr "സിസ്റ്റം രജിസ്ടര്‍ ചെയ്യുന്നു"
+
+#: ../src/up2date_client/rhnregGui.py:734
+#: ../src/up2date_client/rhnregGui.py:739
+#: ../src/up2date_client/rhnregGui.py:744
+#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:989
+#: ../src/up2date_client/tui.py:993 ../src/up2date_client/tui.py:997
+#: ../src/up2date_client/tui.py:1001
+msgid "Problem registering system:\n"
+msgstr "സിസ്റ്റം രജിസ്ടര്‍ ചെയ്യുന്നതില്‍ തകരാര്‍:\n"
+
+#: ../src/up2date_client/rhnregGui.py:751
+#, python-format
+msgid ""
+"The installation number [ %s ] provided is not a valid installation number. "
+"Please go back to the previous screen and fix it."
+msgstr ""
+"നല്‍കിയിരിക്കുന്ന സബ്സ്ക്രിപ്ഷന്‍ നംബര്‍ [ %s ] ഒരു തെറ്റായ സബ്സ്ക്രിപ്ഷന്‍ നംബര്‍ ആണ്. ദയവായി മുമ്പുളള "
+"സ്ക്രീനില്‍ ചെന്ന് പ്രശ്നം പരിഹരിക്കുക."
+
+#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1007
+msgid "Problem registering system."
+msgstr "സിസ്റ്റം രജിസ്ടര്‍ ചെയ്യുന്നതില്‍ പ്രശ്നം."
+
+#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1012
+msgid "Problem writing out system id to disk."
+msgstr "ഡിസ്കിലേക്ക് സിസ്റ്റം id എഴുതുന്നതില്‍ പിഴവ്."
+
+#: ../src/up2date_client/rhnregGui.py:777
+msgid "There was a problem registering this system."
+msgstr "സിസ്റ്റം രജിസ്ടര്‍ ചെയ്യുന്നതില്‍ ഒരു പ്രശ്നം നേരിട്ടു."
+
+#: ../src/up2date_client/rhnregGui.py:790
+msgid "Sending hardware information"
+msgstr "ഹാര്‍ഡ്‌വെയര്‍ വിവരം അയയ്ക്കുന്നു"
+
+#: ../src/up2date_client/rhnregGui.py:795
+msgid "Problem sending hardware information."
+msgstr "ഹാര്‍ഡ്‌വെയര്‍ വിവരം വായിക്കുന്നതില്‍ പിഴവ്."
+
+#. #            for row in range(self.regPackageArea.n_rows):
+#. #                rowData = self.regPackageArea.get_row_data(row)
+#. #                if rowData[0] == 1:
+#. #                    selection.append(rowData[1])
+#. #            print("gh270")
+#. #            selectedPackages = []
+#. #            for pkg in packageList:
+#. #                if pkg[0] in selection:
+#. #                    selectedPackages.append(pkg)
+#: ../src/up2date_client/rhnregGui.py:819
+msgid "Sending package information"
+msgstr "പാക്കേജിന്റെ വിവരം അയയ്ക്കുന്നു"
+
+#: ../src/up2date_client/rhnregGui.py:824
+msgid "Problem sending package information."
+msgstr "പാക്കേജ് വിവരം അയയ്ക്കുന്നതില്‍ പ്രശ്നം."
+
+#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1061
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:910
+msgid "There was an error while installing the certificate."
+msgstr "സര്‍ട്ടിഫിക്കേറ്റ് ഇന്‍സ്റ്റോള്‍ ചെയ്യുമ്പോള്‍ പിശക്."
+
+#: ../src/up2date_client/rhnregGui.py:936
+msgid "You must select a certificate."
+msgstr "ഒരു സര്‍ട്ടിഫിക്കേറ്റ് തിരഞ്ഞെടുക്കേണ്ടതാണ്."
+
+#. TODO Modify rhnlib to raise a unique exception for the not a
+#. cert file case.
+#: ../src/up2date_client/rhnregGui.py:966
+msgid ""
+"There was an SSL error. This could be because the file you picked was not a "
+"certificate file."
+msgstr ""
+"ഒരു SSL പിഴവ്. നിങ്ങള്‍ തിരഞ്ഞെടുത്ത ഫയല്‍ ഒരു സര്‍ട്ടിഫിക്കറ്റ് ഫയല്‍ ആയിരിക്കില്ല എന്നതാവാംകാരണം."
+
+#. TODO Provide better messages
+#: ../src/up2date_client/rhnregGui.py:974
+msgid "Something went wrong while installing the new certificate:\n"
+msgstr "പുതിയ സര്‍ട്ടിഫിക്കേറ്റ് ഇന്‍സ്റ്റോള്‍ ചെയ്യുന്നതിനിടെ എന്തോ പിഴവ്:  \n"
+
+#: ../src/up2date_client/rhnregGui.py:1027
+#: ../src/up2date_client/rhnregGui.py:1028
+#: ../src/up2date_client/rhnregGui.py:1029
+msgid "unknown"
+msgstr "അപരിചിതം"
+
+#: ../src/up2date_client/rhnregGui.py:1133
+msgid "There was an error getting the list of hardware."
+msgstr "ഹാര്‍ഡ്‌വെയര്‍ പട്ടിക ലഭ്യമാക്കുമ്പോള്‍ പിശക്."
+
+#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:788
+#, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
+#: ../src/up2date_client/rhnregGui.py:1149
+#, python-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: ../src/up2date_client/rhnregGui.py:1194
+msgid "There was an error building the list of packages."
+msgstr "പാക്കേജുകളുടെ പട്ടിക ബിള്‍ഡ് ചെയ്യുമ്പോള്‍ പിശക്."
+
+#: ../src/up2date_client/rhnregGui.py:1209
+msgid "Package"
+msgstr "പാക്കേജ്"
+
+#: ../src/up2date_client/rhnregGui.py:1214
+msgid "Arch"
+msgstr "Arch"
+
+#: ../src/up2date_client/rhnregGui.py:1221
+msgid "Building a list of RPM packages installed on your system.  Please wait."
+msgstr ""
+"നിങ്ങളുടെ സിസ്റ്റത്തില്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്തിരിക്കുന്ന RPM പാക്കേജുകള്‍ ബിള്‍ഡ് ചെയ്യുന്നു. കാത്തിരിക്കുക."
+
+#: ../src/up2date_client/rhnregGui.py:1252
+msgid ""
+"There was an error loading your configuration.  Make sure that\n"
+"you have read access to /etc/sysconfig/rhn."
+msgstr ""
+"നിങ്ങളുടെ കോണ്‍ഫിഗറേഷന്‍ ലഭ്യമാകുന്നതില്‍ പിശക്.  നിങ്ങള്‍ക്ക്\n"
+"/etc/sysconfig/rhn വായിക്കുന്നതിനുളള അനുവാദമുണ്ട് എന്നുറപ്പ് വരുത്തുക."
+
+#: ../src/up2date_client/rhnregGui.py:1294
+#, python-format
+msgid ""
+"There was an error saving your configuration. Make sure that\n"
+"you own %s."
+msgstr ""
+"നിങ്ങളുടെ കോണ്‍ഫിഗറേഷന്‍ സൂക്ഷിക്കുന്നതില്‍ പിശക്. %s നിങ്ങള്‍ക്ക്\n"
+"സ്വന്തം എന്നുറപ്പുവരുത്തുക."
+
+#: ../src/up2date_client/rhnregGui.py:1324
+#, python-format
+msgid ""
+"This error shouldn't have happened. If you'd like to help us improve this "
+"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"parts of '%s' would be very helpful. Thanks!"
+msgstr ""
+"ഈ പിഴവ് ഉണ്ടാകുവാന്‍ പാടില്ലായിരുന്നു. ഇത് മെച്ചപ്പെടുത്തണമെങ്കില്‍, ദയവായി ഒരു ബഗ് bugzilla."
+"redhat.com-ല്‍ രേഖപ്പെടുത്തുക. '%s'-ന്റെ ആവശ്യമുളള ഭാഗങ്ങളും ഉല്‍പ്പെടുത്തുക. നന്ദി!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
@@ -759,12 +1031,6 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "ഗുരുതരമായ പിഴവ്"
 
-#: ../src/up2date_client/rhnreg_constants.py:245
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
-msgid "Warning"
-msgstr "മുന്നറിയിപ്പ്"
-
 #: ../src/up2date_client/rhnreg_constants.py:246
 #, fuzzy, python-format
 msgid ""
@@ -930,271 +1196,6 @@ msgstr "അതെ, മുമ്പോട്ട് പോകുക"
 #: ../src/up2date_client/rhnreg_constants.py:316
 msgid "Press <space> to deselect the option."
 msgstr "തിരഞ്ഞെടുത്ത ഉപാധി വേണ്ട എന്ന് വയക്കുന്നതിനായി <space> അമര്‍ത്തുക."
-
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "അറിയിപ്പ്"
-
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "നിങ്ങള്‍ തെരഞ്ഞെടുത്തതില്‍ ഒരു പിഴവ് സംഭവിച്ചിരിക്കുന്നു."
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr "നിങ്ങള്‍ തെറ്റായ സമ്പ്രദായമാണ് നല്‍കിയിരിക്കുന്നത്. https, http മാത്രമേ അനുവദിക്കൂ."
-
-#: ../src/up2date_client/rhnregGui.py:305
-#, fuzzy
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-"Red Hat നെറ്റ്‌വര്‍ക്കിലേക്ക് കണക്ട് ചെയ്യാതെ നിങ്ങള്‍ക്ക് ഈ സബ്സ്ക്രിപ്ഷന്‍ ആനുകൂല്യങ്ങള്‍ ലഭ്യമാകുകയില്ല."
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "തെരഞ്ഞെടുത്ത സര്‍വറുമായി ബന്ധപ്പെടുവാന്‍ സാധ്യമല്ല"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
-msgstr "'%s'-ല്‍ സാറ്റിലൈറ്റ് അല്ലെങ്കില്‍ പ്രൊക്സിയുമായി ബന്ധപ്പെടുവാന്‍ സാധ്യമല്ല."
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"നല്‍കിയിരിക്കുന്ന സ്ഥാനം '%s' ശരിയാണോ എന്ന് വീണ്ടും പരിശോധിക്കുക?ശരിയല്ലായെങ്കില്‍, അത് "
-"ശരിയാക്കി നിങ്ങള്‍ക്ക് വീണ്ടും ശ്റമിക്കാവുന്നതാണ്."
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "ഈ സിസ്റ്റത്തിലുള്ള നെറ്റ്‌വര്‍ക്ക് കണക്ഷന്‍ ഓപ്പറേഷണല്‍ ആണ് എന്നുറപ്പ് വരുത്തുക."
-
-#: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Red Hat നെറ്റ്‌വര്‍ക്കുമായി ബന്ധപ്പെടുന്നതില്‍ ഒരു തകരാറു സംഭവിച്ചിരിക്കുന്നു."
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr "സര്‍വര്‍ ഔട്ട് റേജ് മോഡിലാണ്. നിങ്ങള്‍ പിന്നീട് കണക്ട് ചെയ്യുവാന്‍ ശ്റമിക്കുക."
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "സര്‍വറുമായി പൊരുത്തപ്പെടാത്ത ഒരു ക്ലൈന്റാവാം നിങ്ങള്‍ പ്രവര്‍ത്തിപ്പിക്കുന്ന."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, fuzzy, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr "<b>%s</b> Red Hat നെറ്റ്‌വര്‍ക്ക് സാറ്റിലൈറ്റ് അക്കൊണ്ട് വിവരം ദയവായി നല്‍കുക:"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "ലോഗിന്‍ നല്‍കേണ്ടതാണ്."
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "ഒരു രഹസ്യവാക്ക് നിങ്ങള്‍ നല്‍കേണ്ടതാണ്."
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "പ്രവേശിക്കുമ്പോള്‍ പിശകുണ്ടായിരിയ്ക്കുന്നു."
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr "രജിസ്ട്രേഷന്‍ സര്‍വറുമായി ബന്ധപ്പെടുന്നതില്‍ പിഴവ്.  സന്ദേശം ഇതായിരുന്നു: \n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "പ്രൊഫൈലിനുള്ള വിവരം ശേഖരിക്കുമ്പോള്‍ പിശക്."
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "ഹാര്‍ഡ്‌വെയര്‍ പ്രൊഫൈല്‍ പ്രവര്‍ത്തിക്കുന്നതില്‍ പിഴവ്"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "പ്രൊഫൈല്‍ അറിയിക്കുന്നതില്‍ പിഴവ് സംഭവിച്ചിരിക്കുന്നു."
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "ഈ പ്രൊഫൈലിന് നിങ്ങള്‍ ഒരു പേര് തിരഞ്ഞെടുക്കുക."
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "പ്രൊഫൈല്‍ തയ്യാറാക്കുമ്പോള്‍ പിശക്."
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "സിസ്റ്റം രജിസ്ടര്‍ ചെയ്യുന്നു"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:989
-#: ../src/up2date_client/tui.py:993 ../src/up2date_client/tui.py:997
-#: ../src/up2date_client/tui.py:1001
-msgid "Problem registering system:\n"
-msgstr "സിസ്റ്റം രജിസ്ടര്‍ ചെയ്യുന്നതില്‍ തകരാര്‍:\n"
-
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"നല്‍കിയിരിക്കുന്ന സബ്സ്ക്രിപ്ഷന്‍ നംബര്‍ [ %s ] ഒരു തെറ്റായ സബ്സ്ക്രിപ്ഷന്‍ നംബര്‍ ആണ്. ദയവായി മുമ്പുളള "
-"സ്ക്രീനില്‍ ചെന്ന് പ്രശ്നം പരിഹരിക്കുക."
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1007
-msgid "Problem registering system."
-msgstr "സിസ്റ്റം രജിസ്ടര്‍ ചെയ്യുന്നതില്‍ പ്രശ്നം."
-
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1012
-msgid "Problem writing out system id to disk."
-msgstr "ഡിസ്കിലേക്ക് സിസ്റ്റം id എഴുതുന്നതില്‍ പിഴവ്."
-
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "സിസ്റ്റം രജിസ്ടര്‍ ചെയ്യുന്നതില്‍ ഒരു പ്രശ്നം നേരിട്ടു."
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "ഹാര്‍ഡ്‌വെയര്‍ വിവരം അയയ്ക്കുന്നു"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "ഹാര്‍ഡ്‌വെയര്‍ വിവരം വായിക്കുന്നതില്‍ പിഴവ്."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "പാക്കേജിന്റെ വിവരം അയയ്ക്കുന്നു"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "പാക്കേജ് വിവരം അയയ്ക്കുന്നതില്‍ പ്രശ്നം."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1061
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "സര്‍ട്ടിഫിക്കേറ്റ് ഇന്‍സ്റ്റോള്‍ ചെയ്യുമ്പോള്‍ പിശക്."
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "ഒരു സര്‍ട്ടിഫിക്കേറ്റ് തിരഞ്ഞെടുക്കേണ്ടതാണ്."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"ഒരു SSL പിഴവ്. നിങ്ങള്‍ തിരഞ്ഞെടുത്ത ഫയല്‍ ഒരു സര്‍ട്ടിഫിക്കറ്റ് ഫയല്‍ ആയിരിക്കില്ല എന്നതാവാംകാരണം."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "പുതിയ സര്‍ട്ടിഫിക്കേറ്റ് ഇന്‍സ്റ്റോള്‍ ചെയ്യുന്നതിനിടെ എന്തോ പിഴവ്:  \n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "അപരിചിതം"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "ഹാര്‍ഡ്‌വെയര്‍ പട്ടിക ലഭ്യമാക്കുമ്പോള്‍ പിശക്."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:788
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "പാക്കേജുകളുടെ പട്ടിക ബിള്‍ഡ് ചെയ്യുമ്പോള്‍ പിശക്."
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "പാക്കേജ്"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "Arch"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"നിങ്ങളുടെ സിസ്റ്റത്തില്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്തിരിക്കുന്ന RPM പാക്കേജുകള്‍ ബിള്‍ഡ് ചെയ്യുന്നു. കാത്തിരിക്കുക."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"നിങ്ങളുടെ കോണ്‍ഫിഗറേഷന്‍ ലഭ്യമാകുന്നതില്‍ പിശക്.  നിങ്ങള്‍ക്ക്\n"
-"/etc/sysconfig/rhn വായിക്കുന്നതിനുളള അനുവാദമുണ്ട് എന്നുറപ്പ് വരുത്തുക."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"നിങ്ങളുടെ കോണ്‍ഫിഗറേഷന്‍ സൂക്ഷിക്കുന്നതില്‍ പിശക്. %s നിങ്ങള്‍ക്ക്\n"
-"സ്വന്തം എന്നുറപ്പുവരുത്തുക."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"ഈ പിഴവ് ഉണ്ടാകുവാന്‍ പാടില്ലായിരുന്നു. ഇത് മെച്ചപ്പെടുത്തണമെങ്കില്‍, ദയവായി ഒരു ബഗ് bugzilla."
-"redhat.com-ല്‍ രേഖപ്പെടുത്തുക. '%s'-ന്റെ ആവശ്യമുളള ഭാഗങ്ങളും ഉല്‍പ്പെടുത്തുക. നന്ദി!"
-
-#: ../src/up2date_client/rhnreg.py:75
-#, fuzzy
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "മുന്നറിയിപ്പ്: chkconfig-നൊപ്പം rhnsd പ്രാപ്യമാക്കുന്നതിന് സാധ്യമല്ല"
-
-#: ../src/up2date_client/rhnreg.py:81
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "മുന്നറിയിപ്പ്: chkconfig-നൊപ്പം rhnsd പ്രാപ്യമാക്കുന്നതിന് സാധ്യമല്ല"
 
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
@@ -1397,11 +1398,6 @@ msgstr ""
 "retry to avoid\n"
 "    requiring a Management entitlement."
 
-#: ../src/bin/rhn_check.py:428
-msgid "Attempting to run more than one instance of rhn_check. Exiting.\n"
-msgstr ""
-"rhn_check-ന്റെ ഒന്നില്‍ കൂടുതല്‍ ഇന്‍സ്റ്റന്‍സ് പ്രവര്‍ത്തിപ്പിയ്ക്കുവാന്‍ ശ്രമിയ്ക്കുന്നു. പുറത്തു് കടക്കുന്നു.¶\n"
-
 #: ../src/bin/rhn-profile-sync.py:37
 msgid ""
 "You need to register this system by running `rhn_register` before using this "
@@ -1420,6 +1416,11 @@ msgstr "ഹാര്‍ഡ്‌വെയര്‍ പ്രൊഫൈല്‍ �
 #: ../src/bin/rhn-profile-sync.py:52
 msgid "Updating virtualization profile..."
 msgstr "വിര്‍ച്ച്വലൈസേഷന്‍ പ്രൊഫൈല്‍ പുതുക്കുന്നു..."
+
+#: ../src/bin/rhn_check.py:428
+msgid "Attempting to run more than one instance of rhn_check. Exiting.\n"
+msgstr ""
+"rhn_check-ന്റെ ഒന്നില്‍ കൂടുതല്‍ ഇന്‍സ്റ്റന്‍സ് പ്രവര്‍ത്തിപ്പിയ്ക്കുവാന്‍ ശ്രമിയ്ക്കുന്നു. പുറത്തു് കടക്കുന്നു.¶\n"
 
 #: ../src/bin/rhn_register.py:38
 msgid "Do not attempt to use X"
@@ -2382,9 +2383,3 @@ msgstr ""
 #, fuzzy
 msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 msgstr "സ്പെയിസ്‌വോക്ക്/സാറ്റിലൈറ്റ്/Red Hat നെറ്റ്‌വര്‍ക്ക് രജിസ്ടര്‍ ചെയ്യുക."
-
-#~ msgid "_Finish"
-#~ msgstr "പൂര്‍ത്തിയാക്കി (_F)"
-
-#~ msgid "_Exit"
-#~ msgstr "പുറത്തു് കടക്കുക (_E)"

@@ -22,11 +22,7 @@
 %global rhnconf %{_sysconfdir}/rhn
 %global m2crypto m2crypto
 
-%if 0%{?rhel} && 0%{?rhel} < 6
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%endif
-
-%if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %global python_sitelib %{python3_sitelib}
 %global python3rhnroot %{python3_sitelib}/spacewalk
@@ -99,9 +95,9 @@ Requires:       %{python_prefix}-debian
 %if 0%{?suse_version} > 1320
 Requires:       python-pyliblzma
 %else
-%if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
+%if 0%{?rhel} || 0%{?suse_version} >= 1315
 Requires:       pyliblzma
-%endif # %if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
+%endif # %if 0%{?rhel} || 0%{?suse_version} >= 1315
 %endif # 0%{?suse_version} > 1320
 %if 0%{?pylint_check}
 %if 0%{?build_py3}
@@ -118,7 +114,7 @@ BuildRequires:  python3-spacewalk-usix
 %else
 BuildRequires:  python2-spacewalk-usix
 %endif
-%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1310
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} > 1310
 %if 0%{?build_py3}
 BuildRequires:  python3-gzipstream
 BuildRequires:  python3-rhn-client-tools
@@ -465,7 +461,7 @@ Requires:       python3-spacewalk-usix
 Requires:       python2-spacewalk-usix
 %endif
 Requires:       rhnlib  >= 2.5.57
-%if 0%{?fedora} || 0%{?rhel} > 5
+%if 0%{?fedora} || 0%{?rhel}
 BuildRequires:  python-requests
 %endif
 Obsoletes:      rhns-satellite-tools < 5.3.0
