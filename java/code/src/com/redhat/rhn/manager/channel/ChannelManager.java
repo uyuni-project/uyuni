@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.channel;
 
-import static java.util.Optional.ofNullable;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
