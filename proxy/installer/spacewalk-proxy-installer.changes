@@ -1,3 +1,4 @@
+- don't write invalid values to answer file for configure-proxy.sh
 -------------------------------------------------------------------
 Mon Sep 10 10:21:02 CEST 2018 - jgonzalez@suse.com
 
