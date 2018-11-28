@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 
+import com.suse.manager.utils.ChannelUtils;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.utils.Opt;
 
@@ -171,12 +172,15 @@ public class DownloadController {
         rest = StringUtils.substringBeforeLast(rest, "-");
         String version = StringUtils.substringAfterLast(rest, "-");
         String name = StringUtils.substringBeforeLast(rest, "-");
+        String epoch = null;
 
         // Debian packages names need spacial handling
         Channel channelBean = ChannelFactory.lookupByLabel(channel);
-        if (channelBean.getChannelArch().getArchType().getLabel().equalsIgnoreCase("deb")) {
-            version = StringUtils.substringAfterLast(rest, "_");
+        if (ChannelUtils.isTypeDeb(channelBean)) {
             name = StringUtils.substringBeforeLast(rest, "_");
+            rest = StringUtils.substringAfterLast(rest, "_");
+            epoch = StringUtils.substringBeforeLast(rest, ":");
+            version = StringUtils.substringAfterLast(rest, ":");
         }
 
         if (checkTokens) {
@@ -184,8 +188,7 @@ public class DownloadController {
             validateToken(token, channel, basename);
         }
 
-        Package pkg = PackageFactory.lookupByChannelLabelNevra(
-                channel, name, version, release, null, arch);
+        Package pkg = PackageFactory.lookupByChannelLabelNevra(channel, name, version, release, epoch, arch);
         if (pkg == null) {
             halt(HttpStatus.SC_NOT_FOUND,
                  String.format("%s not found in %s", basename, channel));
@@ -234,7 +237,7 @@ public class DownloadController {
             String encodedData = authorizationHeader.substring("Basic".length()).trim();
             return new String(Base64.getDecoder().decode(encodedData), UTF_8);
         }
-        return "";
+        return null;
     }
 
     /**

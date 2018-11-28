@@ -19,6 +19,7 @@ import logging
 import yaml
 import json
 import sys
+import re
 import salt.utils.dictupdate
 
 # SUSE Manager static pillar paths:
@@ -37,6 +38,8 @@ IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
 MANAGER_STATIC_PILLAR = [
     'gpgkeys',
 ]
+
+CONFIG_FILE = '/etc/rhn/rhn.conf'
 
 # Fomula group subtypes
 class EditGroupSubtype(Enum):
@@ -91,6 +94,9 @@ def ext_pillar(minion_id, *args):
         ret.update(image_pillars(minion_id))
     except Exception as error:
         log.error('Error accessing image pillar data: {}'.format(str(error)))
+
+    # Read repository meatadata config
+    ret.update(read_repo_sign_conf())
 
     return ret
 
@@ -269,5 +275,19 @@ def image_pillars(minion_id):
                     ret = salt.utils.dictupdate.merge(ret, yaml.load(p.read()), strategy='recurse')
             except Exception as error:
                 log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
+
+    return ret
+
+
+def read_repo_sign_conf():
+    ret = {'_mgr_metadata_signing_enabled': False}
+    filename = CONFIG_FILE
+    try:
+        lines = open(filename, 'r').readlines()
+        for line in lines:
+            if re.match('sign_metadata.*=.*1\\s*$', line):
+                ret['_mgr_metadata_signing_enabled'] = True
+    except Exception as error:
+        log.error('Error reading config file {0}: {1}'.format(filename, str(error)))
 
     return ret

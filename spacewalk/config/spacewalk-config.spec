@@ -21,10 +21,12 @@
 %define apacheconfdir %{_sysconfdir}/apache2
 %define apachepkg apache2
 %define apache_group www
+%define manager_group susemanager
 %else
 %define apacheconfdir %{_sysconfdir}/httpd
 %define apachepkg httpd
 %define apache_group apache
+%define manager_group susemanager
 %endif
 
 %global rhnconfigdefaults %{_prefix}/share/rhn/config-defaults
@@ -114,8 +116,8 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %attr(0755,root,%{apache_group}) %dir %{rhnconfigdefaults}
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
-%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
-%attr(0640,root,%{apache_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
+%attr(0750,root,%{manager_group}) %dir %{_sysconfdir}/rhn
+%attr(0640,root,%{manager_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_audit.conf
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn/candlepin-certs
 %config %attr(644, root, root) %{_sysconfdir}/rhn/candlepin-certs/candlepin-redhat-ca.crt
@@ -153,7 +155,7 @@ if [ -f /etc/init.d/satellite-httpd ] ; then
 fi
 
 # Set the group to allow Apache to access the conf files ...
-chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf 2> /dev/null || :
+chgrp %{manager_group} /etc/rhn /etc/rhn/rhn.conf 2> /dev/null || :
 # ... once we restrict access to some files that were too open in
 # the past.
 chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
@@ -190,5 +192,12 @@ if [ -e /etc/sudoers.d/spacewalk.rpmsave ]; then
   mv /etc/sudoers.d/spacewalk.rpmsave /root/sudoers-spacewalk.save
 fi
 rm -f /etc/sudoers.d/spacewalk.{rpmnew,rpmorig,rpmsave}
+# change /etc/rhn/rhn.conf ownership on upgrade
+if [ $1 -gt 2 ]; then
+  if [ $(stat -c "%G" /etc/rhn) != "%{manager_group}" ] || [ $(stat -c "%G" /etc/rhn/rhn.conf) != "%{manager_group}" ]; then
+    chgrp %{manager_group} /etc/rhn
+    chgrp %{manager_group} /etc/rhn/rhn.conf
+  fi
+fi
 
 %changelog

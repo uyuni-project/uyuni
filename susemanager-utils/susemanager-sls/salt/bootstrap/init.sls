@@ -29,9 +29,9 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- endif %}
 {%- elif grains['os_family'] == 'Debian' %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
-{%- endif %}
 {%- endif %}
 
 {%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
@@ -77,11 +77,7 @@ trust_res_gpg_key:
     - runas: root
 
 {%- elif grains['os_family'] == 'Debian' %}
-/usr/share/keyrings/mgr-archive-keyring.gpg:
-  file.managed:
-    - source:
-      - salt://gpg/mgr-keyring.gpg
-    - mode: 644
+{%- include 'channels/debiankeyring.sls' %}
 {%- endif %}
 
 salt-minion-package:
@@ -130,6 +126,7 @@ mgr_update_basic_pkgs:
   file.managed:
     - contents_pillar: minion_pub
     - mode: 644
+    - makedirs: True
     - require:
       - pkg: salt-minion-package
 
@@ -137,6 +134,7 @@ mgr_update_basic_pkgs:
   file.managed:
     - contents_pillar: minion_pem
     - mode: 400
+    - makedirs: True
     - require:
       - pkg: salt-minion-package
 

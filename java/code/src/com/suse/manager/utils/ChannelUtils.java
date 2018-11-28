@@ -46,7 +46,7 @@ public class ChannelUtils {
     }
 
     /**
-     * Ger the channel architecture as string
+     * Get the channel architecture as string
      * @param channelArch the channel arch
      * @return a string
      */

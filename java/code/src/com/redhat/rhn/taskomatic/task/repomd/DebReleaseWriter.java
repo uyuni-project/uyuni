@@ -102,14 +102,11 @@ public class DebReleaseWriter {
         catch (IOException e) {
             log.error("Could not generate Release file for channel " + channel.getLabel(), e);
         }
-
     }
 
     @FunctionalInterface
     private interface ChecksumFunction {
-
         String apply(InputStream input) throws IOException;
-
     }
 
     private void appendSum(PrintWriter writer, ChecksumFunction checksum, String prefix, File file) {
@@ -120,5 +117,4 @@ public class DebReleaseWriter {
             log.error("Could not compute checksum for " + file.getName());
         }
     }
-
 }
