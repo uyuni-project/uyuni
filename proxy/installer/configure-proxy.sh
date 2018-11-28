@@ -138,6 +138,7 @@ yes_no() {
 INTERACTIVE=1
 INTERACTIVE_RETRIES=3
 CNAME_INDEX=0
+MANUAL_ANSWERS=0
 
 OPTS=$(getopt --longoptions=help,activate-SLP,answer-file:,non-interactive,version:,traceback-email:,use-ssl::,force-own-ca,http-proxy:,http-username:,http-password:,rhn-user:,rhn-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,ssl-use-existing-certs::,ssl-ca-cert:,ssl-server-key:,ssl-server-cert:,rhn-user:,rhn-password:,populate-config-channel::,start-services:: -n ${0##*/} -- h "$@")
 
@@ -212,7 +213,7 @@ fi
 ACCUMULATED_ANSWERS=""
 
 generate_answers() {
-    if [ "$INTERACTIVE" = 1 -a ! -z "$ACCUMULATED_ANSWERS" ]; then
+    if [ "$INTERACTIVE" = 1 -a "$MANUAL_ANSWERS" = 1 ]; then
         local WRITE_ANSWERS
         echo "There were some answers you had to enter manually."
         echo "Would you like to have written those into file"
@@ -242,6 +243,7 @@ default_or_input() {
 
     echo -n "$MSG [$DEFAULT]: "
     if [ "$INTERACTIVE" = "1" -a  -z "$VARIABLE_ISSET" ]; then
+        MANUAL_ANSWERS=1
         read INPUT
     elif [ -z "$VARIABLE_ISSET" ]; then
         echo "$DEFAULT"
@@ -250,7 +252,11 @@ default_or_input() {
         echo "$DEFAULT"
     fi
     if [ -z "$INPUT" ]; then
-        INPUT="$DEFAULT"
+        if [ "$DEFAULT" = "y/N" -o "$DEFAULT" = "Y/n" ]; then
+            INPUT=$(yes_no "$DEFAULT")
+        else
+            INPUT="$DEFAULT"
+        fi
     fi
     ACCUMULATED_ANSWERS+=$(printf "\n%q=%q" "$VARIABLE" "${INPUT:-$DEFAULT}")
     eval "$(printf "%q=%q" "$VARIABLE" "$INPUT")"
