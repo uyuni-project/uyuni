@@ -1,3 +1,4 @@
+- Performance improvements in channel management functionalities (bsc#1114877)
 - Handle with an error message if state file fails to render (bsc#1110757)
 - When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
 - Add check for yast autoinstall profiles when setting kickstartTree (bsc#1114115)
