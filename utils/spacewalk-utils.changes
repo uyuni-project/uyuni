@@ -1,3 +1,6 @@
+- Exit with an error if spacewalk-common-channels does not match
+  any channel
+
 -------------------------------------------------------------------
 Wed Nov 21 10:17:29 CET 2018 - jgonzalez@suse.com
 
