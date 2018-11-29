@@ -72,7 +72,7 @@ def connect(user, password, server):
     return client, key
 
 
-def add_channels(channels, section, arch):
+def add_channels(channels, section, arch, client):
     base_channels = ['']
     optional = ['activationkey', 'base_channel_activationkey', 'gpgkey_url',
                 'gpgkey_id', 'gpgkey_fingerprint', 'yumrepo_url',
@@ -90,8 +90,19 @@ def add_channels(channels, section, arch):
         channel = {'base_channel': config.get(section, 'base_channel')}
 
         if base_channel:
-            if channel['base_channel'] not in channels:
-                # there isn't such base channel so skip also child
+            channel_base_server = channel_exists(client, channel['base_channel'])
+            if channel['base_channel'] in channels:
+                # If channel exists at the INI file, use it.
+                pass
+            elif channel_base_server:
+                # If not, if cannel exists on the server, convert it
+                channels[channel['base_channel']] = {'name' : channel_base_server['label'],
+                                                     'gpgkey_url': channel_base_server['gpg_key_url'],
+                                                     'gpgkey_id': channel_base_server['gpg_key_id'],
+                                                     'gpgkey_fingerprint': channel_base_server['gpg_key_fp'],
+                                                     'section': section}
+            else:
+                # Otheriwse there isn't such base channel so skip also child
                 continue
             # set base channel values so they can be used as macros
             for (k, v) in channels[channel['base_channel']].items():
@@ -105,6 +116,18 @@ def add_channels(channels, section, arch):
         for k in mandatory:
             channel[k] = config.get(section, k)
         channels[channel['label']] = channel
+
+
+def channel_exists(client, base_channel_label):
+    # check whether channel exists
+    try:
+        base_info = client.channel.software.getDetails(key, base_channel_label)
+        return base_info
+    # We should improve this as a connection failure would be the same
+    # as not finding the channel
+    except xmlrpclib.Fault, e:
+        return None
+
 
 if __name__ == "__main__":
     # options parsing
@@ -169,8 +192,17 @@ Create everything as well as unlimited activation key for every channel:
         print parser.print_help()
         parser.exit()
 
-    key = None
-    client = None
+    try:
+        client, key = connect(options.user, options.password, options.server)
+        user_info = client.user.getDetails(key, options.user)
+        org_id = user_info['org_id']
+    except xmlrpclib.Fault, e:
+        if e.faultCode == 2950:
+            sys.stderr.write("Either the password or username is incorrect.\n")
+            sys.exit(2)
+        else:
+            raise
+
     channels = {}
 
     sections = []
@@ -186,7 +218,7 @@ Create everything as well as unlimited activation key for every channel:
             # filter out archs not set on commandline
             archs = filter(lambda a: a in options.archs, archs)
         for arch in archs:
-            add_channels(channels, section, arch)
+            add_channels(channels, section, arch, client)
 
     # list of base_channels to deal with
     base_channels = {}
@@ -216,20 +248,6 @@ Create everything as well as unlimited activation key for every channel:
         sys.exit(2)
                     
     for (base_channel_label, create_channel) in sorted(base_channels.items()):
-
-        if key == None:
-            try:
-                client, key = connect(options.user, options.password,
-                                      options.server)
-                user_info = client.user.getDetails(key, options.user)
-                org_id = user_info['org_id']
-            except xmlrpclib.Fault, e:
-                if e.faultCode == 2950:
-                    sys.stderr.write(
-                        "Either the password or username is incorrect.\n")
-                    sys.exit(2)
-                else:
-                    raise
 
         if create_channel:
             base_info = channels[base_channel_label]
@@ -289,16 +307,11 @@ Create everything as well as unlimited activation key for every channel:
                                 base_info['label'], e.faultString))
         else:
             # check whether channel exists
-            try:
-                base_info = client.channel.software.getDetails(key,
-                                                               base_channel_label)
-                if options.verbose:
-                    sys.stdout.write("Base channel '%s' - exists\n"
-                                     % base_info['name'])
-            except xmlrpclib.Fault, e:
-                sys.stderr.write("ERROR: %s: %s\n" % (
-                    base_channel_label, e.faultString))
-                continue
+            base_info = channel_exists(client, base_channel_label)
+            if base_info:
+                sys.stdout.write("Base channel '%s' - exists\n" % base_info['name'])
+            else:
+                sys.stderr.write("ERROR: %s could not be found at the server\n" % base_channel_label)
 
         if options.default_channels:
             try:
