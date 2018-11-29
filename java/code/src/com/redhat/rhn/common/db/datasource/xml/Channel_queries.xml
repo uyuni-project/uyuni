@@ -176,10 +176,13 @@ ORDER BY C.parent_channel NULLS LAST, UPPER(C.name)
   <query params="user_id, org_id">
 SELECT AC.channel_id AS ID,
        AC.channel_name AS NAME,
-       rhn_channel.user_role_check(AC.channel_id, :user_id, 'subscribe') AS HAS_PERM,
+       CASE WHEN scur.deny_reason IS NULL THEN 1 ELSE 0 END AS HAS_PERM,
        CASE rhn_channel.org_channel_setting(AC.channel_id, :org_id,'not_globally_subscribable') WHEN 0 THEN 1 ELSE NULL END AS GLOBALLY_SUBSCRIBABLE
   FROM rhnAvailableChannels AC
- WHERE AC.org_id = :org_id
+      JOIN suseChannelUserRoleView scur ON scur.channel_id = AC.channel_id AND
+          scur.user_id = :user_id AND
+          scur.role = 'subscribe'
+  WHERE AC.org_id = :org_id
 ORDER BY UPPER(AC.channel_name)
   </query>
 </mode>
@@ -188,8 +191,11 @@ ORDER BY UPPER(AC.channel_name)
   <query params="user_id, org_id">
 SELECT C.id AS ID,
        C.name AS NAME,
-       rhn_channel.user_role_check(C.id, :user_id, 'manage') AS HAS_PERM
+       CASE WHEN scur.deny_reason IS NULL THEN 1 ELSE 0 END AS HAS_PERM
   FROM rhnChannel C
+      JOIN suseChannelUserRoleView scur ON scur.channel_id = C.id AND
+          scur.user_id = :user_id AND
+          scur.role = 'manage'
  WHERE C.org_id = :org_id
 ORDER BY UPPER(C.name)
   </query>
@@ -199,8 +205,13 @@ ORDER BY UPPER(C.name)
   <query params="org_id, channel_id">
   SELECT u.id
   FROM web_contact u
-  WHERE u.org_id = :org_id
-    AND rhn_channel.user_role_check(:channel_id, u.id, 'manage') = 1
+  WHERE u.org_id = :org_id AND
+      (SELECT deny_reason
+          FROM suseChannelUserRoleView scur
+          WHERE scur.channel_id = :channel_id AND
+              scur.user_id = u.id AND
+              scur.role = 'manage'
+      ) IS NULL
   </query>
 </mode>
 
@@ -208,16 +219,25 @@ ORDER BY UPPER(C.name)
   <query params="org_id, channel_id">
   SELECT u.id
   FROM web_contact u
-  WHERE u.org_id = :org_id
-    AND rhn_channel.user_role_check(:channel_id, u.id, 'subscribe') = 1
+  WHERE u.org_id = :org_id AND
+      (SELECT deny_reason
+          FROM suseChannelUserRoleView scur
+          WHERE scur.channel_id = :channel_id AND
+              scur.user_id = u.id AND
+              scur.role = 'subscribe'
+      ) IS NULL
   </query>
 </mode>
 
-<callable-mode name="verify_channel_role">
-  <query params="result, cid, user_id, role">
-      {:result = call rhn_channel.user_role_check_debug(:cid, :user_id, :role)}
+<mode name="verify_channel_role">
+  <query params="channel_id, user_id, role">
+      SELECT deny_reason
+        FROM suseChannelUserRoleView
+        WHERE channel_id = :channel_id AND
+          user_id = :user_id AND
+          role = :role
   </query>
-</callable-mode>
+</mode>
 
 <mode name="all_channel_tree" class="com.redhat.rhn.frontend.dto.ChannelTreeNode">
         <query params="user_id">
@@ -493,13 +513,23 @@ SELECT CTV.name, CTV.id, CA.name AS arch_name, C.org_id,
  WHERE CTV.id = C.ID
    AND  CTV.channel_arch_id = CA.id
    AND  CTV.parent_or_self_id = C2.id
-   AND (rhn_channel.user_role_check(C.id, :user_id, 'manage') = 1
-        OR EXISTS (
+   AND EXISTS (
+      SELECT 1
+          FROM suseChannelUserRoleView scur
+          WHERE
+              scur.channel_id = C.id AND
+              scur.user_id = :user_id AND
+              scur.role = 'manage' AND
+              deny_reason IS NULL
+          UNION
               SELECT 1
-                FROM rhnChannel C2
-               WHERE C2.parent_channel = C.ID
-                 AND rhn_channel.user_role_check(C2.id, :user_id, 'manage') = 1))
-ORDER BY UPPER(C2.name), depth, UPPER(C.name)
+                  FROM suseChannelUserRoleView scur
+                  WHERE scur.channel_id IN (SELECT C2.id FROM rhnChannel C2 WHERE C2.parent_channel = C.id) AND
+                      scur.user_id = :user_id AND
+                      scur.role = 'manage' AND
+                      deny_reason IS NULL
+   )
+ ORDER BY UPPER(C2.name), depth, UPPER(C.name)
   </query>
   <elaborator name="visible_server_count"/>
 </mode>
@@ -570,8 +600,12 @@ SELECT C.id, C.name, C.label, 1 AS IS_CUSTOM
             and cp.org_id = :org_id
             and pn.id = c.product_name_id
             and pn.label = :product_name_label
-            and rhn_channel.loose_user_role_check(c.id, :user_id,
-                                                     'subscribe') = 1
+            and (select deny_reason
+                from suseChannelUserRoleView scur
+                where scur.channel_id = c.id and
+                    scur.user_id = :user_id and
+                    scur.role = 'subscribe'
+            ) is null
         order by c.name
   </query>
 </mode>
@@ -597,8 +631,12 @@ SELECT C.id, C.name, C.label, 1 AS IS_CUSTOM
             and cp.org_id = :org_id
             and pn.id = c.product_name_id
             and pn.label = :product_name_label
-            and rhn_channel.loose_user_role_check(c.id, :user_id,
-                                                     'subscribe') = 1
+            and (select deny_reason
+                from suseChannelUserRoleView scur
+                where scur.channel_id = c.id and
+                    scur.user_id = :user_id and
+                    scur.role = 'subscribe'
+            ) is null
   </query>
 </mode>
 
@@ -865,7 +903,12 @@ where   1=1
         and c.id = cfm.channel_id
         and cfm.channel_family_id = cf.id
         and cf.label not in ('rhn-satellite','rhn-proxy', 'SMS', 'SMS-X86', 'SMS-Z', 'SMP')
-        and rhn_channel.user_role_check(c.id, :user_id, 'subscribe')=1
+        and (select deny_reason
+            from suseChannelUserRoleView scur
+            where scur.channel_id = c.id and
+                scur.user_id = :user_id and
+                scur.role = 'subscribe'
+        ) is null
 union all
 select  c.id,
                 c.name,
@@ -886,7 +929,12 @@ where   st.user_id = :user_id
         and c.id = cfm.channel_id
         and cfm.channel_family_id = cf.id
         and cf.label not in ('rhn-satellite','rhn-proxy', 'SMS', 'SMS-X86', 'SMS-Z', 'SMP')
-        and rhn_channel.user_role_check(cfm.channel_id,:user_id,'subscribe')=1
+        and (select deny_reason
+            from suseChannelUserRoleView scur
+            where scur.channel_id = cfm.channel_id and
+                scur.user_id = :user_id and
+                scur.role = 'subscribe'
+        ) is null
         and usp.user_id = :user_id
         and st.element = usp.server_id
 ) U

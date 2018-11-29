@@ -48,7 +48,7 @@ rhnServerGroupMembership         :: rhnServerGroupType rhnServerGroupMembers \
 rhnServerOutdatedPackages        :: rhnServerNeededCache rhnErrata \
                                     rhnPackageName rhnPackageEVR rhnPackage
 rhnStorageDevice                 :: rhnDevice
-rhnUserChannel                   :: rhn_channel.pks rhnChannelFamilyMembers \
+rhnUserChannel                   :: suseChannelUserRoleView rhnChannelFamilyMembers \
                                     rhnUserChannelFamilyPerms web_contact
 rhnUserChannelTreeView           :: rhnChannel rhnChannelFamilyMembers \
                                     rhnUserChannelFamilyPerms
@@ -90,3 +90,13 @@ rhnUserChannelFamilyPerms        :: rhnPrivateChannelFamily \
 rhnWebContactEnabled             :: web_contact rhnWebContactDisabled
 rhnOrgChannelFamilyPermissions   :: rhnPublicChannelFamily web_contact \
                                     rhnPrivateChannelFamily
+suseChannelUserRoleView          :: rhnSharedChannelView \
+                                    rhnChannelFamilyMembers \
+                                    rhnOrgChannelFamilyPermissions \
+                                    rhnUserGroupMembers \
+                                    rhnUserGroup \
+                                    rhnUserGroupType \
+                                    rhnOrgChannelSettings \
+                                    rhnOrgChannelSettingsType \
+                                    rhnChannelPermission \
+                                    rhnChannelPermissionRole

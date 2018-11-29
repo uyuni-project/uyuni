@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 31306ef50aaa30b52c7dd02adcb94ab66de8fb25
 --
 -- Copyright (c) 2008--2018 Red Hat, Inc.
 --
@@ -13,42 +12,39 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
---
---
---
 
--- create schema rhn_channel;
+CREATE OR REPLACE
+PACKAGE BODY rhn_channel
+IS
+        body_version varchar2(100) := '';
 
---update pg_setting
-update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_path';
+    -- Cursor that fetches all the possible base channels for a
+    -- (server_arch_id, release, org_id) combination
+        cursor  base_channel_cursor(
+                release_in in varchar2,
+                server_arch_id_in in number,
+                org_id_in in number
+        ) return rhnChannel%ROWTYPE is
+                select distinct c.*
+                from    rhnOrgDistChannelMap                       odcm,
+                                rhnServerChannelArchCompat      scac,
+                                rhnChannel                                      c
+                where   c.parent_channel is null
+                        and c.id = odcm.channel_id
+                        and c.channel_arch_id = odcm.channel_arch_id
+                        and odcm.release = release_in
+                        and odcm.for_org_id = org_id_in
+                        and scac.server_arch_id = server_arch_id_in
+                        and scac.channel_arch_id = c.channel_arch_id;
 
-    -- this "emulates" cursor server_base_subscriptions defined in oracle/rhn_channel.pks
-    create or replace function server_base_subscriptions(server_id_in NUMERIC)
-    returns boolean as $$
-    begin
-      return exists(SELECT C.id FROM rhnChannel C, rhnServerChannel SC
-		    WHERE C.id = SC.channel_id
-		      AND SC.server_id = server_id_in
-		      AND C.parent_channel IS NULL);
-    end$$ language plpgsql;
-
-    -- this "emulates" cursor server_base_subscriptions defined in oracle/rhn_channel.pks
-    create or replace function check_server_subscription(server_id_in NUMERIC, channel_id_in NUMERIC)
-    returns boolean as $$
-    begin
-      return exists(SELECT channel_id FROM rhnServerChannel WHERE server_id = server_id_in AND channel_id = channel_id_in);
-    end$$ language plpgsql;
-
-
-    CREATE OR REPLACE FUNCTION subscribe_server(server_id_in IN NUMERIC, channel_id_in NUMERIC, immediate_in NUMERIC default 1, user_id_in in numeric default null) returns void
-    AS $$
-    declare
+    PROCEDURE subscribe_server(server_id_in IN NUMBER, channel_id_in NUMBER, immediate_in NUMBER := 1, user_id_in in number := null)
+    IS
         channel_parent_val      rhnChannel.parent_channel%TYPE;
         parent_subscribed       BOOLEAN;
         server_has_base_chan    BOOLEAN;
         server_already_in_chan  BOOLEAN;
-        channel_family_id_val   NUMERIC;
-        allowed                 numeric;
+        channel_family_id_val   NUMBER;
+        allowed                 number := 0;
     BEGIN
         if user_id_in is not null then
             allowed := rhn_channel.user_role_check(channel_id_in, user_id_in, 'subscribe');
@@ -57,10 +53,13 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         end if;
 
         if allowed = 0 then
-            perform rhn_exception.raise_exception('no_subscribe_permissions');
+            rhn_exception.raise_exception('no_subscribe_permissions');
         end if;
         
-        server_already_in_chan := rhn_channel.check_server_subscription(server_id_in, channel_id_in);
+        FOR check_subscription IN check_server_subscription(server_id_in, channel_id_in)
+        LOOP
+            server_already_in_chan := TRUE;
+        END LOOP check_subscription;
 
         IF server_already_in_chan
         THEN
@@ -72,7 +71,12 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         IF channel_parent_val IS NOT NULL
         THEN
             -- child channel; if attempting to cross-subscribe a child to the wrong base, silently ignore
-            parent_subscribed := rhn_channel.check_server_subscription(server_id_in, channel_parent_val);
+            parent_subscribed := FALSE;
+
+            FOR check_subscription IN check_server_subscription(server_id_in, channel_parent_val)
+            LOOP
+                parent_subscribed := TRUE;
+            END LOOP check_subscription;
 
             IF NOT parent_subscribed
             THEN
@@ -80,22 +84,26 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             END IF;
         ELSE
             -- base channel
-            server_has_base_chan := rhn_channel.server_base_subscriptions(server_id_in);
+            server_has_base_chan := FALSE;
+            FOR base IN server_base_subscriptions(server_id_in)
+            LOOP
+                server_has_base_chan := TRUE;
+            END LOOP base;
 
             IF server_has_base_chan
             THEN
-                perform rhn_exception.raise_exception('channel_server_one_base');
+                rhn_exception.raise_exception('channel_server_one_base');
             END IF;
         END IF;
 
         channel_family_id_val := rhn_channel.family_for_channel(channel_id_in);
         IF channel_family_id_val IS NULL
         THEN
-            perform rhn_exception.raise_exception('channel_subscribe_no_family');
+            rhn_exception.raise_exception('channel_subscribe_no_family');
         END IF;
 
         insert into rhnServerHistory (id,server_id,summary,details) (
-            select  nextval('rhn_event_id_seq'),
+            select  rhn_event_id_seq.nextval,
                     server_id_in,
                     'subscribed to channel ' || SUBSTR(c.label, 0, 106),
                     c.label
@@ -104,143 +112,104 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         );
 
         INSERT INTO rhnServerChannel (server_id, channel_id) VALUES (server_id_in, channel_id_in);
-
-        perform queue_server(server_id_in, immediate_in);
+        queue_server(server_id_in, immediate_in);
 
         update rhnServer
            set channels_changed = current_timestamp
          where id = server_id_in;
-    END$$ language plpgsql;
+    END subscribe_server;
 
-    create or replace function guess_server_base(
-        server_id_in in numeric
-    ) RETURNS numeric as $$
-    declare
-        server_cursor cursor for
+    function guess_server_base(
+        server_id_in in number
+    ) RETURN number is
+        cursor server_cursor is
             select s.server_arch_id, s.release, s.org_id
               from rhnServer s
              where s.id = server_id_in;
-    -- Cursor that fetches all the possible base channels for a
-    -- (server_arch_id, release, org_id) combination
-        base_channel_cursor cursor(
-                release_in varchar,
-                server_arch_id_in numeric,
-                org_id_in numeric
-        ) for
-                select distinct c.*
-                from    rhnOrgDistChannelMap                       odcm,
-                                rhnServerChannelArchCompat      scac,
-                                rhnChannel                                      c
-                where   c.parent_channel is null
-                        and c.id = odcm.channel_id
-                        and c.channel_arch_id = odcm.channel_arch_id
-                        and odcm.release = release_in
-                        and odcm.for_org_id = org_id_in
-                        and scac.server_arch_id = server_arch_id_in
-                        and scac.channel_arch_id = c.channel_arch_id;
-
     begin
         for s in server_cursor loop
             for channel in base_channel_cursor(s.release,
                 s.server_arch_id, s.org_id)
             loop
                 return channel.id;
-            end loop;
-        end loop;
+            end loop base_channel_cursor;
+        end loop server_cursor;
         -- Server not found, or no base channel applies to it
         return null;
-    end$$ language plpgsql;
+    end;
 
     -- Private function
-    create or replace function normalize_server_arch(server_arch_in in varchar)
-    returns varchar
-    as $$
-    declare
-        suffix VARCHAR(128) := '-redhat-linux';
+    function normalize_server_arch(server_arch_in in varchar2)
+    return varchar2
+    deterministic
+    is
+        suffix VARCHAR2(128) := '-redhat-linux';
+        suffix_len NUMBER := length(suffix);
     begin
         if server_arch_in is NULL then
             return NULL;
         end if;
-        if position('-' IN server_arch_in) > 0
+        if instr(server_arch_in, '-') > 0
         then
             -- Suffix already present
             return server_arch_in;
         end if;
         return server_arch_in || suffix;
-    end$$ language plpgsql;
+    end normalize_server_arch;
 
+    --
     --
     -- Raises:
     --   server_arch_not_found
     --   no_subscribe_permissions
-    create or replace function base_channel_for_release_arch(
-        release_in in varchar,
-        server_arch_in in varchar,
-        org_id_in in numeric default -1,
-        user_id_in in numeric default null
-    ) returns numeric as $$
-    declare
-        server_arch varchar(256) := rhn_channel.normalize_server_arch(server_arch_in);
-        server_arch_id numeric;
+    function base_channel_for_release_arch(
+        release_in in varchar2,
+        server_arch_in in varchar2,
+        org_id_in in number := -1,
+        user_id_in in number := null
+    ) return number is
+        server_arch varchar2(256) := normalize_server_arch(server_arch_in);
+        server_arch_id number;
     begin
         -- Look up the server arch
+        begin
             select id
               into server_arch_id
               from rhnServerArch
              where label = server_arch;
-            if not found then
-                perform rhn_exception.raise_exception('server_arch_not_found');
-            end if;
-
-        return rhn_channel.base_channel_rel_archid(release_in, server_arch_id,
+        exception
+            when no_data_found then
+                rhn_exception.raise_exception('server_arch_not_found');
+        end;
+        return base_channel_rel_archid(release_in, server_arch_id,
             org_id_in, user_id_in);
-    end$$ language plpgsql;
+    end base_channel_for_release_arch;
 
-    create or replace function base_channel_rel_archid(
-        release_in in varchar,
-        server_arch_id_in in numeric,
-        org_id_in in numeric default -1,
-        user_id_in in numeric default null
-    ) returns numeric as $$
-    declare
-        denied_channel_id numeric := null;
-        valid_org_id numeric := org_id_in;
-        valid_user_id numeric := user_id_in;
-        channel_subscribable numeric;
-    -- Cursor that fetches all the possible base channels for a
-    -- (server_arch_id, release, org_id) combination
-        base_channel_cursor cursor(
-                release_in varchar,
-                server_arch_id_in numeric,
-                org_id_in numeric
-        ) for
-                select distinct c.*
-                from    rhnOrgDistChannelMap                       odcm,
-                                rhnServerChannelArchCompat      scac,
-                                rhnChannel                                      c
-                where   c.parent_channel is null
-                        and c.id = odcm.channel_id
-                        and c.channel_arch_id = odcm.channel_arch_id
-                        and odcm.release = release_in
-                        and odcm.for_org_id = org_id_in
-                        and scac.server_arch_id = server_arch_id_in
-                        and scac.channel_arch_id = c.channel_arch_id;
-
+    function base_channel_rel_archid(
+        release_in in varchar2,
+        server_arch_id_in in number,
+        org_id_in in number := -1,
+        user_id_in in number := null
+    ) return number is
+        denied_channel_id number := null;
+        valid_org_id number := org_id_in;
+        valid_user_id number := user_id_in;
+        channel_subscribable number;
     begin
         if org_id_in = -1 and user_id_in is not null then
             -- Get the org id from the user id
-
+            begin
                 select org_id
                   into valid_org_id
                   from web_contact
                  where id = user_id_in;
-
-                if not found then
+            exception
+                when no_data_found then
                     -- User doesn't exist
                     -- XXX Only list public stuff for now
                     valid_user_id := null;
                     valid_org_id := -1;
-                end if;
+            end;
         end if;
 
         for c in base_channel_cursor(release_in, server_arch_id_in, valid_org_id)
@@ -253,8 +222,9 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             end if;
 
             -- Check user to channel permissions
-            select rhn_channel.loose_user_role_check(c.id, user_id_in, 'subscribe')
-              into channel_subscribable;
+            select loose_user_role_check(c.id, user_id_in, 'subscribe')
+              into channel_subscribable
+              from dual;
 
             if channel_subscribable = 1 then
                 return c.id;
@@ -262,19 +232,18 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
 
             -- Base channel exists, but is not subscribable; keep trying
             denied_channel_id := c.id;
-        end loop;
+        end loop base_channel_fetch;
 
         if denied_channel_id is not null then
-            perform rhn_exception.raise_exception('no_subscribe_permissions');
+            rhn_exception.raise_exception('no_subscribe_permissions');
         end if;
         -- No base channel applies
         return NULL;
-    end$$ language plpgsql;
+    end base_channel_rel_archid;
 
-    CREATE OR REPLACE FUNCTION clear_subscriptions(server_id_in IN NUMERIC, deleting_server IN NUMERIC default 0) returns void
-    AS $$
-    declare
-        server_channels cursor(server_id_in numeric) for
+    PROCEDURE clear_subscriptions(server_id_in IN NUMBER, deleting_server IN NUMBER := 0)
+    IS
+        cursor server_channels(server_id_in in number) is
                 select  s.org_id, sc.channel_id, cfm.channel_family_id
                 from    rhnServer s,
                         rhnServerChannel sc,
@@ -288,51 +257,59 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
     BEGIN
         for channel in server_channels(server_id_in)
         loop
-                perform rhn_channel.unsubscribe_server(server_id_in, channel.channel_id, 1, 1, deleting_server);
-        end loop;
-    END$$ language plpgsql;
+                unsubscribe_server(server_id_in, channel.channel_id, 1, 1, deleting_server);
+        end loop channel;
+    END clear_subscriptions;
 
-    CREATE OR REPLACE FUNCTION unsubscribe_server(server_id_in IN NUMERIC, channel_id_in NUMERIC, immediate_in NUMERIC default 1, unsubscribe_children_in numeric default 0,
-                                 deleting_server in numeric default 0) returns void
-    AS $$
-    declare
-        channel_family_id_val   NUMERIC;
-        server_org_id_val       NUMERIC;
+    PROCEDURE unsubscribe_server(server_id_in IN NUMBER, channel_id_in NUMBER, immediate_in NUMBER := 1, unsubscribe_children_in number := 0,
+                                 deleting_server IN NUMBER := 0)
+    IS
+        channel_family_id_val   NUMBER;
+        server_org_id_val       NUMBER;
         server_already_in_chan  BOOLEAN;
-        channel_family_is_proxy cursor(channel_family_id_in numeric) for
+        cursor  channel_family_is_proxy(channel_family_id_in in number) is
                 select  1
                 from    rhnChannelFamily
                 where   id = channel_family_id_in
                     and label = 'rhn-proxy';
-        channel_family_is_satellite cursor(channel_family_id_in numeric) for
+        cursor  channel_family_is_satellite(channel_family_id_in in number) is
                 select  1
                 from    rhnChannelFamily
                 where   id = channel_family_id_in
                     and label = 'rhn-satellite';
-        child record;
-    BEGIN
-        -- In PostgreSQL recursion with opened cursors is not allowed so we use
-        -- FOR IN SELECT form which is ok.
-        FOR child IN select  c.id
+        -- this is *EXACTLY* like check_server_parent_membership, but if we recurse
+        -- with the package-level one, we get a "cursor already open", so we need a
+        -- copy on our call stack instead.  GROAN.
+        cursor local_chk_server_parent_memb (
+                        server_id_in number,
+                        channel_id_in number ) is
+                select  c.id
                 from    rhnChannel                      c,
                                 rhnServerChannel        sc
                 where   1=1
                         and c.parent_channel = channel_id_in
                         and c.id = sc.channel_id
-                        and sc.server_id = server_id_in
+                        and sc.server_id = server_id_in;
+    BEGIN
+        FOR child IN local_chk_server_parent_memb(server_id_in, channel_id_in)
         LOOP
             if unsubscribe_children_in = 1 then
-                perform rhn_channel.unsubscribe_server(server_id_in,
-                                                       child.id,
-                                                       immediate_in,
-                                                       unsubscribe_children_in,
-                                                       deleting_server);
+                unsubscribe_server(server_id_in => server_id_in,
+                                                                channel_id_in => child.id,
+                                                                immediate_in => immediate_in,
+                                                                unsubscribe_children_in => unsubscribe_children_in,
+                        deleting_server => deleting_server);
             else
-                perform rhn_exception.raise_exception('channel_unsubscribe_child_exists');
+                rhn_exception.raise_exception('channel_unsubscribe_child_exists');
             end if;
-        END LOOP;
+        END LOOP child;
 
-        server_already_in_chan := rhn_channel.check_server_subscription(server_id_in, channel_id_in);
+        server_already_in_chan := FALSE;
+
+        FOR check_subscription IN check_server_subscription(server_id_in, channel_id_in)
+        LOOP
+            server_already_in_chan := TRUE;
+        END LOOP check_subscription;
 
         IF NOT server_already_in_chan
         THEN
@@ -341,7 +318,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
 
    if deleting_server = 0 then
       insert into rhnServerHistory (id,server_id,summary,details) (
-          select  nextval('rhn_event_id_seq'),
+          select  rhn_event_id_seq.nextval,
                 server_id_in,
              'unsubscribed from channel ' || SUBSTR(c.label, 0, 106),
              c.label
@@ -353,7 +330,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
    DELETE FROM rhnServerChannel WHERE server_id = server_id_in AND channel_id = channel_id_in;
 
    if deleting_server = 0 then
-        perform queue_server(server_id_in, immediate_in);
+        queue_server(server_id_in, immediate_in);
 
         update rhnServer
            set channels_changed = current_timestamp
@@ -363,7 +340,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         channel_family_id_val := rhn_channel.family_for_channel(channel_id_in);
         IF channel_family_id_val IS NULL
         THEN
-            perform rhn_exception.raise_exception('channel_unsubscribe_no_family');
+            rhn_exception.raise_exception('channel_unsubscribe_no_family');
         END IF;
 
         for ignore in channel_family_is_satellite(channel_family_id_val) loop
@@ -377,29 +354,28 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
           FROM rhnServer
          WHERE id = server_id_in;
 
-    END$$ language plpgsql;
+    END unsubscribe_server;
 
-    CREATE OR REPLACE FUNCTION family_for_channel(channel_id_in IN NUMERIC)
-    RETURNS NUMERIC
-    AS $$
-    declare
-        channel_family_id_val NUMERIC;
+
+    FUNCTION family_for_channel(channel_id_in IN NUMBER)
+    RETURN NUMBER
+    IS
+        channel_family_id_val NUMBER;
     BEGIN
         SELECT channel_family_id INTO channel_family_id_val
           FROM rhnChannelFamilyMembers
          WHERE channel_id = channel_id_in;
 
-        IF NOT FOUND THEN
-          RETURN NULL;
-        END IF;
-
         RETURN channel_family_id_val;
-    END$$ language plpgsql;
+    EXCEPTION
+        WHEN NO_DATA_FOUND
+        THEN
+            RETURN NULL;
+    END family_for_channel;
 
-    create or replace function unsubscribe_server_from_family(server_id_in in numeric,
-                                             channel_family_id_in in numeric)
-    returns void
-    as $$
+    procedure unsubscribe_server_from_family(server_id_in in number,
+                                             channel_family_id_in in number)
+    is
     begin
         delete
         from    rhnServerChannel rsc
@@ -408,118 +384,160 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                 select  rcfm.channel_id
                 from    rhnChannelFamilyMembers rcfm
                 where   rcfm.channel_family_id = channel_family_id_in);
-    end$$ language plpgsql;
+    end;
 
-    create or replace function get_org_id(channel_id_in in numeric)
-    returns numeric
-    as $$
-    declare
-        org_id_out numeric;
+    function get_org_id(channel_id_in in number)
+    return number
+    is
+        org_id_out number;
     begin
-        select org_id into strict org_id_out
+        select org_id into org_id_out
             from rhnChannel
             where id = channel_id_in;
 
             return org_id_out;
-    end$$ language plpgsql;
+    end get_org_id;
 
-    create or replace function get_cfam_org_access(cfam_id_in in numeric, org_id_in in numeric)
-    returns numeric
-    as $$
-    begin
-      if exists(
+    function get_cfam_org_access(cfam_id_in in number, org_id_in in number)
+    return number
+    is
+        cursor  families is
                         select  1
                         from    rhnOrgChannelFamilyPermissions cfp
-                        where   cfp.org_id = org_id_in
-      ) then
+                        where   cfp.org_id = org_id_in;
+    begin
+                -- the idea: if we get past this query,
+        -- the user has the role, else catch the exception and return 0
+                for family in families loop
                 return 1;
-      else
+                end loop;
                 return 0;
-      end if;
-    end$$ language plpgsql;
+    end;
 
-    create or replace function get_org_access(channel_id_in in numeric, org_id_in in numeric)
-    returns integer
-    as $$
+    function get_org_access(channel_id_in in number, org_id_in in number)
+    return number
+    is
+        throwaway number;
     begin
         -- the idea: if we get past this query,
-        -- the org has access to the channel, else not
-        if exists(
-        select 1
+        -- the org has access to the channel, else catch the exception and return 0
+        select distinct 1 into throwaway
           from rhnChannelFamilyMembers CFM,
                rhnOrgChannelFamilyPermissions CFP
          where cfp.org_id = org_id_in
            and CFM.channel_family_id = CFP.channel_family_id
-           and CFM.channel_id = channel_id_in)
-        then
-          return 1;
-        else
-          return 0;
-        end if;
-    end$$ language plpgsql;
+           and CFM.channel_id = channel_id_in;
 
-    create or replace function rhn_channel.user_role_check(channel_id_in in numeric, user_id_in in numeric, role_in in varchar)
-    returns numeric
-    as $$
-    declare
-        result NUMERIC;
+        return 1;
+        exception
+            when no_data_found
+            then
+            return 0;
+    end;
+
+    -- check if a user has a given role, or if such a role is inferrable
+    -- returns NULL if OK, error message otherwise
+    function user_role_check_debug(channel_id_in in number,
+                                   user_id_in in number,
+                                   role_in in varchar2)
+    return varchar2
+    is
+        org_id number;
     begin
-        SELECT
-          INTO result
-          CASE
-            WHEN suseChannelUserRoleView.deny_reason IS NULL THEN 1
-            ELSE 0
-            END
-          FROM suseChannelUserRoleView
-          WHERE channel_id = channel_id_in AND
-            user_id = user_id_in AND
-            role = role_in;
-         RETURN result;
-    end$$ language plpgsql;
+        org_id := rhn_user.get_org_id(user_id_in);
+
+        -- channel might be shared
+        if role_in = 'subscribe' and
+           rhn_channel.shared_user_role_check(channel_id_in, user_id_in, role_in) = 1 then
+            return NULL;
+        end if;
+
+        if role_in = 'manage' and
+           NVL(rhn_channel.get_org_id(channel_id_in), -1) <> org_id then
+               return 'channel_not_owned';
+        end if;
+
+        if role_in = 'subscribe' and
+           rhn_channel.get_org_access(channel_id_in, org_id) = 0 then
+                return 'channel_not_available';
+        end if;
+
+        -- channel admins have all roles
+        if rhn_user.check_role_implied(user_id_in, 'channel_admin') = 1 then
+            return NULL;
+        end if;
+
+        -- the subscribe permission is inferred
+        -- UNLESS the not_globally_subscribable flag is set
+        if role_in = 'subscribe'
+        then
+            if rhn_channel.org_channel_setting(channel_id_in,
+                       org_id,
+                       'not_globally_subscribable') = 0 then
+                    return NULL;
+            end if;
+        end if;
+
+        -- all other roles (manage right now) are explicitly granted
+        if rhn_channel.direct_user_role_check(channel_id_in,
+                                              user_id_in, role_in) = 1 then
+            return NULL;
+        end if;
+        return 'direct_permission';
+    end;
+
+    -- same as above, but with 1/0 output; useful in views, etc
+    function user_role_check(channel_id_in in number, user_id_in in number, role_in in varchar2)
+    return number
+    is
+    begin
+        if rhn_channel.user_role_check_debug(channel_id_in,
+                                             user_id_in, role_in) is NULL then
+            return 1;
+        else
+            return 0;
+        end if;
+    end;
 
     --
     -- For multiorg phase II, this function simply checks to see if the user's
     -- has a trust relationship that includes this channel by id.
     --
-    create or replace function shared_user_role_check(channel_id in numeric, user_id in numeric, role in varchar)
-    returns numeric
-    as $$
-    declare
-      n numeric;
-      oid numeric;
+    function shared_user_role_check(channel_id in number, user_id in number, role in varchar2)
+    return number
+    is
+      n number;
+      oid number;
     begin
       oid := rhn_user.get_org_id(user_id);
       select 1 into n
       from rhnSharedChannelView s
       where s.id = channel_id and s.org_trust_id = oid;
-
-      if not found then
-        return 0;
-      end if;
-
       return 1;
-    end$$ language plpgsql;
+      exception
+        when no_data_found then
+          return 0;
+    end;
 
     -- same as above, but returns 1 if user_id_in is null
     -- This is useful in queries where user_id is not specified
-    create or replace function loose_user_role_check(channel_id_in in numeric, user_id_in in numeric, role_in in varchar)
-    returns numeric
-    as $$
+    function loose_user_role_check(channel_id_in in number, user_id_in in number, role_in in varchar2)
+    return number
+    is
     begin
         if user_id_in is null then
             return 1;
         end if;
-        return rhn_channel.user_role_check(channel_id_in, user_id_in, role_in);
-    end$$ language plpgsql;
+        return user_role_check(channel_id_in, user_id_in, role_in);
+    end loose_user_role_check;
 
     -- directly checks the table, no inferred permissions
-    create or replace function direct_user_role_check(channel_id_in in numeric, user_id_in in numeric, role_in in varchar)
-    returns numeric
-    as $$
-    declare
-        throwaway numeric;
+    function direct_user_role_check(channel_id_in in number, user_id_in in number, role_in in varchar2)
+    return number
+    is
+        throwaway number;
     begin
-        -- the idea: if we get past this query, the user has the role, else no
+        -- the idea: if we get past this query, the user has the role, else catch the exception and return 0
         select 1 into throwaway
           from rhnChannelPermissionRole CPR,
                rhnChannelPermission CP
@@ -528,21 +546,20 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
            and CPR.label = role_in
            and CP.role_id = CPR.id;
 
-      if not found then
-        return 0;
-      end if;
-
-      return 1;
-    end$$ language plpgsql;
+        return 1;
+    exception
+        when no_data_found
+            then
+            return 0;
+    end;
 
     -- check if an org has a certain setting
-    create or replace function org_channel_setting(channel_id_in in numeric, org_id_in in numeric, setting_in in varchar)
-    returns numeric
-    as $$
-    declare
-        throwaway numeric;
+    function org_channel_setting(channel_id_in in number, org_id_in in number, setting_in in varchar2)
+    return number
+    is
+        throwaway number;
     begin
-        -- the idea: if we get past this query, the org has the setting
+        -- the idea: if we get past this query, the org has the setting, else catch the exception and return 0
         select 1 into throwaway
           from rhnOrgChannelSettingsType OCST,
                rhnOrgChannelSettings OCS
@@ -551,21 +568,20 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
            and OCST.label = setting_in
            and OCS.setting_id = OCST.id;
 
-      if not found then
-        return 0;
-      end if;
+        return 1;
+    exception
+        when no_data_found
+            then
+            return 0;
+    end;
 
-      return 1;
-    end$$ language plpgsql;
-
-    CREATE OR REPLACE FUNCTION channel_priority(channel_id_in IN numeric)
-    RETURNS numeric
-    AS $$
-    declare
-         channel_name varchar(256);
-         priority numeric;
-         end_of_life_val timestamptz;
-         org_id_val numeric;
+    FUNCTION channel_priority(channel_id_in IN number)
+    RETURN number
+    IS
+         channel_name varchar2(256);
+         priority number;
+         end_of_life_val timestamp with local time zone;
+         org_id_val number;
     BEGIN
 
         select name, end_of_life, org_id
@@ -649,14 +665,13 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
 
       return -priority;
 
-    end$$ language plpgsql;
+    end channel_priority;
 
     -- this could certainly be optimized to do updates if needs be
-    create or replace function refresh_newest_package(channel_id_in in numeric,
-                                      caller_in in varchar default '(unknown)',
-                                      package_name_id_in in numeric default null)
-    returns void
-    as $$
+    procedure refresh_newest_package(channel_id_in in number,
+                                     caller_in in varchar2 := '(unknown)',
+                                     package_name_id_in in number := null)
+    is
     -- procedure refreshes rows for name_id = package_name_id_in or
     -- all rows if package_name_id_in is null
     begin
@@ -677,19 +692,19 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         insert into rhnChannelNewestPackageAudit (channel_id, caller)
              values (channel_id_in, caller_in);
         update rhnChannel
-           set last_modified = greatest(current_timestamp,
-                                        last_modified + interval '1 second')
+           set last_modified = greatest(current_timestamp, last_modified + interval '1' second)
          where id = channel_id_in;
-    end$$ language plpgsql;
+    end;
 
-   create or replace function update_channel ( channel_id_in in numeric, invalidate_ss in numeric default 0,
-                              date_to_use in timestamptz default current_timestamp ) returns void
-   as $$
-   declare
-   channel_last_modified timestamptz;
-   last_modified_value timestamptz;
 
-   snapshots cursor for
+   procedure update_channel ( channel_id_in in number, invalidate_ss in number := 0,
+                              date_to_use in timestamp with local time zone := current_timestamp )
+   is
+
+   channel_last_modified timestamp with local time zone;
+   last_modified_value timestamp with local time zone;
+
+   cursor snapshots is
    select  snapshot_id id
    from    rhnSnapshotChannel
    where   channel_id = channel_id_in;
@@ -704,7 +719,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
       last_modified_value := date_to_use;
 
       if last_modified_value <= channel_last_modified then
-          last_modified_value := last_modified_value + interval '1 second';
+          last_modified_value := last_modified_value + 1/86400;
       end if;
 
       update rhnChannel set last_modified = last_modified_value
@@ -718,12 +733,12 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         end loop;
       end if;
 
-   end$$ language plpgsql;
+   end update_channel;
 
-   create or replace function update_channels_by_package ( package_id_in in numeric, date_to_use in timestamptz default current_timestamp ) returns void
-   as $$
-   declare
-   channels cursor for
+   procedure update_channels_by_package ( package_id_in in number, date_to_use in timestamp with local time zone := current_timestamp )
+   is
+
+   cursor channels is
    select channel_id
    from rhnChannelPackage
    where package_id = package_id_in
@@ -733,15 +748,15 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
       for channel in channels loop
          -- we want to invalidate the snapshot assocated with the channel when we
          -- do this b/c we know we've added or removed or packages
-         perform rhn_channel.update_channel ( channel.channel_id, 1, date_to_use );
+         rhn_channel.update_channel ( channel.channel_id, 1, date_to_use );
       end loop;
-   end$$ language plpgsql;
+   end update_channels_by_package;
 
 
-   create or replace function update_channels_by_errata ( errata_id_in numeric, date_to_use in timestamptz default current_timestamp ) returns void
-   as $$
-   declare
-   channels cursor for
+   procedure update_channels_by_errata ( errata_id_in number, date_to_use in timestamp with local time zone := current_timestamp )
+   is
+
+   cursor channels is
    select channel_id
    from rhnChannelErrata
    where errata_id = errata_id_in
@@ -751,15 +766,14 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
       for channel in channels loop
          -- we won't invalidate snapshots, b/c just changing the errata associated with
          -- a channel shouldn't invalidate snapshots
-         perform rhn_channel.update_channel ( channel.channel_id, 0, date_to_use );
+         rhn_channel.update_channel ( channel.channel_id, 0, date_to_use );
       end loop;
-   end$$ language plpgsql;
+   end update_channels_by_errata;
 
-   create or replace function update_needed_cache(channel_id_in in numeric) returns void
-   as $$
-   declare
-   server record;
-   image record;
+   procedure update_needed_cache(channel_id_in in number)
+   is
+       -- update of needed cache ican be commited on a per server basis
+       -- b/c failure of update for a server means nothing for the other servers
    begin
       -- we intentionaly do a loop here instead of one huge select
       -- b/c we want to break update into smaller transaction to unblock other sessions
@@ -770,7 +784,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                  where sc.channel_id = channel_id_in
                  order by id asc
       ) loop
-         perform queue_server(server.id, 0); -- NOT IMMEDIATE
+         queue_server(server.id, 0); -- NOT IMMEDIATELY
       end loop;
       for image in (
         select ic.image_info_id as id
@@ -778,14 +792,12 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
          where ic.channel_id = channel_id_in
         order by id asc
       ) loop
-         perform queue_image(image.id, 0);
+        queue_image(image.id, 0);
       end loop;
-   end$$ language plpgsql;
+   end update_needed_cache;
 
-    create or replace function set_comps(channel_id_in in numeric, path_in in varchar, comps_type_id_in in numeric, timestamp_in in varchar) returns void
-    as $$
-    declare
-    row record;
+    procedure set_comps(channel_id_in in number, path_in in varchar2, comps_type_id_in in number, timestamp_in in varchar2)
+    is
     begin
         for row in (
             select relative_filename, last_modified
@@ -794,15 +806,17 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             and comps_type_id = comps_type_id_in
             ) loop
             if row.relative_filename = path_in
-                and row.last_modified = to_timestamp(timestamp_in, 'YYYYMMDDHH24MISS') then
+                and row.last_modified = to_date(timestamp_in, 'YYYYMMDDHH24MISS') then
                 return;
             end if;
         end loop;
         delete from rhnChannelComps
-        where channel_id = channel_id_in and comps_type_id = comps_type_id_in;
+        where channel_id = channel_id_in
+        and comps_type_id = comps_type_id_in;
         insert into rhnChannelComps (id, channel_id, relative_filename, comps_type_id, last_modified, created, modified)
-        values (sequence_nextval('rhn_channelcomps_id_seq'), channel_id_in, path_in, comps_type_id_in, to_timestamp(timestamp_in, 'YYYYMMDDHH24MISS'), current_timestamp, current_timestamp);
-    end$$ language plpgsql;
+        values (sequence_nextval('rhn_channelcomps_id_seq'), channel_id_in, path_in, comps_type_id_in, to_date(timestamp_in, 'YYYYMMDDHH24MISS'), current_timestamp, current_timestamp);
+    end set_comps;
 
--- restore the original setting
-update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_channel')+1) ) where name = 'search_path';
+END rhn_channel;
+/
+SHOW ERRORS
