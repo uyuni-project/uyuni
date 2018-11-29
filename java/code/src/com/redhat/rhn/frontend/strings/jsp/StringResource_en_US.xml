@@ -11445,6 +11445,9 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <trans-unit id="system.event.details.returned">
           <source>Client execution returned &lt;pre&gt;{0}&lt;/pre&gt; (code {1})</source>
         </trans-unit>
+        <trans-unit id="system.event.details.syntaxerror">
+          <source>Could not parse state file. Please check YAML syntax.</source>
+        </trans-unit>
         <trans-unit id="system.event.rescheduleText">
           <source>This history event was caused by a failed scheduled action.&lt;br /&gt;If you have corrected the problem, you may reschedule the action below.</source>
         </trans-unit>

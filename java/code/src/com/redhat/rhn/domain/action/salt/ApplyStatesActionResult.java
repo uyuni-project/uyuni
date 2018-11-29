@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * ApplyStatesActionResult
@@ -117,9 +118,9 @@ public class ApplyStatesActionResult implements Serializable {
     }
 
     /**
-     * @return a list of state results
+     * @return Optional with list of state results or empty
      */
-    public List<StateResult> getResult() {
+    public Optional<List<StateResult>> getResult() {
         Yaml yaml = new Yaml();
         List<StateResult> result = new LinkedList<>();
         try {
@@ -130,9 +131,9 @@ public class ApplyStatesActionResult implements Serializable {
             });
         }
         catch (ConstructorException ce) {
-            return new LinkedList<>();
+            return Optional.empty();
         }
-        return result;
+        return Optional.of(result);
     }
 
     @Override
