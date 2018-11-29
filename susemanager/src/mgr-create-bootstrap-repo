@@ -77,6 +77,45 @@ SELECT distinct
 order by pkg.id
 """;
 
+_sql_find_pkgs_custom = """
+SELECT distinct
+        pkg.id AS id,
+        PN.name || '-' || evr_t_as_vre_simple(full_list.evr) || '.' || full_list.arch_label AS nvrea,
+        full_list.arch_label AS arch,
+        pkg.path
+  FROM  (
+         SELECT  I_P.name_id name_id,
+                 max(I_PE.evr) evr,
+                 I_PA.id as arch_id,
+                 I_PA.label as arch_label
+           FROM  (
+                  select *
+                    from rhnChannel
+                   where org_id is not null
+                     and label = :parentchannel
+                      or parent_channel in (
+                                            select pc.id
+                                              from rhnChannel pc
+                                             where pc.label = :parentchannel)
+                  ) channels
+           JOIN  rhnChannelNewestPackage I_CNP ON channels.id = I_CNP.channel_id
+           JOIN  rhnPackage I_P ON I_CNP.package_id = I_P.id
+           JOIN  rhnPackageEVR I_PE ON I_P.evr_id = I_PE.id
+           JOIN  rhnPackageArch I_PA ON I_P.package_arch_id = I_PA.id
+       GROUP BY  I_P.name_id, I_PA.label, I_PA.id
+     ) full_list,
+       rhnPackage pkg
+       join rhnPackageName pn on pkg.name_id = pn.id
+       join rhnPackageEVR pevr on pkg.evr_id = pevr.id
+       join rhnChannelPackage CP on CP.package_id = pkg.id
+ WHERE full_list.name_id = pkg.name_id
+   AND full_list.evr = pevr.evr
+   AND full_list.arch_id = pkg.package_arch_id
+   AND pn.name = :pkgname
+order by pkg.id
+""";
+
+
 _sql_find_root_channel_label = """
 select label
 from rhnChannel
@@ -89,6 +128,12 @@ where id in (
 )
 """;
 
+_sql_find_custom_parent_channel_labels = """
+select label
+from rhnChannel
+where parent_channel IS NULL
+and org_id IS NOT NULL
+""";
 
 def find_root_channel_labels(pdids):
     """
@@ -99,6 +144,16 @@ def find_root_channel_labels(pdids):
     h = rhnSQL.Statement( _sql_find_root_channel_label.format(pdids))
     return map(lambda x: x['label'], rhnSQL.fetchall_dict(h) or [])
 
+def find_custom_parent_channel_labels():
+    """
+    Get custom parent channel labels
+
+    :return: list of custom parent channel labels
+    """
+    h = rhnSQL.Statement(_sql_find_custom_parent_channel_labels)
+    return map(lambda x: x['label'], rhnSQL.fetchall_dict(h) or [])
+
+
 def list_labels():
     """
     Create list of labels and return a structure of them for the menu.
@@ -107,16 +162,27 @@ def list_labels():
     """
     label_map = {}
     synced_products = [x['id'] for x in rhnSQL.fetchall_dict(_sql_synced_proucts) or []]
+    custom_parent_channels = find_custom_parent_channel_labels()
     label_index = 1
     for label in sorted(mgr_bootstrap_data.DATA.keys()):
-        if int(mgr_bootstrap_data.DATA[label]['PDID'][0]) in synced_products:
+        if 'PDID' in mgr_bootstrap_data.DATA[label] and int(mgr_bootstrap_data.DATA[label]['PDID'][0]) in synced_products:
+            print("{0}. {1}".format(label_index, label))
+            label_map[label_index] = label
+            label_index += 1
+        elif 'BASECHANNEL' in mgr_bootstrap_data.DATA[label] and mgr_bootstrap_data.DATA[label]['BASECHANNEL'] in custom_parent_channels:
             print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
             label_index += 1
     return label_map
 
 def create_repo(label, flush, additional=[]):
-    pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
+    pdids = None
+    if 'PDID' in mgr_bootstrap_data.DATA[label]:
+        pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
+    else:
+        options.usecustomchannels = True
+        options.parentchannel = mgr_bootstrap_data.DATA[label]['BASECHANNEL']
+
     destdir = mgr_bootstrap_data.DATA[label]['DEST']
     errors = 0
     messages = []
@@ -125,7 +191,10 @@ def create_repo(label, flush, additional=[]):
     }
 
     if options.usecustomchannels:
-        root_labels = find_root_channel_labels(pdids)
+        if pdids:
+            root_labels = find_root_channel_labels(pdids)
+        else:
+            root_labels = find_custom_parent_channel_labels()
         if options.parentchannel and options.parentchannel not in root_labels:
             print("'{0}' not found in existing parent channel options '{1}'".format(options.parentchannel, root_labels))
             sys.exit(1)
@@ -163,8 +232,10 @@ def create_repo(label, flush, additional=[]):
         print("Creating bootstrap repo for {0}".format(label))
     print()
 
-
-    h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids)))
+    if pdids:
+        h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids)))
+    else:
+        h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_custom ))
     packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
     packagelist.extend(additional)
     logging.debug("The bootstrap repo should contain the following packages: {0}".format(packagelist))
@@ -179,9 +250,9 @@ def create_repo(label, flush, additional=[]):
             errors += 1
             if not suggestions['no-packages']:
                 suggestions['no-packages'] = ('mgr-create-bootstrap-repo uses the locally synchronized ' +
-                                              'versions of files from the SUSE Manager Tools repository, ' +
+                                              'versions of files from the Tools repository, ' +
                                               'and uses the locally synchronized pool channel for dependency resolution. ' +
-                                              'Both should be fully synched before running the mgr-create-bootstrap script.')
+                                              'Both should be fully synced before running the mgr-create-bootstrap-repo script.')
             continue
         for p in pkgs:
             logging.debug(p)
@@ -242,10 +313,12 @@ if options.datamodule and options.datamodule != '':
 try:
     mgr_bootstrap_data = __import__(modulename)
     for label in mgr_bootstrap_data.DATA:
-        if not isinstance(mgr_bootstrap_data.DATA[label]['PDID'], usix.ListType):
-            mgr_bootstrap_data.DATA[label]['PDID'] = list(map(str, [int(mgr_bootstrap_data.DATA[label]['PDID'])]))
-        else:
-            mgr_bootstrap_data.DATA[label]['PDID'] = list(map(str, [int(pdid) for pdid in mgr_bootstrap_data.DATA[label]['PDID']]))
+        if 'PDID' in mgr_bootstrap_data.DATA[label]:
+            if not isinstance(mgr_bootstrap_data.DATA[label]['PDID'], usix.ListType):
+                mgr_bootstrap_data.DATA[label]['PDID'] = list(map(str, [int(mgr_bootstrap_data.DATA[label]['PDID'])]))
+            else:
+                mgr_bootstrap_data.DATA[label]['PDID'] = list(map(str, [int(pdid) for pdid in mgr_bootstrap_data.DATA[label]['PDID']]))
+
 except ImportError as e:
     sys.stderr.write("Unable to load module '%s'\n" % modulename)
     sys.stderr.write(str(e) + "\n")
