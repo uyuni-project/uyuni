@@ -1,4 +1,4 @@
-- Add check to prevent internal exception for invalid state file (bsc#1110757)
+- Handle with an error message if state file fails to render (bsc#1110757)
 - When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
 - Add check for yast autoinstall profiles when setting kickstartTree (bsc#1114115)
 - use a Salt engine to process return results (bsc#1099988)

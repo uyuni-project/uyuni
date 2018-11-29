@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.action.salt;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.server.Server;
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.
@@ -77,14 +79,15 @@ public class ApplyStatesAction extends Action {
 
     private String formatStateApplyResult(ApplyStatesActionResult result) {
         StringBuilder retval = new StringBuilder();
-        List<StateResult> resultList = result.getResult();
-        if (resultList.isEmpty()) {
+        Optional<List<StateResult>> resultList = result.getResult();
+        if (!resultList.isPresent()) {
+            LocalizationService ls = LocalizationService.getInstance();
             retval.append("<strong><span class='text-danger'>");
-            retval.append("Error: Could not parse state file. Please check YAML syntax.");
+            retval.append("Error: " + ls.getMessage("system.event.details.syntaxerror"));
             retval.append("</span></strong>");
             return retval.toString();
         }
-        resultList.stream()
+        resultList.get().stream()
         .sorted(
                 new Comparator<StateResult>() {
                     public int compare(StateResult r1, StateResult r2) {
