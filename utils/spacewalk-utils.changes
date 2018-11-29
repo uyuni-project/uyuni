@@ -1,5 +1,9 @@
 - Exit with an error if spacewalk-common-channels does not match
   any channel
+- Add Uyuni Client Tools for CentOS, openSUSE and SLES
+- Removed channels for distributions EoL
+- Removed Spacewalk Server channels
+- Removed Spacewalk Client Tools channels for CentOS and openSUSE
 - Fix typo at --phases option help
 
 -------------------------------------------------------------------
