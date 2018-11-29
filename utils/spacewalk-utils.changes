@@ -1,3 +1,5 @@
+- Exit with an error if spacewalk-common-channels does not match
+  any channel
 - Fix typo at --phases option help
 
 -------------------------------------------------------------------

@@ -211,6 +211,10 @@ Create everything as well as unlimited activation key for every channel:
                 if name not in child_channels:
                     child_channels[name] = []
 
+    if not matching_channels:
+        sys.stderr.write("No channels matching your selection.\n")
+        sys.exit(2)
+                    
     for (base_channel_label, create_channel) in sorted(base_channels.items()):
 
         if key == None:
