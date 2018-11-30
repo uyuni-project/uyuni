@@ -633,5 +633,20 @@ DATA = {
         'PDID' : [1576, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
+    'openSUSE-Leap-42.3-x86_64' : {
+        'BASECHANNEL' : 'opensuse_leap42_3-x86_64', 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/42/3/bootstrap/'
+    },
+    'openSUSE-Leap-15-x86_64' : {
+        'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/0/bootstrap/'
+    },
+    'centos-6-x86_64' : {
+        'BASECHANNEL' : 'centos6-x86_64', 'PKGLIST' : RES6,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
+    },
+    'centos-7-x86_64' : {
+        'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+    },
 }
-
