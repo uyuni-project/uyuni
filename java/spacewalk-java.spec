@@ -626,30 +626,30 @@ export NO_BRP_STALE_LINK_ERROR=yes
 # on Fedora 19 some jars are named differently
 %if 0%{?fedora} || 0%{?rhel} >= 7
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
+install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 
-# Need to use 2 versions of rhn.xml, Tomcat 8 changed syntax
+# Need to use 2 versions of context.xml, Tomcat 8 changed syntax
 %if 0%{?fedora} >= 23
-install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
 %else
-install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
 %endif # 0%{?fedora} >= 23
 
 %else
 %if 0%{?suse_version}
 %if 0%{?suse_version} < 1500 
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" install-tomcat8-suse
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
-install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
+install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
 %else
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
-install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
+install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
 %endif # 0%{?suse_version} < 1500
 %else
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/
-install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
+install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7
 
@@ -981,14 +981,14 @@ fi
 %config %{cobdirsnippets}/sles_no_signature_checks
 %config %{cobdirsnippets}/wait_for_networkmanager_script
 %if 0%{?fedora} || 0%{?rhel} >= 7
-%config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %else
 %if  0%{?suse_version}
-%config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %attr(755,root,root) %dir %{cobblerdir}
 %attr(755,root,root) %dir %{realcobsnippetsdir}
 %else
-%config(noreplace) %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+%config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %endif
 %endif
 %{realcobsnippetsdir}/spacewalk
