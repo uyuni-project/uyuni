@@ -185,7 +185,7 @@
     <rhn-tab name="Join" url="/rhn/systems/details/groups/Add.do"/>
   </rhn-tab>
 
-  <rhn-tab name="Virtualization" acl="not system_is_virtual(); system_has_management_entitlement() or system_has_salt_entitlement()">
+  <rhn-tab name="Virtualization" acl="system_has_virtualization_entitlement()">
     <rhn-tab-url>/rhn/manager/systems/details/virtualization/guests/${sid}</rhn-tab-url>
     <rhn-tab name="Guests" url="/rhn/manager/systems/details/virtualization/guests/${sid}"/>
     <rhn-tab name="Provisioning" url="/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do" acl="system_feature(ftr_kickstart) or system_feature(ftr_snapshotting)"/>
