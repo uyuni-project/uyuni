@@ -51,9 +51,11 @@ import com.suse.matcher.json.VirtualizationGroupJson;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -76,11 +78,11 @@ public class MatcherJsonIO {
     /** Cached list of mandatory product IDs for an s390x system. */
     private final List<Long> productIdsForS390xSystem;
 
-    /** Cached list of mandatory product IDs for a virtualization host. */
-    private final List<Long> productIdsForVirtualHost;
-
     /** Cached list of mandatory product IDs for a regular system. */
     private final List<Long> productIdsForSystem;
+
+    /** Translation of unlimited virtual lifecycle products to single variant. **/
+    private final Map<Long, Long> lifecycleProductsTranslation;
 
     /** Fast factory for SUSEProduct objects. */
     private final CachingSUSEProductFactory productFactory;
@@ -107,15 +109,21 @@ public class MatcherJsonIO {
                 productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
         ).filter(Optional::isPresent).map(Optional::get).collect(toList());
 
-        productIdsForVirtualHost = of(
-                productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual"),
-                productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual")
+        Optional<Long> mgmtUnlimitedVirtualProd = productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual");
+        Optional<Long> provUnlimitedVirtualProd = productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual");
+
+        Optional<Long> mgmtSingleProd = productIdForEntitlement("SUSE-Manager-Mgmt-Single");
+        Optional<Long> provSingleProd = productIdForEntitlement("SUSE-Manager-Prov-Single");
+        productIdsForSystem = of(
+                mgmtSingleProd,
+                provSingleProd
         ).filter(Optional::isPresent).map(Optional::get).collect(toList());
 
-        productIdsForSystem = of(
-                productIdForEntitlement("SUSE-Manager-Mgmt-Single"),
-                productIdForEntitlement("SUSE-Manager-Prov-Single")
-        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
+        lifecycleProductsTranslation = new HashMap<>();
+        mgmtUnlimitedVirtualProd.ifPresent(
+                from -> mgmtSingleProd.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
+        provUnlimitedVirtualProd.ifPresent(
+                from -> provSingleProd.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
         productFactory = new CachingSUSEProductFactory();
     }
@@ -189,8 +197,9 @@ public class MatcherJsonIO {
                     credentials == null ? "extFile" : credentials.getUsername(),
                     subscription == null ? new HashSet<>() :
                         subscription.getProducts().stream()
-                            .map(i -> i.getProductId())
-                            .collect(toSet())
+                                // we want to merge the unlimited virtual products with the single ones
+                                .map(i -> lifecycleProductsTranslation.getOrDefault(i.getProductId(), i.getProductId()))
+                                .collect(toSet())
                 );
             })
             .collect(toList());
@@ -325,9 +334,6 @@ public class MatcherJsonIO {
                 entitlements.contains(EntitlementManager.ENTERPRISE_ENTITLED)) {
             if (server.getServerArch().equals(s390arch)) {
                 return productIdsForS390xSystem.stream();
-            }
-            else if (entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED)) {
-                return productIdsForVirtualHost.stream();
             }
             else {
                 return productIdsForSystem.stream();
