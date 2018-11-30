@@ -23,14 +23,25 @@ disable_repo_{{ alias }}:
 {%- endif %}
 {%- endfor %}
 
+{% set os_base = 'sle' %}
+{%- if "centos" in grains['oscodename']|lower %}
+{% set os_base = 'centos' %}
+{%- elif "opensuse" in grains['oscodename']|lower %}
+{% set os_base = 'opensuse' %}
+{%- endif %}
+
 {%- if grains['os_family'] == 'Suse' %}
 {%- if "." in grains['osrelease'] %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/sle/' ~ grains['osrelease'].replace('.', '/') ~ '/bootstrap/' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osrelease'].replace('.', '/') ~ '/bootstrap/' %}
 {%- else %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/sle/' ~ grains['osrelease'] ~ '/0/bootstrap/' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osrelease'] ~ '/0/bootstrap/' %}
 {%- endif %}
 {%- elif grains['os_family'] == 'RedHat' %}
+{% if salt['file.directory_exists' ]('/etc/centos-release') %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- endif %}
 {%- endif %}
 
 {%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}

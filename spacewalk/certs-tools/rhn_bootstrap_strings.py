@@ -357,8 +357,11 @@ if [ "$INSTALLER" == yum ]; then
     function getY_CLIENT_CODE_BASE() {{
         local BASE=""
         local VERSION=""
-        if [ -f /etc/redhat-release ]; then
-            grep -v '^#' /etc/redhat-release | grep -q '\(CentOS\|Red Hat\)' && BASE="res"
+        if [ -f /etc/centos-release ]; then
+            grep -v '^#' /etc/centos-release | grep -q '\(CentOS\)' && BASE="centos"
+            VERSION=`grep -v '^#' /etc/centos-release | grep -Po '(?<=release )\d+'`
+        elif [ -f /etc/redhat-release ]; then
+            grep -v '^#' /etc/redhat-release | grep -q '\(Red Hat\)' && BASE="res"
             VERSION=`grep -v '^#' /etc/redhat-release | grep -Po '(?<=release )\d+'`
         fi
         Y_CLIENT_CODE_BASE="${{BASE:-unknown}}"
@@ -413,6 +416,9 @@ if [ "$INSTALLER" == zypper ]; then
       eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
     elif [ -r /etc/os-release ]; then
       grep -q 'Enterprise' /etc/os-release && BASE='sle'
+      if [ "$BASE" != "sle" ]; then
+         grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
+      fi
       VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
       PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
     fi
