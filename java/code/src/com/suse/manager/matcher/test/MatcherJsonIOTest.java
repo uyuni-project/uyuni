@@ -13,7 +13,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -37,7 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class MatcherJsonIOTest extends BaseTestCaseWithUser {
+public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/sccdata/";
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
@@ -151,6 +151,53 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         assertEquals("SUSE Linux Enterprise High Availability Extension 12 SP1",
                 result.stream().filter(p -> p.getId().equals(1324L))
                     .findFirst().get().getName());
+    }
+
+    /**
+     * Tests that lifecycle products of the systems are present in the input for the matcher (non s390x scenario).
+     * For virtual hosts, we should report the same lifecycle products as for other systems.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testLifecycleProductsReporting() throws Exception {
+        SUSEProductTestUtils.clearAllProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        SUSEProductTestUtils.createVendorEntitlementProducts();
+
+        Server hostServer = ServerTestUtils.createVirtHostWithGuests(1);
+        // let's set some base product to our systems (otherwise lifecycle subscriptions aren't reported)
+        Set<InstalledProduct> installedProducts = new HashSet<>();
+        InstalledProduct instProd = new InstalledProduct();
+        instProd.setName("SLES");
+        instProd.setVersion("12.1");
+        instProd.setRelease("0");
+        instProd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        instProd.setBaseproduct(true);
+        installedProducts.add(instProd);
+        hostServer.setInstalledProducts(installedProducts);
+        Server guestServer = hostServer.getGuests().iterator().next().getGuestSystem();
+        guestServer.setInstalledProducts(installedProducts);
+
+        MatcherJsonIO matcherInput = new MatcherJsonIO();
+        List<SystemJson> systems = matcherInput.getJsonSystems(false, AMD64_ARCH);
+        assertEquals(1, systems.stream().filter(s -> s.getId().equals(hostServer.getId())).count());
+        assertEquals(1, systems.stream().filter(s -> s.getId().equals(guestServer.getId())).count());
+        SystemJson host = systems.stream().filter(s -> s.getId().equals(hostServer.getId())).findFirst().get();
+        SystemJson guest = systems.stream().filter(s -> s.getId().equals(guestServer.getId())).findFirst().get();
+
+        // SCC Product IDs:
+        long mgmtSingleProdId = 1076L;
+        long provSingleProdId = 1097L;
+        long mgmtUnlimitedVirtProdId = 1078L;
+        long provUnlimitedVirtProdId = 1204L;
+        assertTrue(host.getProductIds().contains(mgmtSingleProdId));
+        assertTrue(host.getProductIds().contains(provSingleProdId));
+        assertFalse(host.getProductIds().contains(mgmtUnlimitedVirtProdId));
+        assertFalse(host.getProductIds().contains(provUnlimitedVirtProdId));
+        assertTrue(guest.getProductIds().contains(mgmtSingleProdId));
+        assertTrue(guest.getProductIds().contains(provSingleProdId));
+        assertFalse(guest.getProductIds().contains(mgmtUnlimitedVirtProdId));
+        assertFalse(guest.getProductIds().contains(provUnlimitedVirtProdId));
     }
 
     public void testSubscriptionsToJson() throws Exception {
