@@ -323,7 +323,7 @@ public class SystemsController {
             catch (Exception e) {
                 // This is not a critical feature for this request, we want to keep moving forward anyway
                 // but log that something unexpected happened
-                LOG.error("An oldBaseChannelId parameter wasn't provided when fetching childchannels", e);
+                LOG.error("A wrong oldBaseChannelId parameter was provided when fetching childchannels", e);
             }
 
             try {
