@@ -126,7 +126,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   getAccessibleChildren = (newBaseId: number) => {
     if (!this.state.availableChildren.has(newBaseId)) {
-      const queryString = this.state.originalBase ? `?oldBaseChannelId=${this.state.originalBase.id}` : '';
+      const shouldIncludeOldBaseChannelIdParam = this.state.originalBase && this.state.originalBase.id !== this.getNoBase().id;
+      const queryString = shouldIncludeOldBaseChannelIdParam && this.state.originalBase ? `?oldBaseChannelId=${this.state.originalBase.id}` : '';
       Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${newBaseId}/accessible-children${queryString}`).promise
         .then((data: JsonResult<Array<ChannelDto>>) => {
           const newChildren = new Map(
