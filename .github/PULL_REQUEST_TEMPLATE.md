@@ -36,3 +36,13 @@ Relevant branches (GitHub automatic links expected below):
  - Uyuni
 
 - [ ] **DONE**
+
+## Changelogs
+
+Copy the following sentence as a new comment if you don't need changelog entries:
+
+> gitarro no changelog needed !!!
+
+If the test `changelog_test`already run, then add another new comment with the following text:
+
+> gitarro rerun changelog_test !!!
