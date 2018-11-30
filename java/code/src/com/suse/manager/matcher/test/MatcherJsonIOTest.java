@@ -16,7 +16,6 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.ProductJson;
@@ -201,29 +200,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSubscriptionsToJson() throws Exception {
-        File subJson = new File(TestUtils.findTestData(
-                new File(JARPATH, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
-        File orderJson = new File(TestUtils.findTestData(
-                new File(JARPATH, ORDERS_JSON).getAbsolutePath()).getPath());
-
-        Path fromdir = Files.createTempDirectory("sumatest");
-        File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
-        File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
-        Files.copy(subJson.toPath(), subtempFile.toPath());
-        Files.copy(orderJson.toPath(), ordertempFile.toPath());
-        try {
-            Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
-            SUSEProductTestUtils.clearAllProducts();
-            SUSEProductTestUtils.createVendorSUSEProducts();
-
-            ContentSyncManager cm = new ContentSyncManager();
-
-            // this will also refresh the DB cache of subscriptions
-            Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
-            HibernateFactory.getSession().flush();
-            assertNotNull(s);
-            List<SubscriptionJson> result = new MatcherJsonIO()
-                    .getJsonSubscriptions();
+        withSetupContentSyncManager(JARPATH, () -> {
+            List<SubscriptionJson> result = new MatcherJsonIO().getJsonSubscriptions();
 
             SubscriptionJson resultSubscription1 = result.stream()
                     .filter(rs -> rs.getId().equals(9998L))
@@ -244,6 +222,42 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
             assertTrue(resultSubscription2.getProductIds().contains(1322L));
             assertTrue(resultSubscription2.getProductIds().contains(1324L));
             assertEquals("extFile", resultSubscription2.getSccUsername());
+        });
+    }
+
+    /**
+     * Helper method for handling the ContentSyncManager mocking boilerplate.
+     *
+     * @param workDir the working directory of the ContentSyncManager
+     * @param body the Runnable with the test body
+     * @throws Exception if anything goes wrong
+     */
+    private static void withSetupContentSyncManager(String workDir, Runnable body) throws Exception {
+        File subJson = new File(TestUtils.findTestData(
+                new File(workDir, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
+        File orderJson = new File(TestUtils.findTestData(
+                new File(workDir, ORDERS_JSON).getAbsolutePath()).getPath());
+
+        Path fromdir = Files.createTempDirectory("sumatest");
+        File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
+        File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
+        Files.copy(subJson.toPath(), subtempFile.toPath());
+        Files.copy(orderJson.toPath(), ordertempFile.toPath());
+        Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
+        try {
+            SUSEProductTestUtils.clearAllProducts();
+            SUSEProductTestUtils.createVendorSUSEProducts();
+            SUSEProductTestUtils.createVendorEntitlementProducts();
+
+            ContentSyncManager cm = new ContentSyncManager();
+
+            // this will also refresh the DB cache of subscriptions
+            Collection<SCCSubscriptionJson> s;
+            s = cm.updateSubscriptions();
+            HibernateFactory.getSession().flush();
+            assertNotNull(s);
+
+            body.run();
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
