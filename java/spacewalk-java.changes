@@ -1,4 +1,5 @@
 - show beta products if a beta subscription is available (bsc#1123189)
+- Merge unlimited virtualization lifecycle products with the single variant (bsc#1114059)
 - Improve performance for granting and revoking permissions to user for groups (bsc#1111810)
 - Fix for duplicate key violation when cloning erratas that have no packages associated (bsc#1111686)
 - Update spec file to no longer install tomcat context file in cache directory (bsc#1111308)
