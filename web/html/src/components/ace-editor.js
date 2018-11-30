@@ -3,6 +3,7 @@
 
 const PropTypes = require('prop-types');
 const React = require("react");
+const ReactDOM = require("react-dom");
 
 class AceEditor extends React.Component {
   static propTypes = {
@@ -20,7 +21,7 @@ class AceEditor extends React.Component {
   componentDidMount() {
     const component = this;
 
-    const node = React.findDOMNode(component.refs.editor);
+    const node = ReactDOM.findDOMNode(component.refs.editor);
     const editor = ace.edit(node);
     editor.setTheme("ace/theme/xcode");
     editor.getSession().setMode("ace/mode/" + component.props.mode);
