@@ -41,6 +41,12 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
 
+    // SCC Product IDs:
+    private static final long MGMT_SINGLE_PROD_ID = 1076L;
+    private static final long PROV_SINGLE_PROD_ID = 1097L;
+    private static final long MGMT_UNLIMITED_VIRT_PROD_ID = 1078L;
+    private static final long PROV_UNLIMITED_VIRT_PROD_ID = 1204L;
+
     private static final String AMD64_ARCH = "amd64";
 
     public void testSystemsToJson() throws Exception {
@@ -104,8 +110,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertEquals("guest1.example.com", resultG1.getName());
         assertEquals(4, resultG1.getProductIds().size());
         assertTrue(resultG1.getProductIds().contains(1322L));
-        assertTrue(resultG1.getProductIds().contains(1076L));
-        assertTrue(resultG1.getProductIds().contains(1097L));
+        assertTrue(resultG1.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+        assertTrue(resultG1.getProductIds().contains(PROV_SINGLE_PROD_ID));
         assertTrue(resultG1.getProductIds().contains(1324L));
 
         SystemJson resultG2 =
@@ -114,8 +120,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertEquals("guest2.example.com", resultG2.getName());
         assertEquals(4, resultG2.getProductIds().size());
         assertTrue(resultG2.getProductIds().contains(1322L));
-        assertTrue(resultG2.getProductIds().contains(1076L));
-        assertTrue(resultG2.getProductIds().contains(1097L));
+        assertTrue(resultG2.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+        assertTrue(resultG2.getProductIds().contains(PROV_SINGLE_PROD_ID));
         assertTrue(resultG2.getProductIds().contains(1324L));
 
         // ISS Master should add itself
@@ -184,19 +190,14 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SystemJson host = systems.stream().filter(s -> s.getId().equals(hostServer.getId())).findFirst().get();
         SystemJson guest = systems.stream().filter(s -> s.getId().equals(guestServer.getId())).findFirst().get();
 
-        // SCC Product IDs:
-        long mgmtSingleProdId = 1076L;
-        long provSingleProdId = 1097L;
-        long mgmtUnlimitedVirtProdId = 1078L;
-        long provUnlimitedVirtProdId = 1204L;
-        assertTrue(host.getProductIds().contains(mgmtSingleProdId));
-        assertTrue(host.getProductIds().contains(provSingleProdId));
-        assertFalse(host.getProductIds().contains(mgmtUnlimitedVirtProdId));
-        assertFalse(host.getProductIds().contains(provUnlimitedVirtProdId));
-        assertTrue(guest.getProductIds().contains(mgmtSingleProdId));
-        assertTrue(guest.getProductIds().contains(provSingleProdId));
-        assertFalse(guest.getProductIds().contains(mgmtUnlimitedVirtProdId));
-        assertFalse(guest.getProductIds().contains(provUnlimitedVirtProdId));
+        assertTrue(host.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+        assertTrue(host.getProductIds().contains(PROV_SINGLE_PROD_ID));
+        assertFalse(host.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
+        assertFalse(host.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
+        assertTrue(guest.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+        assertTrue(guest.getProductIds().contains(PROV_SINGLE_PROD_ID));
+        assertFalse(guest.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
+        assertFalse(guest.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
     }
 
     public void testSubscriptionsToJson() throws Exception {
@@ -222,6 +223,28 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
             assertTrue(resultSubscription2.getProductIds().contains(1322L));
             assertTrue(resultSubscription2.getProductIds().contains(1324L));
             assertEquals("extFile", resultSubscription2.getSccUsername());
+        });
+    }
+
+    public void testLifecycleProductsInSubscriptions() throws Exception {
+        withSetupContentSyncManager("/com/redhat/rhn/manager/content/test/sccdata_lifecycle_products", () -> {
+            List<SubscriptionJson> subscriptions = new MatcherJsonIO().getJsonSubscriptions();
+
+            assertEquals(4, subscriptions.size());
+
+            subscriptions.stream()
+                    .filter(s -> s.getId() == 11 || s.getId() == 12) // Management
+                    .forEach(s -> {
+                        assertTrue(s.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+                        assertFalse(s.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
+                    });
+
+            subscriptions.stream()
+                    .filter(s -> s.getId() == 13 || s.getId() == 14) // Provisioning
+                    .forEach(s -> {
+                        assertTrue(s.getProductIds().contains(PROV_SINGLE_PROD_ID));
+                        assertFalse(s.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
+                    });
         });
     }
 
