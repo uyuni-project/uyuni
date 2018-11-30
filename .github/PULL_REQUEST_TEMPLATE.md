@@ -25,6 +25,14 @@ After:
 Related issues:
  - #123
 
-Related PRs:
- - [ ] Manager-3.1: #123
- - [ ] Manager: #123
+- [ ] **DONE**
+
+## Changelogs
+
+Copy the following sentence as a new comment if you don't need changelog entries:
+
+> gitarro no changelog needed !!!
+
+If the test `changelog_test`already run, then add another new comment with the following text:
+
+> gitarro rerun changelog_test !!!
