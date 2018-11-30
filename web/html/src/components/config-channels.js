@@ -388,16 +388,18 @@ class ConfigChannels extends React.Component {
               <RankingTable items={currentAssignment} onUpdate={this.onUpdateRanking} emptyMsg={t("There are no states assigned.")}/>
             </div>
             :
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>{t("Channel Name")}</th>
-                  <th>{t("Channel Label")}</th>
-                  <th>{t("Assign")}</th>
-                </tr>
-              </thead>
-              {this.tableBody()}
-            </table>
+            <span>
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>{t("Channel Name")}</th>
+                    <th>{t("Channel Label")}</th>
+                    <th>{t("Assign")}</th>
+                  </tr>
+                </thead>
+                {this.tableBody()}
+              </table>
+            </span>
           }
 
           <SaltStatePopup saltState={this.state.showSaltState} onClosePopUp={this.onClosePopUp}/>
