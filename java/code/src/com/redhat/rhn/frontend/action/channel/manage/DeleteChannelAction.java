@@ -32,7 +32,6 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -41,11 +40,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-
 
 /**
  * Handles the page display and actual deletion of a software channel.
@@ -96,7 +94,10 @@ public class DeleteChannelAction extends RhnAction {
                     dr = PackageManager.listCustomPackageForChannel(channelId, user.getOrg().getId(), false);
                     List<MinionServer> minions = ServerFactory.listMinionsByChannel(channel.getId());
                     ChannelManager.deleteChannel(user, channelLabel);
-                    ChannelManager.updateSystemsChannelsInfo(user, minions);
+                    Optional<Long> actionId = ChannelManager.applyChannelState(user, minions);
+                    if (actionId.isPresent()) {
+                        createSuccessMessage(request, "message.channel.deleted.state.scheduled", actionId.toString());
+                    }
                 }
                 catch (PermissionException e) {
                     addMessage(request, e.getMessage());

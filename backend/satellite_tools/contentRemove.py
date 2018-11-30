@@ -68,22 +68,21 @@ class RemoteApi:
             to_ret.append(item["label"])
         self.cache[key] = to_ret
         return to_ret
-    def unsubscribe_channels(self, server_ids):
+    def apply_channel_state(self, server_ids):
         self.auth_check()
-        self.client.channel.software.refreshSystemsChannelInfo(self.auth_token, server_ids)
+        self.client.channel.software.applyChannelState(self.auth_token, server_ids)
 
 
-def __updateServerRepos(server_ids, username, password):
-    print(server_ids)
+def __applyChannelState(server_ids, username, password):
     xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
-    return xmlrpc.unsubscribe_channels(server_ids)
+    return xmlrpc.apply_channel_state(server_ids)
 
-def __getassignedMinions(labels):
+def __getMinionsByChannel(labels):
     sql = """
         SELECT DISTINCT  mi.server_id
              FROM rhnChannel c 
              JOIN rhnServerChannel sc ON c.id = sc.channel_id 
-             JOIN suseminioninfo mi ON mi.server_id = sc.server_id 
+             JOIN suseMinionInfo mi ON mi.server_id = sc.server_id 
         WHERE c.label IN (%s)
     """
     params, bind_params = _bind_many(labels)
@@ -92,7 +91,7 @@ def __getassignedMinions(labels):
     h.execute(**params)
     server_list = h.fetchall_dict()
     if not server_list:
-        return 0
+        return []
     server_ids = map(lambda s: s['server_id'], server_list)
     return server_ids;
 

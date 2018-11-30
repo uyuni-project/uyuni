@@ -28,7 +28,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -614,21 +613,25 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * Refreshes channel info for the systems by regenerating pillar data and then trigger immediate channels state
+     * Refreshes channel-related pillar data for a list of minions and then immediately schedules the application of
+     * the channel state.
      * @param user User with permission to schedule an action
      * @param minions those minions where pillar data should be re-generated and channel state should be applied
-     * @return Scheduled action
+     * @return Scheduled action id or empty optional
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
-     * label
+     *
      */
-
-    public static Action updateSystemsChannelsInfo(User user, List<MinionServer> minions)
+    public static Optional<Long> applyChannelState(User user, List<MinionServer> minions)
             throws TaskomaticApiException {
-        for (MinionServer ms: minions) {
-            SaltStateGeneratorService.INSTANCE.generatePillar(ms, false, Collections.emptySet());
+        Optional<Long> actionId = Optional.empty();
+        if (minions.size() > 0) {
+            for (MinionServer ms: minions) {
+                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false, Collections.emptySet());
+            }
+            actionId = Optional.of(ActionManager.scheduleChannelState(user, minions).getId());
         }
-        return ActionManager.scheduleChannelState(user, minions);
+        return actionId;
     }
 
     /**

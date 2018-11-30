@@ -18,9 +18,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -45,7 +42,6 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
@@ -55,8 +51,6 @@ import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
-import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
-import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.EusReleaseComparator;
@@ -81,18 +75,13 @@ import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TimeZone;
-
-import static org.terracotta.context.query.Matchers.context;
 
 /**
  * ChannelManagerTest
@@ -280,9 +269,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         MinionServer minionServer = TestUtils.saveAndReload(testMinionServer);
 
         ChannelManager.deleteChannel(user, child.getLabel(), true);
-        Action action = ChannelManager.updateSystemsChannelsInfo(user, Collections.singletonList(minionServer));
+        Optional<Long> actionId = ChannelManager.applyChannelState(user, Collections.singletonList(minionServer));
         assertEquals(1, minionServer.getChannels().size());
-        assertTrue(action instanceof ApplyStatesAction);
+        assertTrue(actionId.isPresent());
     }
 
     public void testDeleteChannel() throws Exception {

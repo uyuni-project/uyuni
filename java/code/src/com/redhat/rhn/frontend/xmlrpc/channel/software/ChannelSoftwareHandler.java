@@ -544,7 +544,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Deletes a software channel and then also schedule channel state for the servers which had this channel
+     * Deletes a software channel and then also schedule channel state for the minions which had this channel
      * @param loggedInUser The current user
      * @param channelLabel Label of channel to be deleted.
      * @return 1 if Channel was successfully deleted.
@@ -564,7 +564,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
             List<MinionServer> minions = ServerFactory.listMinionsByChannel(channel.getId());
             ChannelManager.deleteChannel(loggedInUser, channelLabel);
-            ChannelManager.updateSystemsChannelsInfo(loggedInUser, minions);
+            ChannelManager.applyChannelState(loggedInUser, minions);
         }
         catch (InvalidChannelRoleException e) {
             throw new PermissionCheckFailureException(e);
@@ -3366,13 +3366,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param childLabels child channels' labels
      * @return array containing action Ids
      * @deprecated being replaced by refreshSystemsChannelInfo
-
+     *
      * @xmlrpc.doc Unsubscribe channels from the specified minions, trigger immediate channels update state
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "childLabels")
-     * @xmlrpc.returntype  #array_single("int", "actionId")
+     * @xmlrpc.returntype #array_single("int", "actionId")
      */
     @Deprecated
     public long[] unsubscribeChannels(User user, List<Integer> sids, String baseChannel, List<String> childLabels) {
@@ -3411,21 +3411,22 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Refresh pillar data and then schedule channels state on the given systems
+     * Refresh pillar data and then schedule channels state on the given minions
      * @param user The current user
      * @param sids server ids for the minions
-     * @return action id
-
+     * @return action id or 0 if no action is scheduled for any reason
+     *
      * @xmlrpc.doc Refresh pillar data and then schedule channels state on the provided systems
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.returntype  #array_single("int", "actionId")
+     * @xmlrpc.returntype #array_single("int", "actionId")
      */
-    public long refreshSystemsChannelInfo(User user, List<Integer> sids) {
+
+    public long applyChannelState(User user, List<Integer> sids) {
         try {
             List<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toList());
             List<MinionServer> minionServers = MinionServerFactory.lookupByIds(serverIds).collect(Collectors.toList());
-            return ChannelManager.updateSystemsChannelsInfo(user, minionServers).getId();
+            return ChannelManager.applyChannelState(user, minionServers).orElse(0L);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
