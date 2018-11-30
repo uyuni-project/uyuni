@@ -2133,7 +2133,6 @@ public class ActionManager extends BaseManager {
      * @return Set of scheduled Actions
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
-     * label
      */
     public static Action scheduleChannelState(User user, List<MinionServer> minionServers)
             throws TaskomaticApiException {
