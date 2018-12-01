@@ -69,6 +69,8 @@ for DESTINATION in $(echo ${DESTINATIONS}|tr ',' ' '); do
 done
 
 # Clean directories generated as user root
-rm -r ./susemanager-frontend/susemanager-nodejs-sdk-devel/node_modules
-rm -r ./web/html/src/node_modules
-rm -r ./web/html/src/dist
+rm -r ../susemanager-frontend/susemanager-nodejs-sdk-devel/node_modules ||:
+rm -r ../susemanager-frontend/node_modules ||:
+rm -r ../web/html/src/node_modules ||:
+rm -r ../web/html/src/dist ||:
+rm ../susemanager-frontend/susemanager-nodejs-sdk-devel/susemanager-nodejs-modules.tar.gz ||:
