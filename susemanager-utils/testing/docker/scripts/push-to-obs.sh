@@ -68,4 +68,7 @@ for DESTINATION in $(echo ${DESTINATIONS}|tr ',' ' '); do
   ./push-packages-to-obs.sh
 done
 
-# Clean
+# Clean directories generated as user root
+rm -r ./susemanager-frontend/susemanager-nodejs-sdk-devel/node_modules
+rm -r ./web/html/src/node_modules
+rm -r ./web/html/src/dist
