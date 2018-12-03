@@ -36,9 +36,12 @@ Feature: The Setup Wizard
     And I enter "SUSE Linux Enterprise Server 12 SP2" in the css "input[name='product-description-filter']"
     And I select "x86_64" in the dropdown list of the architecture filter
     When I select "SUSE Linux Enterprise Server 12 SP2 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 12 SP2 x86_64" selected
     And I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP2 x86_64"
+    Then I should see the "SUSE Linux Enterprise Server 12 SP2 x86_64" selected
     Then I should see a "Legacy Module 12 x86_64" text
     When I select the addon "Legacy Module 12 x86_64"
+    Then I should see the "Legacy Module 12 x86_64" selected
     And I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     Then the SLE12 products should be added
@@ -53,6 +56,7 @@ Feature: The Setup Wizard
     Then I should see a "Basesystem Module 15 x86_64" text
     And I should see that the "Basesystem Module 15 x86_64" product is "recommended"
     When I select "SUSE Linux Enterprise Server 15 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
     Then I should see the "Basesystem Module 15 x86_64" selected
     And I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
