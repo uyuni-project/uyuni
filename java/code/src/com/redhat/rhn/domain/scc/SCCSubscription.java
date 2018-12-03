@@ -149,6 +149,7 @@ public class SCCSubscription extends BaseDomainHelper {
      * Get the SUSE Products
      * @return the SUSE Products
      */
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "suseSCCSubscriptionProduct",
         joinColumns = @JoinColumn(name = "subscription_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id"))
