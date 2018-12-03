@@ -16,20 +16,24 @@ package com.redhat.rhn.manager.system;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.common.UninitializedCommandException;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command class for schedule virtualization-related actions
@@ -42,6 +46,7 @@ public class VirtualizationActionCommand {
 
     private User user;
     private Date scheduleDate;
+    private Optional<ActionChain> actionChain;
     private ActionType actionType;
     private Server targetSystem;
     private String uuid;
@@ -53,16 +58,18 @@ public class VirtualizationActionCommand {
      * Constructor
      * @param userIn User performing the action
      * @param dateIn Earliest execution date/time for the action
+     * @param actionChainIn the action chain to wire the action to or <code>null</code>.
      * @param actionTypeIn ActionType of the action being performed.
      * @param targetSystemIn The host system for this action.
      * @param uuidIn String representation of the target instance's UUID
      * @param contextIn Map of optional action arguments.
      */
-    public VirtualizationActionCommand(User userIn, Date dateIn, ActionType actionTypeIn,
-                                       Server targetSystemIn, String uuidIn,
+    public VirtualizationActionCommand(User userIn, Date dateIn, Optional<ActionChain> actionChainIn,
+                                       ActionType actionTypeIn, Server targetSystemIn, String uuidIn,
                                        Map contextIn) {
         this.setUser(userIn);
         this.setScheduleDate(dateIn);
+        this.setActionChain(actionChainIn);
         this.setActionType(actionTypeIn);
         this.setTargetSystem(targetSystemIn);
         this.setUuid(uuidIn);
@@ -99,18 +106,21 @@ public class VirtualizationActionCommand {
                     virtAction.getUuid());
         }
 
-        ServerAction serverAction = new ServerAction();
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        serverAction.setRemainingTries(Long.valueOf(5));
-        serverAction.setServer(this.getTargetSystem());
         virtAction.extractParameters(getContext());
-
-        virtAction.addServerAction(serverAction);
-        serverAction.setParentAction(virtAction);
 
         LOG.debug("saving virtAction.");
         ActionFactory.save(virtAction);
-        taskomaticApi.scheduleActionExecution(virtAction);
+
+        if (getActionChain() == null || !getActionChain().isPresent()) {
+            ActionManager.scheduleForExecution(virtAction, Collections.singleton(getTargetSystem().getId()));
+            taskomaticApi.scheduleActionExecution(virtAction);
+        }
+        else {
+            Integer sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain.get());
+            ActionChainFactory.queueActionChainEntry(virtAction, actionChain.get(),
+                    getTargetSystem().getId(), sortOrder);
+        }
+
         action = virtAction;
         return null;
     }
@@ -187,6 +197,22 @@ public class VirtualizationActionCommand {
      */
     public void setScheduleDate(Date argScheduleDate) {
         this.scheduleDate = argScheduleDate;
+    }
+
+
+    /**
+     * @return Returns the actionChain.
+     */
+    public Optional<ActionChain> getActionChain() {
+        return actionChain;
+    }
+
+
+    /**
+     * @param actionChainIn The actionChain to set.
+     */
+    public void setActionChain(Optional<ActionChain> actionChainIn) {
+        actionChain = actionChainIn;
     }
 
     /**

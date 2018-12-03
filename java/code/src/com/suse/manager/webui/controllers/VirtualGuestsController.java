@@ -407,6 +407,7 @@ public class VirtualGuestsController {
         VirtualizationActionCommand cmd
             = new VirtualizationActionCommand(user,
                                               new Date(),
+                                              Optional.empty(),
                                               ActionFactory.TYPE_VIRTUALIZATION_CREATE,
                                               host,
                                               guest != null ? guest.getUuid() : null,
@@ -452,7 +453,7 @@ public class VirtualGuestsController {
         }
 
         VirtualizationActionCommand cmd
-            = new VirtualizationActionCommand(user, new Date(), actionType, host, guest.getUuid(), context);
+            = new VirtualizationActionCommand(user, new Date(), null, actionType, host, guest.getUuid(), context);
         Long actionId;
         try {
             cmd.store();
