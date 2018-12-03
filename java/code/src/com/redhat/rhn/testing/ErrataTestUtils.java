@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelProduct;
+import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
@@ -146,15 +147,20 @@ public class ErrataTestUtils {
     public static ChannelFamily createTestChannelFamily() throws Exception {
         String label = "ChannelFamilyLabel" + TestUtils.randomString();
         String name = "ChannelFamilyName" + TestUtils.randomString();
-        String productUrl = "http://www.example.com";
 
         ChannelFamily channelFamily = new ChannelFamily();
         channelFamily.setOrg(null);
         channelFamily.setLabel(label);
         channelFamily.setName(name);
-        channelFamily.setProductUrl(productUrl);
 
         ChannelFamilyFactory.save(channelFamily);
+
+        PublicChannelFamily pcf = new PublicChannelFamily();
+        pcf.setChannelFamily(channelFamily);
+        HibernateFactory.getSession().save(pcf);
+
+        channelFamily.setPublicChannelFamily(pcf);
+
         channelFamily = (ChannelFamily) TestUtils.reload(channelFamily);
         return channelFamily;
     }
