@@ -53,18 +53,14 @@ class RefreshOperationsTest(unittest.TestCase):
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
-        expected_output = """Refreshing Channels                            [DONE]
-Refreshing Channel families                    [DONE]
+        expected_output = """Refreshing Channel families                    [DONE]
 Refreshing SUSE products                       [DONE]
-Refreshing SUSE Product channels               [DONE]
+Refreshing SUSE repositories                   [DONE]
 Refreshing Subscriptions                       [DONE]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_calls = [
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeChannels",
-                                        self.fake_auth_token, mirror_url),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeChannelFamilies",
                                         self.fake_auth_token),
@@ -72,8 +68,8 @@ Refreshing Subscriptions                       [DONE]"""
                                         "synchronizeProducts",
                                         self.fake_auth_token),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeProductChannels",
-                                        self.fake_auth_token),
+                                        "synchronizeRepositories",
+                                        self.fake_auth_token, mirror_url),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeSubscriptions",
                                         self.fake_auth_token)
@@ -92,18 +88,14 @@ Refreshing Subscriptions                       [DONE]"""
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
-        expected_output = """Refreshing Channels                            [DONE]
-Refreshing Channel families                    [DONE]
+        expected_output = """Refreshing Channel families                    [DONE]
 Refreshing SUSE products                       [DONE]
-Refreshing SUSE Product channels               [DONE]
+Refreshing SUSE repositories                   [DONE]
 Refreshing Subscriptions                       [DONE]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_calls = [
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeChannels",
-                                        self.fake_auth_token, ''),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeChannelFamilies",
                                         self.fake_auth_token),
@@ -111,8 +103,8 @@ Refreshing Subscriptions                       [DONE]"""
                                         "synchronizeProducts",
                                         self.fake_auth_token),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeProductChannels",
-                                        self.fake_auth_token),
+                                        "synchronizeRepositories",
+                                        self.fake_auth_token, ''),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeSubscriptions",
                                         self.fake_auth_token)
@@ -131,10 +123,9 @@ Refreshing Subscriptions                       [DONE]"""
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
-        expected_output = """Refreshing Channels                            [DONE]
-Refreshing Channel families                    [DONE]
+        expected_output = """Refreshing Channel families                    [DONE]
 Refreshing SUSE products                       [DONE]
-Refreshing SUSE Product channels               [DONE]
+Refreshing SUSE repositories                   [DONE]
 Refreshing Subscriptions                       [DONE]
 
 Scheduling refresh of all the available channels
@@ -146,17 +137,14 @@ Scheduling reposync for following channels:
 
         expected_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeChannels",
-                                        self.fake_auth_token, ''),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeChannelFamilies",
                                         self.fake_auth_token),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeProducts",
                                         self.fake_auth_token),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeProductChannels",
-                                        self.fake_auth_token),
+                                        "synchronizeRepositories",
+                                        self.fake_auth_token, ''),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeSubscriptions",
                                         self.fake_auth_token),
