@@ -122,7 +122,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(OrgUserExtGroupSerializer.class);
         SERIALIZER_CLASSES.add(PackageSourceOverviewSerializer.class);
         SERIALIZER_CLASSES.add(MgrSyncProductDtoSerializer.class);
-        SERIALIZER_CLASSES.add(XMLChannelSerializer.class);
+        SERIALIZER_CLASSES.add(MgrSyncChannelDtoSerializer.class);
         SERIALIZER_CLASSES.add(MirrorCredentialsDtoSerializer.class);
         SERIALIZER_CLASSES.add(VirtualHostManagerSerializer.class);
         SERIALIZER_CLASSES.add(PinnedSubscriptionSerializer.class);

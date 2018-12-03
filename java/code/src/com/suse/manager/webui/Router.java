@@ -305,12 +305,10 @@ public class Router implements SparkApplication {
                 withProductAdmin(ProductsController::synchronizeProducts));
         post("/manager/admin/setup/sync/channelfamilies",
                 withProductAdmin(ProductsController::synchronizeChannelFamilies));
-        post("/manager/admin/setup/sync/channels",
-                withProductAdmin(ProductsController::synchronizeChannels));
-        post("/manager/admin/setup/sync/productchannels",
-                withProductAdmin(ProductsController::synchronizeProductChannels));
         post("/manager/admin/setup/sync/subscriptions",
                 withProductAdmin(ProductsController::synchronizeSubscriptions));
+        post("/manager/admin/setup/sync/repositories",
+                withProductAdmin(ProductsController::synchronizeRepositories));
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
