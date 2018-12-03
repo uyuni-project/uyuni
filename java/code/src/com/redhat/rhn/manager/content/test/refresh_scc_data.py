@@ -65,8 +65,8 @@ token = base64.b64encode(b"{0}:{1}".format(args.username, args.password)).decode
 headers = { 'Authorization' : 'Basic %s' %  token }
 
 products = get_paginated(connection, headers, "/connect/organizations/products/unscoped")
-save_json(products, "products.json")
-print("products.json refreshed")
+save_json(products, "productsUnscoped.json")
+print("productsUnscoped.json refreshed")
 
 repositories = get_paginated(connection, headers, "/connect/organizations/repositories")
 if args.real_tokens:
