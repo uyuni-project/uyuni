@@ -718,13 +718,14 @@ public class ErrataFactory extends HibernateFactory {
     public static Errata lookupByAdvisory(String advisory, Org org) {
         Session session = null;
         Errata retval = null;
-        //  try {
+
         //look for a published errata first
         session = HibernateFactory.getSession();
         retval = (Errata) session.getNamedQuery("PublishedErrata.findByAdvisoryName")
                 .setParameter("advisory", advisory)
                 .setParameter("org", org)
                 .uniqueResult();
+
         //if nothing was found, check the unpublished errata table
         if (retval == null) {
             retval = (Errata)
@@ -733,11 +734,6 @@ public class ErrataFactory extends HibernateFactory {
                     .setParameter("org", org)
                     .uniqueResult();
         }
-        //      }
-        //      catch (HibernateException e) {
-        //          throw new
-        //            HibernateRuntimeException("Error looking up errata by advisory name");
-        //       }
         return retval;
     }
 
