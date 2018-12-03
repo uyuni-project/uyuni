@@ -480,6 +480,9 @@ class ContainerHandler:
         self.setSuseProductsContainer()
         self.setSuseProductChannelsContainer()
         self.setSuseUpgradePathsContainer()
+        self.setSuseProductExtensionsContainer()
+        self.setSuseProductRepositoriesContainer()
+        self.setSCCRepositoriesContainer()
         self.setSuseSubscriptionsContainer()
         self.setClonedChannelsContainer()
 
@@ -548,6 +551,12 @@ class ContainerHandler:
         self.handler.set_container(diskImportLib.SuseProductChannelsContainer())
     def setSuseUpgradePathsContainer(self):
         self.handler.set_container(diskImportLib.SuseUpgradePathsContainer())
+    def setSuseProductExtensionsContainer(self):
+        self.handler.set_container(diskImportLib.SuseProductExtensionsContainer())
+    def setSuseProductRepositoriesContainer(self):
+        self.handler.set_container(diskImportLib.SuseProductRepositoriesContainer())
+    def setSCCRepositoriesContainer(self):
+        self.handler.set_container(diskImportLib.SCCRepositoriesContainer())
     def setSuseSubscriptionsContainer(self):
         self.handler.set_container(diskImportLib.SuseSubscriptionsContainer())
     def setClonedChannelsContainer(self):
