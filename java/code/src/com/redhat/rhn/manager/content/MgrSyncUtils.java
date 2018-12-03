@@ -14,25 +14,40 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ProductName;
-
-import com.suse.mgrsync.XMLChannel;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpHead;
+import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Utility methods to be used in {@link ContentSyncManager} related code.
  */
 public class MgrSyncUtils {
+    // Logger instance
+    private static Logger log = Logger.getLogger(MgrSyncUtils.class);
+
+    // Source URL handling
+    private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
+    private static final List<String> OFFICIAL_UPDATE_HOSTS =
+            Arrays.asList("updates.suse.com", OFFICIAL_NOVELL_UPDATE_HOST);
 
     // No instances should be created
     private MgrSyncUtils() {
@@ -90,11 +105,11 @@ public class MgrSyncUtils {
     /**
      * Handle special cases where SUSE arch names differ from the RedHat ones.
      *
-     * @param channel channel that we want to get the arch from
+     * @param packageArch channel that we want to get the arch from
      * @return channel arch object
      */
-    public static ChannelArch getChannelArch(XMLChannel channel) {
-        String arch = channel.getArch();
+    public static ChannelArch getChannelArch(PackageArch packageArch) {
+        String arch = packageArch.getLabel();
         if (arch.equals("i686") || arch.equals("i586") ||
                 arch.equals("i486") || arch.equals("i386")) {
             arch = "ia32";
@@ -106,61 +121,86 @@ public class MgrSyncUtils {
     }
 
     /**
-     * Get the parent channel of a given {@link XMLChannel} by looking it up
-     * via the given label. Return null if the given channel is a base channel.
+     * Get the channel for a given channel label.
+     * If label is null it returns null. If the channel label is not found
+     * it throws an exception.
      *
-     * @param channel to look up its parent
-     * @return the parent channel
+     * @param label the label
+     * @return the channel
      * @throws ContentSyncException if the parent channel is not installed
      */
-    public static Channel getParentChannel(XMLChannel channel)
-            throws ContentSyncException {
-        String parent = channel.getParent();
-        if (ContentSyncManager.BASE_CHANNEL.equals(parent)) {
-            return null;
-        }
-        else {
-            Channel parentChannel = ChannelFactory.lookupByLabel(parent);
-            if (parentChannel == null) {
-                throw new ContentSyncException("The parent channel of " +
-                        channel.getLabel() + " is not currently installed.");
+    public static Channel getChannel(String label) throws ContentSyncException {
+        Channel channel = null;
+        if (label != null) {
+            channel = ChannelFactory.lookupByLabel(label);
+            if (channel == null) {
+                throw new ContentSyncException("The parent channel is not installed: " + label);
             }
-            return parentChannel;
         }
+        return channel;
     }
 
     /**
      * Find a {@link ChannelProduct} or create it if necessary and return it.
-     * @param channel channel
+     * @param product product to find or create
      * @return channel product
      */
-    public static ChannelProduct findOrCreateChannelProduct(XMLChannel channel) {
-        ChannelProduct product = ChannelFactory.findChannelProduct(
-                channel.getProductName(), channel.getProductVersion());
-        if (product == null) {
-            product = new ChannelProduct();
-            product.setProduct(channel.getProductName());
-            product.setVersion(channel.getProductVersion());
-            product.setBeta(false);
-            ChannelFactory.save(product);
+    public static ChannelProduct findOrCreateChannelProduct(SUSEProduct product) {
+        ChannelProduct p = ChannelFactory.findChannelProduct(
+                product.getName(), product.getVersion());
+        if (p == null) {
+            p = new ChannelProduct();
+            p.setProduct(product.getName());
+            p.setVersion(product.getVersion());
+            p.setBeta(false);
+            ChannelFactory.save(p);
         }
-        return product;
+        return p;
     }
 
     /**
      * Find a {@link ProductName} or create it if necessary and return it.
-     * @param channel channel
+     * @param name channel
      * @return product name
      */
-    public static ProductName findOrCreateProductName(XMLChannel channel) {
+    public static ProductName findOrCreateProductName(String name) {
         ProductName productName = ChannelFactory.lookupProductNameByLabel(
-                channel.getProductName());
+                name);
         if (productName == null) {
             productName = new ProductName();
-            productName.setLabel(channel.getProductName());
-            productName.setName(channel.getProductName());
+            productName.setLabel(name);
+            productName.setName(name);
             ChannelFactory.save(productName);
         }
         return productName;
+    }
+
+    /**
+     * Convert network URL to file system URL.
+     * @param urlString url
+     * @param name repo name
+     * @return file URI
+     */
+    public static URI urlToFSPath(String urlString, String name) {
+        String host = "";
+        String path = "/";
+        try {
+            URL url = new URL(urlString);
+            host = url.getHost();
+            path = url.getPath();
+        }
+        catch (MalformedURLException e) {
+            log.warn("Unable to parse URL: " + urlString);
+        }
+        String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
+        File dataPath = new File(sccDataPath);
+
+        if (!OFFICIAL_UPDATE_HOSTS.contains(host) && name != null) {
+            // everything after the first space are suffixes added to make things unique
+            String[] parts  = name.split("\\s");
+            return new File(dataPath.getAbsolutePath() + "/repo/RPMMD/" + parts[0]).toURI();
+        }
+
+        return new File(dataPath.getAbsolutePath() + path).toURI();
     }
 }

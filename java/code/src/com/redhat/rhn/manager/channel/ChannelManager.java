@@ -2282,6 +2282,28 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
+     * Disassociate all packages and patches from the given channel.
+     * @param c the channel to clean
+     */
+    public static void disassociateChannelEntries(Channel c) {
+        log.info("Disassociate packages and patches from channel: " + c.getLabel());
+
+        Map<String, Long> params = new HashMap<String, Long>();
+        params.put("cid", c.getId());
+
+        WriteMode m = ModeFactory.getWriteMode("Channel_queries", "remove_all_packages");
+        m.executeUpdate(params);
+
+        WriteMode n = ModeFactory.getWriteMode("Channel_queries", "remove_all_errata");
+        n.executeUpdate(params);
+
+        HibernateFactory.getSession().refresh(c);
+
+        refreshWithNewestPackages(c, "disassoiateChannelEntries");
+        ErrataCacheManager.updateErrataAndPackageCacheForChannel(c.getId());
+    }
+
+    /**
      * Adds packages to a channel
      * @param chan the channel
      * @param packageIds list of package ids
@@ -2758,14 +2780,13 @@ public class ChannelManager extends BaseManager {
     public static Map<Long, Boolean> computeChannelRecommendedFlags(
             Channel baseChannel, Stream<Channel> childChannels) {
         Channel originalBaseChannel = getOriginalChannel(baseChannel);
-        Optional<SUSEProductChannel> baseChannelProduct =
-                SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
+        Optional<SUSEProductChannel> baseChannelProduct = originalBaseChannel.findProduct();
+
         return childChannels.collect(Collectors.toMap(
                 c -> c.getId(),
                 c -> {
                     Channel original = getOriginalChannel(c);
-                    Optional<SUSEProductChannel> extProduct =
-                            SUSEProductFactory.findProductByChannelLabel(original.getLabel());
+                    Optional<SUSEProductChannel> extProduct = original.findProduct();
                     if (extProduct.isPresent() && baseChannelProduct.isPresent()) {
                         List<SUSEProduct> allBaseProductsOf =
                                 SUSEProductFactory.findAllBaseProductsOf(
