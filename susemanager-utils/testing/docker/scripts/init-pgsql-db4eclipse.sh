@@ -29,11 +29,6 @@ fi
 # this copy the latest schema from the git into the system
 ./build-schema.sh
 
-################################################
-####### START COMMENT OUT
-####### IF A FIXED DESTINATION IS WANTED
-################################################
-
 RPMVERSION=`rpm -q --qf "%{version}\n" --specfile /manager/schema/spacewalk/susemanager-schema.spec | head -n 1`
 NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
 
@@ -44,10 +39,19 @@ else
     export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
 fi
 
-###############################################
-####### END
-#export SUMA_TEST_SCHEMA_VERSION="3.0"
-###############################################
+# guessing the link to next major version
+# THE NEXT BLOCK CAN BE COMMENTED OUT WHEN WE HAVE THE LINK PACKAGED
+for v in `seq 30 -1 1`; do
+    minusone=$(($v-1))
+    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$minusone-to-susemanager-schema-3.2.$v ]; then
+        if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0 ]; then
+            mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0
+            # set hard this destination
+            #export SUMA_TEST_SCHEMA_VERSION="4.0.1"
+        fi
+        break
+    fi
+done
 
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then

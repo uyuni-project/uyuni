@@ -32,8 +32,8 @@ spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-pgsql.txt --
 echo "Creating First Org"
 
 echo "select create_new_org('Test Default Organization', '$RANDOM') from dual;" | spacewalk-sql --select-mode -
-echo "INSERT INTO  rhnChannelFamily (id, name, label, org_id, product_url)
+echo "INSERT INTO  rhnChannelFamily (id, name, label, org_id)
       VALUES (sequence_nextval('rhn_channel_family_id_seq'), 'Private Channel Family 1',
-      'private-channel-family-1', 1, 'First Org Created');" | spacewalk-sql --select-mode -
+      'private-channel-family-1', 1);" | spacewalk-sql --select-mode -
 echo "INSERT INTO  rhnPrivateChannelFamily (channel_family_id, org_id) VALUES  (1000, 1);" | spacewalk-sql --select-mode -
 
