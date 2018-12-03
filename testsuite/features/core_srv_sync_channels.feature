@@ -20,19 +20,19 @@ Feature: Be able to list available channels and enable them
 
   Scenario: List products
     When I execute mgr-sync "list products"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 (x86_64)"
-    And I should get "[ ] SUSE Manager Proxy 2.1 (x86_64)"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 x86_64"
+    And I should get "[ ] SUSE Manager Proxy 2.1 x86_64"
 
   Scenario: List all products
     When I execute mgr-sync "list products --expand"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 (x86_64)"
-    And I should get "[ ] SUSE Manager Proxy 2.1 (x86_64)"
-    And I should get "  [ ] SUSE Cloud 4 (x86_64)"
-    And I should get "  [ ] SUSE Linux Enterprise High Availability Extension 12 (x86_64)"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 x86_64"
+    And I should get "[ ] SUSE Manager Proxy 2.1 x86_64"
+    And I should get "  [ ] SUSE Cloud 4 x86_64"
+    And I should get "  [ ] SUSE Linux Enterprise High Availability Extension 12 x86_64"
 
   Scenario: List products with filter
     When I execute mgr-sync "list products --expand --filter x86_64"
-    Then I should get "[ ] SUSE Linux Enterprise Server for SAP All-in-One 11 SP3 (x86_64)"
+    Then I should get "[ ] SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 x86_64"
     And I shouldn't get "ppc64"
     And I shouldn't get "s390x"
 
@@ -49,15 +49,15 @@ Feature: Be able to list available channels and enable them
     And I execute mgr-sync "list channels"
     Then I should get "[I] SLES12-SP3-Pool for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-pool-x86_64]"
     And I should get "    [I] SLES12-SP3-Updates for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-updates-x86_64]"
-    And I should get "    [ ] SLE-Module-Containers12-Pool for x86_64 SP3 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp3]"
+    And I should get "    [ ] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp3]"
 
   Scenario: Enable sle-module-containers12-pool-x86_64-sp3
     # This automatically enables all required channels
     When I execute mgr-sync "add channel sle-module-containers12-pool-x86_64-sp3"
     And I execute mgr-sync "list channels"
     Then I should get "[I] SLES12-SP3-Pool for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-pool-x86_64]"
-    And I should get "    [I] SLE-Module-Containers12-Pool for x86_64 SP3 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp3]"
-    And I should get "    [I] SLE-Module-Containers12-Updates for x86_64 SP3 Containers Module 12 x86_64 [sle-module-containers12-updates-x86_64-sp3]"
+    And I should get "    [I] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp3]"
+    And I should get "    [I] SLE-Module-Containers12-Updates for x86_64 Containers Module 12 x86_64 [sle-module-containers12-updates-x86_64-sp3]"
 
   Scenario: Let mgr-sync time out
     When I remove the mgr-sync cache file
