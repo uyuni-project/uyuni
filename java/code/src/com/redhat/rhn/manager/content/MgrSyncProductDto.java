@@ -14,8 +14,9 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.domain.product.MgrSyncChannelDto;
+
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.mgrsync.XMLChannel;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -23,17 +24,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * A product, as listed by mgr-sync. This is conceptually different from:
- * {@link SCCProduct}, a deserialized version of how SCC represents a product,
- * {@link XMLProduct}, a deserialized version of how channels.xml encodes a product,
- * {@link SUSEProduct}, which is a deserialization of what we have in DB table suseProducts,
- * {@link SetupWizardProductDto}, which is how the WebUI represents a product.
  */
 public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
 
@@ -47,13 +42,13 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
     private String version;
 
     /** The base channel for this product. */
-    private XMLChannel baseChannel;
+    private MgrSyncChannelDto baseChannel;
 
     /** The channels that make up this product. */
-    private Set<XMLChannel> channels;
+    private Set<MgrSyncChannelDto> channels;
 
     /** The extensions products of this product. */
-    private SortedSet<MgrSyncProductDto> extensions;
+    private Set<MgrSyncProductDto> extensions;
 
     /** Is this extension recommended */
     private boolean recommended;
@@ -64,17 +59,21 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      * @param friendlyNameIn the friendly name
      * @param idIn the id
      * @param versionIn the version
+     * @param recommendsIn product is recommended
      * @param baseChannelIn the base channel
+     * @param childChannelsIn set of channels
+     * @param extensionsIn set of extensions
      */
-    public MgrSyncProductDto(String friendlyNameIn, Long idIn, String versionIn,
-            XMLChannel baseChannelIn) {
+    public MgrSyncProductDto(String friendlyNameIn, Long idIn, String versionIn, boolean recommendsIn,
+            MgrSyncChannelDto baseChannelIn, Set<MgrSyncChannelDto> childChannelsIn,
+                             Set<MgrSyncProductDto> extensionsIn) {
         friendlyName = friendlyNameIn;
         id = idIn;
         version = versionIn;
         baseChannel = baseChannelIn;
-        channels = new HashSet<XMLChannel>();
-        extensions = new TreeSet<MgrSyncProductDto>();
-        recommended = false;
+        channels = childChannelsIn;
+        extensions = extensionsIn;
+        recommended = recommendsIn;
     }
 
     /**
@@ -122,7 +121,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      *
      * @return the base channel
      */
-    public XMLChannel getBaseChannel() {
+    public MgrSyncChannelDto getBaseChannel() {
         return baseChannel;
     }
 
@@ -131,7 +130,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      *
      * @return the channels
      */
-    public Set<XMLChannel> getChannels() {
+    public Set<MgrSyncChannelDto> getChannels() {
         return channels;
     }
 
@@ -140,7 +139,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      *
      * @param channel the channel
      */
-    public void addChannel(XMLChannel channel) {
+    public void addChannel(MgrSyncChannelDto channel) {
         channels.add(channel);
     }
 
@@ -148,7 +147,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      * Gets the extensions.
      * @return the extensions
      */
-    public SortedSet<MgrSyncProductDto> getExtensions() {
+    public Set<MgrSyncProductDto> getExtensions() {
         return extensions;
     }
 
@@ -166,8 +165,8 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      *
      * @return the arch
      */
-    public String getArch() {
-        return getBaseChannel().getArch();
+    public Optional<String> getArch() {
+        return getBaseChannel().getArch().map(a -> a.getLabel());
     }
 
     /**
@@ -182,8 +181,8 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      */
     public MgrSyncStatus getStatus() {
         MgrSyncStatus result = MgrSyncStatus.INSTALLED;
-        for (XMLChannel channel : channels) {
-            if (!channel.isOptional()) {
+        for (MgrSyncChannelDto channel : channels) {
+            if (channel.isMandatory()) {
                 if (channel.getStatus() == MgrSyncStatus.UNAVAILABLE) {
                     return MgrSyncStatus.UNAVAILABLE;
                 }
