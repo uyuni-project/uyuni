@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -36,7 +38,9 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,9 +91,13 @@ public class DeleteChannelAction extends RhnAction {
             if (override || subscribedSystemsCount == 0) {
                 DataResult dr;
                 try {
-                    dr = PackageManager.listCustomPackageForChannel(channelId,
-                            user.getOrg().getId(), false);
+                    dr = PackageManager.listCustomPackageForChannel(channelId, user.getOrg().getId(), false);
+                    List<MinionServer> minions = ServerFactory.listMinionsByChannel(channel.getId());
                     ChannelManager.deleteChannel(user, channelLabel);
+                    Optional<Long> actionId = ChannelManager.applyChannelState(user, minions);
+                    if (actionId.isPresent()) {
+                        createSuccessMessage(request, "message.channel.deleted.state.scheduled", actionId.toString());
+                    }
                 }
                 catch (PermissionException e) {
                     addMessage(request, e.getMessage());

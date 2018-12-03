@@ -2851,6 +2851,22 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channel.delete.jsp.state.scheduled.info">
+        <source>
+           Application of the channel state will be scheduled immediately after confirming on any minions
+           that currently have this channel assigned. This will update repository files on those minions to
+           remove the deleted channel.
+        </source>
+        <context-group name="ctx">
+           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      </trans-unit>
+        <trans-unit id="message.channel.deleted.state.scheduled">
+        <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
+        <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+      </context-group>
+      </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
       </trans-unit>

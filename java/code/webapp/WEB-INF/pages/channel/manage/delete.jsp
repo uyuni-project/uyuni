@@ -15,6 +15,7 @@
                 <rhn:csrf />
                 <h2><bean:message key="channel.delete.jsp.channelheader"/></h2>
                 <p><bean:message key="channel.delete.jsp.introparagraph"/></p>
+                <p><bean:message key="channel.delete.jsp.state.scheduled.info"/></p>
 
                 <div class="form-group">
                     <label class="col-lg-3 control-label">
