@@ -35,6 +35,7 @@ Feature: Chanel subscription via SSM
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     Then radio button "Test-Channel-x86_64" is checked
     And I wait until I do not see "Loading..." text
     And I should see "Test-Channel-x86_64 Child Channel" as unchecked
@@ -43,6 +44,7 @@ Feature: Chanel subscription via SSM
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     Then radio button "Test-Channel-x86_64" is checked
     And I wait until I do not see "Loading..." text
     And I should see "Test-Channel-x86_64 Child Channel" as unchecked
@@ -71,6 +73,7 @@ Feature: Chanel subscription via SSM
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     Then radio button "Test Base Channel" is checked
     And I wait until I do not see "Loading..." text
     And I should see "Test Child Channel" as checked
@@ -79,6 +82,7 @@ Feature: Chanel subscription via SSM
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     Then radio button "Test Base Channel" is checked
     And I wait until I do not see "Loading..." text
     And I should see "Test Child Channel" as checked
@@ -130,6 +134,7 @@ Feature: Chanel subscription via SSM
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     And I check radio button "Test-Channel-x86_64"
     And I wait until I do not see "Loading..." text
     And I wait until I see "Test-Channel-x86_64 Child Channel" text
@@ -145,6 +150,7 @@ Feature: Chanel subscription via SSM
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     And I check radio button "Test-Channel-x86_64"
     And I wait until I do not see "Loading..." text
     And I wait until I see "Test-Channel-x86_64 Child Channel" text
