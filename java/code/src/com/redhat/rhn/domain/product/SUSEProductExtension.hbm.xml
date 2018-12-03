@@ -22,12 +22,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProductExtension]]>
   </query>
 
-  <sql-query name="SUSEProductExtension.findAllExtensionProductsOf">
+  <sql-query name="SUSEProductExtension.findAllExtensionProductsForRootOf">
     <![CDATA[select {ext.*}
              from SUSEProductExtension pe
-             join SUSEProducts base on base.id = pe.base_pdid
              join SUSEProducts ext on pe.ext_pdid = ext.id
-             where base.id = :baseId
+             where pe.base_pdid = :baseId
+             and pe.root_pdid = :rootId
              ]]>
     <return alias="ext" class="com.redhat.rhn.domain.product.SUSEProduct"/>
   </sql-query>
@@ -36,8 +36,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <![CDATA[select {base.*}
              from SUSEProductExtension pe
              join SUSEProducts base on base.id = pe.base_pdid
-             join SUSEProducts ext on pe.ext_pdid = ext.id
-             where ext.id = :extId
+             where pe.ext_pdid = :extId
              ]]>
     <return alias="base" class="com.redhat.rhn.domain.product.SUSEProduct"/>
   </sql-query>
@@ -46,8 +45,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <![CDATA[select {base.*}
              from SUSEProductExtension pe
              join SUSEProducts base on base.id = pe.base_pdid
-             join SUSEProducts ext on pe.ext_pdid = ext.id
-             where ext.id = :extId and pe.root_pdid = :rootId
+             where pe.ext_pdid = :extId
+             and pe.root_pdid = :rootId
              ]]>
     <return alias="base" class="com.redhat.rhn.domain.product.SUSEProduct"/>
   </sql-query>

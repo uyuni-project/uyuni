@@ -15,10 +15,14 @@
 package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
+
+import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -26,14 +30,19 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -61,8 +70,15 @@ public class SCCCachingFactory extends HibernateFactory {
      * @param repo repository
      */
     public static void saveRepository(SCCRepository repo) {
-        repo.setModified(new Date());
         singleton.saveObject(repo);
+    }
+
+    /**
+     * Store {@link SCCRepositoryAuth} to the database.
+     * @param auth repo authentication
+     */
+    public static void saveRepositoryAuth(SCCRepositoryAuth auth) {
+        singleton.saveObject(auth);
     }
 
     /**
@@ -81,11 +97,18 @@ public class SCCCachingFactory extends HibernateFactory {
      * Clear all repositories from the database.
      */
     public static void clearRepositories() {
-        getSession().getNamedQuery("SCCRepository.deleteAll").executeUpdate();
+        //getSession().getNamedQuery("SCCRepository.deleteAll").executeUpdate();
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaDelete<SCCRepository> delete = builder.createCriteriaDelete(SCCRepository.class);
+        CriteriaDelete<SCCRepositoryAuth> deleteAuth = builder.createCriteriaDelete(SCCRepositoryAuth.class);
+        delete.from(SCCRepository.class);
+        deleteAuth.from(SCCRepositoryAuth.class);
+        getSession().createQuery(deleteAuth).executeUpdate();
+        getSession().createQuery(delete).executeUpdate();
     }
 
     /**
-     * Store {@link SCCSubscription} to the database.
+     * Store {@link SCCSubscriptionJson} to the database.
      * @param subscription the subscription
      */
     public static void saveSubscription(SCCSubscription subscription) {
@@ -94,27 +117,18 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
-     * Store {@link SCCSubscription} to the database.
+     * Store {@link SCCSubscriptionJson} to the database.
      * @param jsonSub the json subscription
      * @param creds the credentials
+     * @param productsBySccId lookup map of products by scc id
+     * @param subscriptionBySccId lookup map of subscriptions by scc id
+     * @return generated SCC Subscription
      */
-    public static void saveJsonSubscription(com.suse.scc.model.SCCSubscription jsonSub,
-            Credentials creds) {
-        Set<SUSEProduct> products = new HashSet<>();
-        Map<Long, SUSEProduct> prdMap = SUSEProductFactory.productsByProductIds();
-        for (Long pid : jsonSub.getProductIds()) {
-            if (prdMap.containsKey(pid)) {
-                products.add(prdMap.get(pid));
-            }
-            else {
-                log.error("unable to find product for scc product id: " + pid);
-            }
-        }
+    public static SCCSubscription saveJsonSubscription(SCCSubscriptionJson jsonSub, Credentials creds,
+            Map<Long, SUSEProduct> productsBySccId, Map<Long, SCCSubscription> subscriptionBySccId) {
 
-        SCCSubscription sub = lookupSubscriptionBySccId((long) jsonSub.getId());
-        if (sub == null) {
-            sub = new SCCSubscription();
-        }
+        SCCSubscription sub = Optional.ofNullable(subscriptionBySccId.get(jsonSub.getId()))
+                .orElse(new SCCSubscription());
 
         sub.setCredentials(creds);
         sub.setSccId(jsonSub.getId());
@@ -126,9 +140,26 @@ public class SCCCachingFactory extends HibernateFactory {
         sub.setType(jsonSub.getType());
         sub.setSystemLimit(jsonSub.getSystemLimit().longValue());
 
+        Set<SUSEProduct> products = sub.getProducts();
+        List<Long> currentProductIds = jsonSub.getProductIds();
+        for (Long pid : currentProductIds) {
+            if (productsBySccId.containsKey(pid)) {
+                if (!products.contains(productsBySccId.get(pid))) {
+                    products.add(productsBySccId.get(pid));
+                }
+            }
+        }
+        Set<SUSEProduct> toRemove = new HashSet<>();
+        for (SUSEProduct p : products) {
+            if (!currentProductIds.contains(p.getProductId())) {
+                toRemove.add(p);
+            }
+        }
+        products.removeAll(toRemove);
         sub.setProducts(products);
         sub.setModified(new Date());
         singleton.saveObject(sub);
+        return sub;
     }
 
     /**
@@ -144,7 +175,7 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup a {@link SCCSubscription} object for given sccId.
+     * Lookup a {@link SCCSubscriptionJson} object for given sccId.
      * @param id the scc id
      * @return SCC Subscription or null
      */
@@ -161,7 +192,12 @@ public class SCCCachingFactory extends HibernateFactory {
      * Clear all subscriptions from the database.
      */
     public static void clearSubscriptions() {
-        getSession().getNamedQuery("SCCSubscription.deleteAll").executeUpdate();
+        //getSession().getNamedQuery("SCCSubscription.deleteAll").executeUpdate();
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaDelete<SCCSubscription> delete = builder.createCriteriaDelete(SCCSubscription.class);
+        Root d = delete.from(SCCSubscription.class);
+        getSession().createQuery(delete).executeUpdate();
+
     }
 
     /**
@@ -174,10 +210,11 @@ public class SCCCachingFactory extends HibernateFactory {
             clearSubscriptions();
             return;
         }
-        getSession()
-                .getNamedQuery("SCCSubscription.deleteByCredential")
-                .setParameter("creds", c)
-                .executeUpdate();
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaDelete<SCCSubscription> delete = builder.createCriteriaDelete(SCCSubscription.class);
+        Root<SCCSubscription> e = delete.from(SCCSubscription.class);
+        delete.where(builder.equal(e.get("credentials"), c));
+        getSession().createQuery(delete).executeUpdate();
     }
 
     /**
@@ -190,6 +227,41 @@ public class SCCCachingFactory extends HibernateFactory {
         Session session = getSession();
         Criteria c = session.createCriteria(SCCOrderItem.class);
         return c.list();
+    }
+
+    /**
+     * Return a list of OrderItems fetched with the provided Credentials
+     * @param c the Credentials
+     * @return the list of OrderItems
+     */
+    public static List<SCCOrderItem> listOrderItemsByCredentials(Credentials c) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCOrderItem> query = builder.createQuery(SCCOrderItem.class);
+        Root<SCCOrderItem> root = query.from(SCCOrderItem.class);
+        query.where(builder.equal(root.get("credentials"), c));
+        return getSession().createQuery(query).getResultList();
+    }
+
+    /**
+     * Lookup an OrderItem by its SCC Id
+     * @param sccId the SCC Id
+     * @return the OrderItem
+     */
+    public static Optional<SCCOrderItem> lookupOrderItemBySccId(Long sccId) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCOrderItem> query = builder.createQuery(SCCOrderItem.class);
+        Root<SCCOrderItem> root = query.from(SCCOrderItem.class);
+        query.where(
+                builder.equal(root.get("sccId"), sccId));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Delete an order Item from DB
+     * @param oi the item to delete
+     */
+    public static void deleteOrderItem(SCCOrderItem oi) {
+        singleton.removeObject(oi);
     }
 
     /**
@@ -238,17 +310,18 @@ public class SCCCachingFactory extends HibernateFactory {
         c = c.setProjection(Projections.max("modified"));
         Date modifiedCreds = (Date) c.uniqueResult();
         if (modifiedCreds == null) {
+            log.debug("REFRESH NEEDED - no credentials found");
             return true;
         }
 
         // When was the cache last modified?
-        Criteria c2 = session.createCriteria(SCCRepository.class);
-        c2 = c2.setProjection(Projections.max("modified"));
-        Date modifiedCache = (Date) c2.uniqueResult();
+        Date modifiedCache = ManagerInfoFactory.getLastMgrSyncRefresh();
         if (modifiedCache == null) {
+            log.debug("REFRESH NEEDED - never refreshed");
             return true;
         }
-
+        log.debug("COMPARE: " + modifiedCache.toString() + " and " + modifiedCreds.toString() +
+                " : " + modifiedCache.compareTo(modifiedCreds));
         return modifiedCache.compareTo(modifiedCreds) < 0;
     }
 
@@ -279,4 +352,114 @@ public class SCCCachingFactory extends HibernateFactory {
             singleton.removeObject(sub);
         }
     }
+
+    /**
+     * Return a Repository
+     * @param sccId the scc id
+     * @return a SCCRepository
+     */
+    public static Optional<SCCRepository> lookupRepositoryBySccId(Long sccId) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCRepository> select = builder.createQuery(SCCRepository.class);
+        Root<SCCRepository> root = select.from(SCCRepository.class);
+        select.where(builder.equal(root.get("sccId"), sccId));
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup a {@link SCCRepository} by its name
+     * @param name the name
+     * @return the repository if found
+     */
+    public static Optional<SCCRepository> lookupRepositoryByName(String name) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCRepository> select = builder.createQuery(SCCRepository.class);
+        Root<SCCRepository> root = select.from(SCCRepository.class);
+        select.where(builder.equal(root.get("name"), name));
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+
+    /**
+     * Get all repositories auth for a given Credential
+     * @param c the Credential (null is supported)
+     * @return a list of SCCRepositoriesAuth
+     */
+    public static List<SCCRepositoryAuth> lookupRepositoryAuthByCredential(Credentials c) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCRepositoryAuth> select = builder.createQuery(SCCRepositoryAuth.class);
+        Root<SCCRepositoryAuth> root = select.from(SCCRepositoryAuth.class);
+        if (c != null) {
+            select.where(builder.equal(root.get("credentials"), c));
+        }
+        else {
+            select.where(builder.isNull(root.get("credentials")));
+        }
+        return getSession().createQuery(select).getResultList();
+    }
+
+    /**
+     * @return return a list of all {@link SCCRepositoryAuth} objects
+     */
+    public static List<SCCRepositoryAuth> lookupRepositoryAuth() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCRepositoryAuth> select = builder.createQuery(SCCRepositoryAuth.class);
+        select.from(SCCRepositoryAuth.class);
+        return getSession().createQuery(select).getResultList();
+    }
+
+    /**
+     * @return a list of repository auth objects which are linked to a {@link ContentSource}
+     */
+    public static List<SCCRepositoryAuth> lookupRepositoryAuthWithContentSource() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCRepositoryAuth> select = builder.createQuery(SCCRepositoryAuth.class);
+        Root<SCCRepositoryAuth> root = select.from(SCCRepositoryAuth.class);
+        select.where(builder.isNotNull(root.get("contentSource")));
+        return getSession().createQuery(select).getResultList();
+    }
+
+    /**
+     * @return list of repository ids which can be accessed
+     */
+    public static List<Long> lookupRepositoryIdsWithAuth() {
+        List<BigDecimal> resultList =
+                getSession().getNamedNativeQuery("SCCRepositoryAuth.lookupRepoIdWithAuth").getResultList();
+        return resultList.stream().map(BigDecimal::longValue).collect(Collectors.toList());
+    }
+
+    /**
+     * @param channelFamily channel family label
+     * @return list of {@link SCCRepository} for the given channel family label
+     */
+    public static List<SCCRepository> lookupRepositoriesByChannelFamily(String channelFamily) {
+        return getSession().getNamedQuery("SCCRepository.lookupByChannelFamily")
+                .setParameter("channelFamily", channelFamily).getResultList();
+    }
+
+    /**
+     * Find a compatible SCCRepository using a json repository
+     * @param repos collection of available repositories
+     * @param j the Json version of the repo
+     * @return the found SCCRepository
+     */
+    public static Optional<SCCRepository> findRepo(Collection<SCCRepository> repos, SCCRepositoryJson j) {
+        return repos.stream().filter(r -> r.getSccId().equals(j.getSCCId())).findFirst();
+    }
+
+    /**
+     * Remove the repository
+     * @param r the repository to remove
+     */
+    public static void deleteRepository(SCCRepository r) {
+        singleton.removeObject(r);
+    }
+
+    /**
+     * Remove the repository auth
+     * @param a the repository auth to remove
+     */
+    public static void deleteRepositoryAuth(SCCRepositoryAuth a) {
+        singleton.removeObject(a);
+    }
+
 }

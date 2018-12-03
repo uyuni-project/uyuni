@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
+import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -513,6 +514,7 @@ public class ContentSyncManager {
                 }
             }
             all.addAll(baseMap.values());
+        ManagerInfoFactory.setLastMgrSyncRefresh();
         }
 
         // divide base from extension products

@@ -20,21 +20,6 @@ import static java.util.Optional.ofNullable;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.finder.FinderFactory;
-import com.redhat.rhn.domain.image.DockerfileProfile;
-import com.redhat.rhn.domain.image.ImageBuildHistory;
-import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
-import com.redhat.rhn.domain.image.ImageOverview;
-import com.redhat.rhn.domain.image.ImagePackage;
-import com.redhat.rhn.domain.image.ImageProfile;
-import com.redhat.rhn.domain.image.ImageRepoDigest;
-import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ImageStoreType;
-import com.redhat.rhn.domain.image.KiwiProfile;
-import com.redhat.rhn.domain.image.ProfileCustomDataValue;
-import com.redhat.rhn.domain.notification.NotificationMessage;
-import com.redhat.rhn.domain.notification.UserNotification;
-import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -208,21 +193,9 @@ class ConnectionManager {
             }
 
             //TODO: Fix auto-discovery (see commit: e92b062)
-            config.addAnnotatedClass(ImageStore.class);
-            config.addAnnotatedClass(ImageStoreType.class);
-            config.addAnnotatedClass(DockerfileProfile.class);
-            config.addAnnotatedClass(KiwiProfile.class);
-            config.addAnnotatedClass(ImageProfile.class);
-            config.addAnnotatedClass(ProfileCustomDataValue.class);
-            config.addAnnotatedClass(ImageInfo.class);
-            config.addAnnotatedClass(ImageInfoCustomDataValue.class);
-            config.addAnnotatedClass(ImageOverview.class);
-            config.addAnnotatedClass(ImagePackage.class);
-            config.addAnnotatedClass(ImageBuildHistory.class);
-            config.addAnnotatedClass(ImageRepoDigest.class);
-            config.addAnnotatedClass(VirtualHostManagerNodeInfo.class);
-            config.addAnnotatedClass(NotificationMessage.class);
-            config.addAnnotatedClass(UserNotification.class);
+            AnnotationRegistry.getAnnotationClasses().forEach(c -> {
+                config.addAnnotatedClass(c);
+            });
 
             // add empty varchar warning interceptor
             EmptyVarcharInterceptor interceptor = new EmptyVarcharInterceptor();

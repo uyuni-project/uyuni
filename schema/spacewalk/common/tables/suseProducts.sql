@@ -18,6 +18,7 @@ suseProducts
     name          varchar2(256) not null,
     version       varchar2(256),
     friendly_name varchar2(256),
+    description   VARCHAR2(4000),
     arch_type_id  NUMBER
                   CONSTRAINT suse_products_aid_fk
                   REFERENCES rhnPackageArch (id),
@@ -29,6 +30,7 @@ suseProducts
                         ON DELETE SET NULL,
     base          CHAR(1) DEFAULT ('N') NOT NULL,
     free          CHAR(1) DEFAULT ('N') NOT NULL,
+    release_stage VARCHAR2(10) DEFAULT ('released') NOT NULL,
     created   timestamp with local time zone
                   DEFAULT (current_timestamp) NOT NULL,
     modified  timestamp with local time zone
@@ -37,6 +39,6 @@ suseProducts
 
 CREATE SEQUENCE suse_products_id_seq START WITH 100;
 
-CREATE INDEX suseprod_pdid_idx
+CREATE UNIQUE INDEX suseprod_pdid_uq
 ON suseProducts (product_id)
 TABLESPACE [[64k_tbs]];

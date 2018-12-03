@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.image;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -33,7 +31,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseImageStoreType")
-public class ImageStoreType extends BaseDomainHelper {
+public class ImageStoreType {
 
     /** The id. */
     private Long id;

@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2014--2018 SUSE LLC
+-- Copyright (c) 2018 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,20 +13,23 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseSCCRepository
+CREATE TABLE suseSCCRepositoryAuth
 (
     id             NUMBER NOT NULL PRIMARY KEY,
-    scc_id         NUMBER NOT NULL,
-    autorefresh    CHAR(1) NOT NULL
-                       CONSTRAINT suse_sccrepo_ck
-                       CHECK (autorefresh in ('Y', 'N')),
-    name           VARCHAR2(256) NOT NULL,
-    distro_target  VARCHAR2(256) NULL,
-    description    VARCHAR2(2048) NOT NULL,
-    url            VARCHAR2(2048) NOT NULL,
-    signed         CHAR(1) DEFAULT ('N') NOT NULL
-                           CONSTRAINT suse_sccrepo_sig_ck
-                           CHECK (autorefresh in ('Y', 'N')),
+    repo_id        NUMBER NOT NULL
+                       CONSTRAINT suse_sccrepoauth_rid_fk
+		       REFERENCES suseSCCRepository (id),
+--                     NO ON DELETE !
+    credentials_id NUMBER NULL
+                       CONSTRAINT suse_sccrepo_credsid_fk
+                       REFERENCES suseCredentials (id),
+--                     NO ON DELETE !,
+    source_id      NUMBER NULL
+                         CONSTRAINT suse_sccrepo_src_id_fk
+                             REFERENCES rhnContentSource (id)
+                             ON DELETE SET NULL,
+    auth_type      VARCHAR2(10) NOT NULL,
+    auth           VARCHAR2(4000) NULL,
     created        timestamp with local time zone
                        DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone
@@ -35,10 +38,4 @@ CREATE TABLE suseSCCRepository
 ENABLE ROW MOVEMENT
 ;
 
-CREATE SEQUENCE suse_sccrepository_id_seq;
-
-CREATE UNIQUE INDEX suse_sccrepo_sccid_uq
-    ON suseSCCRepository (scc_id);
-
-CREATE INDEX suse_sccrepo_url_idx
-    ON suseSCCRepository (url);
+CREATE SEQUENCE suse_sccrepoauth_id_seq;
