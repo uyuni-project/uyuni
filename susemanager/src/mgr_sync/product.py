@@ -48,8 +48,7 @@ class Product(object):
             return "[%s]%s" % (str(self.status.value)[0], self.recommended and " (R)" or "")
 
     def to_ascii_row(self):
-        return "{0} {1} ({2})".format(self.short_status, self.friendly_name,
-                                      self.arch)
+        return "{0} {1}".format(self.short_status, self.friendly_name)
 
     def to_stdout(self, indentation_level=0, filter=None, expand=False,  # pylint: disable=redefined-builtin
                   interactive_data=None):
