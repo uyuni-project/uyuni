@@ -325,6 +325,21 @@ class MetadataWireSource(BaseWireSource):
         self._prepare()
         return self._openSocketStream("dump.suse_upgrade_paths", (self.systemid,))
 
+    def getSuseProductExtensionsXmlStream(self):
+        """retrieve xml stream for SUSE Product Extensions"""
+        self._prepare()
+        return self._openSocketStream("dump.suse_product_extensions", (self.systemid,))
+
+    def getSuseProductRepositoriesXmlStream(self):
+        """retrieve xml stream for SUSE Product Repositories"""
+        self._prepare()
+        return self._openSocketStream("dump.suse_product_repositories", (self.systemid,))
+
+    def getSCCRepositoriesXmlStream(self):
+        """retrieve xml stream for SCC Repositories"""
+        self._prepare()
+        return self._openSocketStream("dump.scc_repositories", (self.systemid,))
+
     def getSuseSubscriptionsXmlStream(self):
         """retrieve xml stream for Subscriptions"""
         self._prepare()
