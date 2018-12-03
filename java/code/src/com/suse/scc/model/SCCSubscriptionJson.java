@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014--2015 SUSE LLC
+ * Copyright (c) 2014--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,9 +24,9 @@ import java.util.List;
 /**
  * This is a subscription as parsed from JSON coming in from SCC.
  */
-public class SCCSubscription {
+public class SCCSubscriptionJson {
 
-    private int id;
+    private Long id;
     private String regcode;
     private String name;
     private String type;
@@ -45,13 +45,13 @@ public class SCCSubscription {
     private List<String> productClasses;
     @SerializedName("product_ids")
     private List<Long> productIds;
-    private List<SCCSystem> systems;
+    private List<SCCSystemJson> systems;
     private List<String> skus = new ArrayList<>();
 
     /**
      * @return the id
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -138,7 +138,7 @@ public class SCCSubscription {
     /**
      * @return the systems
      */
-    public List<SCCSystem> getSystems() {
+    public List<SCCSystemJson> getSystems() {
         return systems;
     }
 
@@ -156,7 +156,7 @@ public class SCCSubscription {
     /**
      * @param idIn the id to set
      */
-    public void setId(int idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -240,7 +240,7 @@ public class SCCSubscription {
     /**
      * @param systemsIn the systems to set
      */
-    public void setSystems(List<SCCSystem> systemsIn) {
+    public void setSystems(List<SCCSystemJson> systemsIn) {
         this.systems = systemsIn;
     }
 
