@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014--2015 SUSE LLC
+ * Copyright (c) 2015--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,35 +12,36 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.suse.scc.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 /**
- * This is a system as parsed from JSON coming in from SCC.
+ * This is an Order parsed from JSON coming from SCC
  */
-public class SCCSystem {
+public class SCCOrderJson {
 
-    private int id;
-    private String login;
-    private String password;
+    @SerializedName("order_number")
+    private long orderNumber;
+    @SerializedName("order_items")
+    private List<SCCOrderItemJson> orderItems = new ArrayList<>();
 
     /**
-     * @return the id
+     * @return the orderNumber
      */
-    public int getId() {
-        return id;
+    public long getOrderNumber() {
+        return orderNumber;
     }
 
     /**
-     * @return the login
+     * @return the orderItems
      */
-    public String getLogin() {
-        return login;
-    }
-
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
+    public List<SCCOrderItemJson> getOrderItems() {
+        return orderItems;
     }
 }

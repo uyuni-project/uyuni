@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,35 +15,44 @@
 
 package com.suse.scc.model;
 
-import com.redhat.rhn.domain.scc.SCCOrderItem;
-
-import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
-import java.util.List;
-
-
 /**
- * This is an Order parsed from JSON comming from SCC
+ * Channel family class.
  */
-public class SCCOrder {
+public class ChannelFamilyJson {
 
-    @SerializedName("order_number")
-    private long orderNumber;
-    @SerializedName("order_items")
-    private List<SCCOrderItem> orderItems = new ArrayList<>();
+    private String label;
+
+    private String name;
 
     /**
-     * @return the orderNumber
+     * Get the label.
+     * @return label
      */
-    public long getOrderNumber() {
-        return orderNumber;
+    public String getLabel() {
+        return label;
     }
 
     /**
-     * @return the orderItems
+     * Set the label.
+     * @param labelIn the label to set
      */
-    public List<SCCOrderItem> getOrderItems() {
-        return orderItems;
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
+    }
+
+    /**
+     * Get the name.
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set the name.
+     * @param nameIn the name to set
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 }
