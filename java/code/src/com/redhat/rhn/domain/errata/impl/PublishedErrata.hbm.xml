@@ -101,7 +101,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <query name="PublishedErrata.findByAdvisoryName">
         <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
-                 where e.advisoryName = :advisory and (e.org = :org or e.org is null)]]>
+                 where e.advisoryName = :advisory and ((:org is not null and e.org = :org) or (:org is null and e.org is null))]]>
     </query>
     <query name="PublishedErrata.findSameInChannels">
         <![CDATA[
