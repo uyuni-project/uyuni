@@ -1,3 +1,7 @@
+- change SCC sync backend to adapt quicker to SCC changes and improve
+  speed of syncing metadata and checking for channel dependencies (bsc#1089121)
+- read OEM Orderitems from DB instead of create always new items (bsc#1098826)
+- fix mgr-sync refresh when subscription was removed (bsc#1105720)
 - install product packages during bootstrapping minions (bsc#1104680)
 - remove Oracle support
 
