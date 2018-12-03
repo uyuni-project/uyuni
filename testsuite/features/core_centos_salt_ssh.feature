@@ -58,6 +58,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     And I check radio button "Test Base Channel"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
