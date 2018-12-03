@@ -20,6 +20,9 @@ script(type='text/javascript').
                 },
                 saltEntitled: #{isSalt},
             },
-            guestUuid: "#{guestUuid}"
+            guestUuid: "#{guestUuid}",
+            actionChains: !{actionChains},
+            timezone: "#{h.renderTimezone()}",
+            localTime: "#{h.renderLocalTime()}",
         }
     );

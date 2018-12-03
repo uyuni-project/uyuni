@@ -1,9 +1,14 @@
 // @flow
 
+import type { ActionChain } from 'components/action-schedule';
+
 const React = require('react');
+const { Panel } = require('components/panels/Panel');
 const { Form } = require('components/input/Form');
 const { SubmitButton, Button } = require('components/buttons');
 const { Messages } = require('components/messages');
+const { ActionSchedule } = require('components/action-schedule');
+const Functions = require('utils/functions');
 
 declare function t(msg: string, ...args: Array<any>): string;
 
@@ -14,12 +19,16 @@ type Props = {
   validationChecks: Array<{ check: (model: Object) => boolean, message: Object }>,
   messages: Array<String>,
   children: Function,
+  localTime: string,
+  timezone: string,
+  actionChains: Array<ActionChain>,
 };
 
 type State = {
   model: Object,
   isInvalid: boolean,
   messages: Array<Object>,
+  actionChain: ?ActionChain,
 };
 
 /*
@@ -30,9 +39,10 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      model: Object.assign({}, props.initialModel),
+      model: Object.assign({}, props.initialModel, { earliest: Functions.Utils.dateWithTimezone(props.localTime) }),
       isInvalid: false,
       messages: [],
+      actionChain: null,
     };
   }
 
@@ -68,6 +78,20 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     });
   }
 
+  onDateTimeChanged = (date: Date) => {
+    this.setState(state => ({
+      model: Object.assign({}, state.model, { earliest: date, actionChain: null }),
+      actionChain: null,
+    }));
+  }
+
+  onActionChainChanged = (actionChain: ?ActionChain) => {
+    this.setState(state => ({
+      model: Object.assign({}, state.model, { actionChain: actionChain ? actionChain.text : null }),
+      actionChain,
+    }));
+  }
+
   render() {
     return (
       <div>
@@ -85,6 +109,21 @@ class GuestPropertiesForm extends React.Component<Props, State> {
               changeModel: this.changeModel,
             })
           }
+          <Panel
+            key="schedule"
+            title={t('Schedule')}
+            headingLevel="h3"
+          >
+            <ActionSchedule
+              timezone={this.props.timezone}
+              localTime={this.props.localTime}
+              earliest={this.state.model.earliest}
+              actionChains={this.props.actionChains}
+              actionChain={this.state.actionChain}
+              onActionChainChanged={this.onActionChainChanged}
+              onDateTimeChanged={this.onDateTimeChanged}
+            />
+          </Panel>
           <div className="col-md-offset-3 col-md-6">
             <SubmitButton
               id="submit-btn"

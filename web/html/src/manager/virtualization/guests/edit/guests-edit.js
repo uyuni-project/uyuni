@@ -1,6 +1,8 @@
 // @flow
 /* global module */
 
+import type { ActionChain } from 'components/action-schedule';
+
 const { hot } = require('react-hot-loader');
 const React = require('react');
 const { TopPanel } = require('components/panels/TopPanel');
@@ -15,6 +17,9 @@ declare function t(msg: string): string;
 type Props = {
   host: Object,
   guestUuid: string,
+  localTime: string,
+  timezone: string,
+  actionChains: Array<ActionChain>,
 };
 
 class GuestsEdit extends React.Component<Props> {
@@ -66,6 +71,9 @@ class GuestsEdit extends React.Component<Props> {
                         submit={onSubmit}
                         messages={messages}
                         initialModel={initialModel}
+                        localTime={this.props.localTime}
+                        timezone={this.props.timezone}
+                        actionChains={this.props.actionChains}
                       />
                     </TopPanel>
                   );

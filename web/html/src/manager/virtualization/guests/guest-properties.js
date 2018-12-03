@@ -1,5 +1,7 @@
 // @flow
 
+import type { ActionChain } from 'components/action-schedule';
+
 const React = require('react');
 const { Panel } = require('components/panels/Panel');
 const { Text } = require('components/input/Text');
@@ -16,6 +18,9 @@ type Props = {
   submit: Function,
   initialModel: Object,
   messages: Array<String>,
+  localTime: string,
+  timezone: string,
+  actionChains: Array<ActionChain>,
 };
 
 /*
@@ -37,6 +42,9 @@ class GuestProperties extends React.Component<Props> {
           submit={this.props.submit}
           initialModel={this.props.initialModel}
           messages={this.props.messages}
+          localTime={this.props.localTime}
+          timezone={this.props.timezone}
+          actionChains={this.props.actionChains}
         />
       );
     }
@@ -48,6 +56,9 @@ class GuestProperties extends React.Component<Props> {
         initialModel={this.props.initialModel}
         validationChecks={this.validationChecks}
         messages={this.props.messages}
+        localTime={this.props.localTime}
+        timezone={this.props.timezone}
+        actionChains={this.props.actionChains}
       >
         {
           () => [

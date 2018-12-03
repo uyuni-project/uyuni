@@ -18,6 +18,8 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
@@ -38,19 +40,23 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.HostCapabilitiesJson;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsUpdateActionJson;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,6 +79,7 @@ public class VirtualGuestsController {
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
@@ -334,6 +341,7 @@ public class VirtualGuestsController {
         data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(hostId));
 
         /* For the rest of the template */
+        MinionController.addActionChains(user, data);
         data.put("guestUuid", guestUuid);
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
         return new ModelAndView(data, "templates/virtualization/guests/edit.jade");
@@ -404,10 +412,14 @@ public class VirtualGuestsController {
             }).collect(Collectors.toList()));
         }
 
+        Optional<ActionChain> actionChain = data.getActionChain()
+                .filter(StringUtils::isNotEmpty)
+                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user));
+
         VirtualizationActionCommand cmd
             = new VirtualizationActionCommand(user,
-                                              new Date(),
-                                              Optional.empty(),
+                                              MinionActionUtils.getScheduleDate(data.getEarliest()),
+                                              actionChain,
                                               ActionFactory.TYPE_VIRTUALIZATION_CREATE,
                                               host,
                                               guest != null ? guest.getUuid() : null,

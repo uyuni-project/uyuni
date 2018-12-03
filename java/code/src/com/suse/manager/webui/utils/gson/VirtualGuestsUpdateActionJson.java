@@ -16,7 +16,9 @@ package com.suse.manager.webui.utils.gson;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * VirtualGuestsUpdate represents the JSON data for the virtual guests
@@ -33,6 +35,8 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     private List<DiskData> disks;
     private List<InterfaceData> interfaces;
     private String graphicsType;
+    private LocalDateTime earliest;
+    private Optional<String> actionChain = Optional.empty();
 
     /**
      * @return the domain type (kvm, qemu, linux, xen...)
@@ -160,6 +164,19 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
         this.graphicsType = graphicsTypeIn;
     }
 
+    /**
+     * @return the earliest
+     */
+    public LocalDateTime getEarliest() {
+        return earliest;
+    }
+
+    /**
+     * @return actionChain to get
+     */
+    public Optional<String> getActionChain() {
+        return actionChain;
+    }
 
     /**
      * Class describing the JSON disk data
