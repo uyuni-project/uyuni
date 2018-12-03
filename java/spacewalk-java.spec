@@ -612,7 +612,7 @@ install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalin
 
 %else
 %if 0%{?suse_version}
-%if 0%{?suse_version} < 1500 
+%if 0%{?suse_version} < 1500
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" install-tomcat8-suse
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
@@ -798,6 +798,15 @@ if [ $1 = 0 ] ; then
    fi
 fi
 %endif
+
+%post
+if [ $1 -gt 1 ]; then
+   if [ -f %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml ]; then
+      mv %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml %{appdir}/rhn/META-INF/context.xml
+   elif [ -f %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml ]; then
+      mv %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml %{appdir}/rhn/META-INF/context.xml
+   fi
+fi
 
 %files
 %if 0%{?suse_version}
