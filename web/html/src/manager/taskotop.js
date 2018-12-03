@@ -123,7 +123,7 @@ const TaskoTop = React.createClass({
             {headerTabs}
             <ErrorMessage error={this.state.error} />
             <p>{t('The server is running or has finished executing the following tasks during the latest 5 minutes.')}</p>
-            <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
+            <p>{t('Data is refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
             <Table
               data={this.buildRows(data)}
               identifier={(row) => row["id"]}
