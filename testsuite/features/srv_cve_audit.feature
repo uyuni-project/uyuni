@@ -116,8 +116,6 @@ Feature: CVE Audit
     Given I am logged in via XML-RPC cve audit as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9999"
     Then I should get status "PATCHED" for this client
-    And I should get the test-channel
-    And I should get the "milkyway-dummy-2345" patch
     Then I logout from XML-RPC cve audit namespace
 
   Scenario: Cleanup: remove installed packages
