@@ -223,6 +223,39 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(unpubid, errata.getId());
     }
 
+    public void testCreateAndLookupErrataMultipleOrgs() throws Exception {
+        //published
+        Errata published = createTestPublishedErrata(user.getOrg().getId());
+        assertTrue(published instanceof PublishedErrata);
+        assertNotNull(published.getId());
+        Long pubid = published.getId();
+        String pubname = published.getAdvisoryName();
+
+        // published in Org NULL
+        Errata publishedOrgNull = createTestPublishedErrata(null, of(pubname));
+        assertTrue(publishedOrgNull instanceof PublishedErrata);
+        assertNotNull(publishedOrgNull.getId());
+        Long publishedOrgNullId = publishedOrgNull.getId();
+
+        // Lookup the published errata
+        Errata errata = ErrataFactory.lookupById(pubid);
+        assertTrue(errata instanceof PublishedErrata);
+        assertEquals(pubid, errata.getId());
+        errata = ErrataFactory.lookupByAdvisory(pubname, user.getOrg());
+        assertTrue(errata instanceof PublishedErrata);
+        assertEquals(pubname, errata.getAdvisoryName());
+        assertEquals(user.getOrg(), errata.getOrg());
+
+        // Lookup the published errata in Org NULL
+        errata = ErrataFactory.lookupById(publishedOrgNullId);
+        assertTrue(errata instanceof PublishedErrata);
+        assertEquals(publishedOrgNullId, errata.getId());
+        errata = ErrataFactory.lookupByAdvisory(pubname, null);
+        assertTrue(errata instanceof PublishedErrata);
+        assertEquals(pubname, errata.getAdvisoryName());
+        assertNull(errata.getOrg());
+    }
+
     public void testLastModified() throws Exception {
         Errata published = createTestPublishedErrata(user.getOrg().getId());
         published = reload(published);
@@ -285,6 +318,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(ef.getId());
         assertEquals(2, e.getFiles().size());
     }
+
     /**
      * Create an Errata for testing and commit it to the DB.
      * @param orgId the Org who owns this Errata
