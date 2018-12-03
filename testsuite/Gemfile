@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # FIXME: these gems cannot be updated to major, because
 # they requires Ruby version >= 2.2. (we need first to upgrade ruby to 2.2.2)
 gem 'cucumber', '2.0.0'
-gem 'rack', '1.6.8'
+gem 'rack', '1.6.11'
 gem 'rack-test', '0.7.0'
 # This gems are latest stable
 gem 'capybara', '2.16.0'
