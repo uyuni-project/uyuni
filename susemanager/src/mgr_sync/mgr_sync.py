@@ -606,10 +606,9 @@ class MgrSync(object):
         """
         self.log.info("Refreshing SCC data...")
         actions = (
-            ("Channels             ", "synchronizeChannels"),
             ("Channel families     ", "synchronizeChannelFamilies"),
             ("SUSE products        ", "synchronizeProducts"),
-            ("SUSE Product channels", "synchronizeProductChannels"),
+            ("SUSE repositories    ", "synchronizeRepositories"),
             ("Subscriptions        ", "synchronizeSubscriptions"),
         )
         text_width = len("Refreshing ") + 8 + \
@@ -631,7 +630,7 @@ class MgrSync(object):
             sys.stdout.write("Refreshing {0}".format(operation))
             sys.stdout.flush()
             try:
-                if method == "synchronizeChannels":
+                if method == "synchronizeRepositories":
                     # this is the only method which requires the mirror
                     # parameter
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
