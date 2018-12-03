@@ -39,6 +39,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     And I check radio button "Test-Channel-x86_64"
     And I wait until I do not see "Loading..." text
     And I click on "Next"

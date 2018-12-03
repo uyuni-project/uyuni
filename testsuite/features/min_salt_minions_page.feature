@@ -85,6 +85,7 @@ Feature: Management of minion keys
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
     And I check radio button "Test-Channel-x86_64"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
