@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -43,13 +46,17 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.utils.Opt;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * ErrataFactoryTest
@@ -358,8 +365,19 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public static Errata createTestErrata(Long orgId) throws Exception {
+        return createTestErrata(orgId, empty());
+    }
+
+    /**
+     * Create an Errata for testing and commit it to the DB.
+     * @param orgId the Org who owns this Errata
+     * @param advisory if specified, the advisory name
+     * @return Errata created
+     * @throws Exception something bad happened
+     */
+    public static Errata createTestErrata(Long orgId, Optional<String> advisory) throws Exception {
         Errata e = ErrataFactory.createPublishedErrata();
-        fillOutErrata(e, orgId);
+        fillOutErrata(e, orgId, advisory);
         ErrataFactory.save(e);
         return e;
     }
@@ -373,26 +391,34 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      */
     public static Errata createCriticalTestErrata(Long orgId) throws Exception {
         Errata e = ErrataFactory.createPublishedErrata();
-        fillOutErrata(e, orgId);
+        fillOutErrata(e, orgId, empty());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
         ErrataFactory.save(e);
         return e;
     }
 
     public static Errata createTestPublishedErrata(Long orgId) throws Exception {
+        return createTestPublishedErrata(orgId, empty());
+    }
+
+    public static Errata createTestPublishedErrata(Long orgId, Optional<String> advisory) throws Exception {
         //just pass to createTestErrata since published is the default
-        return createTestErrata(orgId);
+        return createTestErrata(orgId, advisory);
     }
 
     public static Errata createTestUnpublishedErrata(Long orgId) throws Exception {
+        return createTestUnpublishedErrata(orgId, empty());
+    }
+
+    public static Errata createTestUnpublishedErrata(Long orgId, Optional<String> advisory) throws Exception {
         Errata e = ErrataFactory.createUnpublishedErrata();
-        fillOutErrata(e, orgId);
+        fillOutErrata(e, orgId, advisory);
         ErrataFactory.save(e);
         return e;
     }
 
-    private static void fillOutErrata(Errata e, Long orgId) throws Exception {
-        String name = "JAVA Test " + TestUtils.randomString();
+    private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) throws Exception {
+        String name = Opt.fold(advisory, () -> "JAVA Test " + TestUtils.randomString(), Function.identity());
         Org org = null;
         if (orgId != null) {
             org = OrgFactory.lookupById(orgId);
