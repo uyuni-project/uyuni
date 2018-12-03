@@ -16,32 +16,39 @@ package com.suse.scc.client;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
-import com.redhat.rhn.domain.scc.SCCRepository;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.scc.model.SCCOrder;
-import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCSubscription;
+import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.SCCOrderJson;
+import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.NoRouteToHostException;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class representation of a connection to SCC for issuing API requests.
  */
 public class SCCWebClient implements SCCClient {
+
+    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private static Logger log = Logger.getLogger(SCCWebClient.class);
 
     /** The config object. */
     private final SCCConfig config;
@@ -62,15 +69,18 @@ public class SCCWebClient implements SCCClient {
         /** The next url. */
         private final String nextUrl;
 
+        private final int numPages;
+
         /**
          * Instantiates a new paginated result.
-         *
-         * @param resultIn the result in
+         *  @param resultIn the result in
          * @param nextUrlIn the next url in
+         * @param numPagesIn number of pages
          */
-        PaginatedResult(T resultIn, String nextUrlIn) {
+        PaginatedResult(T resultIn, String nextUrlIn, int numPagesIn) {
             result = resultIn;
             nextUrl = nextUrlIn;
+            this.numPages = numPagesIn;
         }
     }
 
@@ -87,36 +97,36 @@ public class SCCWebClient implements SCCClient {
      * {@inheritDoc}
      */
     @Override
-    public List<SCCRepository> listRepositories() throws SCCClientException {
+    public List<SCCRepositoryJson> listRepositories() throws SCCClientException {
         return getList("/connect/organizations/repositories",
-                SCCRepository.class);
+                SCCRepositoryJson.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<SCCProduct> listProducts() throws SCCClientException {
+    public List<SCCProductJson> listProducts() throws SCCClientException {
         return getList(
-                "/connect/organizations/products/unscoped", SCCProduct.class);
+                "/connect/organizations/products/unscoped", SCCProductJson.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<SCCSubscription> listSubscriptions() throws SCCClientException {
+    public List<SCCSubscriptionJson> listSubscriptions() throws SCCClientException {
         return getList("/connect/organizations/subscriptions",
-                SCCSubscription.class);
+                SCCSubscriptionJson.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<SCCOrder> listOrders() throws SCCClientException {
+    public List<SCCOrderJson> listOrders() throws SCCClientException {
         return getList("/connect/organizations/orders",
-                SCCOrder.class);
+                SCCOrderJson.class);
     }
 
     /**
@@ -130,14 +140,36 @@ public class SCCWebClient implements SCCClient {
      */
     private <T> List<T> getList(String endpoint, Type resultType)
             throws SCCClientException {
-        List<T> result = new LinkedList<T>();
-        PaginatedResult<List<T>> partialResult;
-        do {
-            partialResult = request(endpoint, SCCClientUtils.toListType(resultType), "GET");
-            result.addAll(partialResult.result);
-            endpoint = partialResult.nextUrl;
-        } while (partialResult.nextUrl != null);
-        return result;
+
+        PaginatedResult<List<T>> firstPage = request(endpoint, SCCClientUtils.toListType(resultType), "GET");
+        log.info("Pages: " + firstPage.numPages);
+
+        List<CompletableFuture<PaginatedResult<List<T>>>> futures = Stream.iterate(2, i -> i + 1)
+                .limit(Math.max(0, firstPage.numPages - 1)).map(pageNum -> {
+            String e = endpoint + "?page=" + pageNum;
+            CompletableFuture<PaginatedResult<List<T>>> get = CompletableFuture.supplyAsync(() -> {
+                try {
+                    log.info("Start Page: " + pageNum);
+                    PaginatedResult<List<T>> page = request(e, SCCClientUtils.toListType(resultType), "GET");
+                    log.info("End Page: " + pageNum);
+                    return page;
+                }
+                catch (SCCClientException e1) {
+                    throw new RuntimeException(e1);
+                }
+            }, executor);
+            return get;
+        }).collect(Collectors.toList());
+
+        CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(
+                futures.toArray(new CompletableFuture[futures.size()]));
+        voidCompletableFuture.join();
+        return Stream.concat(
+                Stream.of(firstPage),
+                futures.stream().map(f -> f.join())
+                )
+                .flatMap(p -> p.result.stream())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -172,6 +204,10 @@ public class SCCWebClient implements SCCClient {
                         .create();
                 T result = gson.fromJson(streamReader, resultType);
 
+                Integer perPage = Integer.parseInt(response.getFirstHeader("Per-Page").getValue());
+                int total = Integer.parseInt(response.getFirstHeader("Total").getValue());
+                int numPages = (int)Math.ceil(total / perPage.floatValue());
+
                 String nextUrl = null;
                 Header linkHeader = response.getFirstHeader("Link");
                 if (linkHeader != null) {
@@ -183,7 +219,7 @@ public class SCCWebClient implements SCCClient {
                         nextUrl = m.group(1);
                     }
                 }
-                return new PaginatedResult<T>(result, nextUrl);
+                return new PaginatedResult<T>(result, nextUrl, numPages);
             }
             else {
                 // Request was not successful

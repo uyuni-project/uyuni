@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE
+ * Copyright (c) 2014--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,16 +14,16 @@
  */
 package com.suse.scc.test;
 
-import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
-import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCSubscription;
-import com.suse.scc.model.SCCSystem;
+import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.SCCSystemJson;
 
 import org.apache.commons.io.FileUtils;
 
@@ -50,17 +50,17 @@ public class SCCClientTest extends TestCase {
     public void testListProducts() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
-        SCCRequester<List<SCCProduct>> requester = new SCCRequester<List<SCCProduct>>(uri) {
+        SCCRequester<List<SCCProductJson>> requester = new SCCRequester<List<SCCProductJson>>(uri) {
             @Override
-            public List<SCCProduct> request(SCCClient scc) throws SCCClientException {
+            public List<SCCProductJson> request(SCCClient scc) throws SCCClientException {
                 return scc.listProducts();
             }
         };
-        List<SCCProduct> products = serverMock.getResult(requester, new SCCServerStub(uri));
+        List<SCCProductJson> products = serverMock.getResult(requester, new SCCServerStub(uri));
 
         // Assertions
         assertEquals(2, products.size());
-        SCCProduct p = products.get(0);
+        SCCProductJson p = products.get(0);
         assertEquals(42, p.getId());
         assertEquals("SUSE Linux Enterprise Server", p.getName());
         assertEquals("SUSE_SLES", p.getIdentifier());
@@ -75,15 +75,10 @@ public class SCCClientTest extends TestCase {
         assertEquals("https://nu.novell.com/SUSE:/Products:/SLE-12/images/repo/" +
                 "SLE-12-Server-POOL-x86_64-Media.license/", p.getEulaUrl());
 
-        // Enabled repositories
-        List<Integer> enabledRepos = p.getEnabledRepositories();
-        assertEquals(1, enabledRepos.size());
-        assertEquals(true, enabledRepos.contains(1150));
-
         // Extensions
-        List<SCCProduct> extensions = p.getExtensions();
+        List<SCCProductJson> extensions = p.getExtensions();
         assertEquals(1, extensions.size());
-        SCCProduct e = extensions.get(0);
+        SCCProductJson e = extensions.get(0);
         assertEquals(1145, e.getId());
         assertEquals("SUSE Linux Enterprise Server", e.getName());
         assertEquals("sle-sdk", e.getIdentifier());
@@ -102,13 +97,13 @@ public class SCCClientTest extends TestCase {
         assertEquals(1, e.getRepositories().size());
 
         // Repositories
-        List<SCCRepository> repos = p.getRepositories();
+        List<SCCRepositoryJson> repos = p.getRepositories();
         assertEquals(1, repos.size());
-        SCCRepository r = repos.get(0);
+        SCCRepositoryJson r = repos.get(0);
         assertEquals(new Long(1357), r.getSCCId());
 
         // API v4 support (paging)
-        SCCProduct p2 = products.get(1);
+        SCCProductJson p2 = products.get(1);
         assertEquals(43, p2.getId());
     }
 
@@ -118,19 +113,19 @@ public class SCCClientTest extends TestCase {
     public void testListRepositories() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
-        SCCRequester<List<SCCRepository>> requester =
-                new SCCRequester<List<SCCRepository>>(uri) {
+        SCCRequester<List<SCCRepositoryJson>> requester =
+                new SCCRequester<List<SCCRepositoryJson>>(uri) {
                     @Override
-                    public List<SCCRepository> request(SCCClient scc)
+                    public List<SCCRepositoryJson> request(SCCClient scc)
                         throws SCCClientException {
                         return scc.listRepositories();
                     }
                 };
-        List<SCCRepository> repos = serverMock.getResult(requester, new SCCServerStub(uri));
+        List<SCCRepositoryJson> repos = serverMock.getResult(requester, new SCCServerStub(uri));
 
         // Assertions
         assertEquals(2, repos.size());
-        SCCRepository r = repos.get(0);
+        SCCRepositoryJson r = repos.get(0);
         assertEquals(new Long(1358), r.getSCCId());
         assertEquals("SLE10-SDK-SP4-Online", r.getName());
         assertEquals("sles-10-i586", r.getDistroTarget());
@@ -145,22 +140,22 @@ public class SCCClientTest extends TestCase {
     public void testListSubscriptions() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
-        SCCRequester<List<SCCSubscription>> requester =
-                new SCCRequester<List<SCCSubscription>>(uri) {
+        SCCRequester<List<SCCSubscriptionJson>> requester =
+                new SCCRequester<List<SCCSubscriptionJson>>(uri) {
 
                     @Override
-                    public List<SCCSubscription> request(SCCClient scc)
+                    public List<SCCSubscriptionJson> request(SCCClient scc)
                         throws SCCClientException {
                         return scc.listSubscriptions();
                     }
                 };
-        List<SCCSubscription> subs =
+        List<SCCSubscriptionJson> subs =
                 serverMock.getResult(requester, new SCCServerStub(uri));
 
         // Assertions
         assertEquals(2, subs.size());
-        SCCSubscription s = subs.get(0);
-        assertEquals(1, s.getId());
+        SCCSubscriptionJson s = subs.get(0);
+        assertEquals(1L, s.getId().longValue());
         assertEquals("631dc51f", s.getRegcode());
         assertEquals("Subscription 1", s.getName());
         assertEquals("FULL", s.getType());
@@ -183,9 +178,9 @@ public class SCCClientTest extends TestCase {
         assertEquals(true, productClasses.contains("SLES"));
 
         // Systems
-        List<SCCSystem> systems = s.getSystems();
+        List<SCCSystemJson> systems = s.getSystems();
         assertEquals(1, systems.size());
-        SCCSystem sys = systems.get(0);
+        SCCSystemJson sys = systems.get(0);
         assertEquals(1, sys.getId());
         assertEquals("login1", sys.getLogin());
     }
@@ -217,11 +212,11 @@ public class SCCClientTest extends TestCase {
         try {
             SCCClient scc = SCCClientFactory.getInstance(null, null, null,
                     tmpDir.getAbsolutePath(), null);
-            List<SCCRepository> repos = scc.listRepositories();
+            List<SCCRepositoryJson> repos = scc.listRepositories();
 
             // Assertions
             assertEquals(1, repos.size());
-            SCCRepository r = repos.get(0);
+            SCCRepositoryJson r = repos.get(0);
             assertEquals(new Long(1358), r.getSCCId());
             assertEquals("SLE10-SDK-SP4-Online", r.getName());
             assertEquals("sles-10-i586", r.getDistroTarget());
@@ -253,9 +248,9 @@ public class SCCClientTest extends TestCase {
 
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
-        SCCRequester<List<SCCProduct>> requester = new SCCRequester<List<SCCProduct>>(uri) {
+        SCCRequester<List<SCCProductJson>> requester = new SCCRequester<List<SCCProductJson>>(uri) {
             @Override
-            public List<SCCProduct> request(SCCClient scc) throws SCCClientException {
+            public List<SCCProductJson> request(SCCClient scc) throws SCCClientException {
                 try {
                     scc.listProducts();
                     fail("Did not get an exception, expected error 500");

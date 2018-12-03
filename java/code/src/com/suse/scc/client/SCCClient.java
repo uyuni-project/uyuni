@@ -14,11 +14,10 @@
  */
 package com.suse.scc.client;
 
-import com.redhat.rhn.domain.scc.SCCRepository;
-
-import com.suse.scc.model.SCCOrder;
-import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCSubscription;
+import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.SCCOrderJson;
+import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCSubscriptionJson;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public interface SCCClient {
      * @return list of repositories available to organization
      * @throws SCCClientException if anything goes wrong SCC side
      */
-    List<SCCRepository> listRepositories() throws SCCClientException;
+    List<SCCRepositoryJson> listRepositories() throws SCCClientException;
 
     /**
      * Gets and returns the list of all products.
@@ -45,7 +44,7 @@ public interface SCCClient {
      * @return list of all available products
      * @throws SCCClientException if anything goes wrong SCC side
      */
-    List<SCCProduct> listProducts() throws SCCClientException;
+    List<SCCProductJson> listProducts() throws SCCClientException;
 
     /**
      * Gets and returns the list of subscriptions available to an organization.
@@ -55,7 +54,7 @@ public interface SCCClient {
      * @return list of subscriptions available to organization
      * @throws SCCClientException if anything goes wrong SCC side
      */
-    List<SCCSubscription> listSubscriptions() throws SCCClientException;
+    List<SCCSubscriptionJson> listSubscriptions() throws SCCClientException;
 
     /**
      * Gets and returns the list of orders available to an organization.
@@ -65,6 +64,6 @@ public interface SCCClient {
      * @return list of orders available to organization
      * @throws SCCClientException if anything goes wrong SCC side
      */
-    List<SCCOrder> listOrders() throws SCCClientException;
+    List<SCCOrderJson> listOrders() throws SCCClientException;
 
 }
