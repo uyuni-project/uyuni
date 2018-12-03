@@ -55,7 +55,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -293,7 +292,7 @@ public class RegistrationUtils {
                                 baseProduct -> {
                                     // ActivationKey with vendor or cloned vendor channel
                                     return Stream.concat(
-                                            lookupRequiredChannelsForProduct(baseProduct.getProduct()),
+                                            lookupRequiredChannelsForProduct(baseProduct),
                                             ak.getChannels().stream()
                                                     .filter(c -> c.getParentChannel() != null &&
                                                             c.getParentChannel().getId().equals(baseChannel.getId()))
@@ -361,34 +360,34 @@ public class RegistrationUtils {
         return recommendedChannelsByBaseProduct(sp);
     }
 
-    private static Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct base) {
-            return recommendedChannelsByBaseProduct(base, base);
+    private static Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root) {
+        return recommendedChannelsByBaseProduct(root, root);
     }
 
-    private static Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct base) {
-        return root.getSuseProductChannels().stream()
-                .filter(c -> c.getParentChannelLabel() == null)
-                .map(SUSEProductChannel::getChannelLabel)
-                .findFirst().map(rootChannelLabel -> {
-                    List<SUSEProduct> allExtensionProductsOf = SUSEProductFactory.findAllExtensionProductsOf(base);
+    private static Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct product) {
+        return root.parentChannel()
+                .map(Channel::getLabel)
+                .map(rootChannelLabel -> {
 
-                    Stream<Channel> channelStream = SUSEProductFactory.findAllSUSEProductChannels().stream()
-                            .filter(pc -> pc.getProduct().equals(base))
+                    Stream<Channel> channelStream = product.getSuseProductChannels().stream()
+                            .filter(pc -> pc.isMandatory())
                             .map(SUSEProductChannel::getChannel)
-                            .filter(Objects::nonNull)
+                            // we want the parent channel (== null) and its childs
                             .filter(c -> c.getParentChannel() == null ||
-                                    c.getParentChannel().getLabel().equals(rootChannelLabel));
+                                c.getParentChannel().getLabel().equals(rootChannelLabel));
 
-                    Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext ->
-                            SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
+                    Stream<Channel> stream = SUSEProductFactory.findAllProductExtensionsOf(product, root)
+                            .stream()
+                            .flatMap(pe -> {
+                                //NOTE: this assumes that all extensions of a product are not recommended
+                                // if the product itself is not recommended
                                 if (pe.isRecommended()) {
-                                    return recommendedChannelsByBaseProduct(root, ext);
+                                    return recommendedChannelsByBaseProduct(root, pe.getExtensionProduct());
                                 }
                                 else {
-                                    return Stream.<Channel>empty();
+                                    return Stream.empty();
                                 }
-                    }).orElseGet(Stream::empty));
-
+                            });
                     return Stream.concat(
                             channelStream,
                             stream

@@ -781,14 +781,20 @@ public class ContentSyncManager {
     public void refreshOrderItemCache(Credentials c) throws SCCClientException  {
         try {
             SCCClient scc = this.getSCCClient(c);
-            List<SCCOrder> orders = scc.listOrders();
-            SCCCachingFactory.clearOrderItems(c);
-            for (SCCOrder order : orders) {
-                for (SCCOrderItem item : order.getOrderItems()) {
-                    item.setCredentials(c);
-                    SCCCachingFactory.saveOrderItem(item);
+            List<SCCOrderJson> orders = scc.listOrders();
+            List<SCCOrderItem> existingOI = SCCCachingFactory.listOrderItemsByCredentials(c);
+            for (SCCOrderJson order : orders) {
+                for (SCCOrderItemJson j : order.getOrderItems()) {
+                    SCCOrderItem oi = SCCCachingFactory.lookupOrderItemBySccId(j.getSccId())
+                            .orElse(new SCCOrderItem());
+                    oi.update(j, c);
+                    SCCCachingFactory.saveOrderItem(oi);
+                    existingOI.remove(oi);
                 }
             }
+            existingOI.stream()
+                .filter(item -> item.getSccId() >= 0)
+                .forEach(item -> SCCCachingFactory.deleteOrderItem(item));
         }
         catch (URISyntaxException e) {
             log.error("Invalid URL:" + e.getMessage());
@@ -801,16 +807,18 @@ public class ContentSyncManager {
      * @param subscriptions the subscriptions
      * @param credentials the credentials
      */
-    private void generateOEMOrderItems(List<SCCSubscription> subscriptions,
+    private void generateOEMOrderItems(List<SCCSubscriptionJson> subscriptions,
             Credentials credentials) {
+        List<SCCOrderItem> existingOI = SCCCachingFactory.listOrderItemsByCredentials(credentials);
         subscriptions.stream()
                 .filter(sub -> "oem".equals(sub.getType()))
                 .forEach(sub -> {
                     if (sub.getSkus().size() == 1) {
                         log.debug("Generating order item for OEM subscription " +
                                 sub.getName() + ", SCC ID: " + sub.getId());
-                        SCCOrderItem oemOrder = new SCCOrderItem();
-                        long subscriptionSccId = Integer.valueOf(sub.getId()).longValue();
+                        long subscriptionSccId = sub.getId();
+                        SCCOrderItem oemOrder = SCCCachingFactory.lookupOrderItemBySccId(-subscriptionSccId)
+                                .orElse(new SCCOrderItem());
                         // HACK: use inverted subscription id as new the order item id
                         oemOrder.setSccId(-subscriptionSccId);
                         oemOrder.setQuantity(sub.getSystemLimit().longValue());
@@ -820,6 +828,7 @@ public class ContentSyncManager {
                         oemOrder.setSku(sub.getSkus().get(0));
                         oemOrder.setSubscriptionId(subscriptionSccId);
                         SCCCachingFactory.saveOrderItem(oemOrder);
+                        existingOI.remove(oemOrder);
                     }
                     else {
                         log.warn("Subscription " + sub.getName() + ", SCC ID: " +
@@ -828,6 +837,9 @@ public class ContentSyncManager {
                         );
                     }
                 });
+        existingOI.stream()
+            .filter(item -> item.getSccId() < 0)
+            .forEach(item -> SCCCachingFactory.deleteOrderItem(item));
     }
 
     /**
