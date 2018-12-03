@@ -122,6 +122,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <one-to-many class="com.redhat.rhn.domain.channel.ClonedChannel"/>
         </set>
 
+        <set name="suseProductChannels" table="SUSEProductChannel" inverse="true">
+            <key column="channel_id"/>
+            <one-to-many class="com.redhat.rhn.domain.product.SUSEProductChannel"/>
+        </set>
+
         <joined-subclass
                 name="com.redhat.rhn.domain.channel.ClonedChannel"
                 table="rhnChannelCloned">
@@ -586,4 +591,27 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.channel.Channel as c
                  where c.org is null]]>
     </query>
+    <sql-query name="Channel.findVendorRepositoryByChannelId">
+        <![CDATA[
+          SELECT DISTINCT {r.*}
+            FROM rhnChannel c
+            JOIN suseProductSCCRepository pr ON c.label = pr.channel_label
+            JOIN suseSCCRepository r ON pr.repo_id = r.id
+           WHERE c.org_id IS NULL
+            AND c.id = :cid
+        ]]>
+        <return alias="r" class="com.redhat.rhn.domain.scc.SCCRepository" />
+    </sql-query>
+    <sql-query name="Channel.findOrphanVendorChannels">
+        <![CDATA[
+            SELECT {c.*}
+            FROM rhnChannel c
+            LEFT JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+            left join rhnChannelContentSource ccs on c.id = ccs.channel_id
+            where c.org_id is NULL
+            and ccs.source_id IS NULL
+        ]]>
+        <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
+    </sql-query>
+
 </hibernate-mapping>

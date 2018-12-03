@@ -16,15 +16,16 @@
 package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.RpmVersionComparator;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.InstalledProduct;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Transformer;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
@@ -34,17 +35,17 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
  * {@link SUSEProduct} objects from the database.
- * @version $Rev$
  */
 public class SUSEProductFactory extends HibernateFactory {
 
@@ -72,11 +73,77 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Insert or update a {@link SUSEUpgradePath}.
-     * @param upgradePath upgrade path to be inserted.
+     * Save a {@link SCCRepository}
+     * @param repo the repository
      */
-    public static void save(SUSEUpgradePath upgradePath) {
-        singleton.saveObject(upgradePath);
+    public static void save(SCCRepository repo) {
+        singleton.saveObject(repo);
+    }
+
+    /**
+     * Save a {@link SUSEProductSCCRepository}
+     * @param productRepo the productrepo
+     */
+    public static void save(SUSEProductSCCRepository productRepo) {
+        singleton.saveObject(productRepo);
+    }
+
+    /**
+     * @return a list of all {@link SUSEProductSCCRepository}
+     */
+    public static List<SUSEProductSCCRepository> allProductRepos() {
+        Criteria c = getSession().createCriteria(SUSEProductSCCRepository.class);
+        return (List<SUSEProductSCCRepository>) c.list();
+    }
+
+    /**
+     * @return map of all {@link SUSEProductSCCRepository} by ID triple
+     */
+    public static Map<Tuple3<Long, Long, Long>, SUSEProductSCCRepository> allProductReposByIds() {
+        return allProductRepos().stream().collect(
+                Collectors.toMap(
+                        e -> new Tuple3<>(
+                                e.getRootProduct().getProductId(),
+                                e.getProduct().getProductId(),
+                                e.getRepository().getSccId()
+                        ),
+                        e -> e
+                )
+        );
+    }
+
+    /**
+     * Return all {@link SUSEProductSCCRepository} with the given channel label.
+     * In most cases the label is unique, but there are exceptions like SLES11 SP1/SP2 base channel
+     * and products with rolling releases like CaaSP 1 and 2
+     * @param channelLabel the channel label
+     * @return list of {@link SUSEProductSCCRepository}
+     */
+    public static List<SUSEProductSCCRepository> lookupPSRByChannelLabel(String channelLabel) {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
+        c.add(Restrictions.eq("channelLabel", channelLabel));
+        RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
+        return ((List<SUSEProductSCCRepository>) c.list()).stream()
+                .sorted((a, b) ->
+                        rpmVersionComparator.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * lookup {@link SUSEProductSCCRepository} by given ID triple
+     * @param rootId root product id
+     * @param productId product id
+     * @param repoId repository id
+     * @return the product/repository item
+     */
+    public static Optional<SUSEProductSCCRepository> lookupProductRepoByIds(long rootId, long productId, long repoId) {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
+        c.add(Restrictions.eq("rootProduct.productId", rootId));
+        c.add(Restrictions.eq("product.productId", productId));
+        c.add(Restrictions.eq("repository.sccId", repoId));
+        return Optional.ofNullable((SUSEProductSCCRepository) c.uniqueResult());
     }
 
     /**
@@ -101,19 +168,28 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static void removeAllExcept(Collection<SUSEProduct> products) {
-        Collection<Long> ids = CollectionUtils.collect(products, new Transformer() {
-            @Override
-            public Object transform(Object arg0In) {
-                return ((SUSEProduct) arg0In).getId();
+        if (!products.isEmpty()) {
+            Collection<Long> ids = products.stream().map(SUSEProduct::getId).collect(Collectors.toList());
+
+            Criteria c = getSession().createCriteria(SUSEProduct.class);
+            c.add(Restrictions.not(Restrictions.in("id", ids)));
+
+            for (SUSEProduct product : (List<SUSEProduct>) c.list()) {
+                remove(product);
             }
-        });
-
-        Criteria c = getSession().createCriteria(SUSEProduct.class);
-        c.add(Restrictions.not(Restrictions.in("id", ids)));
-
-        for (SUSEProduct product : (List<SUSEProduct>) c.list()) {
-            remove(product);
         }
+    }
+
+
+    /**
+     * Lookup SUSEProductChannels by channel label
+     * @param channelLabel the label
+     * @return list of SUSEProductChannels
+     */
+    public static List<SUSEProductChannel> lookupSyncedProductChannelsByLabel(String channelLabel) {
+        return Optional.ofNullable(ChannelFactory.lookupByLabel(channelLabel))
+                .map(channel -> channel.getSuseProductChannels().stream())
+                .orElseGet(Stream::empty).collect(Collectors.toList());
     }
 
     /**
@@ -121,41 +197,62 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param channelLabel the label
      * @return list of SUSEProductChannels
      */
-    public static List<SUSEProductChannel> lookupByChannelLabel(String channelLabel) {
+    public static List<SUSEProductSCCRepository> lookupByChannelLabel(String channelLabel) {
         Session session = HibernateFactory.getSession();
-        return (List<SUSEProductChannel>)session.getNamedQuery("SUSEProduct.byChannel")
+        return (List<SUSEProductSCCRepository>)session.getNamedQuery("SUSEProductSCCRepository.lookupByLabel")
                 .setParameter("label", channelLabel).list();
     }
 
     /**
-     * return all mandatory channels
-     * @param product the product
-     * @param base the root product
-     * @param baseChannelLabel the base channel label
-     * @return stream of SUSEProductChannel
+     * Lookup SUSE Product Channels by channel name
+     * @param name the channel name
+     * @return list of found matches
      */
-    public static Stream<SUSEProductChannel> findAllMandatoryChannels(SUSEProduct product, SUSEProduct base,
-            String baseChannelLabel) {
+    public static List<SUSEProductSCCRepository> lookupByChannelName(String name) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SUSEProductSCCRepository> criteria = builder.createQuery(SUSEProductSCCRepository.class);
+        Root<SUSEProductSCCRepository> root = criteria.from(SUSEProductSCCRepository.class);
+        criteria.where(builder.equal(root.get("channelName"), name));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Finds a SUSEProductSCCRepository entry by channel label.
+     * Note: this returns the entry with the newest product to make the result predictable.
+     * @param channelLabel channel label
+     * @return SUSEProductSCCRepository entry with the newest product
+     */
+    public static Optional<SUSEProductSCCRepository> lookupByChannelLabelFirst(String channelLabel) {
+        RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
+        return  lookupByChannelLabel(channelLabel)
+                .stream()
+                // sort so we always choose the latest version
+                .sorted((a, b) ->  rpmVersionComparator.compare(b.getProduct().getVersion(),
+                        a.getProduct().getVersion()))
+
+                // We take the first item since there can be more then one entry.
+                // This only happens for sles11 sp1/2  and rolling release attempts like caasp 1/2
+                .findFirst();
+    }
+
+
+    private static Stream<SUSEProductChannel> findSyncedMandatoryChannels(SUSEProduct product, SUSEProduct base,
+                                                                      String baseChannelLabel) {
         Stream<SUSEProductChannel> concat = Stream.concat(
                 product.getSuseProductChannels().stream().filter(
-                        c -> baseChannelLabel.equals(c.getParentChannelLabel()) ||
-                                baseChannelLabel.equals(c.getChannelLabel())
+                        pc -> Optional.ofNullable(pc.getChannel().getParentChannel())
+                                .map(c -> c.getLabel().equals(baseChannelLabel))
+                                .orElseGet(() -> pc.getChannel().getLabel().equals(baseChannelLabel))
                 ),
                 SUSEProductFactory.findAllBaseProductsOf(product, base).stream().flatMap(
-                        p -> findAllMandatoryChannels(p, base, baseChannelLabel)
+                        p -> findSyncedMandatoryChannels(p, base, baseChannelLabel)
                 )
         );
         return concat;
     }
 
-    /**
-     * Finds the suse product channel for a given channel label.
-     * Note: does not work for all channel labels see comment in source.
-     * @param channelLabel channel label
-     * @return suse product channel
-     */
-    public static Optional<SUSEProductChannel> findProductByChannelLabel(String channelLabel) {
-        List<SUSEProductChannel> suseProducts = SUSEProductFactory.lookupByChannelLabel(channelLabel);
+    private static Optional<SUSEProductChannel> findSyncProductChannelByLabel(String channelLabel) {
+        List<SUSEProductChannel> suseProducts = SUSEProductFactory.lookupSyncedProductChannelsByLabel(channelLabel);
         if (suseProducts.isEmpty()) {
             return Optional.empty();
         }
@@ -169,50 +266,83 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Finds all mandetory channels for a given channel label.
-     *
-     * @param channelLabel channel label
-     * @param archByChannelLabel a function mapping from channel label to architecture.
-     *                           to filter out incompatible channels.
-     * @return a stream of suse product channels which are required by the channel
+     * Find all synced mandatoy channels for the given channel label
+     * @param channelLabel the channel label
+     * @return a stream of synced {@link Channel}
      */
-    public static Stream<SUSEProductChannel> findAllMandatoryChannels(String channelLabel,
-            Function<String, String> archByChannelLabel) {
-        return findProductByChannelLabel(channelLabel).map(suseProductChannel -> {
-            Stream<SUSEProductChannel> suseProductChannelStream = Optional.ofNullable(
-                    suseProductChannel.getParentChannelLabel()
-            ).map(parentChannelLabel -> {
-                SUSEProductChannel baseProductChannel = findProductByChannelLabel(parentChannelLabel).get();
-                return findAllMandatoryChannels(
+    public static Stream<Channel> findSyncedMandatoryChannels(String channelLabel) {
+        return findSyncProductChannelByLabel(channelLabel).map(suseProductChannel -> {
+
+            Channel channel = ChannelFactory.lookupByLabel(channelLabel);
+            Channel baseChannel = Optional.ofNullable(channel.getParentChannel()).orElse(channel);
+
+            SUSEProductChannel baseProductChannel = findSyncProductChannelByLabel(baseChannel.getLabel()).get();
+            Stream<SUSEProductChannel> suseProductChannelStream = findSyncedMandatoryChannels(
                         suseProductChannel.getProduct(),
                         baseProductChannel.getProduct(),
-                        parentChannelLabel
-                );
-            }).orElseGet(() -> suseProductChannel.getProduct().getSuseProductChannels().stream());
-            return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream).filter(s -> {
-                return archByChannelLabel.apply(s.getChannelLabel()).equals(
-                        archByChannelLabel.apply(suseProductChannel.getChannelLabel()));
-            });
-        }).orElse(Stream.empty());
+                        baseChannel.getLabel()
+            );
+            return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream)
+                    .filter(pc -> pc.getChannel().getChannelArch().equals(channel.getChannelArch()));
+        }).orElse(Stream.empty())
+          .filter(pc -> pc.isMandatory())
+          .map(pc -> pc.getChannel());
     }
 
     /**
-     * Merge all {@link SUSEUpgradePath} from existing ones
-     * and the ones passed as parameter.
-     * @param newUpgradePaths the new list of upgradePaths to keep stored
+     * Find all mandatory channels for a given product / root product combination
+     * @param product product for which we want the channels
+     * @param root root product under which the product sits (this is for disambiguation since a product by itself
+     *             can have different channels depending in what root product it sits)
+     * @return a stream of SUSEProductSCCRepository since only synced channels have a channel instance
      */
-    public static void mergeAllUpgradePaths(Collection<SUSEUpgradePath> newUpgradePaths) {
-        List<SUSEUpgradePath> existingUpgradePaths = findAllSUSEUpgradePaths();
-        for (SUSEUpgradePath upgradePath : existingUpgradePaths) {
-            if (!newUpgradePaths.contains(upgradePath)) {
-                SUSEProductFactory.remove(upgradePath);
-            }
-        }
-        for (SUSEUpgradePath upgradePath : newUpgradePaths) {
-            if (!existingUpgradePaths.contains(upgradePath)) {
-                SUSEProductFactory.save(upgradePath);
-            }
-        }
+    public static Stream<SUSEProductSCCRepository> findAllMandatoryChannels(SUSEProduct product, SUSEProduct root) {
+        return Stream.concat(
+                product.getRepositories()
+                        .stream()
+                        .filter(p -> p.isMandatory())
+                        .filter(p -> p.getRootProduct().equals(root)),
+                SUSEProductFactory.findAllBaseProductsOf(product, root).stream()
+                .flatMap(p -> findAllMandatoryChannels(p, root))
+        );
+    }
+
+    /**
+     * Finds the suse product channel for a given channel label.
+     * Note: does not work for all channel labels see comment in source.
+     * @param channelLabel channel label
+     * @return suse product channel
+     */
+    public static Optional<SUSEProduct> findProductByChannelLabel(String channelLabel) {
+        return lookupByChannelLabelFirst(channelLabel)
+                .map(p -> p.getProduct());
+    }
+
+    /**
+     * Finds all mandetory channels for a given channel label.
+     *
+     * @param channelLabel channel label
+     * @return a stream of suse product channels which are required by the channel
+     */
+    public static Stream<SUSEProductSCCRepository> findAllMandatoryChannels(String channelLabel) {
+        return lookupByChannelLabelFirst(channelLabel).map(spsr -> {
+            return findAllMandatoryChannels(
+                    spsr.getProduct(),
+                    spsr.getRootProduct()
+            );
+        }).orElseGet(Stream::empty);
+    }
+
+    /**
+     * Find not synced mandatory channels for a given channel label and return them as stream
+     * @param channelLabel channel label
+     * @return stream of required {@link SUSEProductSCCRepository} representing channels
+     */
+    public static Stream<SUSEProductSCCRepository> findNotSyncedMandatoryChannels(String channelLabel) {
+        return findAllMandatoryChannels(channelLabel).
+                filter(spsr -> !Optional.ofNullable(ChannelFactory.lookupByLabel(spsr.getChannelLabel())).isPresent())
+                .sorted(Comparator.comparing(SUSEProductSCCRepository::getParentChannelLabel,
+                        Comparator.nullsFirst(Comparator.naturalOrder())));
     }
 
     /**
@@ -250,19 +380,19 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Delete a {@link SUSEUpgradePath} from the database.
-     * @param upgradePath upgrade path to be deleted.
-     */
-    public static void remove(SUSEUpgradePath upgradePath) {
-        singleton.removeObject(upgradePath);
-    }
-
-    /**
      * Delete a {@link SUSEProductExtension} from the database.
      * @param productExtension productExtension to be deleted.
      */
     public static void remove(SUSEProductExtension productExtension) {
         singleton.removeObject(productExtension);
+    }
+
+    /**
+     * Delete a {@link SUSEProductSCCRepository} from the database.
+     * @param productRepo product repository to be deleted.
+     */
+    public static void remove(SUSEProductSCCRepository productRepo) {
+        singleton.removeObject(productRepo);
     }
 
     /**
@@ -378,53 +508,6 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Find SUSE Product Channel by label and product_id from the product table.
-     * @param channelLabel the label of the channel.
-     * @param productId product id.
-     * @return SUSE Product Channel if it is there.
-     */
-    public static SUSEProductChannel lookupSUSEProductChannel(
-            String channelLabel, Long productId) {
-
-        Criteria c = HibernateFactory.getSession()
-                .createCriteria(SUSEProductChannel.class)
-                .add(Restrictions.eq("channelLabel", channelLabel))
-                .createCriteria("product")
-                .add(Restrictions.eq("productId", productId))
-                .setFetchMode("product", FetchMode.SELECT);
-
-        return (SUSEProductChannel) c.uniqueResult();
-    }
-
-    /**
-     * Find all {@link SUSEUpgradePath}.
-     * @return list of upgrade paths
-     */
-    @SuppressWarnings("unchecked")
-    public static List<SUSEUpgradePath> findAllSUSEUpgradePaths() {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEUpgradePath.class);
-        return c.list();
-    }
-
-    /**
-     * Find a {@link SUSEUpgradePath} given by source and target {@link SUSEProduct}s.
-     * @param fromProduct the source product
-     * @param toProduct the target product
-     * @return SUSEUpgradePath if it is there
-     */
-    public static SUSEUpgradePath findSUSEUpgradePath(SUSEProduct fromProduct,
-            SUSEProduct toProduct) {
-        Session session = getSession();
-
-        Criteria c = session.createCriteria(SUSEUpgradePath.class)
-                .add(Restrictions.eq("fromProduct", fromProduct))
-                .add(Restrictions.eq("toProduct", toProduct));
-
-        return (SUSEUpgradePath) c.uniqueResult();
-    }
-
-    /**
      * Find extensions for the product
      * @param root the root product
      * @param base the base product
@@ -461,15 +544,33 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Find all {@link SUSEProductExtension} of a product.
+     * Find all {@link SUSEProductExtension} of a product for the given root product.
      * @param base product to find extensions of
+     * @param root root product
+     * @return list of product extension of the given product and root
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllExtensionProductsForRootOf(SUSEProduct base, SUSEProduct root) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("baseId", base.getId());
+        params.put("rootId", root.getId());
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllExtensionProductsForRootOf", params);
+    }
+
+    /**
+     * Find all {@link SUSEProductExtension} of a product for a given root.
+     * @param product product to find extensions of
+     * @param root root product to find extensions in
      * @return list of product extension of the given product
      */
     @SuppressWarnings("unchecked")
-    public static List<SUSEProduct> findAllExtensionProductsOf(SUSEProduct base) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("baseId", base.getId());
-        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllExtensionProductsOf", params);
+    public static List<SUSEProductExtension> findAllProductExtensionsOf(SUSEProduct product, SUSEProduct root) {
+        Session session = getSession();
+
+        Criteria c = session.createCriteria(SUSEProductExtension.class)
+                .add(Restrictions.eq("rootProduct", root))
+                .add(Restrictions.eq("baseProduct", product));
+        return c.list();
     }
 
     /**

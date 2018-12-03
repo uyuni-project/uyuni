@@ -17,21 +17,28 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="name" column="name" type="string" />
     <property name="version" column="version" type="string" />
     <property name="friendlyName" column="friendly_name" type="string" />
+    <property name="description" column="description" type="string" />
     <property name="release" column="release" type="string" />
     <property name="productId" column="product_id" type="long" />
     <property name="base" column="base" type="yes_no" not-null="true" />
     <property name="free" column="free" type="yes_no" not-null="true" />
+    <property name="releaseStage" column="release_stage">
+      <type name="org.hibernate.type.EnumType">
+        <param name="enumClass">com.redhat.rhn.domain.product.ReleaseStage</param>
+        <param name="useNamed">true</param>
+      </type>
+    </property>
     <many-to-one name="channelFamily"
                  column="channel_family_id"
                  class="com.redhat.rhn.domain.channel.ChannelFamily" />
 
-    <set name="upgrades" inverse="true" table="SUSEUpgradePath">
+    <set name="upgrades" table="SUSEUpgradePath">
       <key column="from_pdid"/>
       <many-to-many column="to_pdid"
                     class="com.redhat.rhn.domain.product.SUSEProduct"/>
     </set>
 
-    <set name="downgrades" table="SUSEUpgradePath">
+    <set name="downgrades" inverse="true" table="SUSEUpgradePath">
       <key column="to_pdid"/>
       <many-to-many column="from_pdid"
                     class="com.redhat.rhn.domain.product.SUSEProduct"/>
@@ -42,16 +49,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
       <one-to-many class="com.redhat.rhn.domain.product.SUSEProductChannel"/>
     </set>
 
+    <set name="repositories" table="SUSEProductSCCRepository" inverse="true">
+      <key column="product_id"/>
+      <one-to-many class="com.redhat.rhn.domain.product.SUSEProductSCCRepository"/>
+    </set>
   </class>
 
   <query name="SUSEProduct.clear">
     <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProduct]]>
-  </query>
-
-  <query name="SUSEProduct.byChannel">
-    <![CDATA[select pc from com.redhat.rhn.domain.product.SUSEProduct p
-          join p.suseProductChannels pc
-          where pc.channelLabel = :label]]>
   </query>
 
 </hibernate-mapping>

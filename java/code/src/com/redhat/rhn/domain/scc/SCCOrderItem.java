@@ -17,7 +17,7 @@ package com.redhat.rhn.domain.scc;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.Credentials;
 
-import com.google.gson.annotations.SerializedName;
+import com.suse.scc.model.SCCOrderItemJson;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -25,29 +25,93 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * This is a SUSE orderitem as parsed from JSON coming in from SCC.
  */
+@Entity
+@Table(name = "suseSCCOrderItem")
+@NamedQueries
+({
+    @NamedQuery(name = "SCCOrderItem.deleteAll", query = "delete from com.redhat.rhn.domain.scc.SCCOrderItem"),
+    @NamedQuery(name = "SCCOrderItem.deleteByCredential",
+                query = "delete from com.redhat.rhn.domain.scc.SCCOrderItem as o where o.credentials = :creds")
+ })
 public class SCCOrderItem extends BaseDomainHelper {
 
-    @SerializedName("id")
+    private Long id;
+    private Credentials credentials;
     private Long sccId;
     private String sku;
-    @SerializedName("end_date")
     private Date endDate;
-    @SerializedName("start_date")
     private Date startDate;
-    @SerializedName("subscription_id")
     private Long subscriptionId;
     private Long quantity;
 
-    // ignored by gson
-    private transient Long id;
-    private transient Credentials credentials;
+    /**
+     * Default Constructor
+     */
+    public SCCOrderItem() { }
+
+    /**
+     * Constructor
+     * @param j Json Order Item object
+     * @param c Credentials object
+     */
+    public SCCOrderItem(SCCOrderItemJson j, Credentials c) {
+        update(j, c);
+    }
+
+    /**
+     * Update the Object with an SCCOrderItemJson fetched with Credentials
+     * @param j the SCC Order Item Json object
+     * @param c the credentials used to fetch it
+     */
+    public void update(SCCOrderItemJson j, Credentials c) {
+        credentials = c;
+        sccId = j.getSccId();
+        sku = j.getSku();
+        endDate = j.getEndDate();
+        startDate = j.getStartDate();
+        subscriptionId = j.getSubscriptionId();
+        quantity = j.getQuantity();
+    }
+
+    /**
+     * Gets the id.
+     * @return the id
+     */
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccorderitem_seq")
+    @SequenceGenerator(name = "sccorderitem_seq", sequenceName = "suse_sccorder_id_seq",
+                       allocationSize = 1)
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     * @param idIn the new id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
 
     /**
      * @return the SCC id
      */
+    @Column(name = "scc_id")
     public Long getSccId() {
         return sccId;
     }
@@ -62,6 +126,7 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the sku
      */
+    @Column(name = "sku")
     public String getSku() {
         return sku;
     }
@@ -76,6 +141,7 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the endDate
      */
+    @Column(name = "end_date")
     public Date getEndDate() {
         return endDate;
     }
@@ -90,6 +156,7 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the startDate
      */
+    @Column(name = "start_date")
     public Date getStartDate() {
         return startDate;
     }
@@ -104,6 +171,7 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the subscriptionId
      */
+    @Column(name = "subscription_id")
     public Long getSubscriptionId() {
         return subscriptionId;
     }
@@ -111,9 +179,11 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the SCC Subscription
      */
+    /*
     public SCCSubscription getSubscription() {
         return SCCCachingFactory.lookupSubscriptionBySccId(subscriptionId);
     }
+    */
     /**
      * @param subscriptionIdIn the subscriptionId to set
      */
@@ -124,6 +194,7 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the quantity
      */
+    @Column(name = "quantity")
     public Long getQuantity() {
         return quantity;
     }
@@ -136,25 +207,10 @@ public class SCCOrderItem extends BaseDomainHelper {
     }
 
     /**
-     * Gets the id.
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Sets the id.
-     * @param idIn the new id
-     */
-    public void setId(Long idIn) {
-        id = idIn;
-    }
-
-    /**
      * Get the mirror credentials.
      * @return the credentials
      */
+    @ManyToOne
     public Credentials getCredentials() {
         return credentials;
     }

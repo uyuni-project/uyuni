@@ -33,7 +33,6 @@ public class ChannelFamily extends BaseDomainHelper {
     private String name;
     private String label;
     private Org org;
-    private String productUrl;
     private Set<Channel> channels = new HashSet<Channel>();
 
     private Set<PrivateChannelFamily> privateChannelFamilies =
@@ -107,16 +106,10 @@ public class ChannelFamily extends BaseDomainHelper {
     }
 
     /**
-     * @return Returns the productUrl.
+     * @return true if this channel family is a public channel family
      */
-    public String getProductUrl() {
-        return productUrl;
-    }
-    /**
-     * @param productUrlIn The productUrl to set.
-     */
-    public void setProductUrl(String productUrlIn) {
-        this.productUrl = productUrlIn;
+    public boolean isPublic() {
+        return getPublicChannelFamily() != null;
     }
 
     /**
@@ -132,7 +125,6 @@ public class ChannelFamily extends BaseDomainHelper {
                                   .append(label, castOther.label)
                                   .append(name, castOther.name)
                                   .append(org, castOther.org)
-                                  .append(productUrl, castOther.productUrl)
                                   .isEquals();
     }
 
@@ -144,7 +136,6 @@ public class ChannelFamily extends BaseDomainHelper {
                                     .append(label)
                                     .append(name)
                                     .append(org)
-                                    .append(productUrl)
                                     .toHashCode();
     }
 
@@ -154,21 +145,6 @@ public class ChannelFamily extends BaseDomainHelper {
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("name", name)
             .append("label", label).toString();
-    }
-
-    /**
-     * returns the channel family allocation of this channel family
-     * in  the given org
-     * @param orgIn the org whose allocation is requested
-     * @return the channel allocation
-     */
-    private PrivateChannelFamily getAllocation(Org orgIn) {
-        for (PrivateChannelFamily alloc : getPrivateChannelFamilies()) {
-            if (orgIn.getId().equals(alloc.getOrg().getId())) {
-                return alloc;
-            }
-        }
-        return null;
     }
 
     /**

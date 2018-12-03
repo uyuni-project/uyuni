@@ -84,6 +84,22 @@ DELETE
   </query>
 </write-mode>
 
+<write-mode name="remove_all_errata">
+  <query params="cid">
+DELETE
+  FROM rhnChannelErrata CE
+  where CE.channel_id = :cid
+  </query>
+</write-mode>
+
+
+<write-mode name="remove_all_packages">
+  <query params="cid">
+DELETE
+  FROM rhnChannelPackage CP
+  where CP.channel_id = :cid
+  </query>
+</write-mode>
 
 <write-mode name="request_repo_regen">
   <query params="label, client, reason">
