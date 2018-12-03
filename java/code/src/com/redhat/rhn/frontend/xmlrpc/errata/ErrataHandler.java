@@ -1036,6 +1036,12 @@ public class ErrataHandler extends BaseHandler {
             throw new NoSuchChannelException();
         }
 
+        Org errataOrg = loggedInUser.getOrg();
+        Channel original = ChannelFactory.lookupOriginalChannel(channel);
+        if (original != null) {
+            errataOrg = original.getOrg();
+        }
+
         //if calling cloneAsOriginal, do additional checks to verify a clone
         if (inheritPackages) {
             if (!channel.isCloned()) {
@@ -1043,12 +1049,11 @@ public class ErrataHandler extends BaseHandler {
                         channel.getLabel());
             }
 
-            Channel original = ChannelFactory.lookupOriginalChannel(channel);
-
             if (original == null) {
                 throw new InvalidChannelException("Cannot access original " +
                         "of the channel: " + channel.getLabel());
             }
+
             // check access to the original
             if (ChannelFactory.lookupByIdAndUser(original.getId(), loggedInUser) == null) {
                 throw new LookupException("User " + loggedInUser.getLogin() +
@@ -1065,7 +1070,7 @@ public class ErrataHandler extends BaseHandler {
         List<Long> errataIds = new ArrayList<Long>();
         //We loop through once, making sure all the errata exist
         for (String advisory : advisoryNames) {
-            Errata toClone = lookupErrata(advisory, loggedInUser.getOrg());
+            Errata toClone = lookupErrata(advisory, errataOrg);
             errataToClone.add(toClone);
             errataIds.add(toClone.getId());
         }
