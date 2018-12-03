@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,18 +14,19 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.domain.product.MgrSyncChannelDto;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-
-import com.suse.mgrsync.XMLChannel;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Optional;
 
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
- * Serializer for {@link XMLChannel} objects.
+ * Serializer for {@link MgrSyncChannelDto} objects.
  *
  * @xmlrpc.doc
  *   #struct("channel")
@@ -45,29 +46,30 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "update_tag", "Update tag")
  *   #struct_end()
  */
-public class XMLChannelSerializer extends RhnXmlRpcCustomSerializer {
+public class MgrSyncChannelDtoSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Class<XMLChannel> getSupportedClass() {
-        return XMLChannel.class;
+    public Class<MgrSyncChannelDto> getSupportedClass() {
+        return MgrSyncChannelDto.class;
     }
 
     @Override
     protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
             throws XmlRpcException, IOException {
-        XMLChannel channel = (XMLChannel) obj;
+        MgrSyncChannelDto channel = (MgrSyncChannelDto) obj;
         SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("arch", channel.getArch());
+
+        helper.add("arch", channel.getArch().orElse(PackageFactory.lookupPackageArchByLabel("noarch")).getLabel());
         helper.add("description", channel.getDescription());
         helper.add("family", channel.getFamily());
         helper.add("is_signed", channel.isSigned());
         helper.add("label", channel.getLabel());
         helper.add("name", channel.getName());
-        helper.add("optional", channel.isOptional());
-        helper.add("parent", channel.getParent());
+        helper.add("optional", !channel.isMandatory());
+        helper.add("parent", Optional.ofNullable(channel.getParentLabel()).orElse("BASE"));
         helper.add("product_name", channel.getProductName());
         helper.add("product_version", channel.getProductVersion());
         helper.add("source_url", channel.getSourceUrl());
