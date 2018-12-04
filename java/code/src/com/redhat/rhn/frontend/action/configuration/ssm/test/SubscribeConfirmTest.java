@@ -96,11 +96,12 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channels.addElement(channel4.getId());
         RhnSetFactory.save(channels);
 
-        // Set ranking: 2, 4, 3
+        // Set ranking: 2, 4, 3, 1
         RhnSet channelRanking = RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user);
         channelRanking.addElement(channel2.getId(), 0L);
         channelRanking.addElement(channel4.getId(), 1L);
         channelRanking.addElement(channel3.getId(), 2L);
+        channelRanking.addElement(channel1.getId(), 3L);
         RhnSetFactory.save(channelRanking);
 
         // Send confirm request
@@ -182,11 +183,12 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channels.addElement(channel4.getId());
         RhnSetFactory.save(channels);
 
-        // Set ranking: 2, 4, 3
+        // Set ranking: 2, 4, 3, 1
         RhnSet channelRanking = RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user);
         channelRanking.addElement(channel2.getId(), 0L);
         channelRanking.addElement(channel4.getId(), 1L);
         channelRanking.addElement(channel3.getId(), 2L);
+        channelRanking.addElement(channel1.getId(), 3L);
         RhnSetFactory.save(channelRanking);
 
         // Send confirm request
