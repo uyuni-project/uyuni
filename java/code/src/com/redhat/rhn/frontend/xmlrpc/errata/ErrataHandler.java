@@ -225,7 +225,7 @@ public class ErrataHandler extends BaseHandler {
         // Get the logged in user. We don't care what roles this user has, we
         // just want to make sure the caller is logged in.
 
-        Errata errata = lookupErrataReadOnly(advisoryName, loggedInUser.getOrg());
+        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
 
         Map<String, Object> errataMap = new HashMap<String, Object>();
 
@@ -778,7 +778,7 @@ public class ErrataHandler extends BaseHandler {
     public List<Map> listPackages(User loggedInUser, String advisoryName)
             throws FaultException {
         // Get the logged in user
-        Errata errata = lookupErrataReadOnly(advisoryName, loggedInUser.getOrg());
+        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
 
         List<Map> toRet = new ArrayList<Map>();
         for (Iterator iter = errata.getPackages().iterator(); iter.hasNext();) {
@@ -928,28 +928,6 @@ public class ErrataHandler extends BaseHandler {
                                      "The patch " + advisoryName + " cannot be found.");
         }
         return erratas;
-    }
-
-    /**
-     * Private helper method to lookup an errata and throw a Fault exception if it isn't
-     * found
-     * @param advisoryName The advisory name for the erratum you're looking for
-     * @return Returns the errata or a Fault Exception
-     * @throws FaultException Occurs when the erratum is not found
-     */
-    private Errata lookupErrataReadOnly(String advisoryName, Org org)
-            throws FaultException {
-        Errata errata = ErrataManager.lookupByAdvisory(advisoryName, org);
-
-        /*
-         * ErrataManager.lookupByAdvisory() could return null, so we need to check
-         * and throw a no_such_errata exception if the errata was not found.
-         */
-        if (errata == null) {
-            throw new FaultException(-208, "no_such_errata",
-                    "The errata " + advisoryName + " cannot be found.");
-        }
-        return errata;
     }
 
     /**
