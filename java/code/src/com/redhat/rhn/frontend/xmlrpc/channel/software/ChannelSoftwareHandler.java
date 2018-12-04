@@ -2269,7 +2269,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         // make sure our errata exist in the "from" channel
         for (String erratumName : errataNames) {
             Errata toMerge = ErrataManager.lookupByAdvisory(erratumName,
-                    loggedInUser.getOrg());
+                    mergeFrom.getOrg());
 
             for (Errata erratum : sourceErrata) {
                 if (erratum.getAdvisoryName().equals(toMerge.getAdvisoryName())) {
