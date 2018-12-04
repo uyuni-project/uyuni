@@ -1098,14 +1098,14 @@ public class ErrataManager extends BaseManager {
 
 
     /**
-     * Get a list of channels applicable to the erratum
-     * @param eid The id of the erratum
+     * Get a list of channels applicable to a list of erratas
+     * @param eids The ids of the erratas
      * @param orgid The id for the org we want to lookup against
      * @param pc The page control for the user
      * @param clazz The class you would like the return values represented as
-     * @return List of applicable channels for the erratum (that the org has access to)
+     * @return List of applicable channels for the erratas (that the org has access to)
      */
-    public static DataResult applicableChannels(Long eid, Long orgid,
+    public static DataResult applicableChannels(List<Long> eids, Long orgid,
             PageControl pc, Class clazz) {
         SelectMode m;
         if (clazz == null) {
@@ -1117,8 +1117,7 @@ public class ErrataManager extends BaseManager {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", orgid);
-        params.put("eid", eid);
-        return makeDataResult(params, params, pc, m);
+        return m.execute(params, eids);
     }
 
     /**
