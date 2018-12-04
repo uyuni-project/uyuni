@@ -655,11 +655,11 @@ public class ErrataFactory extends HibernateFactory {
     public static Errata lookupById(Long id) {
         //Look for published Errata first
         Session session = HibernateFactory.getSession();
-        Errata errata = (Errata) session.get(PublishedErrata.class, id);
+        Errata errata = session.get(PublishedErrata.class, id);
 
         //If we nothing was found, look for it in the Unpublished Errata table...
         if (errata == null) {
-            errata = (Errata) session.get(UnpublishedErrata.class, id);
+            errata = session.get(UnpublishedErrata.class, id);
         }
         return errata;
     }
@@ -704,6 +704,33 @@ public class ErrataFactory extends HibernateFactory {
             log.error("Error loading ActionArchTypes from DB", he);
             throw new
             HibernateRuntimeException("Error loading ActionArchTypes from db");
+        }
+        return retval;
+    }
+
+    /**
+     * Retrieves the errata that belongs to a vendor or a given organization, given an advisory name.
+     * @param advisory The advisory to lookup
+     * @param org the organization
+     * @return Returns the errata corresponding to the passed in advisory name.
+     */
+    public static List<Errata> lookupErrataByAdvisoryNameAndOrg(String advisory, Org org) {
+        Session session = null;
+        List<Errata> retval = null;
+
+        //look for a published errata first
+        session = HibernateFactory.getSession();
+        retval = session.getNamedQuery("PublishedErrata.findByAdvisoryNameAndOrg")
+                .setParameter("advisory", advisory)
+                .setParameter("org", org)
+                .getResultList();
+
+        //if nothing was found, check the unpublished errata table
+        if (retval == null || retval.isEmpty()) {
+            retval = session.getNamedQuery("UnpublishedErrata.findByAdvisoryNameAndOrg")
+                    .setParameter("advisory", advisory)
+                    .setParameter("org", org)
+                    .getResultList();
         }
         return retval;
     }
@@ -1225,7 +1252,7 @@ public class ErrataFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("from_cid", fromCid);
         params.put("to_cid", toCid);
-        return (DataResult<ErrataOverview>) mode.execute(params);
+        return mode.execute(params);
     }
 
     /**
@@ -1240,7 +1267,7 @@ public class ErrataFactory extends HibernateFactory {
                 "published_owned_unmodified_cloned_errata");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", orgId);
-        return (DataResult<OwnedErrata>) mode.execute(params);
+        return mode.execute(params);
     }
 
     /**
