@@ -376,6 +376,19 @@ When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |tex
   end
 end
 
+When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]")
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find #{text} in any row"
+  end
+end
+
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2|
