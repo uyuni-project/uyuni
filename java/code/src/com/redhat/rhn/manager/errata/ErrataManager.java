@@ -87,6 +87,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -911,12 +912,20 @@ public class ErrataManager extends BaseManager {
      * @return common vulnerabilities and exposures
      */
     public static DataResult errataCVEs(Long eid) {
+        return errataCVEs(Arrays.asList(eid));
+    }
+
+    /**
+     * Returns a list of CVEs for a list of errata ids
+     * @param eids The errata ids
+     * @return common vulnerabilities and exposures
+     */
+    public static DataResult errataCVEs(List<Long> eids) {
         SelectMode m = ModeFactory.getMode("Errata_queries", "cves_for_errata");
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("eid", eid);
-        return m.execute(params);
+        return m.execute(new HashMap<String, Object>(), eids);
     }
+
 
     /**
      * Returns a list of keywords for an errata
