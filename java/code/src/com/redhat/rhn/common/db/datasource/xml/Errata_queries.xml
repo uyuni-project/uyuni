@@ -1396,10 +1396,10 @@ ORDER BY EBL.bug_id
 </mode>
 
 <mode name="cves_for_errata" class="com.redhat.rhn.frontend.dto.CVE">
-  <query params="eid">
+  <query params="">
 SELECT  CVE.name
   FROM  rhnCVE CVE, rhnErrataCVE ECVE
- WHERE  ECVE.errata_id = :eid
+ WHERE  ECVE.errata_id IN (%s)
    AND  ECVE.cve_id = CVE.id
 ORDER BY UPPER(CVE.name)
   </query>

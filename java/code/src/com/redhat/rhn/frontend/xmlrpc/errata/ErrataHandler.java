@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Category;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.FaultException;
@@ -702,38 +703,37 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Returns a list of CVEs for a given erratum
+     * Returns a list of CVEs applicable to the errata with the given advisory name. CVEs may be associated
+     * only with published errata.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the list of CVEs of both of them.
      * @param loggedInUser The current user
      * @param advisoryName The advisory name of the erratum
-     * @return Returns a list of CVEs
+     * @return Returns a collection of CVEs
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
         throws FaultException {
      *
      * @xmlrpc.doc Returns a list of
      * <a href="http://cve.mitre.org/" target="_blank">CVE</a>s
-     * applicable to the erratum with the given advisory name. CVEs may be associated
+     * applicable to the errata with the given advisory name. CVEs may be associated
      * only with published errata.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the list of CVEs of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string",  "advisoryName")
      * @xmlrpc.returntype
      *      #array_single("string", "cveName")
      *
      */
-    public List listCves(User loggedInUser, String advisoryName) throws FaultException {
+    public Set listCves(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(Collectors.toList());
 
-        DataResult dr = ErrataManager.errataCVEs(errata.getId());
-        List returnList = new ArrayList();
+        DataResult dr = ErrataManager.errataCVEs(errataIds);
 
-        //Just return the name of the cve...
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            CVE cve = (CVE) itr.next();
-            returnList.add(cve.getName());
-        }
-
-        return returnList;
+        return (Set) dr.stream().map(cve -> ((CVE) cve).getName()).collect(Collectors.toSet());
     }
 
     /**
