@@ -26,7 +26,7 @@ Feature: The Setup Wizard
     # Order matters here, refresh first
     When I refresh SCC
     And I follow "SUSE Products" in the content area
-    And I wait at most 600 seconds until I see "Product Description" text
+    And I wait until I see "Product Description" text
     And I should see a "Arch" text
     And I should see a "Channels" text
     And I should not see a "WebYaST 1.3" text
@@ -40,13 +40,13 @@ Feature: The Setup Wizard
     Then I should see a "Legacy Module 12" text
     When I select the addon "Legacy Module 12"
     And I click the Add Product button
-    And I wait at most 500 seconds until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     Then the products should be added
 
   Scenario: Select product with recommended enabled
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
-    And I wait at most 600 seconds until I see "Product Description" text
+    And I wait until I see "Product Description" text
     And I enter "SUSE Linux Enterprise Server 15" in the css "input[name='product-description-filter']"
     And I select "x86_64" in the dropdown list of the architecture filter
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15"
@@ -55,13 +55,13 @@ Feature: The Setup Wizard
     When I select "SUSE Linux Enterprise Server 15" as a product
     Then I should see the "Basesystem Module 15" selected
     And I click the Add Product button
-    And I wait at most 500 seconds until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     Then the products should be added
 
   Scenario: View the channels list in the products page
     Given I am on the Admin page
     When I follow "SUSE Products" in the content area
-    And I wait at most 600 seconds until I see "Product Description" text
+    And I wait until I see "Product Description" text
     And I enter "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" in the css "input[name='product-description-filter']"
     And I select "x86_64" in the dropdown list of the architecture filter
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2"
