@@ -625,16 +625,20 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Returns a list of channels (represented by a map) that the given erratum is
-     * applicable to.
+     * Returns a list of channels (represented by a map) applicable to the errata
+     * with the given advisory name.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the list of channels applicable of both of them.
      * @param loggedInUser The current user
      * @param advisoryName The advisory name of the erratum
      * @return Returns an array of channels for the erratum
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Returns a list of channels applicable to the erratum
+     * @xmlrpc.doc Returns a list of channels applicable to the errata
      * with the given advisory name.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the list of channels applicable of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
@@ -651,9 +655,10 @@ public class ErrataHandler extends BaseHandler {
             throws FaultException {
 
         // Get the logged in user
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(Collectors.toList());
 
-        return ErrataManager.applicableChannels(errata.getId(),
+        return ErrataManager.applicableChannels(errataIds,
                 loggedInUser.getOrg().getId(), null, Map.class).toArray();
     }
 
