@@ -130,7 +130,6 @@ public class ErrataFactory extends HibernateFactory {
     public static List lookupByIdentifier(String identifier, Org org) {
         Long eid = null;
         List retval = new LinkedList();
-        Errata errata = null;
         try {
             eid = new Long(Long.parseLong(identifier));
         }
@@ -138,24 +137,24 @@ public class ErrataFactory extends HibernateFactory {
             eid = null;
         }
         if (eid != null) {
-            errata = ErrataFactory.lookupPublishedErrataById(eid);
+            Errata errata = ErrataFactory.lookupPublishedErrataById(eid);
             if (errata != null) {
                 retval.add(errata);
             }
         }
         else if (identifier.length() > 4) {
             String prefix = null;
-            errata = ErrataFactory.lookupByAdvisoryId(identifier, org);
-            if (errata != null) {
-                retval.add(errata);
+            List<Errata> erratas = ErrataFactory.lookupByAdvisoryId(identifier, org);
+            if (erratas != null && !erratas.isEmpty()) {
+                retval.addAll(erratas);
             }
             else {
-                errata = ErrataFactory.lookupByAdvisory(identifier, org);
-                if (errata != null) {
-                    retval.add(errata);
+                erratas = ErrataFactory.lookupErrataByAdvisoryNameAndOrg(identifier, org);
+                if (erratas != null && !erratas.isEmpty()) {
+                    retval.addAll(erratas);
                 }
             }
-            if (errata == null) {
+            if (retval.isEmpty()) {
                 prefix = identifier.substring(0, 4);
                 if (prefix.matches("RH.A")) {
                     StringTokenizer strtok = new StringTokenizer(identifier, "-");
@@ -174,13 +173,14 @@ public class ErrataFactory extends HibernateFactory {
                         }
                     }
                     identifier = buf.toString();
-                    errata = ErrataFactory.lookupByAdvisoryId(identifier, org);
-                }
-                if (errata != null) {
-                    retval.add(errata);
+                    erratas = ErrataFactory.lookupByAdvisoryId(identifier, org);
+
+                    if (erratas != null && !erratas.isEmpty()) {
+                        retval.addAll(erratas);
+                    }
                 }
             }
-            if (errata == null) {
+            if (retval.isEmpty()) {
                 prefix = identifier.substring(0, 3);
                 if ((prefix.equals("CVE") || prefix.equals("CAN")) &&
                         identifier.length() > 7 && identifier.indexOf('-') == -1) {
@@ -188,7 +188,7 @@ public class ErrataFactory extends HibernateFactory {
                             identifier.substring(3, 7) + "-" +
                             identifier.substring(7);
                 }
-                List erratas = ErrataFactory.lookupByCVE(identifier);
+                erratas = ErrataFactory.lookupByCVE(identifier);
                 retval.addAll(erratas);
             }
         }
@@ -769,28 +769,27 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Finds errata based on advisory id
+     * Retrieves the errata that belongs to a vendor or a given organization, given an advisory id.
      * @param advisoryId errata advisory id
      * @param org User organization
      * @return Errata if found, otherwise null
      */
-    public static Errata lookupByAdvisoryId(String advisoryId, Org org) {
+    public static List<Errata> lookupByAdvisoryId(String advisoryId, Org org) {
         Session session = null;
-        Errata retval = null;
+        List<Errata> retval = null;
         try {
             //look for a published errata first
             session = HibernateFactory.getSession();
-            retval = (Errata) session.getNamedQuery("PublishedErrata.findByAdvisory")
+            retval = session.getNamedQuery("PublishedErrata.findByAdvisory")
                     .setParameter("advisory", advisoryId)
                     .setParameter("org", org)
-                    .uniqueResult();
+                    .getResultList();
 
             if (retval == null) {
-                retval = (Errata)
-                        session.getNamedQuery("UnpublishedErrata.findByAdvisory")
+                retval = session.getNamedQuery("UnpublishedErrata.findByAdvisory")
                         .setParameter("advisory", advisoryId)
                         .setParameter("org", org)
-                        .uniqueResult();
+                        .getResultList();
             }
         }
         catch (HibernateException e) {
