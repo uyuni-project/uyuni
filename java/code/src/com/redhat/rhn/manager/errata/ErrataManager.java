@@ -747,6 +747,16 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
+     * Retrieves the errata that belongs to a vendor or a given organization, given an advisory name.
+     * @param advisoryName The advisory name of the errata you're looking for
+     * @param org the organization
+     * @return Returns the requested Errata
+     */
+    public static List<Errata> lookupErrataByAdvisoryNameAndOrg(String advisoryName, Org org) {
+        return ErrataFactory.lookupErrataByAdvisoryNameAndOrg(advisoryName, org);
+    }
+
+    /**
      * Looks up errata by CVE string
      * @param cve errata's CVE string
      * @return Errata if found, otherwise null
