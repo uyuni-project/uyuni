@@ -526,15 +526,18 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * ListAffectedSystems
+     * Return the list of systems affected by the errata with the given advisory name.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the affected systems by both of them.
      * @param loggedInUser The current user
      * @param advisoryName The advisory name of the errata
      * @return Returns an object array containing the system ids and system name
      * @throws FaultException A FaultException is thrown if the errata corresponding to
      * advisoryName cannot be found.
      *
-     * @xmlrpc.doc Return the list of systems affected by the erratum with
-     * advisory name.
+     * @xmlrpc.doc Return the list of systems affected by the errata with the given advisory name.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the affected systems by both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
@@ -546,9 +549,10 @@ public class ErrataHandler extends BaseHandler {
             throws FaultException {
 
         // Get the logged in user
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(Collectors.toList());
 
-        DataResult dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errata.getId());
+        DataResult dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
 
         return dr.toArray();
     }
