@@ -907,6 +907,28 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
+     * Retrieves the errata that belongs to a vendor or a given organization, given an advisory name
+     * Throw a Fault exception if the errata is not found
+     * @param advisoryName The advisory name for the erratum you're looking for
+     * @param org the organization
+     * @return Returns the errata or a Fault Exception
+     * @throws FaultException Occurs when the erratum is not found
+     */
+    private List<Errata> lookupErrataByAdvisoryNameAndOrg(String advisoryName, Org org) throws FaultException {
+        List<Errata> erratas = ErrataManager.lookupErrataByAdvisoryNameAndOrg(advisoryName, org);
+
+        /*
+         * ErrataManager.lookupByAdvisory() could return null, so we need to check
+         * and throw a no_such_errata exception if the errata was not found.
+         */
+        if (erratas == null || erratas.isEmpty()) {
+            throw new FaultException(-208, "no_such_patch",
+                                     "The patch " + advisoryName + " cannot be found.");
+        }
+        return erratas;
+    }
+
+    /**
      * Private helper method to lookup an errata and throw a Fault exception if it isn't
      * found
      * @param advisoryName The advisory name for the erratum you're looking for
