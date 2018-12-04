@@ -840,20 +840,17 @@ public class ErrataManager extends BaseManager {
     /**
      * Returns the system id and system names of the systems affected by a given errata
      * @param user The logged in user
-     * @param eid The id of the errata in question
+     * @param eids The ids of the erratas
      * @return Returns the system id and system names of the systems affected by a
      * given errata
      */
-    public static DataResult systemsAffectedXmlRpc(User user, Long eid) {
+    public static DataResult systemsAffectedXmlRpc(User user, List<Long> eids) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "affected_by_errata_no_selectable",
                 Map.class);
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("eid", eid);
         params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<String, Object>();
-        elabParams.put("eid", eid);
-        return makeDataResult(params, elabParams, null, m);
+        return m.execute(params, eids);
     }
 
     /**
