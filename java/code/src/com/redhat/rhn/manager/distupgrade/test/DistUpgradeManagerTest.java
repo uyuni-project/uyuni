@@ -275,7 +275,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Verify that target products are returned correctly
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(sourceProducts, arch, user);
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -392,7 +392,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Verify that target products are returned correctly
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(sourceProducts, arch, user);
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
