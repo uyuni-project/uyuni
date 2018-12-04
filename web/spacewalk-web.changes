@@ -1,3 +1,4 @@
+- Sort channel lists on the product page of the setup wizard
 - fix wording for taskotop (cosmetical only)(bsc#1118112)
 - When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
 - Show human-readable system cleanup error messages
