@@ -17,6 +17,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.errata;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toMap;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -26,11 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Category;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.FaultException;
@@ -552,7 +553,7 @@ public class ErrataHandler extends BaseHandler {
 
         // Get the logged in user
         List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
-        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(Collectors.toList());
+        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         DataResult dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
 
@@ -591,7 +592,7 @@ public class ErrataHandler extends BaseHandler {
         List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
 
         return (Map<Long, String>) erratas.stream().flatMap(e -> e.getBugs().stream())
-                .collect(Collectors.toMap(Bug::getId, Bug::getSummary));
+                .collect(toMap(Bug::getId, Bug::getSummary));
     }
 
     /**
@@ -619,7 +620,7 @@ public class ErrataHandler extends BaseHandler {
 
         Set<String> keywords = erratas.stream()
                 .flatMap(e -> e.getKeywords().stream().map(Keyword::getKeyword))
-                .collect(Collectors.toSet());
+                .collect(toSet());
 
         return keywords.toArray();
     }
@@ -656,7 +657,7 @@ public class ErrataHandler extends BaseHandler {
 
         // Get the logged in user
         List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
-        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(Collectors.toList());
+        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         return ErrataManager.applicableChannels(errataIds,
                 loggedInUser.getOrg().getId(), null, Map.class).toArray();
@@ -727,11 +728,11 @@ public class ErrataHandler extends BaseHandler {
     public Set listCves(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
-        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(Collectors.toList());
+        List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         DataResult dr = ErrataManager.errataCVEs(errataIds);
 
-        return (Set) dr.stream().map(cve -> ((CVE) cve).getName()).collect(Collectors.toSet());
+        return (Set) dr.stream().map(cve -> ((CVE) cve).getName()).collect(toSet());
     }
 
     /**

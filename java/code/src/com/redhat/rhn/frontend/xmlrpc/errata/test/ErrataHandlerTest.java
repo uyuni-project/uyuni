@@ -239,7 +239,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         DataResult dr = ErrataManager.errataCVEs(errata.getId());
 
-        List cves = handler.listCves(admin, errata.getAdvisory());
+        Set cves = handler.listCves(admin, errata.getAdvisory());
 
         assertEquals(dr.size(), cves.size());
     }
