@@ -630,8 +630,8 @@ where a.user_id = :formvar_uid
    <elaborator name="entitlements" />
 </mode>
 
-<mode name="affected_by_errata_no_selectable" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="eid, user_id">
+<mode name="affected_by_errata_no_selectable" class="com.redhat.rhn.frontend.dto.SystemOverview" >
+  <query params="user_id">
 select * from (
   SELECT  DISTINCT S.id as system_id,
                                         S.name as system_name,
@@ -640,7 +640,7 @@ select * from (
     FROM  rhnServerNeededErrataCache SNEC,
           rhnEntitledServers S,
           rhnUserServerPerms USP
-   WHERE  SNEC.errata_id = :eid
+   WHERE  SNEC.errata_id IN (%s)
      AND  USP.user_id = :user_id
      AND  S.id = USP.server_id
      AND  S.id = SNEC.server_id
