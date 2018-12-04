@@ -1549,7 +1549,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         for (String erratumName : errataNames) {
             Errata erratum = ErrataManager.lookupByAdvisory(erratumName,
-                    loggedInUser.getOrg());
+                    channel.getOrg());
 
             if (erratum != null) {
                 errataToRemove.add(erratum);
