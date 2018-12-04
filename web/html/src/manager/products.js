@@ -523,7 +523,7 @@ class CheckList extends React.Component {
               : null
           }
           {
-            this.props.data.map((l, index) =>
+            this.props.data.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase())).map((l, index) =>
             {
               return (
                 <CheckListItem
