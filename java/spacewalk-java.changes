@@ -1,3 +1,4 @@
+- Fix cloning channels when managing the same errata for both vendor and private orgs (bsc#1111686)
 - Introduce Loggerhead-module.js to store logs from the frontend
 - Removed 'Manage Channels' shortcut for vendor channels (bsc#1115978)
 - Hide already applied errata and channel entries from the output list in
