@@ -39,6 +39,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -226,7 +227,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     public void testApplicableToChannels() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
-        DataResult dr = ErrataManager.applicableChannels(errata.getId(),
+        DataResult dr = ErrataManager.applicableChannels(Arrays.asList(errata.getId()),
                             user.getOrg().getId(), null, Map.class);
 
         Object[] channels = handler.applicableToChannels(admin, errata.getAdvisory());
@@ -411,7 +412,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         // delete a published erratum
         int result = handler.delete(admin, errata.getAdvisory());
         assertEquals(1, result);
-        errata = (Errata) TestUtils.reload(errata);
+        errata = TestUtils.reload(errata);
         assertNull(errata);
 
         errata = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
@@ -422,7 +423,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         // delete an unpublished erratum
         result = handler.delete(admin, errata.getAdvisory());
         assertEquals(1, result);
-        errata = (Errata) TestUtils.reload(errata);
+        errata = TestUtils.reload(errata);
         assertNull(errata);
     }
 

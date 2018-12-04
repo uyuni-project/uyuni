@@ -706,7 +706,7 @@ SELECT  1
 </mode>
 
 <mode name="org_errata_channels">
-  <query params="org_id, eid">
+  <query params="org_id">
 SELECT C.id as channel_id,
        C.id as id,
        C.label as label,
@@ -716,7 +716,7 @@ SELECT C.id as channel_id,
        LEFT OUTER JOIN rhnChannel C2 ON C.parent_channel = C2.id,
        rhnAvailableChannels AC,
        rhnChannelErrata EC
- WHERE EC.errata_id = :eid
+ WHERE EC.errata_id IN (%s)
    AND AC.org_id = :org_id
    AND AC.channel_id = EC.channel_id
    AND EC.channel_id = C.id
