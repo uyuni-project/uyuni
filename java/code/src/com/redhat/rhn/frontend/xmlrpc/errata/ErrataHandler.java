@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -596,7 +597,9 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Get the keywords for a given erratum
+     * Get the keywords for a given erratum.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the keywords of both of them.
      * @param loggedInUser The current user
      * @param advisoryName The advisory name of the erratum
      * @return Returns an array of keywords for the erratum
@@ -605,6 +608,8 @@ public class ErrataHandler extends BaseHandler {
      *
      * @xmlrpc.doc Get the keywords associated with an erratum matching the
      * given advisory name.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the keywords of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype #array_single("string", "Keyword associated with erratum.")
@@ -612,19 +617,13 @@ public class ErrataHandler extends BaseHandler {
      */
     public Object[] listKeywords(User loggedInUser, String advisoryName)
             throws FaultException {
+        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
 
-        // Get the logged in user
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        Set<String> keywords = erratas.stream()
+                .flatMap(e -> e.getKeywords().stream().map(Keyword::getKeyword))
+                .collect(Collectors.toSet());
 
-        Set<Keyword> keywords = errata.getKeywords();
-        List<String> returnList = new ArrayList<String>();
-
-        for (Iterator<Keyword> itr = keywords.iterator(); itr.hasNext();) {
-            Keyword keyword = itr.next();
-            returnList.add(keyword.getKeyword());
-        }
-
-        return returnList.toArray();
+        return keywords.toArray();
     }
 
     /**
