@@ -43,6 +43,8 @@ Feature: Prepare server for using Docker
     And I enter "galaxy-registry" as "label"
     And I enter "registry.mgr.suse.de" as "uri"
     And I click on "create-btn"
+    Then I wait until table row contains a "galaxy-registry" text
+    And I should see a "Items 1 - 1 of 1" text
 
   Scenario: Create a simple image profile without activation key
     Given I am authorized as "admin" with password "admin"
