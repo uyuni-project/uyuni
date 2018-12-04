@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Category;
@@ -559,7 +560,9 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Get the Bugzilla fixes for a given errata
+     * Get the Bugzilla fixes for an erratum matching the given advisoryName.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the list of Bugzilla fixes of both of them.
      * @param loggedInUser The current user
      * @param advisoryName The advisory name of the errata
      * @return Returns a map containing the Bugzilla id and summary for each bug
@@ -570,6 +573,8 @@ public class ErrataHandler extends BaseHandler {
      * advisoryName. The bugs will be returned in a struct where the bug id is
      * the key.  i.e. 208144="errata.bugzillaFixes Method Returns different
      * results than docs say"
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the list of Bugzilla fixes of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
@@ -583,22 +588,10 @@ public class ErrataHandler extends BaseHandler {
             throws FaultException {
 
         // Get the logged in user
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
 
-        Set<Bug> bugs = errata.getBugs();
-        Map<Long, String> returnMap = new HashMap<Long, String>();
-
-        /*
-         * Loop through and stick the bug ids and summaries into a map. This
-         * is ok since (afaict) there isn't an unreasonable number of bugs
-         * attatched to any erratum.
-         */
-        for (Iterator<Bug> itr = bugs.iterator(); itr.hasNext();) {
-            Bug bug = itr.next();
-            returnMap.put(bug.getId(), bug.getSummary());
-        }
-
-        return returnMap;
+        return (Map<Long, String>) erratas.stream().flatMap(e -> e.getBugs().stream())
+                .collect(Collectors.toMap(Bug::getId, Bug::getSummary));
     }
 
     /**
