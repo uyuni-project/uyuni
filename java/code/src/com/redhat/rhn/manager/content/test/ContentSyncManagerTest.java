@@ -1391,26 +1391,21 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testUpdateProductsMultipleTimes() throws Exception {
-        File productsJSON = new File(TestUtils.findTestData(PRODUCTS_JSON).getPath());
         File upgradePathsJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_JSON).getPath());
-        try {
-            // clear existing products
-            SUSEProductTestUtils.clearAllProducts();
+        // clear existing products
+        SUSEProductTestUtils.clearAllProducts();
 
-            List<SCCProductJson> sccProducts =
-                    new Gson().fromJson(FileUtils.readFileToString(productsJSON),
-                    new TypeToken<List<SCCProductJson>>() { } .getType());
+        InputStreamReader inputStreamReader = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(JARPATH + PRODUCTS_JSON));
+        List<SCCProductJson> sccProducts =
+                new Gson().fromJson(inputStreamReader,
+                        new TypeToken<List<SCCProductJson>>() { } .getType());
 
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.setUpgradePathsJson(upgradePathsJson);
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setUpgradePathsJson(upgradePathsJson);
 
-            csm.updateSUSEProducts(sccProducts);
-            csm.updateSUSEProducts(sccProducts);
-        }
-        finally {
-            SUSEProductTestUtils.deleteIfTempFile(productsJSON);
-        }
+        csm.updateSUSEProducts(sccProducts);
+        csm.updateSUSEProducts(sccProducts);
     }
 
     /**
