@@ -324,12 +324,6 @@ public class ErrataHandler extends BaseHandler {
 
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
 
-        if (errata.getOrg() == null) {
-            // Errata in the null org should not be modified; therefore, this is
-            // considered an invalid errata for this request
-            throw new InvalidErrataException(errata.getAdvisoryName());
-        }
-
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
         validKeys.add("synopsis");
@@ -816,12 +810,6 @@ public class ErrataHandler extends BaseHandler {
         // Get the logged in user
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
 
-        if (errata.getOrg() == null) {
-            // Errata in the null org should not be modified; therefore, this is
-            // considered an invalid errata for this request
-            throw new InvalidErrataException(errata.getAdvisoryName());
-        }
-
         int packagesAdded = 0;
         for (Integer packageId : packageIds) {
 
@@ -872,12 +860,6 @@ public class ErrataHandler extends BaseHandler {
         // Get the logged in user
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
 
-        if (errata.getOrg() == null) {
-            // Errata in the null org should not be modified; therefore, this is
-            // considered an invalid errata for this request
-            throw new InvalidErrataException(errata.getAdvisoryName());
-        }
-
         int packagesRemoved = 0;
         for (Integer packageId : packageIds) {
 
@@ -921,15 +903,6 @@ public class ErrataHandler extends BaseHandler {
             throw new FaultException(-208, "no_such_patch",
                                      "The patch " + advisoryName + " cannot be found.");
         }
-        /**
-         * errata with org_id of null are public, but ones with an org id of !null are not
-         * need to make sure here that everything is checked correclty
-         */
-        if (errata.getOrg() != null && !errata.getOrg().equals(org)) {
-            throw new FaultException(-209, "no_rights_to_access",
-                    "You don't have rights to access " + advisoryName + " patch.");
-        }
-
         return errata;
     }
 
@@ -952,23 +925,7 @@ public class ErrataHandler extends BaseHandler {
             throw new FaultException(-208, "no_such_errata",
                     "The errata " + advisoryName + " cannot be found.");
         }
-        /**
-         * errata with org_id of null are public, but ones with an org id of !null are not
-         * need to make sure here that everything is checked correclty
-         */
-
-        if (errata.getOrg() == null || errata.getOrg().equals(org)) {
-            return errata;
-        }
-        Set<Channel> errataChannels = errata.getChannels();
-        List<Channel> orgChannels = org.getAccessibleChannels();
-        for (Channel channel : errataChannels) {
-           if (orgChannels.contains(channel)) {
-               return errata;
-           }
-        }
-        throw new FaultException(-209, "no_rights_to_access",
-                "You don't have rights to access " + advisoryName + " errata.");
+        return errata;
     }
 
     /**
@@ -1372,12 +1329,6 @@ public class ErrataHandler extends BaseHandler {
     public Integer delete(User loggedInUser, String advisoryName)
             throws FaultException {
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
-
-        if (errata.getOrg() == null) {
-            // Errata in the null org should not be modified; therefore, this is
-            // considered an invalid errata for this request
-            throw new InvalidErrataException(errata.getAdvisoryName());
-        }
 
         ErrataManager.deleteErratum(loggedInUser, errata);
         return 1;
