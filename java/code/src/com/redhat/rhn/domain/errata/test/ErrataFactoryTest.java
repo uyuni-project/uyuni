@@ -184,6 +184,46 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(unpubid, errata.getId());
     }
 
+    public void testCreateAndLookupErrataNullOrg() throws Exception {
+        //create a published errata with null Org
+        Errata published = createTestPublishedErrata(null);
+        assertTrue(published instanceof PublishedErrata);
+        assertNotNull(published.getId());
+        Long pubid = published.getId();
+        String pubname = published.getAdvisoryName();
+
+        //unpublished
+        Errata unpublished = createTestUnpublishedErrata(null);
+        assertTrue(unpublished instanceof UnpublishedErrata);
+        assertNotNull(unpublished.getId());
+        Long unpubid = unpublished.getId();
+        String unpubname = unpublished.getAdvisoryName();
+
+        //Lookup the published errata by null Org
+        Errata errata = ErrataFactory.lookupById(pubid);
+        assertTrue(errata instanceof PublishedErrata);
+        assertEquals(pubid, errata.getId());
+        errata = ErrataFactory.lookupByAdvisory(pubname, null);
+        assertTrue(errata instanceof PublishedErrata);
+        assertEquals(pubname, errata.getAdvisoryName());
+
+        //Lookup the published errata by user's Org
+        errata = ErrataFactory.lookupByAdvisory(pubname, user.getOrg());
+        assertNull(errata);
+
+        //Lookup the unpublished errata by null Org
+        errata = ErrataFactory.lookupById(unpubid);
+        assertTrue(errata instanceof UnpublishedErrata);
+        assertEquals(unpubid, errata.getId());
+        errata = ErrataFactory.lookupByAdvisory(unpubname, null);
+        assertTrue(errata instanceof UnpublishedErrata);
+        assertEquals(unpubid, errata.getId());
+
+        //Lookup the unpublished errata by user's Org
+        errata = ErrataFactory.lookupByAdvisory(unpubname, user.getOrg());
+        assertNull(errata);
+    }
+
     public void testLastModified() throws Exception {
         Errata published = createTestPublishedErrata(user.getOrg().getId());
         published = reload(published);
