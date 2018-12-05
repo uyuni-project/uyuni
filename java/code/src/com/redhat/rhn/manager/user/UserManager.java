@@ -14,22 +14,6 @@
  */
 package com.redhat.rhn.manager.user;
 
-import java.sql.Types;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Optional;
-
-import javax.security.auth.login.LoginException;
-
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -60,7 +44,23 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.SatManager;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+
+import org.apache.log4j.Logger;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.security.auth.login.LoginException;
+
+import static java.util.Optional.of;
 
 /**
  * UserManager - the singleton class used to provide Business Operations
@@ -123,7 +123,7 @@ public class UserManager extends BaseManager {
      * @return Returns true if the user has admin access to this channel, false otherwise.
      */
     public static boolean verifyChannelAdmin(User user, Channel channel) {
-       return verifyChannelRole(user.getId(), channel, "manage");
+       return verifyChannelAdmin(user.getId(), channel);
     }
 
     /**
@@ -133,7 +133,7 @@ public class UserManager extends BaseManager {
      * @return Returns true if the user id has admin access to this channel
      */
     public static boolean verifyChannelAdmin(Long userId, Channel channel) {
-       return verifyChannelRole(userId, channel, "manage");
+        return !ChannelManager.verifyChannelRole(userId, channel.getId(), "manage").isPresent();
     }
 
     /**
@@ -144,28 +144,8 @@ public class UserManager extends BaseManager {
      *     false otherwise.
      */
     public static boolean verifyChannelSubscribable(User user, Channel channel) {
-        return verifyChannelRole(user.getId(), channel, "subscribe");
+        return !ChannelManager.verifyChannelRole(user.getId(), channel.getId(), "subscribe").isPresent();
     }
-
-    private static boolean verifyChannelRole(Long userId, Channel channel, String role) {
-        CallableMode m = ModeFactory.getCallableMode(
-                "Channel_queries", "verify_channel_role");
-
-        Map inParams = new HashMap();
-        inParams.put("cid", channel.getId());
-        inParams.put("user_id", userId);
-        inParams.put("role", role);
-
-        Map outParams = new HashMap();
-        outParams.put("result", new Integer(Types.VARCHAR));
-        Map result = m.execute(inParams, outParams);
-
-        return result.get("result") == null;
-    }
-
-
-
-
 
     /**
      * Enables a user.
@@ -648,7 +628,7 @@ public class UserManager extends BaseManager {
             pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.userlist"));
             throw pex;
         }
-        return UserFactory.getInstance().findAllUsers(Optional.of(user.getOrg()));
+        return UserFactory.getInstance().findAllUsers(of(user.getOrg()));
     }
 
     /**

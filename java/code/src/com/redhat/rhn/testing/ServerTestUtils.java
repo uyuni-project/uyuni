@@ -184,9 +184,10 @@ public class ServerTestUtils {
             VirtualInstance vi = new VirtualInstanceManufacturer(user).
                 newRegisteredGuestWithoutHost();
             vi.setConfirmed((long) 0);
+            Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+            vi.getGuestSystem().addChannel(baseChannel);
             s.addGuest(vi);
         }
-
         return s;
     }
 

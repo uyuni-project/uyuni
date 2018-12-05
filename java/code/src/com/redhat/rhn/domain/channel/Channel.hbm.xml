@@ -282,7 +282,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             and cfm.channel_family_id = cf.id
             and c.parent_channel = :parent_id
             and cf.label not in ('rhn-satellite','rhn-proxy', 'SMS', 'SMS-X86', 'SMS-Z', 'SMS-PPC', 'SMP')
-            and rhn_channel.user_role_check(c.id, :user_id, 'subscribe')=1
+            and (select deny_reason
+                  from suseChannelUserRoleView scur
+                  where scur.channel_id = c.id and
+                    scur.user_id = :user_id and
+                    scur.role = 'subscribe'
+            ) is null
         ]]>
     </sql-query>
 
@@ -349,9 +354,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[SELECT {c.*}
               FROM rhnChannel {c} left outer join rhnChannelCloned c_1_
                    ON c.id = c_1_.id
-             WHERE c.id = :cid
-               AND (rhn_channel.user_role_check(c.id, :userId, 'subscribe') = 1 OR
-                    rhn_channel.user_role_check(c.id, :userId, 'manage') = 1) ]]>
+             WHERE c.id = :cid AND
+               EXISTS (SELECT 1
+                  FROM suseChannelUserRoleView scur
+                  WHERE scur.channel_id = c.id AND
+                    scur.user_id = :userId AND
+                    deny_reason IS NULL
+               )
+        ]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
 
@@ -359,9 +369,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[SELECT {c.*}
               FROM rhnChannel {c}
                 LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
-             WHERE c.label = :label
-               AND (rhn_channel.user_role_check(c.id, :userId, 'subscribe') = 1 OR
-                    rhn_channel.user_role_check(c.id, :userId, 'manage') = 1) ]]>
+             WHERE c.label = :label AND
+               EXISTS (SELECT 1
+                  FROM suseChannelUserRoleView scur
+                  WHERE scur.channel_id = c.id AND
+                    scur.user_id = :userId AND
+                    deny_reason IS NULL
+               )
+        ]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
 
@@ -429,10 +444,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
    <sql-query name="Channel.accessibleChildChannels">
         <![CDATA[SELECT {c.*}
-                                        FROM rhnChannel c
-                                LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
-                        where  parent_channel = :cid AND
-                                        rhn_channel.user_role_check(c.id, :userId, 'subscribe') = 1]]>
+                    FROM rhnChannel c
+                        LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                        WHERE parent_channel = :cid AND
+                            (SELECT deny_reason
+                                  FROM suseChannelUserRoleView scur
+                                  WHERE scur.channel_id = c.id AND
+                                    scur.user_id = :userId AND
+                                    scur.role = 'subscribe'
+                            ) IS NULL
+        ]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
 
