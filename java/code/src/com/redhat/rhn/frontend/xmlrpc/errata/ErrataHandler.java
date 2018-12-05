@@ -222,10 +222,10 @@ public class ErrataHandler extends BaseHandler {
      */
     public Map<String, Object> getDetails(User loggedInUser, String advisoryName)
             throws FaultException {
-        // Get the logged in user. We don't care what roles this user has, we
+     // Get the logged in user. We don't care what roles this user has, we
         // just want to make sure the caller is logged in.
 
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        Errata errata = lookupErratumByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
 
         Map<String, Object> errataMap = new HashMap<String, Object>();
 
@@ -911,7 +911,23 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Retrieves the errata that belongs to a vendor or a given organization, given an advisory name
+     * Retrieves the errata that belongs to a given organization, given an advisory name.
+     * If there is not any, returns the vendor errata with the same name.
+     * Throw a Fault exception if the errata is not found
+     * @param advisoryName The advisory name for the erratum you're looking for
+     * @param org the organization
+     * @return Returns the errata or a Fault Exception
+     * @throws FaultException Occurs when the erratum is not found
+     */
+    private Errata lookupErratumByAdvisoryNameAndOrg(String advisoryName, Org org) throws FaultException {
+        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, org);
+
+       return erratas.stream().filter(e -> e.getOrg().getId() == org.getId())
+                .findFirst().orElse(erratas.stream().findFirst().orElse(null));
+    }
+
+    /**
+     * Retrieves the list of errata that belongs to a vendor or a given organization, given an advisory name.
      * Throw a Fault exception if the errata is not found
      * @param advisoryName The advisory name for the erratum you're looking for
      * @param org the organization
