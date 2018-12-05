@@ -65,6 +65,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
@@ -95,6 +96,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2124,7 +2126,22 @@ public class ActionManager extends BaseManager {
         taskomaticApi.scheduleActionExecution(action, !details.isDryRun());
         return action;
     }
-
+    /**
+     * Schedule an action for channel state on the specified list of servers
+     * @param user User with permission to schedule an action
+     * @param minionServers  servers where channel state should be applied to
+     * @return Set of scheduled Actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static Action scheduleChannelState(User user, List<MinionServer> minionServers)
+            throws TaskomaticApiException {
+        List<String> states = Collections.singletonList("channels");
+        List<Long> sids = minionServers.stream().map(ms->ms.getId()).collect(toList());
+        Action action = scheduleApplyStates(user, sids, states, new Date());
+        taskomaticApi.scheduleActionExecution(action);
+        return action;
+    }
     /**
      * Schedule application of the highstate.
      *

@@ -46,6 +46,7 @@ import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -65,6 +66,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyChannelNotFoundException;
 import com.redhat.rhn.manager.BaseManager;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -75,6 +77,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -609,6 +612,28 @@ public class ChannelManager extends BaseManager {
      */
     public static List<ChannelArch> getChannelArchitectures() {
         return ChannelFactory.getChannelArchitectures();
+    }
+
+    /**
+     * Refreshes channel-related pillar data for a list of minions and then immediately schedules the application of
+     * the channel state.
+     * @param user User with permission to schedule an action
+     * @param minions those minions where pillar data should be re-generated and channel state should be applied
+     * @return Scheduled action id or empty optional
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     *
+     */
+    public static Optional<Long> applyChannelState(User user, List<MinionServer> minions)
+            throws TaskomaticApiException {
+        Optional<Long> actionId = Optional.empty();
+        if (minions.size() > 0) {
+            for (MinionServer ms: minions) {
+                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false, Collections.emptySet());
+            }
+            actionId = Optional.of(ActionManager.scheduleChannelState(user, minions).getId());
+        }
+        return actionId;
     }
 
     /**

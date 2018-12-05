@@ -17,6 +17,8 @@ package com.redhat.rhn.manager.channel.test;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
@@ -33,8 +35,10 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -47,6 +51,7 @@ import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.EusReleaseComparator;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
@@ -56,17 +61,26 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -78,6 +92,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     private static final String TEST_OS = "TEST RHEL AS";
     private static final String MAP_RELEASE = "4AS";
+    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }};
+    private static TaskomaticApi taskomaticApi;
 
     public void testAllDownloadsTree() throws Exception {
     }
@@ -235,6 +254,24 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testChannelArches() {
         // for a more detailed test see ChannelFactoryTest
         assertNotNull(ChannelManager.getChannelArchitectures());
+    }
+
+    public void testUpdateSystemsChannelsInfo() throws Exception {
+        ActionManager.setTaskomaticApi(getTaskomaticApi());
+
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(user);
+        testMinionServer.addChannel(base);
+        testMinionServer.addChannel(child);
+        assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(base)).isPresent());
+        assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(child)).isPresent());
+        MinionServer minionServer = TestUtils.saveAndReload(testMinionServer);
+
+        ChannelManager.deleteChannel(user, child.getLabel(), true);
+        Optional<Long> actionId = ChannelManager.applyChannelState(user, Collections.singletonList(minionServer));
+        assertEquals(1, minionServer.getChannels().size());
+        assertTrue(actionId.isPresent());
     }
 
     public void testDeleteChannel() throws Exception {
@@ -904,5 +941,18 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.clear();
         RhnSetManager.store(set);
+    }
+
+    private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
+        if (taskomaticApi == null) {
+            taskomaticApi = MOCK_CONTEXT.mock(TaskomaticApi.class);
+            MOCK_CONTEXT.checking(new Expectations() {
+                {
+                    allowing(taskomaticApi).scheduleActionExecution(with(any(Action.class)));
+                }
+            });
+        }
+
+        return taskomaticApi;
     }
 }

@@ -38,7 +38,7 @@ from spacewalk.common.rhnConfig import initCFG
 from spacewalk.server import rhnSQL
 
 from spacewalk.satellite_tools.contentRemove import __listChannels, __serverCheck, \
-    __kickstartCheck, delete_channels, UserError
+    __kickstartCheck, delete_channels, UserError, __getMinionsByChannel, __applyChannelState
 
 options_table = [
     Option("-v", "--verbose",       action="count",
@@ -162,9 +162,10 @@ def main():
             raise UserError("Username not specified")
         if not options.password:
             options.password= getpass.getpass()
+        affected_minions =  __getMinionsByChannel(channels.keys())
 
     if not options.skip_channels and not options.just_kickstart_trees:
-        if __serverCheck(channels.keys(), options.unsubscribe, base_channel, options.username, options.password):
+        if __serverCheck(channels.keys(), options.unsubscribe):
             sys.exit(-1)
 
         if __kickstartCheck(channels.keys()):
@@ -180,6 +181,8 @@ def main():
         rhnSQL.rollback()
         raise
     rhnSQL.commit()
+    if options.unsubscribe:
+        __applyChannelState(affected_minions, options.username, options.password)
     releaseLOCK()
     return 0
 

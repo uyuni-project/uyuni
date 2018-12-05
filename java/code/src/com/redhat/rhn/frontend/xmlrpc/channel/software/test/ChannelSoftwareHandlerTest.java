@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
@@ -1101,7 +1102,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelSoftwareHandler handler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
 
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server = MinionServerFactoryTest.createTestMinionServer(admin);
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
         Channel child2 = ChannelFactoryTest.createTestChannel(admin);
         Channel base = ChannelFactoryTest.createTestChannel(admin);
@@ -1140,8 +1141,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testUnsubscribeBaseChannel() throws Exception {
         ChannelSoftwareHandler handler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
-
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server = MinionServerFactoryTest.createTestMinionServer(admin);
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
         Channel child2 = ChannelFactoryTest.createTestChannel(admin);
         Channel base = ChannelFactoryTest.createTestChannel(admin);
