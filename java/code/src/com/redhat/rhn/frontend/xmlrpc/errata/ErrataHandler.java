@@ -736,15 +736,19 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * List the packages for a given erratum
+     * List the packages for a given errata.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the packages of both of them.
      * @param loggedInUser The current user
-     * @param advisoryName The advisory name of the erratum
+     * @param advisoryName The advisory name of the errata
      * @return Returns an Array of maps representing a package
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Returns a list of the packages affected by the erratum
+     * @xmlrpc.doc Returns a list of the packages affected by the errata
      * with the given advisory name.
+     * For those errata that are present in both vendor and user organizations under the same advisory name,
+     * this method retrieves the packages of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
@@ -778,14 +782,12 @@ public class ErrataHandler extends BaseHandler {
     public List<Map> listPackages(User loggedInUser, String advisoryName)
             throws FaultException {
         // Get the logged in user
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
 
-        List<Map> toRet = new ArrayList<Map>();
-        for (Iterator iter = errata.getPackages().iterator(); iter.hasNext();) {
-            Package pkg = (Package) iter.next();
-            toRet.add(PackageHelper.packageToMap(pkg, loggedInUser));
-        }
-        return toRet;
+        return erratas.stream().flatMap(
+                e -> e.getPackages().stream()
+                        .map(pkg -> PackageHelper.packageToMap(pkg, loggedInUser)))
+                .collect(toList());
     }
 
     /**
