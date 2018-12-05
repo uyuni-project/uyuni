@@ -116,9 +116,6 @@ def __serverCheck(labels, unsubscribe):
         return 0
 
     if unsubscribe:
-        server_ids = [s['id'] for s in server_list]
-        xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
-        xmlrpc.unsubscribe_channels(server_ids, base_channel, labels)
         return __unsubscribeServers(labels)
 
     print("\nCurrently there are systems subscribed to one or more of the specified channels.")
@@ -171,6 +168,7 @@ def __unsubscribeServers(labels):
         pb.addTo(1)
         pb.printIncrement()
     pb.printComplete()
+    rhnSQL.commit()
 
 
 def __kickstartCheck(labels):
