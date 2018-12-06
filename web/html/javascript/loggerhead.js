@@ -14,83 +14,72 @@ var Loggerhead = {};
   }
 
   // private function
-  function postData(data) {
+  function postData(data, callback) {
     if (config.url == '') {
       const errorMessage = '[Loggerhead] ERROR: no server enpoint URL set to send the POST request!! ';
       if(config.console.error) {
         console.error(errorMessage);
       }
-      return new Promise((resolve, reject) => reject(errorMessage));
+      return;
     }
+
     var headers = new Map();
     headers.set('Content-Type', 'application/json; charset=utf-8');
-    headers = _context.setHeaders(headers);
-    const opts = {
-      method: 'POST', mode: 'cors', cache: 'no-cache', credentials: 'same-origin',
-      headers: headers,
-      redirect: 'follow', referrer: 'no-referrer',
-      body: JSON.stringify(data),
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', config.url);
+    Array.from(_context.setHeaders(headers).keys()).map(k =>
+      xhr.setRequestHeader(k, headers.get(k))
+    );
+    xhr.onload = function() {
+      if (xhr.status !== 200) {
+        console.error(JSON.parse(xhr));
+      }
+    };
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        if (callback && typeof callback === "function") {
+          callback(JSON.parse(xhr.responseText));
+        }
+      }
     }
-    const result = fetch(config.url, opts)
-        .then(function (response) { return response.json();})
-        .catch(error =>
-          {
-            if(config.console.error) {
-              const errorMessage =
-                'Error trying to send log message to `' +
-                config.url +
-                '`\n\n' +
-                'POST JSON data was = ' +
-                JSON.stringify(opts) +
-                '\n\n' +
-                error;
-              console.error(errorMessage, error);
-            }
-          }
-        );
-    return result;
+    xhr.send(JSON.stringify(data));
+
+    return xhr;
   }
 
   // log level functions
-  _context.info = function(message) {
-    var ret = new Promise(function(resolve, reject) { resolve() });
+  _context.info = function(message, callback) {
     if (config.levels.info) {
-      ret = postData({'level' : 'info', 'message' : message});
+      postData({'level' : 'info', 'message' : message}, callback);
     }
     if(config.console.info) {
       console.info(message);
     }
-    return ret;
   }
-  _context.debug = function(message) {
-    var ret = new Promise(function(resolve, reject) { resolve() });
+  _context.debug = function(message, callback) {
     if (config.levels.debug) {
-      ret = postData({'level' : 'debug', 'message' : message});
+      postData({'level' : 'debug', 'message' : message}, callback);
     }
     if(config.console.debug) {
       console.debug(message);
     }
-    return ret;
   }
-  _context.warning = function(message) {
-    var ret = new Promise(function(resolve, reject) { resolve() });
+  _context.warning = function(message, callback) {
     if (config.levels.warning) {
-      ret = postData({'level' : 'warning', 'message' : message});
+      postData({'level' : 'warning', 'message' : message}, callback);
     }
     if(config.console.warning) {
       console.warn(message);
     }
-    return ret;
   }
-  _context.error = function(message) {
-    var ret = new Promise(function(resolve, reject) { resolve() });
+  _context.error = function(message, callback) {
     if (config.levels.error) {
-      ret = postData({'level' : 'error', 'message' : message});
+      postData({'level' : 'error', 'message' : message}, callback);
     }
     if(config.console.error) {
       console.error(message);
     }
-    return ret;
   }
 
   function setMapFromObject(fromObj, toMap) {
