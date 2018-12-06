@@ -8,6 +8,8 @@
 %><%@ page contentType="text/html; charset=UTF-8"
 %><!DOCTYPE HTML>
 <html:html>
+  <div id='frontend-log'></div>
+  <script src='/javascript/manager/frontend-log.bundle.js'></script>
   <head>
     <jsp:include page="layout_head.jsp" />
     <decorator:head />
@@ -52,7 +54,5 @@
       </section>
       <script src='/javascript/manager/menu.bundle.js'></script>
     </div>
-    <div id='frontend-log'></div>
-    <script src='/javascript/manager/frontend-log.bundle.js'></script>
   </body>
 </html:html>
