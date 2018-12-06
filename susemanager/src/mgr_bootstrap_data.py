@@ -618,6 +618,10 @@ DATA = {
                           'PDID' : 45, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
                        },
+    'OES2018-SP1-x86_64' : {
+                          'PDID' : 46, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+                       },
     'SLE-15-aarch64' : {
                           'PDID' : [1589, 1709], 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
