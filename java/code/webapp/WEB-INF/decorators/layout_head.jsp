@@ -43,6 +43,9 @@
       <link rel="stylesheet" href="/css/spacewalk.css" />
     </rhn:require>
 
+    <script src="/javascript/loggerhead.js"></script>
+    <script src="/javascript/frontend-log.js"></script>
+
     <script src="/javascript/jquery.js"></script>
     <script src="/javascript/bootstrap.js"></script>
     <script src="/javascript/select2/select2.js"></script>
