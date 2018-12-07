@@ -354,6 +354,156 @@
 			<product_id eol="N" name="Open_Enterprise_Server" version="2018">45</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 2018 SP1" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-pool-x86_64" name="OES2018-SP1-Pool for x86_64" optional="N" parent="BASE" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-Pool/sle-12-x86_64/" summary="Open Enterprise Server 2018 SP1" update_tag="">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-manager-tools12-debuginfo-pool-x86_64" name="OES2018-SP1-SLE-Manager-Tools12-Debuginfo-Pool x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Manager-Tools12-Debuginfo-Pool/sle-12-x86_64/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-manager-tools12-debuginfo-updates-x86_64" name="OES2018-SP1-SLE-Manager-Tools12-Debuginfo-Updates x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Manager-Tools12-Debuginfo-Updates/sle-12-x86_64/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-manager-tools12-pool-x86_64" name="OES2018-SP1-SLE-Manager-Tools12-Pool x86_64" optional="N" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Manager-Tools12-Pool/sle-12-x86_64/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-manager-tools12-updates-x86_64" name="OES2018-SP1-SLE-Manager-Tools12-Updates x86_64" optional="N" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Manager-Tools12-Updates/sle-12-x86_64/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-containers12-debuginfo-pool-x86_64" name="OES2018-SP1-SLE-Module-Containers12-Debuginfo-Pool for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Containers12-Debuginfo-Pool/sle-12-x86_64/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-containers12-debuginfo-updates-x86_64" name="OES2018-SP1-SLE-Module-Containers12-Debuginfo-Updates for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Containers12-Debuginfo-Updates/sle-12-x86_64/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-containers12-pool-x86_64" name="OES2018-SP1-SLE-Module-Containers12-Pool for x86_64" optional="N" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Containers12-Pool/sle-12-x86_64/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-containers12-updates-x86_64" name="OES2018-SP1-SLE-Module-Containers12-Updates for x86_64" optional="N" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Containers12-Updates/sle-12-x86_64/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-public-cloud12-debuginfo-pool-x86_64" name="OES2018-SP1-SLE-Module-Public-Cloud12-Debuginfo-Pool for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Public-Cloud12-Debuginfo-Pool/sle-12-x86_64/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-public-cloud12-debuginfo-updates-x86_64" name="OES2018-SP1-SLE-Module-Public-Cloud12-Debuginfo-Updates for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Public-Cloud12-Debuginfo-Updates/sle-12-x86_64/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-public-cloud12-pool-x86_64" name="OES2018-SP1-SLE-Module-Public-Cloud12-Pool for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Public-Cloud12-Pool/sle-12-x86_64/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-public-cloud12-updates-x86_64" name="OES2018-SP1-SLE-Module-Public-Cloud12-Updates for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Public-Cloud12-Updates/sle-12-x86_64/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-toolchain12-debuginfo-pool-x86_64" name="OES2018-SP1-SLE-Module-Toolchain12-Debuginfo-Pool for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Toolchain12-Debuginfo-Pool/sle-12-x86_64/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-toolchain12-debuginfo-updates-x86_64" name="OES2018-SP1-SLE-Module-Toolchain12-Debuginfo-Updates for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Toolchain12-Debuginfo-Updates/sle-12-x86_64/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-toolchain12-pool-x86_64" name="OES2018-SP1-SLE-Module-Toolchain12-Pool for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Toolchain12-Pool/sle-12-x86_64/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-toolchain12-updates-x86_64" name="OES2018-SP1-SLE-Module-Toolchain12-Updates for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Toolchain12-Updates/sle-12-x86_64/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-web-scripting12-debuginfo-pool-x86_64" name="OES2018-SP1-SLE-Module-Web-Scripting12-Debuginfo-Pool for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Web-Scripting12-Debuginfo-Pool/sle-12-x86_64/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-web-scripting12-debuginfo-updates-x86_64" name="OES2018-SP1-SLE-Module-Web-Scripting12-Debuginfo-Updates for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Web-Scripting12-Debuginfo-Updates/sle-12-x86_64/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-web-scripting12-pool-x86_64" name="OES2018-SP1-SLE-Module-Web-Scripting12-Pool for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Web-Scripting12-Pool/sle-12-x86_64/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-module-web-scripting12-updates-x86_64" name="OES2018-SP1-SLE-Module-Web-Scripting12-Updates for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Web-Scripting12-Updates/sle-12-x86_64/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-sdk-12-sp3-debuginfo-pool-x86_64" name="OES2018-SP1-SLE-SDK-12-SP3-Debuginfo-Pool x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-SDK-12-SP3-Debuginfo-Pool/sle-12-x86_64/" summary="SUSE Linux Enterprise Software Development Kit 12 SP3 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-sdk-12-sp3-debuginfo-updates-x86_64" name="OES2018-SP1-SLE-SDK-12-SP3-Debuginfo-Updates x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-SDK-12-SP3-Debuginfo-Updates/sle-12-x86_64/" summary="SUSE Linux Enterprise Software Development Kit 12 SP3 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-sdk-12-sp3-pool-x86_64" name="OES2018-SP1-SLE-SDK-12-SP3-Pool x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-SDK-12-SP3-Pool/sle-12-x86_64/" summary="SUSE Linux Enterprise Software Development Kit 12 SP3 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sle-sdk-12-sp3-updates-x86_64" name="OES2018-SP1-SLE-SDK-12-SP3-Updates x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-SDK-12-SP3-Updates/sle-12-x86_64/" summary="SUSE Linux Enterprise Software Development Kit 12 SP3 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sles12-sp3-debuginfo-pool-x86_64" name="OES2018-SP1-SLES12-SP3-Debuginfo-Pool for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP3-Debuginfo-Pool/sle-12-x86_64/" summary="SUSE Linux Enterprise Server 12 SP3 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sles12-sp3-debuginfo-updates-x86_64" name="OES2018-SP1-SLES12-SP3-Debuginfo-Updates for x86_64" optional="Y" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP3-Debuginfo-Updates/sle-12-x86_64/" summary="SUSE Linux Enterprise Server 12 SP3 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sles12-sp3-pool-x86_64" name="OES2018-SP1-SLES12-SP3-Pool for x86_64" optional="N" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP3-Pool/sle-12-x86_64/" summary="SUSE Linux Enterprise Server 12 SP3 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-sles12-sp3-updates-x86_64" name="OES2018-SP1-SLES12-SP3-Updates for x86_64" optional="N" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP3-Updates/sle-12-x86_64/" summary="SUSE Linux Enterprise Server 12 SP3 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 2018 SP1" eol="N" family="OES2" is_signed="Y" label="oes2018-sp1-updates-x86_64" name="OES2018-SP1-Updates for x86_64" optional="N" parent="oes2018-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018.1" source_url="https://nu.novell.com/repo/$RCE/OES2018-SP1-Updates/sle-12-x86_64/" summary="Open Enterprise Server 2018 SP1" update_tag="">
+		<products>
+			<product_id eol="N" name="Open_Enterprise_Server" version="2018.1">46</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="Open Enterprise Server 2018" eol="N" family="OES2" is_signed="Y" label="oes2018-updates-x86_64" name="OES2018-Updates for x86_64" optional="N" parent="oes2018-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2018" source_url="https://nu.novell.com/repo/$RCE/OES2018-Updates/sle-12-x86_64/" summary="Open Enterprise Server 2018" update_tag="oes2018">
 		<products>
 			<product_id eol="N" name="Open_Enterprise_Server" version="2018">45</product_id>
@@ -14690,6 +14840,26 @@
 		<products>
 			<product_id eol="N" name="CAASP" version="1.0">1484</product_id>
 			<product_id eol="N" name="CAASP" version="2.0">1607</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Packages to compile kernel modules and debug applications on SUSE CaaS Platform." eol="N" family="MODULE" is_signed="Y" label="suse-caasp-toolchain-3-debuginfo-pool-x86_64-caasp-3.0" name="SUSE-CAASP-Toolchain-3-Debuginfo-Pool for x86_64 CAASP-3.0" optional="Y" parent="suse-caasp-3.0-pool-x86_64" product_name="caasp-toolchain" product_version="3.0" source_url="https://updates.suse.com/SUSE/Products/SUSE-CaaSP-Toolchain/3/x86_64/product_debug/" summary="SUSE CaaS Platform Toolchain 3.0 x86_64" update_tag="">
+		<products>
+			<product_id eol="N" name="caasp-toolchain" version="3.0">1752</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Packages to compile kernel modules and debug applications on SUSE CaaS Platform." eol="N" family="MODULE" is_signed="Y" label="suse-caasp-toolchain-3-debuginfo-updates-x86_64-caasp-3.0" name="SUSE-CAASP-Toolchain-3-Debuginfo-Updates for x86_64 CAASP-3.0" optional="Y" parent="suse-caasp-3.0-pool-x86_64" product_name="caasp-toolchain" product_version="3.0" source_url="https://updates.suse.com/SUSE/Updates/SUSE-CaaSP-Toolchain/3/x86_64/update_debug/" summary="SUSE CaaS Platform Toolchain 3.0 x86_64" update_tag="">
+		<products>
+			<product_id eol="N" name="caasp-toolchain" version="3.0">1752</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Packages to compile kernel modules and debug applications on SUSE CaaS Platform." eol="N" family="MODULE" is_signed="Y" label="suse-caasp-toolchain-3-pool-x86_64-caasp-3.0" name="SUSE-CAASP-Toolchain-3-Pool for x86_64 CAASP-3.0" optional="N" parent="suse-caasp-3.0-pool-x86_64" product_name="caasp-toolchain" product_version="3.0" source_url="https://updates.suse.com/SUSE/Products/SUSE-CaaSP-Toolchain/3/x86_64/product/" summary="SUSE CaaS Platform Toolchain 3.0 x86_64" update_tag="">
+		<products>
+			<product_id eol="N" name="caasp-toolchain" version="3.0">1752</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Packages to compile kernel modules and debug applications on SUSE CaaS Platform." eol="N" family="MODULE" is_signed="Y" label="suse-caasp-toolchain-3-updates-x86_64-caasp-3.0" name="SUSE-CAASP-Toolchain-3-Updates for x86_64 CAASP-3.0" optional="N" parent="suse-caasp-3.0-pool-x86_64" product_name="caasp-toolchain" product_version="3.0" source_url="https://updates.suse.com/SUSE/Updates/SUSE-CaaSP-Toolchain/3/x86_64/update/" summary="SUSE CaaS Platform Toolchain 3.0 x86_64" update_tag="">
+		<products>
+			<product_id eol="N" name="caasp-toolchain" version="3.0">1752</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Cloud 1.0 x86_64" eol="Y" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-1.0-pool-x86_64" name="SUSE-Cloud-1.0-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE-Cloud" product_version="1.0" source_url="https://updates.suse.com/repo/$RCE/SUSE-Cloud-1.0-Pool/sle-11-x86_64/" summary="SUSE Cloud 1.0 x86_64" update_tag="sleclo10sp2">

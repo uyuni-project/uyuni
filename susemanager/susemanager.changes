@@ -1,3 +1,4 @@
+- add bootstrap repo definition for OES 2018 SP1 (bsc#1116826)
 - fix not found package on mgr-create-bootstrap-repo for SLE-15-s390x
   (bsc#1116566)
 - add python3-six to bootstrap repo for SLES15 (bsc#1118478)
