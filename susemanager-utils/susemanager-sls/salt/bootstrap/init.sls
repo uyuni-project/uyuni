@@ -24,7 +24,8 @@ disable_repo_{{ alias }}:
 {%- endfor %}
 
 {% set os_base = 'sle' %}
-{%- if "centos" in grains['oscodename']|lower %}
+# CentOS6 oscodename is bogus
+{%- if "centos" in grains['os']|lower %}
 {% set os_base = 'centos' %}
 {%- elif "opensuse" in grains['oscodename']|lower %}
 {% set os_base = 'opensuse' %}
@@ -37,7 +38,7 @@ disable_repo_{{ alias }}:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osrelease'] ~ '/0/bootstrap/' %}
 {%- endif %}
 {%- elif grains['os_family'] == 'RedHat' %}
-{% if salt['file.directory_exists' ]('/etc/centos-release') %}
+{% if salt['file.file_exists' ]('/etc/centos-release') %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
