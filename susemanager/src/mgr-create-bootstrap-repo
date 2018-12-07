@@ -39,7 +39,8 @@ SELECT distinct
          SELECT  I_P.name_id name_id,
                  max(I_PE.evr) evr,
                  I_PA.id as arch_id,
-                 I_PA.label as arch_label
+                 I_PA.label as arch_label,
+                 (CASE WHEN channels.parent_channel IS NULL THEN channels.id ELSE channels.parent_channel END) as root
            FROM  (
                   select I_C.*
                    from suseProducts I_SP
@@ -59,15 +60,17 @@ SELECT distinct
            JOIN  rhnPackage I_P ON I_CNP.package_id = I_P.id
            JOIN  rhnPackageEVR I_PE ON I_P.evr_id = I_PE.id
            JOIN  rhnPackageArch I_PA ON I_P.package_arch_id = I_PA.id
-       GROUP BY  I_P.name_id, I_PA.label, I_PA.id
+       GROUP BY  I_P.name_id, I_PA.label, I_PA.id, root
      ) full_list,
        rhnPackage pkg
        join rhnPackageName pn on pkg.name_id = pn.id
        join rhnPackageEVR pevr on pkg.evr_id = pevr.id
        join rhnChannelPackage CP on CP.package_id = pkg.id
+       join rhnChannel c on CP.channel_id = c.id
  WHERE full_list.name_id = pkg.name_id
    AND full_list.evr = pevr.evr
    AND full_list.arch_id = pkg.package_arch_id
+   AND (c.parent_channel = full_list.root OR c.id = full_list.root)
    AND pn.name = :pkgname
 order by pkg.id
 """;

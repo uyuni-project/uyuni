@@ -1,3 +1,5 @@
+- fetch packages from correct channel when creating a bootstrap
+  repository
 - fix not found package on mgr-create-bootstrap-repo for SLE-15-s390x
   (bsc#1116566)
 - add python3-six to bootstrap repo for SLES15 (bsc#1118478)
