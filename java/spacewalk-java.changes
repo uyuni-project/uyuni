@@ -1,3 +1,4 @@
+- Change Requires to allow installing with both Tomcat 8 (SLE-12SP3) and 9 (SLE12-SP4)
 - Automatically schedule an Action to refresh minion repos after deletion of an assigned channel (bsc#1115029)
 - Performance improvements in channel management functionalities (bsc#1114877)
 - Hide already applied errata and channel entries from the output list in

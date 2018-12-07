@@ -938,7 +938,12 @@ delete from rhnChannel where label like 'ChannelLabel%';
     <mkdir dir="${prefix}${taskomatic.link.dir}" />
     <jpackage-deps jars="${taskomatic.jar.dependencies}"
                     dir="${prefix}${taskomatic.link.dir}"/>
-
+    <!-- delete jars that are not needed-->
+    <delete>
+      <fileset dir="${prefix}${taskomatic.link.dir}" >
+        <filename name="tomcattomcat-servlet-3.1-api.jar"/>
+      </fileset>
+    </delete>
   </target>
 
   <!--
