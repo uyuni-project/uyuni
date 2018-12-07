@@ -167,21 +167,30 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     }
 
     public static Channel createResChannel(User user, String version) throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
-        c.setOrg(user.getOrg());
+        return createResChannel(user, version, "x86_64", "channel-x86_64");
+    }
 
-        SUSEProduct suseProduct = new SUSEProduct();
-        suseProduct.setBase(true);
-        suseProduct.setName("res");
-        suseProduct.setVersion(version);
-        suseProduct.setRelease(null);
-        suseProduct.setReleaseStage(ReleaseStage.released);
-        suseProduct.setFriendlyName("RES " + version);
-        suseProduct.setProductId(new Random().nextInt(999999));
-        PackageArch arch = PackageFactory.lookupPackageArchByLabel("x86_64");
-        suseProduct.setArch(arch);
-        SUSEProductFactory.save(suseProduct);
-        SUSEProductFactory.getSession().flush();
+    public static Channel createResChannel(User user, String version, String archLabel, String channelLabel) throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user, "channel-" + archLabel);
+        c.setLabel(channelLabel);
+        c.setOrg(null); // vendor channels don't have org
+
+        SUSEProduct suseProduct = SUSEProductFactory.findAllSUSEProducts().stream()
+                .filter(p -> p.getName().equalsIgnoreCase("res") && p.getVersion().equals(version))
+                .findFirst().orElseGet(() -> {
+                    SUSEProduct suseProd = new SUSEProduct();
+                    suseProd.setBase(true);
+                    suseProd.setName("res");
+                    suseProd.setVersion(version);
+                    suseProd.setRelease(null);
+                    suseProd.setReleaseStage(ReleaseStage.released);
+                    suseProd.setFriendlyName("RHEL Expanded Support  " + version);
+                    suseProd.setProductId(new Random().nextInt(999999));
+                    suseProd.setArch(null); // RES products can contain channels with different archs
+                    SUSEProductFactory.save(suseProd);
+                    SUSEProductFactory.getSession().flush();
+                    return suseProd;
+        });
 
         ProductName pn = ChannelFactoryTest.lookupOrCreateProductName("RES");
         c.setProductName(pn);
@@ -191,7 +200,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         spc.setProduct(suseProduct);
         spc.setMandatory(true);
 
-        suseProduct.setSuseProductChannels(Collections.singleton(spc));
+        suseProduct.getSuseProductChannels().add(spc);
 
         TestUtils.saveAndFlush(spc);
 

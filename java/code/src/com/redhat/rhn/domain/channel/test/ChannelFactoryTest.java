@@ -117,9 +117,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
-    public static Channel createTestChannel(User user, String channelLabel) throws Exception {
-        String query = "ChannelArch.findByLabel";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheByLabel(channelLabel, query);
+    public static Channel createTestChannel(User user, String channelArch) throws Exception {
+        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheByLabel(channelArch, "ChannelArch.findByLabel");
         Channel c = createTestChannel(user.getOrg(), arch, user.getOrg().getPrivateChannelFamily());
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
