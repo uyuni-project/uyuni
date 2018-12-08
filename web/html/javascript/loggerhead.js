@@ -23,13 +23,13 @@ var Loggerhead = {};
       return;
     }
 
-    var headers = new Map();
-    headers.set('Content-Type', 'application/json; charset=utf-8');
+    var headers = {};
+    headers['Content-Type'] = 'application/json; charset=utf-8';
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', config.url);
-    Array.from(_context.setHeaders(headers).keys()).map(k =>
-      xhr.setRequestHeader(k, headers.get(k))
+    Object.keys(_context.setHeaders(headers)).map(k =>
+      xhr.setRequestHeader(k, headers[k])
     );
     xhr.onload = function() {
       if (xhr.status !== 200) {
@@ -82,20 +82,19 @@ var Loggerhead = {};
     }
   }
 
-  function setMapFromObject(fromObj, toMap) {
-    const fromMap = new Map(Object.entries(fromObj));
-    Array.from(fromMap.keys()).map(k => {
-      if (toMap[k] != null && fromMap.get(k) instanceof Object) {
-        setMapFromObject(fromMap.get(k), toMap[k]);
+  function setObjectFromPartialObject(fromObj, toObj) {
+    Object.keys(fromObj).map(k => {
+      if (toObj[k] != null && fromObj[k] instanceof Object) {
+        setObjectFromPartialObject(fromObj[k], toObj[k]);
       }
       else {
-        toMap[k] = fromMap.get(k);
+        toObj[k] = fromObj[k];
       }
     });
   }
 
   // configuration parameters setter
   _context.set = function(configObject) {
-    setMapFromObject(configObject, config);
+    setObjectFromPartialObject(configObject, config);
   }
 })(Loggerhead);
