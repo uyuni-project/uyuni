@@ -1,3 +1,4 @@
+- remove SES 6 Beta as it was moved to SLES15 SP1
 - add OES 2018 SP1 (bsc#1116826)
 - add Toolchain Module for CaaSP 3.0 (bsc#1118155)
 
