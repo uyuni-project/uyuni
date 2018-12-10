@@ -414,10 +414,12 @@ if [ "$INSTALLER" == zypper ]; then
     local PATCHLEVEL=""
     if [ -r /etc/SuSE-release ]; then
       grep -q 'Enterprise' /etc/SuSE-release && BASE='sle'
+      eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
       if [ "$BASE" != "sle" ]; then
          grep -q 'openSUSE' /etc/SuSE-release && BASE='opensuse'
+         VERSION="$(grep '^\(VERSION\)' /etc/SuSE-release | tr -d '[:blank:]' | sed -n 's/.*=\([[:digit:]]\+\).*/\\1/p')"
+         PATCHLEVEL="$(grep '^\(VERSION\)' /etc/SuSE-release | tr -d '[:blank:]' | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
       fi
-      eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
     elif [ -r /etc/os-release ]; then
       grep -q 'Enterprise' /etc/os-release && BASE='sle'
       if [ "$BASE" != "sle" ]; then
