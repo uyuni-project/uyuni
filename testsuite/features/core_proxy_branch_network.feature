@@ -127,6 +127,9 @@ Feature: Setup SUSE Manager for Retail branch network
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
     And I disable repositories after installing branch server
+    # WORKAROUND bsc#1116365 - There are no forwarders on branch server, despite checkbox ticked
+    And I run "netconfig update -f" on "proxy"
+    # TOTO: remove above when solved ^^^
     Then service "dhcpd" is enabled on "proxy"
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
@@ -136,5 +139,7 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Set up the terminals too
     When I set up the private network on the terminals
-    Then terminal "sle-minion" should have got a retail network IP address
+    Then terminal "sle-client" should have got a retail network IP address
+    And name resolution should work on terminal "sle-client"
+    And terminal "sle-minion" should have got a retail network IP address
     And name resolution should work on terminal "sle-minion"
