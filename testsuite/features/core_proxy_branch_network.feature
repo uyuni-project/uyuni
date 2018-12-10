@@ -136,5 +136,7 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Set up the terminals too
     When I set up the private network on the terminals
-    Then terminal "sle-minion" should have got a retail network IP address
+    Then terminal "sle-client" should have got a retail network IP address
+    And name resolution should work on terminal "sle-client"
+    And terminal "sle-minion" should have got a retail network IP address
     And name resolution should work on terminal "sle-minion"
