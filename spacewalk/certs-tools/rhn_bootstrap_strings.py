@@ -414,6 +414,9 @@ if [ "$INSTALLER" == zypper ]; then
     local PATCHLEVEL=""
     if [ -r /etc/SuSE-release ]; then
       grep -q 'Enterprise' /etc/SuSE-release && BASE='sle'
+      if [ "$BASE" != "sle" ]; then
+         grep -q 'openSUSE' /etc/SuSE-release && BASE='opensuse'
+      fi
       eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
     elif [ -r /etc/os-release ]; then
       grep -q 'Enterprise' /etc/os-release && BASE='sle'
