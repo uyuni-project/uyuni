@@ -99,12 +99,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 where e.id in (:list)]]>
     </query>
 
-    <query name="PublishedErrata.findByAdvisoryName">
+    <query name="PublishedErrata.findByAdvisoryNameAndOrg">
         <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
                  where e.advisoryName = :advisory and ((:org is not null and e.org = :org) or (:org is null and e.org is null))]]>
     </query>
     
-    <query name="PublishedErrata.findByAdvisoryNameAndOrg">
+    <query name="PublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg">
         <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
                  where e.advisoryName = :advisory and (e.org = :org or e.org is null)]]>
     </query>
