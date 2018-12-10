@@ -372,7 +372,7 @@ class GuestsList extends React.Component<Props, State> {
                             const state = row.stateLabel;
                             return (
                               <div className="btn-group">
-                                {state !== 'running'
+                                {state !== 'running' && row.name !== 'Domain-0'
                                  && (
                                    <AsyncButton
                                      defaultType="btn-default btn-sm"
@@ -380,8 +380,10 @@ class GuestsList extends React.Component<Props, State> {
                                      icon="fa-play"
                                      action={() => onAction('start', [row.uuid], {})}
                                    />) }
-                                {state === 'running' && this.createModalButton('suspend', modalsData, row) }
-                                {state !== 'stopped' && this.createModalButton('shutdown', modalsData, row) }
+                                {state === 'running' && row.name !== 'Domain-0'
+                                 && this.createModalButton('suspend', modalsData, row) }
+                                {state !== 'stopped' && row.name !== 'Domain-0'
+                                 && this.createModalButton('shutdown', modalsData, row) }
                                 {(state === 'paused' || state === 'running') && this.createModalButton('restart', modalsData, row) }
                                 <LinkButton
                                   title={t('Edit')}
@@ -389,7 +391,8 @@ class GuestsList extends React.Component<Props, State> {
                                   icon="fa-edit"
                                   href={`/rhn/manager/systems/details/virtualization/guests/${this.props.serverId}/edit/${row.uuid}`}
                                 />
-                                { this.props.saltEntitled && this.createModalButton('delete', modalsData, row) }
+                                { this.props.saltEntitled && row.name !== 'Domain-0'
+                                  && this.createModalButton('delete', modalsData, row) }
                               </div>
                             );
                           }}
