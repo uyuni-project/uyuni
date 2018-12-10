@@ -663,10 +663,12 @@ Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |hos
 end
 
 Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
-  # We ping the traditional client, using its domain name provided by the branch server
   node = get_target(host)
-  output, return_code = node.run("ping -c1 client.example.org")
-  raise "Name resolution for branch network on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+  # We test name resolution (and connectivity) both inside and outside of branch network
+  ["proxy.example.org", "download.suse.de"].each do |dest|
+    output, return_code = node.run("ping -c1 #{dest}")
+    raise "Name resolution for branch network on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+  end
 end
 
 When(/^I configure the proxy$/) do
