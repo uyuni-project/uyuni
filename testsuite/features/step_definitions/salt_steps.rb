@@ -127,13 +127,13 @@ Then(/^it should contain a "(.*?)" text$/) do |content|
 end
 
 Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
-  $output, _code = $server.run("ss -nta | grep #{port}")
+  $output, _code = $server.run("ss -ntl | grep #{port}")
   assert_match(/127.0.0.1:#{port}/, $output)
 end
 
 Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
-  $output, _code = $server.run("ss -nta | grep #{port}")
-  assert_match(/\*:#{port}/, $output)
+  $output, _code = $server.run("ss -ntl | grep #{port}")
+  assert_match(/(0.0.0.0|\*|\[::\]):#{port}/, $output)
 end
 
 Then(/^the system should have a base channel set$/) do
