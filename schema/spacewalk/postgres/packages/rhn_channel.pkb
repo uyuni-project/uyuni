@@ -474,6 +474,11 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
           WHERE channel_id = channel_id_in AND
             user_id = user_id_in AND
             role = role_in;
+
+         if result IS NULL then
+           result := 0;
+         end if;
+
          RETURN result;
     end$$ language plpgsql;
 
