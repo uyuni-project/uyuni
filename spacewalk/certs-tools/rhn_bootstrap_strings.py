@@ -246,7 +246,8 @@ def getRegistrationStackSh(saltEnabled):
     """
     PKG_NAME = saltEnabled and ['salt', 'salt-minion'] or ['spacewalk-check', 'spacewalk-client-setup',
                                                            'spacewalk-client-tools', 'zypp-plugin-spacewalk']
-    PKG_NAME_YUM = saltEnabled and ['salt', 'salt-minion'] or []
+    PKG_NAME_YUM = saltEnabled and ['salt', 'salt-minion'] or ['spacewalk-check', 'spacewalk-client-setup',
+                                                               'spacewalk-client-tools', 'yum-rhn-plugin']
 
     PKG_NAME_UPDATE = list(PKG_NAME)
     PKG_NAME_UPDATE.extend(['zypper', 'openssl'])

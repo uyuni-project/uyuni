@@ -1,3 +1,4 @@
+- Add client packages for Yum based distributions
 - enhance bootstrap-repo urls for Centos and Opensuse
 
 -------------------------------------------------------------------
