@@ -635,7 +635,7 @@ end
 Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   node = get_target(host)
   # We test name resolution (and connectivity) both inside and outside of branch network
-  [ "proxy.example.org", "download.suse.de" ].each do |dest|
+  ["proxy.example.org", "download.suse.de"].each do |dest|
     output, return_code = node.run("ping -c1 #{dest}")
     raise "Name resolution for branch network on terminal #{host} doesn't work: #{output}" unless return_code.zero?
   end
