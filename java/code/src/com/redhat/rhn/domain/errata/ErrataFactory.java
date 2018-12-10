@@ -149,7 +149,7 @@ public class ErrataFactory extends HibernateFactory {
                 retval.addAll(erratas);
             }
             else {
-                erratas = ErrataFactory.lookupErrataByAdvisoryNameAndOrg(identifier, org);
+                erratas = ErrataFactory.lookupVendorAndUserErrataByAdvisoryAndOrg(identifier, org);
                 if (erratas != null && !erratas.isEmpty()) {
                     retval.addAll(erratas);
                 }
@@ -714,20 +714,17 @@ public class ErrataFactory extends HibernateFactory {
      * @param org the organization
      * @return Returns the errata corresponding to the passed in advisory name.
      */
-    public static List<Errata> lookupErrataByAdvisoryNameAndOrg(String advisory, Org org) {
-        Session session = null;
-        List<Errata> retval = null;
-
+    public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisory, Org org) {
         //look for a published errata first
-        session = HibernateFactory.getSession();
-        retval = session.getNamedQuery("PublishedErrata.findByAdvisoryNameAndOrg")
+        Session session = HibernateFactory.getSession();
+        List<Errata> retval = session.getNamedQuery("PublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg")
                 .setParameter("advisory", advisory)
                 .setParameter("org", org)
                 .getResultList();
 
         //if nothing was found, check the unpublished errata table
-        if (retval == null || retval.isEmpty()) {
-            retval = session.getNamedQuery("UnpublishedErrata.findByAdvisoryNameAndOrg")
+        if (retval.isEmpty()) {
+            retval = session.getNamedQuery("UnpublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg")
                     .setParameter("advisory", advisory)
                     .setParameter("org", org)
                     .getResultList();
@@ -736,26 +733,25 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Look up an errata by the advisory name. This is a unique field in the db and this
-     * method is needed to help us see if a created/edited advisoryName is unique.
+     * Retrieves the errata that with the given advisory and a given Org.
      * @param advisory The advisory to lookup
      * @param org User organization
      * @return Returns the errata corresponding to the passed in advisory name.
      */
-    public static Errata lookupByAdvisory(String advisory, Org org) {
+    public static Errata lookupByAdvisoryAndOrg(String advisory, Org org) {
         Session session = null;
         Errata retval = null;
         //  try {
         //look for a published errata first
         session = HibernateFactory.getSession();
-        retval = (Errata) session.getNamedQuery("PublishedErrata.findByAdvisoryName")
+        retval = (Errata) session.getNamedQuery("PublishedErrata.findByAdvisoryNameAndOrg")
                 .setParameter("advisory", advisory)
                 .setParameter("org", org)
                 .uniqueResult();
         //if nothing was found, check the unpublished errata table
         if (retval == null) {
             retval = (Errata)
-                    session.getNamedQuery("UnpublishedErrata.findByAdvisoryName")
+                    session.getNamedQuery("UnpublishedErrata.findByAdvisoryNameAndOrg")
                     .setParameter("advisory", advisory)
                     .setParameter("org", org)
                     .uniqueResult();

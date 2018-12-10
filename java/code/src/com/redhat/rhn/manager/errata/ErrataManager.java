@@ -743,8 +743,8 @@ public class ErrataManager extends BaseManager {
      * @param org User organization
      * @return Returns the requested Errata
      */
-    public static Errata lookupByAdvisory(String advisoryName, Org org) {
-        return ErrataFactory.lookupByAdvisory(advisoryName, org);
+    public static Errata lookupByAdvisoryAndOrg(String advisoryName, Org org) {
+        return ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, org);
     }
 
     /**
@@ -753,8 +753,8 @@ public class ErrataManager extends BaseManager {
      * @param org the organization
      * @return Returns the requested Errata
      */
-    public static List<Errata> lookupErrataByAdvisoryNameAndOrg(String advisoryName, Org org) {
-        return ErrataFactory.lookupErrataByAdvisoryNameAndOrg(advisoryName, org);
+    public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisoryName, Org org) {
+        return ErrataFactory.lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, org);
     }
 
     /**
@@ -1033,7 +1033,7 @@ public class ErrataManager extends BaseManager {
      * otherwise.
      */
     public static boolean advisoryNameIsUnique(Long eid, String name, Org org) {
-        Errata e = lookupByAdvisory(name, org);
+        Errata e = lookupByAdvisoryAndOrg(name, org);
         //If we can't find an errata, then the advisoryName is unique
         if (e == null) {
             return true;

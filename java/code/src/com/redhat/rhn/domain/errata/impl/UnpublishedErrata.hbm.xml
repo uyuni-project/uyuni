@@ -78,12 +78,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 class="com.redhat.rhn.domain.errata.impl.PublishedErrata" />
         </joined-subclass>
     </class>
-    <query name="UnpublishedErrata.findByAdvisoryName">
+    <query name="UnpublishedErrata.findByAdvisoryNameAndOrg">
         <![CDATA[from com.redhat.rhn.domain.errata.impl.UnpublishedErrata as e
                  where e.advisoryName = :advisory and ((:org is not null and e.org = :org) or (:org is null and e.org is null))]]>
     </query>
     
-    <query name="UnpublishedErrata.findByAdvisoryNameAndOrg">
+    <query name="UnpublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg">
         <![CDATA[from com.redhat.rhn.domain.errata.impl.UnpublishedErrata as e
                  where e.advisoryName = :advisory and (e.org = :org or org is null)]]>
     </query>

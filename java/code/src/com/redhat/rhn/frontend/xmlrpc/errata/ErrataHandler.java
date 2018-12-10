@@ -225,7 +225,7 @@ public class ErrataHandler extends BaseHandler {
      // Get the logged in user. We don't care what roles this user has, we
         // just want to make sure the caller is logged in.
 
-        Errata errata = lookupErratumByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        Errata errata = lookupErratumByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
         Map<String, Object> errataMap = new HashMap<String, Object>();
 
@@ -552,7 +552,7 @@ public class ErrataHandler extends BaseHandler {
             throws FaultException {
 
         // Get the logged in user
-        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         DataResult dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
@@ -589,7 +589,7 @@ public class ErrataHandler extends BaseHandler {
             throws FaultException {
 
         // Get the logged in user
-        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
         return (Map<Long, String>) erratas.stream().flatMap(e -> e.getBugs().stream())
                 .collect(toMap(Bug::getId, Bug::getSummary));
@@ -616,7 +616,7 @@ public class ErrataHandler extends BaseHandler {
      */
     public Object[] listKeywords(User loggedInUser, String advisoryName)
             throws FaultException {
-        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
         Set<String> keywords = erratas.stream()
                 .flatMap(e -> e.getKeywords().stream().map(Keyword::getKeyword))
@@ -656,7 +656,7 @@ public class ErrataHandler extends BaseHandler {
             throws FaultException {
 
         // Get the logged in user
-        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         return ErrataManager.applicableChannels(errataIds,
@@ -725,14 +725,14 @@ public class ErrataHandler extends BaseHandler {
      *      #array_single("string", "cveName")
      *
      */
-    public Set listCves(User loggedInUser, String advisoryName) throws FaultException {
+    public List listCves(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
-        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         DataResult dr = ErrataManager.errataCVEs(errataIds);
 
-        return (Set) dr.stream().map(cve -> ((CVE) cve).getName()).collect(toSet());
+        return (List) dr.stream().map(cve -> ((CVE) cve).getName()).collect(toList());
     }
 
     /**
@@ -782,7 +782,7 @@ public class ErrataHandler extends BaseHandler {
     public List<Map> listPackages(User loggedInUser, String advisoryName)
             throws FaultException {
         // Get the logged in user
-        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, loggedInUser.getOrg());
+        List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
         return erratas.stream().flatMap(
                 e -> e.getPackages().stream()
@@ -897,7 +897,7 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException Occurs when the erratum is not found
      */
     private Errata lookupErrata(String advisoryName, Org org) throws FaultException {
-        Errata errata = ErrataManager.lookupByAdvisory(advisoryName, org);
+        Errata errata = ErrataManager.lookupByAdvisoryAndOrg(advisoryName, org);
 
         /*
          * ErrataManager.lookupByAdvisory() could return null, so we need to check
@@ -919,8 +919,8 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns the errata or a Fault Exception
      * @throws FaultException Occurs when the erratum is not found
      */
-    private Errata lookupErratumByAdvisoryNameAndOrg(String advisoryName, Org org) throws FaultException {
-        List<Errata> erratas = lookupErrataByAdvisoryNameAndOrg(advisoryName, org);
+    private Errata lookupErratumByAdvisoryAndOrg(String advisoryName, Org org) throws FaultException {
+        List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, org);
 
        return erratas.stream().filter(e -> e.getOrg().getId() == org.getId())
                 .findFirst().orElse(erratas.stream().findFirst().orElse(null));
@@ -934,14 +934,14 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns the errata or a Fault Exception
      * @throws FaultException Occurs when the erratum is not found
      */
-    private List<Errata> lookupErrataByAdvisoryNameAndOrg(String advisoryName, Org org) throws FaultException {
-        List<Errata> erratas = ErrataManager.lookupErrataByAdvisoryNameAndOrg(advisoryName, org);
+    private List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisoryName, Org org) throws FaultException {
+        List<Errata> erratas = ErrataManager.lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, org);
 
         /*
          * ErrataManager.lookupByAdvisory() could return null, so we need to check
          * and throw a no_such_errata exception if the errata was not found.
          */
-        if (erratas == null || erratas.isEmpty()) {
+        if (erratas.isEmpty()) {
             throw new FaultException(-208, "no_such_patch",
                                      "The patch " + advisoryName + " cannot be found.");
         }
@@ -1013,6 +1013,8 @@ public class ErrataHandler extends BaseHandler {
             throw new NoSuchChannelException();
         }
 
+        //We use the org of the original channel if any to lookup for the errata to be cloned.
+        //Otherwise we use the loggedIn user's org
         Org errataOrg = loggedInUser.getOrg();
         Channel original = ChannelFactory.lookupOriginalChannel(channel);
         if (original != null) {
@@ -1256,7 +1258,7 @@ public class ErrataHandler extends BaseHandler {
         String notes = (String) errataInfo.get("notes");
         String severity = (String) errataInfo.get("severity");
 
-        Errata newErrata = ErrataManager.lookupByAdvisory(advisoryName,
+        Errata newErrata = ErrataManager.lookupByAdvisoryAndOrg(advisoryName,
                 loggedInUser.getOrg());
         if (newErrata != null) {
             throw new DuplicateErrataException(advisoryName);

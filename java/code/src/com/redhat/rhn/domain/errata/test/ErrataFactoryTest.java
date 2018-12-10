@@ -152,6 +152,71 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    public void testCreateAndLookupVendorAndUserErrata() throws Exception {
+        //create user published errata
+        Errata userPublishedErrata = createTestPublishedErrata(user.getOrg().getId());
+        assertTrue(userPublishedErrata instanceof PublishedErrata);
+        assertNotNull(userPublishedErrata.getId());
+        assertNotNull(userPublishedErrata.getAdvisory());
+
+        //Lookup the user published errata
+        Errata errata = ErrataFactory.lookupById(userPublishedErrata.getId());
+        assertTrue(errata instanceof PublishedErrata);
+        assertEquals(userPublishedErrata.getId(), errata.getId());
+        assertEquals(userPublishedErrata.getAdvisory(), userPublishedErrata.getAdvisory());
+
+        List<Errata> erratas = ErrataFactory.lookupVendorAndUserErrataByAdvisoryAndOrg(
+                userPublishedErrata.getAdvisory(), user.getOrg());
+
+        assertEquals(erratas.size(), 1);
+        assertTrue(erratas.stream().allMatch(e -> e.getId().equals(userPublishedErrata.getId())));
+        assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userPublishedErrata.getAdvisoryName())));
+        assertTrue(erratas.stream().allMatch(e -> e instanceof PublishedErrata));
+
+        //create user unpublished errata
+        Errata userUnpublishedErrata = createTestUnpublishedErrata(user.getOrg().getId());
+        assertTrue(userUnpublishedErrata instanceof UnpublishedErrata);
+        assertNotNull(userUnpublishedErrata.getId());
+        assertNotNull(userUnpublishedErrata.getAdvisory());
+
+        //Lookup the user unpublished errata
+        errata = ErrataFactory.lookupById(userUnpublishedErrata.getId());
+        assertTrue(errata instanceof UnpublishedErrata);
+        assertEquals(userUnpublishedErrata.getId(), errata.getId());
+        assertEquals(userUnpublishedErrata.getAdvisory(), userUnpublishedErrata.getAdvisory());
+
+        erratas = ErrataFactory.lookupVendorAndUserErrataByAdvisoryAndOrg(
+                userUnpublishedErrata.getAdvisory(), user.getOrg());
+
+        assertEquals(erratas.size(), 1);
+        assertTrue(erratas.stream().allMatch(e -> e.getId().equals(userUnpublishedErrata.getId())));
+        assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userUnpublishedErrata.getAdvisory())));
+        assertTrue(erratas.stream().allMatch(e -> e instanceof UnpublishedErrata));
+
+        //create vendor published errata with same name as user published errata
+        Errata vendorPublishedErrata = createTestPublishedErrata(null,
+                Optional.of(userPublishedErrata.getAdvisory()));
+        assertTrue(vendorPublishedErrata instanceof PublishedErrata);
+        assertNotNull(vendorPublishedErrata.getId());
+        assertNotNull(vendorPublishedErrata.getAdvisory());
+
+        //Lookup the vendor published errata
+        errata = ErrataFactory.lookupById(vendorPublishedErrata.getId());
+        assertTrue(errata instanceof PublishedErrata);
+        assertEquals(vendorPublishedErrata.getId(), errata.getId());
+        assertEquals(vendorPublishedErrata.getAdvisory(), errata.getAdvisory());
+        assertEquals(vendorPublishedErrata.getAdvisory(), userPublishedErrata.getAdvisory());
+
+        //Lookup vendor and user published errata with the same name
+        erratas = ErrataFactory.lookupVendorAndUserErrataByAdvisoryAndOrg(userPublishedErrata.getAdvisory(),
+                user.getOrg());
+
+        assertEquals(erratas.size(), 2);
+        assertTrue(erratas.stream().allMatch(e -> e.getId().equals(vendorPublishedErrata.getId())
+                || e.getId().equals(userPublishedErrata.getId())));
+        assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userPublishedErrata.getAdvisory())));
+        assertTrue(erratas.stream().allMatch(e -> e instanceof PublishedErrata));
+    }
 
     public void testCreateAndLookupErrata() throws Exception {
         //published
@@ -171,7 +236,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Errata errata = ErrataFactory.lookupById(pubid);
         assertTrue(errata instanceof PublishedErrata);
         assertEquals(pubid, errata.getId());
-        errata = ErrataFactory.lookupByAdvisory(pubname, user.getOrg());
+        errata = ErrataFactory.lookupByAdvisoryAndOrg(pubname, user.getOrg());
         assertTrue(errata instanceof PublishedErrata);
         assertEquals(pubname, errata.getAdvisoryName());
 
@@ -179,7 +244,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         errata = ErrataFactory.lookupById(unpubid);
         assertTrue(errata instanceof UnpublishedErrata);
         assertEquals(unpubid, errata.getId());
-        errata = ErrataFactory.lookupByAdvisory(unpubname, user.getOrg());
+        errata = ErrataFactory.lookupByAdvisoryAndOrg(unpubname, user.getOrg());
         assertTrue(errata instanceof UnpublishedErrata);
         assertEquals(unpubid, errata.getId());
     }
@@ -203,24 +268,24 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Errata errata = ErrataFactory.lookupById(pubid);
         assertTrue(errata instanceof PublishedErrata);
         assertEquals(pubid, errata.getId());
-        errata = ErrataFactory.lookupByAdvisory(pubname, null);
+        errata = ErrataFactory.lookupByAdvisoryAndOrg(pubname, null);
         assertTrue(errata instanceof PublishedErrata);
         assertEquals(pubname, errata.getAdvisoryName());
 
         //Lookup the published errata by user's Org
-        errata = ErrataFactory.lookupByAdvisory(pubname, user.getOrg());
+        errata = ErrataFactory.lookupByAdvisoryAndOrg(pubname, user.getOrg());
         assertNull(errata);
 
         //Lookup the unpublished errata by null Org
         errata = ErrataFactory.lookupById(unpubid);
         assertTrue(errata instanceof UnpublishedErrata);
         assertEquals(unpubid, errata.getId());
-        errata = ErrataFactory.lookupByAdvisory(unpubname, null);
+        errata = ErrataFactory.lookupByAdvisoryAndOrg(unpubname, null);
         assertTrue(errata instanceof UnpublishedErrata);
         assertEquals(unpubid, errata.getId());
 
         //Lookup the unpublished errata by user's Org
-        errata = ErrataFactory.lookupByAdvisory(unpubname, user.getOrg());
+        errata = ErrataFactory.lookupByAdvisoryAndOrg(unpubname, user.getOrg());
         assertNull(errata);
     }
 
