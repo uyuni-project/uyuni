@@ -1,3 +1,7 @@
+- Sync changes from Spacewalk
+- Regenerating .po and .pot files for yum-rhn-plugin
+- Updating .po translations from Zanata
+
 -------------------------------------------------------------------
 Fri Oct 26 10:54:58 CEST 2018 - jgonzalez@suse.com
 
