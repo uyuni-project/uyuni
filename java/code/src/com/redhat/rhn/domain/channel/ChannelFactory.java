@@ -31,6 +31,8 @@ import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
@@ -1327,6 +1329,18 @@ public class ChannelFactory extends HibernateFactory {
         criteria.add(Restrictions.eq("product", product));
         criteria.add(Restrictions.eq("version", version));
         return (ChannelProduct) criteria.uniqueResult();
+    }
+
+    /**
+     * Get all packages in the given channel.
+     * @param channel the channel
+     * @return all packages
+     */
+    public static ScrollableResults findChannelPackages(Channel channel) {
+        return getSession().getNamedQuery("Channel.findPackages")
+                .setParameter("channel", channel)
+                .setReadOnly(true)
+                .scroll(ScrollMode.FORWARD_ONLY);
     }
 
     /**

@@ -78,7 +78,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
      *
      * @param pkgDto pkg info to add to xml
      */
-    public void addPackage(PackageDto pkgDto) {
+    public void addPackage(com.redhat.rhn.domain.rhnpackage.Package pkgDto) {
         long pkgId = pkgDto.getId().longValue();
         List<String> eulas = new EulaManager().getEulasForPackage(pkgId);
 

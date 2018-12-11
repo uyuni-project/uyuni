@@ -83,9 +83,9 @@ public class FilelistsXmlWriter extends RepomdWriter {
      *
      * @param pkgDto pkg info to add to xml
      */
-    public void addPackage(PackageDto pkgDto) {
+    public void addPackage(com.redhat.rhn.domain.rhnpackage.Package pkgDto) {
         try {
-            String xml = pkgDto.getFilelistXml();
+            String xml = pkgDto.getPackageRepodata().getFilelistXml();
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
                 if (xml != null) {
                     handler.addCharacters(xml);
@@ -119,7 +119,7 @@ public class FilelistsXmlWriter extends RepomdWriter {
      * @param pkgId package Id info
      * @throws SAXException sax exception
      */
-    private void addPackageFiles(PackageDto pkgDto,
+    private void addPackageFiles(com.redhat.rhn.domain.rhnpackage.Package pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
         Long pkgId = pkgDto.getId();
         Collection<PackageCapabilityDto> files = TaskManager

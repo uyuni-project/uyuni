@@ -82,10 +82,10 @@ public class OtherXmlWriter extends RepomdWriter {
      *
      * @param pkgDto pkg info to add to xml
      */
-    public void addPackage(PackageDto pkgDto) {
+    public void addPackage(com.redhat.rhn.domain.rhnpackage.Package pkgDto) {
 
         try {
-            String xml = pkgDto.getOtherXml();
+            String xml = pkgDto.getPackageRepodata().getOtherXml();
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
                 if (xml != null) {
                     handler.addCharacters(xml);
@@ -121,7 +121,7 @@ public class OtherXmlWriter extends RepomdWriter {
      * @throws SAXException sax exception
      * @throws SQLException sql exception
      */
-    private void addPackageChangelog(PackageDto pkgDto,
+    private void addPackageChangelog(com.redhat.rhn.domain.rhnpackage.Package pkgDto,
             SimpleContentHandler tmpHandler) throws SAXException, SQLException {
 
         Long pkgId = pkgDto.getId();

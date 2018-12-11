@@ -16,18 +16,16 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.RepoMetadata;
-import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
-import com.redhat.rhn.manager.task.TaskManager;
+import org.hibernate.ScrollableResults;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -194,26 +192,24 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         other.begin(channel);
         susedata.begin(channel);
 
-        // batch the elaboration so we don't have to hold many thousands of
-        // packages in memory at once
         final int batchSize = 1000;
-        DataResult<PackageDto> packages = TaskManager.getChannelPackageDtos(channel);
-        for (int i = 0; i < packages.size(); i += batchSize) {
-            DataResult<PackageDto> packageBatch = packages.subList(i, i + batchSize);
-            packageBatch.elaborate();
-            for (PackageDto pkgDto : packageBatch) {
-                // this is a sanity check
-                // package may have been deleted before packageBatch.elaborate()
-                if (pkgDto.getChecksum() == null) {
-                    // channel content changed, we cannot guarantee correct repodata
-                    throw new RepomdRuntimeException("Package with id " + pkgDto.getId() +
-                            " removed from server, interrupting repo generation for " +
-                            channel.getLabel());
-                }
-                primary.addPackage(pkgDto);
-                filelists.addPackage(pkgDto);
-                other.addPackage(pkgDto);
-                susedata.addPackage(pkgDto);
+        ScrollableResults packages = ChannelFactory.findChannelPackages(channel);
+        int count = 0;
+        while (packages.next()) {
+            com.redhat.rhn.domain.rhnpackage.Package pkg = (com.redhat.rhn.domain.rhnpackage.Package)packages.get()[0];
+
+            if (pkg.getChecksum() == null) {
+                // channel content changed, we cannot guarantee correct repodata
+                throw new RepomdRuntimeException("Package with id " + pkg.getId() +
+                        " removed from server, interrupting repo generation for " +
+                        channel.getLabel());
+            }
+            primary.addPackage(pkg);
+            filelists.addPackage(pkg);
+            other.addPackage(pkg);
+            susedata.addPackage(pkg);
+
+            if (count % batchSize == 0) {
                 try {
                     primaryFile.flush();
                     filelistsFile.flush();
@@ -224,7 +220,10 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                     throw new RepomdRuntimeException(e);
                 }
             }
+            count++;
+            HibernateFactory.getSession().evict(pkg); // still necessary to evict the entity to avoid OutOfMemory
         }
+
         primary.end();
         filelists.end();
         other.end();

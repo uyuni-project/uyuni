@@ -78,6 +78,8 @@ public class Package extends BaseDomainHelper {
     private Set<PackageObsoletes> obsoletes = new HashSet();
     private Set<PackageConflicts> conflicts = new HashSet();
 
+    private PackageRepodata packageRepodata;
+
     /**
      * @param lockPendingIn Set pending status. Default is False.
      */
@@ -680,6 +682,20 @@ public class Package extends BaseDomainHelper {
      */
     public void setHeaderEnd(Long headerEndIn) {
         this.headerEnd = headerEndIn;
+    }
+
+    /**
+     * @return packageRepodata to get
+     */
+    public PackageRepodata getPackageRepodata() {
+        return packageRepodata;
+    }
+
+    /**
+     * @param packageRepodataIn to set
+     */
+    public void setPackageRepodata(PackageRepodata packageRepodataIn) {
+        this.packageRepodata = packageRepodataIn;
     }
 
     /**

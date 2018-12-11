@@ -16,7 +16,6 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.frontend.dto.PackageDto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -103,19 +102,19 @@ public abstract class RepomdWriter {
      * @throws SAXException SAX exception
      */
     protected static void addPackageBoilerplate(SimpleContentHandler handler,
-            PackageDto pkgDto) throws SAXException {
+            com.redhat.rhn.domain.rhnpackage.Package pkgDto) throws SAXException {
         long pkgId = pkgDto.getId().longValue();
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
-        attr.addAttribute("pkgid", sanitize(pkgId, pkgDto.getChecksum()));
-        attr.addAttribute("name", sanitize(pkgId, pkgDto.getName()));
-        attr.addAttribute("arch", sanitize(pkgId, pkgDto.getArchLabel()));
+        attr.addAttribute("pkgid", sanitize(pkgId, pkgDto.getChecksum().getChecksum()));
+        attr.addAttribute("name", sanitize(pkgId, pkgDto.getPackageName().getName()));
+        attr.addAttribute("arch", sanitize(pkgId, pkgDto.getPackageArch().getLabel()));
         handler.startElement("package", attr);
 
         attr.clear();
-        attr.addAttribute("ver", sanitize(pkgId, pkgDto.getVersion()));
-        attr.addAttribute("rel", sanitize(pkgId, pkgDto.getRelease()));
+        attr.addAttribute("ver", sanitize(pkgId, pkgDto.getPackageEvr().getVersion()));
+        attr.addAttribute("rel", sanitize(pkgId, pkgDto.getPackageEvr().getRelease()));
         attr.addAttribute("epoch", sanitize(pkgId,
-                getPackageEpoch(pkgDto.getEpoch())));
+                getPackageEpoch(pkgDto.getPackageEvr().getEpoch())));
         handler.startElement("version", attr);
         handler.endElement("version");
     }

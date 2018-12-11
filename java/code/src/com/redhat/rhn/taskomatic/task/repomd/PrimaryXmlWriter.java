@@ -20,7 +20,6 @@ package com.redhat.rhn.taskomatic.task.repomd;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.PackageCapabilityDto;
-import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
@@ -86,9 +85,10 @@ public class PrimaryXmlWriter extends RepomdWriter {
      *
      * @param pkgDto pkg info to add to xml
      */
-    public void addPackage(PackageDto pkgDto) {
+    public void addPackage(com.redhat.rhn.domain.rhnpackage.Package pkgDto) {
         try {
-            String xml = pkgDto.getPrimaryXml();
+            String xml = pkgDto.getPackageRepodata().getPrimaryXmlAsString();
+
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
 
                 if (xml != null) {
@@ -127,7 +127,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      * @param pkgDto pkg info to add to xml
      * @throws SAXException sax exception
      */
-    private void addPackageFormatDetails(PackageDto pkgDto,
+    private void addPackageFormatDetails(com.redhat.rhn.domain.rhnpackage.Package pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
         long pkgId = pkgDto.getId().longValue();
 
@@ -138,11 +138,11 @@ public class PrimaryXmlWriter extends RepomdWriter {
         localHandler.addElementWithCharacters("rpm:vendor", sanitize(pkgId, pkgDto
                 .getVendor()));
         localHandler.addElementWithCharacters("rpm:group", sanitize(pkgId, pkgDto
-                .getPackageGroupName()));
+                .getPackageGroup().getName()));
         localHandler.addElementWithCharacters("rpm:buildhost", sanitize(pkgId,
                 pkgDto.getBuildHost()));
         localHandler.addElementWithCharacters("rpm:sourcerpm", sanitize(pkgId,
-                pkgDto.getSourceRpm()));
+                pkgDto.getSourceRpm().getName()));
 
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("start", pkgDto.getHeaderStart().toString());
@@ -160,28 +160,28 @@ public class PrimaryXmlWriter extends RepomdWriter {
      * @param pkgDto pkg info to add to xml
      * @throws SAXException sax exception
      */
-    private void addBasicPackageDetails(PackageDto pkgDto,
+    private void addBasicPackageDetails(com.redhat.rhn.domain.rhnpackage.Package pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
         long pkgId = pkgDto.getId().longValue();
 
         localHandler.addElementWithCharacters("name", sanitize(pkgId, pkgDto
-                .getName()));
+                .getPackageName().getName()));
         localHandler.addElementWithCharacters("arch", sanitize(pkgId, pkgDto
-                .getArchLabel()));
+                .getPackageArch().getLabel()));
 
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
-        attr.addAttribute("ver", sanitize(pkgId, pkgDto.getVersion()));
-        attr.addAttribute("rel", sanitize(pkgId, pkgDto.getRelease()));
-        attr.addAttribute("epoch", sanitize(pkgId, getPackageEpoch(pkgDto
+        attr.addAttribute("ver", sanitize(pkgId, pkgDto.getPackageEvr().getVersion()));
+        attr.addAttribute("rel", sanitize(pkgId, pkgDto.getPackageEvr().getRelease()));
+        attr.addAttribute("epoch", sanitize(pkgId, getPackageEpoch(pkgDto.getPackageEvr()
                 .getEpoch())));
         localHandler.startElement("version", attr);
         localHandler.endElement("version");
 
         attr.clear();
-        attr.addAttribute("type", sanitize(pkgId, pkgDto.getChecksumType()));
+        attr.addAttribute("type", sanitize(pkgId, pkgDto.getChecksum().getChecksumType().getLabel()));
         attr.addAttribute("pkgid", "YES");
         localHandler.startElement("checksum", attr);
-        localHandler.addCharacters(sanitize(pkgId, pkgDto.getChecksum()));
+        localHandler.addCharacters(sanitize(pkgId, pkgDto.getChecksum().getChecksumType().getLabel()));
         localHandler.endElement("checksum");
 
         localHandler.addElementWithCharacters("summary", sanitize(pkgId, pkgDto
@@ -226,7 +226,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      * @param pkgDto pkg info to add to xml
      * @throws SAXException
      */
-    private void addPackagePrcoData(PackageDto pkgDto,
+    private void addPackagePrcoData(com.redhat.rhn.domain.rhnpackage.Package pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
         addPackageDepData(
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_PROVIDES,
@@ -365,14 +365,14 @@ public class PrimaryXmlWriter extends RepomdWriter {
      * @param pkgDto package info
      * @return package filename
      */
-    private String getProxyFriendlyFilename(PackageDto pkgDto) {
+    private String getProxyFriendlyFilename(com.redhat.rhn.domain.rhnpackage.Package pkgDto) {
         String[] parts = StringUtils.split(pkgDto.getPath(), '/');
         if (parts != null && parts.length > 0) {
             return parts[parts.length - 1];
         }
-        return pkgDto.getName() + "-" + pkgDto.getVersion() +
-                "-" + pkgDto.getRelease() + "." +
-                pkgDto.getArchLabel() + ".rpm";
+        return pkgDto.getPackageName().getName() + "-" + pkgDto.getPackageEvr().getVersion() +
+                "-" + pkgDto.getPackageEvr().getRelease() + "." +
+                pkgDto.getPackageArch().getLabel() + ".rpm";
     }
 
     /**
