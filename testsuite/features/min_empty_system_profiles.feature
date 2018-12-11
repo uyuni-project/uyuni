@@ -28,8 +28,9 @@ Feature: Empty minion profile operations
 
   Scenario: Check the empty minion profiles visible via XML-RPC
     Given I am logged in via XML-RPC system as user "admin" and password "admin"
-    When I call system.list_empty_system_profiles(), "empty-profile" should be present in the result
-    When I call system.list_empty_system_profiles(), "empty-profile-hostname" should be present in the result
+    When I call system.list_empty_system_profiles()
+    Then "empty-profile" should be present in the result
+    And "empty-profile-hostname" should be present in the result
 
   Scenario: Cleanup: Delete first empty minion profile
     Given I am authorized

@@ -603,7 +603,10 @@ When(/^I call system\.create_system_profile\(\) with name "([^"]*)" and hostname
   refute_nil(profile_id)
 end
 
-When(/^I call system\.list_empty_system_profiles\(\), "([^"]*)" should be present in the result$/) do |profile_name|
-  profiles = systest.list_empty_system_profiles
-  assert(profiles.select { |p| p['name'] == profile_name }.count == 1)
+When(/^I call system\.list_empty_system_profiles\(\)$/) do
+  $output = systest.list_empty_system_profiles
+end
+
+Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
+  assert($output.select { |p| p['name'] == profile_name }.count == 1)
 end
