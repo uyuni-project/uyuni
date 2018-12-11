@@ -84,7 +84,7 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   # == Returns:
   # The list of empty system profiles
   #
-  def list_empty_system_profiles()
+  def list_empty_system_profiles
     @connection.call('system.listEmptySystemProfiles', @sid)
   end
 end

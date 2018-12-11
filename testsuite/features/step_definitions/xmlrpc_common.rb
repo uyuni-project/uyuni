@@ -594,16 +594,16 @@ When(/^I logout from XML\-RPC configchannel namespace$/) do
 end
 
 When(/^I call system.create_system_profile\(\) with name "([^"]*)" and HW address "([^"]*)"$/) do |name, hw_address|
-  profile_id = systest.create_system_profile(name, {'hwAddress' => hw_address})
+  profile_id = systest.create_system_profile(name, 'hwAddress' => hw_address)
   refute_nil(profile_id)
 end
 
 When(/^I call system\.create_system_profile\(\) with name "([^"]*)" and hostname "([^"]*)"$/) do |name, hostname|
-  profile_id = systest.create_system_profile(name, {'hostname' => hostname})
+  profile_id = systest.create_system_profile(name, 'hostname' => hostname)
   refute_nil(profile_id)
 end
 
 When(/^I call system\.list_empty_system_profiles\(\), "([^"]*)" should be present in the result$/) do |profile_name|
-  profiles = systest.list_empty_system_profiles()
+  profiles = systest.list_empty_system_profiles
   assert(profiles.select { |p| p['name'] == profile_name }.count == 1)
 end
