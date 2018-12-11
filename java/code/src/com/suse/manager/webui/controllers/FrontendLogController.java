@@ -53,6 +53,7 @@ public class FrontendLogController {
             case "debug": log.debug(message); break;
             case "warning": log.warn(message); break;
             case "error": log.error(message); break;
+            default: log.info(message); break;
         }
 
         Map<String, Boolean> data = new HashMap<>();
