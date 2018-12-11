@@ -1,3 +1,7 @@
+- Sync changes from Spacewalk
+- Regenerating .po and .pot files for spacewalk-abrt
+- Updating .po translations from Zanata
+
 -------------------------------------------------------------------
 Fri Oct 26 10:04:31 CEST 2018 - jgonzalez@suse.com
 

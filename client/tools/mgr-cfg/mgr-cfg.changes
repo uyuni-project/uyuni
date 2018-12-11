@@ -1,3 +1,5 @@
+- Fix python2 compilation on openSUSE
+
 -------------------------------------------------------------------
 Fri Oct 26 09:52:13 CEST 2018 - jgonzalez@suse.com
 

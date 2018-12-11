@@ -22,6 +22,12 @@
 - Different methods have been refactored in tomcat/taskomatic for better performance(bsc#1106430)
 - Do not try cleanup when deleting empty system profiles (bsc#1111247)
 - ActivationKey base and child channel in a reactjs component
+- Sync changes from Spacewalk
+- 1640999 - Fix status icons
+- 1640999 - Show correct name of the channel provididing rhncfg* packages
+- 1624837 - Suppress warning if AppStream addon is enabled
+- 1624837 - Enable appstream by default
+- 1624837 - Add appstream ks corresponding to given baseos ks
 
 -------------------------------------------------------------------
 Fri Oct 26 10:29:32 CEST 2018 - jgonzalez@suse.com
