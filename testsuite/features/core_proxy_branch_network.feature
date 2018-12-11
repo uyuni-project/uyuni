@@ -127,9 +127,6 @@ Feature: Setup SUSE Manager for Retail branch network
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
     And I disable repositories after installing branch server
-    # WORKAROUND bsc#1116365 - There are no forwarders on branch server, despite checkbox ticked
-    And I run "netconfig update -f" on "proxy"
-    # TOTO: remove above when solved ^^^
     Then service "dhcpd" is enabled on "proxy"
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
