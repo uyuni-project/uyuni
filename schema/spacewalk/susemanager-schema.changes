@@ -1,3 +1,4 @@
+- Schema for the Content Management feature
 - add missing schema upgrade paths
 - Add virtual machine creation action
 
