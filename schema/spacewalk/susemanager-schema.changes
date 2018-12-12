@@ -1,3 +1,4 @@
+- Schema for the Content Management feature
 - fix performance regression in inter-server-sync (bsc#1128781)
 
 -------------------------------------------------------------------
