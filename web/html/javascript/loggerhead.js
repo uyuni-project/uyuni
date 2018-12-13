@@ -33,7 +33,13 @@ var Loggerhead = {};
     );
     xhr.onload = function() {
       if (xhr.status !== 200) {
-        console.error(JSON.parse(xhr));
+        // try to parse the xhr response, but catch if it fails unless an infinite loop of failure-and-logging would start
+        try {
+          console.error(JSON.parse(xhr));
+        }
+        catch {
+          console.error("The POST request to the url: '" + config.url + "' was not successfully completed and the response cannot be parsed.");
+        }
       }
     };
     xhr.onreadystatechange = function () {
