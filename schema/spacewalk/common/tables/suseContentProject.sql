@@ -35,3 +35,7 @@ CREATE SEQUENCE suse_ct_project_seq;
 
 CREATE UNIQUE INDEX suse_ct_project_lblid_uq
     ON suseContentProject(label);
+
+CREATE UNIQUE INDEX suse_ct_prj_nameid_oid_uq
+    ON suseContentProject(org_id, name);
+
