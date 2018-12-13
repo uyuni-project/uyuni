@@ -16,13 +16,10 @@
 CREATE TABLE suseContentEnvironmentPath(
     env_id NUMBER
         CONSTRAINT suse_ct_env_path_eid_fk
-            REFERENCES suseContentEnvironment(id)
-            ON DELETE CASCADE,
-
+            REFERENCES suseContentEnvironment(id),
     next_env_id NUMBER
         CONSTRAINT suse_ct_env_path_nxt_eid_fk
             REFERENCES suseContentEnvironment(id)
-            ON DELETE SET NULL
 )
 ENABLE ROW MOVEMENT
 ;
