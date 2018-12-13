@@ -34,9 +34,6 @@
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define run_checkstyle  0
 %define omit_tests      1
-%if !0%{?is_opensuse}
-%define with_oracle     1
-%endif
 %else
 %define appdir          %{_localstatedir}/lib/tomcat6/webapps
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
@@ -308,10 +305,8 @@ BuildRequires:  translate-toolkit
 %endif
 Obsoletes:      rhn-java < 5.3.0
 Obsoletes:      rhn-java-sat < 5.3.0
-Obsoletes:      rhn-oracle-jdbc-tomcat5 <= 1.0
 Provides:       rhn-java = %{version}-%{release}
 Provides:       rhn-java-sat = %{version}-%{release}
-Provides:       rhn-oracle-jdbc-tomcat5 = %{version}-%{release}
 
 %description
 This package contains the code for the Java version of the Spacewalk Web Site.
@@ -344,27 +339,6 @@ Requires:       /usr/bin/sudo
 %description lib
 This package contains the jar files for the Spacewalk Java web application
 and taskomatic process.
-
-%if 0%{?with_oracle}
-%package oracle
-Summary:        Oracle database backend support files for Spacewalk Java
-Group:          Applications/Internet
-BuildRequires:  ojdbc14
-Requires:       ojdbc14
-%if 0%{?fedora} || 0%{?rhel} >= 7
-Requires:       tomcat >= 7
-%else
-%if 0%{?suse_version}
-Requires:       tomcat >= 8
-%else
-Requires:       tomcat6
-%endif
-%endif
-Provides:       spacewalk-java-jdbc = %{version}-%{release}
-
-%description oracle
-This package contains Oracle database backend files for the Spacewalk Java.
-%endif
 
 %package postgresql
 Summary:        PostgreSQL database backend support files for Spacewalk Java
@@ -749,11 +723,6 @@ install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{c
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{cobdirsnippets}/wait_for_networkmanager_script
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/taskomaticd
-%if 0%{?with_oracle}
-ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
-%else
-rm -f %{_javadir}/ojdbc14.jar
-%endif
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT%{realcobsnippetsdir}/spacewalk
@@ -766,18 +735,11 @@ touch $RPM_BUILD_ROOT%{_var}/spacewalk/systemlogs/audit-review.log
 
 # special links for taskomatic
 TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
-%if 0%{?with_oracle}
-ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/ojdbc14.jar
-%endif
-ln -s -f %{_javadir}/quartz-oracle.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/quartz-oracle.jar
 rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*nop.jar
 rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*simple.jar
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
-%if 0%{?with_oracle}
-ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ojdbc14.jar
-%endif
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
 
 # install docbook sources
@@ -1050,17 +1012,6 @@ fi
 %{_datadir}/rhn/classes/log4j.properties
 %{_datadir}/rhn/classes/ehcache.xml
 %{_datadir}/rhn/lib/rhn.jar
-
-%if 0%{?with_oracle}
-%files oracle
-%defattr(644,root,root,755)
-%dir %{_prefix}/share/rhn/search
-%dir %{_prefix}/share/rhn/search/lib
-%{jardir}/ojdbc14.jar
-%{_prefix}/share/spacewalk/taskomatic/ojdbc14.jar
-%{_prefix}/share/spacewalk/taskomatic/quartz-oracle.jar
-%{_prefix}/share/rhn/search/lib/ojdbc14.jar
-%endif
 
 %files postgresql
 %defattr(644,root,root,755)
