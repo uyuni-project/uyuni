@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.redhat.rhn.domain.rhnpackage.PackageRepodata;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -90,6 +91,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private String supportPolicy;
     private String updateTag;
     private Set<ClonedChannel> clonedChannels = new HashSet<ClonedChannel>();
+    private PackageRepodata packageRepodata;
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
     /**
@@ -901,6 +903,20 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Channel getOriginal() {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * @return packageRepodata to get
+     */
+    public PackageRepodata getPackageRepodata() {
+        return packageRepodata;
+    }
+
+    /**
+     * @param packageRepodataIn to set
+     */
+    public void setPackageRepodata(PackageRepodata packageRepodataIn) {
+        this.packageRepodata = packageRepodataIn;
     }
 
     /**

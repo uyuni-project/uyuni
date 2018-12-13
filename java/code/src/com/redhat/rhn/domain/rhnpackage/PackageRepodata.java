@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.rhnpackage;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,8 +25,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "rhnPackageRepodata")
 public class PackageRepodata {
 
     @Id
@@ -34,19 +38,19 @@ public class PackageRepodata {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "package_id")
     @MapsId
-    private Package thePackage; // sorry, package is a keyword in java
+    private Package thePackage; // package is a keyword in java
 
-    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "primary_xml")
-    private byte[] primaryXml;
+    private String primaryXml;
 
-    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "filelist")
-    private byte[] filelist;
+    private String filelistXml;
 
-    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "other")
-    private byte[] other;
+    private String otherXml;
 
     /**
      * @return id to get
@@ -79,55 +83,42 @@ public class PackageRepodata {
     /**
      * @return primaryXml to get
      */
-    public byte[] getPrimaryXml() {
+    public String getPrimaryXml() {
         return primaryXml;
-    }
-
-    public String getPrimaryXmlAsString() {
-        return new String(primaryXml); // TODO encoding
     }
 
     /**
      * @param primaryXmlIn to set
      */
-    public void setPrimaryXml(byte[] primaryXmlIn) {
+    public void setPrimaryXml(String primaryXmlIn) {
         this.primaryXml = primaryXmlIn;
     }
 
     /**
      * @return filelist to get
      */
-    public byte[] getFilelist() {
-        return filelist;
-    }
-
-
     public String getFilelistXml() {
-        return new String(filelist); // TODO encoding
+        return filelistXml;
     }
+
     /**
      * @param filelistIn to set
      */
-    public void setFilelist(byte[] filelistIn) {
-        this.filelist = filelistIn;
+    public void setFilelistXml(String filelistIn) {
+        this.filelistXml = filelistIn;
     }
 
     /**
      * @return other to get
      */
-    public byte[] getOther() {
-        return other;
+    public String getOtherXml() {
+        return otherXml;
     }
 
     /**
      * @param otherIn to set
      */
-    public void setOther(byte[] otherIn) {
-        this.other = otherIn;
-    }
-
-
-    public String getOtherXml() {
-        return new String(other); // TODO encoding
+    public void setOtherXml(String otherIn) {
+        this.otherXml = otherIn;
     }
 }

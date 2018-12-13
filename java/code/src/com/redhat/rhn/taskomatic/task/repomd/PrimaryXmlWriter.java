@@ -87,7 +87,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      */
     public void addPackage(com.redhat.rhn.domain.rhnpackage.Package pkgDto) {
         try {
-            String xml = pkgDto.getPackageRepodata().getPrimaryXmlAsString();
+            String xml = pkgDto.getPackageRepodata().getPrimaryXml();
 
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
 
