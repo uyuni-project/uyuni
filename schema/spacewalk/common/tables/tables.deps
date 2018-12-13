@@ -224,6 +224,14 @@ rhnActionSubChannelsList       :: rhnActionSubChannels rhnChannel
 rhnActionSubChannelsTokens     :: suseChannelAccessToken rhnActionSubChannels
 suseChannelAccessToken         :: suseMinionInfo
 suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
+suseContentProject             :: web_customer
+suseContentProjectSource       :: suseContentProject rhnChannel rhnConfigChannel
+suseContentProjectHistory      :: suseContentProject web_contact
+suseContentFilter              :: web_customer
+suseContentFilterProject       :: suseContentProject suseContentFilter
+suseContentEnvironment         :: suseContentProject
+suseContentEnvironmentPath     :: suseContentEnvironment
+suseContentEnvironmentTarget   :: suseContentEnvironment rhnChannel rhnConfigChannel
 suseCredentials                :: suseCredentialsType web_contact
 suseCVEImageChannel            :: suseImageInfo rhnChannel
 suseCVEServerChannel           :: rhnServer rhnChannel
