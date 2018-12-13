@@ -14,19 +14,16 @@
 --
 
 CREATE TABLE suseContentEnvironmentTarget(
-    id NUMBER NOT NULL
-        CONSTRAINT suse_ct_env_tgt_id_pk PRIMARY KEY,
-
-    env_id NUMBER
-        CONSTRAINT suse_ct_env_tgt_eid_fk
-            REFERENCES suseContentEnvironment(id)
-            ON DELETE CASCADE,
-
-    type VARCHAR2(16) NOT NULL,
-
+    id         NUMBER NOT NULL
+                   CONSTRAINT suse_ct_env_tgt_id_pk PRIMARY KEY,
+    env_id     NUMBER
+                   CONSTRAINT suse_ct_env_tgt_eid_fk
+                       REFERENCES suseContentEnvironment(id)
+                       ON DELETE CASCADE,
+    type       VARCHAR2(16) NOT NULL,
     channel_id NUMBER
-        CONSTRAINT suse_ct_env_tgt_chanid_fk
-            REFERENCES rhnChannel(id)
+                   CONSTRAINT suse_ct_env_tgt_chanid_fk
+                       REFERENCES rhnChannel(id)
 )
 ENABLE ROW MOVEMENT
 ;
