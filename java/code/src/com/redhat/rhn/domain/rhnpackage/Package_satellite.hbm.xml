@@ -28,6 +28,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="headerSignature" type="string" column="header_sig"/>
         <property name="copyright"       type="string" column="copyright"/>
         <property name="cookie"          type="string" column="cookie"/>
+        <property name="headerStart"     type="long"   column="header_start"/>
+        <property name="headerEnd"       type="long"   column="header_end"/>
         <property name="lastModified"    type="timestamp"   column="last_modified"/>
         <property name="created"         type="timestamp"   column="created"/>
         <property name="modified"        type="timestamp"   column="modified"/>
