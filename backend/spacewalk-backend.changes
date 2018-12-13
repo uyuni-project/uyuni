@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Thu Dec 13 10:41:56 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.73.16-1
 - honor renamed postgresql10 log directory for supportconfig
+
 -------------------------------------------------------------------
 Thu Nov 01 10:53:49 CET 2018 - jgonzalez@suse.com
 
