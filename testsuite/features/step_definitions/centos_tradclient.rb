@@ -20,7 +20,8 @@ def wait_action_complete(actionid)
     end
   end
 rescue Timeout::Error
-  raise 'Action did not complete. It was not found in completed actions'
+  out = @cli.call('schedule.list_all_actions', @sid)
+  raise "Action did not complete. It was not found in completed actions. All Actions:\n #{out}"
 end
 
 When(/^I authenticate to XML-RPC$/) do
