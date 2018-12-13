@@ -88,10 +88,10 @@ var Loggerhead = {};
     }
   }
 
-  function setObjectFromPartialObject(fromObj, toObj) {
+  function merge(fromObj, toObj) {
     Object.keys(fromObj).map(k => {
       if (toObj[k] != null && fromObj[k] instanceof Object) {
-        setObjectFromPartialObject(fromObj[k], toObj[k]);
+        merge(fromObj[k], toObj[k]);
       }
       else {
         toObj[k] = fromObj[k];
@@ -101,6 +101,6 @@ var Loggerhead = {};
 
   // configuration parameters setter
   _context.set = function(configObject) {
-    setObjectFromPartialObject(configObject, config);
+    merge(configObject, config);
   }
 })(Loggerhead);
