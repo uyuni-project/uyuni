@@ -1,4 +1,10 @@
-- When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
+-------------------------------------------------------------------
+Thu Dec 13 10:44:51 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.1.20-1
+- When changing basechannel the compatible old childchannels are now
+  selected by default (bsc#1110772)
+
 -------------------------------------------------------------------
 Thu Nov 01 11:02:37 CET 2018 - jgonzalez@suse.com
 
