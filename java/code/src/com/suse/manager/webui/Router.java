@@ -19,6 +19,7 @@ import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
+import com.suse.manager.webui.controllers.FrontendLogController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
@@ -70,6 +71,8 @@ public class Router implements SparkApplication {
         JadeTemplateEngine jade = setup();
 
         initNotFoundRoutes(jade);
+
+        post("/manager/frontend-log", withUser(FrontendLogController::log));
 
         //CVEAudit
 
