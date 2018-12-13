@@ -26,7 +26,7 @@ CREATE TABLE suseContentFilter(
 
     name VARCHAR2(128) NOT NULL,
 
-    criteria VARCHAR2(1024)
+    criteria TEXT
 )
 ENABLE ROW MOVEMENT
 ;
@@ -35,3 +35,6 @@ CREATE SEQUENCE suse_ct_filter_seq;
 
 CREATE UNIQUE INDEX suse_ct_filter_org_name_uq
     ON suseContentFilter(org_id, name);
+
+CREATE INDEX suse_ct_filter_type
+    ON suseContentFilter(type);

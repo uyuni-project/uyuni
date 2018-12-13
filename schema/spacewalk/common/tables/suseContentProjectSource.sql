@@ -27,11 +27,6 @@ CREATE TABLE suseContentProjectSource(
     channel_id NUMBER
         CONSTRAINT suse_ct_prj_src_chanid_fk
             REFERENCES rhnChannel(id)
-            ON DELETE CASCADE,
-
-    config_channel_id NUMBER
-        CONSTRAINT suse_ct_prj_src_confchanid_fk
-            REFERENCES rhnConfigChannel(id)
             ON DELETE CASCADE
 )
 ENABLE ROW MOVEMENT
@@ -42,5 +37,5 @@ CREATE SEQUENCE suse_ct_prj_src_seq;
 CREATE UNIQUE INDEX suse_ct_prj_src_pid_cid_uq
     ON suseContentProjectSource(project_id, channel_id);
 
-CREATE UNIQUE INDEX suse_ct_prj_src_pid_ccid_uq
-    ON suseContentProjectSource(project_id, config_channel_id);
+CREATE INDEX suse_ct_prj_src_type
+    ON suseContentProjectSource(type);

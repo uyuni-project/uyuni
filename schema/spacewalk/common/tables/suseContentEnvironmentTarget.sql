@@ -27,12 +27,6 @@ CREATE TABLE suseContentEnvironmentTarget(
     channel_id NUMBER
         CONSTRAINT suse_ct_env_tgt_chanid_fk
             REFERENCES rhnChannel(id)
-            ON DELETE CASCADE,
-
-    config_channel_id NUMBER
-        CONSTRAINT suse_ct_env_tgt_conchanid_fk
-            REFERENCES rhnConfigChannel(id)
-            ON DELETE CASCADE
 )
 ENABLE ROW MOVEMENT
 ;
@@ -42,6 +36,6 @@ CREATE SEQUENCE suse_ct_env_tgt_seq;
 CREATE UNIQUE INDEX suse_ct_env_tgt_env_cid_uq
     ON suseContentEnvironmentTarget(env_id, channel_id);
 
-CREATE UNIQUE INDEX suse_ct_env_tgt_env_confcid_uq
-    ON suseContentEnvironmentTarget(env_id, config_channel_id);
+CREATE INDEX suse_ct_env_tgt_type
+    ON suseContentEnvironmentTarget(type);
 

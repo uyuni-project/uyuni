@@ -26,7 +26,7 @@ CREATE TABLE suseContentEnvironment(
 
     name VARCHAR2(128) NOT NULL,
 
-    description VARCHAR2(1024),
+    description TEXT,
 
     version NUMBER
 )
