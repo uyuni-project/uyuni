@@ -136,6 +136,8 @@ for i in $(find . -type f);
 do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
+# timestamp of Makefile must always be newer than Makefile.PL, else build will fail
+touch Makefile
 %endif
 
 # Fix python executable in Perl code
