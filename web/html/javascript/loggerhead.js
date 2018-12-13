@@ -16,7 +16,7 @@ var Loggerhead = {};
   // private function
   function postData(data, callback) {
     if (config.url == '') {
-      const errorMessage = '[Loggerhead] ERROR: no server enpoint URL set to send the POST request!! ';
+      var errorMessage = '[Loggerhead] ERROR: no server enpoint URL set to send the POST request!! ';
       if(config.console.error) {
         console.error(errorMessage);
       }
