@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Dec 13 10:43:21 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.46.18-1
 - Removed 'Manage Channels' shortcut for vendor channels (bsc#1115978)
 - add OES 2018 SP1 (bsc#1116826)
 - When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
