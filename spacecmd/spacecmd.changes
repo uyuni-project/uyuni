@@ -1,4 +1,9 @@
-- Add function to merge errata and packages through spacecmd (bsc#987798)
+-------------------------------------------------------------------
+Thu Dec 13 10:32:58 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.8.14-1
+- Add functions to merge errata (softwarechannel_errata_merge) and
+  packages (softwarechannel_mergepackages) through spacecmd (bsc#987798)
 
 -------------------------------------------------------------------
 Thu Nov 01 10:52:41 CET 2018 - jgonzalez@suse.com
