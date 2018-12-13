@@ -22,6 +22,13 @@
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
+%if 0%{?fedora} || 0%{?rhel}
+%global apache_group apache
+%endif
+%if 0%{?suse_version}
+%global apache_group www
+%endif
+
 Name:           spacewalk-utils
 Version:        4.0.3
 Release:        1%{?dist}
@@ -134,7 +141,7 @@ spacewalk-python2-pylint $RPM_BUILD_ROOT%{rhnroot}
 %{rhnroot}/utils/cloneByDate.py*
 %{rhnroot}/utils/depsolver.py*
 %{_mandir}/man8/*
-%dir /etc/rhn
+%attr(0750,root,%{apache_group}) %dir /etc/rhn
 %dir %{_datadir}/rhn
 %doc COPYING.GPLv2 COPYING.GPLv3
 
