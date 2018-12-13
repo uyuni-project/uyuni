@@ -22,9 +22,9 @@ CREATE TABLE suseContentProjectHistory(
             REFERENCES suseContentProject(id)
             ON DELETE CASCADE,
 
-    text VARCHAR2(2048),
+    text TEXT,
 
-    version NUMBER,
+    version NUMBER NOT NULL,
 
     created TIMESTAMP WITH LOCAL TIME ZONE
         DEFAULT (current_timestamp) NOT NULL,
