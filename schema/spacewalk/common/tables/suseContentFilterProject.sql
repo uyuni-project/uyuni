@@ -14,17 +14,15 @@
 --
 
 CREATE TABLE suseContentFilterProject(
-    filter_id NUMBER NOT NULL
-        CONSTRAINT suse_ct_filter_fid_fk
-            REFERENCES suseContentFilter(id)
-            ON DELETE CASCADE,
-
+    filter_id  NUMBER NOT NULL
+                   CONSTRAINT suse_ct_filter_fid_fk
+                       REFERENCES suseContentFilter(id)
+                       ON DELETE CASCADE,
     project_id NUMBER NOT NULL
-        CONSTRAINT suse_ct_filter_pid_fk
-            REFERENCES suseContentProject(id)
-            ON DELETE CASCADE,
-
-    position NUMBER NOT NULL
+                   CONSTRAINT suse_ct_filter_pid_fk
+                       REFERENCES suseContentProject(id)
+                       ON DELETE CASCADE,
+    position   NUMBER NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;

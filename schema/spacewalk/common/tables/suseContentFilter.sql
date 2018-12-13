@@ -14,18 +14,14 @@
 --
 
 CREATE TABLE suseContentFilter(
-    id NUMBER NOT NULL
-        CONSTRAINT suse_ct_filter_id_pk PRIMARY KEY,
-
-    org_id NUMBER NOT NULL
-        CONSTRAINT suse_ct_project_oid_fk
-            REFERENCES web_customer(id)
-            ON DELETE CASCADE,
-
-    type VARCHAR2(16) NOT NULL,
-
-    name VARCHAR2(128) NOT NULL,
-
+    id       NUMBER NOT NULL
+                 CONSTRAINT suse_ct_filter_id_pk PRIMARY KEY,
+    org_id   NUMBER NOT NULL
+                 CONSTRAINT suse_ct_project_oid_fk
+                     REFERENCES web_customer(id)
+                     ON DELETE CASCADE,
+    type     VARCHAR2(16) NOT NULL,
+    name     VARCHAR2(128) NOT NULL,
     criteria TEXT
 )
 ENABLE ROW MOVEMENT

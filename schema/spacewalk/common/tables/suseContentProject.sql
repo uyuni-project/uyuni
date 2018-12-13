@@ -14,18 +14,14 @@
 --
 
 CREATE TABLE suseContentProject(
-    id NUMBER NOT NULL
-        CONSTRAINT suse_ct_project_id_pk PRIMARY KEY,
-
-    name VARCHAR2(128) NOT NULL,
-
-    org_id NUMBER NOT NULL
-        CONSTRAINT suse_ct_project_oid_fk
-            REFERENCES web_customer(id)
-            ON DELETE CASCADE,
-
-    label VARCHAR2(24) NOT NULL,
-
+    id          NUMBER NOT NULL
+                    CONSTRAINT suse_ct_project_id_pk PRIMARY KEY,
+    name        VARCHAR2(128) NOT NULL,
+    org_id      NUMBER NOT NULL
+                    CONSTRAINT suse_ct_project_oid_fk
+                    REFERENCES web_customer(id)
+                    ON DELETE CASCADE,
+    label       VARCHAR2(24) NOT NULL,
     description TEXT
 )
 ENABLE ROW MOVEMENT
