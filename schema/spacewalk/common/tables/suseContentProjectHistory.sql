@@ -14,25 +14,20 @@
 --
 
 CREATE TABLE suseContentProjectHistory(
-    id NUMBER NOT NULL
-        CONSTRAINT suse_ct_prj_hist_id_pk PRIMARY KEY,
-
+    id         NUMBER NOT NULL
+                   CONSTRAINT suse_ct_prj_hist_id_pk PRIMARY KEY,
     project_id NUMBER NOT NULL
-        CONSTRAINT suse_ct_prj_hist_prjid_fk
-            REFERENCES suseContentProject(id)
-            ON DELETE CASCADE,
-
-    text TEXT,
-
-    version NUMBER NOT NULL,
-
-    created TIMESTAMP WITH LOCAL TIME ZONE
-        DEFAULT (current_timestamp) NOT NULL,
-
-    user_id NUMBER
-        CONSTRAINT suse_ct_prj_hist_uid_fk
-            REFERENCES web_contact (id)
-            ON DELETE SET NULL
+                   CONSTRAINT suse_ct_prj_hist_prjid_fk
+                       REFERENCES suseContentProject(id)
+                       ON DELETE CASCADE,
+    text       TEXT,
+    version    NUMBER NOT NULL,
+    created    TIMESTAMP WITH LOCAL TIME ZONE
+                   DEFAULT (current_timestamp) NOT NULL,
+    user_id    NUMBER
+                   CONSTRAINT suse_ct_prj_hist_uid_fk
+                       REFERENCES web_contact (id)
+                       ON DELETE SET NULL
 )
 ENABLE ROW MOVEMENT
 ;

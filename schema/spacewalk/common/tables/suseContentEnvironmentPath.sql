@@ -14,12 +14,12 @@
 --
 
 CREATE TABLE suseContentEnvironmentPath(
-    env_id NUMBER
-        CONSTRAINT suse_ct_env_path_eid_fk
-            REFERENCES suseContentEnvironment(id),
+    env_id      NUMBER
+                    CONSTRAINT suse_ct_env_path_eid_fk
+                        REFERENCES suseContentEnvironment(id),
     next_env_id NUMBER
-        CONSTRAINT suse_ct_env_path_nxt_eid_fk
-            REFERENCES suseContentEnvironment(id)
+                   CONSTRAINT suse_ct_env_path_nxt_eid_fk
+                       REFERENCES suseContentEnvironment(id)
 )
 ENABLE ROW MOVEMENT
 ;

@@ -14,21 +14,16 @@
 --
 
 CREATE TABLE suseContentEnvironment(
-    id NUMBER NOT NULL
-        CONSTRAINT suse_ct_env_id_pk PRIMARY KEY,
-
-    project_id NUMBER
-        CONSTRAINT suse_ct_env_pid_fk
-            REFERENCES suseContentProject(id)
-            ON DELETE CASCADE,
-
-    label VARCHAR2(16) NOT NULL,
-
-    name VARCHAR2(128) NOT NULL,
-
+    id          NUMBER NOT NULL
+                    CONSTRAINT suse_ct_env_id_pk PRIMARY KEY,
+    project_id  NUMBER
+                    CONSTRAINT suse_ct_env_pid_fk
+                        REFERENCES suseContentProject(id)
+                        ON DELETE CASCADE,
+    label       VARCHAR2(16) NOT NULL,
+    name        VARCHAR2(128) NOT NULL,
     description TEXT,
-
-    version NUMBER
+    version     NUMBER
 )
 ENABLE ROW MOVEMENT
 ;
