@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Dec 13 10:45:55 CET 2018 - jgonzalez@suse.com
+
+- version 3.1.17-1
 - fetch packages from correct channel when creating a bootstrap
   repository
 - add bootstrap repo definition for OES 2018 SP1 (bsc#1116826)
