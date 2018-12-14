@@ -46,8 +46,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Test for basic scenarios in VisualizationControllerTest.
@@ -181,6 +182,42 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests that "Unknown virtual host manager" is not present in the hierarchy if
+     * all hosts have known virtual host manager.
+     *
+     * @throws if anything goes wrong
+     */
+    public void testVirtualizationHierarchyNoUnknownVHM() throws Exception {
+        Server host = ServerFactoryTest.createTestServer(user, true);
+        VirtualInstance vi = new GuestBuilder(user).createGuest().build();
+        vi.setHostSystem(host);
+        HibernateFactory.getSession().save(vi);
+        com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager vhm =
+                VirtualHostManagerFactory.getInstance().createVirtualHostManager("myVHM",
+                        user.getOrg(), "file", Collections.emptyMap());
+        vhm.addServer(host);
+        HibernateFactory.getSession().save(vhm);
+
+        List<Object> hierarchy = VisualizationManager.virtualizationHierarchy(user);
+        List<VirtualHostManager> vhms = hierarchy.stream()
+                .filter(o -> o instanceof VirtualHostManager)
+                .map(o -> ((VirtualHostManager) o))
+                .collect(toList());
+
+        assertEquals(1, vhms.size());
+        assertEquals(vhm.getId().toString(), vhms.get(0).getId());
+    }
+
+    /**
+     * Tests that "Unknown virtual host manager" is not present when there are no systems at all.
+     */
+    public void testEmptyVirtualizationHierarchyNoUnknownVHM() {
+        List<Object> hierarchy = VisualizationManager.virtualizationHierarchy(user);
+        assertEquals(1, hierarchy.size());
+        assertEquals("root", ((System) hierarchy.get(0)).getId());
+    }
+
+    /**
      * Test for retrieval of systems and groups
      * @throws Exception if anything goes wrong
      */
@@ -251,7 +288,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         List<System> list = stream
                 .filter(o -> o instanceof System && ((System) o).getRawId().equals(id))
                 .map(o -> ((System) o))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         assertEquals(1, list.size());
         return list.get(0);
@@ -261,7 +298,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         List<System> list = stream
                 .filter(o -> o instanceof System && ((System) o).getId().equals(id))
                 .map(o -> ((System) o))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         assertEquals(1, list.size());
         return list.get(0);
@@ -271,7 +308,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         List<VirtualHostManager> list = stream
                 .filter(o -> o instanceof VirtualHostManager && ((VirtualHostManager) o).getId().equals(id))
                 .map(o -> ((VirtualHostManager) o))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         assertEquals(1, list.size());
         return list.get(0);

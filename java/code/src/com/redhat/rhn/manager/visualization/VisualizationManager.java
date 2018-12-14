@@ -67,33 +67,34 @@ public class VisualizationManager {
 
         Map<String, String> serverVhmMapping = getServerVhmMapping();
 
-        Stream<System> hosts = ((Stream<System>) HibernateFactory.getSession()
+        List<System> hosts = ((Stream<System>) HibernateFactory.getSession()
                 .getNamedQuery("Server.listHostSystems")
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
                 .map(p -> p.setInstalledProducts(installedProducts.get(p.getRawId())))
-                .map(s ->
-                        s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))))
+                .map(s -> s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))))
                 .map(p -> p.setParentId(serverVhmMapping.getOrDefault(
                         p.getId(),
-                        unknownVirtualHostManager.getId()
-                )));
+                        unknownVirtualHostManager.getId())))
+                .collect(Collectors.toList());
+
+        boolean unknownVHMneeded =
+                hosts.stream().anyMatch(h -> unknownVirtualHostManager.getId().equals(h.getParentId()));
 
         Stream<System> guests = ((Stream<System>) HibernateFactory.getSession()
                 .getNamedQuery("Server.listGuestSystems")
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
-                .map(s ->
-                        s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))))
+                .map(s -> s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))))
                 .map(p -> p.setInstalledProducts(installedProducts.get(p.getRawId())));
 
         return concatStreams(
                 Stream.of(root),
-                Stream.of(unknownVirtualHostManager),
+                Stream.of(unknownVirtualHostManager).filter(m -> unknownVHMneeded),
                 virtualHostManagers,
-                hosts,
+                hosts.stream(),
                 guests
         ).collect(Collectors.toList());
     }
