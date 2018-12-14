@@ -14,7 +14,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseContentEnvironmentPath(
+CREATE TABLE IF NOT EXISTS suseContentEnvironmentPath(
     env_id      NUMERIC
                     CONSTRAINT suse_ct_env_path_eid_fk
                         REFERENCES suseContentEnvironment(id),
@@ -25,9 +25,9 @@ CREATE TABLE suseContentEnvironmentPath(
 
 ;
 
-CREATE UNIQUE INDEX suse_ct_env_pid_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_pid_uq
     ON suseContentEnvironmentPath(env_id);
 
-CREATE UNIQUE INDEX suse_ct_env_nxt_pid_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_nxt_pid_uq
     ON suseContentEnvironmentPath(next_env_id);
 
