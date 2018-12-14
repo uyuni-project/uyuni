@@ -14,7 +14,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseContentFilter(
+CREATE TABLE IF NOT EXISTS suseContentFilter(
     id       NUMERIC NOT NULL
                  CONSTRAINT suse_ct_filter_id_pk PRIMARY KEY,
     org_id   NUMERIC NOT NULL
@@ -28,10 +28,10 @@ CREATE TABLE suseContentFilter(
 
 ;
 
-CREATE SEQUENCE suse_ct_filter_seq;
+CREATE SEQUENCE IF NOT EXISTS suse_ct_filter_seq;
 
-CREATE UNIQUE INDEX suse_ct_filter_org_name_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_filter_org_name_uq
     ON suseContentFilter(org_id, name);
 
-CREATE INDEX suse_ct_filter_type
+CREATE INDEX IF NOT EXISTS suse_ct_filter_type
     ON suseContentFilter(type);

@@ -14,7 +14,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseContentProjectSource(
+CREATE TABLE IF NOT EXISTS suseContentProjectSource(
     id         NUMERIC NOT NULL
                    CONSTRAINT suse_ct_prj_src_id_pk PRIMARY KEY,
     type       VARCHAR(16) NOT NULL,
@@ -30,10 +30,10 @@ CREATE TABLE suseContentProjectSource(
 
 ;
 
-CREATE SEQUENCE suse_ct_prj_src_seq;
+CREATE SEQUENCE IF NOT EXISTS suse_ct_prj_src_seq;
 
-CREATE UNIQUE INDEX suse_ct_prj_src_pid_cid_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_prj_src_pid_cid_uq
     ON suseContentProjectSource(project_id, channel_id);
 
-CREATE INDEX suse_ct_prj_src_type
+CREATE INDEX IF NOT EXISTS suse_ct_prj_src_type
     ON suseContentProjectSource(type);

@@ -15,7 +15,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseContentProject(
+CREATE TABLE IF NOT EXISTS suseContentProject(
     id          NUMERIC NOT NULL
                     CONSTRAINT suse_ct_project_id_pk PRIMARY KEY,
     name        VARCHAR(128) NOT NULL,
@@ -29,11 +29,11 @@ CREATE TABLE suseContentProject(
 
 ;
 
-CREATE SEQUENCE suse_ct_project_seq;
+CREATE SEQUENCE IF NOT EXISTS suse_ct_project_seq;
 
-CREATE UNIQUE INDEX suse_ct_project_lblid_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_project_lblid_uq
     ON suseContentProject(label);
 
-CREATE UNIQUE INDEX suse_ct_prj_nameid_oid_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_prj_nameid_oid_uq
     ON suseContentProject(org_id, name);
 
