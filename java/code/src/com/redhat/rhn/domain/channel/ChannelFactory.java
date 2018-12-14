@@ -158,6 +158,15 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Remove all Vendor ContentSources which are not bound to a channel
+     */
+    public static void cleanupOrphanVendorContentSource() {
+        List<ContentSource> unused = singleton.listObjectsByNamedQuery(
+                "ContentSource.findUnusedVendorContentSources", Collections.EMPTY_MAP);
+        unused.forEach(cs -> remove(cs));
+    }
+
+    /**
      * Lookup repository for given channel
      * @param c the channel
      * @return repository

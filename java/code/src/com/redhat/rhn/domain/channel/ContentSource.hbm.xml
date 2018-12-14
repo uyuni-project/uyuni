@@ -102,5 +102,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
         <return alias="cs" class="com.redhat.rhn.domain.channel.ContentSource" />
     </sql-query>
+    <sql-query name="ContentSource.findUnusedVendorContentSources">
+        <![CDATA[
+            select {cs.*}
+              from rhncontentsource cs
+             where cs.org_id is null
+               and not exists (select 1 from rhnchannelcontentsource ccs where ccs.source_id = cs.id)
+        ]]>
+        <return alias="cs" class="com.redhat.rhn.domain.channel.ContentSource" />
+    </sql-query>
 
 </hibernate-mapping>
