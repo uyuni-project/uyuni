@@ -14,7 +14,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseContentFilterProject(
+CREATE TABLE IF NOT EXISTS suseContentFilterProject(
     filter_id  NUMERIC NOT NULL
                    CONSTRAINT suse_ct_filter_fid_fk
                        REFERENCES suseContentFilter(id)
@@ -28,5 +28,5 @@ CREATE TABLE suseContentFilterProject(
 
 ;
 
-CREATE UNIQUE INDEX suse_ct_filter_project_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_filter_project_uq
     ON suseContentFilterProject(filter_id, project_id);
