@@ -1,3 +1,4 @@
+- Fix bootstrap repository creation for all distributions
 - fetch packages from correct channel when creating a bootstrap
   repository
 - adapt mgr-create-bootstrap-repo for Uyuni and let it create
