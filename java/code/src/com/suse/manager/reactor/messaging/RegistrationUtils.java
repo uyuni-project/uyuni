@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -96,6 +98,10 @@ public class RegistrationUtils {
         String minionId = minion.getMinionId();
         // get hardware and network async
         triggerHardwareRefresh(minion);
+
+        // Get the product packages from subscribed channels and install them.
+        List<Package> prodPkgs = PackageFactory.findMissingProductPackagesOnServer(minion.getId());
+        StateFactory.addPackagesToNewStateRevision(minion, Optional.ofNullable(minion.getCreator().getId()), prodPkgs);
 
         LOG.info("Finished minion registration: " + minionId);
 
