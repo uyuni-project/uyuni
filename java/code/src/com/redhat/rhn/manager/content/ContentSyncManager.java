@@ -465,6 +465,8 @@ public class ContentSyncManager {
     private void refreshRepositoriesAuthentication(String mirrorUrl) throws ContentSyncException {
         List<Credentials> credentials = filterCredentials();
 
+        ChannelFactory.cleanupOrphanVendorContentSource();
+
         // Query repos for all mirror credentials and consolidate
         for (Credentials c : credentials) {
             try {
