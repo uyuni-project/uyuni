@@ -14,7 +14,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseContentEnvironment(
+CREATE TABLE IF NOT EXISTS suseContentEnvironment(
     id          NUMERIC NOT NULL
                     CONSTRAINT suse_ct_env_id_pk PRIMARY KEY,
     project_id  NUMERIC
@@ -29,10 +29,10 @@ CREATE TABLE suseContentEnvironment(
 
 ;
 
-CREATE SEQUENCE suse_ct_env_seq;
+CREATE SEQUENCE IF NOT EXISTS suse_ct_env_seq;
 
-CREATE UNIQUE INDEX suse_ct_env_pid_lbl_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_pid_lbl_uq
     ON suseContentEnvironment(project_id, label);
 
-CREATE UNIQUE INDEX suse_ct_env_pid_name_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_pid_name_uq
     ON suseContentEnvironment(project_id, name);
