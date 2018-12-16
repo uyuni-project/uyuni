@@ -90,6 +90,36 @@
         "channel_name": "OES11-SP3-Pool for x86_64"
     },
     {
+        "channel_label": "oes2018-sle-module-web-scripting-12-sp2-updates-x86_64",
+        "parent_channel_label": "oes2018-pool-x86_64",
+        "product_id": 45,
+        "repository_id": -69,
+        "parent_product_id": null,
+        "root_product_id": 45,
+        "update_tag": "SLE-Module-Web-Scripting",
+        "url": "https://nu.novell.com/repo/$RCE/OES2018-SLE-Modules-Web-Scripting-12-SP2-Updates/sle-12-x86_64/",
+        "release_stage": "released",
+        "mandatory": false,
+        "signed": true,
+        "recommended": false,
+        "channel_name": "OES2018-SLE-Module-Web-Scripting-12-SP2-Updates for x86_64"
+    },
+    {
+        "channel_label": "oes2018-sle-module-web-scripting-12-sp2-pool-x86_64",
+        "parent_channel_label": "oes2018-pool-x86_64",
+        "product_id": 45,
+        "repository_id": -68,
+        "parent_product_id": null,
+        "root_product_id": 45,
+        "update_tag": "SLE-Module-Web-Scripting",
+        "url": "https://nu.novell.com/repo/$RCE/OES2018-SLE-Modules-Web-Scripting-12-SP2-Pool/sle-12-x86_64/",
+        "release_stage": "released",
+        "mandatory": false,
+        "signed": true,
+        "recommended": false,
+        "channel_name": "OES2018-SLE-Module-Web-Scripting-12-SP2-Pool for x86_64"
+    },
+    {
         "channel_label": "oes2018-sle-sdk-12-sp2-debuginfo-updates-x86_64",
         "parent_channel_label": "oes2018-pool-x86_64",
         "product_id": 45,
