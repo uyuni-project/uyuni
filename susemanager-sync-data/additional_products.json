@@ -346,6 +346,26 @@
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
+            },
+            {
+                "id" : -68,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Modules-Web-Scripting-12-SP2-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Module-Web-Scripting-12-SP2-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -69,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Modules-Web-Scripting-12-SP2-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Module-Web-Scripting-12-SP2-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
             }
         ]
     },
