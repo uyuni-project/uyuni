@@ -1,3 +1,4 @@
+- add sle-module-web-scripting for OES2018 (bsc#1119233)
 - add new set of data for the new SCC sync backend
 - enable SLE15 SP1 family (bsc#1114268)
 - enable OES2018 SP1 (bsc#1116826)
