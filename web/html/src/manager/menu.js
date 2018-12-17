@@ -148,7 +148,7 @@ class Nav extends React.Component {
   };
 
   scrollToTop = () => {
-    window.scrollTo(0, 0);
+    document.getElementById('spacewalk-content').scrollTop = 0;
   };
 
   render() {

@@ -15,6 +15,7 @@ a, a:hover {
 }
 header {
   position: fixed;
+  top: 0;
   height:auto;
   z-index: 1000;
   width: 100%;
@@ -144,7 +145,11 @@ section {
     background: @spacewalk-aside;
     border-right: 1px solid @spacewalk-aside-border;
     /* erasing the predefined paddings in the columns */
-    padding: 1em 0 2em 0;
+    padding: 0;
+    position: fixed;
+    #nav {
+      overflow-y: auto!important;
+    }
   }
 
   /* fixing margins in the 1st and last columns */
@@ -154,6 +159,8 @@ section {
     padding-right: 2em;
     padding-top: 0;
     padding-bottom: 2em;
+    overflow-y: auto!important;
+    float: right;
   }
 }
 
@@ -336,9 +343,8 @@ header, nav.navbar-pf {
 
 //Nav menu in left column
 #nav {
-  margin-bottom: 60px;
   nav {
-    padding: 0px;
+    padding: 10px 0 0 0;
     .nav-tool-box {
       text-align: center;
       padding: 0 10px;
