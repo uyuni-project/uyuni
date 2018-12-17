@@ -1,3 +1,4 @@
+- Nav and section scroll independently
 - change SCC sync backend to adapt quicker to SCC changes and improve
   speed of syncing metadata and checking for channel dependencies
 
