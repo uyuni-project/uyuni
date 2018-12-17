@@ -22,7 +22,7 @@ CREATE TABLE suseContentEnvironment(
                         ON DELETE CASCADE,
     label       VARCHAR2(16) NOT NULL,
     name        VARCHAR2(128) NOT NULL,
-    description TEXT,
+    description CLOB,
     version     NUMBER
 )
 ENABLE ROW MOVEMENT
