@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Dec 17 14:42:10 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Exit with an error if spacewalk-common-channels does not match
   any channel
 - Add Uyuni Client Tools for CentOS, openSUSE and SLES
