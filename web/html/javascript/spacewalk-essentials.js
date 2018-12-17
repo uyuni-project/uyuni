@@ -61,7 +61,7 @@ $(window).resize(function () {
 
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
-  $('section#spacewalk-content').scroll(function() {
+  $(window).scroll(function() {
     if($(this).scrollTop() > 100) {
       $('#scroll-top').show();
     } else {
@@ -69,6 +69,10 @@ function scrollTopBehavior() {
     }
 
     sstScrollBehavior();
+  });
+
+  $(document).on('click', '#scroll-top', function() {
+    window.scrollTo(0,0);
   });
 }
 
