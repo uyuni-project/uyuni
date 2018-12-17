@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Dec 17 14:37:54 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Change Requires to allow installing with both Tomcat 8 (SLE-12SP3) and 9 (SLE12-SP4)
 - Automatically schedule an Action to refresh minion repos after deletion of an assigned channel (bsc#1115029)
 - Performance improvements in channel management functionalities (bsc#1114877)
