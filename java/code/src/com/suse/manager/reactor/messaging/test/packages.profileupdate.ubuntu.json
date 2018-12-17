@@ -1,0 +1,387 @@
+{
+  "tag": "salt/job/20160407084101455804/ret/minion.ubuntu.local",
+  "data": {
+    "fun_args": [
+      {
+        "mods": [
+          "packages.profileupdate"
+        ]
+      }
+    ],
+    "jid": "20160407084101455804",
+    "return": {
+        "module_|-packages_|-pkg.info_installed_|-run": {
+            "comment": "Module function pkg.info_installed executed",
+            "name": "pkg.info_installed",
+            "start_time": "17:34:36.995780",
+            "result": true,
+            "duration": 610.41,
+            "__run_num__": 2,
+            "__sls__": "packages.profileupdate",
+            "changes": {
+                "ret": {
+                    "libgcc1": {
+                        "build_date": "2018-07-28T06:13:41Z",
+                        "group": "libs",
+                        "description": "GCC support library\n Shared version of the support library, a library of internal subroutines\n that GCC uses to overcome shortcomings of particular machines, or\n special needs for some languages.\n",
+                        "url": "http://gcc.gnu.org/",
+                        "build_date_time_t": 1532758421,
+                        "install_date": "2018-11-01T21:30:01Z",
+                        "install_date_time_t": 1541107801,
+                        "source": "gcc-8",
+                        "version": "1:8.2.0-1ubuntu2~18.04",
+                        "packager": "Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+                        "arch": "amd64",
+                        "name": "libgcc1"
+                    },
+                    "libefiboot1": {
+                        "build_date": "2018-02-13T17:07:12Z",
+                        "group": "libs",
+                        "description": "Library to manage UEFI variables\n Library to allow for the manipulation of UEFI variables related to booting.\n",
+                        "license": "GPL-2.0+, LGPL-2.0+",
+                        "url": "https://github.com/rhinstaller/efivar",
+                        "build_date_time_t": 1518541632,
+                        "install_date": "2018-11-01T21:46:05Z",
+                        "install_date_time_t": 1541108765,
+                        "source": "efivar",
+                        "version": "34-1",
+                        "packager": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+                        "arch": "amd64",
+                        "name": "libefiboot1"
+                    },
+                    "init": {
+                        "build_date": "2017-10-25T15:38:42Z",
+                        "group": "metapackages",
+                        "description": "metapackage ensuring an init system is installed\n This package is a metapackage which allows you to select from the available\n init systems while ensuring that one of these is available on the system at\n all times.\n",
+                        "license": "BSD-3-clause, GPL-2+",
+                        "build_date_time_t": 1508945922,
+                        "install_date": "2018-11-01T21:29:19Z",
+                        "install_date_time_t": 1541107759,
+                        "source": "init-system-helpers",
+                        "version": "1.51",
+                        "packager": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+                        "arch": "amd64",
+                        "name": "init"
+                    }
+                }
+            },
+            "__id__": "packages"
+        },
+        "cmd_|-ubunturelease_|-cat /etc/os-release_|-run": {
+            "comment": "Command \"cat /etc/os-release\" run",
+            "name": "cat /etc/os-release",
+            "start_time": "17:34:37.607547",
+            "result": true,
+            "duration": 37.363,
+            "__run_num__": 3,
+            "__sls__": "packages.profileupdate",
+            "changes": {
+                "pid": 384,
+                "retcode": 0,
+                "stderr": "",
+                "stdout": "NAME=\"Ubuntu\"\nVERSION=\"18.04.1 LTS (Bionic Beaver)\"\nID=ubuntu\nID_LIKE=debian\nPRETTY_NAME=\"Ubuntu 18.04.1 LTS\"\nVERSION_ID=\"18.04\"\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nVERSION_CODENAME=bionic\nUBUNTU_CODENAME=bionic"
+            },
+            "__id__": "ubunturelease"
+        },
+        "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+            "comment": "Module function saltutil.sync_grains executed",
+            "name": "saltutil.sync_grains",
+            "start_time": "17:34:36.302401",
+            "result": true,
+            "duration": 645.792,
+            "__run_num__": 0,
+            "__sls__": "util.syncgrains",
+            "changes": {
+                "ret": []
+            },
+            "__id__": "sync_grains"
+        },
+        "module_|-grains_update_|-grains.items_|-run": {
+            "comment": "Module function grains.items executed",
+            "name": "grains.items",
+            "start_time": "17:34:37.645590",
+            "result": true,
+            "duration": 7.49,
+            "__run_num__": 4,
+            "__sls__": "packages.profileupdate",
+            "changes": {
+                "ret": {
+                    "additional_packages": [],
+                    "kernelrelease": "4.15.0-38-generic",
+                    "virtual": "kvm",
+                    "saltversioninfo": [
+                        2018,
+                        3,
+                        0,
+                        0
+                    ],
+                    "systemd": {
+                        "version": "237",
+                        "features": "+PAM +AUDIT +SELINUX +IMA +APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 +SECCOMP +BLKID +ELFUTILS +KMOD -IDN2 +IDN -PCRE2 default-hierarchy=hybrid"
+                    },
+                    "uuid": "55f5685d-749d-4a34-bff2-412cef02f6a9",
+                    "hwaddr_interfaces": {
+                        "lo": "00:00:00:00:00:00",
+                        "ens3": "d2:2f:6f:d8:f3:b0"
+                    },
+                    "osfullname": "Ubuntu",
+                    "additional_network": 0,
+                    "init": "systemd",
+                    "lsb_distrib_id": "Ubuntu",
+                    "apparmor": 0,
+                    "pythonpath": [
+                        "/usr/bin",
+                        "/usr/lib/python2.7",
+                        "/usr/lib/python2.7/plat-x86_64-linux-gnu",
+                        "/usr/lib/python2.7/lib-tk",
+                        "/usr/lib/python2.7/lib-old",
+                        "/usr/lib/python2.7/lib-dynload",
+                        "/usr/local/lib/python2.7/dist-packages",
+                        "/usr/lib/python2.7/dist-packages"
+                    ],
+                    "cpu_flags": [
+                        "fpu",
+                        "de",
+                        "pse",
+                        "tsc",
+                        "msr",
+                        "pae",
+                        "mce",
+                        "cx8",
+                        "apic",
+                        "sep",
+                        "mtrr",
+                        "pge",
+                        "mca",
+                        "cmov",
+                        "pse36",
+                        "clflush",
+                        "mmx",
+                        "fxsr",
+                        "sse",
+                        "sse2",
+                        "syscall",
+                        "nx",
+                        "lm",
+                        "rep_good",
+                        "nopl",
+                        "xtopology",
+                        "cpuid",
+                        "pni",
+                        "cx16",
+                        "x2apic",
+                        "hypervisor",
+                        "lahf_lm",
+                        "pti"
+                    ],
+                    "cpu_model": "QEMU Virtual CPU version 2.5+",
+                    "oscodename": "bionic",
+                    "gpus": [
+                      {
+                            "model": "GD 5446",
+                            "vendor": "unknown"
+                        }
+                    ],
+                    "num_gpus": 1,
+                    "disks": [
+                        "loop1",
+                        "loop6",
+                        "loop4",
+                        "sr0",
+                        "loop2",
+                        "loop0",
+                        "loop7",
+                        "loop5",
+                        "vda",
+                        "loop3"
+                    ],
+                    "productname": "Standard PC (i440FX + PIIX, 1996)",
+                    "osarch": "amd64",
+                    "machine_id": "55f5685d749d4a34bff2412cef02f6a9",
+                    "biosversion": "1.0.0-prebuilt.qemu-project.org",
+                    "use_unreleased_updates": 0,
+                    "domain": "tf.local",
+                    "fqdns": [],
+                    "ip_interfaces": {
+                        "lo": [
+                            "127.0.0.1",
+                            "::1"
+                        ],
+                        "ens3": [
+                            "10.160.64.174",
+                            "2620:113:80c0:8080:10:160:68:69",
+                            "2620:113:80c0:8080:d02f:6fff:fed8:f3b0",
+                            "fe80::d02f:6fff:fed8:f3b0"
+                        ]
+                    },
+                    "mem_total": 481,
+                    "mirror": null,
+                    "server": "cb-suma.tf.local",
+                    "mdadm": [],
+                    "lsb_distrib_description": "Ubuntu 18.04.1 LTS",
+                    "product_version": "released",
+                    "use_avahi": 1,
+                    "localhost": "cb-min-ubuntu-3",
+                    "connect_to_additional_network": 1,
+                    "lsb_distrib_release": "18.04",
+                    "saltpath": "/usr/lib/python2.7/dist-packages/salt",
+                    "__suse_reserved_pkg_patches_support": true,
+                    "biosreleasedate": "04/01/2014",
+                    "host": "cb-min-ubuntu-3",
+                    "reset_ids": true,
+                    "osfinger": "Ubuntu-18.04",
+                    "manufacturer": "QEMU",
+                    "kernelversion": "#41-Ubuntu SMP Wed Oct 10 10:59:38 UTC 2018",
+                    "testsuite": 0,
+                    "ip4_gw": "10.160.255.254",
+                    "fqdn": "cb-min-ubuntu-3.tf.local",
+                    "os": "Ubuntu",
+                    "kernel": "Linux",
+                    "additional_repos": {},
+                    "use_released_updates": 0,
+                    "path": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                    "SSDs": [],
+                    "susemanager": {
+                        "activation_key": "1-UBUNTU-BIONIC-DEFAULT"
+                    },
+                    "ps": "ps -efHww",
+                    "server_id": 435202551,
+                    "ip_gw": true,
+                    "auto_connect_to_master": false,
+                    "__suse_reserved_pkg_all_versions_support": true,
+                    "gid": 0,
+                    "master": "cb-suma.tf.local",
+                    "ipv4": [
+                        "10.160.64.174",
+                        "127.0.0.1"
+                    ],
+                    "dns": {
+                        "domain": "",
+                        "sortlist": [],
+                        "nameservers": [
+                            "127.0.0.53"
+                        ],
+                        "ip4_nameservers": [
+                            "127.0.0.53"
+                        ],
+                        "search": [],
+                        "ip6_nameservers": [],
+                        "options": []
+                    },
+                    "ipv6": [
+                        "::1",
+                        "2620:113:80c0:8080:10:160:68:69",
+                        "2620:113:80c0:8080:d02f:6fff:fed8:f3b0",
+                        "fe80::d02f:6fff:fed8:f3b0"
+                    ],
+                    "total_num_cpus": 1,
+                    "username": "root",
+                    "shell": "/bin/sh",
+                    "saltversion": "2018.3.0",
+                    "gpg_keys": [],
+                    "pythonversion": [
+                        2,
+                        7,
+                        15,
+                        "candidate",
+                        1
+                    ],
+                    "connect_to_base_network": 1,
+                    "cpuarch": "x86_64",
+                    "osrelease_info": [
+                        18,
+                        4
+                    ],
+                    "uid": 0,
+                    "zmqversion": "4.2.5",
+                    "serialnumber": "",
+                    "pid": 32744,
+                    "groupname": "root",
+                    "zfs_support": false,
+                    "timezone": "Europe/Berlin",
+                    "id": "cb-min-ubuntu-3.tf.local",
+                    "osrelease": "18.04",
+                    "ip6_interfaces": {
+                        "lo": [
+                            "::1"
+                        ],
+                        "ens3": [
+                            "2620:113:80c0:8080:10:160:68:69",
+                            "2620:113:80c0:8080:d02f:6fff:fed8:f3b0",
+                            "fe80::d02f:6fff:fed8:f3b0"
+                        ]
+                    },
+                    "num_cpus": 1,
+                    "hostname": "cb-min-ubuntu-3",
+                    "ip4_interfaces": {
+                        "lo": [
+                            "127.0.0.1"
+                        ],
+                        "ens3": [
+                            "10.160.64.174"
+                        ]
+                    },
+                    "role": "minion",
+                    "cpusockets": 1,
+                    "locale_info": {
+                        "detectedencoding": "UTF-8",
+                        "defaultlanguage": "en_US",
+                        "defaultencoding": "UTF-8"
+                    },
+                    "fqdn_ip4": [
+                        "10.160.64.174"
+                    ],
+                    "evil_minions_dump": 0,
+                    "fqdn_ip6": [
+                        "2620:113:80c0:8080:10:160:68:69"
+                    ],
+                    "nodename": "cb-min-ubuntu-3",
+                    "ip6_gw": "fe80::1",
+                    "osmajorrelease": 18,
+                    "os_family": "Debian",
+                    "pythonexecutable": "/usr/bin/python2",
+                    "swap_total": 0,
+                    "lsb_distrib_codename": "bionic"
+                }
+            },
+            "__id__": "grains_update"
+        },
+        "module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run": {
+            "comment": "Module function sumautil.get_kernel_live_version executed",
+            "name": "sumautil.get_kernel_live_version",
+            "start_time": "17:34:37.653415",
+            "result": true,
+            "duration": 1.48,
+            "__run_num__": 5,
+            "__sls__": "packages.profileupdate",
+            "changes": {
+                "ret": null
+            },
+            "__id__": "kernel_live_version"
+        },
+        "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+            "comment": "Module function saltutil.sync_modules executed",
+            "name": "saltutil.sync_modules",
+            "start_time": "17:34:36.949199",
+            "result": true,
+            "duration": 46.431,
+            "__run_num__": 1,
+            "__sls__": "util.syncmodules",
+            "changes": {
+                "ret": []
+            },
+            "__id__": "sync_modules"
+        }
+    },
+    "retcode": 0,
+    "success": true,
+    "cmd": "_return",
+    "_stamp": "2016-04-07T08:41:02.846934",
+    "fun": "state.apply",
+    "out": "highstate",
+    "id": "minion.ubuntu.local",
+    "metadata": {
+      "suma-action-id": 59
+    }
+  }
+}
