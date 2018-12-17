@@ -311,9 +311,13 @@ public class MatcherJsonIO {
      * Returns SUSE product ids for a server, including ids for SUSE Manager entitlements.
      * (For systems without a SUSE base product, empty stream is returned as we don't
      * require SUSE Manager entitlements for such systems).
+     * Filters out the products with "SLE-M-T" product class as they are not considered in
+     * subsription matching.
      */
     private Stream<Long> productIdsForServer(Server server, Set<String> entitlements) {
-        List<SUSEProduct> products = productFactory.map(server.getInstalledProducts());
+        List<SUSEProduct> products = productFactory.map(server.getInstalledProducts())
+                .filter(product -> !"SLE-M-T".equals(product.getChannelFamily().getLabel()))
+                .collect(toList());
 
         if (products.stream().noneMatch(SUSEProduct::isBase)) {
             return Stream.empty();
