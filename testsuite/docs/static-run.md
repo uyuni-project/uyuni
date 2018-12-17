@@ -19,6 +19,7 @@ Set up the following environment variables:
 * `MINION` the Salt minion
 * `SSHMINION` the SSH-managed Salt minion
 * `CENTOSMINION` the CentOS Salt minion
+* `UBUNTUMINION` the Ubuntu Salt minion
 
 Once you have the machines configured, you can run the testsuite.
 To run all standard tests, from the controller:
@@ -29,5 +30,6 @@ export CLIENT="${PREFIX}clisles12sp3.tf.local"
 export MINION="${PREFIX}minsles12sp3.tf.local"
 export SSHMINION="${PREFIX}minsles12sp3ssh.tf.local"
 export CENTOSMINION="${PREFIX}mincentos7.tf.local"
+export UBUNTUMINION="${PREFIX}min-ubuntu.tf.local"
 run-testsuite
 ```

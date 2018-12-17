@@ -92,6 +92,38 @@ Inside of the testsuite, the scenarios that are tagged with
 are executed only if the CentOS minion is available.
 
 
+### Testing with a Ubuntu minion
+
+Using a Ubuntu minion with the testsuite is not mandatory.
+
+If you do not want a CentOS minion, do not define `UBUNTUMINION` environment
+variable before you run the testsuite. That's all.
+If you want a CentOS minion, make this variable point to the machine that
+will be the CentOS minion:
+```bash
+export UBUNTUMINION=ubuntu.example.com
+```
+and then run the testsuite.
+
+Sumaform can prepare a CentOS virtual machine and declare the `$UBUNTUMINION`
+variable on the controller (in `/root/.bashrc`).
+To declare a CentOS minion in your `main.tf` file, add a line
+to the controller declaration that looks like:
+```
+ubuntu_configuration="${module.min-ubuntu.configuration}"
+```
+The module defining the Ubuntu minion will use a Ubuntu image:
+```
+image = "ubuntu1804"
+```
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@ubuntu_minion
+```
+are executed only if the Ubuntu minion is available.
+
+
 ### Testing with a SLE 15 system
 
 The test suite will determine automatically whether your minion
