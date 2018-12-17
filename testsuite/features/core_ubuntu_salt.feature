@@ -57,17 +57,16 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
 @proxy
 @ubuntu_minion
   Scenario: Run a remote command on the Ubuntu minion
-    Given I am authorized as "testing" with password "testing"
+    Given I am authorized
     And I follow "Salt"
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
     And I enter command "cat /etc/os-release"
-    And I enter target "*centos*"
+    And I enter target "*ubuntu*"
     And I click on preview
     When I click on run
     Then I should see "ubuntu-minion" hostname
-    #TODO: And I wait until we have results for that command
-    And I wait for "15" seconds
+    And I wait until I see "show response" text
     And I expand the results for "ubuntu-minion"
     And I should see a "rhel fedora" text
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
