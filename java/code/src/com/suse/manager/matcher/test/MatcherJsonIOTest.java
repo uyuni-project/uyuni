@@ -185,6 +185,34 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertFalse(guest.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
     }
 
+
+    /**
+     * Tests that the SUSE Manager Tools proudct is not reported to the matcher.
+     *
+     * @throws java.lang.Exception if anything goes wrong
+     */
+    public void testFilteringToolsProducts() throws Exception {
+        SUSEProductTestUtils.clearAllProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        SUSEProductTestUtils.createSUMAToolsProduct();
+        SUSEProductTestUtils.createVendorEntitlementProducts();
+
+        Set<InstalledProduct> installedProducts = new HashSet<>();
+        InstalledProduct instPrd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
+        installedProducts.add(instPrd);
+        instPrd = createInstalledProduct("sle-manager-tools", "12", "0", "x86_64", false);
+        installedProducts.add(instPrd);
+
+        Server testSystem = ServerTestUtils.createTestSystem(user);
+        testSystem.setInstalledProducts(installedProducts);
+
+        MatcherJsonIO matcherInput = new MatcherJsonIO();
+        SystemJson system = matcherInput.getJsonSystems(false, AMD64_ARCH).stream()
+                .filter(s -> s.getId().equals(testSystem.getId())).findFirst().get();
+
+        assertFalse(system.getProductIds().contains(instPrd.getSUSEProduct().getProductId()));
+    }
+
     public void testSubscriptionsToJson() throws Exception {
         withSetupContentSyncManager(JARPATH, () -> {
             List<SubscriptionJson> result = new MatcherJsonIO().getJsonSubscriptions();
