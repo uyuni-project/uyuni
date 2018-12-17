@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Dec 17 14:41:40 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Add support for Python 3 on spacewalk-setup
 - use a Salt engine to process return results (bsc#1099988)
 - increase maximum number of threads and open files for taskomatic (bsc#1111966)
