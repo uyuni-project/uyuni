@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.server.Server;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * ServerAuditTarget
  */
@@ -49,7 +51,7 @@ public class ServerAuditTarget implements AuditTarget {
 
     @Override
     public List<SUSEProduct> getSUSEProducts() {
-        return productFactory.map(server.getInstalledProducts());
+        return productFactory.map(server.getInstalledProducts()).collect(toList());
     }
 
     @Override
