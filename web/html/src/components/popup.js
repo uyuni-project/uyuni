@@ -12,6 +12,7 @@ class PopUp extends React.Component {
     title: PropTypes.string,
     content: PropTypes.node, // the body of the popup
     footer: PropTypes.node,
+    hideHeader: PropTypes.bool, // Whether to show the title and close button
   };
 
   componentDidMount() {
@@ -23,12 +24,16 @@ class PopUp extends React.Component {
       <div className="modal fade" tabIndex="-1" role="dialog" id={this.props.id}>
         <div className={"modal-dialog " + (this.props.className ? this.props.className : "")}>
           <div className="modal-content">
-            <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              {this.props.title ? <h4 className="modal-title">{this.props.title}</h4> : null}
-            </div>
+            {!this.props.hideHeader
+              && (
+                <div className="modal-header">
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  {this.props.title ? <h4 className="modal-title">{this.props.title}</h4> : null}
+                </div>
+              )
+            }
             <div className="modal-body">{this.props.content}</div>
             {this.props.footer ? <div className="modal-footer">{this.props.footer}</div> : null}
           </div>
