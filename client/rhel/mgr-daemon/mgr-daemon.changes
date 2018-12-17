@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Dec 17 14:32:34 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Add missing timer file
 - Sync changes from Spacewalk
 - Regenerating .po and .pot files for rhnsd
