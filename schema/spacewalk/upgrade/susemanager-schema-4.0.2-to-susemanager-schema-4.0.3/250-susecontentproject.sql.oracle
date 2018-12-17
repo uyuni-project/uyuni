@@ -22,7 +22,7 @@ CREATE TABLE suseContentProject(
                     REFERENCES web_customer(id)
                     ON DELETE CASCADE,
     label       VARCHAR2(24) NOT NULL,
-    description TEXT
+    description CLOB
 )
 ENABLE ROW MOVEMENT
 ;

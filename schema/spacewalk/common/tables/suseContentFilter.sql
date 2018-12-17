@@ -22,7 +22,7 @@ CREATE TABLE suseContentFilter(
                      ON DELETE CASCADE,
     type     VARCHAR2(16) NOT NULL,
     name     VARCHAR2(128) NOT NULL,
-    criteria TEXT
+    criteria CLOB
 )
 ENABLE ROW MOVEMENT
 ;
