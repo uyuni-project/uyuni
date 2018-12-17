@@ -360,7 +360,7 @@ public class SaltService {
     }
 
     /**
-     * For a given id check if there is a minion key in any status.
+     * For a given minion id check if there is a key in any status excluding keys pending for registration.
      *
      * @param id the id to check for
      * @return true if there is a key with the given id, false otherwise
@@ -368,7 +368,6 @@ public class SaltService {
     public boolean keyExists(String id) {
         Key.Names keys = getKeys();
         return keys.getMinions().contains(id) ||
-                keys.getUnacceptedMinions().contains(id) ||
                 keys.getRejectedMinions().contains(id) ||
                 keys.getDeniedMinions().contains(id);
     }
