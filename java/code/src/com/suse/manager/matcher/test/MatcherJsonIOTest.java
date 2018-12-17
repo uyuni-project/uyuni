@@ -36,6 +36,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.singleton;
+
 public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/sccdata/";
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
@@ -59,20 +61,9 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         h1.setCpu(createCPU(h1, 8L));
 
         Set<InstalledProduct> installedProducts = new HashSet<>();
-        InstalledProduct instPrd = new InstalledProduct();
-        instPrd.setName("SLES");
-        instPrd.setVersion("12.1");
-        instPrd.setRelease("0");
-        instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        instPrd.setBaseproduct(true);
+        InstalledProduct instPrd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
         installedProducts.add(instPrd);
-
-        instPrd = new InstalledProduct();
-        instPrd.setName("sle-ha");
-        instPrd.setVersion("12.1");
-        instPrd.setRelease("0");
-        instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        instPrd.setBaseproduct(false);
+        instPrd = createInstalledProduct("sle-ha", "12.1", "0", "x86_64", false);
         installedProducts.add(instPrd);
 
         Server g1 = ServerTestUtils.createTestSystem();
@@ -171,14 +162,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
         Server hostServer = ServerTestUtils.createVirtHostWithGuests(1);
         // let's set some base product to our systems (otherwise lifecycle subscriptions aren't reported)
-        Set<InstalledProduct> installedProducts = new HashSet<>();
-        InstalledProduct instProd = new InstalledProduct();
-        instProd.setName("SLES");
-        instProd.setVersion("12.1");
-        instProd.setRelease("0");
-        instProd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        instProd.setBaseproduct(true);
-        installedProducts.add(instProd);
+        InstalledProduct instProd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
+        Set<InstalledProduct> installedProducts = singleton(instProd);
         hostServer.setInstalledProducts(installedProducts);
         Server guestServer = hostServer.getGuests().iterator().next().getGuestSystem();
         guestServer.setInstalledProducts(installedProducts);
@@ -350,20 +335,9 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
             ServerFactory.save(h1);
 
             Set<InstalledProduct> installedProducts = new HashSet<>();
-            InstalledProduct instPrd = new InstalledProduct();
-            instPrd.setName("SLES");
-            instPrd.setVersion("12.1");
-            instPrd.setRelease("0");
-            instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-            instPrd.setBaseproduct(true);
+            InstalledProduct instPrd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
             installedProducts.add(instPrd);
-
-            instPrd = new InstalledProduct();
-            instPrd.setName("sle-ha");
-            instPrd.setVersion("12.1");
-            instPrd.setRelease("0");
-            instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-            instPrd.setBaseproduct(false);
+            instPrd = createInstalledProduct("sle-ha", "12.1", "0", "x86_64", false);
             installedProducts.add(instPrd);
 
             h1.setInstalledProducts(installedProducts);
@@ -411,5 +385,15 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         cpu.setServer(s);
         cpu.setArch(ServerFactory.lookupCPUArchByName("x86_64"));
         return cpu;
+    }
+
+    private InstalledProduct createInstalledProduct(String name, String version, String release, String archLabel, boolean base) {
+        InstalledProduct instProd = new InstalledProduct();
+        instProd.setName(name);
+        instProd.setVersion(version);
+        instProd.setRelease(release);
+        instProd.setArch(PackageFactory.lookupPackageArchByLabel(archLabel));
+        instProd.setBaseproduct(base);
+        return instProd;
     }
 }
