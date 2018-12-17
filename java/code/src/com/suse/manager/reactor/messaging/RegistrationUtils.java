@@ -100,7 +100,7 @@ public class RegistrationUtils {
 
         // Get the product packages from subscribed channels and install them.
         List<Package> prodPkgs = PackageFactory.findMissingProductPackagesOnServer(minion.getId());
-        StateFactory.addPackagesToNewStateRevision(minion, Optional.ofNullable(minion.getCreator().getId()), prodPkgs);
+        StateFactory.addPackagesToNewStateRevision(minion, creator.map(c -> c.getId()), prodPkgs);
 
         LOG.info("Finished minion registration: " + minionId);
 
