@@ -8,6 +8,8 @@
         <pattern>/errors/500.jsp</pattern>
         <pattern>/manager/download/saltssh/pubkey</pattern>
     </excludes>
+    <decorator name="layout_bare" page="layout_bare.jsp">
+    </decorator>
     <decorator name="layout_c" page="layout_c.jsp">
         <pattern>/*</pattern>
     </decorator>
