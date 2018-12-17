@@ -1,3 +1,4 @@
+- Allow bootstrapping minions with a pending minion key being present (bsc#1119727)
 - Fix cloning channels when managing the same errata for both vendor and private orgs (bsc#1111686)
 - Hide 'unknown virtual host manager' when virtual host manager of all hosts is known (bsc#1119320)
 - Add REST API to retrieve VM definition
