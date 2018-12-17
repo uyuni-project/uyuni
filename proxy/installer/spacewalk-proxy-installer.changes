@@ -1,5 +1,12 @@
+- configure firewalld if available
+
+-------------------------------------------------------------------
+Mon Dec 17 14:39:21 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Add support for Python 3 on spacewalk-proxy-installer
 - don't write invalid values to answer file for configure-proxy.sh
+
 -------------------------------------------------------------------
 Fri Oct 26 10:35:58 CEST 2018 - jgonzalez@suse.com
 

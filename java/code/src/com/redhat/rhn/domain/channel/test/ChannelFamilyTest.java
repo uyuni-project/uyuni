@@ -50,7 +50,6 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
         assertEquals(cfam.getId(), cfam3.getId());
         assertEquals(cfam.getLabel(), cfam3.getLabel());
         assertEquals(cfam.getName(), cfam3.getName());
-        assertEquals(cfam.getProductUrl(), cfam3.getProductUrl());
         assertEquals(cfam.getOrg(), cfam3.getOrg());
     }
 

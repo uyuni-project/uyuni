@@ -19,17 +19,20 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.model.SCCSubscription;
+import com.suse.scc.model.SCCSubscriptionJson;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -144,22 +147,40 @@ public class MirrorCredentialsManager {
         // Store credentials to empty cache later
         MirrorCredentialsDto credentials = findMirrorCredentials(id);
 
-        // Delete from database
         Credentials dbCreds = CredentialsFactory.lookupCredentialsById(id);
-        CredentialsFactory.removeCredentials(dbCreds);
 
         // Make new primary credentials if necessary
         if (credentials.isPrimary()) {
             List<Credentials> credsList = CredentialsFactory.lookupSCCCredentials();
             if (credsList != null && !credsList.isEmpty()) {
-                makePrimaryCredentials(credsList.get(0).getId());
+                credsList.stream().filter(c -> !c.equals(dbCreds)).findFirst()
+                    .ifPresent(c -> {
+                        try {
+                            makePrimaryCredentials(c.getId());
+                        }
+                        catch (ContentSyncException e) {
+                            log.error("Invalid Credential");
+                        }
+                    });
             }
         }
+
+        // Clear Repository Authentications
+        SCCCachingFactory.lookupRepositoryAuthByCredential(dbCreds).stream().forEach(a -> {
+            SCCCachingFactory.deleteRepositoryAuth(a);
+        });
 
         // Clear the cache for deleted credentials
         if (request != null) {
             SetupWizardSessionCache.clearSubscriptions(credentials, request);
         }
+
+        // Delete from database
+        CredentialsFactory.removeCredentials(dbCreds);
+
+        // Link orphan content sources
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.linkAndRefreshContentSource(null);
     }
 
     /**
@@ -205,8 +226,8 @@ public class MirrorCredentialsManager {
             try {
                 Credentials credentials =
                         CredentialsFactory.lookupCredentialsById(creds.getId());
-                List<SCCSubscription> subscriptions = new ContentSyncManager().
-                        getSubscriptions(credentials);
+                List<SCCSubscriptionJson> subscriptions = new ContentSyncManager().
+                        updateSubscriptions(credentials);
                 SetupWizardSessionCache.storeSubscriptions(
                         makeDtos(subscriptions), creds, request);
             }
@@ -227,13 +248,15 @@ public class MirrorCredentialsManager {
      * @param subscriptions SCC subscriptions
      * @return list of subscription DTOs
      */
-    private List<SubscriptionDto> makeDtos(List<SCCSubscription> subscriptions) {
+    private List<SubscriptionDto> makeDtos(List<SCCSubscriptionJson> subscriptions) {
         if (subscriptions == null) {
             return null;
         }
+        Map<String, String> familyNameByLabel = ChannelFamilyFactory.getAllChannelFamilies()
+                .stream().collect(Collectors.toMap(cf -> cf.getLabel(), cf -> cf.getName()));
         // Go through all of the given subscriptions
         List<SubscriptionDto> dtos = new ArrayList<SubscriptionDto>();
-        for (SCCSubscription s : subscriptions) {
+        for (SCCSubscriptionJson s : subscriptions) {
             // Skip all non-active
             if (!s.getStatus().equals("ACTIVE")) {
                 continue;
@@ -248,11 +271,7 @@ public class MirrorCredentialsManager {
             }
             String subscriptionName = null;
             for (String productClass : productClasses) {
-                String name = ChannelFamilyFactory.getNameByLabel(productClass);
-                if (StringUtils.isBlank(name)) {
-                    log.warn("Empty name for: " + productClass);
-                    name = productClass;
-                }
+                String name = Optional.ofNullable(familyNameByLabel.get(productClass)).orElse(productClass);
 
                 // It is an OR relationship: append with OR
                 if (subscriptionName == null) {

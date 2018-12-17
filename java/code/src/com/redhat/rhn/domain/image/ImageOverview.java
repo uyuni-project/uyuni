@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.domain.image;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -52,7 +51,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "suseImageOverview")
 @Immutable
-public class ImageOverview extends BaseDomainHelper {
+public class ImageOverview {
 
     private Long id;
     private String name;
@@ -78,6 +77,7 @@ public class ImageOverview extends BaseDomainHelper {
     private Integer enhancementErrata;
     private Integer outdatedPackages;
     private Integer installedPackages;
+    private Date modified;
 
     /**
      * @return the id
@@ -299,10 +299,12 @@ public class ImageOverview extends BaseDomainHelper {
         return installedPackages;
     }
 
-    @Override
+    /**
+     * @return the modified date
+     */
     @Column(name = "modified")
     public Date getModified() {
-        return super.getModified();
+        return modified;
     }
 
     /**
@@ -493,6 +495,15 @@ public class ImageOverview extends BaseDomainHelper {
      */
     public void setInstalledPackages(Integer installedPackagesIn) {
         this.installedPackages = installedPackagesIn;
+    }
+
+    /**
+     * Dummy - Cannot set modified of a View
+     * Just to make hibernate happy
+     * @param modifiedIn does not set anything
+     */
+    public void setModified(Date modifiedIn) {
+        this.modified = modifiedIn;
     }
 
     /**

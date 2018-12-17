@@ -16,6 +16,11 @@ products:
     - name: pkg.list_products
 {% elif grains['os_family'] == 'RedHat' %}
 {% include 'packages/redhatproductinfo.sls' %}
+{% elif grains['os_family'] == 'Debian' %}
+debianrelease:
+  cmd.run:
+    - name: cat /etc/os-release
+    - onlyif: test -f /etc/os-release
 {% endif %}
 
 include:

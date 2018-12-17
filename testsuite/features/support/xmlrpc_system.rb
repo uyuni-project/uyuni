@@ -61,4 +61,30 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   def create_system_record(name, kslabel, koptions, comment, netdevices)
     @connection.call('system.createSystemRecord', @sid, name, kslabel, koptions, comment, netdevices)
   end
+
+  # Create an empty system profile based on the given data
+  # == Parameters:
+  # name::
+  #    system profile name
+  # data::
+  #    map containing 'hwAddress' or 'hostname' key
+  # == Returns:
+  # The id of created system
+  # == Raises:
+  # An XMLRPC fault with a descriptive faultString if a matching profile
+  # already exists or if the given data is not sufficient for an empty
+  # profile creation.
+  #
+  def create_system_profile(name, data)
+    @connection.call('system.createSystemProfile', @sid, name, data)
+  end
+
+  # List empty system profiles
+  #
+  # == Returns:
+  # The list of empty system profiles
+  #
+  def list_empty_system_profiles
+    @connection.call('system.listEmptySystemProfiles', @sid)
+  end
 end

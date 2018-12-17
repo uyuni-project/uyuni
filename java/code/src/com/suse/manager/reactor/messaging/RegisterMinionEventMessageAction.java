@@ -286,8 +286,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
             minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
 
-            minion.setServerArch(
-                    ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
+            if (osfamily.equals("Debian")) {
+                minion.setServerArch(
+                        ServerFactory.lookupServerArchByLabel(osarch + "-debian-linux"));
+            }
+            else {
+                minion.setServerArch(
+                        ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
+            }
 
             RegistrationUtils.subscribeMinionToChannels(SALT_SERVICE, minion, grains, activationKey,
                     activationKeyLabel);

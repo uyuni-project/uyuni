@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014--2015 SUSE LLC
+ * Copyright (c) 2014--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -33,7 +33,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "arch", "Architecture")
  *     #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
  *     #array()
- *       $XMLChannelSerializer
+ *       $MgrSyncChannelDtoSerializer
  *     #array_end()
  *     #array()
  *       #struct("extension product")
@@ -41,7 +41,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *         #prop_desc("string", "arch", "Architecture")
  *         #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
  *         #array()
- *           $XMLChannelSerializer
+ *           $MgrSyncChannelDtoSerializer
  *         #array_end()
  *       #struct_end()
  *     #array_end()
@@ -65,7 +65,7 @@ public class MgrSyncProductDtoSerializer extends RhnXmlRpcCustomSerializer {
         SerializerHelper helper = new SerializerHelper(serializer);
 
         helper.add("friendly_name", product.getFriendlyName());
-        helper.add("arch", product.getArch());
+        helper.add("arch", product.getArch().orElse("noarch"));
         helper.add("status", product.getStatus().toString().toLowerCase());
         helper.add("channels", product.getChannels());
         helper.add("extensions", product.getExtensions());

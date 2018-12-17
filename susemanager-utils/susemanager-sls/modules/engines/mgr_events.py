@@ -121,6 +121,7 @@ class Responder:
             fnmatch.fnmatch(tag, "salt/minion/*/start"),
             fnmatch.fnmatch(tag, "salt/job/*/ret/*"),
             fnmatch.fnmatch(tag, "salt/beacon/*"),
+            fnmatch.fnmatch(tag, "salt/engines/*"),
             fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
             fnmatch.fnmatch(tag, "suse/systemid/generate")
         ]):

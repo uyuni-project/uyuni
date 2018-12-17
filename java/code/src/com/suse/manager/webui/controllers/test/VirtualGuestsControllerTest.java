@@ -15,51 +15,53 @@
 
 package com.suse.manager.webui.controllers.test;
 
+import static org.hamcrest.Matchers.containsString;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.suse.manager.reactor.messaging.test.SaltTestUtils;
+import com.suse.manager.virtualization.DomainCapabilitiesJson;
+import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
-import com.suse.manager.webui.utils.SparkTestUtils;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import spark.HaltException;
-import spark.Request;
-import spark.RequestResponseFactory;
-import spark.Response;
 
 /**
  * Tests for VirtualGuestsController
  */
-public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
+@SuppressWarnings("serial")
+public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
-    private Response response;
-    private final String baseUri = "http://localhost:8080/rhn";
     private TaskomaticApi taskomaticMock;
+    private SaltService saltServiceMock;
     private static final Gson GSON = new GsonBuilder().create();
     private Server host;
 
@@ -71,24 +73,30 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        setImposteriser(ClassImposteriser.INSTANCE);
-        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
-
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
+        VirtualizationActionCommand.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() {{
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        host = ServerTestUtils.createVirtHostWithGuests(user, 2);
+        saltServiceMock = context().mock(SaltService.class);
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(containsString("serverfactorytest")));
+        }});
+        VirtManager.setSaltService(saltServiceMock);
+        SystemManager.mockSaltService(saltServiceMock);
+
+        host = ServerTestUtils.createVirtHostWithGuests(user, 2, true);
+        host.asMinionServer().get().setMinionId("testminion.local");
 
         // Clean pending actions for easier checks in the tests
         DataResult<ScheduledAction> actions = ActionManager.allActions(user, null);
         for (ScheduledAction scheduledAction : actions) {
             ActionManager.failSystemAction(user, host.getId(), scheduledAction.getId(), "test clean up");
         }
-
     }
 
     /**
@@ -252,28 +260,93 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Creates a request with csrf token.
+     * Test the API querying the XML definition of a VM using salt.
      *
-     * @param uri the uri
-     * @param vars the vars
-     * @return the request with csrf
+     * @throws Exception if anything unexpected happens during the test
      */
-    private Request getRequestWithCsrf(String uri, Object... vars) {
-        Request request = SparkTestUtils.createMockRequest(baseUri + uri, vars);
-        request.session(true).attribute("csrf_token", "bleh");
-        return request;
+    @SuppressWarnings("unchecked")
+    public void testGetGuest() throws Exception {
+        String guid = host.getGuests().iterator().next().getUuid();
+        String uuid = guid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("b99a8176-4f40-498d-8e61-2f6ade654fe2", uuid);
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(host.asMinionServer().get().getMinionId()));
+            will(returnValue(SaltTestUtils.getSaltResponse(
+                    "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", placeholders, null)));
+        }});
+
+        String json = VirtualGuestsController.getGuest(
+                getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
+                        host.getId(), guid),
+                response, user);
+        GuestDefinition def = GSON.fromJson(json, new TypeToken<GuestDefinition>() {}.getType());
+        assertEquals(uuid, def.getUuid());
+        assertEquals("sles12sp2", def.getName());
+        assertEquals(1024*1024, def.getMaxMemory());
+        assertEquals("spice", def.getGraphics().getType());
+
+        assertEquals(1, def.getInterfaces().size());
+        assertEquals("network", def.getInterfaces().get(0).getType());
+        assertEquals("default", def.getInterfaces().get(0).getSource());
+
+        assertEquals(2, def.getDisks().size());
+        assertEquals("file", def.getDisks().get(0).getType());
+        assertEquals("disk", def.getDisks().get(0).getDevice());
+        assertEquals("qcow2", def.getDisks().get(0).getFormat());
+        assertEquals("vda", def.getDisks().get(0).getTarget());
+        assertEquals("virtio", def.getDisks().get(0).getBus());
+        assertEquals("/srv/vms/sles12sp2.qcow2", def.getDisks().get(0).getSource().get("file"));
+
+        assertEquals("file", def.getDisks().get(1).getType());
+        assertEquals("cdrom", def.getDisks().get(1).getDevice());
+        assertEquals("raw", def.getDisks().get(1).getFormat());
+        assertEquals("hda", def.getDisks().get(1).getTarget());
+        assertEquals("ide", def.getDisks().get(1).getBus());
+        assertEquals(null, def.getDisks().get(1).getSource());
     }
+
     /**
-     * Creates a request with csrf token.
+     * Test the API querying the domains capabilities of a virtual host using salt.
      *
-     * @param uri the uri
-     * @param vars the vars
-     * @return the request with csrf
+     * @throws Exception if anything unexpected happens during the test
      */
-    private Request getPostRequestWithCsrfAndBody(String uri, String body,
-                                                  Object... vars) throws UnsupportedEncodingException {
-        Request request = SparkTestUtils.createMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
-        request.session(true).attribute("csrf_token", "bleh");
-        return request;
+    public void testGetDomainsCapabilities() throws Exception {
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("[\"ide\", \"fdc\", \"scsi\", \"virtio\", \"usb\"]", "[\"ide\", \"fdc\", \"scsi\", \"usb\"]");
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(SaltTestUtils.functionEquals("virt", "all_capabilities")),
+                    with(host.asMinionServer().get().getMinionId()));
+            will(returnValue(SaltTestUtils.getSaltResponse(
+                    "/com/suse/manager/webui/controllers/test/virt.guest.allcaps.json", null,
+                    new TypeToken<Map<String, JsonElement>>() { }.getType())));
+        }});
+
+        String json = VirtualGuestsController.getDomainsCapabilities(
+                getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
+                        host.getId()), response, user);
+
+        DomainsCapsJson caps = GSON.fromJson(json, new TypeToken<DomainsCapsJson>() {}.getType());
+        assertTrue(caps.osTypes.contains("hvm"));
+        assertEquals("i686", caps.domainsCaps.get(0).getArch());
+
+        assertEquals("kvm", caps.domainsCaps.get(0).getDomain());
+        assertTrue(caps.domainsCaps.get(0).getDevices().get("disk").get("bus").contains("virtio"));
+        assertFalse(caps.domainsCaps.get(1).getDevices().get("disk").get("bus").contains("virtio"));
+    }
+
+    /**
+     * Represents the output of VirtualGuestsController.getDomainsCapabilities.
+     * There is no need to share this structure since these data will only be used from Javascript.
+     */
+    private class DomainsCapsJson {
+        public List<String> osTypes;
+        public List<DomainCapabilitiesJson> domainsCaps;
     }
 }

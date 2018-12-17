@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -48,6 +50,9 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** The friendly name. */
     private String friendlyName;
 
+    /** The description */
+    private String description;
+
     /** The product id. */
     private long productId;
 
@@ -60,14 +65,20 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** True if the product is 'free' */
     private boolean free;
 
+    /** The release stage */
+    private ReleaseStage releaseStage;
+
     /** available upgrades for this product; */
-    private Set<SUSEProduct> upgrades;
+    private Set<SUSEProduct> upgrades = new HashSet<>();
 
     /** available products from which upgrade to this is possible */
-    private Set<SUSEProduct> downgrades;
+    private Set<SUSEProduct> downgrades = new HashSet<>();
 
     /** product channels */
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
+
+    /** repositories */
+    private Set<SUSEProductSCCRepository> repositories = new HashSet<>();
 
     /**
      * Gets the id.
@@ -166,6 +177,22 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
+     * Gets the description.
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the descriptions.
+     * @param descriptionIn the new descriptions
+     */
+    public void setDescription(String descriptionIn) {
+        description = descriptionIn;
+    }
+
+    /**
      * Gets the product id.
      * @return the product id
      */
@@ -226,6 +253,22 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
+     * The release stage of the product
+     * @return alpha, beta, released
+     */
+    public ReleaseStage getReleaseStage() {
+        return releaseStage;
+    }
+
+    /**
+     * Set the release stage
+     * @param releaseStageIn - alpha, beta, released
+     */
+    public void setReleaseStage(ReleaseStage releaseStageIn) {
+        releaseStage = releaseStageIn;
+    }
+
+    /**
      * List available upgrade path for this product
      * @return list available upgrade path for this product
      */
@@ -271,6 +314,30 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setSuseProductChannels(Set<SUSEProductChannel> suseProductChannelsIn) {
         this.suseProductChannels = suseProductChannelsIn;
+    }
+
+    /**
+     * @return Returns the repositories provided by SCC.
+     */
+    public Set<SUSEProductSCCRepository> getRepositories() {
+        return repositories;
+    }
+
+    /**
+     * @param repositoriesIn The repositories to set.
+     */
+    public void setRepositories(Set<SUSEProductSCCRepository> repositoriesIn) {
+        this.repositories = repositoriesIn;
+    }
+
+    /**
+     * @return the parent channel for this product
+     */
+    public Optional<Channel> parentChannel() {
+        return getSuseProductChannels().stream()
+                .map(SUSEProductChannel::getChannel)
+                .filter(c -> c.getParentChannel() == null)
+                .findFirst();
     }
 
     /**

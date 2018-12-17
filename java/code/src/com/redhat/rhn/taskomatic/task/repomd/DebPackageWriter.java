@@ -140,7 +140,7 @@ public class DebPackageWriter {
                     TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_BREAKS,
                     pkgDto.getId(), "Breaks");
 
-            out.write("Filename: XMLRPC/GET-REQ/" + channelLabel + "/getPackage/");
+            out.write("Filename: " + channelLabel + "/getPackage/");
             out.write(pkgDto.getName() + "_");
             if (epoch != null && !epoch.equalsIgnoreCase("")) {
                 out.write(epoch + ":");

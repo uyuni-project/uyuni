@@ -60,6 +60,17 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
+@ubuntu_minion
+  Scenario: Subscribe a Ubuntu minion to the configuration channel
+    When I am on the Systems overview page of this "ubuntu-minion"
+    And I follow "Configuration" in the content area
+    And I follow "Manage Configuration Channels" in the content area
+    And I follow first "Subscribe to Channels" in the content area
+    And I check "Mixed Channel" in the list
+    And I click on "Continue"
+    And I click on "Update Channel Rankings"
+    Then I should see a "Channel Subscriptions successfully changed for" text
+
 @ssh_minion
   Scenario: Subscribe a SSH minion to the configuration channel
     When I am on the Systems overview page of this "ssh-minion"
@@ -99,6 +110,11 @@ Feature: Management of configuration of all types of clients in a single channel
     When I wait until file "/etc/s-mgr/config" exists on "ceos-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos-minion"
 
+@ubuntu_minion
+  Scenario: Check that file has been created on Ubuntu minion
+    When I wait until file "/etc/s-mgr/config" exists on "ubuntu-minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu-minion"
+
 @ssh_minion
   Scenario: Check that file has been created on SSH minion
     When I wait until file "/etc/s-mgr/config" exists on "ssh-minion"
@@ -114,6 +130,12 @@ Feature: Management of configuration of all types of clients in a single channel
     When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ceos-minion"
     And I apply highstate on "ceos-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos-minion"
+
+@ubuntu_minion
+  Scenario: Apply highstate to override changed content on Ubuntu minion
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ubuntu-minion"
+    And I apply highstate on "ubuntu-minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu-minion"
 
 @ssh_minion
   Scenario: Apply highstate to override changed content on SSH minion
@@ -133,6 +155,19 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
     And I destroy "/etc/s-mgr" directory on "ceos-minion"
+
+@ubuntu_minion
+  Scenario: Unsubscribe Ubuntu minion and delete configuration files
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Mixed Channel"
+    And I follow "Systems" in the content area
+    And I check the "ubuntu-minion" client
+    And I click on "Unsubscribe systems"
+    Then I should see a "Successfully unsubscribed 1 system(s)." text
+    And I destroy "/etc/s-mgr" directory on "ubuntu-minion"
 
 @ssh_minion
   Scenario: Unsubscribe SSH minion and delete configuration files

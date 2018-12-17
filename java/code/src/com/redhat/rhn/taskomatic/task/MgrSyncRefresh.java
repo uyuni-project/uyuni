@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.util.SCCRefreshLock;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
@@ -89,16 +90,19 @@ public class MgrSyncRefresh extends RhnJavaJob {
             }
 
             // Perform the refresh
+            SCCRefreshLock.tryGetLock();
             try {
                 ContentSyncManager csm = new ContentSyncManager();
-                csm.updateChannels(null);
                 csm.updateChannelFamilies(csm.readChannelFamilies());
                 csm.updateSUSEProducts(csm.getProducts());
-                csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
-                csm.updateSubscriptions(csm.getSubscriptions());
+                csm.updateRepositories(null);
+                csm.updateSubscriptions();
             }
             catch (ContentSyncException e) {
                 log.error("Error during mgr-sync refresh", e);
+            }
+            finally {
+                SCCRefreshLock.unlockFile();
             }
 
             try {

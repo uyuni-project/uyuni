@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+	<short>SUSE Manager Server</short>
+	<description>SUSE Manager Server is a systems management application that will inventory, provision, update and control your Linux machines.</description>
+	<port protocol="tcp" port="80"/>
+	<port protocol="tcp" port="443"/>
+	<port protocol="tcp" port="22"/>
+	<port protocol="tcp" port="5222"/>
+	<port protocol="tcp" port="5269"/>
+        <port protocol="tcp" port="4505"/>
+        <port protocol="tcp" port="4506">
+	<port protocol="udp" port="123"/>
+	<port protocol="udp" port="69"/>
+	<module name="nf_conntrack_tftp"/>
+</service>

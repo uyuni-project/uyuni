@@ -1,3 +1,11 @@
+- change SCC sync backend to adapt quicker to SCC changes and improve
+  speed of syncing metadata and checking for channel dependencies
+
+-------------------------------------------------------------------
+Mon Dec 17 14:45:07 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- Add Uyuni GPG to the database
 - Performance improvements in channel management functionalities (bsc#1114877)
 - use a Salt engine to process return results (bsc#1099988)
 - Automatic cleanup of notification messages after a configurable lifetime

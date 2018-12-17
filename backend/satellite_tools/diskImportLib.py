@@ -181,6 +181,27 @@ class SuseUpgradePathsContainer(diskImportLibContainer, xmlSource.SuseUpgradePat
             return
         diskImportLibContainer.endContainerCallback(self)
 
+class SuseProductExtensionsContainer(diskImportLibContainer, xmlSource.SuseProductExtensionsContainer):
+    importer_class = suseProductsImport.SuseProductExtensionsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
+
+class SuseProductRepositoriesContainer(diskImportLibContainer, xmlSource.SuseProductRepositoriesContainer):
+    importer_class = suseProductsImport.SuseProductRepositoriesImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
+
+class SCCRepositoriesContainer(diskImportLibContainer, xmlSource.SCCRepositoriesContainer):
+    importer_class = suseProductsImport.SCCRepositoriesImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
+
 class SuseSubscriptionsContainer(diskImportLibContainer, xmlSource.SuseSubscriptionsContainer):
     importer_class = suseProductsImport.SuseSubscriptionsImport
     def endContainerCallback(self):

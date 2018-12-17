@@ -842,6 +842,46 @@ class SuseUpgradePathItem(BaseItem):
     }
 addItem(SuseUpgradePathItem)
 
+class SuseProductExtensionItem(BaseItem):
+    item_name = 'suse-product-extension'
+    item_class = importLib.SuseProductExtension
+    tagMap = {
+        'product-id'    : 'product_id',
+        'root-product-id' : 'root_id',
+        'ext-product-id' : 'ext_id',
+        'recommended': 'recommended'
+    }
+addItem(SuseProductExtensionItem)
+
+class SuseProductRepositoryItem(BaseItem):
+    item_name = 'suse-product-repository'
+    item_class = importLib.SuseProductRepository
+    tagMap = {
+        'product-id'    : 'product_id',
+        'root-product-id' : 'root_id',
+        'repo-id' : 'repo_id',
+        'channel-label': 'channel_label',
+        'parent-channel-label': 'parent_channel_label',
+        'channel-name': 'channel_name',
+        'mandatory': 'mandatory',
+        'update-tag': 'update_tag'
+    }
+addItem(SuseProductRepositoryItem)
+
+class SCCRepositoryItem(BaseItem):
+    item_name = 'scc-repository'
+    item_class = importLib.SCCRepository
+    tagMap = {
+            'scc-id' : 'sccid',
+            'autorefresh' : 'autorefresh',
+            'name' : 'name',
+            'distro-target': 'distro_target',
+            'description': 'description',
+            'url': 'url',
+            'signed': 'signed'
+    }
+addItem(SCCRepositoryItem)
+
 class SuseSubscriptionItem(BaseItem):
     item_name = 'suse-subscription'
     item_class = importLib.SuseSubscription
@@ -1316,6 +1356,15 @@ class SuseProductChannelsContainer(ContainerHandler):
 
 class SuseUpgradePathsContainer(ContainerHandler):
     container_name = 'suse-upgrade-paths'
+
+class SuseProductExtensionsContainer(ContainerHandler):
+    container_name = 'suse-product-extensions'
+
+class SuseProductRepositoriesContainer(ContainerHandler):
+    container_name = 'suse-product-repositories'
+
+class SCCRepositoriesContainer(ContainerHandler):
+    container_name = 'scc-repositories'
 
 class SuseSubscriptionsContainer(ContainerHandler):
     container_name = 'suse-subscriptions'

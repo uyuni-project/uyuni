@@ -1,0 +1,2 @@
+insert into rhnPackageProvider (id, name) (select sequence_nextval('rhn_package_provider_id_seq'), 'Uyuni' from dual where not exists (select 1 from rhnPackageProvider where name = 'Uyuni'));
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '972e5d6c0d20833e', lookup_package_key_type('gpg'), lookup_package_provider('Uyuni') from dual where not exists (select 1 from rhnPackageKey where key_id = '972e5d6c0d20833e'));

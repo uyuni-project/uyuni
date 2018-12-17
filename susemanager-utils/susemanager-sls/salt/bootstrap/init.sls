@@ -7,21 +7,8 @@ mgr_server_localhost_alias_absent:
       - {{ salt['pillar.get']('mgr_server') }}
 
 # disable all susemanager:* repos
-{%- set repos_disabled = {'disabled': false} %}
-{%- set repos = salt['pkg.list_repos']() %}
-{%- for alias, data in repos.items() %}
-{%- if 'susemanager:' in alias %}
-{%- if data.get('enabled', true) %}
-disable_repo_{{ alias }}:
-  module.run:
-    - name: pkg.mod_repo
-    - repo: {{ alias }}
-    - kwargs:
-        enabled: False
-{%- if repos_disabled.update({'disabled': true}) %}{% endif %}
-{%- endif %}
-{%- endif %}
-{%- endfor %}
+{% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
+{%- include 'channels/disablelocalrepos.sls' %}
 
 {% set os_base = 'sle' %}
 # CentOS6 oscodename is bogus
@@ -43,10 +30,17 @@ disable_repo_{{ alias }}:
 {%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- endif %}
+{%- elif grains['os_family'] == 'Debian' %}
+{%- if grains['os'] == 'Ubuntu' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- else %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- endif %}
 {%- endif %}
 
 {%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
 
+{%- if not grains['os_family'] == 'Debian' %}
 bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
@@ -62,12 +56,12 @@ bootstrap_repo:
     - mode: 644
     - require:
       - host: mgr_server_localhost_alias_absent
-{%- if repos_disabled.disabled %}
+{%- if repos_disabled.count > 0 %}
       - module: disable_repo_*
 {%- endif %}
     - onlyif:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
-
+{%- endif %}
 
 {%- if grains['os_family'] == 'RedHat' %}
 trust_suse_manager_tools_gpg_key:
@@ -86,13 +80,18 @@ trust_res_gpg_key:
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
     - runas: root
+
+{%- elif grains['os_family'] == 'Debian' %}
+{%- include 'channels/debiankeyring.sls' %}
 {%- endif %}
 
 salt-minion-package:
   pkg.installed:
     - name: salt-minion
+{%- if not grains['os_family'] == 'Debian' %}
     - require:
       - file: bootstrap_repo
+{%- endif %}
 
 /etc/salt/minion.d/susemanager.conf:
   file.managed:
@@ -134,6 +133,7 @@ mgr_update_basic_pkgs:
   file.managed:
     - contents_pillar: minion_pub
     - mode: 644
+    - makedirs: True
     - require:
       - pkg: salt-minion-package
 
@@ -141,6 +141,7 @@ mgr_update_basic_pkgs:
   file.managed:
     - contents_pillar: minion_pem
     - mode: 400
+    - makedirs: True
     - require:
       - pkg: salt-minion-package
 

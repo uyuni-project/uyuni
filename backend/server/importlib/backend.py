@@ -58,6 +58,8 @@ sequences = {
     'suseMdKeyword': 'suse_mdkeyword_id_seq',
     'suseEula': 'suse_eula_id_seq',
     'suseProducts': 'suse_products_id_seq',
+    'suseRepositories': 'suse_sccrepository_id_seq',
+    'suseProductSCCRepositories': 'suse_prdrepo_id_seq'
 }
 
 
@@ -1335,58 +1337,46 @@ class Backend:
 
     def processSuseProductChannels(self, batch):
         """Check if the SUSE ProductChannel is already in DB.
-           If yes, update it, if not add it.
+           If yes, update it, if not add it. We get only "mandatory" product channels
+           This is jut to update this flag.
         """
         insert_pc = self.dbmodule.prepare("""
             INSERT INTO suseProductChannel
-                   (id, product_id, channel_id, channel_label, parent_channel_label)
-            VALUES (sequence_nextval('suse_product_channel_id_seq'), :pid, :cid, :clabel, :pclabel)
-            """)
-        delete_pc = self.dbmodule.prepare("""
-            DELETE FROM suseProductChannel
-             WHERE product_id = :pid
-               AND channel_label = :clabel
+                   (id, product_id, channel_id, mandatory)
+            VALUES (sequence_nextval('suse_product_channel_id_seq'), :pid, :cid, 'Y')
             """)
         update_pc = self.dbmodule.prepare("""
             UPDATE suseProductChannel
-               SET channel_id = :cid,
-                   parent_channel_label = :pclabel
+               SET mandatory = :mand,
              WHERE product_id = :pid
-               AND channel_label = :clabel
+               AND channel_id = :cid
              """)
         _query_pc = self.dbmodule.prepare("""
-            SELECT product_id, channel_label FROM suseProductChannel
+            SELECT product_id, channel_id FROM suseProductChannel
             """)
         _query_pc.execute()
-        existing_data = ["%s-%s" % (x['product_id'], x['channel_label']) for x in _query_pc.fetchall_dict() or []]
-        toinsert = [[], [], [], []]
-        todelete = [[], []]
-        toupdate = [[], [], [], []]
+        existing_data = ["%s-%s" % (x['product_id'], x['channel_id']) for x in _query_pc.fetchall_dict() or []]
+        toinsert = [[], []]
+        toupdate = [[], [], []]
         for item in batch:
-            ident = "%s-%s" % (item['product_id'], item['channel_label'])
+            ident = "%s-%s" % (item['product_id'], item['channel_id'])
             if ident in existing_data:
                 existing_data.remove(ident)
-                toupdate[0].append(item['channel_id'])
-                toupdate[1].append(item['parent_channel_label'])
-                toupdate[2].append(item['product_id'])
-                toupdate[3].append(item['channel_label'])
+                toupdate[0].append('Y')
+                toupdate[1].append(item['product_id'])
+                toupdate[2].append(item['channel_id'])
                 continue
             toinsert[0].append(item['product_id'])
             toinsert[1].append(item['channel_id'])
-            toinsert[2].append(item['channel_label'])
-            toinsert[3].append(item['parent_channel_label'])
         for ident in existing_data:
-            pid, clabel = ident.split('-', 1)
-            todelete[0].append(int(pid))
-            todelete[1].append(clabel)
-        if todelete[0]:
-            delete_pc.executemany(pid=todelete[0], clabel=todelete[1])
+            pid, cid = ident.split('-', 1)
+            toupdate[0].append('N')
+            toupdate[1].append(int(pid))
+            toupdate[2].append(int(cid))
         if toinsert[0]:
-            insert_pc.executemany(pid=toinsert[0], cid=toinsert[1],
-                                  clabel=toinsert[2], pclabel=toinsert[3])
+            insert_pc.executemany(pid=toinsert[0], cid=toinsert[1])
         if toupdate[0]:
-            update_pc.executemany(cid=toupdate[0], pclabel=toupdate[1],
-                                  pid=toupdate[2], clabel=toupdate[3])
+            update_pc.executemany(mand=toupdate[0], pid=toupdate[1], cid=toupdate[2])
 
     def processSuseUpgradePaths(self, batch):
         """Check if the SUSE Upgrade Paths are already in DB.
@@ -1424,6 +1414,196 @@ class Backend:
             delete_up.executemany(from_pdid=todelete[0], to_pdid=todelete[1])
         if toinsert[0]:
             insert_up.executemany(from_pdid=toinsert[0], to_pdid=toinsert[1])
+
+    def processSuseProductExtensions(self, batch):
+        """Check if the SUSE Extensions are already in DB.
+           If not add it.
+        """
+        insert_pe = self.dbmodule.prepare("""
+            INSERT INTO suseProductExtension
+                   (base_pdid, root_pdid, ext_pdid, recommended)
+            VALUES (:product_id, :root_id, :ext_id, :recommended)
+            """)
+        delete_pe = self.dbmodule.prepare("""
+            DELETE FROM suseProductExtension
+             WHERE base_pdid = :product_id
+               AND root_pdid = :root_id
+               AND ext_pdid = :ext_id
+            """)
+        update_pe = self.dbmodule.prepare("""
+            UPDATE suseProductExtension
+               SET recommended = :recommended
+             WHERE base_pdid = :product_id
+               AND root_pdid = :root_id
+               AND ext_pdid = :ext_id
+        """)
+        _query_pe = self.dbmodule.prepare("""
+            SELECT base_pdid, root_pdid, ext_pdid FROM suseProductExtension
+            """)
+        _query_pe.execute()
+        existing_data = ["%s-%s-%s" % (x['base_pdid'], x['root_pdid'], x['ext_pdid']) for x in _query_pe.fetchall_dict() or []]
+        toinsert = [[], [], [], []]
+        todelete = [[], [], []]
+        toupdate = [[], [], [], []]
+        for item in batch:
+            ident = "%s-%s-%s" % (item['product_pdid'], item['root_pdid'], item['ext_pdid'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                toupdate[0].append(item['recommended'])
+                toupdate[1].append(item['product_pdid'])
+                toupdate[2].append(item['root_pdid'])
+                toupdate[3].append(item['ext_pdid'])
+                continue
+            toinsert[0].append(item['product_pdid'])
+            toinsert[1].append(item['root_pdid'])
+            toinsert[2].append(item['ext_pdid'])
+            toinsert[3].append(item['recommended'])
+        for ident in existing_data:
+            product_id, root_id, ext_id = ident.split('-', 2)
+            todelete[0].append(int(product_id))
+            todelete[1].append(int(root_id))
+            todelete[2].append(int(ext_id))
+        if todelete[0]:
+            delete_pe.executemany(product_id=todelete[0], root_id=todelete[1], ext_id=todelete[2])
+        if toinsert[0]:
+            insert_pe.executemany(product_id=toinsert[0], root_id=toinsert[1], ext_id=toinsert[2], recommended=toinsert[3])
+        if toupdate[0]:
+            update_pe.executemany(product_id=toupdate[1], root_id=toupdate[2], ext_id=toupdate[3], recommended=toupdate[0])
+
+    def processSuseProductRepositories(self, batch):
+        """Check if the SUSE Product Repositories are already in DB.
+           If not add it.
+        """
+        insert_pr = self.dbmodule.prepare("""
+            INSERT INTO suseProductRepository
+                   (id, product_id, root_product_id, repo_id, channel_label, parent_channel_label,
+                    channel_name, mandatory, update_tag)
+            VALUES (:id, :product_id, :root_id, :repo_id, :channel_label, :parent_channel_label,
+                    :channel_name, :mandatory, :update_tag)
+            """)
+        delete_pr = self.dbmodule.prepare("""
+            DELETE FROM suseProductRepository
+             WHERE product_id = :product_id
+               AND root_product_id = :root_id
+               AND repo_id = :repo_id
+            """)
+        update_pr = self.dbmodule.prepare("""
+            UPDATE suseProductRepository
+               SET channel_label = :channel_label,
+                   parent_channel_label = :parent_channel_label,
+                   channel_name = :channel_name,
+                   mandatory = :mandatory,
+                   update_tag = :update_tag
+             WHERE product_id = :product_id
+               AND root_product_id = :root_id
+               AND repo_id = :repo_id
+        """)
+        _query_pr = self.dbmodule.prepare("""
+            SELECT product_id, root_product_id, repo_id FROM suseProductRepository
+            """)
+        _query_pr.execute()
+        existing_data = ["%s-%s-%s" % (x['product_id'], x['root_product_id'], x['repo_id']) for x in _query_pr.fetchall_dict() or []]
+        toinsert = [[], [], [], [], [], [], [], [], []]
+        todelete = [[], [], []]
+        toupdate = [[], [], [], [], [], [], [], []]
+        for item in batch:
+            ident = "%s-%s-%s" % (item['product_id'], item['root_id'], item['repo_id'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                toupdate[0].append(item['channel_label'])
+                toupdate[1].append(item['parent_channel_label'])
+                toupdate[2].append(item['channel_name'])
+                toupdate[3].append(item['mandatory'])
+                toupdate[4].append(item['update_tag'])
+                toupdate[5].append(item['product_id'])
+                toupdate[6].append(item['root_id'])
+                toupdate[7].append(item['repo_id'])
+                continue
+            toinsert[0].append(next(self.sequences['suseProductSCCRepositories']))
+            toinsert[1].append(int(item['product_id']))
+            toinsert[2].append(int(item['root_id']))
+            toinsert[3].append(int(item['repo_id']))
+            toinsert[4].append(item['channel_label'])
+            toinsert[5].append(item['parent_channel_label'])
+            toinsert[6].append(item['channel_name'])
+            toinsert[7].append(item['mandatory'])
+            toinsert[8].append(item['update_tag'])
+        for ident in existing_data:
+            product_id, root_id, repo_id = ident.split('-', 2)
+            todelete[0].append(int(product_id))
+            todelete[1].append(int(root_id))
+            todelete[2].append(int(repo_id))
+        if todelete[0]:
+            delete_pr.executemany(product_id=todelete[0], root_id=todelete[1], repo_id=todelete[2])
+        if toinsert[0]:
+            insert_pr.executemany(id=toinsert[0], product_id=toinsert[1], root_id=toinsert[2], repo_id=toinsert[3],
+                                  channel_label=toinsert[4], parent_channel_label=toinsert[5],
+                                  channel_name=toinsert[6], mandatory=toinsert[7], update_tag=toinsert[8])
+        if toupdate[0]:
+            update_pr.executemany(product_id=toupdate[5], root_id=toupdate[6], repo_id=toupdate[7],
+                                  channel_label=toupdate[0], parent_channel_label=toupdate[1],
+                                  channel_name=toupdate[2], mandatory=toupdate[3], update_tag=toupdate[4])
+
+    def processSCCRepositories(self, batch):
+        """Check if SCC Repository is already in DB.
+           If yes, update it, if not add it.
+        """
+        insert_repo = self.dbmodule.prepare("""
+            INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed)
+            VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed)
+            """)
+        delete_repo = self.dbmodule.prepare("""
+            DELETE FROM suseSCCRepository WHERE scc_id = :sccid
+            """)
+        update_repo = self.dbmodule.prepare("""
+            UPDATE suseSCCRepository
+               SET name = :name,
+                   autorefresh = :autorefresh
+                   distro_target = :target,
+                   description = :description,
+                   url = :url,
+                   signed = :signed,
+             WHERE scc_id = :sccid
+             """)
+        _query_repo = self.dbmodule.prepare("""
+            SELECT scc_id FROM suseSCCRepository
+            """)
+        _query_repo.execute()
+        existing_data = ["%s" % (x['sccid']) for x in _query_repo.fetchall_dict() or []]
+        toinsert = [[], [], [], [], [], [], [], []]
+        todelete = [[]]
+        toupdate = [[], [], [], [], [], [], []]
+        for item in batch:
+            if item['sccid'] in existing_data:
+                existing_data.remove(item['sccid'])
+                toupdate[0].append(item['name'])
+                toupdate[1].append(item['autorefresh'])
+                toupdate[2].append(item['distro_target'])
+                toupdate[3].append(item['description'])
+                toupdate[4].append(item['url'])
+                toupdate[5].append(item['signed'])
+                toupdate[6].append(int(item['sccid']))
+                continue
+            toinsert[0].append(next(self.sequences['suseRepositories']))
+            toinsert[1].append(item['sccid'])
+            toinsert[2].append(item['autorefresh'])
+            toinsert[3].append(item['name'])
+            toinsert[4].append(item['distro_target'])
+            toinsert[5].append(item['description'])
+            toinsert[6].append(item['url'])
+            toinsert[7].append(item['signed'])
+        for ident in existing_data:
+            todelete[0].append(int(ident))
+        if todelete[0]:
+            delete_repo.executemany(sccid=todelete[0])
+        if toinsert[0]:
+            insert_repo.executemany(rid=toinsert[0], sccid=toinsert[1], autorefresh=toinsert[2],
+                                    name=toinsert[3], target=toinsert[4], description=toinsert[5],
+                                    url=toinsert[6], signed=toinsert[7])
+        if toupdate[0]:
+            update_repo.executemany(name=toupdate[0], autorefresh=toupdate[1], target=toupdate[2],
+                                    description=toupdate[3], url=toupdate[4], signed=toupdate[5],
+                                    sccid=toupdate[6])
 
     def processClonedChannels(self, batch):
         """Check if cloned channel info is already in DB.
@@ -1531,6 +1711,16 @@ class Backend:
             SELECT id FROM suseProducts WHERE product_id = :pid
         """)
         _query.execute(pid=pid)
+        res = _query.fetchone_dict()
+        if res:
+            return res['id']
+        return None
+
+    def lookupRepoIdBySCCRepoId(self, rid):
+        _query = self.dbmodule.prepare("""
+            SELECT id FROM suseSCCRepository WHERE scc_id = :rid
+        """)
+        _query.execute(rid=rid)
         res = _query.fetchone_dict()
         if res:
             return res['id']

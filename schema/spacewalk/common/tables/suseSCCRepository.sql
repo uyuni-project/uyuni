@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2014 SUSE
+-- Copyright (c) 2014--2018 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,18 +16,17 @@
 CREATE TABLE suseSCCRepository
 (
     id             NUMBER NOT NULL PRIMARY KEY,
-    scc_id         NUMBER,
-    credentials_id NUMBER
-                       CONSTRAINT suse_sccrepo_credsid_fk
-                       REFERENCES suseCredentials (id)
-                       ON DELETE CASCADE,
+    scc_id         NUMBER NOT NULL,
     autorefresh    CHAR(1) NOT NULL
                        CONSTRAINT suse_sccrepo_ck
                        CHECK (autorefresh in ('Y', 'N')),
-    name           VARCHAR2(256),
-    distro_target  VARCHAR2(256),
-    description    VARCHAR2(2048),
-    url            VARCHAR2(2048),
+    name           VARCHAR2(256) NOT NULL,
+    distro_target  VARCHAR2(256) NULL,
+    description    VARCHAR2(2048) NOT NULL,
+    url            VARCHAR2(2048) NOT NULL,
+    signed         CHAR(1) DEFAULT ('N') NOT NULL
+                           CONSTRAINT suse_sccrepo_sig_ck
+                           CHECK (signed in ('Y', 'N')),
     created        timestamp with local time zone
                        DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone
@@ -37,3 +36,9 @@ ENABLE ROW MOVEMENT
 ;
 
 CREATE SEQUENCE suse_sccrepository_id_seq;
+
+CREATE UNIQUE INDEX suse_sccrepo_sccid_uq
+    ON suseSCCRepository (scc_id);
+
+CREATE INDEX suse_sccrepo_url_idx
+    ON suseSCCRepository (url);

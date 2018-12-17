@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Dec 17 14:47:04 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Fix issue raising exceptions 'with_traceback' on Python 2
 
 -------------------------------------------------------------------

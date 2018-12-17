@@ -110,8 +110,11 @@ class Runner:
         'orgs': [''],
         'supportinfo': ['channels', 'packages'],
         'suse-products': ['arches'],
+        'scc-repositories': [''],
         'suse-product-channels': ['suse-products', 'channels'],
         'suse-upgrade-paths': ['suse-products'],
+        'suse-product-extensions': ['suse-products'],
+        'suse-product-repositories': ['suse-products', 'scc-repositories'],
         'suse-subscriptions': ['channel-families'],
         'cloned-channels': ['channels'],
     }
@@ -137,8 +140,11 @@ class Runner:
         'kickstarts',
         'supportinfo',
         'suse-products',
+        'scc-repositories',
         'suse-product-channels',
         'suse-upgrade-paths',
+        'suse-product-extensions',
+        'suse-product-repositories',
         'suse-subscriptions',
     ]
 
@@ -411,6 +417,15 @@ class Runner:
 
     def _step_suse_upgrade_paths(self):
         self.syncer.import_suse_upgrade_paths()
+
+    def _step_suse_product_extensions(self):
+        self.syncer.import_suse_product_extensions()
+
+    def _step_suse_product_repositories(self):
+        self.syncer.import_suse_product_repositories()
+
+    def _step_scc_repositories(self):
+        self.syncer.import_scc_repositories()
 
     def _step_suse_subscriptions(self):
         self.syncer.import_suse_subscriptions()
@@ -1914,6 +1929,18 @@ class Syncer:
     def import_suse_upgrade_paths(self):
         """Imports Upgrade Paths"""
         self._process_simple("getSuseUpgradePathsXmlStream", "suse_upgrade_paths")
+
+    def import_suse_product_extensions(self):
+        """Imports SUSE Product Extensions"""
+        self._process_simple("getSuseProductExtensionsXmlStream", "suse_product_extensions")
+
+    def import_suse_product_repositories(self):
+        """Imports SUSE Product Repositories"""
+        self._process_simple("getSuseProductRepositoriesXmlStream", "suse_product_repositories")
+
+    def import_scc_repositories(self):
+        """Imports SCC Repositories"""
+        self._process_simple("getSCCRepositoriesXmlStream", "scc_repositories")
 
     def import_suse_subscriptions(self):
         """Imports Subscriptions"""

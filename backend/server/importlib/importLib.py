@@ -198,14 +198,44 @@ class SuseProductChannel(Information):
     attributeTypes = {
         'product_id'           : IntType,
         'channel_id'           : IntType,
-        'channel_label'        : StringType,
-        'parent_channel_label' : StringType,
+        'mandatory'            : StringType,
     }
 
 class SuseUpgradePath(Information):
     attributeTypes = {
         'from_pdid' : IntType,
         'to_pdid'   : IntType,
+    }
+
+class SuseProductExtension(Information):
+    attributeTypes = {
+        'product_id'  : IntType,
+        'root_id'     : IntType,
+        'ext_id'      : IntType,
+        'recommended' : StringType
+    }
+
+class SuseProductRepositories(Information):
+    attributeTypes = {
+        'product_id'          : IntType,
+        'root_id'             : IntType,
+        'repo_id'             : IntType,
+        'channel_label'       : StringType,
+        'parent_channel_label': StringType,
+        'channel_name'        : StringType,
+        'mandatory'           : StringType,
+        'update_tag'          : StringType
+    }
+
+class SCCRepositories(Information):
+    attributeTypes = {
+        'sccid'        : IntType,
+        'autorefresh'  : StringType,
+        'name'         : StringType,
+        'distro_target': StringType,
+        'description'  : StringType,
+        'url'          : StringType,
+        'signed'       : StringType
     }
 
 class SuseSubscription(Information):

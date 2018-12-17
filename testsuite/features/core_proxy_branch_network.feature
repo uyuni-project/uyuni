@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
-# ($proxy is nil) or if there is no private network ($private_net is false)
+# ($proxy is nil) or if there is no private network ($private_net is nil)
 
 Feature: Setup SUSE Manager for Retail branch network
   In order to deploy SUSE Manager for Retail solution
@@ -37,7 +37,7 @@ Feature: Setup SUSE Manager for Retail branch network
     When I follow "Formulas" in the content area
     And I follow first "Branch Network" in the content area
     And I enter "eth1" in NIC field
-    And I enter "192.168.5.254" in IP field
+    And I enter the local IP address of "proxy" in IP field
     And I click on "Save Formula"
     Then I should see a "Formula saved!" text
 
@@ -48,21 +48,21 @@ Feature: Setup SUSE Manager for Retail branch network
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
     And I enter "example.org" in domain name field
-    And I enter "192.168.5.254" in domain name server field
+    And I enter the local IP address of "proxy" in domain name server field
     And I enter "eth1" in listen interfaces field
-    And I enter "192.168.5.0" in network IP field
+    And I enter the local IP address of "network" in network IP field
     And I enter "255.255.255.0" in network mask field
-    And I enter "192.168.5.128" in dynamic IP range begin field
-    And I enter "192.168.5.253" in dynamic IP range end field
-    And I enter "192.168.5.255" in broadcast address field
-    And I enter "192.168.5.254" in routers field
+    And I enter the local IP address of "range begin" in dynamic IP range begin field
+    And I enter the local IP address of "range end" in dynamic IP range end field
+    And I enter the local IP address of "broadcast" in broadcast address field
+    And I enter the local IP address of "proxy" in routers field
     And I press "Add Item" in host reservations section
     And I enter "client" in first reserved hostname field
-    And I enter "192.168.5.2" in first reserved IP field
+    And I enter the local IP address of "client" in first reserved IP field
     And I enter the MAC address of "sle-client" in first reserved MAC field
     And I press "Add Item" in host reservations section
     And I enter "minion" in second reserved hostname field
-    And I enter "192.168.5.3" in second reserved IP field
+    And I enter the local IP address of "minion" in second reserved IP field
     And I enter the MAC address of "sle-minion" in second reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved!" text
@@ -80,7 +80,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter "no" in first value field
     And I enter "example.org" in first configured zone name field
     And I press "Add Item" in configured zones section
-    And I enter "5.168.192.in-addr.arpa" in second configured zone name field
+    And I enter the local zone name in second configured zone name field
     # direct zone example.org:
     And I enter "example.org" in first available zone name field
     And I enter "master/db.example.org" in first file name field
@@ -88,24 +88,24 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter "admin@example.org." in first contact field
     And I press "Add Item" in first A section
     And I enter "client" in first A name field
-    And I enter "192.168.5.2" in first A address field
+    And I enter the local IP address of "client" in first A address field
     And I press "Add Item" in first A section
     And I enter "minion" in second A name field
-    And I enter "192.168.5.3" in second A address field
+    And I enter the local IP address of "minion" in second A address field
     And I press "Add Item" in first A section
     And I enter "proxy" in third A name field
-    And I enter "192.168.5.254" in third A address field
+    And I enter the local IP address of "proxy" in third A address field
     And I press "Add Item" in first NS section
     And I enter "proxy.example.org." in first NS field
-    # reverse zone 5.168.192.in-addr.arpa:
+    # reverse zone xx.168.192.in-addr.arpa:
     And I press "Add Item" in available zones section
-    And I enter "5.168.192.in-addr.arpa" in second available zone name field
-    And I enter "master/db.5.168.192.in-addr.arpa" in second file name field
+    And I enter the local zone name in second available zone name field
+    And I enter the local file name in second file name field
     And I enter "proxy.example.org." in second name server field
     And I enter "admin@example.org." in second contact field
     And I press "Add Item" in second NS section
     And I enter "proxy.example.org." in second NS field
-    And I enter "192.168.5.0/24" in second generate reverse network field
+    And I enter the local network in second generate reverse network field
     And I press "Add Item" in second for zones section
     And I enter "example.org" in second for zones field
     # end
@@ -136,5 +136,7 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Set up the terminals too
     When I set up the private network on the terminals
-    Then terminal "sle-minion" should have got a retail network IP address
+    Then terminal "sle-client" should have got a retail network IP address
+    And name resolution should work on terminal "sle-client"
+    And terminal "sle-minion" should have got a retail network IP address
     And name resolution should work on terminal "sle-minion"

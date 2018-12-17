@@ -121,9 +121,6 @@ public class ChannelFamilyFactory extends HibernateFactory {
             cfam.setLabel(label);
             cfam.setName(name);
 
-            // This is only really a thing for orgs we get from Hosted
-            cfam.setProductUrl("https://www.suse.com/products/");
-
             ChannelFamilyFactory.save(cfam);
 
             //If we're creating a new channel fam, make sure the org has

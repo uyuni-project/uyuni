@@ -9,6 +9,11 @@ Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
   node.run("rpm -q #{package}")
 end
 
+Then(/^Deb package "([^"]*)" with version "([^"]*)" should be installed on "([^"]*)"$/) do |package, version, host|
+  node = get_target(host)
+  node.run("test $(dpkg-query -W -f='${Version}' #{package}) = \"#{version}\"")
+end
+
 Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
   node = get_target(host)
   node.run("rpm -q #{package}; test $? -ne 0")
@@ -23,12 +28,21 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
 end
 
+When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
+  node = get_target(host)
+  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  result.split("\n")[0, 15].each do |line|
+    line.force_encoding("UTF-8")
+    puts line
+  end
+end
+
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif host == 'ssh-minion' or host == 'ceos-minion'
+  elsif host == 'ssh-minion' or host == 'ceos-minion' or host == 'ubuntu-minion'
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -517,8 +531,10 @@ When(/^I enable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
     cmd = "zypper mr --enable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -529,8 +545,10 @@ When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
     cmd = "zypper mr --disable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -553,8 +571,10 @@ When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
     cmd = "zypper --non-interactive install -y #{package}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y install #{package}"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "apt-get --assume-yes install #{package}"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -565,8 +585,10 @@ When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
     cmd = "zypper --non-interactive remove -y #{package}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y remove #{package}"
+  elsif file_exists?(node, '/usr/bin/dpkg')
+    cmd = "dpkg --remove #{package}"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or dpkg'
   end
   node.run(cmd)
 end
@@ -618,55 +640,57 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I set up the private network on the terminals$/) do
-  nodes = [$client, $minion]
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  proxy = net_prefix + "254"
   # /etc/sysconfig/network/ifcfg-eth1
-  file = 'ifcfg-eth1'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file + "-suse"
-  dest = "/etc/sysconfig/network/" + file
+  nodes = [$client, $minion]
+  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
   nodes.each do |node|
     next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('ifup eth1')
+    node.run("echo -e \"#{conf}\" > /etc/sysconfig/network/ifcfg-eth1 && ifup eth1")
   end
   # /etc/sysconfig/network-scripts/ifcfg-eth1
   nodes = [$ceos_minion]
-  file = 'ifcfg-eth1'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file + "-centos"
-  dest = "/etc/sysconfig/network-scripts/" + file
+  conf = "DEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
   nodes.each do |node|
     next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('systemctl restart network')
+    node.run("echo -e \"#{conf}\" > /etc/sysconfig/network-scripts/ifcfg-eth1 && systemctl restart network")
   end
   # /etc/resolv.conf
   nodes = [$client, $minion, $ceos_minion]
-  file = 'resolv.conf.sed'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
+  script = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
   nodes.each do |node|
     next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('sed -i -f /tmp/resolv.conf.sed /etc/resolv.conf')
+    node.run("sed -i #{script} /etc/resolv.conf")
   end
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
   output, return_code = node.run("ip -4 address show eth1")
-  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? "192.168.5."
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
 end
 
 Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
-  # We ping the traditional client, using its domain name provided by the branch server
   node = get_target(host)
-  output, return_code = node.run("ping -c1 client.example.org")
-  raise "Name resolution for branch network on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+  # we need "host" utility
+  step "I install package \"bind-utils\" on this \"#{host}\""
+  # direct name resolution
+  ["proxy.example.org", "download.suse.de"].each do |dest|
+    output, return_code = node.run("host #{dest}")
+    raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+    STDOUT.puts "#{output}"
+  end
+  # reverse name resolution
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  client = net_prefix + "2"
+  [client, "149.44.176.1"].each do |dest|
+    output, return_code = node.run("host #{dest}")
+    raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+    STDOUT.puts "#{output}"
+  end
 end
 
 When(/^I configure the proxy$/) do
@@ -783,8 +807,8 @@ Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        output, _code = node.run("virsh dominfo #{vm}", fatal = false)
-        break if output.include? "Domain not found"
+        _output, code = node.run("virsh dominfo #{vm}", fatal = false)
+        break if code == 1
         sleep 3
       end
     end

@@ -15,6 +15,7 @@ a, a:hover {
 }
 header {
   position: fixed;
+  top: 0;
   height:auto;
   z-index: 1000;
   width: 100%;
@@ -144,7 +145,11 @@ section {
     background: @spacewalk-aside;
     border-right: 1px solid @spacewalk-aside-border;
     /* erasing the predefined paddings in the columns */
-    padding: 1em 0 2em 0;
+    padding: 0;
+    position: fixed;
+    #nav {
+      overflow-y: auto!important;
+    }
   }
 
   /* fixing margins in the 1st and last columns */
@@ -154,6 +159,8 @@ section {
     padding-right: 2em;
     padding-top: 0;
     padding-bottom: 2em;
+    overflow-y: auto!important;
+    float: right;
   }
 }
 
@@ -334,11 +341,37 @@ header, nav.navbar-pf {
   }
 }
 
+#scroll-top {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  right: 3px;
+  cursor: pointer;
+  z-index: 1000;
+  border-radius: 20px;
+  width: 35px;
+  height: 35px;
+  font-size: 1.5em;
+  padding: 0;
+  text-align: center;
+  background-color: rgba(0, 192, 129, 0.2);
+  color: @spacewalk-gray-dark;
+  border: 1px solid rgba(0, 192, 129, 0.2);
+  i {
+    margin: 0 auto;
+    height: 26px;
+  }
+}
+#scroll-top:hover {
+  background-color: rgba(0, 192, 129, 0.9);
+  color: @spacewalk-gray-light;
+  border: 1px solid darken(@susemanager-green, 10%);
+}
+
 //Nav menu in left column
 #nav {
-  margin-bottom: 60px;
   nav {
-    padding: 0px;
+    padding: 10px 0 0 0;
     .nav-tool-box {
       text-align: center;
       padding: 0 10px;
@@ -366,32 +399,6 @@ header, nav.navbar-pf {
           color: @spacewalk-aside-menu-search-clear-hover;
         }
       }
-    }
-    #scroll-top {
-      display: none;
-      position: fixed;
-      bottom: 5px;
-      right: 3px;
-      cursor: pointer;
-      z-index: 1000;
-      border-radius: 20px;
-      width: 35px;
-      height: 35px;
-      font-size: 1.5em;
-      padding: 0;
-      text-align: center;
-      background-color: rgba(0, 192, 129, 0.2);
-      color: @spacewalk-gray-dark;
-      border: 1px solid rgba(0, 192, 129, 0.2);
-      i {
-        margin: 0 auto;
-        height: 26px;
-      }
-    }
-    #scroll-top:hover {
-      background-color: rgba(0, 192, 129, 0.9);
-      color: @spacewalk-gray-light;
-      border: 1px solid darken(@susemanager-green, 10%);
     }
     a, .node-text {
       display: inline-block;

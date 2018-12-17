@@ -1,0 +1,843 @@
+[
+    {
+        "id" : 42,
+        "name" : "Open Enterprise Server 2015",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "2015",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 2015",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "extension",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -9,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2015-Pool/sle-11-x86_64/",
+                "name" : "OES2015-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Open Enterprise Server 2015",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -10,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2015-Updates/sle-11-x86_64/",
+                "name" : "OES2015-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Open Enterprise Server 2015",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : 43,
+        "name" : "Open Enterprise Server 2015 SP1",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "2015.1",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 2015 SP1",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "extension",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            43
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -11,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2015-SP1-Pool/sle-11-x86_64/",
+                "name" : "OES2015-SP1-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Open Enterprise Server 2015 SP1",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -12,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2015-SP1-Updates/sle-11-x86_64/",
+                "name" : "OES2015-SP1-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Open Enterprise Server 2015 SP1",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : 44,
+        "name" : "Open Enterprise Server 11 SP3",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "11.3",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 11 SP3",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "extension",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            1242
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -7,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP3-Pool/sle-11-x86_64/",
+                "name" : "OES11-SP3-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Open Enterprise Server 11 SP3",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -8,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP3-Updates/sle-11-x86_64/",
+                "name" : "OES11-SP3-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Open Enterprise Server 11 SP3",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : 45,
+        "name" : "Open Enterprise Server 2018",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "2018",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 2018",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -13,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-Pool/sle-12-x86_64/",
+                "name" : "OES2018-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "Open Enterprise Server 2018",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -23,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Manager-Tools-12-SP2-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Manager-Tools-12-SP2-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -24,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Manager-Tools-12-SP2-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Manager-Tools-12-SP2-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -25,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Manager-Tools-12-SP2-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Manager-Tools-12-SP2-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -26,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Manager-Tools-12-SP2-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Manager-Tools-12-SP2-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -21,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Module-Containers-12-SP2-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Module-Containers-12-SP2-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p>This Module contains several packages revolving around containers and related tools. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -22,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Module-Containers-12-SP2-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Module-Containers-12-SP2-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p>This Module contains several packages revolving around containers and related tools. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -19,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Module-Containers-12-SP2-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Module-Containers-12-SP2-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p>This Module contains several packages revolving around containers and related tools. </p>",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -20,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Module-Containers-12-SP2-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Module-Containers-12-SP2-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p>This Module contains several packages revolving around containers and related tools. </p>",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -29,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-SDK-12-SP2-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLE-SDK-12-SP2-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -30,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-SDK-12-SP2-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLE-SDK-12-SP2-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -27,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-SDK-12-SP2-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLE-SDK-12-SP2-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -28,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-SDK-12-SP2-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLE-SDK-12-SP2-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -15,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLES12-SP2-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLES12-SP2-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -16,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLES12-SP2-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLES12-SP2-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -17,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLES12-SP2-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLES12-SP2-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -18,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLES12-SP2-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLES12-SP2-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -14,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-Updates/sle-12-x86_64/",
+                "name" : "OES2018-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "Open Enterprise Server 2018",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -68,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Modules-Web-Scripting-12-SP2-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Module-Web-Scripting-12-SP2-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -69,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SLE-Modules-Web-Scripting-12-SP2-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SLE-Module-Web-Scripting-12-SP2-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : 46,
+        "name" : "Open Enterprise Server 2018 SP1",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "2018.1",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 2018 SP1",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            45
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -31,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "Open Enterprise Server 2018 SP1",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -32,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "Open Enterprise Server 2018 SP1",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -33,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP3-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLES12-SP3-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -34,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP3-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLES12-SP3-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -35,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP3-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLES12-SP3-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -36,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLES12-SP3-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLES12-SP3-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -37,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Containers12-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Containers12-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p>This Module contains several packages revolving around containers and related tools. </p>",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -38,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Containers12-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Containers12-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p>This Module contains several packages revolving around containers and related tools. </p>",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -39,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Containers12-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Containers12-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p>This Module contains several packages revolving around containers and related tools. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -40,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Containers12-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Containers12-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p>This Module contains several packages revolving around containers and related tools. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -41,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Manager-Tools12-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Manager-Tools12-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -42,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Manager-Tools12-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Manager-Tools12-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -43,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Manager-Tools12-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Manager-Tools12-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -44,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Manager-Tools12-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Manager-Tools12-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "SUSE Manager Tools provide packages required to connect to a SUSE Manager Server.",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -45,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-SDK-12-SP3-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-SDK-12-SP3-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -46,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-SDK-12-SP3-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-SDK-12-SP3-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -47,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-SDK-12-SP3-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-SDK-12-SP3-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -48,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-SDK-12-SP3-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-SDK-12-SP3-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -49,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Public-Cloud12-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Public-Cloud12-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. </p> <p> Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -50,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Public-Cloud12-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Public-Cloud12-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. </p> <p> Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -51,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Public-Cloud12-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Public-Cloud12-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. </p> <p> Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -52,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Public-Cloud12-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Public-Cloud12-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. </p> <p> Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -53,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Web-Scripting12-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Web-Scripting12-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -54,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Web-Scripting12-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Web-Scripting12-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -55,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Web-Scripting12-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Web-Scripting12-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -56,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Web-Scripting12-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Web-Scripting12-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -57,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Toolchain12-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Toolchain12-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -58,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Toolchain12-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Toolchain12-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details.",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -59,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Toolchain12-Debuginfo-Pool/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Toolchain12-Debuginfo-Pool",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -60,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2018-SP1-SLE-Module-Toolchain12-Debuginfo-Updates/sle-12-x86_64/",
+                "name" : "OES2018-SP1-SLE-Module-Toolchain12-Debuginfo-Updates",
+                "distro_target" : "sle-12-x86_64",
+                "description" : "Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details.",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : 1232,
+        "name" : "Novell Open Enterprise Server 2 11",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "11",
+        "release_type" : null,
+        "arch" : null,
+        "friendly_name" : "Novell Open Enterprise Server 2 11",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "extension",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -1,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-Pool/sle-11-x86_64/",
+                "name" : "OES11-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -2,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-Updates/sle-11-x86_64/",
+                "name" : "OES11-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : 1241,
+        "name" : "Novell Open Enterprise Server 2 11.1",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "11.1",
+        "release_type" : null,
+        "arch" : null,
+        "friendly_name" : "Novell Open Enterprise Server 2 11.1",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "extension",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            1232
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -3,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP1-Pool/sle-11-x86_64/",
+                "name" : "OES11-SP1-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11.1",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -4,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP1-Updates/sle-11-x86_64/",
+                "name" : "OES11-SP1-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11.1",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : 1242,
+        "name" : "Novell Open Enterprise Server 2 11.2",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "11.2",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Novell Open Enterprise Server 2 11.2",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "extension",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            1241
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -5,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP2-Pool/sle-11-x86_64/",
+                "name" : "OES11-SP2-Pool",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11.2",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -6,
+                "url" : "https://nu.novell.com/repo/$RCE/OES11-SP2-Updates/sle-11-x86_64/",
+                "name" : "OES11-SP2-Updates",
+                "distro_target" : "sle-11-x86_64",
+                "description" : "Novell Open Enterprise Server 11.2",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    }
+]

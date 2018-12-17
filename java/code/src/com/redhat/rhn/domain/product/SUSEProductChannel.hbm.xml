@@ -13,9 +13,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <many-to-one name="product" column="product_id" class="com.redhat.rhn.domain.product.SUSEProduct" />
     <many-to-one name="channel" column="channel_id" class="com.redhat.rhn.domain.channel.Channel" />
+    <property name="mandatory" column="mandatory" type="yes_no" />
 
-    <property name="channelLabel" column="channel_label" type="string" />
-    <property name="parentChannelLabel" column="parent_channel_label" type="string" />
     <property name="created" column="created" type="timestamp" insert="false" update="false" />
     <property name="modified" column="modified" type="timestamp" insert="false" update="false" />
   </class>

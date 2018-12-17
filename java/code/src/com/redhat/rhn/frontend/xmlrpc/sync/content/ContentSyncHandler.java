@@ -15,9 +15,10 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
+import com.redhat.rhn.common.util.SCCRefreshLock;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -27,13 +28,10 @@ import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
-import com.suse.mgrsync.XMLChannel;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -61,7 +59,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
-        return csm.listProducts(csm.listChannels());
+        return csm.listProducts();
     }
 
     /**
@@ -74,17 +72,17 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc List all accessible channels.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
-     *                       $XMLChannelSerializer
+     *                       $MgrSyncChannelDtoSerializer
      *                    #array_end()
      */
-    public List<XMLChannel> listChannels(User loggedInUser)
-            throws ContentSyncException {
+    public List<MgrSyncChannelDto> listChannels(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         return csm.listChannels();
     }
 
     /**
+     * @Deprecated
      * Synchronize channels between the Customer Center and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
      *
@@ -93,7 +91,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Synchronize channels between the Customer Center
+     * @xmlrpc.doc (Deprecated) Synchronize channels between the Customer Center
      *             and the SUSE Manager database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
@@ -101,10 +99,7 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeChannels(User loggedInUser, String mirrorUrl)
             throws ContentSyncException {
-        ensureSatAdmin(loggedInUser);
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateChannels(mirrorUrl);
-        return BaseHandler.VALID;
+        return 1;
     }
 
     /**
@@ -124,8 +119,14 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannelFamilies(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateChannelFamilies(csm.readChannelFamilies());
+        SCCRefreshLock.tryGetLock();
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateChannelFamilies(csm.readChannelFamilies());
+        }
+        finally {
+            SCCRefreshLock.unlockFile();
+        }
         return BaseHandler.VALID;
     }
 
@@ -144,30 +145,34 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSUSEProducts(csm.getProducts());
+        SCCRefreshLock.tryGetLock();
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSUSEProducts(csm.getProducts());
+        }
+        finally {
+            SCCRefreshLock.unlockFile();
+        }
         return BaseHandler.VALID;
     }
 
     /**
+     * @deprecated
      * Synchronize SUSE product channels between the Customer Center
      * and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
      *
      * @param loggedInUser the currently logged in user
      * @return Integer
-     * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Synchronize SUSE product channels between the Customer Center
+     * @xmlrpc.doc (Deprecated) Synchronize SUSE product channels between the Customer Center
      *             and the SUSE Manager database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeProductChannels(User loggedInUser)
-            throws ContentSyncException {
+    @Deprecated
+    public Integer synchronizeProductChannels(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
         return BaseHandler.VALID;
     }
 
@@ -187,8 +192,43 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSubscriptions(csm.getSubscriptions());
+        SCCRefreshLock.tryGetLock();
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSubscriptions();
+        }
+        finally {
+            SCCRefreshLock.unlockFile();
+        }
+        return BaseHandler.VALID;
+    }
+
+    /**
+     * Synchronize Repositories between the Customer Center
+     * and the SUSE Manager database.
+     * This method is one step of the whole refresh cycle.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param mirrorUrl optional mirror url
+     * @return Integer
+     * @throws ContentSyncException in case of an error
+     *
+     * @xmlrpc.doc Synchronize repositories between the Customer Center
+     *             and the SUSE Manager database.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional mirror url or null")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer synchronizeRepositories(User loggedInUser, String mirrorUrl) throws ContentSyncException {
+        ensureSatAdmin(loggedInUser);
+        SCCRefreshLock.tryGetLock();
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateRepositories(mirrorUrl);
+        }
+        finally {
+            SCCRefreshLock.unlockFile();
+        }
         return BaseHandler.VALID;
     }
 
@@ -234,17 +274,10 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
-        // TODO: add all channels which were enabled to the return list
-
-        Map<String, String> archByChannelLabel = csm.listChannels().stream().collect(Collectors.toMap(
-                XMLChannel::getLabel,
-                XMLChannel::getArch
-        ));
 
         List<String> mandatoryChannelLabels =
-                SUSEProductFactory.findAllMandatoryChannels(channelLabel, archByChannelLabel::get)
-                .filter(s -> s.getChannel() == null)
-                .map(SUSEProductChannel::getChannelLabel)
+                SUSEProductFactory.findNotSyncedMandatoryChannels(channelLabel)
+                .map(c -> c.getChannelLabel())
                 .collect(Collectors.toList());
 
         LinkedHashSet<String> channelLabelsToAdd = new LinkedHashSet<>(mandatoryChannelLabels);

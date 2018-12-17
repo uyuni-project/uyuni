@@ -56,48 +56,58 @@ public class VirtualizationActionMap {
         startMap.put("crashed", ActionFactory.TYPE_VIRTUALIZATION_START);
         startMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_RESUME);
 
+        // The VM may be in an unknown state in some weird circumstances (mostly a libvirt-events or libvirt bug)
+        // This typically should never happen... at least in production
+        startMap.put("unknown", ActionFactory.TYPE_VIRTUALIZATION_START);
+
         suspendMap = new HashMap();
         suspendMap.put("running", ActionFactory.TYPE_VIRTUALIZATION_SUSPEND);
         suspendMap.put("stopped", null);
         suspendMap.put("crashed", null);
         suspendMap.put("paused", null);
+        suspendMap.put("unknown", null);
 
         resumeMap = new HashMap();
         resumeMap.put("running", null);
         resumeMap.put("stopped", null);
         resumeMap.put("crashed", null);
         resumeMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_RESUME);
+        resumeMap.put("unknown", null);
 
         restartMap = new HashMap();
         restartMap.put("running", ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
         restartMap.put("stopped", ActionFactory.TYPE_VIRTUALIZATION_START);
         restartMap.put("crashed", ActionFactory.TYPE_VIRTUALIZATION_START);
         restartMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
+        restartMap.put("unknown", ActionFactory.TYPE_VIRTUALIZATION_START);
 
         shutdownMap = new HashMap();
         shutdownMap.put("running", ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
         shutdownMap.put("stopped", null);
         shutdownMap.put("crashed", ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
         shutdownMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
+        shutdownMap.put("unknown", ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
 
         deleteMap = new HashMap();
         deleteMap.put("running", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
         deleteMap.put("stopped", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
         deleteMap.put("crashed", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
         deleteMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
-
+        deleteMap.put("unknown", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
 
         setMemoryMap = new HashMap();
         setMemoryMap.put("running", ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
         setMemoryMap.put("stopped", ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
         setMemoryMap.put("crashed", ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
         setMemoryMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
+        setMemoryMap.put("unknown", ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
 
         setVcpusMap = new HashMap();
         setVcpusMap.put("running", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
         setVcpusMap.put("stopped", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
         setVcpusMap.put("crashed", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
         setVcpusMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
+        setVcpusMap.put("unknown", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
 
         actionMap = new HashMap();
         actionMap.put("start", startMap);

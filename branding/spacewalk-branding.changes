@@ -1,3 +1,9 @@
+- Nav and section scroll independently
+
+-------------------------------------------------------------------
+Mon Dec 17 14:35:08 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Better label visualization when the input is disabled. (bsc#1110772)
 - Automatic cleanup of notification messages after a configurable lifetime
 - ActivationKey base and child channel in a reactjs component

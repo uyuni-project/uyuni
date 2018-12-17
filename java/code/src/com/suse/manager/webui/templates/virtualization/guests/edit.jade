@@ -17,8 +17,9 @@ script(type='text/javascript').
                 "id": "#{server.id}",
                 "cpu": {
                     "count": #{server.cpu.nrCPU}
-                }
+                },
+                saltEntitled: #{isSalt},
             },
-            guest: JSON.parse('!{guest}')
+            guestUuid: "#{guestUuid}"
         }
     );

@@ -1,3 +1,12 @@
+- add sle-module-web-scripting for OES2018 (bsc#1119233)
+- add new set of data for the new SCC sync backend
+- enable SLE15 SP1 family (bsc#1114268)
+- enable OES2018 SP1 (bsc#1116826)
+
+-------------------------------------------------------------------
+Mon Dec 17 14:46:30 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - SUSE OpenStack Cloud 9 enablement (bsc#1113557)
 - add SUSE Manager 3.1 and 3.2 to SLES12 SP4
 

@@ -22,24 +22,42 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
-import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCRepository;
+import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
+import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.StaticInfoEntry;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.suse.salt.netapi.parser.JsonParser;
+import com.suse.scc.model.ChannelFamilyJson;
+import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.UpgradePathJson;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -72,8 +90,10 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setRelease("test");
         product.setProductId(new Random().nextInt(999999));
         product.setBase(true);
+        product.setReleaseStage(ReleaseStage.released);
+        product.setChannelFamily(family);
 
-        TestUtils.saveAndReload(product);
+        product = TestUtils.saveAndReload(product);
 
         return product;
     }
@@ -85,7 +105,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      */
     public static Channel createTestVendorChannel() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(null,
-                ChannelFamilyFactoryTest.createTestChannelFamily());
+                ChannelFamilyFactoryTest.createNullOrgTestChannelFamily());
         ChannelFactory.save(c);
         return c;
     }
@@ -107,34 +127,12 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param channel the channel
      * @param product the SUSE product
      */
-    public static void createTestSUSEProductChannel(Channel channel, SUSEProduct product) {
+    public static void createTestSUSEProductChannel(Channel channel, SUSEProduct product, boolean mandatory) {
         Set<SUSEProductChannel> pcs = product.getSuseProductChannels();
         SUSEProductChannel pc = new SUSEProductChannel();
         pc.setChannel(channel);
         pc.setProduct(product);
-        pc.setChannelLabel(channel.getLabel());
-        Channel parentChannel = channel.getParentChannel();
-        if (parentChannel != null) {
-            pc.setParentChannelLabel(parentChannel.getLabel());
-        }
-        SUSEProductFactory.save(pc);
-        pcs.add(pc);
-        product.setSuseProductChannels(pcs);
-    }
-
-    /**
-     * Create a SUSE product channel (that is, links a channel to a SUSE
-     * product, eg. a row in suseproductchannel) for a not synced channel
-     * @param channelLabel the channel label
-     * @param parentChannelLabel the parent channel label
-     * @param product the SUSE product
-     */
-    public static void createTestSUSEProductChannelNotSynced(String channelLabel, String parentChannelLabel, SUSEProduct product) {
-        Set<SUSEProductChannel> pcs = product.getSuseProductChannels();
-        SUSEProductChannel pc = new SUSEProductChannel();
-        pc.setProduct(product);
-        pc.setChannelLabel(channelLabel);
-        pc.setParentChannelLabel(parentChannelLabel);
+        pc.setMandatory(mandatory);
         SUSEProductFactory.save(pc);
         pcs.add(pc);
         product.setSuseProductChannels(pcs);
@@ -146,10 +144,10 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param to the second SUSE product
      */
     public static void createTestSUSEUpgradePath(SUSEProduct from, SUSEProduct to) {
-        SUSEUpgradePath up = new SUSEUpgradePath();
-        up.setFromProduct(from);
-        up.setToProduct(to);
-        SUSEProductFactory.save(up);
+        Set<SUSEProduct> up = from.getUpgrades();
+        up.add(to);
+        from.setUpgrades(up);
+        SUSEProductFactory.save(from);
     }
 
     /**
@@ -187,7 +185,6 @@ public class SUSEProductTestUtils extends HibernateFactory {
             cfsles = new ChannelFamily();
             cfsles.setLabel("7261");
             cfsles.setName("SUSE Linux Enterprise Server");
-            cfsles.setProductUrl("some url");
             TestUtils.saveAndFlush(cfsles);
         }
 
@@ -196,7 +193,6 @@ public class SUSEProductTestUtils extends HibernateFactory {
             cfha = new ChannelFamily();
             cfha.setLabel("SLE-HAE-X86");
             cfha.setName("SUSE Linux Enterprise High Availability Extension (x86)");
-            cfha.setProductUrl("some url");
             TestUtils.saveAndFlush(cfha);
         }
 
@@ -208,6 +204,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setProductId(1322);
         product.setChannelFamily(cfsles);
         product.setBase(true);
+        product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
 
         product = new SUSEProduct();
@@ -217,6 +214,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setProductId(1324);
         product.setChannelFamily(cfha);
+        product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
     }
 
@@ -224,18 +222,21 @@ public class SUSEProductTestUtils extends HibernateFactory {
         ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
         Channel channel = ChannelTestUtils.createBaseChannel(admin);
         channel.setChannelArch(channelArch);
-        ChannelFactory.save(channel);
-        SUSEProductTestUtils.createTestSUSEProductChannel(channel, product);
+        channel.setName("Channel for " + product.getFriendlyName());
+        channel = TestUtils.saveAndReload(channel);
+        SUSEProductTestUtils.createTestSUSEProductChannel(channel, product, true);
         return channel;
     }
 
-    public static void createChildChannelsForProduct(SUSEProduct product, Channel baseChannel, User admin) throws Exception {
+    public static Channel createChildChannelsForProduct(SUSEProduct product, Channel baseChannel, User admin) throws Exception {
         ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         channel.setChannelArch(channelArch);
         channel.setParentChannel(baseChannel);
-        ChannelFactory.save(channel);
-        SUSEProductTestUtils.createTestSUSEProductChannel(channel, product);
+        channel.setName("Channel for " + product.getFriendlyName());
+        channel = TestUtils.saveAndReload(channel);
+        SUSEProductTestUtils.createTestSUSEProductChannel(channel, product, true);
+        return channel;
     }
 
     /**
@@ -246,147 +247,60 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param admin
      * @throws Exception
      */
-    public static void createVendorSUSEProductEnvironment(User admin) throws Exception {
-        SUSEProduct productSLES12 = new SUSEProduct();
-        productSLES12.setName("sles");
-        productSLES12.setVersion("12");
-        productSLES12.setFriendlyName("SUSE Linux Enterprise Server 12");
-        productSLES12.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productSLES12.setProductId(1117);
+    public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos) throws Exception {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                .create();
+        if (testDataPath == null) {
+            testDataPath = "/com/redhat/rhn/manager/content/test/";
+        }
+        else if (!testDataPath.endsWith("/")) {
+            testDataPath = testDataPath + "/";
+        }
+        InputStreamReader inputStreamReader = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "productsUnscoped.json"));
+        List<SCCProductJson> products = gson.fromJson(inputStreamReader, new TypeToken<List<SCCProductJson>>() {}.getType());
+        InputStreamReader inputStreamReader2 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "upgrade_paths.json"));
+        List<UpgradePathJson> upgradePaths = gson.fromJson(inputStreamReader2, new TypeToken<List<UpgradePathJson>>() {}.getType());
+        InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "channel_families.json"));
+        List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
+        InputStreamReader inputStreamReader4 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "product_tree.json"));
+        List<StaticInfoEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<StaticInfoEntry>>() {}.getType());
+        InputStreamReader inputStreamReader5 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "repositories.json"));
+        List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader5, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
 
-        SUSEProduct productHA12 = new SUSEProduct();
-        productHA12.setName("sle-ha");
-        productHA12.setVersion("12");
-        productHA12.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12");
-        productHA12.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productHA12.setProductId(1245);
+        Credentials credentials = CredentialsFactory.createSCCCredentials();
+        credentials.setPassword("dummy");
+        credentials.setUrl("dummy");
+        credentials.setUsername("dummy");
+        credentials.setUser(admin);
+        CredentialsFactory.storeCredentials(credentials);
 
-        SUSEProduct productHAGEO12 = new SUSEProduct();
-        productHAGEO12.setName("sle-ha-geo");
-        productHAGEO12.setVersion("12");
-        productHAGEO12.setFriendlyName("SUSE Linux Enterprise High Availability GEO Extension 12");
-        productHAGEO12.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productHAGEO12.setProductId(1157);
-
-        SUSEProduct productSLES121 = new SUSEProduct();
-        productSLES121.setName("sles");
-        productSLES121.setVersion("12.1");
-        productSLES121.setFriendlyName("SUSE Linux Enterprise Server 12 SP1");
-        productSLES121.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productSLES121.setProductId(1322);
-
-        SUSEProduct productHA121 = new SUSEProduct();
-        productHA121.setName("sle-ha");
-        productHA121.setVersion("12.1");
-        productHA121.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP1");
-        productHA121.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productHA121.setProductId(1324);
-
-        SUSEProduct productHAGEO121 = new SUSEProduct();
-        productHAGEO121.setName("sle-ha-geo");
-        productHAGEO121.setVersion("12.1");
-        productHAGEO121.setFriendlyName("SUSE Linux Enterprise High Availability GEO Extension 12 SP1");
-        productHAGEO121.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productHAGEO121.setProductId(1337);
-
-        SUSEProduct productSLES122 = new SUSEProduct();
-        productSLES122.setName("sles");
-        productSLES122.setVersion("12.2");
-        productSLES122.setFriendlyName("SUSE Linux Enterprise Server 12 SP2");
-        productSLES122.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productSLES122.setProductId(1357);
-
-        SUSEProduct productHA122 = new SUSEProduct();
-        productHA122.setName("sle-ha");
-        productHA122.setVersion("12.2");
-        productHA122.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP2");
-        productHA122.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productHA122.setProductId(1361);
-
-        SUSEProduct productHAGEO122 = new SUSEProduct();
-        productHAGEO122.setName("sle-ha-geo");
-        productHAGEO122.setVersion("12.2");
-        productHAGEO122.setFriendlyName("SUSE Linux Enterprise High Availability GEO Extension 12 SP2");
-        productHAGEO122.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        productHAGEO122.setProductId(1363);
-
-        TestUtils.saveAndFlush(productHAGEO12);
-        TestUtils.saveAndFlush(productHAGEO121);
-        TestUtils.saveAndFlush(productHAGEO122);
-        TestUtils.saveAndFlush(productHA122);
-        TestUtils.saveAndFlush(productSLES122);
-        TestUtils.saveAndFlush(productHA121);
-        TestUtils.saveAndFlush(productSLES121);
-        TestUtils.saveAndFlush(productHA12);
-        TestUtils.saveAndFlush(productSLES12);
-
-        Set<SUSEProduct> upSLES = new HashSet<SUSEProduct>();
-        upSLES.add(productSLES121);
-        upSLES.add(productSLES122);
-        productSLES12.setUpgrades(upSLES);
-        Set<SUSEProduct> upHA = new HashSet<SUSEProduct>();
-        upHA.add(productHA121);
-        upHA.add(productHA122);
-        productHA12.setUpgrades(upHA);
-        Set<SUSEProduct> upHAGEO = new HashSet<SUSEProduct>();
-        upHA.add(productHAGEO121);
-        upHA.add(productHAGEO122);
-        productHAGEO12.setUpgrades(upHAGEO);
-
-        productSLES121.setDowngrades(Collections.singleton(productSLES12));
-        productHA121.setDowngrades(Collections.singleton(productHA12));
-        productHAGEO121.setDowngrades(Collections.singleton(productHAGEO12));
-
-        Set<SUSEProduct> downSLES = new HashSet<SUSEProduct>();
-        downSLES.add(productSLES121);
-        downSLES.add(productSLES12);
-        productSLES122.setDowngrades(downSLES);
-        Set<SUSEProduct> downHA = new HashSet<SUSEProduct>();
-        downHA.add(productHA121);
-        downHA.add(productHA12);
-        productHA122.setDowngrades(downHA);
-        Set<SUSEProduct> downHAGEO = new HashSet<SUSEProduct>();
-        downHAGEO.add(productHAGEO121);
-        downHAGEO.add(productHAGEO12);
-        productHAGEO122.setDowngrades(downHAGEO);
-
-        SUSEProductExtension e1 = new SUSEProductExtension(productSLES12, productHA12, productSLES12, false);
-        SUSEProductExtension e2 = new SUSEProductExtension(productSLES121, productHA121, productSLES121, false);
-        SUSEProductExtension e3 = new SUSEProductExtension(productSLES122, productHA122, productSLES122, false);
-
-        SUSEProductExtension e4 = new SUSEProductExtension(productHA12, productHAGEO12, productSLES12, false);
-        SUSEProductExtension e5 = new SUSEProductExtension(productHA121, productHAGEO121, productSLES121, false);
-        SUSEProductExtension e6 = new SUSEProductExtension(productHA122, productHAGEO122, productSLES122, false);
-
-        TestUtils.saveAndReload(productHAGEO122);
-        TestUtils.saveAndReload(productHAGEO121);
-        TestUtils.saveAndReload(productHAGEO12);
-        TestUtils.saveAndReload(productHA122);
-        TestUtils.saveAndReload(productSLES122);
-        TestUtils.saveAndReload(productHA121);
-        TestUtils.saveAndReload(productSLES121);
-        TestUtils.saveAndReload(productHA12);
-        TestUtils.saveAndReload(productSLES12);
-
-        TestUtils.saveAndReload(e1);
-        TestUtils.saveAndReload(e2);
-        TestUtils.saveAndReload(e3);
-        TestUtils.saveAndReload(e4);
-        TestUtils.saveAndReload(e5);
-        TestUtils.saveAndReload(e6);
-
-        Channel bcSLES12 = createBaseChannelForBaseProduct(productSLES12, admin);
-        createChildChannelsForProduct(productHA12, bcSLES12, admin);
-        createChildChannelsForProduct(productHAGEO12, bcSLES12, admin);
-        Channel bcSLES121 = createBaseChannelForBaseProduct(productSLES121, admin);
-        createChildChannelsForProduct(productHA121, bcSLES121, admin);
-        createChildChannelsForProduct(productHAGEO121, bcSLES121, admin);
-        Channel bcSLES122 = createBaseChannelForBaseProduct(productSLES122, admin);
-        createChildChannelsForProduct(productHA122, bcSLES122, admin);
-        createTestSUSEProductChannelNotSynced("channellabel" + TestUtils.randomString().toLowerCase()
-                , bcSLES122.getLabel(), productHAGEO122);
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateChannelFamilies(channelFamilies);
+        csm.updateSUSEProducts(products, upgradePaths, staticTree, Collections.emptyList());
+        if (withRepos) {
+            csm.refreshRepositoriesAuthentication(repositories, credentials, null);
+        }
     }
 
+    public static void addChannelsForProduct(SUSEProduct product) {
+        ContentSyncManager csm = new ContentSyncManager();
+        product.getRepositories()
+        .stream()
+        .filter(pr -> pr.isMandatory())
+        .forEach(pr -> {
+            try {
+                if (pr.getParentChannelLabel() != null && ChannelFactory.lookupByLabel(pr.getParentChannelLabel()) == null) {
+                    csm.addChannel(pr.getParentChannelLabel(), null);
+                }
+                csm.addChannel(pr.getChannelLabel(), null);
+            }
+            catch (ContentSyncException e) {
+                log.error("unable to add channel", e);
+                throw new RuntimeException(e);
+            }
+        });
+    }
     /**
      * Create standard SUSE Vendor Entitlement products.
      */
@@ -396,6 +310,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setVersion("1.2");
         product.setFriendlyName("SUSE Manager Mgmt Unlimited Virtual Z 1.2");
         product.setProductId(1200);
+        product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
 
         product = new SUSEProduct();
@@ -403,6 +318,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setVersion("1.2");
         product.setFriendlyName("SUSE Manager Prov Unlimited Virtual Z 1.2");
         product.setProductId(1205);
+        product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
 
         product = new SUSEProduct();
@@ -410,6 +326,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setVersion("1.2");
         product.setFriendlyName("SUSE Manager Mgmt Unlimited Virtual 1.2");
         product.setProductId(1078);
+        product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
 
         product = new SUSEProduct();
@@ -417,6 +334,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setVersion("1.2");
         product.setFriendlyName("SUSE Manager Prov Unlimited Virtual 1.2");
         product.setProductId(1204);
+        product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
 
         product = new SUSEProduct();
@@ -424,6 +342,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setVersion("1.2");
         product.setFriendlyName("SUSE Manager Mgmt Single 1.2");
         product.setProductId(1076);
+        product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
 
         product = new SUSEProduct();
@@ -431,6 +350,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setVersion("1.2");
         product.setFriendlyName("SUSE Manager Prov Single 1.2");
         product.setProductId(1097);
+        product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
     }
 
@@ -441,8 +361,40 @@ public class SUSEProductTestUtils extends HibernateFactory {
         Session session = getSession();
         session.getNamedQuery("SUSEProductChannel.clear").executeUpdate();
         session.getNamedQuery("SUSEProduct.clear").executeUpdate();
-        session.getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
         session.getNamedQuery("SUSEProductExtension.clear").executeUpdate();
+    }
+
+    /**
+     * Create a SCCRepository
+     * @return a SCCRepository
+     */
+    public static SCCRepository createSCCRepository() {
+        SCCRepository bRepo = new SCCRepository();
+        bRepo.setSccId(new Random().nextLong());
+        bRepo.setAutorefresh(true);
+        bRepo.setDescription(TestUtils.randomString());
+        bRepo.setDistroTarget("sle-15-x86_64");
+        bRepo.setName(TestUtils.randomString().toLowerCase());
+        bRepo.setUrl("https://dummy.domain.top/" + TestUtils.randomString().toLowerCase());
+
+        return TestUtils.saveAndReload(bRepo);
+    }
+
+    public static SCCRepositoryAuth createSCCRepositoryTokenAuth(Credentials c, SCCRepository r) {
+        SCCRepositoryAuth auth = new SCCRepositoryTokenAuth(TestUtils.randomString().toLowerCase());
+        auth.setRepository(r);
+        auth.setCredentials(c);
+        return TestUtils.saveAndReload(auth);
+    }
+
+    public static Credentials createSCCCredentials(String name, User user) {
+        Credentials credentials = CredentialsFactory.createSCCCredentials();
+        credentials.setPassword(TestUtils.randomString());
+        credentials.setUrl("dummy");
+        credentials.setUsername(name);
+        credentials.setUser(user);
+        CredentialsFactory.storeCredentials(credentials);
+        return credentials;
     }
 
     /**

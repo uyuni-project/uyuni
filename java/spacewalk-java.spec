@@ -34,9 +34,6 @@
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define run_checkstyle  0
 %define omit_tests      1
-%if !0%{?is_opensuse}
-%define with_oracle     1
-%endif
 %else
 %define appdir          %{_localstatedir}/lib/tomcat6/webapps
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
@@ -47,7 +44,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.2
+Version:        4.0.3
 Release:        1%{?dist}
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -72,15 +69,16 @@ Requires:       java >= 1.8.0
 Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       gnu-jaf
+Requires:       byte-buddy
+Requires:       jpa-api
 Requires:       hibernate-commons-annotations
-Requires:       hibernate-jpa-2.1-api
 Requires:       hibernate5
 Requires:       jade4j
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jose4j
 Requires:       objectweb-asm
-Requires:       pam-modules
+Requires:       /sbin/unix2_chkpwd
 Requires:       prometheus-client-java
 Requires:       salt-netapi-client >= 0.15.0
 Requires:       snakeyaml
@@ -95,15 +93,15 @@ BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
 BuildRequires:  ehcache >= 2.10.1
 BuildRequires:  google-gson >= 2.2.4
+BuildRequires:  byte-buddy
+BuildRequires:  jpa-api
 BuildRequires:  hibernate-commons-annotations
-BuildRequires:  hibernate-jpa-2.1-api
 BuildRequires:  hibernate5
 BuildRequires:  java-devel >= 1.8.0
 BuildRequires:  javassist
 BuildRequires:  jboss-logging
 BuildRequires:  jsch
 BuildRequires:  objectweb-asm
-BuildRequires:  pam-modules
 BuildRequires:  snakeyaml
 BuildRequires:  statistics
 # SUSE additional build requirements
@@ -308,10 +306,8 @@ BuildRequires:  translate-toolkit
 %endif
 Obsoletes:      rhn-java < 5.3.0
 Obsoletes:      rhn-java-sat < 5.3.0
-Obsoletes:      rhn-oracle-jdbc-tomcat5 <= 1.0
 Provides:       rhn-java = %{version}-%{release}
 Provides:       rhn-java-sat = %{version}-%{release}
-Provides:       rhn-oracle-jdbc-tomcat5 = %{version}-%{release}
 
 %description
 This package contains the code for the Java version of the Spacewalk Web Site.
@@ -344,27 +340,6 @@ Requires:       /usr/bin/sudo
 %description lib
 This package contains the jar files for the Spacewalk Java web application
 and taskomatic process.
-
-%if 0%{?with_oracle}
-%package oracle
-Summary:        Oracle database backend support files for Spacewalk Java
-Group:          Applications/Internet
-BuildRequires:  ojdbc14
-Requires:       ojdbc14
-%if 0%{?fedora} || 0%{?rhel} >= 7
-Requires:       tomcat >= 7
-%else
-%if 0%{?suse_version}
-Requires:       tomcat >= 8
-%else
-Requires:       tomcat6
-%endif
-%endif
-Provides:       spacewalk-java-jdbc = %{version}-%{release}
-
-%description oracle
-This package contains Oracle database backend files for the Spacewalk Java.
-%endif
 
 %package postgresql
 Summary:        PostgreSQL database backend support files for Spacewalk Java
@@ -440,7 +415,7 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cobbler >= 2.0.0
 Requires:       java >= 1.8.0
 Requires:       jsch
-Requires:       pam-modules
+Requires:       /sbin/unix2_chkpwd
 Requires:       tomcat-taglibs-standard
 %else
 Requires:       cobbler20
@@ -465,11 +440,12 @@ Requires:       xerces-j2
 Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       hibernate-commons-annotations
-Requires:       hibernate-jpa-2.1-api
 Requires:       hibernate5
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       statistics
+Requires:       byte-buddy
+Requires:       jpa-api
 %else
 Requires:       hibernate3 >= 3.2.4
 %endif
@@ -490,20 +466,11 @@ Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
-%if 0%{?suse_version} < 1500
-Requires:       jakarta-commons-pool
-BuildRequires:  jakarta-commons-pool
-%else
-Requires:       apache-commons-pool
-BuildRequires:  apache-commons-pool
-%endif # 0%{?suse_version} < 1500
 %else
 Requires:       jakarta-commons-cli
 Requires:       jakarta-commons-codec
 Requires:       jakarta-commons-lang
 Requires:       jakarta-commons-logging
-Requires:       jakarta-commons-pool
-BuildRequires:  jakarta-commons-pool
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7
 Conflicts:      quartz < 2.0
@@ -749,11 +716,6 @@ install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{c
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{cobdirsnippets}/wait_for_networkmanager_script
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/taskomaticd
-%if 0%{?with_oracle}
-ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
-%else
-rm -f %{_javadir}/ojdbc14.jar
-%endif
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT%{realcobsnippetsdir}/spacewalk
@@ -766,18 +728,11 @@ touch $RPM_BUILD_ROOT%{_var}/spacewalk/systemlogs/audit-review.log
 
 # special links for taskomatic
 TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
-%if 0%{?with_oracle}
-ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/ojdbc14.jar
-%endif
-ln -s -f %{_javadir}/quartz-oracle.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/quartz-oracle.jar
 rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*nop.jar
 rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*simple.jar
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
-%if 0%{?with_oracle}
-ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ojdbc14.jar
-%endif
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
 
 # install docbook sources
@@ -929,12 +884,14 @@ fi
 %{jardir}/simpleclient*.jar
 %{jardir}/pgjdbc-ng.jar
 
+%{jardir}/byte-buddy.jar
+%{jardir}/jakarta-persistence-api.jar
+
 # Hibernate and related
 %{jardir}/hibernate-core-5.jar
 %{jardir}/hibernate-c3p0-5.jar
 %{jardir}/hibernate-ehcache-5.jar
 %{jardir}/hibernate-commons-annotations.jar
-%{jardir}/hibernate-jpa-2.1-api.jar
 %{jardir}/ehcache-core.jar
 %{jardir}/classmate.jar
 %{jardir}/javassist.jar
@@ -1050,17 +1007,6 @@ fi
 %{_datadir}/rhn/classes/log4j.properties
 %{_datadir}/rhn/classes/ehcache.xml
 %{_datadir}/rhn/lib/rhn.jar
-
-%if 0%{?with_oracle}
-%files oracle
-%defattr(644,root,root,755)
-%dir %{_prefix}/share/rhn/search
-%dir %{_prefix}/share/rhn/search/lib
-%{jardir}/ojdbc14.jar
-%{_prefix}/share/spacewalk/taskomatic/ojdbc14.jar
-%{_prefix}/share/spacewalk/taskomatic/quartz-oracle.jar
-%{_prefix}/share/rhn/search/lib/ojdbc14.jar
-%endif
 
 %files postgresql
 %defattr(644,root,root,755)

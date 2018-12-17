@@ -1,3 +1,23 @@
+- Hide 'unknown virtual host manager' when virtual host manager of all hosts is known (bsc#1119320)
+- Add REST API to retrieve VM definition
+- Nav and section scroll independently
+- Listen to salt libvirt events to update VMs state
+- avoid a NullPointerException error in Taskomatic (bsc#1119271)
+- XMLRPC API: Include init.sls in channel file list (bsc#1111191)
+- Disable notification types with 'java.notifications_type_disabled' in rhn.conf (bsc#1111910)
+- Fix the config channels assignment via SSM (bsc#1117759)
+- Introduce Loggerhead-module.js to store logs from the frontend
+- change SCC sync backend to adapt quicker to SCC changes and improve
+  speed of syncing metadata and checking for channel dependencies (bsc#1089121)
+- read OEM Orderitems from DB instead of create always new items (bsc#1098826)
+- fix mgr-sync refresh when subscription was removed (bsc#1105720)
+- install product packages during bootstrapping minions (bsc#1104680)
+- remove Oracle support
+
+-------------------------------------------------------------------
+Mon Dec 17 14:37:54 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Change Requires to allow installing with both Tomcat 8 (SLE-12SP3) and 9 (SLE12-SP4)
 - Automatically schedule an Action to refresh minion repos after deletion of an assigned channel (bsc#1115029)
 - Performance improvements in channel management functionalities (bsc#1114877)
@@ -22,6 +42,12 @@
 - Different methods have been refactored in tomcat/taskomatic for better performance(bsc#1106430)
 - Do not try cleanup when deleting empty system profiles (bsc#1111247)
 - ActivationKey base and child channel in a reactjs component
+- Sync changes from Spacewalk
+- 1640999 - Fix status icons
+- 1640999 - Show correct name of the channel provididing rhncfg* packages
+- 1624837 - Suppress warning if AppStream addon is enabled
+- 1624837 - Enable appstream by default
+- 1624837 - Add appstream ks corresponding to given baseos ks
 
 -------------------------------------------------------------------
 Fri Oct 26 10:29:32 CEST 2018 - jgonzalez@suse.com

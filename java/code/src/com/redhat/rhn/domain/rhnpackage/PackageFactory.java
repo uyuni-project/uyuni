@@ -41,6 +41,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 /**
  * PackageFactory
  */
@@ -168,6 +171,17 @@ public class PackageFactory extends HibernateFactory {
         params.put("label", label);
         return (PackageArch) singleton.lookupObjectByNamedQuery("PackageArch.findByLabel",
                 params, true);
+    }
+
+    /**
+     * Lookup all PackageArch
+     * @return list of PackageArch
+     */
+    public static List<PackageArch> lookupPackageArch() {
+        CriteriaBuilder builder = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<PackageArch> q = builder.createQuery(PackageArch.class);
+        q.from(PackageArch.class);
+        return HibernateFactory.getSession().createQuery(q).getResultList();
     }
 
     /**

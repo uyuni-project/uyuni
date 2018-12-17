@@ -477,7 +477,7 @@ ORDER BY  S.name
 
 
 <mode name="latest_files_in_namespace" class="com.redhat.rhn.frontend.dto.ConfigFileDto">
-  <query params="ccid,user_id">
+  <query params="ccid,user_id,include_init_sls">
 SELECT CF.id,
            CF.latest_config_revision_id,
        CFN.path,
@@ -495,7 +495,7 @@ SELECT CF.id,
    AND CR.config_file_id = CF.id
    AND CF.latest_config_revision_id = CR.id
    AND CR.config_file_type_id = CFT.id
-   AND (CFT.label != 'sls' OR CFN.path != '/init.sls')
+   AND (CFT.label != 'sls' OR CFN.path != '/init.sls' OR :include_init_sls = 'Y')
 ORDER BY CFN.path
   </query>
 </mode>

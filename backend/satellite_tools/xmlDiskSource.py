@@ -343,6 +343,15 @@ class MetadataDiskSource:
     def getSuseUpgradePathsXmlStream(self):
         return SuseUpgradePathsDiskSource(self.mountpoint).load()
 
+    def getSuseProductExtensionsXmlStream(self):
+        return SuseProductExtensionsDiskSource(self.mountpoint).load()
+
+    def getSuseProductRepositoriesXmlStream(self):
+        return SuseProductRepositoriesDiskSource(self.mountpoint).load()
+
+    def getSCCRepositoriesXmlStream(self):
+        return SCCRepositoriesDiskSource(self.mountpoint).load()
+
     def getSuseSubscriptionsXmlStream(self):
         return SuseSubscriptionsDiskSource(self.mountpoint).load()
 
@@ -384,6 +393,33 @@ class SuseUpgradePathsDiskSource(DiskSource):
         if create and not os.path.isdir(dirname):
             createPath(dirname)
         return "%s/suse_upgrade_paths.xml" % dirname
+
+class SuseProductExtensionsDiskSource(DiskSource):
+    subdir = 'suse_product_extensions'
+
+    def _getFile(self, create=0):
+        dirname = self._getDir(create)
+        if create and not os.path.isdir(dirname):
+            createPath(dirname)
+        return "%s/suse_product_extensions.xml" % dirname
+
+class SuseProductRepositoriesDiskSource(DiskSource):
+    subdir = 'suse_product_repositories'
+
+    def _getFile(self, create=0):
+        dirname = self._getDir(create)
+        if create and not os.path.isdir(dirname):
+            createPath(dirname)
+        return "%s/suse_product_repositories.xml" % dirname
+
+class SCCRepositoriesDiskSource(DiskSource):
+    subdir = 'scc_repositories'
+
+    def _getFile(self, create=0):
+        dirname = self._getDir(create)
+        if create and not os.path.isdir(dirname):
+            createPath(dirname)
+        return "%s/scc_repositories.xml" % dirname
 
 class SuseSubscriptionsDiskSource(DiskSource):
     subdir = 'suse_products'

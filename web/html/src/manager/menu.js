@@ -147,10 +147,6 @@ class Nav extends React.Component {
     this.setState({search: '', forceCollapse: true});
   };
 
-  scrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
-
   render() {
     return (
       <nav className={this.state.search != null && this.state.search.length > 0 ? '' : 'collapsed'}>
@@ -162,7 +158,6 @@ class Nav extends React.Component {
           </span>
         </div>
         <MenuLevel level={1} elements={JSONMenu} searchString={this.state.search} forceCollapse={this.state.forceCollapse} />
-        <button id="scroll-top" onClick={this.scrollToTop}><i className='fa fa-angle-up'></i></button>
       </nav>
     );
   }

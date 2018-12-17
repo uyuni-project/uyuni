@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 17 14:38:29 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- Fix python2 compilation on openSUSE
+
+-------------------------------------------------------------------
 Fri Oct 26 10:32:08 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.2-1

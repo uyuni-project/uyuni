@@ -1,3 +1,6 @@
+- removed dependency to yum-utils as the dependencies exists on
+  the packages which really need it
+
 -------------------------------------------------------------------
 Fri Oct 26 10:03:57 CEST 2018 - jgonzalez@suse.com
 
