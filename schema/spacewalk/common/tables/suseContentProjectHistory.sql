@@ -20,7 +20,7 @@ CREATE TABLE suseContentProjectHistory(
                    CONSTRAINT suse_ct_prj_hist_prjid_fk
                        REFERENCES suseContentProject(id)
                        ON DELETE CASCADE,
-    text       TEXT,
+    message    CLOB,
     version    NUMBER NOT NULL,
     created    TIMESTAMP WITH LOCAL TIME ZONE
                    DEFAULT (current_timestamp) NOT NULL,
