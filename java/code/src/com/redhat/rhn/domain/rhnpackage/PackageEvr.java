@@ -183,12 +183,32 @@ public class PackageEvr implements Comparable {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         if (StringUtils.isNumeric(getEpoch())) {
-            builder.append(getEpoch());
-            builder.append(":");
+            builder.append(getEpoch()).append(':');
+        }
+        builder.append(getVersion()).append('-').append(getRelease());
+        return builder.toString();
+    }
+
+    /**
+     * Return an EVR string representation in the format "[epoch:]version-release",
+     * stripping away any dummy release strings (e.g. "-X"). The universal string is
+     * meant to be recognized in the whole linux ecosystem.
+     *
+     * @return string representation of epoch, version and release
+     */
+    public String toUniversalEvrString() {
+        StringBuilder builder = new StringBuilder();
+
+        if (StringUtils.isNumeric(getEpoch())) {
+            builder.append(getEpoch()).append(':');
         }
         builder.append(getVersion());
-        builder.append("-");
-        builder.append(getRelease());
+
+        // Strip dummy release string
+        if (!getRelease().equals("X")) {
+            builder.append('-').append(getRelease());
+        }
+
         return builder.toString();
     }
 }

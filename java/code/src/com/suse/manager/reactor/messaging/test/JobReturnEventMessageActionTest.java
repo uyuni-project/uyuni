@@ -509,6 +509,64 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    /**
+     * Test the processing of packages.profileupdate job return event
+     * for Ubuntu 18.04.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPackagesProfileUpdateUbuntu() throws Exception {
+        // Prepare test objects: minion server, products and action
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
+        minion.setMinionId("minion.ubuntu.local");
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("packages.profileupdate.ubuntu.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        // Verify the results
+        assertEquals(3, minion.getPackages().size());
+
+        // 'libgcc1' package
+        InstalledPackage pkg =
+                minion.getPackages().stream().filter(p -> "libgcc1".equals(p.getName().getName())).findFirst().get();
+        assertEquals("8.2.0", pkg.getEvr().getVersion());
+        assertEquals("1ubuntu2~18.04", pkg.getEvr().getRelease());
+        assertEquals("1", pkg.getEvr().getEpoch());
+        assertEquals("amd64-deb", pkg.getArch().getLabel());
+
+        // 'libefiboot1' package
+        pkg = minion.getPackages().stream().filter(p -> "libefiboot1".equals(p.getName().getName())).findFirst().get();
+        assertEquals("34", pkg.getEvr().getVersion());
+        assertEquals("1", pkg.getEvr().getRelease());
+        assertNull(pkg.getEvr().getEpoch());
+        assertEquals("amd64-deb", pkg.getArch().getLabel());
+
+        // 'init' package
+        pkg = minion.getPackages().stream().filter(p -> "init".equals(p.getName().getName())).findFirst().get();
+        assertEquals("1.51", pkg.getEvr().getVersion());
+        assertEquals("X", pkg.getEvr().getRelease());
+        assertNull(pkg.getEvr().getEpoch());
+        assertEquals("amd64-deb", pkg.getArch().getLabel());
+
+        // Verify OS family
+        assertEquals("Debian", minion.getOsFamily());
+
+        // Verify the action status
+        assertTrue(action.getServerActions().stream()
+                .filter(serverAction -> serverAction.getServer().equals(minion))
+                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
+    }
+
 
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.nodmi.x86.json", (server) -> {

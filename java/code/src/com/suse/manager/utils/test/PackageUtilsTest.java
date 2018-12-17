@@ -15,10 +15,8 @@
 package com.suse.manager.utils.test;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.utils.PackageUtils;
@@ -37,22 +35,6 @@ public class PackageUtilsTest extends BaseTestCaseWithUser {
 
         assertFalse(PackageUtils.isTypeRpm(pkgDeb));
         assertTrue(PackageUtils.isTypeDeb(pkgDeb));
-    }
-
-    public void testGetUniversalArchString() {
-        PackageArch archx86 = PackageFactory.lookupPackageArchByLabel("x86_64");
-        PackageArch archAmd64 = PackageFactory.lookupPackageArchByLabel("amd64-deb");
-
-        assertEquals("x86_64", PackageUtils.getUniversalArchString(archx86));
-        assertEquals("amd64", PackageUtils.getUniversalArchString(archAmd64));
-    }
-
-    public void testGetUniversalEvrString() {
-        PackageEvr evr1 = PackageEvrFactoryTest.createTestPackageEvr("1", "2.3.4", "5");
-        PackageEvr evr2 = PackageEvrFactoryTest.createTestPackageEvr(null, "1.2", "X");
-
-        assertEquals("1:2.3.4-5", PackageUtils.getUniversalEvrString(evr1));
-        assertEquals("1.2", PackageUtils.getUniversalEvrString(evr2));
     }
 
     /**

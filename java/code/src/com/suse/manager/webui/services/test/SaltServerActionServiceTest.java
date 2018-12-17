@@ -34,9 +34,11 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
@@ -149,6 +151,107 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction, minionSummaries);
         RhnBaseTestCase.assertNotEmpty(result.values());
+    }
+
+    public void testPackageRemoveDebian() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
+        List<MinionServer> mins = new ArrayList<>();
+        mins.add(minion);
+
+        List<MinionSummary> minionSummaries = mins.stream().
+                map(MinionSummary::new).collect(Collectors.toList());
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Package p = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
+        p.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X"));
+
+        Map<String, Long> pkgMap = new HashMap<>();
+        pkgMap.put("name_id", p.getPackageName().getId());
+        pkgMap.put("evr_id", p.getPackageEvr().getId());
+        pkgMap.put("arch_id", p.getPackageArch().getId());
+
+        final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
+                "test action", Date.from(now.toInstant()));
+
+        ActionFactory.addServerToAction(minion, action);
+
+        ActionManager.addPackageActionDetails(Arrays.asList(action), Collections.singletonList(pkgMap));
+        TestUtils.flushAndEvict(action);
+        Action updateAction = ActionFactory.lookupById(action.getId());
+
+        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction,
+                minionSummaries);
+        assertEquals(1, result.size());
+        LocalCall<?> resultCall = result.keySet().iterator().next();
+        List<List<String>> resultPkgs = (List<List<String>>) ((Map) ((Map) resultCall.getPayload().get("kwarg")).get(
+                "pillar")).get("param_pkgs");
+
+        List<String> resultPkg =
+                resultPkgs.stream().filter(pkg -> p.getPackageName().getName().equals(pkg.get(0))).findFirst().get();
+
+        // Assert if the package EVRAs are sent to Salt correctly
+        assertEquals("amd64", resultPkg.get(1));
+        assertEquals("1.0.0", resultPkg.get(2));
+    }
+
+    public void testPackageUpdateDebian() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
+        List<MinionServer> mins = new ArrayList<>();
+        mins.add(minion);
+
+        List<MinionSummary> minionSummaries = mins.stream().
+                map(MinionSummary::new).collect(Collectors.toList());
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Package p1 = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
+        p1.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X"));
+        Package p2 = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
+        p2.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr("1", "1.2", "1ubuntu1"));
+
+        List<Map<String, Long>> packageMaps = new ArrayList<>();
+        Map<String, Long> pkgMap = new HashMap<>();
+        pkgMap.put("name_id", p1.getPackageName().getId());
+        pkgMap.put("evr_id", p1.getPackageEvr().getId());
+        pkgMap.put("arch_id", p1.getPackageArch().getId());
+        packageMaps.add(pkgMap);
+
+        pkgMap = new HashMap<>();
+        pkgMap.put("name_id", p2.getPackageName().getId());
+        pkgMap.put("evr_id", p2.getPackageEvr().getId());
+        pkgMap.put("arch_id", p2.getPackageArch().getId());
+        packageMaps.add(pkgMap);
+
+        final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
+                "test action", Date.from(now.toInstant()));
+
+        ActionFactory.addServerToAction(minion, action);
+
+        ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
+        TestUtils.flushAndEvict(action);
+        Action updateAction = ActionFactory.lookupById(action.getId());
+
+        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction,
+                minionSummaries);
+        assertEquals(1, result.size());
+        LocalCall<?> resultCall = result.keySet().iterator().next();
+        List<List<String>> resultPkgs = (List<List<String>>) ((Map) ((Map) resultCall.getPayload().get("kwarg")).get(
+                "pillar")).get("param_pkgs");
+
+        List<String> resultP1 =
+                resultPkgs.stream().filter(pkg -> p1.getPackageName().getName().equals(pkg.get(0))).findFirst().get();
+        List<String> resultP2 =
+                resultPkgs.stream().filter(pkg -> p2.getPackageName().getName().equals(pkg.get(0))).findFirst().get();
+
+        // Assert if the package EVRAs are sent to Salt correctly
+        assertEquals("amd64", resultP1.get(1));
+        assertEquals("1.0.0", resultP1.get(2));
+
+        assertEquals("amd64", resultP2.get(1));
+        assertEquals("1:1.2-1ubuntu1", resultP2.get(2));
     }
 
     public void testDeployFiles() throws Exception {
