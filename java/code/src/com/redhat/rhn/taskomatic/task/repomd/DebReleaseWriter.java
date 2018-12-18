@@ -16,7 +16,7 @@
 package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.domain.channel.Channel;
-import com.suse.manager.utils.ChannelUtils;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
@@ -79,7 +79,7 @@ public class DebReleaseWriter {
             writer.println("Archive: " + channel.getLabel());
             writer.println("Label: " + channel.getLabel());
             writer.println("Suite: " + channel.getLabel());
-            writer.println("Architectures: " + ChannelUtils.getChannelArch(channel.getChannelArch()));
+            writer.println("Architectures: " + toArchString(channel.getChannelArch()));
             writer.println("Date: " + RFC822_DATE_FORMAT.format(ZonedDateTime.now()));
             writer.println("Description: " + Optional.ofNullable(channel.getDescription()).orElse(""));
 
@@ -88,7 +88,7 @@ public class DebReleaseWriter {
                     .collect(Collectors.toList());
 
             // assume we always use the "main" component for our repos
-            String filePrefix = "main/binary-" + ChannelUtils.getChannelArch(channel.getChannelArch()) + "/";
+            String filePrefix = "main/binary-" + toArchString(channel.getChannelArch()) + "/";
 
             writer.println("MD5Sum:");
             metadataFiles.forEach(file -> appendSum(writer, DigestUtils::md5Hex, filePrefix, file));
@@ -102,6 +102,10 @@ public class DebReleaseWriter {
         catch (IOException e) {
             log.error("Could not generate Release file for channel " + channel.getLabel(), e);
         }
+    }
+
+    private String toArchString(ChannelArch channelArch) {
+        return channelArch.getLabel().replaceAll("channel-", "").replaceAll("-deb", "");
     }
 
     @FunctionalInterface

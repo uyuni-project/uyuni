@@ -102,12 +102,12 @@ DELETE
 </write-mode>
 
 <write-mode name="request_repo_regen">
-  <query params="label, client, reason">
+  <query params="label, client, reason, force">
 INSERT
   INTO rhnRepoRegenQueue
         (id, channel_label, client, reason, force, bypass_filters, next_action, created, modified)
 VALUES (null,                   -- the id is set by trigger on rhnRepoRegenQueue
-        :label, :client, :reason, 'N', 'N', current_timestamp, current_timestamp, current_timestamp)
+        :label, :client, :reason, :force, 'N', current_timestamp, current_timestamp, current_timestamp)
   </query>
 </write-mode>
 

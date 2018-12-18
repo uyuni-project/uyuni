@@ -3,11 +3,13 @@
 set -e
 
 function usage {
-  echo "Usage: mgr-sign-metadata-ctl [enable <keyid> | disable | check]"
-  echo "  enable KEYID  Enable GPG signing of repository metadata using the provided KEYID."
-  echo "                Requires a valid key with the given KEYID to exist in the default keyring."
-  echo "  disable       Disable GPG signing of repository metadata."
-  echo "  check         Check configuration and report any problems. This is the default option."
+    echo "Usage: mgr-sign-metadata-ctl [enable <keyid> | disable | check-config | check-channels]"
+    echo "  enable KEYID     Enable GPG signing of repository metadata using the provided KEYID."
+    echo "                   Requires a valid key with the given KEYID to exist in the default keyring."
+    echo "  disable          Disable GPG signing of repository metadata."
+    echo "  check-channels   Check if the cached channels repodata is signed."
+    echo "  check-config     Check configuration and report any problems. This is the default option."
+    echo "  regen-metadata   Restart services and schedule metadata regeneration."
 }
 
 function check_key_in_keyring {
@@ -19,24 +21,55 @@ function check_key_in_keyring {
     fi
 }
 
+function regenerate_metadata {
+    echo -n "Restarting Tomcat..."
+    systemctl restart tomcat
+    echo "done."
+    echo -n "Restarting Taskomatic..."
+    systemctl restart taskomatic
+    echo "done."
+    echo
+    echo "Scheduling repo metadata regeneration..."
+    read_spacecmd_user_pass
+    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS softwarechannel_regenerateyumcache "*"
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]; then
+        echo "\nERROR queuing repo metadata regeneration. Try executing manually: spacecmd softwarechannel_regenerateyumcache \"*\""
+        exit 1
+    fi
+    echo "done."
+}
+
 function changed_repo_signing {
-    read -p "Restarting the services is required. Proceed now (y/N)? " -n 1 -r
+    read -p "Restarting the services and regenerating the metadata is required. Proceed now (y/N)? " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo -n "Restarting services ... "
-        systemctl restart tomcat
-        systemctl restart taskomatic
-        echo "done."
+        regenerate_metadata
     else
-        echo "You can restart the required services later by executing:"
-        echo "    rctomcat restart; rctaskomatic restart"
+        echo -e "\nYou can restart the services and regenerate the metadata later by executing:\n    mgr-sign-metadata-ctl regen-metadata"
     fi
 
     echo
-    echo "WARNING: You must reapply the highstate on all affected minions in order for the repositories to be configured correctly on the client machines."
+    echo "WARNING: When the metadata regeneration has finished refresh the repo config on all registered machines."
+    echo "To check if all channels have signed metadata: mgr-signed-metadata-ctl check-channels"
 }
 
-ACTION="check"
+function is_signing_enabled {
+    grep --quiet "^sign_metadata.*=.*1\s*$" $RHN_CONF
+}
+
+function read_spacecmd_user_pass {
+    if [[ -z "$SPACECMD_USER" || -z "$SPACECMD_PASS" ]];then
+        echo -n "Server User: ";
+        read SPACECMD_USER
+        echo -n "Server Password: ";
+        read -s SPACECMD_PASS
+    fi
+    echo
+}
+
+
+ACTION="check-config"
 ENABLE_KEYID=""
 
 if [ -n "$1" ]; then
@@ -48,7 +81,7 @@ if [ -n "$1" ]; then
         else
            ENABLE_KEYID="$2"
         fi
-    elif [[ "$1" = "disable" || "$1" = "check" ]]; then
+    elif [[ "$1" = "disable" || "$1" = "check-config" || "$1" = "check-channels" || "$1" = "regen-metadata" ]]; then
         ACTION="$1"
     elif [[ "$1" = "help" || "$1" = "-h" ]]; then
         usage
@@ -134,9 +167,9 @@ if [[  $ACTION = "enable" ]]; then
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_PUB_EXPORT_FILE}."
     fi
 
-elif [[  $ACTION = "check" ]]; then
+elif [[  $ACTION = "check-config" ]]; then
     # check sign_metadata in rhn.conf
-    if grep --quiet "^sign_metadata.*=.*1\s*$" $RHN_CONF; then
+    if is_signing_enabled; then
         echo "Metadata signing is enabled in ${RHN_CONF}."
         echo
 
@@ -149,7 +182,7 @@ elif [[  $ACTION = "check" ]]; then
         fi
 
         if [[ -z "$GPGPASS" ]]; then
-            echo "WARNING. No GPGPASS set in ${SIGNING_CONF}. You can safely ignore this warning if your keyring doesn't use a password."
+            echo "ERROR. No GPGPASS set in ${SIGNING_CONF}."
         fi
 
         # check pub key export file
@@ -227,6 +260,32 @@ elif [[  $ACTION = "disable" ]]; then
 
     echo
     echo "NOTE: Key pair was not removed from the GPG keyring. Use gpg --delete-keys and --delete-secret-keys if you wish to remove the keys from the keyring."
+elif [[ $ACTION = "check-channels" ]]; then
+    if is_signing_enabled; then
+        read_spacecmd_user_pass
+        CHANNELS=$(spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS softwarechannel_list)
+        RETVAL=$?
+        if [ $RETVAL -ne 0 ]; then
+            exit 1
+        fi
+        REPODATA_DIR=/var/cache/rhn/repodata # TODO get mount point from cfg
+
+        for ch in $CHANNELS; do
+           if [ ! -d "$REPODATA_DIR/$ch" ]; then
+                echo "ERROR. Channel $ch. Cached metadata not generated."
+           else
+               if [[ -f "$REPODATA_DIR/$ch/Release.gpg" || -f "$REPODATA_DIR/$ch/Release.gpg" ]]; then
+                    echo "OK. Channel $ch. Cached metadata is signed."
+               else
+                    echo "ERROR. Channel $ch. Cached metadata is not signed."
+               fi
+           fi
+        done
+    else
+        echo "No checking done. Metadata signing is disabled."
+    fi
+elif [[ $ACTION = "regen-metadata" ]]; then
+    regenerate_metadata
 fi
 
 if [[ $ACTION = "enable" || $ACTION = "disable" ]]; then

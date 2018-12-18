@@ -21,15 +21,14 @@
 %define apacheconfdir %{_sysconfdir}/apache2
 %define apachepkg apache2
 %define apache_group www
-%define manager_group susemanager
 %else
 %define apacheconfdir %{_sysconfdir}/httpd
 %define apachepkg httpd
 %define apache_group apache
-%define manager_group susemanager
 %endif
 
 %global rhnconfigdefaults %{_prefix}/share/rhn/config-defaults
+%global manager_group susemanager
 
 Name:           spacewalk-config
 Summary:        Spacewalk Configuration

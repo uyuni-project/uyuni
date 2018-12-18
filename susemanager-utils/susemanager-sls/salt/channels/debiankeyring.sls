@@ -1,4 +1,4 @@
-{%- if pillar.get('_mgr_metadata_signing_enabled', false) %}
+{%- if pillar.get('mgr_metadata_signing_enabled', false) %}
 /usr/share/keyrings/mgr-archive-keyring.gpg:
   file.managed:
     - source:

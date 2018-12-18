@@ -31,11 +31,16 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- endif %}
 {%- elif grains['os_family'] == 'Debian' %}
+{%- if grains['os'] == 'Ubuntu' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- endif %}
 {%- endif %}
 
 {%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
 
+{%- if not grains['os_family'] == 'Debian' %}
 bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
@@ -56,7 +61,7 @@ bootstrap_repo:
 {%- endif %}
     - onlyif:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
-
+{%- endif %}
 
 {%- if grains['os_family'] == 'RedHat' %}
 trust_suse_manager_tools_gpg_key:
@@ -83,8 +88,10 @@ trust_res_gpg_key:
 salt-minion-package:
   pkg.installed:
     - name: salt-minion
+{%- if not grains['os_family'] == 'Debian' %}
     - require:
       - file: bootstrap_repo
+{%- endif %}
 
 /etc/salt/minion.d/susemanager.conf:
   file.managed:

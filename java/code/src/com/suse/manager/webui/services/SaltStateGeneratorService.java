@@ -45,7 +45,6 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.utils.ChannelUtils;
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.utils.SaltConfigChannelState;
@@ -326,10 +325,10 @@ public enum SaltStateGeneratorService {
             chanProps.put("port", Config.get().getInt("ssh_push_port_https"));
         }
         chanProps.put("token", accessToken.getToken());
-        if (ChannelUtils.isTypeRpm(chan)) {
+        if (chan.isTypeRpm()) {
             chanProps.put("type", "rpm-md");
         }
-        else if (ChannelUtils.isTypeDeb(chan)) {
+        else if (chan.isTypeDeb()) {
             chanProps.put("type", "deb");
         }
         else {

@@ -937,5 +937,23 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         }
     }
 
+    private String getArchTypeLabel() {
+        return this.getChannelArch().getArchType().getLabel();
+    }
+
+    /**
+     * @return whether the channel is a RPM chanel or not
+     */
+    public boolean isTypeRpm() {
+        return "rpm".equalsIgnoreCase(getArchTypeLabel());
+    }
+
+    /**
+     * @return whether the channel is a DEB chanel or not
+     */
+    public boolean isTypeDeb() {
+        return "deb".equalsIgnoreCase(getArchTypeLabel());
+    }
+
 }
 

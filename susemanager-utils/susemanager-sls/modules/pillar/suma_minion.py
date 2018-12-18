@@ -280,13 +280,14 @@ def image_pillars(minion_id):
 
 
 def read_repo_sign_conf():
-    ret = {'_mgr_metadata_signing_enabled': False}
+    ret = {'mgr_metadata_signing_enabled': False}
     filename = CONFIG_FILE
     try:
         lines = open(filename, 'r').readlines()
         for line in lines:
             if re.match('sign_metadata.*=.*1\\s*$', line):
-                ret['_mgr_metadata_signing_enabled'] = True
+                ret['mgr_metadata_signing_enabled'] = True
+                break
     except Exception as error:
         log.error('Error reading config file {0}: {1}'.format(filename, str(error)))
 

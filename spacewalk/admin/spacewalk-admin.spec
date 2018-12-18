@@ -18,6 +18,7 @@
 
 
 %global rhnroot /%{_datadir}/rhn
+%global manager_group susemanager
 Summary:        Various utility scripts and data files for Spacewalk installations
 License:        GPL-2.0-only
 Group:          Applications/Internet
@@ -107,7 +108,7 @@ ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 %{_unitdir}/mgr-events-config.service
 %endif
 %if 0%{?suse_version}
-%attr(0750,root,www) %dir %{_sysconfdir}/rhn
+%attr(0750,root,%{manager_group}) %dir %{_sysconfdir}/rhn
 %endif
 
 %changelog

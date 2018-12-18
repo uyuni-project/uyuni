@@ -31,6 +31,7 @@
 %endif
 
 %define pythonX %{?build_py3:python3}%{!?build_py3:python}
+%global manager_group susemanager
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 0}
@@ -998,7 +999,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %doc README.ULN
-%attr(0750,root,%{apache_group}) %dir %{rhnconf}
+%attr(0750,root,%{manager_group}) %dir %{rhnconf}
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %config(noreplace) %{rhnconf}/signing.conf

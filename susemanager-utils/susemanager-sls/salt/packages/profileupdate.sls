@@ -1,7 +1,7 @@
 packages:
   module.run:
     - name: pkg.info_installed
-{% if grains['os_family'] == 'Suse' %}
+{% if grains['os_family'] == 'Suse' or grains['os_family'] == 'RedHat' %}
     - kwargs: {
           attr: 'arch,epoch,version,release,install_date_time_t',
 {%- if grains.get('__suse_reserved_pkg_all_versions_support', False) %}
@@ -19,7 +19,7 @@ products:
 {% elif grains['os_family'] == 'RedHat' %}
 {% include 'packages/redhatproductinfo.sls' %}
 {% elif grains['os_family'] == 'Debian' %}
-ubunturelease:
+debianrelease:
   cmd.run:
     - name: cat /etc/os-release
     - onlyif: test -f /etc/os-release
