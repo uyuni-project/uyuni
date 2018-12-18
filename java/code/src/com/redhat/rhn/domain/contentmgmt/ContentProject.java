@@ -20,6 +20,9 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +34,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * todo
+ * A Content Project
  */
 @Entity
 @Table(name = "suseContentProject")
@@ -42,6 +45,7 @@ public class ContentProject extends BaseDomainHelper {
     private String label;
     private String name;
     private String description;
+    private Set<ContentEnvironment> environments = new HashSet<>();
 
     /**
      * Gets the id.
@@ -138,6 +142,21 @@ public class ContentProject extends BaseDomainHelper {
      */
     public void setDescription(String descriptionIn) {
         description = descriptionIn;
+    }
+
+    /**
+     * @return the environments
+     */
+    @OneToMany(mappedBy = "contentProject")
+    public Set<ContentEnvironment> getEnvironments() {
+        return environments;
+    }
+
+    /**
+     * @param environmentsIn the environments to set
+     */
+    public void setEnvironments(Set<ContentEnvironment> environmentsIn) {
+        environments = environmentsIn;
     }
 
     /**
