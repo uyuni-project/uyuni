@@ -23,7 +23,11 @@ CREATE TABLE suseContentEnvironment(
     label       VARCHAR2(16) NOT NULL,
     name        VARCHAR2(128) NOT NULL,
     description CLOB,
-    version     NUMBER
+    version     NUMBER,
+    created     TIMESTAMP WITH LOCAL TIME ZONE
+                    DEFAULT (current_timestamp) NOT NULL,
+    modified    TIMESTAMP WITH LOCAL TIME ZONE
+                    DEFAULT (current_timestamp) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;

@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 a748a0d6718d3434c7b3c3386a07ccddd2a8a8c3
+-- oracle equivalent source sha1 1a6c328f9273937c57ca944fdcc6c5f61777b0b8
 --
 -- Copyright (c) 2018 SUSE LLC
 --
@@ -24,7 +24,11 @@ CREATE TABLE IF NOT EXISTS suseContentEnvironment(
     label       VARCHAR(16) NOT NULL,
     name        VARCHAR(128) NOT NULL,
     description TEXT,
-    version     NUMERIC
+    version     NUMERIC,
+    created     TIMESTAMPTZ
+                    DEFAULT (current_timestamp) NOT NULL,
+    modified    TIMESTAMPTZ
+                    DEFAULT (current_timestamp) NOT NULL
 )
 
 ;

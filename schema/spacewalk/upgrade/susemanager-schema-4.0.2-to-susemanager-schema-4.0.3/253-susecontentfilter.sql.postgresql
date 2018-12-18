@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 6347d34ff52d68f4727a294c1cdad7338f9e3454
+-- oracle equivalent source sha1 9ccb9d202e545d58626ab1064e54993303c92ed9
 --
 -- Copyright (c) 2018 SUSE LLC
 --
@@ -23,7 +23,11 @@ CREATE TABLE IF NOT EXISTS suseContentFilter(
                      ON DELETE CASCADE,
     type     VARCHAR(16) NOT NULL,
     name     VARCHAR(128) NOT NULL,
-    criteria TEXT
+    criteria TEXT,
+    created  TIMESTAMPTZ
+                 DEFAULT (current_timestamp) NOT NULL,
+    modified TIMESTAMPTZ
+                 DEFAULT (current_timestamp) NOT NULL
 )
 
 ;
