@@ -22,7 +22,12 @@ CREATE TABLE suseContentFilter(
                      ON DELETE CASCADE,
     type     VARCHAR2(16) NOT NULL,
     name     VARCHAR2(128) NOT NULL,
-    criteria CLOB
+    criteria CLOB,
+    created  TIMESTAMP WITH LOCAL TIME ZONE
+                 DEFAULT (current_timestamp) NOT NULL,
+    modified TIMESTAMP WITH LOCAL TIME ZONE
+                 DEFAULT (current_timestamp) NOT NULL
+
 )
 ENABLE ROW MOVEMENT
 ;
