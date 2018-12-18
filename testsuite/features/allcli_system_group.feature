@@ -25,7 +25,7 @@ Feature: Create a group
     And I click on "Create Group"
     Then I should see a "System group new-systems-group created." text
 
-  Scenario: Add a SLE minion system to the group
+  Scenario: Add the SLE minion system to the group
     Given I am on the groups page
     When I follow "new-systems-group"
     And I follow "Target Systems"
@@ -33,7 +33,7 @@ Feature: Create a group
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group." text
 
-  Scenario: Add a SLE client system to the group
+  Scenario: Add the SLE client system to the group
     Given I am on the groups page
     When I follow "new-systems-group"
     And I follow "Target Systems"
@@ -41,12 +41,12 @@ Feature: Create a group
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group." text
 
-  Scenario: Check that this SLE client is part of the new group
+  Scenario: Check that the SLE client is part of the new group
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Groups" in the content area
     Then I should see a "new-systems-group" text
 
-  Scenario: Check that this SLE minion is part of the new group
+  Scenario: Check that the SLE minion is part of the new group
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Groups" in the content area
     Then I should see a "new-systems-group" text
