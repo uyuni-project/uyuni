@@ -1,3 +1,4 @@
+- avoid a NullPointerException error in Taskomatic (bsc#1119271)
 - change SCC sync backend to adapt quicker to SCC changes and improve
   speed of syncing metadata and checking for channel dependencies (bsc#1089121)
 - read OEM Orderitems from DB instead of create always new items (bsc#1098826)
