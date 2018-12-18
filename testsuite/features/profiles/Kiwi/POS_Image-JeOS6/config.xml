@@ -30,16 +30,16 @@
       <file name="drivers/block/virtio_blk.ko" />
     </drivers>
     <repository type="rpm-md" >
-        <source path="http://euklid.nue.suse.com/mirror/SuSE/build.suse.de/SUSE/Products/SLE-SERVER/12-SP3/x86_64/product/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP3/x86_64/product/"/>
     </repository>
     <repository type="rpm-md" >
-        <source path="http://euklid.nue.suse.com/mirror/SuSE/build.suse.de/SUSE/Updates/SLE-SERVER/12-SP3/x86_64/update/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-SERVER/12-SP3/x86_64/update/"/>
     </repository>
     <repository type="rpm-md" >
-        <source path="http://euklid.nue.suse.com/mirror/SuSE/build.suse.de/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/"/>
     </repository>
     <repository type="rpm-md" >
-        <source path="http://euklid.nue.suse.com/mirror/SuSE/build.suse.de/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/"/>
     </repository>
     <packages type="image">
         <package name="patterns-sles-Minimal"/>
