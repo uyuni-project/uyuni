@@ -1,5 +1,5 @@
 FROM registry.mgr.suse.de/toaster-sles12sp3-products
-MAINTAINER Dario Maiocchi "dmaiocchi@suse.com"
+MAINTAINER Admin User "noemail@example.com"
 
 ARG repo
 ARG cert
