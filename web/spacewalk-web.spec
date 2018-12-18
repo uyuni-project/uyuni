@@ -92,6 +92,11 @@ Group:          Applications/Internet
 Provides:       spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       susemanager-frontend-libs
+%if 0%{?suse_version} >= 1500
+Requires:       python3-websockify
+%else
+Requires:       python-websockify
+%endif
 %endif
 Requires:       httpd
 Requires:       sudo

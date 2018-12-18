@@ -1,0 +1,12 @@
+[Unit]
+Description=TCP to WebSocket proxy
+
+[Service]
+ExecStartPre=/usr/bin/sh -c "grep secret_key /etc/rhn/rhn.conf | tr -d ' ' | cut -f2 -d '=' | perl -ne 's/([0-9a-f]{2})/print chr hex $1/gie' > /etc/rhn/websockify.key"
+ExecStart=/usr/bin/websockify \
+    --token-plugin JWTTokenApi \
+	--token-source /etc/rhn/websockify.key \
+	--cert /etc/apache2/ssl.crt/server.crt \
+	--key /etc/pki/tls/private/spacewalk.key \
+	8050
+ExecReload=/bin/kill -USR1 $MAINPID
