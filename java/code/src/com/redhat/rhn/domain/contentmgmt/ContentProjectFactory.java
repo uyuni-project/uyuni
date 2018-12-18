@@ -19,6 +19,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import org.apache.log4j.Logger;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 /**
  *  todo
  */
@@ -45,6 +49,21 @@ public class ContentProjectFactory extends HibernateFactory {
         saveObject(contentProject);
     }
 
+    /**
+     * Save a Content Environment in DB
+     * @param contentEnvironment the content environment
+     */
+    public void save(ContentEnvironment contentEnvironment) {
+        saveObject(contentEnvironment);
+    }
+
+    public ContentProject lookupContentProjectByLabel(String label) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ContentProject> criteria = builder.createQuery(ContentProject.class);
+        Root<ContentProject> root = criteria.from(ContentProject.class);
+        criteria.where(builder.equal(root.get("label"), label));
+        return getSession().createQuery(criteria).getSingleResult();
+    }
     // todo
     @Override
     protected Logger getLogger() {
