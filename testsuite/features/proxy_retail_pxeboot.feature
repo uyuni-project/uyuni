@@ -201,7 +201,6 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in partitions section
     And I enter "p2" in second partition id field
     And I enter "/" in second mount point field
-    And I select "ext4" in second filesystem format field
     And I enter "POS_Image_JeOS6" in second OS image field
     And I click on "Save Formula"
     Then I should see a "Formula saved!" text
