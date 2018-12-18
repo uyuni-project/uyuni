@@ -965,9 +965,10 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(
             List<MinionSummary> minionSummaries, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        List<List<String>> pkgs = action.getDetails().stream().map(
-                d -> Arrays.asList(d.getPackageName().getName(), d.getArch().getName(), d.getEvr().toString())
-        ).collect(Collectors.toList());
+        List<List<String>> pkgs = action
+                .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
+                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
+                .collect(Collectors.toList());
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
                 Optional.of(singletonMap(PARAM_PKGS, pkgs))), minionSummaries);
         return ret;
@@ -976,9 +977,10 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> packagesRemoveAction(
             List<MinionSummary> minionSummaries, PackageRemoveAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        List<List<String>> pkgs = action.getDetails().stream().map(
-                d -> Arrays.asList(d.getPackageName().getName(), d.getArch().getName(), d.getEvr().toString())
-        ).collect(Collectors.toList());
+        List<List<String>> pkgs = action
+                .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
+                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
+                .collect(Collectors.toList());
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGREMOVE),
                 Optional.of(singletonMap(PARAM_PKGS, pkgs))), minionSummaries);
         return ret;
@@ -1517,11 +1519,10 @@ public class SaltServerActionService {
     private LocalCall<?> prepareStagingTargets(Action actionIn, List<MinionSummary> minionSummaries) {
         LocalCall<?> call = null;
         if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
-            List<List<String>> args =
-                    ((PackageUpdateAction) actionIn).getDetails().stream().map(
-                            d -> Arrays.asList(d.getPackageName().getName(),
-                                    d.getArch().getName(), d.getEvr().toString())
-                    ).collect(Collectors.toList());
+            List<List<String>> args = ((PackageUpdateAction) actionIn)
+                    .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
+                            d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
+                    .collect(Collectors.toList());
             call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
                     Optional.of(Collections.singletonMap(PARAM_PKGS, args)));
             LOG.info("Executing staging of packages");
