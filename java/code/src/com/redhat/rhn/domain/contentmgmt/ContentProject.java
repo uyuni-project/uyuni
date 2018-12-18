@@ -19,10 +19,10 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -164,9 +164,13 @@ public class ContentProject extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
 
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         ContentProject that = (ContentProject) o;
 
@@ -183,5 +187,16 @@ public class ContentProject extends BaseDomainHelper {
         return new HashCodeBuilder(17, 37)
                 .append(label)
                 .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("label", label)
+                .append("org", org)
+                .toString();
     }
 }
