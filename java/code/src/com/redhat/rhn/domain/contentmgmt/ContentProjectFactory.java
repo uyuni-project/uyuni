@@ -17,34 +17,43 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
+
+import com.redhat.rhn.domain.org.Org;
 import org.apache.log4j.Logger;
 
+import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
- *  todo
+ *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class.
  */
 public class ContentProjectFactory extends HibernateFactory {
 
-    private static ContentProjectFactory INSTANCE;
-
+    private static ContentProjectFactory instance;
     private static Logger log = Logger.getLogger(ImageInfoFactory.class);
 
     private ContentProjectFactory() {
         super();
     }
 
-    // todo
+    /**
+     * Get the instance.
+     * @return the instance
+     */
     public static synchronized ContentProjectFactory getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ContentProjectFactory();
+        if (instance == null) {
+            instance = new ContentProjectFactory();
         }
-        return INSTANCE;
+        return instance;
     }
 
-    // todo
+    /**
+     * Save the ContentProject
+     *
+     * @param contentProject - the ContentProject
+     */
     public void save(ContentProject contentProject) {
         saveObject(contentProject);
     }
@@ -57,6 +66,12 @@ public class ContentProjectFactory extends HibernateFactory {
         saveObject(contentEnvironment);
     }
 
+    /**
+     * Looks up a ContentProject by label
+     *
+     * @param label - the label
+     * @return ContentProject with given label
+     */
     public ContentProject lookupContentProjectByLabel(String label) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ContentProject> criteria = builder.createQuery(ContentProject.class);
@@ -64,7 +79,23 @@ public class ContentProjectFactory extends HibernateFactory {
         criteria.where(builder.equal(root.get("label"), label));
         return getSession().createQuery(criteria).getSingleResult();
     }
-    // todo
+
+    /**
+     * List all ContentProjects with given organization
+     * @param org - the organization
+     * @return the ContentProjects in given organization
+     */
+    public List<ContentProject> listContentProjects(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ContentProject> query = builder.createQuery(ContentProject.class);
+        Root<ContentProject> root = query.from(ContentProject.class);
+        query.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(query).list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Logger getLogger() {
         return log;
