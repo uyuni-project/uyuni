@@ -1,4 +1,0 @@
-# Retail: interface to private network on the terminals
-
-STARTMODE='auto'
-BOOTPROTO='dhcp'

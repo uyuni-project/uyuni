@@ -618,48 +618,40 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I set up the private network on the terminals$/) do
-  nodes = [$client, $minion]
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  proxy = net_prefix + "254"
   # /etc/sysconfig/network/ifcfg-eth1
-  file = 'ifcfg-eth1'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file + "-suse"
-  dest = "/etc/sysconfig/network/" + file
+  nodes = [$client, $minion]
+  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
+  STDOUT.puts "#{conf}"
   nodes.each do |node|
     next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('ifup eth1')
+    node.run("echo -e \"#{conf}\" > /etc/sysconfig/network/ifcfg-eth1 && ifup eth1")
   end
   # /etc/sysconfig/network-scripts/ifcfg-eth1
   nodes = [$ceos_minion]
-  file = 'ifcfg-eth1'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file + "-centos"
-  dest = "/etc/sysconfig/network-scripts/" + file
+  conf = "DEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
+  STDOUT.puts "#{conf}"
   nodes.each do |node|
     next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('systemctl restart network')
+    node.run("echo -e \"#{conf}\" > /etc/sysconfig/network-scripts/ifcfg-eth1 && systemctl restart network")
   end
   # /etc/resolv.conf
   nodes = [$client, $minion, $ceos_minion]
-  file = 'resolv.conf.sed'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
+  script = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
+  STDOUT.puts "#{script}"
   nodes.each do |node|
     next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('sed -i -f /tmp/resolv.conf.sed /etc/resolv.conf')
+    node.run("sed -i #{script} /etc/resolv.conf")
   end
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
   output, return_code = node.run("ip -4 address show eth1")
-  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? "192.168.5."
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
 end
 
 Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
