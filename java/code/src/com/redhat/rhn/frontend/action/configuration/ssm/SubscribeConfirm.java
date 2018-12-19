@@ -174,7 +174,10 @@ public class SubscribeConfirm extends RhnAction {
                 RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user).getElements());
         Collections.sort(rankElements, new ConfigChannelSetComparator());
 
+        RhnSet selectedChannels = RhnSetDecl.CONFIG_CHANNELS.get(user);
+
         List<ConfigChannel> channels = ((List<RhnSetElement>) rankElements).stream()
+                .filter(elm -> selectedChannels.contains(elm.getElement()))
                 .map(elm -> cm.lookupConfigChannel(user, elm.getElement()))
                 .collect(Collectors.toList());
 
