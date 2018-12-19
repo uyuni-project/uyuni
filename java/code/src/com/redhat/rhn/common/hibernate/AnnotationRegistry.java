@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -56,7 +58,7 @@ public class AnnotationRegistry {
 
     private static final List<Class> ANNOTATION_CLASSES;
     static {
-        ANNOTATION_CLASSES = new LinkedList<Class>();
+        ANNOTATION_CLASSES = new LinkedList<>();
         ANNOTATION_CLASSES.add(ImageStore.class);
         ANNOTATION_CLASSES.add(ImageStoreType.class);
         ANNOTATION_CLASSES.add(DockerfileProfile.class);
@@ -80,6 +82,8 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(SCCRepositoryNoAuth.class);
         ANNOTATION_CLASSES.add(SCCRepositoryBasicAuth.class);
         ANNOTATION_CLASSES.add(SCCRepositoryTokenAuth.class);
+        ANNOTATION_CLASSES.add(ContentProject.class);
+        ANNOTATION_CLASSES.add(ContentEnvironment.class);
     }
 
     /**
