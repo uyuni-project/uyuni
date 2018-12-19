@@ -673,6 +673,7 @@ public class ContentSyncManager {
                         if (updateCS != null) {
                             updateCS.setMetadataSigned(repo.isSigned());
                             updateCS.setSourceUrl(contentSourceUrlOverwrite(repo, tauth.getUrl(), mirrorUrl));
+                            ChannelFactory.save(updateCS);
                         }
                     }
                 }
@@ -692,7 +693,7 @@ public class ContentSyncManager {
         }
 
         // OES
-        repoIdsFromCredential.addAll(refreshOESRepositoryAuth(c));
+        repoIdsFromCredential.addAll(refreshOESRepositoryAuth(c, mirrorUrl));
 
         // check if we have to remove auths which exists before
         List<SCCRepositoryAuth> authList = SCCCachingFactory.lookupRepositoryAuthByCredential(c);
@@ -710,9 +711,10 @@ public class ContentSyncManager {
      * OES products depending on that result.
      *
      * @param c credential to use for the check
+     * @param mirrorUrl optional mirror url
      * @return list of available repository ids
      */
-    public List<Long> refreshOESRepositoryAuth(Credentials c) {
+    public List<Long> refreshOESRepositoryAuth(Credentials c, String mirrorUrl) {
         List<Long> oesRepoIds = new LinkedList<>();
         if (!(c == null || accessibleUrl(OES_URL, c.getUsername(), c.getPassword()))) {
             return oesRepoIds;
@@ -759,7 +761,16 @@ public class ContentSyncManager {
                 repo.setRepositoryAuth(allAuths);
                 SCCCachingFactory.saveRepositoryAuth(newAuth);
             }
-            // else: Auth exists - update not needed as no values can change
+            else {
+                // else: Auth exists - check, if URL still match
+                SCCRepositoryAuth exAuth = authsThisCred.iterator().next();
+                ContentSource updateCS = exAuth.getContentSource();
+                if (updateCS != null) {
+                    updateCS.setMetadataSigned(repo.isSigned());
+                    updateCS.setSourceUrl(contentSourceUrlOverwrite(repo, exAuth.getUrl(), mirrorUrl));
+                    ChannelFactory.save(updateCS);
+                }
+            }
         }
         return oesRepoIds;
     }
@@ -1217,6 +1228,7 @@ public class ContentSyncManager {
                     r -> {
                         r.setName(repoJson.getName());
                         r.setDescription(repoJson.getDescription());
+                        r.setUrl(repoJson.getUrl());
                         dbReposById.put(r.getSccId(), r);
                         return r;
                     });
