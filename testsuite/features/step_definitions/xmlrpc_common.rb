@@ -592,3 +592,21 @@ end
 When(/^I logout from XML\-RPC configchannel namespace$/) do
   cfgtest.logout
 end
+
+When(/^I call system.create_system_profile\(\) with name "([^"]*)" and HW address "([^"]*)"$/) do |name, hw_address|
+  profile_id = systest.create_system_profile(name, 'hwAddress' => hw_address)
+  refute_nil(profile_id)
+end
+
+When(/^I call system\.create_system_profile\(\) with name "([^"]*)" and hostname "([^"]*)"$/) do |name, hostname|
+  profile_id = systest.create_system_profile(name, 'hostname' => hostname)
+  refute_nil(profile_id)
+end
+
+When(/^I call system\.list_empty_system_profiles\(\)$/) do
+  $output = systest.list_empty_system_profiles
+end
+
+Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
+  assert($output.select { |p| p['name'] == profile_name }.count == 1)
+end

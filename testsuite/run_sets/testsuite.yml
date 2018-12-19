@@ -115,6 +115,7 @@
 - features/srv_notifications.feature
 - features/minkvm_guests.feature
 - features/minxen_guests.feature
+- features/min_empty_system_profiles.feature
 ## Secondary features END ##
 
 
