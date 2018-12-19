@@ -111,6 +111,9 @@
 - features/allcli_software_channels_dependencies.feature
 - features/srv_sync_products.feature
 - features/srv_notifications.feature
+- features/minkvm_guests.feature
+- features/minxen_guests.feature
+- features/min_empty_system_profiles.feature
 ## Secondary features END ##
 
 
