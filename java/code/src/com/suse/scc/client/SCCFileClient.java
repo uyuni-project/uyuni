@@ -14,13 +14,12 @@
  */
 package com.suse.scc.client;
 
-import com.redhat.rhn.domain.scc.SCCRepository;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.scc.model.SCCOrder;
-import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCSubscription;
+import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.SCCOrderJson;
+import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCSubscriptionJson;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,36 +49,36 @@ public class SCCFileClient implements SCCClient {
      * {@inheritDoc}
      */
     @Override
-    public List<SCCRepository> listRepositories() throws SCCClientException {
+    public List<SCCRepositoryJson> listRepositories() throws SCCClientException {
         return getList("organizations_repositories.json",
-                SCCRepository.class);
+                SCCRepositoryJson.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<SCCProduct> listProducts() throws SCCClientException {
+    public List<SCCProductJson> listProducts() throws SCCClientException {
         return getList(
-                "organizations_products_unscoped.json", SCCProduct.class);
+                "organizations_products_unscoped.json", SCCProductJson.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<SCCSubscription> listSubscriptions() throws SCCClientException {
+    public List<SCCSubscriptionJson> listSubscriptions() throws SCCClientException {
         return getList("organizations_subscriptions.json",
-                SCCSubscription.class);
+                SCCSubscriptionJson.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<SCCOrder> listOrders() throws SCCClientException {
+    public List<SCCOrderJson> listOrders() throws SCCClientException {
         return getList("organizations_orders.json",
-                SCCOrder.class);
+                SCCOrderJson.class);
     }
 
     /**

@@ -23,7 +23,7 @@ import com.suse.matcher.json.ProductJson;
 import com.suse.matcher.json.SubscriptionJson;
 import com.suse.matcher.json.SystemJson;
 import com.suse.matcher.json.VirtualizationGroupJson;
-import com.suse.scc.model.SCCSubscription;
+import com.suse.scc.model.SCCSubscriptionJson;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -172,7 +172,7 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
             ContentSyncManager cm = new ContentSyncManager();
 
             // this will also refresh the DB cache of subscriptions
-            Collection<SCCSubscription> s = cm.getSubscriptions();
+            Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
             HibernateFactory.getSession().flush();
             assertNotNull(s);
             List<SubscriptionJson> result = new MatcherJsonIO()
@@ -285,7 +285,7 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
             h1.setInstalledProducts(installedProducts);
 
             ContentSyncManager cm = new ContentSyncManager();
-            Collection<SCCSubscription> s = cm.getSubscriptions();
+            Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
             HibernateFactory.getSession().flush();
 
             PinnedSubscription pin = new PinnedSubscription();

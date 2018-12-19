@@ -1,3 +1,5 @@
+- Adapt Inter Server Sync code to new SCC sync backend
+
 -------------------------------------------------------------------
 Mon Dec 17 14:34:38 CET 2018 - jgonzalez@suse.com
 

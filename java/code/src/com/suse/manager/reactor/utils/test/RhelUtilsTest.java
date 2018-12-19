@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -173,6 +174,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         suseProduct.setName("res");
         suseProduct.setVersion(version);
         suseProduct.setRelease(null);
+        suseProduct.setReleaseStage(ReleaseStage.released);
         suseProduct.setFriendlyName("RES " + version);
         suseProduct.setProductId(new Random().nextInt(999999));
         PackageArch arch = PackageFactory.lookupPackageArchByLabel("x86_64");
@@ -185,9 +187,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
         SUSEProductChannel spc = new SUSEProductChannel();
         spc.setChannel(c);
-        spc.setChannelLabel(c.getLabel());
         spc.setProduct(suseProduct);
-        //spc.setParentChannelLabel("res-x86_64-server-" + version);
+        spc.setMandatory(true);
 
         suseProduct.setSuseProductChannels(Collections.singleton(spc));
 

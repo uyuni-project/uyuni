@@ -41,6 +41,9 @@ class ActionDeps:
             'suse-products': [''],
             'suse-product-channels': ['suse-products', 'channels'],
             'suse-upgrade-paths': ['suse-products'],
+            'suse-product-extensions': ['suse-products'],
+            'scc-repositories': [''],
+            'suse-product-repositories': ['suse-products', 'scc-repositories'],
             'suse-subscriptions': ['channel-families'],
             'cloned-channels': ['channels'],
         }
@@ -62,8 +65,11 @@ class ActionDeps:
             'kickstarts',
             'supportinfo',
             'suse-products',
+            'scc-repositories'
             'suse-product-channels',
             'suse-upgrade-paths',
+            'suse-product-extensions',
+            'suse-product-repositories',
             'suse-subscriptions',
         ]
         self.options = options

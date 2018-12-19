@@ -36,11 +36,7 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     /** The channel. */
     private Channel channel;
 
-    /** The channel label. */
-    private String channelLabel;
-
-    /** The parent channel label. */
-    private String parentChannelLabel;
+    private boolean mandatory;
 
     /**
      * Gets the id.
@@ -92,37 +88,20 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * Gets the channel label.
-     * @return the channel label
+     * Set if this is mandatory
+     * @param mandatoryIn mandatory
+     * @return the new {@link SUSEProductChannel}
      */
-    public String getChannelLabel() {
-        return channelLabel;
+    public SUSEProductChannel setMandatory(boolean mandatoryIn) {
+        this.mandatory = mandatoryIn;
+        return this;
     }
 
     /**
-     * Sets the channel label.
-     * @param channelLabelIn the new channel label
+     * @return true if the channel for that product is mandatory
      */
-    public void setChannelLabel(String channelLabelIn) {
-        channelLabel = channelLabelIn;
-    }
-
-    /**
-     * Gets the parent channel label.
-     *
-     * @return the parent channel label
-     */
-    public String getParentChannelLabel() {
-        return parentChannelLabel;
-    }
-
-    /**
-     * Sets the parent channel label.
-     *
-     * @param parentChannelLabelIn the new parent channel label
-     */
-    public void setParentChannelLabel(String parentChannelLabelIn) {
-        parentChannelLabel = parentChannelLabelIn;
+    public boolean isMandatory() {
+        return mandatory;
     }
 
     /**
@@ -136,7 +115,7 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
         SUSEProductChannel other = (SUSEProductChannel) otherObject;
         return new EqualsBuilder()
             .append(getProduct(), other.getProduct())
-            .append(getChannelLabel(), other.getChannelLabel())
+            .append(getChannel(), other.getChannel())
             .isEquals();
     }
 
@@ -147,7 +126,7 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     public int hashCode() {
         return new HashCodeBuilder()
             .append(getProduct())
-            .append(getChannelLabel())
+            .append(getChannel())
             .toHashCode();
     }
 }

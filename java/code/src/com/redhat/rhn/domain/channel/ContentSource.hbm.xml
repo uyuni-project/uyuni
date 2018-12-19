@@ -27,7 +27,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             name="type"
             class="com.redhat.rhn.domain.channel.ContentSourceType"
             column="type_id"/>
-        
+
+        <one-to-one name="repositoryAuth" class="com.redhat.rhn.domain.scc.SCCRepositoryAuth" />
+
         <set name="sslSets" table="rhnContentSourceSsl" cascade="save-update">
             <key column="content_source_id" />
             <composite-element class="com.redhat.rhn.domain.channel.SslContentSource">
@@ -91,8 +93,23 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  and cs in elements(c.sources)
                  ]]>
     </query>
-
-
-
+    <sql-query name="ContentSource.findOrphanVendorContentSources">
+        <![CDATA[
+            select {cs.*}
+              from rhncontentsource cs
+             where cs.org_id is null
+               and not exists (select 1 from susesccrepositoryauth a where a.source_id = cs.id)
+        ]]>
+        <return alias="cs" class="com.redhat.rhn.domain.channel.ContentSource" />
+    </sql-query>
+    <sql-query name="ContentSource.findUnusedVendorContentSources">
+        <![CDATA[
+            select {cs.*}
+              from rhncontentsource cs
+             where cs.org_id is null
+               and not exists (select 1 from rhnchannelcontentsource ccs where ccs.source_id = cs.id)
+        ]]>
+        <return alias="cs" class="com.redhat.rhn.domain.channel.ContentSource" />
+    </sql-query>
 
 </hibernate-mapping>

@@ -51,7 +51,7 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         // Create channels
         Channel baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct1);
         baseChannel.setUpdateTag("SLE-SERVER");
-        createTestSUSEProductChannel(baseChannel, product);
+        createTestSUSEProductChannel(baseChannel, product, true);
 
         Errata errata = createTestPublishedErrata(user.getId());
         errata.setAdvisoryName("SUSE-2016-1234");

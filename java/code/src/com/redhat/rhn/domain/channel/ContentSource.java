@@ -20,6 +20,7 @@ package com.redhat.rhn.domain.channel;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +39,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     private boolean metadataSigned;
     private Set<Channel> channels = new HashSet<Channel>();
     private Set<SslContentSource> sslSets = new HashSet<SslContentSource>();
+    private SCCRepositoryAuth repositoryAuth;
 
     /**
      * Constructor
@@ -56,6 +58,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
         label = cs.getLabel();
         channels = new HashSet<Channel>(cs.getChannels());
         sslSets = new HashSet<SslContentSource>(cs.getSslSets());
+        repositoryAuth = cs.getRepositoryAuth();
     }
 
 
@@ -179,5 +182,19 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
      */
     public void setSslSets(Set<SslContentSource> sslSetsIn) {
         this.sslSets = sslSetsIn;
+    }
+
+    /**
+     * @return repositoryAuth object or null
+     */
+    public SCCRepositoryAuth getRepositoryAuth() {
+        return repositoryAuth;
+    }
+
+    /**
+     * @param repoAuth repository auth object to set
+     */
+    public void setRepositoryAuth(SCCRepositoryAuth repoAuth) {
+        repositoryAuth = repoAuth;
     }
 }

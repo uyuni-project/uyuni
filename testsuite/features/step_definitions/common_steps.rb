@@ -375,7 +375,7 @@ end
 When(/^I select "([^\"]*)" as a product$/) do |product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise unless find(:xpath, xpath).click
+  raise unless find(:xpath, xpath).set(true)
 end
 
 And(/^I open the sub-list of the product "(.*?)"$/) do |product|
@@ -389,7 +389,7 @@ end
 When(/^I select the addon "(.*?)"$/) do |addon|
   # click on the checkbox of the sublist to select the addon product
   xpath = "//span[contains(text(), '#{addon}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise unless find(:xpath, xpath).click
+  raise unless find(:xpath, xpath).set(true)
 end
 
 And(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
@@ -407,12 +407,20 @@ When(/^I click the Add Product button$/) do
   raise unless find('button#addProducts').click
 end
 
-Then(/^the products should be added$/) do
+Then(/^the SLE12 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 SP2 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
+  sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
   raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP2 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp2]'
+  raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sle-manager-tools12-pool-x86_64-sp2]'
   raise unless output[:stdout].include? sle_module
+end
+
+Then(/^the SLE15 products should be added$/) do
+  output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
+  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-Pool for x86_64 SUSE Linux Enterprise Server 15 x86_64 [sle-product-sles15-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Manager-Tools15-Pool for x86_64 SUSE Manager Tools 15 x86_64 [sle-manager-tools15-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-Updates for x86_64 Basesystem Module 15 x86_64 [sle-module-basesystem15-updates-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-Pool for x86_64 Server Applications Module 15 x86_64 [sle-module-server-applications15-pool-x86_64]'
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|

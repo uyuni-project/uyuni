@@ -177,7 +177,7 @@ public class MatcherJsonIO {
     public List<SubscriptionJson> getJsonSubscriptions() {
         return SCCCachingFactory.lookupOrderItems().stream()
             .map(order -> {
-                SCCSubscription subscription = order.getSubscription();
+                SCCSubscription subscription = SCCCachingFactory.lookupSubscriptionBySccId(order.getSubscriptionId());
                 Credentials credentials = order.getCredentials();
                 return new SubscriptionJson(
                     order.getSccId(),

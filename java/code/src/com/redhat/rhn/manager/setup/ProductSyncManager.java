@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus;
@@ -35,7 +36,6 @@ import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.mgrsync.XMLChannel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -62,35 +62,33 @@ public class ProductSyncManager {
      * @return the products list
      * @throws ProductSyncException if an error occurred
      */
-    public List<SetupWizardProductDto> getBaseProducts() throws ProductSyncException {
+    public List<SetupWizardProductDto> getBaseProducts() {
         ContentSyncManager csm = new ContentSyncManager();
-        try {
-            // Convert the listed products to objects we can display
-            Collection<MgrSyncProductDto> products = csm.listProducts(csm.listChannels());
-            List<SetupWizardProductDto> result = convertProducts(products);
+        // Convert the listed products to objects we can display
+        Collection<MgrSyncProductDto> products = csm.listProducts();
+        List<SetupWizardProductDto> result = convertProducts(products);
 
-            // Determine their product sync status separately
-            for (SetupWizardProductDto p : result) {
-                if (p.isProvided()) {
-                    p.setSyncStatus(getProductSyncStatus(p));
+        Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = ChannelFactory.listVendorChannels()
+                .stream().collect(Collectors.toMap(c -> c.getLabel(), c -> c));
+
+        // Determine their product sync status separately
+        for (SetupWizardProductDto p : result) {
+            if (p.isProvided()) {
+                p.setSyncStatus(getProductSyncStatus(p, channelByLabel));
+            }
+            else {
+                p.setStatusNotMirrored();
+            }
+            for (SetupWizardProductDto addon : p.getAddonProducts()) {
+                if (addon.isProvided()) {
+                    addon.setSyncStatus(getProductSyncStatus(addon, channelByLabel));
                 }
                 else {
-                    p.setStatusNotMirrored();
-                }
-                for (SetupWizardProductDto addon : p.getAddonProducts()) {
-                    if (addon.isProvided()) {
-                        addon.setSyncStatus(getProductSyncStatus(addon));
-                    }
-                    else {
-                        addon.setStatusNotMirrored();
-                    }
+                    addon.setStatusNotMirrored();
                 }
             }
-            return result;
         }
-        catch (ContentSyncException e) {
-            throw new ProductSyncException(e);
-        }
+        return result;
     }
 
     /**
@@ -158,7 +156,8 @@ public class ProductSyncManager {
      * @param product product
      * @return sync status as string
      */
-    private SyncStatus getProductSyncStatus(SetupWizardProductDto product) {
+    private SyncStatus getProductSyncStatus(SetupWizardProductDto product,
+        Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel) {
         // Compute statistics about channels
         int notMirroredCounter = 0;
         int finishedCounter = 0;
@@ -167,8 +166,9 @@ public class ProductSyncManager {
         Date maxLastSyncDate = null;
         StringBuilder debugDetails = new StringBuilder();
 
+
         for (Channel c : product.getMandatoryChannels()) {
-            SyncStatus channelStatus = getChannelSyncStatus(c.getLabel());
+            SyncStatus channelStatus = getChannelSyncStatus(c.getLabel(), channelByLabel);
 
             if (StringUtils.isNotBlank(channelStatus.getDetails())) {
                 debugDetails.append(channelStatus.getDetails());
@@ -224,15 +224,17 @@ public class ProductSyncManager {
     /**
      * Get the synchronization status for a given channel.
      * @param channelLabel the channel label
+     * @param channelByLabel lookup map for channels by its label
      * @return channel sync status as string
      */
-    public SyncStatus getChannelSyncStatus(String channelLabel) {
+    public SyncStatus getChannelSyncStatus(String channelLabel, Map<String,
+            com.redhat.rhn.domain.channel.Channel> channelByLabel) {
         // Fall back to FAILED if no progress or success is detected
         SyncStatus channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
 
         // Check for success: is there metadata for this channel?
-        com.redhat.rhn.domain.channel.Channel c =
-                ChannelFactory.lookupByLabel(channelLabel);
+
+        com.redhat.rhn.domain.channel.Channel c = channelByLabel.get(channelLabel);
 
         if (c == null) {
             return new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
@@ -385,12 +387,12 @@ public class ProductSyncManager {
         // Sort product channels (mandatory/optional)
         List<Channel> mandatoryChannelsOut = new ArrayList<Channel>();
         List<Channel> optionalChannelsOut = new ArrayList<Channel>();
-        for (XMLChannel channelIn : productIn.getChannels()) {
+        for (MgrSyncChannelDto channelIn : productIn.getChannels()) {
             MgrSyncStatus statusIn = channelIn.getStatus();
             String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED) ?
                     Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
             Channel channelOut = new Channel(channelIn.getLabel(), statusOut);
-            if (channelIn.isOptional()) {
+            if (!channelIn.isMandatory()) {
                 optionalChannelsOut.add(channelOut);
             }
             else {
@@ -406,7 +408,7 @@ public class ProductSyncManager {
 
         // Setup the product that will be displayed
         SetupWizardProductDto displayProduct = new SetupWizardProductDto(
-                productIn.getArch(), productIn.getIdent(), productIn.getFriendlyName(), "",
+                productIn.getArch().orElse(null), productIn.getIdent(), productIn.getFriendlyName(), "",
                 new MandatoryChannels(mandatoryChannelsOut),
                 new OptionalChannels(optionalChannelsOut));
 
