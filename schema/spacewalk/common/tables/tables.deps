@@ -230,7 +230,6 @@ suseContentProjectHistory      :: suseContentProject web_contact
 suseContentFilter              :: web_customer
 suseContentFilterProject       :: suseContentProject suseContentFilter
 suseContentEnvironment         :: suseContentProject
-suseContentEnvironmentPath     :: suseContentEnvironment
 suseContentEnvironmentTarget   :: suseContentEnvironment rhnChannel
 suseCredentials                :: suseCredentialsType web_contact
 suseCVEImageChannel            :: suseImageInfo rhnChannel
