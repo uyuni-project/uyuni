@@ -95,6 +95,7 @@
 - features/secondary/allcli_system_group.feature
 - features/secondary/srv_group_union_intersection.feature
 - features/secondary/proxy_retail_pxeboot.feature
+- features/secondary/proxy_retail_mass_import.feature
 - features/secondary/min_salt_openscap_audit.feature
 - features/secondary/srv_custom_system_info.feature
 - features/secondary/srv_security.feature

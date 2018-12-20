@@ -238,6 +238,10 @@ When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install --force #{package}-formula")
 end
 
+Then(/^I wait for "([^"]*)" formula to be installed on the server$/) do |package|
+  $server.run_until_ok("rpm -q #{package}-formula")
+end
+
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   $server.run("zypper --non-interactive remove #{package}-formula")
 end
@@ -271,15 +275,7 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
-  boxids = { 'timezone name'            => 'timezone#name',
-             'language'                 => 'keyboard_and_language#language',
-             'keyboard layout'          => 'keyboard_and_language#keyboard_layout',
-             'disk label'               => 'partitioning#0#disklabel',
-             'first filesystem format'  => 'partitioning#0#partitions#0#format',
-             'first partition flags'    => 'partitioning#0#partitions#0#flags',
-             'second filesystem format' => 'partitioning#0#partitions#1#format',
-             'second partition flags'   => 'partitioning#0#partitions#1#flags' }
-  select(value, from: boxids[box])
+  select(value, from: FIELD_IDS[box])
 end
 
 When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, field|
@@ -390,25 +386,23 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
                'second OS image'                 => 'partitioning#0#partitions#1#image',
                'FTP server directory'            => 'vsftpd_config#anon_root' }
-  fill_in fieldids[field], with: value
+  fill_in FIELD_IDS[field], with: net_prefix + ADDRESSES[host]
 end
-# rubocop:enable Metrics/BlockLength
+
+When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
+  fill_in FIELD_IDS[field], with: value
+end
 
 When(/^I enter the hostname of "([^"]*)" in (.*) field$/) do |host, field|
   system_name = get_system_name(host)
-  fieldids = { 'third CNAME name'   => 'bind#available_zones#0#records#CNAME#2#1',
-               'third name server'  => 'bind#available_zones#2#soa#ns',
-               'fifth A name'       => 'bind#available_zones#2#records#A#0#0',
-               'third NS'           => 'bind#available_zones#2#records#NS#@#0' }
-  fill_in fieldids[field], with: "#{system_name}."
+  fill_in FIELD_IDS[field], with: "#{system_name}."
 end
 
 When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
   node = get_target(host)
   output, _code = node.run("ip address show dev eth0")
   ip = output.split("\n")[2].split[1].split('/')[0]
-  fieldids = { 'fifth A address' => 'bind#available_zones#2#records#A#0#1' }
-  fill_in fieldids[field], with: ip
+  fill_in FIELD_IDS[field], with: ip
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
@@ -419,32 +413,31 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     output, _code = node.run("ip link show dev eth1")
     mac = output.split("\n")[1].split[1]
   end
-  fieldids = { 'first reserved MAC'  => 'dhcpd#hosts#0#hardware',
-               'second reserved MAC' => 'dhcpd#hosts#1#hardware',
-               'third reserved MAC'  => 'dhcpd#hosts#2#hardware' }
-  fill_in fieldids[field], with: 'ethernet ' + mac
+
+  fill_in FIELD_IDS[field], with: 'ethernet ' + mac
 end
 
 When(/^I enter the local zone name in (.*) field$/) do |field|
+<<<<<<< HEAD
   fieldids = { 'second configured zone name' => 'bind#configured_zones#1#$key',
                'second available zone name'  => 'bind#available_zones#1#$key' }
   a = $private_net.split('.')
   reverse_net = a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+=======
+  reverse_net = get_reverse_net($private_net)
+>>>>>>> [6649] Massive import of terminals
   STDOUT.puts "#{$private_net} => #{reverse_net}"
-  fill_in fieldids[field], with: reverse_net
+  fill_in FIELD_IDS[field], with: reverse_net
 end
 
 When(/^I enter the local file name in (.*) field$/) do |field|
-  fieldids = { 'second file name' => 'bind#available_zones#1#file' }
-  a = $private_net.split('.')
-  reverse_filename = 'master/db.' + a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  reverse_filename = 'master/db.' + get_reverse_net($private_net)
   STDOUT.puts "#{$private_net} => #{reverse_filename}"
-  fill_in fieldids[field], with: reverse_filename
+  fill_in FIELD_IDS[field], with: reverse_filename
 end
 
 When(/^I enter the local network in (.*) field$/) do |field|
-  fieldids = { 'second generate reverse network' => 'bind#available_zones#1#generate_reverse#net' }
-  fill_in fieldids[field], with: $private_net
+  fill_in FIELD_IDS[field], with: $private_net
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|

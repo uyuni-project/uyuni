@@ -40,6 +40,24 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
+Then(/^I should see the terminals imported from the configuration file/) do
+  filepath = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
+  terminals = get_terminals_from_yaml(filepath)
+  terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
+end
+
+Then(/^I should not see any terminals imported from the configuration file/) do
+  filepath = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
+  terminals = get_terminals_from_yaml(filepath)
+  terminals.each { |terminal| step %(I should not see a "#{terminal}" text) }
+end
+
+When(/^I enter the hostname of "([^"]*)" terminal as "([^"]*)"$/) do |host, hostname|
+  filepath = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
+  domain = get_branch_prefix_from_yaml(filepath)
+  step %(I enter "#{host}.#{domain}" as "#{hostname}")
+end
+
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|

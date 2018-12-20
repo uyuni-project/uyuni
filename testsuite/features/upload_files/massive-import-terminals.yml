@@ -1,0 +1,74 @@
+branches:
+  <PROXY_HOSTNAME>:
+    branch_ip: <NET_PREFIX><PROXY>
+    branch_prefix: example.org
+    dedicated_nic: true
+    configure_firewall: true
+    dyn_range:
+    - <NET_PREFIX><RANGE_BEGIN>
+    - <NET_PREFIX><RANGE_END>
+    netmask: 255.255.255.0
+    nic: eth1
+    server_name: proxy
+    server_domain: example.org
+    terminals:
+      terminal1:
+        IP: <NET_PREFIX>201
+        hwAddress: 01:02:03:04:05:01
+        hwtype: Intel-Genuine
+      terminal2:
+        IP: <NET_PREFIX>202
+        hwAddress: 01:02:03:04:05:02
+        hwtype: Intel-Genuine
+      terminal3:
+        IP: <NET_PREFIX>203
+        hwAddress: 01:02:03:04:05:03
+        hwtype: Intel-Genuine
+      terminal4:
+        IP: <NET_PREFIX>204
+        hwAddress: 01:02:03:04:05:04
+        hwtype: Intel-Genuine
+      terminal5:
+        IP: <NET_PREFIX>205
+        hwAddress: 01:02:03:04:05:05
+        hwtype: Intel-Genuine
+      terminal6:
+        IP: <NET_PREFIX>206
+        hwAddress: 01:02:03:04:05:06
+        hwtype: Intel-Genuine
+      terminal7:
+        IP: <NET_PREFIX>207
+        hwAddress: 01:02:03:04:05:07
+        hwtype: Intel-Genuine
+      terminal8:
+        IP: <NET_PREFIX>208
+        hwAddress: 01:02:03:04:05:08
+        hwtype: Intel-Genuine
+      terminal9:
+        IP: <NET_PREFIX>209
+        hwAddress: 01:02:03:04:05:09
+        hwtype: Intel-Genuine
+      pxeboot:
+        IP: <NET_PREFIX><PXEBOOT>
+        hwAddress: <PXEBOOT_MAC>
+        hwtype: Intel-Genuine
+
+hwtypes:
+  Intel-Genuine:
+    saltboot:
+      partitioning:
+        disk1:
+          device: /dev/sda
+          disklabel: msdos
+          partitions:
+            p1:
+              image: POS_Image-JeOS6
+              mountpoint: /
+              size_MiB: 14000
+            p2:
+              size_MiB: 1000
+            p3:
+              format: ext4
+              mountpoint: /srv/SLEPOS
+              size_MiB: 1000
+          type: DISK
