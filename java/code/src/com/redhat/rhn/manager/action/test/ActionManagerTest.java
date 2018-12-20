@@ -80,6 +80,7 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -151,6 +152,39 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action a2 = ActionManager.lookupAction(user, actionId);
         assertNotNull(a2);
+    }
+
+    public void testActionsArchivedOnSystemDelete() throws Exception {
+        Server server = ServerTestUtils.createTestSystem(user);
+        User admin = UserTestUtils.createUser("admin", user.getOrg().getId());
+        admin.addPermanentRole(RoleFactory.ORG_ADMIN);
+        TestUtils.saveAndReload(admin);
+
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+
+        action.addServerAction(serverAction);
+        ActionManager.storeAction(action);
+
+        Action result = ActionManager.lookupAction(user, action.getId());
+        assertNotNull(result);
+
+        SystemManager.deleteServer(user, server.getId());
+
+        try {
+            // Regular users cannot see orphan actions
+            ActionManager.lookupAction(user, action.getId());
+            fail("Must throw LookupException.");
+        }
+        catch (LookupException ignored) {
+        }
+
+        // Admins should see orphan actions
+        result = ActionManager.lookupAction(admin, action.getId());
+        assertNotNull(result);
+        assertEquals(1, (long)result.getArchived());
+        assertServerActionCount(action, 0);
     }
 
     public void testFailedActions() throws Exception {

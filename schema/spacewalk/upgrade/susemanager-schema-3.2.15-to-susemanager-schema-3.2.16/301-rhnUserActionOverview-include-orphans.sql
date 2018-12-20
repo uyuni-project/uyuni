@@ -7,10 +7,10 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
+-- in this software or its documentation.
 --
 --
 --
@@ -28,7 +28,7 @@
 create or replace view rhnUserActionOverview as
 select	ao.org_id                                       as org_id,
 	usp.user_id                                     as user_id,
-    	ao.action_id                                    as id,
+        ao.action_id                                    as id,
 	ao.type_name                                    as type_name,
         ao.scheduler                                    as scheduler,
 	ao.earliest_action                              as earliest_action,
