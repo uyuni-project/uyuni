@@ -16,11 +16,11 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,17 +28,33 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * A Content Environment
  */
 @Entity
 @Table(name = "suseContentEnvironment")
+@NamedQueries({
+        @NamedQuery(
+                name = "ContentEnvironment.lookupFirstInProject",
+                query = "SELECT first from ContentEnvironment first" +
+                        " WHERE first.contentProject = :contentProject" +
+                        " AND NOT EXISTS (SELECT predecessor from ContentEnvironment predecessor" +
+                        "                 WHERE predecessor.nextEnvironment = first)"),
+        @NamedQuery(
+                name = "ContentEnvironment.lookupPredecessor",
+                query = "SELECT predecessor from ContentEnvironment predecessor" +
+                        " WHERE predecessor.nextEnvironment = :env")
+})
 public class ContentEnvironment extends BaseDomainHelper {
 
     private Long id;
@@ -48,7 +64,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     private Long version;
     private ContentProject contentProject;
     private ContentEnvironment nextEnvironment;
-    private ContentEnvironment prevEnvironment;
 
     /**
      * @return the id
@@ -147,34 +162,21 @@ public class ContentEnvironment extends BaseDomainHelper {
      * @return the nextEnvironment
      */
     @OneToOne
-    @JoinTable(name = "suseContentEnvironmentPath",
-            joinColumns = {@JoinColumn(name = "env_id", referencedColumnName = "id", nullable = true)},
-            inverseJoinColumns = {@JoinColumn(name = "next_env_id", referencedColumnName = "id", nullable = true)}
-    )
-    public ContentEnvironment getNextEnvironment() {
+    @JoinColumn(name = "next_env_id")
+    protected ContentEnvironment getNextEnvironment() {
         return nextEnvironment;
     }
 
     /**
-     * @return the prevEnvironment
+     * @return optional of the next environment
      */
-    @OneToOne(mappedBy = "nextEnvironment")
-    public ContentEnvironment getPrevEnvironment() {
-        return prevEnvironment;
+    @Transient
+    public Optional<ContentEnvironment> getNextEnvironmentOpt() {
+        return ofNullable(getNextEnvironment());
     }
 
-    /**
-     * @param next next environment to set
-     */
-    public void setNextEnvironment(ContentEnvironment next) {
-        nextEnvironment = next;
-    }
-
-    /**
-     * @param prev previous environment to set
-     */
-    public void setPrevEnvironment(ContentEnvironment prev) {
-        prevEnvironment = prev;
+    protected void setNextEnvironment(ContentEnvironment nextEnvironmentIn) {
+        nextEnvironment = nextEnvironmentIn;
     }
 
     /**
@@ -211,10 +213,11 @@ public class ContentEnvironment extends BaseDomainHelper {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-        .append("name", getName())
-        .append("project", getContentProject().getName())
-        .append("label", getLabel())
-        .append("version", getVersion())
-        .toString();
+                .append("name", getName())
+                .append("project", getContentProject().getName())
+                .append("label", getLabel())
+                .append("version", getVersion())
+                .append("next env", getNextEnvironment())
+                .toString();
     }
 }

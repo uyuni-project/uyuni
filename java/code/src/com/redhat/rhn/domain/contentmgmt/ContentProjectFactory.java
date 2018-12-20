@@ -17,11 +17,11 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
-
 import com.redhat.rhn.domain.org.Org;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -91,6 +91,72 @@ public class ContentProjectFactory extends HibernateFactory {
         Root<ContentProject> root = query.from(ContentProject.class);
         query.where(builder.equal(root.get("org"), org));
         return getSession().createQuery(query).list();
+    }
+
+    /**
+     * Get the 1st Envirnoment of the Content Project
+     *
+     * @param project the Content Project
+     * @return the first Environment
+     */
+    public Optional<ContentEnvironment> getFirstEnvironmentOfProject(ContentProject project) {
+        return HibernateFactory.getSession()
+                .createNamedQuery("ContentEnvironment.lookupFirstInProject")
+                .setParameter("contentProject", project)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Get the predecessor to given Environment
+     * @param env the environment
+     * @return predecessor of given Environment or empty when no predecessor exists
+     */
+    public Optional<ContentEnvironment> getPrevEnvironment(ContentEnvironment env) {
+        return HibernateFactory.getSession()
+                .createNamedQuery("ContentEnvironment.lookupPredecessor")
+                .setParameter("env", env)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Prepend given environment to the given successor environment (or set it as a first environment of the project,
+     * if no successor environment is given).
+     *
+     * @param env the environment
+     * @param successor the optional successor environment
+     */
+    public void prependEnvironment(ContentEnvironment env, Optional<ContentEnvironment> successor) {
+        // disconnect environment from the environment path, if needed
+        ContentProject contentProject = env.getContentProject();
+        disconnectEnvironment(env);
+
+        // if new successor is present -> prepend the env to it
+        successor.ifPresent(succ -> {
+            getPrevEnvironment(succ).ifPresent(succPrev -> {
+                succPrev.setNextEnvironment(env);
+                save(succPrev);
+            });
+            env.setNextEnvironment(succ);
+        });
+
+        // otherwise set this env as a first environment of a project
+        if(!successor.isPresent()) {
+            env.setNextEnvironment(getFirstEnvironmentOfProject(env.getContentProject()).orElse(null));
+        }
+
+        // reset content project
+        env.setContentProject(contentProject);
+        save(env);
+    }
+
+    private void disconnectEnvironment(ContentEnvironment env) {
+        getPrevEnvironment(env).ifPresent(pred -> {
+            pred.setNextEnvironment(env.getNextEnvironment());
+            save(pred);
+        });
+
+        env.setNextEnvironment(null);
+        env.setContentProject(null);
     }
 
     /**

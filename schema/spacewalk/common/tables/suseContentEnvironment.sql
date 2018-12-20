@@ -24,6 +24,9 @@ CREATE TABLE suseContentEnvironment(
     name        VARCHAR2(128) NOT NULL,
     description CLOB,
     version     NUMBER,
+    next_env_id NUMBER
+                    CONSTRAINT suse_ct_env_nid_fk
+                        REFERENCES suseContentEnvironment(id),
     created     TIMESTAMP WITH LOCAL TIME ZONE
                     DEFAULT (current_timestamp) NOT NULL,
     modified    TIMESTAMP WITH LOCAL TIME ZONE
@@ -40,3 +43,6 @@ CREATE UNIQUE INDEX suse_ct_env_pid_lbl_uq
 
 CREATE UNIQUE INDEX suse_ct_env_pid_name_uq
     ON suseContentEnvironment(project_id, name);
+
+CREATE UNIQUE INDEX suse_ct_env_nid_uq
+    ON suseContentEnvironment(next_env_id);
