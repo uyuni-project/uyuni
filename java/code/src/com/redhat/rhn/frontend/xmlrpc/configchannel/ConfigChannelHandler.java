@@ -681,7 +681,7 @@ public class ConfigChannelHandler extends BaseHandler {
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
                                                                 channelLabel);
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        return cm.listCurrentFiles(loggedInUser, channel, null);
+        return cm.listCurrentFiles(loggedInUser, channel, null, null, true);
     }
 
 
