@@ -96,7 +96,7 @@ public class ChannelDeployConfirmAction extends RhnAction {
 
         DataResult files = ConfigurationManager.getInstance().
             listCurrentFiles(user, cc, null,
-                    RhnSetDecl.CONFIG_CHANNEL_DEPLOY_REVISIONS.getLabel());
+                    RhnSetDecl.CONFIG_CHANNEL_DEPLOY_REVISIONS.getLabel(), false);
         DataList list = new DataList(files);
         list.setMode(files.getMode());
         list.setElaboratorParams(files.getElaborationParams());

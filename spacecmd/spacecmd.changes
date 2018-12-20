@@ -1,3 +1,6 @@
+- Fix importing state channels using configchannel_import
+- Fix getting file info for latest revision (via configchannel_filedetails)
+
 -------------------------------------------------------------------
 Mon Dec 17 14:33:04 CET 2018 - jgonzalez@suse.com
 
