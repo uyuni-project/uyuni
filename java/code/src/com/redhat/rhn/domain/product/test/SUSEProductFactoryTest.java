@@ -19,49 +19,15 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.manager.content.ContentSyncException;
-import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.test.ContentSyncManagerNonRegressionTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.TestUtils;
-import com.suse.mgrsync.XMLChannel;
-import com.suse.mgrsync.XMLChannels;
-import org.simpleframework.xml.core.Persister;
 
-import java.io.File;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Tests for {@link SUSEProductFactory}.
  */
 public class SUSEProductFactoryTest extends BaseTestCaseWithUser {
-
-    /**
-     * Test {@link SUSEProductFactory#lookupSUSEProductChannel(String, Long)}.
-     * @throws Exception if anything goes wrong
-     */
-    public void testLookupSUSEProductChannel() throws Exception {
-        // Setup a product in the database
-        ChannelFamily family = createTestChannelFamily();
-        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(family);
-
-        // Create and save a product channel
-        SUSEProductChannel expected = new SUSEProductChannel();
-        String channelLabel = TestUtils.randomString();
-        expected.setChannelLabel(channelLabel);
-        expected.setProduct(product);
-        TestUtils.saveAndFlush(expected);
-
-        // Check if lookup returns the right SUSEProductChannel object
-        SUSEProductChannel actual = SUSEProductFactory.lookupSUSEProductChannel(
-                channelLabel, product.getProductId());
-        assertEquals(expected, actual);
-    }
 
     /**
      * Tests {@link SUSEProductFactory#removeAllExcept}.

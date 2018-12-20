@@ -90,6 +90,9 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             'suse_products',
             'suse_product_channels',
             'suse_upgrade_paths',
+            'suse_product_extensions',
+            'suse_product_repositories',
+            'scc_repositories',
             'suse_subscriptions',
             'cloned_channels',
         ]
@@ -333,6 +336,33 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         self.close()
         return 0
 
+    def dump_suse_product_extensions(self):
+        log_debug(4)
+        writer = self._get_xml_writer()
+        d = dumper.SatelliteDumper(writer, exportLib.SuseProductExtensionDumper(writer))
+        d.dump()
+        writer.flush()
+        self.close()
+        return 0
+
+    def dump_suse_product_repositories(self):
+        log_debug(4)
+        writer = self._get_xml_writer()
+        d = dumper.SatelliteDumper(writer, exportLib.SuseProductRepositoryDumper(writer))
+        d.dump()
+        writer.flush()
+        self.close()
+        return 0
+
+    def dump_scc_repositories(self):
+        log_debug(4)
+        writer = self._get_xml_writer()
+        d = dumper.SatelliteDumper(writer, exportLib.SCCRepositoryDumper(writer))
+        d.dump()
+        writer.flush()
+        self.close()
+        return 0
+
     def dump_suse_subscriptions(self):
         log_debug(4)
         writer = self._get_xml_writer()
@@ -368,6 +398,15 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     def suse_upgrade_paths(self):
         self.dump_suse_upgrade_paths()
+
+    def suse_product_extensions(self):
+        self.dump_suse_product_extensions()
+
+    def suse_product_repositories(self):
+        self.dump_suse_product_repositories()
+
+    def scc_repositories(self):
+        self.dump_scc_repositories()
 
     def suse_subscriptions(self):
         self.dump_suse_subscriptions()

@@ -250,8 +250,9 @@ susePackageState               :: rhnPackageName rhnPackageEVR rhnPackageArch su
 suseProducts                   :: rhnPackageArch rhnChannelFamily
 suseProductChannel             :: suseProducts rhnChannel
 suseProductExtension           :: suseProducts
+suseProductSCCRepository       :: suseProducts suseSCCRepository
 suseSCCOrderItem               :: suseCredentials
-suseSCCRepository              :: suseCredentials
+suseSCCRepositoryAuth          :: suseCredentials rhnContentSource
 suseSCCSubscription            :: suseCredentials
 suseSCCSubscriptionProduct     :: suseSCCSubscription suseProducts
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct

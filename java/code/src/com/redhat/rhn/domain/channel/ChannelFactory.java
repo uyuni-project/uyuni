@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
@@ -136,6 +137,45 @@ public class ChannelFactory extends HibernateFactory {
         params.put("org", org);
         return singleton.listObjectsByNamedQuery(
                 "ContentSource.findByOrg", params);
+    }
+
+    /**
+     * Lookup orphan vendor content source
+     * @return the ContentSource(s)
+     */
+    public static List<ContentSource> lookupOrphanVendorContentSources() {
+        return singleton.listObjectsByNamedQuery(
+                "ContentSource.findOrphanVendorContentSources", Collections.EMPTY_MAP);
+    }
+
+    /**
+     * Lookup orphan vendor channels
+     * @return the Channels(s)
+     */
+    public static List<Channel> lookupOrphanVendorChannels() {
+        return singleton.listObjectsByNamedQuery(
+                "Channel.findOrphanVendorChannels", Collections.EMPTY_MAP);
+    }
+
+    /**
+     * Remove all Vendor ContentSources which are not bound to a channel
+     */
+    public static void cleanupOrphanVendorContentSource() {
+        List<ContentSource> unused = singleton.listObjectsByNamedQuery(
+                "ContentSource.findUnusedVendorContentSources", Collections.EMPTY_MAP);
+        unused.forEach(cs -> remove(cs));
+    }
+
+    /**
+     * Lookup repository for given channel
+     * @param c the channel
+     * @return repository
+     */
+    public static SCCRepository findVendorRepositoryByChannel(Channel c) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cid", c.getId());
+        return (SCCRepository) singleton.lookupObjectByNamedQuery(
+                "Channel.findVendorRepositoryByChannelId", params);
     }
 
     /**
@@ -546,22 +586,6 @@ public class ChannelFactory extends HibernateFactory {
         params.put("cid", cid);
         params.put("pid", pid);
         m.executeUpdate(params);
-    }
-
-    /**
-     * Creates an empty Channel
-     * @return empty Channel
-     */
-    public static Channel createChannel() {
-        return new Channel();
-    }
-
-    /**
-     * Creates an empty Repo
-     * @return empty Repo
-     */
-    public static ContentSource createRepo() {
-        return new ContentSource();
     }
 
     /**

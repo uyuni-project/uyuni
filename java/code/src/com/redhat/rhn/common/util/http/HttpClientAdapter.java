@@ -71,6 +71,7 @@ public class HttpClientAdapter {
      * Configuration key for the proxy skip list.
      */
     public static final String NO_PROXY = "server.satellite.no_proxy";
+    public static final String MAX_CONNCECTIONS = "java.mgr_sync_max_connections";
 
     /** The log. */
     private static Logger log = Logger.getLogger(HttpClientAdapter.class);
@@ -151,6 +152,8 @@ public class HttpClientAdapter {
         }
 
         requestConfig = requestConfigBuilder.build();
+        clientBuilder.setMaxConnPerRoute(Config.get().getInt(MAX_CONNCECTIONS, 1));
+        clientBuilder.setMaxConnTotal(Config.get().getInt(MAX_CONNCECTIONS, 1));
         httpClient = clientBuilder.build();
     }
 

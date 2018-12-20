@@ -1,0 +1,282 @@
+[
+    {
+        "label": "SLE-HAE-PPC", 
+        "name": "SUSE Linux Enterprise High Availability Extension (PPC)"
+    }, 
+    {
+        "label": "HPC-X86", 
+        "name": "SUSE Linux Enterprise High Performance Computing (x86)"
+    }, 
+    {
+        "label": "10040", 
+        "name": "SUSE Linux Enterprise Point of Service"
+    }, 
+    {
+        "label": "RES", 
+        "name": "SUSE Linux Enterprise RedHat Expanded Support"
+    }, 
+    {
+        "label": "AiO-PPC", 
+        "name": "SUSE Linux Enterprise Server for SAP Power"
+    }, 
+    {
+        "label": "ATI", 
+        "name": "ATI"
+    }, 
+    {
+        "label": "SLE-M-T", 
+        "name": "SUSE Manager Tools"
+    }, 
+    {
+        "label": "SLE-TC", 
+        "name": "SUSE Linux Enterprise Thin Client"
+    }, 
+    {
+        "label": "SLE-LP-PPC", 
+        "name": "SUSE Linux Enterprise Live Patching PPC"
+    }, 
+    {
+        "label": "SUSE_CLOUD", 
+        "name": "SUSE Cloud"
+    }, 
+    {
+        "label": "SUSE", 
+        "name": "openSUSE"
+    }, 
+    {
+        "label": "SLES12-GA-LTSS-X86", 
+        "name": "SUSE Linux Enterprise Server 12 LTSS (x86)"
+    }, 
+    {
+        "label": "SLESMT", 
+        "name": "SUSE Linux Enterprise Subscription Management Tool"
+    }, 
+    {
+        "label": "NAM-AGA", 
+        "name": "Novell Access Manager"
+    }, 
+    {
+        "label": "SLES-Z", 
+        "name": "SUSE Linux Enterprise Server (Z-Series)"
+    }, 
+    {
+        "label": "STUDIOONSITE", 
+        "name": "SUSE Studio Onsite"
+    }, 
+    {
+        "label": "SLMS", 
+        "name": "SUSE Lifecycle Management Server"
+    }, 
+    {
+        "label": "DSMP", 
+        "name": "Data Synchronizer Mobility Pack"
+    }, 
+    {
+        "label": "SLES12-SP2-LTSS-Z", 
+        "name": "SUSE Linux Enterprise Server LTSS 12 SP2 Z-Series"
+    }, 
+    {
+        "label": "MONO", 
+        "name": "SUSE Linux Enterprise Mono Extension"
+    }, 
+    {
+        "label": "7261", 
+        "name": "SUSE Linux Enterprise Server"
+    }, 
+    {
+        "label": "7260", 
+        "name": "SUSE Linux Enterprise Desktop"
+    }, 
+    {
+        "label": "SES", 
+        "name": "SUSE Enterprise Storage"
+    }, 
+    {
+        "label": "VMDP", 
+        "name": "SUSE Linux Enterprise Virtual Machine Driver Pack"
+    }, 
+    {
+        "label": "SLE-HAS", 
+        "name": "SUSE Linux Enterprise HA Server"
+    }, 
+    {
+        "label": "SLE-SDK", 
+        "name": "SUSE Linux Enterprise Software Development Kit"
+    }, 
+    {
+        "label": "RES-HA", 
+        "name": "SUSE Linux Enterprise RedHat Expanded Support HA"
+    }, 
+    {
+        "label": "OES2", 
+        "name": "Novell Open Enterprise Server"
+    }, 
+    {
+        "label": "SLE-LP", 
+        "name": "SUSE Linux Enterprise Live Patching"
+    }, 
+    {
+        "label": "Moblin-2.1-MSI", 
+        "name": "Moblin for MSI"
+    }, 
+    {
+        "label": "SMS-Z", 
+        "name": "SUSE Manager Server System Z"
+    }, 
+    {
+        "label": "SLES-EC2", 
+        "name": "SUSE Linux Enterprise Server for Amazon EC2"
+    }, 
+    {
+        "label": "HP-HWREF", 
+        "name": "SUSE Linux Enterprise Desktop HW Refresh 2011A"
+    }, 
+    {
+        "label": "SLES-RPI-ARM64", 
+        "name": "SUSE Linux Enterprise Server (RPI ARM64)"
+    }, 
+    {
+        "label": "SLE-WE", 
+        "name": "SUSE Linux Enterprise Workstation Extension"
+    }, 
+    {
+        "label": "JBEAP", 
+        "name": "Novell Support for JBoss"
+    }, 
+    {
+        "label": "SLE-HAE-IA", 
+        "name": "SUSE Linux Enterprise High Availability Extension (Itanium)"
+    }, 
+    {
+        "label": "WEBYAST", 
+        "name": "WebYaST for SUSE Linux Enterprise"
+    }, 
+    {
+        "label": "WebYast-SLMS", 
+        "name": "WebYaST for SUSE Appliance Toolkit"
+    }, 
+    {
+        "label": "SLES12-GA-LTSS-Z", 
+        "name": "SUSE Linux Enterprise Server 12 LTSS (Z-Series)"
+    }, 
+    {
+        "label": "20082", 
+        "name": "Novell Open Workgroup Suite - Small Business Edition"
+    }, 
+    {
+        "label": "MODULE", 
+        "name": "SUSE Linux Enterprise Modules"
+    }, 
+    {
+        "label": "jeos", 
+        "name": "Just enough OS"
+    }, 
+    {
+        "label": "MEEGO-1", 
+        "name": "MEEGO"
+    }, 
+    {
+        "label": "SLM", 
+        "name": "Novell Sentinel Log Manager"
+    }, 
+    {
+        "label": "ZLM7", 
+        "name": "ZENworks Linux Management"
+    }, 
+    {
+        "label": "ZOS", 
+        "name": "ZENworks Orchestrator"
+    }, 
+    {
+        "label": "Moblin-2-Samsung", 
+        "name": "Moblin for Samsung"
+    }, 
+    {
+        "label": "nVidia", 
+        "name": "nVidia"
+    }, 
+    {
+        "label": "STUDIOONSITERUNNER", 
+        "name": "SUSE Studio OnSite Runner"
+    }, 
+    {
+        "label": "SMS-PPC", 
+        "name": "SUSE Manager Server PPC"
+    }, 
+    {
+        "label": "SMP", 
+        "name": "SUSE Manager Proxy"
+    }, 
+    {
+        "label": "SLES12-SP1-LTSS-Z", 
+        "name": "SUSE Linux Enterprise Server LTSS 12 SP1 Z-Series"
+    }, 
+    {
+        "label": "SLE-POS-AS-SMRBS-X86", 
+        "name": "SUSE Manager for Retail"
+    }, 
+    {
+        "label": "SLE-HAE-Z", 
+        "name": "SUSE Linux Enterprise High Availability Extension (Z-Series)"
+    }, 
+    {
+        "label": "SMS-X86", 
+        "name": "SUSE Manager Server X86-64"
+    }, 
+    {
+        "label": "SLES-X86-VMWARE", 
+        "name": "SUSE Linux Enterprise Server for VMware"
+    }, 
+    {
+        "label": "13319", 
+        "name": "SUSE Linux Enterprise Real Time"
+    }, 
+    {
+        "label": "HPC-ARM64", 
+        "name": "SUSE Linux Enterprise High Performance Computing (ARM64)"
+    }, 
+    {
+        "label": "SES-ARM", 
+        "name": "SUSE Enterprise Storage (ARM64)"
+    }, 
+    {
+        "label": "SLE-HAE-GEO", 
+        "name": "GEO Clustering for SLE HA Extension"
+    }, 
+    {
+        "label": "SLES-ARM64", 
+        "name": "SUSE Linux Enterprise Server (ARM64)"
+    }, 
+    {
+        "label": "18962", 
+        "name": "Novell ZENworks Configuration Management"
+    }, 
+    {
+        "label": "CAASP_X86", 
+        "name": "SUSE Container as a Service Platform x86_64"
+    }, 
+    {
+        "label": "SLE-HAE-X86", 
+        "name": "SUSE Linux Enterprise High Availability Extension (x86)"
+    }, 
+    {
+        "label": "AiO", 
+        "name": "SUSE Linux Enterprise Server for SAP"
+    }, 
+    {
+        "label": "SLES-IA", 
+        "name": "SUSE Linux Enterprise Server (Itanium)"
+    }, 
+    {
+        "label": "SLES-PPC", 
+        "name": "SUSE Linux Enterprise Server (PPC)"
+    }, 
+    {
+        "label": "SLES12-SP1-LTSS-X86", 
+        "name": "SUSE Linux Enterprise Server LTSS 12 SP1 x86_64"
+    }, 
+    {
+        "label": "SLES12-SP2-LTSS-X86", 
+        "name": "SUSE Linux Enterprise Server LTSS 12 SP2 x86_64"
+    }
+]

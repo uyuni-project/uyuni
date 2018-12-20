@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChecksumLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidGPGKeyException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidGPGUrlException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
-import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import org.apache.commons.lang3.StringUtils;
@@ -252,21 +251,16 @@ public class CreateChannelCommand {
                 InvalidChannelLabelException.Reason.LABEL_IN_USE,
                 "edit.channel.invalidchannellabel.labelinuse", label);
         }
-        try {
-            if (ContentSyncManager.isChannelNameReserved(name)) {
-                throw new InvalidChannelNameException(name,
-                        InvalidChannelNameException.Reason.NAME_RESERVED,
-                        "edit.channel.invalidchannelname.namereserved", name);
-            }
-
-            if (ContentSyncManager.isChannelLabelReserved(label)) {
-                throw new InvalidChannelLabelException(label,
-                    InvalidChannelLabelException.Reason.LABEL_RESERVED,
-                    "edit.channel.invalidchannellabel.labelreserved", label);
-            }
+        if (ContentSyncManager.isChannelNameReserved(name)) {
+            throw new InvalidChannelNameException(name,
+                    InvalidChannelNameException.Reason.NAME_RESERVED,
+                    "edit.channel.invalidchannelname.namereserved", name);
         }
-        catch (ContentSyncException e) {
-            throw new RuntimeException(e.getMessage());
+
+        if (ContentSyncManager.isChannelLabelReserved(label)) {
+            throw new InvalidChannelLabelException(label,
+                InvalidChannelLabelException.Reason.LABEL_RESERVED,
+                "edit.channel.invalidchannellabel.labelreserved", label);
         }
 
         if (ca == null) {
@@ -294,7 +288,7 @@ public class CreateChannelCommand {
         ChecksumType ct = ChannelFactory.findChecksumTypeByLabel(checksum);
         validateChannel(ca, ct);
 
-        Channel c = ChannelFactory.createChannel();
+        Channel c = new Channel();
         c.setLabel(label);
         c.setName(name);
         c.setSummary(summary);

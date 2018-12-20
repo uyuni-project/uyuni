@@ -60,10 +60,12 @@ public class SCCServerStub implements Responder {
                     "<" + uri + path + "2>; rel=\"last\", " +
                     "<" + uri + path + "2>; rel=\"next\"");
         }
+        response.set("Per-Page", "1");
+        response.set("Total", "2");
 
         // Send file content
         try {
-            String filename = path.replaceFirst("/", "") + ".json";
+            String filename = path.replaceFirst("/", "").replaceFirst("\\?page=", "") + ".json";
             URL url = TestUtils.findTestData(filename);
 
             InputStream in = url.openStream();

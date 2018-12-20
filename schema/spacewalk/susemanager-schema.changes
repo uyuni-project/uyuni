@@ -1,3 +1,5 @@
+- change SCC sync backend to adapt quicker to SCC changes and improve
+  speed of syncing metadata and checking for channel dependencies
 - Performance improvements in channel management functionalities (bsc#1114877)
 - use a Salt engine to process return results (bsc#1099988)
 
