@@ -26,7 +26,7 @@ CREATE TABLE suseSCCRepository
     url            VARCHAR2(2048) NOT NULL,
     signed         CHAR(1) DEFAULT ('N') NOT NULL
                            CONSTRAINT suse_sccrepo_sig_ck
-                           CHECK (autorefresh in ('Y', 'N')),
+                           CHECK (signed in ('Y', 'N')),
     created        timestamp with local time zone
                        DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone
