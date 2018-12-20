@@ -70,7 +70,6 @@ Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       gnu-jaf
 Requires:       hibernate-commons-annotations
-Requires:       hibernate-jpa-2.1-api
 Requires:       hibernate5
 Requires:       jade4j
 Requires:       javassist
@@ -93,7 +92,6 @@ BuildRequires:  classmate
 BuildRequires:  ehcache >= 2.10.1
 BuildRequires:  google-gson >= 2.2.4
 BuildRequires:  hibernate-commons-annotations
-BuildRequires:  hibernate-jpa-2.1-api
 BuildRequires:  hibernate5
 BuildRequires:  java-devel >= 1.8.0
 BuildRequires:  javassist
