@@ -19,16 +19,7 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Install or update PXE formulas on the server
-    When I manually install the "tftpd" formula on the server
-    And I manually install the "saltboot" formula on the server
-    And I manually install the "pxe" formula on the server
-    And I wait for "16" seconds
-
-@proxy
-@private_net
-@pxeboot_minion
-  Scenario: Enable the PXE formulas on the branch server
+  Scenario: Enable the formulas needed for PXE booting on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I check the "tftpd" formula
@@ -48,9 +39,6 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
     # direct zone example.org:
-    And I press "Add Item" in first A section
-    And I enter "pxeboot" in fourth A name field
-    And I enter the local IP address of "pxeboot" in fourth A address field
     And I press "Add Item" in first CNAME section
     And I enter "ftp" in first CNAME alias field
     And I enter "proxy" in first CNAME name field
@@ -85,10 +73,6 @@ Feature: PXE boot a Retail terminal
     And I follow first "Dhcpd" in the content area
     And I enter the local IP address of "proxy" in next server field
     And I enter "boot/pxelinux.0" in filename field
-    And I press "Add Item" in host reservations section
-    And I enter "pxeboot" in third reserved hostname field
-    And I enter the local IP address of "pxeboot" in third reserved IP field
-    And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved!" text
 
@@ -223,7 +207,7 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Check connection from terminal to branch server
+  Scenario: Check connection from PXE booted minion to proxy
     Given I am on the Systems overview page of this "pxeboot-minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
@@ -232,7 +216,7 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Install a package on the new Retail terminal
+  Scenario: Install a package on the PXE booted minion
     Given I am on the Systems overview page of this "pxeboot-minion"
     When I install the GPG key of the server on the PXE boot minion
     And I follow "Software" in the content area
@@ -252,7 +236,12 @@ Feature: PXE boot a Retail terminal
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
-    # TODO: for full idempotency, also stop salt-minion service
+
+@proxy
+@private_net
+@pxeboot_minion
+  Scenario: Cleanup: make sure salt-minion is stopped after PXE boot
+    When I stop salt-minion on the PXE boot minion
 
 @proxy
 @private_net
@@ -304,9 +293,8 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Apply the highstate to clear PXE formulas
+  Scenario: Cleanup: apply the highstate after the PXE boot tests
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
-    And I enable repositories before installing branch server
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
