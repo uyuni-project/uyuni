@@ -1,3 +1,5 @@
+- Fix importing state channels using configchannel_import
+- Fix getting file info for latest revision (via configchannel_filedetails)
 - Add function to merge errata and packages through spacecmd (bsc#987798)
 
 -------------------------------------------------------------------
