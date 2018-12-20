@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 1a6c328f9273937c57ca944fdcc6c5f61777b0b8
+-- oracle equivalent source sha1 272313b88788a654940ce6566ca5bbb4eaca509c
 --
 -- Copyright (c) 2018 SUSE LLC
 --
@@ -25,6 +25,9 @@ CREATE TABLE IF NOT EXISTS suseContentEnvironment(
     name        VARCHAR(128) NOT NULL,
     description TEXT,
     version     NUMERIC,
+    next_env_id NUMERIC
+                    CONSTRAINT suse_ct_env_nid_fk
+                        REFERENCES suseContentEnvironment(id),
     created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
     modified    TIMESTAMPTZ
@@ -40,3 +43,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_pid_lbl_uq
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_pid_name_uq
     ON suseContentEnvironment(project_id, name);
+
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_nid_uq
+    ON suseContentEnvironment(next_env_id);
