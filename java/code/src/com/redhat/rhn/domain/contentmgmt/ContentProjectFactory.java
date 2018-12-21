@@ -31,22 +31,12 @@ import javax.persistence.criteria.Root;
  */
 public class ContentProjectFactory extends HibernateFactory {
 
-    private static ContentProjectFactory instance;
+    private static final ContentProjectFactory instance = new ContentProjectFactory();
     private static Logger log = Logger.getLogger(ImageInfoFactory.class);
 
+    // forbid  instantiation
     private ContentProjectFactory() {
         super();
-    }
-
-    /**
-     * Get the instance.
-     * @return the instance
-     */
-    public static synchronized ContentProjectFactory getInstance() {
-        if (instance == null) {
-            instance = new ContentProjectFactory();
-        }
-        return instance;
     }
 
     /**
@@ -54,16 +44,16 @@ public class ContentProjectFactory extends HibernateFactory {
      *
      * @param contentProject - the ContentProject
      */
-    public void save(ContentProject contentProject) {
-        saveObject(contentProject);
+    public static void save(ContentProject contentProject) {
+        instance.saveObject(contentProject);
     }
 
     /**
      * Save a Content Environment in DB
      * @param contentEnvironment the content environment
      */
-    public void save(ContentEnvironment contentEnvironment) {
-        saveObject(contentEnvironment);
+    public static void save(ContentEnvironment contentEnvironment) {
+        instance.saveObject(contentEnvironment);
     }
 
     /**
@@ -72,7 +62,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param label - the label
      * @return ContentProject with given label
      */
-    public ContentProject lookupContentProjectByLabel(String label) {
+    public static ContentProject lookupContentProjectByLabel(String label) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ContentProject> criteria = builder.createQuery(ContentProject.class);
         Root<ContentProject> root = criteria.from(ContentProject.class);
@@ -85,7 +75,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param org - the organization
      * @return the ContentProjects in given organization
      */
-    public List<ContentProject> listContentProjects(Org org) {
+    public static List<ContentProject> listContentProjects(Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ContentProject> query = builder.createQuery(ContentProject.class);
         Root<ContentProject> root = query.from(ContentProject.class);
@@ -99,7 +89,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param project the Content Project
      * @return the first Environment
      */
-    public Optional<ContentEnvironment> getFirstEnvironmentOfProject(ContentProject project) {
+    public static Optional<ContentEnvironment> getFirstEnvironmentOfProject(ContentProject project) {
         return HibernateFactory.getSession()
                 .createNamedQuery("ContentEnvironment.lookupFirstInProject")
                 .setParameter("contentProject", project)
@@ -111,7 +101,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param env the environment
      * @return predecessor of given Environment or empty when no predecessor exists
      */
-    public Optional<ContentEnvironment> getPrevEnvironment(ContentEnvironment env) {
+    public static Optional<ContentEnvironment> getPrevEnvironment(ContentEnvironment env) {
         return HibernateFactory.getSession()
                 .createNamedQuery("ContentEnvironment.lookupPredecessor")
                 .setParameter("env", env)
@@ -125,7 +115,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param env the environment
      * @param successor the optional successor environment
      */
-    public void prependEnvironment(ContentEnvironment env, Optional<ContentEnvironment> successor) {
+    public static void prependEnvironment(ContentEnvironment env, Optional<ContentEnvironment> successor) {
         // disconnect environment from the environment path, if needed
         ContentProject contentProject = env.getContentProject();
         disconnectEnvironment(env);
@@ -149,7 +139,7 @@ public class ContentProjectFactory extends HibernateFactory {
         save(env);
     }
 
-    private void disconnectEnvironment(ContentEnvironment env) {
+    private static void disconnectEnvironment(ContentEnvironment env) {
         getPrevEnvironment(env).ifPresent(pred -> {
             pred.setNextEnvironment(env.getNextEnvironment());
             save(pred);

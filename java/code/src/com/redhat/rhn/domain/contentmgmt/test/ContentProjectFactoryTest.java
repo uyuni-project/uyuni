@@ -35,33 +35,32 @@ import static java.util.Optional.empty;
 public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
     public void testEnvironment() {
-        ContentProjectFactory contentProjectFactory = ContentProjectFactory.getInstance();
         ContentProject cp = new ContentProject();
         cp.setLabel("project1");
         cp.setName("Project 1");
         cp.setDescription("This is project 1");
         cp.setOrg(user.getOrg());
-        contentProjectFactory.save(cp);
+        ContentProjectFactory.save(cp);
 
         ContentEnvironment envdev = new ContentEnvironment();
         envdev.setLabel("dev");
         envdev.setName("Development");
         envdev.setContentProject(cp);
-        contentProjectFactory.save(envdev);
-        contentProjectFactory.prependEnvironment(envdev, empty());
+        ContentProjectFactory.save(envdev);
+        ContentProjectFactory.prependEnvironment(envdev, empty());
 
         ContentEnvironment envtest = new ContentEnvironment();
         envtest.setLabel("test");
         envtest.setName("Test");
         envtest.setContentProject(cp);
-        contentProjectFactory.save(envtest);
-        contentProjectFactory.prependEnvironment(envdev, Optional.of(envtest));
+        ContentProjectFactory.save(envtest);
+        ContentProjectFactory.prependEnvironment(envdev, Optional.of(envtest));
 
-        ContentProject fromDb = contentProjectFactory.lookupContentProjectByLabel("project1");
+        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
         assertEquals("project1", fromDb.getLabel());
         assertEquals("This is project 1", fromDb.getDescription());
 
-        ContentEnvironment first = contentProjectFactory.getFirstEnvironmentOfProject(cp).get();
+        ContentEnvironment first = ContentProjectFactory.getFirstEnvironmentOfProject(cp).get();
         assertEquals("dev", first.getLabel());
         assertEquals("Development", first.getName());
 
@@ -70,9 +69,9 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals("Test", second.getName());
 
         assertEquals(second, first.getNextEnvironmentOpt().get());
-        assertEquals(empty(), contentProjectFactory.getPrevEnvironment(first));
+        assertEquals(empty(), ContentProjectFactory.getPrevEnvironment(first));
 
-        assertEquals(first, contentProjectFactory.getPrevEnvironment(second).get());
+        assertEquals(first, ContentProjectFactory.getPrevEnvironment(second).get());
         assertEquals(empty(), second.getNextEnvironmentOpt());
     }
 
@@ -85,7 +84,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.setDescription("cpdesc");
         cp.setName("cpname");
         cp.setOrg(user.getOrg());
-        ContentProjectFactory.getInstance().save(cp);
+        ContentProjectFactory.save(cp);
 
         Org org2 = OrgFactory.createOrg();
         org2.setName("test org for content project");
@@ -94,9 +93,9 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp2.setLabel("cplabel2");
         cp2.setName("cpname2");
         cp2.setOrg(org2);
-        ContentProjectFactory.getInstance().save(cp2);
+        ContentProjectFactory.save(cp2);
 
-        List<ContentProject> contentProjects = ContentProjectFactory.getInstance().listContentProjects(user.getOrg());
+        List<ContentProject> contentProjects = ContentProjectFactory.listContentProjects(user.getOrg());
         assertEquals(1, contentProjects.size());
         ContentProject fromDb = contentProjects.get(0);
         assertNotNull(fromDb.getId());
@@ -104,6 +103,6 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(cp.getDescription(), fromDb.getDescription());
         assertEquals(cp.getName(), fromDb.getName());
         assertEquals(cp.getOrg(), fromDb.getOrg());
-        assertEquals(empty(), ContentProjectFactory.getInstance().getFirstEnvironmentOfProject(cp));
+        assertEquals(empty(), ContentProjectFactory.getFirstEnvironmentOfProject(cp));
     }
 }
