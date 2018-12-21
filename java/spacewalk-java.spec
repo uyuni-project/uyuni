@@ -69,6 +69,8 @@ Requires:       java >= 1.8.0
 Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       gnu-jaf
+Requires:       byte-buddy
+Requires:       jpa-api
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       jade4j
@@ -91,6 +93,8 @@ BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
 BuildRequires:  ehcache >= 2.10.1
 BuildRequires:  google-gson >= 2.2.4
+BuildRequires:  byte-buddy
+BuildRequires:  jpa-api
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
 BuildRequires:  java-devel >= 1.8.0
