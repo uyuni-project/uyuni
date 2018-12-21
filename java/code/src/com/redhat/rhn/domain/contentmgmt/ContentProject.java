@@ -150,15 +150,21 @@ public class ContentProject extends BaseDomainHelper {
         return firstEnvironment;
     }
 
+    /**
+     * Gets the first environment or empty if none exists
+     *
+     * @return optional of the first environment
+     */
     @Transient
     public Optional<ContentEnvironment> getFirstEnvironmentOpt() {
         return Optional.ofNullable(getFirstEnvironment());
     }
+
     /**
-     * @param firstEnvironment the firstEnvironment to set
+     * @param firstEnvironmentIn the firstEnvironment to set
      */
-    public void setFirstEnvironment(ContentEnvironment firstEnvironment) {
-        this.firstEnvironment = firstEnvironment;
+    public void setFirstEnvironment(ContentEnvironment firstEnvironmentIn) {
+        this.firstEnvironment = firstEnvironmentIn;
     }
 
     /**
