@@ -23,6 +23,7 @@ CREATE TABLE suseContentProject(
                     ON DELETE CASCADE,
     label       VARCHAR2(24) NOT NULL,
     description CLOB,
+    first_env_id NUMBER,
     created     TIMESTAMP WITH LOCAL TIME ZONE
                     DEFAULT (current_timestamp) NOT NULL,
     modified    TIMESTAMP WITH LOCAL TIME ZONE

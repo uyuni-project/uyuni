@@ -16,12 +16,10 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.org.Org;
 import org.apache.log4j.Logger;
 
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -32,7 +30,7 @@ import javax.persistence.criteria.Root;
 public class ContentProjectFactory extends HibernateFactory {
 
     private static final ContentProjectFactory instance = new ContentProjectFactory();
-    private static Logger log = Logger.getLogger(ImageInfoFactory.class);
+    private static Logger log = Logger.getLogger(ContentProjectFactory.class);
 
     // forbid  instantiation
     private ContentProjectFactory() {
@@ -54,6 +52,14 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static void save(ContentEnvironment contentEnvironment) {
         instance.saveObject(contentEnvironment);
+    }
+
+    /**
+     * Delete a {@link ContentEnvironment} from the database.
+     * @param contentEnvironment Environment to be deleted.
+     */
+    protected static void remove(ContentEnvironment contentEnvironment) {
+        instance.removeObject(contentEnvironment);
     }
 
     /**
@@ -84,69 +90,63 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * Get the 1st Envirnoment of the Content Project
-     *
-     * @param project the Content Project
-     * @return the first Environment
+     * Insert the new environment in the path after the given environment.
+     * @param newEnv new environment to be inserted
+     * @param after insert after this
+     * @throws ContentManagementException
      */
-    public static Optional<ContentEnvironment> getFirstEnvironmentOfProject(ContentProject project) {
-        return HibernateFactory.getSession()
-                .createNamedQuery("ContentEnvironment.lookupFirstInProject")
-                .setParameter("contentProject", project)
-                .uniqueResultOptional();
-    }
+    public static void insertEnvironment(ContentEnvironment newEnv, ContentEnvironment after)
+            throws ContentManagementException {
 
-    /**
-     * Get the predecessor to given Environment
-     * @param env the environment
-     * @return predecessor of given Environment or empty when no predecessor exists
-     */
-    public static Optional<ContentEnvironment> getPrevEnvironment(ContentEnvironment env) {
-        return HibernateFactory.getSession()
-                .createNamedQuery("ContentEnvironment.lookupPredecessor")
-                .setParameter("env", env)
-                .uniqueResultOptional();
-    }
-
-    /**
-     * Prepend given environment to the given successor environment (or set it as a first environment of the project,
-     * if no successor environment is given).
-     *
-     * @param env the environment
-     * @param successor the optional successor environment
-     */
-    public static void prependEnvironment(ContentEnvironment env, Optional<ContentEnvironment> successor) {
-        // disconnect environment from the environment path, if needed
-        ContentProject contentProject = env.getContentProject();
-        disconnectEnvironment(env);
-
-        // if new successor is present -> prepend the env to it
-        successor.ifPresent(succ -> {
-            getPrevEnvironment(succ).ifPresent(succPrev -> {
-                succPrev.setNextEnvironment(env);
-                save(succPrev);
-            });
-            env.setNextEnvironment(succ);
-        });
-
-        // otherwise set this env as a first environment of a project
-        if(!successor.isPresent()) {
-            env.setNextEnvironment(getFirstEnvironmentOfProject(env.getContentProject()).orElse(null));
+        if (!newEnv.getContentProject().equals(after.getContentProject())) {
+            throw new ContentManagementException("Environments from different Projects");
         }
 
-        // reset content project
-        env.setContentProject(contentProject);
-        save(env);
+        after.getNextEnvironmentOpt().ifPresent(successor -> {
+            after.setNextEnvironment(newEnv);
+            newEnv.setPrevEnvironment(after);
+            newEnv.setNextEnvironment(successor);
+            successor.setPrevEnvironment(newEnv);
+            save(successor);
+        });
+        if (!after.getNextEnvironmentOpt().isPresent()) {
+            after.setNextEnvironment(newEnv);
+            newEnv.setPrevEnvironment(after);
+        }
+        save(newEnv);
+        save(after);
     }
 
-    private static void disconnectEnvironment(ContentEnvironment env) {
-        getPrevEnvironment(env).ifPresent(pred -> {
-            pred.setNextEnvironment(env.getNextEnvironment());
-            save(pred);
-        });
-
-        env.setNextEnvironment(null);
-        env.setContentProject(null);
+    /**
+     * Remove an environment from the path. It take care that chain stay intact
+     * @param toRemove environment to remove.
+     */
+    public static void removeEnvironment(ContentEnvironment toRemove) {
+        if (toRemove.getNextEnvironmentOpt().isPresent()) {
+            ContentEnvironment next = toRemove.getNextEnvironmentOpt().get();
+            if (toRemove.getPrevEnvironmentOpt().isPresent()) {
+                ContentEnvironment prev = toRemove.getPrevEnvironmentOpt().get();
+                prev.setNextEnvironment(next);
+                next.setPrevEnvironment(prev);
+                save(prev);
+            }
+            else {
+                // First Env - change the project
+                ContentProject project = toRemove.getContentProject();
+                project.setFirstEnvironment(next);
+                next.setPrevEnvironment(null);
+                save(project);
+            }
+            save(next);
+        }
+        else if (toRemove.getPrevEnvironmentOpt().isPresent()) {
+            ContentEnvironment prev = toRemove.getPrevEnvironmentOpt().get();
+            prev.setNextEnvironment(null);
+            save(prev);
+        }
+        toRemove.setPrevEnvironment(null);
+        toRemove.setNextEnvironment(null);
+        remove(toRemove);
     }
 
     /**
