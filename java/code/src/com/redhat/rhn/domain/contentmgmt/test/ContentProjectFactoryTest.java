@@ -192,4 +192,51 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(cp.getOrg(), fromDb.getOrg());
         assertEquals(empty(), cp.getFirstEnvironmentOpt());
     }
+
+    public void testListEnvironments() {
+        ContentProject cp = new ContentProject();
+        cp.setLabel("project1");
+        cp.setName("Project 1");
+        cp.setDescription("This is project 1");
+        cp.setOrg(user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        ContentEnvironment envdev = new ContentEnvironment();
+        envdev.setLabel("dev");
+        envdev.setName("Development");
+        envdev.setContentProject(cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+
+        ContentEnvironment envtest = new ContentEnvironment();
+        envtest.setLabel("test");
+        envtest.setName("Test");
+        envtest.setContentProject(cp);
+        ContentProjectFactory.save(envtest);
+        ContentProjectFactory.insertEnvironment(envtest, envdev);
+
+        ContentEnvironment envprod = new ContentEnvironment();
+        envprod.setLabel("prod");
+        envprod.setName("Production");
+        envprod.setContentProject(cp);
+        ContentProjectFactory.save(envprod);
+        ContentProjectFactory.insertEnvironment(envprod, envtest);
+
+        ContentEnvironment envint = new ContentEnvironment();
+        envint.setLabel("int");
+        envint.setName("Integration");
+        envint.setContentProject(cp);
+        ContentProjectFactory.save(envint);
+        ContentProjectFactory.insertEnvironment(envint, envdev);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
+        List<ContentEnvironment> envs = ContentProjectFactory.listProjectEnvironments(fromDb);
+        assertEquals("dev", envs.get(0).getLabel());
+        assertEquals("int", envs.get(1).getLabel());
+        assertEquals("test", envs.get(2).getLabel());
+        assertEquals("prod", envs.get(3).getLabel());
+    }
 }
