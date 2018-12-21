@@ -32,7 +32,7 @@ import javax.persistence.criteria.Root;
  */
 public class ContentProjectFactory extends HibernateFactory {
 
-    private static final ContentProjectFactory instance = new ContentProjectFactory();
+    private static final ContentProjectFactory INSTANCE = new ContentProjectFactory();
     private static Logger log = Logger.getLogger(ContentProjectFactory.class);
 
     // forbid  instantiation
@@ -46,7 +46,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param contentProject - the ContentProject
      */
     public static void save(ContentProject contentProject) {
-        instance.saveObject(contentProject);
+        INSTANCE.saveObject(contentProject);
     }
 
     /**
@@ -54,7 +54,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param contentEnvironment the content environment
      */
     public static void save(ContentEnvironment contentEnvironment) {
-        instance.saveObject(contentEnvironment);
+        INSTANCE.saveObject(contentEnvironment);
     }
 
     /**
@@ -62,7 +62,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param contentEnvironment Environment to be deleted.
      */
     protected static void remove(ContentEnvironment contentEnvironment) {
-        instance.removeObject(contentEnvironment);
+        INSTANCE.removeObject(contentEnvironment);
     }
 
     /**
@@ -96,7 +96,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * Insert the new environment in the path after the given environment.
      * @param newEnv new environment to be inserted
      * @param after insert after this
-     * @throws ContentManagementException
+     * @throws ContentManagementException if projects of given environments mismatch
      */
     public static void insertEnvironment(ContentEnvironment newEnv, ContentEnvironment after)
             throws ContentManagementException {
@@ -152,6 +152,12 @@ public class ContentProjectFactory extends HibernateFactory {
         remove(toRemove);
     }
 
+    /**
+     * Lists all Environments of a Content Project
+     *
+     * @param project the Content Project
+     * @return Environments of the Content Project
+     */
     public static List<ContentEnvironment> listProjectEnvironments(ContentProject project) {
         List<ContentEnvironment> result = new LinkedList<>();
         Optional<ContentEnvironment> env = project.getFirstEnvironmentOpt();
@@ -168,7 +174,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param source the project source
      */
     public static void save(ProjectSource source) {
-        instance.saveObject(source);
+        INSTANCE.saveObject(source);
     }
 
     /**
