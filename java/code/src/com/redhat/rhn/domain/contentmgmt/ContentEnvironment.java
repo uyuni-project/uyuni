@@ -150,7 +150,7 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the nextEnvironment
      */
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "next_env_id")
     protected ContentEnvironment getNextEnvironment() {
         return nextEnvironment;
