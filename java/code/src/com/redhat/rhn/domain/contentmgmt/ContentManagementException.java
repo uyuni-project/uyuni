@@ -15,6 +15,9 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 
+/**
+ * Content Management Exception
+ */
 public class ContentManagementException extends RuntimeException {
 
     /**
