@@ -17,16 +17,22 @@
 package com.redhat.rhn.domain.contentmgmt.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 
 /**
@@ -238,5 +244,39 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals("int", envs.get(1).getLabel());
         assertEquals("test", envs.get(2).getLabel());
         assertEquals("prod", envs.get(3).getLabel());
+    }
+
+    /**
+     * Tests adding/removing sources on a project
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testProjectSource() throws Exception {
+        ContentProject cp = new ContentProject();
+        cp.setLabel("cplabel");
+        cp.setDescription("cpdesc");
+        cp.setName("cpname");
+        cp.setOrg(user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        ProjectSource swSource = new SoftwareProjectSource(baseChannel);
+        cp.addSource(swSource);
+        ContentProjectFactory.save(swSource);
+
+        List<ProjectSource> fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
+        assertEquals(singletonList(swSource), fromDb);
+
+        Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
+        ProjectSource swSource2 = new SoftwareProjectSource(childChannel);
+        cp.addSource(swSource2);
+        ContentProjectFactory.save(swSource2);
+
+        fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
+        assertEquals(asList(swSource, swSource2), fromDb);
+
+        cp.removeSource(swSource2);
+        fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
+        assertEquals(singletonList(swSource), fromDb);
     }
 }

@@ -16,6 +16,8 @@ package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -84,6 +86,8 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(SCCRepositoryTokenAuth.class);
         ANNOTATION_CLASSES.add(ContentProject.class);
         ANNOTATION_CLASSES.add(ContentEnvironment.class);
+        ANNOTATION_CLASSES.add(ProjectSource.class);
+        ANNOTATION_CLASSES.add(SoftwareProjectSource.class);
     }
 
     /**
