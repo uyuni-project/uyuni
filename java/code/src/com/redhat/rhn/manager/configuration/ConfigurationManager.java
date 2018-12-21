@@ -1259,7 +1259,7 @@ public class ConfigurationManager extends BaseManager {
             params.put("set_label", setLabel);
         }
         else {
-            params.put("include_init_sls", includeInitSls);
+            params.put("include_init_sls", includeInitSls ? "Y" : "N");
             m = ModeFactory.getMode("config_queries", "latest_files_in_namespace");
         }
         return (DataResult<ConfigFileDto>) makeDataResult(params, new HashMap(), pc, m);
