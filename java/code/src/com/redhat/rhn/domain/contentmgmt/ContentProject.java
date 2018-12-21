@@ -21,15 +21,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -48,6 +51,7 @@ public class ContentProject extends BaseDomainHelper {
     private String name;
     private String description;
     private ContentEnvironment firstEnvironment;
+    private List<ProjectSource> sources = new ArrayList<>();
 
     /**
      * Gets the id.
@@ -164,6 +168,44 @@ public class ContentProject extends BaseDomainHelper {
      */
     public void setDescription(String descriptionIn) {
         description = descriptionIn;
+    }
+
+    /**
+     * Gets the sources.
+     *
+     * @return sources
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contentProject", orphanRemoval = true)
+    public List<ProjectSource> getSources() {
+        return sources;
+    }
+
+    /**
+     * Sets the sources.
+     *
+     * @param sourcesIn - the sources
+     */
+    public void setSources(List<ProjectSource> sourcesIn) {
+        sources = sourcesIn;
+    }
+
+    /**
+     * Adds a source to content project
+     *
+     * @param source the source
+     */
+    public void addSource(ProjectSource source) {
+        source.setContentProject(this);
+        sources.add(source);
+    }
+
+    /**
+     * Removes a source from content project
+     *
+     * @param source the source
+     */
+    public void removeSource(ProjectSource source) {
+        sources.remove(source);
     }
 
     /**
