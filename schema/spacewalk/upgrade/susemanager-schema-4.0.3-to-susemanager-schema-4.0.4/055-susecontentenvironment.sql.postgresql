@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 272313b88788a654940ce6566ca5bbb4eaca509c
+-- oracle equivalent source sha1 09ffacc3c2fce4d122681d6b8a8b7e9d276b4c2d
 --
 -- Copyright (c) 2018 SUSE LLC
 --
@@ -44,5 +44,11 @@ CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_pid_lbl_uq
 CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_pid_name_uq
     ON suseContentEnvironment(project_id, name);
 
-CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_nid_uq
-    ON suseContentEnvironment(next_env_id);
+-- CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_nid_uq
+--     ON suseContentEnvironment(next_env_id);
+
+ALTER TABLE suseContentProject
+  ADD CONSTRAINT suse_ct_project_fenvid_fk
+  FOREIGN KEY (first_env_id)
+  REFERENCES suseContentEnvironment(id)
+  ON DELETE SET NULL;

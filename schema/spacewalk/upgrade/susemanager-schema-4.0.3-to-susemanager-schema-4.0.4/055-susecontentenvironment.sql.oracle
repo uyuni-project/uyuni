@@ -43,5 +43,11 @@ CREATE UNIQUE INDEX suse_ct_env_pid_lbl_uq
 CREATE UNIQUE INDEX suse_ct_env_pid_name_uq
     ON suseContentEnvironment(project_id, name);
 
-CREATE UNIQUE INDEX suse_ct_env_nid_uq
-    ON suseContentEnvironment(next_env_id);
+-- CREATE UNIQUE INDEX suse_ct_env_nid_uq
+--     ON suseContentEnvironment(next_env_id);
+
+ALTER TABLE suseContentProject
+  ADD CONSTRAINT suse_ct_project_fenvid_fk
+  FOREIGN KEY (first_env_id)
+  REFERENCES suseContentEnvironment(id)
+  ON DELETE SET NULL;

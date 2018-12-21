@@ -44,5 +44,6 @@ CREATE UNIQUE INDEX suse_ct_env_pid_lbl_uq
 CREATE UNIQUE INDEX suse_ct_env_pid_name_uq
     ON suseContentEnvironment(project_id, name);
 
-CREATE UNIQUE INDEX suse_ct_env_nid_uq
-    ON suseContentEnvironment(next_env_id);
+-- conflict with hibernate way to update things
+-- CREATE UNIQUE INDEX suse_ct_env_nid_uq
+--     ON suseContentEnvironment(next_env_id);

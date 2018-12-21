@@ -21,6 +21,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Optional;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,8 +31,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -43,18 +43,6 @@ import static java.util.Optional.ofNullable;
  */
 @Entity
 @Table(name = "suseContentEnvironment")
-@NamedQueries({
-        @NamedQuery(
-                name = "ContentEnvironment.lookupFirstInProject",
-                query = "SELECT first from ContentEnvironment first" +
-                        " WHERE first.contentProject = :contentProject" +
-                        " AND NOT EXISTS (SELECT predecessor from ContentEnvironment predecessor" +
-                        "                 WHERE predecessor.nextEnvironment = first)"),
-        @NamedQuery(
-                name = "ContentEnvironment.lookupPredecessor",
-                query = "SELECT predecessor from ContentEnvironment predecessor" +
-                        " WHERE predecessor.nextEnvironment = :env")
-})
 public class ContentEnvironment extends BaseDomainHelper {
 
     private Long id;
@@ -64,6 +52,7 @@ public class ContentEnvironment extends BaseDomainHelper {
     private Long version;
     private ContentProject contentProject;
     private ContentEnvironment nextEnvironment;
+    private ContentEnvironment prevEnvironment;
 
     /**
      * @return the id
@@ -161,10 +150,18 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the nextEnvironment
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "next_env_id")
     protected ContentEnvironment getNextEnvironment() {
         return nextEnvironment;
+    }
+
+    /**
+     * @return the nextEnvironment
+     */
+    @OneToOne(mappedBy = "nextEnvironment")
+    protected ContentEnvironment getPrevEnvironment() {
+        return prevEnvironment;
     }
 
     /**
@@ -175,8 +172,26 @@ public class ContentEnvironment extends BaseDomainHelper {
         return ofNullable(getNextEnvironment());
     }
 
+    /**
+     * @return optional of the previous environment
+     */
+    @Transient
+    public Optional<ContentEnvironment> getPrevEnvironmentOpt() {
+        return ofNullable(getPrevEnvironment());
+    }
+
+    /**
+     * @param nextEnvironmentIn set next environment
+     */
     protected void setNextEnvironment(ContentEnvironment nextEnvironmentIn) {
         nextEnvironment = nextEnvironmentIn;
+    }
+
+    /**
+     * @param prevEnvironmentIn set previous environment
+     */
+    protected void setPrevEnvironment(ContentEnvironment prevEnvironmentIn) {
+        prevEnvironment = prevEnvironmentIn;
     }
 
     /**
@@ -213,11 +228,12 @@ public class ContentEnvironment extends BaseDomainHelper {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .append("id", getId())
                 .append("name", getName())
                 .append("project", getContentProject().getName())
                 .append("label", getLabel())
                 .append("version", getVersion())
-                .append("next env", getNextEnvironment())
+                .append("next env id", getNextEnvironment().getId())
                 .toString();
     }
 }

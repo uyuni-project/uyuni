@@ -23,9 +23,9 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Optional.empty;
 
@@ -34,7 +34,7 @@ import static java.util.Optional.empty;
  */
 public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
-    public void testEnvironment() {
+    public void testCreateEnvironments() {
         ContentProject cp = new ContentProject();
         cp.setLabel("project1");
         cp.setName("Project 1");
@@ -47,32 +47,119 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         envdev.setName("Development");
         envdev.setContentProject(cp);
         ContentProjectFactory.save(envdev);
-        ContentProjectFactory.prependEnvironment(envdev, empty());
+        cp.setFirstEnvironment(envdev);
 
         ContentEnvironment envtest = new ContentEnvironment();
         envtest.setLabel("test");
         envtest.setName("Test");
         envtest.setContentProject(cp);
         ContentProjectFactory.save(envtest);
-        ContentProjectFactory.prependEnvironment(envdev, Optional.of(envtest));
+        ContentProjectFactory.insertEnvironment(envtest, envdev);
+
+        ContentEnvironment envprod = new ContentEnvironment();
+        envprod.setLabel("prod");
+        envprod.setName("Production");
+        envprod.setContentProject(cp);
+        ContentProjectFactory.save(envprod);
+        ContentProjectFactory.insertEnvironment(envprod, envtest);
+
+        ContentEnvironment envint = new ContentEnvironment();
+        envint.setLabel("int");
+        envint.setName("Integration");
+        envint.setContentProject(cp);
+        ContentProjectFactory.save(envint);
+        ContentProjectFactory.insertEnvironment(envint, envdev);
+
+        HibernateFactory.getSession().flush();
 
         ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
         assertEquals("project1", fromDb.getLabel());
         assertEquals("This is project 1", fromDb.getDescription());
 
-        ContentEnvironment first = ContentProjectFactory.getFirstEnvironmentOfProject(cp).get();
+        ContentEnvironment first = fromDb.getFirstEnvironmentOpt().get();
         assertEquals("dev", first.getLabel());
         assertEquals("Development", first.getName());
 
         ContentEnvironment second = first.getNextEnvironmentOpt().get();
-        assertEquals("test", second.getLabel());
-        assertEquals("Test", second.getName());
+        assertEquals("int", second.getLabel());
+        assertEquals("Integration", second.getName());
+
+        ContentEnvironment third = second.getNextEnvironmentOpt().get();
+        assertEquals("test", third.getLabel());
+        assertEquals("Test", third.getName());
+
+        ContentEnvironment fourth = third.getNextEnvironmentOpt().get();
+        assertEquals("prod", fourth.getLabel());
+        assertEquals("Production", fourth.getName());
 
         assertEquals(second, first.getNextEnvironmentOpt().get());
-        assertEquals(empty(), ContentProjectFactory.getPrevEnvironment(first));
+        assertEquals(empty(), first.getPrevEnvironmentOpt());
 
-        assertEquals(first, ContentProjectFactory.getPrevEnvironment(second).get());
-        assertEquals(empty(), second.getNextEnvironmentOpt());
+        assertEquals(second, third.getPrevEnvironmentOpt().get());
+
+        assertEquals(first, second.getPrevEnvironmentOpt().get());
+        assertEquals(empty(), fourth.getNextEnvironmentOpt());
+    }
+
+    public void testRemoveEnvironments() {
+        ContentProject cp = new ContentProject();
+        cp.setLabel("project1");
+        cp.setName("Project 1");
+        cp.setDescription("This is project 1");
+        cp.setOrg(user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        ContentEnvironment envdev = new ContentEnvironment();
+        envdev.setLabel("dev");
+        envdev.setName("Development");
+        envdev.setContentProject(cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+
+        ContentEnvironment envtest = new ContentEnvironment();
+        envtest.setLabel("test");
+        envtest.setName("Test");
+        envtest.setContentProject(cp);
+        ContentProjectFactory.save(envtest);
+        ContentProjectFactory.insertEnvironment(envtest, envdev);
+
+        ContentEnvironment envprod = new ContentEnvironment();
+        envprod.setLabel("prod");
+        envprod.setName("Production");
+        envprod.setContentProject(cp);
+        ContentProjectFactory.save(envprod);
+        ContentProjectFactory.insertEnvironment(envprod, envtest);
+
+        HibernateFactory.getSession().flush();
+        envtest = TestUtils.reload(envtest);
+
+        ContentProjectFactory.removeEnvironment(envtest);
+
+        HibernateFactory.getSession().flush();
+
+        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
+        assertEquals("project1", fromDb.getLabel());
+        assertEquals("This is project 1", fromDb.getDescription());
+
+        ContentEnvironment first = fromDb.getFirstEnvironmentOpt().get();
+        assertEquals("dev", first.getLabel());
+        assertEquals("Development", first.getName());
+
+        ContentEnvironment second = first.getNextEnvironmentOpt().get();
+        assertEquals("prod", second.getLabel());
+        assertEquals("Production", second.getName());
+
+        assertEquals(second, first.getNextEnvironmentOpt().get());
+        assertEquals(empty(), first.getPrevEnvironmentOpt());
+
+        ContentProjectFactory.removeEnvironment(envdev);
+
+        HibernateFactory.getSession().flush();
+
+        fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
+        ContentEnvironment newfirst = fromDb.getFirstEnvironmentOpt().get();
+        assertEquals("prod", newfirst.getLabel());
+        assertEquals("Production", newfirst.getName());
     }
 
     /**
@@ -103,6 +190,6 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(cp.getDescription(), fromDb.getDescription());
         assertEquals(cp.getName(), fromDb.getName());
         assertEquals(cp.getOrg(), fromDb.getOrg());
-        assertEquals(empty(), ContentProjectFactory.getFirstEnvironmentOfProject(cp));
+        assertEquals(empty(), cp.getFirstEnvironmentOpt());
     }
 }

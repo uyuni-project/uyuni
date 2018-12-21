@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 0231a16c3911563496766a3c08f50200737d3ade
+-- oracle equivalent source sha1 5b15cd99c4f969af0a17f7a91411727a91cb33bd
 --
 --
 -- Copyright (c) 2018 SUSE LLC
@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS suseContentProject(
                     ON DELETE CASCADE,
     label       VARCHAR(24) NOT NULL,
     description TEXT,
+    first_env_id NUMERIC,
     created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
     modified    TIMESTAMPTZ
