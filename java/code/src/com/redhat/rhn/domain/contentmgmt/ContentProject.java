@@ -21,14 +21,19 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * A Content Project
@@ -42,6 +47,7 @@ public class ContentProject extends BaseDomainHelper {
     private String label;
     private String name;
     private String description;
+    private ContentEnvironment firstEnvironment;
 
     /**
      * Gets the id.
@@ -129,6 +135,26 @@ public class ContentProject extends BaseDomainHelper {
     @Column
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * @return the firstEnvironment
+     */
+    @OneToOne
+    @JoinColumn(name = "first_env_id")
+    protected ContentEnvironment getFirstEnvironment() {
+        return firstEnvironment;
+    }
+
+    @Transient
+    public Optional<ContentEnvironment> getFirstEnvironmentOpt() {
+        return Optional.ofNullable(getFirstEnvironment());
+    }
+    /**
+     * @param firstEnvironment the firstEnvironment to set
+     */
+    public void setFirstEnvironment(ContentEnvironment firstEnvironment) {
+        this.firstEnvironment = firstEnvironment;
     }
 
     /**
