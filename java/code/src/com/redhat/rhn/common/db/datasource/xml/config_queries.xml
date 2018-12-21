@@ -490,7 +490,7 @@ SELECT CF.id,
    AND CR.config_file_id = CF.id
    AND CF.latest_config_revision_id = CR.id
    AND CR.config_file_type_id = CFT.id
-   AND (CFT.label != 'sls' OR CFN.path != '/init.sls' OR :include_init_sls)
+   AND (CFT.label != 'sls' OR CFN.path != '/init.sls' OR :include_init_sls = 'Y')
 ORDER BY CFN.path
   </query>
 </mode>
