@@ -172,6 +172,8 @@ public enum SaltStateGeneratorService {
         }
         // this add the configuration for the beacon that tell us about
         // virtual guests running on that minion
+        // The virtpoller is still usefull with the libvirt events: it will help
+        // synchronizing the DB with the actual guest lists in case we had a temporary shutdown.
         // TODO: find a better way to detect when the beacon should be configured
         if (minion.isVirtualHost()) {
             beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);

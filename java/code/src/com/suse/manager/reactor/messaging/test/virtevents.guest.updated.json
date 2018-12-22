@@ -1,0 +1,21 @@
+{
+    "data": {
+        "_stamp": "2018-10-01T07:46:07.470709",
+        "cmd": "_minion_event",
+
+        "data": {
+	        "detail": "updated", 
+	        "domain": {
+	            "id": -1, 
+	            "name": "sles12sp2", 
+	            "uuid": "b99a8176-4f40-498d-8e61-2f6ade654fe2"
+	        }, 
+	        "event": "defined", 
+	        "uri": "qemu:///system"
+	    }, 
+        "id": "testminion.local",
+        "pretag": null,
+        "tag": "salt/engines/libvirt_events/qemu/system/domain/lifecycle"
+    },
+    "tag": "salt/engines/libvirt_events/qemu/system/domain/lifecycle"
+}

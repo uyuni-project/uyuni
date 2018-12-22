@@ -24,12 +24,16 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessage;
+import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
@@ -39,21 +43,23 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
+import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BeaconEvent;
+import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
-import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
 import com.suse.salt.netapi.exception.SaltException;
+
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -105,6 +111,8 @@ public class SaltReactor {
                 SystemIdGenerateEventMessage.class);
         MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
                 ImageDeployedEventMessage.class);
+        MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(),
+                LibvirtEngineDomainLifecycleMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -195,9 +203,10 @@ public class SaltReactor {
                JobReturnEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               EngineEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        )))));
+        ))))));
     }
 
     /**
@@ -238,6 +247,31 @@ public class SaltReactor {
             new MinionStartEventMessage(minionId),
             new RegisterMinionEventMessage(minionId)
         );
+    }
+
+    /**
+     * Trigger handling of engine events
+     *
+     * @param engineEvent engine event
+     * @return event handler runnable
+     */
+    private Stream<EventMessage> eventToMessages(EngineEvent engineEvent) {
+        if ("libvirt_events".equals(engineEvent.getEngine())) {
+            try {
+                AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(engineEvent);
+                if (message != null) {
+                    return of(message);
+                }
+                else {
+                    LOG.debug("Unhandled libvirt engine event:" +
+                              engineEvent.getAdditional());
+                }
+            }
+            catch (IllegalArgumentException e) {
+                LOG.warn("Invalid libvirt engine event: " + engineEvent.getAdditional());
+            }
+        }
+        return empty();
     }
 
     /**

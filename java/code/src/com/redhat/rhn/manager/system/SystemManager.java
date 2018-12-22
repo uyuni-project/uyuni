@@ -95,6 +95,8 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.utils.Opt;
+import com.suse.manager.webui.utils.salt.State;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -1993,13 +1995,15 @@ public class SystemManager extends BaseManager {
                     ent.getHumanReadableLabel()));
             return result;
         }
+
+        boolean wasVirtEntitled = hasEntitlement(sid, EntitlementManager.VIRTUALIZATION);
         if (EntitlementManager.VIRTUALIZATION.equals(ent)) {
             if (server.isVirtualGuest()) {
                 result.addError(new ValidatorError("system.entitle.guestcantvirt"));
                 return result;
             }
 
-            if (!hasEntitlement(sid, EntitlementManager.VIRTUALIZATION)) {
+            if (!wasVirtEntitled) {
                 log.debug("setting up system for virt.");
                 ValidatorResult virtSetupResults = setupSystemForVirtualization(orgIn, sid);
                 result.append(virtSetupResults);
@@ -2025,6 +2029,10 @@ public class SystemManager extends BaseManager {
         log.debug("entitle_server mode query executed.");
 
         server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
+        if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
+                !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
+            server.asMinionServer().ifPresent(SystemManager::updateLibvirtEngine);
+        }
 
         log.debug("done.  returning null");
         return result;
@@ -3704,4 +3712,10 @@ public class SystemManager extends BaseManager {
 
     }
 
+    private static void updateLibvirtEngine(MinionServer minion) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
+        saltServiceInstance.callSync(State.apply(Collections.singletonList("virt.engine-events"),
+                                                 Optional.of(pillar)), minion.getName());
+    }
 }
