@@ -32,6 +32,8 @@ $(document).on("ready", function(){
 
   // Show character length for textarea
   addTextareaLengthNotification();
+
+  scrollTopBehavior();
 });
 
 
@@ -57,17 +59,23 @@ $(window).resize(function () {
   alignContentDimensions();
 });
 
-// On window scroll
-$(window).scroll(function () {
-  if ((document.documentElement.scrollTop || document.body.scrollTop) < 100) {
-    $('#scroll-top').hide();
-  }
-  else {
-    $('#scroll-top').show();
-  }
+// On section#spacewalk-content scroll
+function scrollTopBehavior() {
+  $(window).scroll(function() {
+    if($(this).scrollTop() > 100) {
+      $('#scroll-top').show();
+    } else {
+      $('#scroll-top').hide();
+    }
 
-  sstScrollBehavior();
-});
+    sstScrollBehavior();
+  });
+
+  $(document).on('click', '#scroll-top', function() {
+    window.scrollTo(0,0);
+  });
+}
+
 
 // A container function for what should be fired
 // to set HTML tag dimensions
@@ -91,7 +99,7 @@ function sstScrollBehaviorSetup(sst) {
 
   // override the empty function hooked on window.scroll event                                              │
   sstScrollBehavior = function() {
-    var currentScroll = $(window).scrollTop();
+    var currentScroll = $('section#spacewalk-content').scrollTop();
     if (currentScroll >= fixedTop) {
       sst.after(adjustSpaceObject);
       $(sst).addClass('fixed');
@@ -170,25 +178,27 @@ function sstStyle() {
 // padding-top equals the header height to be fully visible
 function adjustDistanceForFixedHeader() {
   // subtract 1px in case the outerHeight comes to us already upper rounded
-  $('.spacewalk-main-column-layout').css('padding-top', $('header').outerHeight()-1);
+  $('body').css('padding-top', $('header').outerHeight());
 }
 
 // Make columns 100% in height
 function columnHeight() {
   const aside = $('.spacewalk-main-column-layout aside');
-  const section = $('.spacewalk-main-column-layout section');
-  aside.css('min-height', 0);
-  section.css('min-height', 0);
   const headerHeight = $('header').outerHeight();
-  const footerHeight = $('.login-page footer').outerHeight();
-  const docHeight = $(document).height();
-  // Column heights should equal the document height minus the header height and footer height
-  aside.css('min-height', docHeight - headerHeight - footerHeight + 1);
-  // responsive rule: the aside block is layered on top of section,
-  // and when it is shown, its height increase the docHeight
-  const asideHeight = aside.is(':hidden') ? 0 : aside.outerHeight();
-  section.css('min-height', docHeight - headerHeight - asideHeight - footerHeight);
+  const footerHeight = $('footer').outerHeight();
+  const winHeight = $(window).height();
+  // // Column height should equal the window height minus the header and footer height
+  aside.css('height', winHeight - headerHeight);
+  // aside.css('padding-bottom', footerHeight);
+  const nav = $('.spacewalk-main-column-layout aside #nav');
+  nav.css('height', aside.outerHeight() - footerHeight);
 };
+
+$(document).on('click', '.navbar-toggle', function() {
+  $('aside').toggleClass('in');
+  $('aside').toggleClass('collapse');
+  columnHeight();
+});
 
 // returns an object that can be passed to DWR renderer as a callback
 // puts rendered HTML in #divId, opens an alert with the same text if
@@ -480,6 +490,10 @@ $(document).click(function (e) {
       toggleButton.trigger('click');
     }
   });
+});
+
+$(document).on('click', '.navbar-toggle', function() {
+  $('aside').toggle();
 });
 
 /* prevent jumping to the top of the page because
