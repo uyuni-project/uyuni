@@ -77,20 +77,13 @@ def get_system_name(host)
     # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
-    system_name = output.split.find do |word|
-      word =~ /example.Intel-Genuine-None-/ || word =~ /pxeboot.example.org/
-    end
+    system_name = output.split.find { |word| word =~ /example.Intel-Genuine-None-/ }
     system_name = '' if system_name.nil?
   else
     node = get_target(host)
     system_name = node.full_hostname
   end
   system_name
-end
-
-# This function returns the net prefix, caching it
-def net_prefix
-  $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil?
 end
 
 # This function tests whether a file exists on a node
