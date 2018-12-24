@@ -565,17 +565,29 @@ end
 When(/^I enable repositories before installing branch server$/) do
   # Distribution Pool and Update
   os_version = get_os_version($proxy)
-  arch, _code = $proxy.run('uname -m')
-  puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
-  puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+  os_family, _code = $proxy.run('grep "ID" /etc/os-release')
+  if /opensuse/ =~ os_family
+    puts $proxy.run("zypper mr --enable openSUSE-Leap-#{os_version}-Pool")
+    puts $proxy.run("zypper mr --enable openSUSE-Leap-#{os_version}-Update")
+  else
+    arch, _code = $proxy.run('uname -m')
+    puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
+    puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+  end
 end
 
 When(/^I disable repositories after installing branch server$/) do
   # Distribution Pool and Update
   os_version = get_os_version($proxy)
-  arch, _code = $proxy.run('uname -m')
-  puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
-  puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
+  os_family, _code = $proxy.run('grep "ID" /etc/os-release')
+  if /opensuse/ =~ os_family
+    puts $proxy.run("zypper mr --disable openSUSE-Leap-#{os_version}-Pool")
+    puts $proxy.run("zypper mr --disable openSUSE-Leap-#{os_version}-Update")
+  else
+    arch, _code = $proxy.run('uname -m')
+    puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
+    puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
+  end
 end
 
 # Register client
