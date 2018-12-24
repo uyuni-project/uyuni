@@ -28,7 +28,9 @@ Feature: Build OS images
 @proxy
 @private_net
   Scenario: Move the image to the branch server
-    When I apply state "image-sync" to "proxy"
+    When I manually install the "image-sync" formula on the server
+    And I wait for "16" seconds
+    And I apply state "image-sync" to "proxy"
     Then the image "POS_Image_JeOS6" should exist on "proxy"
 
   Scenario: Cleanup: remove the image from SUSE Manager server

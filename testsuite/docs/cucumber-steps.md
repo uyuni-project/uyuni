@@ -38,7 +38,6 @@ Possible values are currently:
 | SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle-minion"``` or ```"sle-migrated-minion"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh-minion"``` | ```"minion"``` |
 | Cent OS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos-minion"``` or ```"ceos-traditional-client"``` | ```"minion"``` |
-| PXE-Boot minion |  None | ```$PXEBOOTMAC``` | ```"pxeboot-minion"``` | ```"pxe_boot"``` |
 
 These names are such for historical reasons and might be made better in the future.
 

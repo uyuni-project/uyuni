@@ -23,7 +23,7 @@
   #         core_proxy_register_as_minion_with_script.feature
   #         core_proxy_register_as_minion_with_gui.feature
 - features/core_proxy_register_as_minion_with_gui.feature
-- features/core_proxy_retail_branch_network.feature
+- features/core_proxy_branch_network.feature
 # initialize clients
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
@@ -86,7 +86,6 @@
 - features/trad_openscap_audit.feature
 - features/allcli_system_group.feature
 - features/srv_group_union_intersection.feature
-- features/proxy_retail_mass_import.feature
 - features/proxy_retail_pxeboot.feature
 - features/min_salt_openscap_audit.feature
 - features/srv_custom_system_info.feature

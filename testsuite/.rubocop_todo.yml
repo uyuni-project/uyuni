@@ -14,10 +14,6 @@ Layout/AlignParameters:
   Exclude:
     - 'features/step_definitions/xmlrpc_common.rb'
 
-Layout/AlignHash:
-  Exclude:
-  - 'features/support/constants.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Layout/ClosingParenthesisIndentation:
@@ -57,10 +53,6 @@ Layout/MultilineMethodCallBraceLayout:
 Layout/SpaceAfterComma:
   Exclude:
     - 'features/step_definitions/datepicker_steps.rb'
-
-Layout/SpaceAroundOperators:
-  Exclude:
-  - 'features/support/constants.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.

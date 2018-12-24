@@ -162,42 +162,19 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
-When(/^I restart the network on the PXE boot minion$/) do
-  # We have no IPv4 address on that machine yet,
-  # so the only way to contact it is via IPv6 link-local.
-  # We convert MAC address to IPv6 link-local address:
+When(/^I reboot the PXE boot minion$/) do
+  # we might have no or any IPv4 address on that machine
+  # convert MAC address to IPv6 link-local address
   mac = $pxeboot_mac.tr(':', '')
   hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
   ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  file = 'restart-network-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  # We have no direct access to the PXE boot minion
-  # so we run the command from the proxy
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I reboot the PXE boot minion$/) do
-  STDOUT.puts "Rebooting PXE minion..."
+  STDOUT.puts "Rebooting #{ipv6}..."
   file = 'reboot-pxeboot.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/tmp/" + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
-When(/^I stop salt-minion on the PXE boot minion$/) do
-  file = 'cleanup-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
+  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
 When(/^I install the GPG key of the server on the PXE boot minion$/) do
@@ -503,7 +480,7 @@ When(/^I register this client for SSH push via tunnel$/) do
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"
-  path = generate_temp_file('push-registration.exp', script)
+  path = generate_temp_file('push-registration.expect', script)
   step 'I copy "' + path + '" to "server"'
   `rm #{path}`
   # perform the registration
@@ -537,20 +514,6 @@ When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   else
     raise 'Not found: zypper or yum'
   end
-  node.run(cmd)
-end
-
-When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
-  node = get_target(host)
-  raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
-  cmd = "zypper --non-interactive install -t pattern #{pattern}"
-  node.run(cmd)
-end
-
-When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
-  node = get_target(host)
-  raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
-  cmd = "zypper --non-interactive remove -t pattern #{pattern}"
   node.run(cmd)
 end
 
@@ -626,7 +589,8 @@ When(/^I copy server\'s keys to the proxy$/) do
 end
 
 When(/^I set up the private network on the terminals$/) do
-  proxy = net_prefix + ADDRESSES['proxy']
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  proxy = net_prefix + "254"
   # /etc/sysconfig/network/ifcfg-eth1
   nodes = [$client, $minion]
   conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
@@ -643,10 +607,6 @@ When(/^I set up the private network on the terminals$/) do
     next if node.nil?
     node.run("echo -e \"#{conf}\" > /etc/sysconfig/network-scripts/ifcfg-eth1 && systemctl restart network")
   end
-  # PXE boot minion
-  if $pxeboot_mac
-    step %(I restart the network on the PXE boot minion)
-  end
   # /etc/resolv.conf
   nodes = [$client, $minion, $ceos_minion]
   script = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
@@ -660,6 +620,7 @@ end
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
   output, return_code = node.run("ip -4 address show eth1")
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
 end
 
@@ -733,45 +694,4 @@ When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
   $server.run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -y -u admin -p admin -- system_scheduleapplyconfigchannels  #{system_name}"
   $server.run(command)
-end
-
-When(/^I copy the retail configuration file "([^"]*)" on server$/) do |file|
-  @retail_config = file # Reuse the value during scenario (it will be automatically cleaned after it)
-  source = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
-  dest = "/tmp/" + @retail_config
-  return_code = file_inject($server, source, dest)
-  raise "File #{@retail_config} couldn't be copied to server" unless return_code.zero?
-  sed_values = "s/<PROXY_HOSTNAME>/#{$proxy.full_hostname}/; "
-  sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
-  sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
-  sed_values << "s/<RANGE_BEGIN>/#{ADDRESSES['range begin']}/; "
-  sed_values << "s/<RANGE_END>/#{ADDRESSES['range end']}/; "
-  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot']}/; "
-  sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
-  $server.run("sed -i '#{sed_values}' #{dest}")
-end
-
-Given(/^the retail configuration file name is "([^"]*)"$/) do |file|
-  @retail_config = file # Reuse the value during scenario (it will be automatically cleaned after it)
-end
-
-When(/^I import the retail configuration using retail_yaml command/) do
-  filepath = "/tmp/" + @retail_config
-  $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
-end
-
-When(/^I delete all the terminals imported from file "([^"]*)"$/) do |file|
-  @retail_config = file
-  filepath = File.dirname(__FILE__) + '/../upload_files/' + @retail_config
-  terminals = get_terminals_from_yaml(filepath)
-  # prefix = get_branch_prefix_from_yaml(filepath)
-  terminals.each do |terminal|
-    steps %(
-      When I follow "#{terminal}"
-      And I follow "Delete System"
-      And I should see a "Confirm System Profile Deletion" text
-      And I click on "Delete Profile"
-      Then I should see a "has been deleted" text
-    )
-  end
 end

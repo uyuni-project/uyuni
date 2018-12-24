@@ -1,6 +1,6 @@
-set pxeboot_ipv4 [lindex $argv 0]
+set address [lindex $argv 0]
 
-spawn /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $pxeboot_ipv4
+spawn /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $address
 match_max 100000
 expect "*?assword:*"
 send -- "linux\r"
