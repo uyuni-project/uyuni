@@ -29,6 +29,7 @@
 - features/core_min_bootstrap.feature
 - features/core_min_salt_ssh.feature
 - features/core_centos_salt_ssh.feature
+- features/core_ubuntu_salt_ssh.feature
 # these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
 - features/core_srv_setup_wizard.feature
@@ -46,6 +47,8 @@
 - features/min_centos_salt.feature
 - features/trad_centos_client.feature
 - features/minssh_centos_salt_install_package_and_patch.feature
+- features/min_ubuntu_salt.feature
+- features/min_ubuntu_salt_install_package.feature
 - features/min_bootstrap_xmlrpc.feature
 - features/minssh_bootstrap_xmlrpc.feature
 - features/min_activationkey.feature

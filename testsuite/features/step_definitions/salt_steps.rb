@@ -1,4 +1,4 @@
-# Copyright 2015-2018 SUSE LLC
+# Copyright 2015-2019 SUSE LLC
 require 'timeout'
 require 'open-uri'
 require 'tempfile'
@@ -42,19 +42,19 @@ end
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
-  node.run('systemctl stop salt-minion', false) if minion == 'ceos-minion' or minion == 'ceos-ssh-minion'
+  node.run('systemctl stop salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
-  node.run('systemctl restart salt-minion', false) if minion == 'ceos-minion' or minion == 'ceos-ssh-minion'
+  node.run('systemctl restart salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
-  node.run('systemctl restart salt-minion', false) if minion == 'ceos-minion' or minion == 'ceos-ssh-minion'
+  node.run('systemctl restart salt-minion', false) if ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -515,7 +515,7 @@ Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key
   if minion == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif minion == 'ssh-minion' or minion == 'ceos-minion' or minion == 'ceos-ssh-minion'
+  elsif ['ssh-minion', 'ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -674,6 +674,19 @@ When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", false)
   elsif ['ceos-minion', 'ceos-ssh-minion'].include?(host)
     target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
+  elsif ['ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
+    target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", false)
+  end
+end
+
+When(/^I install Salt packages from "(.*?)"$/) do |host|
+  target = get_target(host)
+  if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", false)
+  elsif ['ceos-minion'].include?(host)
+    target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", false)
+  elsif ['ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
+    target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", false)
   end
 end
 
@@ -694,12 +707,13 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   $server.run("spacecmd -u admin -p admin system_listevents #{system_name}")
 end
 
-And(/^I cleanup minion "([^"]*)"$/) do |target|
-  if target == 'sle-minion'
-    $minion.run('rcsalt-minion stop')
-    $minion.run('rm -Rf /var/cache/salt/minion')
-  elsif target == 'ceos-minion' or target == 'ceos-ssh-minion'
-    $ceos_minion.run('systemctl stop salt-minion')
-    $ceos_minion.run('rm -Rf /var/cache/salt/minion')
+And(/^I cleanup minion "([^"]*)"$/) do |minion|
+  node = get_target(minion)
+  if minion == 'sle-minion'
+    node.run('rcsalt-minion stop')
+    node.run('rm -Rf /var/cache/salt/minion')
+  elsif ['ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(minion)
+    node.run('systemctl stop salt-minion')
+    node.run('rm -Rf /var/cache/salt/minion')
   end
 end

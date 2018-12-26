@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2018 SUSE
+# Copyright (c) 2010-2019 SUSE
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -35,8 +35,8 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   step %(I should see a "#{kernel_version.strip}" text)
   os_pretty_raw, _code = node.run('grep "PRETTY" /etc/os-release')
   os_pretty = os_pretty_raw.strip.split('=')[1].delete '"'
-  puts 'i should see os version: ' + os_pretty
-  # skip this test for centos systems
+  # skip this test for centos and ubuntu systems
+  puts 'i should see os version: ' + os_pretty if os_pretty.include? 'SUSE Linux'
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 

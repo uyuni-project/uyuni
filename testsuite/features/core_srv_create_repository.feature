@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Add a repository to a channel
@@ -94,6 +94,46 @@ Feature: Add a repository to a channel
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-i586." text
 
+@ubuntu_minion
+  Scenario: Add a test repository for Ubuntu
+    Given I am authorized as "testing" with password "testing"
+    When I follow "Home" in the left menu
+    And I follow "Channels"
+    And I follow "Manage Software Channels" in the left menu
+    And I follow "Repositories" in the left menu
+    And I follow "Create Repository"
+    And I enter "Test-Repository-Deb" as "label"
+    And I select "deb" from "contenttype"
+    And I enter "http://localhost/pub/TestRepoDebUpdates/" as "url"
+    And I click on "Create Repository"
+    Then I should see a "Repository created successfully" text
+
+@ubuntu_minion
+  Scenario: Add the Ubuntu repository to the AMD64 channel
+    Given I am authorized as "testing" with password "testing"
+    When I follow "Home" in the left menu
+    And I follow "Channels"
+    And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow "Test-Channel-Deb-AMD64"
+    And I follow "Repositories" in the content area
+    And I select the "Test-Repository-Deb" repo
+    And I click on "Update Repositories"
+    Then I should see a "Test-Channel-Deb-AMD64 repository information was successfully updated" text
+
+@ubuntu_minion
+  Scenario: Synchronize the Ubuntu repository in the AMD64 channel
+    Given I am authorized as "testing" with password "testing"
+    When I follow "Home" in the left menu
+    And I follow "Channels"
+    And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow "Test-Channel-Deb-AMD64"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Test-Channel-Deb-AMD64." text
+
   Scenario: Refresh the errata cache
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
@@ -120,5 +160,14 @@ Feature: Add a repository to a channel
     When I follow "Home" in the left menu
     And I follow "Channels"
     And I follow "Test-Channel-x86_64"
+    And I follow "Packages" in the content area
+    Then I should see a "blackhole-dummy" text
+
+@ubuntu_minion
+  Scenario: Reposync handles wrong encoding on DEB attributes
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Home" in the left menu
+    And I follow "Channels"
+    And I follow "Test-Channel-Deb-AMD64"
     And I follow "Packages" in the content area
     Then I should see a "blackhole-dummy" text

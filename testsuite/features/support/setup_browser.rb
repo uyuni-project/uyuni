@@ -65,6 +65,9 @@ end
 Before('@centos_minion') do |scenario|
   scenario.skip_invoke! unless $ceos_minion
 end
+Before('@ubuntu_minion') do |scenario|
+  scenario.skip_invoke! unless $ubuntu_minion
+end
 Before('@pxeboot_minion') do |scenario|
   scenario.skip_invoke! unless $pxeboot_mac
 end
