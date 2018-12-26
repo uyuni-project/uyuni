@@ -47,22 +47,31 @@ Feature: Reboot systems managed by SUSE Manager
     Then I wait and check that "sle-client" has rebooted
 
 @centos_minion
-  Scenario: Reboot the CentOS minion
+  Scenario: Reboot the CentOS minion and wait until reboot is completed
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-
-@centos_minion
-  Scenario: Reboot action is not COMPLETED until CentOS minion is rebooted
-    Given I am on the Systems overview page of this "ceos-minion"
-    When I follow "Events" in the content area
-    And I follow "History" in the content area
-    And I wait until I see "System reboot scheduled by admin" text, refreshing the page
+    And I follow "scheduled" in the content area
     And I follow first "System reboot scheduled by admin"
-    Then I should see a "This action's status is: Picked Up." text
+    And I wait until I see "This action's status is: Picked Up." text, refreshing the page
     And I wait and check that "ceos-minion" has rebooted
+    Then I wait until I see "This action's status is: Completed." text, refreshing the page
+    And I should see a "Reboot completed." text
+
+@ubuntu_minion
+  Scenario: Reboot the Ubuntu minion and wait until reboot is completed
+    Given I am on the Systems overview page of this "ubuntu-minion"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    And I follow "scheduled" in the content area
+    And I follow first "System reboot scheduled by admin"
+    And I wait until I see "This action's status is: Picked Up." text, refreshing the page
+    And I wait and check that "ubuntu-minion" has rebooted
     Then I wait until I see "This action's status is: Completed." text, refreshing the page
     And I should see a "Reboot completed." text

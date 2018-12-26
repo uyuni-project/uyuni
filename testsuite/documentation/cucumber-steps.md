@@ -39,6 +39,7 @@ Possible values are currently:
 | SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle-minion"``` or ```"sle-migrated-minion"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh-minion"``` | ```"minion"``` |
 | Cent OS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos-minion"```, ```"ceos-traditional-client"```, or ``"ceos-ssh-minion"``` | ```"minion"``` |
+| Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu-minion"``` or ```"ubuntu-ssh-minion"``` | ```"minion"``` |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -714,5 +715,3 @@ When implementing a step, to convert a step host name into a target, use:
 ```ruby
   node = get_target(target)
 ```
-
-

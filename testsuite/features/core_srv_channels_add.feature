@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Adding channels
@@ -107,6 +107,20 @@ Feature: Adding channels
     And I enter "No more description for base channel." as "Channel Description"
     And I click on "Create Channel"
     Then I should see a "Channel Fedora x86_64 Channel created." text
+
+  Scenario: Add Ubuntu AMD64 base channel
+    When I follow "Software"
+    And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow "Create Channel"
+    And I enter "Test-Channel-Deb-AMD64" as "Channel Name"
+    And I enter "test-channel-deb-amd64" as "Channel Label"
+    And I select "None" from "Parent Channel"
+    And I select "AMD64 Debian" from "Architecture:"
+    And I enter "Test-Channel-Deb-AMD64 for testing" as "Channel Summary"
+    And I enter "No more description for base channel." as "Channel Description"
+    And I click on "Create Channel"
+    Then I should see a "Channel Test-Channel-Deb-AMD64 created." text
 
   Scenario: Fail when trying to add a duplicate channel
      When I follow "Software"

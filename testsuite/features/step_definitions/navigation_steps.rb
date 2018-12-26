@@ -492,6 +492,13 @@ Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   end
 end
 
+Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
+  unless page.has_content?(text1) || page.has_content?(text2)
+    sleep 2
+    raise unless page.has_content?(text1) || page.has_content?(text2)
+  end
+end
+
 #
 # Test for text in a snippet textarea
 #

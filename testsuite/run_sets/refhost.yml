@@ -22,7 +22,8 @@
 - features/core_min_bootstrap.feature
 - features/core_min_salt_ssh.feature
   #- features/core_centos_tradclient.feature
-- features/core_centos_salt_ssh.feature 
+- features/core_centos_salt_ssh.feature
+- features/core_ubuntu_salt_ssh.feature
   #- features/core_centos_salt_ssh.feature
 # these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
