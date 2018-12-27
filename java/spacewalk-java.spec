@@ -893,12 +893,14 @@ fi
 %{jardir}/simpleclient*.jar
 %{jardir}/pgjdbc-ng.jar
 
+%{jardir}/byte-buddy.jar
+%{jardir}/jakarta-persistence-api.jar
+
 # Hibernate and related
 %{jardir}/hibernate-core-5.jar
 %{jardir}/hibernate-c3p0-5.jar
 %{jardir}/hibernate-ehcache-5.jar
 %{jardir}/hibernate-commons-annotations.jar
-%{jardir}/hibernate-jpa-2.1-api.jar
 %{jardir}/ehcache-core.jar
 %{jardir}/classmate.jar
 %{jardir}/javassist.jar
