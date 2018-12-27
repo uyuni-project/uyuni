@@ -36,7 +36,8 @@ import java.util.Map;
  */
 public class VirtualizationActionCommand {
 
-    private static Logger log = Logger.getLogger(VirtualizationActionCommand.class);
+    private static final Logger LOG = Logger.getLogger(VirtualizationActionCommand.class);
+
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private User user;
@@ -82,9 +83,9 @@ public class VirtualizationActionCommand {
                                                     "VirtualizationActionCommand");
         }
 
-        log.debug("store() called.");
+        LOG.debug("store() called.");
 
-        log.debug("creating virtAction");
+        LOG.debug("creating virtAction");
         BaseVirtualizationAction virtAction =
             (BaseVirtualizationAction) ActionFactory.createAction(this.getActionType());
         virtAction.setName(this.getActionType().getName());
@@ -93,8 +94,8 @@ public class VirtualizationActionCommand {
         virtAction.setEarliestAction(this.getScheduleDate());
         virtAction.setUuid(this.getUuid());
 
-        if (log.isDebugEnabled()) {
-            log.debug("virtAction.name: " + virtAction.getName() + " uuid: " +
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("virtAction.name: " + virtAction.getName() + " uuid: " +
                     virtAction.getUuid());
         }
 
@@ -107,7 +108,7 @@ public class VirtualizationActionCommand {
         virtAction.addServerAction(serverAction);
         serverAction.setParentAction(virtAction);
 
-        log.debug("saving virtAction.");
+        LOG.debug("saving virtAction.");
         ActionFactory.save(virtAction);
         taskomaticApi.scheduleActionExecution(virtAction);
         action = virtAction;
