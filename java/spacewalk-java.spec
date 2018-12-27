@@ -441,11 +441,12 @@ Requires:       xerces-j2
 Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       hibernate-commons-annotations
-Requires:       hibernate-jpa-2.1-api
 Requires:       hibernate5
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       statistics
+Requires:       byte-buddy
+Requires:       jpa-api
 %else
 Requires:       hibernate3 >= 3.2.4
 %endif
