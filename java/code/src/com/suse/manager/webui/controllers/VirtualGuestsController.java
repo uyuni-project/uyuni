@@ -75,7 +75,7 @@ import spark.Spark;
  */
 public class VirtualGuestsController {
 
-    private static Logger log = Logger.getLogger(VirtualGuestsController.class);
+    private static final Logger LOG = Logger.getLogger(VirtualGuestsController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -392,7 +392,7 @@ public class VirtualGuestsController {
         }
 
         if (data.getUuids().isEmpty()) {
-            log.error("Creating a virtual machine is only possible for salt minions not for " + host.getHostname());
+            LOG.error("Creating a virtual machine is only possible for salt minions not for " + host.getHostname());
             return null;
         }
 
@@ -470,8 +470,8 @@ public class VirtualGuestsController {
             status = String.valueOf(cmd.getAction().getId());
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule virtualization action:");
-            log.error(e);
+            LOG.error("Could not schedule virtualization action:");
+            LOG.error(e);
             return null;
         }
         return status;
@@ -501,7 +501,7 @@ public class VirtualGuestsController {
         // the delete action for them
         if (host.hasEntitlement(EntitlementManager.MANAGEMENT) &&
                 actionType.equals(ActionFactory.TYPE_VIRTUALIZATION_DELETE)) {
-            log.warn("Traditional systems don't support virtual guests deletion");
+            LOG.warn("Traditional systems don't support virtual guests deletion");
             return null;
         }
 
@@ -513,8 +513,8 @@ public class VirtualGuestsController {
             actionId = cmd.getAction().getId();
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule virtualization action:");
-            log.error(e);
+            LOG.error("Could not schedule virtualization action:");
+            LOG.error(e);
             return null;
         }
 
