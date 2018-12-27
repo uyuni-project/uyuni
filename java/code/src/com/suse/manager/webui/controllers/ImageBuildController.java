@@ -37,7 +37,6 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -59,15 +58,16 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.utils.ImagesUtil;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -370,7 +370,7 @@ public class ImageBuildController {
                     ResultJson.error());
         }
 
-        Date scheduleDate = getScheduleDate(buildRequest);
+        Date scheduleDate = MinionActionUtils.getScheduleDate(buildRequest.getEarliest());
 
         ActionChain actionChain = buildRequest.getActionChain()
                 .filter(StringUtils::isNotEmpty)
@@ -421,7 +421,7 @@ public class ImageBuildController {
                     ResultJson.error());
         }
 
-        Date scheduleDate = getScheduleDate(inspectRequest);
+        Date scheduleDate = MinionActionUtils.getScheduleDate(inspectRequest.getEarliest());
 
         Long imageId = Long.parseLong(req.params("id"));
 
@@ -465,7 +465,7 @@ public class ImageBuildController {
                     ResultJson.error("invalid_id"));
         }
 
-        Date scheduleDate = getScheduleDate(data);
+        Date scheduleDate = MinionActionUtils.getScheduleDate(data.getEarliest());
         return ImageStoreFactory.lookupByIdAndOrg(data.getStoreId(), user.getOrg())
                 .map(store -> {
                     try {
@@ -917,12 +917,5 @@ public class ImageBuildController {
         obj.add("patchlist", list);
 
         return obj;
-    }
-
-    private static Date getScheduleDate(ScheduleRequest json) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-        return Date.from(Optional.ofNullable(json.getEarliest())
-                .orElseGet(() -> LocalDateTime.now())
-                .atZone(zoneId).toInstant());
     }
 }

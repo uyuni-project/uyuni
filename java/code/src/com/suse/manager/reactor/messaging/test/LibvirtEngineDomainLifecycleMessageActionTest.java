@@ -195,16 +195,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     }
 
     protected Optional<String> getSaltResponse(String filename, Map<String, String> placeholders) throws Exception {
-        Path path = new File(TestUtils.findTestData(
-                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
-        String content = Files.lines(path).collect(Collectors.joining("\n"));
-
-        if (placeholders != null) {
-            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-                content = StringUtils.replace(content, entry.getKey(), entry.getValue());
-            }
-        }
-        return Optional.of(content);
+        return SaltTestUtils.getSaltResponse("/com/suse/manager/reactor/messaging/test/" + filename, placeholders, null);
     }
 
     private Event getEngineEvent(String filename, Map<String, String> placeholders) throws Exception {

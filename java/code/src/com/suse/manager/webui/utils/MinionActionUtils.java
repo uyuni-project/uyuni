@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.frontend.context.Context;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -42,6 +43,7 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
+
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -349,5 +351,18 @@ public class MinionActionUtils {
                 }
             });
         }
+    }
+
+    /**
+     * Compute the schedule date of an action.
+     *
+     * @param earliest the earliest locat date time to execute the action, may be <code>null</code>
+     * @return the date to run the action
+     */
+    public static Date getScheduleDate(LocalDateTime earliest) {
+        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        return Date.from(Optional.ofNullable(earliest)
+                .orElseGet(() -> LocalDateTime.now())
+                .atZone(zoneId).toInstant());
     }
 }
