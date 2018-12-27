@@ -36,8 +36,9 @@ import java.util.Map;
  */
 public class VirtualizationActionCommand {
 
-    private static Logger log = Logger.getLogger(VirtualizationActionCommand.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private static final Logger LOG = Logger.getLogger(VirtualizationActionCommand.class);
+
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private User user;
     private Date scheduleDate;
@@ -82,9 +83,9 @@ public class VirtualizationActionCommand {
                                                     "VirtualizationActionCommand");
         }
 
-        log.debug("store() called.");
+        LOG.debug("store() called.");
 
-        log.debug("creating virtAction");
+        LOG.debug("creating virtAction");
         BaseVirtualizationAction virtAction =
             (BaseVirtualizationAction) ActionFactory.createAction(this.getActionType());
         virtAction.setName(this.getActionType().getName());
@@ -93,23 +94,23 @@ public class VirtualizationActionCommand {
         virtAction.setEarliestAction(this.getScheduleDate());
         virtAction.setUuid(this.getUuid());
 
-        if (log.isDebugEnabled()) {
-            log.debug("virtAction.name: " + virtAction.getName() + " uuid: " +
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("virtAction.name: " + virtAction.getName() + " uuid: " +
                     virtAction.getUuid());
         }
 
         ServerAction serverAction = new ServerAction();
         serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        serverAction.setRemainingTries(new Long(5));
+        serverAction.setRemainingTries(Long.valueOf(5));
         serverAction.setServer(this.getTargetSystem());
         virtAction.extractParameters(getContext());
 
         virtAction.addServerAction(serverAction);
         serverAction.setParentAction(virtAction);
 
-        log.debug("saving virtAction.");
+        LOG.debug("saving virtAction.");
         ActionFactory.save(virtAction);
-        TASKOMATIC_API.scheduleActionExecution(virtAction);
+        taskomaticApi.scheduleActionExecution(virtAction);
         action = virtAction;
         return null;
     }
@@ -242,5 +243,12 @@ public class VirtualizationActionCommand {
         this.uuid = argUuid;
     }
 
+    /**
+     * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
+    }
 }
 

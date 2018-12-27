@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.controllers.test;
 
+import static org.hamcrest.Matchers.containsString;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -26,26 +28,40 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SparkTestUtils;
+import com.suse.salt.netapi.calls.LocalCall;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.HaltException;
 import spark.Request;
@@ -60,6 +76,7 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
     private Response response;
     private final String baseUri = "http://localhost:8080/rhn";
     private TaskomaticApi taskomaticMock;
+    private SaltService saltServiceMock;
     private static final Gson GSON = new GsonBuilder().create();
     private Server host;
 
@@ -77,18 +94,28 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
 
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
+        VirtualizationActionCommand.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() {{
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        host = ServerTestUtils.createVirtHostWithGuests(user, 2);
+        saltServiceMock = context().mock(SaltService.class);
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(containsString("serverfactorytest")));
+        }});
+        VirtManager.setSaltService(saltServiceMock);
+        SystemManager.mockSaltService(saltServiceMock);
+
+        host = ServerTestUtils.createVirtHostWithGuests(user, 2, true);
+        host.asMinionServer().get().setMinionId("testminion.local");
 
         // Clean pending actions for easier checks in the tests
         DataResult<ScheduledAction> actions = ActionManager.allActions(user, null);
         for (ScheduledAction scheduledAction : actions) {
             ActionManager.failSystemAction(user, host.getId(), scheduledAction.getId(), "test clean up");
         }
-
     }
 
     /**
@@ -252,6 +279,37 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Test the API querying the XML definition of a VM using salt.
+     *
+     * @throws Exception if anything unexpected happens during the test
+     */
+    @SuppressWarnings("unchecked")
+    public void testGetGuest() throws Exception {
+        String guid = host.getGuests().iterator().next().getUuid();
+        String uuid = guid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("b99a8176-4f40-498d-8e61-2f6ade654fe2", uuid);
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(host.asMinionServer().get().getMinionId()));
+            will(returnValue(getSaltResponse("/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml",
+                    placeholders)));
+        }});
+
+        String json = VirtualGuestsController.getGuest(
+                getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
+                        host.getId(), guid),
+                response, user);
+        GuestDefinition def = GSON.fromJson(json, new TypeToken<GuestDefinition>() {}.getType());
+        assertEquals(uuid, def.getUuid());
+        assertEquals("sles12sp2", def.getName());
+        assertEquals(1024*1024, def.getMaxMemory());
+    }
+
+    /**
      * Creates a request with csrf token.
      *
      * @param uri the uri
@@ -275,5 +333,17 @@ public class VirtualGuestsControllerTest extends JMockBaseTestCaseWithUser {
         Request request = SparkTestUtils.createMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
+    }
+
+    private Optional<String> getSaltResponse(String filename, Map<String, String> placeholders) throws Exception {
+        Path path = new File(TestUtils.findTestData(filename).getPath()).toPath();
+        String content = Files.lines(path).collect(Collectors.joining("\n"));
+
+        if (placeholders != null) {
+            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+                content = StringUtils.replace(content, entry.getKey(), entry.getValue());
+            }
+        }
+        return Optional.of(content);
     }
 }
