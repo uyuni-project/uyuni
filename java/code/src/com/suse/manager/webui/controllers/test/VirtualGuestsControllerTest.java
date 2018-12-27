@@ -285,5 +285,25 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals(uuid, def.getUuid());
         assertEquals("sles12sp2", def.getName());
         assertEquals(1024*1024, def.getMaxMemory());
+        assertEquals("spice", def.getGraphics().getType());
+
+        assertEquals(1, def.getInterfaces().size());
+        assertEquals("network", def.getInterfaces().get(0).getType());
+        assertEquals("default", def.getInterfaces().get(0).getSource());
+
+        assertEquals(2, def.getDisks().size());
+        assertEquals("file", def.getDisks().get(0).getType());
+        assertEquals("disk", def.getDisks().get(0).getDevice());
+        assertEquals("qcow2", def.getDisks().get(0).getFormat());
+        assertEquals("vda", def.getDisks().get(0).getTarget());
+        assertEquals("virtio", def.getDisks().get(0).getBus());
+        assertEquals("/srv/vms/sles12sp2.qcow2", def.getDisks().get(0).getSource().get("file"));
+
+        assertEquals("file", def.getDisks().get(1).getType());
+        assertEquals("cdrom", def.getDisks().get(1).getDevice());
+        assertEquals("raw", def.getDisks().get(1).getFormat());
+        assertEquals("hda", def.getDisks().get(1).getTarget());
+        assertEquals("ide", def.getDisks().get(1).getBus());
+        assertEquals(null, def.getDisks().get(1).getSource());
     }
 }

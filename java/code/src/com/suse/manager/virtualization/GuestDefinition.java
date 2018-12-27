@@ -26,6 +26,7 @@ import org.jdom.input.SAXBuilder;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class representing the VM XML Definition.
@@ -42,6 +43,10 @@ public class GuestDefinition {
 
     private GuestVcpuDef vcpu;
     private GuestOsDef os;
+    private GuestGraphicsDef graphics;
+    private List<GuestInterfaceDef> interfaces;
+    private List<GuestDiskDef> disks;
+
 
     /**
      * Create a guest definition from a virtual system overview.
@@ -177,6 +182,54 @@ public class GuestDefinition {
     }
 
     /**
+     * Note that we are only storing one graphics device definition for the guest
+     * even if libvirt schema allows more. I couldn't get libvirt to do anything
+     * useful with a second one: this limitation should make sense.
+     *
+     * @return the graphic device definition
+     */
+    public GuestGraphicsDef getGraphics() {
+        return graphics;
+    }
+
+    /**
+     * Set the graphic device definition
+     *
+     * @param graphicsIn the definition to set
+     */
+    public void setGraphics(GuestGraphicsDef graphicsIn) {
+        graphics = graphicsIn;
+    }
+
+    /**
+     * @return Returns the interfaces.
+     */
+    public List<GuestInterfaceDef> getInterfaces() {
+        return interfaces;
+    }
+
+    /**
+     * @param interfacesIn The interfaces to set.
+     */
+    public void setInterfaces(List<GuestInterfaceDef> interfacesIn) {
+        interfaces = interfacesIn;
+    }
+
+    /**
+     * @return Returns the disks.
+     */
+    public List<GuestDiskDef> getDisks() {
+        return disks;
+    }
+
+    /**
+     * @param disksIn The disks to set.
+     */
+    public void setDisks(List<GuestDiskDef> disksIn) {
+        disks = disksIn;
+    }
+
+    /**
      * Compute the virtual instance type from the VM OS definition.
      *
      * @return the VirtualInstanceType
@@ -196,6 +249,7 @@ public class GuestDefinition {
      * @param xmlDef libvirt XML domain definition
      * @return parsed definition or {@code null}
      */
+    @SuppressWarnings("unchecked")
     public static GuestDefinition parse(String xmlDef) {
         GuestDefinition def = null;
         SAXBuilder builder = new SAXBuilder();
@@ -214,6 +268,14 @@ public class GuestDefinition {
 
             def.vcpu = GuestVcpuDef.parse(domainElement.getChild("vcpu"));
             def.os = GuestOsDef.parse(domainElement.getChild("os"));
+
+            Element devices = domainElement.getChild("devices");
+            def.graphics = GuestGraphicsDef.parse(devices.getChild("graphics"));
+
+            def.interfaces = ((List<Element>)devices.getChildren("interface")).stream()
+                    .map(node -> GuestInterfaceDef.parse(node)).collect(Collectors.toList());
+            def.disks = ((List<Element>)devices.getChildren("disk")).stream()
+                    .map(node -> GuestDiskDef.parse(node)).collect(Collectors.toList());
         }
         catch (Exception e) {
             LOG.error("failed to parse libvirt XML definition: " + e.getMessage());
