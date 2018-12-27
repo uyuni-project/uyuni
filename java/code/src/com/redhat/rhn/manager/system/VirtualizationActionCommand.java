@@ -100,7 +100,7 @@ public class VirtualizationActionCommand {
 
         ServerAction serverAction = new ServerAction();
         serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        serverAction.setRemainingTries(new Long(5));
+        serverAction.setRemainingTries(Long.valueOf(5));
         serverAction.setServer(this.getTargetSystem());
         virtAction.extractParameters(getContext());
 

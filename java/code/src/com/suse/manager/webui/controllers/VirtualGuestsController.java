@@ -298,11 +298,11 @@ public class VirtualGuestsController {
                                                    VirtualGuestsUpdateActionJson data) {
         List<String> results = new ArrayList<>();
         // Comparing against the DB data may not be accurate, but that will change with virt.running state soon
-        if (data.getVcpu() != guest.getVcpus()) {
+        if (data.getVcpu().longValue() != guest.getVcpus().longValue()) {
             results.add(triggerGuestSetterAction(host, guest, "setVcpu", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
                                                  user, data.getVcpu()));
         }
-        if (data.getMemory() != guest.getMemory()) {
+        if (data.getMemory().longValue() != guest.getMemory().longValue()) {
             results.add(triggerGuestSetterAction(host, guest, "setMemory",
                                                  ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
                                                  user, data.getMemory()));
