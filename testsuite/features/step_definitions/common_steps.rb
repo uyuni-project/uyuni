@@ -429,6 +429,13 @@ When(/^I click the channel list of product "(.*?)"$/) do |product|
 end
 
 Then(/^I see verification succeeded/) do
+  10.times do
+    begin
+      break if find('i.text-success')
+    rescue Capybara::ElementNotFound
+      sleep 3
+    end
+  end
   find('i.text-success')
 end
 

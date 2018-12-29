@@ -20,6 +20,7 @@ Feature: The Setup Wizard
     And I view the primary subscription list
     And I click on "Close"
     Then I should not see a "asdf" text
+    And I see verification succeeded
 
   Scenario: Play with the products page
     Given I am on the Admin page
