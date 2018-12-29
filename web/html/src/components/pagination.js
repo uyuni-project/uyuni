@@ -22,7 +22,11 @@ const PaginationBlock = (props) => {
 
   return (
     <div>
-      <div className="table-page-information">{t("Page {0} of {1}", currentPage, lastPage)}</div>
+      <PageSelector
+        onChange={(p) => onPageChange(p)}
+        currentValue={currentPage}
+        lastPage={lastPage}
+      />
       {pagination}
     </div>
   );
@@ -42,6 +46,34 @@ const ItemsPerPageSelector = (props) =>
       {[5,10,15,25,50,100,250,500].map((o) => <option value={o} key={o}>{o}</option>)}
   </select>
 ;
+
+const PageSelector = (props) => {
+  if (props.lastPage > 1) {
+    return (
+      <div className="table-page-information">
+        {t('Page')}
+        &nbsp;
+        <select className="display-number small-select"
+          defaultValue={props.currentValue}
+          value={props.currentValue}
+          onChange={(e) => props.onChange(parseInt(e.target.value))}>
+            {Array.from(Array(props.lastPage)).map((o, i) => <option value={i + 1} key={i + 1}>{i + 1}</option>)}
+        </select>
+        &nbsp;
+        {t('of')}
+        &nbsp;
+        {props.lastPage}
+      </div>
+    )
+  }
+  else {
+    return (
+      <div className="table-page-information">
+        {t('Page {0} of {1}', props.currentValue, props.lastPage)}
+      </div>
+    )
+  }
+}
 
 
 module.exports = {
