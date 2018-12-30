@@ -404,14 +404,16 @@ header, nav.navbar-pf {
       display: inline-block;
       padding: 8px 2px;
       color: @spacewalk-aside-menu-hyperlink;
-      width: 100%;
+      // width: 100%;
       vertical-align: middle;
-      cursor:pointer;
     }
     a:hover, a:focus,
     .node-text:hover, .node-text:focus {
       text-decoration: none;
       color: @spacewalk-aside-menu-hyperlink-hover;
+    }
+    .node-text a:hover, .leafLink a:hover {
+      text-decoration: underline;
     }
     i.submenuIcon {
       display: inline-block;
@@ -443,27 +445,7 @@ header, nav.navbar-pf {
     div.nodeLink {
       .node-text {
         display: inline-block;
-        width: 85%;
-      }
-      a.direct-link {
-        background: none;
-        width: 15%;
-        text-align: center;
-        border-left: 1px dashed #333;
-        color: @spacewalk-gray;
-        padding-left: 0px;
-        padding-right: 0px;
-        i {
-          font-size: 0.8em;
-          width: 15px;
-          display: inline-block;
-          text-align: center;
-          margin: 0 auto;
-        }
-      }
-      a.direct-link:hover {
-        background-color: lighten(@spacewalk-blue-light, 5%);
-        color: @spacewalk-aside-menu-hyperlink-hover;
+        width: 100%;
       }
     }
     /* First Level */

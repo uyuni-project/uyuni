@@ -6,35 +6,40 @@ const ReactDOM = require("react-dom");
 const Link = (props) =>
   <a href={props.url} className={props.cssClass} target={props.target}
     title={props.title} onClick={props.handleClick}>
-    {props.preIcon ? <i className={'fa ' + props.preIcon}></i> : null}
-    {
-      props.icon ?
-      <i className={'fa ' + props.icon}></i>
-      : null
-    }
     {props.responsiveLabel}
     {props.label}
   </a>
   ;
 
 const NodeLink = (props) =>
+  <div className={props.cssClass} onClick={props.handleClick}>
+    {props.preIcon ? <i className={'fa ' + props.preIcon}></i> : null}
+    {
+      props.icon ?
+      <i className={'fa ' + props.icon}></i>
+      : null
+    }
+    <Link url={props.url} target={props.target} label={props.label} />
+  </div>
+;
+
+const Node = (props) =>
   <div className={props.isLeaf ? " leafLink " : " nodeLink "} >
     {
       props.isLeaf ?
-      <Link url={props.url} target={props.target} label={props.label} />
-      : <Link url="#" target={props.target} cssClass="node-text" handleClick={props.handleClick}
-          label={props.label} icon={props.icon}
+        <Link url={props.url} target={props.target} label={props.label} />
+        :
+        <NodeLink url={props.url}
+          target={props.target}
+          cssClass="node-text"
+          handleClick={props.handleClick}
+          label={props.label}
+          icon={props.icon}
           preIcon={ !props.isSearchActive ?
-            'submenuIcon ' + (props.isOpen ? "fa fa-angle-down" : "fa fa-angle-right")
+            'submenuIcon ' + (props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")
             : null
-          }/>
-    }
-    {
-      !props.isLeaf ?
-      <Link url={props.url} title={props.completeUrlLabel}
-        label={<i className="fa fa-dot-circle-o"></i>}
-        cssClass="direct-link" target={props.target} />
-      : null
+          }
+        />
     }
   </div>;
 
@@ -95,7 +100,7 @@ class Element extends React.Component {
           (this.isLeaf(element) ? " leaf " : " node ")
           }
         >
-          <NodeLink isLeaf={this.isLeaf(element)} url={this.getUrl(element)}
+          <Node isLeaf={this.isLeaf(element)} url={this.getUrl(element)}
               label={element.label} target={element.target}
               completeUrlLabel={this.getCompleteUrlLabel(element)}
               handleClick={this.isLeaf(element) ? null : this.toggleView}
