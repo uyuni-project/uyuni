@@ -36,7 +36,11 @@ IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
 
 # SUSE Manager static pillar data.
 MANAGER_STATIC_PILLAR = [
-    'gpgkeys',
+    'gpgkeys'
+]
+
+MANAGER_GLOBAL_PILLAR = [
+    'mgr_conf'
 ]
 
 CONFIG_FILE = '/etc/rhn/rhn.conf'
@@ -75,6 +79,14 @@ def ext_pillar(minion_id, *args):
         except Exception as exc:
             log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
 
+    # Including SUSE Manager global pillar data
+    for global_pillar in MANAGER_GLOBAL_PILLAR:
+        global_pillar_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, global_pillar)
+        try:
+            ret.update(yaml.load(open('{0}.yml'.format(global_pillar_filename)).read()))
+        except Exception as exc:
+            log.error('Error accessing "{0}": {1}'.format(global_pillar_filename, exc))
+
     # Including generated pillar data for this minion
     data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
     if os.path.exists(data_filename):
@@ -94,9 +106,6 @@ def ext_pillar(minion_id, *args):
         ret.update(image_pillars(minion_id))
     except Exception as error:
         log.error('Error accessing image pillar data: {}'.format(str(error)))
-
-    # Read repository meatadata config
-    ret.update(read_repo_sign_conf())
 
     return ret
 
@@ -278,17 +287,3 @@ def image_pillars(minion_id):
 
     return ret
 
-
-def read_repo_sign_conf():
-    ret = {'mgr_metadata_signing_enabled': False}
-    filename = CONFIG_FILE
-    try:
-        lines = open(filename, 'r').readlines()
-        for line in lines:
-            if re.match('sign_metadata.*=.*1\\s*$', line):
-                ret['mgr_metadata_signing_enabled'] = True
-                break
-    except Exception as error:
-        log.error('Error reading config file {0}: {1}'.format(filename, str(error)))
-
-    return ret

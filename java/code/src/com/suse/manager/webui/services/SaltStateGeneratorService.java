@@ -27,6 +27,7 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -643,4 +644,24 @@ public enum SaltStateGeneratorService {
     }
 
 
+    /**
+     * Expose some global configuration options as pillar data.
+     * @param saltRootPath the directory where to generate the pillar data file
+     */
+    public void generateMgrConfPillar(Path saltRootPath) {
+        boolean metataSigningEnabled = ConfigDefaults.get().isMetadataSigningEnabled();
+        SaltPillar pillar = new SaltPillar();
+        pillar.add("mgr_metadata_signing_enabled", metataSigningEnabled);
+        Path filePath = saltRootPath.resolve("mgr_conf." + PILLAR_DATA_FILE_EXT);
+        FileUtils.deleteFile(filePath);
+        try {
+            com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
+                    new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
+            saltStateGenerator.generate(pillar);
+        }
+        catch (IOException e) {
+            LOG.error("Failed to generate pillar data into " + filePath, e);
+            throw new RuntimeException(e);
+        }
+    }
 }
