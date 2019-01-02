@@ -388,7 +388,7 @@ def findAllExtensionProductsOf(baseId, rootId):
 
 def channelForProduct(product, ostarget, parent_id=None, org_id=None,
                       user_id=None):
-    """Find Channels for a given product and ostarget.
+    """Find mandatory Channels for a given product and ostarget.
 
     If parent_id is None, a base channel is requested.
     Otherwise only channels are returned which have this id
@@ -428,6 +428,7 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
         JOIN suseOSTarget sot ON sot.channel_arch_id = c.channel_arch_id
         JOIN rhnChannelArch ca ON c.channel_arch_id = ca.id
         WHERE spc.product_id = :pid
+          AND spc.mandatory = 'Y'
           AND sot.os = :ostarget
           AND c.parent_channel %s""" % parent_statement)
     h.execute(**vals)
