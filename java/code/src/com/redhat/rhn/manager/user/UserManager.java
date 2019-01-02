@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.user;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -49,6 +51,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -214,29 +217,27 @@ public class UserManager extends BaseManager {
     }
 
     /**
+     * Revokes permission from the given User to a list of ServerGroups.
+     * @param userId Id of user who no longer needs permission
+     * @param serverGroupIds the IDs of the server groups
+     */
+    public static void revokeServerGroupPermission(Long userId,
+            List<Long> serverGroupIds) {
+        boolean needsToUpdateServerPerms = executeRevokeServerGroupPermsQuery(userId, serverGroupIds);
+
+        if (needsToUpdateServerPerms) {
+            updateServerPermsForUser(userId);
+        }
+    }
+
+    /**
      * Revokes permission from the given User to the ServerGroup whose id is sgid.
      * @param uid Id of user who no longer needs permission
      * @param sgid ServerGroup ID
      */
     public static void revokeServerGroupPermission(final Long uid,
             final long sgid) {
-        SelectMode sm = ModeFactory.getMode("User_queries",
-                "check_server_group_permissions_for_revoke");
-        CallableMode m = ModeFactory.getCallableMode("User_queries",
-                "remove_server_group_permissions");
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", uid);
-        params.put("server_group_id", new Long(sgid));
-
-        DataResult dr = sm.execute(params);
-        for (Iterator itr = dr.iterator(); itr.hasNext();) {
-            Map row = (Map)itr.next();
-            long ruid = ((Long)row.get("user_id")).longValue();
-            if (ruid == uid.longValue()) {
-                m.execute(params, new HashMap());
-            }
-        }
+        revokeServerGroupPermission(uid, Arrays.asList(sgid));
     }
 
     /**
@@ -250,25 +251,91 @@ public class UserManager extends BaseManager {
     }
 
     /**
-     * Grants the given User permission to the ServerGroup whose id is sgid.
-     * @param uid Id of user who needs permission
-     * @param sgid ServerGroup ID
+     * Updates server group permission to an User given a list of ServerGroup IDs.
+     * @param user the user
+     * @param serverGroupIds the IDs of the server groups
      */
-    public static void grantServerGroupPermission(final Long uid,
-            final long sgid) {
-        SelectMode sm = ModeFactory.getMode("User_queries",
-                "check_server_group_permissions");
-        CallableMode m = ModeFactory.getCallableMode("User_queries",
-                "set_server_group_permissions");
+    @SuppressWarnings("unchecked")
+    public static void updateServerGroupPermsForUser(User user, List<Long> serverGroupIds) {
+        boolean needsToUpdateServerPerms = false;
+        List<Long> userServerGroupIds = (List<Long>) user.getAssociatedServerGroups()
+                .stream().map(sg -> ((ServerGroup) sg).getId()).collect(toList());
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", uid);
-        params.put("server_group_id", new Long(sgid));
-
-        DataResult dr = sm.execute(params);
-        if (dr.size() > 0) {
-            m.execute(params, new HashMap());
+        List<Long> serverGroupIdsToRevoke = userServerGroupIds.stream()
+                .filter(id -> !serverGroupIds.contains(id)).collect(toList());
+        if (!serverGroupIdsToRevoke.isEmpty()) {
+            needsToUpdateServerPerms |= executeRevokeServerGroupPermsQuery(user.getId(), serverGroupIdsToRevoke);
         }
+
+        List<Long> serverGroupIdsToGrant = serverGroupIds.stream()
+                .filter(id -> !userServerGroupIds.contains(id)).collect(toList());
+        if (!serverGroupIdsToGrant.isEmpty()) {
+            needsToUpdateServerPerms |= executeGrantServerGroupPermsQuery(user.getId(), serverGroupIdsToGrant);
+        }
+        if (needsToUpdateServerPerms) {
+            updateServerPermsForUser(user.getId());
+        }
+    }
+
+    /**
+     * Executes a query for updating server group permissions to an user, given a list of server groups IDs.
+     * @param userId Id of the user who needs permissions
+     * @param updateServerGroupPermsQuery the query to be executed
+     * @param serverGroupIds IDs of the server groups
+     * @return true if there any row was affected by the query. Otherwise, returns false
+     */
+    private static boolean executeUpdateServerGroupPermsQuery(Long userId, String updateServerGroupPermsQuery,
+            List<Long> serverGroupIds) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", userId);
+
+        WriteMode writeMode = ModeFactory.getWriteMode("User_queries", updateServerGroupPermsQuery);
+        return writeMode.executeUpdate(params, serverGroupIds) > 0;
+    }
+
+    /**
+     * Executes a query for revoking server group permissions to an user, given a list of server groups IDs.
+     * @param userId Id of the user who needs permissions
+     * @param serverGroupIds IDs of the server groups
+     * @return true if there any row was affected by the query. Otherwise, returns false
+     */
+    private static boolean executeRevokeServerGroupPermsQuery(Long userId, List<Long> serverGroupIds) {
+        return executeUpdateServerGroupPermsQuery(userId, "revoke_server_group_permissions_to_user", serverGroupIds);
+    }
+
+    /**
+     * Executes a query for granting server group permissions to an user, given a list of server groups IDs.
+     * @param userId Id of the user who needs permissions
+     * @param serverGroupIds IDs of the server groups
+     * @return true if there any row was affected by the query. Otherwise, returns false
+     */
+    private static boolean executeGrantServerGroupPermsQuery(Long userId, List<Long> serverGroupIds) {
+        return executeUpdateServerGroupPermsQuery(userId, "grant_server_group_permissions_to_user", serverGroupIds);
+    }
+
+    /**
+     * Grants the given User permission to a list of ServerGroup.
+     * @param userId the ID of the User
+     * @param serverGroupIds the IDs of the server groups
+     */
+    public static void grantServerGroupPermission(Long userId, List<Long> serverGroupIds) {
+        boolean needsToUpdateServerPerms = executeGrantServerGroupPermsQuery(userId, serverGroupIds);
+
+        if (needsToUpdateServerPerms) {
+            updateServerPermsForUser(userId);
+        }
+    }
+
+    /**
+     * Updates the server permissions to User.
+     * @param userId the ID of the User
+     */
+    private static void updateServerPermsForUser(Long userId) {
+        CallableMode m = ModeFactory.getCallableMode("User_queries",
+                "update_perms_for_user");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", userId);
+        m.execute(params, new HashMap<String, Integer>());
     }
 
     /**
@@ -280,6 +347,16 @@ public class UserManager extends BaseManager {
             final long sgid) {
         grantServerGroupPermission(usr.getId(), sgid);
     }
+
+    /**
+     * Grants the given User permission to the ServerGroup whose id is sgid.
+     * @param uid Id of user who needs permission
+     * @param sgid ServerGroup ID
+     */
+    public static void grantServerGroupPermission(final Long uid,
+            final long sgid) {
+        grantServerGroupPermission(uid, Arrays.asList(sgid));
+     }
 
     /**
     * Add and remove the specified roles from the user.
