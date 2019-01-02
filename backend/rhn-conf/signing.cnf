@@ -18,4 +18,4 @@ GNUPGHOME="/root/.gnupg"
 # Digest algorithm to use when signing repo metadata.
 # Note: Debian systems require at least SHA256.
 #
-DIGESTPREF=SHA256
+#DIGESTPREF=SHA256
