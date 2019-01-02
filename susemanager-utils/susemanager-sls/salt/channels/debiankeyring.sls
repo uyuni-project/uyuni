@@ -1,7 +1,7 @@
 {%- if pillar.get('mgr_metadata_signing_enabled', false) %}
-/usr/share/keyrings/mgr-archive-keyring.gpg:
+mgr_debian_repo_keyring:
   file.managed:
-    - source:
-      - salt://gpg/mgr-keyring.gpg
+    - name: /usr/share/keyrings/mgr-archive-keyring.gpg
+    - source: salt://gpg/mgr-keyring.gpg
     - mode: 644
 {%- endif %}
