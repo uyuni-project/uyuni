@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -271,18 +273,10 @@ public class AssignedGroupsSetupAction extends RhnListAction {
 
         RhnSet set =  getSetDecl().get(requestContext.getCurrentUser());
 
-        //First remove the user from all groups
-        DataResult dr = UserManager.getSystemGroups(user, null);
-        for (Iterator it = dr.iterator(); it.hasNext();) {
-           SystemGroupOverview map =  (SystemGroupOverview) it.next();
-            UserManager.revokeServerGroupPermission(user, map.getId().longValue());
-        }
+        List<Long> serverGroupIds =
+                set.getElements().stream().map(RhnSetElement::getElement).collect(toList());
 
-        //Then add him to the ones selected.  Easiest way to do this.
-        for (Iterator it = set.getElements().iterator(); it.hasNext();) {
-            RhnSetElement elem = (RhnSetElement) it.next();
-              UserManager.grantServerGroupPermission(user, elem.getElement());
-        }
+        UserManager.updateServerGroupPermsForUser(user, serverGroupIds);
 
         ActionMessages msgs = new ActionMessages();
         msgs.add(ActionMessages.GLOBAL_MESSAGE,

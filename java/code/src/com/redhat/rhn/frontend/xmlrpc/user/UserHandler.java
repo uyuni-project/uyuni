@@ -59,6 +59,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * UserHandler
@@ -1072,10 +1073,8 @@ public class UserHandler extends BaseHandler {
             groups.add(group);
         }
 
-        // Now do the actual add:
-        for (ManagedServerGroup group : groups) {
-            UserManager.grantServerGroupPermission(targetUser, group.getId());
-        }
+        List<Long> groupIds = groups.stream().map(ManagedServerGroup::getId).collect(Collectors.toList());
+        UserManager.grantServerGroupPermission(targetUser.getId(), groupIds);
 
         // Follow up with a call to addDefaultSystemGroups if setDefault is true:
         if (setDefault.booleanValue()) {

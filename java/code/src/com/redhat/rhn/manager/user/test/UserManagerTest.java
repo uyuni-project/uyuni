@@ -16,7 +16,9 @@
 package com.redhat.rhn.manager.user.test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,21 +26,28 @@ import java.util.Set;
 
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.user.StateChangeException;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -48,6 +57,7 @@ import com.redhat.rhn.frontend.dto.SystemSearchResult;
 import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
@@ -58,6 +68,198 @@ import com.redhat.rhn.testing.UserTestUtils;
  *  class.
  */
 public class UserManagerTest extends RhnBaseTestCase {
+
+    private Set<User> users;
+    private boolean committed = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        this.users = new HashSet<User>();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+
+        // If at some point we created an org and committed the transaction, we must erase it from the database
+        if (this.committed) {
+            users.stream().forEach(user -> OrgFactory.deleteOrg(user.getOrg().getId(), user));
+           commitAndCloseSession();
+        }
+        this.committed = false;
+        this.users = null;
+    }
+
+    // If we have to commit in mid-test, set up the next transaction correctly
+    protected void commitHappened() {
+        committed = true;
+    }
+
+    public void testGrantServerGroupPermission() throws Exception {
+        //Group and user have the same org, so should be possible to grant permits
+        User user = UserTestUtils.findNewUser("user_1", "org_1");
+        this.users.add(user);
+
+        Server server = ServerFactoryTest.createTestServer(user, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+
+        ServerGroup group = ServerGroupTest
+                .createTestServerGroup(user.getOrg(), null);
+
+        SystemManager.addServerToServerGroup(server, group);
+        ServerFactory.save(server);
+
+        ServerGroup foundGroup = ServerGroupFactory.lookupByIdAndOrg(group.getId(),
+                group.getOrg());
+        assertNotNull(foundGroup);
+
+        List<Server> servers = foundGroup.getServers();
+        assertNotNull(servers);
+        assertEquals(servers.size(), 1);
+        assertTrue(servers.stream().allMatch(s -> s.getId().equals(server.getId())));
+
+        User foundUser = UserFactory.lookupById(user.getId());
+        assertEquals(foundUser.getOrg().getId(), user.getOrg().getId());
+        assertEquals(foundUser.getOrg().getId(), group.getOrg().getId());
+
+        Set userGroups = foundUser.getAssociatedServerGroups();
+        assertNotNull(userGroups);
+        assertTrue(userGroups.isEmpty());
+
+        UserManager.grantServerGroupPermission(foundUser, group.getId());
+        HibernateFactory.commitTransaction();
+        commitHappened();
+
+        HibernateFactory.getSession().clear();
+
+        foundUser = UserFactory.lookupById(foundUser.getId());
+        userGroups = foundUser.getAssociatedServerGroups();
+        assertNotNull(userGroups);
+        assertEquals(userGroups.size(), 1);
+        assertTrue(userGroups.stream().allMatch(g -> ((ServerGroup) g).getId().equals(group.getId())));
+
+        //Group and user have different orgs, so should not be possible to grant permits
+        User user2 = UserTestUtils.findNewUser("user_2", "org_2");
+        this.users.add(user);
+
+        User foundUser2 = UserFactory.lookupById(user2.getId());
+        assertEquals(foundUser2.getId(), user2.getId());
+        assertFalse(foundUser2.getOrg().getId().equals(group.getOrg().getId()));
+
+        Set userGroups2 = foundUser2.getAssociatedServerGroups();
+        assertNotNull(userGroups2);
+        assertTrue(userGroups2.isEmpty());
+
+        UserManager.grantServerGroupPermission(foundUser2, group.getId());
+        HibernateFactory.commitTransaction();
+        commitHappened();
+
+        HibernateFactory.getSession().clear();
+
+        foundUser2 = UserFactory.lookupById(user2.getId());
+        userGroups2 = foundUser2.getAssociatedServerGroups();
+        assertNotNull(userGroups2);
+        assertTrue(userGroups2.isEmpty());
+
+        //One group with same org than the user's, and one group with different org.
+        //It should not be possible to grant permissions
+        Server server2 = ServerFactoryTest.createTestServer(foundUser2, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+
+        ServerGroup group2 = ServerGroupTest
+                .createTestServerGroup(foundUser2.getOrg(), null);
+
+        SystemManager.addServerToServerGroup(server2, group2);
+        ServerFactory.save(server2);
+
+        ManagedServerGroup foundGroup2 = ServerGroupFactory.lookupByIdAndOrg(group2.getId(),
+                group2.getOrg());
+        assertNotNull(foundGroup2);
+
+        List<Server> servers2 = foundGroup2.getServers();
+        assertNotNull(servers2);
+        assertEquals(servers2.size(), 1);
+        assertTrue(servers2.stream().allMatch(s -> s.getId().equals(server2.getId())));
+
+        assertEquals(foundUser2.getOrg().getId(), group2.getOrg().getId());
+
+        userGroups2 = foundUser2.getAssociatedServerGroups();
+        assertNotNull(userGroups2);
+        assertTrue(userGroups2.isEmpty());
+
+        UserManager.grantServerGroupPermission(foundUser2.getId(), Arrays.asList(group.getId(), group2.getId()));
+        HibernateFactory.commitTransaction();
+        commitHappened();
+
+        HibernateFactory.getSession().clear();
+
+        foundUser2 = UserFactory.lookupById(user2.getId());
+        userGroups2 = foundUser2.getAssociatedServerGroups();
+        assertNotNull(userGroups2);
+        assertTrue(userGroups2.isEmpty());
+
+    }
+
+    public void testRevokeServerGroupPermission() throws Exception {
+        User user = UserTestUtils.findNewUser("user_test_revoke", "org_test_revoke");
+        this.users.add(user);
+
+        Server server = ServerFactoryTest.createTestServer(user, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+
+        ServerGroup group = ServerGroupTest
+                .createTestServerGroup(user.getOrg(), null);
+
+        SystemManager.addServerToServerGroup(server, group);
+        ServerFactory.save(server);
+
+        ServerGroup foundGroup = ServerGroupFactory.lookupByIdAndOrg(group.getId(),
+                group.getOrg());
+        assertNotNull(foundGroup);
+
+        List<Server> servers = foundGroup.getServers();
+        assertNotNull(servers);
+        assertEquals(servers.size(), 1);
+        assertTrue(servers.stream().allMatch(s -> s.getId().equals(server.getId())));
+
+        User foundUser = UserFactory.lookupById(user.getId());
+        assertEquals(foundUser.getOrg().getId(), user.getOrg().getId());
+        assertEquals(foundUser.getOrg().getId(), group.getOrg().getId());
+
+        Set userGroups = foundUser.getAssociatedServerGroups();
+        assertNotNull(userGroups);
+        assertTrue(userGroups.isEmpty());
+
+        UserManager.grantServerGroupPermission(foundUser, group.getId());
+        HibernateFactory.commitTransaction();
+        commitHappened();
+
+        HibernateFactory.getSession().clear();
+
+        foundUser = UserFactory.lookupById(foundUser.getId());
+        userGroups = foundUser.getAssociatedServerGroups();
+        assertNotNull(userGroups);
+        assertEquals(userGroups.size(), 1);
+        assertTrue(userGroups.stream().allMatch(g -> ((ServerGroup) g).getId().equals(group.getId())));
+
+        UserManager.revokeServerGroupPermission(foundUser, group.getId());
+        HibernateFactory.commitTransaction();
+        commitHappened();
+
+        HibernateFactory.getSession().clear();
+
+        foundUser = UserFactory.lookupById(foundUser.getId());
+        userGroups = foundUser.getAssociatedServerGroups();
+        assertNotNull(userGroups);
+        assertTrue(userGroups.isEmpty());
+    }
 
     public void testListRolesAssignable() throws Exception {
         User user = UserTestUtils.findNewUser();

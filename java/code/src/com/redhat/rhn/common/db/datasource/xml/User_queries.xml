@@ -257,53 +257,35 @@ SELECT system_group_id
   </query>
 </write-mode>
 
-<callable-mode name="set_server_group_permissions">
-    <query params="user_id, server_group_id">
-     {call rhn_user.add_servergroup_perm(:user_id, :server_group_id)}
-    </query>
-</callable-mode>
+<write-mode name="grant_server_group_permissions_to_user">
+  <query params="user_id">
+    INSERT INTO rhnUserServerGroupPerms (user_id, server_group_id)
+    SELECT :user_id, id FROM rhnServerGroup
+    WHERE id IN (%s)
+      AND NOT EXISTS (SELECT 1
+                      FROM rhnServerGroup sg, web_contact u
+                      WHERE u.id = :user_id
+                        AND sg.id IN (%s)
+                        AND sg.org_id != u.org_id)
+      AND NOT EXISTS (SELECT 1
+                      FROM rhnUserServerGroupPerms usgp
+                      WHERE usgp.user_id = :user_id
+                        AND usgp.server_group_id IN (%s));
+  </query>
+</write-mode>
 
-<mode name="check_server_group_permissions">
-    <query params="user_id, server_group_id">
-        select  wc.id user_id,
-                sg.id server_group_id
-        from    rhnServerGroup sg,
-                web_contact wc,
-                web_customer org
-        where   wc.id = :user_id
-          and   wc.org_id = org.id
-          and   sg.org_id = org.id
-          and   sg.id = :server_group_id
-          and   not exists (
-                select  1
-                from    rhnUserServerGroupPerms usgp
-                where   usgp.user_id = :user_id
-                    and usgp.server_group_id = :server_group_id
-            )
-    </query>
-</mode>
-
-<callable-mode name="remove_server_group_permissions">
-    <query params="user_id, server_group_id">
-     {call rhn_user.remove_servergroup_perm(:user_id, :server_group_id)}
-    </query>
-</callable-mode>
-
-<mode name="check_server_group_permissions_for_revoke">
-    <query params="user_id, server_group_id">
-    select  usgp.server_group_id, usgp.user_id
-    from    rhnUserServerGroupPerms usgp
-    where   usgp.server_group_id = :server_group_id
-        and exists (
-            select  1
-            from    rhnServerGroup  sg,
-                    web_contact     wc
-            where   wc.id = :user_id
-                and sg.id = :server_group_id
-                and sg.org_id = wc.org_id
-            )
-    </query>
-</mode>
+<write-mode name="revoke_server_group_permissions_to_user">
+  <query params="user_id">
+    DELETE FROM rhnUserServerGroupPerms
+    WHERE user_id = :user_id
+      AND server_group_id IN (%s)
+      AND NOT EXISTS (SELECT 1
+                      FROM rhnServerGroup sg, web_contact u
+                      WHERE u.id = :user_id
+                        AND sg.id IN (%s)
+                        AND sg.org_id != u.org_id);
+  </query>
+</write-mode>
 
 <callable-mode name="oai_contact_sync">
   <query params="user_id">
