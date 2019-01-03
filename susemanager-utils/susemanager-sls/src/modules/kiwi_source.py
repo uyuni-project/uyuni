@@ -85,6 +85,8 @@ def _prepareGit(source, dest, root):
   url = None
 
   # parse git uri - i.e. git@github.com/repo/#rev:sub
+  # compatible with docker as per https://docs.docker.com/engine/reference/commandline/build/#git-repositories
+
   try:
     url, fragment = source.split('#', 1)
     try:
@@ -94,14 +96,21 @@ def _prepareGit(source, dest, root):
   except:
     url = source
 
+  # omitted rev means default 'master' branch revision
+  if rev == '':
+    rev = 'master'
+
   log.debug('GIT URL: {}, Revision: {}, subdir: {}'.format(url, rev, subdir))
   __salt__['git.init'](tmpdir)
   __salt__['git.remote_set'](tmpdir, url)
   __salt__['git.fetch'](tmpdir)
   __salt__['git.checkout'](tmpdir, rev=rev)
 
-  if subdir and _isLocal(os.path.join(tmpdir, subdir)):
-    __salt__['file.symlink'](os.path.join(tmpdir, subdir), dest)
+  if subdir:
+    if _isLocal(os.path.join(tmpdir, subdir)):
+      __salt__['file.symlink'](os.path.join(tmpdir, subdir), dest)
+    else:
+      raise salt.exceptions.SaltException('Directory is not present in checked out source: {}'.format(subdir))
   else:
     __salt__['file.symlink'](tmpdir, dest)
   return dest
