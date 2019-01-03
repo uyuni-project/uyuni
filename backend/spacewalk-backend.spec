@@ -140,7 +140,7 @@ Requires:       python2-spacewalk-usix
 %endif
 
 %if 0%{?suse_version}
-Requires:       python-pycurl
+Requires:       %{pythonX}-pycurl
 %endif
 
 # we don't really want to require this redhat-release, so we protect
