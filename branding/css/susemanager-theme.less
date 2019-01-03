@@ -371,11 +371,15 @@ header, nav.navbar-pf {
 
 //Nav menu in left column
 #nav {
+  font-size: 1.1em;
   nav {
-    padding: 10px 0 0 0;
+    > * {
+      margin-top: 1em;
+    }
+    //Search box
     .nav-tool-box {
       text-align: center;
-      padding: 0 10px;
+      padding: 0 0.5em;
       position: relative;
       input, button {
         margin: auto;
@@ -383,12 +387,12 @@ header, nav.navbar-pf {
       }
       input {
         background-color: @spacewalk-blue;
-        border-color: @spacewalk-gray;
+        border-color: @spacewalk-gray-dark;
         border-style: solid;
         border-radius: 0;
         border-width: 0 0 1px 0;
         color: @spacewalk-gray-light;
-        padding: 4px 2px;
+        padding-right: 2.3em;
       }
       input:focus {
         box-shadow: none;
@@ -396,105 +400,33 @@ header, nav.navbar-pf {
       .input-right-icon {
         color: @spacewalk-aside-menu-search-clear;
         position: absolute;
-        top: 0;
+        top: 0.2em;
         right: 0;
-        font-size: 1.3em;
+        font-size: 1.2em;
         cursor: pointer;
-        margin-right: 15px;
-        margin-top: 4px;
+        margin-right: 1em;
         padding: 0;
       }
       .clear:hover {
         color: @spacewalk-aside-menu-search-clear-hover;
       }
     }
-    a, .node-text {
-      display: inline-block;
-      padding: 8px 2px;
-      color: @spacewalk-aside-menu-hyperlink;
-      // width: 100%;
-      vertical-align: middle;
-    }
-    a:hover, a:focus,
-    .node-text:hover, .node-text:focus {
-      text-decoration: none;
-      color: @spacewalk-aside-menu-hyperlink-hover;
-    }
-    .node-text a:hover, .leafLink a:hover {
-      text-decoration: underline;
-    }
-    i.submenuIcon {
-      display: inline-block;
-      font-size: inherit;
-      height: 100%;
-      width: 19px;
-      margin: 0 8px 0 -27px;
-      text-align: center;
-      cursor: default;
-    }
-    ul, li {
+    //Menu
+    ul {
       padding: 0;
-      margin: 0;
       list-style: none;
       font-size: 1em;
       display: block;
-    }
-    li {
-      position: relative;
-    }
-    div.nodeLink, div.leafLink {
-      margin-left: 18px;
-      display: block;
-      border-right: 4px solid transparent;
-    }
-    div.leafLink > a {
-      width: 100%;
-    }
-    div.nodeLink {
-      .node-text {
-        display: inline-block;
-        width: 100%;
-      }
-    }
-    /* First Level */
-    > ul {
-      margin-top: 10px;
-      > li:last-of-type {
-        border-bottom: 1px solid darken(@spacewalk-blue-light, 5%);
-      }
-      > li {
-        border-top: 1px solid darken(@spacewalk-blue-light, 5%);
-        > div {
-          > a {
-            padding: 8px 2px 8px 8px;
-            color: @spacewalk-aside-menu-hyperlink;
-            > span {
-              display: inline-block;
-              vertical-align: middle;
-            }
-          }
-        }
-      }
-    }
-    /* Every level */
-    li.active > div > * {
-      color: @spacewalk-aside-menu-active;
-    }
-    ul {
-      padding-left: 8px;
       li {
-        a, .node-text {
-          border-right: 4px solid transparent;
-          span {
-            padding-right: 10px;
+        padding: 0;
+        list-style: none;
+        font-size: 1em;
+        display: block;
+        position: relative;
+        div {
+          a {
+            padding: 4px 10px;
           }
-        }
-      }
-      > li {
-        > .nodeLink:hover,
-        > .leafLink:hover {
-          border-right-color: @spacewalk-aside-menu-hyperlink-hover;
-          background-color: @spacewalk-blue-light;
         }
       }
       li.node.open {
@@ -502,36 +434,81 @@ header, nav.navbar-pf {
           display: block;
         }
       }
-      /* Second Level */
-      ul {
-        padding-bottom: 10px;
-        background-color: @spacewalk-blue;
-        padding-top: 1px;
-        li {
-          > div {
-            > a, .node-text {
-              padding-left: 10px;
-              background-image: url('/img/susemanager/sub-list.png');
-              background-repeat: no-repeat;
-              background-position: left center;
-              i {
-                font-size: 1em;
+      // active
+      li.active > .nodeLink {
+        color: @susemanager-green;
+      }
+      li.active > .leafLink {
+        background-color: @spacewalk-aside-menu-active;
+        border-radius: 0 2px 2px 0;
+      }
+      // nodeLink and leafLink
+      div.nodeLink,
+      div.leafLink {
+        color: @spacewalk-gray-light;
+        border-left: 3px solid transparent;
+        a {
+          display: block;
+          color: inherit;
+          width: auto;
+        }
+      }
+      div.nodeLink:hover,
+      div.leafLink:hover {
+        border-left: 3px solid @susemanager-green;
+      }
+      // nodeLink only
+      div.nodeLink {
+        > i.submenuIcon {
+          font-size: inherit;
+          position: absolute;
+          right: 0.5em;
+          top: 0.4em;
+        }
+        > a {
+          display: inline-block;
+        }
+        > a:hover {
+          color: @spacewalk-gray-light;
+        }
+      }
+      div.nodeLink:hover {
+        color: @spacewalk-aside-menu-active;
+      }
+    }
+    /* First Level */
+    > ul {
+      margin-top: 10px;
+      padding-right: 10px;
+      > li {
+        > div {
+          > a {
+            padding: 8px 2px;
+          }
+        }
+        > div.nodeLink {
+          padding-left: 0.8em;
+        }
+        /* Second Level */
+        > ul {
+          padding-bottom: 10px;
+          > li {
+            > div {
+              > a {
+                padding-left: 2.5em;
+              }
+            }
+            /* Third Level */
+            > ul {
+              > li {
+                > div {
+                  > a {
+                    padding-left: 4em;
+                  }
+                }
               }
             }
           }
-        }
-        > li:last-of-type > div > a,
-        > li:last-of-type > div > .node-text  {
-          background-image: url('/img/susemanager/sub-list-last.png');
-        }
-        > li:last-of-type ul {
-          background-image: none;
-        }
-        /* Third Level */
-        ul {
-          margin-left: 18px;
-          background-image: url('/img/susemanager/sub-list-line.png');
-          background-repeat: repeat-y;
         }
       }
     }

@@ -11,35 +11,20 @@ const Link = (props) =>
   </a>
   ;
 
-const NodeLink = (props) =>
-  <div className={props.cssClass} onClick={props.handleClick}>
-    {props.preIcon ? <i className={'fa ' + props.preIcon}></i> : null}
+const Node = (props) =>
+  <div className={props.isLeaf ? " leafLink " : " nodeLink "} onClick={props.handleClick}>
     {
       props.icon ?
       <i className={'fa ' + props.icon}></i>
       : null
     }
     <Link url={props.url} target={props.target} label={props.label} />
-  </div>
-;
-
-const Node = (props) =>
-  <div className={props.isLeaf ? " leafLink " : " nodeLink "} >
-    {
-      props.isLeaf ?
-        <Link url={props.url} target={props.target} label={props.label} />
+    { props.isLeaf ?
+        null
         :
-        <NodeLink url={props.url}
-          target={props.target}
-          cssClass="node-text"
-          handleClick={props.handleClick}
-          label={props.label}
-          icon={props.icon}
-          preIcon={ !props.isSearchActive ?
-            'submenuIcon ' + (props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")
-            : null
-          }
-        />
+        (!props.isSearchActive ?
+          <i className={'submenuIcon ' + (props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
+          : null)
     }
   </div>;
 
