@@ -84,10 +84,11 @@ Requires:       %{pythonX}
 Requires:       rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires:       /etc/rhn
-Requires:       rhnlib >= 2.5.74
 %if 0%{?build_py3}
 Requires:       python3-%{name}-libs >= %{version}
+Requires:       python3-rhnlib >= 2.5.74
 %else
+Requires:       python2-rhnlib >= 2.5.74
 Requires:       %{name}-libs >= %{version}
 %endif
 # for Debian support
@@ -118,11 +119,12 @@ BuildRequires:  python2-spacewalk-usix
 %if 0%{?build_py3}
 BuildRequires:  python3-gzipstream
 BuildRequires:  python3-rhn-client-tools
+BuildRequires:  python3-rhnlib >= 2.5.74
 %else
 BuildRequires:  python2-gzipstream
 BuildRequires:  python2-rhn-client-tools
+BuildRequires:  python2-rhnlib >= 2.5.74
 %endif
-BuildRequires:  rhnlib >= 2.5.74
 BuildRequires:  rpm-python
 BuildRequires:  %{python_prefix}-debian
 
@@ -457,10 +459,11 @@ Requires:       %{m2crypto}
 Requires:       python-requests
 %if 0%{?build_py3}
 Requires:       python3-spacewalk-usix
+Requires:       python3-rhnlib  >= 2.5.57
 %else
 Requires:       python2-spacewalk-usix
+Requires:       python2-rhnlib  >= 2.5.57
 %endif
-Requires:       rhnlib  >= 2.5.57
 %if 0%{?fedora} || 0%{?rhel}
 BuildRequires:  python-requests
 %endif
