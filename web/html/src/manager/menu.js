@@ -153,13 +153,19 @@ class Nav extends React.Component {
   };
 
   render() {
+    const isSearchActive = this.state.search != null && this.state.search.length > 0;
     return (
-      <nav className={this.state.search != null && this.state.search.length > 0 ? '' : 'collapsed'}>
+      <nav className={isSearchActive > 0 ? '' : 'collapsed'}>
         <div className="nav-tool-box">
           <input type="text" className="form-control" name="nav-search" id="nav-search" value={this.state.search}
             onChange={this.onSearch} placeholder="Search page" />
-          <span className="clear">
-            <i className="fa fa-times-circle-o no-margin" onClick={this.closeEmAll} title={t('Clear Menu')}></i>
+          <span className={"input-right-icon " +  (isSearchActive ? "clear" : "")}>
+            {
+              isSearchActive ?
+                <i className="fa fa-times-circle-o no-margin" onClick={this.closeEmAll} title={t('Clear Menu')}></i>
+                :
+                <i className="fa fa-search no-margin" title={t('Filter menu')}></i>
+            }
           </span>
         </div>
         <MenuLevel level={1} elements={JSONMenu} searchString={this.state.search} forceCollapse={this.state.forceCollapse} />
