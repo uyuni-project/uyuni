@@ -48,7 +48,7 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Requires:       %{pythonX}-%{name} = %{version}-%{release}
+Requires(pre):  %{pythonX}-%{name} = %{version}-%{release}
 Requires:       openssl
 Requires:       rpm-build
 Requires:       spacewalk-base-minimal-config
@@ -62,15 +62,15 @@ BuildRequires:  docbook-utils
 BuildRequires:  filesystem
 Requires:       susemanager-build-keys-web
 %endif
-BuildRequires:  python
 %if 0%{?build_py3}
-Requires(post):  python3-spacewalk-backend-libs
-Requires(post):  python3-rhnlib
-Requires(post):  python3-rpm
-%endif
+Requires(post): python3-spacewalk-backend-libs
+Requires(post): python3-rhnlib
+Requires(post): python3-rpm
+%else
 Requires(post): spacewalk-backend-libs
 Requires(post): rhnlib
 Requires(post): rpm-python
+%endif
 Obsoletes:      rhns-certs < 5.3.0
 Obsoletes:      rhns-certs-tools < 5.3.0
 # can not provides = %{version} since some old packages expect > 3.6.0
@@ -90,6 +90,7 @@ Requires:       spacewalk-backend-libs >= 0.8.28
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires:       python-hashlib
 %endif
+BuildRequires:  python
 
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
