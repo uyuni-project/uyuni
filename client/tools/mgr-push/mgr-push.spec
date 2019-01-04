@@ -108,7 +108,7 @@ Requires:       python3-spacewalk-usix
 BuildRequires:  python3-devel
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rpm-macros
-BuildRequires:  spacewalk-backend-libs > 1.8.33
+BuildRequires:  python3-spacewalk-backend-libs > 1.8.33
 
 %description -n python3-%{name}
 Python 3 specific files for rhnpush.
