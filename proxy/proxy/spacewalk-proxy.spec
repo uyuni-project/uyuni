@@ -46,7 +46,6 @@ BuildRequires:  spacewalk-python2-pylint
 BuildRequires:  mgr-push >= 4.0.0
 BuildRequires:  %{pythonX}-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
-BuildRequires:  spacewalk-backend-libs >= 1.7.24
 
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
