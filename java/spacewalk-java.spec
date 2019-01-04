@@ -467,20 +467,11 @@ Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
-%if 0%{?suse_version} < 1500
-Requires:       jakarta-commons-pool
-BuildRequires:  jakarta-commons-pool
-%else
-Requires:       apache-commons-pool
-BuildRequires:  apache-commons-pool
-%endif # 0%{?suse_version} < 1500
 %else
 Requires:       jakarta-commons-cli
 Requires:       jakarta-commons-codec
 Requires:       jakarta-commons-lang
 Requires:       jakarta-commons-logging
-Requires:       jakarta-commons-pool
-BuildRequires:  jakarta-commons-pool
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7
 Conflicts:      quartz < 2.0
