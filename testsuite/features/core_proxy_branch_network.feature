@@ -80,7 +80,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter "no" in first value field
     And I enter "example.org" in first configured zone name field
     And I press "Add Item" in configured zones section
-    And I enter "5.168.192.in-addr.arpa" in second configured zone name field
+    And I enter the local zone name in second configured zone name field
     # direct zone example.org:
     And I enter "example.org" in first available zone name field
     And I enter "master/db.example.org" in first file name field
@@ -97,7 +97,7 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "proxy" in third A address field
     And I press "Add Item" in first NS section
     And I enter "proxy.example.org." in first NS field
-    # reverse zone 5.168.192.in-addr.arpa:
+    # reverse zone xx.168.192.in-addr.arpa:
     And I press "Add Item" in available zones section
     And I enter the local zone name in second available zone name field
     And I enter the local file name in second file name field
