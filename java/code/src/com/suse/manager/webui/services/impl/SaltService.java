@@ -373,6 +373,17 @@ public class SaltService {
     }
 
     /**
+     * For a given minion id check if there is a key pending in "Unaccepted Keys".
+     *
+     * @param id the minion id to look for in "Unaccepted Keys"
+     * @return true if there is a key with the given id, false otherwise
+     */
+    public boolean keyPending(String id) {
+        Key.Names keys = getKeys();
+        return keys.getUnacceptedMinions().contains(id);
+    }
+
+    /**
      * Get the minion keys from salt with their respective status and fingerprint.
      *
      * @return the keys with their respective status and fingerprint as returned from salt
@@ -1052,6 +1063,17 @@ public class SaltService {
             return callSync(call);
         }
         return Optional.of(MgrUtilRunner.ExecResult.success());
+    }
+
+    /**
+     * Delete a Salt key from the "Rejected Keys" category using the mgrutil runner.
+     *
+     * @param minionId the minionId to look for in "Rejected Keys"
+     * @return the result of the runner call as a map
+     */
+    public Optional<MgrUtilRunner.ExecResult> deleteRejectedKey(String minionId) {
+        RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.deleteRejectedKey(minionId);
+        return callSync(call);
     }
 
     /**
