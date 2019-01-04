@@ -49,7 +49,7 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
-%global m2crypto python-m2crypto
+%global m2crypto %{pythonX}-M2Crypto
 %if !0%{?is_opensuse}
 %define with_oracle     1
 %endif
@@ -456,7 +456,7 @@ Requires:       cobbler >= 2.0.0
 Recommends:     cobbler20
 %endif
 Requires:       %{m2crypto}
-Requires:       python-requests
+Requires:       %{pythonX}-requests
 %if 0%{?build_py3}
 Requires:       python3-spacewalk-usix
 Requires:       python3-rhnlib  >= 2.5.57
