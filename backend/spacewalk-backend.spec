@@ -55,10 +55,14 @@
 %endif
 %endif
 
+%if 0%{?suse_version} >= 1320
+%global python_prefix python3
+%else
 %if  0%{?fedora} >= 28  || 0%{?rhel} >= 8
 %global python_prefix python2
 %else
 %global python_prefix python
+%endif
 %endif
 
 %{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -90,16 +94,16 @@ Requires:       python3-rhnlib >= 2.5.74
 %else
 Requires:       python2-rhnlib >= 2.5.74
 Requires:       %{name}-libs >= %{version}
-%endif
-# for Debian support
-Requires:       %{python_prefix}-debian
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version}
 Requires:       python-pyliblzma
 %else
-%if 0%{?rhel} || 0%{?suse_version} >= 1315
+%if 0%{?rhel}
 Requires:       pyliblzma
-%endif # %if 0%{?rhel} || 0%{?suse_version} >= 1315
-%endif # 0%{?suse_version} > 1320
+%endif # %if 0%{?rhel}
+%endif # 0%{?suse_version}
+%endif # 0%{?build_py3}
+# for Debian support
+Requires:       %{python_prefix}-debian
 %if 0%{?pylint_check}
 %if 0%{?build_py3}
 BuildRequires:  spacewalk-python3-pylint
@@ -432,20 +436,20 @@ Requires:       python3-rhn-client-tools
 Requires:       python-dateutil
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
-%endif
+%if 0%{?suse_version}
+Requires:       python-pyliblzma
+%else
+%if 0%{?fedora} || 0%{?rhel} > 6
+Requires:       pyliblzma
+%endif # 0%{?fedora} || 0%{?rhel} > 6
+%endif # 0%{?suse_version}
+%endif # 0%{?build_py3}
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 %if 0%{?suse_version}
 Requires:       apache2-prefork
 Requires:       susemanager-tools
 %endif
-%if 0%{?suse_version} > 1320
-Requires:       python-pyliblzma
-%else
-%if 0%{?fedora} || 0%{?rhel} > 6
-Requires:       pyliblzma
-%endif # 0%{?fedora} || 0%{?rhel} > 6
-%endif # 0%{?suse_version} > 1320
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       mod_ssl
 Requires:       python2-devel
