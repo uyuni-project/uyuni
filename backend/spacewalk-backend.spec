@@ -55,10 +55,14 @@
 %endif
 %endif
 
+%if 0%{?suse_version} >= 1320
+%global python_prefix python3
+%else
 %if  0%{?fedora} >= 28  || 0%{?rhel} >= 8
 %global python_prefix python2
 %else
 %global python_prefix python
+%endif
 %endif
 
 %{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
