@@ -16,6 +16,9 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%if 0%{?suse_version} > 1320
+%global build_py3 1
+%endif
 
 Name:           spacewalk-ssl-cert-check
 Version:        4.0.2
@@ -30,8 +33,13 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Obsoletes:      rhn-ssl-cert-check < %{version}
 Provides:       rhn-ssl-cert-check = %{version}
+%if 0%{?build_py3}
+Requires:       python3-cryptography
+Requires:       python3-setuptools
+%else
 Requires:       python-cryptography
 Requires:       python-setuptools
+%endif
 BuildRequires:  pkgconfig(systemd)
 %{?systemd_requires}
 
@@ -44,7 +52,9 @@ notification
 %setup -q
 
 %build
-# Nothing to do
+%if 0%{?build_py3}
+sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' ssl-cert-check
+%endif
 
 %install
 
