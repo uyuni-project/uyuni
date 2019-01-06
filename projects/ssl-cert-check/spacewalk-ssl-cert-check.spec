@@ -30,9 +30,10 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Obsoletes:      rhn-ssl-cert-check < %{version}
 Provides:       rhn-ssl-cert-check = %{version}
-Requires:       cron
 Requires:       python-cryptography
 Requires:       python-setuptools
+BuildRequires:  pkgconfig(systemd)
+%{?systemd_requires}
 
 %description
 Runs a check once a day to see if the ssl certificates installed on this
@@ -47,20 +48,34 @@ notification
 
 %install
 
-install -d $RPM_BUILD_ROOT/etc/cron.daily
 install -d $RPM_BUILD_ROOT/etc/sysconfig/rhn
 install -d $RPM_BUILD_ROOT/%{_bindir}
 install -d $RPM_BUILD_ROOT%{_mandir}/man8/
-
-install -m755 cron.ssl-cert-check $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/suse.de-ssl-cert-check
+install -D -m 0644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
+install -D -m 0644 %{name}.timer %{buildroot}%{_unitdir}/%{name}.timer
 install -m644 sysconfig.ssl-cert-check $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/rhn/ssl-cert-check
+install -m755 timerscript.ssl-cert-check $RPM_BUILD_ROOT/%{_bindir}/ssl-cert-check-timerscript
 install -m755 ssl-cert-check $RPM_BUILD_ROOT/%{_bindir}/ssl-cert-check
 install -m644 ssl-cert-check.8 $RPM_BUILD_ROOT%{_mandir}/man8/
+
+%pre
+%service_add_pre %{name}.timer
+
+%post
+%service_add_post %{name}.timer
+
+%preun
+%service_del_preun %{name}.timer
+
+%postun
+%service_del_postun %{name}.timer
 
 %files
 %defattr(-,root,root,-)
 %dir %{_sysconfdir}/sysconfig/rhn
-%attr(0755,root,root) %{_sysconfdir}/cron.daily/suse.de-ssl-cert-check
+%{_unitdir}/%{name}.service
+%{_unitdir}/%{name}.timer
+%attr(0755,root,root) %{_bindir}/ssl-cert-check-timerscript
 %attr(0755,root,root) %{_bindir}/ssl-cert-check
 %{_mandir}/man8/ssl-cert-check.*
 %config %{_sysconfdir}/sysconfig/rhn/ssl-cert-check
