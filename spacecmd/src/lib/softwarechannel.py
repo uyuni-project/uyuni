@@ -2030,7 +2030,7 @@ def do_softwarechannel_regenerateyumcache(self, args):
 
     for channel in channels:
         logging.debug('Regenerating YUM cache for %s' % channel)
-        self.client.channel.software.regenerateYumCache(self.session, channel, "Y" if _options.force else "N")
+        self.client.channel.software.regenerateYumCache(self.session, channel, _options.force)
 
 ####################
 # softwarechannel helper

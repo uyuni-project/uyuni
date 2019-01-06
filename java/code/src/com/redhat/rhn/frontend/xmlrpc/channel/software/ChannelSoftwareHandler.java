@@ -2422,22 +2422,21 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * Regenerate the yum cache for a specific channel.
      * @param loggedInUser The current user
      * @param channelLabel the channel label
-     * @param forceStr force regeneration
+     * @param force force regeneration
      * @return int - 1 on success!
      *
      * @xmlrpc.doc Regenerate yum cache for the specified channel.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "the label of the
      *          channel")
-     * @xmlrpc.param #param_desc("string", "forceStr", "Y/N force cache regeneration")
+     * @xmlrpc.param #param_desc("boolean", "force", "force cache regeneration")
      * @xmlrpc.returntype  #return_int_success()
      *
      */
-    public int regenerateYumCache(User loggedInUser, String channelLabel, String forceStr) {
+    public int regenerateYumCache(User loggedInUser, String channelLabel, boolean force) {
         channelAdminPermCheck(loggedInUser);
         lookupChannelByLabel(loggedInUser, channelLabel);
 
-        boolean force = "Y".equalsIgnoreCase(forceStr);
         ChannelManager.queueChannelChange(channelLabel,
                 "api: regenerateYumCache", "api called", force);
         return 1;

@@ -1,7 +1,6 @@
 packages:
   module.run:
     - name: pkg.info_installed
-{% if grains['os_family'] == 'Suse' or grains['os_family'] == 'RedHat' %}
     - kwargs: {
           attr: 'arch,epoch,version,release,install_date_time_t',
 {%- if grains.get('__suse_reserved_pkg_all_versions_support', False) %}
@@ -11,7 +10,6 @@ packages:
           errors: report
 {%- endif %}
       }
-{% endif %}
 {% if grains['os_family'] == 'Suse' %}
 products:
   module.run:

@@ -2238,14 +2238,14 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
+     * Queue regenerating the repo metadata.
      *
      * @param channelLabel channel label
      * @param client client info
      * @param reason reason for queue
      * @param force force regen
      */
-    public static void queueChannelChange(String channelLabel, String client,
-            String reason, boolean force) {
+    public static void queueChannelChange(String channelLabel, String client, String reason, boolean force) {
         if ("".equals(client)) {
             client = null;
         }
