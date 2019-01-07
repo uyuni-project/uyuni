@@ -1,3 +1,5 @@
+- configure firewalld if available
+
 -------------------------------------------------------------------
 Mon Dec 17 14:39:21 CET 2018 - jgonzalez@suse.com
 
