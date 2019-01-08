@@ -43,6 +43,7 @@
 
 # IDEMPOTENT
 
+- features/srv_change_task_schedule.feature
 - features/allcli_reboot.feature
 - features/trad_config_channel.feature
 - features/trad_lock_packages.feature
