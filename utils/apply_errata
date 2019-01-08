@@ -53,32 +53,32 @@ def usage(code):
             code = 0
     else:
         code = 0
-    print "-a            - all errata - implies -b -e -s"
-    print "-b            - bug fix errata"
-    print "-d <date>     - date (in m-d-yy format) - defaults to today's date"
-    print "-e            - enhancement errata"
-    print "-s            - security errata"
-    print "-r            - do it for real - required to make the script actually do"
-    print "                updates"
-    print "-v            - be verbose, implied if -r is not supplied"
-    print "-n            - call /usr/sbin/rhn_check rather than waiting for the next"
-    print "                scheduled checkin"
-    print "-u <username> - username for connecting to RHN hosted or the Satellite server"
-    print "-p <password> - password for connecting to RHN hosted or the Satellite server"
-    print "-P <proxy>    - the proxy server to use"
-    print "-z <search>   - only apply errata matching this regular expression"
-    print "-h            - this help message"
-    print "Notes:"
-    print "1) Errata are scheduled only if they have a date of <date> or older"
-    print "2) -u and -p can be ommitted if the environment variables RHN_USER and RHN_PASS"
-    print "   are defined. If -u/-p are provided and RHN_USER and RHN_PASS are also"
-    print "   defined, the -u/-p switches have preference."
-    print "   If the password is '-' then the user is asked to enter the password via stdin"
-    print "3) the search is case insensitive and looks in the errata synopsis.  An"
-    print "   example use is:"
-    print " '%s -u admin -p - -P squid:3128 -s -d %s -z \"critical|important\"'" % (prog, today)
-    print "-P <proxy> is needed to define the proxy server (and port) to use and overrides"
-    print "   the environment variable RHN_PROXY"
+    print("-a            - all errata - implies -b -e -s")
+    print("-b            - bug fix errata")
+    print("-d <date>     - date (in m-d-yy format) - defaults to today's date")
+    print("-e            - enhancement errata")
+    print("-s            - security errata")
+    print("-r            - do it for real - required to make the script actually do")
+    print("                updates")
+    print("-v            - be verbose, implied if -r is not supplied")
+    print("-n            - call /usr/sbin/rhn_check rather than waiting for the next")
+    print("                scheduled checkin")
+    print("-u <username> - username for connecting to RHN hosted or the Satellite server")
+    print("-p <password> - password for connecting to RHN hosted or the Satellite server")
+    print("-P <proxy>    - the proxy server to use")
+    print("-z <search>   - only apply errata matching this regular expression")
+    print("-h            - this help message")
+    print("Notes:")
+    print("1) Errata are scheduled only if they have a date of <date> or older")
+    print("2) -u and -p can be ommitted if the environment variables RHN_USER and RHN_PASS")
+    print("   are defined. If -u/-p are provided and RHN_USER and RHN_PASS are also")
+    print("   defined, the -u/-p switches have preference.")
+    print("   If the password is '-' then the user is asked to enter the password via stdin")
+    print("3) the search is case insensitive and looks in the errata synopsis.  An")
+    print("   example use is:")
+    print(" '%s -u admin -p - -P squid:3128 -s -d %s -z \"critical|important\"'" % (prog, today))
+    print("-P <proxy> is needed to define the proxy server (and port) to use and overrides")
+    print("   the environment variable RHN_PROXY")
     sys.exit(code)
 
 
@@ -97,8 +97,8 @@ def getSysId():
     result = pattern.search(text)
     infile.close()
     if result is None:
-        print "No system ID found, please register the node with RHN or your local Satellite/"
-        print "Spacewalk server using rhn_register or another appropriate tool"
+        print("No system ID found, please register the node with RHN or your local Satellite/")
+        print("Spacewalk server using rhn_register or another appropriate tool")
         sys.exit(3)
     return int(result.group(1))
 
@@ -110,8 +110,8 @@ def getServer():
     result = pattern.search(text)
     infile.close()
     if result is None:
-        print "No server details found.  This should not happen as RHN hosted is"
-        print "present by default.  Resolve and re-run."
+        print("No server details found.  This should not happen as RHN hosted is")
+        print("present by default.  Resolve and re-run.")
         sys.exit(3)
     return result.group(0).split("/")[2]
 
@@ -211,11 +211,11 @@ def main():
         opt['verbose'] = True
 
     if opt['user'] == "":
-        print "-u <username> not supplied and environment variable RHN_USER not set"
+        print("-u <username> not supplied and environment variable RHN_USER not set")
         sys.exit(4)
 
     if opt['passwd'] == "":
-        print "-p <password> not supplied and environment variable RHN_PASS not set"
+        print("-p <password> not supplied and environment variable RHN_PASS not set")
         sys.exit(5)
 
     if opt['sat_host'] == "":
@@ -271,30 +271,30 @@ def main():
                     erratum.append(e['id'])
 
     if opt['verbose']:
-        print "Notes:"
-        print "\tUsing: %s" % opt['sat_host']
+        print("Notes:")
+        print("\tUsing: %s" % opt['sat_host'])
         if opt['test']:
-            print "\tRunning in test mode, updates will not be scheduled"
+            print("\tRunning in test mode, updates will not be scheduled")
         else:
-            print "\tUpdates *will* be scheduled"
+            print("\tUpdates *will* be scheduled")
         if type['b']:
-            print "\tBug fix errata selected"
+            print("\tBug fix errata selected")
         if type['e']:
-            print "\tEnhancement errata selected"
+            print("\tEnhancement errata selected")
         if type['s']:
-            print "\tSecurity errata selected"
-        print "\t%d errata selected" % len(erratum)
-        print ""
+            print("\tSecurity errata selected")
+        print("\t%d errata selected" % len(erratum))
+        print("")
 
     if opt['verbose']:
         for errata in erratum:
-            print "(Errata ID: %04d, Errata Name: %s, Released: %s) %s" % (errata, EN[errata], ED[errata], EI[errata])
+            print("(Errata ID: %04d, Errata Name: %s, Released: %s) %s" % (errata, EN[errata], ED[errata], EI[errata]))
 
     if not opt['test']:
         client.system.applyErrata(session, sid, erratum)
         command = ["/usr/sbin/rhn_check"]
         if opt['verbose']:
-            print "\tDeploying updates now"
+            print("\tDeploying updates now")
             command += ["-v"]
         call(command, shell=False)
 

@@ -263,7 +263,7 @@ def log(level, *args):
     if not verbose:
         verbose = 0
     if verbose >= level:
-        print (', '.join(map(lambda i: str(i), args)))
+        print((', '.join(map(lambda i: str(i), args))))
 
 
 def split_and_log_to_level(level, spaces, string):
@@ -294,7 +294,7 @@ if __name__ == '__main__':
     parser = OptionParser(option_list=options_table)
     (options, args) = parser.parse_args()
     if not options.directory:
-        print "Export directory has to be specified. Try --help:\n"
+        print("Export directory has to be specified. Try --help:\n")
         parser.print_help()
         sys.exit(1)
 

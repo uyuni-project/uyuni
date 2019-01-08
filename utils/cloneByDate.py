@@ -58,9 +58,9 @@ def confirm(txt, options):
         while ['y', 'n'].count(response.lower()) == 0:
             response = raw_input(txt)
         if response.lower() == "n":
-            print "Cancelling"
+            print("Cancelling")
             sys.exit(0)
-        print ""
+        print("")
 
 
 def validate(channel_labels):
@@ -130,12 +130,12 @@ def main(options):
     log_debug(0, "Started spacewalk-clone-by-date")
     log_clean(0, pprint.pformat(cleansed))
 
-    print "Reading repository information."
+    print("Reading repository information.")
     if options.use_update_date:
         options.use_update_date = 'update_date'
     else:
         options.use_update_date = 'issue_date'
-    print "Using %s." % options.use_update_date
+    print("Using %s." % options.use_update_date)
 
     cloners = []
     needed_channels = []
@@ -149,10 +149,10 @@ def main(options):
             if len(options.parents) == 1:
                 src_parent = xmlrpc.get_original(options.parents[0])
                 if not src_parent:
-                    print ("Channel %s is not a cloned channel." % options.parents[0])
+                    print(("Channel %s is not a cloned channel." % options.parents[0]))
                     sys.exit(1)
-                print "Looking up the original channel for %s, %s found" % (
-                    options.parents[0], src_parent)
+                print("Looking up the original channel for %s, %s found" % (
+                    options.parents[0], src_parent))
                 options.parents = [src_parent] + options.parents
             # options.parents is only set by command line, this must be the
             # only channel tree
@@ -212,11 +212,11 @@ def main(options):
             for channel in channel_labels:
                 channel_errata = set(xmlrpc.list_errata(channel))
                 if set(errata - channel_errata):
-                    print ("Error: all errata specified with --errata must "
+                    print(("Error: all errata specified with --errata must "
                            + "exist in every original channel cloned in "
-                           + "this operation.")
-                    print ("Channel %s does not contain these errata: %s" %
-                           (channel, errata - channel_errata))
+                           + "this operation."))
+                    print(("Channel %s does not contain these errata: %s" %
+                           (channel, errata - channel_errata)))
                     sys.exit(1)
 
         tree_cloner = ChannelTreeCloner(channel_list, xmlrpc, db,
@@ -238,8 +238,8 @@ def main(options):
         return
 
     if needed_channels:
-        print "\nBy continuing the following channels will be created: "
-        print ", ".join(needed_channels)
+        print("\nBy continuing the following channels will be created: ")
+        print(", ".join(needed_channels))
         confirm("\nContinue with channel creation (y/n)?", options)
         for cloner in cloners:
             cloner.create_channels(options.skip_depsolve)
@@ -255,7 +255,7 @@ def main(options):
             now = datetime.datetime.now()
             for ch in d_errata:
                 log_file = ch + "_" + now.strftime("%Y-%m-%d-%H:%M")
-                print "# Log file: " + log_file
+                print("# Log file: " + log_file)
                 fh = open(log_file, 'w')
                 for errata in d_errata[ch]:
                     line = ""
@@ -265,7 +265,7 @@ def main(options):
                 fh.close()
         sys.exit(0)
 
-    print "\nBy continuing the following will be cloned:"
+    print("\nBy continuing the following will be cloned:")
     total = 0
     for cloner in cloners:
         cloner.pre_summary()
@@ -480,7 +480,7 @@ class ChannelTreeCloner:
         repos = [{"id": label, "relative_path": repodata(label)}
                  for label in labels]
 
-        print "Copying repodata, please wait."
+        print("Copying repodata, please wait.")
 
         # dep solver expects the metadata to be in /repodata directory;
         # create temporary symlinks
@@ -552,7 +552,7 @@ class ChannelTreeCloner:
 
         # recursively solve dependencies to get dependencies-of-dependencies
         if added_nevras:
-            print 'Dependencies added, looking for new dependencies'
+            print('Dependencies added, looking for new dependencies')
             self.__dep_solve(list(added_nevras))
 
     def remove_packages(self):
@@ -568,17 +568,17 @@ class ChannelTreeCloner:
         for cloner in self.cloners:
             if cloner.total_added_nevras > 0:
                 reported = 1
-                print '%s RPM(s) added to %s to resolve dependencies.' \
-                       % (cloner.total_added_nevras, cloner.dest_label())
+                print('%s RPM(s) added to %s to resolve dependencies.' \
+                       % (cloner.total_added_nevras, cloner.dest_label()))
                 cloner.total_added_nevras = 0
             if cloner.total_added_errata > 0:
                 reported = 1
-                print '%s errata added to %s to resolve dependencies.' \
-                       % (cloner.total_added_errata, cloner.dest_label())
+                print('%s errata added to %s to resolve dependencies.' \
+                       % (cloner.total_added_errata, cloner.dest_label()))
                 cloner.total_added_errata = 0
 
         if reported:
-            print 'Please see %s for details.' % LOG_LOCATION
+            print('Please see %s for details.' % LOG_LOCATION)
 
 class ChannelCloner:
     # pylint: disable=R0902
@@ -643,8 +643,8 @@ class ChannelCloner:
         return self.errata_to_clone
 
     def pre_summary(self):
-        print "  %s -> %s  (%i/%i Errata)" % (self.from_label, self.to_label,
-                                              len(self.errata_to_clone), len(self.available_errata))
+        print("  %s -> %s  (%i/%i Errata)" % (self.from_label, self.to_label,
+                                              len(self.errata_to_clone), len(self.available_errata)))
 
     def process(self):
         self.clone()
@@ -739,7 +739,7 @@ class ChannelCloner:
             return
 
         msg = 'Cloning Errata into %s (%i):' % (self.to_label, len(errata_ids))
-        print msg
+        print(msg)
         log_clean(0, "")
         log_clean(0, msg)
         for e in sorted(self.errata_to_clone):
@@ -823,8 +823,8 @@ class ChannelCloner:
         log_clean(0, "\n".join(found_names))
 
         if found_ids:
-            print "%s: Removing %i packages from %s" % (name, len(found_ids),
-                                                        self.to_label)
+            print("%s: Removing %i packages from %s" % (name, len(found_ids),
+                                                        self.to_label))
             self.remote_api.remove_packages(self.to_label, found_ids)
 
     def remove_removelist(self, pkg_names):

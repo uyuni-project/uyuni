@@ -139,7 +139,7 @@ def cleanup(options):
 
 def checkSuperUser():
     if os.geteuid() != 0:
-        print "You must be root to run this!"
+        print("You must be root to run this!")
         sys.exit(1)
 
 if __name__ == '__main__':

@@ -298,7 +298,7 @@ def parse_args():
                                 + "five arguments")
 
     if options.sample:
-        print SAMPLE_CONFIG
+        print(SAMPLE_CONFIG)
         sys.exit(0)
 
     if options.config and options.channels:

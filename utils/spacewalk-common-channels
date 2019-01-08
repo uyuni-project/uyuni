@@ -54,7 +54,7 @@ class ExtOptionParser(OptionParser):
 
     def print_help(self):
         OptionParser.print_help(self)
-        print "\n\n" + self.examples
+        print("\n\n" + self.examples)
 
 
 def connect(user, password, server):
@@ -178,18 +178,18 @@ Create everything as well as unlimited activation key for every channel:
     config.read(options.config)
 
     if options.list:
-        print "Available channels:"
+        print("Available channels:")
         channel_list = config.sections()
         if channel_list:
             for channel in sorted(channel_list):
                 channel_archs = config.get(channel, 'archs')
-                print " %-20s %s" % (channel + ":", channel_archs)
+                print(" %-20s %s" % (channel + ":", channel_archs))
         else:
-            print " [no channel available]"
+            print(" [no channel available]")
         sys.exit(0)
 
     if not args:
-        print parser.print_help()
+        print(parser.print_help())
         parser.exit()
 
     try:
