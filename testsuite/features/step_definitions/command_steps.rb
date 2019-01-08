@@ -23,6 +23,15 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
 end
 
+When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
+  node = get_target(host)
+  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  result.split("\n")[0, 15].each do |line|
+    line.force_encoding("UTF-8")
+    puts line
+  end
+end
+
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host == 'sle-minion'

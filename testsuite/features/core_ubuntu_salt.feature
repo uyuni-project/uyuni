@@ -42,7 +42,7 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
 
 @ubuntu_minion
   Scenario: Detect latest Salt changes on the Ubuntu minion
-    When I query latest Salt changes on "ubuntu-minion"
+    When I query latest Salt changes on ubuntu system "ubuntu-minion"
 
 @ubuntu_minion
   Scenario: Run a remote command on the Ubuntu minion
