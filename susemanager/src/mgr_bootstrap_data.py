@@ -339,6 +339,7 @@ PKGLIST15 = [
     "python3-pyzmq",
     "python3-requests",
     "python3-simplejson",
+    "python3-six",
     "python3-tornado",
     "python3-urllib3",
     "timezone",
