@@ -14,7 +14,9 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -39,13 +41,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.asList;
+
 /**
  * Test for {@link com.suse.manager.webui.utils.salt.ImageDeployedEvent}
  */
 public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     // Fixed test parameters
-    private MinionServer minionWithChannels;
+    private MinionServer testMinion;
     private Channel baseChannelX8664;
     private Map<String, Object> grains;
 
@@ -63,7 +67,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         ActionManager.setTaskomaticApi(taskomaticMock);
 
         // setup a minion
-        minionWithChannels = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinion = MinionServerFactoryTest.createTestMinionServer(user);
         grains = getGrains();
 
         // setup channels & product
@@ -74,7 +78,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         context().checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
 
-            allowing(saltMock).getGrains(minionWithChannels.getMinionId());
+            allowing(saltMock).getGrains(testMinion.getMinionId());
             will(returnValue(grains));
 
             List<Zypper.ProductInfo> pil = new ArrayList<>();
@@ -98,14 +102,37 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
      * (based on its product) assigned.
      */
     public void testChannelsAssigned() {
-        grains.put("machine_id", minionWithChannels.getMachineId());
+        grains.put("machine_id", testMinion.getMachineId());
 
         ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
         ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);
         EventMessage message = new ImageDeployedEventMessage(event);
         action.execute(message);
 
-        assertEquals(baseChannelX8664, minionWithChannels.getBaseChannel());
+        assertEquals(baseChannelX8664, testMinion.getBaseChannel());
+    }
+
+    /**
+     * Happy path scenario: machine_id grain is present.
+     * In this case we test that at the end of the Action, the minion has correct channels
+     * (based on its product) assigned. Old channel assignments will be overriden.
+     */
+    public void testBaseChannelChanged() throws Exception {
+        grains.put("machine_id", testMinion.getMachineId());
+
+        Channel oldBase = ChannelTestUtils.createBaseChannel(user);
+        SystemManager.subscribeServerToChannel(user, testMinion, oldBase);
+        Channel oldChild = ChannelTestUtils.createChildChannel(user, oldBase);
+        SystemManager.subscribeServerToChannel(user, testMinion, oldChild);
+        System.out.println(testMinion.getChannels());
+
+        ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
+        ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);
+        EventMessage message = new ImageDeployedEventMessage(event);
+        action.execute(message);
+
+        assertTrue(testMinion.getChannels().contains(baseChannelX8664));
+        assertFalse(testMinion.getChannels().removeAll(asList(oldBase, oldChild)));
     }
 
     /**
@@ -117,7 +144,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         EventMessage message = new ImageDeployedEventMessage(event);
         action.execute(message);
 
-        assertNull(minionWithChannels.getBaseChannel());
+        assertNull(testMinion.getBaseChannel());
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
