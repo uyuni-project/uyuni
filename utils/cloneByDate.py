@@ -21,13 +21,17 @@ import os
 import sys
 import shutil
 import tempfile
-import xmlrpclib
 import pprint
 import subprocess
 import datetime
 import re
 
 from yum.Errors import RepoError
+
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 
 try:
     from spacewalk.common import rhnLog
@@ -46,7 +50,7 @@ except ImportError:
     from common.rhnConfig import CFG, initCFG
     from satellite_tools.progress_bar import ProgressBar
 
-from depsolver import DepSolver
+from .depsolver import DepSolver
 
 
 LOG_LOCATION = '/var/log/rhn/errata-clone.log'
