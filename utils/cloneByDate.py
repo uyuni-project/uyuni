@@ -500,7 +500,7 @@ class ChannelTreeCloner:
                 self.__dep_solve(nvrea_list)
                 self.report_depsolve_results()
                 self.solver.cleanup()
-            except RepoError, e:
+            except RepoError as e:
                 raise UserRepoError(repo["id"], e.value)
         finally:
             # clean up temporary symlinks
@@ -854,7 +854,7 @@ class RemoteApi:
             self.username = username
             self.password = password
             self.__login()
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             raise UserError(e.faultString)
 
     def auth_check(self):
@@ -916,7 +916,7 @@ class RemoteApi:
         try:
             return self.client.channel.software.getDetails(self.auth_token,
                                                            label)
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             raise UserError(e.faultString + ": " + label)
 
     def add_packages(self, label, package_ids):
