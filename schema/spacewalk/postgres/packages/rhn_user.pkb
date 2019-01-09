@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 d80542ac99957b8d7be155ec3eef07dce1e574f0
+-- oracle equivalent source sha1 98b987747d62806810341a5c56981bf16069c68e
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -113,30 +113,6 @@ create or replace
 		perform rhn_exception.raise_exception('usgp_different_orgs');
 	exception when UNIQUE_VIOLATION then
 		perform rhn_exception.raise_exception('usgp_already_allowed');
-	end;
-$$ language plpgsql;
-
-create or replace
-	function remove_servergroup_perm(
-		user_id_in in numeric,
-		server_group_id_in in numeric
-	) returns void as $$
-        declare
-            perm record;
-	begin
-		for perm in
-			select	1
-			from	rhnUserServerGroupPerms
-			where	user_id = user_id_in
-				and server_group_id = server_group_id_in
-                loop
-		delete from rhnUserServerGroupPerms
-				where	user_id = user_id_in
-					and server_group_id = server_group_id_in;
-			perform rhn_cache.update_perms_for_user(user_id_in);
-			return;
-		end loop;
-		perform rhn_exception.raise_exception('usgp_not_allowed');
 	end;
 $$ language plpgsql;
 
