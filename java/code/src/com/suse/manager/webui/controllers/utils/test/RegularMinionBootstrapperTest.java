@@ -50,6 +50,8 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         context().checking(new Expectations() {{
             allowing(saltServiceMock).keyExists("myhost");
             will(returnValue(false));
+            allowing(saltServiceMock).keyPending("myhost");
+            will(returnValue(false));
 
             allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
             will(returnValue(keyPair));

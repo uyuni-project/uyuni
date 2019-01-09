@@ -128,6 +128,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         context().checking(new Expectations() {{
             allowing(saltServiceMock).keyExists("myhost");
             will(returnValue(false));
+            allowing(saltServiceMock).keyPending("myhost");
+            will(returnValue(false));
 
             allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
             will(returnValue(keyPair));
@@ -181,6 +183,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(of(key.getKey())));
 
             allowing(saltServiceMock).keyExists("myhost");
+            will(returnValue(false));
+            allowing(saltServiceMock).keyPending("myhost");
             will(returnValue(false));
 
             Key.Pair keyPair = mockKeyPair();
