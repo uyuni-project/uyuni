@@ -1,3 +1,4 @@
+- Reset channel assignments when base channel changes on registration (bsc#1118917)
 - Removed 'Manage Channels' shortcut for vendor channels (bsc#1115978)
 - Allow bootstrapping minions with a pending minion key being present (bsc#1119727)
 - Fix cloning channels when managing the same errata for both vendor and private orgs (bsc#1111686)
