@@ -498,7 +498,7 @@ When(/^I enable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   if file_exists?(node, '/usr/bin/zypper')
     cmd = "zypper mr --enable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+    cmd = "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
   else
     raise 'Not found: zypper or yum'
   end
@@ -510,7 +510,7 @@ When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
   if file_exists?(node, '/usr/bin/zypper')
     cmd = "zypper mr --disable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
-    cmd = "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+    cmd = "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
   else
     raise 'Not found: zypper or yum'
   end
