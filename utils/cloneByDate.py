@@ -19,6 +19,7 @@
 
 import os
 import sys
+import six
 import shutil
 import tempfile
 import pprint
@@ -50,6 +51,8 @@ except ImportError:
     from common.rhnConfig import CFG, initCFG
     from satellite_tools.progress_bar import ProgressBar
 
+from builtins import input
+
 from .depsolver import DepSolver
 
 
@@ -58,9 +61,13 @@ LOG_LOCATION = '/var/log/rhn/errata-clone.log'
 
 def confirm(txt, options):
     if not options.assumeyes:
-        response = raw_input(txt)
+        if six.PY2:
+            inputfn = raw_input
+        else:
+            inputfn = input
+        response = inputfn(txt)
         while ['y', 'n'].count(response.lower()) == 0:
-            response = raw_input(txt)
+            response = inputfn(txt)
         if response.lower() == "n":
             print("Cancelling")
             sys.exit(0)
