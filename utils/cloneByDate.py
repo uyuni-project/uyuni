@@ -733,7 +733,7 @@ class ChannelCloner:
             exist in the pkg_hash with key of N-V-R.A  format"""
         for i in needed_list:
             key = "%s-%s-%s.%s" % (i[0], i[1], i[3], i[4])
-            if pkg_list.has_key(key):
+            if key in pkg_list:
                 return pkg_list[key]
         return False
 
@@ -803,9 +803,9 @@ class ChannelCloner:
             return
 
         full_pkgs = []
-        if names_dict.has_key("ALL"):
+        if "ALL" in names_dict:
             full_pkgs += names_dict["ALL"]
-        if names_dict.has_key(self.dest_label()):
+        if self.dest_label() in names_dict:
             full_pkgs += names_dict[self.dest_label()]
 
         # removes all empty string pattern from the list
@@ -872,7 +872,7 @@ class RemoteApi:
     def list_channel_labels(self):
         self.auth_check()
         key = "chan_labels"
-        if self.cache.has_key(key):
+        if key in self.cache:
             return self.cache[key]
 
         chan_list = self.client.channel.listAllChannels(self.auth_token)
