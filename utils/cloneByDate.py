@@ -77,12 +77,12 @@ def validate(channel_labels):
         shutil.copytree(path, "%s/repodata/" % tmp)
 
     cmd = ["repoclosure"]
-    for label, path in tmp_dirs.items():
+    for label, path in list(tmp_dirs.items()):
         cmd.append("--repofrompath=%s,%s" % (label, path))
         cmd.append("--repoid=%s" % (label))
     subprocess.call(cmd)
 
-    for tmp in tmp_dirs.values():
+    for tmp in list(tmp_dirs.values()):
         shutil.rmtree(tmp, True)
 
 
@@ -169,7 +169,7 @@ def main(options):
         # TODO: the channel / parents structure needs to be cleaned up throught
         # clone-by-date. Probably best thing would to make everywhere use the
         # dict structure instead of the list structure.
-        for src_channel in channel_list.keys():
+        for src_channel in list(channel_list.keys()):
             dest_channel = channel_list[src_channel]
             # new-style config file channel specification
             if isinstance(dest_channel, dict):
@@ -200,7 +200,7 @@ def main(options):
 
         # before we start make sure we can get repodata for all channels
         # involved.
-        channel_labels = channel_list.keys()
+        channel_labels = list(channel_list.keys())
         for label in channel_labels:
             if not os.path.exists(repodata(label)):
                 raise UserRepoError(label)
@@ -231,14 +231,14 @@ def main(options):
                                         options.skip_errata_depsolve, parents)
 
         cloners.append(tree_cloner)
-        needed_channels += tree_cloner.needing_create().values()
+        needed_channels += list(tree_cloner.needing_create().values())
 
     if options.validate:
         if needed_channels:
             raise UserError("Cannot validate channels that do not exist %s" %
                             ', '.join(map(str, needed_channels)))
         for channel_list in options.channels:
-            validate(channel_list.values())
+            validate(list(channel_list.values()))
         return
 
     if needed_channels:
@@ -348,7 +348,7 @@ class ChannelTreeCloner:
                                 + " already exist.\nIf you want to clone the"
                                 + " parent channels too simply add another"
                                 + " --channels option.")
-        for src, dest in self.channel_map.items():
+        for src, dest in list(self.channel_map.items()):
             if dest[0] not in existing:
                 to_create[src] = dest[0]
         return to_create
@@ -376,39 +376,39 @@ class ChannelTreeCloner:
         nvreas = []
 
         #clone the destination parent if it doesn't exist
-        if dest_parent[0] in to_create.values():
+        if dest_parent[0] in list(to_create.values()):
             self.remote_api.clone_channel(self.src_parent, dest_parent, None)
             del to_create[self.src_parent]
             cloner = self.find_cloner(self.src_parent)
             nvreas += [pkg['nvrea'] for pkg in
-                       cloner.reset_new_pkgs().values()]
+                       list(cloner.reset_new_pkgs().values())]
         #clone the children
         for cloner in self.cloners:
-            if cloner.dest_label() in to_create.values():
+            if cloner.dest_label() in list(to_create.values()):
                 dest = self.channel_map[cloner.src_label()]
                 self.remote_api.clone_channel(cloner.src_label(),
                                               dest, dest_parent[0])
                 nvreas += [pkg['nvrea'] for pkg in
-                           cloner.reset_new_pkgs().values()]
+                           list(cloner.reset_new_pkgs().values())]
 
         #dep solve all added packages with the parent channel
         if not skip_depsolve:
-            self.dep_solve(nvreas, labels=(to_create.keys()
+            self.dep_solve(nvreas, labels=(list(to_create.keys())
                                            + [self.src_parent]))
 
     def validate_source_channels(self):
         self.channel_details = self.remote_api.channel_details(
             self.channel_map, values=False)
         if not self.src_parent:
-            self.src_parent = self.find_parent(self.channel_map.keys())
-        self.validate_children(self.src_parent, self.channel_map.keys())
+            self.src_parent = self.find_parent(list(self.channel_map.keys()))
+        self.validate_children(self.src_parent, list(self.channel_map.keys()))
 
     def validate_dest_channels(self):
         self.channel_details = self.remote_api.channel_details(
             self.channel_map)
         if not self.dest_parent:
-            self.dest_parent = self.find_parent(self.channel_map.values())
-        self.validate_children(self.dest_parent, self.channel_map.values())
+            self.dest_parent = self.find_parent(list(self.channel_map.values()))
+        self.validate_children(self.dest_parent, list(self.channel_map.values()))
 
     def validate_children(self, parent, channel_list):
         """ Make sure all children are children of the parent"""
@@ -441,8 +441,8 @@ class ChannelTreeCloner:
     def ordered_labels(self):
         """Return list of labels with parent first"""
         if self.parents_specified:
-            return self.channel_map.keys()
-        labels = self.channel_map.keys()
+            return list(self.channel_map.keys())
+        labels = list(self.channel_map.keys())
         labels.remove(self.src_parent)
         labels.insert(0, self.src_parent)
         return labels
@@ -480,7 +480,7 @@ class ChannelTreeCloner:
 
     def dep_solve(self, nvrea_list, labels=None):
         if not labels:
-            labels = self.channel_map.keys()
+            labels = list(self.channel_map.keys())
         repos = [{"id": label, "relative_path": repodata(label)}
                  for label in labels]
 
@@ -516,7 +516,7 @@ class ChannelTreeCloner:
         # pylint: disable=deprecated-lambda, unnecessary-lambda
         list_to_set = lambda x: set(map(lambda y: tuple(y), x))
         needed_list = dict((channel[0], [])
-                           for channel in self.channel_map.values())
+                           for channel in list(self.channel_map.values()))
         for cloner in self.cloners:
             if not cloner.dest_label() in self.visited:
                 self.visited[cloner.dest_label()] = list_to_set(needed_list[cloner.dest_label()])
@@ -532,7 +532,7 @@ class ChannelTreeCloner:
         for pkg in deps:
             pb.addTo(1)
             pb.printIncrement()
-            for solved_list in pkg.values():
+            for solved_list in list(pkg.values()):
                 for cloner in self.cloners:
                     if cloner.src_pkg_exist(solved_list) and not cloner.dest_pkg_exist(solved_list):
                         #grab oldest package
@@ -619,8 +619,8 @@ class ChannelCloner:
         return self.from_label
 
     def pkg_diff(self):
-        return diff_packages(self.old_pkg_hash.values(),
-                             self.new_pkg_hash.values())
+        return diff_packages(list(self.old_pkg_hash.values()),
+                             list(self.new_pkg_hash.values()))
 
     def reset_original_pkgs(self):
         self.old_pkg_hash = dict((pkg['nvrea'], pkg)
@@ -832,7 +832,7 @@ class ChannelCloner:
             self.remote_api.remove_packages(self.to_label, found_ids)
 
     def remove_removelist(self, pkg_names):
-        self.__remove_packages(pkg_names, self.reset_new_pkgs().values(),
+        self.__remove_packages(pkg_names, list(self.reset_new_pkgs().values()),
                                "Removelist")
 
     def remove_blacklisted(self, pkg_names):
@@ -885,7 +885,7 @@ class RemoteApi:
     def channel_details(self, label_hash, keys=True, values=True):
         self.auth_check()
         to_ret = {}
-        for src, dst in label_hash.items():
+        for src, dst in list(label_hash.items()):
             if keys:
                 to_ret[src] = self.get_details(src)
             if values:
