@@ -22,7 +22,6 @@
 import logging
 import os
 import sys
-import xmlrpclib
 import string
 from string import lower
 from ConfigParser import SafeConfigParser
@@ -30,6 +29,11 @@ from optparse import OptionParser, OptionGroup
 from os import path, access, R_OK
 from os.path import expanduser
 import getpass
+
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 
 CONF_DIR = os.path.expanduser('~/.spacewalk-sync-setup')
 USER_CONF_FILE = os.path.join(CONF_DIR, 'config')

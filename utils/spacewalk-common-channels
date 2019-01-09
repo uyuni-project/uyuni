@@ -15,12 +15,16 @@
 #
 
 import sys
-import xmlrpclib
 import fnmatch
 import ConfigParser
 from optparse import OptionParser, Option
 import re
 from spacewalk.common.cli import getUsernamePassword, xmlrpc_login, xmlrpc_logout
+
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 
 DEFAULT_SERVER = "localhost"
 

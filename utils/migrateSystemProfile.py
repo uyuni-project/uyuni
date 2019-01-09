@@ -12,7 +12,10 @@ Author: Pradeep Kilambi <pkilambi@redhat.com>
 
 import os
 import sys
-import xmlrpclib
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 
 from optparse import OptionParser, Option
 from spacewalk.common.cli import getUsernamePassword, xmlrpc_login, xmlrpc_logout

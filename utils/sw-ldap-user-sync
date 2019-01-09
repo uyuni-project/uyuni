@@ -8,10 +8,14 @@
 ## author: Christian Berendt <berendt@b1-systems.de>, 2011.
 
 import logging
-import xmlrpclib
 import ldap
 import yaml
 import sys
+
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 
 logging.basicConfig(
     filename = "/var/log/sw-ldap-user-sync.log",

@@ -24,12 +24,20 @@ import sys
 import time
 import os
 import re
-import xmlrpclib
-import httplib
 from time import localtime
 from sys import argv
 import getpass
 from subprocess import call
+
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
+
+try:
+    import httplib
+except ImportError:
+    import httplib.client as httplib  # pylint: disable=F0401
 
 prog = sys.argv[0]
 today = "%d-%d-%d" % (localtime()[2], localtime()[1], localtime()[0])
