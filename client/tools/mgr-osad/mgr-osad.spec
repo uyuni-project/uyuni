@@ -187,7 +187,7 @@ Group:          System Environment/Daemons
 Obsoletes:      osa-dispatcher < %{oldversion}
 Provides:       osa-dispatcher = %{oldversion}
 Requires:       lsof
-Requires:       python2-mgr-osa-dispatcher = %{version}-%{release}
+Requires:       %{pythonX}-mgr-osa-dispatcher = %{version}-%{release}
 Requires:       spacewalk-backend-server >= 1.2.32
 Conflicts:      %{name} < %{version}-%{release}
 Conflicts:      %{name} > %{version}-%{release}
