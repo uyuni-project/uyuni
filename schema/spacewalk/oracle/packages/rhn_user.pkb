@@ -105,26 +105,6 @@ is
 		rhn_exception.raise_exception('usgp_already_allowed');
 	end add_servergroup_perm;
 
-	procedure remove_servergroup_perm(
-		user_id_in in number,
-		server_group_id_in in number
-	) is
-		cursor perms is
-			select	1
-			from	rhnUserServerGroupPerms
-			where	user_id = user_id_in
-				and server_group_id = server_group_id_in;
-	begin
-		for perm in perms loop
-			delete from rhnUserServerGroupPerms
-				where	user_id = user_id_in
-					and server_group_id = server_group_id_in;
-			rhn_cache.update_perms_for_user(user_id_in);
-			return;
-		end loop;
-		rhn_exception.raise_exception('usgp_not_allowed');
-	end remove_servergroup_perm;
-
 	procedure add_to_usergroup(
 		user_id_in in number,
 		user_group_id_in in number

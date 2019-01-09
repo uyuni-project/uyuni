@@ -32,11 +32,6 @@ is
 		server_group_id_in in number
 	);
 
-	procedure remove_servergroup_perm(
-		user_id_in in number,
-		server_group_id_in in number
-	);
-
 	procedure add_to_usergroup(
 		user_id_in in number,
 		user_group_id_in in number
