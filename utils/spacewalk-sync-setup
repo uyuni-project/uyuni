@@ -215,7 +215,7 @@ def setupConfig(opt):
             # create ~/.spacewalk-sync-setup
             if not os.path.isdir(CONF_DIR):
                 logging.debug('Creating %s' % CONF_DIR)
-                os.mkdir(CONF_DIR, 0700)
+                os.mkdir(CONF_DIR, 0o700)
 
             # create a template configuration file
             logging.debug('Creating configuration file: %s' % USER_CONF_FILE)

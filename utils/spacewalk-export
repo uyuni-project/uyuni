@@ -152,9 +152,9 @@ def setupEntities(options):
 
 def setupOutputDir(options):
     if not os.path.isdir(options.export_dir):
-        os.mkdir(options.export_dir, 0700)
+        os.mkdir(options.export_dir, 0o700)
     if not os.path.isdir(options.export_dir + '/' + REPORTS_DIR):
-        os.mkdir(options.export_dir + '/' + REPORTS_DIR, 0700)
+        os.mkdir(options.export_dir + '/' + REPORTS_DIR, 0o700)
 
 # Did we get an orgs-list? If so, return an array of --where entries
 
@@ -208,7 +208,7 @@ def channelsDump(options):
 
     channel_export_dir = options.export_dir + '/' + REPORTS_DIR + '/' + 'CHANNELS'
     if not os.path.isdir(channel_export_dir):
-        os.mkdir(channel_export_dir, 0700)
+        os.mkdir(channel_export_dir, 0o700)
     _my_call(['/usr/bin/spacewalk-export-channels', '-d', channel_export_dir, '-f', 'FORCE'] + extra_args)
     return
 

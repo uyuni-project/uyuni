@@ -102,7 +102,7 @@ def setup_config(config):
     if not os.path.exists(CONF_DIR):
         logging.debug("Creating directory: %s" % CONF_DIR)
         try:
-            os.mkdir(CONF_DIR, 0700)
+            os.mkdir(CONF_DIR, 0o700)
         except IOError:
             logging.error("Unable to create %s" % CONF_DIR)
             sys.exit(1)
