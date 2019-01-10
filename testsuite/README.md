@@ -6,7 +6,7 @@ This is the automated testsuite for [SUSE Manager](https://www.suse.com/products
 
 Before you start, make sure you know about the [**basic concepts**](https://cucumber.io/docs/reference) of Cucumber that we are using in this testsuite: features, scenarios and steps.
 
-Apart from Cucumber, the testsuite relies on a number of [software components](docs/software-components.md).
+Apart from Cucumber, the testsuite relies on a number of [software components](documentation/software-components.md).
 
 
 # Running the testsuite
@@ -17,7 +17,7 @@ You can run the SUSE Manager testsuite [with sumaform](https://github.com/moio/s
 
 The tests (features) included in the `[testsuite.yml](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml)` file will be executed sequentially from the top to the bottom.
 
-[Idempotency](docs/idempotency.md) is the faculty to run same the feature any number of times. The basic idea of such a feature is that it does not change its environment.
+[Idempotency](documentation/idempotency.md) is the faculty to run same the feature any number of times. The basic idea of such a feature is that it does not change its environment.
 
 The features are grouped by core and secondary features.
 
@@ -27,7 +27,7 @@ The **secondary features** can be run any number of times, and the order is not 
 
 ## Optional components
 
-To know how to test with or without optional components like a proxy, a CentOS minion or a SSH minion, look at the [optional components instructions](docs/optional.md).
+To know how to test with or without optional components like a proxy, a CentOS minion or a SSH minion, look at the [optional components instructions](documentation/optional.md).
 
 
 # Contributing
@@ -39,13 +39,13 @@ To know how to test with or without optional components like a proxy, a CentOS m
 
 ## Guidelines for coding
 
-To get started, see the documentation about [Using and writing Cucumber steps](docs/cucumber-steps.md). It covers most common steps in an ordered manner, as well as the way to write new steps.
+To get started, see the documentation about [Using and writing Cucumber steps](documentation/cucumber-steps.md). It covers most common steps in an ordered manner, as well as the way to write new steps.
 
-Please read with attention the [guidelines](docs/Guidelines.md). They cover style issues, idempotency concerns, file naming conventions, and features, scenarios and test naming conventions.
+Please read with attention the [guidelines](documentation/guidelines.md). They cover style issues, idempotency concerns, file naming conventions, and features, scenarios and test naming conventions.
 
-Check the [code coverage results](docs/codecoverage.md) after you have run the test suite with your code.
+Check the [code coverage results](documentation/codecoverage.md) after you have run the test suite with your code.
 
-There are also hints about [Pitfalls in writing the testsuite](docs/Pitfalls-test.md).
+There are also hints about [Pitfalls in writing the testsuite](documentation/pitfalls.md).
 
 
 # Branches used
