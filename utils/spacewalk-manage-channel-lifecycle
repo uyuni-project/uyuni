@@ -27,13 +27,17 @@ import re
 import sys
 import time
 from optparse import Option, OptionParser
-import ConfigParser
 from socket import gethostname
 
 try:
     import xmlrpclib
 except ImportError:
     import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
+
+try:
+    import ConfigParser
+except ImportError:
+    import configparser as ConfigParser
 
 
 class Config(object):
