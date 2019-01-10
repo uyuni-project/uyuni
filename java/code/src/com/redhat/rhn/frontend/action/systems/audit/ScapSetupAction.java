@@ -35,6 +35,7 @@ public abstract class ScapSetupAction extends RhnAction {
     private static final String SPACEWALK_OSCAP = "spacewalk-oscap";
     private static final String OPENSCAP_SUSE_PKG = "openscap-utils";
     private static final String OPENSCAP_REDHAT_PKG = "openscap-scanner";
+    private static final String OPENSCAP_DEBIAN_PKG = "libopenscap8";
 
     protected void setupScapEnablementInfo(RequestContext context) {
         Server server = context.lookupAndBindServer();
@@ -43,9 +44,17 @@ public abstract class ScapSetupAction extends RhnAction {
         String requiredPkg = SPACEWALK_OSCAP;
         if (server.asMinionServer().isPresent()) {
             MinionServer minion = server.asMinionServer().get();
-            requiredPkg = minion.getOsFamily().equals("Suse") ?
-                    OPENSCAP_SUSE_PKG : OPENSCAP_REDHAT_PKG;
-            InstalledPackage installedPkg =
+            
+	    switch(minion.getOsFamily()) {
+                case "Suse":    requiredPkg = OPENSCAP_SUSE_PKG;
+                                break;
+
+                case "Debian":  requiredPkg = OPENSCAP_DEBIAN_PKG;
+                                break;
+
+                default:        requiredPkg = OPENSCAP_REDHAT_PKG;
+            }
+	    InstalledPackage installedPkg =
                     PackageFactory.lookupByNameAndServer(requiredPkg, server);
             if (installedPkg != null) {
                 enabled = true;
