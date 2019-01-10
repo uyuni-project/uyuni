@@ -1,9 +1,5 @@
 ## Guidelines for writing the testsuite
 
-See [here](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/docs/Pitfalls-test.md)
-for more details on recommandations.
-
-
 ### Directory layout
 
 * `testsuite/features`: definition of tests of software features, in English
@@ -39,13 +35,9 @@ exhaustive list, look at the steps themselves under `features/step_definitions/`
 
 ### Idempotency
 
-[Idempotency](docs/idempotency.md) is the faculty to run same the feature any number of times. The basic idea of such a feature is that it does not change its environment.
+Idempotency is the faculty to run same the feature any number of times. The basic idea of such a feature is that it does not change its environment. Our secondary features (the features run after the core features) are supposed to be idempotent.
 
-**Always** create an idempotent feature, and **always** as a secondary feature (a feature that is run after all core features). If the feature is not idempotent, it will be not merged.
-
-To acheive idempotency, you may create preparation scenarios at the beginning of your scenarios to prepare for the other tests, and cleanup scenarios at the end of your features.
-
-If you do operations on packages, look [here](Patches_test.md).
+Idempotency is a topic of its own. Please refer to [idempotency documentation](idempotency.md) for details.
 
 
 ### Phrasing
@@ -117,3 +109,6 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
  * Don't use ```fail```, prefer minitest assertions like ```assert_equal```
  * Don't use global variables, prefer member variables
 
+### Other
+
+See [pitfalls documentation](pitfalls.md) for more details on the problems you might face and more recommandations.
