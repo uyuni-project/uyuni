@@ -138,7 +138,7 @@ install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certific
 
 %if 0%{?suse_version} > 1320
 mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
-install -m 0644 etc/firewalld/services/suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/services
+install -m 0644 suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/services
 %endif
 
 %check
