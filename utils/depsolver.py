@@ -125,7 +125,7 @@ class DepSolver:
             found = self.processResults(results)[0]
             solved += to_solve
             to_solve = []
-            for _dep, pkgs in found.items():
+            for _dep, pkgs in list(found.items()):
                 for pkg in pkgs:
                     name, version, _epoch, release, arch = pkg
                     ndep = "%s-%s-%s.%s" % (name, version, release, arch)
@@ -189,7 +189,7 @@ class DepSolver:
                     continue
                 reqlist[prco_tuple_to_string(req)] = rlist
         found = {}
-        for req, rlist in reqlist.items():
+        for req, rlist in list(reqlist.items()):
             found[req] = []
             for r in rlist:
                 dep = [r.name, r.version, r.epoch, r.release, r.arch]

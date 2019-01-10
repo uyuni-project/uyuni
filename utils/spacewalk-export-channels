@@ -224,7 +224,7 @@ def create_repository(repo_dir, options):
 
 
 def pkgs_available_in_repos(pkg, repo_packages):
-    for id, packages in repo_packages.iteritems():
+    for id, packages in list(repo_packages.items()):
         if pkg['nevra'] in packages:
             return id
     return None

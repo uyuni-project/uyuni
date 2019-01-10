@@ -113,7 +113,7 @@ def add_channels(channels, section, arch, client):
                 # Otheriwse there isn't such base channel so skip also child
                 continue
             # set base channel values so they can be used as macros
-            for (k, v) in channels[channel['base_channel']].items():
+            for (k, v) in list(channels[channel['base_channel']].items()):
                 config.set(section, 'base_channel_' + k, v)
 
         for k in optional:
@@ -234,7 +234,7 @@ Create everything as well as unlimited activation key for every channel:
     child_channels = {}
     # filter out non-matching channels
     for pattern in args:
-        matching_channels = [n for n in channels.keys()
+        matching_channels = [n for n in list(channels.keys())
                              if fnmatch.fnmatch(channels[n]['section'], pattern)]
         for name in matching_channels:
             attr = channels[name]

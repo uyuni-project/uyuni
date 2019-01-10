@@ -83,7 +83,7 @@ for uid in data['member']:
         logging.error("unable to fetch user details for user %s from LDAP server: %s" % (uid, e))
 
 
-for user in users.keys():
+for user in list(users.keys()):
     logging.info("deleting user %s" % user)
 
     try:

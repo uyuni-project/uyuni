@@ -125,7 +125,7 @@ def setupLogging(opt):
 
 def listSupported():
     logging.info('Currently-supported entities include:')
-    for s in SUPPORTED_ENTITIES.keys():
+    for s in list(SUPPORTED_ENTITIES.keys()):
         logging.info('%20s : %s' % (s, SUPPORTED_ENTITIES[s]))
 
     return
@@ -135,14 +135,14 @@ def setupEntities(options):
     entities = {}
     doAll = options.entities == 'all'
 
-    for s in SUPPORTED_ENTITIES.keys():
+    for s in list(SUPPORTED_ENTITIES.keys()):
         entities[s] = doAll
 
     if doAll:
         return entities
 
     for e in split(options.entities, ','):
-        if e in entities.keys():
+        if e in list(entities.keys()):
             entities[e] = True
         else:
             logging.error('ERROR: unsupported entity ' + e + ', skipping...')
@@ -341,7 +341,7 @@ if __name__ == '__main__':
     entities = setupEntities(options)
     setupOutputDir(options)
 
-    for entity in entities.keys():
+    for entity in list(entities.keys()):
         if (entities[entity]):
             logging.debug('DUMPING ' + entity)
             # dump-function name is <entity>Dump(options)

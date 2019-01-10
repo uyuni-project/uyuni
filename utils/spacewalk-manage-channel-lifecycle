@@ -170,7 +170,7 @@ def print_channel_tree():
     # print the channels in a tree format
     print("Channel tree:")
     idx = 1
-    step = len(str(len(tree.keys())))
+    step = len(str(len(list(tree.keys()))))
     for parent in sorted(tree.keys()):
         if len(tree[parent]):
             print()
