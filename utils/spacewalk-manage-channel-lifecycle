@@ -132,7 +132,7 @@ def parse_enumerated(data):
     """
     items = []
     if data:
-        items = filter(None, map(lambda i: i.strip(), data.split(",")))
+        items = filter(None, [i.strip() for i in data.split(",")])
 
     return items
 
