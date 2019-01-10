@@ -15,7 +15,6 @@
 import datetime
 import time
 import struct
-import StringIO
 import signal
 import sys
 import curses
@@ -24,6 +23,12 @@ import argparse
 import os.path
 
 from spacewalk.server import rhnSQL
+
+try:
+    # python 2
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 DEFAULT_LOGFILE = './taskotop.log'
@@ -299,7 +304,7 @@ def extract_channel_ids(bytes):
     # represent numbers, we assume they are channel_ids
     # (currently this is the case)
     java_strings = []
-    io = StringIO.StringIO(bytes)
+    io = StringIO(bytes)
     while True:
         char = io.read(1)
         if char == "":

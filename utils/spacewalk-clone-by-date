@@ -22,10 +22,15 @@ import sys
 import datetime
 import getpass
 import os
-import StringIO
 from optparse import OptionParser
 import simplejson as json
 from socket import gethostname
+
+try:
+    # python 2
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 _LIBPATH = "/usr/share/rhn"
 if _LIBPATH not in sys.path:
@@ -90,7 +95,7 @@ def merge_config(options):
 
     try:
         config_file = open(options.config).read()
-        config = json.load(StringIO.StringIO(config_file))
+        config = json.load(StringIO(config_file))
     except:
         raise UserError("Configuration file is invalid, please check syntax.")
 
