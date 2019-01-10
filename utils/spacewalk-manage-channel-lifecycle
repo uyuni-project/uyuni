@@ -123,7 +123,11 @@ def ask(msg, password=False):
     msg += ": "
     if password:
         return getpass.getpass(msg)
-    return raw_input(msg)
+    if six.PY2:
+        inputfn = raw_input
+    else:
+        inputfn = input
+    return inputfn(msg)
 
 
 def parse_enumerated(data):

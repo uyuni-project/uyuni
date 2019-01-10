@@ -614,7 +614,11 @@ def describe_master_template(master_setup_filename):
 
 def ask(msg, password=False):
     msg += ": "
-    return password and getpass.getpass(msg) or raw_input(msg)
+    if six.PY2:
+        inputfn = raw_input
+    else:
+        inputfn = input
+    return password and getpass.getpass(msg) or inputfn(msg)
 
 
 def fail(msg):
