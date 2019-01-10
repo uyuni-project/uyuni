@@ -393,7 +393,7 @@ def gen_slave_template(slave_session, master_session, master, filename, dflt_mas
     logging.info("About to wget master CA cert: [" + wget_cmd + "]")
     try:
         os.system(wget_cmd)
-    except Exception, e:
+    except Exception as e:
         logging.error("...FAILED - do you have permission to write to /usr/share/rhn?")
         logging.exception()
 
@@ -409,7 +409,7 @@ def gen_slave_template(slave_session, master_session, master, filename, dflt_mas
         configfile = open(filename, 'w+')
         slave_setup.write(configfile)
         configfile.close()
-    except IOError, e:
+    except IOError as e:
         logging.error("FAILED to write to slave template [" + filename + "]")
         sys.exit(1)
 
@@ -449,7 +449,7 @@ def gen_master_template(master_session, slave, filename):
         mfile = open(filename, 'w+')
         master_setup.write(mfile)
         mfile.close()
-    except IOError, e:
+    except IOError as e:
         logging.error("FAILED to write to master template [" + mfile + "]")
         sys.exit(1)
 
@@ -473,7 +473,7 @@ def apply_slave_template(slave_session, slave_setup_filename):
     for fqdn in fqdns:
         try:
             master = client.sync.master.getMasterByLabel(key, fqdn)
-        except Exception, e:
+        except Exception as e:
             master = client.sync.master.create(key, fqdn)
 
         master_orgs = []
@@ -554,7 +554,7 @@ def apply_master_template(master_session, master_setup_filename):
     for fqdn in fqdns:
         try:
             slave = client.sync.slave.getSlaveByName(key, fqdn)
-        except Exception, e:
+        except Exception as e:
             slave = client.sync.slave.create(key, fqdn, True, True)
 
         isEnabled = True

@@ -213,7 +213,7 @@ def deleteBySystemBetweenDates(sessionKey, systemIds, startDate, endDate):
                     sessionKey, systemId,
                     {"startDate": startDate, "endDate": endDate})
 
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             # print an error and go to the next system
             sys.stderr.write("Error: %s\n" % e.faultString)
 
@@ -241,7 +241,7 @@ def deleteBySystemAfterDate(sessionKey, systemIds, startDate):
                 client.system.provisioning.snapshot.deleteSnapshots(
                     sessionKey, systemId, {"startDate": startDate})
 
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             # print an error and go to the next system
             sys.stderr.write("Error: %s\n" % e.faultString)
 
@@ -268,7 +268,7 @@ def deleteBySystem(sessionKey, systemIds):
                 client.system.provisioning.snapshot.deleteSnapshots(
                     sessionKey, systemId, {})
 
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             # print an error and go to the next system
             sys.stderr.write("Error: %s\n" % e.faultString)
 
@@ -291,7 +291,7 @@ def deleteBySnapshotId(sessionKey, snapshotIds):
                 client.system.provisioning.snapshot.deleteSnapshot(sessionKey,
                                                                    int(snapshotId))
 
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             # print an error and go to the next system
             sys.stderr.write("Error: %s\n" % e.faultString)
 

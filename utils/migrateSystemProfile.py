@@ -117,7 +117,7 @@ def migrate_system(key, newOrgId, server_ids):
         print("Migrating systemIds %s to Org %s" % (server_ids, newOrgId))
     try:
         client.org.migrateSystems(key, newOrgId, server_ids)
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         sys.stderr.write("Error: %s\n" % e.faultString)
         sys.exit(-1)
 

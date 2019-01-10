@@ -424,7 +424,7 @@ def main():
         return cloneByDate.main(args)
     except KeyboardInterrupt:
         systemExit(0, "\nUser interrupted process.")
-    except UserError, error:
+    except UserError as error:
         systemExit(-1, "\n%s" % error)
     return 0
 

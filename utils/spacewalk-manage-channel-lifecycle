@@ -187,7 +187,7 @@ def channel_exists(channel, quiet=False):
     try:
         client.channel.software.getDetails(session, channel)
         return True
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
         if not quiet:
@@ -223,7 +223,7 @@ def merge_channels(source_label, dest_label):
                                                              dest_label)
 
             logging.info('Added %i packages' % len(packages))
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
             logging.error('Failed to merge packages')
@@ -244,7 +244,7 @@ def merge_channels(source_label, dest_label):
                                                              dest_label)
 
                 logging.info('Added %i errata' % len(errata))
-            except xmlrpclib.Fault, e:
+            except xmlrpclib.Fault as e:
                 if options.debug:
                     logging.exception(e)
                 logging.error('Failed to merge errata')
@@ -271,7 +271,7 @@ def clone_channel(source_label, details):
     if not options.dry_run:
         try:
             client.channel.software.clone(session, source_label, details, False)
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
             logging.error('Failed to clone channel')
@@ -294,7 +294,7 @@ def clear_channel(label):
                                                  label,
                                                  errata_names,
                                                  False)
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
             logging.warning('Failed to clear errata from %s' % label)
@@ -425,7 +425,7 @@ options.workflow = options.workflow or Config.SECTION_GENERAL
 config = Config(USER_CONF_FILE)
 try:
     setup_config(config)
-except ConfigParser.ParsingError, ex:
+except ConfigParser.ParsingError as ex:
     logging.error("Unable to process configuration:\n" + str(ex))
     sys.exit(1)
 
@@ -485,7 +485,7 @@ if os.path.exists(SESSION_CACHE):
         fh = open(SESSION_CACHE, 'r')
         session = fh.readline()
         fh.close()
-    except IOError, e:
+    except IOError as e:
         if options.debug:
             logging.exception(e)
         logging.debug('Failed to read session cache')
@@ -493,7 +493,7 @@ if os.path.exists(SESSION_CACHE):
     # validate the session
     try:
         client.channel.listMyChannels(session)
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
         logging.warning('Existing session is invalid')
@@ -517,7 +517,7 @@ if not session:
     # login to the server
     try:
         session = client.auth.login(options.username, options.password)
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
         logging.error('Failed to log into %s' % options.server)
@@ -528,7 +528,7 @@ if not session:
         fh = open(SESSION_CACHE, 'w')
         fh.write(session)
         fh.close()
-    except IOError, e:
+    except IOError as e:
         if options.debug:
             logging.exception(e)
         logging.warning('Failed to write session cache')
@@ -537,7 +537,7 @@ if not session:
 try:
     all_channels = client.channel.listSoftwareChannels(session)
     all_channel_labels = [c.get('label') for c in all_channels]
-except xmlrpclib.Fault, e:
+except xmlrpclib.Fault as e:
     if options.debug:
         logging.exception(e)
     logging.error('Could not retrieve the list of software channels')

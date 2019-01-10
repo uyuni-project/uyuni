@@ -133,7 +133,7 @@ def channel_exists(client, base_channel_label):
         return base_info
     # We should improve this as a connection failure would be the same
     # as not finding the channel
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         return None
 
 
@@ -204,7 +204,7 @@ Create everything as well as unlimited activation key for every channel:
         client, key = connect(options.user, options.password, options.server)
         user_info = client.user.getDetails(key, options.user)
         org_id = user_info['org_id']
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         if e.faultCode == 2950:
             sys.stderr.write("Either the password or username is incorrect.\n")
             sys.exit(2)
@@ -283,7 +283,7 @@ Create everything as well as unlimited activation key for every channel:
                                                        base_info['yumrepo_url'])
                     client.channel.software.associateRepo(key,
                                                           base_info['label'], base_info['yum_repo_label'])
-                except xmlrpclib.Fault, e:
+                except xmlrpclib.Fault as e:
                     if e.faultCode != 1200:  # ignore if channel exists
                         sys.stderr.write("ERROR: %s: %s\n" % (
                             base_info['label'], e.faultString))
@@ -309,7 +309,7 @@ Create everything as well as unlimited activation key for every channel:
                                    int(options.key_limit), [], False)
                     try:
                         client.activationkey.create(*ak_args)
-                    except xmlrpclib.Fault, e:
+                    except xmlrpclib.Fault as e:
                         if e.faultCode != 1091:  # ignore if ak exists
                             sys.stderr.write("ERROR: %s: %s\n" % (
                                 base_info['label'], e.faultString))
@@ -327,7 +327,7 @@ Create everything as well as unlimited activation key for every channel:
                                                 base_info['name'], base_info['dist_map_release'],
                                                 base_info['arch'], base_info['label'])
 
-            except xmlrpclib.Fault, e:
+            except xmlrpclib.Fault as e:
                 sys.stderr.write("ERROR: %s: %s\n" % (
                     base_info['label'], e.faultString))
 
@@ -359,7 +359,7 @@ Create everything as well as unlimited activation key for every channel:
                                                        child_info['yumrepo_url'])
                     client.channel.software.associateRepo(key,
                                                           child_info['label'], child_info['yum_repo_label'])
-                except xmlrpclib.Fault, e:
+                except xmlrpclib.Fault as e:
                     if e.faultCode != 1200:  # ignore if channel exists
                         sys.stderr.write("ERROR: %s: %s\n" % (
                             child_info['label'], e.faultString))
@@ -381,7 +381,7 @@ Create everything as well as unlimited activation key for every channel:
                         try:
                             client.activationkey.addChildChannels(key,
                                                                   activationkey, [child_info['label']])
-                        except xmlrpclib.Fault, e:
+                        except xmlrpclib.Fault as e:
                             sys.stderr.write("ERROR: %s: %s\n" % (
                                 child_info['label'], e.faultString))
 
