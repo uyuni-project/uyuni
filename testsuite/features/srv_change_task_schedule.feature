@@ -1,7 +1,7 @@
-# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Change the schedule of task mgr-sync-refresh-default
+Feature: Change the schedule of a task
 
   Scenario: Change the schedule of task mgr-sync-refresh-default
     Given I am authorized as "admin" with password "admin"
