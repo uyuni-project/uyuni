@@ -7,6 +7,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
+import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -48,9 +49,9 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         Key.Pair keyPair = mockKeyPair();
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).keyExists("myhost");
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
-            allowing(saltServiceMock).keyPending("myhost");
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
             will(returnValue(false));
 
             allowing(saltServiceMock).generateKeysAndAccept("myhost", false);

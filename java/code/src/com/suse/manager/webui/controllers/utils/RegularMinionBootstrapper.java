@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
@@ -105,7 +106,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
         // If a key is pending for this minion, temporarily reject it
         boolean weRejectedIt = false;
-        if (saltService.keyPending(minionId)) {
+        if (saltService.keyExists(minionId, KeyStatus.UNACCEPTED)) {
             LOG.info("Pending key exists for " + minionId + ", rejecting...");
             saltService.rejectKey(minionId);
             weRejectedIt = true;

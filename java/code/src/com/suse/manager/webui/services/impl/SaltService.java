@@ -152,6 +152,13 @@ public class SaltService {
     private final ScheduledExecutorService scheduledExecutorService =
             Executors.newScheduledThreadPool(5);
 
+    /**
+     * Enum of all the available status for Salt keys.
+     */
+    public enum KeyStatus {
+        ACCEPTED, DENIED, UNACCEPTED, REJECTED
+    }
+
     // Prevent instantiation
     SaltService() {
         RequestConfig requestConfig = RequestConfig.custom()
@@ -356,27 +363,24 @@ public class SaltService {
     }
 
     /**
-     * For a given minion id check if there is a key in any status excluding keys pending for registration.
+     * For a given minion id check if there is a key in any of the given status. If no status is given as parameter,
+     * all the available status are considered.
      *
      * @param id the id to check for
+     * @param statusIn array of key status to consider
      * @return true if there is a key with the given id, false otherwise
      */
-    public boolean keyExists(String id) {
-        Key.Names keys = getKeys();
-        return keys.getMinions().contains(id) ||
-                keys.getRejectedMinions().contains(id) ||
-                keys.getDeniedMinions().contains(id);
-    }
+    public boolean keyExists(String id, KeyStatus... statusIn) {
+        final Set<KeyStatus> status = new HashSet<>(Arrays.asList(statusIn));
+        if (status.isEmpty()) {
+            status.addAll(Arrays.asList(KeyStatus.values()));
+        }
 
-    /**
-     * For a given minion id check if there is a key pending in "Unaccepted Keys".
-     *
-     * @param id the minion id to look for in "Unaccepted Keys"
-     * @return true if there is a key with the given id, false otherwise
-     */
-    public boolean keyPending(String id) {
         Key.Names keys = getKeys();
-        return keys.getUnacceptedMinions().contains(id);
+        return status.contains(KeyStatus.ACCEPTED) && keys.getMinions().contains(id) ||
+                status.contains(KeyStatus.DENIED) && keys.getDeniedMinions().contains(id) ||
+                status.contains(KeyStatus.UNACCEPTED) && keys.getUnacceptedMinions().contains(id) ||
+                status.contains(KeyStatus.REJECTED) && keys.getRejectedMinions().contains(id);
     }
 
     /**

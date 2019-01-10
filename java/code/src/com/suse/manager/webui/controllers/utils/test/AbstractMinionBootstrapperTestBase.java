@@ -7,6 +7,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.salt.netapi.calls.modules.State;
@@ -52,7 +53,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         setEmptyActivationKeys(input);
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).keyExists("myhost");
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(true));
         }});
 
@@ -107,7 +108,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         setEmptyActivationKeys(input);
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).keyExists("myhost");
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
         }});
 
@@ -126,9 +127,9 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         Key.Pair keyPair = mockKeyPair();
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).keyExists("myhost");
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
-            allowing(saltServiceMock).keyPending("myhost");
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
             will(returnValue(false));
 
             allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
@@ -182,9 +183,9 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             allowing(input).getFirstActivationKey();
             will(returnValue(of(key.getKey())));
 
-            allowing(saltServiceMock).keyExists("myhost");
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
-            allowing(saltServiceMock).keyPending("myhost");
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
             will(returnValue(false));
 
             Key.Pair keyPair = mockKeyPair();
