@@ -1,3 +1,8 @@
+/*
+* Source code available at
+* https://github.com/ncounter/loggerhead/blob/master/for-old-browser/loggerhead.js
+*/
+
 'use strict';
 
 var Loggerhead = {};
