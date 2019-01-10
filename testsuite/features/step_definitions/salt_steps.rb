@@ -690,6 +690,8 @@ When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", false)
   elsif ['ceos-minion'].include?(host)
     target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
+  elsif ['ubuntu-minion'].include?(host)
+    target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", false)
   end
 end
 
