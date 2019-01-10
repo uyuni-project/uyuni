@@ -224,7 +224,7 @@ Create everything as well as unlimited activation key for every channel:
         archs = re.split(SPLIT_PATTERN, config.get(section, 'archs'))
         if options.archs:
             # filter out archs not set on commandline
-            archs = filter(lambda a: a in options.archs, archs)
+            archs = [a for a in archs if a in options.archs]
         for arch in archs:
             add_channels(channels, section, arch, client)
 

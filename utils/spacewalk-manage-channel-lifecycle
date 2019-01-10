@@ -82,7 +82,7 @@ class Config(object):
         self._cfg.read(self.path)
 
     def sections(self):
-        return filter(lambda i: i != self.default_section, self._cfg.sections())
+        return [i for i in self._cfg.sections() if i != self.default_section]
 
 
 CONF_DIR = os.path.expanduser("~/.spacewalk-manage-channel-lifecycle")
@@ -132,7 +132,7 @@ def parse_enumerated(data):
     """
     items = []
     if data:
-        items = filter(None, [i.strip() for i in data.split(",")])
+        items = [_f for _f in [i.strip() for i in data.split(",")] if _f]
 
     return items
 
