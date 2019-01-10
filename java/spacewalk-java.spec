@@ -78,7 +78,7 @@ Requires:       javassist
 Requires:       jboss-logging
 Requires:       jose4j
 Requires:       objectweb-asm
-Requires:       pam-modules
+Requires:       /sbin/unix2_chkpwd
 Requires:       prometheus-client-java
 Requires:       salt-netapi-client >= 0.15.0
 Requires:       snakeyaml
@@ -102,7 +102,6 @@ BuildRequires:  javassist
 BuildRequires:  jboss-logging
 BuildRequires:  jsch
 BuildRequires:  objectweb-asm
-BuildRequires:  pam-modules
 BuildRequires:  snakeyaml
 BuildRequires:  statistics
 # SUSE additional build requirements
@@ -416,7 +415,7 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cobbler >= 2.0.0
 Requires:       java >= 1.8.0
 Requires:       jsch
-Requires:       pam-modules
+Requires:       /sbin/unix2_chkpwd
 Requires:       tomcat-taglibs-standard
 %else
 Requires:       cobbler20
@@ -467,20 +466,11 @@ Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
-%if 0%{?suse_version} < 1500
-Requires:       jakarta-commons-pool
-BuildRequires:  jakarta-commons-pool
-%else
-Requires:       apache-commons-pool
-BuildRequires:  apache-commons-pool
-%endif # 0%{?suse_version} < 1500
 %else
 Requires:       jakarta-commons-cli
 Requires:       jakarta-commons-codec
 Requires:       jakarta-commons-lang
 Requires:       jakarta-commons-logging
-Requires:       jakarta-commons-pool
-BuildRequires:  jakarta-commons-pool
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7
 Conflicts:      quartz < 2.0

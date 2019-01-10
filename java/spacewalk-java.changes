@@ -1,3 +1,4 @@
+- Hide 'unknown virtual host manager' when virtual host manager of all hosts is known (bsc#1119320)
 - Add REST API to retrieve VM definition
 - Nav and section scroll independently
 - Listen to salt libvirt events to update VMs state

@@ -49,6 +49,11 @@ Requires:       apache2
 Requires:       glibc
 Requires(pre): spacewalk-proxy-common
 Requires:       spacewalk-proxy-salt
+%if 0%{?suse_version} > 1320
+Requires:       firewalld
+%else
+Requires:       SuSEfirewall2
+%endif
 %else
 Requires:       glibc-common
 
@@ -131,6 +136,11 @@ done
 install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT/%{_usr}/sbin/rhn-proxy-activate
 install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certificate
 
+%if 0%{?suse_version} > 1320
+mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
+install -m 0644 etc/firewalld/services/suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/services
+%endif
+
 %check
 %if 0%{?pylint_check}
 # check coding style
@@ -155,5 +165,8 @@ spacewalk-%{pythonX}-pylint .
 %dir %{_usr}/share/doc/proxy
 %dir %{_usr}/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
+%if 0%{?suse_version} > 1320
+%{_prefix}/lib/firewalld/services/suse-manager-proxy.xml
+%endif
 
 %changelog

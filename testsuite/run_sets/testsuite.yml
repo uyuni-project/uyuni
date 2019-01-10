@@ -86,7 +86,7 @@
 - features/srv_power_management.feature
 - features/srv_datepicker.feature
 - features/trad_openscap_audit.feature
-- features/srv_create_group.feature
+- features/allcli_system_group.feature
 - features/srv_group_union_intersection.feature
 - features/proxy_retail_pxeboot.feature
 - features/min_salt_openscap_audit.feature

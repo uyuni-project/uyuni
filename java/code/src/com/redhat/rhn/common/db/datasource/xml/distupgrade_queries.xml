@@ -37,6 +37,7 @@
       FROM rhnChannel C
       JOIN suseProductChannel spc on C.id = spc.channel_id
      WHERE spc.product_id IN (%s)
+       AND spc.mandatory = 'Y'
        AND C.parent_channel = :base_channel_id
   </query>
 </mode>

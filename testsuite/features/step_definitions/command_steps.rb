@@ -624,7 +624,6 @@ When(/^I set up the private network on the terminals$/) do
   # /etc/sysconfig/network/ifcfg-eth1
   nodes = [$client, $minion]
   conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
-  STDOUT.puts "#{conf}"
   nodes.each do |node|
     next if node.nil?
     node.run("echo -e \"#{conf}\" > /etc/sysconfig/network/ifcfg-eth1 && ifup eth1")
@@ -632,7 +631,6 @@ When(/^I set up the private network on the terminals$/) do
   # /etc/sysconfig/network-scripts/ifcfg-eth1
   nodes = [$ceos_minion]
   conf = "DEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
-  STDOUT.puts "#{conf}"
   nodes.each do |node|
     next if node.nil?
     node.run("echo -e \"#{conf}\" > /etc/sysconfig/network-scripts/ifcfg-eth1 && systemctl restart network")
@@ -640,7 +638,6 @@ When(/^I set up the private network on the terminals$/) do
   # /etc/resolv.conf
   nodes = [$client, $minion, $ceos_minion]
   script = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
-  STDOUT.puts "#{script}"
   nodes.each do |node|
     next if node.nil?
     node.run("sed -i #{script} /etc/resolv.conf")
@@ -656,10 +653,21 @@ end
 
 Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   node = get_target(host)
-  # We test name resolution (and connectivity) both inside and outside of branch network
+  # we need "host" utility
+  step "I install package \"bind-utils\" on this \"#{host}\""
+  # direct name resolution
   ["proxy.example.org", "download.suse.de"].each do |dest|
-    output, return_code = node.run("ping -c1 #{dest}")
-    raise "Name resolution for branch network on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+    output, return_code = node.run("host #{dest}")
+    raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+    STDOUT.puts "#{output}"
+  end
+  # reverse name resolution
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  client = net_prefix + "2"
+  [client, "149.44.176.1"].each do |dest|
+    output, return_code = node.run("host #{dest}")
+    raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+    STDOUT.puts "#{output}"
   end
 end
 

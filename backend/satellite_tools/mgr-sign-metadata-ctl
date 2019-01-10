@@ -1,0 +1,296 @@
+#!/bin/bash
+
+set -e
+
+function usage {
+    echo "Usage: mgr-sign-metadata-ctl [enable <keyid> | disable | check-config | check-channels]"
+    echo "  enable KEYID     Enable GPG signing of repository metadata using the provided KEYID."
+    echo "                   Requires a valid key with the given KEYID to exist in the default keyring."
+    echo "  disable          Disable GPG signing of repository metadata."
+    echo "  check-channels   Check if the cached channels repodata is signed."
+    echo "  check-config     Check configuration and report any problems. This is the default option."
+    echo "  regen-metadata   Restart services and schedule metadata regeneration."
+}
+
+function check_key_in_keyring {
+    if gpg --list-keys | grep --quiet -F "$1"; then
+        echo "OK. Found key $1 in keyring."
+    else
+        echo "ERROR. Key $1 not found in keyring. Generate or import a key pair and then rerun this command."
+        exit 2
+    fi
+}
+
+function regenerate_metadata {
+    echo -n "Restarting Tomcat..."
+    systemctl restart tomcat
+    echo "done."
+    echo -n "Restarting Taskomatic..."
+    systemctl restart taskomatic
+    echo "done."
+    echo
+    echo "Scheduling repo metadata regeneration..."
+    read_spacecmd_user_pass
+    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "softwarechannel_regenerateyumcache -f *"
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]; then
+        echo "\nERROR queuing repo metadata regeneration. Try executing manually: spacecmd softwarechannel_regenerateyumcache \"*\""
+        exit 1
+    fi
+    echo "done."
+}
+
+function changed_repo_signing {
+    read -p "Restarting the services and regenerating the metadata is required. Proceed now (y/N)? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        regenerate_metadata
+    else
+        echo -e "\nYou can restart the services and regenerate the metadata later by executing:\n    mgr-sign-metadata-ctl regen-metadata"
+    fi
+
+    echo
+    echo "WARNING: When the metadata regeneration has finished refresh the repo config on all registered machines."
+    echo "To check if all channels have signed metadata: mgr-signed-metadata-ctl check-channels"
+}
+
+function is_signing_enabled {
+    grep --quiet "^sign_metadata.*=.*1\s*$" $RHN_CONF
+}
+
+function read_spacecmd_user_pass {
+    if [[ -z "$SPACECMD_USER" || -z "$SPACECMD_PASS" ]];then
+        echo -n "Server User: ";
+        read SPACECMD_USER
+        echo -n "Server Password: ";
+        read -s SPACECMD_PASS
+    fi
+    echo
+}
+
+
+ACTION="check-config"
+ENABLE_KEYID=""
+
+if [ -n "$1" ]; then
+    if [[ "$1" = "enable" ]]; then
+        ACTION="$1"
+        if [[ -z "$2" ]]; then
+           usage
+           exit 1
+        else
+           ENABLE_KEYID="$2"
+        fi
+    elif [[ "$1" = "disable" || "$1" = "check-config" || "$1" = "check-channels" || "$1" = "regen-metadata" ]]; then
+        ACTION="$1"
+    elif [[ "$1" = "help" || "$1" = "-h" ]]; then
+        usage
+        exit 0
+    else
+        usage
+        exit 1
+    fi
+fi
+
+RHN_CONF="/etc/rhn/rhn.conf"
+GPG_SALT_EXPORT_FILE="/srv/susemanager/salt/gpg/mgr-keyring.gpg"
+GPG_PUB_EXPORT_FILE="/srv/www/htdocs/pub/mgr-gpg-pub.key"
+SIGNING_CONF="/etc/rhn/signing.conf"
+
+if [[ ! -f $SIGNING_CONF ]]; then
+    echo "Error. File ${SIGNING_CONF} is missing."
+    exit 1
+fi
+
+source $SIGNING_CONF
+
+if [[  $ACTION = "enable" ]]; then
+    # check if the KEYID exists in the keyring
+    check_key_in_keyring "$ENABLE_KEYID"
+
+    # make sure KEYID exists in singing.conf
+    if grep --quiet "^KEYID=\"${ENABLE_KEYID}\"" $SIGNING_CONF; then
+        echo "OK. Key ${ENABLE_KEYID} is set in ${SIGNING_CONF}."
+    elif grep --quiet "^KEYID=\".*\"" $SIGNING_CONF; then
+        sed -i "s/KEYID=\".*\"\s*$/KEYID=\"${ENABLE_KEYID}\"/g" $SIGNING_CONF
+        echo "DONE. Set key ${ENABLE_KEYID} in ${SIGNING_CONF}."
+    else
+        echo "KEYID=\"${ENABLE_KEYID}\"" >> $SIGNING_CONF
+        echo "DONE. Set key ${ENABLE_KEYID} in ${SIGNING_CONF}."
+    fi
+
+    # make sure sign_metadata=1 in rhn.conf
+    if grep --quiet "^sign_metadata.*=.*0\s*$" $RHN_CONF; then
+        # edit rhn.conf to enable signing
+        sed -i 's/sign_metadata.*=.*$/sign_metadata = 1/g' $RHN_CONF
+        echo "DONE. Enabled metadata signing in ${RHN_CONF}."
+
+    elif grep --quiet "^sign_metadata.*=.*1" $RHN_CONF; then
+        echo "OK. Metadata signing is enabled in ${RHN_CONF}."
+    else
+        # add line to rhn.conf
+        echo "sign_metadata = 1" >> $RHN_CONF
+        echo "DONE. Enabled metadata signing in ${RHN_CONF}."
+    fi
+
+    # check if key was exported to the salt dir
+    EXPORT_SALT_KEY=true
+    if [ -f $GPG_SALT_EXPORT_FILE ]; then
+        if gpg --no-default-keyring --keyring $GPG_SALT_EXPORT_FILE --list-keys | grep --quiet "$ENABLE_KEYID"; then
+            echo "OK. Key ${ENABLE_KEYID} was exported to ${GPG_SALT_EXPORT_FILE}."
+            EXPORT_SALT_KEY=false
+        fi
+    fi
+    if [ "$EXPORT_SALT_KEY" = true ]; then
+        rm -f $GPG_SALT_EXPORT_FILE
+        GPG_SALT_EXPORT_DIR=$(dirname $GPG_SALT_EXPORT_FILE)
+        mkdir -p $GPG_SALT_EXPORT_DIR
+        chown salt:salt $GPG_SALT_EXPORT_DIR
+        chmod 775 $GPG_SALT_EXPORT_DIR
+        gpg --export $KEYID > $GPG_SALT_EXPORT_FILE
+        chmod 644 $GPG_SALT_EXPORT_FILE
+        echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_SALT_EXPORT_FILE}."
+    fi
+
+    # check if key was exported to the http pub dir
+    EXPORT_WWW_PUB_KEY=true
+    if [ -f $GPG_PUB_EXPORT_FILE ]; then
+        if gpg --with-fingerprint $GPG_PUB_EXPORT_FILE | grep --quiet $ENABLE_KEYID; then
+            echo "OK. Key ${ENABLE_KEYID} was exported to ${GPG_PUB_EXPORT_FILE}."
+            EXPORT_WWW_PUB_KEY=false
+        fi
+    fi
+    if [ "$EXPORT_WWW_PUB_KEY" = true ]; then
+        rm -f $GPG_PUB_EXPORT_FILE
+        gpg --batch --export --armor --output $GPG_PUB_EXPORT_FILE
+        chmod 644 $GPG_PUB_EXPORT_FILE
+        echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_PUB_EXPORT_FILE}."
+    fi
+
+elif [[  $ACTION = "check-config" ]]; then
+    # check sign_metadata in rhn.conf
+    if is_signing_enabled; then
+        echo "Metadata signing is enabled in ${RHN_CONF}."
+        echo
+
+        # check KEYID set in signing.conf
+        if [[ -z "$KEYID" ]]; then
+            echo "ERROR. No KEYID set in ${SIGNING_CONF}."
+        else
+            echo "OK. KEYID is set in ${SIGNING_CONF}."
+            check_key_in_keyring "$KEYID"
+        fi
+
+        if [[ -z "$GPGPASS" ]]; then
+            echo "ERROR. No GPGPASS set in ${SIGNING_CONF}."
+        fi
+
+        # check pub key export file
+        if [ -f $GPG_SALT_EXPORT_FILE ]; then
+            if gpg --no-default-keyring --keyring $GPG_SALT_EXPORT_FILE --list-keys | grep --quiet $KEYID; then
+                echo "OK. Key ${KEYID} was exported to ${GPG_SALT_EXPORT_FILE}."
+            else
+                echo "ERROR. Public key file ${GPG_SALT_EXPORT_FILE} exists but it doesn't contain key ${KEYID}."
+            fi
+        else
+            echo "ERROR. Public key file $GPG_SALT_EXPORT_FILE is missing."
+        fi
+
+        if [ -f $GPG_PUB_EXPORT_FILE ]; then
+            if gpg --with-fingerprint $GPG_PUB_EXPORT_FILE | grep --quiet $KEYID; then
+                echo "OK. Key ${KEYID} was exported to ${GPG_PUB_EXPORT_FILE}."
+            else
+                echo "ERROR. Public key file ${GPG_PUB_EXPORT_FILE} exists but it doesn't contain key ${KEYID}."
+            fi
+        else
+            echo "ERROR. Public key file $GPG_PUB_EXPORT_FILE is missing."
+        fi
+
+    else
+        echo "Metadata signing is disabled in ${RHN_CONF}."
+
+        # check KEYID set in signing.conf
+        if [[ -z "$KEYID" ]]; then
+            echo "OK. No KEYID set in ${SIGNING_CONF}."
+        else
+            echo "WARNING. KEYID is set in ${SIGNING_CONF}."
+        fi
+
+        # check salt key export file
+        if [ -f $GPG_SALT_EXPORT_FILE ]; then
+            echo "WARNING. Key export file ${GPG_SALT_EXPORT_FILE} is present."
+        else
+            echo "OK. Key file ${GPG_SALT_EXPORT_FILE} is not present."
+        fi
+
+        # check http pub key export file
+        if [ -f $GPG_PUB_EXPORT_FILE ]; then
+            echo "WARNING. Key export file ${GPG_PUB_EXPORT_FILE} is present."
+        else
+            echo "OK. Key file ${GPG_PUB_EXPORT_FILE} is not present."
+        fi
+    fi
+
+elif [[  $ACTION = "disable" ]]; then
+    if grep --quiet "^sign_metadata.*=.*$" $RHN_CONF; then
+        # edit rhn.conf to disable signing
+        sed -i 's/sign_metadata.*=.*$/sign_metadata = 0/g' $RHN_CONF
+    else
+        # add line to rhn.conf
+        echo "sign_metadata = 0" >> $RHN_CONF
+    fi
+    echo "DONE. Disabled metadata signing in ${RHN_CONF}."
+
+    sed -i "s/KEYID=\".*\"\s*$/KEYID=\"\"/g" $SIGNING_CONF
+    echo "DONE. Unset KEYID in ${SIGNING_CONF}."
+
+    if [ -f $GPG_SALT_EXPORT_FILE ]; then
+        rm -f $GPG_SALT_EXPORT_FILE
+        echo "DONE. Removed key export file ${GPG_SALT_EXPORT_FILE}."
+    else
+        echo "OK. Key file ${GPG_SALT_EXPORT_FILE} is not present."
+    fi
+
+    if [ -f $GPG_PUB_EXPORT_FILE ]; then
+        rm -f $GPG_PUB_EXPORT_FILE
+        echo "DONE. Removed key export file ${GPG_PUB_EXPORT_FILE}."
+    else
+        echo "OK. Key file ${GPG_PUB_EXPORT_FILE} is not present."
+    fi
+
+    echo
+    echo "NOTE: Key pair was not removed from the GPG keyring. Use gpg --delete-keys and --delete-secret-keys if you wish to remove the keys from the keyring."
+elif [[ $ACTION = "check-channels" ]]; then
+    if is_signing_enabled; then
+        read_spacecmd_user_pass
+        CHANNELS=$(spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS softwarechannel_list)
+        RETVAL=$?
+        if [ $RETVAL -ne 0 ]; then
+            exit 1
+        fi
+        REPODATA_DIR=/var/cache/rhn/repodata # TODO get mount point from cfg
+
+        for ch in $CHANNELS; do
+           if [ ! -d "$REPODATA_DIR/$ch" ]; then
+                echo "ERROR. Channel $ch. Cached metadata not generated."
+           else
+               if [[ -f "$REPODATA_DIR/$ch/Release.gpg" || -f "$REPODATA_DIR/$ch/Release.gpg" ]]; then
+                    echo "OK. Channel $ch. Cached metadata is signed."
+               else
+                    echo "ERROR. Channel $ch. Cached metadata is not signed."
+               fi
+           fi
+        done
+    else
+        echo "No checking done. Metadata signing is disabled."
+    fi
+elif [[ $ACTION = "regen-metadata" ]]; then
+    regenerate_metadata
+fi
+
+if [[ $ACTION = "enable" || $ACTION = "disable" ]]; then
+    echo
+    echo "NOTE. For the changes to become effective run:"
+    echo "   mgr-sign-metadata-ctl regen-metadata"
+    echo
+fi

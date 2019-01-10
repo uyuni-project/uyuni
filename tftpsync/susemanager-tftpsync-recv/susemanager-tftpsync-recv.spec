@@ -31,12 +31,13 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  apache2
-Requires:       apache2-mod_wsgi
 Requires(pre):  tftp(server)
 %if 0%{?build_py3}
 Requires:       python3
+Requires:       apache2-mod_wsgi-python3
 %else
 Requires:       python
+Requires:       apache2-mod_wsgi
 %endif
 Requires:       spacewalk-backend
 Requires:       spacewalk-proxy-common

@@ -71,7 +71,11 @@ Requires:       susemanager-tools
 Requires:       spacewalk-db-virtual
 Requires:       susemanager-branding
 # yast module dependency
+%if 0%{?suse_version} > 1320
+Requires:       firewalld
+%else
 Requires:       SuSEfirewall2
+%endif
 Requires:       postfix
 Requires:       yast2-users
 # mgr-setup want to call mksubvolume
@@ -133,12 +137,10 @@ ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
 ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
-mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
-install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
@@ -161,6 +163,14 @@ install -m 0644 yast/*.scr %{buildroot}%{_datadir}/YaST2/scrconf
 install -m 0644 yast/susemanager_setup_uyuni.desktop %{buildroot}%{_datadir}/applications/YaST2/susemanager_setup.desktop
 %else
 install -m 0644 yast/susemanager_setup.desktop %{buildroot}%{_datadir}/applications/YaST2/susemanager_setup.desktop
+%endif
+
+%if 0%{?suse_version} > 1320
+mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
+install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_prefix}/lib/firewalld/services
+%else
+mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
+install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 %endif
 
 %check
@@ -236,11 +246,15 @@ fi
 %{_datadir}/YaST2/clients/*.rb
 %{_datadir}/YaST2/scrconf/*.scr
 %config /etc/YaST2/firstboot-susemanager.xml
-%config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
 %{_sysconfdir}/init.d/susemanager
 %{_datadir}/applications/YaST2/susemanager_setup.desktop
 %attr(775,salt,susemanager) %dir /srv/www/os-images/
+%if 0%{?suse_version} > 1320
+%{_prefix}/lib/firewalld/services/suse-manager-server.xml
+%else
+%config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
+%endif
 
 %files tools
 %defattr(-,root,root,-)

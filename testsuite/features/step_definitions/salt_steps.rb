@@ -387,7 +387,6 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'second CNAME name'               => 'bind#available_zones#0#records#CNAME#1#1',
                'third CNAME alias'               => 'bind#available_zones#0#records#CNAME#2#0',
                'third CNAME name'                => 'bind#available_zones#0#records#CNAME#2#1',
-               'second configured zone name'     => 'bind#configured_zones#1#$key',
                'second name server'              => 'bind#available_zones#1#soa#ns',
                'second contact'                  => 'bind#available_zones#1#soa#contact',
                'second NS'                       => 'bind#available_zones#1#records#NS#@#0',
@@ -445,7 +444,8 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
 end
 
 When(/^I enter the local zone name in (.*) field$/) do |field|
-  fieldids = { 'second available zone name' => 'bind#available_zones#1#$key' }
+  fieldids = { 'second configured zone name' => 'bind#configured_zones#1#$key',
+               'second available zone name'  => 'bind#available_zones#1#$key' }
   a = $private_net.split('.')
   reverse_net = a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
   STDOUT.puts "#{$private_net} => #{reverse_net}"

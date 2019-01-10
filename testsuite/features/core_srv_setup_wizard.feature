@@ -3,25 +3,6 @@
 
 Feature: The Setup Wizard
 
-@no_mirror
-  Scenario: Set up some credentials
-    Given I am on the Admin page
-    When I follow "Organization Credentials" in the content area
-    And I want to add a new credential
-    And I enter "asdf" as "edit-user"
-    And I enter "asdf" as "edit-password"
-    And I click on "Save"
-    Then I should see a "asdf" text
-    When I make the credentials primary
-    And I view the primary subscription list for asdf
-    Then I should see a "No subscriptions available" text
-    When I click on "Close"
-    And I delete the primary credentials
-    And I view the primary subscription list
-    And I click on "Close"
-    Then I should not see a "asdf" text
-    And I see verification succeeded
-
   Scenario: Play with the products page
     Given I am on the Admin page
     # Order matters here, refresh first
@@ -72,3 +53,22 @@ Feature: The Setup Wizard
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
     And I should see a "Optional Channels" text
+
+@no_mirror
+  Scenario: Set up some credentials
+    Given I am on the Admin page
+    When I follow "Organization Credentials" in the content area
+    And I want to add a new credential
+    And I enter "asdf" as "edit-user"
+    And I enter "asdf" as "edit-password"
+    And I click on "Save"
+    Then I should see a "asdf" text
+    When I make the credentials primary
+    And I view the primary subscription list for asdf
+    Then I should see a "No subscriptions available" text
+    When I click on "Close"
+    And I delete the primary credentials
+    And I view the primary subscription list
+    And I click on "Close"
+    Then I should not see a "asdf" text
+    And I see verification succeeded

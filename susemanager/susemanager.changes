@@ -1,3 +1,4 @@
+- configure firewalld if available
 - change SCC sync backend to adapt quicker to SCC changes and improve
   speed of syncing metadata and checking for channel dependencies
 
@@ -12,6 +13,7 @@ Mon Dec 17 14:43:50 CET 2018 - jgonzalez@suse.com
   bootstrap repos for openSUSE and CentOS
 - fix not found package on mgr-create-bootstrap-repo for SLE-15-s390x
   (bsc#1116566)
+- add python3-six to bootstrap repo for SLES15 (bsc#1118478)
 
 -------------------------------------------------------------------
 Fri Oct 26 10:49:25 CEST 2018 - jgonzalez@suse.com

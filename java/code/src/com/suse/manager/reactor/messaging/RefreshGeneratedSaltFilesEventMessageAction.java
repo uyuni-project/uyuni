@@ -17,6 +17,7 @@ package com.suse.manager.reactor.messaging;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -119,6 +120,8 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
                     SaltStateGeneratorService.INSTANCE.generateConfigState(groupRev, tempSaltRootPath);
                 }
             }
+
+            SaltStateGeneratorService.INSTANCE.generateMgrConfPillar(Paths.get(SUMA_PILLAR_DATA_PATH));
 
             Path saltPath = suseManagerStatesFilesRoot.resolve(SALT_CONFIG_STATES_DIR);
             Path oldSaltPath = saltGenerationTempDir.resolve(
