@@ -111,6 +111,7 @@
 - features/srv_spacewalk_channel.feature
 - features/allcli_software_channels.feature
 - features/allcli_software_channels_dependencies.feature
+- features/srv_change_task_schedule.feature
 - features/srv_sync_products.feature
 - features/srv_notifications.feature
 - features/minkvm_guests.feature
