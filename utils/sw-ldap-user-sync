@@ -69,7 +69,7 @@ for uid in data['member']:
 
     try:
         (userdn, userdata) = directory.search_s(uid, ldap.SCOPE_SUBTREE, filter, attrs)[0]
-        if users.has_key(userdata["uid"][0]):
+        if userdata["uid"][0] in users:
             del users[userdata["uid"][0]]
         else:
             logging.info("creating new user account for ldap user %s" % userdata["uid"][0])

@@ -106,7 +106,7 @@ def merge_config(options):
                  "security_only", "use_update_date", "no_errata_sync",
                  "errata", 'dry_run']
     for key in overwrite:
-        if config.has_key(key) and not getattr(options, key):
+        if key in config and not getattr(options, key):
             setattr(options, key, config[key])
 
     # If from the command line there is only one channel tree. Transform single

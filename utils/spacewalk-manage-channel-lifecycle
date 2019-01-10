@@ -159,12 +159,12 @@ def print_channel_tree():
     # determine parent channels so we can make a pretty tree for the user
     for channel in all_channels:
         if channel.get('parent_label'):
-            if not tree.has_key(channel.get('parent_label')):
+            if channel.get('parent_label') not in tree:
                 tree[channel.get('parent_label')] = []
 
             tree[channel.get('parent_label')].append(channel.get('label'))
         else:
-            if not tree.has_key(channel.get('label')):
+            if channel.get('label') not in tree:
                 tree[channel.get('label')] = []
 
     # print the channels in a tree format
