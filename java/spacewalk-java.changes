@@ -1,3 +1,4 @@
+- Remove the reference of channel from revision before deleting it (bsc#1107850)
 - Fix cloning channels when managing the same errata for both vendor and private orgs (bsc#1111686)
 - Hide 'unknown virtual host manager' when virtual host manager of all hosts is known (bsc#1119320)
 - Add REST API to retrieve VM definition
