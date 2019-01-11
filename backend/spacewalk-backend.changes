@@ -1,3 +1,4 @@
+- move channel update close to commit to avoid long lock (bsc#1121424)
 - Adapt Inter Server Sync code to new SCC sync backend
 - Fix issue raising exceptions 'with_traceback' on Python 2
 - Hide Python traceback and show only error message (bsc#1110427)
