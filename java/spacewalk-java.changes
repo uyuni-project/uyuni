@@ -1,3 +1,4 @@
+- Fix for duplicate key violation when cloning erratas that have no packages associated (bsc#1111686)
 - Improve performance for granting and revoking permissions to user for groups (bsc#1111810)
 
 -------------------------------------------------------------------
