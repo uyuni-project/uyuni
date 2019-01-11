@@ -44,17 +44,19 @@ public abstract class ScapSetupAction extends RhnAction {
         String requiredPkg = SPACEWALK_OSCAP;
         if (server.asMinionServer().isPresent()) {
             MinionServer minion = server.asMinionServer().get();
-            
-	    switch(minion.getOsFamily()) {
-                case "Suse":    requiredPkg = OPENSCAP_SUSE_PKG;
-                                break;
+            switch (minion.getOsFamily()) {
+                case "Suse":
+                    requiredPkg = OPENSCAP_SUSE_PKG;
+                    break;
 
-                case "Debian":  requiredPkg = OPENSCAP_DEBIAN_PKG;
-                                break;
+                case "Debian":
+                    requiredPkg = OPENSCAP_DEBIAN_PKG;
+                    break;
 
-                default:        requiredPkg = OPENSCAP_REDHAT_PKG;
+                default:
+                    requiredPkg = OPENSCAP_REDHAT_PKG;
             }
-	    InstalledPackage installedPkg =
+            InstalledPackage installedPkg =
                     PackageFactory.lookupByNameAndServer(requiredPkg, server);
             if (installedPkg != null) {
                 enabled = true;
