@@ -127,4 +127,11 @@ public interface ErrataFile {
      * @param p package to add
      */
     void addPackage(Package p);
+
+    /**
+     * Returns whether this errata file has the given Package.
+     * @param pkg the package
+     * @return Returns true if this errata file has the given Package. Otherwise return false.
+     */
+    boolean hasPackage(Package pkg);
 }
