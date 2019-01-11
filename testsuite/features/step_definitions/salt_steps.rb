@@ -43,18 +43,21 @@ When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
   node.run('systemctl stop salt-minion', false) if minion == 'ceos-minion'
+  node.run('systemctl stop salt-minion', false) if minion == 'ubuntu-minion'
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
   node.run('systemctl restart salt-minion', false) if minion == 'ceos-minion'
+  node.run('systemctl restart salt-minion', false) if minion == 'ubuntu-minion'
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
   node.run('systemctl restart salt-minion', false) if minion == 'ceos-minion'
+  node.run('systemctl restart salt-minion', false) if minion == 'ubuntu-minion'
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -690,6 +693,8 @@ When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", false)
   elsif ['ceos-minion'].include?(host)
     target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
+  elsif ['ubuntu-minion'].include?(host)
+    target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", false)
   end
 end
 
@@ -723,5 +728,8 @@ And(/^I cleanup minion "([^"]*)"$/) do |target|
   elsif target == 'ceos-minion'
     $ceos_minion.run('systemctl stop salt-minion')
     $ceos_minion.run('rm -Rf /var/cache/salt/minion')
+  elsif target == 'ubuntu-minion'
+    $ubuntu_minion.run('systemctl stop salt-minion')
+    $ubuntu_minion.run('rm -Rf /var/cache/salt/minion')
   end
 end
