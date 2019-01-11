@@ -467,6 +467,7 @@ class RepoSync(object):
         """Trigger a reposync"""
         failed_packages = 0
         sync_error = 0
+        repo_checksum_type = 'sha1'
         start_time = datetime.now()
         for data in self.urls:
             data['source_url'] = self.set_repo_credentials(data)
@@ -534,7 +535,7 @@ class RepoSync(object):
 
                         # update the checksum type of channels with org_id NULL
                         # this fetch also the normal xml primary file
-                        self.updateChannelChecksumType(plugin.get_md_checksum_type())
+                        repo_checksum_type = plugin.get_md_checksum_type()
 
                         if not self.no_packages:
                             self.import_groups(plugin)
@@ -621,6 +622,8 @@ class RepoSync(object):
 
         # Update cache with package checksums
         #rhnCache.set(checksum_cache_filename, self.checksum_cache)
+        self.updateChannelChecksumType(repo_checksum_type)
+        rhnSQL.commit()
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")
