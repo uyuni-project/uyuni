@@ -51,6 +51,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
+import com.suse.utils.Opt;
+
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -66,6 +68,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
@@ -358,37 +361,16 @@ public class ErrataFactory extends HibernateFactory {
         ChannelManager.addPackages(chan, pids, user);
 
         for (Package pack : packages) {
-            List<ErrataFile> publishedFiles = ErrataFactory.lookupErrataFile(
-                    errata, pack);
-            Map<String, ErrataFile> toAdd = new HashMap();
-            if (publishedFiles.size() == 0) {
-                // Now create the appropriate ErrataFile object
-                String path = pack.getPath();
-                if (path == null) {
-                    throw new DatabaseException("Package " + pack.getId() +
-                        " has NULL path, please run spacewalk-data-fsck");
-                }
-                ErrataFile publishedFile = ErrataFactory
-                        .createPublishedErrataFile(ErrataFactory
-                                .lookupErrataFileType("RPM"), pack
-                                .getChecksum().getChecksum(), path);
-                publishedFile.addPackage(pack);
-                publishedFile.setErrata(errata);
-                publishedFile.setModified(new Date());
-                ((PublishedErrataFile) publishedFile).addChannel(chan);
-                singleton.saveObject(publishedFile);
+            if (pack.getPath() == null) {
+                throw new DatabaseException("Package " + pack.getId() +
+                    " has NULL path, please run spacewalk-data-fsck");
             }
-            else {
-                for (ErrataFile publishedFile : publishedFiles) {
-                    String fileName = publishedFile.getFileName().substring(
-                            publishedFile.getFileName().lastIndexOf("/") + 1);
-                    if (!toAdd.containsKey(fileName)) {
-                        toAdd.put(fileName, publishedFile);
-                        ((PublishedErrataFile) publishedFile).addChannel(chan);
-                        singleton.saveObject(publishedFile);
-                    }
-                }
-            }
+
+            Optional<ErrataFile> publishedFileOpt =
+                    ErrataFactory.lookupErrataFile(errata.getId(), pack.getPath());
+
+            singleton.saveObject(Opt.fold(publishedFileOpt, () -> createPublishedErrataFile(pack, errata, chan),
+                    ef -> publishErrataFile(ef, pack, chan)));
 
         }
         ChannelFactory.save(chan);
@@ -398,6 +380,40 @@ public class ErrataFactory extends HibernateFactory {
         ErrataCacheManager.insertCacheForChannelErrataAsync(chanList, errata);
 
         return errata;
+    }
+
+    /**
+     * Private helper method that publish an ErrataFile to a channel.
+     *
+     * @param publishedFile ErrataFile to publish
+     * @param pack the Package to push
+     * @param chan Channel to publish it into.
+     * @return the published errata
+     */
+    private static ErrataFile publishErrataFile(ErrataFile publishedFile, Package pack, Channel chan) {
+        if (!publishedFile.hasPackage(pack)) {
+            publishedFile.addPackage(pack);
+        }
+        ((PublishedErrataFile) publishedFile).addChannel(chan);
+        return publishedFile;
+    }
+
+    /**
+     * Private helper method that creates an ErrataFile and publish it to a channel
+     *
+     * @param pack the Package to push
+     * @param errata the Errata to publish
+     * @param chan Channel to publish it into.
+     * @return the published errata
+     */
+    private static ErrataFile createPublishedErrataFile(Package pack, Errata errata, Channel chan) {
+        ErrataFile publishedFile = ErrataFactory.createPublishedErrataFile(
+                ErrataFactory.lookupErrataFileType("RPM"), pack.getChecksum().getChecksum(), pack.getFilename());
+        publishedFile.addPackage(pack);
+        publishedFile.setErrata(errata);
+        publishedFile.setModified(new Date());
+        ((PublishedErrataFile) publishedFile).addChannel(chan);
+        return publishedFile;
     }
 
     /**
@@ -1018,17 +1034,16 @@ public class ErrataFactory extends HibernateFactory {
 
 
     /**
-     * Lookup an errataFile object by it's errata and package
-     * @param errata the errata associated
-     * @param pack the package associated
-     * @return the requested errata file object
+     * Lookup an errataFile object by it's errata id and package filename.
+     * @param errataId the ID of the errata associated
+     * @param filename the filename of the package associated
+     * @return an Optional that may or may not contain the requested errata file object
      */
-    public static List<ErrataFile> lookupErrataFile(Errata errata, Package pack) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("errata", errata);
-        params.put("package", pack);
-        return  singleton.listObjectsByNamedQuery(
-                "PublishedErrataFile.lookupByErrataAndPackage", params);
+    public static Optional<ErrataFile> lookupErrataFile(Long errataId, String filename) {
+        Session session = HibernateFactory.getSession();
+        return session.getNamedQuery("PublishedErrataFile.lookupByErrataAndPackage")
+                .setParameter("errata_id", errataId)
+                .setParameter("filename", filename).uniqueResultOptional();
     }
 
     /**
