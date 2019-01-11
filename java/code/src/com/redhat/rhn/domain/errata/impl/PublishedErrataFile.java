@@ -225,5 +225,12 @@ public class PublishedErrataFile extends BaseDomainHelper implements ErrataFile 
         this.packages.add(p);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasPackage(Package pkg) {
+        return this.packages.contains(pkg);
+    }
 
 }

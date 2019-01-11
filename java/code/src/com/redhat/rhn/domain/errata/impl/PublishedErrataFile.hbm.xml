@@ -40,6 +40,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
      <query name="PublishedErrataFile.lookupByErrataAndPackage">
         <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrataFile as pef
-                 where pef.errata = :errata and  :package in elements(pef.packages) ]]>
+                 where pef.errata.id = :errata_id and pef.fileName = :filename]]>
     </query>
 </hibernate-mapping>

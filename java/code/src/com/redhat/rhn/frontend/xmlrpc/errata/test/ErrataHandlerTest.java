@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.impl.PublishedBug;
+import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -81,6 +82,64 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         // TODO Auto-generated method stub
         super.setUp();
         user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+    }
+
+    public void testCloneAsOriginal() throws Exception {
+        // clone a channel with its errata, and the errata's packages are NOT EMPTY
+        Errata errata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
+
+        Errata foundErrata = ErrataFactory.lookupById(errata.getId());
+        assertNotNull(foundErrata);
+        assertEquals(foundErrata.getId(), errata.getId());
+        assertNotNull(foundErrata.getPackages());
+        assertFalse(foundErrata.getPackages().isEmpty());
+
+        Channel original = createTestChannel(admin, errata);
+
+        Channel clonedChannel = ChannelFactoryTest.createTestClonedChannel(original, admin);
+
+        Object[] cloned = handler.cloneAsOriginal(admin, clonedChannel.getLabel(),
+                Arrays.asList(errata.getAdvisoryName()));
+        assertNotNull(cloned);
+        assertEquals(1, cloned.length);
+
+        PublishedClonedErrata publishClonedErrata = (PublishedClonedErrata) cloned[0];
+        assertEquals(publishClonedErrata.getAdvisoryName(),
+                "CL-" + errata.getAdvisoryName());
+        assertEquals(publishClonedErrata.getPackages().size(), errata.getPackages().size());
+        assertTrue(publishClonedErrata.getPackages().stream()
+                .allMatch(p -> errata.getPackages().stream()
+                        .anyMatch(ep -> ep.getFilename().equals(p.getFilename()))));
+
+        // clone a channel with its errata, and the errata's packages are EMPTY
+        Errata emptyErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
+
+        emptyErrata.setPackages(new HashSet<>());
+        ErrataFactory.save(emptyErrata);
+
+        foundErrata = ErrataFactory.lookupById(emptyErrata.getId());
+        assertNotNull(foundErrata);
+        assertEquals(foundErrata.getId(), emptyErrata.getId());
+        assertNotNull(foundErrata.getPackages());
+        assertTrue(foundErrata.getPackages().isEmpty());
+
+        Channel originalForEmptyErrata = createTestChannel(admin, emptyErrata);
+
+        Channel clonedChannelForEmptyErrata =
+                ChannelFactoryTest.createTestClonedChannel(originalForEmptyErrata, admin);
+
+        Object[] clonedForEmptyErrata =
+                handler.cloneAsOriginal(admin, clonedChannelForEmptyErrata.getLabel(),
+                        Arrays.asList(emptyErrata.getAdvisoryName()));
+        assertNotNull(clonedForEmptyErrata);
+        assertNotNull(clonedForEmptyErrata);
+        assertEquals(1, clonedForEmptyErrata.length);
+
+        PublishedClonedErrata publishClonedEmptyErrata = (PublishedClonedErrata) clonedForEmptyErrata[0];
+        assertEquals(publishClonedEmptyErrata.getAdvisoryName(),
+                "CL-" + emptyErrata.getAdvisoryName());
+        assertEquals(publishClonedEmptyErrata.getPackages().size(), emptyErrata.getPackages().size());
+        assertTrue(publishClonedEmptyErrata.getPackages().isEmpty());
     }
 
     public void testGetDetails() throws Exception {
