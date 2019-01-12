@@ -1,3 +1,4 @@
+- rhnlib was renamed to python2-rhnlib. Change bootstrap data accordingly.
 -------------------------------------------------------------------
 Thu Dec 13 10:45:55 CET 2018 - jgonzalez@suse.com
 
