@@ -1,3 +1,4 @@
+- rhnlib was renamed to python2-rhnlib. Change bootstrap data accordingly.
 - change SCC sync backend to adapt quicker to SCC changes and improve
   speed of syncing metadata and checking for channel dependencies
 - adapt mgr-create-bootstrap-repo for Uyuni and let it create
