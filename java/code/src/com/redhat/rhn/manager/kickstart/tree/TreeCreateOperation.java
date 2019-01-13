@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.kickstart.tree;
 
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
@@ -26,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * TreeCreateCommand
@@ -65,15 +67,15 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
 
         if (this.tree.getInstallType().isSUSE()) {
             String kopts = StringUtils.defaultString(this.tree.getKernelOptions());
+            String localhost = this.getServerName();
+            try {
+                // Find the FQDN of localhost
+                localhost = InetAddress.getByName(localhost).getCanonicalHostName();
+            }
+            catch (UnknownHostException e) {
+                // Fall back to the local name in this case
+            }
             if (!kopts.contains("install=")) {
-                String localhost = this.getServerName();
-                try {
-                    // Find the FQDN of localhost
-                    localhost = InetAddress.getByName(localhost).getCanonicalHostName();
-                }
-                catch (UnknownHostException e) {
-                    // Fall back to the local name in this case
-                }
                 kopts = kopts + " install=http://" + localhost + "/ks/dist/" +
                        this.tree.getLabel();
 
@@ -81,7 +83,19 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
             }
             // disable YaST self update for SLE
             if (!kopts.contains("self_update=")) {
-                kopts = kopts + " self_update=0 pt.options=+self_update";
+                Optional<Channel> installerUpdates = tree.getChannel()
+                        .getAccessibleChildrenFor(getUser())
+                        .stream()
+                        .filter(c -> c.getLabel().contains("installer"))
+                        .findFirst();
+                if (installerUpdates.isPresent()) {
+                    kopts = kopts + " self_update=http://" + localhost + "/ks/dist/child/" +
+                            installerUpdates.get().getLabel() + "/" + this.tree.getLabel() +
+                            " pt.options=+self_update";
+                }
+                else {
+                    kopts = kopts + " self_update=0 pt.options=+self_update";
+                }
                 this.tree.setKernelOptions(kopts);
             }
         }
