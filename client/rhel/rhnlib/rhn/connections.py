@@ -167,6 +167,9 @@ class HTTPProxyConnection(HTTPConnection):
         enc_userpass = base64.encodestring(userpass).replace("\n", "")
         self.putheader("Proxy-Authorization", "Basic %s" % enc_userpass)
 
+    def _set_hostport(self, host, port):
+        (self.host, self.port) = self._get_hostport(host, port)
+
 class HTTPSConnection(HTTPConnection):
     response_class = HTTPResponse
     default_port = httplib.HTTPSConnection.default_port
@@ -270,7 +273,7 @@ def idn_ascii_to_puny(hostname):
         return None
     else:
         hostname = i18n.ustr(hostname)
-        return hostname.encode('idna')
+        return i18n.ustr(hostname.encode('idna'))
 
 
 idn_pune_to_unicode = idn_puny_to_unicode
