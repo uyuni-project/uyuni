@@ -1,0 +1,9 @@
+[Unit]
+Description=Check libvirtd for VMs and report it to Uyuni Server
+
+[Timer]
+OnCalendar=*:*/2:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

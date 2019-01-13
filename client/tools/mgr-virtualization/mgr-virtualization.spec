@@ -121,10 +121,19 @@ Group:          System Environment/Base
 Provides:       %{oldname}-host = %{oldversion}
 Obsoletes:      %{oldname}-host < %{oldversion}
 Requires:       %{pythonX}-%{name}-host = %{version}-%{release}
+
+%if 0%{?default_py3}
+BuildRequires:  systemd
+Requires(pre): systemd
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
+%else
 %if 0%{?suse_version}
 Requires:       cron
 %else
 Requires:       /usr/sbin/crond
+%endif
 %endif
 
 %description host
@@ -179,16 +188,28 @@ make -f Makefile.rhn-virtualization
 make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir} \
         PYTHONPATH=%{python_sitelib} install
 sed -i 's,@PYTHON@,python,; s,@PYTHONPATH@,%{python_sitelib},;' \
-        $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host \
-        $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
+        $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
 %endif
 
 %if 0%{?build_py3}
 make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir} \
         PYTHONPATH=%{python3_sitelib} install
         sed -i 's,@PYTHON@,python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
-                $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host \
-                $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
+                $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
+%endif
+
+%if 0%{?default_py3}
+install -d %{buildroot}%{_unitdir}
+install -D -m 0644 scripts/mgr-virtualization.timer %{buildroot}%{_unitdir}/mgr-virtualization.timer
+install -D -m 0644 scripts/mgr-virtualization.service %{buildroot}%{_unitdir}/mgr-virtualization.service
+sed -i 's,@PYTHON@,python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
+       %{buildroot}%{_unitdir}/mgr-virtualization.service
+
+%else
+install -d $RPM_BUILD_ROOT%{cron_dir}
+install -D -m 0644 scripts/rhn-virtualization.cron %{cron_dir}/rhn-virtualization.cron
+sed -i 's,@PYTHON@,python,; s,@PYTHONPATH@,%{python_sitelib},;' \
+        $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
 %endif
 
 %if 0%{?suse_version}
@@ -217,12 +238,34 @@ if [ -d /proc/xen ]; then
     # change the default template to the xen version
     sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/xen-template.xml@' /etc/sysconfig/rhn/image.cfg
 fi
+%if 0%{?default_py3}
+%service_add_post mgr-virtualization.timer
+
+%pre
+%service_add_pre mgr-virtualization.timer
+
+%preun
+%service_del_preun mgr-virtualization.timer
+
+%postun
+%service_del_postun mgr-virtualization.timer
+%endif
 
 %else
 
+%if 0%{?default_py3}
+%{!?systemd_post: %global systemd_post() if [ $1 -eq 1 ] ; then /usr/bin/systemctl enable %%{?*} >/dev/null 2>&1 || : ; fi; }
+%{!?systemd_preun: %global systemd_preun() if [ $1 -eq 0 ] ; then /usr/bin/systemctl --no-reload disable %%{?*} > /dev/null 2>&1 || : ; /usr/bin/systemctl stop %%{?*} > /dev/null 2>&1 || : ; fi; }
+%{!?systemd_postun_with_restart: %global systemd_postun_with_restart() /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : ; if [ $1 -ge 1 ] ; then /usr/bin/systemctl try-restart %%{?*} >/dev/null 2>&1 || : ; fi; }
+%endif
+
 %post host
+%if 0%{?default_py3}
+%systemd_post mgr-virtualization.timer
+%else
 /sbin/chkconfig --add rhn-virtualization-host
 /sbin/service crond condrestart
+%endif
 if [ -d /proc/xen ]; then
     # xen kernel is running
     # change the default template to the xen version
@@ -230,12 +273,20 @@ if [ -d /proc/xen ]; then
 fi
 
 %preun host
+%if 0%{?default_py3}
+%systemd_preun mgr-virtualization.timer
+%else
 if [ $1 = 0 ]; then
   /sbin/chkconfig --del rhn-virtualization-host
 fi
+%endif
 
 %postun host
+%if 0%{?default_py3}
+%systemd_postun_with_restart mgr-virtualization.timer
+%else
 /sbin/service crond condrestart
+%endif
 %endif
 
 %if 0%{?build_py2}
@@ -286,9 +337,12 @@ fi
 %endif
 %dir %{rhn_conf_dir}/virt
 %dir %{rhn_conf_dir}/virt/auto
-%if ! 0%{?suse_version}
-%endif
+%if 0%{?default_py3}
+%{_unitdir}/mgr-virtualization.service
+%{_unitdir}/mgr-virtualization.timer
+%else
 %config(noreplace) %attr(644,root,root) %{cron_dir}/rhn-virtualization.cron
+%endif
 %{rhn_conf_dir}/*-template.xml
 %config(noreplace) %{rhn_conf_dir}/image.cfg
 %doc LICENSE
