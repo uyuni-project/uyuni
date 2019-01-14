@@ -1,3 +1,4 @@
+- Remove the reference of channel from revision before deleting it (bsc#1107850)
 - Add sp migration dry runs to the daily status report (bsc#1083094)
 - Fix permissions check on formula list api call (bsc#1106626)
 - Prevent failing KickstartCommand when customPosition is null (bsc#1112121)
