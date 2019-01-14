@@ -105,6 +105,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 /**
  * ChannelSoftwareHandler
  * @version $Rev$
@@ -2129,7 +2132,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         Channel originalChan = lookupChannelByLabel(loggedInUser.getOrg(), originalLabel);
 
-        CloneChannelCommand ccc = new CloneChannelCommand(originalState, originalChan);
+        CloneChannelCommand ccc = new CloneChannelCommand(originalState ? ORIGINAL_STATE : CURRENT_STATE, originalChan);
 
         ccc.setUser(loggedInUser);
         setChangedValues(ccc, channelDetails);

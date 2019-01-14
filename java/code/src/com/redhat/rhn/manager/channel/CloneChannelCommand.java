@@ -34,21 +34,30 @@ import java.util.Optional;
  */
 public class CloneChannelCommand extends CreateChannelCommand {
 
-    private boolean originalState;
+    private CloneBehavior cloneBehavior;
     private Channel original;
     private String DEFAULT_PREFIX = "clone-of-";
 
     /**
+     * Clone Behavior type
+     */
+    public enum CloneBehavior {
+        ORIGINAL_STATE,
+        CURRENT_STATE,
+        EMPTY
+    }
+
+    /**
      * Constructor
-     * @param originalStateIn true to clone with no errata, false to clone with all errata
+     * @param cloneBehaviorIn the cloning behavior
      * @param cloneFrom channel to clone from
      */
-    public CloneChannelCommand(boolean originalStateIn, Channel cloneFrom) {
+    public CloneChannelCommand(CloneBehavior cloneBehaviorIn, Channel cloneFrom) {
         user = null;
         label = DEFAULT_PREFIX + cloneFrom.getLabel();
         name =  DEFAULT_PREFIX + cloneFrom.getName();
         original = cloneFrom;
-        originalState = originalStateIn;
+        cloneBehavior = cloneBehaviorIn;
         summary = cloneFrom.getSummary();
         checksum = cloneFrom.getChecksumTypeLabel();
         gpgKeyUrl = cloneFrom.getGPGKeyUrl();
@@ -111,12 +120,12 @@ public class CloneChannelCommand extends CreateChannelCommand {
         // This ends up being a mode query call so need to save first to get channel id
         c.setGloballySubscribable(globallySubscribable, user.getOrg());
 
-        if (originalState) {
+        if (cloneBehavior == CloneBehavior.ORIGINAL_STATE) {
             // original packages only, no errata
             ChannelManager.cloneOriginalChannelPackages(original.getId(), c.getId());
             ChannelFactory.refreshNewestPackageCache(c.getId(), "cloning as original");
         }
-        else {
+        else if (cloneBehavior == CloneBehavior.CURRENT_STATE) {
             ChannelManager.cloneChannelPackages(original.getId(), c.getId());
             ChannelFactory.cloneNewestPackageCache(original.getId(), c.getId());
             ErrataManager.cloneChannelErrata(original.getId(), c.getId(), user);
