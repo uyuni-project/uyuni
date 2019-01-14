@@ -1,3 +1,4 @@
+- fixes bug showing retrying notification actions result messages
 - Make datetimepicker update displayed time (bsc#1041999)
 - Nav and section scroll independently
 - change SCC sync backend to adapt quicker to SCC changes and improve
