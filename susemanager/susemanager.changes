@@ -38,7 +38,7 @@ Fri Aug 10 15:42:19 CEST 2018 - jgonzalez@suse.com
 - Fix copyright for the package specfile (bsc#1103696)
 - Feat: add OS Image building with Kiwi FATE#322959 FATE#323057 FATE#323056
 - fix mgr-create-bootstrap-repo with custom channels (bsc#1099934)
-- add python-pyudev to bootstrap repo (bsc#1099311)
+- add package python-pyudev for bootstrapping (bsc#1099311)
 - Feat: allow cleanup of bootstrap repo (bsc#1096204)
 
 -------------------------------------------------------------------
