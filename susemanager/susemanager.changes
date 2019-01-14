@@ -1,3 +1,4 @@
+- add bootstrap repo definition for OES 2018 SP1 (bsc#1116826)
 - rhnlib was renamed to python2-rhnlib. Change bootstrap data accordingly.
 - change SCC sync backend to adapt quicker to SCC changes and improve
   speed of syncing metadata and checking for channel dependencies
