@@ -1,3 +1,4 @@
+- show feedback messages after using the retry option on the notification messages page
 - change SCC sync backend to adapt quicker to SCC changes and improve
   speed of syncing metadata and checking for channel dependencies
 - fix wording for taskotop (cosmetical only)(bsc#1118112)
