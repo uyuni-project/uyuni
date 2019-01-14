@@ -240,7 +240,7 @@ class NotificationMessages extends React.Component {
     return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
       .then((data) => {
         const newMessage = { severity: data.severity, text: data.text };
-        this.setState((prevState, props) => ({ messages : prevState.message.concat([newMessage]) }));
+        this.setState((prevState, props) => ({ messages : prevState.messages.concat([newMessage]) }));
       })
       .catch(response => {
       });
@@ -250,7 +250,7 @@ class NotificationMessages extends React.Component {
     return Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
       .then((data) => {
         const newMessage = { severity: data.severity, text: data.text };
-        this.setState((prevState, props) => ({ messages : prevState.message.concat([newMessage]) }));
+        this.setState((prevState, props) => ({ messages : prevState.messages.concat([newMessage]) }));
       })
       .catch(response => {
       });
