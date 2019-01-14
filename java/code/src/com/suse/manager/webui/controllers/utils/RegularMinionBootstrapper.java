@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
@@ -102,10 +103,23 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
         String minionId = input.getHost();
         MinionPendingRegistrationService.addMinion(
                 user, minionId, defaultContactMethod, Optional.empty());
+
+        // If a key is pending for this minion, temporarily reject it
+        boolean weRejectedIt = false;
+        if (saltService.keyExists(minionId, KeyStatus.UNACCEPTED)) {
+            LOG.info("Pending key exists for " + minionId + ", rejecting...");
+            saltService.rejectKey(minionId);
+            weRejectedIt = true;
+        }
+
         BootstrapResult result = super.bootstrapInternal(input, user, defaultContactMethod);
         if (!result.isSuccess()) {
-            saltService.deleteKey(input.getHost());
+            saltService.deleteKey(minionId);
             MinionPendingRegistrationService.removeMinion(minionId);
+        }
+        else if (weRejectedIt) {
+            LOG.info("Removing key that was temporarily rejected for " + minionId);
+            saltService.deleteRejectedKey(minionId);
         }
         LOG.info("Minion bootstrap success: " + result.isSuccess());
         return result;

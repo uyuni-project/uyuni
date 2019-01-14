@@ -156,6 +156,13 @@ public class SaltService {
     private final ScheduledExecutorService scheduledExecutorService =
             Executors.newScheduledThreadPool(5);
 
+    /**
+     * Enum of all the available status for Salt keys.
+     */
+    public enum KeyStatus {
+        ACCEPTED, DENIED, UNACCEPTED, REJECTED
+    }
+
     // Prevent instantiation
     SaltService() {
         RequestConfig requestConfig = RequestConfig.custom()
@@ -360,17 +367,24 @@ public class SaltService {
     }
 
     /**
-     * For a given id check if there is a minion key in any status.
+     * For a given minion id check if there is a key in any of the given status. If no status is given as parameter,
+     * all the available status are considered.
      *
      * @param id the id to check for
+     * @param statusIn array of key status to consider
      * @return true if there is a key with the given id, false otherwise
      */
-    public boolean keyExists(String id) {
+    public boolean keyExists(String id, KeyStatus... statusIn) {
+        final Set<KeyStatus> status = new HashSet<>(Arrays.asList(statusIn));
+        if (status.isEmpty()) {
+            status.addAll(Arrays.asList(KeyStatus.values()));
+        }
+
         Key.Names keys = getKeys();
-        return keys.getMinions().contains(id) ||
-                keys.getUnacceptedMinions().contains(id) ||
-                keys.getRejectedMinions().contains(id) ||
-                keys.getDeniedMinions().contains(id);
+        return status.contains(KeyStatus.ACCEPTED) && keys.getMinions().contains(id) ||
+                status.contains(KeyStatus.DENIED) && keys.getDeniedMinions().contains(id) ||
+                status.contains(KeyStatus.UNACCEPTED) && keys.getUnacceptedMinions().contains(id) ||
+                status.contains(KeyStatus.REJECTED) && keys.getRejectedMinions().contains(id);
     }
 
     /**
@@ -1053,6 +1067,17 @@ public class SaltService {
             return callSync(call);
         }
         return Optional.of(MgrUtilRunner.ExecResult.success());
+    }
+
+    /**
+     * Delete a Salt key from the "Rejected Keys" category using the mgrutil runner.
+     *
+     * @param minionId the minionId to look for in "Rejected Keys"
+     * @return the result of the runner call as a map
+     */
+    public Optional<MgrUtilRunner.ExecResult> deleteRejectedKey(String minionId) {
+        RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.deleteRejectedKey(minionId);
+        return callSync(call);
     }
 
     /**

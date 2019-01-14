@@ -144,15 +144,23 @@ echo "    * copying Salt state files"
 D_IFS=$IFS
 IFS=","
 for sls_dir in "/usr/share/susemanager/salt/","static-sls","static SLS" \
-               "/srv/susemanager/salt/","generated-sls","generated SLS" \
-               "/srv/salt/","custom-sls","custom SLS"; do
+               "/srv/susemanager/salt/","generated-sls","generated SLS"; do
     set $sls_dir
     if [ -d $1 ] && [ "$(ls -A $1)" ]; then
-	echo -e "    \t- copying $3"
-	cp -fa $1 $DIR/salt-states/$2
+	    echo -e "    \t- copying $3"
+	    cp -fa $1 $DIR/salt-states/$2
     fi
 done
 IFS=$D_IFS
+mkdir -p $DIR/salt-states/custom-sls/
+for i in $(find /srv/salt/ -type f); do
+    echo -e "    \t- copying custom SLS"
+    if [[ $(file $i) = *"text"* ]];  then
+	    cp --parents -fa $i $DIR/salt-states/custom-sls/
+    else
+      echo "$i" >> $DIR/salt-states/custom-sls/other_files
+    fi
+done
 
 MATCHER_DATA_DIR=/var/lib/spacewalk/subscription-matcher
 if [ -d $MATCHER_DATA_DIR ]; then

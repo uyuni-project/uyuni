@@ -12,6 +12,22 @@ log = logging.getLogger(__name__)
 GROUP_OWNER = 'susemanager'
 
 
+def delete_rejected_key(minion):
+    '''
+    Delete a previously rejected minion key from minions_rejected
+    :param minion: the minion id to look for
+    :return: map containing returncode and stdout/stderr
+    '''
+    path_rejected = "/etc/salt/pki/master/minions_rejected/"
+    path = os.path.normpath(path_rejected + minion)
+    if not path.startswith(path_rejected):
+        return {"returncode": -1, "stderr": "Unexpected path: " + path}
+    if os.path.isfile(path):
+        cmd = ['rm', path]
+        return _cmd(cmd)
+    return {"returncode": 0}
+
+
 def ssh_keygen(path):
     '''
     Generate SSH keys using the given path.

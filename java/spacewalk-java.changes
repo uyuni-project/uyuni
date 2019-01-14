@@ -1,4 +1,11 @@
 - Remove the reference of channel from revision before deleting it (bsc#1107850)
+- Add sp migration dry runs to the daily status report (bsc#1083094)
+- Fix permissions check on formula list api call (bsc#1106626)
+- Prevent failing KickstartCommand when customPosition is null (bsc#1112121)
+- Improve return value and errors thrown for system.createEmptyProfile XMLRPC endpoint
+- Reset channel assignments when base channel changes on registration (bsc#1118917)
+- Removed 'Manage Channels' shortcut for vendor channels (bsc#1115978)
+- Allow bootstrapping minions with a pending minion key being present (bsc#1119727)
 - Fix cloning channels when managing the same errata for both vendor and private orgs (bsc#1111686)
 - Hide 'unknown virtual host manager' when virtual host manager of all hosts is known (bsc#1119320)
 - Add REST API to retrieve VM definition

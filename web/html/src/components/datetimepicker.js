@@ -141,8 +141,31 @@ class DateTimePicker extends React.Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
+       // Set 1 minute interval for updating time
+       const now = new Date();
+       const nextMinute = new Date(now);
+       nextMinute.setSeconds(0);
+       nextMinute.setMinutes(nextMinute.getMinutes() + 1)
+       this.timeOut = setTimeout(this.changeTime, nextMinute - now);
+       this.timer = setInterval(this.changeTime, 60000);
     }
+
+    componentWillUnmount() {
+        clearTimeout(this.timeOut);
+        clearInterval(this.timer);
+    }
+
+   changeTime = () => {
+       // Check if date set is in the future if not, update displayed time
+       const setDate = this.props.value;
+       const now = new Date(Date.now());
+       now.setMilliseconds(0);
+
+       if(setDate < now) {
+           this.props.onChange(now);
+       }
+   }
 
     onDateChanged(date) {
         const value = this.props.value;

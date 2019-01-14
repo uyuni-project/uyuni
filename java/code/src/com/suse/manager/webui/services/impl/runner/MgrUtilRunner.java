@@ -75,6 +75,20 @@ public class MgrUtilRunner {
     }
 
     /**
+     * Remove a Salt key from the "Rejected Keys" category.
+     * @param minionId the minionId to look for in "Rejected Keys"
+     * @return the execution result
+     */
+    public static RunnerCall<ExecResult> deleteRejectedKey(String minionId) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("minion", minionId);
+        RunnerCall<ExecResult> call =
+                new RunnerCall<>("mgrutil.delete_rejected_key", Optional.of(args),
+                        new TypeToken<ExecResult>() { });
+        return call;
+    }
+
+    /**
      * Generate a ssh key pair.
      * @param path path where to generate the keys
      * @return the execution result
