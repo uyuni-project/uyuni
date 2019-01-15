@@ -44,11 +44,6 @@ public abstract class ProjectSource {
     private ContentProject contentProject;
 
     /**
-     * Publish content project.
-     */
-    public abstract void publish();
-
-    /**
      * Gets the id.
      *
      * @return id
@@ -95,6 +90,9 @@ public abstract class ProjectSource {
                 .append("contentProject", contentProject);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return toStringBuilder().toString();
