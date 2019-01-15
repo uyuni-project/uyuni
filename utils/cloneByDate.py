@@ -19,7 +19,6 @@
 
 import os
 import sys
-import six
 import shutil
 import tempfile
 import pprint
@@ -27,6 +26,7 @@ import subprocess
 import datetime
 import re
 
+from salt.ext import six
 from yum.Errors import RepoError
 
 try:
