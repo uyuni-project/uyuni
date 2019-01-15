@@ -67,7 +67,7 @@ public class PackageUtils {
         int releaseIndex = version.lastIndexOf('-');
         if (releaseIndex > 0) {
             // Strip away optional 'release'
-            release = version.substring(releaseIndex + 1, version.length());
+            release = version.substring(releaseIndex + 1);
             version = version.substring(0, releaseIndex);
         }
 
