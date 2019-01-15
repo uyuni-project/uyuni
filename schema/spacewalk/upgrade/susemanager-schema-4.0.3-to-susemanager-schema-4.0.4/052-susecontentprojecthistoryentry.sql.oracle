@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseContentProjectHistory(
+CREATE TABLE suseContentProjectHistoryEntry(
     id         NUMBER NOT NULL
                    CONSTRAINT suse_ct_prj_hist_id_pk PRIMARY KEY,
     project_id NUMBER NOT NULL
@@ -35,4 +35,4 @@ ENABLE ROW MOVEMENT
 CREATE SEQUENCE suse_ct_prj_hist_seq;
 
 CREATE UNIQUE INDEX suse_ct_prj_hist_pid_ver_uq
-    ON suseContentProjectHistory(project_id, version);
+    ON suseContentProjectHistoryEntry(project_id, version);
