@@ -16,6 +16,11 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%if 0%{?suse_version} > 1320
+# SLE15 builds on Python 3
+%global build_py3   1
+%endif
+%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 %define rhnroot %{_prefix}/share/rhn
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -77,7 +82,7 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 Requires:       python
 Requires:       rpm-python
 %if 0%{?rhel} == 6
-Requires:       python-argparse
+Requires:       %{pythonX}-argparse
 %endif
 Requires:       rhnlib >= 2.5.20
 Requires:       rpm
@@ -94,9 +99,9 @@ Requires:       spacewalk-reports
 Requires:       spacewalk-setup
 Requires:       yum-utils
 
-Requires:       python-curses
-Requires:       python-ldap
-Requires:       python-yaml
+Requires:       %{pythonX}-curses
+Requires:       %{pythonX}-ldap
+Requires:       %{pythonX}-yaml
 
 %description
 Generic utilities that may be run against a Spacewalk server.
@@ -114,6 +119,14 @@ Generic utilities that may be run against a Spacewalk server.
 
 %build
 make all %{?pod2man}
+
+# Fixing shebang for Python 3
+%if 0%{?build_py3}
+for i in $(find . -type f);
+do
+    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+done
+%endif
 
 %install
 install -d $RPM_BUILD_ROOT/%{rhnroot}
