@@ -89,6 +89,7 @@ Requires:       rpm
 %if ! 0%{?suse_version}
 Requires:       setup
 %endif
+Requires:       salt
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend
 Requires:       spacewalk-backend-libs
