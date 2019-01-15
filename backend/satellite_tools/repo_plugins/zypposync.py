@@ -86,7 +86,26 @@ class ContentSource(object):
         """
         Return products of SLE.
 
-        :returns: list
+        Example data:
+
+            {'arch': 'x86_64',
+             'description': 'openSUSE Leap 15.0',
+             'eol': '2019-11-30T01:00:00+01',
+             'eol_t': 1575072000,
+             'epoch': '0',
+             'flavor': 'ftp',
+             'installed': True,
+             'isbase': True,
+             'name': 'openSUSE',
+             'productline': 'Leap',
+             'release': '1',
+             'repo': '@System',
+             'shortname': 'openSUSE Leap',
+             'summary': 'openSUSE Leap 15.0',
+             'vendor': 'openSUSE',
+             'version': '15.0'}
+
+        :returns: list of mappings
         """
         self.repo.list_products()
         return []
