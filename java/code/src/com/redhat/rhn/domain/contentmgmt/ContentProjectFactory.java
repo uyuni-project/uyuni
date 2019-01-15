@@ -28,7 +28,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
- *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class.
+ *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class and related classes.
  */
 public class ContentProjectFactory extends HibernateFactory {
 
