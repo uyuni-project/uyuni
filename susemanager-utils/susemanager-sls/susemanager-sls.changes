@@ -1,3 +1,5 @@
+- Allow bootstrapping minions with a pending minion key being present (bsc#1119727)
+
 -------------------------------------------------------------------
 Mon Dec 17 14:46:00 CET 2018 - jgonzalez@suse.com
 
