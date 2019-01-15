@@ -51,8 +51,6 @@ except ImportError:
     from common.rhnConfig import CFG, initCFG
     from satellite_tools.progress_bar import ProgressBar
 
-from builtins import input
-
 from .depsolver import DepSolver
 
 
