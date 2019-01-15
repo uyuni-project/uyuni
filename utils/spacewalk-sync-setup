@@ -28,6 +28,7 @@ from optparse import OptionParser, OptionGroup
 from os import path, access, R_OK
 from os.path import expanduser
 import getpass
+from salt.ext import six
 
 try:
     import xmlrpclib
