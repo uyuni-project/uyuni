@@ -1,4 +1,4 @@
-- fixes bug showing retrying notification actions result messages
+- show feedback messages after using the retry option on the notification messages page
 
 -------------------------------------------------------------------
 Thu Dec 13 10:44:51 CET 2018 - jgonzalez@suse.com
