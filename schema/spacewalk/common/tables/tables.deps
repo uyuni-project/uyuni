@@ -227,7 +227,7 @@ suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
 suseContentProject             :: web_customer
 suseContentProject_alters      :: suseContentEnvironment
 suseContentProjectSource       :: suseContentProject rhnChannel
-suseContentProjectHistory      :: suseContentProject web_contact
+suseContentProjectHistoryEntry :: suseContentProject web_contact
 suseContentFilter              :: web_customer
 suseContentFilterProject       :: suseContentProject suseContentFilter
 suseContentEnvironment         :: suseContentProject
