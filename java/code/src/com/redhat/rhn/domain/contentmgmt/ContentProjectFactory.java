@@ -67,6 +67,15 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Save the Content Project history entry
+     *
+     * @param entry  - the Content Project history entry
+     */
+    private static void save(ContentProjectHistoryEntry entry) {
+        INSTANCE.saveObject(entry);
+    }
+
+    /**
      * Delete a {@link ContentEnvironment} from the database.
      * @param contentEnvironment Environment to be deleted.
      */
@@ -220,6 +229,20 @@ public class ContentProjectFactory extends HibernateFactory {
         Root<ProjectSource> root = query.from(ProjectSource.class);
         query.where(builder.equal(root.get("contentProject"), cp));
         return getSession().createQuery(query).list();
+    }
+
+    /**
+     * Add a history entry to a Content Project
+     *
+     * @param project - Content Project
+     * @param entry - the history entry
+     */
+    public static void addHistoryEntryToProject(ContentProject project, ContentProjectHistoryEntry entry) {
+        List<ContentProjectHistoryEntry> entries = project.getHistoryEntries();
+        entry.setVersion(entries.size() == 0 ? 1 : entries.get(entries.size() - 1).getVersion() + 1);
+        entry.setContentProject(project);
+        save(entry);
+        entries.add(entry);
     }
 
     /**
