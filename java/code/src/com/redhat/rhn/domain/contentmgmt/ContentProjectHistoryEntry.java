@@ -35,7 +35,7 @@ import javax.persistence.Table;
  * Content Project History entry
  */
 @Entity
-@Table(name = "suseContentProjectHistory") // todo change  db
+@Table(name = "suseContentProjectHistoryEntry")
 public class ContentProjectHistoryEntry {
 
     private Long id;
