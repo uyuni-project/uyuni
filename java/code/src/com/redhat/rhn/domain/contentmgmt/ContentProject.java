@@ -56,6 +56,7 @@ public class ContentProject extends BaseDomainHelper {
     private ContentEnvironment firstEnvironment;
     private List<ProjectSource> sources = new ArrayList<>();
     private List<ContentFilter> filters = new ArrayList<>();
+    private List<ContentProjectHistoryEntry> historyEntries = new ArrayList<>();
 
     /**
      * Gets the id.
@@ -266,6 +267,33 @@ public class ContentProject extends BaseDomainHelper {
             throw new ContentManagementException("Filter organization does not match Content Project");
         }
         return filters.remove(contentFilter);
+    }
+
+    /**
+     * Gets the historyEntries.
+     *
+     * @return historyEntries
+     */
+    @OneToMany(mappedBy = "contentProject")
+    public List<ContentProjectHistoryEntry> getHistoryEntries() {
+        return historyEntries;
+    }
+
+    /**
+     * Sets the historyEntries.
+     *
+     * @param historyEntriesIn - the historyEntries
+     */
+    public void setHistoryEntries(List<ContentProjectHistoryEntry> historyEntriesIn) {
+        historyEntries = historyEntriesIn;
+    }
+
+    /**
+     * Add a history entry
+     *
+     * @param entry - the history entry
+     */
+    public void addHistoryEntry(ContentProjectHistoryEntry entry) {
     }
 
     /**
