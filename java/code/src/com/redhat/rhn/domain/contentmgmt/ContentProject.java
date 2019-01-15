@@ -31,9 +31,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -52,6 +55,7 @@ public class ContentProject extends BaseDomainHelper {
     private String description;
     private ContentEnvironment firstEnvironment;
     private List<ProjectSource> sources = new ArrayList<>();
+    private List<ContentFilter> filters = new ArrayList<>();
 
     /**
      * Gets the id.
@@ -212,6 +216,56 @@ public class ContentProject extends BaseDomainHelper {
      */
     public void removeSource(ProjectSource source) {
         sources.remove(source);
+    }
+
+    /**
+     * Gets the filters.
+     *
+     * @return filters
+     */
+    @ManyToMany
+    @JoinTable(
+            name = "suseContentFilterProject",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "filter_id")
+    )
+    @OrderColumn(name = "position")
+    public List<ContentFilter> getFilters() {
+        return filters;
+    }
+
+    /**
+     * Sets the filters.
+     *
+     * @param filtersIn - the filters
+     */
+    public void setFilters(List<ContentFilter> filtersIn) {
+        filters = filtersIn;
+    }
+
+    /**
+     * Adds a filter.
+     *
+     * @param contentFilter the content filter
+     */
+    public void addFilter(ContentFilter contentFilter) {
+        if (!org.equals(contentFilter.getOrg())) {
+            throw new ContentManagementException("Filter organization does not match Content Project");
+        }
+        filters.add(contentFilter);
+    }
+
+    /**
+     * Removes filter.
+     *
+     * @param contentFilter - the filter to remove
+     * @return true if the filter was contained in the collection
+     */
+    public boolean removeFilter(ContentFilter contentFilter) {
+        if (!org.equals(contentFilter.getOrg())) {
+            throw new ContentManagementException("Filter organization does not match Content Project");
+        }
+        return filters.remove(contentFilter);
     }
 
     /**

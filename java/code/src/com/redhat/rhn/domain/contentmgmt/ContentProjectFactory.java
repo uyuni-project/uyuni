@@ -58,6 +58,15 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Save the ContentFilter
+     *
+     * @param contentFilter the content filter
+     */
+    public static void save(ContentFilter contentFilter) {
+        INSTANCE.saveObject(contentFilter);
+    }
+
+    /**
      * Delete a {@link ContentEnvironment} from the database.
      * @param contentEnvironment Environment to be deleted.
      */
