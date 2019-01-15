@@ -107,8 +107,16 @@ class ContentSource(object):
 
         :returns: list of mappings
         """
-        self.repo.list_products()
-        return []
+
+        data = []
+        for product in self.repo.list_products():
+            for sp_key in ["eol", "eol_t", "flavor", "installed", "isbase",
+                           "productline", "repo", "shortname"]:
+                if sp_key in product:
+                    del product[sp_key]
+            data.append(product)
+
+        return data
 
     def get_susedata(self):
         """
