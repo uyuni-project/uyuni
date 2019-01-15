@@ -16,13 +16,13 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import org.apache.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -169,12 +169,34 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up SoftwareEnvironmentTarget with a given channel
+     *
+     * @param channel the channel
+     * @return Optional of {@link com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget}
+     */
+    public static Optional<SoftwareEnvironmentTarget> lookupEnvironmentTargetByChannel(Channel channel) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SoftwareEnvironmentTarget> query = builder.createQuery(SoftwareEnvironmentTarget.class);
+        Root<SoftwareEnvironmentTarget> from = query.from(SoftwareEnvironmentTarget.class);
+        query.where(builder.equal(from.get("channel"), channel));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
      * Save a Project source
      *
      * @param source the project source
      */
     public static void save(ProjectSource source) {
         INSTANCE.saveObject(source);
+    }
+
+    /**
+     * Save an Environment Target
+     * @param target the Environment Target
+     */
+    public static void save(EnvironmentTarget target) {
+        INSTANCE.saveObject(target);
     }
 
     /**
