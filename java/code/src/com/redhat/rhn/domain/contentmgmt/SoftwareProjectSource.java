@@ -48,11 +48,6 @@ public class SoftwareProjectSource extends ProjectSource {
         this.channel = channelIn;
     }
 
-    @Override
-    public void publish() {
-        // todo clone channel and apply filters here
-    }
-
     /**
      * Get the channel
      *
