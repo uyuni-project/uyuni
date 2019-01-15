@@ -55,6 +55,25 @@ public class ContentEnvironment extends BaseDomainHelper {
     private ContentEnvironment prevEnvironment;
 
     /**
+     * Standard constructor.
+     */
+    public ContentEnvironment() {
+    }
+
+    /**
+     * Standard constructor.
+     *
+     * @param labelIn label
+     * @param nameIn name
+     * @param contentProjectIn content project
+     */
+    public ContentEnvironment(String labelIn, String nameIn, ContentProject contentProjectIn) {
+        this.label = labelIn;
+        this.name = nameIn;
+        this.contentProject = contentProjectIn;
+    }
+
+    /**
      * @return the id
      */
     @Id
