@@ -9,6 +9,11 @@ Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
   node.run("rpm -q #{package}")
 end
 
+Then(/^Deb package "([^"]*)" with version "([^"]*)" should be installed on "([^"]*)"$/) do |package, version, host|
+  node = get_target(host)
+  node.run("test $(dpkg-query -W -f='${Version}' #{package}) = \"#{version}\"")
+end
+
 Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
   node = get_target(host)
   node.run("rpm -q #{package}; test $? -ne 0")
@@ -526,8 +531,10 @@ When(/^I enable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
     cmd = "zypper mr --enable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -538,8 +545,10 @@ When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
     cmd = "zypper mr --disable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -562,8 +571,10 @@ When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
     cmd = "zypper --non-interactive install -y #{package}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y install #{package}"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "apt-get --assume-yes install #{package}"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -574,8 +585,10 @@ When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
     cmd = "zypper --non-interactive remove -y #{package}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y remove #{package}"
+  elsif file_exists?(node, '/usr/bin/dpkg')
+    cmd = "dpkg --remove #{package}"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or dpkg'
   end
   node.run(cmd)
 end
