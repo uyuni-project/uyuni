@@ -51,7 +51,7 @@ except ImportError:
     from common.rhnConfig import CFG, initCFG
     from satellite_tools.progress_bar import ProgressBar
 
-from .depsolver import DepSolver
+from depsolver import DepSolver
 
 
 LOG_LOCATION = '/var/log/rhn/errata-clone.log'
