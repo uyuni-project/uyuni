@@ -59,6 +59,27 @@ public class ContentProject extends BaseDomainHelper {
     private List<ContentProjectHistoryEntry> historyEntries = new ArrayList<>();
 
     /**
+     * Standard constructor.
+     */
+    public ContentProject() {
+    }
+
+    /**
+     * Standard constructor.
+     *
+     * @param labelIn label
+     * @param nameIn name
+     * @param descriptionIn description
+     * @param orgIn org
+     */
+    public ContentProject(String labelIn, String nameIn, String descriptionIn, Org orgIn) {
+        this.label = labelIn;
+        this.name = nameIn;
+        this.description = descriptionIn;
+        this.org = orgIn;
+    }
+
+    /**
      * Gets the id.
      *
      * @return id
