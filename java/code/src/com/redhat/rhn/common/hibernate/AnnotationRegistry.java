@@ -15,8 +15,14 @@
 package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
+import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
@@ -88,6 +94,12 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(ContentEnvironment.class);
         ANNOTATION_CLASSES.add(ProjectSource.class);
         ANNOTATION_CLASSES.add(SoftwareProjectSource.class);
+        ANNOTATION_CLASSES.add(ContentFilter.class);
+        ANNOTATION_CLASSES.add(PackageFilter.class);
+        ANNOTATION_CLASSES.add(ErrataFilter.class);
+        ANNOTATION_CLASSES.add(EnvironmentTarget.class);
+        ANNOTATION_CLASSES.add(SoftwareEnvironmentTarget.class);
+        ANNOTATION_CLASSES.add(ContentProjectHistoryEntry.class);
     }
 
     /**
