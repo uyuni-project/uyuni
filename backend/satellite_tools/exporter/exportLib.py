@@ -799,10 +799,16 @@ class SuseProductChannelDumper(BaseQueryDumper):
     tag_name = 'suse-product-channels'
     iterator_query = """
     SELECT p.product_id AS pdid,
-           pc.channel_label AS clabel,
-           pc.parent_channel_label AS pclabel
-      FROM suseProductChannel pc
-      JOIN suseProducts p ON pc.product_id = p.id
+           pr.channel_label as clabel,
+           pr.parent_channel_label AS pclabel
+      FROM suseProductSCCRepository pr
+      JOIN suseProducts p ON pr.product_id = p.id
+     WHERE EXISTS (select 1
+                     FROM suseProductChannel pc
+                     JOIN rhnChannel c ON c.id = pc.channel_id
+                    WHERE p.id = pc.product_id
+                      AND pc.mandatory = 'Y'
+                      AND c.label = pr.channel_label)
     """
 
     def __init__(self, writer, data_iterator=None):
@@ -836,6 +842,106 @@ class SuseUpgradePathDumper(BaseQueryDumper):
 
     def dump_subelement(self, data):
         cf = _SuseUpgradePathDumper(self._writer, data)
+        cf.dump()
+
+class _SuseProductExtensionDumper(BaseRowDumper):
+    tag_name = 'suse-product-extension'
+
+    def set_attributes(self):
+        return {
+            'root-product-id' : self._row['rootid'],
+            'product-id' : self._row['pdid'],
+            'ext-product-id' : self._row['extid'],
+            'recommended': self._row['recommended']
+            }
+
+class SuseProductExtensionDumper(BaseQueryDumper):
+    tag_name = 'suse-product-extensions'
+    iterator_query = """
+    SELECT p1.product_id AS pdid,
+           p2.product_id AS rootid,
+           p3.product_id AS extid,
+           e.recommended AS recommended
+      FROM suseProductExtension e
+      JOIN suseProducts p1 ON e.base_pdid = p1.id
+      JOIN suseProducts p2 ON e.root_pdid = p2.id
+      JOIN suseProducts p3 ON e.ext_pdid = p3.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseProductExtensionDumper(self._writer, data)
+        cf.dump()
+
+class _SuseProductRepositoryDumper(BaseRowDumper):
+    tag_name = 'suse-product-repository'
+
+    def set_attributes(self):
+        return {
+            'root-product-id' : self._row['rootid'],
+            'product-id' : self._row['pdid'],
+            'repository-id' : self._row['repoid'],
+            'channel-label': self._row['channel_label'],
+            'parent-channel-label': self._row['parent_channel_label'],
+            'channel-name': self._row['channel_name'],
+            'mandatory': self._row['mandatory'],
+            'update-tag': self._row['update_tag']
+            }
+
+class SuseProductExtensionDumper(BaseQueryDumper):
+    tag_name = 'suse-product-repositories'
+    iterator_query = """
+    SELECT p1.product_id AS pdid,
+           p2.product_id AS rootid,
+           r.scc_id AS repoid,
+           pr.channel_label,
+           pr.parent_channel_label,
+           pr.channel_name,
+           pr.mandatory,
+           pr.update_tag
+      FROM suseProductSCCRepository pr
+      JOIN suseProducts p1 ON pr.product_id = p1.id
+      JOIN suseProducts p2 ON pr.root_product_id = p2.id
+      JOIN suseSCCRepository r ON pr.repo_id = r.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseProductRepositoryDumper(self._writer, data)
+        cf.dump()
+
+class _SCCRepositoryDumper(BaseRowDumper):
+    tag_name = 'scc-repository'
+
+    def set_attributes(self):
+        return {
+            'scc-id' : self._row['sccid'],
+            'autorefresh' : self._row['autorefresh'],
+            'name' : self._row['name'],
+            'distro-target': self._row['distro_target'],
+            'description': self._row['description'],
+            'url': self._row['url'],
+            'signed': self._row['signed']
+            }
+
+class SCCRepositoryDumper(BaseQueryDumper):
+    tag_name = 'scc-repositories'
+    iterator_query = """
+    SELECT scc_id AS sccid,
+           autorefresh, name, distro_target,
+           description, url, signed
+      FROM suseSCCRepository
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SCCRepositoryDumper(self._writer, data)
         cf.dump()
 
 class _SuseSubscriptionDumper(BaseRowDumper):

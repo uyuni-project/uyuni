@@ -1,0 +1,7 @@
+[Unit]
+Description=Check SSL certificates for Uyuni
+Documentation=man:ssl-cert-check(8)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ssl-cert-check-timerscript

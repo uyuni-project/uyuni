@@ -8,7 +8,7 @@
 #
 # The scenarios in this feature are skipped:
 # * if there is no proxy ($proxy is nil)
-# * if there is no private network ($private_net is false).
+# * if there is no private network ($private_net is nil)
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
 Feature: PXE boot a Retail terminal
@@ -49,8 +49,8 @@ Feature: PXE boot a Retail terminal
     And I enter "tf.local" in third configured zone name field
     # direct zone example.org:
     And I press "Add Item" in first A section
-    And I enter "terminal" in fourth A name field
-    And I enter "192.168.5.4" in fourth A address field
+    And I enter "pxeboot" in fourth A name field
+    And I enter the local IP address of "pxeboot" in fourth A address field
     And I press "Add Item" in first CNAME section
     And I enter "ftp" in first CNAME alias field
     And I enter "proxy" in first CNAME name field
@@ -83,11 +83,11 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
-    And I enter "192.168.5.254" in next server field
+    And I enter the local IP address of "proxy" in next server field
     And I enter "boot/pxelinux.0" in filename field
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
-    And I enter "192.168.5.4" in third reserved IP field
+    And I enter the local IP address of "pxeboot" in third reserved IP field
     And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved!" text
@@ -99,7 +99,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Tftpd" in the content area
-    And I enter "192.168.5.254" in internal network address field
+    And I enter the local IP address of "proxy" in internal network address field
     And I enter "/srv/saltboot" in TFTP base directory field
     And I click on "Save Formula"
     Then I should see a "Formula saved!" text
@@ -201,7 +201,6 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in partitions section
     And I enter "p2" in second partition id field
     And I enter "/" in second mount point field
-    And I select "ext4" in second filesystem format field
     And I enter "POS_Image_JeOS6" in second OS image field
     And I click on "Save Formula"
     Then I should see a "Formula saved!" text

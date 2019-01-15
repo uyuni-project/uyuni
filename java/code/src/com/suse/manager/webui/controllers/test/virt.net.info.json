@@ -1,0 +1,18 @@
+{
+    "net0": {
+        "active": 1,
+        "autostart": 1,
+        "bridge": "br0",
+        "leases": [],
+        "persistent": 1,
+        "uuid": "6682ddbc-e02d-4a13-9c03-f4d4a4924f09"
+    },
+    "net1": {
+        "active": 0,
+        "autostart": 0,
+        "bridge": "virbr0",
+        "leases": [],
+        "persistent": 1,
+        "uuid": "860e49a3-d227-4105-95ca-d19dc8f0c8b6"
+    }
+}

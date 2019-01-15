@@ -25,8 +25,6 @@ CREATE TABLE rhnChannelFamily
                          ON DELETE CASCADE,
     name         VARCHAR2(128) NOT NULL,
     label        VARCHAR2(128) NOT NULL,
-    product_url  VARCHAR2(128)
-                     DEFAULT ('http://www.redhat.com/products/') NOT NULL,
     created      timestamp with local time zone
                      DEFAULT (current_timestamp) NOT NULL,
     modified     timestamp with local time zone

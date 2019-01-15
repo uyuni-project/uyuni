@@ -86,7 +86,10 @@ def parse_channels(data, log):
             continue
         channel = Channel(entry)
         log.debug("Found channel '{0}'".format(channel.name))
-        channels[channel.parent].add_child(channel)
+        if channel.parent in channels:
+            channels[channel.parent].add_child(channel)
+        else:
+            log.debug("Base Channel '{0}' undefined".format(channel.parent))
 
     return channels
 

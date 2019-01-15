@@ -195,7 +195,7 @@ public abstract class BaseRepoCommand {
 
         // create new repository
         if (repo == null) {
-            this.repo = ChannelFactory.createRepo();
+            this.repo = new ContentSource();
         }
 
         Set<SslContentSource> repoSslSets = repo.getSslSets();

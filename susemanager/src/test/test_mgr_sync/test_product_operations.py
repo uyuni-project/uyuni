@@ -110,60 +110,60 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-[ ] RES 4 (x86_64)
-[ ] RES 4 (x86_64)
-[ ] RES 5 (x86_64)
-[ ] RES 6 (x86_64)
-[ ] SUSE Linux Enterprise Desktop 11 SP2 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 (x86_64)
-[ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP1 (x86_64)
-[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 (x86_64)
-[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
-[ ] SUSE Linux Enterprise Server 10 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 10 SP3 (x86_64)
-[I] SUSE Linux Enterprise Server 10 SP4 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 (x86_64)
-[ ] SUSE Linux Enterprise Server 11 SP1 (x86_64)
-  [ ] Novell Open Enterprise Server 2 11 (x86_64)
-  [ ] SUSE Linux Enterprise High Availability Extension 11 SP1 (x86_64)
-  [ ] SUSE Linux Enterprise Point of Service 11 SP1 (x86_64)
-  [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP1 (x86_64)
-  [ ] SUSE Linux Enterprise Subscription Management Tool 11 (x86_64)
-[ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
-  [ ] Novell Open Enterprise Server 2 11.1 (x86_64)
-  [ ] SUSE Cloud 1.0 (x86_64)
-  [ ] SUSE Lifecycle Management Server 1.3 (x86_64)
-  [ ] SUSE Linux Enterprise High Availability Extension 11 SP2 (x86_64)
-  [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 (x86_64)
-  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP2 (x86_64)
-  [ ] SUSE WebYaST 1.3 (x86_64)
-[I] SUSE Linux Enterprise Server 11 SP3 (x86_64)
-  [ ] Novell Open Enterprise Server 2 11.2 (x86_64)
-  [ ] SUSE Cloud 2.0 (x86_64)
-  [ ] SUSE Cloud 3 (x86_64)
-  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Point of Service 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
-  [I] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
-  [ ] SUSE WebYaST 1.3 (x86_64)
-[ ] SUSE Linux Enterprise Server 11 SP3 VMWare (x86_64)
-  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
-  [ ] SUSE WebYaST 1.3 (x86_64)
-[ ] SUSE Manager Proxy 1.2 (x86_64)
-[ ] SUSE Manager Proxy 1.7 (x86_64)
-[ ] SUSE Manager Proxy 2.1 (x86_64)
-[ ] SUSE Manager Server 2.1 (x86_64)"""
+[ ] RES 4 x86_64
+[ ] RES 4 x86_64
+[ ] RES 5 x86_64
+[ ] RES 6 x86_64
+[ ] SUSE Linux Enterprise Desktop 11 SP2 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 x86_64
+[ ] SUSE Linux Enterprise Desktop 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP1 x86_64
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 x86_64
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
+[ ] SUSE Linux Enterprise Server 10 SP3 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 10 SP3 x86_64
+[I] SUSE Linux Enterprise Server 10 SP4 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 x86_64
+[ ] SUSE Linux Enterprise Server 11 SP1 x86_64
+  [ ] Novell Open Enterprise Server 2 11 x86_64
+  [ ] SUSE Linux Enterprise High Availability Extension 11 SP1 x86_64
+  [ ] SUSE Linux Enterprise Point of Service 11 SP1 x86_64
+  [ ] SUSE Linux Enterprise Real Time 11 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP1 x86_64
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 x86_64
+[ ] SUSE Linux Enterprise Server 11 SP2 x86_64
+  [ ] Novell Open Enterprise Server 2 11.1 x86_64
+  [ ] SUSE Cloud 1.0 x86_64
+  [ ] SUSE Lifecycle Management Server 1.3 x86_64
+  [ ] SUSE Linux Enterprise High Availability Extension 11 SP2 x86_64
+  [ ] SUSE Linux Enterprise Real Time 11 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 x86_64
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP2 x86_64
+  [ ] SUSE WebYaST 1.3 x86_64
+[I] SUSE Linux Enterprise Server 11 SP3 x86_64
+  [ ] Novell Open Enterprise Server 2 11.2 x86_64
+  [ ] SUSE Cloud 2.0 x86_64
+  [ ] SUSE Cloud 3 x86_64
+  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Point of Service 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Real Time 11 x86_64
+  [I] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
+  [ ] SUSE WebYaST 1.3 x86_64
+[ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
+  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
+  [ ] SUSE WebYaST 1.3 x86_64
+[ ] SUSE Manager Proxy 1.2 x86_64
+[ ] SUSE Manager Proxy 1.7 x86_64
+[ ] SUSE Manager Proxy 2.1 x86_64
+[ ] SUSE Manager Server 2.1 x86_64"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -191,35 +191,35 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-[ ] RES 4 (x86_64)
-[ ] RES 4 (x86_64)
-[ ] RES 5 (x86_64)
-[ ] RES 6 (x86_64)
-[ ] SUSE Linux Enterprise Desktop 11 SP2 (x86_64)
-[ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
-[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 (x86_64)
-[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 (x86_64)
-[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 (x86_64)
-[ ] SUSE Linux Enterprise Server 10 SP3 (x86_64)
-[I] SUSE Linux Enterprise Server 10 SP4 (x86_64)
-  [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 (x86_64)
-[ ] SUSE Linux Enterprise Server 11 SP1 (x86_64)
-[ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
-[I] SUSE Linux Enterprise Server 11 SP3 (x86_64)
-  [ ] Novell Open Enterprise Server 2 11.2 (x86_64)
-  [ ] SUSE Cloud 2.0 (x86_64)
-  [ ] SUSE Cloud 3 (x86_64)
-  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Point of Service 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
-  [I] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
-  [ ] SUSE WebYaST 1.3 (x86_64)
-[ ] SUSE Linux Enterprise Server 11 SP3 VMWare (x86_64)
-[ ] SUSE Manager Proxy 1.2 (x86_64)
-[ ] SUSE Manager Proxy 1.7 (x86_64)
-[ ] SUSE Manager Proxy 2.1 (x86_64)
-[ ] SUSE Manager Server 2.1 (x86_64)"""
+[ ] RES 4 x86_64
+[ ] RES 4 x86_64
+[ ] RES 5 x86_64
+[ ] RES 6 x86_64
+[ ] SUSE Linux Enterprise Desktop 11 SP2 x86_64
+[ ] SUSE Linux Enterprise Desktop 11 SP3 x86_64
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 x86_64
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 x86_64
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 x86_64
+[ ] SUSE Linux Enterprise Server 10 SP3 x86_64
+[I] SUSE Linux Enterprise Server 10 SP4 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 x86_64
+[ ] SUSE Linux Enterprise Server 11 SP1 x86_64
+[ ] SUSE Linux Enterprise Server 11 SP2 x86_64
+[I] SUSE Linux Enterprise Server 11 SP3 x86_64
+  [ ] Novell Open Enterprise Server 2 11.2 x86_64
+  [ ] SUSE Cloud 2.0 x86_64
+  [ ] SUSE Cloud 3 x86_64
+  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Point of Service 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Real Time 11 x86_64
+  [I] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
+  [ ] SUSE WebYaST 1.3 x86_64
+[ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
+[ ] SUSE Manager Proxy 1.2 x86_64
+[ ] SUSE Manager Proxy 1.7 x86_64
+[ ] SUSE Manager Proxy 2.1 x86_64
+[ ] SUSE Manager Server 2.1 x86_64"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -247,9 +247,9 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-[ ] SUSE Manager Proxy 1.2 (x86_64)
-[ ] SUSE Manager Proxy 1.7 (x86_64)
-[ ] SUSE Manager Proxy 2.1 (x86_64)"""
+[ ] SUSE Manager Proxy 1.2 x86_64
+[ ] SUSE Manager Proxy 1.7 x86_64
+[ ] SUSE Manager Proxy 2.1 x86_64"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -277,9 +277,9 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-[ ] SUSE Manager Proxy 1.2 (x86_64)
-[ ] SUSE Manager Proxy 1.7 (x86_64)
-[ ] SUSE Manager Proxy 2.1 (x86_64)"""
+[ ] SUSE Manager Proxy 1.2 x86_64
+[ ] SUSE Manager Proxy 1.7 x86_64
+[ ] SUSE Manager Proxy 2.1 x86_64"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -307,9 +307,9 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-[ ] SUSE Manager Proxy 1.2 (x86_64)
-[ ] SUSE Manager Proxy 1.7 (x86_64)
-[ ] SUSE Manager Proxy 2.1 (x86_64)"""
+[ ] SUSE Manager Proxy 1.2 x86_64
+[ ] SUSE Manager Proxy 1.7 x86_64
+[ ] SUSE Manager Proxy 2.1 x86_64"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -339,11 +339,11 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-[ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
-  [ ] SUSE Cloud 1.0 (x86_64)
-[I] SUSE Linux Enterprise Server 11 SP3 (x86_64)
-  [ ] SUSE Cloud 2.0 (x86_64)
-  [ ] SUSE Cloud 3 (x86_64)"""
+[ ] SUSE Linux Enterprise Server 11 SP2 x86_64
+  [ ] SUSE Cloud 1.0 x86_64
+[I] SUSE Linux Enterprise Server 11 SP3 x86_64
+  [ ] SUSE Cloud 2.0 x86_64
+  [ ] SUSE Cloud 3 x86_64"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -371,35 +371,35 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-001) [ ] RES 4 (x86_64)
-002) [ ] RES 4 (x86_64)
-003) [ ] RES 5 (x86_64)
-004) [ ] RES 6 (x86_64)
-005) [ ] SUSE Linux Enterprise Desktop 11 SP2 (x86_64)
-006) [ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
-007) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 (x86_64)
-008) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 (x86_64)
-009) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 (x86_64)
-010) [ ] SUSE Linux Enterprise Server 10 SP3 (x86_64)
-     [I] SUSE Linux Enterprise Server 10 SP4 (x86_64)
-011)   [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 (x86_64)
-012) [ ] SUSE Linux Enterprise Server 11 SP1 (x86_64)
-013) [ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
-     [I] SUSE Linux Enterprise Server 11 SP3 (x86_64)
-014)   [ ] Novell Open Enterprise Server 2 11.2 (x86_64)
-015)   [ ] SUSE Cloud 2.0 (x86_64)
-016)   [ ] SUSE Cloud 3 (x86_64)
-017)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (x86_64)
-018)   [ ] SUSE Linux Enterprise Point of Service 11 SP3 (x86_64)
-019)   [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
-       [I] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-020)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
-021)   [ ] SUSE WebYaST 1.3 (x86_64)
-022) [ ] SUSE Linux Enterprise Server 11 SP3 VMWare (x86_64)
-023) [ ] SUSE Manager Proxy 1.2 (x86_64)
-024) [ ] SUSE Manager Proxy 1.7 (x86_64)
-025) [ ] SUSE Manager Proxy 2.1 (x86_64)
-026) [ ] SUSE Manager Server 2.1 (x86_64)"""
+001) [ ] RES 4 x86_64
+002) [ ] RES 4 x86_64
+003) [ ] RES 5 x86_64
+004) [ ] RES 6 x86_64
+005) [ ] SUSE Linux Enterprise Desktop 11 SP2 x86_64
+006) [ ] SUSE Linux Enterprise Desktop 11 SP3 x86_64
+007) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 x86_64
+008) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 x86_64
+009) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 x86_64
+010) [ ] SUSE Linux Enterprise Server 10 SP3 x86_64
+     [I] SUSE Linux Enterprise Server 10 SP4 x86_64
+011)   [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 x86_64
+012) [ ] SUSE Linux Enterprise Server 11 SP1 x86_64
+013) [ ] SUSE Linux Enterprise Server 11 SP2 x86_64
+     [I] SUSE Linux Enterprise Server 11 SP3 x86_64
+014)   [ ] Novell Open Enterprise Server 2 11.2 x86_64
+015)   [ ] SUSE Cloud 2.0 x86_64
+016)   [ ] SUSE Cloud 3 x86_64
+017)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64
+018)   [ ] SUSE Linux Enterprise Point of Service 11 SP3 x86_64
+019)   [ ] SUSE Linux Enterprise Real Time 11 x86_64
+       [I] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
+020)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
+021)   [ ] SUSE WebYaST 1.3 x86_64
+022) [ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
+023) [ ] SUSE Manager Proxy 1.2 x86_64
+024) [ ] SUSE Manager Proxy 1.7 x86_64
+025) [ ] SUSE Manager Proxy 2.1 x86_64
+026) [ ] SUSE Manager Server 2.1 x86_64"""
 
         self.assertEqual(recorder.stdout, expected_output.split("\n"))
 
@@ -408,7 +408,7 @@ Status:
         mirror_url = "http://smt.suse.de"
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
-                    if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
+                    if p['friendly_name'] == 'RES 4 x86_64' and p['arch'] == 'x86_64')
         options = get_options("add product --from-mirror {0}".format(mirror_url).split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
@@ -433,8 +433,8 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-001) [ ] RES 4 (x86_64)
-Adding channels required by 'RES 4' product
+001) [ ] RES 4 x86_64
+Adding channels required by 'RES 4 x86_64' product
 'res4-as-suse-manager-tools-x86_64' depends on channel 'rhel-x86_64-as-4' which has not been added yet
 Going to add 'rhel-x86_64-as-4'
 Added 'rhel-x86_64-as-4' channel
@@ -475,7 +475,7 @@ Product successfully added"""
 
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
-                    if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
+                    if p['friendly_name'] == 'RES 4 x86_64' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
@@ -500,8 +500,8 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-001) [ ] RES 4 (x86_64)
-Adding channels required by 'RES 4' product
+001) [ ] RES 4 x86_64
+Adding channels required by 'RES 4 x86_64' product
 'res4-as-suse-manager-tools-x86_64' depends on channel 'rhel-x86_64-as-4' which has not been added yet
 Going to add 'rhel-x86_64-as-4'
 Added 'rhel-x86_64-as-4' channel
@@ -539,7 +539,7 @@ Product successfully added"""
 
         products = read_data_from_fixture('list_products.data')
         sled = next(p for p in products
-                    if p['friendly_name'] == 'SUSE Linux Enterprise Desktop 11 SP3'
+                    if p['friendly_name'] == 'SUSE Linux Enterprise Desktop 11 SP3 x86_64'
                     and p['arch'] == 'x86_64')
 
         options = get_options("add product".split())
@@ -571,8 +571,8 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-001) [ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
-Adding channels required by 'SUSE Linux Enterprise Desktop 11 SP3' product
+001) [ ] SUSE Linux Enterprise Desktop 11 SP3 x86_64
+Adding channels required by 'SUSE Linux Enterprise Desktop 11 SP3 x86_64' product
 Added 'sled11-sp3-pool-x86_64' channel
 Added 'sles11-sp3-suse-manager-tools-x86_64-sled-sp3' channel
 Added 'sled11-sp3-updates-x86_64' channel
@@ -610,7 +610,7 @@ Product successfully added"""
 
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
-                    if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
+                    if p['friendly_name'] == 'RES 4 x86_64' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
@@ -647,8 +647,8 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-001) [ ] RES 4 (x86_64)
-Adding channels required by 'RES 4' product
+001) [ ] RES 4 x86_64
+Adding channels required by 'RES 4 x86_64' product
 Added 'res4-as-suse-manager-tools-x86_64' channel
 Channel 'rhel-x86_64-as-4' has already been added
 Added 'res4-as-x86_64' channel
@@ -685,7 +685,7 @@ Product successfully added"""
 
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
-                    if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
+                    if p['friendly_name'] == 'RES 4 x86_64' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
@@ -712,7 +712,7 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-     [U] RES 4 (x86_64)
+     [U] RES 4 x86_64
 All the available products have already been installed, nothing to do"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
@@ -724,7 +724,7 @@ All the available products have already been installed, nothing to do"""
 
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
-                    if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
+                    if p['friendly_name'] == 'RES 4 x86_64' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
@@ -754,7 +754,7 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-     [I] RES 4 (x86_64)
+     [I] RES 4 x86_64
 All the available products have already been installed, nothing to do"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -765,7 +765,7 @@ All the available products have already been installed, nothing to do"""
 
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
-                    if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
+                    if p['friendly_name'] == 'RES 4 x86_64' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
@@ -793,8 +793,8 @@ Status:
   - [ ] - product is not installed, but is available
   - [U] - product is unavailable
 
-001) [ ] RES 4 (x86_64)
-Adding channels required by 'RES 4' product
+001) [ ] RES 4 x86_64
+Adding channels required by 'RES 4 x86_64' product
 Added 'rhel-x86_64-as-4' channel
 Added 'res4-as-x86_64' channel
 Scheduling reposync for following channels:

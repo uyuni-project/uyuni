@@ -14,11 +14,26 @@
  */
 package com.suse.manager.webui;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.delete;
+import static spark.Spark.exception;
+import static spark.Spark.get;
+import static spark.Spark.head;
+import static spark.Spark.notFound;
+import static spark.Spark.post;
+
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
+import com.suse.manager.webui.controllers.FrontendLogController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
@@ -34,28 +49,19 @@ import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
+import com.suse.manager.webui.controllers.VirtualNetsController;
+import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.errors.NotFoundException;
+
+import org.apache.http.HttpStatus;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.http.HttpStatus;
+
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
-
-import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-import static spark.Spark.delete;
-import static spark.Spark.exception;
-import static spark.Spark.get;
-import static spark.Spark.head;
-import static spark.Spark.notFound;
-import static spark.Spark.post;
 
 /**
  * Router class defining the web UI routes.
@@ -70,6 +76,8 @@ public class Router implements SparkApplication {
         JadeTemplateEngine jade = setup();
 
         initNotFoundRoutes(jade);
+
+        post("/manager/frontend-log", withUser(FrontendLogController::log));
 
         //CVEAudit
 
@@ -306,12 +314,10 @@ public class Router implements SparkApplication {
                 withProductAdmin(ProductsController::synchronizeProducts));
         post("/manager/admin/setup/sync/channelfamilies",
                 withProductAdmin(ProductsController::synchronizeChannelFamilies));
-        post("/manager/admin/setup/sync/channels",
-                withProductAdmin(ProductsController::synchronizeChannels));
-        post("/manager/admin/setup/sync/productchannels",
-                withProductAdmin(ProductsController::synchronizeProductChannels));
         post("/manager/admin/setup/sync/subscriptions",
                 withProductAdmin(ProductsController::synchronizeSubscriptions));
+        post("/manager/admin/setup/sync/repositories",
+                withProductAdmin(ProductsController::synchronizeRepositories));
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
@@ -338,6 +344,14 @@ public class Router implements SparkApplication {
                 withUser(VirtualGuestsController::data));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
                 withUser(VirtualGuestsController::action));
+        get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
+                withUser(VirtualGuestsController::getGuest));
+        get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
+                withUser(VirtualGuestsController::getDomainsCapabilities));
+        get("/manager/api/systems/details/virtualization/nets/:sid/data",
+                withUser(VirtualNetsController::data));
+        get("/manager/api/systems/details/virtualization/pools/:sid/data",
+                withUser(VirtualPoolsController::data));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {

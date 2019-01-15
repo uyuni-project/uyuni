@@ -1,9 +1,19 @@
+- configure firewalld if available
+- change SCC sync backend to adapt quicker to SCC changes and improve
+  speed of syncing metadata and checking for channel dependencies
+
+-------------------------------------------------------------------
+Mon Dec 17 14:43:50 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- Fix bootstrap repository creation for all distributions
 - fetch packages from correct channel when creating a bootstrap
   repository
 - adapt mgr-create-bootstrap-repo for Uyuni and let it create
   bootstrap repos for openSUSE and CentOS
 - fix not found package on mgr-create-bootstrap-repo for SLE-15-s390x
   (bsc#1116566)
+- add python3-six to bootstrap repo for SLES15 (bsc#1118478)
 
 -------------------------------------------------------------------
 Fri Oct 26 10:49:25 CEST 2018 - jgonzalez@suse.com

@@ -1,0 +1,20 @@
+{
+    "data": {
+        "_stamp": "2018-10-01T13:16:07.052034",
+        "cmd": "_minion_event",
+        "data": {
+            "detail": "shutdown",
+            "domain": {
+                "id": 4,
+                "name": "sles12sp2",
+                "uuid": "b99a8176-4f40-498d-8e61-2f6ade654fe2"
+            },
+            "event": "stopped",
+            "uri": "qemu:///system"
+        },
+        "id": "testminion.local",
+        "pretag": null,
+        "tag": "salt/engines/libvirt_events/qemu/system/domain/lifecycle"
+    },
+    "tag": "salt/engines/libvirt_events/qemu/system/domain/lifecycle"
+}

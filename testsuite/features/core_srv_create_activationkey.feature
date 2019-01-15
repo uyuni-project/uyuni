@@ -92,3 +92,18 @@ Feature: Be able to manipulate activation keys
     And I should see a "Configuration" link in the content area
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
+
+  Scenario: Create an activation key for Ubuntu
+    Given I am on the Systems page
+    When I follow "Activation Keys" in the left menu
+    And I follow "Create Key"
+    And I enter "Ubuntu Test Key" as "description"
+    And I enter "UBUNTU-TEST" as "key"
+    And I select "Ubuntu AMD64 Channel" from "selectedBaseChannel"
+    And I click on "Create Activation Key"
+    Then I should see a "Activation key Ubuntu Test Key has been created" text
+    And I should see a "Details" link
+    And I should see a "Packages" link
+    And I should see a "Configuration" link in the content area
+    And I should see a "Groups" link
+    And I should see a "Activated Systems" link

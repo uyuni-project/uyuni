@@ -55,6 +55,21 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Verify script is deleted in case no Action is there at all.
+     */
+    public void testCleanupScriptWithoutAction() throws Exception {
+        SaltUtils.INSTANCE.setScriptsDir(Files.createTempDirectory("scripts"));
+        Path scriptFile = Files.createFile(SaltUtils.INSTANCE.getScriptPath(123456L));
+
+        // Testing
+        MinionActionUtils.cleanupScriptActions();
+        assertFalse(Files.exists(scriptFile));
+
+        // Cleanup
+        Files.delete(SaltUtils.INSTANCE.getScriptsDir());
+    }
+
+    /**
      * Verify script is not deleted as long as not all servers have finished (e.g. PICKED_UP).
      */
     public void testCleanupScriptActionsPickedUp() throws Exception {

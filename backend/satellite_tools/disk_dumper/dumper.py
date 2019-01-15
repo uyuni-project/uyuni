@@ -572,6 +572,21 @@ class XML_Dumper:
         self._write_dump(exportLib.SuseUpgradePathDumper)
         return 0
 
+    def dump_suse_product_extensions(self):
+        log_debug(2)
+        self._write_dump(exportLib.SuseProductExtensionDumper)
+        return 0
+
+    def dump_suse_product_repositories(self):
+        log_debug(2)
+        self._write_dump(exportLib.SuseProductRepositoryDumper)
+        return 0
+
+    def dump_scc_repositories(self):
+        log_debug(2)
+        self._write_dump(exportLib.SCCRepositoryDumper)
+        return 0
+
     def dump_suse_subscriptions(self):
         log_debug(2)
         self._write_dump(exportLib.SuseSubscriptionDumper)

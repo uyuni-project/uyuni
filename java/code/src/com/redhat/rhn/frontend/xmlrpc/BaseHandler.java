@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.channels.OverlappingFileLockException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -172,6 +173,10 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 FaultException fe = (FaultException)t;
                 throw new XmlRpcFault(fe.getErrorCode(), fe.getMessage());
             }
+            else if (t instanceof OverlappingFileLockException) {
+                throw new XmlRpcFault(-1, "Operation already running. Please try later again.");
+            }
+
             // If it isn't a FaultException that caused this, we still need to
             // send something to the client.
             Throwable cause = e.getCause();

@@ -2233,7 +2233,19 @@ public class ChannelManager extends BaseManager {
      * @param reason reason for queue
      */
     public static void queueChannelChange(String channelLabel, String client,
-            String reason) {
+                                          String reason) {
+        queueChannelChange(channelLabel, client, reason, false);
+    }
+
+    /**
+     * Queue regenerating the repo metadata.
+     *
+     * @param channelLabel channel label
+     * @param client client info
+     * @param reason reason for queue
+     * @param force force regen
+     */
+    public static void queueChannelChange(String channelLabel, String client, String reason, boolean force) {
         if ("".equals(client)) {
             client = null;
         }
@@ -2247,6 +2259,7 @@ public class ChannelManager extends BaseManager {
         params.put("label", channelLabel);
         params.put("client", client);
         params.put("reason", reason);
+        params.put("force", force ? "Y" : "N");
         m.executeUpdate(params);
     }
 
@@ -2279,6 +2292,28 @@ public class ChannelManager extends BaseManager {
 
         HibernateFactory.getSession().refresh(chan);
 
+    }
+
+    /**
+     * Disassociate all packages and patches from the given channel.
+     * @param c the channel to clean
+     */
+    public static void disassociateChannelEntries(Channel c) {
+        log.info("Disassociate packages and patches from channel: " + c.getLabel());
+
+        Map<String, Long> params = new HashMap<String, Long>();
+        params.put("cid", c.getId());
+
+        WriteMode m = ModeFactory.getWriteMode("Channel_queries", "remove_all_packages");
+        m.executeUpdate(params);
+
+        WriteMode n = ModeFactory.getWriteMode("Channel_queries", "remove_all_errata");
+        n.executeUpdate(params);
+
+        HibernateFactory.getSession().refresh(c);
+
+        refreshWithNewestPackages(c, "disassoiateChannelEntries");
+        ErrataCacheManager.updateErrataAndPackageCacheForChannel(c.getId());
     }
 
     /**
@@ -2758,14 +2793,13 @@ public class ChannelManager extends BaseManager {
     public static Map<Long, Boolean> computeChannelRecommendedFlags(
             Channel baseChannel, Stream<Channel> childChannels) {
         Channel originalBaseChannel = getOriginalChannel(baseChannel);
-        Optional<SUSEProductChannel> baseChannelProduct =
-                SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
+        Optional<SUSEProductChannel> baseChannelProduct = originalBaseChannel.findProduct();
+
         return childChannels.collect(Collectors.toMap(
                 c -> c.getId(),
                 c -> {
                     Channel original = getOriginalChannel(c);
-                    Optional<SUSEProductChannel> extProduct =
-                            SUSEProductFactory.findProductByChannelLabel(original.getLabel());
+                    Optional<SUSEProductChannel> extProduct = original.findProduct();
                     if (extProduct.isPresent() && baseChannelProduct.isPresent()) {
                         List<SUSEProduct> allBaseProductsOf =
                                 SUSEProductFactory.findAllBaseProductsOf(

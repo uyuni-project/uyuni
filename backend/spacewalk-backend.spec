@@ -49,16 +49,20 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
-%global m2crypto python-m2crypto
+%global m2crypto %{pythonX}-M2Crypto
 %if !0%{?is_opensuse}
 %define with_oracle     1
 %endif
 %endif
 
+%if 0%{?suse_version} >= 1320
+%global python_prefix python3
+%else
 %if  0%{?fedora} >= 28  || 0%{?rhel} >= 8
 %global python_prefix python2
 %else
 %global python_prefix python
+%endif
 %endif
 
 %{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -71,7 +75,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.2
+Version:        4.0.3
 Release:        1%{?dist}
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -84,21 +88,22 @@ Requires:       %{pythonX}
 Requires:       rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires:       /etc/rhn
-Requires:       rhnlib >= 2.5.74
 %if 0%{?build_py3}
 Requires:       python3-%{name}-libs >= %{version}
+Requires:       python3-rhnlib >= 2.5.74
 %else
+Requires:       python2-rhnlib >= 2.5.74
 Requires:       %{name}-libs >= %{version}
-%endif
-# for Debian support
-Requires:       %{python_prefix}-debian
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version}
 Requires:       python-pyliblzma
 %else
-%if 0%{?rhel} || 0%{?suse_version} >= 1315
+%if 0%{?rhel}
 Requires:       pyliblzma
-%endif # %if 0%{?rhel} || 0%{?suse_version} >= 1315
-%endif # 0%{?suse_version} > 1320
+%endif # %if 0%{?rhel}
+%endif # 0%{?suse_version}
+%endif # 0%{?build_py3}
+# for Debian support
+Requires:       %{python_prefix}-debian
 %if 0%{?pylint_check}
 %if 0%{?build_py3}
 BuildRequires:  spacewalk-python3-pylint
@@ -118,11 +123,12 @@ BuildRequires:  python2-spacewalk-usix
 %if 0%{?build_py3}
 BuildRequires:  python3-gzipstream
 BuildRequires:  python3-rhn-client-tools
+BuildRequires:  python3-rhnlib >= 2.5.74
 %else
 BuildRequires:  python2-gzipstream
 BuildRequires:  python2-rhn-client-tools
+BuildRequires:  python2-rhnlib >= 2.5.74
 %endif
-BuildRequires:  rhnlib >= 2.5.74
 BuildRequires:  rpm-python
 BuildRequires:  %{python_prefix}-debian
 
@@ -138,7 +144,7 @@ Requires:       python2-spacewalk-usix
 %endif
 
 %if 0%{?suse_version}
-Requires:       python-pycurl
+Requires:       %{pythonX}-pycurl
 %endif
 
 # we don't really want to require this redhat-release, so we protect
@@ -430,20 +436,20 @@ Requires:       python3-rhn-client-tools
 Requires:       python-dateutil
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
-%endif
+%if 0%{?suse_version}
+Requires:       python-pyliblzma
+%else
+%if 0%{?fedora} || 0%{?rhel} > 6
+Requires:       pyliblzma
+%endif # 0%{?fedora} || 0%{?rhel} > 6
+%endif # 0%{?suse_version}
+%endif # 0%{?build_py3}
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 %if 0%{?suse_version}
 Requires:       apache2-prefork
 Requires:       susemanager-tools
 %endif
-%if 0%{?suse_version} > 1320
-Requires:       python-pyliblzma
-%else
-%if 0%{?fedora} || 0%{?rhel} > 6
-Requires:       pyliblzma
-%endif # 0%{?fedora} || 0%{?rhel} > 6
-%endif # 0%{?suse_version} > 1320
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       mod_ssl
 Requires:       python2-devel
@@ -454,13 +460,14 @@ Requires:       cobbler >= 2.0.0
 Recommends:     cobbler20
 %endif
 Requires:       %{m2crypto}
-Requires:       python-requests
+Requires:       %{pythonX}-requests
 %if 0%{?build_py3}
 Requires:       python3-spacewalk-usix
+Requires:       python3-rhnlib  >= 2.5.57
 %else
 Requires:       python2-spacewalk-usix
+Requires:       python2-rhnlib  >= 2.5.57
 %endif
-Requires:       rhnlib  >= 2.5.57
 %if 0%{?fedora} || 0%{?rhel}
 BuildRequires:  python-requests
 %endif
@@ -1015,6 +1022,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-data-fsck
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
+%attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
 %{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*

@@ -103,6 +103,9 @@ class FileMapper:
             'suse_products': xmlDiskSource.SuseProductsDiskSource(self.mp),
             'suse_product_channels': xmlDiskSource.SuseProductChannelsDiskSource(self.mp),
             'suse_upgrade_paths': xmlDiskSource.SuseUpgradePathsDiskSource(self.mp),
+            'suse_product_extensions': xmlDiskSource.SuseProductEntensionsDiskSource(self.mp),
+            'suse_product_repositories': xmlDiskSource.SuseProductRepositoriesDiskSource(self.mp),
+            'scc_repositories': xmlDiskSource.SCCRepositoriesDiskSource(self.mp),
             'suse_subscriptions': xmlDiskSource.SuseSubscriptionsDiskSource(self.mp),
             'cloned_channels': xmlDiskSource.ClonedChannelsDiskSource(self.mp),
         }
@@ -195,6 +198,15 @@ class FileMapper:
 
     def getSuseUpgradePathsFile(self):
         return self.setup_file(self.filemap['suse_upgrade_paths']._getFile())
+
+    def getSuseProductExtensionsFile(self):
+        return self.setup_file(self.filemap['suse_product_extensions']._getFile())
+
+    def getSuseProductRepositoriesFile(self):
+        return self.setup_file(self.filemap['suse_product_repositories']._getFile())
+
+    def getSCCRepositoriesFile(self):
+        return self.setup_file(self.filemap['scc_repositories']._getFile())
 
     def getSuseSubscriptionsFile(self):
         return self.setup_file(self.filemap['suse_subscriptions']._getFile())
@@ -1099,6 +1111,27 @@ class Dumper(dumper.XML_Dumper):
                           "Upgrade Path Information exported to %s",
                           "%s caught in dump_suse_upgrade_paths.")
 
+    def dump_suse_product_extensions(self):
+        self._dump_simple(self.fm.getSuseProductExtensionsFile(),
+                          dumper.XML_Dumper.dump_suse_product_extensions,
+                          "Exporting SUSE Product Extension Information...",
+                          "SUSE Product Extension Information exported to %s",
+                          "%s caught in dump_suse_product_extensions.")
+
+    def dump_suse_product_repositories(self):
+        self._dump_simple(self.fm.getSuseProductRepositoriesFile(),
+                          dumper.XML_Dumper.dump_suse_product_repositories,
+                          "Exporting SUSE Product Repository Information...",
+                          "SUSE Product Repository Information exported to %s",
+                          "%s caught in dump_suse_product_repositories.")
+
+    def dump_scc_repositories(self):
+        self._dump_simple(self.fm.getSCCRepositoriesFile(),
+                          dumper.XML_Dumper.dump_scc_repositories,
+                          "Exporting Repository Information...",
+                          "Repository Information exported to %s",
+                          "%s caught in dump_scc_repositories.")
+
     def dump_suse_subscriptions(self):
         self._dump_simple(self.fm.getSuseSubscriptionsFile(),
                           dumper.XML_Dumper.dump_suse_subscriptions,
@@ -1309,6 +1342,9 @@ class ExporterMain:
                     'suse-products':   {'dump': self.dumper.dump_suse_products},
                     'suse-product-channels':   {'dump': self.dumper.dump_suse_product_channels},
                     'suse-upgrade-paths':   {'dump': self.dumper.dump_suse_upgrade_paths},
+                    'suse-product-extensions':   {'dump': self.dumper.dump_suse_product_extensions},
+                    'suse-product-repositories':   {'dump': self.dumper.dump_suse_product_repositories},
+                    'scc-repositories':   {'dump': self.dumper.dump_scc_repositories},
                     'suse-subscriptions':   {'dump': self.dumper.dump_suse_subscriptions},
                     'cloned-channels':   {'dump': self.dumper.dump_cloned_channels},
                 }

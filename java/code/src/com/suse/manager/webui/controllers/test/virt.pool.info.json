@@ -1,0 +1,24 @@
+{
+    "pool0": {
+        "target_path": null,
+        "capacity": 854374301696,
+        "uuid": "d92682d0-33cf-4e10-9837-a216c463e158",
+        "persistent": 1,
+        "free": 301218959360,
+        "allocation": 553155342336,
+        "state": "running",
+        "autostart": 1,
+        "type": "dir"
+    },
+    "pool1": {
+        "target_path": "/path/to/pool1",
+        "capacity": 21003628544,
+        "uuid": "808befba-85b1-40d6-83dc-d248850962e4",
+        "persistent": 1,
+        "free": 6591508480,
+        "allocation": 14412120064,
+        "state": "running",
+        "autostart": 0,
+        "type": "dir"
+    }
+}

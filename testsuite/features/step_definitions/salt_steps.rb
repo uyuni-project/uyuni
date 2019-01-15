@@ -330,27 +330,45 @@ When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   select(value, from: boxids[box])
 end
 
+When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, field|
+  fieldids = { 'IP'                       => 'branch_network#ip',
+               'domain name server'       => 'dhcpd#domain_name_servers#0',
+               'network IP'               => 'dhcpd#subnets#0#$key',
+               'dynamic IP range begin'   => 'dhcpd#subnets#0#range#0',
+               'dynamic IP range end'     => 'dhcpd#subnets#0#range#1',
+               'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
+               'routers'                  => 'dhcpd#subnets#0#routers#0',
+               'next server'              => 'dhcpd#subnets#0#next_server',
+               'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
+               'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
+               'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
+               'first A address'          => 'bind#available_zones#0#records#A#0#1',
+               'second A address'         => 'bind#available_zones#0#records#A#1#1',
+               'third A address'          => 'bind#available_zones#0#records#A#2#1',
+               'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
+               'internal network address' => 'tftpd#listen_ip' }
+  addresses = { 'network'     => '0',
+                'client'      => '2',
+                'minion'      => '3',
+                'pxeboot'     => '4',
+                'range begin' => '128',
+                'range end'   => '253',
+                'proxy'       => '254',
+                'broadcast'   => '255' }
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  fill_in fieldids[field], with: net_prefix + addresses[host]
+end
+
 # rubocop:disable Metrics/BlockLength
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
-  fieldids = { 'IP'                              => 'branch_network#ip',
-               'NIC'                             => 'branch_network#nic',
+  fieldids = { 'NIC'                             => 'branch_network#nic',
                'domain name'                     => 'dhcpd#domain_name',
-               'domain name server'              => 'dhcpd#domain_name_servers#0',
                'listen interfaces'               => 'dhcpd#listen_interfaces#0',
-               'network IP'                      => 'dhcpd#subnets#0#$key',
                'network mask'                    => 'dhcpd#subnets#0#netmask',
-               'dynamic IP range begin'          => 'dhcpd#subnets#0#range#0',
-               'dynamic IP range end'            => 'dhcpd#subnets#0#range#1',
-               'broadcast address'               => 'dhcpd#subnets#0#broadcast_address',
-               'routers'                         => 'dhcpd#subnets#0#routers#0',
-               'next server'                     => 'dhcpd#subnets#0#next_server',
                'filename'                        => 'dhcpd#subnets#0#filename',
                'first reserved hostname'         => 'dhcpd#hosts#0#$key',
-               'first reserved IP'               => 'dhcpd#hosts#0#fixed_address',
                'second reserved hostname'        => 'dhcpd#hosts#1#$key',
-               'second reserved IP'              => 'dhcpd#hosts#1#fixed_address',
                'third reserved hostname'         => 'dhcpd#hosts#2#$key',
-               'third reserved IP'               => 'dhcpd#hosts#2#fixed_address',
                'first option'                    => 'bind#config#options#0#0',
                'first value'                     => 'bind#config#options#0#1',
                'first configured zone name'      => 'bind#configured_zones#0#$key',
@@ -359,13 +377,9 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'first name server'               => 'bind#available_zones#0#soa#ns',
                'first contact'                   => 'bind#available_zones#0#soa#contact',
                'first A name'                    => 'bind#available_zones#0#records#A#0#0',
-               'first A address'                 => 'bind#available_zones#0#records#A#0#1',
                'second A name'                   => 'bind#available_zones#0#records#A#1#0',
-               'second A address'                => 'bind#available_zones#0#records#A#1#1',
                'third A name'                    => 'bind#available_zones#0#records#A#2#0',
-               'third A address'                 => 'bind#available_zones#0#records#A#2#1',
                'fourth A name'                   => 'bind#available_zones#0#records#A#3#0',
-               'fourth A address'                => 'bind#available_zones#0#records#A#3#1',
                'first NS'                        => 'bind#available_zones#0#records#NS#@#0',
                'first CNAME alias'               => 'bind#available_zones#0#records#CNAME#0#0',
                'first CNAME name'                => 'bind#available_zones#0#records#CNAME#0#1',
@@ -373,20 +387,15 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'second CNAME name'               => 'bind#available_zones#0#records#CNAME#1#1',
                'third CNAME alias'               => 'bind#available_zones#0#records#CNAME#2#0',
                'third CNAME name'                => 'bind#available_zones#0#records#CNAME#2#1',
-               'second configured zone name'     => 'bind#configured_zones#1#$key',
-               'second available zone name'      => 'bind#available_zones#1#$key',
-               'second file name'                => 'bind#available_zones#1#file',
                'second name server'              => 'bind#available_zones#1#soa#ns',
                'second contact'                  => 'bind#available_zones#1#soa#contact',
                'second NS'                       => 'bind#available_zones#1#records#NS#@#0',
-               'second generate reverse network' => 'bind#available_zones#1#generate_reverse#net',
                'second for zones'                => 'bind#available_zones#1#generate_reverse#for_zones#0',
                'third configured zone name'      => 'bind#configured_zones#2#$key',
                'third available zone name'       => 'bind#available_zones#2#$key',
                'third file name'                 => 'bind#available_zones#2#file',
                'third name server'               => 'bind#available_zones#2#soa#ns',
                'third contact'                   => 'bind#available_zones#2#soa#contact',
-               'internal network address'        => 'tftpd#listen_ip',
                'TFTP base directory'             => 'tftpd#root_dir',
                'branch id'                       => 'pxe#branch_id',
                'disk id'                         => 'partitioning#0#$key',
@@ -432,6 +441,28 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
                'second reserved MAC' => 'dhcpd#hosts#1#hardware',
                'third reserved MAC'  => 'dhcpd#hosts#2#hardware' }
   fill_in fieldids[field], with: 'ethernet ' + mac
+end
+
+When(/^I enter the local zone name in (.*) field$/) do |field|
+  fieldids = { 'second configured zone name' => 'bind#configured_zones#1#$key',
+               'second available zone name'  => 'bind#available_zones#1#$key' }
+  a = $private_net.split('.')
+  reverse_net = a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  STDOUT.puts "#{$private_net} => #{reverse_net}"
+  fill_in fieldids[field], with: reverse_net
+end
+
+When(/^I enter the local file name in (.*) field$/) do |field|
+  fieldids = { 'second file name' => 'bind#available_zones#1#file' }
+  a = $private_net.split('.')
+  reverse_filename = 'master/db.' + a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  STDOUT.puts "#{$private_net} => #{reverse_filename}"
+  fill_in fieldids[field], with: reverse_filename
+end
+
+When(/^I enter the local network in (.*) field$/) do |field|
+  fieldids = { 'second generate reverse network' => 'bind#available_zones#1#generate_reverse#net' }
+  fill_in fieldids[field], with: $private_net
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|

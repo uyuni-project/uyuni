@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# 1) register an Ubuntu minion via GUI (using a proxy)
+# 1) register an Ubuntu minion via GUI
 # 2) run a remote command
 # 3) try an openscap scan
 

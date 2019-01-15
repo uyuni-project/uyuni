@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Dec 17 14:29:37 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- Sync changes from Spacewalk
+- Fixed plugin for dnf > 3.6.0
+
+-------------------------------------------------------------------
 Fri Oct 26 09:51:02 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.2-1

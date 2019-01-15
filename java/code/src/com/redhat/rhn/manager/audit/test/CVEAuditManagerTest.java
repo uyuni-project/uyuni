@@ -170,10 +170,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel childChannel2 = createTestVendorChildChannel(baseChannel, channelProduct2);
         Channel childChannel3 = createTestVendorChildChannel(baseChannel, channelProduct2);
         // Assign channels to SUSE product
-        createTestSUSEProductChannel(baseChannel, product);
-        createTestSUSEProductChannel(childChannel1, product);
-        createTestSUSEProductChannel(childChannel2, product);
-        createTestSUSEProductChannel(childChannel3, product);
+        createTestSUSEProductChannel(baseChannel, product, true);
+        createTestSUSEProductChannel(childChannel1, product, true);
+        createTestSUSEProductChannel(childChannel2, product, true);
+        createTestSUSEProductChannel(childChannel3, product, true);
 
         // Test the conversion between SUSE product and channel products
         List<Long> channelProductIDs = CVEAuditManager.convertProductId(product.getId());
@@ -218,7 +218,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Assign channels to SUSE product. Not adding the base channel on
         // purpose to simulate that it has not been synchronized
-        createTestSUSEProductChannel(childChannel1, product);
+        createTestSUSEProductChannel(childChannel1, product, true);
 
         // should not throw any exception
         CVEAuditManager.findSUSEProductChannels(product.getId(), baseChannel.getId());
@@ -330,9 +330,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel childChannel1 = createTestVendorChildChannel(baseChannel, channelProduct);
         Channel childChannel2 = createTestVendorChildChannel(baseChannel, channelProduct);
         // Assign channels to SUSE product
-        createTestSUSEProductChannel(baseChannel, product);
-        createTestSUSEProductChannel(childChannel1, product);
-        createTestSUSEProductChannel(childChannel2, product);
+        createTestSUSEProductChannel(baseChannel, product, true);
+        createTestSUSEProductChannel(childChannel1, product, true);
+        createTestSUSEProductChannel(childChannel2, product, true);
 
         // Setup a next SP product for verifying SP migrations
         SUSEProduct productNextSP = createTestSUSEProduct(channelFamily);
@@ -342,8 +342,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel baseChannelNextSP = createTestVendorBaseChannel(channelFamily, channelProductNextSP);
         Channel childChannelNextSP = createTestVendorChildChannel(baseChannelNextSP, channelProductNextSP);
         // Assign channels to SP product
-        createTestSUSEProductChannel(baseChannelNextSP, productNextSP);
-        createTestSUSEProductChannel(childChannelNextSP, productNextSP);
+        createTestSUSEProductChannel(baseChannelNextSP, productNextSP, true);
+        createTestSUSEProductChannel(childChannelNextSP, productNextSP, true);
 
         // Setup a previous SP of the installed product
         SUSEProduct productPrevSP = createTestSUSEProduct(channelFamily);
@@ -353,8 +353,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel baseChannelPrevSP = createTestVendorBaseChannel(channelFamily, channelProductPrevSP);
         Channel childChannelPrevSP = createTestVendorChildChannel(baseChannelPrevSP, channelProductPrevSP);
         // Assign channels to SP product
-        createTestSUSEProductChannel(baseChannelPrevSP, productPrevSP);
-        createTestSUSEProductChannel(childChannelPrevSP, productPrevSP);
+        createTestSUSEProductChannel(baseChannelPrevSP, productPrevSP, true);
+        createTestSUSEProductChannel(childChannelPrevSP, productPrevSP, true);
 
         // Create server and install product
         User user = createTestUser();
@@ -567,8 +567,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct);
         Channel childChannel = createTestVendorChildChannel(baseChannel, channelProduct);
         // Assign channels to SUSE product
-        createTestSUSEProductChannel(baseChannel, product);
-        createTestSUSEProductChannel(childChannel, product);
+        createTestSUSEProductChannel(baseChannel, product, true);
+        createTestSUSEProductChannel(childChannel, product, true);
 
         // Create an errata for a package, create patched and unpatched versions
         User user = createTestUser();
@@ -923,9 +923,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
 
         // Assign channels to products (LTSS channel is *not* part of the product!)
-        createTestSUSEProductChannel(baseChannelSP2, productSP2);
-        createTestSUSEProductChannel(baseChannelSP3, productSP3);
-        createTestSUSEProductChannel(updateChannelSP3, productSP3);
+        createTestSUSEProductChannel(baseChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3, true);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3, true);
 
         // Create two errata: one in the LTSS channel and one in SP3 updates
         User user = createTestUser();
@@ -998,9 +998,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
 
         // Assign channels to products (LTSS channel is *not* part of the product!)
-        createTestSUSEProductChannel(baseChannelSP2, productSP2);
-        createTestSUSEProductChannel(baseChannelSP3, productSP3);
-        createTestSUSEProductChannel(updateChannelSP3, productSP3);
+        createTestSUSEProductChannel(baseChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3, true);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3, true);
 
         // Create two errata: one in the LTSS channel and one in SP3 updates
         User user = createTestUser();
@@ -1061,10 +1061,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
 
         // Assign channels to products
-        createTestSUSEProductChannel(baseChannelSP2, productSP2);
-        createTestSUSEProductChannel(updateChannelSP2, productSP2);
-        createTestSUSEProductChannel(baseChannelSP3, productSP3);
-        createTestSUSEProductChannel(updateChannelSP3, productSP3);
+        createTestSUSEProductChannel(baseChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(updateChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3, true);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3, true);
 
         // Create two errata: one in SP2 updates and one in SP3 updates
         User user = createTestUser();
@@ -1129,10 +1129,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
 
         // Assign channels to products
-        createTestSUSEProductChannel(baseChannelSP2, productSP2);
-        createTestSUSEProductChannel(ltssChannelSP2, productSP2);
-        createTestSUSEProductChannel(baseChannelSP3, productSP3);
-        createTestSUSEProductChannel(updateChannelSP3, productSP3);
+        createTestSUSEProductChannel(baseChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(ltssChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3, true);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3, true);
 
         // Create two errata: one in the LTSS channel and one in SP3 updates
         User user = createTestUser();
@@ -1613,8 +1613,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct);
         Channel childChannel = createTestVendorChildChannel(baseChannel, channelProduct);
         // Assign channels to SUSE product
-        createTestSUSEProductChannel(baseChannel, product);
-        createTestSUSEProductChannel(childChannel, product);
+        createTestSUSEProductChannel(baseChannel, product, true);
+        createTestSUSEProductChannel(childChannel, product, true);
 
         // Create an errata for a package, create patched and unpatched versions
         User user = createTestUser();

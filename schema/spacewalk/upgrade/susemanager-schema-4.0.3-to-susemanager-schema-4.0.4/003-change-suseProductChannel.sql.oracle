@@ -1,0 +1,23 @@
+
+DELETE FROM suseProductChannel WHERE channel_id IS NULL;
+
+DECLARE
+  already_not_null exception;
+  pragma exception_init (already_not_null, -01442);
+begin
+  begin
+    execute immediate 'ALTER TABLE suseProductChannel MODIFY (channel_id NUMBER NOT NULL)';
+  exception
+    when already_not_null then null;
+  end;
+end;
+/
+
+call add_column_if_not_exists('alter table suseProductChannel add mandatory  CHAR(1) DEFAULT (''N'') NOT NULL CONSTRAINT spc_mand_ck CHECK (mandatory in (''Y'', ''N''))');
+
+call drop_column_if_exists('SUSEPRODUCTCHANNEL', 'CHANNEL_LABEL');
+call drop_column_if_exists('SUSEPRODUCTCHANNEL', 'PARENT_CHANNEL_LABEL');
+call drop_if_exists('index', 'suse_prd_chan_label_uq');
+call drop_if_exists('index', 'suse_prd_chan_pcl_idx');
+call drop_if_exists('index', 'suse_prd_chan_chan_idx');
+

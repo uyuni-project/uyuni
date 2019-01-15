@@ -1,0 +1,1196 @@
+[
+  {
+    "id": 1117,
+    "name": "SUSE Linux Enterprise Server UPDATED",
+    "identifier": "SLES",
+    "former_identifier": "SUSE_SLES",
+    "version": "12",
+    "arch": "x86_64",
+    "friendly_name": "SUSE Linux Enterprise Server 12 x86_64 UPDATED",
+    "product_class": "7261",
+    "cpe": "cpe:/o:suse:sles:12",
+    "free": false,
+    "description": "UPDATED: SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+    "release_stage": "released",
+    "eula_url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product.license/",
+    "product_type": "base",
+    "offline_predecessor_ids": [
+      814,
+      769,
+      1300,
+      824,
+      690
+    ],
+    "online_predecessor_ids": [
+    ],
+    "shortname": "SLES12",
+    "recommended": false,
+    "extensions": [
+      {
+        "id": 1150,
+        "name": "Legacy Module",
+        "identifier": "sle-module-legacy",
+        "former_identifier": "sle-module-legacy",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "Legacy Module 12 x86_64",
+        "product_class": "MODULE",
+        "cpe": "cpe:/o:suse:sle-module-legacy:12",
+        "free": true,
+        "description": "<p> The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). </p> <p> Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. </p>",
+        "release_stage": "released",
+        "eula_url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/x86_64/product.license/",
+        "product_type": "module",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "Legacy-Module",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1989,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/x86_64/product_source/",
+            "name": "SLE-Module-Legacy12-Source-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Legacy12-Source-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1679,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/x86_64/product_debug/",
+            "name": "SLE-Module-Legacy12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Legacy12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1678,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/x86_64/product/",
+            "name": "SLE-Module-Legacy12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Legacy12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1677,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/x86_64/update_debug/",
+            "name": "SLE-Module-Legacy12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Legacy12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1676,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/x86_64/update/",
+            "name": "SLE-Module-Legacy12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Legacy12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1153,
+        "name": "Web and Scripting Module",
+        "identifier": "sle-module-web-scripting",
+        "former_identifier": "sle-module-web-scripting",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "Web and Scripting Module 12 x86_64",
+        "product_class": "MODULE",
+        "cpe": "cpe:/o:suse:sle-module-web-scripting:12",
+        "free": true,
+        "description": "<p> The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+        "release_stage": "released",
+        "eula_url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/x86_64/product.license/",
+        "product_type": "module",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "Web-and-Scripting-Module",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1992,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/x86_64/product_source/",
+            "name": "SLE-Module-Web-Scripting12-Source-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Web-Scripting12-Source-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1691,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/x86_64/product_debug/",
+            "name": "SLE-Module-Web-Scripting12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Web-Scripting12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1690,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/x86_64/product/",
+            "name": "SLE-Module-Web-Scripting12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Web-Scripting12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1689,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/x86_64/update_debug/",
+            "name": "SLE-Module-Web-Scripting12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Web-Scripting12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1688,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/x86_64/update/",
+            "name": "SLE-Module-Web-Scripting12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Web-Scripting12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1317,
+        "name": "SUSE Cloud for SLE 12 Compute Nodes",
+        "identifier": "suse-sle12-cloud-compute",
+        "former_identifier": "suse-sle12-cloud-compute",
+        "version": "5",
+        "arch": "x86_64",
+        "friendly_name": "SUSE Cloud for SLE 12 Compute Nodes 5 x86_64",
+        "product_class": "SUSE_CLOUD",
+        "cpe": "cpe:/o:suse:suse-sle12-cloud-compute:5",
+        "free": false,
+        "description": "SUSE Cloud for SLE 12 Compute Nodes",
+        "release_stage": "released",
+        "eula_url": "https://updates.suse.com/SUSE/Products/12-Cloud-Compute/5/x86_64/product.license/",
+        "product_type": "extension",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "SUSE Cloud for SLE 12 Compute Nodes",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1999,
+            "url": "https://updates.suse.com/SUSE/Products/12-Cloud-Compute/5/x86_64/product_source/",
+            "name": "SLE-12-Cloud-Compute5-Source-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-12-Cloud-Compute5-Source-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1816,
+            "url": "https://updates.suse.com/SUSE/Products/12-Cloud-Compute/5/x86_64/product_debug/",
+            "name": "SLE-12-Cloud-Compute5-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-12-Cloud-Compute5-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1815,
+            "url": "https://updates.suse.com/SUSE/Products/12-Cloud-Compute/5/x86_64/product/",
+            "name": "SLE-12-Cloud-Compute5-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-12-Cloud-Compute5-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1814,
+            "url": "https://updates.suse.com/SUSE/Updates/12-Cloud-Compute/5/x86_64/update_debug/",
+            "name": "SLE-12-Cloud-Compute5-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-12-Cloud-Compute5-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1813,
+            "url": "https://updates.suse.com/SUSE/Updates/12-Cloud-Compute/5/x86_64/update/",
+            "name": "SLE-12-Cloud-Compute5-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-12-Cloud-Compute5-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1379,
+        "name": "SUSE Linux Enterprise Server LTSS",
+        "identifier": "SLES-LTSS",
+        "former_identifier": "SUSE_SLES",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "SUSE Linux Enterprise Server LTSS 12 x86_64",
+        "product_class": "SLES12-GA-LTSS-X86",
+        "cpe": "cpe:/o:suse:sles-ltss:12",
+        "free": false,
+        "description": "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+        "release_stage": "released",
+        "eula_url": "",
+        "product_type": "extension",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "SLES12 LTSS",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 2106,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-LTSS/x86_64/update_debug/",
+            "name": "SLES12-LTSS-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLES12-LTSS-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 2105,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-LTSS/x86_64/update/",
+            "name": "SLES12-LTSS-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLES12-LTSS-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1332,
+        "name": "Containers Module",
+        "identifier": "sle-module-containers",
+        "former_identifier": "sle-module-containers",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "Containers Module 12 x86_64",
+        "product_class": "MODULE",
+        "cpe": "cpe:/o:suse:sle-module-containers:12",
+        "free": true,
+        "description": "<p>This Module contains several packages revolving around containers and related tools. </p>",
+        "release_stage": "released",
+        "eula_url": "",
+        "product_type": "module",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "Containers-Module",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1957,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/x86_64/product_source/",
+            "name": "SLE-Module-Containers12-Source-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Containers12-Source-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1867,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/x86_64/product_debug/",
+            "name": "SLE-Module-Containers12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Containers12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1866,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/x86_64/product/",
+            "name": "SLE-Module-Containers12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Containers12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1865,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/12/x86_64/update_debug/",
+            "name": "SLE-Module-Containers12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Containers12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1864,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/12/x86_64/update/",
+            "name": "SLE-Module-Containers12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Containers12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1245,
+        "name": "SUSE Linux Enterprise High Availability Extension",
+        "identifier": "sle-ha",
+        "former_identifier": "sle-hae",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "SUSE Linux Enterprise High Availability Extension 12 x86_64",
+        "product_class": "SLE-HAE-X86",
+        "cpe": "cpe:/o:suse:sle-ha:12",
+        "free": false,
+        "description": "SUSE Linux Enterprise High Availability Extension.",
+        "release_stage": "released",
+        "eula_url": "https://updates.suse.com/SUSE/Products/SLE-HA/12/x86_64/product.license/",
+        "product_type": "extension",
+        "offline_predecessor_ids": [
+          1256,
+          971,
+          961,
+          958,
+          967
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "SLEHA-12",
+        "recommended": false,
+        "extensions": [
+          {
+            "id": 1157,
+            "name": "SUSE Linux Enterprise High Availability GEO Extension",
+            "identifier": "sle-ha-geo",
+            "former_identifier": "sle-haegeo",
+            "version": "12",
+            "arch": "x86_64",
+            "friendly_name": "SUSE Linux Enterprise High Availability GEO Extension 12 x86_64",
+            "product_class": "SLE-HAE-GEO",
+            "cpe": "cpe:/o:suse:sle-ha-geo:12",
+            "free": false,
+            "description": "SUSE Linux Enterprise High Availability Geographical Cluster Extension",
+            "release_stage": "released",
+            "eula_url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12/x86_64/product.license/",
+            "product_type": "extension",
+            "offline_predecessor_ids": [
+              1101,
+              1286,
+              1107
+            ],
+            "online_predecessor_ids": [
+            ],
+            "shortname": "SLEHA-12-GEO",
+            "recommended": false,
+            "extensions": [
+            ],
+            "repositories": [
+              {
+                "id": 1723,
+                "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12/x86_64/product_debug/",
+                "name": "SLE-HA-GEO12-Debuginfo-Pool",
+                "distro_target": "sle-12-x86_64",
+                "description": "SLE-HA-GEO12-Debuginfo-Pool for sle-12-x86_64",
+                "enabled": false,
+                "autorefresh": false,
+                "installer_updates": false
+              },
+              {
+                "id": 1722,
+                "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12/x86_64/product/",
+                "name": "SLE-HA-GEO12-Pool",
+                "distro_target": "sle-12-x86_64",
+                "description": "SLE-HA-GEO12-Pool for sle-12-x86_64",
+                "enabled": true,
+                "autorefresh": false,
+                "installer_updates": false
+              },
+              {
+                "id": 1721,
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12/x86_64/update_debug/",
+                "name": "SLE-HA-GEO12-Debuginfo-Updates",
+                "distro_target": "sle-12-x86_64",
+                "description": "SLE-HA-GEO12-Debuginfo-Updates for sle-12-x86_64",
+                "enabled": false,
+                "autorefresh": true,
+                "installer_updates": false
+              },
+              {
+                "id": 1720,
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12/x86_64/update/",
+                "name": "SLE-HA-GEO12-Updates",
+                "distro_target": "sle-12-x86_64",
+                "description": "SLE-HA-GEO12-Updates for sle-12-x86_64",
+                "enabled": true,
+                "autorefresh": true,
+                "installer_updates": false
+              }
+            ]
+          }
+        ],
+        "repositories": [
+          {
+            "id": 1715,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12/x86_64/product_debug/",
+            "name": "SLE-HA12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-HA12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1714,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12/x86_64/product/",
+            "name": "SLE-HA12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-HA12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1713,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12/x86_64/update_debug/",
+            "name": "SLE-HA12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-HA12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1712,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12/x86_64/update/",
+            "name": "SLE-HA12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-HA12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1253,
+        "name": "SUSE Linux Enterprise Live Patching",
+        "identifier": "sle-live-patching",
+        "former_identifier": "sle-live-patching",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "SUSE Linux Enterprise Live Patching 12 x86_64",
+        "product_class": "SLE-LP",
+        "cpe": "cpe:/o:suse:sle-live-patching:12",
+        "free": false,
+        "description": "<p> SUSE Linux Enterprise Live Patching provides packages to update critical kernel modules live in SUSE Linux Enterprise. With SUSE Linux Enterprise Live Patching, you can perform critical kernel patching without shutting down your system, reducing the need for planned downtime and increasing service availability. <p>",
+        "release_stage": "released",
+        "eula_url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12/x86_64/product.license/",
+        "product_type": "extension",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "Live-Patching",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1986,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12/x86_64/product_source/",
+            "name": "SLE-Live-Patching12-Source-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Live-Patching12-Source-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1744,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12/x86_64/product_debug/",
+            "name": "SLE-Live-Patching12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Live-Patching12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1743,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12/x86_64/product/",
+            "name": "SLE-Live-Patching12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Live-Patching12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1742,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Live-Patching/12/x86_64/update_debug/",
+            "name": "SLE-Live-Patching12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Live-Patching12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1741,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Live-Patching/12/x86_64/update/",
+            "name": "SLE-Live-Patching12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Live-Patching12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1341,
+        "name": "Toolchain Module",
+        "identifier": "sle-module-toolchain",
+        "former_identifier": "sle-module-toolchain",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "Toolchain Module 12 x86_64",
+        "product_class": "MODULE",
+        "cpe": "cpe:/o:suse:sle-module-toolchain:12",
+        "free": true,
+        "description": "Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details.",
+        "release_stage": "released",
+        "eula_url": "",
+        "product_type": "module",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "Toolchain-Module",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1906,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product_debug/",
+            "name": "SLE-Module-Toolchain12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Toolchain12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1905,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product/",
+            "name": "SLE-Module-Toolchain12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Toolchain12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1904,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/x86_64/update_debug/",
+            "name": "SLE-Module-Toolchain12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Toolchain12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1903,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/x86_64/update/",
+            "name": "SLE-Module-Toolchain12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Toolchain12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1222,
+        "name": "SUSE Linux Enterprise Workstation Extension",
+        "identifier": "sle-we",
+        "former_identifier": "sle-we",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "SUSE Linux Enterprise Workstation Extension 12 x86_64",
+        "product_class": "SLE-WE",
+        "cpe": "cpe:/o:suse:sle-we:12",
+        "free": false,
+        "description": "SUSE Linux Enterprise Workstation Extension extends the functionality of SUSE Linux Enterprise Server with packages of SUSE Linux Enterprise Desktop, like additional desktop applications (office suite, email client, graphical editor ...) and libraries. It allows to combine both products to create a full featured Workstation.",
+        "release_stage": "released",
+        "eula_url": "https://updates.suse.com/SUSE/Products/SLE-WE/12/x86_64/product.license/",
+        "product_type": "extension",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "SLEWE12",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1655,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12/x86_64/product_debug/",
+            "name": "SLE-WE12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-WE12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1503,
+            "url": "http://download.nvidia.com/novell/sle12/",
+            "name": "SLE-12-GA-Desktop-NVIDIA-Driver",
+            "description": "SLE-12-GA-Desktop-NVIDIA-Driver for ",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1654,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12/x86_64/product/",
+            "name": "SLE-WE12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-WE12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1653,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-WE/12/x86_64/update_debug/",
+            "name": "SLE-WE12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-WE12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1652,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-WE/12/x86_64/update/",
+            "name": "SLE-WE12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-WE12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1223,
+        "name": "SUSE Linux Enterprise Software Development Kit",
+        "identifier": "sle-sdk",
+        "former_identifier": "sle-sdk",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "SUSE Linux Enterprise Software Development Kit 12 x86_64",
+        "product_class": "SLE-SDK",
+        "cpe": "cpe:/o:suse:sle-sdk:12",
+        "free": true,
+        "description": "<p> SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. </p> <p> Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. </p> <p> Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. </p>",
+        "release_stage": "released",
+        "eula_url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/x86_64/product.license/",
+        "product_type": "extension",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "SDK12",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1667,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/x86_64/product_debug/",
+            "name": "SLE-SDK12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-SDK12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1666,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/x86_64/product/",
+            "name": "SLE-SDK12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-SDK12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1665,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/x86_64/update_debug/",
+            "name": "SLE-SDK12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-SDK12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1664,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/x86_64/update/",
+            "name": "SLE-SDK12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-SDK12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1368,
+        "name": "Certifications Module",
+        "identifier": "sle-module-certifications",
+        "former_identifier": "sle-module-certifications",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "Certifications Module 12 x86_64",
+        "product_class": "MODULE",
+        "cpe": "cpe:/o:suse:sle-module-certifications:12",
+        "free": true,
+        "description": "<p> This module contains packages specific to certifications. </p> <p> It contains: </p><p> Packages used for the Evaluated Configuration of the Common Criteria Certification of SUSE Linux Enterprise Server 12 GA. </p><p> Packages used for the FIPS 140-2 certification of various cryptographics modules. </p><p> Please refer to our certification pages referenced from https://www.suse.com/security/ </p>",
+        "release_stage": "released",
+        "eula_url": "",
+        "product_type": "module",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "Certifications",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 2071,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Certifications/12/x86_64/product_debug/",
+            "name": "SLE-Module-Certifications12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Certifications12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 2070,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Certifications/12/x86_64/product/",
+            "name": "SLE-Module-Certifications12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Certifications12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 2069,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Certifications/12/x86_64/update_debug/",
+            "name": "SLE-Module-Certifications12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Certifications12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 2068,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Certifications/12/x86_64/update/",
+            "name": "SLE-Module-Certifications12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Certifications12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1220,
+        "name": "Public Cloud Module",
+        "identifier": "sle-module-public-cloud",
+        "former_identifier": "sle-module-public-cloud",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "Public Cloud Module 12 x86_64",
+        "product_class": "MODULE",
+        "cpe": "cpe:/o:suse:sle-module-public-cloud:12",
+        "free": true,
+        "description": "<p> The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. </p> <p> Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. </p>",
+        "release_stage": "released",
+        "eula_url": "",
+        "product_type": "module",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "Public-Cloud-Module",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1995,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product_source/",
+            "name": "SLE-Module-Public-Cloud12-Source-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Public-Cloud12-Source-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1703,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product_debug/",
+            "name": "SLE-Module-Public-Cloud12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Public-Cloud12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1702,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product/",
+            "name": "SLE-Module-Public-Cloud12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Public-Cloud12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1701,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/12/x86_64/update_debug/",
+            "name": "SLE-Module-Public-Cloud12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Public-Cloud12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1700,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/12/x86_64/update/",
+            "name": "SLE-Module-Public-Cloud12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Public-Cloud12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1342,
+        "name": "SUSE Enterprise Storage",
+        "identifier": "ses",
+        "former_identifier": "ses",
+        "version": "2",
+        "arch": "x86_64",
+        "friendly_name": "SUSE Enterprise Storage 2 x86_64",
+        "product_class": "SES",
+        "cpe": "cpe:/o:suse:ses:2",
+        "free": false,
+        "description": "SUSE Enterprise Storage 2 for SUSE Linux Enterprise Server 12, powered by Ceph.",
+        "release_stage": "released",
+        "eula_url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product.license/",
+        "product_type": "extension",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "SES2",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1921,
+            "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product_source/",
+            "name": "SUSE-Enterprise-Storage-2-Source-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SUSE-Enterprise-Storage-2-Source-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1920,
+            "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product_debug/",
+            "name": "SUSE-Enterprise-Storage-2-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SUSE-Enterprise-Storage-2-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1919,
+            "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product/",
+            "name": "SUSE-Enterprise-Storage-2-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SUSE-Enterprise-Storage-2-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1918,
+            "url": "https://updates.suse.com/SUSE/Updates/Storage/2/x86_64/update_debug/",
+            "name": "SUSE-Enterprise-Storage-2-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SUSE-Enterprise-Storage-2-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1917,
+            "url": "https://updates.suse.com/SUSE/Updates/Storage/2/x86_64/update/",
+            "name": "SUSE-Enterprise-Storage-2-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SUSE-Enterprise-Storage-2-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1473,
+        "name": "SUSE Package Hub",
+        "identifier": "PackageHub",
+        "former_identifier": "PackageHub",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "SUSE Package Hub 12 x86_64",
+        "product_class": "7261",
+        "cpe": "cpe:/o:suse:packagehub:12",
+        "free": true,
+        "description": "SUSE Package Hub is a free of charge extension providing access to community maintained packages built to run on SUSE Linux Enterprise Server. Built from the same sources used in the openSUSE distributions, these quality packages provide additional software to what is found in the SUSE Linux Enterprise Server product. Packages from the Package Hub are delivered without L3 support from SUSE. General updates and fixes to the packages in SUSE Package Hub are provided by the openSUSE community based on their discretion though SUSE will monitor and ensure that any known critical security issues will be addressed. Packages in the Package Hub are approved by SUSE for use with SUSE Linux Enterprise Server 12 and to not interfere with the supportability of SUSE Linux Enterprise Server it's modules and extensions. For more information about SUSE Package Hub please visit https://packagehub.suse.com.",
+        "release_stage": "released",
+        "eula_url": "",
+        "product_type": "extension",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "SUSE-PackageHub-12",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 2329,
+            "url": "https://updates.suse.com/SUSE/Backports/SLE-12_x86_64/product/",
+            "name": "SUSE-PackageHub-12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SUSE-PackageHub-12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 2328,
+            "url": "https://updates.suse.com/SUSE/Backports/SLE-12_x86_64/standard_debug/",
+            "name": "SUSE-PackageHub-12-Debuginfo",
+            "distro_target": "sle-12-x86_64",
+            "description": "SUSE-PackageHub-12-Debuginfo for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 2327,
+            "url": "https://updates.suse.com/SUSE/Backports/SLE-12_x86_64/standard/",
+            "name": "SUSE-PackageHub-12",
+            "distro_target": "sle-12-x86_64",
+            "description": "SUSE-PackageHub-12 for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      },
+      {
+        "id": 1212,
+        "name": "Advanced Systems Management Module",
+        "identifier": "sle-module-adv-systems-management",
+        "former_identifier": "sle-module-adv-systems-management",
+        "version": "12",
+        "arch": "x86_64",
+        "friendly_name": "Advanced Systems Management Module 12 x86_64",
+        "product_class": "MODULE",
+        "cpe": "cpe:/o:suse:sle-module-adv-systems-management:12",
+        "free": true,
+        "description": "<p>This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.</p> <p>The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. </p>",
+        "release_stage": "released",
+        "eula_url": "",
+        "product_type": "module",
+        "offline_predecessor_ids": [
+        ],
+        "online_predecessor_ids": [
+        ],
+        "shortname": "Adv-Sys-Mgmt-Module",
+        "recommended": false,
+        "extensions": [
+        ],
+        "repositories": [
+          {
+            "id": 1998,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/x86_64/product_source/",
+            "name": "SLE-Module-Adv-Systems-Management12-Source-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Adv-Systems-Management12-Source-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1707,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/x86_64/product_debug/",
+            "name": "SLE-Module-Adv-Systems-Management12-Debuginfo-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Adv-Systems-Management12-Debuginfo-Pool for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1706,
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/x86_64/product/",
+            "name": "SLE-Module-Adv-Systems-Management12-Pool",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Adv-Systems-Management12-Pool for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": false,
+            "installer_updates": false
+          },
+          {
+            "id": 1705,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/x86_64/update_debug/",
+            "name": "SLE-Module-Adv-Systems-Management12-Debuginfo-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Adv-Systems-Management12-Debuginfo-Updates for sle-12-x86_64",
+            "enabled": false,
+            "autorefresh": true,
+            "installer_updates": false
+          },
+          {
+            "id": 1704,
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/x86_64/update/",
+            "name": "SLE-Module-Adv-Systems-Management12-Updates",
+            "distro_target": "sle-12-x86_64",
+            "description": "SLE-Module-Adv-Systems-Management12-Updates for sle-12-x86_64",
+            "enabled": true,
+            "autorefresh": true,
+            "installer_updates": false
+          }
+        ]
+      }
+    ],
+    "repositories": [
+      {
+        "id": 1634,
+        "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product/",
+        "name": "SLES12-Pool",
+        "distro_target": "sle-12-x86_64",
+        "description": "SLES12-Pool for sle-12-x86_64",
+        "enabled": false,
+        "autorefresh": false,
+        "installer_updates": false
+      },
+      {
+        "id": -1632,
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12/x86_64/update_changed/",
+        "name": "SLES12-Updates",
+        "distro_target": "sle-12-x86_64",
+        "description": "SLES12-Updates for sle-12-x86_64",
+        "enabled": true,
+        "autorefresh": true,
+        "installer_updates": false
+      },
+      {
+        "id": 1635,
+        "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product_debug/",
+        "name": "SLES12-Debuginfo-Pool",
+        "distro_target": "sle-12-x86_64",
+        "description": "SLES12-Debuginfo-Pool for sle-12-x86_64",
+        "enabled": false,
+        "autorefresh": false,
+        "installer_updates": false
+      },
+      {
+        "id": 1633,
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12/x86_64/update_debug/",
+        "name": "SLES12-Debuginfo-Updates",
+        "distro_target": "sle-12-x86_64",
+        "description": "SLES12-Debuginfo-Updates for sle-12-x86_64",
+        "enabled": false,
+        "autorefresh": true,
+        "installer_updates": false
+      }
+    ]
+  }
+]

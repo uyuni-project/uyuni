@@ -3,6 +3,7 @@
 set -e
 
 FILETOSIGN=$1
+[ -z $2 ] && SIGFILE="$FILETOSIGN.asc" || SIGFILE="$2"
 
 if [ -z "$FILETOSIGN" -o ! -r "$FILETOSIGN" ]; then
     echo "No file to sign provided" >&2
@@ -26,11 +27,17 @@ if [ -z "$GPGPASS" ]; then
     exit 1
 fi
 
-SIGFILE="$FILETOSIGN.asc"
 KEYFILE="$FILETOSIGN.key"
 
+# Debian systems require the hashing algorithm to be at least SHA256
+if [ ! -z "$DIGESTPREF" ]; then
+  DIGESTOPT="--personal-digest-preferences $DIGESTPREF"
+else
+  DIGESTOPT="--personal-digest-preferences SHA256"
+fi
+
 rm -f $SIGFILE
-echo "$GPGPASS" | gpg -sab --batch -u $KEYID --passphrase-fd 0 -o $SIGFILE $FILETOSIGN
+echo "$GPGPASS" | gpg -sab --batch -u $KEYID --passphrase-fd 0 $DIGESTOPT -o $SIGFILE $FILETOSIGN
 
 rm -f $KEYFILE
 gpg --batch --export -a -o $KEYFILE $KEYID

@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -30,6 +31,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -39,7 +41,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * Channel
- * @version $Rev$
  */
 public class Channel extends BaseDomainHelper implements Comparable<Channel> {
 
@@ -89,6 +90,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private String supportPolicy;
     private String updateTag;
     private Set<ClonedChannel> clonedChannels = new HashSet<ClonedChannel>();
+    private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
     /**
      * @param orgIn what org you want to know if it is globally subscribable in
@@ -900,4 +902,58 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     public Channel getOriginal() {
         throw new UnsupportedOperationException();
     }
+
+    /**
+     * @return the {@link SUSEProductChannel}
+     */
+    public Set<SUSEProductChannel> getSuseProductChannels() {
+        return suseProductChannels;
+    }
+
+    /**
+     * Set {@link SUSEProductChannel}
+     * @param suseProductChannelsIn the product channel to set
+     */
+    public void setSuseProductChannels(Set<SUSEProductChannel> suseProductChannelsIn) {
+        this.suseProductChannels = suseProductChannelsIn;
+    }
+
+    /**
+     * Finds the suse product channel for a channel
+     * Note: does not work for all channels see comment in source.
+     * @return suse product channel
+     */
+    public Optional<SUSEProductChannel> findProduct() {
+        Set<SUSEProductChannel> suseProducts = getSuseProductChannels();
+        if (suseProducts.isEmpty()) {
+            return Optional.empty();
+        }
+        else {
+            // We take the first item since there can be more then one entry.
+            // All entries should point to the same "product" with only arch differences.
+            // The only exception to this is sles11 sp1/2 and caasp 1/2 but they are out of maintenance
+            // and we decided to ignore this inconsistency until the great rewrite.
+            return suseProducts.stream().findFirst();
+        }
+    }
+
+    private String getArchTypeLabel() {
+        return this.getChannelArch().getArchType().getLabel();
+    }
+
+    /**
+     * @return whether the channel is a RPM chanel or not
+     */
+    public boolean isTypeRpm() {
+        return "rpm".equalsIgnoreCase(getArchTypeLabel());
+    }
+
+    /**
+     * @return whether the channel is a DEB chanel or not
+     */
+    public boolean isTypeDeb() {
+        return "deb".equalsIgnoreCase(getArchTypeLabel());
+    }
+
 }
+

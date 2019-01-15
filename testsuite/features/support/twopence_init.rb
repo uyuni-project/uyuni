@@ -4,7 +4,6 @@
 require 'twopence'
 
 # Initialize SSH targets from environment variables
-# If there is no proxy, don't define $PROXY environment variable
 raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
 raise 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
@@ -123,7 +122,7 @@ end
 # Other global variables
 $sle15_minion = minion_is_sle15
 $pxeboot_mac = ENV['PXEBOOTMAC']
-$private_net = !ENV['PRIVATENET'].nil?
+$private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $git_profiles = ENV['GITPROFILES']
 $product = product

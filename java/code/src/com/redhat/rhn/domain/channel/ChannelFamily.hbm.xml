@@ -15,7 +15,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
                 <property name="name" type="string" column="name" />
                 <property name="label" type="string" column="label" />
-                <property name="productUrl" type="string" column="product_url" />
 
                 <property name="created" column="created" type="timestamp"
                         insert="false" update="false" />

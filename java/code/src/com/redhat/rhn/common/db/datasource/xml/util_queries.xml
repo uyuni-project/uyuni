@@ -17,6 +17,26 @@
   </query>
 </mode>
 
+<mode name="get_last_mgr_sync_refresh">
+  <query>
+    SELECT last_mgr_sync_refresh
+    FROM suseManagerInfo
+  </query>
+</mode>
+
+<write-mode name="set_last_mgr_sync_refresh">
+  <query params="lastrefresh">
+    INSERT INTO suseManagerInfo (last_mgr_sync_refresh) VALUES(:lastrefresh)
+   </query>
+</write-mode>
+
+<write-mode name="update_last_mgr_sync_refresh">
+  <query params="lastrefresh">
+    UPDATE suseManagerInfo
+    SET last_mgr_sync_refresh = :lastrefresh
+   </query>
+</write-mode>
+
 <write-mode name="set_satconfig_value">
   <query params="key, value">
     UPDATE rhnConfiguration

@@ -245,18 +245,23 @@ fi
 
 open_firewall_ports() {
 echo "Open needed firewall ports..."
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http" > /dev/null 2>&1
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https" > /dev/null 2>&1
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-client" > /dev/null 2>&1
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-server" > /dev/null 2>&1
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "tftp" > /dev/null 2>&1
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "tftp" > /dev/null 2>&1
+if [ -x /usr/bin/firewall-cmd ]; then
+  firewall-cmd --permanent --zone=public --add-service=suse-manager-server
+  firewall-cmd --state 2>/dev/null && firewall-cmd --reload
+else
+  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http" > /dev/null 2>&1
+  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https" > /dev/null 2>&1
+  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-client" > /dev/null 2>&1
+  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-server" > /dev/null 2>&1
+  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "tftp" > /dev/null 2>&1
+  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "tftp" > /dev/null 2>&1
 
-# ports needed for Salt
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4505" > /dev/null 2>&1
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4506" > /dev/null 2>&1
+  # ports needed for Salt
+  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4505" > /dev/null 2>&1
+  sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4506" > /dev/null 2>&1
 
-systemctl condrestart SuSEfirewall2
+  systemctl condrestart SuSEfirewall2
+fi
 }
 
 check_re_install() {
@@ -837,10 +842,15 @@ fi
 
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$ACTIVATE_SLP" = "y" ]; then
-	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
-	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427" > /dev/null 2>&1
-	systemctl --quiet enable slpd
-	systemctl start slpd
+        if [ -x /usr/bin/firewall-cmd ]; then
+            firewall-cmd --permanent --zone=public --add-service=slp
+            firewall-cmd --state 2>/dev/null && firewall-cmd --reload
+        else
+            sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
+            sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427" > /dev/null 2>&1
+        fi
+        systemctl --quiet enable slpd
+        systemctl start slpd
     fi
 fi
 

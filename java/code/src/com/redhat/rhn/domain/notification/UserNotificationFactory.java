@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.notification;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.org.Org;
@@ -66,12 +67,28 @@ public class UserNotificationFactory extends HibernateFactory {
     }
 
     /**
+     * Check if the given user notification is currently disabled
+     *
+     * @param userNotificationIn userNotification
+     * @return boolean if notification type is disabled
+     */
+    public static boolean isNotificationTypeDisabled(UserNotification userNotificationIn) {
+        List<String> disableNotificationsBy = ConfigDefaults.get().getNotificationsTypeDisabled();
+
+        return disableNotificationsBy.contains(userNotificationIn.getMessage().getType().name());
+    }
+
+    /**
      * Store {@link UserNotification} to the database.
      *
      * @param userNotificationIn userNotification
      */
     public static void store(UserNotification userNotificationIn) {
-        singleton.saveObject(userNotificationIn);
+        // We want to disable out the notifications defined on parameter: java.notifications_type_disabled
+        // They are still added to the SuseNotificationTable but not associated with any user
+        if (!isNotificationTypeDisabled(userNotificationIn)) {
+            singleton.saveObject(userNotificationIn);
+        }
     }
 
     /**

@@ -1,3 +1,11 @@
+- Nav and section scroll independently
+- change SCC sync backend to adapt quicker to SCC changes and improve
+  speed of syncing metadata and checking for channel dependencies
+
+-------------------------------------------------------------------
+Mon Dec 17 14:42:59 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - fix wording for taskotop (cosmetical only)(bsc#1118112)
 - When changing basechannel the compatible old childchannels are now selected by default. (bsc#1110772)
 - Show human-readable system cleanup error messages

@@ -83,11 +83,6 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         // Create a SUSE product and channel products
         ChannelFamily channelFamily = createTestChannelFamily();
 
-        PublicChannelFamily pcf = new PublicChannelFamily();
-        pcf.setChannelFamily(channelFamily);
-        ChannelFamilyFactory.save(pcf);
-        channelFamily.setPublicChannelFamily(pcf);
-
         {
             product = createTestSUSEProduct(channelFamily);
             ChannelProduct channelProduct = createTestChannelProduct();
@@ -108,9 +103,9 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
             childChannel2.setOrg(user.getOrg());
 
             // Assign channels to SUSE product
-            createTestSUSEProductChannel(baseChannel, product);
-            createTestSUSEProductChannel(childChannel1, product);
-            createTestSUSEProductChannel(childChannel2, product);
+            createTestSUSEProductChannel(baseChannel, product, true);
+            createTestSUSEProductChannel(childChannel1, product, true);
+            createTestSUSEProductChannel(childChannel2, product, true);
         }
         {
             product2 = createTestSUSEProduct(channelFamily);
@@ -132,9 +127,9 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
             childChannel2_2.setOrg(user.getOrg());
 
             // Assign channels to SUSE product
-            createTestSUSEProductChannel(baseChannel2, product2);
-            createTestSUSEProductChannel(childChannel2_1, product2);
-            createTestSUSEProductChannel(childChannel2_2, product2);
+            createTestSUSEProductChannel(baseChannel2, product2, true);
+            createTestSUSEProductChannel(childChannel2_1, product2, true);
+            createTestSUSEProductChannel(childChannel2_2, product2, true);
         }
         setImposteriser(ClassImposteriser.INSTANCE);
         taskomaticMock = mock(TaskomaticApi.class);

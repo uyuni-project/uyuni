@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Dec 17 14:35:42 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Add client packages for Yum based distributions
 - enhance bootstrap-repo urls for Centos and Opensuse
 

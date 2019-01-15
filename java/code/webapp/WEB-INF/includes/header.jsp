@@ -7,7 +7,7 @@
 <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 
 <div class="navbar-header">
-  <a href="#" class="navbar-toggle" data-toggle="collapse" data-target="#spacewalk-aside">
+  <a href="#" class="navbar-toggle">
     <i class="fa fa-bars" aria-hidden="true"></i>
   </a>
   <div id="breadcrumb"></div>

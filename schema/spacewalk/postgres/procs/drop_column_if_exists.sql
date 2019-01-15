@@ -1,0 +1,2 @@
+-- oracle equivalent source sha1 05c8e3c44805e6a9340457858127ac756a8e7d8e
+-- This file is intentionally left empty.

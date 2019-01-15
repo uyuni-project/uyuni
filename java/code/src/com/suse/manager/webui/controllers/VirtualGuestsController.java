@@ -32,8 +32,14 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.virtualization.DomainCapabilitiesJson;
+import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.HostCapabilitiesJson;
+import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsBaseActionJson;
@@ -48,6 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -139,6 +146,74 @@ public class VirtualGuestsController {
 
         response.type("application/json");
         return GSON.toJson(data);
+    }
+
+    /**
+     * Return the definition of the virtual machine
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
+    public static String getGuest(Request request, Response response, User user) {
+        Long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        String uuid = request.params("uuid");
+        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, serverId, null);
+        VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
+                .findFirst().orElseThrow(() -> new NotFoundException());
+
+        GuestDefinition definition = VirtManager.getGuestDefinition(host.asMinionServer().get().getMinionId(),
+                guest.getName()).orElseThrow(() -> new NotFoundException());
+
+        return json(response, definition);
+    }
+
+    /**
+     * Return the list of all domain capabilities from a given salt virtual host
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
+    public static String getDomainsCapabilities(Request request, Response response, User user) {
+        Long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        String minionId = host.asMinionServer().orElseThrow(() ->
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
+
+        Map<String, JsonElement> capabilities = VirtManager.getCapabilities(minionId)
+                .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST,
+                        "Failed to get virtual host capabilities"));
+
+        HostCapabilitiesJson hostCaps = GSON.fromJson(capabilities.get("host"),
+                new TypeToken<HostCapabilitiesJson>() { }.getType());
+        List<DomainCapabilitiesJson> domainsCaps = GSON.fromJson(capabilities.get("domains"),
+                new TypeToken<List<DomainCapabilitiesJson>>() { }.getType());
+
+        Map<String, Object> allDomainCaps = new HashMap<>();
+        allDomainCaps.put("osTypes", hostCaps.getGuests().stream().map(guest -> guest.getOsType())
+                .distinct()
+                .collect(Collectors.toList()));
+        allDomainCaps.put("domainsCaps", domainsCaps);
+
+        return json(response, allDomainCaps);
     }
 
     /**
@@ -256,7 +331,7 @@ public class VirtualGuestsController {
         data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(hostId));
 
         /* For the rest of the template */
-        data.put("guest", GSON.toJson(guest.get()));
+        data.put("guestUuid", guestUuid);
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
         return new ModelAndView(data, "virtualization/guests/edit.jade");
     }
@@ -267,11 +342,11 @@ public class VirtualGuestsController {
                                                    VirtualGuestsUpdateActionJson data) {
         List<String> results = new ArrayList<>();
         // Comparing against the DB data may not be accurate, but that will change with virt.running state soon
-        if (data.getVcpu() != guest.getVcpus()) {
+        if (data.getVcpu().longValue() != guest.getVcpus().longValue()) {
             results.add(triggerGuestSetterAction(host, guest, "setVcpu", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
                                                  user, data.getVcpu()));
         }
-        if (data.getMemory() != guest.getMemory()) {
+        if (data.getMemory().longValue() != guest.getMemory().longValue()) {
             results.add(triggerGuestSetterAction(host, guest, "setMemory",
                                                  ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
                                                  user, data.getMemory()));

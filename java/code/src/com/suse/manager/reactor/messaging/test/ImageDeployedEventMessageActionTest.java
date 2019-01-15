@@ -127,13 +127,13 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
         Channel baseChannelX8664 = DistUpgradeManagerTest
                 .createTestBaseChannel(channelFamily, channelProduct, channelArch);
-        SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product);
+        SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product, true);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
         Channel channel3 = ChannelFactoryTest.createTestChannel(user);
         channel2.setParentChannel(baseChannelX8664);
         channel3.setParentChannel(baseChannelX8664);
-        SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product);
-        SUSEProductTestUtils.createTestSUSEProductChannel(channel3, product);
+        SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product, true);
+        SUSEProductTestUtils.createTestSUSEProductChannel(channel3, product, true);
         return baseChannelX8664;
     }
 

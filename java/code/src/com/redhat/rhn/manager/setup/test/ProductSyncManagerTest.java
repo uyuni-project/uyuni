@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus;
-import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
@@ -33,8 +32,6 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
-import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.mgrsync.XMLChannel;
 
 import org.apache.commons.io.FileUtils;
 
@@ -58,6 +55,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    /*
     public void testConvertProduct() throws Exception {
         // Setup some test data
         XMLChannel baseChannel = new XMLChannel();
@@ -109,6 +107,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(".", c.getStatus());
         }
     }
+    */
 
     /**
      * Verify product sync status for a given product: NOT_MIRRORED

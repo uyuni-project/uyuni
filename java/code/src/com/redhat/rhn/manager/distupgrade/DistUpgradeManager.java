@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.util.RpmVersionComparator;
@@ -55,12 +56,12 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.ChildChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -122,24 +123,6 @@ public class DistUpgradeManager extends BaseManager {
                 "find_source_products");
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("product_id", productId);
-        return m.execute(params);
-    }
-
-    /**
-     * Find all *mandatory* child channels for a given product ID with base channel.
-     *
-     * @param productId product ID
-     * @param baseChannelLabel base channel label
-     * @return DataResult containing product channel IDs
-     */
-    @SuppressWarnings("unchecked")
-    private static List<ChildChannelDto> findProductChannels(long productId,
-            String baseChannelLabel) {
-        SelectMode m = ModeFactory.getMode("distupgrade_queries",
-                "channels_required_for_product");
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("product_id", productId);
-        params.put("base_channel_label", baseChannelLabel);
         return m.execute(params);
     }
 
@@ -326,29 +309,19 @@ public class DistUpgradeManager extends BaseManager {
                 if (target.getIsEveryChannelSynced()) {
                     for (SUSEProduct addonProduct : target.getAddonProducts()) {
                         // Look for mandatory child channels
-                        List<ChildChannelDto> addonProductChannels = findProductChannels(
-                                addonProduct.getId(), baseChannel.getLabel());
-                        target.addMissingChannels(getMissingChannels(addonProductChannels));
+                        List<String> missing =
+                                SUSEProductFactory.findAllMandatoryChannels(addonProduct, target.getBaseProduct())
+                                .filter(pr -> ChannelFactory.lookupByLabel(pr.getChannelLabel()) == null)
+                                .map(pr -> {
+                                    logger.warn("Mandatory channel not synced: " + pr.getChannelLabel());
+                                    return pr.getChannelLabel();
+                                }).collect(Collectors.toList());
+                        target.addMissingChannels(missing);
                     }
                 }
             }
         }
         return migrationTargets;
-    }
-
-    /**
-    * Given a list of channels, return the labels of those where cid == null.
-    */
-    private static List<String> getMissingChannels(List<ChildChannelDto> channels) {
-        List<String> ret = new ArrayList<String>();
-        for (ChildChannelDto channel : channels) {
-            Long cid = channel.getId();
-            if (cid == null) {
-                logger.warn("Mandatory channel not synced: " + channel.getLabel());
-                ret.add(channel.getLabel());
-            }
-        }
-        return ret;
     }
 
     /**
@@ -424,7 +397,7 @@ public class DistUpgradeManager extends BaseManager {
                 for (List<SUSEProduct> combination : Lists.combinations(comb)) {
                     if (!combination.equals(currentCombination)) {
                         SUSEProduct base = combination.get(0);
-                        if (base.getSuseProductChannels().isEmpty()) {
+                        if (!ContentSyncManager.isProductAvailable(base, base)) {
                             // No Product Channels means, no subscription to access the channels
                             logger.debug("No SUSE Product Channels for " + base.getFriendlyName() +
                                     ". Skipping");
@@ -439,10 +412,10 @@ public class DistUpgradeManager extends BaseManager {
                                     .subList(1, combination.size());
                             //No Product Channels means, no subscription to access the channels
                             if (addonProducts.stream()
-                                    .anyMatch(ap -> ap.getSuseProductChannels().isEmpty())) {
+                                    .anyMatch(ap -> !ContentSyncManager.isProductAvailable(ap, base))) {
                                 if (logger.isDebugEnabled()) {
                                     addonProducts.stream()
-                                            .filter(ap -> ap.getSuseProductChannels().isEmpty())
+                                            .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
                                             .forEach(ap -> logger.debug("No SUSE Product Channels for " +
                                                     ap.getFriendlyName() + ". Skipping " +
                                                     base.getFriendlyName()));

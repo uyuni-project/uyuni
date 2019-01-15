@@ -15,10 +15,12 @@
 package com.redhat.rhn.domain.scc.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
+import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -60,7 +62,6 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
     /**
      * Test refreshNeeded().
      */
-    @SuppressWarnings("deprecation")
     public void testRefreshNeeded() {
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
@@ -68,17 +69,15 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
         Credentials creds = CredentialsFactory.createSCCCredentials();
         creds.setUsername(TestUtils.randomString());
         creds.setPassword(TestUtils.randomString());
-        creds.setModified(new Date(114, 0, 1));
+        creds.setModified(new Date(System.currentTimeMillis()));
         HibernateFactory.getSession().save(creds);
 
+        ManagerInfoFactory.setLastMgrSyncRefresh();
         // Repos are newer than credentials -> no refresh
-        SCCRepository repo = createTestRepo(0L);
-        repo.setModified(new Date(114, 1, 2));
-        HibernateFactory.getSession().save(repo);
         assertFalse(SCCCachingFactory.refreshNeeded());
 
         // Newer credentials -> refresh
-        creds.setModified(new Date(114, 2, 3));
+        creds.setModified(new Date(System.currentTimeMillis()));
         HibernateFactory.getSession().save(creds);
         assertTrue(SCCCachingFactory.refreshNeeded());
     }
@@ -89,13 +88,12 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
      */
     private SCCRepository createTestRepo(Long id) {
         SCCRepository repo = new SCCRepository();
-        repo.setSCCId(id);
+        repo.setSccId(id);
         repo.setDescription(TestUtils.randomString());
         repo.setDistroTarget(TestUtils.randomString());
         repo.setName(TestUtils.randomString());
         repo.setUrl(TestUtils.randomString());
         repo.setAutorefresh(true);
-        // TODO: repo.setCredentials();
         return repo;
     }
 

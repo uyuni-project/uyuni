@@ -15,6 +15,10 @@
 package com.redhat.rhn.common.util;
 
 
+import org.apache.log4j.Logger;
+
+import java.util.function.Supplier;
+
 /**
  * TimeUtils is a utility class for dealing with time.
  * @version $Rev$
@@ -32,5 +36,34 @@ public class TimeUtils {
      */
     public static long currentTimeSeconds() {
         return (System.currentTimeMillis() / 1000);
+    }
+
+    /**
+     * Helper for logging the time some code took to execute.
+     * @param log logger to use.
+     * @param name a name/tag to describe whats being executed
+     * @param fun the code to time
+     */
+    public static void logTime(Logger log, String name, Runnable fun) {
+        long start = System.nanoTime();
+        fun.run();
+        long end = System.nanoTime();
+        log.info(name + " took " + ((end - start) / 1e9) + " seconds.");
+    }
+
+    /**
+     * Helper for logging the time some code took to execute.
+     * @param log logger to use.
+     * @param name a name/tag to describe whats being executed
+     * @param fun the code to time
+     * @param <T> type of return value
+     * @return returns whatever fun returns
+     */
+    public static <T> T logTime(Logger log, String name, Supplier<T> fun) {
+        long start = System.nanoTime();
+        T result = fun.get();
+        long end = System.nanoTime();
+        log.info(name + " took " + ((end - start) / 1e9) + " seconds.");
+        return result;
     }
 }

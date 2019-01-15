@@ -8,13 +8,6 @@ const Button = require('../components/buttons').Button;
 
 const _SCC_REFRESH_STEPS = [
   {
-    id: 'scc-channels',
-    label: 'Channels',
-    url: '/rhn/manager/admin/setup/sync/channels',
-    inProgress: false,
-    success: null
-  },
-  {
     id: 'scc-channel-families',
     label: 'Channel Families',
     url: '/rhn/manager/admin/setup/sync/channelfamilies',
@@ -29,13 +22,13 @@ const _SCC_REFRESH_STEPS = [
     success: null
   },
   {
-    id: 'scc-product-channels',
-    label: 'Product Channels',
-    url: '/rhn/manager/admin/setup/sync/productchannels',
+    id: 'scc-repositories',
+    label: 'Repositories',
+    url: '/rhn/manager/admin/setup/sync/repositories',
     inProgress: false,
     success: null
-  },
-  {
+   },
+   {
     id: 'scc-subscriptions',
     label: 'Subscriptions',
     url: '/rhn/manager/admin/setup/sync/subscriptions',

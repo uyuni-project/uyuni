@@ -69,6 +69,7 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -148,7 +149,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
@@ -2371,7 +2371,23 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testListMigrationTargetBaseOnly() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        admin = TestUtils.reload(admin);
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1245));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1157));
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1322));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1324));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1337));
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1357));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1361));
+        // Do not sync HA-GEO 12 SP2
+        //SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId());
 
         InstalledProduct installedPrd = new InstalledProduct();
         installedPrd.setName("SLES");
@@ -2400,11 +2416,28 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNotEmpty("no target found", result);
 
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise High Performance Computing 12 SP2");
+        assertContains(result.get(2).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
     }
 
     public void testListMigrationTargetExtension() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        admin = TestUtils.reload(admin);
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1245));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1157));
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1322));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1324));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1337));
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1357));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1361));
+        // Do not sync HA-GEO 12 SP2
+        //SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId());
 
         InstalledProduct installedPrd = new InstalledProduct();
         installedPrd.setName("SLES");
@@ -2446,7 +2479,23 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testListMigrationTargetExtensionNotSynced() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        admin = TestUtils.reload(admin);
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1245));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1157));
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1322));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1324));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1337));
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1357));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1361));
+        // Do not sync HA-GEO 12 SP2
+        //SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId());
 
         InstalledProduct installedPrd = new InstalledProduct();
         installedPrd.setName("SLES");
@@ -2482,18 +2531,16 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertNotNull(server.getInstalledProductSet().orElse(null));
 
-        server.getInstalledProductSet().get().getBaseProduct().getUpgrades();
-
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
         assertNotEmpty("no target found", result);
-        assertTrue(result.size() == 1);
+        assertEquals(1, result.size());
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
     public void testGetInstalledProducts() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
         assertNotNull(server);

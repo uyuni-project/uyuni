@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Dec 17 14:32:34 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- Add missing timer file
+- Sync changes from Spacewalk
+- Regenerating .po and .pot files for rhnsd
+- Updating .po translations from Zanata
+- 1091025 - Languages are not needed on systemd
+- 1091025 - Make package noarch on systemd systems
+- 1091025 - Fix building
+- 1091025 - Replace rhnsd with systemd.tim
+
+-------------------------------------------------------------------
 Fri Oct 26 09:54:38 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.2-1

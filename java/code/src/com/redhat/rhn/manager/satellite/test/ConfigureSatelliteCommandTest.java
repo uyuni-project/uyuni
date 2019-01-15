@@ -43,7 +43,6 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     public void setUp() throws Exception {
-        // TODO Auto-generated method stub
         super.setUp();
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
     }

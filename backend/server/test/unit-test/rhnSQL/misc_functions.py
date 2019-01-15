@@ -384,8 +384,8 @@ def grant_channel_family_entitlements(org_id, channel_family, quantity):
         return
     _query_create_chfam = """
        INSERT INTO  rhnChannelFamily
-              (id, name, label, org_id, product_url)
-       VALUES (sequence_nextval('rhn_channel_family_id_seq'), :name, :label, :org, :url)
+              (id, name, label, org_id)
+       VALUES (sequence_nextval('rhn_channel_family_id_seq'), :name, :label, :org)
 
     """
     h = rhnSQL.prepare(_query_create_chfam)
@@ -393,8 +393,7 @@ def grant_channel_family_entitlements(org_id, channel_family, quantity):
         h.execute(
             name='Private Channel Family %s' % channel_family,
             label=channel_family,
-            org=org_id,
-            url='%s url' % channel_family
+            org=org_id
         )
     except rhnSQL.SQLError:
         e = sys.exc_info()[1]

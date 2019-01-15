@@ -9,7 +9,7 @@
 # IMMUTABLE ORDER
 
 - features/core_first_settings.feature
-# initialize SUSE Manager server
+#- initialize SUSE Manager server
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
@@ -23,19 +23,20 @@
   #         core_proxy_register_as_minion_with_script.feature
   #         core_proxy_register_as_minion_with_gui.feature
 - features/core_proxy_register_as_minion_with_gui.feature
-# features/core_proxy_branch_network.feature
+#- features/core_proxy_branch_network.feature
 # initialize clients
-# features/core_trad_register_client.feature
-# features/core_min_bootstrap.feature
-# features/core_min_salt_ssh.feature
-# features/core_centos_tradclient.feature
-# features/core_centos_salt.feature
-# features/min_centos_salt_install_package_and_patch.feature
-# features/core_centos_salt_ssh.feature
+
+#- features/core_trad_register_client.feature
+#- features/core_min_bootstrap.feature
+#- features/core_min_salt_ssh.feature
+#- features/core_centos_tradclient.feature
+#- features/core_centos_salt.feature
+#- features/min_centos_salt_install_package_and_patch.feature
+#- features/core_centos_salt_ssh.feature
 - features/core_ubuntu_salt.feature
 # these features sync real channels (last core features)
-- features/core_srv_sync_channels.feature
-- features/core_srv_setup_wizard.feature
+#- features/core_srv_sync_channels.feature
+#- features/core_srv_setup_wizard.feature
 
 ## Core features END ###
 
@@ -44,78 +45,79 @@
 
 # IDEMPOTENT
 
-# features/allcli_reboot.feature
-# features/trad_config_channel.feature
-# features/trad_lock_packages.feature
-# features/min_centos_salt_install_package_and_patch.feature
-# features/min_bootstrap_xmlrpc.feature
-# features/minssh_bootstrap_xmlrpc.feature
-# features/min_activationkey.feature
-# features/trad_migrate_to_minion.feature
-# features/trad_need_reboot.feature
-# features/trad_ssh_push.feature
-# features/srv_change_password.feature
-# features/srv_check_sync_source_packages.feature
-# features/min_salt_software_states.feature
-# features/min_docker_xmlrpc.feature
-# features/min_docker_build_image.feature
-# features/trad_metadata_check.feature
-# features/srv_clone_channel_npn.feature
-# features/trad_cve_id_new_syntax.feature
-# features/trad_weak_deps.feature
-# features/srv_nagios.feature
-# features/srv_cve_audit.feature
-# features/min_salt_install_with_staging.feature
-# features/srv_xmlrpc_activationkey.feature
-# features/allcli_overview_systems_details.feature
-# features/srv_distro_cobbler.feature
-# features/srv_mainpage.feature
-# features/srv_xmlrpc_user.feature
-# features/srv_salt_download_endpoint.feature
-# features/srv_virtual_host_manager.feature
-# features/trad_baremetal_discovery.feature
-# features/trad_action_chain.feature
-# features/min_action_chain.feature
-# features/minssh_action_chain.feature
-# features/min_salt_formulas.feature
-# features/min_salt_formulas_advanced.feature
-# features/min_docker_auth_registry.feature
-# features/srv_docker_advanced_content_management.feature
-# features/srv_docker_cve_audit.feature
-# features/min_osimage_build_image.feature
-# features/min_salt_install_package.feature
-# features/srv_power_management.feature
-# features/srv_datepicker.feature
-# features/trad_openscap_audit.feature
-# features/srv_create_group.feature
-# features/srv_group_union_intersection.feature
-# features/proxy_retail_pxeboot.feature
-# features/min_salt_openscap_audit.feature
-# features/srv_custom_system_info.feature
-# features/srv_security.feature
-# features/trad_inst_package_and_patch.feature
-# features/trad_check_patches_install.feature
-# features/trad_mgr_bootstrap.feature
-# features/trad_sp_migration.feature
-# features/srv_salt.feature
-# features/min_salt_user_states.feature
-# features/srv_check_channels_page.feature
-# features/min_salt_minion_details.feature
-# features/trad_check_registration.feature
-# features/min_salt_minions_page.feature
-# features/srv_xmlrpc_channel.feature
-# features/allcli_config_channel.feature
-# features/min_config_state_channel.feature
-# features/min_state_config_channel.feature
-# features/min_salt_pkgset_beacon.feature
-# features/srv_patches_page.feature
-# features/srv_spacewalk_channel.feature
-# features/allcli_software_channels.feature
-# features/allcli_software_channels_dependencies.feature
-# features/srv_sync_products.feature
-# features/srv_notifications.feature
-# features/minkvm_guests.feature
-# features/minxen_guests.feature
+#- features/allcli_reboot.feature
+#- features/trad_config_channel.feature
+#- features/trad_lock_packages.feature
+#- features/min_centos_salt_install_package_and_patch.feature
+#- features/min_bootstrap_xmlrpc.feature
+#- features/minssh_bootstrap_xmlrpc.feature
+#- features/min_activationkey.feature
+#- features/trad_migrate_to_minion.feature
+#- features/trad_need_reboot.feature
+#- features/trad_ssh_push.feature
+#- features/srv_change_password.feature
+#- features/srv_check_sync_source_packages.feature
+#- features/min_salt_software_states.feature
+#- features/min_docker_xmlrpc.feature
+#- features/min_docker_build_image.feature
+#- features/trad_metadata_check.feature
+#- features/srv_clone_channel_npn.feature
+#- features/trad_cve_id_new_syntax.feature
+#- features/trad_weak_deps.feature
+#- features/srv_nagios.feature
+#- features/srv_cve_audit.feature
+#- features/min_salt_install_with_staging.feature
+#- features/srv_xmlrpc_activationkey.feature
+#- features/allcli_overview_systems_details.feature
+#- features/srv_distro_cobbler.feature
+#- features/srv_mainpage.feature
+#- features/srv_xmlrpc_user.feature
+#- features/srv_salt_download_endpoint.feature
+#- features/srv_virtual_host_manager.feature
+#- features/trad_baremetal_discovery.feature
+#- features/trad_action_chain.feature
+#- features/min_action_chain.feature
+#- features/minssh_action_chain.feature
+#- features/min_salt_formulas.feature
+#- features/min_salt_formulas_advanced.feature
+#- features/min_docker_auth_registry.feature
+#- features/srv_docker_advanced_content_management.feature
+#- features/srv_docker_cve_audit.feature
+#- features/min_osimage_build_image.feature
+#- features/min_salt_install_package.feature
+#- features/srv_power_management.feature
+#- features/srv_datepicker.feature
+#- features/trad_openscap_audit.feature
+#- features/allcli_system_group.feature
+#- features/srv_group_union_intersection.feature
+#- features/proxy_retail_pxeboot.feature
+#- features/min_salt_openscap_audit.feature
+#- features/srv_custom_system_info.feature
+#- features/srv_security.feature
+#- features/trad_inst_package_and_patch.feature
+#- features/trad_check_patches_install.feature
+#- features/trad_mgr_bootstrap.feature
+#- features/trad_sp_migration.feature
+#- features/srv_salt.feature
+#- features/min_salt_user_states.feature
+#- features/srv_check_channels_page.feature
+#- features/min_salt_minion_details.feature
+#- features/trad_check_registration.feature
+#- features/min_salt_minions_page.feature
+#- features/srv_xmlrpc_channel.feature
+#- features/allcli_config_channel.feature
+#- features/min_config_state_channel.feature
+#- features/min_state_config_channel.feature
+#- features/min_salt_pkgset_beacon.feature
+#- features/srv_patches_page.feature
+#- features/srv_spacewalk_channel.feature
+#- features/allcli_software_channels.feature
+#- features/allcli_software_channels_dependencies.feature
+#- features/srv_sync_products.feature
+#- features/srv_notifications.feature
+#- features/minkvm_guests.feature
+#- features/minxen_guests.feature
+#- features/min_empty_system_profiles.feature
 ## Secondary features END ##
 
 
@@ -124,7 +126,7 @@
 # IMMUTABLE ORDER
 
 # this feature is destructive for other features, so it is better at the end
-# features/srv_smdba.feature
+#- features/srv_smdba.feature
 # this feature is needed for gathering log/debug infos
 - features/srv_susemanager_debug.feature
 

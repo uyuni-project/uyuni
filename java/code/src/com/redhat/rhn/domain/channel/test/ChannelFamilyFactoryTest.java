@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
+import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -58,7 +59,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
     public void testLookupByLabelLike() throws Exception {
         ChannelFamily cfam = createTestChannelFamily();
         List cfams = ChannelFamilyFactory.lookupByLabelLike(cfam.getLabel(),
-                                                                 cfam.getOrg());
+                cfam.getOrg());
         ChannelFamily cfam2 = (ChannelFamily) cfams.get(0);
         assertEquals(cfam.getId(), cfam2.getId());
     }
@@ -88,6 +89,11 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         assertEquals(orgfam.getName(), orgfam2.getName());
     }
 
+    public static ChannelFamily createNullOrgTestChannelFamily() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser", "testOrgCreateTestChannelFamily");
+        return createTestChannelFamily(user, true);
+    }
+
     public static ChannelFamily createTestChannelFamily() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrgCreateTestChannelFamily");
         return createTestChannelFamily(user);
@@ -106,23 +112,30 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
             String prefix) throws Exception {
         String label = prefix + "Label" + TestUtils.randomString();
         String name = prefix + "Name" + TestUtils.randomString();
-        String productUrl = "http://www.example.com";
 
         ChannelFamily cfam = new ChannelFamily();
         cfam.setOrg(nullOrg ? null : user.getOrg());
         cfam.setLabel(label);
         cfam.setName(name);
-        cfam.setProductUrl(productUrl);
 
         ChannelFamilyFactory.save(cfam);
         cfam = (ChannelFamily) TestUtils.reload(cfam);
 
-        PrivateChannelFamily pcf = new PrivateChannelFamily();
-        pcf.setOrg(user.getOrg());
-        pcf.setChannelFamily(cfam);
-        HibernateFactory.getSession().save(pcf);
+        if (nullOrg) {
+            PublicChannelFamily pcf = new PublicChannelFamily();
+            pcf.setChannelFamily(cfam);
+            HibernateFactory.getSession().save(pcf);
 
-        cfam.addPrivateChannelFamily(pcf);
+            cfam.setPublicChannelFamily(pcf);
+        }
+        else {
+            PrivateChannelFamily pcf = new PrivateChannelFamily();
+            pcf.setOrg(user.getOrg());
+            pcf.setChannelFamily(cfam);
+            HibernateFactory.getSession().save(pcf);
+
+            cfam.addPrivateChannelFamily(pcf);
+        }
         cfam = (ChannelFamily) TestUtils.reload(cfam);
         return cfam;
     }

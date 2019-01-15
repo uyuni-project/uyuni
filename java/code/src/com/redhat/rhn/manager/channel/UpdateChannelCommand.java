@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChecksumLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
-import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 /**
@@ -108,16 +107,10 @@ public class UpdateChannelCommand extends CreateChannelCommand {
                     InvalidChannelNameException.Reason.NAME_IN_USE,
                     "edit.channel.invalidchannelname.nameinuse", name);
         }
-
-        try {
-            if (ContentSyncManager.isChannelNameReserved(name)) {
-                throw new InvalidChannelNameException(name,
-                        InvalidChannelNameException.Reason.NAME_RESERVED,
-                        "edit.channel.invalidchannelname.namereserved", name);
-            }
-        }
-        catch (ContentSyncException e) {
-            throw new RuntimeException(e.getMessage());
+        if (ContentSyncManager.isChannelNameReserved(name)) {
+            throw new InvalidChannelNameException(name,
+                    InvalidChannelNameException.Reason.NAME_RESERVED,
+                    "edit.channel.invalidchannelname.namereserved", name);
         }
 
         if (ChannelFactory.findArchByLabel(archLabel) == null) {

@@ -19,6 +19,7 @@ import logging
 import yaml
 import json
 import sys
+import re
 import salt.utils.dictupdate
 
 # SUSE Manager static pillar paths:
@@ -35,8 +36,14 @@ IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
 
 # SUSE Manager static pillar data.
 MANAGER_STATIC_PILLAR = [
-    'gpgkeys',
+    'gpgkeys'
 ]
+
+MANAGER_GLOBAL_PILLAR = [
+    'mgr_conf'
+]
+
+CONFIG_FILE = '/etc/rhn/rhn.conf'
 
 # Fomula group subtypes
 class EditGroupSubtype(Enum):
@@ -71,6 +78,14 @@ def ext_pillar(minion_id, *args):
             ret.update(yaml.load(open('{0}.yml'.format(static_pillar_filename)).read()))
         except Exception as exc:
             log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
+
+    # Including SUSE Manager global pillar data
+    for global_pillar in MANAGER_GLOBAL_PILLAR:
+        global_pillar_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, global_pillar)
+        try:
+            ret.update(yaml.load(open('{0}.yml'.format(global_pillar_filename)).read()))
+        except Exception as exc:
+            log.error('Error accessing "{0}": {1}'.format(global_pillar_filename, exc))
 
     # Including generated pillar data for this minion
     data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
@@ -271,3 +286,4 @@ def image_pillars(minion_id):
                 log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
 
     return ret
+

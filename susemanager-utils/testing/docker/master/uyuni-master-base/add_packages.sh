@@ -50,7 +50,7 @@ zypper --non-interactive in ant \
              ant-junit \
              apache-ivy \
              java-1_8_0-openjdk-devel \
-             pam-modules \
+             pam \
              sudo \
              tar
 

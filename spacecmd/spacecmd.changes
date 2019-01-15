@@ -1,4 +1,12 @@
-- Add function to merge errata and packages through spacecmd (bsc#987798)
+- Fix importing state channels using configchannel_import
+- Fix getting file info for latest revision (via configchannel_filedetails)
+
+-------------------------------------------------------------------
+Mon Dec 17 14:33:04 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- Add functions to merge errata (softwarechannel_errata_merge) and
+  packages (softwarechannel_mergepackages) through spacecmd (bsc#987798)
 - show group id on group_details (bsc#1111542)
 - State channels handling: Existing commands configchannel_create and configchannel_import were updated
   while system_scheduleapplyconfigchannels and configchannel_updateinitsls were added.

@@ -62,7 +62,7 @@ class SuseProductChannelsImport(GenericPackageImport):
             if channel[item['channel_label']]:
                 item['channel_id'] = channel[item['channel_label']]['id']
             else:
-                item['channel_id'] = None
+                continue
             if item['parent_channel_label'] == 'None':
                 item['parent_channel_label'] = None
             self._data.append(item)
@@ -101,6 +101,89 @@ class SuseUpgradePathsImport(GenericPackageImport):
     def submit(self):
         try:
             self.backend.processSuseUpgradePaths(self._data)
+        except:
+            self.backend.rollback()
+            raise
+        self.backend.commit()
+
+class SuseProductExtensionsImport(GenericPackageImport):
+    def __init__(self, batch, backend):
+        GenericPackageImport.__init__(self, batch, backend)
+        self._cache = syncCache.ShortPackageCache()
+        self._data = []
+
+    def preprocess(self):
+        pid_trans = {}
+        for item in self.batch:
+            if item['product_id'] not in pid_trans:
+                pid_trans[item['product_id']] = self.backend.lookupSuseProductIdByProductId(item['product_id'])
+            item['product_pdid'] = pid_trans[item['product_id']]
+            if item['root_id'] not in pid_trans:
+                pid_trans[item['root_id']] = self.backend.lookupSuseProductIdByProductId(item['root_id'])
+            item['root_pdid'] = pid_trans[item['root_id']]
+            if item['ext_id'] not in pid_trans:
+                pid_trans[item['ext_id']] = self.backend.lookupSuseProductIdByProductId(item['ext_id'])
+            item['ext_pdid'] = pid_trans[item['ext_id']]
+            self._data.append(item)
+
+    def fix(self):
+        pass
+
+    def submit(self):
+        try:
+            self.backend.processSuseProductExtensions(self._data)
+        except:
+            self.backend.rollback()
+            raise
+        self.backend.commit()
+
+class SuseProductRepositoriesImport(GenericPackageImport):
+    def __init__(self, batch, backend):
+        GenericPackageImport.__init__(self, batch, backend)
+        self._cache = syncCache.ShortPackageCache()
+        self._data = []
+
+    def preprocess(self):
+        pid_trans = {}
+        rid_trans = {}
+        for item in self.batch:
+            if item['product_id'] not in pid_trans:
+                pid_trans[item['product_id']] = self.backend.lookupSuseProductIdByProductId(item['product_id'])
+            item['product_pdid'] = pid_trans[item['product_id']]
+            if item['root_id'] not in pid_trans:
+                pid_trans[item['root_id']] = self.backend.lookupSuseProductIdByProductId(item['root_id'])
+            item['root_pdid'] = pid_trans[item['root_id']]
+            if item['repo_id'] not in rid_trans:
+                rid_trans[item['repo_id']] = self.backend.lookupRepoIdBySCCRepoId(item['repo_id'])
+            item['repo_pdid'] = rid_trans[item['repo_id']]
+            self._data.append(item)
+
+    def fix(self):
+        pass
+
+    def submit(self):
+        try:
+            self.backend.processSuseProductRepositories(self._data)
+        except:
+            self.backend.rollback()
+            raise
+        self.backend.commit()
+
+class SCCRepositoriesImport(GenericPackageImport):
+    def __init__(self, batch, backend):
+        GenericPackageImport.__init__(self, batch, backend)
+        self._cache = syncCache.ShortPackageCache()
+        self._data = []
+
+    def preprocess(self):
+        pass
+
+    def fix(self):
+        pass
+
+    def submit(self):
+        try:
+            self.backend.processSCCRepositories(self._data)
         except:
             self.backend.rollback()
             raise

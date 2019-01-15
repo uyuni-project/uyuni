@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Dec 17 14:39:52 CET 2018 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- Sync changes from Spacewalk
+- 1649374 - Update spacewalk-remote-utils with RHEL 7.6 channel definitions
+- 1633532 - Use python-gpg instead of python-gpgme where possible
+
+-------------------------------------------------------------------
 Fri Oct 26 10:40:23 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.2-1

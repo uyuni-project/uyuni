@@ -81,7 +81,6 @@ Requires:       spacewalk-certs-tools
 Requires:       pxe-default-image
 Requires:       spacewalk-config
 Requires:       spacewalk-schema
-Requires:       yum-utils
 
 Requires:       virtual-host-gatherer
 Recommends:     virtual-host-gatherer-VMware

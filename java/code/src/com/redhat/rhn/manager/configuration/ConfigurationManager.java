@@ -1235,7 +1235,7 @@ public class ConfigurationManager extends BaseManager {
      */
     public DataResult<ConfigFileDto> listCurrentFiles(User user,
             ConfigChannel channel, PageControl pc) {
-        return listCurrentFiles(user, channel, pc, null);
+        return listCurrentFiles(user, channel, pc, null, false);
     }
 
     /**
@@ -1245,10 +1245,11 @@ public class ConfigurationManager extends BaseManager {
      * @param channel channel of interest
      * @param pc controller/elaborator for the list
      * @param setLabel label of set we care about, or NULL if we don't want to use a set
+     * @param includeInitSls should the /init.sls file be included? (for state channels)
      * @return list of com.redhat.rhn.frontend.dto.ConfigFileDto
      */
-    public DataResult listCurrentFiles(
-            User user, ConfigChannel channel, PageControl pc, String setLabel) {
+    public DataResult listCurrentFiles(User user, ConfigChannel channel, PageControl pc, String setLabel,
+            boolean includeInitSls) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("ccid", channel.getId());
         params.put("user_id", user.getId());
@@ -1258,6 +1259,7 @@ public class ConfigurationManager extends BaseManager {
             params.put("set_label", setLabel);
         }
         else {
+            params.put("include_init_sls", includeInitSls ? "Y" : "N");
             m = ModeFactory.getMode("config_queries", "latest_files_in_namespace");
         }
         return (DataResult<ConfigFileDto>) makeDataResult(params, new HashMap(), pc, m);
