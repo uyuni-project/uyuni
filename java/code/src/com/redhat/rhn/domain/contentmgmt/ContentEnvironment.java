@@ -233,7 +233,7 @@ public class ContentEnvironment extends BaseDomainHelper {
                 .append("project", getContentProject().getName())
                 .append("label", getLabel())
                 .append("version", getVersion())
-                .append("next env id", getNextEnvironment().getId())
+                .append("next env id", ofNullable(getNextEnvironment()).map(e -> e.getId()).orElse(null))
                 .toString();
     }
 }
