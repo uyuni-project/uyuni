@@ -18,7 +18,7 @@ class ZyppoSync(object):
     >>> for idx, repo_meta in enumerate(zyppo.list_repos().values()):
     >>>    print(idx + 1, repo_meta["name"])
     >>>    print("  ", repo_meta["baseurl"])
-    
+
     """
     def __init__(self, cfg_path="/etc/salt/minion"):
         self._conf = salt.config.minion_config(cfg_path)
@@ -42,5 +42,4 @@ class ZyppoSync(object):
         attribute name.
         """
         return self._get_call(attr)
-
     
