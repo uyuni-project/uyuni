@@ -4,9 +4,12 @@ Reposync via Salt library.
 """
 from __future__ import absolute_import, unicode_literals
 
+import gzip
 import os
 import sys
 import types
+import xml.etree.ElementTree as etree
+
 import salt.client
 import salt.config
 
@@ -146,13 +149,79 @@ class ContentSource:
 
         return data
 
+    def _md_exists(self, tag):
+        pass
+
+    def _retrieve_md_path(self, tag):
+        pass
+
+    def _fix_encoding(text):
+        if text is None:
+            return None
+        if isinstance(text, str):
+            return str.encode(text, 'utf-8')
+        else:
+            return str(text)
+
     def get_susedata(self):
         """
         Return ??
 
         :returns: list
         """
-        return []
+        susedata = []
+        if self._md_exists('susedata'):
+            data_path = self._retrieve_md_path('susedata')
+            infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
+            for package in etree.parse(infile).getroot():
+                d = {}
+                d['pkgid'] = package.get('pkgid')
+                d['name'] = package.get('name')
+                d['arch'] = package.get('arch')
+                d['keywords'] = []
+                for child in package:
+                    # we use "endswith" because sometimes it has a namespace
+                    # and sometimes not :-(
+                    if child.tag.endswith('version'):
+                        d['version'] = child.get('ver')
+                        d['release'] = child.get('rel')
+                        d['epoch'] = child.get('epoch')
+                        if d['epoch'] == '0' or d['epoch'] == '':
+                            d['epoch'] = None
+                        if child.get('arch'):
+                            d['arch'] = child.get('arch')
+
+                    elif child.tag.endswith('keyword'):
+                        d['keywords'].append(child.text)
+                    elif child.tag == 'eula':
+                        d['eula'] = child.text
+                susedata.append(d)
+        return susedata
+
+    def get_products(self):
+        """
+        Return list of products
+        :returns: ?
+        """
+        products = []
+        if self._md_exists('products'):
+            data_path = self._retrieve_md_path('products')
+            infile = prod_path.endswith('.gz') and gzip.open(prod_path) or open(prod_path, 'rt')
+            for product in etree.parse(infile).getroot():
+                p = {}
+                p['name'] = product.find('name').text
+                p['arch'] = product.find('arch').text
+                version = product.find('version')
+                p['version'] = version.get('ver')
+                p['release'] = version.get('rel')
+                p['epoch'] = version.get('epoch')
+                p['vendor'] = _fix_encoding(product.find('vendor').text)
+                p['summary'] = _fix_encoding(product.find('summary').text)
+                p['description'] = _fix_encoding(product.find('description').text)
+                if p['epoch'] == '0':
+                    p['epoch'] = None
+                products.append(p)
+        return products
 
     def get_updates(self):
         """
