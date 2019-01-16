@@ -68,11 +68,11 @@ class ZyppoSync:
         attribute name.
         """
         return self._get_call(attr)
-    
+
 
 class ContentSource:
     def __init__(self, url, name, insecure=False, interactive=True,
-                 yumsrc_conf=None, org="1", channel_label="", 
+                 yumsrc_conf=None, org="1", channel_label="",
                  no_mirrors=False, ca_cert_file=None, client_cert_file=None,
                  client_key_file=None):
         """
