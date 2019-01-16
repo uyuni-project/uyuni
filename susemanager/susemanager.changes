@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 16 12:26:43 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
 - ensure POSTGRES_LANG is correctly set (bsc#1121787)
 - add bootstrap repo definition for OES 2018 SP1 (bsc#1116826) 
 - configure firewalld if available
