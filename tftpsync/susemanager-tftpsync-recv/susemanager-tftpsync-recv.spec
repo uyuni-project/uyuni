@@ -21,7 +21,7 @@
 %endif
 
 Name:           susemanager-tftpsync-recv
-Version:        4.0.2
+Version:        4.0.3
 Release:        1%{?dist}
 Summary:        Reciever for SUSE Manager tftp sync
 License:        GPL-2.0-only
