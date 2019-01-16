@@ -37,7 +37,7 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   if host == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif host == 'ssh-minion' or host == 'ceos-minion'
+  elsif host == 'ssh-minion' or host == 'ceos-minion' or host == 'ubuntu-minion'
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
