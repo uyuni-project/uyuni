@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 16 12:17:28 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - removed dependency to yum-utils as the dependencies exists on
   the packages which really need it
 
