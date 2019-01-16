@@ -51,7 +51,7 @@ BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 
-PreReq:         %fillup_prereq %insserv_prereq tftp(server)
+PreReq:         %fillup_prereq %insserv_prereq tftp(server) postgresql-init
 Requires(pre):  tomcat salt
 Requires:       cobbler
 Requires:       openslp-server
@@ -207,16 +207,6 @@ if [ ! -d /srv/tftpboot ]; then
   chmod 750 /srv/tftpboot
   chown wwwrun:tftp /srv/tftpboot
 fi
-# make sure our database will use correct encoding
-. /etc/sysconfig/postgresql
-if [ -z $POSTGRES_LANG ]; then
-    grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
-    if [ $? = 0 ]; then
-        sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
-    else
-        echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
-    fi
-fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
 # ensure susemanager group can write in all subdirs under /var/spacewalk/systems
@@ -236,6 +226,18 @@ if [ $POST_ARG -eq 2 ] ; then
     fi
 fi
 # else new install and the systems dir should be created by spacewalk-setup
+
+%posttrans
+# make sure our database will use correct encoding
+. /etc/sysconfig/postgresql
+if [ -z $POSTGRES_LANG ]; then
+    grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
+    if [ $? = 0 ]; then
+        sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
+    else
+        echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
+    fi
+fi
 
 %postun
 %{insserv_cleanup}
