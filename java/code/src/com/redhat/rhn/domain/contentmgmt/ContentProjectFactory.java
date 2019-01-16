@@ -27,6 +27,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import static java.util.Collections.unmodifiableList;
+
 /**
  *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class and related classes.
  */
@@ -171,7 +173,7 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * Lists all Environments of a Content Project
+     * Lists all Environments of a Content Project with the respect to their ordering.
      *
      * @param project the Content Project
      * @return Environments of the Content Project
@@ -183,7 +185,7 @@ public class ContentProjectFactory extends HibernateFactory {
             result.add(env.get());
             env = env.get().getNextEnvironmentOpt();
         }
-        return result;
+        return unmodifiableList(result);
     }
 
     /**
@@ -243,6 +245,7 @@ public class ContentProjectFactory extends HibernateFactory {
         entry.setContentProject(project);
         save(entry);
         entries.add(entry);
+        save(project);
     }
 
     /**
