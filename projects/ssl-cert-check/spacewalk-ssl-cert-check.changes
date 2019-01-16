@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 16 12:25:06 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.3-1
 - Prepare spacewalk-ssl-cert-check packages to build on Python 3
 - migrate from cron to systemd timers (FATE#323635, bsc#1115399)
 
