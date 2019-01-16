@@ -207,6 +207,16 @@ if [ ! -d /srv/tftpboot ]; then
   chmod 750 /srv/tftpboot
   chown wwwrun:tftp /srv/tftpboot
 fi
+# make sure our database will use correct encoding
+. /etc/sysconfig/postgresql
+if [ -z $POSTGRES_LANG ]; then
+    grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
+    if [ $? = 0 ]; then
+        sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
+    else
+        echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
+    fi
+fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
 # ensure susemanager group can write in all subdirs under /var/spacewalk/systems
