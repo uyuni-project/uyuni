@@ -1,3 +1,5 @@
+- Create directory with correct ownership to prevent file conflicts
+
 -------------------------------------------------------------------
 Mon Dec 17 14:42:10 CET 2018 - jgonzalez@suse.com
 
