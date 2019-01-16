@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 16 12:21:06 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
 - Take only text files from /srv/salt to make spacewalk-debug smaller (bsc#1103388)
 - move channel update close to commit to avoid long lock (bsc#1121424)
 - Adapt Inter Server Sync code to new SCC sync backend
