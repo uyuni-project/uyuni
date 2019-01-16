@@ -2,13 +2,16 @@
 """
 Reposync via Salt library.
 """
-from __future__ import absolute_import, unicode_literals, print_function
+from __future__ import absolute_import, unicode_literals
 
+import os
+import sys
+import types
 import salt.client
 import salt.config
 
 
-class ZyppoSync(object):
+class ZyppoSync:
     """
     Wrapper for underlying package manager for the reposync via Salt.
 
@@ -20,12 +23,31 @@ class ZyppoSync(object):
     >>>    print("  ", repo_meta["baseurl"])
 
     """
-    def __init__(self, cfg_path="/etc/salt/minion"):
+    def __init__(self, cfg_path:str = "/etc/salt/minion", root:str = None):
         self._conf = salt.config.minion_config(cfg_path)
         self._conf["file_client"] = "local"
+        self._conf["server_id_use_crc"] = "Adler32"
+        if root is not None:
+            self._init_root(root)
         self._caller = salt.client.Caller(mopts=self._conf)
 
-    def _get_call(self, key):
+    def _init_root(self, root:str) -> None:
+        """
+        Creates a root environment for Zypper, but only if none is around.
+
+        :return: None
+        """
+        if not os.path.exists(root):
+            try:
+                for pth in [root, os.path.join(root, "zypp/repos.d")]:
+                    os.makedirs(pth)
+            except PermissionError as exc:
+                # TODO: a proper logging somehow?
+                sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
+                raise
+            self._conf["zypper_root"] = root
+
+    def _get_call(self, key:str) -> types.FunctionType:
         """
         Prepare a call to the pkg module.
         """
@@ -33,10 +55,11 @@ class ZyppoSync(object):
             """
             Makes a call to the underlying package.
             """
+            kwargs["root"] = self._conf.get("zypper_root")
             return self._caller.cmd("pkg.{}".format(key), *args, **kwargs)
         return make_call
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr:str) -> types.FunctionType:
         """
         Prepare a callable on the requested
         attribute name.
