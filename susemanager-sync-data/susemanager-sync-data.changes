@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 16 12:27:30 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
 - add sle-module-web-scripting for OES2018 (bsc#1119233)
 - add new set of data for the new SCC sync backend
 - enable SLE15 SP1 family (bsc#1114268)
