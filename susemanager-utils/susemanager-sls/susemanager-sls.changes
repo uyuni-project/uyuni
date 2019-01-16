@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 16 12:27:07 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
 - Allow bootstrapping minions with a pending minion key being present (bsc#1119727)
 
 -------------------------------------------------------------------
