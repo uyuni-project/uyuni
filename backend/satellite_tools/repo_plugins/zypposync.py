@@ -97,15 +97,15 @@ class ContentSource(object):
         _scheme, _netloc, _path, query, _fragid = urlparse.urlsplit(url)
         self.authtoken = query if query else None
 
-    def get_md_checksum_type(self):
+    def get_md_checksum_type(self) -> (str, int):
         """
         Get checksum type.
 
-        :returns: None
+        :returns: tuple of: checksum-type, checksum
         """
-        return None
+        return "sha1", 0
 
-    def get_products(self):
+    def get_products(self) -> dict:
         """
         Return products of SLE.
 
