@@ -1,11 +1,21 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# 1) register a Centos minion via GUI
+# 1) delete CentOS SSH minion and register as Centos minion
 # 2) run a remote command
 # 3) try an openscap scan
+# 4) delete CentOS minion client and register as Centos SSH minion
 
 Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
+
+@centos_minion
+  Scenario: Delete the CentOS SSH minion
+    When I am on the Systems overview page of this "ceos-ssh-minion"
+    And I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+    And "ceos-ssh-minion" should not be registered
 
 @centos_minion
   Scenario: Bootstrap a CentOS minion
@@ -81,3 +91,27 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     And I should see a "XCCDF Rule Results" text
     And I should see a "pass" text
     And I should see a "rpm_" link
+
+@centos_minion
+  Scenario: Cleanup: delete the CentOS minion
+    When I am on the Systems overview page of this "ceos-minion"
+    And I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+    And "ceos-minion" should not be registered
+
+@centos_minion
+  Scenario: Cleanup: bootstrap a SSH-managed CentOS minion
+    Given I am authorized
+    When I go to the bootstrapping page
+    Then I should see a "Bootstrap Minions" text
+    When I check "manageWithSSH"
+    And I enter the hostname of "ceos-ssh-minion" as "hostname"
+    And I enter "linux" as "password"
+    And I select the hostname of the proxy from "proxies"
+    And I click on "Bootstrap"
+    Then I wait until I see "Successfully bootstrapped host! " text
+    And I navigate to "rhn/systems/Overview.do" page
+    And I wait until I see the name of "ceos-ssh-minion", refreshing the page
+    And I wait until onboarding is completed for "ceos-ssh-minion"

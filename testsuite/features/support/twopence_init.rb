@@ -57,10 +57,11 @@ def get_target(host)
     'server' => $server,
     'proxy' => $proxy,
     'ceos-minion' => $ceos_minion,
+    'ceos-ssh-minion' => $ceos_minion,
+    'ceos-client' => $ceos_minion,
     'ssh-minion' => $ssh_minion,
     'sle-minion' => $minion,
     'sle-client' => $client,
-    'ceos-traditional-client' => $ceos_minion,
     'sle-migrated-minion' => $client
   }
   node = nodes_map[host]
