@@ -1,3 +1,4 @@
+- ensure POSTGRES_LANG is correctly set (bsc#1121787)
 - add bootstrap repo definition for OES 2018 SP1 (bsc#1116826) 
 - configure firewalld if available
 - change SCC sync backend to adapt quicker to SCC changes and improve
