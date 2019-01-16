@@ -310,14 +310,6 @@ public class ContentProject extends BaseDomainHelper {
     }
 
     /**
-     * Add a history entry
-     *
-     * @param entry - the history entry
-     */
-    public void addHistoryEntry(ContentProjectHistoryEntry entry) {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
