@@ -51,6 +51,7 @@ import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.client.impl.HttpAsyncClientImpl;
 import com.suse.salt.netapi.datatypes.AuthMethod;
+import com.suse.salt.netapi.datatypes.Batch;
 import com.suse.salt.netapi.datatypes.PasswordAuth;
 import com.suse.salt.netapi.datatypes.Token;
 import com.suse.salt.netapi.datatypes.target.Glob;
@@ -111,6 +112,8 @@ import java.util.stream.Stream;
  * Singleton class acting as a service layer for accessing the salt API.
  */
 public class SaltService {
+
+    private static final Optional<Batch> defaultBatch = Optional.of(Batch.asAmount(100).delayed(1.0));
 
     /**
      * Singleton instance of this class
@@ -517,7 +520,7 @@ public class SaltService {
     private <R> Optional<Map<String, CompletionStage<Result<R>>>> completableAsyncCall(
             LocalCall<R> call, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
-        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel, Optional.empty()));
+        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel, defaultBatch));
     }
 
     /**
@@ -814,7 +817,7 @@ public class SaltService {
      */
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> call, Target<?> target)
             throws SaltException {
-        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH));
+        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
     }
 
     /**
