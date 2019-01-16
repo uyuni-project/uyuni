@@ -67,7 +67,7 @@ class ZyppoSync:
         return self._get_call(attr)
     
 
-class ContentSource(object):
+class ContentSource:
     def __init__(self, url, name, insecure=False, interactive=True,
                  yumsrc_conf=None, org="1", channel_label="", 
                  no_mirrors=False, ca_cert_file=None, client_cert_file=None,
@@ -87,8 +87,13 @@ class ContentSource(object):
         self.proxy_user = CFG.http_proxy_username
         self.proxy_pass = CFG.http_proxy_password
 
-        # TODO: Further configure
-        self.repo = ZyppoSync()
+        # Add this repo to the Zypper env
+        reponame = self.name.replace(" ", "-")
+        root = os.path.join("/var/cache/rhn/reposync", str(org or "1"), reponame)
+        self.repo = ZyppoSync(root=root)
+        self.repo.mod_repo(name, url=url, gpgautoimport=True, gpgcheck=False,
+                           alias=channel_label or reponame)
+        self.repo.refresh_db()
 
         self.num_packages = 0
         self.num_excluded = 0
