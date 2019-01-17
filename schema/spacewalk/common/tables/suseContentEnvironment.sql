@@ -23,7 +23,15 @@ CREATE TABLE suseContentEnvironment(
     label       VARCHAR2(16) NOT NULL,
     name        VARCHAR2(128) NOT NULL,
     description CLOB,
-    version     NUMBER
+    version     NUMBER,
+    next_env_id NUMBER
+                    CONSTRAINT suse_ct_env_nid_fk
+                        REFERENCES suseContentEnvironment(id),
+    created     TIMESTAMP WITH LOCAL TIME ZONE
+                    DEFAULT (current_timestamp) NOT NULL,
+    modified    TIMESTAMP WITH LOCAL TIME ZONE
+                    DEFAULT (current_timestamp) NOT NULL
+
 )
 ENABLE ROW MOVEMENT
 ;
@@ -35,3 +43,7 @@ CREATE UNIQUE INDEX suse_ct_env_pid_lbl_uq
 
 CREATE UNIQUE INDEX suse_ct_env_pid_name_uq
     ON suseContentEnvironment(project_id, name);
+
+-- conflict with hibernate way to update things
+-- CREATE UNIQUE INDEX suse_ct_env_nid_uq
+--     ON suseContentEnvironment(next_env_id);
