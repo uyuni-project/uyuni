@@ -19,7 +19,7 @@
 #
 
 if __name__ != '__main__':
-    raise ImportError, "module cannot be imported"
+    raise ImportError("module cannot be imported")
 
 import sys
 
@@ -44,7 +44,7 @@ try:
     from utils import systemSnapshot
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
-except ImportError, e:
+except ImportError as e:
     systemExit(2, "Unable to find system snapshot tool.\n"
                   "Error: %s" % e)
 

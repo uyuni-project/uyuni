@@ -224,7 +224,7 @@ def create_repository(repo_dir, options):
 
 
 def pkgs_available_in_repos(pkg, repo_packages):
-    for id, packages in repo_packages.iteritems():
+    for id, packages in list(repo_packages.items()):
         if pkg['nevra'] in packages:
             return id
     return None
@@ -237,7 +237,7 @@ def list_repo_packages(label, source_url):
     plugin = getattr(submod, "ContentSource")
     try:
         repo_plugin = plugin(source_url, label)
-        packages = map(lambda p: p.getNEVRA(), plugin.list_packages(repo_plugin, []))
+        packages = [p.getNEVRA() for p in plugin.list_packages(repo_plugin, [])]
         return set(packages)
     except ValueError:
         log(2, "   Invalid repo source_url ... %s" % source_url)
@@ -263,7 +263,7 @@ def log(level, *args):
     if not verbose:
         verbose = 0
     if verbose >= level:
-        print (', '.join(map(lambda i: str(i), args)))
+        print((', '.join([str(i) for i in args])))
 
 
 def split_and_log_to_level(level, spaces, string):
@@ -294,7 +294,7 @@ if __name__ == '__main__':
     parser = OptionParser(option_list=options_table)
     (options, args) = parser.parse_args()
     if not options.directory:
-        print "Export directory has to be specified. Try --help:\n"
+        print("Export directory has to be specified. Try --help:\n")
         parser.print_help()
         sys.exit(1)
 

@@ -203,24 +203,24 @@ def buckets(opt):
 def report(opt):
     """List size of all rhnsnapshot* tables found"""
     names = tables()
-    print
-    print '{0:>26} : {1:>12}'.format('Table name', 'rows')
+    print()
+    print('{0:>26} : {1:>12}'.format('Table name', 'rows'))
     for name in names:
-        print '{0:>26} : {1:>12d}'.format(name, count(name))
+        print('{0:>26} : {1:>12d}'.format(name, count(name)))
     by_quarter = buckets(opt)
     if by_quarter:
-        print
-        print ': {0:^36} :'.format('Snapshot info, ' + str(opt.report_interval) + '-day interval')
-        print ': {0:^9} : {1:>9} : {2:>12} :'.format('age(days)', 'systems', 'snapshots')
+        print()
+        print(': {0:^36} :'.format('Snapshot info, ' + str(opt.report_interval) + '-day interval'))
+        print(': {0:^9} : {1:>9} : {2:>12} :'.format('age(days)', 'systems', 'snapshots'))
         for a_row in by_quarter:
-            print ': {age:^9} : {servers_affected:9d} : {snapshots:12d} :'.format(**a_row)
+            print(': {age:^9} : {servers_affected:9d} : {snapshots:12d} :'.format(**a_row))
     else:
-        print 'No snapshots remain.'
+        print('No snapshots remain.')
 
 
 def purge(opt):
     """Remove from the rhnsnapshot* tables anything that happened more than <num_days> old"""
-    print 'Deleting snapshots older than ' + str(opt.num_days) + ' days'
+    print('Deleting snapshots older than ' + str(opt.num_days) + ' days')
     _log('Deleting snapshots older than ' + str(opt.num_days) + ' days')
 
 
@@ -229,17 +229,17 @@ def purge(opt):
 
     name = 'rhnsnapshot'
 
-    print '{0:12d} snapshots currently'.format(count(name))
+    print('{0:12d} snapshots currently'.format(count(name)))
     _log('{0:12d} snapshots currently'.format(count(name)))
 
     to_be_purged = purge_count(name, opt, now_ts)
-    print '{0:12d} snapshots to be deleted, {1:d} per commit'.format(to_be_purged, opt.batch_size)
+    print('{0:12d} snapshots to be deleted, {1:d} per commit'.format(to_be_purged, opt.batch_size))
     _log('{0:12d} snapshots to be deleted, {1:d} per commit'.format(to_be_purged, opt.batch_size))
 
     lock_str = _get_sql('LOCK_GROUPS')
     del_str = _get_sql('PURGE_DATA')
     while to_be_purged > 0:
-        print '...{0:12d} snapshots left to purge'.format(to_be_purged)
+        print('...{0:12d} snapshots left to purge'.format(to_be_purged))
         _log('...{0:12d} snapshots left to purge'.format(to_be_purged))
         # Commit after each batch - if something blows us up, we don't want to lose the
         # work that's already been done.
@@ -250,7 +250,7 @@ def purge(opt):
         rhnSQL.commit()
         to_be_purged = purge_count(name, opt, now_ts)
 
-    print '{0:12d} snapshots remain'.format(count(name))
+    print('{0:12d} snapshots remain'.format(count(name)))
     _log('{0:12d} snapshots remain'.format(count(name)))
     return
 
@@ -265,8 +265,8 @@ if __name__ == '__main__':
 
     rhnLog.initLOG(LOG_LOCATION)
     if rhnLog.LOG.real == 0:
-        print 'Failed to access logfile ' + LOG_LOCATION + ' - exiting...'
-        print '(Try running as sudo)'
+        print('Failed to access logfile ' + LOG_LOCATION + ' - exiting...')
+        print('(Try running as sudo)')
         sys.exit(1)
 
     if options.num_days is not None:

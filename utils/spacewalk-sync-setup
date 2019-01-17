@@ -22,14 +22,23 @@
 import logging
 import os
 import sys
-import xmlrpclib
 import string
 from string import lower
-from ConfigParser import SafeConfigParser
 from optparse import OptionParser, OptionGroup
 from os import path, access, R_OK
 from os.path import expanduser
 import getpass
+from salt.ext import six
+
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
+
+try:
+    from ConfigParser import SafeConfigParser
+except ImportError:
+    from configparser import SafeConfigParser
 
 CONF_DIR = os.path.expanduser('~/.spacewalk-sync-setup')
 USER_CONF_FILE = os.path.join(CONF_DIR, 'config')
@@ -207,7 +216,7 @@ def setupConfig(opt):
             # create ~/.spacewalk-sync-setup
             if not os.path.isdir(CONF_DIR):
                 logging.debug('Creating %s' % CONF_DIR)
-                os.mkdir(CONF_DIR, 0700)
+                os.mkdir(CONF_DIR, 0o700)
 
             # create a template configuration file
             logging.debug('Creating configuration file: %s' % USER_CONF_FILE)
@@ -385,7 +394,7 @@ def gen_slave_template(slave_session, master_session, master, filename, dflt_mas
     logging.info("About to wget master CA cert: [" + wget_cmd + "]")
     try:
         os.system(wget_cmd)
-    except Exception, e:
+    except Exception as e:
         logging.error("...FAILED - do you have permission to write to /usr/share/rhn?")
         logging.exception()
 
@@ -401,7 +410,7 @@ def gen_slave_template(slave_session, master_session, master, filename, dflt_mas
         configfile = open(filename, 'w+')
         slave_setup.write(configfile)
         configfile.close()
-    except IOError, e:
+    except IOError as e:
         logging.error("FAILED to write to slave template [" + filename + "]")
         sys.exit(1)
 
@@ -441,7 +450,7 @@ def gen_master_template(master_session, slave, filename):
         mfile = open(filename, 'w+')
         master_setup.write(mfile)
         mfile.close()
-    except IOError, e:
+    except IOError as e:
         logging.error("FAILED to write to master template [" + mfile + "]")
         sys.exit(1)
 
@@ -465,7 +474,7 @@ def apply_slave_template(slave_session, slave_setup_filename):
     for fqdn in fqdns:
         try:
             master = client.sync.master.getMasterByLabel(key, fqdn)
-        except Exception, e:
+        except Exception as e:
             master = client.sync.master.create(key, fqdn)
 
         master_orgs = []
@@ -546,7 +555,7 @@ def apply_master_template(master_session, master_setup_filename):
     for fqdn in fqdns:
         try:
             slave = client.sync.slave.getSlaveByName(key, fqdn)
-        except Exception, e:
+        except Exception as e:
             slave = client.sync.slave.create(key, fqdn, True, True)
 
         isEnabled = True
@@ -606,7 +615,11 @@ def describe_master_template(master_setup_filename):
 
 def ask(msg, password=False):
     msg += ": "
-    return password and getpass.getpass(msg) or raw_input(msg)
+    if six.PY2:
+        inputfn = raw_input
+    else:
+        inputfn = input
+    return password and getpass.getpass(msg) or inputfn(msg)
 
 
 def fail(msg):

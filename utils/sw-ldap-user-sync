@@ -8,10 +8,14 @@
 ## author: Christian Berendt <berendt@b1-systems.de>, 2011.
 
 import logging
-import xmlrpclib
 import ldap
 import yaml
 import sys
+
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 
 logging.basicConfig(
     filename = "/var/log/sw-ldap-user-sync.log",
@@ -26,7 +30,7 @@ try:
     directory = ldap.initialize(settings["directory"]["url"])
     directory.simple_bind_s(settings["directory"]["user"],
                         settings["directory"]["password"])
-except Exception, e:
+except Exception as e:
     logging.error("unable to connect to LDAP server: %s" % e)
     sys.exit(1)
 
@@ -34,7 +38,7 @@ try:
     spacewalk = xmlrpclib.Server(settings["spacewalk"]["url"], verbose=0)
     spacewalk_token = spacewalk.auth.login(settings["spacewalk"]["user"],
         settings["spacewalk"]["password"])
-except Exception, e:
+except Exception as e:
     logging.error("unable to connect to spacewalk server: %s" % e)
     sys.exit(1)
 
@@ -43,7 +47,7 @@ attrs = ['member']
 
 try:
     result = spacewalk.user.list_users(spacewalk_token)
-except Exception, e:
+except Exception as e:
     logging.error("unable to fetch user accounts from spacewalk server: %s" % e)
     sys.exit(1)
 
@@ -55,7 +59,7 @@ for user in result:
 
 try:
     (dn, data) = directory.search_s(settings["directory"]["group"], ldap.SCOPE_SUBTREE, filter, attrs)[0]
-except Exception, e:
+except Exception as e:
     logging.error("unable to fetch user entries from LDAP group: %s" % e)
     sys.exit(1)
 
@@ -65,7 +69,7 @@ for uid in data['member']:
 
     try:
         (userdn, userdata) = directory.search_s(uid, ldap.SCOPE_SUBTREE, filter, attrs)[0]
-        if users.has_key(userdata["uid"][0]):
+        if userdata["uid"][0] in users:
             del users[userdata["uid"][0]]
         else:
             logging.info("creating new user account for ldap user %s" % userdata["uid"][0])
@@ -73,18 +77,18 @@ for uid in data['member']:
             try:
                 spacewalk.user.create(spacewalk_token, userdata["uid"][0], "",
                   userdata["givenName"][0], userdata["sn"][0], userdata["mail"][0], 1)
-            except Exception, e:
+            except Exception as e:
                 logging.error("unable to create new user account %s on spacewalk server: %s" % (userdata["uid"], e))
-    except Exception, e:
+    except Exception as e:
         logging.error("unable to fetch user details for user %s from LDAP server: %s" % (uid, e))
 
 
-for user in users.keys():
+for user in list(users.keys()):
     logging.info("deleting user %s" % user)
 
     try:
         spacewalk.user.delete(spacewalk_token, user)
-    except Exception, e:
+    except Exception as e:
         logging.error("unable to remove user account %s from spacewalk: %s"
                 % (user, e))
 

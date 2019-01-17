@@ -71,18 +71,18 @@ def setupLogging(opt):
 def setupOutputDir(options):
     if not os.path.isdir(options.archive_dir):
         os.mkdir(options.archive_dir)
-        os.chmod(options.archive_dir, 0777)
+        os.chmod(options.archive_dir, 0o777)
 
     arch_root = '%s/%s' % (options.archive_dir, ARCHIVE_ROOT)
     if not os.path.isdir(arch_root):
         os.mkdir(arch_root)
-        os.chmod(arch_root, 0777)
+        os.chmod(arch_root, 0o777)
 
     # db-dir needs to be writeable by postgres
     db_path = '%s/%s' % (arch_root, DB_DIR)
     if not os.path.isdir(db_path):
         os.mkdir(db_path)
-        os.chmod(db_path, 0777)
+        os.chmod(db_path, 0o777)
 
     report_path = '%s/%s' % (arch_root, REPORTS_DIR)
     if not os.path.isdir(report_path):
@@ -139,7 +139,7 @@ def cleanup(options):
 
 def checkSuperUser():
     if os.geteuid() != 0:
-        print "You must be root to run this!"
+        print("You must be root to run this!")
         sys.exit(1)
 
 if __name__ == '__main__':

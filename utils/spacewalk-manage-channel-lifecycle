@@ -26,10 +26,18 @@ import os
 import re
 import sys
 import time
-import xmlrpclib
 from optparse import Option, OptionParser
-import ConfigParser
 from socket import gethostname
+
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
+
+try:
+    import ConfigParser
+except ImportError:
+    import configparser as ConfigParser
 
 
 class Config(object):
@@ -74,7 +82,7 @@ class Config(object):
         self._cfg.read(self.path)
 
     def sections(self):
-        return filter(lambda i: i != self.default_section, self._cfg.sections())
+        return [i for i in self._cfg.sections() if i != self.default_section]
 
 
 CONF_DIR = os.path.expanduser("~/.spacewalk-manage-channel-lifecycle")
@@ -94,7 +102,7 @@ def setup_config(config):
     if not os.path.exists(CONF_DIR):
         logging.debug("Creating directory: %s" % CONF_DIR)
         try:
-            os.mkdir(CONF_DIR, 0700)
+            os.mkdir(CONF_DIR, 0o700)
         except IOError:
             logging.error("Unable to create %s" % CONF_DIR)
             sys.exit(1)
@@ -115,7 +123,11 @@ def ask(msg, password=False):
     msg += ": "
     if password:
         return getpass.getpass(msg)
-    return raw_input(msg)
+    if six.PY2:
+        inputfn = raw_input
+    else:
+        inputfn = input
+    return inputfn(msg)
 
 
 def parse_enumerated(data):
@@ -124,7 +136,7 @@ def parse_enumerated(data):
     """
     items = []
     if data:
-        items = filter(None, map(lambda i: i.strip(), data.split(",")))
+        items = [_f for _f in [i.strip() for i in data.split(",")] if _f]
 
     return items
 
@@ -151,35 +163,35 @@ def print_channel_tree():
     # determine parent channels so we can make a pretty tree for the user
     for channel in all_channels:
         if channel.get('parent_label'):
-            if not tree.has_key(channel.get('parent_label')):
+            if channel.get('parent_label') not in tree:
                 tree[channel.get('parent_label')] = []
 
             tree[channel.get('parent_label')].append(channel.get('label'))
         else:
-            if not tree.has_key(channel.get('label')):
+            if channel.get('label') not in tree:
                 tree[channel.get('label')] = []
 
     # print the channels in a tree format
-    print "Channel tree:"
+    print("Channel tree:")
     idx = 1
-    step = len(str(len(tree.keys())))
+    step = len(str(len(list(tree.keys()))))
     for parent in sorted(tree.keys()):
         if len(tree[parent]):
-            print
-        print " %s. %s" % (str(idx).rjust(step), parent)
+            print()
+        print(" %s. %s" % (str(idx).rjust(step), parent))
         idx += 1
         if len(tree[parent]):
             for child in sorted(tree[parent]):
-                print (' ' * step) + '     \\__ %s' % child
-            print
-    print
+                print((' ' * step) + '     \\__ %s' % child)
+            print()
+    print()
 
 
 def channel_exists(channel, quiet=False):
     try:
         client.channel.software.getDetails(session, channel)
         return True
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
         if not quiet:
@@ -215,7 +227,7 @@ def merge_channels(source_label, dest_label):
                                                              dest_label)
 
             logging.info('Added %i packages' % len(packages))
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
             logging.error('Failed to merge packages')
@@ -236,7 +248,7 @@ def merge_channels(source_label, dest_label):
                                                              dest_label)
 
                 logging.info('Added %i errata' % len(errata))
-            except xmlrpclib.Fault, e:
+            except xmlrpclib.Fault as e:
                 if options.debug:
                     logging.exception(e)
                 logging.error('Failed to merge errata')
@@ -246,7 +258,7 @@ def merge_channels(source_label, dest_label):
                 else:
                     sys.exit(1)
 
-    print
+    print()
 
 
 def clone_channel(source_label, details):
@@ -263,7 +275,7 @@ def clone_channel(source_label, details):
     if not options.dry_run:
         try:
             client.channel.software.clone(session, source_label, details, False)
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
             logging.error('Failed to clone channel')
@@ -286,7 +298,7 @@ def clear_channel(label):
                                                  label,
                                                  errata_names,
                                                  False)
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             if options.debug:
                 logging.exception(e)
             logging.warning('Failed to clear errata from %s' % label)
@@ -417,22 +429,22 @@ options.workflow = options.workflow or Config.SECTION_GENERAL
 config = Config(USER_CONF_FILE)
 try:
     setup_config(config)
-except ConfigParser.ParsingError, ex:
+except ConfigParser.ParsingError as ex:
     logging.error("Unable to process configuration:\n" + str(ex))
     sys.exit(1)
 
 if options.list_workflows:
     workflows = config.sections()
     if not workflows:
-        print "There are no additinal configured workflows except default."
+        print("There are no additinal configured workflows except default.")
         sys.exit(0)
 
-    print "Configured additional workflows:"
+    print("Configured additional workflows:")
     idx = 1
     for workflow in workflows:
-        print "  %s. %s" % (idx, workflow)
+        print("  %s. %s" % (idx, workflow))
         idx += 1
-    print
+    print()
     sys.exit(0)
 
 # sanity check
@@ -477,7 +489,7 @@ if os.path.exists(SESSION_CACHE):
         fh = open(SESSION_CACHE, 'r')
         session = fh.readline()
         fh.close()
-    except IOError, e:
+    except IOError as e:
         if options.debug:
             logging.exception(e)
         logging.debug('Failed to read session cache')
@@ -485,7 +497,7 @@ if os.path.exists(SESSION_CACHE):
     # validate the session
     try:
         client.channel.listMyChannels(session)
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
         logging.warning('Existing session is invalid')
@@ -509,7 +521,7 @@ if not session:
     # login to the server
     try:
         session = client.auth.login(options.username, options.password)
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         if options.debug:
             logging.exception(e)
         logging.error('Failed to log into %s' % options.server)
@@ -520,7 +532,7 @@ if not session:
         fh = open(SESSION_CACHE, 'w')
         fh.write(session)
         fh.close()
-    except IOError, e:
+    except IOError as e:
         if options.debug:
             logging.exception(e)
         logging.warning('Failed to write session cache')
@@ -529,7 +541,7 @@ if not session:
 try:
     all_channels = client.channel.listSoftwareChannels(session)
     all_channel_labels = [c.get('label') for c in all_channels]
-except xmlrpclib.Fault, e:
+except xmlrpclib.Fault as e:
     if options.debug:
         logging.exception(e)
     logging.error('Could not retrieve the list of software channels')
@@ -551,7 +563,7 @@ if not channel_exists(options.channel):
 if options.dry_run:
     logging.info('DRY RUN - No changes are being made to the channels')
     time.sleep(2)
-    print
+    print()
 
 # merge packages/errata if the destination channel label already exists,
 # otherwise clone it from the source channel

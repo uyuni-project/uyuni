@@ -22,10 +22,15 @@ import sys
 import datetime
 import getpass
 import os
-import StringIO
 from optparse import OptionParser
 import simplejson as json
 from socket import gethostname
+
+try:
+    # python 2
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 _LIBPATH = "/usr/share/rhn"
 if _LIBPATH not in sys.path:
@@ -90,7 +95,7 @@ def merge_config(options):
 
     try:
         config_file = open(options.config).read()
-        config = json.load(StringIO.StringIO(config_file))
+        config = json.load(StringIO(config_file))
     except:
         raise UserError("Configuration file is invalid, please check syntax.")
 
@@ -101,7 +106,7 @@ def merge_config(options):
                  "security_only", "use_update_date", "no_errata_sync",
                  "errata", 'dry_run']
     for key in overwrite:
-        if config.has_key(key) and not getattr(options, key):
+        if key in config and not getattr(options, key):
             setattr(options, key, config[key])
 
     # If from the command line there is only one channel tree. Transform single
@@ -111,7 +116,7 @@ def merge_config(options):
         options.channels = [options.channels]
 
     for channel_dict in options.channels:
-        for key in channel_dict.keys():
+        for key in list(channel_dict.keys()):
             # handle the just-the-lable case
             if type(channel_dict[key]) == type(""):
                 channel_dict[key] = [channel_dict[key]]
@@ -130,7 +135,7 @@ def validate_list_dict(name, pkg_dict):
     """
     if type(pkg_dict) != type({}):
         raise UserError("%s  is not formatted correctly" % name)
-    for key, value in pkg_dict.items():
+    for key, value in list(pkg_dict.items()):
         if type(value) != type([]):
             raise UserError("Channel %s in %s packages not formatted correctly" % (key, name))
 
@@ -298,7 +303,7 @@ def parse_args():
                                 + "five arguments")
 
     if options.sample:
-        print SAMPLE_CONFIG
+        print(SAMPLE_CONFIG)
         sys.exit(0)
 
     if options.config and options.channels:
@@ -351,7 +356,7 @@ def parse_args():
     for option in [getattr(options, 'blacklist', None),
                    getattr(options, 'removelist', None)]:
         if option:
-            for key in option.keys()[:]:
+            for key in list(option.keys())[:]:
                 if key != key.strip():
                     option[key.strip()] = option[key]
                     del option[key]
@@ -361,7 +366,7 @@ def parse_args():
                     my_list.append(element.strip())
                 option[key] = my_list
     for channel_tree in options.channels:
-        for channel in channel_tree.keys()[:]:
+        for channel in list(channel_tree.keys())[:]:
             if channel != channel.strip():
                 channel_tree[channel.strip()] = channel_tree[channel]
                 del channel_tree[channel]
@@ -373,7 +378,7 @@ def parse_args():
                 channel_tree[channel] = my_list
             elif type(channel_tree[channel]) == dict:
                 my_dict = {}
-                for key in channel_tree[channel].keys():
+                for key in list(channel_tree[channel].keys()):
                     if type(channel_tree[channel][key]) == str:
                         my_dict[key.strip()] = channel_tree[channel][key].strip()
                     else:
@@ -419,7 +424,7 @@ def main():
         return cloneByDate.main(args)
     except KeyboardInterrupt:
         systemExit(0, "\nUser interrupted process.")
-    except UserError, error:
+    except UserError as error:
         systemExit(-1, "\n%s" % error)
     return 0
 

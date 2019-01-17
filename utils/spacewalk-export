@@ -125,7 +125,7 @@ def setupLogging(opt):
 
 def listSupported():
     logging.info('Currently-supported entities include:')
-    for s in SUPPORTED_ENTITIES.keys():
+    for s in list(SUPPORTED_ENTITIES.keys()):
         logging.info('%20s : %s' % (s, SUPPORTED_ENTITIES[s]))
 
     return
@@ -135,14 +135,14 @@ def setupEntities(options):
     entities = {}
     doAll = options.entities == 'all'
 
-    for s in SUPPORTED_ENTITIES.keys():
+    for s in list(SUPPORTED_ENTITIES.keys()):
         entities[s] = doAll
 
     if doAll:
         return entities
 
     for e in split(options.entities, ','):
-        if e in entities.keys():
+        if e in list(entities.keys()):
             entities[e] = True
         else:
             logging.error('ERROR: unsupported entity ' + e + ', skipping...')
@@ -152,9 +152,9 @@ def setupEntities(options):
 
 def setupOutputDir(options):
     if not os.path.isdir(options.export_dir):
-        os.mkdir(options.export_dir, 0700)
+        os.mkdir(options.export_dir, 0o700)
     if not os.path.isdir(options.export_dir + '/' + REPORTS_DIR):
-        os.mkdir(options.export_dir + '/' + REPORTS_DIR, 0700)
+        os.mkdir(options.export_dir + '/' + REPORTS_DIR, 0o700)
 
 # Did we get an orgs-list? If so, return an array of --where entries
 
@@ -208,7 +208,7 @@ def channelsDump(options):
 
     channel_export_dir = options.export_dir + '/' + REPORTS_DIR + '/' + 'CHANNELS'
     if not os.path.isdir(channel_export_dir):
-        os.mkdir(channel_export_dir, 0700)
+        os.mkdir(channel_export_dir, 0o700)
     _my_call(['/usr/bin/spacewalk-export-channels', '-d', channel_export_dir, '-f', 'FORCE'] + extra_args)
     return
 
@@ -318,7 +318,7 @@ def cleanup(options):
 
 def checkSuperUser():
     if os.geteuid() != 0:
-        print "You must be root to run this!"
+        print("You must be root to run this!")
         sys.exit(1)
 
 
@@ -341,7 +341,7 @@ if __name__ == '__main__':
     entities = setupEntities(options)
     setupOutputDir(options)
 
-    for entity in entities.keys():
+    for entity in list(entities.keys()):
         if (entities[entity]):
             logging.debug('DUMPING ' + entity)
             # dump-function name is <entity>Dump(options)
