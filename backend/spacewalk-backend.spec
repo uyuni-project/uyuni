@@ -133,7 +133,6 @@ BuildRequires:  rpm-python
 BuildRequires:  %{python_prefix}-debian
 
 BuildRequires:  %{m2crypto}
-BuildRequires:  yum
 %endif
 Requires(pre): %{apache_pkg}
 Requires:       %{apache_pkg}
