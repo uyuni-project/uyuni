@@ -1,4 +1,4 @@
-#/!bin/bash
+#!/bin/bash
 
 FAST_UPGRADE=""
 DIR=/var/lib/pgsql
