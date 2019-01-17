@@ -84,7 +84,7 @@ public class BaseSetHelper {
             // itself will have the selected servers cleared
             updateSet(set, listName);
 
-            String[] selected = ListTagHelper.getSelected(listName, request);
+            String[] selected = (String[]) set.toArray(new String[set.size()]);
 
             RequestContext context = new RequestContext(request);
             User user = context.getCurrentUser();
