@@ -61,17 +61,30 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * Looks up a ContentProject by label
+     * Remove a Content Project
+     *
+     * @param contentProject - the Content Project to remove
+     * @return the number of object affected
+     */
+    public static int remove(ContentProject contentProject) {
+        return INSTANCE.removeObject(contentProject);
+    }
+
+    /**
+     * Looks up a ContentProject by label and organization
      *
      * @param label - the label
-     * @return ContentProject with given label
+     * @param org - the org
+     * @return Optional with ContentProject with given label
      */
-    public static ContentProject lookupContentProjectByLabel(String label) {
+    public static Optional<ContentProject> lookupContentProjectByLabelAndOrg(String label, Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ContentProject> criteria = builder.createQuery(ContentProject.class);
         Root<ContentProject> root = criteria.from(ContentProject.class);
-        criteria.where(builder.equal(root.get("label"), label));
-        return getSession().createQuery(criteria).getSingleResult();
+        criteria.where(builder.and(
+                builder.equal(root.get("label"), label),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**
