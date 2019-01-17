@@ -30,8 +30,9 @@ class ZyppoSync:
         self._conf = salt.config.minion_config(cfg_path)
         self._conf["file_client"] = "local"
         self._conf["server_id_use_crc"] = "Adler32"
-        if root is not None:
-            self._init_root(root)
+        self._root = root
+        if self.root is not None:
+            self._init_root(self.root)
         self._caller = salt.client.Caller(mopts=self._conf)
 
     def _init_root(self, root:str) -> None:
@@ -49,6 +50,12 @@ class ZyppoSync:
                 sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
                 raise
             self._conf["zypper_root"] = root
+
+    def _md_exists(self, tag:str) -> bool:
+        pass
+
+    def _retrieve_md_path(self, tag:str) -> str:
+        pass
 
     def _get_call(self, key:str) -> types.FunctionType:
         """
@@ -92,7 +99,8 @@ class ContentSource:
 
         # Add this repo to the Zypper env
         reponame = self.name.replace(" ", "-")
-        root = os.path.join("/var/cache/rhn/reposync", str(org or "1"), reponame)
+        # SUSE vendor repositories belongs to org = NULL
+        root = os.path.join("/var/cache/rhn/reposync", str(org or "NULL"), reponame)
         self.repo = ZyppoSync(root=root)
         self.repo.mod_repo(name, url=url, gpgautoimport=True, gpgcheck=False,
                            alias=channel_label or reponame)
@@ -113,7 +121,7 @@ class ContentSource:
         """
         return "sha1", 0
 
-    def get_products(self) -> dict:
+    def get_products_alt(self) -> dict:
         """
         Return products of SLE.
 
@@ -149,12 +157,6 @@ class ContentSource:
 
         return data
 
-    def _md_exists(self, tag):
-        pass
-
-    def _retrieve_md_path(self, tag):
-        pass
-
     def _fix_encoding(text):
         if text is None:
             return None
@@ -170,8 +172,8 @@ class ContentSource:
         :returns: list
         """
         susedata = []
-        if self._md_exists('susedata'):
-            data_path = self._retrieve_md_path('susedata')
+        if self.repo._md_exists('susedata'):
+            data_path = self.repo._retrieve_md_path('susedata')
             infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
             for package in etree.parse(infile).getroot():
                 d = {}
@@ -204,8 +206,8 @@ class ContentSource:
         :returns: ?
         """
         products = []
-        if self._md_exists('products'):
-            data_path = self._retrieve_md_path('products')
+        if self.repo._md_exists('products'):
+            data_path = self.repo._retrieve_md_path('products')
             infile = prod_path.endswith('.gz') and gzip.open(prod_path) or open(prod_path, 'rt')
             for product in etree.parse(infile).getroot():
                 p = {}
