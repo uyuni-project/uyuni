@@ -1,3 +1,4 @@
+- Add Content Project CRUD operations and expose them via XMLRPC
 - Fix parsing of deb package version string on download (bsc#1130040)
 - Generate solv file when repository metadata is created
 - Fix errata_details to return details correctly (bsc#1128228)
