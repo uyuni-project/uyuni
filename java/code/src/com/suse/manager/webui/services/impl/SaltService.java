@@ -113,7 +113,7 @@ import java.util.stream.Stream;
  */
 public class SaltService {
 
-    private static final Optional<Batch> defaultBatch = Optional.of(Batch.asAmount(100).delayed(1.0));
+    private final Optional<Batch> defaultBatch;
 
     /**
      * Singleton instance of this class
@@ -187,6 +187,9 @@ public class SaltService {
 
         SALT_CLIENT = new SaltClient(SALT_MASTER_URI, new HttpAsyncClientImpl(asyncHttpClient));
         saltSSHService = new SaltSSHService(SALT_CLIENT, SaltActionChainGeneratorService.INSTANCE);
+        defaultBatch = Optional.of(Batch.asAmount(ConfigDefaults.get().getSaltBatchSize())
+                .delayed(ConfigDefaults.get().getSaltBatchDelay())
+        );
     }
 
     /**
