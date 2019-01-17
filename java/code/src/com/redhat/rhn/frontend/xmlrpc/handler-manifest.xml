@@ -9,6 +9,7 @@
   <template name="channel.org" classname="com.redhat.rhn.frontend.xmlrpc.channel.org.ChannelOrgHandler"/>
   <template name="channel.software" classname="com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler"/>
   <template name="configchannel" classname="com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler"/>
+  <template name="contentmanagement" classname="com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler"/>
   <template name="distchannel" classname="com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler" />
   <template name="errata" classname="com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler" />
   <template name="formula" classname="com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler" />
