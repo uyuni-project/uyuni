@@ -273,6 +273,22 @@ public class ConfigDefaults {
     public static final String SALT_EVENT_THREAD_POOL_SIZE = "java.salt_event_thread_pool_size";
 
     /**
+     * Upper limit to the number of minions that execute a single Action concurrently. Lowering this value
+     * prevents thundering-herd effects from Action execution but can decrease overall performance as the
+     * overall level of parallelization is reduced. This is translated to the `--batch-size` Salt option.
+     */
+    public static final String SALT_BATCH_SIZE = "java.salt_batch_size";
+
+    /**
+     * Delay, in seconds, before a new batch is scheduled. After the first batch is scheduled with a size up to
+     * java.salt_batch_size, subsequent batches will contain a smaller number of minions: the exact count will be
+     * equal to the number of minions completing before java.salt_batch_delay expires.
+     * Higher values will typically result in bigger batches with a lower CPU and I/O load on the Salt Master, while
+     * smaller values will typically result in smaller batches with higher CPU and I/O load on the Salt Master.
+     */
+    public static final String SALT_BATCH_DELAY = "java.salt_batch_delay";
+
+    /**
      * Maximum number of events processed before COMMITTing to the database. Raising this to any value above 1 will
      * decrease reliability, as failures will result in the loss of more events, but can improve performance in
      * high-scale scenarios.
@@ -834,6 +850,20 @@ public class ConfigDefaults {
      */
     public int getSaltPresencePingTimeout() {
         return Config.get().getInt(SALT_PRESENCE_PING_TIMEOUT, 4);
+    }
+
+    /**
+     * @return default batch size for salt jobs execution in batch mode
+     */
+    public int getSaltBatchSize() {
+        return Config.get().getInt(SALT_BATCH_SIZE, 100);
+    }
+
+    /**
+     * @return default batch delay for salt jobs execution in batch mode
+     */
+    public double getSaltBatchDelay() {
+        return Config.get().getFloat(SALT_BATCH_DELAY, 1);
     }
 
     /**
