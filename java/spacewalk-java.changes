@@ -1,3 +1,4 @@
+- Fix "Add Selected to SSM" on System Groups -> systems page (bsc#1121856)
 - Disable notification types with 'java.notifications_type_disabled' in rhn.conf (bsc#1111910)
 - XMLRPC API: Include init.sls in channel file list (bsc#1111191)
 - Fix the config channels assignment via SSM (bsc#1117759)
