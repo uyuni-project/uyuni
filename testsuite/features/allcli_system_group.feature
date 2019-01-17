@@ -57,6 +57,14 @@ Feature: Create a group
     Then I should see a "Selected Systems List" text
     And I should see "sle-client" as link
     And I should see "sle-minion" as link
+
+  Scenario: Check formula page is rendered for the system group
+    Given I am on the groups page
+    When I follow "new-systems-group"
+    And I follow "Formulas"
+    Then I should see a "Choose formulas:" text
+    And I should see a "General System Configuration" text
+    And the "locale" formula should be unchecked
   
   Scenario: Remove SLE client from new group
     Given I am on the Systems overview page of this "sle-client"
