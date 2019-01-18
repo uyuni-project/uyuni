@@ -171,12 +171,14 @@ public class ContentProjectFactory extends HibernateFactory {
         ContentProject contentProject = newEnv.getContentProject();
 
         ContentEnvironment oldFirstEnvironment = contentProject.getFirstEnvironment();
-        newEnv.setNextEnvironment(oldFirstEnvironment);
-        oldFirstEnvironment.setPrevEnvironment(newEnv);
+        if (oldFirstEnvironment != null) {
+            newEnv.setNextEnvironment(oldFirstEnvironment);
+            oldFirstEnvironment.setPrevEnvironment(newEnv);
+            save(oldFirstEnvironment);
+        }
 
         contentProject.setFirstEnvironment(newEnv);
         save(contentProject);
-        save(oldFirstEnvironment);
         save(newEnv);
     }
 
