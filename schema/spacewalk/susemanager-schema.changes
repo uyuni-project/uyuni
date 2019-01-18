@@ -1,3 +1,5 @@
+- Remove unused 'remove_servergroup_perm' stored procedure (bsc#1111810)
+
 -------------------------------------------------------------------
 Fri Jan 18 13:00:05 CET 2019 - jgonzalez@suse.com
 
