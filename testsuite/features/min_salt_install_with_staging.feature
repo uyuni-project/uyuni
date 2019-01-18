@@ -56,7 +56,7 @@ Feature: Install a package on the minion with staging enabled
     And I pick 2 minutes from now as schedule time
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until the package "orion-dummy-1.1-1.1.x86_64" has been cached on this "sle-minion"
+    And I wait until the package "orion-dummy-1.1-1.1" has been cached on this "sle-minion"
     And I wait for "orion-dummy-1.1-1.1" to be installed on this "sle-minion"
     Then I remove package "orion-dummy-1.1-1.1" from this "sle-minion"
 
