@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jan 18 11:43:37 CET 2019 - jgonzalez@suse.com
+
+- version 3.2.19-1
 - Allow bootstrapping minions with a pending minion key being present (bsc#1119727)
 - use a Salt engine to process return results (bsc#1099988)
 
