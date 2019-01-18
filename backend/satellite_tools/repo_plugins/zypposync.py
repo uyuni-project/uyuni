@@ -4,6 +4,7 @@ Reposync via Salt library.
 """
 from __future__ import absolute_import, unicode_literals
 
+import glob
 import gzip
 import os
 import sys
@@ -12,6 +13,10 @@ import xml.etree.ElementTree as etree
 
 import salt.client
 import salt.config
+
+from spacewalk.common import rhnLog
+
+ZYPP_RAW_CACHE_PATH = "var/cache/zypp/raw"
 
 
 class ZyppoSync:
@@ -50,12 +55,6 @@ class ZyppoSync:
                 sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
                 raise
             self._conf["zypper_root"] = root
-
-    def _md_exists(self, tag:str) -> bool:
-        pass
-
-    def _retrieve_md_path(self, tag:str) -> str:
-        pass
 
     def _get_call(self, key:str) -> types.FunctionType:
         """
@@ -112,6 +111,23 @@ class ContentSource:
         # keep authtokens for mirroring
         _scheme, _netloc, _path, query, _fragid = urlparse.urlsplit(url)
         self.authtoken = query if query else None
+
+    def error_msg(self, message):
+        rhnLog.log_clean(0, message)
+        sys.stderr.write(str(message) + "\n")
+
+    def _md_exists(self, tag:str) -> bool:
+        return bool(self._retrieve_md_path(tag))
+
+    def _retrieve_md_path(self, tag:str) -> str:
+        #TODO: SHould this return xml.gz files only or also uncompressed ?
+        _md_files = glob.glob(self.get_repodata_path() + "/*{}.xml.gz".format(tag))
+        if _md_files:
+            return _md_files[0]
+        return None
+
+    def get_repodata_path(self) -> str:
+        return os.path.join(self.root, ZYPP_RAW_CACHE_PATH, self.name, "repodata")
 
     def get_md_checksum_type(self) -> (str, int):
         """
@@ -172,8 +188,8 @@ class ContentSource:
         :returns: list
         """
         susedata = []
-        if self.repo._md_exists('susedata'):
-            data_path = self.repo._retrieve_md_path('susedata')
+        if self._md_exists('susedata'):
+            data_path = self._retrieve_md_path('susedata')
             infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
             for package in etree.parse(infile).getroot():
                 d = {}
@@ -206,9 +222,9 @@ class ContentSource:
         :returns: ?
         """
         products = []
-        if self.repo._md_exists('products'):
-            data_path = self.repo._retrieve_md_path('products')
-            infile = prod_path.endswith('.gz') and gzip.open(prod_path) or open(prod_path, 'rt')
+        if self._md_exists('products'):
+            data_path = self._retrieve_md_path('products')
+            infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
             for product in etree.parse(infile).getroot():
                 p = {}
                 p['name'] = product.find('name').text
