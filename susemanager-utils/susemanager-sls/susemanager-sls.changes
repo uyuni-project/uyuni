@@ -1,3 +1,5 @@
+- Prevent excessive DEBUG logging from mgr_events engine
+
 -------------------------------------------------------------------
 Wed Jan 16 12:27:07 CET 2019 - jgonzalez@suse.com
 
