@@ -22,8 +22,12 @@ After:
 
 ## Links
 
-Related issues:
- - #123
+Fixes #
+
+Relevant branches (GitHub automatic links expected below):
+ - Manager-3.1
+ - Manager-3.2
+ - Uyuni
 
 - [ ] **DONE**
 
