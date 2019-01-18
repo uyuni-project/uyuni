@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentManager;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -26,6 +27,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -133,7 +135,134 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.returntype int - the number of removed objects
      */
-    public int removeContentProject(User loggedInUser, String label) {
+    public int removeProject(User loggedInUser, String label) {
         return ContentManager.removeContentProject(label, loggedInUser);
+    }
+
+    /**
+     * List Environments in a Content Project with the respect to their ordering
+     *
+     * @param loggedInUser - the logged in user
+     * @param contentProjectLabel - the Content Project label
+     * @return the List of Content Environments with respect to their ordering
+     *
+     * @xmlrpc.doc List Environments in a Content Project with the respect to their ordering
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "contentProjectLabel")
+     * @xmlrpc.returntype
+     * #array()
+     * $ContentEnvironmentSerializer
+     * #array_end()
+     */
+    public List<ContentEnvironment> listProjectEnvironments(User loggedInUser, String contentProjectLabel) {
+        try {
+            return ContentManager.listContentProjectEnvironments(contentProjectLabel, loggedInUser);
+        }
+        catch (ContentManagementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        }
+    }
+
+    /**
+     * Look up Content Environment based on Content Project and Content Environment label
+     *
+     * @param loggedInUser - the logged in user
+     * @param contentProjectLabel - the Content Project label
+     * @param environmentLabel - the Content Environment label
+     * @return found Content Environment or null if no such environment exists
+     *
+     * @xmlrpc.doc Look up Content Environment based on Content Project and Content Environment label
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "contentProjectLabel")
+     * @xmlrpc.param #param("string", "environmentLabel")
+     * @xmlrpc.returntype $ContentEnvironmentSerializer
+     */
+    public ContentEnvironment lookupEnvironment(User loggedInUser, String contentProjectLabel,
+            String environmentLabel) {
+        return ContentManager.lookupContentEnvironment(environmentLabel, contentProjectLabel, loggedInUser)
+                .orElse(null);
+    }
+
+    /**
+     * Create a Content Environment and appends it behind given Content Environment
+     *
+     * @param loggedInUser - the logged in user
+     * @param contentProjectLabel - the Content Project label
+     * @param predecessorLabel - the Predecessor label
+     * @param label - the Content Environment Label
+     * @param name - the Content Environment name
+     * @param description - the Content Environment description
+     * @return the created Content Environment
+     *
+     * @xmlrpc.doc Create a Content Environment and appends it behind given Content Environment
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "contentProjectLabel")
+     * @xmlrpc.param #param("string", "predecessorLabel")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.param #param("string", "name")
+     * @xmlrpc.param #param("string", "description")
+     * @xmlrpc.returntype $ContentEnvironmentSerializer
+     */
+    public ContentEnvironment createEnvironment(User loggedInUser, String contentProjectLabel,
+            String predecessorLabel, String label, String name, String description) {
+        try {
+            return ContentManager.createContentEnvironment(contentProjectLabel, of(predecessorLabel), label, name,
+                    description, loggedInUser);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementException(e.getMessage());
+        }
+    }
+
+    /**
+     * Update Content Environment
+     *
+     * @param loggedInUser - the logged in user
+     * @param projectLabel - the Content Project label
+     * @param environmentLabel - the Environment label
+     * @param props - the map with the Environment properties
+     * @return the updated Environment
+     *
+     * @xmlrpc.doc Update Content Environment with given label
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "project label")
+     * @xmlrpc.param #param("string", "environment label")
+     * @xmlrpc.param
+     *  #struct("data")
+     *      #prop_desc("string", "name", "Content Environment name")
+     *      #prop_desc("string", "description", "Content Environment description")
+     *  #struct_end()
+     * @xmlrpc.returntype $ContentEnvironmentSerializer
+     */
+    public ContentEnvironment updateEnvironment(User loggedInUser, String projectLabel, String environmentLabel,
+            Map<String, Object> props) {
+        try {
+            return ContentManager.updateContentEnvironment(environmentLabel,
+                    projectLabel,
+                    ofNullable((String) props.get("name")),
+                    ofNullable((String) props.get("description")),
+                    loggedInUser);
+        }
+        catch (ContentManagementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove a Content Environment
+     *
+     * @param loggedInUser - the logged in user
+     * @param environmentLabel - the Content Environment label
+     * @param contentProjectLabel - the Content Project label
+     * @return the number of removed objects
+     *
+     * @xmlrpc.doc Remove a Content Environment
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "environmentLabel")
+     * @xmlrpc.param #param("string", "contentProjectLabel")
+     * @xmlrpc.returntype int - the number of removed objects
+     */
+    public int removeEnvironment(User loggedInUser, String environmentLabel, String contentProjectLabel) {
+        return ContentManager.removeContentEnvironment(environmentLabel, contentProjectLabel, loggedInUser);
     }
 }
