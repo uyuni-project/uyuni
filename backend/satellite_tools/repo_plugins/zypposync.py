@@ -16,7 +16,10 @@ import salt.config
 
 from spacewalk.common import rhnLog
 
-ZYPP_RAW_CACHE_PATH = "var/cache/zypp/raw"
+# namespace prefix to parse patches.xml file
+PATCHES = '{http://novell.com/package/metadata/suse/patches}'
+
+ZYPP_RAW_CACHE_PATH = 'var/cache/zypp/raw'
 
 
 class ZyppoSync:
@@ -463,6 +466,7 @@ class ContentSource:
             return 0
         else:
             return -1
+
     @staticmethod
     def _filter_packages(packages, filters):
         """ implement include / exclude logic
