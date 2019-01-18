@@ -299,42 +299,6 @@ class ContentSource:
         """
         return "sha1", 0
 
-    def get_products_alt(self) -> dict:
-        """
-        Return products of SLE.
-
-        Example data:
-
-            {'arch': 'x86_64',
-             'description': 'openSUSE Leap 15.0',
-             'eol': '2019-11-30T01:00:00+01',
-             'eol_t': 1575072000,
-             'epoch': '0',
-             'flavor': 'ftp',
-             'installed': True,
-             'isbase': True,
-             'name': 'openSUSE',
-             'productline': 'Leap',
-             'release': '1',
-             'repo': '@System',
-             'shortname': 'openSUSE Leap',
-             'summary': 'openSUSE Leap 15.0',
-             'vendor': 'openSUSE',
-             'version': '15.0'}
-
-        :returns: list of mappings
-        """
-
-        data = []
-        for product in self.repo.list_products():
-            for sp_key in ["eol", "eol_t", "flavor", "installed", "isbase",
-                           "productline", "repo", "shortname"]:
-                if sp_key in product:
-                    del product[sp_key]
-            data.append(product)
-
-        return data
-
     def _fix_encoding(text):
         if text is None:
             return None
