@@ -23,9 +23,6 @@
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
 - features/core_min_salt_ssh.feature
-- features/core_centos_tradclient.feature
-- features/core_centos_salt.feature
-- features/min_centos_salt_install_package_and_patch.feature
 - features/core_centos_salt_ssh.feature
 # these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
@@ -39,7 +36,9 @@
 # IDEMPOTENT
 
 - features/allcli_reboot.feature
-- features/min_centos_salt_install_package_and_patch.feature
+- features/min_centos_salt.feature
+- features/trad_centos_client.feature
+- features/minssh_centos_salt_install_package_and_patch.feature
 - features/min_bootstrap_xmlrpc.feature
 - features/srv_susestudio_credentials.feature
 - features/minssh_bootstrap_xmlrpc.feature
