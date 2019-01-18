@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jan 18 13:00:05 CET 2019 - jgonzalez@suse.com
+
+- version 3.2.16-1
 - change SCC sync backend to adapt quicker to SCC changes and improve
   speed of syncing metadata and checking for channel dependencies
 - Performance improvements in channel management functionalities (bsc#1114877)
