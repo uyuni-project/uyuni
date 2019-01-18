@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jan 18 11:42:58 CET 2019 - jgonzalez@suse.com
+
+- version 1.0.4-1
 - Add lodash
 - Add react-hot-loader and webpack-dev-server
 - Add ESLint to dependencies
