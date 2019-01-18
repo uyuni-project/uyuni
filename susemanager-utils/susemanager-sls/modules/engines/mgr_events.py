@@ -140,9 +140,9 @@ class Responder:
         else:
             log.debug("%s: Discarding event -> %s", __name__, tag)
 
-    def debug_log(self):
-        log.debug("%s: queue_size -> %s", __name__, self.counter)
-        log.debug("%s: tokens -> %s", __name__, self.tokens)
+    def trace_log(self):
+        log.trace("%s: queue_size -> %s", __name__, self.counter)
+        log.trace("%s: tokens -> %s", __name__, self.tokens)
 
     @tornado.gen.coroutine
     def add_event_to_queue(self, raw):
@@ -158,7 +158,7 @@ class Responder:
     def add_token(self):
         self.tokens = min(self.tokens + 1, self.config['commit_burst'])
         self.attempt_commit()
-        self.debug_log()
+        self.trace_log()
         self.event_bus.io_loop.call_later(self.config['commit_interval'], self.add_token)
 
     def attempt_commit(self):
