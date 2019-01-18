@@ -373,8 +373,52 @@ class ContentSource:
 
         :returns: list
         """
-        self.repo.list_updates()
-        return ('', [])
+        if self._md_exists('updateinfo'):
+            notices = {}
+            updates_path = self._retrieve_md_path('updateinfo')
+            infile = updates_path.endswith('.gz') and gzip.open(updates_path) or open(updates_path, 'rt')
+            for _event, elem in etree.iterparse(infile):
+                if elem.tag == 'update':
+                    un = UpdateNotice(elem)
+                    key = un['update_id']
+                    key = "%s-%s" % (un['update_id'], un['version'])
+                    if key not in notices:
+                        notices[key] = un
+            return ('updateinfo', notices)
+        elif self._md_exists('patches'):
+            patches_path = self._retrieve_md_path('patches')
+            infile = patches_path.endswith('.gz') and gzip.open(patches_path) or open(patches_path, 'rt')
+            notices = []
+            for patch in etree.parse(infile).getroot():
+                checksum_elem = patch.find(PATCHES+'checksum')
+                location_elem = patch.find(PATCHES+'location')
+                relative = location_elem.get('href')
+                checksum_type = checksum_elem.get('type')
+                checksum = checksum_elem.text
+                filename = os.path.join(self.repo.get_repodata_path(), os.path.basename(relative))
+                try:
+                    notices.append(etree.parse(filename).getroot())
+                except SyntaxError as e:
+                    self.error_msg("Could not parse %s. "
+                                   "The file is not a valid XML document. %s" %
+                                   (filename, e.msg))
+                    continue
+            return ('patches', notices)
+        else:
+            return ('', [])
+
+    def get_groups(self):
+        # groups -> /var/cache/rhn/reposync/1/CentOS_7_os_x86_64/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz
+        groups = None
+        if self._md_exists('comps'):
+            groups = self._retrieve_md_path('comps')
+        return groups
+
+    def get_modules(self):
+        modules = None
+        if self._md_exists('modules'):
+            modules = self._retrieve_md_path('modules')
+        return modules
 
     def list_packages(self, filters, latest):
         """
@@ -478,10 +522,7 @@ class ContentSource:
             elif os.path.isdir(path):
                 rmtree(path)
 
-    @staticmethod
-    def get_groups():
-        # There aren't any
-        return None
+
 
     # Get download parameters for threaded downloader
     def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None,
