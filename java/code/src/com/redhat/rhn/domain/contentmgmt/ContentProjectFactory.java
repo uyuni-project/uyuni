@@ -27,6 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import static com.suse.utils.Opt.consume;
 import static java.util.Collections.unmodifiableList;
 
 /**
@@ -133,31 +134,70 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Look up Content Environment by label and Content Project label
+     *
+     * @param label the Environment label
+     * @param project the Content Project
+     * @return matching Environment
+     */
+    public static Optional<ContentEnvironment> lookupEnvironmentByLabelAndContentProject(String label,
+            ContentProject project) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ContentEnvironment> criteria = builder.createQuery(ContentEnvironment.class);
+        Root<ContentEnvironment> root = criteria.from(ContentEnvironment.class);
+        criteria.where(builder.and(
+                builder.equal(root.get("label"), label),
+                builder.equal(root.get("contentProject"), project)));
+        return getSession().createQuery(criteria).uniqueResultOptional();
+    }
+
+    /**
      * Insert the new environment in the path after the given environment.
      * @param newEnv new environment to be inserted
-     * @param after insert after this
+     * @param predecessor optional predecessor:
+     *                    if defined -> insert after predecessor
+     *                    if empty -> insert as 1st environment in the project
      * @throws ContentManagementException if projects of given environments mismatch
      */
-    public static void insertEnvironment(ContentEnvironment newEnv, ContentEnvironment after)
+    public static void insertEnvironment(ContentEnvironment newEnv, Optional<ContentEnvironment> predecessor)
             throws ContentManagementException {
+        consume(
+                predecessor,
+                () -> insertFirstEnvironment(newEnv),
+                (pred) -> appendEnvironment(newEnv, pred));
+    }
 
-        if (!newEnv.getContentProject().equals(after.getContentProject())) {
+    private static void insertFirstEnvironment(ContentEnvironment newEnv) {
+        ContentProject contentProject = newEnv.getContentProject();
+
+        ContentEnvironment oldFirstEnvironment = contentProject.getFirstEnvironment();
+        newEnv.setNextEnvironment(oldFirstEnvironment);
+        oldFirstEnvironment.setPrevEnvironment(newEnv);
+
+        contentProject.setFirstEnvironment(newEnv);
+        save(contentProject);
+        save(oldFirstEnvironment);
+        save(newEnv);
+    }
+
+    private static void appendEnvironment(ContentEnvironment newEnv, ContentEnvironment predecessor) {
+        if (!newEnv.getContentProject().equals(predecessor.getContentProject())) {
             throw new ContentManagementException("Environments from different Projects");
         }
 
-        after.getNextEnvironmentOpt().ifPresent(successor -> {
-            after.setNextEnvironment(newEnv);
-            newEnv.setPrevEnvironment(after);
+        predecessor.getNextEnvironmentOpt().ifPresent(successor -> {
+            predecessor.setNextEnvironment(newEnv);
+            newEnv.setPrevEnvironment(predecessor);
             newEnv.setNextEnvironment(successor);
             successor.setPrevEnvironment(newEnv);
             save(successor);
         });
-        if (!after.getNextEnvironmentOpt().isPresent()) {
-            after.setNextEnvironment(newEnv);
-            newEnv.setPrevEnvironment(after);
+        if (!predecessor.getNextEnvironmentOpt().isPresent()) {
+            predecessor.setNextEnvironment(newEnv);
+            newEnv.setPrevEnvironment(predecessor);
         }
         save(newEnv);
-        save(after);
+        save(predecessor);
     }
 
     /**

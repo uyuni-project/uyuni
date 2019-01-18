@@ -42,6 +42,7 @@ import java.util.Optional;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 /**
  * Tests for {@link com.redhat.rhn.domain.contentmgmt.ContentProjectFactory}
@@ -52,21 +53,21 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
 
-        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
 
-        ContentEnvironment envtest = new ContentEnvironment("test", "Test", cp);
+        ContentEnvironment envtest = new ContentEnvironment("test", "Test", null, cp);
         ContentProjectFactory.save(envtest);
-        ContentProjectFactory.insertEnvironment(envtest, envdev);
+        ContentProjectFactory.insertEnvironment(envtest, of(envdev));
 
-        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", cp);
+        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", null, cp);
         ContentProjectFactory.save(envprod);
-        ContentProjectFactory.insertEnvironment(envprod, envtest);
+        ContentProjectFactory.insertEnvironment(envprod, of(envtest));
 
-        ContentEnvironment envint = new ContentEnvironment("int", "Integration", cp);
+        ContentEnvironment envint = new ContentEnvironment("int", "Integration", null, cp);
         ContentProjectFactory.save(envint);
-        ContentProjectFactory.insertEnvironment(envint, envdev);
+        ContentProjectFactory.insertEnvironment(envint, of(envdev));
 
         HibernateFactory.getSession().flush();
 
@@ -103,17 +104,17 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
 
-        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
 
-        ContentEnvironment envtest = new ContentEnvironment("test", "Test", cp);
+        ContentEnvironment envtest = new ContentEnvironment("test", "Test", null, cp);
         ContentProjectFactory.save(envtest);
-        ContentProjectFactory.insertEnvironment(envtest, envdev);
+        ContentProjectFactory.insertEnvironment(envtest, of(envdev));
 
-        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", cp);
+        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", null, cp);
         ContentProjectFactory.save(envprod);
-        ContentProjectFactory.insertEnvironment(envprod, envtest);
+        ContentProjectFactory.insertEnvironment(envprod, of(envtest));
 
         HibernateFactory.getSession().flush();
         envtest = TestUtils.reload(envtest);
@@ -200,21 +201,21 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
 
-        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
 
-        ContentEnvironment envtest = new ContentEnvironment("test", "Test", cp);
+        ContentEnvironment envtest = new ContentEnvironment("test", "Test", null, cp);
         ContentProjectFactory.save(envtest);
-        ContentProjectFactory.insertEnvironment(envtest, envdev);
+        ContentProjectFactory.insertEnvironment(envtest, of(envdev));
 
-        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", cp);
+        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", null, cp);
         ContentProjectFactory.save(envprod);
-        ContentProjectFactory.insertEnvironment(envprod, envtest);
+        ContentProjectFactory.insertEnvironment(envprod, of(envtest));
 
-        ContentEnvironment envint = new ContentEnvironment("int", "Integration", cp);
+        ContentEnvironment envint = new ContentEnvironment("int", "Integration", null, cp);
         ContentProjectFactory.save(envint);
-        ContentProjectFactory.insertEnvironment(envint, envdev);
+        ContentProjectFactory.insertEnvironment(envint, of(envdev));
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -292,7 +293,6 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(asList(packageFilter2, packageFilter), fromDb.getFilters());
     }
 
-
     /**
      * Tests adding/removing filters in wrong organization
      */
@@ -328,7 +328,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     public void testEnvironmentTarget() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
