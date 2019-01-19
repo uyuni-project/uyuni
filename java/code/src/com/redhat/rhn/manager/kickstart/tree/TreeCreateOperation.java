@@ -79,7 +79,7 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
                 Optional<Channel> installerUpdates = tree.getChannel()
                         .getAccessibleChildrenFor(getUser())
                         .stream()
-                        .filter(c -> c.getLabel().contains("installer"))
+                        .filter(c -> c.isInstallerUpdates())
                         .findFirst();
                 if (installerUpdates.isPresent()) {
                     kOptsJoiner.add("self_update=http://" + getServerFqdn() + "/ks/dist/child/" +
