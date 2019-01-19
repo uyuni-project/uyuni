@@ -34,6 +34,8 @@ public class SCCRepositoryJson {
     private String url;
     private boolean autorefresh;
     private boolean enabled;
+    @SerializedName("installer_updates")
+    private boolean installerUpdates;
 
     /**
      * @return the SCC id
@@ -131,6 +133,20 @@ public class SCCRepositoryJson {
      */
     public void setEnabled(boolean enabledIn) {
         this.enabled = enabledIn;
+    }
+
+    /**
+     * @return Returns the installerUpdates.
+     */
+    public boolean isInstallerUpdates() {
+        return installerUpdates;
+    }
+
+    /**
+     * @param installerUpdatesIn The installerUpdates to set.
+     */
+    public void setInstallerUpdates(boolean installerUpdatesIn) {
+        this.installerUpdates = installerUpdatesIn;
     }
 
     /**

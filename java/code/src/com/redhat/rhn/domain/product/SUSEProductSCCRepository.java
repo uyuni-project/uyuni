@@ -57,6 +57,7 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     private String parentChannelLabel;
     private String channelName;
     private boolean mandatory;
+    private boolean installerUpdates = false;
     private String updateTag;
 
     /**
@@ -132,6 +133,15 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     }
 
     /**
+     * @return Return true if this is for installer updates
+     */
+    @Type(type = "yes_no")
+    @Column(name = "installer_updates")
+    public boolean isInstallerUpdates() {
+        return installerUpdates;
+    }
+
+    /**
      * @return Returns the updateTag.
      */
     @Column(name = "update_tag")
@@ -193,6 +203,13 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
      */
     public void setMandatory(boolean mandatoryIn) {
         this.mandatory = mandatoryIn;
+    }
+
+    /**
+     * @param installerUpdatesIn set installer updates
+     */
+    public void setInstallerUpdates(boolean installerUpdatesIn) {
+        this.installerUpdates = installerUpdatesIn;
     }
 
     /**

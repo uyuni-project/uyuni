@@ -1272,6 +1272,7 @@ public class ContentSyncManager {
                             prodRepoLink.setProduct(product);
                             prodRepoLink.setRepository(repo);
                             prodRepoLink.setRootProduct(root);
+                            prodRepoLink.setInstallerUpdates(repoJson.isInstallerUpdates());
                             dbProductReposByIds.put(ids, prodRepoLink);
 
                             if (productIdsSwitchedToReleased.contains(entry.getProductId())) {
@@ -1286,6 +1287,7 @@ public class ContentSyncManager {
                             }
                             prodRepoLink.setChannelName(entry.getChannelName());
                             prodRepoLink.setMandatory(entry.isMandatory());
+                            prodRepoLink.setInstallerUpdates(repoJson.isInstallerUpdates());
 
                             if (productIdsSwitchedToReleased.contains(entry.getProductId())) {
                                 channelsToCleanup.add(entry.getChannelLabel());
@@ -1571,6 +1573,7 @@ public class ContentSyncManager {
         dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
         dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
         dbChannel.setUpdateTag(productrepo.getUpdateTag());
+        dbChannel.setInstallerUpdates(productrepo.isInstallerUpdates());
         ChannelFactory.save(dbChannel);
 
         // update Mandatory Flag
