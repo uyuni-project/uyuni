@@ -63,6 +63,10 @@ CREATE TABLE rhnChannel
     maint_phone         VARCHAR(128),
     support_policy      VARCHAR(256),
     update_tag          VARCHAR(128),
+    installer_updates   CHAR(1)
+                            DEFAULT ('N') NOT NULL
+                            CONSTRAINT rhn_channel_instup_ck
+                                CHECK (installer_updates in ('Y', 'N')),
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
     modified            TIMESTAMPTZ
