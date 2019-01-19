@@ -49,6 +49,7 @@ UPDATES_FROM_SPACEWALK = _("This system is receiving updates from Spacewalk serv
 GPG_KEY_REJECTED     = _("For security reasons packages from Spacewalk based repositories can be verified only with locally installed gpg keys. GPG key '%s' has been rejected.")
 PROFILE_NOT_SENT     = _("Package profile information could not be sent.")
 MISSING_HEADER       = _("Missing required login information for Spacewalk: %s")
+MUST_BE_ROOT         = _('Spacewalk plugin has to be run under with the root privileges.')
 
 class Spacewalk(dnf.Plugin):
 
@@ -68,6 +69,9 @@ class Spacewalk(dnf.Plugin):
             options = self.parser.items("main")
             for (key, value) in options:
                 self.conf._set_value(key, value, PRIO_PLUGINCONFIG)
+        if not dnf.util.am_i_root():
+            logger.warning(MUST_BE_ROOT)
+            self.conf.enabled = False
         if not self.conf.enabled:
             return
         logger.debug('initialized Spacewalk plugin')
@@ -222,7 +226,7 @@ class  SpacewalkRepo(dnf.repo.Repo):
         try:
             self.gpgkey = get_gpg_key_urls(channel['gpg_key_url'])
         except InvalidGpgKeyLocation as e:
-            logger.warn(GPG_KEY_REJECTED, dnf.i18n.ucd(e))
+            logger.warning(GPG_KEY_REJECTED, dnf.i18n.ucd(e))
             self.gpgkey = []
         if channel['version'] != opts.get('cached_version'):
             self.metadata_expire = 1
@@ -242,11 +246,11 @@ class  SpacewalkRepo(dnf.repo.Repo):
         else:
             self.disable()
 
-        if hasattr(self, '_repo'):
-            # dnf > 3.6.0
+        if hasattr(self, 'set_http_headers'):
+            # dnf > 4.0.9  on RHEL 8, Fedora 29/30
             http_headers = self.create_http_headers()
             if http_headers:
-                self._repo.setHttpHeaders(http_headers)
+                self.set_http_headers(http_headers)
 
     def create_http_headers(self):
         http_headers = []

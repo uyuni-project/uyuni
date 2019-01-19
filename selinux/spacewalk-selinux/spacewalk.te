@@ -82,6 +82,9 @@ tunable_policy(`spacewalk_nfs_mountpoint',`
 	manage_files_pattern(httpd_t, nfs_t, nfs_t)
 	manage_lnk_files_pattern(httpd_t, nfs_t, nfs_t)
 	manage_dirs_pattern(httpd_t, nfs_t, nfs_t)
+	manage_files_pattern(tomcat_t, nfs_t, nfs_t)
+	manage_lnk_files_pattern(tomcat_t, nfs_t, nfs_t)
+	manage_dirs_pattern(tomcat_t, nfs_t, nfs_t)
 	read_lnk_files_pattern(restorecon_t, nfs_t, nfs_t)
 ')
 
@@ -105,10 +108,12 @@ optional_policy(`
 optional_policy(`
         gen_require(`
                 type cobblerd_t;
+                type gpg_exec_t;
         ')
         read_files_pattern(cobblerd_t, spacewalk_data_t, spacewalk_data_t);
         allow cobblerd_t spacewalk_data_t:file { getattr link unlink rename };
         manage_dirs_pattern(cobblerd_t, spacewalk_data_t, spacewalk_data_t);
+        allow cobblerd_t gpg_exec_t:file getattr;
 ')
 
 # rpm_dontaudit_search_db(httpd_t) is not available on RHELs
@@ -143,6 +148,14 @@ optional_policy(`
 
 optional_policy(`
         gen_require(`
+                type cobbler_var_lib_t;
+        ')
+        allow httpd_t cobbler_var_lib_t:dir { read };
+        allow tomcat_t cobbler_var_lib_t:dir { read };
+')
+
+optional_policy(`
+        gen_require(`
                 type cobbler_tmp_t;
         ')
         allow tomcat_t cobbler_tmp_t:dir { search };
@@ -163,3 +176,4 @@ allow httpd_t etc_t:file { create link rename setattr unlink write };
 
 allow tomcat_t etc_t:dir { add_name remove_name write };
 allow httpd_t etc_t:dir { add_name remove_name write };
+
