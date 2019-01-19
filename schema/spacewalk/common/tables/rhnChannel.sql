@@ -63,6 +63,10 @@ CREATE TABLE rhnChannel
     maint_phone         VARCHAR2(128),
     support_policy      VARCHAR2(256),
     update_tag          VARCHAR2(128),
+    installer_updates   CHAR(1)
+                            DEFAULT ('N') NOT NULL
+                            CONSTRAINT rhn_channel_instup_ck
+                                CHECK (installer_updates in ('Y', 'N')),
     created             timestamp with local time zone
                             DEFAULT (current_timestamp) NOT NULL,
     modified            timestamp with local time zone

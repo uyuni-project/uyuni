@@ -20,6 +20,9 @@ suseProductSCCRepository
     mandatory              CHAR(1) DEFAULT ('N') NOT NULL
                                    CONSTRAINT suse_prdrepo_mand_ck
                                    CHECK (mandatory in ('Y', 'N')),
+    installer_updates      CHAR(1) DEFAULT ('N') NOT NULL
+                                   CONSTRAINT suse_prdrepo_instup_ck
+                                   CHECK (installer_updates in ('Y', 'N')),
     update_tag             VARCHAR2(128),
     created                timestamp with local time zone
                            DEFAULT (current_timestamp) NOT NULL,
