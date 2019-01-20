@@ -1192,5 +1192,51 @@
         "installer_updates": false
       }
     ]
+  },
+  {
+    "arch": null,
+    "cpe": null,
+    "description": null,
+    "eula_url": "",
+    "extensions": [],
+    "former_identifier": "RES",
+    "free": false,
+    "friendly_name": "RHEL Expanded Support 7",
+    "id": 1251,
+    "identifier": "RES",
+    "migration_extra": false,
+    "name": "RHEL Expanded Support",
+    "offline_predecessor_ids": [],
+    "online_predecessor_ids": [],
+    "predecessor_ids": [],
+    "product_class": "RES",
+    "product_type": "base",
+    "recommended": false,
+    "release_stage": "released",
+    "release_type": null,
+    "repositories": [
+      {
+        "autorefresh": true,
+        "description": "RES7 for x86_64",
+        "distro_target": "x86_64",
+        "enabled": true,
+        "id": 1736,
+        "installer_updates": false,
+        "name": "RES7",
+        "url": "https://updates.suse.com/repo/$RCE/RES7/x86_64/"
+      },
+      {
+        "autorefresh": true,
+        "description": "RES7 for src",
+        "distro_target": "src",
+        "enabled": true,
+        "id": 1963,
+        "installer_updates": false,
+        "name": "RES7",
+        "url": "https://updates.suse.com/repo/$RCE/RES7/src/"
+      }
+    ],
+    "shortname": null,
+    "version": "7"
   }
 ]

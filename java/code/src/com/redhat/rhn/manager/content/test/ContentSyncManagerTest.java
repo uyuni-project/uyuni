@@ -1007,7 +1007,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertTrue("Debuginfo Pool channel not found", foundDebugPool);
         Map<MgrSyncStatus, List<MgrSyncChannelDto>> collect = channels.stream().collect(Collectors.groupingBy(c -> c.getStatus()));
         assertEquals(2, collect.get(MgrSyncStatus.INSTALLED).size());
-        assertEquals(60, collect.get(MgrSyncStatus.AVAILABLE).size());
+        assertEquals(62, collect.get(MgrSyncStatus.AVAILABLE).size());
     }
 
     /**
@@ -1067,6 +1067,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         csm.addChannel("sles12-pool-x86_64", null);
         csm.addChannel("sles12-updates-x86_64", null);
         csm.addChannel("sle-module-legacy12-debuginfo-pool-x86_64", null);
+        csm.addChannel("rhel-x86_64-server-7", null);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -1091,6 +1092,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(false, pc.isMandatory());
             assertEquals(1150L, pc.getProduct().getProductId());
         }
+        assertTrue(csm.listChannels().stream().anyMatch(c -> c.getLabel().equals("rhel-x86_64-server-7")));
+        assertTrue(csm.listChannels()
+                .stream()
+                .filter(c -> c.getLabel().equals("rhel-x86_64-server-7"))
+                .anyMatch(c -> c.getStatus().equals(MgrSyncStatus.INSTALLED)));
     }
 
     /**
