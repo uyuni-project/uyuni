@@ -48,6 +48,8 @@ public class MgrSyncUtils {
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
     private static final List<String> OFFICIAL_UPDATE_HOSTS =
             Arrays.asList("updates.suse.com", OFFICIAL_NOVELL_UPDATE_HOST);
+    private static final List<String> PRODUCT_ARCHS = Arrays.asList("i586", "ia64", "ppc64le", "ppc64", "ppc",
+            "s390x", "s390", "x86_64", "aarch64");
 
     // No instances should be created
     private MgrSyncUtils() {
@@ -105,11 +107,18 @@ public class MgrSyncUtils {
     /**
      * Handle special cases where SUSE arch names differ from the RedHat ones.
      *
-     * @param packageArch channel that we want to get the arch from
+     * @param packageArch we want to get the arch from
+     * @param channelLabel alternative try to find the arch in the channelLabel
      * @return channel arch object
      */
-    public static ChannelArch getChannelArch(PackageArch packageArch) {
-        String arch = packageArch.getLabel();
+    public static ChannelArch getChannelArch(PackageArch packageArch, String channelLabel) {
+        String arch = "x86_64";
+        if (packageArch != null) {
+            arch = packageArch.getLabel();
+        }
+        else {
+            arch = PRODUCT_ARCHS.stream().filter(a -> channelLabel.contains(a)).findFirst().orElse(arch);
+        }
         if (arch.equals("i686") || arch.equals("i586") ||
                 arch.equals("i486") || arch.equals("i386")) {
             arch = "ia32";
