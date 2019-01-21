@@ -83,7 +83,7 @@ public class ImageProfileController {
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("isAdmin", user.hasRole(ADMIN_ROLE));
-        return new ModelAndView(data, "content_management/list-profiles.jade");
+        return new ModelAndView(data, "templates/content_management/list-profiles.jade");
     }
 
     /**
@@ -104,7 +104,7 @@ public class ImageProfileController {
         data.put("activationKeys", getActivationKeys(user));
         data.put("customDataKeys", getCustomDataKeys(user.getOrg()));
         data.put("imageTypesDataFromTheServer", GSON.toJson(imageTypesDataFromTheServer));
-        return new ModelAndView(data, "content_management/edit-profile.jade");
+        return new ModelAndView(data, "templates/content_management/edit-profile.jade");
     }
 
     /**
@@ -141,7 +141,7 @@ public class ImageProfileController {
         data.put("activationKeys", getActivationKeys(user));
         data.put("customDataKeys", getCustomDataKeys(user.getOrg()));
         data.put("imageTypesDataFromTheServer", GSON.toJson(imageTypesDataFromTheServer));
-        return new ModelAndView(data, "content_management/edit-profile.jade");
+        return new ModelAndView(data, "templates/content_management/edit-profile.jade");
     }
 
     /**

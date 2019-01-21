@@ -83,7 +83,7 @@ public class ProductsController {
         data.put(REFRESH_NEEDED, String.valueOf(SCCCachingFactory.refreshNeeded()));
         data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
 
-        return new ModelAndView(data, "products/show.jade");
+        return new ModelAndView(data, "templates/products/show.jade");
     }
 
     /**

@@ -50,7 +50,7 @@ public class TaskoTop {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "taskotop/show.jade");
+        return new ModelAndView(new HashMap<>(), "templates/taskotop/show.jade");
     }
 
     /**

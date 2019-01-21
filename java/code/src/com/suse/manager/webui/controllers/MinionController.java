@@ -63,7 +63,7 @@ public class MinionController {
      */
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "minion/list.jade");
+        return new ModelAndView(data, "templates/minion/list.jade");
     }
 
     /**
@@ -75,7 +75,7 @@ public class MinionController {
      */
     public static ModelAndView cmd(Request request, Response response) {
         request.session().removeAttribute(MinionsAPI.SALT_CMD_RUN_TARGETS);
-        return new ModelAndView(new HashMap<>(), "minion/cmd.jade");
+        return new ModelAndView(new HashMap<>(), "templates/minion/cmd.jade");
     }
 
     /**
@@ -105,7 +105,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(new Long(serverId));
         data.put("server", server);
-        return new ModelAndView(data, "minion/packages.jade");
+        return new ModelAndView(data, "templates/minion/packages.jade");
     }
 
     /**
@@ -120,7 +120,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(new Long(orgId)).getName());
-        return new ModelAndView(data, "org/custom.jade");
+        return new ModelAndView(data, "templates/org/custom.jade");
     }
 
     /**
@@ -136,7 +136,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
-        return new ModelAndView(data, "yourorg/custom.jade");
+        return new ModelAndView(data, "templates/yourorg/custom.jade");
     }
 
     /**
@@ -154,7 +154,7 @@ public class MinionController {
         data.put("groupId", orgId);
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(orgId),
                 user.getOrg()).getName());
-        return new ModelAndView(data, "groups/custom.jade");
+        return new ModelAndView(data, "templates/groups/custom.jade");
     }
 
     /**
@@ -183,7 +183,7 @@ public class MinionController {
                 user.getOrg()).getName());
         data.put("minions", Json.GSON.toJson(minions));
         addActionChains(user, data);
-        return new ModelAndView(data, "groups/highstate.jade");
+        return new ModelAndView(data, "templates/groups/highstate.jade");
     }
 
     /**
@@ -202,7 +202,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
         addActionChains(user, data);
-        return new ModelAndView(data, "ssm/highstate.jade");
+        return new ModelAndView(data, "templates/ssm/highstate.jade");
     }
 
     /**
@@ -217,7 +217,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(new Long(serverId));
         data.put("server", server);
-        return new ModelAndView(data, "minion/custom.jade");
+        return new ModelAndView(data, "templates/minion/custom.jade");
     }
 
     /**
@@ -234,7 +234,7 @@ public class MinionController {
         Server server = ServerFactory.lookupById(new Long(serverId));
         data.put("server", server);
         addActionChains(user, data);
-        return new ModelAndView(data, "minion/highstate.jade");
+        return new ModelAndView(data, "templates/minion/highstate.jade");
     }
 
     /**
@@ -276,6 +276,6 @@ public class MinionController {
                 .collect(Collectors.toList());
         data.put("availableActivationKeys", Json.GSON.toJson(visibleBootstrapKeys));
         data.put("proxies", Json.GSON.toJson(proxies));
-        return new ModelAndView(data, "minion/bootstrap.jade");
+        return new ModelAndView(data, "templates/minion/bootstrap.jade");
     }
 }
