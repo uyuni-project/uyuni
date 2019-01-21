@@ -17,7 +17,8 @@ import salt.config
 from spacewalk.common import rhnLog
 
 # namespace prefix to parse patches.xml file
-PATCHES = '{http://novell.com/package/metadata/suse/patches}'
+PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
+REPO_XML = '{http://linux.duke.edu/metadata/repo}'
 
 ZYPP_CACHE_ROOT_PATH = '/var/cache/rhn/reposync'
 ZYPP_RAW_CACHE_PATH = 'var/cache/zypp/raw'
@@ -296,11 +297,19 @@ class ContentSource:
 
     def get_md_checksum_type(self) -> (str, int):
         """
-        Get checksum type.
+        Return the checksum type of the primary.xml if exists, otherwise
+        default output is "sha1".
 
-        :returns: tuple of: checksum-type, checksum
+        :returns: str
         """
-        return "sha1", 0
+        if self._md_exists('repomd'):
+            repomd_path = self._retrieve_md_path('repomd')
+            infile = repomd_path.endswith('.gz') and gzip.open(repomd_path) or open(repomd_path, 'rt')
+            for repodata in etree.parse(infile).getroot():
+                if repodata.get('type') == 'primary':
+                    checksum_elem = repodata.find(REPO_XML+'checksum')
+                    return checksum_elem.get('type')
+        return "sha1"
 
     def _fix_encoding(text):
         if text is None:
@@ -393,8 +402,8 @@ class ContentSource:
             infile = patches_path.endswith('.gz') and gzip.open(patches_path) or open(patches_path, 'rt')
             notices = []
             for patch in etree.parse(infile).getroot():
-                checksum_elem = patch.find(PATCHES+'checksum')
-                location_elem = patch.find(PATCHES+'location')
+                checksum_elem = patch.find(PATCHES_XML+'checksum')
+                location_elem = patch.find(PATCHES_XML+'location')
                 relative = location_elem.get('href')
                 checksum_type = checksum_elem.get('type')
                 checksum = checksum_elem.text
