@@ -1,0 +1,11 @@
+include /templates/common.jade
+
+#content-management-project
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+
+script(src='/javascript/manager/content-management/project/project.renderer.bundle.js')
+
+script(type='text/javascript').
+    pageRenderers.contentManagement.project.renderer('content-management-project');

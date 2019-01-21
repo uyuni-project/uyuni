@@ -24,7 +24,7 @@ const npmDependencies = [
   { name: "raf", license: "MIT",  version: "3.4.1" }, 
   { name: "react", license: "MIT",  version: "16.6.1" }, 
   { name: "react-dom", license: "MIT",  version: "16.6.1" }, 
-  { name: "react-hot-loader", license: "MIT",  version: "4.3.12" }, 
+  { name: "react-hot-loader", license: "MIT",  version: "4.6.2" }, 
   { name: "react-input-autosize", license: "MIT",  version: "2.2.1" }, 
   { name: "react-lifecycles-compat", license: "MIT",  version: "3.0.4" }, 
   { name: "react-select", license: "MIT",  version: "2.1.1" }, 
