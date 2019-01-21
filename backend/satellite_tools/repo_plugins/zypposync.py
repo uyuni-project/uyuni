@@ -286,8 +286,7 @@ class ContentSource:
         return bool(self._retrieve_md_path(tag))
 
     def _retrieve_md_path(self, tag:str) -> str:
-        #TODO: SHould this return xml.gz files only or also uncompressed ?
-        _md_files = glob.glob(self.get_repodata_path() + "/*{}.xml.gz".format(tag))
+        _md_files = glob.glob(self._get_repodata_path() + "/*{}.xml.gz".format(tag)) or glob.glob(self._get_repodata_path() + "/*{}.xml".format(tag))
         if _md_files:
             return _md_files[0]
         return None
