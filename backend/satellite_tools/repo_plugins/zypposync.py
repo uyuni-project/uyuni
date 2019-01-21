@@ -425,6 +425,11 @@ class ContentSource:
             return ('', [])
 
     def get_groups(self):
+        """
+        Return list of groups
+
+        :returns: str
+        """
         # groups -> /var/cache/rhn/reposync/1/CentOS_7_os_x86_64/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz
         groups = None
         if self._md_exists('comps'):
@@ -432,6 +437,11 @@ class ContentSource:
         return groups
 
     def get_modules(self):
+        """
+        Return list of modules
+
+        :returns: str
+        """
         modules = None
         if self._md_exists('modules'):
             modules = self._retrieve_md_path('modules')
@@ -529,17 +539,20 @@ class ContentSource:
                 raise IOError("Filters are malformed")
         return selected
 
-    def clear_cache(self, directory=None):
+    def clear_cache(self, directory=None, keep_repomd=False):
+        """
+        Clear the root environment and all cache files
+        """
         if directory is None:
-            directory = os.path.join(CACHE_DIR, self.org, self.name)
+            directory = self.repo.root
+
         # remove content in directory
         for item in os.listdir(directory):
             path = os.path.join(directory, item)
-            if os.path.isfile(path):
+            if os.path.isfile(path) and not (keep_repomd and item == "repomd.xml"):
                 os.unlink(path)
             elif os.path.isdir(path):
                 rmtree(path)
-
 
     def get_metadata_paths(self):
         """
