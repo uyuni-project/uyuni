@@ -1,0 +1,11 @@
+include /templates/common.jade
+
+#content-management-list-projects
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+
+script(src='/javascript/manager/content-management/list-projects/list-projects.renderer.bundle.js')
+
+script(type='text/javascript').
+    pageRenderers.contentManagement.listProjects.renderer('content-management-list-projects');
