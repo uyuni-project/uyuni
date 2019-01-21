@@ -123,7 +123,7 @@ public class ImageBuildController {
                     .map(ServerAction::getServerId).map(id -> "&host=" + id).orElse("");
             res.redirect("/rhn/manager/cm/build?version=" + i.getVersion() + hostId +
                     "&profile=" + i.getProfile().getProfileId());
-            return new ModelAndView(model, "content_management/build.jade");
+            return new ModelAndView(model, "templates/content_management/build.jade");
         }).orElseGet(() -> {
             throw new NotFoundException();
         });
@@ -157,7 +157,7 @@ public class ImageBuildController {
             return null;
         }
 
-        return new ModelAndView(model, "content_management/build.jade");
+        return new ModelAndView(model, "templates/content_management/build.jade");
     }
 
     /**
@@ -170,7 +170,7 @@ public class ImageBuildController {
      */
     public static ModelAndView importView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
-        return new ModelAndView(model, "content_management/import.jade");
+        return new ModelAndView(model, "templates/content_management/import.jade");
     }
 
     /**
@@ -226,7 +226,7 @@ public class ImageBuildController {
         model.put("isAdmin", user.hasRole(ADMIN_ROLE));
         Map<String, GathererModule> modules = new GathererRunner().listModules();
         model.put("isRuntimeInfoEnabled", ImagesUtil.isImageRuntimeInfoEnabled());
-        return new ModelAndView(model, "content_management/view.jade");
+        return new ModelAndView(model, "templates/content_management/view.jade");
     }
 
     /**

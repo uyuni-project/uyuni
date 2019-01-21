@@ -111,7 +111,7 @@ public class VirtualGuestsController {
         data.put("salt_entitled", server.hasEntitlement(EntitlementManager.SALT));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
 
-        return new ModelAndView(data, "virtualization/guests/show.jade");
+        return new ModelAndView(data, "templates/virtualization/guests/show.jade");
     }
 
     /**
@@ -333,7 +333,7 @@ public class VirtualGuestsController {
         /* For the rest of the template */
         data.put("guestUuid", guestUuid);
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
-        return new ModelAndView(data, "virtualization/guests/edit.jade");
+        return new ModelAndView(data, "templates/virtualization/guests/edit.jade");
     }
 
     private static String triggerGuestUpdateAction(Server host,

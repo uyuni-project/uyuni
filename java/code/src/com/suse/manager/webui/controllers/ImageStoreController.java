@@ -70,7 +70,7 @@ public class ImageStoreController {
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("is_admin", user.hasRole(ADMIN_ROLE));
-        return new ModelAndView(data, "content_management/list-stores.jade");
+        return new ModelAndView(data, "templates/content_management/list-stores.jade");
     }
 
     /**
@@ -83,7 +83,7 @@ public class ImageStoreController {
      */
     public static ModelAndView createView(Request req, Response res, User user) {
         return new ModelAndView(new HashMap<String, Object>(),
-                "content_management/edit-store.jade");
+                "templates/content_management/edit-store.jade");
     }
 
     /**
@@ -116,7 +116,7 @@ public class ImageStoreController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("store_id", storeId);
-        return new ModelAndView(data, "content_management/edit-store.jade");
+        return new ModelAndView(data, "templates/content_management/edit-store.jade");
     }
 
     /**

@@ -64,7 +64,7 @@ public class CVEAuditController {
      */
     public static ModelAndView cveAuditView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
-        return new ModelAndView(model, "audit/cve.jade");
+        return new ModelAndView(model, "templates/audit/cve.jade");
     }
 
     private enum AuditTarget {

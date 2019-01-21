@@ -85,7 +85,7 @@ public class VirtualHostManagerController {
      */
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "virtualhostmanager/list.jade");
+        return new ModelAndView(data, "templates/virtualhostmanager/list.jade");
     }
 
     /**
