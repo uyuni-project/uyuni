@@ -19,6 +19,7 @@ from spacewalk.common import rhnLog
 # namespace prefix to parse patches.xml file
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 
+ZYPP_CACHE_ROOT_PATH = '/var/cache/rhn/reposync'
 ZYPP_RAW_CACHE_PATH = 'var/cache/zypp/raw'
 
 
@@ -38,7 +39,7 @@ class ZyppoSync:
         self._conf = salt.config.minion_config(cfg_path)
         self._conf["file_client"] = "local"
         self._conf["server_id_use_crc"] = "Adler32"
-        self._root = root
+        self.root = root
         if self.root is not None:
             self._init_root(self.root)
         self._caller = salt.client.Caller(mopts=self._conf)
@@ -51,7 +52,7 @@ class ZyppoSync:
         """
         if not os.path.exists(root):
             try:
-                for pth in [root, os.path.join(root, "zypp/repos.d")]:
+                for pth in [root, os.path.join(root, "etc/zypp/repos.d")]:
                     os.makedirs(pth)
             except PermissionError as exc:
                 # TODO: a proper logging somehow?
@@ -264,7 +265,7 @@ class ContentSource:
         # Add this repo to the Zypper env
         reponame = self.name.replace(" ", "-")
         # SUSE vendor repositories belongs to org = NULL
-        root = os.path.join("/var/cache/rhn/reposync", str(org or "NULL"), reponame)
+        root = os.path.join(ZYPP_CACHE_ROOT_PATH, str(org or "NULL"), reponame)
         self.repo = ZyppoSync(root=root)
         self.repo.mod_repo(name, url=url, gpgautoimport=True, gpgcheck=False,
                            alias=channel_label or reponame)
@@ -291,8 +292,8 @@ class ContentSource:
             return _md_files[0]
         return None
 
-    def get_repodata_path(self) -> str:
-        return os.path.join(self.root, ZYPP_RAW_CACHE_PATH, self.name, "repodata")
+    def _get_repodata_path(self) -> str:
+        return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.name, "repodata")
 
     def get_md_checksum_type(self) -> (str, int):
         """
@@ -398,7 +399,7 @@ class ContentSource:
                 relative = location_elem.get('href')
                 checksum_type = checksum_elem.get('type')
                 checksum = checksum_elem.text
-                filename = os.path.join(self.repo.get_repodata_path(), os.path.basename(relative))
+                filename = os.path.join(self._get_repodata_path(), os.path.basename(relative))
                 try:
                     notices.append(etree.parse(filename).getroot())
                 except SyntaxError as e:
