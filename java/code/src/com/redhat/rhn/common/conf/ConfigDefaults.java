@@ -221,12 +221,6 @@ public class ConfigDefaults {
      */
     public static final String TOKEN_REFRESH_AUTO_DEPLOY = "server.susemanager.token_refresh_auto_deploy";
 
-    /**
-     * Salt Minions presence ping timeouts in seconds
-     */
-    public static final String SALT_PRESENCE_PING_TIMEOUT = "java.salt_presence_ping_timeout";
-    public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT = "java.salt_presence_ping_gather_job_timeout";
-
     public static final String SALT_SSH_CONNECT_TIMEOUT = "java.salt_ssh_connect_timeout";
 
     /**
@@ -845,14 +839,6 @@ public class ConfigDefaults {
     }
 
     /**
-     * Returns salt presence ping job timeout
-     * @return salt presence ping job timeout
-     */
-    public int getSaltPresencePingTimeout() {
-        return Config.get().getInt(SALT_PRESENCE_PING_TIMEOUT, 4);
-    }
-
-    /**
      * @return default batch size for salt jobs execution in batch mode
      */
     public int getSaltBatchSize() {
@@ -873,15 +859,6 @@ public class ConfigDefaults {
     public boolean isPrometheusMonitoringEnabled() {
         return Config.get().getBoolean(PROMETHEUS_MONITORING_ENABLED);
     }
-
-    /**
-     * Returns salt presence ping job gather_job_timeout
-     * @return salt presence ping job gather_job_timeout
-     */
-    public int getSaltPresencePingGatherJobTimeout() {
-        return Config.get().getInt(SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT, 1);
-    }
-
 
     /**
      * Returns the duration, in hours, of the time window for Salt minions to
