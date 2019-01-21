@@ -52,6 +52,7 @@ import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VirtualNetsController;
 import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.controllers.VisualizationController;
+import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.errors.NotFoundException;
 
 import org.apache.http.HttpStatus;
@@ -91,6 +92,9 @@ public class Router implements SparkApplication {
 
         // Virtualization Routes
         initVirtualizationRoutes(jade);
+
+        // Content Management Routes
+        ContentManagementViewsController.initRoutes(jade);
 
         // Minions
         get("/manager/systems/keys",
@@ -432,4 +436,5 @@ public class Router implements SparkApplication {
         get("/manager/api/cm/activationkeys",
                 withUser(ImageProfileController::getActivationKeys));
     }
+
 }
