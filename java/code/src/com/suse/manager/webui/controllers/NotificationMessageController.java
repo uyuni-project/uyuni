@@ -65,7 +65,7 @@ public class NotificationMessageController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView getList(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "notification-messages/list.jade");
+        return new ModelAndView(new HashMap<>(), "templates/notification-messages/list.jade");
     }
 
 

@@ -56,7 +56,7 @@ public class SubscriptionMatchingController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "subscription-matching/show.jade");
+        return new ModelAndView(new HashMap<>(), "templates/subscription-matching/show.jade");
     }
 
     /**

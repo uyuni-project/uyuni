@@ -45,7 +45,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class SparkApplicationHelper {
 
-    private static final String TEMPLATE_ROOT = "com/suse/manager/webui/templates";
+    private static final String TEMPLATE_ROOT = "com/suse/manager/webui";
     private static final Gson GSON = new GsonBuilder().create();
 
     /**

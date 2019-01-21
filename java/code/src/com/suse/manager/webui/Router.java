@@ -319,14 +319,14 @@ public class Router implements SparkApplication {
         notFound((request, response) -> {
             Map<String, Object> data = new HashMap<>();
             data.put("currentUrl", request.pathInfo());
-            return jade.render(new ModelAndView(data, "errors/404.jade"));
+            return jade.render(new ModelAndView(data, "templates/errors/404.jade"));
         });
 
         exception(NotFoundException.class, (exception, request, response) -> {
             response.status(HttpStatus.SC_NOT_FOUND);
             Map<String, Object> data = new HashMap<>();
             data.put("currentUrl", request.pathInfo());
-            response.body(jade.render(new ModelAndView(data, "errors/404.jade")));
+            response.body(jade.render(new ModelAndView(data, "templates/errors/404.jade")));
         });
     }
 
