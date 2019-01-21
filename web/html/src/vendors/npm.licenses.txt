@@ -554,7 +554,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-hot-loader v4.3.12 - Dan Abramov
+react-hot-loader v4.6.2 - Dan Abramov
 https://github.com/gaearon/react-hot-loader/
 --------------------------------------------------------------------------------
 
