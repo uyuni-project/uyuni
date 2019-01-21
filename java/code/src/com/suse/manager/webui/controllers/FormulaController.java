@@ -99,7 +99,7 @@ public class FormulaController {
                 ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
         data.put("formula_id", request.params("formula_id"));
-        return new ModelAndView(data, "groups/formula.jade");
+        return new ModelAndView(data, "templates/groups/formula.jade");
     }
 
     /**
@@ -239,7 +239,7 @@ public class FormulaController {
         data.put("groupName",
                 ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
-        return new ModelAndView(data, "groups/formulas.jade");
+        return new ModelAndView(data, "templates/groups/formulas.jade");
     }
 
     /**
@@ -333,7 +333,7 @@ public class FormulaController {
         Map<String, Object> data = new HashMap<>();
         data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
         data.put("formula_id", request.params("formula_id"));
-        return new ModelAndView(data, "minion/formula.jade");
+        return new ModelAndView(data, "templates/minion/formula.jade");
     }
 
     /**
@@ -348,7 +348,7 @@ public class FormulaController {
            User user) {
        Map<String, Object> data = new HashMap<>();
        data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
-       return new ModelAndView(data, "minion/formulas.jade");
+       return new ModelAndView(data, "templates/minion/formulas.jade");
    }
 
     private static String errorResponse(Response response, List<String> errs) {

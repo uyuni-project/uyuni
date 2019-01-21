@@ -53,7 +53,7 @@ public class FormulaCatalogController {
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("info", FlashScopeHelper.flash(request));
-        return new ModelAndView(data, "formula_catalog/list.jade");
+        return new ModelAndView(data, "templates/formula_catalog/list.jade");
     }
 
     /**
@@ -84,7 +84,7 @@ public class FormulaCatalogController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("formulaName", formulaName);
-        return new ModelAndView(data, "formula_catalog/formula.jade");
+        return new ModelAndView(data, "templates/formula_catalog/formula.jade");
     }
 
     /**
