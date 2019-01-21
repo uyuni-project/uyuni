@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to manipulate activation keys
@@ -99,7 +99,7 @@ Feature: Be able to manipulate activation keys
     And I follow "Create Key"
     And I enter "Ubuntu Test Key" as "description"
     And I enter "UBUNTU-TEST" as "key"
-    And I select "Ubuntu AMD64 Channel" from "selectedBaseChannel"
+    And I select "Test-Channel-Deb-AMD64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key Ubuntu Test Key has been created" text
     And I should see a "Details" link
