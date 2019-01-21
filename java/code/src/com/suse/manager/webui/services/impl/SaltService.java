@@ -751,18 +751,8 @@ public class SaltService {
                     Collections.emptySet() :
                     presencePing(new MinionList(regularMinionIds)).keySet();
 
-            Set<String> sshActiveMinions = sshMinionIds.isEmpty() ?
-                    Collections.emptySet() :
-                    presencePingSSH(new MinionList(sshMinionIds)).entrySet()
-                        .stream()
-                        .filter(
-                            s -> s.getValue().toXor().fold(error -> false, result -> true))
-                        .map(Map.Entry::getKey)
-                        .collect(Collectors.toSet());
-
             Set<String> unreachableMinions = uniqueMinionIds.stream()
                 .filter(id -> !regularActiveMinions.contains(id))
-                .filter(id -> !sshActiveMinions.contains(id))
                 .sorted()
                 .collect(Collectors.toSet());
 
@@ -770,7 +760,6 @@ public class SaltService {
                 LOG.warn("Some of the targeted minions cannot be reached: " +
                         unreachableMinions.toString() +
                         ". Excluding them from the synchronous call.");
-                sshMinionIds.retainAll(sshActiveMinions);
                 regularMinionIds.retainAll(regularActiveMinions);
             }
         }
@@ -878,25 +867,6 @@ public class SaltService {
                 .entrySet().stream().filter(kv -> {
             return kv.getValue().result().orElse(true);
         }).collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
-    }
-
-    /**
-     * Pings a target set of SSH minions using a short timeout to check presence
-     * @param targetInSSH the SSH target
-     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
-     * @throws SaltException if we get a failure from Salt
-     */
-    public Map<String, Result<Boolean>> presencePingSSH(MinionList targetInSSH)
-            throws SaltException {
-        return saltSSHService.callSyncSSH(
-            new LocalCall<>("test.ping",
-                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
-                Optional.of(SALT_PRESENCE_TIMEOUT),
-                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT)), targetInSSH)
-                .entrySet().stream().filter(kv -> {
-                    return kv.getValue().result().orElse(true);
-                })
-                .collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
     }
 
     /**
