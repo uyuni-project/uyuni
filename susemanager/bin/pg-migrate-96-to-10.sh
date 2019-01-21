@@ -85,7 +85,11 @@ mkdir /var/lib/pgsql/data
 chown postgres:postgres /var/lib/pgsql/data
 
 echo "`date +"%H:%M:%S"`   Initialize new postgresql 10 database..."
-su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data"
+. /etc/sysconfig/postgresql
+if [ -z $POSTGRES_LANG ]; then
+    POSTGRES_LANG="en_US.UTF-8"
+fi
+su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data --locale=$POSTGRES_LANG"
 if [ $? -eq 0 ]; then
     echo "`date +"%H:%M:%S"`   Successfully initialized new postgresql 10 database."
 else
