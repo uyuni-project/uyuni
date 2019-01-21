@@ -19,7 +19,7 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 BuildRequires:  pyxml
 
-PreReq:         %fillup_prereq %insserv_prereq tftp(server)
+PreReq:         %fillup_prereq %insserv_prereq tftp(server) postgresql-init
 Requires(pre):  tomcat salt
 Requires:       openslp-server
 Requires:       spacewalk-setup
@@ -165,6 +165,18 @@ if [ $POST_ARG -eq 2 ] ; then
     fi
 fi
 # else new install and the systems dir should be created by spacewalk-setup
+
+%posttrans
+# make sure our database will use correct encoding
+. /etc/sysconfig/postgresql
+if [ -z $POSTGRES_LANG ]; then
+    grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
+    if [ $? = 0 ]; then
+        sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
+    else
+        echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
+    fi
+fi
 
 %postun
 %{insserv_cleanup}
