@@ -14,7 +14,7 @@ import xml.etree.ElementTree as etree
 import salt.client
 import salt.config
 
-from spacewalk.common import rhnLog
+from spacewalk.common import checksum, rhnLog
 
 # namespace prefix to parse patches.xml file
 PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
@@ -79,6 +79,11 @@ class ZyppoSync:
         attribute name.
         """
         return self._get_call(attr)
+
+
+class RepoMDNotFound(Exception):
+    """ An exception thrown when not RepoMD is found. """
+    pass
 
 
 class UpdateNoticeException(Exception):
@@ -536,6 +541,60 @@ class ContentSource:
                 rmtree(path)
 
 
+    def get_metadata_paths(self):
+        """
+        Simply load primary and updateinfo path from repomd
+
+        :returns: list
+        """
+        def get_location(data_item):
+            for sub_item in data_item:
+                if sub_item.tag.endswith("location"):
+                    return sub_item.attrib.get("href")
+
+        def get_checksum(data_item):
+            for sub_item in data_item:
+                if sub_item.tag.endswith("checksum"):
+                    return sub_item.attrib.get("type"), sub_item.text
+
+        if self._md_exists('repomd'):
+            repomd_path = self._retrieve_md_path('repomd')
+        else:
+            raise RepoMDNotFound(self._get_repodata_path())
+        repomd = open(repomd_path, 'rb')
+        files = {}
+        for _event, elem in etree.iterparse(repomd):
+            if elem.tag.endswith("data"):
+                if elem.attrib.get("type") == "primary_db":
+                    files['primary'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "primary" and 'primary' not in files:
+                    files['primary'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "updateinfo":
+                    files['updateinfo'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "group_gz":
+                    files['group'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "group" and 'group' not in files:
+                    files['group'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "modules":
+                    files['modules'] = (get_location(elem), get_checksum(elem))
+        repomd.close()
+        return list(files.values())
+
+    def repomd_up_to_date(self):
+        """
+        Check if repomd.xml has been updated.
+
+        :returns: bool
+        """
+        if self._md_exists('repomd'):
+            repomd_old_path = self._retrieve_md_path('repomd')
+            repomd_new_path = os.path.join(self._get_repodata_path(), "repomd.xml.new")
+            # Newer file not available? Don't do anything. It should be downloaded before this.
+            if not os.path.isfile(repomd_new_path):
+                return True
+            return checksum.getFileChecksum('sha256', filename=repomd_old_path) == checksum.getFileChecksum('sha256', filename=repomd_new_path)
+        else:
+            return False
 
     # Get download parameters for threaded downloader
     def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None,
