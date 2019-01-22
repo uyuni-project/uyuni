@@ -8,6 +8,7 @@ import configparser
 import glob
 import gzip
 import os
+import solv
 import sys
 import types
 
@@ -26,7 +27,9 @@ PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
 REPO_XML = '{http://linux.duke.edu/metadata/repo}'
 
 CACHE_DIR = '/var/cache/rhn/reposync'
-ZYPP_RAW_CACHE_PATH = 'var/cache/zypp/raw'
+ZYPP_CACHE_PATH = 'var/cache/zypp'
+ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'raw')
+ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
 REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
 
 
@@ -321,9 +324,9 @@ class ContentSource:
             self.urls[0] += '/'
 
         # Add this repo to the Zypper env
-        reponame = self.name.replace(" ", "-")
+        self.reponame = self.name.replace(" ", "-")
         # SUSE vendor repositories belongs to org = NULL
-        root = os.path.join(CACHE_DIR, str(org or "NULL"), reponame)
+        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
         self.repo = ZyppoSync(root=root)
         zypp_repo_url = self._prep_zypp_repo_url(url)
 
@@ -544,6 +547,15 @@ class ContentSource:
             modules = self._retrieve_md_path('modules')
         return modules
 
+    def raw_list_packages(self, filters=None):
+        pool = solv.Pool()
+        repo = pool.add_repo(self.reponame)
+        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.reponame, 'solv')
+        repo.add_solv(solv.xfopen(solv_path), 0)
+        rawpkglist = [str(solvable) for solvable in repo.solvables_iter()]
+        self.num_packages = len(rawpkglist)
+        return rawpkglist
+
     def list_packages(self, filters, latest):
         """
         List available packages.
@@ -551,24 +563,20 @@ class ContentSource:
         :returns: list
         """
 
-        pkglist = self.repo.list_pkgs()
-        self.num_packages = len(pkglist)
+        pool = solv.Pool()
+        repo = pool.add_repo(self.reponame)
+        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.reponame, 'solv')
+        repo.add_solv(solv.xfopen(solv_path), 0)
 
-        pkglist.sort(self._sort_packages)
+        #TODO: Implement latest
+        #if latest:
+        #     pkglist = pkglist.returnNewestByNameArch()
 
-        if not filters:
-            # if there's no include/exclude filter on command line or in database
-            for p in self.repo.includepkgs:
-                filters.append(('+', [p]))
-            for p in self.repo.exclude:
-                filters.append(('-', [p]))
-
-        if filters:
-            pkglist = self._filter_packages(pkglist, filters)
-            self.num_excluded = self.num_packages - len(pkglist)
+        #TODO: Implement sort
+        #pkglist.sort(self._sort_packages)
 
         to_return = []
-        for pack in pkglist:
+        for pack in repo.solvables:
             new_pack = ContentPackage()
             new_pack.setNVREA(pack.name, pack.version, pack.release,
                               pack.epoch, pack.arch)
@@ -576,6 +584,8 @@ class ContentSource:
             new_pack.checksum_type = pack.checksum_type
             new_pack.checksum = pack.checksum
             to_return.append(new_pack)
+
+        self.num_packages = len(to_return)
         return to_return
 
     @staticmethod
