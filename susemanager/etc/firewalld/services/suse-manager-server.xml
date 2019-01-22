@@ -8,7 +8,7 @@
 	<port protocol="tcp" port="5222"/>
 	<port protocol="tcp" port="5269"/>
         <port protocol="tcp" port="4505"/>
-        <port protocol="tcp" port="4506">
+	<port protocol="tcp" port="4506"/>
 	<port protocol="udp" port="123"/>
 	<port protocol="udp" port="69"/>
 	<module name="nf_conntrack_tftp"/>
