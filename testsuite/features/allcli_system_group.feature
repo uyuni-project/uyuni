@@ -60,7 +60,8 @@ Feature: Create a group
 
   Scenario: Check formula page is rendered for the system group
     Given I am on the groups page
-    When I follow "new-systems-group"
+    When I manually install the "locale" formula on the server
+    And I follow "new-systems-group"
     And I follow "Formulas"
     Then I should see a "Choose formulas:" text
     And I should see a "General System Configuration" text
@@ -79,6 +80,10 @@ Feature: Create a group
     And I check "new-systems-group" in the list
     And I click on "Leave Selected Groups"
     Then I should see a "1 system groups removed." text
+
+  Scenario: Cleanup: uninstall formula package from the server
+    Given I am authorized
+    And I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove the new group
     Given I am on the groups page
