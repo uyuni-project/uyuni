@@ -250,17 +250,17 @@ public class ContentManagementHandler extends BaseHandler {
      * Remove a Content Environment
      *
      * @param loggedInUser - the logged in user
-     * @param envLabel - the Content Environment label
      * @param projectLabel - the Content Project label
+     * @param envLabel - the Content Environment label
      * @return the number of removed objects
      *
      * @xmlrpc.doc Remove a Content Environment
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
      * @xmlrpc.returntype int - the number of removed objects
      */
-    public int removeEnvironment(User loggedInUser, String envLabel, String projectLabel) {
+    public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
         return ContentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
     }
 }
