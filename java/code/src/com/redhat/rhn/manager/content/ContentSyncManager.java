@@ -1618,7 +1618,7 @@ public class ContentSyncManager {
         Channel dbChannel = new Channel();
         dbChannel.setBaseDir("/dev/null");
         // from product
-        dbChannel.setChannelArch(MgrSyncUtils.getChannelArch(product.getArch()));
+        dbChannel.setChannelArch(MgrSyncUtils.getChannelArch(product.getArch(), label));
         dbChannel.setChannelFamily(product.getChannelFamily());
         // Checksum type is only a dummy here. spacewalk-repo-sync will update it
         // and set it to the type used in the (last) repo to hash the primary file

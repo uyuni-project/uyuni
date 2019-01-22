@@ -29,8 +29,10 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
+import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
@@ -268,6 +270,9 @@ public class SUSEProductTestUtils extends HibernateFactory {
         InputStreamReader inputStreamReader5 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "repositories.json"));
         List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader5, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
 
+        InputStreamReader inputStreamReader6 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "additional_repositories.json"));
+        List<SCCRepositoryJson> add_repos = gson.fromJson(inputStreamReader6, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
+
         Credentials credentials = CredentialsFactory.createSCCCredentials();
         credentials.setPassword("dummy");
         credentials.setUrl("dummy");
@@ -277,9 +282,15 @@ public class SUSEProductTestUtils extends HibernateFactory {
 
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateChannelFamilies(channelFamilies);
-        csm.updateSUSEProducts(products, upgradePaths, staticTree, Collections.emptyList());
+        csm.updateSUSEProducts(products, upgradePaths, staticTree, add_repos);
         if (withRepos) {
             csm.refreshRepositoriesAuthentication(repositories, credentials, null);
+
+            // set noauth for rhel-x86_64-server-7
+            SCCRepositoryNoAuth newAuth = new SCCRepositoryNoAuth();
+            newAuth.setCredentials(credentials);
+            newAuth.setRepository(SCCCachingFactory.lookupRepositoryBySccId(-75L).get());
+            SCCCachingFactory.saveRepositoryAuth(newAuth);
         }
     }
 
