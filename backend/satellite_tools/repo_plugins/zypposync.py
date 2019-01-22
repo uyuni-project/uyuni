@@ -4,24 +4,30 @@ Reposync via Salt library.
 """
 from __future__ import absolute_import, unicode_literals
 
+import configparser
 import glob
 import gzip
 import os
 import sys
 import types
+
+from urllib.parse import urlsplit, urlencode
 import xml.etree.ElementTree as etree
 
 import salt.client
 import salt.config
 
 from spacewalk.common import checksum, rhnLog
+from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
+from spacewalk.satellite_tools.download import get_proxies
 
 # namespace prefix to parse patches.xml file
 PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
 REPO_XML = '{http://linux.duke.edu/metadata/repo}'
 
-ZYPP_CACHE_ROOT_PATH = '/var/cache/rhn/reposync'
+CACHE_DIR = '/var/cache/rhn/reposync'
 ZYPP_RAW_CACHE_PATH = 'var/cache/zypp/raw'
+REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
 
 
 class ZyppoSync:
