@@ -71,7 +71,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabelAndOrg("project1", user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
         assertEquals("This is project 1", fromDb.getDescription());
 
@@ -123,7 +123,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabelAndOrg("project1", user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
         assertEquals("This is project 1", fromDb.getDescription());
 
@@ -142,7 +142,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        fromDb = ContentProjectFactory.lookupContentProjectByLabelAndOrg("project1", user.getOrg()).get();
+        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         ContentEnvironment newfirst = fromDb.getFirstEnvironmentOpt().get();
         assertEquals("prod", newfirst.getLabel());
         assertEquals("Production", newfirst.getName());
@@ -161,7 +161,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProject cp2 = new ContentProject("cplabel2", "cpname2", "cpdesc2", org2);
         ContentProjectFactory.save(cp2);
 
-        List<ContentProject> contentProjects = ContentProjectFactory.listContentProjects(user.getOrg());
+        List<ContentProject> contentProjects = ContentProjectFactory.listProjects(user.getOrg());
         assertEquals(1, contentProjects.size());
         ContentProject fromDb = contentProjects.get(0);
         assertNotNull(fromDb.getId());
@@ -185,15 +185,15 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(cp2);
 
         // happy paths
-        Optional<ContentProject> fromDb1 = ContentProjectFactory.lookupContentProjectByLabelAndOrg("cplabel", org1);
+        Optional<ContentProject> fromDb1 = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", org1);
         assertEquals(cp1, fromDb1.get());
-        Optional<ContentProject> fromDb2 = ContentProjectFactory.lookupContentProjectByLabelAndOrg("cplabel2", org2);
+        Optional<ContentProject> fromDb2 = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel2", org2);
         assertEquals(cp2, fromDb2.get());
 
         // cross-org access test
-        fromDb1 = ContentProjectFactory.lookupContentProjectByLabelAndOrg("cplabel", org2);
+        fromDb1 = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", org2);
         assertFalse(fromDb1.isPresent());
-        fromDb2 = ContentProjectFactory.lookupContentProjectByLabelAndOrg("cplabel2", org1);
+        fromDb2 = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel2", org1);
         assertFalse(fromDb2.isPresent());
     }
 
@@ -220,7 +220,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabelAndOrg("project1", user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         List<ContentEnvironment> envs = ContentProjectFactory.listProjectEnvironments(fromDb);
         assertEquals("dev", envs.get(0).getLabel());
         assertEquals("int", envs.get(1).getLabel());
@@ -280,16 +280,16 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.addFilter(packageFilter);
         cp.addFilter(packageFilter2);
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
         assertEquals(asList(packageFilter, packageFilter2), fromDb.getFilters());
 
         cp.removeFilter(packageFilter);
-        fromDb = ContentProjectFactory.lookupContentProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
+        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
         assertEquals(asList(packageFilter2), fromDb.getFilters());
 
         // check if the order is honored if filters are "swapped"
         cp.addFilter(packageFilter);
-        fromDb = ContentProjectFactory.lookupContentProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
+        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
         assertEquals(asList(packageFilter2, packageFilter), fromDb.getFilters());
     }
 
@@ -359,7 +359,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
         ContentProjectFactory.addHistoryEntryToProject(cp, sndEntry);
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
         ContentProjectHistoryEntry fstEntryFromDb = fromDb.getHistoryEntries().get(0);
         ContentProjectHistoryEntry sndEntryFromDb = fromDb.getHistoryEntries().get(1);
 
