@@ -61,7 +61,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Look up Content Project with given label
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
      * @xmlrpc.returntype $ContentProjectSerializer
      */
     public ContentProject lookupProject(User loggedInUser, String label) {
@@ -79,9 +79,9 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Create Content Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "description")
+     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "name", "Content Project name")
+     * @xmlrpc.param #param_desc("string", "description", "Content Project description")
      * @xmlrpc.returntype $ContentProjectSerializer
      */
     public ContentProject createProject(User loggedInUser, String label, String name, String description) {
@@ -103,7 +103,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Update Content Project with given label
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
      * @xmlrpc.param
      *  #struct("data")
      *      #prop_desc("string", "name", "Content Project name")
@@ -132,7 +132,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Remove Content Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
      * @xmlrpc.returntype int - the number of removed objects
      */
     public int removeProject(User loggedInUser, String label) {
@@ -148,7 +148,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc List Environments in a Content Project with the respect to their ordering
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "projectLabel")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.returntype
      * #array()
      * $ContentEnvironmentSerializer
@@ -173,8 +173,8 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Look up Content Environment based on Content Project and Content Environment label
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "projectLabel")
-     * @xmlrpc.param #param("string", "envLabel")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
      * @xmlrpc.returntype $ContentEnvironmentSerializer
      */
     public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel, String envLabel) {
@@ -194,11 +194,11 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Create a Content Environment and appends it behind given Content Environment
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "projectLabel")
-     * @xmlrpc.param #param("string", "predecessorLabel")
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "description")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "predecessorLabel", "Predecessor Environment label")
+     * @xmlrpc.param #param_desc("string", "label", "new Content Environment label")
+     * @xmlrpc.param #param_desc("string", "name", "new Content Environment name")
+     * @xmlrpc.param #param_desc("string", "description", "new Content Environment description")
      * @xmlrpc.returntype $ContentEnvironmentSerializer
      */
     public ContentEnvironment createEnvironment(User loggedInUser, String projectLabel, String predecessorLabel,
@@ -223,8 +223,8 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Update Content Environment with given label
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "project label")
-     * @xmlrpc.param #param("string", "environment label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
      * @xmlrpc.param
      *  #struct("data")
      *      #prop_desc("string", "name", "Content Environment name")
@@ -256,8 +256,8 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Remove a Content Environment
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "envLabel")
-     * @xmlrpc.param #param("string", "projectLabel")
+     * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.returntype int - the number of removed objects
      */
     public int removeEnvironment(User loggedInUser, String envLabel, String projectLabel) {
