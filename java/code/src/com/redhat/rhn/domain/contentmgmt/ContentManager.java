@@ -36,10 +36,10 @@ public class ContentManager {
      * @param description - the description
      * @param user - the creator
      * @throws ContentManagementException if a project with given label already exists
-     * @return the created content project
+     * @return the created Content Project
      */
-    public static ContentProject createContentProject(String label, String name, String description, User user) {
-        lookupContentProject(label, user).ifPresent(cp -> {
+    public static ContentProject createProject(String label, String name, String description, User user) {
+        lookupProject(label, user).ifPresent(cp -> {
             throw new ContentManagementException("Content Project with label " + label + " already exists");
         });
         ContentProject contentProject = new ContentProject(label, name, description, user.getOrg());
@@ -54,8 +54,8 @@ public class ContentManager {
      * @param user - the user
      * @return Optional with matching Content Project
      */
-    public static Optional<ContentProject> lookupContentProject(String label, User user) {
-        return ContentProjectFactory.lookupContentProjectByLabelAndOrg(label, user.getOrg());
+    public static Optional<ContentProject> lookupProject(String label, User user) {
+        return ContentProjectFactory.lookupProjectByLabelAndOrg(label, user.getOrg());
     }
 
     /**
@@ -65,13 +65,12 @@ public class ContentManager {
      * @param newName - new name
      * @param newDesc - new description
      * @param user - the user
-     * @throws com.redhat.rhn.domain.contentmgmt.ContentManagementException - if Content Project with given label is not
-     * found
+     * @throws ContentManagementException - if Content Project with given label is not found
      * @return the updated Content Project
      */
-    public static ContentProject updateContentProject(String label, Optional<String> newName, Optional<String> newDesc,
+    public static ContentProject updateProject(String label, Optional<String> newName, Optional<String> newDesc,
             User user) {
-        return lookupContentProject(label, user)
+        return lookupProject(label, user)
                 .map(cp -> {
                     newName.ifPresent(name -> cp.setName(name));
                     newDesc.ifPresent(desc -> cp.setDescription(desc));
@@ -88,8 +87,8 @@ public class ContentManager {
      * @param user - the user
      * @return the number of objects affected
      */
-    public static int removeContentProject(String label, User user) {
-        return lookupContentProject(label, user)
+    public static int removeProject(String label, User user) {
+        return lookupProject(label, user)
                 .map(cp -> ContentProjectFactory.remove(cp))
                 .orElse(0);
     }
@@ -97,21 +96,23 @@ public class ContentManager {
     /**
      * Create Content Environment
      *
-     * @param contentProjectLabel - the Content Project label
+     * @param projectLabel - the Content Project label
      * @param predecessorLabel - the predecessor Environment label
      * @param label - the Environment label
      * @param name - the Environment name
      * @param description - the Environment description
      * @param user - the user performing the action
+     * @throws ContentManagementException - if Content Project with given label or Content Environment in the Project
+     * is not found
      * @return the created Content Environment
      */
-    public static ContentEnvironment createContentEnvironment(String contentProjectLabel,
-            Optional<String> predecessorLabel, String label, String name, String description, User user) {
-        return lookupContentProject(contentProjectLabel, user)
+    public static ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
+            String label, String name, String description, User user) {
+        return lookupProject(projectLabel, user)
                 .map(cp -> {
                     ContentEnvironment newEnv = new ContentEnvironment(label, name, description, cp);
                     Optional<ContentEnvironment> predecessor = predecessorLabel.map(pl ->
-                            ContentProjectFactory.lookupEnvironmentByLabelAndContentProject(pl, cp)
+                            ContentProjectFactory.lookupEnvironmentByLabelAndProject(pl, cp)
                                     .orElseThrow(() -> new ContentManagementException("Environment " + pl +
                                             " in Project " + label + " not found.")));
                     ContentProjectFactory.insertEnvironment(newEnv, predecessor);
@@ -123,35 +124,35 @@ public class ContentManager {
     /**
      * List Environments in a Content Project with the respect to their ordering
      *
-     * @param contentProjectLabel - the Content Project label
+     * @param projectLabel - the Content Project label
      * @param user - the user
+     * @throws ContentManagementException - if Content Project with given label is not found
      * @return the List of Content Environments with respect to their ordering
      */
-    public static List<ContentEnvironment> listContentProjectEnvironments(String contentProjectLabel, User user) {
-        return lookupContentProject(contentProjectLabel, user)
+    public static List<ContentEnvironment> listProjectEnvironments(String projectLabel, User user) {
+        return lookupProject(projectLabel, user)
                 .map(cp -> ContentProjectFactory.listProjectEnvironments(cp))
-                .orElseThrow(() -> new ContentManagementException("Content Project with label " +
-                        contentProjectLabel + " not found."));
+                .orElseThrow(() -> new ContentManagementException("Content Project with label " + projectLabel +
+                        " not found."));
     }
 
     /**
      * Look up Content Environment based on its label, Content Project label and Org
      *
-     * @param environmentLabel - the Content Environment label
-     * @param contentProjectLabel - the Content Project label
+     * @param envLabel - the Content Environment label
+     * @param contentLabel - the Content Project label
      * @param user - the user
      * @return the optional of matching Content Environment
      */
-    public static Optional<ContentEnvironment> lookupContentEnvironment(String environmentLabel,
-            String contentProjectLabel, User user) {
-        return lookupContentProject(contentProjectLabel, user)
-                .flatMap(cp -> ContentProjectFactory.lookupEnvironmentByLabelAndContentProject(environmentLabel, cp));
+    public static Optional<ContentEnvironment> lookupEnvironment(String envLabel, String contentLabel, User user) {
+        return lookupProject(contentLabel, user)
+                .flatMap(cp -> ContentProjectFactory.lookupEnvironmentByLabelAndProject(envLabel, cp));
     }
 
     /**
      * Update Content Environment
      *
-     * @param environmentLabel - the Environment label
+     * @param envLabel - the Environment label
      * @param projectLabel - the Content Project label
      * @param newName - new name
      * @param newDescription - new description
@@ -159,15 +160,15 @@ public class ContentManager {
      * @throws ContentManagementException - if the Environment is not found
      * @return the updated Environment
      */
-    public static ContentEnvironment updateContentEnvironment(String environmentLabel, String projectLabel,
-            Optional<String> newName, Optional<String> newDescription, User user) {
-        return lookupContentEnvironment(environmentLabel, projectLabel, user)
+    public static ContentEnvironment updateEnvironment(String envLabel, String projectLabel, Optional<String> newName,
+            Optional<String> newDescription, User user) {
+        return lookupEnvironment(envLabel, projectLabel, user)
                 .map(env -> {
                     newName.ifPresent(name -> env.setName(name));
                     newDescription.ifPresent(desc -> env.setDescription(desc));
                     return env;
                 })
-                .orElseThrow(() -> new ContentManagementException("Environment with label " + environmentLabel +
+                .orElseThrow(() -> new ContentManagementException("Environment with label " + envLabel +
                         " in Project " + projectLabel + " not found."));
     }
 
@@ -175,13 +176,13 @@ public class ContentManager {
     /**
      * Remove a Content Environment
      *
-     * @param environmentLabel - the Content Environment label
-     * @param contentProjectLabel - the Content Project label
+     * @param envLabel - the Content Environment label
+     * @param projectLabel - the Content Project label
      * @param user - the user
      * @return number of deleted objects
      */
-    public static int removeContentEnvironment(String environmentLabel, String contentProjectLabel, User user) {
-        return lookupContentEnvironment(environmentLabel, contentProjectLabel, user)
+    public static int removeEnvironment(String envLabel, String projectLabel, User user) {
+        return lookupEnvironment(envLabel, projectLabel, user)
                 .map((env) -> {
                     ContentProjectFactory.removeEnvironment(env);
                     return 1;
