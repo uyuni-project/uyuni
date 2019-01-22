@@ -343,8 +343,8 @@ class ContentSource:
     def _prep_zypp_repo_url(self, url) -> str:
         """
         Prepare the repository baseurl to use in the Zypper repo file.
-        This will add the HTTP Proxy as part of the url parameters to
-        be interpreted by CURL during the Zypper execution.
+        This will add the HTTP Proxy and Client certificate settings as part of
+        the url parameters to be interpreted by CURL during the Zypper execution.
 
         :returns: str
         """
@@ -356,6 +356,12 @@ class ContentSource:
             query_params['proxyuser'] = self.proxy_user
         if self.proxy_pass:
             query_params['proxypass'] = self.proxy_pass
+        if self.sslcacert:
+            query_params['ssl_capath'] = self.sslcacert
+        if self.sslclientcert:
+            query_params['ssl_clientcert'] = self.sslclientcert
+        if self.sslclientkey:
+            query_params['ssl_clientkey'] = self.sslclientkey
         new_query = urlencode(query_params, doseq=True)
         if self.authtoken:
             ret_url = "{0}&{1}".format(url, new_query)
