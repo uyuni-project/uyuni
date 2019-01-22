@@ -350,8 +350,7 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
 
 dump_remote_db() {
     echo "`date +"%H:%M:%S"`   Dumping remote database to $TMPDIR/$DBDUMPFILE on target system. Please wait..."
-    scp -i $KEYFILE /usr/lib/susemanager/bin/tclfilter root@$SATELLITE_IP:/tmp
-    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | /bin/bash /tmp/tclfilter | gzip\"" > $TMPDIR/$DBDUMPFILE
+    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | gzip\"" > $TMPDIR/$DBDUMPFILE
     if [ $? -eq 0 ]; then
         echo -n "`date +"%H:%M:%S"`   Database successfully dumped. Size is: "
         du -h $TMPDIR/$DBDUMPFILE | cut -f 1
@@ -435,6 +434,17 @@ copy_remote_files_suse() {
     rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/ >> $RSYNC_LOG
     echo "`date +"%H:%M:%S"`   Copy /root/.ssh ..."
     rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/.ssh/ /root/.ssh.new >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /srv/www/os-images ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/srv/www/os-images /srv/www/ >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /srv/susemanager ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/srv/susemanager /srv/ >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /srv/salt ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/srv/salt /srv/ >> $RSYNC_LOG
+    ssh -i $KEYFILE root@$SATELLITE_IP "test -d /var/lib/Kiwi"
+    if [ $? -eq 0 ]; then
+        echo "`date +"%H:%M:%S"`   Copy /var/lib/Kiwi ..."
+        rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/lib/Kiwi /var/lib/ >> $RSYNC_LOG
+    fi
 
     chown -R wwwrun.www /var/spacewalk
     ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
