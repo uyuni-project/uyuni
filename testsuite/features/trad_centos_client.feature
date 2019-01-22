@@ -23,13 +23,13 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
   Scenario: Prepare a CentOS 7 traditional client
     Given I am authorized
     When I enable repository "Devel_Galaxy_Manager_3.2_RES-Manager-Tools-7-x86_64" on this "ceos-client"
-    And  I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos-client"
-    And  I enable repository "CentOS-Base" on this "ceos-client"
-    And  I install package "hwdata m2crypto wget" on this "ceos-client"
-    And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos-client"
-    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos-client"
-    And  I register "ceos-client" as traditional client
-    And  I run "rhn-actions-control --enable-all" on "ceos-client"
+    And I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos-client"
+    And I enable repository "CentOS-Base" on this "ceos-client"
+    And I install package "hwdata m2crypto wget" on this "ceos-client"
+    And I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos-client"
+    And I install package "spacewalk-oscap scap-security-guide" on this "ceos-client"
+    And I register "ceos-client" as traditional client
+    And I run "rhn-actions-control --enable-all" on "ceos-client"
 
 @proxy
 @centos_minion
@@ -46,6 +46,20 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos-client" hostname
+
+@centos_minion
+  Scenario: Re-subscribe the CentOS traditional client to a base channel
+    Given I am on the Systems overview page of this "ceos-minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test Base Channel"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @centos_minion
   Scenario: Schedule an OpenSCAP audit job for the CentOS traditional client
@@ -101,3 +115,17 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "ceos-ssh-minion", refreshing the page
     And I wait until onboarding is completed for "ceos-ssh-minion"
+
+@centos_minion
+  Scenario: Cleanup: re-subscribe the new SSH-managed CentOS minion to a base channel
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test Base Channel"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed

@@ -1,17 +1,26 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Install a patch on the CentOS minion via Salt through the UI
+Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 
 @centos_minion
   Scenario: Pre-requisite: install virgo-dummy-1.0 packages
-    When I enable repository "Devel_Galaxy_BuildRepo" on this "ceos-minion"
-    And I remove package "andromeda-dummy" from this "ceos-minion"
-    And I install package "virgo-dummy-1.0" on this "ceos-minion"
+    When I enable repository "Devel_Galaxy_BuildRepo" on this "ceos-ssh-minion"
+    And I remove package "andromeda-dummy" from this "ceos-ssh-minion"
+    And I install package "virgo-dummy-1.0" on this "ceos-ssh-minion"
+
+@centos_minion
+  Scenario: Pre-requisite: refresh package list on Centos SSH minion 
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    When I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I follow "Events" in the content area
+    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    Then I wait until event "Package List Refresh scheduled by admin" is completed
 
 @centos_minion
   Scenario: Schedule errata refresh to reflect channel assignment on CentOS minion
-    Given I am on the Systems overview page of this "ceos-minion"
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
@@ -26,7 +35,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
 
 @centos_minion
   Scenario: Install a patch on the minion
-    Given I am on the Systems overview page of this "ceos-minion"
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
     And I follow "Software" in the content area
     And I follow "Patches" in the content area
     When I check "virgo-dummy-3456" in the list
@@ -34,24 +43,32 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     And I click on "Confirm"
     And I wait for "5" seconds
     Then I should see a "1 patch update has been scheduled for" text
-    And I wait for "virgo-dummy-2.0-1.1" to be installed on this "ceos-minion"
+    And I wait for "virgo-dummy" to be installed on this "ceos-ssh-minion"
 
 @centos_minion
   Scenario: Install a package on the minion
-    Given I am on the Systems overview page of this "ceos-minion"
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
     And I follow "Software" in the content area
     And I follow "Install"
     And I check "andromeda-dummy" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
-    Then "andromeda-dummy-2.0-1.1" should be installed on "ceos-minion"
+    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
 @centos_minion
-  Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos minion
-    Given I am authorized as "admin" with password "admin"
-    And I remove package "andromeda-dummy" from this "ceos-minion"
-    And I install package "andromeda-dummy-1.0" on this "ceos-minion"
-    And I remove package "virgo-dummy" from this "ceos-minion"
-    And I disable repository "Devel_Galaxy_BuildRepo" on this "ceos-minion"
+  Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos SSH minion
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    And I follow "Software" in the content area
+    And I follow "List / Remove"
+    And I enter "andromeda" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I check "andromeda-dummy" in the list
+    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I check "virgo-dummy" in the list
+    And I click on "Remove Packages"
+    And I click on "Confirm"
+    Then I should see a "2 package removals have been scheduled" text
+    And I wait until event "Package Removal scheduled by admin" is completed
+    And I disable repository "Devel_Galaxy_BuildRepo" on this "ceos-ssh-minion"

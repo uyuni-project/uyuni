@@ -51,6 +51,20 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see "ceos-minion" hostname
 
 @centos_minion
+  Scenario: Re-subscribe the CentOS minion to a base channel
+    Given I am on the Systems overview page of this "ceos-minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test Base Channel"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+@centos_minion
   Scenario: Detect latest Salt changes on the CentOS minion
     When I query latest Salt changes on "ceos-minion"
 
@@ -115,3 +129,17 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "ceos-ssh-minion", refreshing the page
     And I wait until onboarding is completed for "ceos-ssh-minion"
+
+@centos_minion
+  Scenario: Cleanup: re-subscribe the SSH-managed CentOS minion to a base channel
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test Base Channel"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
