@@ -1163,8 +1163,24 @@ sub setup_services {
   return 1;
 }
 
+sub is_suse_like {
+  my $filename = '/etc/os-release';
+  if(! -e $filename) {
+    return;
+  }
+  open my $fh, "<", $filename or die "Could not open '$filename': $!\n";
+  while( my $line = <$fh> ) {
+    if ($line =~ m/ID_LIKE=".*suse.*"/) {
+      close $fh;
+      return 1;
+    }
+  }
+  close $fh;
+  return;
+}
+
 sub setup_users_and_groups {
-  if(-e '/etc/SuSE-release')
+  if(is_suse_like)
   {
     # Check to be sure the required users and groups exist.
     my @required_groups = qw/www/;

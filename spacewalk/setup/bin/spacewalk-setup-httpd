@@ -141,6 +141,22 @@ sub setup_mod_ssl {
         return;
 }
 
+sub is_suse_like {
+  my $filename = '/etc/os-release';
+  if(! -e $filename) {
+    return;
+  }
+  open my $fh, "<", $filename or die "Could not open '$filename': $!\n";
+  while( my $line = <$fh> ) {
+    if ($line =~ m/ID_LIKE=".*suse.*"/) {
+      close $fh;
+      return 1;
+    }
+  }
+  close $fh;
+  return;
+}
+
 # main
 
 my $help;
@@ -163,8 +179,8 @@ if ($help) {
         exit 0;
 }
 
-if(-e '/etc/SuSE-release') {
-    $isSUSE = 1;
+if(is_suse_like) {
+  $isSUSE = 1;
 }
 
 setup_mod_ssl($fips_mode_on);
