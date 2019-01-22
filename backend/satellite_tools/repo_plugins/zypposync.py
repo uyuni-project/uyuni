@@ -364,15 +364,30 @@ class ContentSource:
         return ret_url
 
     def _md_exists(self, tag:str) -> bool:
+        """
+        Check if the requested metadata exists on the repository
+
+        :returns: bool
+        """
         return bool(self._retrieve_md_path(tag))
 
     def _retrieve_md_path(self, tag:str) -> str:
+        """
+        Return the path to the requested metadata if exists
+
+        :returns: str
+        """
         _md_files = glob.glob(self._get_repodata_path() + "/*{}.xml.gz".format(tag)) or glob.glob(self._get_repodata_path() + "/*{}.xml".format(tag))
         if _md_files:
             return _md_files[0]
         return None
 
     def _get_repodata_path(self) -> str:
+        """
+        Return the path to the repository repodata directory
+
+        :returns: str
+        """
         return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.name, "repodata")
 
     def get_md_checksum_type(self) -> (str, int):
@@ -401,7 +416,7 @@ class ContentSource:
 
     def get_susedata(self):
         """
-        Return ??
+        Return susedata metadata from the repository if available
 
         :returns: list
         """
@@ -434,10 +449,11 @@ class ContentSource:
                 susedata.append(d)
         return susedata
 
-    def get_products(self):
+    def get_products(self) -> list:
         """
-        Return list of products
-        :returns: ?
+        Return products metadata from the repository if available
+
+        :returns: list
         """
         products = []
         if self._md_exists('products'):
@@ -461,7 +477,7 @@ class ContentSource:
 
     def get_updates(self):
         """
-        Return available updates.
+        Return update metadata from the repository if available
 
         :returns: list
         """
@@ -501,7 +517,7 @@ class ContentSource:
 
     def get_groups(self):
         """
-        Return list of groups
+        Return path to the repository groups metadata file if available
 
         :returns: str
         """
@@ -513,7 +529,7 @@ class ContentSource:
 
     def get_modules(self):
         """
-        Return list of modules
+        Return path to the repository modules metadata file if available
 
         :returns: str
         """
@@ -631,7 +647,19 @@ class ContentSource:
 
     def get_metadata_paths(self):
         """
-        Simply load primary and updateinfo path from repomd
+        Simply return the 'primary' and 'updateinfo' path from repomd
+
+        Example output:
+        [
+            (
+                'repodata/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz',
+                ('sha256', 'bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c')
+            ),
+            (
+                'repodata/6614b3605d961a4aaec45d74ac4e5e713e517debb3ee454a1c91097955780697-primary.sqlite.bz2',
+                ('sha256', '6614b3605d961a4aaec45d74ac4e5e713e517debb3ee454a1c91097955780697')
+            )
+        ]
 
         :returns: list
         """
@@ -670,7 +698,7 @@ class ContentSource:
 
     def repomd_up_to_date(self):
         """
-        Check if repomd.xml has been updated.
+        Check if repomd.xml has been updated by spacewalk.
 
         :returns: bool
         """
