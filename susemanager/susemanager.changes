@@ -1,4 +1,5 @@
 - Fix invalid XML for firewalld suse-manager-server configuration
+- Configure openJDK 11 as default JVM during setup
 - adapt script for migration from 3.2 to 4.0
 
 -------------------------------------------------------------------
