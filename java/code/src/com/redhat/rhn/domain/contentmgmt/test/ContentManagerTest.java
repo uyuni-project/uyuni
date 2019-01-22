@@ -40,10 +40,10 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
      * Test creating & looking up Content Project
      */
     public void testLookupContentProject() {
-        ContentProject cp = ContentManager.createContentProject("cplabel", "cpname", "description", user);
+        ContentProject cp = ContentManager.createProject("cplabel", "cpname", "description", user);
         assertNotNull(cp.getId());
 
-        Optional<ContentProject> fromDb = ContentManager.lookupContentProject("cplabel", user);
+        Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", user);
         assertEquals(cp, fromDb.get());
     }
 
@@ -51,9 +51,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
      * Test multiple creating Content Project with same label
      */
     public void testMultipleCreateContentProject() {
-        ContentManager.createContentProject("cplabel", "cpname", "description", user);
+        ContentManager.createProject("cplabel", "cpname", "description", user);
         try {
-            ContentManager.createContentProject("cplabel", "differentname", null, user);
+            ContentManager.createProject("cplabel", "differentname", null, user);
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -65,10 +65,10 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
      * Test updating Content Project
      */
     public void testUpdateContentProject() {
-        ContentProject cp = ContentManager.createContentProject("cplabel", "cpname", "description", user);
-        ContentProject updated = ContentManager.updateContentProject(cp.getLabel(), of("new name"), of("new desc"), user);
+        ContentProject cp = ContentManager.createProject("cplabel", "cpname", "description", user);
+        ContentProject updated = ContentManager.updateProject(cp.getLabel(), of("new name"), of("new desc"), user);
 
-        ContentProject fromDb = ContentManager.lookupContentProject("cplabel", user).get();
+        ContentProject fromDb = ContentManager.lookupProject("cplabel", user).get();
         assertEquals(fromDb, updated);
         assertEquals("new name", fromDb.getName());
         assertEquals("new desc", fromDb.getDescription());
@@ -78,10 +78,10 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
      * Test removing Content Project
      */
     public void testRemoveContentProject() {
-        ContentProject cp = ContentManager.createContentProject("cplabel", "cpname", "description", user);
-        int entitiesAffected = ContentManager.removeContentProject(cp.getLabel(), user);
+        ContentProject cp = ContentManager.createProject("cplabel", "cpname", "description", user);
+        int entitiesAffected = ContentManager.removeProject(cp.getLabel(), user);
         assertEquals(1, entitiesAffected);
-        Optional<ContentProject> fromDb = ContentManager.lookupContentProject("cplabel", user);
+        Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", user);
         assertFalse(fromDb.isPresent());
     }
 
@@ -89,41 +89,41 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
      * Tests various operations performed by a user from different organization
      */
     public void testContentProjectCrossOrg() {
-        ContentProject cp = ContentManager.createContentProject("cplabel", "cpname", "description", user);
+        ContentProject cp = ContentManager.createProject("cplabel", "cpname", "description", user);
 
         Org rangersOrg = UserTestUtils.createNewOrgFull("rangers");
         User anotherUser = UserTestUtils.createUser("Chuck", rangersOrg.getId());
 
-        assertFalse(ContentManager.lookupContentProject(cp.getLabel(), anotherUser).isPresent());
+        assertFalse(ContentManager.lookupProject(cp.getLabel(), anotherUser).isPresent());
 
         try {
-            ContentManager.updateContentProject(cp.getLabel(), of("new name"), of("new desc"), anotherUser);
+            ContentManager.updateProject(cp.getLabel(), of("new name"), of("new desc"), anotherUser);
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
             // no-op
         }
 
-        assertEquals(0, ContentManager.removeContentProject(cp.getLabel(), anotherUser));
+        assertEquals(0, ContentManager.removeProject(cp.getLabel(), anotherUser));
     }
 
     /**
      * Tests creating, looking up and removing Environments in a Project
      */
     public void testContentEnvironmentLifecycle() {
-        ContentProject cp = ContentManager.createContentProject("cplabel", "cpname", "description", user);
+        ContentProject cp = ContentManager.createProject("cplabel", "cpname", "description", user);
 
         ContentEnvironment fst = ContentManager.
-                createContentEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
+                createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
         ContentEnvironment snd = ContentManager
-                .createContentEnvironment(cp.getLabel(), of(fst.getLabel()), "snd", "second env", "desc2", user);
+                .createEnvironment(cp.getLabel(), of(fst.getLabel()), "snd", "second env", "desc2", user);
         assertEquals(asList(fst, snd), ContentProjectFactory.listProjectEnvironments(cp));
 
         ContentEnvironment mid = ContentManager.
-                createContentEnvironment(cp.getLabel(), of(fst.getLabel()), "mid", "middle env", "desc", user);
+                createEnvironment(cp.getLabel(), of(fst.getLabel()), "mid", "middle env", "desc", user);
         assertEquals(asList(fst, mid, snd), ContentProjectFactory.listProjectEnvironments(cp));
 
-        int numRemoved = ContentManager.removeContentEnvironment(fst.getLabel(), cp.getLabel(), user);
+        int numRemoved = ContentManager.removeEnvironment(fst.getLabel(), cp.getLabel(), user);
         assertEquals(1, numRemoved);
         assertEquals(asList(mid, snd), ContentProjectFactory.listProjectEnvironments(cp));
         assertEquals(mid, cp.getFirstEnvironmentOpt().get());
@@ -149,13 +149,13 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
      * Test updating a Content Environment
      */
     public void testUpdateContentEnvironment() {
-        ContentProject cp = ContentManager.createContentProject("cplabel", "cpname", "description", user);
+        ContentProject cp = ContentManager.createProject("cplabel", "cpname", "description", user);
         ContentManager
-                .createContentEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
-        ContentManager.updateContentEnvironment("fst", "cplabel", of("new env name"),
+                .createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
+        ContentManager.updateEnvironment("fst", "cplabel", of("new env name"),
                 of("new description"), user);
         ContentEnvironment fromDb = ContentManager
-                .lookupContentEnvironment("fst", "cplabel", user).get();
+                .lookupEnvironment("fst", "cplabel", user).get();
 
         assertEquals("new env name", fromDb.getName());
         assertEquals("new description", fromDb.getDescription());

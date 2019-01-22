@@ -78,7 +78,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param org - the org
      * @return Optional with ContentProject with given label
      */
-    public static Optional<ContentProject> lookupContentProjectByLabelAndOrg(String label, Org org) {
+    public static Optional<ContentProject> lookupProjectByLabelAndOrg(String label, Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ContentProject> criteria = builder.createQuery(ContentProject.class);
         Root<ContentProject> root = criteria.from(ContentProject.class);
@@ -93,7 +93,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param org - the organization
      * @return the ContentProjects in given organization
      */
-    public static List<ContentProject> listContentProjects(Org org) {
+    public static List<ContentProject> listProjects(Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ContentProject> query = builder.createQuery(ContentProject.class);
         Root<ContentProject> root = query.from(ContentProject.class);
@@ -140,7 +140,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param project the Content Project
      * @return matching Environment
      */
-    public static Optional<ContentEnvironment> lookupEnvironmentByLabelAndContentProject(String label,
+    public static Optional<ContentEnvironment> lookupEnvironmentByLabelAndProject(String label,
             ContentProject project) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ContentEnvironment> criteria = builder.createQuery(ContentEnvironment.class);
