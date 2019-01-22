@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2018 SUSE
+# Copyright (c) 2010-2019 SUSE
 # Licensed under the terms of the MIT license.
 
 require 'jwt'

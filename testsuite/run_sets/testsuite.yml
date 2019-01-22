@@ -32,8 +32,8 @@
 - features/core_centos_salt.feature
 - features/min_centos_salt_install_package_and_patch.feature
 - features/core_centos_salt_ssh.feature
-#- features/core_ubuntu_salt.feature
-#- features/core_ubuntu_salt_ssh.feature
+- features/core_ubuntu_salt.feature
+- features/core_ubuntu_salt_ssh.feature
 # these features sync real channels (last core features)
 #- features/core_srv_sync_channels.feature
 #- features/core_srv_setup_wizard.feature

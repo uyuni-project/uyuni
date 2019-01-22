@@ -1,4 +1,4 @@
-# Copyright 2015-2018 SUSE LLC
+# Copyright 2015-2019 SUSE LLC
 require 'timeout'
 require 'open-uri'
 require 'tempfile'
@@ -695,6 +695,17 @@ When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
     target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
   elsif ['ubuntu-minion'].include?(host)
     target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", false)
+  end
+end
+
+When(/^I install Salt packages from "(.*?)"$/) do |host|
+  target = get_target(host)
+  if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", false)
+  elsif ['ceos-minion'].include?(host)
+    target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", false)
+  elsif ['ubuntu-minion'].include?(host)
+    target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", false)
   end
 end
 
