@@ -46,7 +46,7 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:  noarch
-BuildRequires:  java-devel >= 1.8.0
+BuildRequires:  java-devel >= 11
 BuildRequires:  nodejs
 BuildRequires:  nodejs-less
 Requires:       httpd

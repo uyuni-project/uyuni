@@ -65,7 +65,7 @@ Requires:       concurrent
 Requires:       google-gson >= 2.2.4
 Requires:       httpcomponents-client
 Requires:       jakarta-commons-digester
-Requires:       java >= 1.8.0
+Requires:       java >= 11
 Requires:       classmate
 Requires:       ehcache >= 2.10.1
 Requires:       gnu-jaf
@@ -97,7 +97,7 @@ BuildRequires:  byte-buddy
 BuildRequires:  jpa-api
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
-BuildRequires:  java-devel >= 1.8.0
+BuildRequires:  java-devel >= 11
 BuildRequires:  javassist
 BuildRequires:  jboss-logging
 BuildRequires:  jsch
@@ -120,11 +120,11 @@ BuildRequires: pgjdbc-ng
 %else
 Requires:       cobbler20
 Requires:       jakarta-taglibs-standard
-Requires:       java >= 1:1.7.0
-Requires:       java-devel >= 1:1.7.0
+Requires:       java >= 11
+Requires:       java-devel >= 11
 Requires:       jpam
 Requires:       oscache
-BuildRequires:  java-devel >= 1:1.7.0
+BuildRequires:  java-devel >= 11
 BuildRequires:  jpam
 BuildRequires:  oscache
 
@@ -413,15 +413,15 @@ Requires:       bcel
 Requires:       c3p0 >= 0.9.1
 %if 0%{?suse_version}
 Requires:       cobbler >= 2.0.0
-Requires:       java >= 1.8.0
+Requires:       java >= 11
 Requires:       jsch
 Requires:       /sbin/unix2_chkpwd
 Requires:       tomcat-taglibs-standard
 %else
 Requires:       cobbler20
 Requires:       jakarta-taglibs-standard
-Requires:       java >= 1.7.0
-Requires:       java-devel >= 1.7.0
+Requires:       java >= 11
+Requires:       java-devel >= 11
 Requires:       jpam
 Requires:       oscache
 %endif
