@@ -93,6 +93,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -743,12 +744,13 @@ public class SaltService {
         }
 
         if (!regularMinionIds.isEmpty()) {
+            List<Map<String, Result<T>>> callResult =
+                    adaptException(call.callSync(SALT_CLIENT,
+                            new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
             results.putAll(
-                adaptException(
-                    call.callSync(SALT_CLIENT,
-                            new MinionList(regularMinionIds),
-                            PW_AUTH)
-                )
+                    callResult.stream().flatMap(map -> map.entrySet().stream())
+                            .collect(Collectors.toMap(Entry<String, Result<T>>::getKey,
+                                    Entry<String, Result<T>>::getValue))
             );
         }
 
