@@ -264,35 +264,104 @@ class ContentSource:
         """
 
         # pylint: disable=W0613
-        self.url = url
+        if urlsplit(url).scheme:
+          self.url = url
+        else:
+          self.url = "file://%s" % url
         self.name = name
+        self.insecure = insecure
+        self.interactive = interactive
         self.org = org if org else "NULL"
+        self.proxy_hostname = None
+        self.proxy_url = None
+        self.proxy_user = None
+        self.proxy_pass = None
+        self.authtoken = None
+        self.sslcacert = ca_cert_file
+        self.sslclientcert = client_cert_file
+        self.sslclientkey = client_key_file
+        self.http_headers = {}
 
         # read the proxy configuration in /etc/rhn/rhn.conf
         initCFG('server.satellite')
-        self.proxy_addr = CFG.http_proxy
-        self.proxy_user = CFG.http_proxy_username
-        self.proxy_pass = CFG.http_proxy_password
+
+        # keep authtokens for mirroring
+        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+        if query:
+            self.authtoken = query
+
+        if CFG.http_proxy:
+            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
+        elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
+            zypper_cfg = configparser.ConfigParser()
+            zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
+            section_name = None
+
+            if zypper_cfg.has_section(self.name):
+                section_name = self.name
+            elif zypper_cfg.has_section(channel_label):
+                section_name = channel_label
+            elif zypper_cfg.has_section('main'):
+                section_name = 'main'
+
+            if section_name:
+                if zypper_cfg.has_option(section_name, option='proxy'):
+                    self.proxy_hostname = zypper_cfg.get(section_name, option='proxy')
+                    self.proxy_url = "http://%s" % self.proxy_hostname
+
+                if zypper_cfg.has_option(section_name, 'proxy_username'):
+                    self.proxy_user = zypper_cfg.get(section_name, 'proxy_username')
+
+                if zypper_cfg.has_option(section_name, 'proxy_password'):
+                    self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
+
+        # Make sure baseurl ends with / and urljoin will work correctly
+        self.urls = [url]
+        if self.urls[0][-1] != '/':
+            self.urls[0] += '/'
 
         # Add this repo to the Zypper env
         reponame = self.name.replace(" ", "-")
         # SUSE vendor repositories belongs to org = NULL
-        root = os.path.join(ZYPP_CACHE_ROOT_PATH, str(org or "NULL"), reponame)
+        root = os.path.join(CACHE_DIR, str(org or "NULL"), reponame)
         self.repo = ZyppoSync(root=root)
-        self.repo.mod_repo(name, url=url, gpgautoimport=True, gpgcheck=False,
+        zypp_repo_url = self._prep_zypp_repo_url(url)
+
+        self.repo.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
                            alias=channel_label or reponame)
         self.repo.refresh_db()
 
         self.num_packages = 0
         self.num_excluded = 0
-
-        # keep authtokens for mirroring
-        _scheme, _netloc, _path, query, _fragid = urlparse.urlsplit(url)
-        self.authtoken = query if query else None
+        self.gpgkey_autotrust = None
+        self.groupsfile = None
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
         sys.stderr.write(str(message) + "\n")
+
+    def _prep_zypp_repo_url(self, url) -> str:
+        """
+        Prepare the repository baseurl to use in the Zypper repo file.
+        This will add the HTTP Proxy as part of the url parameters to
+        be interpreted by CURL during the Zypper execution.
+
+        :returns: str
+        """
+        ret_url = None
+        query_params = {}
+        if self.proxy_hostname:
+            query_params['proxy'] = self.proxy_hostname
+        if self.proxy_user:
+            query_params['proxyuser'] = self.proxy_user
+        if self.proxy_pass:
+            query_params['proxypass'] = self.proxy_pass
+        new_query = urlencode(query_params, doseq=True)
+        if self.authtoken:
+            ret_url = "{0}&{1}".format(url, new_query)
+        else:
+            ret_url = "{0}?{1}".format(url, new_query)
+        return ret_url
 
     def _md_exists(self, tag:str) -> bool:
         return bool(self._retrieve_md_path(tag))
@@ -616,30 +685,29 @@ class ContentSource:
             return False
 
     # Get download parameters for threaded downloader
-    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None,
-                                bytes_range=None):
+    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None, bytes_range=None):
         # Create directories if needed
         target_dir = os.path.dirname(target_file)
         if not os.path.exists(target_dir):
             os.makedirs(target_dir, int('0755', 8))
 
         params['authtoken'] = self.authtoken
-        params['urls'] = self.repo.urls
+        params['urls'] = self.urls
         params['relative_path'] = relative_path
         params['authtoken'] = self.authtoken
         params['target_file'] = target_file
-        params['ssl_ca_cert'] = self.repo.sslcacert
-        params['ssl_client_cert'] = self.repo.sslclientcert
-        params['ssl_client_key'] = self.repo.sslclientkey
+        params['ssl_ca_cert'] = self.sslcacert
+        params['ssl_client_cert'] = self.sslclientcert
+        params['ssl_client_key'] = self.sslclientkey
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['proxy'] = self.proxy_addr
+        params['proxy'] = self.proxy_url
         params['proxy_username'] = self.proxy_user
         params['proxy_password'] = self.proxy_pass
-        params['http_headers'] = self.repo.http_headers
+        params['http_headers'] = self.http_headers
         # Older urlgrabber compatibility
-        params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username, self.repo.proxy_password)
+        params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
 
     @staticmethod
     def get_file(path, local_base=None):
