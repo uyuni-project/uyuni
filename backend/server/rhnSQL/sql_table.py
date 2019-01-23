@@ -21,8 +21,8 @@ import string
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.rhnException import rhnException
 
-import sql_base
-import sql_lib
+from . import sql_base
+from . import sql_lib
 
 
 # A class to handle row updates transparently

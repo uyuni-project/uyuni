@@ -17,7 +17,7 @@
 
 from spacewalk.common.rhnException import rhnException
 
-import sql_base
+from . import sql_base
 
 
 # A class to handle sequences

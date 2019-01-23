@@ -70,7 +70,7 @@ from spacewalk.server.importlib.importLib import InvalidChannelFamilyError
 from spacewalk.server.importlib.importLib import MissingParentChannelError
 from spacewalk.server.importlib.importLib import get_nevra, get_nevra_dict
 
-import satCerts
+from . import satCerts
 import req_channels
 import messages
 import sync_handlers

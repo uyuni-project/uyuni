@@ -228,9 +228,14 @@ class RHNOptions:
                print cfg.DEBUG ---> yields 5
         """
         self.__check()
-        if key not in self.__configs[self.__component]:
+        # For some reason, before the migration to python3, the code
+        # used all attribute names in capital letters, and it worked
+        # while for python3 it is failing. Adding .lower() since
+        # otherwise changing the mentions to config parameters
+        # all over the code, would take ages
+        if key.lower() not in self.__configs[self.__component]:
             raise AttributeError(key)
-        return self.__configs[self.__component][key]
+        return self.__configs[self.__component][key.lower()]
     __getitem__ = __getattr__
 
     def get(self, key, default=None):
@@ -450,18 +455,7 @@ def read_file(filename):
     reads a text config file and returns its lines in a list
     """
     try:
-        lines = open(filename, 'rb').readlines()
-        new_lines = []
-        combined = ''
-        for line in lines:
-            # if the line isn't part of a multiline, lets add it
-            if line.find('\\\n') < 0:
-                combined = combined + line
-                new_lines.append(combined)
-                combined = ''
-            else:
-                combined = combined + line.replace('\\\n', ' ')
-        return new_lines
+        return open(filename, 'r').readlines()
     except (IOError, OSError):
         e = sys.exc_info()[1]
         raise_with_tb(ConfigParserError("Can not read config file", filename, e.args[1]), sys.exc_info()[2])
