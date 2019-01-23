@@ -54,7 +54,9 @@ def beacon(config):
     if os.path.exists(config.get('cookie', '')):
         with open(config.get('cookie')) as ck_file:
             ck_data = ck_file.read().strip()
-            if __context__.get(__virtualname__, "") != ck_data:
+            if __virtualname__ not in __context__:
+                __context__[__virtualname__] = ck_data
+            if __context__[__virtualname__] != ck_data:
                 ret.append({
                     'tag': 'changed'
                 })
