@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Bare metal discovery
@@ -48,7 +48,7 @@ Feature: Bare metal discovery
     And I should see a "Number of disks" text
     And I should see a "1" text
     And I should see a "MAC Address(es)" text
-    And I check the MAC address value
+    Then the MAC address of "sle-client" should be displayed
 
   Scenario: Check unprovisioned system details
     Given I am on the Systems page

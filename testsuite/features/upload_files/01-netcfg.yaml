@@ -1,0 +1,13 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens3:
+      match: {}
+      dhcp4: yes
+    ens4:
+      match: {}
+      dhcp4: yes
+      nameservers:
+      search: [DOMAINS]
+      addresses: [ADDRESSES]

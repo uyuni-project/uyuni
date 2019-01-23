@@ -445,6 +445,11 @@ The check box can be identified by name, id or label text.
   When I wait and check that "sle-client" has rebooted
 ```
 
+* Check the MAC address value 
+
+```cucumber
+  Then the MAC address of "sle-client" should be displayed
+```
 
 <a name="b8" />
 

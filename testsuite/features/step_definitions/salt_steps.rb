@@ -426,7 +426,8 @@ end
 
 When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
   node = get_target(host)
-  output, _code = node.run("ip address show dev eth0")
+  iface = host == 'ubuntu-minion' ? 'ens3' : 'eth0'
+  output, return_code = node.run("ip address show dev #{iface}")
   ip = output.split("\n")[2].split[1].split('/')[0]
   fieldids = { 'fifth A address' => 'bind#available_zones#2#records#A#0#1' }
   fill_in fieldids[field], with: ip
@@ -437,7 +438,8 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     mac = $pxeboot_mac
   else
     node = get_target(host)
-    output, _code = node.run("ip link show dev eth1")
+    iface = host == 'ubuntu-minion' ? 'ens4' : 'eth1'
+    output, return_code = node.run("ip link show dev #{iface}")
     mac = output.split("\n")[1].split[1]
   end
   fieldids = { 'first reserved MAC'  => 'dhcpd#hosts#0#hardware',

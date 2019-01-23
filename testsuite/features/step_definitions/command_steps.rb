@@ -640,9 +640,11 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I set up the private network on the terminals$/) do
   net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   proxy = net_prefix + "254"
+  domain = 'example.org'
   # /etc/sysconfig/network/ifcfg-eth1
   nodes = [$client, $minion]
   conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
@@ -657,18 +659,28 @@ When(/^I set up the private network on the terminals$/) do
     next if node.nil?
     node.run("echo -e \"#{conf}\" > /etc/sysconfig/network-scripts/ifcfg-eth1 && systemctl restart network")
   end
+  # /etc/netplan
+  nodes = [$ubuntu_minion]
+  config_file = File.dirname(__FILE__) + '/../upload_files/' + '01-netcfg.yaml'
+  conf = File.readlines(config_file).sub('DOMAINS', domain).sub('ADDRESSES', proxy)
+  nodes.each do |node|
+    next if node.nil?
+    node.run("echo -e \"#{conf}\" > /etc/netplan/01-netcfg.yaml && netplan apply")
+  end
   # /etc/resolv.conf
-  nodes = [$client, $minion, $ceos_minion]
-  script = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
+  nodes = [$client, $minion, $ceos_minion, $ubuntu_minion]
+  script = "-e '/^#/d' -e 's/^search /search #{domain} /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
   nodes.each do |node|
     next if node.nil?
     node.run("sed -i #{script} /etc/resolv.conf")
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
-  output, return_code = node.run("ip -4 address show eth1")
+  iface = host == 'ubuntu-minion' ? 'ens4' : 'eth1'
+  output, return_code = node.run("ip -4 address show #{iface}")
   net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
 end
