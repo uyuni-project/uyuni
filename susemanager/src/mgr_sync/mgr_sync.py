@@ -577,7 +577,6 @@ class MgrSync(object):
         Show saved credentials prefixed with a number, read the user input
         and return the chosen credential.
         """
-        credentials = [];
         saved_credentials = self._fetch_credentials()
 
         self._list_credentials(True)
