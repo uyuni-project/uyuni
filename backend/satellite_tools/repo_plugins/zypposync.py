@@ -11,6 +11,7 @@ import os
 import solv
 import sys
 import types
+import urlgrabber
 
 from urllib.parse import urlsplit, urlencode
 import xml.etree.ElementTree as etree
@@ -785,9 +786,25 @@ class ContentSource:
         # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
 
-    @staticmethod
-    def get_file(path, local_base=None):
-        # pylint: disable=W0613
-        # Called from import_kickstarts, not working for deb repo
-        log2(0, 0, "Unable to download path %s from deb repo." % path, stream=sys.stderr)
-        return None
+    def get_file(self, path, local_base=None):
+        try:
+            try:
+                temp_file = ""
+                if local_base is not None:
+                    target_file = os.path.join(local_base, path)
+                    target_dir = os.path.dirname(target_file)
+                    if not os.path.exists(target_dir):
+                        os.makedirs(target_dir, int('0755', 8))
+                    temp_file = target_file + '..download'
+                    if os.path.exists(temp_file):
+                        os.unlink(temp_file)
+                    downloaded = urlgrabber.urlgrab(path, temp_file)
+                    os.rename(downloaded, target_file)
+                    return target_file
+                else:
+                    return urlgrabber.urlread(path)
+            except URLGrabError:
+                return
+        finally:
+            if os.path.exists(temp_file):
+                os.unlink(temp_file)
