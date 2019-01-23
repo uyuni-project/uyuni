@@ -476,9 +476,9 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                 return num_prod[int(choice)]
             else:
                 self.log.info("All the available products have already been "
-                        "installed, nothing to do")
+                              "installed, nothing to do")
                 print("All the available products have already been installed, "
-                    "nothing to do")
+                      "nothing to do")
                 return None
         else:
             self.log.info("Have you run 'mgr-sync refresh'?")
