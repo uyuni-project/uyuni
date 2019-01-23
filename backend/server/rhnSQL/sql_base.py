@@ -25,7 +25,7 @@
 
 import string
 import sys
-import sql_types
+from . import sql_types
 from spacewalk.common import usix
 
 

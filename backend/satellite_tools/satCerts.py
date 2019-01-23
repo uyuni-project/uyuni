@@ -133,7 +133,7 @@ def _insertPrep_rhnCryptoKey(rhn_cryptokey_id, description, org_id):
     #       do so if the row does not exist.
     #       bugzilla: 120297 - and no I don't like it.
     rhn_cryptokey_id_seq = rhnSQL.Sequence('rhn_cryptokey_id_seq')
-    rhn_cryptokey_id = next(rhn_cryptokey_id_seq)
+    rhn_cryptokey_id = rhn_cryptokey_id_seq.next()
     # print 'no cert found, new one with id:', rhn_cryptokey_id
     h = rhnSQL.prepare(_queryInsertCryptoCertInfo)
     # ...insert
