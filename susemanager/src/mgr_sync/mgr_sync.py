@@ -580,7 +580,7 @@ class MgrSync(object):
         credentials = [];
         saved_credentials = self._fetch_credentials()
 
-        self._list_credentials(True);
+        self._list_credentials(True)
         number = cli_ask(
             msg=("Enter credentials number (1-{0})".format(len(saved_credentials))),
             validator=[str(i) for i in list(range(1, len(saved_credentials)+1))])
