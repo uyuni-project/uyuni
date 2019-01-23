@@ -481,9 +481,9 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                     "nothing to do")
                 return None
         else:
-            self.log.info("Have you run `mgr-sync refresh`?")
-            print("Have you run `mgr-sync refresh`?")
-        
+            self.log.info("Have you run 'mgr-sync refresh'?")
+            print("Have you run 'mgr-sync refresh'?")
+
 
     ##############################
     #                            #
