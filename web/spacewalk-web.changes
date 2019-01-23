@@ -1,3 +1,5 @@
+- remove RH-specific warning message (bsc#1118100)
+
 -------------------------------------------------------------------
 Fri Jan 18 11:39:28 CET 2019 - jgonzalez@suse.com
 
