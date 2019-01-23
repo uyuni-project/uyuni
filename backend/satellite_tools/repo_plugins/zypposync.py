@@ -24,7 +24,7 @@ import xml.etree.ElementTree as etree
 import salt.client
 import salt.config
 
-from spacewalk.common import checksum, rhnLog
+from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
 
@@ -97,11 +97,11 @@ class ZyppoSync:
 
 
 class ZypperRepo:
-    def __init__(self, root, url):
+    def __init__(self, root, url, org):
        self.root = root
        self.baseurl = [url]
-       self.basecachedir = os.path.join(CACHE_DIR, self.org)
-       pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
+       self.basecachedir = os.path.join(CACHE_DIR, org)
+       pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, 'stage')
        if not os.path.isdir(pkgdir):
            fileutils.makedirs(pkgdir, user='wwwrun', group='www')
        self.pkgdir = pkgdir
@@ -383,7 +383,7 @@ class ContentSource:
         self.reponame = self.name.replace(" ", "-")
         # SUSE vendor repositories belongs to org = NULL
         root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
-        self.repo = ZypperRepo(root=root, url=self.url)
+        self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
         self.salt = ZyppoSync(root=root)
         zypp_repo_url = self._prep_zypp_repo_url(url)
 
