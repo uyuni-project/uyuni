@@ -13,7 +13,12 @@ import sys
 import types
 import urlgrabber
 
-from urllib.parse import urlsplit, urlencode
+try:
+    from urllib import urlencode
+    from urlparse import urlsplit
+except:
+    from urllib.parse import urlsplit, urlencode
+
 import xml.etree.ElementTree as etree
 
 import salt.client
@@ -46,7 +51,7 @@ class ZyppoSync:
     >>>    print("  ", repo_meta["baseurl"])
 
     """
-    def __init__(self, cfg_path:str = "/etc/salt/minion", root:str = None):
+    def __init__(self, cfg_path="/etc/salt/minion", root=None):
         self._conf = salt.config.minion_config(cfg_path)
         self._conf["file_client"] = "local"
         self._conf["server_id_use_crc"] = "Adler32"
@@ -55,7 +60,7 @@ class ZyppoSync:
             self._init_root(self.root)
         self._caller = salt.client.Caller(mopts=self._conf)
 
-    def _init_root(self, root:str) -> None:
+    def _init_root(self, root):
         """
         Creates a root environment for Zypper, but only if none is around.
 
@@ -71,7 +76,7 @@ class ZyppoSync:
                 raise
             self._conf["zypper_root"] = root
 
-    def _get_call(self, key:str) -> types.FunctionType:
+    def _get_call(self, key):
         """
         Prepare a call to the pkg module.
         """
@@ -83,7 +88,7 @@ class ZyppoSync:
             return self._caller.cmd("pkg.{}".format(key), *args, **kwargs)
         return make_call
 
-    def __getattr__(self, attr:str) -> types.FunctionType:
+    def __getattr__(self, attr):
         """
         Prepare a callable on the requested
         attribute name.
@@ -344,7 +349,7 @@ class ContentSource:
         rhnLog.log_clean(0, message)
         sys.stderr.write(str(message) + "\n")
 
-    def _prep_zypp_repo_url(self, url) -> str:
+    def _prep_zypp_repo_url(self, url):
         """
         Prepare the repository baseurl to use in the Zypper repo file.
         This will add the HTTP Proxy and Client certificate settings as part of
@@ -373,7 +378,7 @@ class ContentSource:
             ret_url = "{0}?{1}".format(url, new_query)
         return ret_url
 
-    def _md_exists(self, tag:str) -> bool:
+    def _md_exists(self, tag):
         """
         Check if the requested metadata exists on the repository
 
@@ -381,18 +386,19 @@ class ContentSource:
         """
         return bool(self._retrieve_md_path(tag))
 
-    def _retrieve_md_path(self, tag:str) -> str:
+    def _retrieve_md_path(self, tag):
         """
         Return the path to the requested metadata if exists
 
         :returns: str
         """
         _md_files = glob.glob(self._get_repodata_path() + "/*{}.xml.gz".format(tag)) or glob.glob(self._get_repodata_path() + "/*{}.xml".format(tag))
+        print("-> md_files: {}".format(_md_files))
         if _md_files:
             return _md_files[0]
         return None
 
-    def _get_repodata_path(self) -> str:
+    def _get_repodata_path(self):
         """
         Return the path to the repository repodata directory
 
@@ -400,7 +406,7 @@ class ContentSource:
         """
         return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.name, "repodata")
 
-    def get_md_checksum_type(self) -> (str, int):
+    def get_md_checksum_type(self):
         """
         Return the checksum type of the primary.xml if exists, otherwise
         default output is "sha1".
@@ -459,7 +465,7 @@ class ContentSource:
                 susedata.append(d)
         return susedata
 
-    def get_products(self) -> list:
+    def get_products(self):
         """
         Return products metadata from the repository if available
 
