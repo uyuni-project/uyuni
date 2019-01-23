@@ -582,16 +582,43 @@ class ContentSource:
 
         to_return = []
         for pack in repo.solvables:
+            # Solvables with ":" in name are not packages
+            if ':' in pack.name:
+                continue
             new_pack = ContentPackage()
-            new_pack.setNVREA(pack.name, pack.version, pack.release,
-                              pack.epoch, pack.arch)
+            epoch, version, release = self._parse_solvable_evr(pack.evr)
+            new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
             new_pack.unique_id = pack
-            new_pack.checksum_type = pack.checksum_type
-            new_pack.checksum = pack.checksum
+            checksum = solvable.lookup_checksum(solv.SOLVABLE_CHECKSUM)
+            new_pack.checksum_type = checksum.typestr()
+            new_pack.checksum = checksum.hex()
             to_return.append(new_pack)
 
         self.num_packages = len(to_return)
         return to_return
+
+    @staticmethod
+    def _parse_solvable_evr(evr):
+        """
+        Return the (epoch, version, release) tuple based on evr string.
+        The "evr" string from libsolv is represented as: "epoch:version-release"
+
+        https://github.com/openSUSE/libsolv/blob/master/src/solvable.h
+
+        :returns: tuple
+        """
+        if evr in [None, '']:
+           return ('', '', '')
+        idx_epoch = evr.find(':')
+        epoch = evr[:idx_epoch] if idx_epoch != -1 else ''
+        idx_release = evr.find('-')
+        if idx_release != -1:
+            version = evr[idx_epoch + 1:idx_release]
+            release = evr[idx_release + 1:]
+        else:
+            version = evr[idx_epoch + 1:]
+            release = ''
+        return epoch, version, release
 
     @staticmethod
     def _sort_packages(pkg1, pkg2):
