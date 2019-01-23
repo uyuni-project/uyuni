@@ -474,9 +474,9 @@ class MgrSync(object):
                     "nothing to do")
                 return None
         else:
-            self.log.info("Have you run `mgr-sync refresh`?")
-            print("Have you run `mgr-sync refresh`?")
-        
+            self.log.info("Have you run 'mgr-sync refresh'?")
+            print("Have you run 'mgr-sync refresh'?")
+
 
     ##############################
     #                            #
