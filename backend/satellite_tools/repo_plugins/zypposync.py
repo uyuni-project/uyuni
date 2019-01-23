@@ -552,7 +552,12 @@ class ContentSource:
         repo = pool.add_repo(self.reponame)
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.reponame, 'solv')
         repo.add_solv(solv.xfopen(solv_path), 0)
-        rawpkglist = [str(solvable) for solvable in repo.solvables_iter()]
+        rawpkglist = []
+        for solvable in repo.solvables_iter():
+            # Solvables with ":" in name are not packages
+            if ':' in solvable.name:
+                continue
+            rawpkglist.append(str(solvable))
         self.num_packages = len(rawpkglist)
         return rawpkglist
 
