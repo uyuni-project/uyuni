@@ -351,11 +351,9 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             expand=False, filter=None, compact=False,
             no_optionals=no_optionals, show_interactive_numbers=True)
 
-        validator = lambda i: re.search(r"\d+", i) and \
-            int(i) in range(1, len(channels)+1)
         choice = cli_ask(
             msg=("Enter channel number (1-{0})".format(len(channels))),
-            validator=validator)
+            validator=[str(i) for i in list(range(1, len(channels)+1))])
 
         self.log.info("Selecting channel '{0}' from choice '{1}'".format(
             channels[int(choice)-1], choice))
@@ -463,11 +461,9 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         if interactive_data is not None and 'num_prod' in interactive_data:
             num_prod = interactive_data['num_prod']
             if num_prod:
-                validator = lambda i: re.search("\d+", i) and \
-                    int(i) in range(1, len(num_prod.keys()) + 1)
                 choice = cli_ask(
                     msg=("Enter product number (1-{0})".format(len(num_prod.keys()))),
-                    validator=validator)
+                    validator=[str(i) for i in list(range(1, len(num_prod.keys()) + 1))])
 
                 self.log.info("Selecting product '{0} {1}' from choice '{2}'".format(
                     num_prod[int(choice)].friendly_name, num_prod[int(choice)].arch,
@@ -589,13 +585,11 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         and return the chosen credential.
         """
         saved_credentials = self._fetch_credentials()
-        validator = lambda i: re.search(r"\d+", i) and \
-            int(i) in range(1, len(saved_credentials)+1)
 
         self._list_credentials(True)
         number = cli_ask(
             msg=("Enter credentials number (1-{0})".format(len(saved_credentials))),
-            validator=validator)
+            validator=[str(i) for i in list(range(1, len(saved_credentials)+1))])
 
         self.log.info("Selecting credentials '{0}' from choice '{1}'".format(
             saved_credentials[int(number)-1]['user'], number))
