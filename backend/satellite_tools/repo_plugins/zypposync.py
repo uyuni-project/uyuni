@@ -96,6 +96,44 @@ class ZyppoSync:
         return self._get_call(attr)
 
 
+class RawSolvablePackage:
+    def __init__(self, solvable):
+        self.name = solvable.name
+        self.raw_name = str(solvable)
+        self.epoch, self.version, self.release = self._parse_solvable_evr(solvable.evr)
+        self.arch = solvable.arch
+        cksum = solvable.lookup_checksum(solv.SOLVABLE_CHECKSUM)
+        self.checksum_type = cksum.typestr()
+        self.checksum = cksum.hex()
+        self.packagesize = solvable.lookup_num(solv.SOLVABLE_DOWNLOADSIZE)
+
+    def __repr__(self):
+        return "RawSolvablePackage({})".format(self.raw_name)
+
+    @staticmethod
+    def _parse_solvable_evr(evr):
+        """
+        Return the (epoch, version, release) tuple based on evr string.
+        The "evr" string from libsolv is represented as: "epoch:version-release"
+
+        https://github.com/openSUSE/libsolv/blob/master/src/solvable.h
+
+        :returns: tuple
+        """
+        if evr in [None, '']:
+           return ('', '', '')
+        idx_epoch = evr.find(':')
+        epoch = evr[:idx_epoch] if idx_epoch != -1 else ''
+        idx_release = evr.find('-')
+        if idx_release != -1:
+            version = evr[idx_epoch + 1:idx_release]
+            release = evr[idx_release + 1:]
+        else:
+            version = evr[idx_epoch + 1:]
+            release = ''
+        return epoch, version, release
+
+
 class RepoMDNotFound(Exception):
     """ An exception thrown when not RepoMD is found. """
     pass
@@ -556,15 +594,15 @@ class ContentSource:
 
     def raw_list_packages(self, filters=None):
         pool = solv.Pool()
-        repo = pool.add_repo(self.reponame)
+        repo = pool.add_repo(str(self.reponame))
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.reponame, 'solv')
-        repo.add_solv(solv.xfopen(solv_path), 0)
+        repo.add_solv(solv.xfopen(str(solv_path)), 0)
         rawpkglist = []
         for solvable in repo.solvables_iter():
             # Solvables with ":" in name are not packages
             if ':' in solvable.name:
                 continue
-            rawpkglist.append(str(solvable))
+            rawpkglist.append(RawSolvablePackage(solvable))
         self.num_packages = len(rawpkglist)
         return rawpkglist
 
@@ -574,7 +612,6 @@ class ContentSource:
 
         :returns: list
         """
-
         pool = solv.Pool()
         repo = pool.add_repo(self.reponame)
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.reponame, 'solv')
@@ -593,7 +630,7 @@ class ContentSource:
             if ':' in pack.name:
                 continue
             new_pack = ContentPackage()
-            epoch, version, release = self._parse_solvable_evr(pack.evr)
+            epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)
             new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
             new_pack.unique_id = pack
             checksum = solvable.lookup_checksum(solv.SOLVABLE_CHECKSUM)
@@ -604,28 +641,7 @@ class ContentSource:
         self.num_packages = len(to_return)
         return to_return
 
-    @staticmethod
-    def _parse_solvable_evr(evr):
-        """
-        Return the (epoch, version, release) tuple based on evr string.
-        The "evr" string from libsolv is represented as: "epoch:version-release"
 
-        https://github.com/openSUSE/libsolv/blob/master/src/solvable.h
-
-        :returns: tuple
-        """
-        if evr in [None, '']:
-           return ('', '', '')
-        idx_epoch = evr.find(':')
-        epoch = evr[:idx_epoch] if idx_epoch != -1 else ''
-        idx_release = evr.find('-')
-        if idx_release != -1:
-            version = evr[idx_epoch + 1:idx_release]
-            release = evr[idx_release + 1:]
-        else:
-            version = evr[idx_epoch + 1:]
-            release = ''
-        return epoch, version, release
 
     @staticmethod
     def _sort_packages(pkg1, pkg2):
