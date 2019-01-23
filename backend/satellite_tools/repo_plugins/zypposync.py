@@ -55,9 +55,9 @@ class ZyppoSync:
         self._conf = salt.config.minion_config(cfg_path)
         self._conf["file_client"] = "local"
         self._conf["server_id_use_crc"] = "Adler32"
-        self.root = root
-        if self.root is not None:
-            self._init_root(self.root)
+        self._root = root
+        if self._root is not None:
+            self._init_root(self._root)
         self._caller = salt.client.Caller(mopts=self._conf)
 
     def _init_root(self, root):
@@ -94,6 +94,18 @@ class ZyppoSync:
         attribute name.
         """
         return self._get_call(attr)
+
+
+class ZypperRepo:
+    def __init__(self, root, url):
+       self.root = root
+       self.baseurl = [url]
+       self.basecachedir = os.path.join(CACHE_DIR, self.org)
+       pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
+       if not os.path.isdir(pkgdir):
+           fileutils.makedirs(pkgdir, user='wwwrun', group='www')
+       self.pkgdir = pkgdir
+       self.urls = self.baseurl
 
 
 class RawSolvablePackage:
@@ -371,12 +383,13 @@ class ContentSource:
         self.reponame = self.name.replace(" ", "-")
         # SUSE vendor repositories belongs to org = NULL
         root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
-        self.repo = ZyppoSync(root=root)
+        self.repo = ZypperRepo(root=root, url=self.url)
+        self.salt = ZyppoSync(root=root)
         zypp_repo_url = self._prep_zypp_repo_url(url)
 
-        self.repo.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
-                           alias=channel_label or reponame)
-        self.repo.refresh_db()
+        self.salt.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
+                           alias=channel_label or self.reponame)
+        self.salt.refresh_db()
 
         self.num_packages = 0
         self.num_excluded = 0
@@ -791,7 +804,7 @@ class ContentSource:
             os.makedirs(target_dir, int('0755', 8))
 
         params['authtoken'] = self.authtoken
-        params['urls'] = self.urls
+        params['urls'] = self.repo.urls
         params['relative_path'] = relative_path
         params['authtoken'] = self.authtoken
         params['target_file'] = target_file
