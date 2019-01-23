@@ -4,6 +4,8 @@ Reposync via Salt library.
 """
 from __future__ import absolute_import, unicode_literals
 
+from shutil import rmtree
+
 import configparser
 import glob
 import gzip
@@ -27,6 +29,8 @@ import salt.config
 from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
+from spacewalk.common.rhnConfig import CFG, initCFG
+
 
 # namespace prefix to parse patches.xml file
 PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
@@ -66,15 +70,15 @@ class ZyppoSync:
 
         :return: None
         """
-        if not os.path.exists(root):
-            try:
-                for pth in [root, os.path.join(root, "etc/zypp/repos.d")]:
+        try:
+            for pth in [root, os.path.join(root, "etc/zypp/repos.d")]:
+                if not os.path.exists(pth):
                     os.makedirs(pth)
-            except PermissionError as exc:
-                # TODO: a proper logging somehow?
-                sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
-                raise
-            self._conf["zypper_root"] = root
+        except PermissionError as exc:
+            # TODO: a proper logging somehow?
+            sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
+            raise
+        self._conf["zypper_root"] = root
 
     def _get_call(self, key):
         """
@@ -118,6 +122,7 @@ class RawSolvablePackage:
         self.checksum_type = cksum.typestr()
         self.checksum = cksum.hex()
         self.packagesize = solvable.lookup_num(solv.SOLVABLE_DOWNLOADSIZE)
+        self.relativepath = solvable.lookup_location()[0]
 
     def __repr__(self):
         return "RawSolvablePackage({})".format(self.raw_name)
@@ -179,7 +184,7 @@ class UpdateNotice(object):
             'reboot_suggested' : False
         }
 
-        if elem:
+        if elem is not None:
             self._parse(elem)
 
     def __getitem__(self, item):
@@ -383,8 +388,8 @@ class ContentSource:
         self.reponame = self.name.replace(" ", "-")
         # SUSE vendor repositories belongs to org = NULL
         root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
-        self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
         self.salt = ZyppoSync(root=root)
+        self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
         zypp_repo_url = self._prep_zypp_repo_url(url)
 
         self.salt.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
@@ -559,7 +564,7 @@ class ContentSource:
                     key = "%s-%s" % (un['update_id'], un['version'])
                     if key not in notices:
                         notices[key] = un
-            return ('updateinfo', notices)
+            return ('updateinfo', notices.values())
         elif self._md_exists('patches'):
             patches_path = self._retrieve_md_path('patches')
             infile = patches_path.endswith('.gz') and gzip.open(patches_path) or open(patches_path, 'rt')
@@ -626,9 +631,9 @@ class ContentSource:
         :returns: list
         """
         pool = solv.Pool()
-        repo = pool.add_repo(self.reponame)
+        repo = pool.add_repo(str(self.reponame))
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.reponame, 'solv')
-        repo.add_solv(solv.xfopen(solv_path), 0)
+        repo.add_solv(solv.xfopen(str(solv_path)), 0)
 
         #TODO: Implement latest
         #if latest:
@@ -645,8 +650,8 @@ class ContentSource:
             new_pack = ContentPackage()
             epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)
             new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
-            new_pack.unique_id = pack
-            checksum = solvable.lookup_checksum(solv.SOLVABLE_CHECKSUM)
+            new_pack.unique_id = RawSolvablePackage(pack)
+            checksum = pack.lookup_checksum(solv.SOLVABLE_CHECKSUM)
             new_pack.checksum_type = checksum.typestr()
             new_pack.checksum = checksum.hex()
             to_return.append(new_pack)
