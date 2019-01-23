@@ -1,3 +1,4 @@
+- prevent the pkgset beacon from firing during onboarding (bsc#1122896)
 - Prevent excessive DEBUG logging from mgr_events engine
 
 -------------------------------------------------------------------
