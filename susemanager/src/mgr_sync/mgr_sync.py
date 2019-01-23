@@ -459,8 +459,7 @@ class MgrSync(object):
                 validator = lambda i: re.search("\d+", i) and \
                     int(i) in range(1, len(num_prod.keys()) + 1)
                 choice = cli_ask(
-                    msg=("Enter product number (1-{0})".format(
-                        len(num_prod.keys()))),
+                    msg=("Enter product number (1-{0})".format(len(num_prod.keys()))),
                     validator=validator)
 
                 self.log.info("Selecting product '{0} {1}' from choice '{2}'".format(
