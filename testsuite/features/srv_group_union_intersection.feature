@@ -1,7 +1,8 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# This feature will be fully tested only if we have a CentOS client running
+# This feature will be fully tested only if we have a CentOS and/or Ubuntu client
+# running
 
 Feature: Work with Union and Intersection buttons in the group list
 
@@ -40,6 +41,24 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Add Systems"
     Then I should see a "1 systems were added to centos server group." text
 
+@ubuntu_minion
+   Scenario: Create a ubuntu group
+    Given I am on the groups page
+    When I follow "Create Group"
+    And I enter "ubuntu" as "name"
+    And I enter "Ubuntu systems" as "description"
+    And I click on "Create Group"
+    Then I should see a "System group ubuntu created." text
+
+@ubuntu_minion
+  Scenario: Add systems to the ubuntu group
+    Given I am on the groups page
+    When I follow "ubuntu"
+    And I follow "Target Systems"
+    And I check the "ubuntu-minion" client
+    And I click on "Add Systems"
+    Then I should see a "1 systems were added to ubuntu server group." text
+
   Scenario: Create a traditional group
     Given I am on the groups page
     When I follow "Create Group"
@@ -65,7 +84,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I should see "sle-minion" as link
 
 @centos_minion
-  Scenario: Add a union of 2 groups to SSM
+  Scenario: Add a union of 2 groups to SSM - CentOS
     Given I am on the groups page
     When I check "sles" in the list
     And I check "centos" in the list
@@ -75,7 +94,7 @@ Feature: Work with Union and Intersection buttons in the group list
     And I should see "ceos-minion" as link
 
 @centos_minion
-  Scenario: Add an intersection of 2 groups to SSM
+  Scenario: Add an intersection of 2 groups to SSM - CentOS
     Given I am on the groups page
     When I check "sles" in the list
     And I check "traditional" in the list
@@ -83,6 +102,26 @@ Feature: Work with Union and Intersection buttons in the group list
     Then I should see "sle-client" as link
     And I should not see a "sle-minion" link
     And I should not see a "ceos-minion" link
+
+@ubuntu_minion
+  Scenario: Add a union of 2 groups to SSM - Ubuntu
+    Given I am on the groups page
+    When I check "sles" in the list
+    And I check "ubuntu" in the list
+    And I click on "Work With Union"
+    Then I should see "sle-client" as link
+    And I should see "sle-minion" as link
+    And I should see "ubuntu-minion" as link
+
+@ubuntu_minion
+  Scenario: Add an intersection of 2 groups to SSM - Ubuntu
+    Given I am on the groups page
+    When I check "sles" in the list
+    And I check "traditional" in the list
+    And I click on "Work With Intersection"
+    Then I should see "sle-client" as link
+    And I should not see a "sle-minion" link
+    And I should not see a "ubuntu-minion" link
 
   Scenario: Cleanup: remove the sles group
     Given I am on the groups page
@@ -95,6 +134,14 @@ Feature: Work with Union and Intersection buttons in the group list
   Scenario: Cleanup: remove the centos group
     Given I am on the groups page
     When I follow "centos" in the content area
+    And I follow "Delete Group" in the content area
+    And I click on "Confirm Deletion"
+    Then I should see a "deleted" text
+
+@ubuntu_minion
+  Scenario: Cleanup: remove the ubuntu group
+    Given I am on the groups page
+    When I follow "ubuntu" in the content area
     And I follow "Delete Group" in the content area
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
