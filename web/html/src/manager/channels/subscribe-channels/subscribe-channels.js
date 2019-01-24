@@ -542,11 +542,6 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                     }
                   </div>
             </div>
-            <div className="row">
-              <span className="help-block">
-                <strong>Warning:</strong> 'FastTrack' and Beta child software channels are not available with Extended Update Support.
-              </span>
-            </div>
           </span>
       </BootstrapPanel>
     );
