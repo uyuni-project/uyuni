@@ -1,3 +1,4 @@
+- Change default image download protocol from tftp to ftp
 - Fix a problem when cloning public child channels with a private base channel (bsc#1124639)
 - prevent crash of mgr-sync refresh when channel label could not be found (bsc#1125451)
 - Keep assigned channels on traditional to minion migration (bsc#1122836)
