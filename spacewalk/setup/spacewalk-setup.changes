@@ -1,3 +1,4 @@
+- Point to the correct log file when tomcat is not able to start
 - Fix distribution detection to work with openSUSE Leap 15 and
   SLE 15
 
