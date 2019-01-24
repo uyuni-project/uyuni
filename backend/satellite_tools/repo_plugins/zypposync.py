@@ -30,6 +30,7 @@ from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.suseLib import get_proxy
 
 
 # namespace prefix to parse patches.xml file
@@ -110,6 +111,9 @@ class ZypperRepo:
            fileutils.makedirs(pkgdir, user='wwwrun', group='www')
        self.pkgdir = pkgdir
        self.urls = self.baseurl
+       # Make sure baseurl ends with / and urljoin will work correctly
+       if self.urls[0][-1] != '/':
+           self.urls[0] += '/'
 
 
 class RawSolvablePackage:
@@ -153,6 +157,11 @@ class RawSolvablePackage:
 
 class RepoMDNotFound(Exception):
     """ An exception thrown when not RepoMD is found. """
+    pass
+
+
+class SolvFileNotFound(Exception):
+    """ An exception thrown when not Solv file is found. """
     pass
 
 
@@ -385,16 +394,30 @@ class ContentSource:
             self.urls[0] += '/'
 
         # Add this repo to the Zypper env
-        self.reponame = self.name.replace(" ", "-")
+        self.reponame = self.name
+        for chr in ["$", " ", ".", ";"]:
+            self.reponame = self.reponame.replace(chr, "_")
+        self.channel_label = channel_label
         # SUSE vendor repositories belongs to org = NULL
-        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
+        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.channel_label or self.reponame)
         self.salt = ZyppoSync(root=root)
         self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
         zypp_repo_url = self._prep_zypp_repo_url(url)
 
-        self.salt.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
-                           alias=channel_label or self.reponame)
-        self.salt.refresh_db()
+        #REMOVE: Manually call Zypper
+        repo_cfg = '''[{reponame}]
+enabled=1
+autorefresh=0
+baseurl={baseurl}
+type=rpm-md
+'''
+        with open(os.path.join(root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
+            repo_conf_file.write(repo_cfg.format(reponame=self.channel_label or self.reponame, baseurl=zypp_repo_url))
+        os.system("zypper --root {} --gpg-auto-import-keys --no-gpg-checks ref".format(root))
+
+#        self.salt.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
+#                           alias=self.channel_label or self.reponame)
+#        self.salt.refresh_db()
 
         self.num_packages = 0
         self.num_excluded = 0
@@ -431,7 +454,7 @@ class ContentSource:
         if self.authtoken:
             ret_url = "{0}&{1}".format(url, new_query)
         else:
-            ret_url = "{0}?{1}".format(url, new_query)
+            ret_url = "{0}?{1}".format(url, new_query) if new_query else url
         return ret_url
 
     def _md_exists(self, tag):
@@ -449,7 +472,6 @@ class ContentSource:
         :returns: str
         """
         _md_files = glob.glob(self._get_repodata_path() + "/*{}.xml.gz".format(tag)) or glob.glob(self._get_repodata_path() + "/*{}.xml".format(tag))
-        print("-> md_files: {}".format(_md_files))
         if _md_files:
             return _md_files[0]
         return None
@@ -612,9 +634,10 @@ class ContentSource:
 
     def raw_list_packages(self, filters=None):
         pool = solv.Pool()
-        repo = pool.add_repo(str(self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.reponame, 'solv')
-        repo.add_solv(solv.xfopen(str(solv_path)), 0)
+        repo = pool.add_repo(str(self.channel_label or self.reponame))
+        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
+        if not repo.add_solv(solv.xfopen(str(solv_path)), 0):
+            raise SolvFileNotFound(solv_path)
         rawpkglist = []
         for solvable in repo.solvables_iter():
             # Solvables with ":" in name are not packages
@@ -631,9 +654,10 @@ class ContentSource:
         :returns: list
         """
         pool = solv.Pool()
-        repo = pool.add_repo(str(self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.reponame, 'solv')
-        repo.add_solv(solv.xfopen(str(solv_path)), 0)
+        repo = pool.add_repo(str(self.channel_label or self.reponame))
+        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
+        if not repo.add_solv(solv.xfopen(str(solv_path)), 0):
+            raise SolvFileNotFound(solv_path)
 
         #TODO: Implement latest
         #if latest:
@@ -721,18 +745,13 @@ class ContentSource:
 
     def clear_cache(self, directory=None, keep_repomd=False):
         """
-        Clear the root environment and all cache files
+        Clear all cache files from the environment.
         """
-        if directory is None:
-            directory = self.repo.root
-
-        # remove content in directory
-        for item in os.listdir(directory):
-            path = os.path.join(directory, item)
-            if os.path.isfile(path) and not (keep_repomd and item == "repomd.xml"):
-                os.unlink(path)
-            elif os.path.isdir(path):
-                rmtree(path)
+        # TODO: This clean_cache method is called by reposync just
+        # after ContentSource is instanciated. We need to prevent that
+        # metadata files and update info is wiped here.
+        # Maybe: os.system("zypper --root {} clean".format(self.repo.root))
+        return
 
     def get_metadata_paths(self):
         """
@@ -848,3 +867,8 @@ class ContentSource:
         finally:
             if os.path.exists(temp_file):
                 os.unlink(temp_file)
+
+    def set_ssl_options(self, ca_cert, client_cert, client_key):
+        self.sslcacert = ca_cert_file
+        self.sslclientcert = client_cert_file
+        self.sslclientkey = client_key_file
