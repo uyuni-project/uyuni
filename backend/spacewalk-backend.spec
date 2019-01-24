@@ -85,15 +85,16 @@ BuildArch:      noarch
 %endif
 
 Requires:       %{pythonX}
-Requires:       rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires:       /etc/rhn
 %if 0%{?build_py3}
 Requires:       python3-%{name}-libs >= %{version}
 Requires:       python3-rhnlib >= 2.5.74
+Requires:       python3-rpm
 %else
 Requires:       python2-rhnlib >= 2.5.74
 Requires:       %{name}-libs >= %{version}
+Requires:       python2-rpm
 %if 0%{?suse_version}
 Requires:       python-pyliblzma
 %else
@@ -124,12 +125,13 @@ BuildRequires:  python2-spacewalk-usix
 BuildRequires:  python3-gzipstream
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
+BuildRequires:  python3-rpm
 %else
 BuildRequires:  python2-gzipstream
 BuildRequires:  python2-rhn-client-tools
 BuildRequires:  python2-rhnlib >= 2.5.74
+BuildRequires:  python2-rpm
 %endif
-BuildRequires:  rpm-python
 BuildRequires:  %{python_prefix}-debian
 
 BuildRequires:  %{m2crypto}
@@ -249,10 +251,11 @@ Group:          Applications/Internet
 Requires:       %{name}-server = %{version}-%{release}
 %if 0%{?build_py3}
 Requires:       python3-spacewalk-usix
+Requires:       python3-rpm
 %else
 Requires:       python2-spacewalk-usix
+Requires:       python2-rpm
 %endif
-Requires:       rpm-python
 Obsoletes:      rhns-server-xmlrpc < 5.3.0
 Obsoletes:      rhns-xmlrpc < 5.3.0
 Provides:       rhns-server-xmlrpc = 1:%{version}-%{release}
@@ -325,10 +328,11 @@ Group:          Applications/Internet
 Requires:       %{name}-xml-export-libs = %{version}-%{release}
 %if 0%{?build_py3}
 Requires:       python3-spacewalk-usix
+Requires:       python3-rpm
 %else
 Requires:       python2-spacewalk-usix
+Requires:       python2-rpm
 %endif
-Requires:       rpm-python
 
 %description iss-export
 %{name} contains the basic code that provides server/backend
