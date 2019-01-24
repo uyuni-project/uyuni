@@ -22,8 +22,7 @@ Feature: Setup SUSE Manager proxy
     And I enter "linux" as "password"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host! " text
-    When I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "proxy", refreshing the page
+    And I wait until onboarding is completed for "proxy"
 
 @proxy
   Scenario: Detect latest Salt changes on the proxy
