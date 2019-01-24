@@ -197,9 +197,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         // batch the elaboration so we don't have to hold many thousands of
         // packages in memory at once
         final int batchSize = 1000;
-        DataResult<PackageDto> packages = TaskManager.getChannelPackageDtos(channel);
-        for (int i = 0; i < packages.size(); i += batchSize) {
-            DataResult<PackageDto> packageBatch = packages.subList(i, i + batchSize);
+
+        for (long i = 0; i < channel.getPackageCount(); i += batchSize) {
+            DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, i, batchSize);
             packageBatch.elaborate();
             for (PackageDto pkgDto : packageBatch) {
                 // this is a sanity check
@@ -224,6 +224,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                     throw new RepomdRuntimeException(e);
                 }
             }
+            log.info("Processed " + (i + packageBatch.getEnd()) + " packages");
         }
         primary.end();
         filelists.end();

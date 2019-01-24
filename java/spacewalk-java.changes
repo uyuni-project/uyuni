@@ -1,3 +1,5 @@
+- Improve memory usage when generating repo matadata for channels having
+  a large number of packages (bsc#1115776)
 - Merge unlimited virtualization lifecycle products with the single variant (bsc#1114059)
 - show beta products if a beta subscription is available (bsc#1123189)
 - fix synchronizing Expanded Support Channel with missing architecture

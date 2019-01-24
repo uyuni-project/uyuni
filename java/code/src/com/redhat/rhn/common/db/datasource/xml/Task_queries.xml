@@ -488,6 +488,20 @@ where snc.errata_id = :errata_id
    <elaborator name="repomdgenerator_package_elab" />
 </mode>
 
+<mode name="repomdgenerator_channel_package_batch"
+      class="com.redhat.rhn.frontend.dto.PackageDto">
+    <query params="channel_id, limit, offset">
+        SELECT cp.package_id AS id
+        FROM
+        rhnChannelPackage cp
+        WHERE
+        cp.channel_id = :channel_id
+        ORDER by cp.package_id
+        LIMIT :limit OFFSET :offset
+    </query>
+    <elaborator name="repomdgenerator_package_elab" />
+</mode>
+
 <mode name="repomdgenerator_capability_files"
     class="com.redhat.rhn.frontend.dto.PackageCapabilityDto">
    <query params="package_id">
