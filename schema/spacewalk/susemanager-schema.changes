@@ -1,3 +1,4 @@
+- remove wrong channel_family labels (bsc#1123189)
 - Remove unused 'remove_servergroup_perm' stored procedure (bsc#1111810)
 
 -------------------------------------------------------------------
