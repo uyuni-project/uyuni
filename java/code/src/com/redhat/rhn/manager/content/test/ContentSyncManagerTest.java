@@ -658,7 +658,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertNotNull(family.getPublicChannelFamily());
 
             // Check for ALPHA and BETA families
-            String label = cf.getLabel() + "-alpha";
+            String label = cf.getLabel() + "-ALPHA";
             String name = cf.getName() + " (ALPHA)";
             family = ChannelFamilyFactory.lookupByLabel(label, null);
             assertNotNull(family);
@@ -666,7 +666,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(name, family.getName());
             assertNotNull(family.getPublicChannelFamily());
 
-            label = cf.getLabel() + "-beta";
+            label = cf.getLabel() + "-BETA";
             name = cf.getName() + " (BETA)";
             family = ChannelFamilyFactory.lookupByLabel(label, null);
             assertNotNull(family);
@@ -713,7 +713,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertNotNull(family.getPublicChannelFamily());
 
             // Check for ALPHA and BETA families
-            String label = cf.getLabel() + "-alpha";
+            String label = cf.getLabel() + "-ALPHA";
             String name = cf.getName() + " (ALPHA)";
             family = ChannelFamilyFactory.lookupByLabel(label, null);
             assertNotNull(family);
@@ -721,7 +721,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(name, family.getName());
             assertNotNull(family.getPublicChannelFamily());
 
-            label = cf.getLabel() + "-beta";
+            label = cf.getLabel() + "-BETA";
             name = cf.getName() + " (BETA)";
             family = ChannelFamilyFactory.lookupByLabel(label, null);
             assertNotNull(family);
