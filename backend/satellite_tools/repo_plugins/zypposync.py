@@ -104,6 +104,8 @@ class ZyppoSync:
 class ZypperRepo:
     def __init__(self, root, url, org):
        self.root = root
+       if not os.path.isdir(self.root):
+           fileutils.makedirs(self.root, user='wwwrun', group='www')
        self.baseurl = [url]
        self.basecachedir = os.path.join(CACHE_DIR, org)
        pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, 'stage')
@@ -114,6 +116,7 @@ class ZypperRepo:
        # Make sure baseurl ends with / and urljoin will work correctly
        if self.urls[0][-1] != '/':
            self.urls[0] += '/'
+       self.is_configured = False
 
 
 class RawSolvablePackage:
@@ -400,9 +403,16 @@ class ContentSource:
         self.channel_label = channel_label
         # SUSE vendor repositories belongs to org = NULL
         root = os.path.join(CACHE_DIR, str(org or "NULL"), self.channel_label or self.reponame)
-        self.salt = ZyppoSync(root=root)
+
         self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
-        zypp_repo_url = self._prep_zypp_repo_url(url)
+        self.num_packages = 0
+        self.num_excluded = 0
+        self.gpgkey_autotrust = None
+        self.groupsfile = None
+
+    def setup_repo(self, repo):
+        self.salt = ZyppoSync(root=repo.root)
+        zypp_repo_url = self._prep_zypp_repo_url(self.url)
 
         #REMOVE: Manually call Zypper
         repo_cfg = '''[{reponame}]
@@ -411,18 +421,14 @@ autorefresh=0
 baseurl={baseurl}
 type=rpm-md
 '''
-        with open(os.path.join(root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
+        with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(reponame=self.channel_label or self.reponame, baseurl=zypp_repo_url))
-        os.system("zypper --root {} --gpg-auto-import-keys --no-gpg-checks ref".format(root))
+        os.system("zypper --root {} --gpg-auto-import-keys --no-gpg-checks ref".format(repo.root))
 
 #        self.salt.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
 #                           alias=self.channel_label or self.reponame)
 #        self.salt.refresh_db()
-
-        self.num_packages = 0
-        self.num_excluded = 0
-        self.gpgkey_autotrust = None
-        self.groupsfile = None
+        repo.is_configured = True
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
@@ -463,6 +469,8 @@ type=rpm-md
 
         :returns: bool
         """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
         return bool(self._retrieve_md_path(tag))
 
     def _retrieve_md_path(self, tag):
@@ -471,6 +479,8 @@ type=rpm-md
 
         :returns: str
         """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
         _md_files = glob.glob(self._get_repodata_path() + "/*{}.xml.gz".format(tag)) or glob.glob(self._get_repodata_path() + "/*{}.xml".format(tag))
         if _md_files:
             return _md_files[0]
@@ -482,6 +492,8 @@ type=rpm-md
 
         :returns: str
         """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
         return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.name, "repodata")
 
     def get_md_checksum_type(self):
@@ -633,6 +645,8 @@ type=rpm-md
         return modules
 
     def raw_list_packages(self, filters=None):
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
         pool = solv.Pool()
         repo = pool.add_repo(str(self.channel_label or self.reponame))
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
@@ -653,6 +667,8 @@ type=rpm-md
 
         :returns: list
         """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
         pool = solv.Pool()
         repo = pool.add_repo(str(self.channel_label or self.reponame))
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
@@ -682,7 +698,6 @@ type=rpm-md
 
         self.num_packages = len(to_return)
         return to_return
-
 
 
     @staticmethod
@@ -746,12 +761,18 @@ type=rpm-md
     def clear_cache(self, directory=None, keep_repomd=False):
         """
         Clear all cache files from the environment.
+
         """
-        # TODO: This clean_cache method is called by reposync just
-        # after ContentSource is instanciated. We need to prevent that
-        # metadata files and update info is wiped here.
-        # Maybe: os.system("zypper --root {} clean".format(self.repo.root))
-        return
+        if directory is None:
+            directory = self.repo.root
+
+        # remove content in directory
+        for item in os.listdir(directory):
+            path = os.path.join(directory, item)
+            if os.path.isfile(path) and not (keep_repomd and item == "repomd.xml"):
+                os.unlink(path)
+            elif os.path.isdir(path):
+                rmtree(path)
 
     def get_metadata_paths(self):
         """
@@ -869,6 +890,6 @@ type=rpm-md
                 os.unlink(temp_file)
 
     def set_ssl_options(self, ca_cert, client_cert, client_key):
-        self.sslcacert = ca_cert_file
-        self.sslclientcert = client_cert_file
-        self.sslclientkey = client_key_file
+        self.sslcacert = ca_cert
+        self.sslclientcert = client_cert
+        self.sslclientkey = client_key
