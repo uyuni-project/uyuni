@@ -104,18 +104,18 @@ class ZyppoSync:
 class ZypperRepo:
     def __init__(self, root, url, org):
        self.root = root
-       if not os.path.isdir(self.root):
-           fileutils.makedirs(self.root, user='wwwrun', group='www')
        self.baseurl = [url]
        self.basecachedir = os.path.join(CACHE_DIR, org)
-       pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, 'stage')
-       if not os.path.isdir(pkgdir):
-           fileutils.makedirs(pkgdir, user='wwwrun', group='www')
-       self.pkgdir = pkgdir
+       self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, 'stage')
        self.urls = self.baseurl
        # Make sure baseurl ends with / and urljoin will work correctly
        if self.urls[0][-1] != '/':
            self.urls[0] += '/'
+       # Make sure root paths are created
+       if not os.path.isdir(self.root):
+           fileutils.makedirs(self.root, user='wwwrun', group='www')
+       if not os.path.isdir(self.pkgdir):
+           fileutils.makedirs(self.pkgdir, user='wwwrun', group='www')
        self.is_configured = False
 
 
@@ -366,6 +366,8 @@ class ContentSource:
         if query:
             self.authtoken = query
 
+        # Get the global HTTP Proxy settings from DB or per-repo
+        # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
         if CFG.http_proxy:
             self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
         elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
@@ -396,7 +398,7 @@ class ContentSource:
         if self.urls[0][-1] != '/':
             self.urls[0] += '/'
 
-        # Add this repo to the Zypper env
+        # Exclude non-valid characters from reponame
         self.reponame = self.name
         for chr in ["$", " ", ".", ";"]:
             self.reponame = self.reponame.replace(chr, "_")
@@ -411,6 +413,9 @@ class ContentSource:
         self.groupsfile = None
 
     def setup_repo(self, repo):
+        """
+        Setup repository and fetch metadata
+        """
         self.salt = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url)
 
