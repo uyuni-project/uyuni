@@ -19,7 +19,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     Then I wait until event "Package List Refresh scheduled by admin" is completed
 
 @centos_minion
-  Scenario: Schedule errata refresh to reflect channel assignment on CentOS minion
+  Scenario: Schedule errata refresh to reflect channel assignment on Centos SSH minion 
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
@@ -34,7 +34,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
 @centos_minion
-  Scenario: Install a patch on the minion
+  Scenario: Install a patch on the Centos SSH minion 
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     And I follow "Software" in the content area
     And I follow "Patches" in the content area
@@ -46,7 +46,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     And I wait for "virgo-dummy" to be installed on this "ceos-ssh-minion"
 
 @centos_minion
-  Scenario: Install a package on the minion
+  Scenario: Install a package on the Centos SSH minion 
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     And I follow "Software" in the content area
     And I follow "Install"

@@ -45,7 +45,7 @@
 - features/trad_lock_packages.feature
 - features/min_centos_salt.feature
 - features/trad_centos_client.feature
-- features/min_centos_salt_install_package_and_patch.feature
+- features/minssh_centos_salt_install_package_and_patch.feature
 - features/min_bootstrap_xmlrpc.feature
 - features/minssh_bootstrap_xmlrpc.feature
 - features/min_activationkey.feature
