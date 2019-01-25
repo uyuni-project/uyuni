@@ -32,6 +32,8 @@ def test_validate():
         assert msg == 'Cookie path has not been set.'
 
 
+@patch.object(pkgset.os.path, 'exists', MagicMock(return_value=True))
+@patch.object(pkgset, '__context__', {pkgset.__virtualname__: ""})
 def test_beacon():
     '''
     Test beacon functionality.
@@ -39,7 +41,6 @@ def test_beacon():
     mock_content = MagicMock(
         **{'return_value.__enter__.return_value.read.return_value.strip.return_value': 'test'}
     )
-    with patch.object(pkgset.os.path, 'exists', MagicMock(return_value=True)):
-        with patch.object(pkgset, 'open', mock_content):
-            data = pkgset.beacon({})
-            assert data == [{'tag': 'changed'}]
+    with patch.object(pkgset, 'open', mock_content):
+        data = pkgset.beacon({})
+        assert data == [{'tag': 'changed'}]
