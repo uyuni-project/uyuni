@@ -47,7 +47,6 @@ public class RepoSyncTask extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void execute(JobExecutionContext context) {
         List<Long> channelIds = getChannelIds(context.getJobDetail().getJobDataMap());
 
