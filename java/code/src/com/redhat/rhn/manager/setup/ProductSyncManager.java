@@ -124,6 +124,7 @@ public class ProductSyncManager {
         SetupWizardProductDto product = findProductByIdent(productIdent);
         if (product != null) {
             try {
+                List<String> channelsToSync = new LinkedList<>();
                 // Add the channels first
                 ContentSyncManager csm = new ContentSyncManager();
                 for (Channel channel : product.getMandatoryChannels()) {
@@ -131,15 +132,19 @@ public class ProductSyncManager {
                         logger.debug("Add channel: " + channel.getLabel());
                     }
                     csm.addChannel(channel.getLabel(), null);
+                    channelsToSync.add(channel.getLabel());
                 }
 
-                // Trigger sync of those channels
-                List<String> labels = new LinkedList<>();
-                for (Channel channel : product.getMandatoryChannels()) {
-                    labels.add(channel.getLabel());
+                for (Channel iuc : product.getInstallerUpdateChannels()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Add installer update channel: " + iuc.getLabel());
+                    }
+                    csm.addChannel(iuc.getLabel(), null);
+                    channelsToSync.add(iuc.getLabel());
                 }
+
                 ScheduleRepoSyncEvent event =
-                        new ScheduleRepoSyncEvent(labels, user.getId());
+                        new ScheduleRepoSyncEvent(channelsToSync, user.getId());
                 MessageQueue.publish(event);
             }
             catch (ContentSyncException ex) {
@@ -388,7 +393,7 @@ public class ProductSyncManager {
             MgrSyncStatus statusIn = channelIn.getStatus();
             String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED) ?
                     Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
-            return new Channel(channelIn.getLabel(), statusOut);
+            return new Channel(channelIn.getLabel(), statusOut, channelIn.isInstallerUpdates());
         };
 
         List<Channel> mandatoryChannelsOut = collect.get(true).stream()
