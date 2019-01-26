@@ -30,6 +30,7 @@ public class MgrSyncChannelDto {
     private final String summary;
     private final String description;
     private final boolean mandatory;
+    private final boolean installerUpdates;
     private final Optional<PackageArch> arch;
     private final String parentLabel;
     private final String family;
@@ -66,6 +67,13 @@ public class MgrSyncChannelDto {
      */
     public boolean isMandatory() {
         return mandatory;
+    }
+
+    /**
+     * @return true if it is a installer update repo
+     */
+    public boolean isInstallerUpdates() {
+        return installerUpdates;
     }
 
     /**
@@ -145,6 +153,7 @@ public class MgrSyncChannelDto {
      * @param summaryIn the summary
      * @param descriptionIn the description
      * @param mandatoryIn mandatory
+     * @param installerUpdatesIn installerUpdates
      * @param archIn the arch
      * @param parentLabelIn the parent label
      * @param familyIn the channel family
@@ -156,14 +165,15 @@ public class MgrSyncChannelDto {
      * @param updateTagIn the update tag
      */
     public MgrSyncChannelDto(String nameIn, String labelIn, String summaryIn, String descriptionIn,
-            boolean mandatoryIn, Optional<PackageArch> archIn, String parentLabelIn, String familyIn,
-            String productNameIn, String productVersionIn, MgrSyncStatus statusIn, boolean isSignedIn,
-            String sourceUrlIn, String updateTagIn) {
+            boolean mandatoryIn, boolean installerUpdatesIn, Optional<PackageArch> archIn, String parentLabelIn,
+            String familyIn, String productNameIn, String productVersionIn, MgrSyncStatus statusIn,
+            boolean isSignedIn, String sourceUrlIn, String updateTagIn) {
         this.name = nameIn;
         this.label = labelIn;
         this.summary = summaryIn;
         this.description = descriptionIn;
         this.mandatory = mandatoryIn;
+        this.installerUpdates = installerUpdatesIn;
         this.arch = archIn;
         this.parentLabel = parentLabelIn;
         this.family = familyIn;

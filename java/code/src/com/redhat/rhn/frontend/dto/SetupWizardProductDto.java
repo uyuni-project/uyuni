@@ -29,6 +29,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A SUSE Product as it is shown in the Setup Wizard UI.
@@ -320,6 +322,19 @@ public class SetupWizardProductDto implements Selectable,
      */
     public List<Channel> getOptionalChannels() {
         return optionalChannels.getChannels();
+    }
+
+    /**
+     * Gets all channels which are installer updates channel
+     * @return installer updates channel
+     */
+    public List<Channel> getInstallerUpdateChannels() {
+        return Stream.concat(
+                getMandatoryChannels().stream(),
+                getOptionalChannels().stream()
+                )
+                .filter(c -> c.isInstallerUpdates())
+                .collect(Collectors.toList());
     }
 
     /**

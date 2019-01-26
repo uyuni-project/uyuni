@@ -444,7 +444,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         ret = []
         if not product:
             return ret
-        ret.extend([c.label for c in product.channels if not c.optional])
+        ret.extend([c.label for c in product.channels if not c.optional or c.installer_updates])
         if product.isBase:
             for extprd in product.extensions:
                 if extprd.recommended and not no_recommends:

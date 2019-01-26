@@ -31,6 +31,7 @@ class Channel(object):  # pylint: disable=too-many-instance-attributes
         self.status = data["status"]
         self.url = data["source_url"]
         self.optional = data["optional"]
+        self.installer_updates = data["installer_updates"]
         self._children = []
 
     def __repr__(self):

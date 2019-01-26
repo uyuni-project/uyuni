@@ -38,6 +38,9 @@ public class Channel {
     @Attribute
     private String status;
 
+    @Attribute
+    private boolean installerUpdates;
+
     /**
      * Default constructor.
      */
@@ -49,10 +52,12 @@ public class Channel {
      * Instantiates a new channel.
      * @param labelIn the label in
      * @param statusIn the status in
+     * @param installerUpdatesIn is an installer update channel
      */
-    public Channel(String labelIn, String statusIn) {
+    public Channel(String labelIn, String statusIn, boolean installerUpdatesIn) {
         label = labelIn;
         status = statusIn;
+        installerUpdates = installerUpdatesIn;
     }
 
     /**
@@ -69,6 +74,13 @@ public class Channel {
      */
     public String getStatus() {
         return status;
+    }
+
+    /**
+     * @return true if it is a installer update repo
+     */
+    public boolean isInstallerUpdates() {
+        return installerUpdates;
     }
 
     /**
