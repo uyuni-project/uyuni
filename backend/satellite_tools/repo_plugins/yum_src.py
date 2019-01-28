@@ -1,7 +1,24 @@
 # coding: utf-8
-"""
-Reposync via Salt library.
-"""
+#
+# Copyright (c) 2008--2018 Red Hat, Inc.
+# Copyright (c) 2010--2019 SUSE LINUX GmbH, Nuernberg, Germany.
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+# SUSE trademarks are not licensed under GPLv2. No permission is
+# granted to use or replicate SUSE trademarks that are incorporated
+# in this software or its documentation.
+#
+# Red Hat trademarks are not licensed under GPLv2. No permission is
+# granted to use or replicate Red Hat trademarks that are incorporated
+# in this software or its documentation.
+#
+
 from __future__ import absolute_import, unicode_literals
 
 from shutil import rmtree
@@ -174,6 +191,12 @@ class UpdateNoticeException(Exception):
 
 
 class UpdateNotice(object):
+    """
+    Simplified UpdateNotice class implementation
+    https://github.com/rpm-software-management/yum/blob/master/yum/update_md.py
+
+    A single update notice (for instance, a security fix).
+    """
     def __init__(self, elem=None, repoid=None, vlogger=None):
         self._md = {
             'from'             : '',
