@@ -407,6 +407,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
+    <query name="Server.findServerIdsByMinionIds">
+    <![CDATA[
+        SELECT s.minionId, s.id
+            FROM Server AS s
+            WHERE s.class = com.redhat.rhn.domain.server.MinionServer
+                AND s.minionId IN (:minionIds)
+    ]]>
+    </query>
+    
     <sql-query name="Server.lookupAdministrators">
         <![CDATA[select {wc.*}
                                                 from WEB_CONTACT wc
