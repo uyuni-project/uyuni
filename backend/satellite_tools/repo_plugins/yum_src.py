@@ -40,8 +40,8 @@ except:
 
 import xml.etree.ElementTree as etree
 
-import salt.client
-import salt.config
+#import salt.client
+#import salt.config
 
 from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
@@ -74,13 +74,13 @@ class ZyppoSync:
 
     """
     def __init__(self, cfg_path="/etc/salt/minion", root=None):
-        self._conf = salt.config.minion_config(cfg_path)
-        self._conf["file_client"] = "local"
-        self._conf["server_id_use_crc"] = "Adler32"
+#        self._conf = salt.config.minion_config(cfg_path)
+#        self._conf["file_client"] = "local"
+#        self._conf["server_id_use_crc"] = "Adler32"
         self._root = root
         if self._root is not None:
             self._init_root(self._root)
-        self._caller = salt.client.Caller(mopts=self._conf)
+#        self._caller = salt.client.Caller(mopts=self._conf)
 
     def _init_root(self, root):
         """
