@@ -36,8 +36,6 @@ import errno
 
 from rhn.connections import idn_puny_to_unicode
 
-from yum import Errors
-from yum.i18n import to_unicode
 from spacewalk.common.usix import raise_with_tb
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
@@ -53,6 +51,7 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.satellite_tools.download import ThreadedDownloader, ProgressBarLogger, TextLogger
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR
+from spacewalk.satellite_tools.repo_plugins.yum_src import RepoMDNotFound
 from spacewalk.server import taskomatic, rhnPackageUpload
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 
@@ -95,7 +94,7 @@ class ChannelException(Exception):
         return "%s" %(self.value,)
 
     def __unicode__(self):
-        return '%s' % to_unicode(self.value)
+        return self.value
 
 class ChannelTimeoutException(ChannelException):
     """Channel timeout error e.g. a remote repository is not responding"""
@@ -593,15 +592,7 @@ class RepoSync(object):
                     log(0, "ChannelException: %s" % e)
                     self.sendErrorMail("ChannelException: %s" % str(e))
                     sync_error = -1
-                except Errors.YumGPGCheckError as e:
-                    log(0, "YumGPGCheckError: %s" % e)
-                    self.sendErrorMail("YumGPGCheckError: %s" % e)
-                    sync_error = -1
-                except Errors.RepoError as e:
-                    log(0, "RepoError: %s" % e)
-                    self.sendErrorMail("RepoError: %s" % e)
-                    sync_error = -1
-                except Errors.RepoMDError as e:
+                except yum_src.RepoMDNotFound as e:
                     if "primary not available" in str(e):
                         taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                             [self.channel_label], [], "server.app.yumreposync")
