@@ -451,7 +451,7 @@ type=rpm-md
 '''
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(reponame=self.channel_label or self.reponame, baseurl=zypp_repo_url))
-        os.system("zypper --root {} --gpg-auto-import-keys --no-gpg-checks ref".format(repo.root))
+        os.system("zypper --root {} --gpg-auto-import-keys ref".format(repo.root))
 
 #        self.salt.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
 #                           alias=self.channel_label or self.reponame)
