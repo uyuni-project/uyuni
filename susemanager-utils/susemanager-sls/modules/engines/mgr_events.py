@@ -123,6 +123,7 @@ class Responder:
             fnmatch.fnmatch(tag, "salt/job/*/ret/*"),
             fnmatch.fnmatch(tag, "salt/beacon/*"),
             fnmatch.fnmatch(tag, "salt/engines/*"),
+            fnmatch.fnmatch(tag, "salt/batch/*/start"),
             fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
             fnmatch.fnmatch(tag, "suse/systemid/generate")
         ]) and not self._is_salt_mine_event(tag, data):
