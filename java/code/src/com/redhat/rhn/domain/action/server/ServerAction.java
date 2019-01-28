@@ -256,4 +256,11 @@ public class ServerAction extends ActionChild implements Serializable {
         this.setResultMsg(message);
     }
 
+    /**
+     * @return Returns TRUE if this server action status is FAILED. Otherwise, returns FALSE.
+     */
+    public boolean isFailed() {
+        return  ActionFactory.STATUS_FAILED.equals(status);
+    }
+
 }
