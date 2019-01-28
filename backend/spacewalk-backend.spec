@@ -451,10 +451,14 @@ Requires:       %{name}-xmlrpc = %{version}-%{release}
 Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
 Requires:       python3-rhn-client-tools
+Requires:       python3-solv
+Requires:       python3-configparser
 %else
 Requires:       python-dateutil
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
+Requires:       python2-solv
+Requires:       python2-configparser
 %if 0%{?suse_version}
 Requires:       python-pyliblzma
 %else
