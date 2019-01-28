@@ -31,9 +31,6 @@ class YumSrcTest(unittest.TestCase):
 
     def _make_dummy_cs(self):
         """Create a dummy ContentSource object that only talks to a mocked yum"""
-        real_yum = yum_src.yum
-        yum_src.yum = Mock()
-
         real_setup_repo = yum_src.ContentSource.setup_repo
         yum_src.ContentSource.initgpgdir = Mock()
         yum_src.ContentSource.get_groups = Mock(return_value=None)
@@ -59,7 +56,6 @@ class YumSrcTest(unittest.TestCase):
         cs.repo.includepkgs = []
         cs.repo.exclude = []
 
-        yum_src.yum = real_yum
         yum_src.ContentSource.setup_repo = real_setup_repo
 
         return cs

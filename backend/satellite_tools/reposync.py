@@ -51,7 +51,7 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.satellite_tools.download import ThreadedDownloader, ProgressBarLogger, TextLogger
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR
-from spacewalk.satellite_tools.repo_plugins.yum_src import RepoMDNotFound
+from spacewalk.satellite_tools.repo_plugins import yum_src
 from spacewalk.server import taskomatic, rhnPackageUpload
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 
