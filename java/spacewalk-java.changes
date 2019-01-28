@@ -1,3 +1,4 @@
+- show beta products if a beta subscription is available (bsc#1123189)
 - fix synchronizing Expanded Support Channel with missing architecture
   (bsc#1122565)
 - Explicitly require JDK11

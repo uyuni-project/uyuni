@@ -1005,7 +1005,7 @@ public class ContentSyncManager {
     public void updateChannelFamilies(Collection<ChannelFamilyJson> channelFamilies)
             throws ContentSyncException {
         log.info("ContentSyncManager.updateChannelFamilies called");
-        List<String> suffixes = Arrays.asList("", "alpha", "beta");
+        List<String> suffixes = Arrays.asList("", "ALPHA", "BETA");
 
         for (ChannelFamilyJson channelFamily : channelFamilies) {
             for (String suffix : suffixes) {
@@ -1694,7 +1694,7 @@ public class ContentSyncManager {
     private ChannelFamily createOrUpdateChannelFamily(String label, String name, String suffix) {
         // to create ALPHA and BETA families
         if (!StringUtils.isBlank(suffix)) {
-            label = label + "-" + suffix.toLowerCase();
+            label = label + "-" + suffix;
             name = name + " (" + suffix.toUpperCase() + ")";
         }
         return createOrUpdateChannelFamily(label, name, new HashMap<>());
