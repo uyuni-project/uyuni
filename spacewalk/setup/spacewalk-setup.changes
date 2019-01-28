@@ -1,3 +1,4 @@
+- Add Java module options for Tomcat needed when running on Java 11
 - Point to the correct log file when tomcat is not able to start
 - Fix distribution detection to work with openSUSE Leap 15 and
   SLE 15

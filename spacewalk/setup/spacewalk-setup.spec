@@ -234,6 +234,11 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
         echo 'module = manage_in_tftpd'                     >> /etc/cobbler/modules.conf
     fi
 fi
+
+if [ $1 = 2 -a -e /etc/sysconfig/tomcat ]; then
+     sed -ri '/\-\-add\-modules java\.annotation,com\.sun\.xml\.bind/!s/JAVA_OPTS="(.*)"/JAVA_OPTS="\1 --add-modules java.annotation,com.sun.xml.bind --add-exports java.annotation\/javax.annotation.security=ALL-UNNAMED --add-opens java.annotation\/javax.annotation.security=ALL-UNNAMED"/' /etc/sysconfig/tomcat
+fi
+
 if [ -e /etc/zypp/credentials.d/NCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/NCCcredentials
     chmod g+r /etc/zypp/credentials.d/NCCcredentials
