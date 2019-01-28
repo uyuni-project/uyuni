@@ -888,7 +888,7 @@ type=rpm-md
                     return target_file
                 else:
                     return urlgrabber.urlread(path)
-            except URLGrabError:
+            except urlgrabber.URLGrabError:
                 return
         finally:
             if os.path.exists(temp_file):
