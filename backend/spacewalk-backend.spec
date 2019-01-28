@@ -457,8 +457,8 @@ Requires:       python3-configparser
 Requires:       python-dateutil
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
-Requires:       python2-solv
-Requires:       python2-configparser
+Requires:       python-solv
+Requires:       python-configparser
 %if 0%{?suse_version}
 Requires:       python-pyliblzma
 %else
