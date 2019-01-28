@@ -227,19 +227,19 @@
     </exec>
 
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
     </exec>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
     </exec>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
     </exec>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
     </exec>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.vendors.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/vendors/" />
     </exec>
   </target>
