@@ -1,3 +1,4 @@
+- Use "Zypper" and "libsolv" in "spacewalk-repo-sync". Replace "yum".
 - Require the correct dependency for python-rpm to allow the Proxy
   to work with Python3 only
 - Make rhn-ssl-dbstore compatible with python3
