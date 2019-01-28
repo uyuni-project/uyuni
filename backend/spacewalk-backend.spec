@@ -22,7 +22,7 @@
 %global rhnconf %{_sysconfdir}/rhn
 %global m2crypto m2crypto
 
-%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
+%if 0%{?fedora} || 0%{?suse_version} >= 1500 || 0%{?rhel} >= 8
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %global python_sitelib %{python3_sitelib}
 %global python3rhnroot %{python3_sitelib}/spacewalk
@@ -55,7 +55,7 @@
 %endif
 %endif
 
-%if 0%{?suse_version} >= 1320
+%if 0%{?suse_version} >= 1500
 %global python_prefix python3
 %else
 %if  0%{?fedora} >= 28  || 0%{?rhel} >= 8
@@ -94,7 +94,11 @@ Requires:       python3-rpm
 %else
 Requires:       python2-rhnlib >= 2.5.74
 Requires:       %{name}-libs >= %{version}
+%if 0%{?suse_version} >= 1500
 Requires:       python2-rpm
+%else
+Requires:       rpm-python
+%endif
 %if 0%{?suse_version}
 Requires:       python-pyliblzma
 %else
@@ -130,7 +134,11 @@ BuildRequires:  python3-rpm
 BuildRequires:  python2-gzipstream
 BuildRequires:  python2-rhn-client-tools
 BuildRequires:  python2-rhnlib >= 2.5.74
-BuildRequires:  python2-rpm
+%if 0%{?suse_version} >= 1500
+Requires:       python2-rpm
+%else
+Requires:       rpm-python
+%endif
 %endif
 BuildRequires:  %{python_prefix}-debian
 
@@ -254,7 +262,11 @@ Requires:       python3-spacewalk-usix
 Requires:       python3-rpm
 %else
 Requires:       python2-spacewalk-usix
+%if 0%{?suse_version} >= 1500
 Requires:       python2-rpm
+%else
+Requires:       rpm-python
+%endif
 %endif
 Obsoletes:      rhns-server-xmlrpc < 5.3.0
 Obsoletes:      rhns-xmlrpc < 5.3.0
@@ -331,7 +343,11 @@ Requires:       python3-spacewalk-usix
 Requires:       python3-rpm
 %else
 Requires:       python2-spacewalk-usix
+%if 0%{?suse_version} >= 1500
 Requires:       python2-rpm
+%else
+Requires:       rpm-python
+%endif
 %endif
 
 %description iss-export
