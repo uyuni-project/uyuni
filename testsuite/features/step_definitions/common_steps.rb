@@ -42,26 +42,49 @@ end
 
 # events
 
+When(/^I wait until event "([^"]*)" is completed$/) do |event|
+  steps %(
+    When I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed
+  )
+end
+
 When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
   # The code below is not perfect because there might be other events with the
   # same name in the events history - however, that's the best we have so far.
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait for "1" second
     And I wait until I do not see "#{event}" text, refreshing the page
     And I follow "History"
-    And I wait for "1" second
-    And I wait until I see "#{event}" text, refreshing the page
+    And I wait until I see "System History" text
     And I follow first "#{event}"
     And I wait at most #{final_timeout} seconds until the event is completed, refreshing the page
   )
 end
 
-When(/^I wait until event "([^"]*)" is completed$/) do |event|
-  steps %(
-    When I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed
-  )
+When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        now = Time.now
+        current_minute = now.strftime('%H:%M')
+        previous_minute = (now - 60).strftime('%H:%M')
+        break if page.has_xpath?("//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]")
+        sleep 1
+        page.evaluate_script 'window.location.reload()'
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the event #{event} in webpage"
+  end
+end
+
+When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
+  now = Time.now
+  current_minute = now.strftime('%H:%M')
+  previous_minute = (now - 60).strftime('%H:%M')
+  xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]"
+  raise unless find(:xpath, xpath_query).click
 end
 
 # spacewalk errors steps
