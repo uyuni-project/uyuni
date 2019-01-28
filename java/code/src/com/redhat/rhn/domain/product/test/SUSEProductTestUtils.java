@@ -220,6 +220,31 @@ public class SUSEProductTestUtils extends HibernateFactory {
         TestUtils.saveAndFlush(product);
     }
 
+    /**
+     * Create the SUSE Manager Tools product.
+     */
+    public static void createSUMAToolsProduct() {
+        ChannelFamily toolsChannelFamily = ChannelFamilyFactory.lookupByLabel("SLE-M-T", null);
+        if (toolsChannelFamily == null) {
+            toolsChannelFamily = new ChannelFamily();
+            toolsChannelFamily.setLabel("SLE-M-T");
+            toolsChannelFamily.setName("SUSE Manager Tools");
+            TestUtils.saveAndFlush(toolsChannelFamily);
+        }
+
+        SUSEProduct product = new SUSEProduct();
+        product.setName("sle-manager-tools");
+        product.setVersion("12");
+        product.setRelease("0");
+        product.setFriendlyName("SUSE Manager Tools 12");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(1248L);
+        product.setChannelFamily(toolsChannelFamily);
+        product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+    }
+
     public static Channel createBaseChannelForBaseProduct(SUSEProduct product, User admin) throws Exception {
         ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
         Channel channel = ChannelTestUtils.createBaseChannel(admin);

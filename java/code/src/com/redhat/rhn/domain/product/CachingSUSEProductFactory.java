@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.product;
 
 
 import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -26,9 +25,9 @@ import com.suse.utils.Opt;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * Fetches {@link SUSEProduct} objects caching them for speed.
@@ -63,13 +62,12 @@ public class CachingSUSEProductFactory {
     /**
      * Maps many InstalledProducts to many SUSEProducts
      * @param installedProducts the installed products
-     * @return the SUSE products
+     * @return the SUSE products stream
      */
-    public List<SUSEProduct> map(Collection<InstalledProduct> installedProducts) {
+    public Stream<SUSEProduct> map(Collection<InstalledProduct> installedProducts) {
         return installedProducts.stream()
                 .map(this::lookupCachedSUSEProduct)
                 .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(SUSEProduct::isBase).thenComparing(SUSEProduct::getId))
-                .collect(toList());
+                .sorted(Comparator.comparing(SUSEProduct::isBase).thenComparing(SUSEProduct::getId));
     }
 }

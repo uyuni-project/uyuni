@@ -13,10 +13,9 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.ProductJson;
@@ -37,10 +36,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class MatcherJsonIOTest extends BaseTestCaseWithUser {
+import static java.util.Collections.singleton;
+
+public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/sccdata/";
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
+
+    // SCC Product IDs:
+    private static final long MGMT_SINGLE_PROD_ID = 1076L;
+    private static final long PROV_SINGLE_PROD_ID = 1097L;
+    private static final long MGMT_UNLIMITED_VIRT_PROD_ID = 1078L;
+    private static final long PROV_UNLIMITED_VIRT_PROD_ID = 1204L;
 
     private static final String AMD64_ARCH = "amd64";
 
@@ -54,20 +61,9 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         h1.setCpu(createCPU(h1, 8L));
 
         Set<InstalledProduct> installedProducts = new HashSet<>();
-        InstalledProduct instPrd = new InstalledProduct();
-        instPrd.setName("SLES");
-        instPrd.setVersion("12.1");
-        instPrd.setRelease("0");
-        instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        instPrd.setBaseproduct(true);
+        InstalledProduct instPrd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
         installedProducts.add(instPrd);
-
-        instPrd = new InstalledProduct();
-        instPrd.setName("sle-ha");
-        instPrd.setVersion("12.1");
-        instPrd.setRelease("0");
-        instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        instPrd.setBaseproduct(false);
+        instPrd = createInstalledProduct("sle-ha", "12.1", "0", "x86_64", false);
         installedProducts.add(instPrd);
 
         Server g1 = ServerTestUtils.createTestSystem();
@@ -105,8 +101,8 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         assertEquals("guest1.example.com", resultG1.getName());
         assertEquals(4, resultG1.getProductIds().size());
         assertTrue(resultG1.getProductIds().contains(1322L));
-        assertTrue(resultG1.getProductIds().contains(1076L));
-        assertTrue(resultG1.getProductIds().contains(1097L));
+        assertTrue(resultG1.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+        assertTrue(resultG1.getProductIds().contains(PROV_SINGLE_PROD_ID));
         assertTrue(resultG1.getProductIds().contains(1324L));
 
         SystemJson resultG2 =
@@ -115,8 +111,8 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         assertEquals("guest2.example.com", resultG2.getName());
         assertEquals(4, resultG2.getProductIds().size());
         assertTrue(resultG2.getProductIds().contains(1322L));
-        assertTrue(resultG2.getProductIds().contains(1076L));
-        assertTrue(resultG2.getProductIds().contains(1097L));
+        assertTrue(resultG2.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+        assertTrue(resultG2.getProductIds().contains(PROV_SINGLE_PROD_ID));
         assertTrue(resultG2.getProductIds().contains(1324L));
 
         // ISS Master should add itself
@@ -153,30 +149,73 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
                     .findFirst().get().getName());
     }
 
+    /**
+     * Tests that lifecycle products of the systems are present in the input for the matcher (non s390x scenario).
+     * For virtual hosts, we should report the same lifecycle products as for other systems.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testLifecycleProductsReporting() throws Exception {
+        SUSEProductTestUtils.clearAllProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        SUSEProductTestUtils.createVendorEntitlementProducts();
+
+        Server hostServer = ServerTestUtils.createVirtHostWithGuests(1);
+        // let's set some base product to our systems (otherwise lifecycle subscriptions aren't reported)
+        InstalledProduct instProd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
+        Set<InstalledProduct> installedProducts = singleton(instProd);
+        hostServer.setInstalledProducts(installedProducts);
+        Server guestServer = hostServer.getGuests().iterator().next().getGuestSystem();
+        guestServer.setInstalledProducts(installedProducts);
+
+        MatcherJsonIO matcherInput = new MatcherJsonIO();
+        List<SystemJson> systems = matcherInput.getJsonSystems(false, AMD64_ARCH);
+        assertEquals(1, systems.stream().filter(s -> s.getId().equals(hostServer.getId())).count());
+        assertEquals(1, systems.stream().filter(s -> s.getId().equals(guestServer.getId())).count());
+        SystemJson host = systems.stream().filter(s -> s.getId().equals(hostServer.getId())).findFirst().get();
+        SystemJson guest = systems.stream().filter(s -> s.getId().equals(guestServer.getId())).findFirst().get();
+
+        assertTrue(host.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+        assertTrue(host.getProductIds().contains(PROV_SINGLE_PROD_ID));
+        assertFalse(host.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
+        assertFalse(host.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
+        assertTrue(guest.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+        assertTrue(guest.getProductIds().contains(PROV_SINGLE_PROD_ID));
+        assertFalse(guest.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
+        assertFalse(guest.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
+    }
+
+
+    /**
+     * Tests that the SUSE Manager Tools proudct is not reported to the matcher.
+     *
+     * @throws java.lang.Exception if anything goes wrong
+     */
+    public void testFilteringToolsProducts() throws Exception {
+        SUSEProductTestUtils.clearAllProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        SUSEProductTestUtils.createSUMAToolsProduct();
+        SUSEProductTestUtils.createVendorEntitlementProducts();
+
+        Set<InstalledProduct> installedProducts = new HashSet<>();
+        InstalledProduct instPrd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
+        installedProducts.add(instPrd);
+        instPrd = createInstalledProduct("sle-manager-tools", "12", "0", "x86_64", false);
+        installedProducts.add(instPrd);
+
+        Server testSystem = ServerTestUtils.createTestSystem(user);
+        testSystem.setInstalledProducts(installedProducts);
+
+        MatcherJsonIO matcherInput = new MatcherJsonIO();
+        SystemJson system = matcherInput.getJsonSystems(false, AMD64_ARCH).stream()
+                .filter(s -> s.getId().equals(testSystem.getId())).findFirst().get();
+
+        assertFalse(system.getProductIds().contains(instPrd.getSUSEProduct().getProductId()));
+    }
+
     public void testSubscriptionsToJson() throws Exception {
-        File subJson = new File(TestUtils.findTestData(
-                new File(JARPATH, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
-        File orderJson = new File(TestUtils.findTestData(
-                new File(JARPATH, ORDERS_JSON).getAbsolutePath()).getPath());
-
-        Path fromdir = Files.createTempDirectory("sumatest");
-        File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
-        File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
-        Files.copy(subJson.toPath(), subtempFile.toPath());
-        Files.copy(orderJson.toPath(), ordertempFile.toPath());
-        try {
-            Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
-            SUSEProductTestUtils.clearAllProducts();
-            SUSEProductTestUtils.createVendorSUSEProducts();
-
-            ContentSyncManager cm = new ContentSyncManager();
-
-            // this will also refresh the DB cache of subscriptions
-            Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
-            HibernateFactory.getSession().flush();
-            assertNotNull(s);
-            List<SubscriptionJson> result = new MatcherJsonIO()
-                    .getJsonSubscriptions();
+        withSetupContentSyncManager(JARPATH, () -> {
+            List<SubscriptionJson> result = new MatcherJsonIO().getJsonSubscriptions();
 
             SubscriptionJson resultSubscription1 = result.stream()
                     .filter(rs -> rs.getId().equals(9998L))
@@ -197,6 +236,64 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
             assertTrue(resultSubscription2.getProductIds().contains(1322L));
             assertTrue(resultSubscription2.getProductIds().contains(1324L));
             assertEquals("extFile", resultSubscription2.getSccUsername());
+        });
+    }
+
+    public void testLifecycleProductsInSubscriptions() throws Exception {
+        withSetupContentSyncManager("/com/redhat/rhn/manager/content/test/sccdata_lifecycle_products", () -> {
+            List<SubscriptionJson> subscriptions = new MatcherJsonIO().getJsonSubscriptions();
+
+            assertEquals(4, subscriptions.size());
+
+            subscriptions.stream()
+                    .filter(s -> s.getId() == 11 || s.getId() == 12) // Management
+                    .forEach(s -> {
+                        assertTrue(s.getProductIds().contains(MGMT_SINGLE_PROD_ID));
+                        assertFalse(s.getProductIds().contains(MGMT_UNLIMITED_VIRT_PROD_ID));
+                    });
+
+            subscriptions.stream()
+                    .filter(s -> s.getId() == 13 || s.getId() == 14) // Provisioning
+                    .forEach(s -> {
+                        assertTrue(s.getProductIds().contains(PROV_SINGLE_PROD_ID));
+                        assertFalse(s.getProductIds().contains(PROV_UNLIMITED_VIRT_PROD_ID));
+                    });
+        });
+    }
+
+    /**
+     * Helper method for handling the ContentSyncManager mocking boilerplate.
+     *
+     * @param workDir the working directory of the ContentSyncManager
+     * @param body the Runnable with the test body
+     * @throws Exception if anything goes wrong
+     */
+    private static void withSetupContentSyncManager(String workDir, Runnable body) throws Exception {
+        File subJson = new File(TestUtils.findTestData(
+                new File(workDir, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
+        File orderJson = new File(TestUtils.findTestData(
+                new File(workDir, ORDERS_JSON).getAbsolutePath()).getPath());
+
+        Path fromdir = Files.createTempDirectory("sumatest");
+        File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
+        File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
+        Files.copy(subJson.toPath(), subtempFile.toPath());
+        Files.copy(orderJson.toPath(), ordertempFile.toPath());
+        Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
+        try {
+            SUSEProductTestUtils.clearAllProducts();
+            SUSEProductTestUtils.createVendorSUSEProducts();
+            SUSEProductTestUtils.createVendorEntitlementProducts();
+
+            ContentSyncManager cm = new ContentSyncManager();
+
+            // this will also refresh the DB cache of subscriptions
+            Collection<SCCSubscriptionJson> s;
+            s = cm.updateSubscriptions();
+            HibernateFactory.getSession().flush();
+            assertNotNull(s);
+
+            body.run();
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
@@ -266,20 +363,9 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
             ServerFactory.save(h1);
 
             Set<InstalledProduct> installedProducts = new HashSet<>();
-            InstalledProduct instPrd = new InstalledProduct();
-            instPrd.setName("SLES");
-            instPrd.setVersion("12.1");
-            instPrd.setRelease("0");
-            instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-            instPrd.setBaseproduct(true);
+            InstalledProduct instPrd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
             installedProducts.add(instPrd);
-
-            instPrd = new InstalledProduct();
-            instPrd.setName("sle-ha");
-            instPrd.setVersion("12.1");
-            instPrd.setRelease("0");
-            instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-            instPrd.setBaseproduct(false);
+            instPrd = createInstalledProduct("sle-ha", "12.1", "0", "x86_64", false);
             installedProducts.add(instPrd);
 
             h1.setInstalledProducts(installedProducts);
@@ -327,5 +413,15 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         cpu.setServer(s);
         cpu.setArch(ServerFactory.lookupCPUArchByName("x86_64"));
         return cpu;
+    }
+
+    private InstalledProduct createInstalledProduct(String name, String version, String release, String archLabel, boolean base) {
+        InstalledProduct instProd = new InstalledProduct();
+        instProd.setName(name);
+        instProd.setVersion(version);
+        instProd.setRelease(release);
+        instProd.setArch(PackageFactory.lookupPackageArchByLabel(archLabel));
+        instProd.setBaseproduct(base);
+        return instProd;
     }
 }
