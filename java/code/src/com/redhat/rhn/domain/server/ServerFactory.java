@@ -1281,4 +1281,41 @@ public class ServerFactory extends HibernateFactory {
 
     }
 
+    /**
+     * Finds the server ids given a list of minion ids.
+     *
+     * @param minionIds the list of minion ids
+     * @return a map containing the minion id as key and the server id as value
+     */
+    public static Map<String, Long> findServerIdsByMinionIds(List<String> minionIds) {
+        Session session = HibernateFactory.getSession();
+        org.hibernate.query.Query<Object[]> query = session.getNamedQuery("Server.findServerIdsByMinionIds");
+        List<Object[]> results = new LinkedList<Object[]>();
+
+        if (minionIds.size() == 0) {
+            return new HashMap();
+        }
+
+        if (minionIds.size() < 1000) {
+            query.setParameterList("minionIds", minionIds);
+            results = query.getResultList();
+        } else {
+            List<String> blockOfIds = new LinkedList<String>();
+            for (String sid : minionIds) {
+                blockOfIds.add(sid);
+                if (blockOfIds.size() == 999) {
+                    query.setParameterList("minionIds", blockOfIds);
+                    results.addAll(query.getResultList());
+                    blockOfIds = new LinkedList<String>();
+                }
+            }
+            // Deal with the remainder:
+            if (blockOfIds.size() > 0) {
+                query.setParameterList("minionIds", blockOfIds);
+                results.addAll(query.getResultList());
+            }
+        }
+        return results.stream().collect(Collectors.toMap(row -> row[0].toString(), row -> (Long)row[1]));
+    }
+
 }

@@ -26,6 +26,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
+import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
+import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
@@ -48,6 +50,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
+import com.suse.salt.netapi.event.BatchStartedEvent;
 import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
@@ -105,6 +108,8 @@ public class SaltReactor {
                 SystemIdGenerateEventMessage.class);
         MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
                 ImageDeployedEventMessage.class);
+        MessageQueue.registerAction(new BatchStartedEventMessageAction(),
+                BatchStartedEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -193,11 +198,22 @@ public class SaltReactor {
         // Setup handlers for different event types
         return MinionStartEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                JobReturnEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               BatchStartedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        )))));
+        ))))));
+    }
+
+    /**
+     * Trigger handling of batch started events.
+     *
+     * @param batchStartedEvent the batch started event as we get it from salt
+     * @return event handler runnable
+     */
+    private Stream<EventMessage> eventToMessages(BatchStartedEvent batchStartedEvent) {
+        return of(new BatchStartedEventMessage(batchStartedEvent));
     }
 
     /**
