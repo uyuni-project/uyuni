@@ -317,7 +317,7 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osad-%
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
 ln -s osad%{default_suffix} $RPM_BUILD_ROOT/usr/sbin/osad
 # osa-dispatcher is python2 even on Fedora
-ln -s osa-dispatcher-%{python_version} $RPM_BUILD_ROOT/usr/sbin/osa-dispatcher
+ln -s osa-dispatcher%{default_suffix} $RPM_BUILD_ROOT/usr/sbin/osa-dispatcher
 
 mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
