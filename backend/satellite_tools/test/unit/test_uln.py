@@ -26,6 +26,9 @@ class TestULNAuth:
     Test ULN auth.
     """
     def test_get_hostname_uln(self, uln_auth_instance):
+        """
+        Test ULN uri raises an exception if protocol is not ULN.
+        """
         with pytest.raises(ulnauth.RhnSyncException) as exc:
             uln_auth_instance._get_hostname("foo://something/else")
         assert "URL must start with 'uln://'" in str(exc)
