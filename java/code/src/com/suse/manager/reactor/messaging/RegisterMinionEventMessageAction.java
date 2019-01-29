@@ -462,9 +462,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 // remove package profile
                 minion.getPackages().clear();
 
-                // change base channel
-                minion.getChannels().clear();
-
                 // clear config channels
                 minion.setConfigChannels(Collections.emptyList(), minion.getCreator());
 
