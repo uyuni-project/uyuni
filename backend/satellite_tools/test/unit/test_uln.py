@@ -4,6 +4,7 @@ Unit tests for the ULN authentication library.
 """
 import sys
 import pytest
+from unittest.mock import MagicMock, patch
 
 try:
     sys.path.insert(0, __file__.split("/test/unit")[0])
@@ -49,3 +50,12 @@ class TestULNAuth:
         assert netloc == "scc.suse.de"
         assert path == "/suse"
 
+    @patch("os.path.exists", MagicMock(return_value=False))
+    @patch("os.access", MagicMock(return_value=False))
+    def test_get_credentials_not_found(self, uln_auth_instance):
+        """
+        Test fetching proper credentials from the ULN configuration.
+        """
+        with pytest.raises(ulnauth.RhnSyncException) as exc:
+            uln_auth_instance._get_credentials()
+        assert "'/etc/rhn/spacewalk-repo-sync/uln.conf' does not exists" in str(exc)
