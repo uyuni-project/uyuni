@@ -60,6 +60,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toSet;
@@ -231,54 +232,14 @@ public class RegistrationUtils {
                 // No ActivationKey
                 () -> {
                     Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
-                    Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                            .collect(partitioningBy(SUSEProduct::isBase));
-
-                    Optional<SUSEProduct> baseProductOpt = ofNullable(baseAndExtProd.get(true))
-                            .flatMap(s -> s.stream().findFirst());
-                    List<SUSEProduct> extProducts = baseAndExtProd.get(false);
-
-                    return Opt.fold(
-                            baseProductOpt,
-                            // No ActivationKey and no base product identified
-                            () -> {
-                                LOG.warn("Server " + minionId + " has no identifiable base product" +
-                                        " and will register without base channel assignment");
-                                return Collections.emptySet();
-                            },
-                            baseProduct -> Stream.concat(
-                                    lookupRequiredChannelsForProduct(baseProduct),
-                                    extProducts.stream()
-                                            .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                            ).collect(toSet())
-                    );
+                    return findChannelsForProducts(suseProducts, minionId);
                 },
                 ak -> Opt.<Channel, Set<Channel>>fold(
                         ofNullable(ak.getBaseChannel()),
                         // ActivationKey without base channel (SUSE Manager Default)
                         () -> {
                             Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
-                            Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
-                                    .collect(partitioningBy(SUSEProduct::isBase));
-
-                            Optional<SUSEProduct> baseProductOpt = ofNullable(baseAndExtProd.get(true))
-                                    .flatMap(s -> s.stream().findFirst());
-                            List<SUSEProduct> extProducts = baseAndExtProd.get(false);
-
-                            return Opt.fold(
-                                    baseProductOpt,
-                                    // ActivationKey and no base product identified
-                                    () -> {
-                                        LOG.warn("Server " + minionId + " has no identifiable base product" +
-                                                " and will register without base channel assignment");
-                                        return Collections.emptySet();
-                                    },
-                                    baseProduct -> Stream.concat(
-                                            lookupRequiredChannelsForProduct(baseProduct),
-                                            extProducts.stream().flatMap(
-                                                    ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
-                                    ).collect(toSet())
-                            );
+                            return findChannelsForProducts(suseProducts, minionId);
                         },
                         baseChannel -> Opt.fold(
                                 SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()),
@@ -311,6 +272,28 @@ public class RegistrationUtils {
         }
 
         channelsToAssign.forEach(server::addChannel);
+    }
+
+    private static Set<Channel> findChannelsForProducts(Set<SUSEProduct> suseProducts, String minionId) {
+        Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
+                .collect(partitioningBy(SUSEProduct::isBase));
+        Optional<SUSEProduct> baseProductOpt = ofNullable(baseAndExtProd.get(true))
+                .flatMap(s -> s.stream().findFirst());
+        List<SUSEProduct> extProducts = baseAndExtProd.get(false);
+
+        return Opt.fold(
+                baseProductOpt,
+                () -> {
+                    LOG.warn("Server " + minionId + " has no identifiable base product" +
+                            " and will register without base channel assignment");
+                    return emptySet();
+                },
+                baseProduct -> Stream.concat(
+                        lookupRequiredChannelsForProduct(baseProduct),
+                        extProducts.stream()
+                                .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
+                ).collect(toSet())
+        );
     }
 
     private static Set<SUSEProduct> identifyProduct(SaltService saltService, MinionServer server, ValueMap grains) {
@@ -361,7 +344,7 @@ public class RegistrationUtils {
                 }
             }).collect(toSet());
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 
     private static Stream<Channel> lookupRequiredChannelsForProduct(SUSEProduct sp) {
