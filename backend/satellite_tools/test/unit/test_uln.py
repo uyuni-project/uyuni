@@ -79,3 +79,18 @@ class TestULNAuth:
         with pytest.raises(ulnauth.RhnSyncException) as exc:
             uln_auth_instance._get_credentials()
         assert "Permission denied to '/etc/rhn/spacewalk-repo-sync/uln.conf'" in str(exc)
+
+    @patch("os.path.exists", MagicMock(return_value=True))
+    @patch("os.access", MagicMock(return_value=True))
+    def test_get_credentials_credentials(self, uln_auth_instance):
+        """
+        Test credentials ULN
+        """
+        class CfgParser(dict):
+            def read(self, path):
+                self["main"] = {"username": "Darth Vader", "password": "f1ndE4rth"}
+
+        with patch("configparser.ConfigParser", CfgParser):
+            username, password = uln_auth_instance._get_credentials()
+            assert username == "Darth Vader"
+            assert password == "f1ndE4rth"
