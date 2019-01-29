@@ -15,6 +15,8 @@
 # in this software or its documentation.
 
 import os
+import solv
+import etree
 import unittest
 try:
     from io import StringIO
@@ -69,6 +71,9 @@ class YumSrcTest(unittest.TestCase):
     def test_list_packages_empty(self):
         cs = self._make_dummy_cs()
 
+        os.path.isfile = Mock(return_value=True)
+        solv.Pool = Mock()
+
         self.assertEqual(cs.list_packages(filters=None, latest=False), [])
 
     def test_list_packages_with_pack(self):
@@ -79,10 +84,9 @@ class YumSrcTest(unittest.TestCase):
         Package = namedtuple('Package', package_attrs)
         mocked_packs = [Package('n1', 'v1', 'r1', 'e1', 'a1', [('c1', 'cs')], 'rid1', ('n1', 'a1', 'e1', 'v1', 'r1')),
                         Package('n2', 'v2', 'r2', 'e2', 'a2', [('c2', 'cs')], 'rid2', ('n2', 'a2', 'e2', 'v2', 'r2'))]
-        mockReturnPackages = MagicMock()
-        mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
-        mockReturnPackages.returnPackages.return_value = mocked_packs
-        cs.repo.getPackageSack = MagicMock(return_value=mockReturnPackages)
+
+        os.path.isfile = Mock(return_value=True)
+        solv.Pool = Mock()
 
         listed_packages = cs.list_packages(filters=None, latest=False)
 
@@ -124,7 +128,7 @@ class YumSrcTest(unittest.TestCase):
                 """)
         cs._md_exists = Mock(return_value=True)
         cs._md_retrieve_md_path = Mock(return_value="patches.xml")
-        cs.etree.iterparse = Mock(return_value=patches_xml)
+        etree.iterparse = Mock(return_value=patches_xml)
         os.path.join = Mock(side_effect=lambda *args: StringIO(u"<xml></xml>"))
 
         patches = cs.get_updates()
