@@ -85,6 +85,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype $ContentProjectSerializer
      */
     public ContentProject createProject(User loggedInUser, String label, String name, String description) {
+        ensureOrgAdmin(loggedInUser);
         try {
             return ContentManager.createProject(label, name, description, loggedInUser);
         }
@@ -112,6 +113,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype $ContentProjectSerializer
      */
     public ContentProject updateProject(User loggedInUser, String label, Map<String, Object> props) {
+        ensureOrgAdmin(loggedInUser);
         try {
             return ContentManager.updateProject(label,
                     ofNullable((String) props.get("name")),
@@ -136,6 +138,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype int - the number of removed objects
      */
     public int removeProject(User loggedInUser, String label) {
+        ensureOrgAdmin(loggedInUser);
         return ContentManager.removeProject(label, loggedInUser);
     }
 
@@ -203,6 +206,7 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public ContentEnvironment createEnvironment(User loggedInUser, String projectLabel, String predecessorLabel,
             String label, String name, String description) {
+        ensureOrgAdmin(loggedInUser);
         try {
             return ContentManager.createEnvironment(projectLabel, of(predecessorLabel), label, name, description,
                     loggedInUser);
@@ -234,6 +238,7 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public ContentEnvironment updateEnvironment(User loggedInUser, String projectLabel, String envLabel,
             Map<String, Object> props) {
+        ensureOrgAdmin(loggedInUser);
         try {
             return ContentManager.updateEnvironment(envLabel,
                     projectLabel,
@@ -261,6 +266,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype int - the number of removed objects
      */
     public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
+        ensureOrgAdmin(loggedInUser);
         return ContentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
     }
 }
