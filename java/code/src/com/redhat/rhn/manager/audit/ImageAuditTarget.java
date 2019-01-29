@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * ImageAuditTarget
  */
@@ -50,7 +52,7 @@ public class ImageAuditTarget implements AuditTarget {
 
     @Override
     public List<SUSEProduct> getSUSEProducts() {
-        return productFactory.map(imageInfo.getInstalledProducts());
+        return productFactory.map(imageInfo.getInstalledProducts()).collect(toList());
     }
 
     @Override
