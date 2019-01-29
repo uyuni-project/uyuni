@@ -54,8 +54,18 @@ class TestULNAuth:
     @patch("os.access", MagicMock(return_value=False))
     def test_get_credentials_not_found(self, uln_auth_instance):
         """
-        Test fetching proper credentials from the ULN configuration.
+        Test credentials ULN configuration exists.
         """
         with pytest.raises(ulnauth.RhnSyncException) as exc:
             uln_auth_instance._get_credentials()
         assert "'/etc/rhn/spacewalk-repo-sync/uln.conf' does not exists" in str(exc)
+
+    @patch("os.path.exists", MagicMock(return_value=True))
+    @patch("os.access", MagicMock(return_value=False))
+    def test_get_credentials_access_denied(self, uln_auth_instance):
+        """
+        Test credentials ULN configuration readable.
+        """
+        with pytest.raises(ulnauth.RhnSyncException) as exc:
+            uln_auth_instance._get_credentials()
+        assert "Permission denied to '/etc/rhn/spacewalk-repo-sync/uln.conf'" in str(exc)
