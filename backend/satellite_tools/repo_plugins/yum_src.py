@@ -89,7 +89,7 @@ class ZyppoSync:
         :return: None
         """
         try:
-            for pth in [root, os.path.join(root, "etc/zypp/repos.d")]:
+            for pth in [root, os.path.join(root, "root"), os.path.join(root, "etc/zypp/repos.d")]:
                 if not os.path.exists(pth):
                     os.makedirs(pth)
         except PermissionError as exc:
@@ -442,7 +442,7 @@ class ContentSource:
         self.salt = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url)
 
-        #REMOVE: Manually call Zypper
+        # Manually call Zypper
         repo_cfg = '''[{reponame}]
 enabled=1
 autorefresh=0
@@ -451,11 +451,13 @@ type=rpm-md
 '''
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(reponame=self.channel_label or self.reponame, baseurl=zypp_repo_url))
-        os.system("zypper --root {} --gpg-auto-import-keys ref".format(repo.root))
-
-#        self.salt.mod_repo(name, url=zypp_repo_url, gpgautoimport=True, gpgcheck=True,
-#                           alias=self.channel_label or self.reponame)
-#        self.salt.refresh_db()
+        os.system("zypper --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
+            os.path.join(CACHE_DIR, "root"),
+            os.path.join(repo.root, "etc/zypp/repos.d/"),
+            os.path.join(repo.root, "var/cache/zypp/"),
+            os.path.join(repo.root, "var/cache/zypp/raw/"),
+            os.path.join(repo.root, "var/cache/zypp/solv/")
+        ))
         repo.is_configured = True
 
     def error_msg(self, message):
