@@ -15,19 +15,23 @@
 
 package com.redhat.rhn.domain.contentmgmt.test;
 
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentManager;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
@@ -35,6 +39,12 @@ import static java.util.Optional.of;
  * Tests for ContentManager
  */
 public class ContentManagerTest extends BaseTestCaseWithUser {
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+    }
 
     /**
      * Test creating & looking up Content Project
@@ -93,6 +103,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         Org rangersOrg = UserTestUtils.createNewOrgFull("rangers");
         User anotherUser = UserTestUtils.createUser("Chuck", rangersOrg.getId());
+        anotherUser.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         assertFalse(ContentManager.lookupProject(cp.getLabel(), anotherUser).isPresent());
 
@@ -105,6 +116,38 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         }
 
         assertEquals(0, ContentManager.removeProject(cp.getLabel(), anotherUser));
+    }
+
+    /**
+     * Tests permissions for Content Project CRUD
+     */
+    public void testContentProjectPermissions() {
+        User guy = UserTestUtils.createUser("Regular user", user.getOrg().getId());
+
+        try {
+            ContentManager.createProject("cplabel", "cpname", "description", guy);
+            fail("An exception should have been thrown");
+        }
+        catch (PermissionException e) {
+            // expected
+        }
+        try {
+            ContentManager.updateProject("cplabel", empty(), empty(), guy);
+            fail("An exception should have been thrown");
+        }
+        catch (PermissionException e) {
+            // expected
+        }
+        try {
+            ContentManager.removeProject("cplabel", guy);
+            fail("An exception should have been thrown");
+        }
+        catch (PermissionException e) {
+            // expected
+        }
+
+        ContentProject project = ContentManager.createProject("cplabel", "cpname", "description", user);
+        assertEquals(project, ContentManager.lookupProject("cplabel", guy).get());
     }
 
     /**
@@ -159,5 +202,40 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         assertEquals("new env name", fromDb.getName());
         assertEquals("new description", fromDb.getDescription());
+    }
+
+    /**
+     * Tests permissions for Environment CRUD
+     */
+    public void testEnvironmentPermissions() {
+        ContentProject project = ContentManager.createProject("cplabel", "cpname", "description", user);
+        ContentEnvironment env =
+                ContentManager.createEnvironment("cplabel", empty(), "dev", "dev env", "...", user);
+
+        User guy = UserTestUtils.createUser("Regular user", user.getOrg().getId());
+        assertEquals(env, ContentManager.lookupEnvironment("dev", "cplabel", guy).get());
+        assertEquals(singletonList(env), ContentManager.listProjectEnvironments("cplabel", guy));
+
+        try {
+            ContentManager.createEnvironment("cplabel", empty(), "dev", "dev env", "...", guy);
+            fail("An exception should have been thrown");
+        }
+        catch (PermissionException e) {
+            // expected
+        }
+        try {
+            ContentManager.updateEnvironment("dev", "cplabel", empty(), empty(), guy);
+            fail("An exception should have been thrown");
+        }
+        catch (PermissionException e) {
+            // expected
+        }
+        try {
+            ContentManager.removeEnvironment("dev", "cplabel", guy);
+            fail("An exception should have been thrown");
+        }
+        catch (PermissionException e) {
+            // expected
+        }
     }
 }
