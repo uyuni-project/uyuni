@@ -680,7 +680,7 @@ type=rpm-md
         pool = solv.Pool()
         repo = pool.add_repo(str(self.channel_label or self.reponame))
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not repo.add_solv(solv.xfopen(str(solv_path)), 0):
+        if not os.path.isfile(solv_path) or not repo.add_solv(solv.xfopen(str(solv_path)), 0):
             raise SolvFileNotFound(solv_path)
         rawpkglist = []
         for solvable in repo.solvables_iter():
@@ -702,7 +702,7 @@ type=rpm-md
         pool = solv.Pool()
         repo = pool.add_repo(str(self.channel_label or self.reponame))
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not repo.add_solv(solv.xfopen(str(solv_path)), 0):
+        if not os.path.isfile(solv_path) or not repo.add_solv(solv.xfopen(str(solv_path)), 0):
             raise SolvFileNotFound(solv_path)
 
         #TODO: Implement latest
