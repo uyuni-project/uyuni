@@ -15,10 +15,13 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 /**
  * Content Management functionality
@@ -36,9 +39,11 @@ public class ContentManager {
      * @param description - the description
      * @param user - the creator
      * @throws ContentManagementException if a project with given label already exists
+     * @throws PermissionException if given user does not have required role
      * @return the created Content Project
      */
     public static ContentProject createProject(String label, String name, String description, User user) {
+        ensureOrgAdmin(user);
         lookupProject(label, user).ifPresent(cp -> {
             throw new ContentManagementException("Content Project with label " + label + " already exists");
         });
@@ -66,10 +71,12 @@ public class ContentManager {
      * @param newDesc - new description
      * @param user - the user
      * @throws ContentManagementException - if Content Project with given label is not found
+     * @throws PermissionException if given user does not have required role
      * @return the updated Content Project
      */
     public static ContentProject updateProject(String label, Optional<String> newName, Optional<String> newDesc,
             User user) {
+        ensureOrgAdmin(user);
         return lookupProject(label, user)
                 .map(cp -> {
                     newName.ifPresent(name -> cp.setName(name));
@@ -85,9 +92,11 @@ public class ContentManager {
      *
      * @param label - the label
      * @param user - the user
+     * @throws PermissionException if given user does not have required role
      * @return the number of objects affected
      */
     public static int removeProject(String label, User user) {
+        ensureOrgAdmin(user);
         return lookupProject(label, user)
                 .map(cp -> ContentProjectFactory.remove(cp))
                 .orElse(0);
@@ -104,10 +113,12 @@ public class ContentManager {
      * @param user - the user performing the action
      * @throws ContentManagementException - if Content Project with given label or Content Environment in the Project
      * is not found
+     * @throws PermissionException if given user does not have required role
      * @return the created Content Environment
      */
     public static ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
             String label, String name, String description, User user) {
+        ensureOrgAdmin(user);
         return lookupProject(projectLabel, user)
                 .map(cp -> {
                     ContentEnvironment newEnv = new ContentEnvironment(label, name, description, cp);
@@ -158,10 +169,12 @@ public class ContentManager {
      * @param newDescription - new description
      * @param user - the user
      * @throws ContentManagementException - if the Environment is not found
+     * @throws PermissionException if given user does not have required role
      * @return the updated Environment
      */
     public static ContentEnvironment updateEnvironment(String envLabel, String projectLabel, Optional<String> newName,
             Optional<String> newDescription, User user) {
+        ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map(env -> {
                     newName.ifPresent(name -> env.setName(name));
@@ -179,14 +192,28 @@ public class ContentManager {
      * @param envLabel - the Content Environment label
      * @param projectLabel - the Content Project label
      * @param user - the user
+     * @throws PermissionException if given user does not have required role
      * @return number of deleted objects
      */
     public static int removeEnvironment(String envLabel, String projectLabel, User user) {
+        ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map((env) -> {
                     ContentProjectFactory.removeEnvironment(env);
                     return 1;
                 })
                 .orElse(0);
+    }
+
+    /**
+     * Ensures that given user has the Org admin role
+     *
+     * @param user the user
+     * @throws com.redhat.rhn.common.security.PermissionException if the user does not have Org admin role
+     */
+    private static void ensureOrgAdmin(User user) {
+        if (!user.hasRole(ORG_ADMIN)) {
+            throw new PermissionException(ORG_ADMIN);
+        }
     }
 }
