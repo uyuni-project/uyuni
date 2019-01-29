@@ -18,7 +18,7 @@ import select
 import socket
 import string
 try: # python 3
-    import sockerserver
+    import socketserver
 except ImportError: # python 2
     import SocketServer
 from random import choice
