@@ -18,7 +18,7 @@ class ULNAuth:
         self._uln_token = None
         self._uln_url = None
 
-    def _get_hostname(self, url: str) -> tuple:
+    def get_hostname(self, url: str) -> tuple:
         """
         Get label from the URL (a hostname).
 
@@ -30,7 +30,7 @@ class ULNAuth:
         p_url = urllib.parse.urlparse(url)
         return p_url.netloc or self.ULN_DEFAULT_HOST, p_url.path
 
-    def _get_credentials(self) -> tuple:
+    def get_credentials(self) -> tuple:
         """
         Get credentials from the uln.conf
 
@@ -53,7 +53,7 @@ class ULNAuth:
 
         return username, password
 
-    def _authenticate_uln(self, url):
+    def authenticate_uln(self, url):
         """
         Get ULN token.
 
