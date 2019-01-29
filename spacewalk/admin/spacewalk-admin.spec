@@ -16,6 +16,11 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
+%global build_py3   1
+%endif
+
+%define pythonX %{?build_py3: python3}%{!?build_py3: python}
 
 %global rhnroot /%{_datadir}/rhn
 Summary:        Various utility scripts and data files for Spacewalk installations
@@ -30,6 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       lsof
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
+Requires:       %{pythonX}
 BuildRequires:  /usr/bin/pod2man
 %if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
 BuildRequires:  systemd
@@ -74,6 +80,9 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8/
 install -p man/rhn-satellite.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 chmod 0644 $RPM_BUILD_ROOT%{_mandir}/man8/*.8*
 ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
+%if 0%{?build_py3}
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-events-config.py
+%endif
 
 %files
 %doc LICENSE
