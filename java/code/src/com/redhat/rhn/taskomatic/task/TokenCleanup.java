@@ -14,13 +14,23 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -38,19 +48,36 @@ public class TokenCleanup extends RhnJavaJob {
             log.debug("start token cleanup");
         }
         try {
-            MinionServerFactory.listMinions().forEach(minionServer -> {
+            Stream<MinionServer> changedMinions = MinionServerFactory.listMinions().stream().flatMap(minionServer -> {
                 try {
                     if (AccessTokenFactory.refreshTokens(minionServer, Collections.emptySet())) {
                         // TODO schedule state.apply channels to refresh channels on minion ?
                         SaltStateGeneratorService.INSTANCE.generatePillar(
                                 minionServer, false, Collections.emptySet());
+                        return Stream.of(minionServer);
+                    }
+                    else {
+                        return Stream.empty();
                     }
                 }
                 catch (Exception e) {
                     log.error("error refreshing access tokens for minion " +
                             minionServer.getMinionId(), e);
+                    return Stream.empty();
                 }
             });
+
+            List<String> changedMinionIds = changedMinions.map(m -> m.getMinionId()).collect(Collectors.toList());
+            if (Config.get().getBoolean(ConfigDefaults.TOKEN_REFRESH_AUTO_DEPLOY)) {
+                SaltService.INSTANCE.callSync(
+                        State.apply(ApplyStatesEventMessage.CHANNELS),
+                        new MinionList(changedMinionIds));
+            }
+            else {
+                log.warn("The following minions got channel tokens changed and" +
+                        " need them deployed before the old one expires: " + changedMinionIds.stream()
+                        .collect(Collectors.joining(", ")));
+            }
             AccessTokenFactory.cleanupUnusedExpired();
         }
         catch (Exception e) {
