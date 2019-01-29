@@ -21,7 +21,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from shutil import rmtree
+from shutil import rmtree, copytree
 
 import configparser
 import glob
@@ -55,6 +55,7 @@ PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
 REPO_XML = '{http://linux.duke.edu/metadata/repo}'
 
 CACHE_DIR = '/var/cache/rhn/reposync'
+RPM_DATABASE = '/var/lib/rpm'
 ZYPP_CACHE_PATH = 'var/cache/zypp'
 ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'raw')
 ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
@@ -89,10 +90,17 @@ class ZyppoSync:
         :return: None
         """
         try:
-            for pth in [root, os.path.join(root, "root"), os.path.join(root, "etc/zypp/repos.d")]:
+            for pth in [root, os.path.join(CACHE_DIR, "root"), os.path.join(root, "etc/zypp/repos.d")]:
                 if not os.path.exists(pth):
-                    os.makedirs(pth)
-        except PermissionError as exc:
+                    if pth == os.path.join(CACHE_DIR, "root"):
+                        # If the Zypper root is being created for the first time
+                        # we copy the system RPM database to get the already imported
+                        # repository GPG keys (SUSE keys)
+                        copytree(RPM_DATABASE, os.path.join(pth, "var/lib/rpm/"))
+                    else:
+                        os.makedirs(pth)
+
+        except Exception as exc:
             # TODO: a proper logging somehow?
             sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
             raise
@@ -451,13 +459,20 @@ type=rpm-md
 '''
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(reponame=self.channel_label or self.reponame, baseurl=zypp_repo_url))
-        os.system("zypper --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
+        zypper_cmd = "zypper"
+        if not self.interactive:
+            zypper_cmd = "{} -n".format(zypper_cmd)
+        ret_error = os.system("{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
+            zypper_cmd,
             os.path.join(CACHE_DIR, "root"),
             os.path.join(repo.root, "etc/zypp/repos.d/"),
             os.path.join(repo.root, "var/cache/zypp/"),
             os.path.join(repo.root, "var/cache/zypp/raw/"),
             os.path.join(repo.root, "var/cache/zypp/solv/")
         ))
+        if ret_error:
+            raise RepoMDNotFound("Cannot access repository. Maybe repository GPG keys are not imported")
+
         repo.is_configured = True
 
     def error_msg(self, message):
