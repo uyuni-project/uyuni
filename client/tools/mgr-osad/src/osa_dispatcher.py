@@ -17,7 +17,10 @@ import sys
 import select
 import socket
 import string
-import SocketServer
+try: # python 3
+    import sockerserver
+except ImportError: # python 2
+    import SocketServer
 from random import choice
 from rhn.connections import idn_ascii_to_puny
 from spacewalk.common.rhnLog import initLOG, log_debug, log_error
