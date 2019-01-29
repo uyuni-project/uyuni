@@ -21,6 +21,19 @@ def uln_auth_instance():
     return ulnauth.ULNAuth()
 
 
+@pytest.fixture
+def cfg_parser():
+    """
+    Get cfgparser dummy class
+    """
+    class CfgParser(dict):
+        cfg = {}
+        def read(self, path):
+            self["main"] = self.cfg
+
+    return CfgParser
+
+
 @pytest.mark.skipif(ulnauth is None, reason="'ulnauth' failed to be imported")
 class TestULNAuth:
     """
@@ -82,30 +95,42 @@ class TestULNAuth:
 
     @patch("os.path.exists", MagicMock(return_value=True))
     @patch("os.access", MagicMock(return_value=True))
-    def test_get_credentials_credentials(self, uln_auth_instance):
+    def test_get_credentials_credentials(self, uln_auth_instance, cfg_parser):
         """
         Test credentials ULN
         """
-        class CfgParser(dict):
-            def read(self, path):
-                self["main"] = {"username": "Darth Vader", "password": "f1ndE4rth"}
-
-        with patch("configparser.ConfigParser", CfgParser):
+        cfg_parser.cfg = {"username": "Darth Vader", "password": "f1ndE4rth"}
+        with patch("configparser.ConfigParser", cfg_parser):
             username, password = uln_auth_instance._get_credentials()
             assert username == "Darth Vader"
             assert password == "f1ndE4rth"
 
     @patch("os.path.exists", MagicMock(return_value=True))
     @patch("os.access", MagicMock(return_value=True))
-    def test_get_credentials_credentials_not_found(self, uln_auth_instance):
+    def test_get_credentials_credentials_not_found(self, uln_auth_instance, cfg_parser):
         """
-        Test credentials ULN
+        Test credentials ULN was not found
         """
-        class CfgParser(dict):
-            def read(self, path):
-                pass
+        with patch("configparser.ConfigParser", cfg_parser):
+            with pytest.raises(AssertionError) as exc:
+                uln_auth_instance._get_credentials()
+            assert "Credentials were not found in the configuration" in str(exc)
 
-        with patch("configparser.ConfigParser", CfgParser):
+    @patch("os.path.exists", MagicMock(return_value=True))
+    @patch("os.access", MagicMock(return_value=True))
+    def test_get_credentials_not_all_credentials_found(self, uln_auth_instance, cfg_parser):
+        """
+        Test partial credentials ULN found
+        """
+        cfg_parser.cfg = {"username": "Darth Vader"}
+        with patch("configparser.ConfigParser", cfg_parser):
+            with pytest.raises(AssertionError) as exc:
+                uln_auth_instance._get_credentials()
+            assert "Credentials were not found in the configuration" in str(exc)
+
+        cfg_parser.cfg["password"] = "something"
+        del cfg_parser.cfg["username"]
+        with patch("configparser.ConfigParser", cfg_parser):
             with pytest.raises(AssertionError) as exc:
                 uln_auth_instance._get_credentials()
             assert "Credentials were not found in the configuration" in str(exc)
