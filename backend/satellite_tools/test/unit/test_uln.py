@@ -33,3 +33,10 @@ class TestULNAuth:
             uln_auth_instance._get_hostname("foo://something/else")
         assert "URL must start with 'uln://'" in str(exc)
 
+    def test_get_hostname_default(self, uln_auth_instance):
+        """
+        Test ULN uri inserts a default hostname, if not specified.
+        """
+        netloc, path  = uln_auth_instance._get_hostname("uln:///suse")
+        assert netloc == ulnauth.ULNAuth.ULN_DEFAULT_HOST
+        assert path == "/suse"
