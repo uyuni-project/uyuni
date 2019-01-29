@@ -96,7 +96,7 @@ class ZyppoSync:
             # TODO: a proper logging somehow?
             sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
             raise
-        self._conf["zypper_root"] = root
+#        self._conf["zypper_root"] = root
 
     def _get_call(self, key):
         """

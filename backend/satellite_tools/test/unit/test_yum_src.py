@@ -32,7 +32,6 @@ class YumSrcTest(unittest.TestCase):
     def _make_dummy_cs(self):
         """Create a dummy ContentSource object that only talks to a mocked yum"""
         real_setup_repo = yum_src.ContentSource.setup_repo
-        yum_src.ContentSource.initgpgdir = Mock()
         yum_src.ContentSource.get_groups = Mock(return_value=None)
 
         # don't read configs
@@ -43,7 +42,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.CFG.MOUNT_POINT = ''
         yum_src.CFG.PREPENDED_DIR = ''
         yum_src.fileutils.makedirs = Mock()
-        yum_src.makedirs = Mock()
+        yum_src.os.makedirs = Mock()
         yum_src.os.path.isdir = Mock()
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
@@ -52,7 +51,7 @@ class YumSrcTest(unittest.TestCase):
         mockReturnPackages = MagicMock()
         mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
         mockReturnPackages.returnPackages.return_value = []
-        cs.repo.getPackageSack = MagicMock(return_value=mockReturnPackages)
+        cs.repo.is_configured = True
         cs.repo.includepkgs = []
         cs.repo.exclude = []
 
@@ -123,14 +122,9 @@ class YumSrcTest(unittest.TestCase):
                   </patch>
                 </patches>
                 """)
-        cs.repo.repoXML.repoData = 'patches'
-        cs.repo.retrieveMD = Mock(return_value=patches_xml)
-        cs.repo.grab.urlgrab = Mock()
-        os.mkdir = Mock()
-        # we can't just use return_value, because Mock caches the
-        # returned object and then subsequent reads to the StringIO
-        # object will return nothing, because the file pointer is at the
-        # end of the file
+        cs._md_exists = Mock(return_value=True)
+        cs._md_retrieve_md_path = Mock(return_value="patches.xml")
+        cs.etree.iterparse = Mock(return_value=patches_xml)
         os.path.join = Mock(side_effect=lambda *args: StringIO(u"<xml></xml>"))
 
         patches = cs.get_updates()
