@@ -966,7 +966,7 @@ def test_channel_exceptions():
 
     for exc_class, exc_name in [
         (repoSync.ChannelException, "ChannelException"),
-        (yum_src.RepoMDNotFound, "RepoMDNotFound")]:
+        (yum_src.RepoMDError, "RepoMDError")]:
         yield check_channel_exceptions, rs, exc_class, exc_name
 
 def check_channel_exceptions(rs, exc_class, exc_name):

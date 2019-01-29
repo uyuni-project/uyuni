@@ -183,7 +183,7 @@ class RawSolvablePackage:
         return epoch, version, release
 
 
-class RepoMDNotFound(Exception):
+class RepoMDError(Exception):
     """ An exception thrown when not RepoMD is found. """
     pass
 
@@ -471,7 +471,7 @@ type=rpm-md
             os.path.join(repo.root, "var/cache/zypp/solv/")
         ))
         if ret_error:
-            raise RepoMDNotFound("Cannot access repository. Maybe repository GPG keys are not imported")
+            raise RepoMDError("Cannot access repository. Maybe repository GPG keys are not imported")
 
         repo.is_configured = True
 
@@ -850,7 +850,7 @@ type=rpm-md
         if self._md_exists('repomd'):
             repomd_path = self._retrieve_md_path('repomd')
         else:
-            raise RepoMDNotFound(self._get_repodata_path())
+            raise RepoMDError(self._get_repodata_path())
         repomd = open(repomd_path, 'rb')
         files = {}
         for _event, elem in etree.iterparse(repomd):
