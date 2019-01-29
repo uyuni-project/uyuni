@@ -233,6 +233,10 @@ public class RegistrationUtils {
                 activationKey,
                 // No ActivationKey
                 () -> {
+                    // if server has a base channel assigned and there is no AK -> don't assign new channels
+                    if (server.getBaseChannel() != null) {
+                        return server.getChannels();
+                    }
                     Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
                     return findChannelsForProducts(suseProducts, minionId);
                 },
@@ -266,15 +270,7 @@ public class RegistrationUtils {
                 )
         );
 
-        Channel assignedBaseChannel = server.getBaseChannel();
-        if (assignedBaseChannel != null && channelsToAssign.stream()
-                .filter(channel -> channel.isBaseChannel())
-                .anyMatch(baseChannel -> !baseChannel.equals(assignedBaseChannel))) {
-            // if base channel is going to be changed, we reset all current assignments
-            server.getChannels().clear();
-        }
-
-        channelsToAssign.forEach(server::addChannel);
+        server.setChannels(channelsToAssign);
     }
 
     private static Set<Channel> findChannelsForProducts(Set<SUSEProduct> suseProducts, String minionId) {

@@ -1294,7 +1294,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return channels;
     }
 
-    protected void setChannels(Set<Channel> chans) {
+    /**
+     * Set channels
+     * @param chans the channels
+     */
+    public void setChannels(Set<Channel> chans) {
         channels = chans;
     }
 
