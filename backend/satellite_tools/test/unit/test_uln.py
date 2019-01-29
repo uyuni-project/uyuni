@@ -94,3 +94,18 @@ class TestULNAuth:
             username, password = uln_auth_instance._get_credentials()
             assert username == "Darth Vader"
             assert password == "f1ndE4rth"
+
+    @patch("os.path.exists", MagicMock(return_value=True))
+    @patch("os.access", MagicMock(return_value=True))
+    def test_get_credentials_credentials_not_found(self, uln_auth_instance):
+        """
+        Test credentials ULN
+        """
+        class CfgParser(dict):
+            def read(self, path):
+                pass
+
+        with patch("configparser.ConfigParser", CfgParser):
+            with pytest.raises(AssertionError) as exc:
+                uln_auth_instance._get_credentials()
+            assert "Credentials were not found in the configuration" in str(exc)
