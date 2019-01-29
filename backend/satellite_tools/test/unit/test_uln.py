@@ -40,3 +40,12 @@ class TestULNAuth:
         netloc, path  = uln_auth_instance._get_hostname("uln:///suse")
         assert netloc == ulnauth.ULNAuth.ULN_DEFAULT_HOST
         assert path == "/suse"
+
+    def test_get_hostname_custom(self, uln_auth_instance):
+        """
+        Test ULN uri inserts a custom hostname, if specified.
+        """
+        netloc, path  = uln_auth_instance._get_hostname("uln://scc.suse.de/suse")
+        assert netloc == "scc.suse.de"
+        assert path == "/suse"
+
