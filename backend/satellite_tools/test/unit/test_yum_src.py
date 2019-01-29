@@ -16,7 +16,7 @@
 
 import os
 import solv
-import etree
+import xml.etree.ElementTree as etree
 import unittest
 try:
     from io import StringIO
