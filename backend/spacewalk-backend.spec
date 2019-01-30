@@ -452,7 +452,6 @@ Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
-Requires:       python3-configparser
 %else
 Requires:       python-dateutil
 Requires:       python2-gzipstream
