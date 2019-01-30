@@ -61,12 +61,14 @@ class ULNAuth:
         :raises RhnSyncException: if configuration does not contain required sections.
         :returns: ULN token
         """
-        usr, pwd = self._get_credentials()
+        usr, pwd = self.get_credentials()
         px_url, px_usr, px_pwd = get_proxy(url)
-        hostname, label = self._get_hostname(url)
+        hostname, label = self.get_hostname(url)
         self._uln_url = "https://{}/XMLRPC/GET-REQ{}".format(hostname, label)
         server_list = ServerList(["https://{}/rpc/api".format(hostname)])
         retry_server = RetryServer(server_list.server(), refreshCallback=None, proxy=None,
                                    username=px_usr, password=px_pwd, timeout=5)
         retry_server.addServerList(server_list)
         self._uln_token = retry_server.auth.login(usr, pwd)
+
+        return self._uln_token
