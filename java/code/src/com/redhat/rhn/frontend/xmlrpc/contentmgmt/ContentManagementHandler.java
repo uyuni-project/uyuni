@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentManager;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
-import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
@@ -49,7 +48,7 @@ public class ContentManagementHandler extends BaseHandler {
      * #array_end()
      */
     public List<ContentProject> listProjects(User loggedInUser) {
-        return ContentProjectFactory.listProjects(loggedInUser.getOrg());
+        return ContentManager.listProjects(loggedInUser);
     }
 
     /**
