@@ -22,6 +22,20 @@ class ULNAuth:
         self._uln_token = None
         self._uln_url = None
 
+    @property
+    def token(self):
+        """
+        Return ULN token, if authorised.
+        """
+        return self._uln_token
+
+    @property
+    def url(self):
+        """
+        Return ULN URL for the access.
+        """
+        return self._uln_url
+
     def get_hostname(self, url: str) -> tuple:
         """
         Get label from the URL (a hostname).
@@ -75,4 +89,6 @@ class ULNAuth:
             retry_server.addServerList(server_list)
             self._uln_token = retry_server.auth.login(usr, pwd)
 
-        return self._uln_token
+        assert self.token is not None, "Authentication failure: token was not obtained"
+
+        return self.token
