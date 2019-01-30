@@ -156,7 +156,7 @@ class TestULNAuth:
         uri = "uln:///suse"
         with patch("ulnauth.ServerList", server_list) as srv_lst, patch("ulnauth.RetryServer", retry_server) as rtr_srv:
             uln_auth_instance.get_credentials = MagicMock(return_value=("uln_user", "uln_password",))
-            token = uln_auth_instance.authenticate_uln(uri)
+            token = uln_auth_instance.authenticate(uri)
             assert server_list.call_args_list[0][0] == (['https://linux-update.oracle.com/rpc/api'],)
             rs_call = retry_server.call_args_list[0][1]
             for p_name, p_val in {'refreshCallback': None, 'username': 'user',

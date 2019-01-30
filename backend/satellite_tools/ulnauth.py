@@ -57,7 +57,7 @@ class ULNAuth:
 
         return username, password
 
-    def authenticate_uln(self, url):
+    def authenticate(self, url):
         """
         Get ULN token.
 
