@@ -930,4 +930,4 @@ def _fix_encoding(text):
     if isinstance(text, str):
         return str.encode(text, 'utf-8')
     else:
-        return str(re.sub(u"(\u2018|\u2019)", "", text))
+        return text.encode("ascii", errors="ignore")
