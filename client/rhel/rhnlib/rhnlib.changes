@@ -1,3 +1,6 @@
+- Sync changes from Spacewalk
+- 1652859 - python3 http.client does not contain _set_hostport()
+
 -------------------------------------------------------------------
 Fri Oct 26 10:02:33 CEST 2018 - jgonzalez@suse.com
 
