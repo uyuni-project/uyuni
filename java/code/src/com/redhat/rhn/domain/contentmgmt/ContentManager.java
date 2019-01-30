@@ -53,6 +53,16 @@ public class ContentManager {
     }
 
     /**
+     * List Projects visible to the user
+     *
+     * @param user the user
+     * @return the Projects visible to the user
+     */
+    public static List<ContentProject> listProjects(User user) {
+        return ContentProjectFactory.listProjects(user.getOrg());
+    }
+
+    /**
      * Look up Content Project by label
      *
      * @param label - the label
