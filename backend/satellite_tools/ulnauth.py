@@ -5,7 +5,10 @@ Oracle ULN (Unbreakable Linux Network) authentication library.
 import os
 import configparser
 import urllib.parse
+
+from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.syncLib import RhnSyncException
+from up2date_client.rpcServer import RetryServer, ServerList
 
 
 class ULNAuth:
