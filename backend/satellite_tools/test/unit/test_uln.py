@@ -134,3 +134,36 @@ class TestULNAuth:
             with pytest.raises(AssertionError) as exc:
                 uln_auth_instance.get_credentials()
             assert "Credentials were not found in the configuration" in str(exc)
+
+    @patch("ulnauth.get_proxy", MagicMock(return_value=("uln:///suse", "user", "password")))
+    def test_auth_uln(self, uln_auth_instance):
+        """
+        Authenticate ULN, getting its token.
+        """
+
+        class ServerList:
+            """
+            Dummy server list mock.
+            """
+            def server(self): pass
+
+        server_list_instance = ServerList()
+        server_list = MagicMock(return_value=server_list_instance)
+        retry_server_instance = MagicMock()
+        retry_server_instance.auth = MagicMock()
+        retry_server_instance.auth.login = MagicMock(return_value="12345")
+        retry_server = MagicMock(return_value=retry_server_instance)
+        uri = "uln:///suse"
+        with patch("ulnauth.ServerList", server_list) as srv_lst, patch("ulnauth.RetryServer", retry_server) as rtr_srv:
+            uln_auth_instance.get_credentials = MagicMock(return_value=("uln_user", "uln_password",))
+            token = uln_auth_instance.authenticate_uln(uri)
+            assert server_list.call_args_list[0][0] == (['https://linux-update.oracle.com/rpc/api'],)
+            rs_call = retry_server.call_args_list[0][1]
+            for p_name, p_val in {'refreshCallback': None, 'username': 'user',
+                          'proxy': None, 'password': 'password', 'timeout': 5}.items():
+                assert p_name in rs_call
+                assert rs_call[p_name] == p_val
+
+            assert retry_server_instance.addServerList.call_args_list[0][0] == (server_list_instance,)
+            assert token == "12345"
+            assert retry_server_instance.auth.login.call_args_list[0][0] == ("uln_user", "uln_password")
