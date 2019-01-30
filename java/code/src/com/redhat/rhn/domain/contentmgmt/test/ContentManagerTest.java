@@ -27,7 +27,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
@@ -55,6 +55,21 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", user);
         assertEquals(cp, fromDb.get());
+    }
+
+    /**
+     * Test creating & listing Content Projects
+     */
+    public void testListContentProjects() {
+        ContentProject cp1 = ContentManager.createProject("cplabel1", "cpname1", "description1", user);
+        ContentProject cp2 = ContentManager.createProject("cplabel2", "cpname2", "description2", user);
+        Org rangersOrg = UserTestUtils.createNewOrgFull("rangers");
+        User anotherAdmin = UserTestUtils.createUser("Chuck", rangersOrg.getId());
+        anotherAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
+        ContentProject cp3 = ContentManager.createProject("cplabel3", "cpname3", "description3", anotherAdmin);
+
+        assertEquals(Arrays.asList(cp1, cp2), ContentManager.listProjects(user));
+        assertEquals(singletonList(cp3), ContentManager.listProjects(anotherAdmin));
     }
 
     /**
