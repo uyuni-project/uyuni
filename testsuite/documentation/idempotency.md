@@ -23,6 +23,9 @@ As a standard status, we require that traditional clients and Salt minions have 
 
 If you remove a traditional client or minion, **always re-add** the base channel, otherwise all package and patch tests will fail.
 
+## CentOS minion
+
+CentOS clients are always registered as SSH salt minions by defaut.
 
 ## Patches tests
 
