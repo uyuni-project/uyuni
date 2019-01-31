@@ -65,7 +65,6 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
-import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
@@ -512,8 +511,12 @@ public class SaltService {
     }
 
     private <R> Optional<Map<String, CompletionStage<Result<R>>>> completableAsyncCall(
-            LocalCall<R> call, Target<?> target, EventStream events,
+            LocalCall<R> callIn, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
+
+        LocalCall<R> call = Opt.fold(defaultBatch, () -> callIn,
+                b -> callIn.withMetadata(ScheduleMetadata.getDefaultMetadata().withBatchMode()));
+
         return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel, defaultBatch));
     }
 
@@ -767,7 +770,8 @@ public class SaltService {
     }
 
     /**
-     * Execute a LocalCall asynchronously on the default Salt client.
+     * Execute a LocalCall asynchronously on the default Salt client,
+     * without passing any metadata on the call.
      *
      * @param <T> the return type of the call
      * @param call the call to execute
@@ -777,6 +781,24 @@ public class SaltService {
      */
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> call, Target<?> target)
             throws SaltException {
+        return callAsync(call, target, Optional.empty());
+    }
+
+    /**
+     * Execute a LocalCall asynchronously on the default Salt client.
+     *
+     * @param <T> the return type of the call
+     * @param callIn the call to execute
+     * @param target minions targeted by the call
+     * @param metadata the metadata to be passed in the call
+     * @return the LocalAsyncResult of the call
+     * @throws SaltException in case of an error executing the job with Salt
+     */
+    public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
+            Optional<ScheduleMetadata> metadata) throws SaltException {
+        LocalCall<T> call = Opt.fold(metadata, () -> callIn, m -> Opt.fold(defaultBatch,
+                () -> callIn.withMetadata(m), b -> callIn.withMetadata(m.withBatchMode())));
+
         return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
     }
 

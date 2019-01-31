@@ -39,6 +39,8 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
+import com.suse.utils.Opt;
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -96,7 +98,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         Optional<JsonElement> jobResult = eventToJson(jobReturnEvent);
 
         // Check first if the received event was triggered by a single action execution
-        Optional<Long> actionId = getActionId(jobReturnEvent);
+        Optional<Long> actionId = jobReturnEvent.getData().getMetadata(ScheduleMetadata.class).map(
+                ScheduleMetadata::getSumaActionId);
         actionId.filter(id -> id > 0).ifPresent(id -> {
                 jobResult.ifPresent(result ->
                     handleAction(id,

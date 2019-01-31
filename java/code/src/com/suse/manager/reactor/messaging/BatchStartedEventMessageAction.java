@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.BatchStartedEvent.Data;
+import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
 
@@ -44,20 +45,10 @@ public class BatchStartedEventMessageAction implements MessageAction {
         List<String> downMinions = eventData.getDownMinions();
 
         if (!downMinions.isEmpty()) {
-            Optional<Long> actionId = getActionId(eventData);
+            Optional<Long> actionId = eventData.getMetadata(ScheduleMetadata.class).map(
+                    ScheduleMetadata::getSumaActionId);
             actionId.filter(id -> id > 0).ifPresent(id -> handleBatchStartedAction(id, downMinions));
         }
-    }
-
-    /**
-     * Find the action id corresponding to a given job return event in the job metadata.
-     *
-     * @param data the data of the event
-     * @return the corresponding action id or empty optional
-     */
-    private Optional<Long> getActionId(Data data) {
-        return data.getMetadata(ScheduleMetadata.class).map(
-            ScheduleMetadata::getSumaActionId);
     }
 
     /**
