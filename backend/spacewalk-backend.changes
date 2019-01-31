@@ -1,3 +1,4 @@
+- Add "python-urlgrabber" as a new dependency.
 - Fix Python3 issues on satellite_tools scripts
 
 -------------------------------------------------------------------
