@@ -14,7 +14,12 @@
 # in this software or its documentation.
 #
 
-import cStringIO
+try:
+    #  python 2
+    import cStringIO
+except ImportError:
+    #  python3
+    import io as cStringIO
 
 import sys
 import os
@@ -29,13 +34,13 @@ from spacewalk.satellite_tools.syncLib import log2stderr, log2email
 from spacewalk.common.rhnTB import Traceback
 
 if os.geteuid() != 0:
-    print "This script must be run as root."
+    print("This script must be run as root.")
     exit()
 
 if __name__ == "__main__":
     try:
         main = iss.ExporterMain()
-    except iss.ISSError, isserror:
+    except iss.ISSError as isserror:
         # I have the tb get generated in the function that the the error occurred in to minimize
         # the amount of extra crap that shows up in it.
         tb = isserror.tb
@@ -43,9 +48,9 @@ if __name__ == "__main__":
         log2stderr(-1, isserror.msg)
         log2stderr(4, isserror.tb)
         sys.exit(-1)
-    except SystemExit, se:
+    except SystemExit as se:
         sys.exit(se.code)
-    except Exception, e:
+    except Exception as e:
         log2stderr(-1, "Unhandled Error: %s" % (e.__class__.__name__,))
         tbout = cStringIO.StringIO()
         Traceback(mail=0, ostream=tbout, with_locals=0)
@@ -55,10 +60,10 @@ if __name__ == "__main__":
     try:
         main.main()
 
-    except SystemExit, se:
+    except SystemExit as se:
         sys.exit(se.code)
 
-    except iss.ISSError, isserror:
+    except iss.ISSError as isserror:
         tb = isserror.tb
         msg = isserror.msg
         iss.handle_error(msg, tb)
@@ -71,7 +76,7 @@ if __name__ == "__main__":
 
         sys.exit(-1)
 
-    except Exception, e:
+    except Exception as e:
         log2stderr(-1, "Unhandled Error: %s" % (e.__class__.__name__,))
         # If we get here we want the traceback, even if it's got some useless junk added to it.
         tbout = cStringIO.StringIO()

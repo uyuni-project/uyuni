@@ -20,7 +20,12 @@ from optparse import OptionParser
 from spacewalk.common import rhn_rpm
 import sys
 import time
-import xmlrpclib
+try:
+    #  python2
+    import xmlrpclib
+except ImportError:
+    #  python3
+    import xmlrpc.client as xmlrpclib # pylint: disable=F0401
 from socket import gethostname
 
 
@@ -56,11 +61,11 @@ def read_username():
     try:
         username = sys.stdin.readline().rstrip('\n')
     except KeyboardInterrupt:
-        print
+        print()
         sys.exit(0)
     if username is None:
         # EOF
-        print
+        print()
         sys.exit(0)
     return username.strip()
 
@@ -120,7 +125,7 @@ if __name__ == '__main__':
     (options, args) = parse_args()
 
     if len(args) == 0:
-        print description
+        print(description)
         sys.exit(1)
 
     if not options.install_packages and not options.update_certificates:
@@ -147,7 +152,7 @@ if __name__ == '__main__':
     scheduled_date = None
     try:
         scheduled_date = xmlrpclib.DateTime(time.strptime(options.date, strftime_format))
-    except ValueError, e:
+    except ValueError as e:
         sys.stderr.write("Error processing the specified date: %s\n" % e)
         sys.exit(1)
 
@@ -160,7 +165,7 @@ if __name__ == '__main__':
 
     try:
         key = client.auth.login(options.username, options.password)
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         if hasattr(e, "faultCode") and e.faultCode == 2950:
             sys.stderr.write("Incorrect user name or password\n")
             sys.exit(1)
@@ -182,7 +187,7 @@ if __name__ == '__main__':
                     # Systems which already have spacewalk-client-cert installed are not broken
                     broken_systems.remove(system_id)
                     break
-    except xmlrpclib.Fault, e:
+    except xmlrpclib.Fault as e:
         sys.stderr.write(e.faultString + '\n')
         sys.exit(1)
 
@@ -255,7 +260,7 @@ if __name__ == '__main__':
         for system_id in systems:
             try:
                 action_id = client.system.schedule_certificate_update(key, system_id, scheduled_date)
-            except xmlrpclib.Fault, e:
+            except xmlrpclib.Fault as e:
                 sys.stderr.write("Error scheduling certificate update on %s: %s\n" %
                                  (system_id, e.faultString))
                 sys.exit(1)

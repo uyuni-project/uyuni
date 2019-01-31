@@ -105,7 +105,7 @@ def main():
 
     dict_label, dict_parents = __listChannels()
     if options.list:
-        keys = dict_parents.keys()
+        keys = list(dict_parents.keys())
         keys.sort()
         for c in keys:
             print(c)
@@ -134,7 +134,7 @@ def main():
             sys.exit(-1)
 
     child_test_fail = False
-    for channel in channels.keys():
+    for channel in list(channels.keys()):
         if channel not in dict_label:
             print("Unknown channel %s" % channel)
             sys.exit(-1)
@@ -162,17 +162,17 @@ def main():
             raise UserError("Username not specified")
         if not options.password:
             options.password= getpass.getpass()
-        affected_minions =  __getMinionsByChannel(channels.keys())
+        affected_minions =  __getMinionsByChannel(list(channels.keys()))
 
     if not options.skip_channels and not options.just_kickstart_trees:
-        if __serverCheck(channels.keys(), options.unsubscribe):
+        if __serverCheck(list(channels.keys()), options.unsubscribe):
             sys.exit(-1)
 
-        if __kickstartCheck(channels.keys()):
+        if __kickstartCheck(list(channels.keys())):
             sys.exit(-1)
 
     try:
-        delete_channels(channels.keys(), force=options.force,
+        delete_channels(list(channels.keys()), force=options.force,
                                       justdb=options.justdb, skip_packages=options.skip_packages,
                                       skip_channels=options.skip_channels,
                                       skip_kickstart_trees=options.skip_kickstart_trees,
@@ -207,7 +207,7 @@ if __name__ == '__main__':
         sys.stderr.write("\nUser interrupted process.\n")
         releaseLOCK()
         sys.exit(0)
-    except UserError, error:
+    except UserError as error:
         systemExit(-1, "\n%s" % error)
     except SystemExit:
         # Normal exit
