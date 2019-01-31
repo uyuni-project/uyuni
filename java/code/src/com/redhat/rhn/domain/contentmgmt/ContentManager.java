@@ -15,12 +15,17 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 /**
@@ -158,7 +163,7 @@ public class ContentManager {
     }
 
     /**
-     * Look up Content Environment based on its label, Content Project label and Org
+     * Look up Content Environment based on its label, Content Project label and User
      *
      * @param envLabel - the Content Environment label
      * @param contentLabel - the Content Project label
@@ -213,6 +218,90 @@ public class ContentManager {
                     return 1;
                 })
                 .orElse(0);
+    }
+
+    /**
+     * Create and attach a Source to given Project.
+     * If the Source is already attached to the Project, this is a no-op.
+     *
+     * @param projectLabel - the Project label
+     * @param sourceType - the Source Type (e.g. SW_CHANNEL)
+     * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
+     * @param user the user
+     * @throws ContentManagementException when either the Project or the Channel is not found
+     * @throws java.lang.IllegalArgumentException if the sourceType is unsupported
+     * @return the created or existing Source
+     */
+    public static ProjectSource attachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
+        ensureOrgAdmin(user);
+
+        Optional<? extends ProjectSource> projectSource = lookupProjectSource(projectLabel, sourceType, sourceLabel,
+                user);
+        if (projectSource.isPresent()) {
+            // source already attached
+            return projectSource.get();
+        }
+
+        if (sourceType == SW_CHANNEL) {
+            ContentProject project = lookupProject(projectLabel, user)
+                    .orElseThrow(() -> new ContentManagementException("Can't find project with label " + projectLabel));
+            Channel channel = getChannel(sourceLabel, user);
+            SoftwareProjectSource source = new SoftwareProjectSource(project, channel);
+            project.addSource(source);
+            ContentProjectFactory.save(project);
+            ContentProjectFactory.save(source);
+            return source;
+        }
+        else {
+            throw new IllegalArgumentException("Unsupported source type " + sourceType);
+        }
+    }
+
+    private static Channel getChannel(String sourceLabel, User user) {
+        try {
+            return ChannelManager.lookupByLabelAndUser(sourceLabel, user);
+        }
+        catch (LookupException e) {
+            throw new ContentManagementException(e);
+        }
+    }
+
+    /**
+     * Detach (and delete) a Source from given Project
+     * @param projectLabel - the Project label
+     * @param sourceType - the Source Type (e.g. SW_CHANNEL)
+     * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
+     * @param user the user
+     * @return number of Sources removed
+     */
+    public static int detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
+        ensureOrgAdmin(user);
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new ContentManagementException("Can't find project with label " + projectLabel));
+        ProjectSource source = lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
+                .orElseThrow(() -> new ContentManagementException("Can't find source with channel label " +
+                        sourceLabel));
+
+        project.removeSource(source);
+        ContentProjectFactory.save(project);
+        return ContentProjectFactory.remove(source);
+    }
+
+    /**
+     * Look up Source
+     *
+     * @param projectLabel the Project label
+     * @param sourceType the Source type
+     * @param sourceLabel  the Source label
+     * @param user the User
+     * @throws ContentManagementException if Project with given label cannot be found
+     * @return Optional with matching Source
+     */
+    public static Optional<? extends ProjectSource> lookupProjectSource(String projectLabel, Type sourceType,
+            String sourceLabel, User user) {
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new ContentManagementException("Can't find project with label " + projectLabel));
+        return ContentProjectFactory.lookupProjectSource(project, sourceType, sourceLabel, user);
     }
 
     /**

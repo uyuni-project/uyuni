@@ -39,6 +39,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 import java.util.List;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
@@ -255,7 +257,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(cp);
 
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
-        ProjectSource swSource = new SoftwareProjectSource(baseChannel);
+        ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
         cp.addSource(swSource);
         ContentProjectFactory.save(swSource);
 
@@ -263,7 +265,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(singletonList(swSource), fromDb);
 
         Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
-        ProjectSource swSource2 = new SoftwareProjectSource(childChannel);
+        ProjectSource swSource2 = new SoftwareProjectSource(cp, childChannel);
         cp.addSource(swSource2);
         ContentProjectFactory.save(swSource2);
 
@@ -392,5 +394,20 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         sndEntryFromDb = (ContentProjectHistoryEntry) HibernateFactory.reload(sndEntryFromDb);
         assertNull(fstEntryFromDb.getUser());
         assertNull(sndEntryFromDb.getUser());
+    }
+
+    /**
+     * Test looking up Source by label
+     */
+    public void testSourceTypeLookup() {
+        assertEquals(SW_CHANNEL, lookupByLabel("software"));
+
+        try {
+            lookupByLabel("thisdoesntexist");
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalArgumentException e) {
+            // expected
+        }
     }
 }
