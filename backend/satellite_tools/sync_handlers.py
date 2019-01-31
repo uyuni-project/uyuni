@@ -20,10 +20,10 @@ from spacewalk.common import usix
 from spacewalk.server.importlib import channelImport, packageImport, errataImport, \
     kickstartImport
 from spacewalk.common.usix import raise_with_tb
-import diskImportLib
-import xmlSource
-import syncCache
-import syncLib
+from . import diskImportLib
+from . import xmlSource
+from . import syncCache
+from . import syncLib
 
 DEFAULT_ORG = 1
 

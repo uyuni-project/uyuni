@@ -55,7 +55,7 @@ from spacewalk.satellite_tools.repo_plugins import yum_src
 from spacewalk.server import taskomatic, rhnPackageUpload
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 
-from syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
+from .syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = translation.ugettext
