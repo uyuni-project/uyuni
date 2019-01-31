@@ -202,7 +202,7 @@ class BootstrapMinions extends React.Component {
                        <select value={this.state.activationKey} onChange={this.activationKeyChanged} className="form-control" name="activationKeys">
                          <option key="none" value="">None</option>
                          {
-                             this.props.availableActivationKeys.map(k =>
+                             this.props.availableActivationKeys.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).map(k =>
                                 <option key={k} value={k}>{ k }</option>
                              )
                          }
