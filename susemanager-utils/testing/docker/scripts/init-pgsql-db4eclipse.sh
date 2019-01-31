@@ -20,11 +20,7 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 #sysctl -w kernel.shmmax=18446744073709551615
-if [ -e /usr/lib/postgresql-init ]; then
-    su - postgres -c "/usr/lib/postgresql-init start" ||:
-else
-    rcpostgresql start
-fi
+su - postgres -c "/usr/lib/postgresql10/bin/pg_ctl start" ||:
 
 # this copy the latest schema from the git into the system
 ./build-schema.sh
@@ -56,11 +52,7 @@ done
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
-    if [ -e /usr/lib/postgresql-init ]; then
-        su - postgres -c "/usr/lib/postgresql-init stop" ||:
-    else
-        rcpostgresql stop
-    fi
+    su - postgres -c "/usr/lib/postgresql10/bin/pg_ctl stop" ||:
     exit 1
 fi
 
@@ -70,10 +62,6 @@ echo "INSERT INTO  rhnChannelFamily (id, name, label, org_id)
             'private-channel-family-1', 1);" | spacewalk-sql --select-mode -
 echo "INSERT INTO  rhnPrivateChannelFamily (channel_family_id, org_id) VALUES  (1000, 1);" | spacewalk-sql --select-mode -
 
-if [ -e /usr/lib/postgresql-init ]; then
-    su - postgres -c "/usr/lib/postgresql-init stop" ||:
-else
-    rcpostgresql stop
-fi
-su - postgres -c '/usr/lib/postgresql96/bin/postgres -D /var/lib/pgsql/data'
+su - postgres -c "/usr/lib/postgresql10/bin/pg_ctl stop" ||:
+su - postgres -c '/usr/lib/postgresql10/bin/postgres -D /var/lib/pgsql/data'
 

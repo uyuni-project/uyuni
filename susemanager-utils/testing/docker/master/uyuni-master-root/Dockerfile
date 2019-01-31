@@ -2,7 +2,7 @@
 #
 # VERSION                4.0.0
 
-FROM opensuse/leap:42.3
+FROM opensuse/leap:15.0
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
 # Add the repositories
