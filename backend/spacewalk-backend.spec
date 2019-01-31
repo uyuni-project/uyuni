@@ -452,12 +452,14 @@ Requires:       python3-python-dateutil
 Requires:       python3-gzipstream
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
+Requires:       python3-urlgrabber
 %else
 Requires:       python-dateutil
 Requires:       python2-gzipstream
 Requires:       python2-rhn-client-tools
 Requires:       python-solv
 Requires:       python-configparser
+Requires:       python2-urlgrabber
 %if 0%{?suse_version}
 Requires:       python-pyliblzma
 %else
