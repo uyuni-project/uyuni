@@ -20,10 +20,10 @@
 # the server.Server class inherits this ServerWrapper class
 #
 
-from server_hardware import Hardware
-from server_packages import Packages
-from server_history import History
-from server_suse import SuseData
+from .server_hardware import Hardware
+from .server_packages import Packages
+from .server_history import History
+from .server_suse import SuseData
 
 from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL

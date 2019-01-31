@@ -18,9 +18,9 @@
 
 import time
 import string
-from importLib import File, Dependency, ChangeLog, Channel, \
+from .importLib import File, Dependency, ChangeLog, Channel, \
     IncompletePackage, Package, SourcePackage
-from backendLib import gmtime, localtime
+from .backendLib import gmtime, localtime
 from spacewalk.common.usix import ListType, TupleType, IntType, LongType, StringType, UnicodeType
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.stringutils import to_string

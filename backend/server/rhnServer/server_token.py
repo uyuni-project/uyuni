@@ -24,7 +24,7 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL, rhnChannel, rhnAction
 
-from server_lib import join_server_group, check_entitlement
+from .server_lib import join_server_group, check_entitlement
 
 VIRT_ENT_LABEL = 'virtualization_host'
 

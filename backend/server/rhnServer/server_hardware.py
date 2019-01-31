@@ -34,7 +34,7 @@ from spacewalk.common import rhnFlags
 from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
 
 # Local imports
-import server_class
+from . import server_class
 
 def kudzu_mapping(dict=None):
     """ this is a class we use to get the mapping for a kudzu entry """

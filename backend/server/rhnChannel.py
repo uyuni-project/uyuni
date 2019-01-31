@@ -37,9 +37,9 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
 # local module
-import rhnUser
-import rhnSQL
-import rhnLib
+from . import rhnUser
+from . import rhnSQL
+from . import rhnLib
 
 
 class NoBaseChannelError(Exception):
