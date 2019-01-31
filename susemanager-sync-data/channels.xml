@@ -14009,6 +14009,22 @@
 			<product_id eol="N" name="SLES-for-VMware" version="11.3">993</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP4 i686" eol="N" family="7261" is_signed="Y" label="sles11-sp4-ltss-updates-i586" name="SLES11-SP4-LTSS-Updates for i586" optional="Y" parent="sles11-sp4-pool-i586" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-LTSS-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP4 i686" update_tag="slessp4">
+		<products>
+			<product_id eol="N" name="SUSE_SLES" version="11.4">1298</product_id>
+			<product_id eol="N" name="SUSE_SLES" version="11.4">1299</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP4 s390x" eol="N" family="SLES-Z" is_signed="Y" label="sles11-sp4-ltss-updates-s390x" name="SLES11-SP4-LTSS-Updates for s390x" optional="Y" parent="sles11-sp4-pool-s390x" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-LTSS-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP4 s390x" update_tag="slessp4">
+		<products>
+			<product_id eol="N" name="SUSE_SLES" version="11.4">1303</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP4 x86_64" eol="N" family="7261" is_signed="Y" label="sles11-sp4-ltss-updates-x86_64" name="SLES11-SP4-LTSS-Updates for x86_64" optional="Y" parent="sles11-sp4-pool-x86_64" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-LTSS-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP4 x86_64" update_tag="slessp4">
+		<products>
+			<product_id eol="N" name="SUSE_SLES" version="11.4">1300</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP4 i686" eol="N" family="7261" is_signed="Y" label="sles11-sp4-pool-i586" name="SLES11-SP4-Pool for i586" optional="N" parent="BASE" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP4 i686" update_tag="slessp4">
 		<products>
 			<product_id eol="N" name="SUSE_SLES" version="11.4">1298</product_id>
@@ -15872,22 +15888,22 @@
 			<product_id eol="N" name="suse-openstack-cloud" version="8">1617</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE OpenStack Cloud 9" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-9-debuginfo-pool-x86_64-sp4" name="SUSE-OpenStack-Cloud-9-Debuginfo-Pool for x86_64 SP4" optional="Y" parent="sles12-sp3-pool-x86_64" product_name="suse-openstack-cloud" product_version="9" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/9/x86_64/product_debug/" summary="SUSE OpenStack Cloud 9 x86_64" update_tag="">
+	<channel arch="x86_64" description="SUSE OpenStack Cloud is an enterprise-ready OpenStack distribution that accelerates deployment of highly available, mixed-hypervisor IaaS Clouds. Backed by the excellence of SUSE engineering, quality assurance and support, SUSE OpenStack Cloud leverages existing data center investments to help enterprises increase business agility, economically scale current IT capabilities and easily integrate upstream innovation." eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-9-debuginfo-pool-x86_64-sp4" name="SUSE-OpenStack-Cloud-9-Debuginfo-Pool for x86_64 SP4" optional="Y" parent="sles12-sp4-pool-x86_64" product_name="suse-openstack-cloud" product_version="9" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/9/x86_64/product_debug/" summary="SUSE OpenStack Cloud 9 x86_64" update_tag="">
 		<products>
 			<product_id eol="N" name="suse-openstack-cloud" version="9">1820</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE OpenStack Cloud 9" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-9-debuginfo-updates-x86_64-sp4" name="SUSE-OpenStack-Cloud-9-Debuginfo-Updates for x86_64 SP4" optional="Y" parent="sles12-sp3-pool-x86_64" product_name="suse-openstack-cloud" product_version="9" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/9/x86_64/update_debug/" summary="SUSE OpenStack Cloud 9 x86_64" update_tag="">
+	<channel arch="x86_64" description="SUSE OpenStack Cloud is an enterprise-ready OpenStack distribution that accelerates deployment of highly available, mixed-hypervisor IaaS Clouds. Backed by the excellence of SUSE engineering, quality assurance and support, SUSE OpenStack Cloud leverages existing data center investments to help enterprises increase business agility, economically scale current IT capabilities and easily integrate upstream innovation." eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-9-debuginfo-updates-x86_64-sp4" name="SUSE-OpenStack-Cloud-9-Debuginfo-Updates for x86_64 SP4" optional="Y" parent="sles12-sp4-pool-x86_64" product_name="suse-openstack-cloud" product_version="9" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/9/x86_64/update_debug/" summary="SUSE OpenStack Cloud 9 x86_64" update_tag="">
 		<products>
 			<product_id eol="N" name="suse-openstack-cloud" version="9">1820</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE OpenStack Cloud 9" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-9-pool-x86_64-sp4" name="SUSE-OpenStack-Cloud-9-Pool for x86_64 SP4" optional="N" parent="sles12-sp3-pool-x86_64" product_name="suse-openstack-cloud" product_version="9" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/9/x86_64/product/" summary="SUSE OpenStack Cloud 9 x86_64" update_tag="">
+	<channel arch="x86_64" description="SUSE OpenStack Cloud is an enterprise-ready OpenStack distribution that accelerates deployment of highly available, mixed-hypervisor IaaS Clouds. Backed by the excellence of SUSE engineering, quality assurance and support, SUSE OpenStack Cloud leverages existing data center investments to help enterprises increase business agility, economically scale current IT capabilities and easily integrate upstream innovation." eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-9-pool-x86_64-sp4" name="SUSE-OpenStack-Cloud-9-Pool for x86_64 SP4" optional="N" parent="sles12-sp4-pool-x86_64" product_name="suse-openstack-cloud" product_version="9" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/9/x86_64/product/" summary="SUSE OpenStack Cloud 9 x86_64" update_tag="">
 		<products>
 			<product_id eol="N" name="suse-openstack-cloud" version="9">1820</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE OpenStack Cloud 9" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-9-updates-x86_64-sp4" name="SUSE-OpenStack-Cloud-9-Updates for x86_64 SP4" optional="N" parent="sles12-sp3-pool-x86_64" product_name="suse-openstack-cloud" product_version="9" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/9/x86_64/update/" summary="SUSE OpenStack Cloud 9 x86_64" update_tag="">
+	<channel arch="x86_64" description="SUSE OpenStack Cloud is an enterprise-ready OpenStack distribution that accelerates deployment of highly available, mixed-hypervisor IaaS Clouds. Backed by the excellence of SUSE engineering, quality assurance and support, SUSE OpenStack Cloud leverages existing data center investments to help enterprises increase business agility, economically scale current IT capabilities and easily integrate upstream innovation." eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-9-updates-x86_64-sp4" name="SUSE-OpenStack-Cloud-9-Updates for x86_64 SP4" optional="N" parent="sles12-sp4-pool-x86_64" product_name="suse-openstack-cloud" product_version="9" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/9/x86_64/update/" summary="SUSE OpenStack Cloud 9 x86_64" update_tag="">
 		<products>
 			<product_id eol="N" name="suse-openstack-cloud" version="9">1820</product_id>
 		</products>
@@ -15952,22 +15968,22 @@
 			<product_id eol="N" name="suse-openstack-cloud-crowbar" version="8">1729</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE OpenStack Cloud Crowbar 9" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-crowbar-9-debuginfo-pool-x86_64-sp4" name="SUSE-OpenStack-Cloud-Crowbar-9-Debuginfo-Pool for x86_64 SP4" optional="Y" parent="sles12-sp3-pool-x86_64" product_name="suse-openstack-cloud-crowbar" product_version="9" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud-Crowbar/9/x86_64/product_debug/" summary="SUSE OpenStack Cloud Crowbar 9 x86_64" update_tag="">
+	<channel arch="x86_64" description="SUSE OpenStack Cloud is an enterprise-ready OpenStack distribution that accelerates deployment of highly available, mixed-hypervisor IaaS Clouds. Backed by the excellence of SUSE engineering, quality assurance and support, SUSE OpenStack Cloud leverages existing data center investments to help enterprises increase business agility, economically scale current IT capabilities and easily integrate upstream innovation." eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-crowbar-9-debuginfo-pool-x86_64-sp4" name="SUSE-OpenStack-Cloud-Crowbar-9-Debuginfo-Pool for x86_64 SP4" optional="Y" parent="sles12-sp4-pool-x86_64" product_name="suse-openstack-cloud-crowbar" product_version="9" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud-Crowbar/9/x86_64/product_debug/" summary="SUSE OpenStack Cloud Crowbar 9 x86_64" update_tag="">
 		<products>
 			<product_id eol="N" name="suse-openstack-cloud-crowbar" version="9">1821</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE OpenStack Cloud Crowbar 9" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-crowbar-9-debuginfo-updates-x86_64-sp4" name="SUSE-OpenStack-Cloud-Crowbar-9-Debuginfo-Updates for x86_64 SP4" optional="Y" parent="sles12-sp3-pool-x86_64" product_name="suse-openstack-cloud-crowbar" product_version="9" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud-Crowbar/9/x86_64/update_debug/" summary="SUSE OpenStack Cloud Crowbar 9 x86_64" update_tag="">
+	<channel arch="x86_64" description="SUSE OpenStack Cloud is an enterprise-ready OpenStack distribution that accelerates deployment of highly available, mixed-hypervisor IaaS Clouds. Backed by the excellence of SUSE engineering, quality assurance and support, SUSE OpenStack Cloud leverages existing data center investments to help enterprises increase business agility, economically scale current IT capabilities and easily integrate upstream innovation." eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-crowbar-9-debuginfo-updates-x86_64-sp4" name="SUSE-OpenStack-Cloud-Crowbar-9-Debuginfo-Updates for x86_64 SP4" optional="Y" parent="sles12-sp4-pool-x86_64" product_name="suse-openstack-cloud-crowbar" product_version="9" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud-Crowbar/9/x86_64/update_debug/" summary="SUSE OpenStack Cloud Crowbar 9 x86_64" update_tag="">
 		<products>
 			<product_id eol="N" name="suse-openstack-cloud-crowbar" version="9">1821</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE OpenStack Cloud Crowbar 9" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-crowbar-9-pool-x86_64-sp4" name="SUSE-OpenStack-Cloud-Crowbar-9-Pool for x86_64 SP4" optional="N" parent="sles12-sp3-pool-x86_64" product_name="suse-openstack-cloud-crowbar" product_version="9" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud-Crowbar/9/x86_64/product/" summary="SUSE OpenStack Cloud Crowbar 9 x86_64" update_tag="">
+	<channel arch="x86_64" description="SUSE OpenStack Cloud is an enterprise-ready OpenStack distribution that accelerates deployment of highly available, mixed-hypervisor IaaS Clouds. Backed by the excellence of SUSE engineering, quality assurance and support, SUSE OpenStack Cloud leverages existing data center investments to help enterprises increase business agility, economically scale current IT capabilities and easily integrate upstream innovation." eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-crowbar-9-pool-x86_64-sp4" name="SUSE-OpenStack-Cloud-Crowbar-9-Pool for x86_64 SP4" optional="N" parent="sles12-sp4-pool-x86_64" product_name="suse-openstack-cloud-crowbar" product_version="9" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud-Crowbar/9/x86_64/product/" summary="SUSE OpenStack Cloud Crowbar 9 x86_64" update_tag="">
 		<products>
 			<product_id eol="N" name="suse-openstack-cloud-crowbar" version="9">1821</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE OpenStack Cloud Crowbar 9" eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-crowbar-9-updates-x86_64-sp4" name="SUSE-OpenStack-Cloud-Crowbar-9-Updates for x86_64 SP4" optional="N" parent="sles12-sp3-pool-x86_64" product_name="suse-openstack-cloud-crowbar" product_version="9" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud-Crowbar/9/x86_64/update/" summary="SUSE OpenStack Cloud Crowbar 9 x86_64" update_tag="">
+	<channel arch="x86_64" description="SUSE OpenStack Cloud is an enterprise-ready OpenStack distribution that accelerates deployment of highly available, mixed-hypervisor IaaS Clouds. Backed by the excellence of SUSE engineering, quality assurance and support, SUSE OpenStack Cloud leverages existing data center investments to help enterprises increase business agility, economically scale current IT capabilities and easily integrate upstream innovation." eol="N" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-crowbar-9-updates-x86_64-sp4" name="SUSE-OpenStack-Cloud-Crowbar-9-Updates for x86_64 SP4" optional="N" parent="sles12-sp4-pool-x86_64" product_name="suse-openstack-cloud-crowbar" product_version="9" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud-Crowbar/9/x86_64/update/" summary="SUSE OpenStack Cloud Crowbar 9 x86_64" update_tag="">
 		<products>
 			<product_id eol="N" name="suse-openstack-cloud-crowbar" version="9">1821</product_id>
 		</products>
