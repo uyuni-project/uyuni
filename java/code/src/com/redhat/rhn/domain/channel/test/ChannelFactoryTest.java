@@ -461,4 +461,19 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals("sha1", ct2.getLabel());
     }
 
+    /**
+     * Test user channel accessibility
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testAccessibility() throws Exception {
+        User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
+        User user2 = UserTestUtils.createUser("testuser2", user1.getOrg().getId());
+        User user3 = UserTestUtils.findNewUser("testuser3", "testorg3");
+        Channel c = ChannelFactoryTest.createTestChannel(user1);
+
+        assertTrue(ChannelFactory.isAccessibleByUser(c.getLabel(), user1.getId()));
+        assertTrue(ChannelFactory.isAccessibleByUser(c.getLabel(), user2.getId()));
+        assertFalse(ChannelFactory.isAccessibleByUser(c.getLabel(), user3.getId()));
+    }
 }

@@ -563,6 +563,17 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             AND ac.org_id = :org_id
     </sql-query>
 
+    <sql-query name="Channel.isAccessibleByUser">
+        <![CDATA[SELECT 1
+                   FROM rhnChannel c
+                   JOIN suseChannelUserRoleView scur on c.id = scur.channel_id
+                  WHERE c.label = :channelLabel
+                    AND scur.user_id = :userId
+                    AND scur.channel_id = c.id
+                    AND deny_reason IS NULL
+        ]]>
+    </sql-query>
+
     <sql-query name="Channel.lookupOriginalPackages">
         <![CDATA[
             SELECT DISTINCT cp.package_id AS id
