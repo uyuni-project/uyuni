@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jan 31 09:41:46 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.5-1
 - Improve memory usage when generating repo matadata for channels having
   a large number of packages (bsc#1115776)
 - Merge unlimited virtualization lifecycle products with the single variant (bsc#1114059)
