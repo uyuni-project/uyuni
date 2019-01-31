@@ -205,7 +205,7 @@ def isSUSE():
 
     cpe_name = ''
     try:
-        lines = open('/etc/os-release', 'rb').readlines()
+        lines = open('/etc/os-release', 'r').readlines()
         for line in lines:
             # Skip empty and comment-only lines
             if re.match(r'[ \t]*(#|$)', line):
