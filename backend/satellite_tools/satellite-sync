@@ -19,7 +19,7 @@
 # For return codes see bottom of this file
 
 if __name__ != '__main__':
-    raise ImportError, "module cannot be imported"
+    raise ImportError("module cannot be imported")
 
 import sys
 
@@ -69,7 +69,7 @@ try:
     from spacewalk.satellite_tools import satsync, syncLib
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
-except ImportError, e:
+except ImportError as e:
     systemExit(2, "Unable to find synchronization tools.\n"
                   "Error: %s" % e)
 
@@ -140,20 +140,20 @@ def main():
     except SystemExit:
         satsync.sendMail()
         raise
-    except socket.error, e:
+    except socket.error as e:
         msg = "\nERROR: a general socket exception occurred:"
         systemExit_exception(3, msg, e)
-    except socket.sslerror, e:
+    except socket.sslerror as e:
         msg = ("""
 ERROR: an SSL error occurred. Recheck your SSL settings. Those settings may
        include URL's, SSL Certificate settings, firewall rules, etc..
        Also, check that your system time has not drifted! Time drift is one
        of the primary reasons for SSL connection failures.""")
         systemExit_exception(4, msg, e)
-    except syncLib.RhnSyncException, e:
+    except syncLib.RhnSyncException as e:
         msg = "\nSYNC ERROR:"
         systemExit_exception(5, msg, e)
-    except Exception, e:
+    except Exception as e:
         msg = "\nSYNC ERROR: unhandled exception occurred:"
         systemExit_exception(6, msg, e)
 
@@ -166,10 +166,10 @@ if __name__ == '__main__':
         sys.exit(abs(main() or 0))
     except KeyboardInterrupt:
         systemExit(0, "\nUser interrupted process.")
-    except SystemExit, e:
+    except SystemExit as e:
         releaseLOCK()
         sys.exit(e.code)
-    except Exception, e:
+    except Exception as e:
         releaseLOCK()
         systemExit_exception(7, "SYNC ERROR: attempting to display as much information as possible:", e)
 
