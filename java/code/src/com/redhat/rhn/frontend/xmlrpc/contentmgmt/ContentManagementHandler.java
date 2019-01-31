@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentManager;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
@@ -26,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Optional.of;
+import static com.redhat.rhn.common.util.StringUtil.nullIfEmpty;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -207,11 +209,11 @@ public class ContentManagementHandler extends BaseHandler {
             String label, String name, String description) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return ContentManager.createEnvironment(projectLabel, of(predecessorLabel), label, name, description,
-                    loggedInUser);
+            return ContentManager.createEnvironment(projectLabel, ofNullable(nullIfEmpty(predecessorLabel)), label,
+                    name, description, loggedInUser);
         }
         catch (ContentManagementException e) {
-            throw new ContentManagementException(e.getMessage());
+            throw new InvalidParameterException(e.getMessage());
         }
     }
 
@@ -267,5 +269,116 @@ public class ContentManagementHandler extends BaseHandler {
     public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
         return ContentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
+    }
+
+    /**
+     * List Content Project Sources
+     *
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Project label
+     * @throws InvalidParameterException if the Project is not found
+     * @return list of Project Sources
+     *
+     * @xmlrpc.doc List Content Project Sources
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.returntype
+     * #array()
+     * $ContentProjectSourceSerializer
+     * #array_end()
+     */
+    public List<ProjectSource> listProjectSources(User loggedInUser, String projectLabel) {
+        return ContentManager.lookupProject(projectLabel, loggedInUser)
+                .orElseThrow(() -> new InvalidParameterException("Content Project: " + projectLabel +
+                        ", does not exist"))
+                .getSources();
+    }
+
+    /**
+     * Look up Content Project Source
+     *
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Project label
+     * @param sourceType the Source type (e.g. "software")
+     * @param sourceLabel the Source label (e.g. software channel label)
+     * @throws InvalidParameterException if the Project is not found
+     * @return list of Project Sources
+     *
+     * @xmlrpc.doc Look up Content Project Source
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
+     * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @xmlrpc.returntype $ContentProjectSourceSerializer
+     */
+    public ProjectSource lookupProjectSource(User loggedInUser, String projectLabel, String sourceType,
+            String sourceLabel) {
+        Type type = Type.lookupByLabel(sourceType);
+        try {
+            return ContentManager.lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser).orElse(null);
+        }
+        catch (ContentManagementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        }
+    }
+
+    /**
+     * Attach a Source to a Project
+     *
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Project label
+     * @param sourceType the Source type (e.g. "software")
+     * @param sourceLabel the Source label (e.g. software channel label)
+     * @throws InvalidParameterException when Source already exists or when used entities don't exist or are not
+     * accessible
+     * @return the created Source
+     *
+     * @xmlrpc.doc Attach a Source to a Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
+     * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @xmlrpc.returntype $ContentProjectSourceSerializer
+     */
+    public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
+        Type type = Type.lookupByLabel(sourceType);
+        try {
+            ContentManager.lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser).ifPresent(
+                    s -> {
+                        throw new InvalidParameterException("Source " + sourceLabel + " of type " + sourceType +
+                                " is already attached to Project " + projectLabel);
+                    }
+            );
+            return ContentManager.attachSource(projectLabel, type, sourceLabel, loggedInUser);
+        }
+        catch (ContentManagementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        }
+    }
+
+    /**
+     * Detach a Source from a Project
+     *
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Project label
+     * @param sourceType the Source type (e.g. "software")
+     * @param sourceLabel the Source label (e.g. software channel label)
+     * @return the number of Sources removed
+     *
+     * @xmlrpc.doc Detach a Source from a Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
+     * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @xmlrpc.returntype int - the number of removed objects
+     */
+    public int detachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
+        Type type = Type.lookupByLabel(sourceType);
+        try {
+            return ContentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);
+        }
+        catch (ContentManagementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        }
     }
 }
