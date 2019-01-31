@@ -43,7 +43,7 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
     And I click on "Confirm"
     And I wait for "5" seconds
     Then I should see a "1 patch update has been scheduled for" text
-    And I wait for "virgo-dummy" to be installed on this "ceos-ssh-minion"
+    And I wait for "virgo-dummy-2.0-1.1" to be installed on this "ceos-ssh-minion"
 
 @centos_minion
   Scenario: Install a package on the Centos SSH minion 
