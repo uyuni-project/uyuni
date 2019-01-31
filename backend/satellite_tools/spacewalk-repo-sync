@@ -18,10 +18,10 @@
 import re
 try:
     #  python2
-    from StringIO import StringIO
+    import StringIO as StringIO
 except ImportError:
     #  python3
-    from io import StringIO
+    import io as StringIO
 import simplejson as json
 import shutil
 import sys
