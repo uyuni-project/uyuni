@@ -1638,16 +1638,6 @@ public class SaltServerActionService {
     private Map<Boolean, List<MinionSummary>> execute(Action actionIn, LocalCall<?> call,
             List<MinionSummary> minionSummaries, boolean forcePackageListRefresh,
             boolean isStagingJob) {
-        // Prepare the metadata
-        Map<String, Object> metadata = new HashMap<>();
-
-        if (!isStagingJob) {
-            metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
-        }
-        if (forcePackageListRefresh) {
-            metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
-        }
-
         List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toList());
 
         if (LOG.isDebugEnabled()) {
@@ -1658,8 +1648,10 @@ public class SaltServerActionService {
         try {
             Map<Boolean, List<MinionSummary>> result = new HashMap<>();
 
+            ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
+                    isStagingJob, forcePackageListRefresh, actionIn.getId());
             List<String> results = SaltService.INSTANCE
-                    .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
+                    .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
                     .get().getMinions();
 
             result = minionSummaries.stream().collect(Collectors
@@ -1683,10 +1675,6 @@ public class SaltServerActionService {
      */
     private Map<Boolean, ? extends Collection<MinionSummary>> callAsyncActionChainStart(LocalCall<?> call,
             Set<MinionSummary> minionSummaries) {
-        // Prepare the metadata
-        Map<String, Object> metadata = new HashMap<>();
-        metadata.put("suma-action-chain", true);
-
         List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId)
                 .collect(Collectors.toList());
 
@@ -1697,9 +1685,8 @@ public class SaltServerActionService {
 
         try {
             List<String> results = SaltService.INSTANCE
-                    .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
-                    .get()
-                    .getMinions();
+                    .callAsync(call, new MinionList(minionIds),
+                            Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain())).get().getMinions();
 
             Map<Boolean, ? extends Collection<MinionSummary>> result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minion -> results.contains(minion.getMinionId())));
