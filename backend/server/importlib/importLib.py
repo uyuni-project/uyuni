@@ -19,13 +19,13 @@
 import os
 import shutil
 from spacewalk.common.usix import IntType, StringType, InstanceType
-from UserDict import UserDict
 try:
     #  python 2
+    from UserDict import UserDict
     from UserList import UserList
 except ImportError:
     #  python3
-    from collections import UserList
+    from collections import UserList, UserDict
 
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.fileutils import createPath

@@ -19,7 +19,12 @@
 import time
 import string
 
-from UserDict import UserDict
+try:
+    #  python 2
+    from UserDict import UserDict
+except ImportError:
+    #  python3
+    from collections import UserDict
 from spacewalk.common.usix import ListType, StringType, DictType, IntType, UnicodeType
 
 # A function that formats a UNIX timestamp to the session's format
@@ -72,12 +77,12 @@ class Table:
     keywords = {
         'fields': DictType,
         'pk': ListType,
-        'attribute': StringType,
+        'attribute': str,
         'map': DictType,
         'nullable': ListType,  # Will become a hash eventually
         'severityHash': DictType,
         'defaultSeverity': IntType,
-        'sequenceColumn': StringType,
+        'sequenceColumn': str,
     }
 
     def __init__(self, name, **kwargs):

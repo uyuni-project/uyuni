@@ -24,7 +24,7 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 
 # architecture work
-from rhnMapping import check_package_arch
+from .rhnMapping import check_package_arch
 
 
 def computeSignature(*fields):

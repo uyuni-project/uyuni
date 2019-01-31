@@ -17,7 +17,7 @@
 #
 
 from spacewalk.common.rhnException import rhnFault
-from importLib import GenericPackageImport
+from .importLib import GenericPackageImport
 from spacewalk.satellite_tools.syncLib import log
 
 

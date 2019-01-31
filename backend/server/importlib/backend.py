@@ -27,10 +27,10 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.stringutils import to_string
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
-from importLib import Diff, Package, IncompletePackage, Erratum, \
+from .importLib import Diff, Package, IncompletePackage, Erratum, \
     AlreadyUploadedError, InvalidPackageError, TransactionError, \
     SourcePackage
-from backendLib import TableCollection, sanitizeValue, TableDelete, \
+from .backendLib import TableCollection, sanitizeValue, TableDelete, \
     TableUpdate, TableLookup, addHash, TableInsert
 
 sequences = {

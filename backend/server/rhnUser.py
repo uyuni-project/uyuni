@@ -26,8 +26,8 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
-import rhnSQL
-import rhnSession
+from . import rhnSQL
+from . import rhnSession
 
 
 class User:

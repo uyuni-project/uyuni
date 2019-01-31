@@ -19,10 +19,10 @@
 import rpm
 import sys
 import os.path
-from importLib import GenericPackageImport, IncompletePackage, \
+from .importLib import GenericPackageImport, IncompletePackage, \
     Import, InvalidArchError, InvalidChannelError, \
     IncompatibleArchError
-from mpmSource import mpmBinaryPackage
+from .mpmSource import mpmBinaryPackage
 from spacewalk.common import rhn_pkg
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.server import taskomatic

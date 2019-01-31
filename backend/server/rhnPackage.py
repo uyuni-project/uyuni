@@ -24,7 +24,7 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL
-from rhnLib import parseRPMFilename
+from .rhnLib import parseRPMFilename
 
 
 #

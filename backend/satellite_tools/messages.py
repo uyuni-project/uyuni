@@ -21,7 +21,7 @@
 
 import gettext
 t = gettext.translation('spacewalk-backend-server', fallback=True)
-_ = t.ugettext
+_ = t.gettext
 
 failed_step = _("""
 ERROR: executing step %s. Error is:
