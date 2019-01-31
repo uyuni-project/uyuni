@@ -1,3 +1,5 @@
+- add SLES11 SP4 LTSS channels (bsc#1123989)
+- fix parent channel for Cloud 9 (bsc#1123376)
 - add Web-Scripting Module to OES 2018 (bsc#1119233)
 
 -------------------------------------------------------------------
