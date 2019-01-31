@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jan 31 09:39:31 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.4-1
 - Sync changes from Spacewalk
 - 1660552 - report and fail gracefully if not root
 - 1637980 - use new api for http headers
