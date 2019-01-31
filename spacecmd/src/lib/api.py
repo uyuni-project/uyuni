@@ -30,7 +30,6 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
-from utils import CustomJsonEncoder
 from spacecmd.utils import *
 
 

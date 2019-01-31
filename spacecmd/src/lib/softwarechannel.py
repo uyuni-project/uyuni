@@ -779,7 +779,7 @@ def do_softwarechannel_update(self, args):
        options.summary = prompt_user('Summary:')
 
        print('')
-       print 'New Description (blank to keep unchanged)'
+       print('New Description (blank to keep unchanged)')
        print('------------')
        print('')
        options.description = prompt_user('Description:')
