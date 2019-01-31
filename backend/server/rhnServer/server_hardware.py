@@ -34,7 +34,7 @@ from spacewalk.common import rhnFlags
 from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
 
 # Local imports
-from . import server_class
+from .server_class import *
 
 def kudzu_mapping(dict=None):
     """ this is a class we use to get the mapping for a kudzu entry """
@@ -900,7 +900,7 @@ class SystemInformation():
         guestid = guest.getid()
         if not hid:
             # create a new host entry
-            host = server_class.Server(guest.user, hw.get('arch'))
+            host = Server(guest.user, hw.get('arch'))
             host.server["name"] = hw.get('name')
             host.server["os"] = hw.get('os')
             host.server["release"] = hw.get('type')
@@ -925,7 +925,7 @@ class SystemInformation():
             host.reload(hid)
             log_debug(4, "New host created: ", host)
         else:
-            host = server_class.Server(None)
+            host = Server(None)
             host.reload(hid)
             host.checkin(commit=0)
             log_debug(4, "Found host: ", host)
