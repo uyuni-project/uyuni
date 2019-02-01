@@ -306,7 +306,7 @@ class CreateImageProfile extends React.Component {
         hint={hint} required={isRequired}>
         <option key="0" value="">None</option>
         {
-          activationKeys.map(k =>
+          activationKeys.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).map(k =>
             <option key={k} value={k}>{k}</option>
           )
         }
