@@ -431,9 +431,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 // remove package profile
                 minion.getPackages().clear();
 
-                // change base channel
-                minion.getChannels().clear();
-
                 // clear config channels
                 minion.setConfigChannels(Collections.emptyList(), minion.getCreator());
 
@@ -559,6 +556,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 activationKey,
                 // No ActivationKey
                 () -> {
+                    // we keep the channels if some are already assigned!
+                    if (server.getBaseChannel() != null) {
+                        return server.getChannels();
+                    }
                     Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
                     Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
                             .collect(Collectors.partitioningBy(SUSEProduct::isBase));
@@ -643,7 +644,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 }
         );
 
-        channelsToAssign.forEach(server::addChannel);
+        server.setChannels(channelsToAssign);
     }
 
     private ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
