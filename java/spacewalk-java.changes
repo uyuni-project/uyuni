@@ -1,3 +1,4 @@
+- Add support for Salt batch execution mode
 - fix NPE on remote commands when no targets match (bsc1123375)
 - Fix apidoc return order on mergePackages
 - Take into account only synced products when scheduling SP migration from the API (bsc#1131929)
