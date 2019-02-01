@@ -367,10 +367,7 @@ public class SaltServerActionService {
                     LOG.warn("Failed to schedule action for minion: " +
                             minionServer.getMinionId());
                     if (!isStagingJob) {
-                        serverAction.setCompletionTime(new Date());
-                        serverAction.setResultCode(-1L);
-                        serverAction.setResultMsg("Failed to schedule action.");
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                        serverAction.fail("Failed to schedule action.");
                         ActionFactory.save(serverAction);
                     }
                 });
@@ -1085,10 +1082,7 @@ public class SaltServerActionService {
             scriptAction.getServerActions().stream()
                     .filter(entry -> minions.contains(entry.getServer()))
                     .forEach(sa -> {
-                        sa.setCompletionTime(new Date());
-                        sa.setResultCode(-1L);
-                        sa.setResultMsg("Error scheduling the action: " + errorMsg);
-                        sa.setStatus(ActionFactory.STATUS_FAILED);
+                        sa.fail("Error scheduling the action: " + errorMsg);
                         ActionFactory.save(sa);
             });
         }
@@ -1534,10 +1528,7 @@ public class SaltServerActionService {
             if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
                 LOG.info("Failing action '" + action.getName() + "' as its prerequisite '" +
                         action.getPrerequisite().getName() + "' failed.");
-                sa.setStatus(STATUS_FAILED);
-                sa.setResultMsg("Prerequisite failed.");
-                sa.setResultCode(-100L);
-                sa.setCompletionTime(new Date());
+                sa.fail(-100L, "Prerequisite failed.");
                 return;
             }
 

@@ -25,11 +25,33 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.util.Date;
+
 /**
  * ServerActionTest
  * @version $Rev$
  */
 public class ServerActionTest extends RhnBaseTestCase {
+
+    public void testFail() {
+        ServerAction sa1 = new ServerAction();
+        sa1.fail(-1L, "Fail_message", new Date());
+        assertEquals(sa1.getResultMsg(), "Fail_message");
+        assertEquals(sa1.getResultCode(), new Long(-1));
+        assertEquals(sa1.getStatus(), ActionFactory.STATUS_FAILED);
+
+        ServerAction sa2 = new ServerAction();
+        sa2.fail(-1L, "Fail_message");
+        assertEquals(sa2.getResultMsg(), "Fail_message");
+        assertEquals(sa2.getResultCode(), new Long(-1));
+        assertEquals(sa2.getStatus(), ActionFactory.STATUS_FAILED);
+
+        ServerAction sa3 = new ServerAction();
+        sa3.fail("Fail_message");
+        assertEquals(sa3.getResultMsg(), "Fail_message");
+        assertEquals(sa3.getResultCode(), new Long(-1));
+        assertEquals(sa3.getStatus(), ActionFactory.STATUS_FAILED);
+    }
 
     public void testEquals() {
         ServerAction sa = new ServerAction();
