@@ -112,6 +112,7 @@
 - features/srv_sync_products.feature
 - features/srv_notifications.feature
 - features/min_empty_system_profiles.feature
+- features/min_custom_pkg_download_endpoint.feature
 ## Secondary features END ##
 
 

@@ -32,3 +32,13 @@ def count_table_items
   raise unless (items_label = find(:xpath, items_label_xpath).text)
   items_label.split('of ')[1]
 end
+
+# This function creates salt pillar file in the default pillar_roots location
+def inject_salt_pillar_file(source, file)
+  dest = '/srv/pillar/' + file
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  # make file readeable by salt
+  $server.run("chgrp salt #{dest}")
+  return_code
+end

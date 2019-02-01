@@ -703,3 +703,31 @@ And(/^I cleanup minion "([^"]*)"$/) do |target|
     $ceos_minion.run('rm -Rf /var/cache/salt/minion')
   end
 end
+
+When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|
+  system_name = host == "*" ? "*" : get_system_name(host)
+  script = "base:\n" \
+            "  '#{system_name}':\n" \
+            "    - '#{file}'\n"
+  path = generate_temp_file('top.sls', script)
+  inject_salt_pillar_file(path, 'top.sls')
+  `rm #{path}`
+end
+
+When(/^I install a salt pillar file with name "([^"]*)" on the server$/) do |file|
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  inject_salt_pillar_file(source, file)
+end
+
+When(/^I delete a salt "([^"]*)" file with name "([^"]*)" on the server$/) do |type, file|
+  case type
+  when 'state'
+    path = "/srv/salt/" + file
+  when 'pillar'
+    path = "/srv/pillar/" + file
+  else
+    raise 'Invalid type.'
+  end
+  return_code = file_delete($server, path)
+  raise 'File Deletion failed' unless return_code.zero?
+end
