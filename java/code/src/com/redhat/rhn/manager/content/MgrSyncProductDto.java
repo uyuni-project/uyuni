@@ -26,9 +26,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import spark.utils.StringUtils;
 
 /**
  * A product, as listed by mgr-sync. This is conceptually different from:
@@ -134,9 +131,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      * @return the channels
      */
     public Set<MgrSyncChannelDto> getChannels() {
-        return channels.stream().filter(c ->
-            StringUtils.isBlank(c.getParentLabel()) || c.getParentLabel().equals(baseChannel.getLabel())
-        ).collect(Collectors.toSet());
+        return channels;
     }
 
     /**

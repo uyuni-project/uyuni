@@ -355,11 +355,11 @@ public class ContentSyncManager {
             Map<Boolean, List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>>> partitionBaseRepo = repos.stream()
                     .collect(Collectors.partitioningBy(p -> p.getA().getParentChannelLabel() == null));
 
-            Tuple2<SUSEProductSCCRepository, MgrSyncStatus> baseRepo = partitionBaseRepo.get(true).stream()
+            List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> baseRepos = partitionBaseRepo.get(true).stream()
                     // for RHEL and Vmware which have multiple base channels for a product
                     .sorted((a, b) -> {
                         return a.getA().getChannelLabel().compareTo(b.getA().getChannelLabel());
-                    }).findFirst().get();
+                    }).collect(Collectors.toList());
             List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> childRepos = partitionBaseRepo.get(false);
 
             Set<MgrSyncChannelDto> allChannels = childRepos.stream().map(c -> new MgrSyncChannelDto(
@@ -381,7 +381,7 @@ public class ContentSyncManager {
                     c.getA().getUpdateTag()
             )).collect(Collectors.toSet());
 
-            MgrSyncChannelDto baseChannel = new MgrSyncChannelDto(
+            List<MgrSyncChannelDto> baseChannels = baseRepos.stream().map(baseRepo -> new MgrSyncChannelDto(
                     baseRepo.getA().getRepository().getName() +
                     (baseRepo.getA().getRootProduct().getArch() != null ?
                             " for " + baseRepo.getA().getRootProduct().getArch().getLabel() : ""),
@@ -398,9 +398,9 @@ public class ContentSyncManager {
                     baseRepo.getA().getRepository().isSigned(),
                     baseRepo.getA().getRepository().getUrl(),
                     baseRepo.getA().getUpdateTag()
-            );
-            allChannels.add(baseChannel);
-
+            )).collect(Collectors.toList());
+            allChannels.addAll(baseChannels);
+            MgrSyncChannelDto baseChannel = baseChannels.get(0);
 
             Map<SUSEProduct, List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>>> byExtension = exts.stream()
                     .collect(Collectors.groupingBy(e -> e.getA().getProduct()));
