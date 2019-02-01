@@ -1,3 +1,4 @@
+- Add support for Salt batch execution mode
 - fix NPE on remote commands when no targets match (bsc1123375)
 - change release notes URL
 - provide Proxy release notes as well
