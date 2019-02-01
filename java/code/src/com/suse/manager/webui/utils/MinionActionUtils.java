@@ -134,11 +134,7 @@ public class MinionActionUtils {
                             // If it is a string its likely to be an error because our
                             // actions so far don't have String as a result type
                             if (o.isJsonPrimitive() && o.getAsJsonPrimitive().isString()) {
-                                String error = o.getAsJsonPrimitive().getAsString();
-                                sa.setCompletionTime(new Date());
-                                sa.setResultMsg(error);
-                                sa.setStatus(ActionFactory.STATUS_FAILED);
-                                sa.setResultCode(-1L);
+                                sa.fail(o.getAsJsonPrimitive().getAsString());
                                 return sa;
                             }
                             else {
@@ -149,23 +145,16 @@ public class MinionActionUtils {
                                 return sa;
                             }
                         }).orElseGet(() -> {
-                            sa.setCompletionTime(new Date());
-                            sa.setResultMsg("There was no result.");
-                            sa.setStatus(ActionFactory.STATUS_FAILED);
-                            sa.setResultCode(-1L);
+                            sa.fail("There was no result.");
                             return sa;
                         });
                     }).orElseGet(() -> {
                         if (!sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
-                            sa.setCompletionTime(new Date());
-                            if (POSTGRES) {
-                                sa.setResultMsg("No job return event was received.");
+                            String message = "No job return event was received.";
+                            if (!POSTGRES) {
+                                message = "There was no job cache entry.";
                             }
-                            else {
-                                sa.setResultMsg("There was no job cache entry.");
-                            }
-                            sa.setStatus(ActionFactory.STATUS_FAILED);
-                            sa.setResultCode(-1L);
+                            sa.fail(message);
                         }
                         return sa;
                     });

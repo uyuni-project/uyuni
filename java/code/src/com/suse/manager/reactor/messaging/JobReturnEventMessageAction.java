@@ -254,7 +254,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                                     .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
                                     .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
                                     .findFirst()
-                                    .ifPresent(sa -> failServerAction(sa, message)));
+                                    .ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed"))));
 
             // walk dependent server actions recursively and set them to failed
             Stack<Long> actionIdsDependencies = new Stack<>();
@@ -272,17 +272,10 @@ public class JobReturnEventMessageAction implements MessageAction {
                    .collect(Collectors.toList());
                for (ServerAction sa : serverActionsWithPrereq) {
                    actionIdsDependencies.push(sa.getParentAction().getId());
-                   failServerAction(sa, Optional.empty());
+                   sa.fail("Prerequisite failed");
                }
            }
        }
-    }
-
-    private static void failServerAction(ServerAction serverAction, Optional<String> message) {
-        serverAction.setCompletionTime(new Date());
-        serverAction.setResultCode(new Long(-1));
-        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-        serverAction.setResultMsg(message.orElse("Prerequisite failed"));
     }
 
     private boolean refreshPackagesIfNeeded(JobReturnEvent jobReturnEvent, String function,
@@ -370,10 +363,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                         // state. We need to rollback this transaction first.
                         ActionFactory.rollbackTransaction();
 
-                        sa.setCompletionTime(new Date());
-                        sa.setStatus(ActionFactory.STATUS_FAILED);
-                        sa.setResultCode(-1L);
-                        sa.setResultMsg("An unexpected error has occurred. Please check the server logs.");
+                        sa.fail("An unexpected error has occurred. Please check the server logs.");
 
                         ActionFactory.save(sa);
                         // When we throw the exception again, the current transaction
