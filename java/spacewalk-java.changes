@@ -1,3 +1,4 @@
+- support products with multiple base channels
 - fix ordering of base channels to prevent synchronization errors
   (bsc#1123902)
 - prevent crash of mgr-sync refresh when channel label could not be found (bsc#1125451)
