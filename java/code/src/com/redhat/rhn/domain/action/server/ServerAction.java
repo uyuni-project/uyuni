@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.server;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.server.Server;
 
@@ -223,6 +224,36 @@ public class ServerAction extends ActionChild implements Serializable {
      */
     public void setServerId(Long serverIdIn) {
         this.serverId = serverIdIn;
+    }
+
+    /**
+     * Set this server action to FAILED.
+     * @param message the message to set in the server action
+     */
+    public void fail(String message) {
+        this.fail(-1L, message);
+    }
+
+    /**
+     * Set this server action to FAILED.
+     * @param resultCodeIn the result code set in the server action
+     * @param message the message to set in the server action
+     */
+    public void fail(long resultCodeIn, String message) {
+        this.fail(resultCodeIn, message, new Date());
+    }
+
+    /**
+     * Set this server action to FAILED.
+     * @param resultCodeIn the result code set in the server action
+     * @param message the message to set in the server action
+     * @param completionTimeIn the completionTime to set in the server action
+     */
+    public void fail(long resultCodeIn, String message, Date completionTimeIn) {
+        this.setCompletionTime(completionTimeIn);
+        this.setResultCode(resultCodeIn);
+        this.setStatus(ActionFactory.STATUS_FAILED);
+        this.setResultMsg(message);
     }
 
 }

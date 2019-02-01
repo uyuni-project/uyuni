@@ -46,6 +46,7 @@ public class RebootActionCleanup extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext arg0In)
         throws JobExecutionException {
         List<Map<String, Long>> failedRebootActions = lookupRebootActionCleanup();
@@ -102,10 +103,7 @@ public class RebootActionCleanup extends RhnJavaJob {
         Action a = ActionFactory.lookupById(actionId);
         ServerAction sa = ActionFactory.getServerActionForServerAndAction(s, a);
         if (sa.getStatus().getName() != "Failed") {
-            sa.setResultCode(-100L);
-            sa.setResultMsg("Prerequisite failed");
-            sa.setCompletionTime(sa.getPickupTime());
-            sa.setStatus(ActionFactory.STATUS_FAILED);
+            sa.fail(-100L, "Prerequisite failed", sa.getPickupTime());
 
             s.asMinionServer()
                     .filter(MinionServerUtils::isSshPushMinion)
