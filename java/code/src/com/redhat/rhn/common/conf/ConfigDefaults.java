@@ -214,6 +214,10 @@ public class ConfigDefaults {
      */
     public static final String TEMP_TOKEN_LIFETIME = "server.susemanager.temp_token_lifetime";
     public static final String TOKEN_LIFETIME = "server.susemanager.token_lifetime";
+    /**
+     * Controls if refreshed tokens get automatically deployed or not.
+     */
+    public static final String TOKEN_REFRESH_AUTO_DEPLOY = "server.susemanager.token_refresh_auto_deploy";
 
     /**
      * Salt Minions presence ping timeouts in seconds
