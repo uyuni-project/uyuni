@@ -8574,7 +8574,7 @@
         "update_tag": "res5ct",
         "url": "https://updates.suse.com/repo/$RCE/RES5-SUSE-Manager-Tools/x86_64/",
         "release_stage": "released",
-        "mandatory": false,
+        "mandatory": true,
         "signed": true,
         "recommended": false,
         "channel_name": "RES5 SUSE-Manager-Tools x86_64"
@@ -8589,7 +8589,7 @@
         "update_tag": "res5ct",
         "url": "https://updates.suse.com/repo/$RCE/RES5-SUSE-Manager-Tools/i386/",
         "release_stage": "released",
-        "mandatory": false,
+        "mandatory": true,
         "signed": true,
         "recommended": false,
         "channel_name": "RES5 SUSE-Manager-Tools i386"
@@ -9504,7 +9504,7 @@
         "update_tag": "res6ct",
         "url": "https://updates.suse.com/repo/$RCE/RES6-SUSE-Manager-Tools/x86_64/",
         "release_stage": "released",
-        "mandatory": false,
+        "mandatory": true,
         "signed": true,
         "recommended": false,
         "channel_name": "RES6 SUSE-Manager-Tools x86_64"
@@ -9519,7 +9519,7 @@
         "update_tag": "res6ct",
         "url": "https://updates.suse.com/repo/$RCE/RES6-SUSE-Manager-Tools/i386/",
         "release_stage": "released",
-        "mandatory": false,
+        "mandatory": true,
         "signed": true,
         "recommended": false,
         "channel_name": "RES6 SUSE-Manager-Tools i386"
@@ -19419,7 +19419,7 @@
         "update_tag": "suse-res7ct",
         "url": "https://updates.suse.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/",
         "release_stage": "released",
-        "mandatory": false,
+        "mandatory": true,
         "signed": true,
         "recommended": false,
         "channel_name": "RES7 SUSE-Manager-Tools x86_64"
