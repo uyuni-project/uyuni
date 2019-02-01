@@ -1,3 +1,4 @@
+- make SUSE Manager Tools channel mandatory (bsc#1123983)
 - fix channel label for suse-openstack-cloud-6 and packagehub-12-sp4-* (bsc#1125451)
 
 -------------------------------------------------------------------
