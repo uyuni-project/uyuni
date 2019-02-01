@@ -356,7 +356,10 @@ public class ContentSyncManager {
                     .collect(Collectors.partitioningBy(p -> p.getA().getParentChannelLabel() == null));
 
             Tuple2<SUSEProductSCCRepository, MgrSyncStatus> baseRepo = partitionBaseRepo.get(true).stream()
-                    .findFirst().get();
+                    // for RHEL and Vmware which have multiple base channels for a product
+                    .sorted((a, b) -> {
+                        return a.getA().getChannelLabel().compareTo(b.getA().getChannelLabel());
+                    }).findFirst().get();
             List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> childRepos = partitionBaseRepo.get(false);
 
             Set<MgrSyncChannelDto> allChannels = childRepos.stream().map(c -> new MgrSyncChannelDto(
