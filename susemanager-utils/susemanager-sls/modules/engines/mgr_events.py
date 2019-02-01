@@ -125,7 +125,7 @@ class Responder:
             fnmatch.fnmatch(tag, "salt/batch/*/start"),
             fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
             fnmatch.fnmatch(tag, "suse/systemid/generate")
-        ]) and not self._is_salt_mine_event(tag, data):
+        ]) and not self._is_salt_mine_event(tag, data) and not self._is_presence_ping(tag, data):
             log.debug("%s: Adding event to queue -> %s", __name__, tag)
             try:
                 self.cursor.execute(
@@ -146,6 +146,15 @@ class Responder:
 
     def _is_salt_mine_update(self, data):
         return data.get("fun") == "mine.update"
+
+    def _is_presence_ping(self, tag, data):
+        return fnmatch.fnmatch(tag, "salt/job/*/ret/*") and self._is_test_ping(data) and self._is_batch_mode(data)
+
+    def _is_test_ping(self, data):
+        return data.get("fun") == "test.ping"
+
+    def _is_batch_mode(self, data):
+        return data.get("metadata", {}).get("batch-mode")
 
     def debug_log(self):
         log.debug("%s: queue_size -> %s", __name__, self.counter)
