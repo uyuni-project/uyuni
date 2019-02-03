@@ -3,6 +3,7 @@ REGISTRY = registry.mgr.suse.de
 SHELL := /bin/bash
 # --no-cache=true
 BUILDOPTS=
+PUSH_IT=false
 
 #
 # no *-4eclipse container: we use the last released version for head
@@ -19,8 +20,8 @@ suma-head-root::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 suma-head-base::
@@ -32,8 +33,8 @@ suma-head-base::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 suma-head-cobbler::
@@ -45,8 +46,8 @@ suma-head-cobbler::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 suma-head-gatherer::
@@ -58,8 +59,8 @@ suma-head-gatherer::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 suma-head-spacewalkkoan::
@@ -71,8 +72,8 @@ suma-head-spacewalkkoan::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
-	docker push $(REGISTRY)/$@:latest ; \
-	docker push $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
 suma-head-pgsql::
@@ -84,5 +85,7 @@ suma-head-pgsql::
 	docker tag $@ $@:$(VERSION); \
 	docker tag $@ $(REGISTRY)/$@:latest; \
 	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:latest ; \
+	$(PUSH_IT) && docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
