@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo "Installing Oracle 12 database..."
-cd /
-curl -s http://ramrod.mgr.suse.de/pub/oracle-overlay.tbz | tar xvfj -
-

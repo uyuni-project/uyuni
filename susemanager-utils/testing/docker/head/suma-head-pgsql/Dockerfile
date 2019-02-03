@@ -1,9 +1,9 @@
 # Container used to test java and python code of SUSE Manager against postgresql
 #
-# VERSION               1.1.2
+# VERSION               4.0.0
 
 FROM registry.mgr.suse.de/suma-head-base:latest
-MAINTAINER Michael Calmer "mc@suse.com"
+MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
 # Install the required packages
 ADD add_packages.sh /root/add_packages.sh

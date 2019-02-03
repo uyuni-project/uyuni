@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e
 
-# make sure the package repository is up to date
-zypper --non-interactive --gpg-auto-import-keys ref
-
-# this package has a file conflict with python-base
-# and this package is not on SLES12 SP1
-# a lock prevent the installation
-zypper addlock python-strict-tls-check
-
 # Packages required to run spacewalk-setup inside of the container
 zypper --non-interactive in perl \
              perl-Params-Validate \
@@ -30,47 +22,32 @@ zypper --non-interactive in perl \
 
 # Packages required to run the python unit tests
 zypper --non-interactive in  \
-              make \
-              python \
-              python-argparse \
-              python-base \
-              python-configobj \
-              python-dateutil \
-              python-debian \
-              python-devel \
-              python-dmidecode \
-              python-enum34 \
-              python-ethtool \
-              python-gobject2 \
-              python-gpgme \
-              python-gzipstream \
-              python-iniparse \
-              python-mock \
-              python-newt \
-              python-nose \
-              python-pam \
-              python-psycopg2 \
-              python-pyOpenSSL \
-              python-pycrypto \
-              python-pycurl \
-              python-pylint \
-              python-selinux \
-              python-setools \
-              python-simplejson \
-              python-urlgrabber \
-              python-xml \
-              rpm-python \
+              python3-dateutil \
+              python3-debian \
+              python3-dmidecode \
+              python3-ethtool \
+              python3-gobject2 \
+              python3-gpgme \
+              python3-gzipstream \
+              python3-iniparse \
+              python3-newt \
+              python3-python-pam \
+              python3-psycopg2 \
+              python3-pyOpenSSL \
+              python3-pycrypto \
+              python3-pycurl \
+              python3-selinux \
+              python3-simplejson \
+              python3-urlgrabber \
+              python3-xml \
+              python3-rpm \
               yum
 
 # Packages required to run the Java unit tests
 zypper --non-interactive in ant \
              ant-junit \
              apache-ivy \
-             java-1_8_0-ibm-devel \
-             pam-modules \
+             java-11-openjdk-devel \
+             pam \
              sudo \
              tar
-
-# Packages for easier debugging
-zypper --non-interactive in vim less
-
