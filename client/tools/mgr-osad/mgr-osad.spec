@@ -50,7 +50,7 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.0.4
+Version:        4.0.5
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} = %{oldversion}
 Release:        1%{?dist}
@@ -312,6 +312,7 @@ make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osad-%{python3_version}
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osa-dispatcher-%{python3_version}
 %endif
 
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}

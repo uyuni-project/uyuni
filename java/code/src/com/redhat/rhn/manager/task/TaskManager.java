@@ -55,6 +55,23 @@ public class TaskManager {
     }
 
     /**
+     *  Get the channel package list for a channel
+     * @param channel channel info
+     * @param start index of first element
+     * @param pageSize how many elements to fetch
+     * @return the iterator
+     */
+    public static DataResult<PackageDto> getChannelPackageDtos(Channel channel, long start, int pageSize) {
+        SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CHANNEL_PACKAGES_BATCH);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("channel_id", channel.getId());
+        params.put("offset", start);
+        params.put("limit", pageSize);
+        return m.execute(params);
+    }
+
+    /**
      * Get capabilities of a certain type for a package
      * @param packageId the package's id
      * @param query the query to execute
