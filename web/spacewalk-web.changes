@@ -1,3 +1,5 @@
+
+- Sort activation key list on create image profile page (bsc#1122770)
 - Sort channel lists on the product page of the setup wizard
 - Sort activation key list on bootstrap page (bsc#1122770)
 - remove RH-specific warning message (bsc#1118100)
