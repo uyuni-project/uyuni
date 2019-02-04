@@ -36,7 +36,6 @@ import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -52,7 +51,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -409,38 +407,15 @@ public class ServerFactory extends HibernateFactory {
     /**
      * Looks up server objects from the given list of server IDs.
      *
-     * If more than 1000 servers are present in the list we'll split it into
-     * chunks as this can cause problems on Oracle.
-     *
      * @param serverIds List of server IDs.
      * @param user who wants to lookup the Server
      * @return list of server objects
      */
     public static List<Server> lookupByIdsAndUser(List<Long> serverIds, User user) {
-        Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery("Server.findByIdsAndOrgId")
-                .setParameter("orgId", user.getOrg().getId());
-        if (serverIds.size() < 1000) {
-            query.setParameterList("serverIds", serverIds);
-            return query.list();
-        }
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("orgId", user.getOrg().getId());
 
-        List<Server> results = new LinkedList<Server>();
-        List<Long> blockOfIds = new LinkedList<Long>();
-        for (Long sid : serverIds) {
-            blockOfIds.add(sid);
-            if (blockOfIds.size() == 999) {
-                query.setParameterList("serverIds", blockOfIds);
-                results.addAll(query.list());
-                blockOfIds = new LinkedList<Long>();
-            }
-        }
-        // Deal with the remainder:
-        if (blockOfIds.size() > 0) {
-            query.setParameterList("serverIds", blockOfIds);
-            results.addAll(query.list());
-        }
-        return results;
+        return findByIds(serverIds, "Server.findByIdsAndOrgId", "serverIds", parameters);
     }
 
     /**
@@ -486,36 +461,8 @@ public class ServerFactory extends HibernateFactory {
      * @param queryName the name of the query to be executed
      * @return the Servers found
      */
-    @SuppressWarnings("unchecked")
     public static <T extends Server> List<T> lookupByServerIds(List<Long> ids, String queryName) {
-        Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery(queryName);
-        List<T> results = new LinkedList<T>();
-
-        if (ids.size() == 0) {
-            return results;
-        }
-
-        if (ids.size() < 1000) {
-            query.setParameterList("serverIds", ids);
-            return query.list();
-        }
-
-        List<Long> blockOfIds = new LinkedList<Long>();
-        for (Long sid : ids) {
-            blockOfIds.add(sid);
-            if (blockOfIds.size() == 999) {
-                query.setParameterList("serverIds", blockOfIds);
-                results.addAll(query.list());
-                blockOfIds = new LinkedList<Long>();
-            }
-        }
-        // Deal with the remainder:
-        if (blockOfIds.size() > 0) {
-            query.setParameterList("serverIds", blockOfIds);
-            results.addAll(query.list());
-        }
-        return results;
+        return findByIds(ids, queryName, "serverIds");
     }
 
     /**
@@ -1288,33 +1235,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a map containing the minion id as key and the server id as value
      */
     public static Map<String, Long> findServerIdsByMinionIds(List<String> minionIds) {
-        Session session = HibernateFactory.getSession();
-        org.hibernate.query.Query<Object[]> query = session.getNamedQuery("Server.findServerIdsByMinionIds");
-        List<Object[]> results = new LinkedList<Object[]>();
-
-        if (minionIds.size() == 0) {
-            return new HashMap();
-        }
-
-        if (minionIds.size() < 1000) {
-            query.setParameterList("minionIds", minionIds);
-            results = query.getResultList();
-        } else {
-            List<String> blockOfIds = new LinkedList<String>();
-            for (String sid : minionIds) {
-                blockOfIds.add(sid);
-                if (blockOfIds.size() == 999) {
-                    query.setParameterList("minionIds", blockOfIds);
-                    results.addAll(query.getResultList());
-                    blockOfIds = new LinkedList<String>();
-                }
-            }
-            // Deal with the remainder:
-            if (blockOfIds.size() > 0) {
-                query.setParameterList("minionIds", blockOfIds);
-                results.addAll(query.getResultList());
-            }
-        }
+        List<Object[]> results = findByIds(minionIds, "Server.findServerIdsByMinionIds", "minionIds");
         return results.stream().collect(Collectors.toMap(row -> row[0].toString(), row -> (Long)row[1]));
     }
 

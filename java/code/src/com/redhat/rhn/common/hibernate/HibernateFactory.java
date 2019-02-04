@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +63,7 @@ public abstract class HibernateFactory {
 
     private static ConnectionManager connectionManager = new ConnectionManager();
     private static final Logger LOG = Logger.getLogger(HibernateFactory.class);
+    private static final int LIST_BATCH_MAX_SIZE = 1000;
 
     protected HibernateFactory() {
     }
@@ -762,5 +764,66 @@ public abstract class HibernateFactory {
                     .getImplementation();
         }
         return entity;
+    }
+
+    /**
+     * Executes a 'lookup' query to retrieve data from the database given a list of ids.
+     * The query will be execute in batches of 1000 ids each.
+     * @param <T> the type of the returned objects
+     * @param <ID>
+     * @param ids the ids to search for
+     * @param queryName the name of the query to be executed
+     * @param idsParameterName the name of the parameter to match the ids
+     * @return a list of the objects found
+     */
+    protected static <T, ID> List<T> findByIds(List<ID> ids, String queryName, String idsParameterName) {
+        return findByIds(ids, queryName, idsParameterName, new HashMap<String, Object>());
+    }
+
+    /**
+     * Executes a 'lookup' query to retrieve data from the database given a list of ids.
+     * The query will be execute in batchs of 1000 ids each.
+     * @param <T> the type of the returned objects
+     * @param <ID>
+     * @param ids the ids to search for
+     * @param queryName the name of the query to be executed
+     * @param idsParameterName the name of the parameter to match the ids
+     * @param parameters extra parameters to include in the query
+     * @return a list of the objects found
+     */
+    @SuppressWarnings("unchecked")
+    protected static <T, ID> List<T> findByIds(List<ID> ids, String queryName,
+            String idsParameterName, Map<String, Object> parameters) {
+        Session session = HibernateFactory.getSession();
+        org.hibernate.query.Query<T> query = session.getNamedQuery(queryName);
+        parameters.entrySet().stream().forEach(entry -> {
+            query.setParameter(entry.getKey(), entry.getValue());
+        });
+        List<T> results = new LinkedList<T>();
+
+        if (ids.size() == 0) {
+            return results;
+        }
+
+        if (ids.size() < LIST_BATCH_MAX_SIZE) {
+            query.setParameterList(idsParameterName, ids);
+            return query.getResultList();
+        }
+
+        List<ID> blockOfIds = new LinkedList<ID>();
+        for (ID sid : ids) {
+            blockOfIds.add(sid);
+            if (blockOfIds.size() == LIST_BATCH_MAX_SIZE - 1) {
+                query.setParameterList(idsParameterName, blockOfIds);
+                results.addAll(query.getResultList());
+                blockOfIds = new LinkedList<ID>();
+            }
+        }
+        // Deal with the remainder:
+        if (blockOfIds.size() > 0) {
+            query.setParameterList(idsParameterName, blockOfIds);
+            results.addAll(query.getResultList());
+        }
+        return results;
     }
 }
