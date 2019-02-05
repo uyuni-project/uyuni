@@ -109,7 +109,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertEquals(publishClonedErrata.getPackages().size(), errata.getPackages().size());
         assertTrue(publishClonedErrata.getPackages().stream()
                 .allMatch(p -> errata.getPackages().stream()
-                        .anyMatch(ep -> ep.getFilename().equals(p.getFilename()))));
+                        .anyMatch(ep -> ep.getPath().equals(p.getPath()))));
 
         // clone a channel with its errata, and the errata's packages are EMPTY
         Errata emptyErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
