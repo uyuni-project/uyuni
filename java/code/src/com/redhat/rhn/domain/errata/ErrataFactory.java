@@ -408,7 +408,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     private static ErrataFile createPublishedErrataFile(Package pack, Errata errata, Channel chan) {
         ErrataFile publishedFile = ErrataFactory.createPublishedErrataFile(
-                ErrataFactory.lookupErrataFileType("RPM"), pack.getChecksum().getChecksum(), pack.getFilename());
+                ErrataFactory.lookupErrataFileType("RPM"), pack.getChecksum().getChecksum(), pack.getPath());
         publishedFile.addPackage(pack);
         publishedFile.setErrata(errata);
         publishedFile.setModified(new Date());
