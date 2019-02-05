@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt.test;
+package com.redhat.rhn.manager.contentmgmt.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
-import com.redhat.rhn.domain.contentmgmt.ContentManager;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;

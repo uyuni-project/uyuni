@@ -13,12 +13,18 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt;
+package com.redhat.rhn.manager.contentmgmt;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
@@ -43,7 +49,7 @@ public class ContentManager {
      * @param name - the name
      * @param description - the description
      * @param user - the creator
-     * @throws ContentManagementException if a project with given label already exists
+     * @throws com.redhat.rhn.domain.contentmgmt.ContentManagementException if a project with given label already exists
      * @throws PermissionException if given user does not have required role
      * @return the created Content Project
      */
