@@ -65,6 +65,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -205,7 +206,7 @@ public class ActionManager extends BaseManager {
      * can't be looked up.
      */
     public static Action lookupAction(User user, Long aid) {
-        Action returnedAction = null;
+        Action returnedAction;
         if (aid == null) {
             return null;
         }
@@ -216,7 +217,9 @@ public class ActionManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Action_queries", "visible_to_user");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
+        params.put("org_id", user.getOrg().getId());
         params.put("aid", aid);
+        params.put("include_orphans", user.hasRole(RoleFactory.ORG_ADMIN) ? "Y" : "N");
         if (m.execute(params).size() < 1) {
             returnedAction = null;
         }
@@ -910,6 +913,7 @@ public class ActionManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
+        params.put("include_orphans", user.hasRole(RoleFactory.ORG_ADMIN) ? "Y" : "N");
         if (setLabel != null) {
             params.put("set_label", setLabel);
         }

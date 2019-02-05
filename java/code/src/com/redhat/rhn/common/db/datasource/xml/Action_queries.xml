@@ -219,7 +219,7 @@ ORDER BY EARLIEST DESC
 
 <mode name="archived_action_list"
       class="com.redhat.rhn.frontend.dto.ScheduledAction">
-  <query params="user_id, org_id">
+  <query params="user_id, org_id, include_orphans">
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
         UAO.type_name,
@@ -231,7 +231,7 @@ SELECT  DISTINCT UAO.id AS ID,
   FROM  rhnUserActionOverview UAO left join
         web_contact WC on UAO.scheduler = WC.id
  WHERE  UAO.org_id = :org_id
-   AND  UAO.user_id = :user_id
+   AND  (UAO.user_id = :user_id OR (:include_orphans = 'Y' AND UAO.user_id IS NULL))
    AND  UAO.archived = 1
 ORDER BY EARLIEST DESC
   </query>
@@ -287,11 +287,12 @@ VALUES (:action_id, :delta_id)
 </write-mode>
 
 <mode name="visible_to_user">
-  <query params="user_id, aid">
+  <query params="user_id, org_id, aid, include_orphans">
 SELECT  1
   FROM  rhnUserActionOverview UAO
- WHERE  UAO.user_id = :user_id
+ WHERE  (UAO.user_id = :user_id OR (:include_orphans = 'Y' AND UAO.user_id IS NULL))
    AND  UAO.id = :aid
+   AND  UAO.org_id = :org_id
   </query>
 </mode>
 

@@ -170,7 +170,11 @@ SELECT  user_id, label, element, element_two, element_three
                         WHERE SH.id = S.element
                           AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP
                                        WHERE USP.user_id = S.user_id
-                                         AND USP.server_id = SH.server_id))
+                                         AND USP.server_id = SH.server_id)
+                       UNION ALL
+                       SELECT 1 FROM rhnUserActionOverview UAO
+                        WHERE UAO.id = S.element
+                          AND UAO.user_id IS NULL)
   </query>
 </write-mode>
 
