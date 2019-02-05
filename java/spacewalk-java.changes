@@ -1,4 +1,4 @@
-- Add support for Ubuntu minions
+- Add support for Ubuntu minions (FATE#324534, FATE#326848, FATE#326811)
 - Fix/enhance Debian/Ubuntu repository generation
 - Implement HTTP token authentication for Ubuntu clients
 
