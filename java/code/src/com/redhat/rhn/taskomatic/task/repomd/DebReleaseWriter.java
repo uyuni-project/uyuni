@@ -58,23 +58,17 @@ public class DebReleaseWriter {
         log.debug("DebReleaseWriter created");
         this.channel = channelIn;
         this.pathPrefix = pathPrefixIn;
-        try {
-            filenameRelease = pathPrefix + "Release";
-            File f = new File(filenameRelease);
-            if (f.exists()) {
-                f.delete();
-            }
-            f.createNewFile();
-        }
-        catch (Exception e) {
-            log.error("Creating new Release file failed ", e);
-        }
+        this.filenameRelease = pathPrefix + "Release";
     }
 
     /**
      * Generates the Release file.
      */
     public void generateRelease() {
+        File f = new File(filenameRelease);
+        if (f.exists()) {
+            f.delete();
+        }
         try (PrintWriter writer = new PrintWriter(filenameRelease, "UTF-8")) {
             writer.println("Archive: " + channel.getLabel());
             writer.println("Label: " + channel.getLabel());
