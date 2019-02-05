@@ -75,7 +75,7 @@ public class DebReleaseWriter {
      * Generates the Release file.
      */
     public void generateRelease() {
-        try (PrintWriter writer = new PrintWriter(filenameRelease)) {
+        try (PrintWriter writer = new PrintWriter(filenameRelease, "UTF-8")) {
             writer.println("Archive: " + channel.getLabel());
             writer.println("Label: " + channel.getLabel());
             writer.println("Suite: " + channel.getLabel());
