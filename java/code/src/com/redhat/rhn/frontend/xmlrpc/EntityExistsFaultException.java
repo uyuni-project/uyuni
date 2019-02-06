@@ -41,6 +41,6 @@ public class EntityExistsFaultException extends FaultException {
      * @param entity the entity
      */
     public EntityExistsFaultException(Object entity) {
-        super(ERROR_CODE, ERROR_LABEL, entity.toString());
+        super(ERROR_CODE, ERROR_LABEL, "Entity already exists: " + entity.toString());
     }
 }
