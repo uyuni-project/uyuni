@@ -1,3 +1,4 @@
+- add configurable option to auto deploy new tokens (bsc#1123019) 
 - fix broken shebang in postgresql migration scripts
 - ensure POSTGRES_LANG is correctly set (bsc#1121787)
 -------------------------------------------------------------------
