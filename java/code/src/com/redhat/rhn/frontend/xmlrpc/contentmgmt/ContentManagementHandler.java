@@ -68,7 +68,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype $ContentProjectSerializer
      */
     public ContentProject lookupProject(User loggedInUser, String label) {
-        return ContentManager.lookupProject(label, loggedInUser).orElse(null);
+        return ContentManager.lookupProject(label, loggedInUser)
+                .orElseThrow(() -> new EntityNotExistsFaultException(label));
     }
 
     /**
@@ -194,7 +195,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype $ContentEnvironmentSerializer
      */
     public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel, String envLabel) {
-        return ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser).orElse(null);
+        return ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
+                .orElseThrow(() -> new EntityNotExistsFaultException(envLabel));
     }
 
     /**
@@ -333,7 +335,8 @@ public class ContentManagementHandler extends BaseHandler {
             String sourceLabel) {
         Type type = Type.lookupByLabel(sourceType);
         try {
-            return ContentManager.lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser).orElse(null);
+            return ContentManager.lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser)
+                    .orElseThrow(() -> new EntityNotExistsFaultException(sourceLabel));
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
