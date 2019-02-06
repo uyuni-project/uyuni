@@ -146,6 +146,9 @@
       </fileset>
     </copy>
 
+    <mkdir dir="${build.dir}/webapp/META-INF" />
+    <copy file="conf/rhn-tomcat8.xml" tofile="${build.dir}/webapp/META-INF/context.xml" />
+
     <copy todir="${build.dir}/webapp/WEB-INF/lib">
       <fileset file="${build.dir}/rhn.jar" />
       <fileset dir="${lib.dir}">
