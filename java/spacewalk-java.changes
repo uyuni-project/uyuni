@@ -1,3 +1,6 @@
+- Add support for Ubuntu minions (FATE#324534, FATE#326848, FATE#326811)
+- Fix/enhance Debian/Ubuntu repository generation
+- Implement HTTP token authentication for Ubuntu clients
 - Archive orphan actions when a system is deleted and make them visible in the UI (bsc#1118213)
 - Fix "Add Selected to SSM" on System Groups -> systems page (bsc#1121856)
 - add configurable option to auto deploy new tokens (bsc#1123019)

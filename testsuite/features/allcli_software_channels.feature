@@ -130,6 +130,55 @@ Feature: Chanel subscription via SSM
     And I follow "Software Channels" in the content area
     Then radio button "Test Base Channel" is checked
 
+@centos_minion
+  Scenario: Cleanup: remove CentOS systems from SSM
+    Given I am authorized as "admin" with password "admin"
+    And I am on the System Overview page
+    When I uncheck the "ceos-minion" client
+    And I check the "sle-minion" client
+    And I check the "sle-client" client
+    And I should see "2" systems selected for SSM
+
+@ubuntu_minion
+  Scenario: System default channel can't be determined
+    Given I am authorized as "admin" with password "admin"
+    When I am on the System Overview page
+    And I check the "ubuntu-minion" client
+    And I uncheck the "sle-minion" client
+    And I uncheck the "sle-client" client
+    Then I should see "1" systems selected for SSM
+    When I am on System Set Manager Overview
+    And I follow "channel memberships" in the content area
+    And I select "System Default Base Channel" from drop-down in table line with "Test-Channel-Deb-AMD64"
+    And I click on "Next"
+    Then I should see a "Child Channels" text
+    And I should see a "Couldn't determine new base channel" text
+    And I should see a "1 system(s) incompatible" text
+    When I click on "Next"
+    Then I should see a "Channel Changes Overview" text
+    And I should see a "Couldn't determine new base channel" text
+    And I should see a "1 system(s) incompatible" text
+    When I click on "Confirm"
+    Then I should see a "Channel Changes Actions" text
+    And I should see a "Items 1 - 1 of 1" text
+    And a table line should contain system "ubuntu-minion", "Could not determine system default channel"
+
+@ubuntu_minion
+  Scenario: Cleanup: make sure the Ubuntu minion is still unchanged
+    Given I am on the Systems overview page of this "ubuntu-minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    Then radio button "Test-Channel-Deb-AMD64" is checked
+
+@ubuntu_minion
+  Scenario: Cleanup: remove Ubuntu system from SSM
+    Given I am authorized as "admin" with password "admin"
+    And I am on the System Overview page
+    When I uncheck the "ubuntu-minion" client
+    And I check the "sle-minion" client
+    And I check the "sle-client" client
+    And I should see "2" systems selected for SSM
+
   Scenario: Cleanup: subscribe the SLES minion back to previous channels
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
@@ -160,9 +209,9 @@ Feature: Chanel subscription via SSM
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
-@centos_minion
-  Scenario: Cleanup: remove systems from SSM
+  Scenario: Cleanup: remove remaining systems from SSM
     Given I am authorized as "admin" with password "admin"
     And I am on the System Overview page
-    When I uncheck the "ceos-minion" client
+    And I uncheck the "sle-minion" client
+    And I uncheck the "sle-client" client
     And I should see "0" systems selected for SSM

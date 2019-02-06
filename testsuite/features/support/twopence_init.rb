@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 SUSE-LINUX
+# Copyright (c) 2016-2019 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 require 'twopence'
@@ -9,6 +9,7 @@ warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
 raise 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 raise 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
+warn 'Ubuntu minion IP address or domain name variable empty' if ENV['UBUNTUMINION'].nil?
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
 warn 'PXE boot MAC address variable empty' if ENV['PXEBOOTMAC'].nil?
 
@@ -18,11 +19,12 @@ $proxy = Twopence.init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = Twopence.init("ssh:#{ENV['SERVER']}")
 $minion = Twopence.init("ssh:#{ENV['MINION']}")
 $ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
+$ubuntu_minion = Twopence.init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
 $ssh_minion = Twopence.init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
 
 # Lavanda library module extension
 # Look at support/lavanda.rb for more details
-nodes = [$server, $proxy, $client, $minion, $ceos_minion, $ssh_minion]
+nodes = [$server, $proxy, $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
 nodes.each do |node|
   next if node.nil?
 
@@ -59,6 +61,8 @@ def get_target(host)
     'ceos-minion' => $ceos_minion,
     'ceos-ssh-minion' => $ceos_minion,
     'ceos-client' => $ceos_minion,
+    'ubuntu-minion' => $ubuntu_minion,
+    'ubuntu-ssh-minion' => $ubuntu_minion,
     'ssh-minion' => $ssh_minion,
     'sle-minion' => $minion,
     'sle-client' => $client,

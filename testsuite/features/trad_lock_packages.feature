@@ -34,7 +34,8 @@ Feature: Lock packages on traditional client
     Then I should see a "1 package install has been scheduled for" text
     When I follow "Events"
     And I follow "History"
-    And I follow first "Package Install/Upgrade scheduled by admin"
+    And I wait until I see the event "Package Install/Upgrade scheduled by admin" completed during last minute, refreshing the page
+    And I follow the event "Package Install/Upgrade scheduled by admin" completed during last minute
     Then the package scheduled is "hoag-dummy-1.1-2.1"
     And the action status is "Failed"
 

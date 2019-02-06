@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -57,10 +58,13 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     private Channel channel;
     private String uriFile;
+    private String debUriFile;
     private File packageFile;
+    private File debPackageFile;
     private MockHttpServletResponse mockResponse;
     private Response response;
     private Package pkg;
+    private Package debPkg;
 
     private static String originalMountPoint;
 
@@ -96,17 +100,30 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         this.response = RequestResponseFactory.create(mockResponse);
 
         this.pkg = createTestPackage(user, channel, "noarch");
+        this.debPkg = createTestPackage(user, channel, "all-deb");
         final String nvra = String.format("%s-%s-%s.%s",
                 pkg.getPackageName().getName(), pkg.getPackageEvr().getVersion(),
                 pkg.getPackageEvr().getRelease(), pkg.getPackageArch().getLabel());
         this.uriFile = String.format("%s.rpm", nvra);
+
+        final String debNvra = String.format("%s_%s-%s.%s",
+                debPkg.getPackageName().getName(), debPkg.getPackageEvr().getVersion(),
+                debPkg.getPackageEvr().getRelease(), debPkg.getPackageArch().getLabel());
+        this.debUriFile = String.format("%s.deb", debNvra);
+
         this.packageFile = File.createTempFile(nvra, ".rpm");
         // Write a fake file for the package
         Files.write(packageFile.getAbsoluteFile().toPath(),
                 TestUtils.randomString().getBytes());
 
+        this.debPackageFile = File.createTempFile(debNvra, ".deb");
+        Files.write(debPackageFile.getAbsoluteFile().toPath(),
+                TestUtils.randomString().getBytes());
+
         pkg.setPath(FilenameUtils.getName(packageFile.getAbsolutePath()));
+        debPkg.setPath(FilenameUtils.getName(debPackageFile.getAbsolutePath()));
         TestUtils.saveAndFlush(pkg);
+        TestUtils.saveAndFlush(debPkg);
 
         // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
@@ -121,6 +138,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         super.tearDown();
         Config.get().setString(ConfigDefaults.MOUNT_POINT, originalMountPoint);
         Files.deleteIfExists(packageFile.toPath());
+        Files.deleteIfExists(debPackageFile.toPath());
     }
 
     /**
@@ -140,11 +158,15 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @return - Spark Request
      */
     private Request getMockRequestWithParamsAndHeaders(Map<String, String> params, Map<String, String> headers) {
+        return getMockRequestWithParamsAndHeaders(params, headers, uriFile);
+    }
+
+    private Request getMockRequestWithParamsAndHeaders(Map<String, String> params, Map<String, String> headers, String file) {
         return SparkTestUtils.createMockRequestWithParams(
                 "http://localhost:8080/rhn/manager/download/:channel/getPackage/:file",
                 params,
                 headers,
-                channel.getLabel(), uriFile);
+                channel.getLabel(), file);
     }
 
     /**
@@ -386,12 +408,24 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         });
     }
 
+    public void testDownloadDebPackage() throws Exception {
+        testCorrectChannel(() -> debPackageFile, (tokenChannel) -> {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(tokenChannel.getBytes()));
+            return getMockRequestWithParamsAndHeaders(Collections.emptyMap(), headers, debUriFile);
+        });
+    }
+
+    private void testCorrectChannel(Function<String, Request> requestFactory) throws Exception {
+        testCorrectChannel(() -> packageFile, requestFactory);
+    }
+
     /**
      * Test a download with a correct channel in the token.
      *
      * @throws Exception if anything goes wrong
      */
-    private void testCorrectChannel(Function<String, Request> requestFactory) throws Exception {
+    private void testCorrectChannel(Supplier<File> pkgFile, Function<String, Request> requestFactory) throws Exception {
         TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         tokenBuilder.onlyChannels(
@@ -403,9 +437,9 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         try {
             assertNotNull(DownloadController.downloadPackage(request, response));
 
-            assertEquals(packageFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+            assertEquals(pkgFile.get().getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
-            assertEquals("attachment; filename=" + packageFile.getName(),
+            assertEquals("attachment; filename=" + pkgFile.get().getName(),
                     response.raw().getHeader("Content-Disposition"));
         } catch (spark.HaltException e) {
             fail("No HaltException should be thrown with a valid token!");

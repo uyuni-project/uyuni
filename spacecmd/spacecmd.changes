@@ -1,3 +1,5 @@
+- Add '--force', '-f' option to regenerateYumCache
+
 -------------------------------------------------------------------
 Fri Jan 18 11:23:29 CET 2019 - jgonzalez@suse.com
 

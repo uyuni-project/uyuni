@@ -1,5 +1,6 @@
 #
 # GPG KEYID to sign with
+# Note: The keyid must not include the length of the key, e.g. only "F24F1B08", not "1024D/F24F1B08"
 #
 KEYID=""
 
@@ -12,3 +13,9 @@ GPGPASS=""
 # GPG HOMEDIR (optional)
 #
 GNUPGHOME="/root/.gnupg"
+
+#
+# Digest algorithm to use when signing repo metadata.
+# Note: Debian systems require at least SHA256.
+#
+#DIGESTPREF=SHA256

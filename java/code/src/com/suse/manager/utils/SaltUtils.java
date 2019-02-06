@@ -1086,14 +1086,9 @@ public class SaltUtils {
                 Long instantNow = new Date().getTime() / 1000L;
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
                 List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
-                packages.stream().forEach(pkg -> {
-                    createImagePackageFromSalt(pkg.getName(),
-                            pkg.getEpoch().equals(StringUtils.EMPTY) ? null :
-                                    pkg.getEpoch(),
-                            pkg.getRelease(), pkg.getVersion(),
-                            Optional.of(instantNow),
-                            Optional.of(pkg.getArch()), imageInfo);
-                });
+                packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
+                        Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
+                        Optional.of(pkg.getArch()), imageInfo));
                 if ("pxe".equals(ret.getImage().getType())) {
                     String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(
                             serverAction.getParentAction().getOrg());
@@ -1350,41 +1345,57 @@ public class SaltUtils {
      * @param server server this package will be added to
      * @return the InstalledPackage object
      */
-    private static InstalledPackage createPackageFromSalt(String name, Pkg.Info info,
-            Server server) {
+    private static InstalledPackage createPackageFromSalt(String name, Pkg.Info info, Server server) {
 
-        String epoch = info.getEpoch().orElse(null);
-        String release = info.getRelease().orElse("0");
-        String version = info.getVersion().get();
-        PackageEvr evr = PackageEvrFactory
-                .lookupOrCreatePackageEvr(epoch, version, release);
+        String serverArchTypeLabel = server.getServerArch().getArchType().getLabel();
 
         InstalledPackage pkg = new InstalledPackage();
-        pkg.setEvr(evr);
-        pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture().get()));
+        pkg.setEvr(parsePackageEvr(info.getEpoch(), info.getVersion().get(), info.getRelease(), serverArchTypeLabel));
         pkg.setInstallTime(new Date(info.getInstallDateUnixTime().get() * 1000));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setServer(server);
+
+        // Add -deb suffix to architectures for Debian systems
+        String pkgArch = info.getArchitecture().get();
+        if ("deb".equals(serverArchTypeLabel)) {
+            pkgArch += "-deb";
+        }
+        pkg.setArch(PackageFactory.lookupPackageArchByLabel(pkgArch));
+
         return pkg;
     }
 
-    private static ImagePackage createImagePackageFromSalt(
-            String name, Pkg.Info info, ImageInfo imageInfo) {
-        String epoch = info.getEpoch().orElse(null);
-        String release = info.getRelease().orElse("0");
-        String version = info.getVersion().get();
-        return createImagePackageFromSalt(name, epoch, release, version,
+    private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
+            String archTypeLabel) {
+
+        if ("deb".equals(archTypeLabel)) {
+            // We need additional parsing for deb package versions
+            return PackageEvrFactory.lookupOrCreatePackageEvr(PackageUtils.parseDebianEvr(version));
+        }
+
+        return PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null), version,
+                release.orElse("0"));
+    }
+
+    private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
+        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().get(),
                 info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
     }
 
-    private static ImagePackage createImagePackageFromSalt(String name, String epoch,
-            String release, String version, Optional<Long> installDateUnixTime,
-            Optional<String> architecture, ImageInfo imageInfo) {
-        PackageEvr evr =
-                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release);
+    private static ImagePackage createImagePackageFromSalt(String name, Optional<String> epoch,
+            Optional<String> release, String version, Optional<Long> installDateUnixTime, Optional<String> architecture,
+            ImageInfo imageInfo) {
 
+        String archType = imageInfo.getImageArch().getArchType().getLabel();
+        Optional<String> pkgArch = architecture.map(arch -> archType.equals("deb") ? arch + "-deb" : arch);
+        PackageEvr evr = parsePackageEvr(epoch, version, release, archType);
+        return createImagePackageFromSalt(name, evr, installDateUnixTime, pkgArch, imageInfo);
+    }
+
+    private static ImagePackage createImagePackageFromSalt(String name, PackageEvr pkgEvr,
+            Optional<Long> installDateUnixTime, Optional<String> architecture, ImageInfo imageInfo) {
         ImagePackage pkg = new ImagePackage();
-        pkg.setEvr(evr);
+        pkg.setEvr(pkgEvr);
         architecture.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
         installDateUnixTime.ifPresent(udut -> pkg.setInstallTime(new Date(udut * 1000)));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));

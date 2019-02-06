@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.rhnpackage.test;
 
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -38,5 +39,13 @@ public class PackageArchTest extends RhnBaseTestCase {
 
         assertNotNull(p1.getArchType());
         assertEquals(p1.getLabel(), p2.getLabel());
+    }
+
+    public void testToUniversalArchString() {
+        PackageArch archx86 = PackageFactory.lookupPackageArchByLabel("x86_64");
+        PackageArch archAmd64 = PackageFactory.lookupPackageArchByLabel("amd64-deb");
+
+        assertEquals("x86_64", archx86.toUniversalArchString());
+        assertEquals("amd64", archAmd64.toUniversalArchString());
     }
 }

@@ -1,3 +1,5 @@
+- Add rewrite rules for .deb repository metadata paths
+
 -------------------------------------------------------------------
 Wed Nov 21 10:12:43 CET 2018 - jgonzalez@suse.com
 
