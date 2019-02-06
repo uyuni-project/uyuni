@@ -20,7 +20,6 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
@@ -307,7 +306,13 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         Channel channel = ChannelTestUtils.createBaseChannel(user);
 
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        try {
+            ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityExistsException e) {
+            // expected
+        }
         assertEquals(1, cp.getSources().size());
     }
 

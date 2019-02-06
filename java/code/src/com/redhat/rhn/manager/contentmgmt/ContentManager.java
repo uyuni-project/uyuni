@@ -135,12 +135,14 @@ public class ContentManager {
      * @param user - the user performing the action
      * @throws EntityNotExistsException - if Content Project with given label or Content Environment in the Project
      * is not found
+     * @throws EntityExistsException - if Environment with given parameters already exists
      * @throws PermissionException if given user does not have required role
      * @return the created Content Environment
      */
     public static ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
             String label, String name, String description, User user) {
         ensureOrgAdmin(user);
+        lookupEnvironment(label, projectLabel, user).ifPresent(e -> { throw new EntityExistsException(e); });
         return lookupProject(projectLabel, user)
                 .map(cp -> {
                     ContentEnvironment newEnv = new ContentEnvironment(label, name, description, cp);
@@ -189,7 +191,7 @@ public class ContentManager {
      * @param newName - new name
      * @param newDescription - new description
      * @param user - the user
-     * @throws EntityNotExistsException - if the Environment is not found
+     * @throws EntityNotExistsException - if Project or Environment is not found
      * @throws PermissionException if given user does not have required role
      * @return the updated Environment
      */
@@ -205,13 +207,14 @@ public class ContentManager {
                 .orElseThrow(() -> new EntityNotExistsException(envLabel));
     }
 
-
     /**
      * Remove a Content Environment
      *
      * @param envLabel - the Content Environment label
      * @param projectLabel - the Content Project label
      * @param user - the user
+     * @throws PermissionException if given user does not have required role
+     * @throws EntityNotExistsException - if Project or Environment is not found
      * @throws PermissionException if given user does not have required role
      * @return number of deleted objects
      */
@@ -222,7 +225,7 @@ public class ContentManager {
                     ContentProjectFactory.removeEnvironment(env);
                     return 1;
                 })
-                .orElse(0);
+                .orElseThrow(() -> new EntityNotExistsException(envLabel));
     }
 
     /**
@@ -234,18 +237,15 @@ public class ContentManager {
      * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
      * @param user the user
      * @throws EntityNotExistsException when either the Project or the Source is not found
+     * @throws EntityExistsException when Source with given parameters is already attached
      * @throws java.lang.IllegalArgumentException if the sourceType is unsupported
      * @return the created or existing Source
      */
     public static ProjectSource attachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
         ensureOrgAdmin(user);
 
-        Optional<? extends ProjectSource> projectSource = lookupProjectSource(projectLabel, sourceType, sourceLabel,
-                user);
-        if (projectSource.isPresent()) {
-            // source already attached
-            return projectSource.get();
-        }
+        lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
+                .ifPresent(s -> { throw new EntityExistsException(s); });
 
         if (sourceType == SW_CHANNEL) {
             ContentProject project = lookupProject(projectLabel, user)
