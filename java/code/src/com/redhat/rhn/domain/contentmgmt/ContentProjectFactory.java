@@ -33,6 +33,7 @@ import javax.persistence.criteria.Root;
 
 import static com.suse.utils.Opt.consume;
 import static java.util.Collections.unmodifiableList;
+import static java.util.Optional.empty;
 
 /**
  *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class and related classes.
@@ -330,7 +331,6 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param sourceType the Source type
      * @param sourceLabel the Source label
      * @param user the User
-     * @throws ContentManagementException when a Project Source is not accessible by the user
      * @return Optional with matching Source
      */
     public static Optional<ProjectSource> lookupProjectSource(ContentProject project, Type sourceType,
@@ -343,7 +343,7 @@ public class ContentProjectFactory extends HibernateFactory {
         switch (sourceType) {
             case SW_CHANNEL:
                 if (!ChannelFactory.isAccessibleByUser(sourceLabel, user.getId())) {
-                    throw new ContentManagementException("Channel " + sourceLabel + " not accessible");
+                    return empty();
                 }
                 sourcePredicate = builder.equal(root.get("channel").get("label"), sourceLabel);
                 break;

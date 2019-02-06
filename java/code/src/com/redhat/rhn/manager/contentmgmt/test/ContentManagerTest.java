@@ -21,13 +21,15 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
-import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -94,7 +96,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
             ContentManager.createProject("cplabel", "differentname", null, user);
             fail("An exception should have been thrown");
         }
-        catch (ContentManagementException e) {
+        catch (EntityExistsException e) {
             // expected
         }
     }
@@ -139,11 +141,17 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
             ContentManager.updateProject(cp.getLabel(), of("new name"), of("new desc"), anotherUser);
             fail("An exception should have been thrown");
         }
-        catch (ContentManagementException e) {
+        catch (EntityNotExistsException e) {
             // no-op
         }
 
-        assertEquals(0, ContentManager.removeProject(cp.getLabel(), anotherUser));
+        try {
+            ContentManager.removeProject(cp.getLabel(), anotherUser);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityNotExistsException e) {
+            // no-op
+        }
     }
 
     /**
@@ -211,7 +219,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
                     user);
             fail("An exception should have been thrown");
         }
-        catch (ContentManagementException e) {
+        catch (EntityNotExistsException e) {
             // expected
         }
     }
@@ -317,7 +325,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
             ContentManager.attachSource("cplabel", SW_CHANNEL, "notthere", user);
             fail("An exception should have been thrown");
         }
-        catch (ContentManagementException e) {
+        catch (EntityNotExistsException e) {
             // expected
         }
 
@@ -325,7 +333,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
             ContentManager.attachSource("idontexist", SW_CHANNEL, channel.getLabel(), user);
             fail("An exception should have been thrown");
         }
-        catch (ContentManagementException e) {
+        catch (EntityNotExistsException e) {
             // expected
         }
     }
