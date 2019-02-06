@@ -61,6 +61,7 @@ class ChannelPackageSubscription(GenericPackageImport):
             self._processPackage(package)
 
     def fix(self):
+        #import rpdb; rpdb.set_trace()
         # Look up arches and channels
         self.backend.lookupPackageArches(self.package_arches)
         self.backend.lookupChannels(self.channels)
@@ -255,7 +256,7 @@ class PackageImport(ChannelPackageSubscription):
             for dep in depList:
                 nv = []
                 for f in ('name', 'version'):
-                    nv.append(dep[f])
+                    nv.append(dep[f].decode("utf-8"))
                     del dep[f]
                 nv = tuple(nv)
                 dep['capability'] = nv
@@ -277,6 +278,7 @@ class PackageImport(ChannelPackageSubscription):
         # Uniquify changelog entries
         unique_package_changelog_hash = {}
         unique_package_changelog = []
+        package['changelog'] = self._fix_encoding(package['changelog'])
         for changelog in package['changelog']:
             key = (changelog['name'], changelog['time'], changelog['text'])
             if key not in unique_package_changelog_hash:
@@ -307,6 +309,7 @@ class PackageImport(ChannelPackageSubscription):
                 self.suseEula_data[key] = None
 
     def fix(self):
+        #import rpdb; rpdb.set_trace()
         # If capabilities are available, process them
         if self.capabilities:
             try:
