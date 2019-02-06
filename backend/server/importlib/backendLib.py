@@ -78,11 +78,13 @@ class Table:
         'fields': DictType,
         'pk': ListType,
         'attribute': str,
+#        'attribute': StringType,
         'map': DictType,
         'nullable': ListType,  # Will become a hash eventually
         'severityHash': DictType,
         'defaultSeverity': IntType,
         'sequenceColumn': str,
+#        'sequenceColumn': StringType,
     }
 
     def __init__(self, name, **kwargs):
@@ -213,7 +215,7 @@ class BaseTableLookup:
         # Now put the queries in self.sqlqueries, keyed on the list of 0/1
         for i in range(len(keys)):
             key = tuple(keys[i])
-            query = string.join(queries[i], ' and ')
+            query = ' and '.join(queries[i])
             self.whereclauses[key] = query
 
     def _selectQueryKey(self, value):
