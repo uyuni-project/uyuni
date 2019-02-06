@@ -207,6 +207,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param name - the Content Environment name
      * @param description - the Content Environment description
      * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
+     * @throws EntityExistsFaultException when Environment with given parameters already exists
      * @return the created Content Environment
      *
      * @xmlrpc.doc Create a Content Environment and appends it behind given Content Environment
@@ -227,6 +228,9 @@ public class ContentManagementHandler extends BaseHandler {
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
         }
     }
 
@@ -357,12 +361,13 @@ public class ContentManagementHandler extends BaseHandler {
     public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
         Type type = Type.lookupByLabel(sourceType);
         try {
-            ContentManager.lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser).ifPresent(
-                    s -> { throw new EntityExistsFaultException(s); });
             return ContentManager.attachSource(projectLabel, type, sourceLabel, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
         }
     }
 
