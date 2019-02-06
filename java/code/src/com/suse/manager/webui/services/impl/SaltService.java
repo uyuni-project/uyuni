@@ -113,7 +113,7 @@ import java.util.stream.Stream;
  */
 public class SaltService {
 
-    private final Optional<Batch> defaultBatch;
+    private final Batch defaultBatch;
 
     /**
      * Singleton instance of this class
@@ -177,8 +177,8 @@ public class SaltService {
 
         SALT_CLIENT = new SaltClient(SALT_MASTER_URI, new HttpAsyncClientImpl(asyncHttpClient));
         saltSSHService = new SaltSSHService(SALT_CLIENT, SaltActionChainGeneratorService.INSTANCE);
-        defaultBatch = Optional.of(Batch.asAmount(ConfigDefaults.get().getSaltBatchSize())
-                .delayed(ConfigDefaults.get().getSaltBatchDelay())
+        defaultBatch = Batch.asAmount(ConfigDefaults.get().getSaltBatchSize())
+                .delayed(ConfigDefaults.get().getSaltBatchDelay()
         );
     }
 
@@ -513,10 +513,7 @@ public class SaltService {
     private <R> Optional<Map<String, CompletionStage<Result<R>>>> completableAsyncCall(
             LocalCall<R> callIn, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
-
-        LocalCall<R> call = Opt.fold(defaultBatch, () -> callIn,
-                b -> callIn.withMetadata(ScheduleMetadata.getDefaultMetadata().withBatchMode()));
-
+        LocalCall<R> call = callIn.withMetadata(ScheduleMetadata.getDefaultMetadata().withBatchMode());
         return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel, defaultBatch));
     }
 
@@ -796,9 +793,7 @@ public class SaltService {
      */
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
             Optional<ScheduleMetadata> metadata) throws SaltException {
-        LocalCall<T> call = Opt.fold(metadata, () -> callIn, m -> Opt.fold(defaultBatch,
-                () -> callIn.withMetadata(m), b -> callIn.withMetadata(m.withBatchMode())));
-
+        LocalCall<T> call = Opt.fold(metadata, () -> callIn, m -> callIn.withMetadata(m.withBatchMode()));
         return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
     }
 
