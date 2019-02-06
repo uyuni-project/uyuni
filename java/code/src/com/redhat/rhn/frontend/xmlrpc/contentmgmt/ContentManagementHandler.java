@@ -16,14 +16,16 @@
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
-import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
-import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import java.util.List;
 import java.util.Map;
@@ -76,6 +78,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param label - the label
      * @param name - the name
      * @param description - the description
+     * @throws EntityExistsFaultException when Project already exists
      * @return the created Content Project
      *
      * @xmlrpc.doc Create Content Project
@@ -90,8 +93,8 @@ public class ContentManagementHandler extends BaseHandler {
         try {
             return ContentManager.createProject(label, name, description, loggedInUser);
         }
-        catch (ContentManagementException e) {
-            throw new InvalidParameterException(e.getMessage());
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
         }
     }
 
@@ -101,6 +104,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser - the logged in user
      * @param label - the new label
      * @param props - the map with the Content Project properties
+     * @throws EntityNotExistsFaultException when Project does not exist
      * @return the updated Content Project
      *
      * @xmlrpc.doc Update Content Project with given label
@@ -121,8 +125,8 @@ public class ContentManagementHandler extends BaseHandler {
                     ofNullable((String) props.get("description")),
                     loggedInUser);
         }
-        catch (ContentManagementException e) {
-            throw new InvalidParameterException(e.getMessage());
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 
@@ -131,6 +135,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser - the logged in user
      * @param label - the label
+     * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
      * @xmlrpc.doc Remove Content Project
@@ -140,7 +145,12 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int removeProject(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
-        return ContentManager.removeProject(label, loggedInUser);
+        try {
+            return ContentManager.removeProject(label, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     /**
@@ -148,6 +158,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser - the logged in user
      * @param projectLabel - the Content Project label
+     * @throws EntityNotExistsFaultException when Project does not exist
      * @return the List of Content Environments with respect to their ordering
      *
      * @xmlrpc.doc List Environments in a Content Project with the respect to their ordering
@@ -162,8 +173,8 @@ public class ContentManagementHandler extends BaseHandler {
         try {
             return ContentManager.listProjectEnvironments(projectLabel, loggedInUser);
         }
-        catch (ContentManagementException e) {
-            throw new InvalidParameterException(e.getMessage());
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 
@@ -173,6 +184,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser - the logged in user
      * @param projectLabel - the Content Project label
      * @param envLabel - the Content Environment label
+     * @throws EntityNotExistsException when Project does not exist
      * @return found Content Environment or null if no such environment exists
      *
      * @xmlrpc.doc Look up Content Environment based on Content Project and Content Environment label
@@ -194,6 +206,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param label - the Content Environment Label
      * @param name - the Content Environment name
      * @param description - the Content Environment description
+     * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
      * @return the created Content Environment
      *
      * @xmlrpc.doc Create a Content Environment and appends it behind given Content Environment
@@ -212,8 +225,8 @@ public class ContentManagementHandler extends BaseHandler {
             return ContentManager.createEnvironment(projectLabel, ofNullable(nullIfEmpty(predecessorLabel)), label,
                     name, description, loggedInUser);
         }
-        catch (ContentManagementException e) {
-            throw new InvalidParameterException(e.getMessage());
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 
@@ -224,6 +237,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel - the Content Project label
      * @param envLabel - the Environment label
      * @param props - the map with the Environment properties
+     * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
      * @return the updated Environment
      *
      * @xmlrpc.doc Update Content Environment with given label
@@ -247,8 +261,8 @@ public class ContentManagementHandler extends BaseHandler {
                     ofNullable((String) props.get("description")),
                     loggedInUser);
         }
-        catch (ContentManagementException e) {
-            throw new InvalidParameterException(e.getMessage());
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 
@@ -258,6 +272,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser - the logged in user
      * @param projectLabel - the Content Project label
      * @param envLabel - the Content Environment label
+     * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
      * @xmlrpc.doc Remove a Content Environment
@@ -276,7 +291,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the logged in user
      * @param projectLabel the Project label
-     * @throws InvalidParameterException if the Project is not found
+     * @throws EntityNotExistsFaultException when Project does not exist
      * @return list of Project Sources
      *
      * @xmlrpc.doc List Content Project Sources
@@ -289,8 +304,7 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public List<ProjectSource> listProjectSources(User loggedInUser, String projectLabel) {
         return ContentManager.lookupProject(projectLabel, loggedInUser)
-                .orElseThrow(() -> new InvalidParameterException("Content Project: " + projectLabel +
-                        ", does not exist"))
+                .orElseThrow(() -> new EntityNotExistsFaultException(projectLabel))
                 .getSources();
     }
 
@@ -301,7 +315,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
-     * @throws InvalidParameterException if the Project is not found
+     * @throws EntityNotExistsFaultException if the Project is not found
      * @return list of Project Sources
      *
      * @xmlrpc.doc Look up Content Project Source
@@ -317,8 +331,8 @@ public class ContentManagementHandler extends BaseHandler {
         try {
             return ContentManager.lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser).orElse(null);
         }
-        catch (ContentManagementException e) {
-            throw new InvalidParameterException(e.getMessage());
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 
@@ -329,8 +343,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
-     * @throws InvalidParameterException when Source already exists or when used entities don't exist or are not
-     * accessible
+     * @throws EntityExistsFaultException when Source already exists
+     * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
      * @return the created Source
      *
      * @xmlrpc.doc Attach a Source to a Project
@@ -344,15 +358,11 @@ public class ContentManagementHandler extends BaseHandler {
         Type type = Type.lookupByLabel(sourceType);
         try {
             ContentManager.lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser).ifPresent(
-                    s -> {
-                        throw new InvalidParameterException("Source " + sourceLabel + " of type " + sourceType +
-                                " is already attached to Project " + projectLabel);
-                    }
-            );
+                    s -> { throw new EntityExistsFaultException(s); });
             return ContentManager.attachSource(projectLabel, type, sourceLabel, loggedInUser);
         }
-        catch (ContentManagementException e) {
-            throw new InvalidParameterException(e.getMessage());
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 
@@ -363,6 +373,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
+     * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
      * @return the number of Sources removed
      *
      * @xmlrpc.doc Detach a Source from a Project
@@ -377,8 +388,8 @@ public class ContentManagementHandler extends BaseHandler {
         try {
             return ContentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);
         }
-        catch (ContentManagementException e) {
-            throw new InvalidParameterException(e.getMessage());
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 }
