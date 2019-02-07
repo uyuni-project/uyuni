@@ -6,7 +6,7 @@ import time
 import argparse
 
 
-RETRIES = 3
+RETRIES = 20
 WAIT_RESPONSE = 10
 REQUEST_TAG = 'suse/systemid/generate'
 RESPONSE_TAG = 'suse/systemid/generated'
