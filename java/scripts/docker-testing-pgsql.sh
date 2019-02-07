@@ -28,8 +28,4 @@ cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
 ant -f manager-build.xml refresh-branding-jar $TARGET
 
 # Postgres shutdown (avoid stale memory by shmget())
-if [ -e /usr/lib/postgresql-init ]; then
-    su - postgres -c "/usr/lib/postgresql-init stop" ||:
-else
-    rcpostgresql stop
-fi
+su - postgres -c "/usr/lib/postgresql10/bin/pg_ctl stop" ||:
