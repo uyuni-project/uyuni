@@ -78,13 +78,11 @@ class Table:
         'fields': DictType,
         'pk': ListType,
         'attribute': str,
-#        'attribute': StringType,
         'map': DictType,
         'nullable': ListType,  # Will become a hash eventually
         'severityHash': DictType,
         'defaultSeverity': IntType,
         'sequenceColumn': str,
-#        'sequenceColumn': StringType,
     }
 
     def __init__(self, name, **kwargs):
