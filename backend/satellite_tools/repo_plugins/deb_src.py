@@ -112,6 +112,9 @@ class DebRepo(object):
                                        path + '/Packages' + extension, query, fragid))
             filename = self._download(url)
             if filename:
+                if query:
+                    os.rename(filename, filename.strip('?' + query))
+                    filename = filename.strip('?' + query)
                 decompressed = fileutils.decompress_open(filename)
                 break
 
