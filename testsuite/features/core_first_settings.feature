@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Very first settings
@@ -57,8 +57,8 @@ Feature: Very first settings
     When I wait until mgr-sync refresh is finished
 
   Scenario: Check services which should run
-    Then service or socket "atftpd" is enabled on "server"
-    And service or socket "atftpd" is active on "server"
+    Then service "apache2" is enabled on "server"
+    And service "apache2" is active on "server"
     And service "auditlog-keeper" is enabled on "server"
     And service "auditlog-keeper" is active on "server"
     And service "cobblerd" is enabled on "server"
@@ -75,8 +75,8 @@ Feature: Very first settings
     And service "salt-master" is active on "server"
     And service "taskomatic" is enabled on "server"
     And service "taskomatic" is active on "server"
-    And service "apache2" is enabled on "server"
-    And service "apache2" is active on "server"
+    And socket "tftp" is enabled on "server"
+    And socket "tftp" is active on "server"
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
 
