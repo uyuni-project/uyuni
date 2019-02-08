@@ -120,7 +120,7 @@ class Backend:
                 changelogHash[(name, time, text)] = row['id']
                 continue
 
-            id = next(self.sequences['rhnPackageChangeLogData'])
+            id = self.sequences['rhnPackageChangeLogData'].next()
             changelogHash[(name, time, text)] = id
 
             toinsert[0].append(id)
@@ -165,7 +165,7 @@ class Backend:
                 prodfileHash[(name, evr_id, package_arch_id, vendor, summary, description)] = row['id']
                 continue
 
-            id = next(self.sequences['suseProductFile'])
+            id = self.sequences['suseProductFile'].next()
             prodfileHash[(name, evr_id, package_arch_id, vendor, summary, description)] = id
 
             toinsert[0].append(id)
@@ -211,7 +211,7 @@ class Backend:
                 eulaHash[(text, checksum)] = row['id']
                 continue
 
-            id = next(self.sequences['suseEula'])
+            id = self.sequences['suseEula'].next()
             eulaHash[(text, checksum)] = id
             h_insert.execute(id=id, text=to_string(val['text']), checksum=val['checksum'])
 
@@ -230,7 +230,7 @@ class Backend:
                 continue
 
             # Generate an id
-            id = next(self.sequences['rhnCVE'])
+            id = self.sequences['rhnCVE'].next()
 
             cveHash[cve_name] = id
 
@@ -289,7 +289,7 @@ class Backend:
             h.execute(label=label)
             row = h.fetchone_dict()
             if not row:
-                next_id = next(seq)
+                next_id = seq.next()
                 inserts[0].append(next_id)
                 inserts[1].append(label)
                 inserts[2].append(name)
@@ -558,12 +558,12 @@ class Backend:
 
         h = self.dbmodule.prepare(sql)
 
-        if erratum.has_key('security_impact') and erratum['security_impact']:
+        if 'security_impact' in erratum and erratum['security_impact']:
             #concatenate the severity to reflect the db
             #bz-204374: rhnErrataSeverity tbl has lower case severity values,
             #so we convert severity in errata hash to lower case to lookup.
             severity_label = 'errata.sev.label.' + erratum['security_impact'].lower()
-        elif erratum.has_key('severity') and erratum['severity']:
+        elif 'severity' in erratum and erratum['severity']:
             severity_label = erratum['severity']
         else:
             return None
@@ -725,7 +725,7 @@ class Backend:
         for label, name in list(hash.items()):
             row = t[label]
             if not row:
-                row_id = next(seq)
+                row_id = seq.next()
                 result[label] = row_id
                 to_insert.append((label, name, row_id))
                 continue
@@ -1315,7 +1315,7 @@ class Backend:
                 toupdate[4].append(item['release'])
                 toupdate[5].append(int(item['product_id']))
                 continue
-            toinsert[0].append(next(self.sequences['suseProducts']))
+            toinsert[0].append(self.sequences['suseProducts'].next())
             toinsert[1].append(item['name'])
             toinsert[2].append(item['version'])
             toinsert[3].append(item['friendly_name'])
@@ -1519,7 +1519,7 @@ class Backend:
                 toupdate[6].append(item['root_id'])
                 toupdate[7].append(item['repo_id'])
                 continue
-            toinsert[0].append(next(self.sequences['suseProductSCCRepositories']))
+            toinsert[0].append(self.sequences['suseProductSCCRepositories'].next())
             toinsert[1].append(int(item['product_id']))
             toinsert[2].append(int(item['root_id']))
             toinsert[3].append(int(item['repo_id']))
@@ -1584,7 +1584,7 @@ class Backend:
                 toupdate[5].append(item['signed'])
                 toupdate[6].append(int(item['sccid']))
                 continue
-            toinsert[0].append(next(self.sequences['suseRepositories']))
+            toinsert[0].append(self.sequences['suseRepositories'].next())
             toinsert[1].append(item['sccid'])
             toinsert[2].append(item['autorefresh'])
             toinsert[3].append(item['name'])
@@ -1737,7 +1737,7 @@ class Backend:
 
         if kid:
             return kid['id']
-        kid = next(self.sequences['suseMdKeyword'])
+        kid = self.sequences['suseMdKeyword'].next()
         statement = self.dbmodule.prepare("""
             INSERT INTO suseMdKeyword (id, label)
             VALUES (:kid, :label)
@@ -1786,7 +1786,7 @@ class Backend:
         return self.createChannelProduct(channel)
 
     def createChannelProduct(self, channel):
-        id = next(self.sequences['rhnChannelProduct'])
+        id = self.sequences['rhnChannelProduct'].next()
 
         statement = self.dbmodule.prepare("""
             INSERT
@@ -2066,7 +2066,7 @@ class Backend:
             row = h.fetchone_dict()
             if not row:
                 # Object does not exist
-                id = next(self.sequences[parentTable])
+                id = self.sequences[parentTable].next()
                 object.id = id
                 extObject = {'id': id}
                 _buildExternalValue(extObject, object, parentTableObj)
@@ -2088,7 +2088,7 @@ class Backend:
                             # in the master table is not created yet, there
                             # shouldn't be a problem with uniqueness
                             # constraints
-                            new_id = next(self.sequences[tbl.name])
+                            new_id = self.sequences[tbl.name].next()
                             extObject[seq_col] = new_id
                             # Make sure we initialize the object's sequenced
                             # column as well
@@ -2211,7 +2211,7 @@ class Backend:
                     if childTableObj.sequenceColumn:
                         # Initialize the sequence column too
                         sc = childTableObj.sequenceColumn
-                        nextid = next(self.sequences[childTableName])
+                        nextid = self.sequences[childTableName].next()
                         val[sc] = ent[sc] = nextid
                     # This entry has to be inserted
                     object.diff.append((parentattr, val, None))
@@ -2427,7 +2427,7 @@ class Backend:
             valhash[key] = entry
 
         query = "select %s from %s where %s = :%s" % (
-            string.join(all_fields, ", "),
+            ", ".join(all_fields),
             table_name,
             first_uq_col, first_uq_col,
         )
@@ -2465,8 +2465,7 @@ class Backend:
             params = transpose(deletes, uq_fields)
             query = "delete from %s where %s" % (
                 table_name,
-                string.join(["%s = :%s" % (x, x) for x in uq_fields],
-                            ' and '),
+                ' and '.join(["%s = :%s" % (x, x) for x in uq_fields]),
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
@@ -2474,8 +2473,8 @@ class Backend:
             params = transpose(inserts, all_fields)
             query = "insert into %s (%s) values (%s)" % (
                 table_name,
-                string.join(all_fields, ', '),
-                string.join([":" + x for x in all_fields], ', '),
+                ', '.join(all_fields),
+                ', '.join([":" + x for x in all_fields]),
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
@@ -2483,10 +2482,8 @@ class Backend:
             params = transpose(updates, all_fields)
             query = "update % set %s where %s" % (
                 table_name,
-                string.join(["%s = :s" + (x, x) for x in fields],
-                            ', '),
-                string.join(["%s = :%s" % (x, x) for x in uq_fields],
-                            ' and '),
+                ', '.join(["%s = :s" + (x, x) for x in fields]),
+                ', '.join(["%s = :%s" % (x, x) for x in uq_fields]),
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)

@@ -789,11 +789,10 @@ class Import:
     def _fix_encoding(self, text):
         if text is None:
             return None
-        try:
-            return text.decode('utf8')
-        except UnicodeDecodeError:
-            return text.decode('iso8859-1')
-
+        elif isinstance(text, str):
+            return text
+        elif isinstance(text, bytes):
+            return text.decode("utf8")
 
 # Any package processing import class
 class GenericPackageImport(Import):

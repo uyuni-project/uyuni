@@ -18,7 +18,6 @@
 #
 
 import socket
-import string
 import sys
 import time
 import uuid
@@ -51,7 +50,7 @@ def kudzu_mapping(dict=None):
     # we need to have a bus type to be able to continue
     if not hw_bus:
         return mapping
-    hw_bus = string.lower(hw_bus)
+    hw_bus = hw_bus.lower()
     extra = {}
     if hw_bus == "ddc":
         extra = {
@@ -317,7 +316,7 @@ class Device(GenericDevice):
         try:
             for k in list(self.data.keys()):
                 if type(self.data[k]) == type("") and len(self.data[k]):
-                    self.data[k] = string.strip(self.data[k])
+                    self.data[k] = self.data[k].strip()
                     if not len(self.data[k]):
                         continue
                     if self.data[k][0] == '"' and self.data[k][-1] == '"':

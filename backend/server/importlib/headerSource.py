@@ -17,7 +17,6 @@
 #
 
 import time
-import string
 from .importLib import File, Dependency, ChangeLog, Channel, \
     IncompletePackage, Package, SourcePackage
 from .backendLib import gmtime, localtime
@@ -322,8 +321,7 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
 
         # Convert sigchecksum to ASCII
         self['sigchecksum_type'] = 'md5'
-        self['sigchecksum'] = string.join(
-            ["%02x" % ord(x) for x in self['sigchecksum']], '')
+        self['sigchecksum'] = ''.join(["%02x" % ord(x) for x in self['sigchecksum']])
 
 
 class rpmFile(File, ChangeLog):
@@ -356,6 +354,16 @@ class rpmFile(File, ChangeLog):
         if type(self['filedigest']) == StringType:
             self['checksum'] = self['filedigest']
             del(self['filedigest'])
+        if type(self['linkto'] == bytes):
+            self['linkto'] = self['linkto'].decode("utf8")
+        if type(self['lang'] == bytes):
+            self['lang'] = self['lang'].decode("utf8")
+        if type(self['filedigest'] == bytes):
+            self['filedigest'] = self['filedigest'].decode("utf8")
+        if type(self['groupname'] == bytes):
+            self['groupname'] = self['groupname'].decode("utf8")
+        if type(self['username'] == bytes):
+            self['username'] = self['username'].decode("utf8")
 
 
 class rpmProvides(Dependency):

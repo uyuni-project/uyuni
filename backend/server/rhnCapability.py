@@ -15,7 +15,6 @@
 #
 
 import re
-import string
 import sys
 
 # common module
@@ -42,9 +41,9 @@ def set_client_capabilities(capabilities):
             # XXX Just ignoring it, for now
             continue
         dict = mo.groupdict()
-        name = string.strip(dict['name'])
-        version = string.strip(dict['version'])
-        value = string.strip(dict['value'])
+        name = dict['name'].strip()
+        version = dict['version'].strip()
+        value = dict['value'].strip()
 
         caps[name] = {
             'version': version,
