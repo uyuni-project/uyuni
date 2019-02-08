@@ -15,6 +15,12 @@
 
 package com.suse.manager.reactor.messaging;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -38,6 +44,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -59,12 +66,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Common registration logic that can be used from multiple places
@@ -229,7 +230,7 @@ public class RegistrationUtils {
             return;
         }
 
-        Set<Channel> channelsToAssign = Opt.fold(
+        Set<Channel> unfilteredChannels = Opt.fold(
                 activationKey,
                 // No ActivationKey
                 () -> {
@@ -270,7 +271,21 @@ public class RegistrationUtils {
                 )
         );
 
-        server.setChannels(channelsToAssign);
+        // this is needed for "special" cases like RES6 that has multiple architectures in one product, or in case an
+        // activation key specifies a base channel for an incorrect arch
+        Set<Channel> compatibleChannels = unfilteredChannels.stream()
+                .filter(c -> c.getChannelArch().getCompatibleServerArches().contains(server.getServerArch()))
+                .collect(toSet());
+
+        Channel assignedBaseChannel = server.getBaseChannel();
+        if (assignedBaseChannel != null && compatibleChannels.stream()
+                .filter(channel -> channel.isBaseChannel())
+                .anyMatch(baseChannel -> !baseChannel.equals(assignedBaseChannel))) {
+            // if base channel is going to be changed, we reset all current assignments
+            server.getChannels().clear();
+        }
+
+        server.setChannels(compatibleChannels);
     }
 
     private static Set<Channel> findChannelsForProducts(Set<SUSEProduct> suseProducts, String minionId) {

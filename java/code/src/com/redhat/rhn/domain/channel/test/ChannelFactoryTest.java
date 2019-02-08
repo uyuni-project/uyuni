@@ -88,6 +88,17 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
+    public static Channel createBaseChannel(User user, String channelArchLabel) throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user, channelArchLabel);
+        c.setOrg(user.getOrg());
+
+        ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
+        c.setProductName(pn);
+
+        ChannelFactory.save(c);
+        return c;
+    }
+
     public static Channel createBaseChannel(User user,
                                 ChannelFamily fam) throws Exception {
         Channel c = createTestChannel(null, fam);
