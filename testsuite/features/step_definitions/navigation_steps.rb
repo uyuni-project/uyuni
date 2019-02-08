@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2018 Novell, Inc.
+# Copyright (c) 2010-2019 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 #
@@ -16,7 +16,7 @@ When(/^I should see a "(.*)" text in the content area$/) do |txt|
   end
 end
 
-When(/^I click on "([^"]+)" for "([^"]+)"$/) do |link, item|
+When(/^I click on "([^"]+)" in row "([^"]+)"$/) do |link, item|
   within(:xpath, '//section') do
     within(:xpath, "//table/tbody/tr[.//a[contains(.,'#{item}')]]") do
       find_link(link).click

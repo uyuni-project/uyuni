@@ -77,7 +77,7 @@ Feature: Work with Union and Intersection buttons in the group list
 
   Scenario: Add the new group to SSM
     Given I am on the groups page
-    When I click on "Use in SSM" for "sles"
+    When I click on "Use in SSM" in row "sles"
     And I should see a "systems selected" text
     And I should see a "Selected Systems List" text
     Then I should see "sle-client" as link
