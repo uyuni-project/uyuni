@@ -278,7 +278,6 @@ class PackageImport(ChannelPackageSubscription):
         # Uniquify changelog entries
         unique_package_changelog_hash = {}
         unique_package_changelog = []
-        package['changelog'] = self._fix_encoding(package['changelog'])
         for changelog in package['changelog']:
             key = (self._fix_encoding(changelog['name']), self._fix_encoding(changelog['time']), self._fix_encoding(changelog['text']))
             if key not in unique_package_changelog_hash:
