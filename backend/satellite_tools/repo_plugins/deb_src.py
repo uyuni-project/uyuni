@@ -107,7 +107,9 @@ class DebRepo(object):
         to_return = []
 
         for extension in FORMAT_PRIORITY:
-            url = self.url + '/Packages' + extension
+            (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.url)
+            url = urlparse.urlunsplit((scheme, netloc,
+                                       path + '/Packages' + extension, query, fragid))
             filename = self._download(url)
             if filename:
                 decompressed = fileutils.decompress_open(filename)
