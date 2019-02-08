@@ -158,11 +158,11 @@ def test_commit_avoidance_without_tokens(responder):
         with patch.object(responder, 'connection') as mock_connection:
             mock_connection.closed = False
             responder.tokens = 0
-            responder._insert('salt/minion/1/start', {'value': 1})
+            responder._insert('salt/minion/1/start', {'id': 'testminion', 'value': 1})
             assert responder.counter == 1
             assert responder.tokens == 0
             assert responder.connection.commit.call_count == 0
-            assert responder.cursor.execute.mock_calls == [call('INSERT INTO suseSaltEvent (data) VALUES (%s);', ('{"tag": "salt/minion/1/start", "data": {"value": 1}}',))]
+            assert responder.cursor.execute.mock_calls == [call('INSERT INTO suseSaltEvent (minion_id, data) VALUES (%s, %s);', ('testminion', '{"tag": "salt/minion/1/start", "data": {"id": "testminion", "value": 1}}',))]
 
 
 def test_postgres_connect(db_connection, responder):
