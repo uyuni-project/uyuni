@@ -116,10 +116,16 @@ if [ $SWAP -eq 0 ]; then
         if [ $FSTYPE == "btrfs" ]; then
             echo "Will *NOT* create swapfile on btrfs. Make sure you have enough RAM!"
         else
-            dd if=/dev/zero of=/SWAPFILE bs=1M count=2000
+            if [ -f /SWAPFILE ]; then
+                swapoff /SWAPFILE
+            fi
+            dd if=/dev/zero of=/SWAPFILE bs=1M count=2000 status=none
+            chmod 0600 /SWAPFILE
             sync
             mkswap -f /SWAPFILE
-            echo "/SWAPFILE swap swap defaults 0 0" >> /etc/fstab
+            if [ "$(grep -ir '/SWAPFILE swap swap defaults 0 0' /etc/fstab)" == "" ]; then
+                echo "/SWAPFILE swap swap defaults 0 0" >> /etc/fstab
+            fi
             swapon -a
             echo "ok."
         fi
