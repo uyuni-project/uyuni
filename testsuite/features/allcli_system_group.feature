@@ -1,7 +1,7 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Create a group
+Feature: Manage a group of systems
 
   Scenario: Fail to create a group with only its name
     Given I am on the groups page
@@ -53,7 +53,7 @@ Feature: Create a group
 
   Scenario: Add the new group to SSM
     Given I am on the groups page
-    When I click on "Use in SSM" for "new-systems-group"
+    When I click on "Use in SSM" in row "new-systems-group"
     Then I should see a "Selected Systems List" text
     And I should see "sle-client" as link
     And I should see "sle-minion" as link
@@ -83,7 +83,7 @@ Feature: Create a group
 
   Scenario: Cleanup: uninstall formula package from the server
     Given I am authorized
-    And I manually uninstall the "locale" formula from the server
+    When I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove the new group
     Given I am on the groups page
