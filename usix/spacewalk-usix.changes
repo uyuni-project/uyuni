@@ -1,3 +1,5 @@
+- Fix StringType as str on Python 3
+
 -------------------------------------------------------------------
 Fri Oct 26 10:45:34 CEST 2018 - jgonzalez@suse.com
 
