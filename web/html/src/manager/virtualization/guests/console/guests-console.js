@@ -11,6 +11,7 @@ import { showDialog } from 'components/dialog/util';
 import { hideDialog } from 'components/dialog/util';
 import { VncClient } from './vnc-client';
 import type { ConsoleClientType } from './guests-console-types';
+import { SpiceClient } from './spice-client';
 import styles from './guests-console.css';
 
 type Props = {
@@ -39,6 +40,7 @@ class GuestsConsole extends React.Component<Props, State> {
 
     const clients = {
       vnc: VncClient,
+      spice: SpiceClient,
     };
     this.client = new clients[this.props.graphicsType]('canvas', this.props.socketUrl, this.onConnect, this.onDisconnect, this.askPassword);
 

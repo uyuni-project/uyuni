@@ -247,6 +247,13 @@ https://opensource.org/licenses/MIT
 
 
 --------------------------------------------------------------------------------
+@spice-project/spice-html5 v0.2.1 - SPICE Project <spice-devel@lists.freedesktop.org> (https://www.spice-space.org)
+https://gitlab.freedesktop.org/spice/spice-html5.git
+--------------------------------------------------------------------------------
+
+LGPL-3.0-or-later
+
+--------------------------------------------------------------------------------
 core-js v2.6.5
 https://github.com/zloirock/core-js.git
 --------------------------------------------------------------------------------
