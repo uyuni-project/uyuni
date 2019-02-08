@@ -61,7 +61,6 @@ class ChannelPackageSubscription(GenericPackageImport):
             self._processPackage(package)
 
     def fix(self):
-        #import rpdb; rpdb.set_trace()
         # Look up arches and channels
         self.backend.lookupPackageArches(self.package_arches)
         self.backend.lookupChannels(self.channels)
@@ -310,7 +309,6 @@ class PackageImport(ChannelPackageSubscription):
                 self.suseEula_data[key] = None
 
     def fix(self):
-        #import rpdb; rpdb.set_trace()
         # If capabilities are available, process them
         if self.capabilities:
             try:

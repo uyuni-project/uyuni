@@ -1,4 +1,4 @@
-#!/usr/bin/python3 -u
+#!/usr/bin/python -u
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2010 SUSE LLC
