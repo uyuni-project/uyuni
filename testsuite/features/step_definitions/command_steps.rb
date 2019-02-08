@@ -334,24 +334,6 @@ Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   raise if output != 'active'
 end
 
-Then(/^service or socket "([^"]*)" is enabled on "([^"]*)"$/) do |name, host|
-  node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-enabled '#{name}'", false)
-  output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-enabled '#{name}.socket'", false)
-  output_socket = output_socket.split(/\n+/)[-1]
-  raise if output_service != 'enabled' and output_socket != 'enabled'
-end
-
-Then(/^service or socket "([^"]*)" is active on "([^"]*)"$/) do |name, host|
-  node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-active '#{name}'", false)
-  output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-active '#{name}.socket'", false)
-  output_socket = output_socket.split(/\n+/)[-1]
-  raise if output_service != 'active' and output_socket != 'active'
-end
-
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}.socket'", false)
