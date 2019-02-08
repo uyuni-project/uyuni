@@ -98,6 +98,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     /**
      * Checks every 5s that the connection is alive. If not, notifies all listeners that we are shutting down.
+     * Additionally, a cleanup of possible stale events is fired.
      *
      * It is up to SaltReactor to create a new instance of this class and restart from scratch.
      */
@@ -108,6 +109,17 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                 try {
                     try (Statement s = connection.createStatement()) {
                         s.execute("SELECT 'salt-event-connection-watchdog';");
+
+                        // if we have any rows in suseSaltEvent that do not yet have a process task queued or executing
+                        // then schedule tasks for them
+                        // this can only happen in case we lost notifications somehow
+                        long allJobs = SaltEventFactory.countSaltEvents();
+                        long queuedJobs = executorService.getTaskCount() - executorService.getCompletedTaskCount();
+                        long missingJobs = allJobs - queuedJobs;
+                        if (missingJobs > 0) {
+                            LOG.warn("Found " + missingJobs + " events without a job. Scheduling...");
+                            notification(missingJobs);
+                        }
                     }
                 }
                 catch (SQLException e) {
