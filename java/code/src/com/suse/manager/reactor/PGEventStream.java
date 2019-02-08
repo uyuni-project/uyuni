@@ -41,8 +41,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
@@ -55,8 +56,12 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     private static final int THREAD_POOL_SIZE = ConfigDefaults.get().getSaltEventThreadPoolSize();
 
     private PGConnection connection;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(
+    private final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
             THREAD_POOL_SIZE,
+            THREAD_POOL_SIZE,
+            0L,
+            TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<Runnable>(),
             new BasicThreadFactory.Builder().namingPattern("salt-event-thread-%d").build()
     );
 
