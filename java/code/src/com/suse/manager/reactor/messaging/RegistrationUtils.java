@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
@@ -226,7 +227,7 @@ public class RegistrationUtils {
             return;
         }
 
-        Set<Channel> channelsToAssign = Opt.fold(
+        Set<Channel> unfilteredChannels = Opt.fold(
                 activationKey,
                 // No ActivationKey
                 () -> {
@@ -302,15 +303,21 @@ public class RegistrationUtils {
                 )
         );
 
+        // this is only needed for "special" cases like RES6 that has multiple architectures in one product.
+        Set<Channel> compatibleChannels = unfilteredChannels.stream()
+                .filter(
+                    channel -> channel.getChannelArch().getCompatibleServerArches().contains(server.getServerArch()))
+                .collect(toSet());
+
         Channel assignedBaseChannel = server.getBaseChannel();
-        if (assignedBaseChannel != null && channelsToAssign.stream()
+        if (assignedBaseChannel != null && compatibleChannels.stream()
                 .filter(channel -> channel.isBaseChannel())
                 .anyMatch(baseChannel -> !baseChannel.equals(assignedBaseChannel))) {
             // if base channel is going to be changed, we reset all current assignments
             server.getChannels().clear();
         }
 
-        channelsToAssign.forEach(server::addChannel);
+        compatibleChannels.forEach(server::addChannel);
     }
 
     private static Set<SUSEProduct> identifyProduct(SaltService saltService, MinionServer server, ValueMap grains) {
