@@ -142,7 +142,7 @@ def test_postgres_notification(responder):
         responder._insert('salt/minion/1/start', {'value': 1})
         assert responder.counter == 0
         assert responder.tokens == DEFAULT_COMMIT_BURST -1
-        assert responder.cursor.execute.mock_calls[-1:] == [call('NOTIFY suseSaltEvent;')]
+        assert responder.cursor.execute.mock_calls[-1:] == [call("NOTIFY suseSaltEvent, '1';")]
 
 def test_add_token(responder):
     responder.tokens = 0
