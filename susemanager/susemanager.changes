@@ -1,3 +1,4 @@
+- Do not show false errors when configuring swapfile during setup
 - create bootstrap repo for new Red Hat channels (bsc#1133587)
 
 -------------------------------------------------------------------
