@@ -25,7 +25,7 @@ PY3 = sys.version_info[0] == 3
 if PY3:
     BufferType = memoryview
     UnicodeType = str
-    StringType = bytes
+    StringType = str
     DictType = dict
     IntType = int
     LongType = int
