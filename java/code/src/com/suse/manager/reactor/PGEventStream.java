@@ -89,7 +89,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             startConnectionWatchdog();
 
             LOG.debug("Listening succeeded, making sure there is no event left in queue...");
-            notification(0, null, null);
+            notification(SaltEventFactory.countSaltEvents());
         }
         catch (SQLException e) {
             throw new SaltException(e);
@@ -120,9 +120,17 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     @Override
     public void notification(int processId, String channelName, String payload) {
+        notification(Long.parseLong(payload));
+    }
+
+    /**
+     * Called every time a notification from Postgres (ultimately from mgr_engine.py) is fired.
+     * @param count the number of INSERTed events to be handled
+     */
+    public void notification(long count) {
         // compute the number of jobs we need to do - each job COMMITs individually
         // jobs = events / MAX_EVENTS_PER_COMMIT (rounded up)
-        long jobs = (SaltEventFactory.countSaltEvents() + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
+        long jobs = (count + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
 
         // queue one handlingTransaction(processEvents) call per job
         for (int j = 0; j < jobs; j++) {
