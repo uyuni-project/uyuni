@@ -120,7 +120,7 @@ class Table:
                 clause = "%s = :%s" % (col, col)
             args.append(clause)
         sql = "select * from %s where " % self.__table
-        cursor = self.__db.prepare(sql + string.join(args, " and "))
+        cursor = self.__db.prepare(sql + " and ".join(args))
         cursor.execute(**row)
         rows = cursor.fetchall_dict()
         if rows is None:

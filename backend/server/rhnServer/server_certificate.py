@@ -22,7 +22,6 @@ import hashlib
 import time
 import random
 import socket
-import string
 try:
     #  python 2
     import xmlrpclib
@@ -155,7 +154,7 @@ class Certificate:
     def reload(self, text):
         """ load data from a text certificate passed on by a client """
         log_debug(4)
-        text_id = string.strip(text)
+        text_id = text.strip()
         if not text_id:
             return -1
         # Now decode this certificate

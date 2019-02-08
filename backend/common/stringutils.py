@@ -25,6 +25,8 @@ def to_unicode(obj):
 
 def to_string(obj):
     if isinstance(obj, UnicodeType):
-        return obj.encode('utf8')
+        return obj
+    elif isinstance(obj, bytes):
+        return obj.decode('utf8')
     else:
         return obj

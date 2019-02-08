@@ -306,7 +306,7 @@ class Cursor(sql_base.Cursor):
         except KeyError:
             e = sys.exc_info()[1]
             raise sql_base.SQLError("Unable to bound the following variable(s): %s"
-                                    % (string.join(e.args, " ")))
+                                    % (" ".join(e.args)))
         return retval
 
     def _execute_(self, args, kwargs):

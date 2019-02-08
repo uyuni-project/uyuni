@@ -282,8 +282,7 @@ class TableUpdate(BaseTableLookup):
                 self.blob_fields.append(field)
             else:
                 self.otherfields.append(field)
-        self.updateclause = string.join(
-            ["%s = :%s" % (x, x) for x in self.otherfields], ', ')
+        self.updateclause = ', '.join(["%s = :%s" % (x, x) for x in self.otherfields])
         # key
         self.firstkey = None
         for pk in self.pks:
@@ -361,7 +360,7 @@ class TableUpdate(BaseTableLookup):
     def _update_blobs(self, blobValuesHash):
         # Now update BLOB fields
         template = "select %s from %s where %s for update"
-        blob_fields_string = string.join(self.blob_fields, ", ")
+        blob_fields_string = ", ".join(self.blob_fields)
         for key, val in list(blobValuesHash.items()):
             statement = template % (blob_fields_string, self.table.name,
                                     self.whereclauses[key])
@@ -443,8 +442,8 @@ class TableInsert(TableUpdate):
 
     def _buildQuery(self, key):
         q = self.queryTemplate % (self.table.name,
-                                  string.join(self.insert_fields, ', '),
-                                  string.join(self.insert_values, ', '))
+                                  ', '.join(self.insert_fields),
+                                  ', '.join(self.insert_values))
         return q
 
     def query(self, values):
@@ -497,19 +496,13 @@ def sanitizeValue(value, datatype):
             # and not depend on Oracle converting
             # empty strings to NULLs -- PostgreSQL
             # does not do this
-        elif isinstance(value, UnicodeType):
-            value = UnicodeType.encode(value, 'utf-8')
         if len(value) > datatype.limit:
             value = value[:datatype.limit]
             # ignore incomplete characters created after truncating
-            value = value.decode('utf-8', 'ignore')
-            value = value.encode('utf-8')
         return value
     if isinstance(datatype, DBblob):
         if value is None:
             value = ''
-        if isinstance(value, UnicodeType):
-            value = UnicodeType.encode(value, 'utf-8')
         return str(value)
     if value in [None, '']:
         return None

@@ -41,7 +41,7 @@ class Row(UserDictCase):
             raise rhnException("Argument db is not a database instance", db)
         self.db = db
         self.table = table
-        self.hashname = string.lower(hashname)
+        self.hashname = hashname.lower()
 
         # and the data dictionary
         self.data = {}
@@ -58,7 +58,7 @@ class Row(UserDictCase):
 
     def __setitem__(self, name, value):
         """ make it work like a dictionary """
-        x = string.lower(name)
+        x = name.lower()
         # forbid setting the value of the hash column because of the
         # ambiguity of the operation (is it a "save as new id" or
         # "load from new id"?). We provide interfaces for load, save
@@ -69,13 +69,13 @@ class Row(UserDictCase):
             self.data[x] = (value, 1)
 
     def __getitem__(self, name):
-        x = string.lower(name)
+        x = name.lower()
         if x in self.data:
             return self.data[x][0]
         raise KeyError("Key %s not found in the Row dictionary" % name)
 
     def get(self, name):
-        x = string.lower(name)
+        x = name.lower()
         if x in self.data:
             return self.data[x][0]
         return None
