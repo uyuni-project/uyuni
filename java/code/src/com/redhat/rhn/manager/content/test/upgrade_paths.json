@@ -1,1 +1,608 @@
-../../../../../../../../../susemanager-sync-data/upgrade_paths.json
+[
+  {
+    "from_pdid": "42", 
+    "from_product": "Open_Enterprise_Server-2015-None.x86_64", 
+    "to_pdid": "43", 
+    "to_product": "Open_Enterprise_Server-2015.1-None.x86_64"
+  }, 
+  {
+    "from_pdid": "677", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.i686", 
+    "to_pdid": "751", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.i686"
+  }, 
+  {
+    "from_pdid": "678", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.ppc", 
+    "to_pdid": "711", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.ppc"
+  }, 
+  {
+    "from_pdid": "681", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.i686", 
+    "to_pdid": "751", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.i686"
+  }, 
+  {
+    "from_pdid": "682", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.s390x", 
+    "to_pdid": "771", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.s390x"
+  }, 
+  {
+    "from_pdid": "684", 
+    "from_product": "SUSE_SLES-11.1-None.i586", 
+    "to_pdid": "811", 
+    "to_product": "SUSE_SLES-11.2-None.i586"
+  }, 
+  {
+    "from_pdid": "685", 
+    "from_product": "SUSE_SLES-11.1-None.s390", 
+    "to_pdid": "754", 
+    "to_product": "SUSE_SLES-11.2-None.s390"
+  }, 
+  {
+    "from_pdid": "690", 
+    "from_product": "SUSE_SLES-11.2-None.x86_64", 
+    "to_pdid": "814", 
+    "to_product": "SUSE_SLES-11.3-None.x86_64"
+  }, 
+  {
+    "from_pdid": "693", 
+    "from_product": "SUSE_SLES-11.3-None.s390x", 
+    "to_pdid": "1303", 
+    "to_product": "SUSE_SLES-11.4-None.s390x"
+  }, 
+  {
+    "from_pdid": "707", 
+    "from_product": "SUSE_SLES-11.1-None.i686", 
+    "to_pdid": "792", 
+    "to_product": "SUSE_SLES-11.2-None.i686"
+  }, 
+  {
+    "from_pdid": "715", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.s390", 
+    "to_pdid": "722", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.s390"
+  }, 
+  {
+    "from_pdid": "721", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.x86_64", 
+    "to_pdid": "832", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.x86_64"
+  }, 
+  {
+    "from_pdid": "723", 
+    "from_product": "SUSE_SLES-11.2-None.i486", 
+    "to_pdid": "794", 
+    "to_product": "SUSE_SLES-11.3-None.i486"
+  }, 
+  {
+    "from_pdid": "725", 
+    "from_product": "SUSE_SLES-11.3-None.i686", 
+    "to_pdid": "1298", 
+    "to_product": "SUSE_SLES-11.4-None.i686"
+  }, 
+  {
+    "from_pdid": "735", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.i486", 
+    "to_pdid": "687", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.i486"
+  }, 
+  {
+    "from_pdid": "736", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.ia64", 
+    "to_pdid": "770", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.ia64"
+  }, 
+  {
+    "from_pdid": "739", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.ppc64", 
+    "to_pdid": "689", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.ppc64"
+  }, 
+  {
+    "from_pdid": "740", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.ia64", 
+    "to_pdid": "770", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.ia64"
+  }, 
+  {
+    "from_pdid": "741", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.s390", 
+    "to_pdid": "722", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.s390"
+  }, 
+  {
+    "from_pdid": "745", 
+    "from_product": "SUSE_SLES-11.1-None.s390x", 
+    "to_pdid": "755", 
+    "to_product": "SUSE_SLES-11.2-None.s390x"
+  }, 
+  {
+    "from_pdid": "753", 
+    "from_product": "SUSE_SLES-11.2-None.i386", 
+    "to_pdid": "813", 
+    "to_product": "SUSE_SLES-11.3-None.i386"
+  }, 
+  {
+    "from_pdid": "754", 
+    "from_product": "SUSE_SLES-11.2-None.s390", 
+    "to_pdid": "795", 
+    "to_product": "SUSE_SLES-11.3-None.s390"
+  }, 
+  {
+    "from_pdid": "755", 
+    "from_product": "SUSE_SLES-11.2-None.s390x", 
+    "to_pdid": "693", 
+    "to_product": "SUSE_SLES-11.3-None.s390x"
+  }, 
+  {
+    "from_pdid": "768", 
+    "from_product": "SUSE_SLES-11.1-None.i486", 
+    "to_pdid": "723", 
+    "to_product": "SUSE_SLES-11.2-None.i486"
+  }, 
+  {
+    "from_pdid": "769", 
+    "from_product": "SUSE_SLES-11.1-None.x86_64", 
+    "to_pdid": "690", 
+    "to_product": "SUSE_SLES-11.2-None.x86_64"
+  }, 
+  {
+    "from_pdid": "777", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.i586", 
+    "to_pdid": "752", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.i586"
+  }, 
+  {
+    "from_pdid": "785", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.i586", 
+    "to_pdid": "752", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.i586"
+  }, 
+  {
+    "from_pdid": "786", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.i386", 
+    "to_pdid": "688", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.i386"
+  }, 
+  {
+    "from_pdid": "787", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.ppc", 
+    "to_pdid": "711", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.ppc"
+  }, 
+  {
+    "from_pdid": "790", 
+    "from_product": "SUSE_SLES-11.1-None.i386", 
+    "to_pdid": "753", 
+    "to_product": "SUSE_SLES-11.2-None.i386"
+  }, 
+  {
+    "from_pdid": "792", 
+    "from_product": "SUSE_SLES-11.2-None.i686", 
+    "to_pdid": "725", 
+    "to_product": "SUSE_SLES-11.3-None.i686"
+  }, 
+  {
+    "from_pdid": "793", 
+    "from_product": "SUSE_SLES-11.3-None.i586", 
+    "to_pdid": "1299", 
+    "to_product": "SUSE_SLES-11.4-None.i586"
+  }, 
+  {
+    "from_pdid": "802", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.i386", 
+    "to_pdid": "688", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.i386"
+  }, 
+  {
+    "from_pdid": "803", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.x86_64", 
+    "to_pdid": "832", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.x86_64"
+  }, 
+  {
+    "from_pdid": "804", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.s390x", 
+    "to_pdid": "771", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.s390x"
+  }, 
+  {
+    "from_pdid": "808", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP3-10-None.i486", 
+    "to_pdid": "687", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.i486"
+  }, 
+  {
+    "from_pdid": "811", 
+    "from_product": "SUSE_SLES-11.2-None.i586", 
+    "to_pdid": "793", 
+    "to_product": "SUSE_SLES-11.3-None.i586"
+  }, 
+  {
+    "from_pdid": "814", 
+    "from_product": "SUSE_SLES-11.3-None.x86_64", 
+    "to_pdid": "1300", 
+    "to_product": "SUSE_SLES-11.4-None.x86_64"
+  }, 
+  {
+    "from_pdid": "821", 
+    "from_product": "SUSE-Linux-Enterprise-Server-SP2-10-None.ppc64", 
+    "to_pdid": "689", 
+    "to_product": "SUSE-Linux-Enterprise-Server-SP4-10-None.ppc64"
+  }, 
+  {
+    "from_pdid": "840", 
+    "from_product": "SUSE_SLED-11.1-None.i486", 
+    "to_pdid": "844", 
+    "to_product": "SUSE_SLED-11.2-None.i486"
+  }, 
+  {
+    "from_pdid": "843", 
+    "from_product": "SUSE_SLED-11.2-None.i586", 
+    "to_pdid": "892", 
+    "to_product": "SUSE_SLED-11.3-None.i586"
+  }, 
+  {
+    "from_pdid": "844", 
+    "from_product": "SUSE_SLED-11.2-None.i486", 
+    "to_pdid": "869", 
+    "to_product": "SUSE_SLED-11.3-None.i486"
+  }, 
+  {
+    "from_pdid": "853", 
+    "from_product": "SUSE_SLED-11.1-None.i586", 
+    "to_pdid": "843", 
+    "to_product": "SUSE_SLED-11.2-None.i586"
+  }, 
+  {
+    "from_pdid": "868", 
+    "from_product": "SUSE_SLED-11.2-None.i686", 
+    "to_pdid": "932", 
+    "to_product": "SUSE_SLED-11.3-None.i686"
+  }, 
+  {
+    "from_pdid": "879", 
+    "from_product": "SUSE_SLED-11.2-None.i386", 
+    "to_pdid": "893", 
+    "to_product": "SUSE_SLED-11.3-None.i386"
+  }, 
+  {
+    "from_pdid": "887", 
+    "from_product": "SUSE_SLED-11.1-None.x86_64", 
+    "to_pdid": "901", 
+    "to_product": "SUSE_SLED-11.2-None.x86_64"
+  }, 
+  {
+    "from_pdid": "892", 
+    "from_product": "SUSE_SLED-11.3-None.i586", 
+    "to_pdid": "1312", 
+    "to_product": "SUSE_SLED-11.4-None.i586"
+  }, 
+  {
+    "from_pdid": "901", 
+    "from_product": "SUSE_SLED-11.2-None.x86_64", 
+    "to_pdid": "902", 
+    "to_product": "SUSE_SLED-11.3-None.x86_64"
+  }, 
+  {
+    "from_pdid": "902", 
+    "from_product": "SUSE_SLED-11.3-None.x86_64", 
+    "to_pdid": "1313", 
+    "to_product": "SUSE_SLED-11.4-None.x86_64"
+  }, 
+  {
+    "from_pdid": "927", 
+    "from_product": "SUSE_SLED-11.1-None.i686", 
+    "to_pdid": "868", 
+    "to_product": "SUSE_SLED-11.2-None.i686"
+  }, 
+  {
+    "from_pdid": "928", 
+    "from_product": "SUSE_SLED-11.1-None.i386", 
+    "to_pdid": "879", 
+    "to_product": "SUSE_SLED-11.2-None.i386"
+  }, 
+  {
+    "from_pdid": "932", 
+    "from_product": "SUSE_SLED-11.3-None.i686", 
+    "to_pdid": "1311", 
+    "to_product": "SUSE_SLED-11.4-None.i686"
+  }, 
+  {
+    "from_pdid": "940", 
+    "from_product": "SUSE_SLES-11.1-None.ppc64", 
+    "to_pdid": "946", 
+    "to_product": "SUSE_SLES-11.2-None.ppc64"
+  }, 
+  {
+    "from_pdid": "946", 
+    "from_product": "SUSE_SLES-11.2-None.ppc64", 
+    "to_pdid": "949", 
+    "to_product": "SUSE_SLES-11.3-None.ppc64"
+  }, 
+  {
+    "from_pdid": "949", 
+    "from_product": "SUSE_SLES-11.3-None.ppc64", 
+    "to_pdid": "1301", 
+    "to_product": "SUSE_SLES-11.4-None.ppc64"
+  }, 
+  {
+    "from_pdid": "952", 
+    "from_product": "SUSE_SLES-11.2-None.ppc", 
+    "to_pdid": "953", 
+    "to_product": "SUSE_SLES-11.3-None.ppc"
+  }, 
+  {
+    "from_pdid": "959", 
+    "from_product": "sle-hae-11.1-None.i586", 
+    "to_pdid": "975", 
+    "to_product": "sle-hae-11.2-None.i586"
+  }, 
+  {
+    "from_pdid": "961", 
+    "from_product": "sle-hae-11.2-None.x86_64", 
+    "to_pdid": "971", 
+    "to_product": "sle-hae-11.3-None.x86_64"
+  }, 
+  {
+    "from_pdid": "965", 
+    "from_product": "sle-hae-11.1-None.i486", 
+    "to_pdid": "979", 
+    "to_product": "sle-hae-11.2-None.i486"
+  }, 
+  {
+    "from_pdid": "966", 
+    "from_product": "sle-hae-11.1-None.i386", 
+    "to_pdid": "984", 
+    "to_product": "sle-hae-11.2-None.i386"
+  }, 
+  {
+    "from_pdid": "967", 
+    "from_product": "sle-hae-11.1-None.x86_64", 
+    "to_pdid": "961", 
+    "to_product": "sle-hae-11.2-None.x86_64"
+  }, 
+  {
+    "from_pdid": "970", 
+    "from_product": "sle-hae-11.2-None.i686", 
+    "to_pdid": "985", 
+    "to_product": "sle-hae-11.3-None.i686"
+  }, 
+  {
+    "from_pdid": "971", 
+    "from_product": "sle-hae-11.3-None.x86_64", 
+    "to_pdid": "1256", 
+    "to_product": "sle-hae-11.4-None.x86_64"
+  }, 
+  {
+    "from_pdid": "975", 
+    "from_product": "sle-hae-11.2-None.i586", 
+    "to_pdid": "977", 
+    "to_product": "sle-hae-11.3-None.i586"
+  }, 
+  {
+    "from_pdid": "977", 
+    "from_product": "sle-hae-11.3-None.i586", 
+    "to_pdid": "1255", 
+    "to_product": "sle-hae-11.4-None.i586"
+  }, 
+  {
+    "from_pdid": "978", 
+    "from_product": "sle-hae-11.1-None.i686", 
+    "to_pdid": "970", 
+    "to_product": "sle-hae-11.2-None.i686"
+  }, 
+  {
+    "from_pdid": "985", 
+    "from_product": "sle-hae-11.3-None.i686", 
+    "to_pdid": "1254", 
+    "to_product": "sle-hae-11.4-None.i686"
+  }, 
+  {
+    "from_pdid": "995", 
+    "from_product": "SUSE_SLES-11.1-VMWARE.None", 
+    "to_pdid": "996", 
+    "to_product": "SLES-for-VMware-11.2-None.None"
+  }, 
+  {
+    "from_pdid": "996", 
+    "from_product": "SLES-for-VMware-11.2-None.None", 
+    "to_pdid": "993", 
+    "to_product": "SLES-for-VMware-11.3-None.None"
+  }, 
+  {
+    "from_pdid": "1000", 
+    "from_product": "SUSE-Manager-Proxy-1.2-None.None", 
+    "to_pdid": "1002", 
+    "to_product": "SUSE-Manager-Proxy-1.7-None.x86_64"
+  }, 
+  {
+    "from_pdid": "1002", 
+    "from_product": "SUSE-Manager-Proxy-1.7-None.x86_64", 
+    "to_pdid": "1141", 
+    "to_product": "SUSE-Manager-Proxy-2.1-None.x86_64"
+  }, 
+  {
+    "from_pdid": "1033", 
+    "from_product": "SUSE_SLES-11.1-None.ia64", 
+    "to_pdid": "1034", 
+    "to_product": "SUSE_SLES-11.2-None.ia64"
+  }, 
+  {
+    "from_pdid": "1034", 
+    "from_product": "SUSE_SLES-11.2-None.ia64", 
+    "to_pdid": "1037", 
+    "to_product": "SUSE_SLES-11.3-None.ia64"
+  }, 
+  {
+    "from_pdid": "1037", 
+    "from_product": "SUSE_SLES-11.3-None.ia64", 
+    "to_pdid": "1302", 
+    "to_product": "SUSE_SLES-11.4-None.ia64"
+  }, 
+  {
+    "from_pdid": "1042", 
+    "from_product": "sle-hae-11.3-None.ppc64", 
+    "to_pdid": "1258", 
+    "to_product": "sle-hae-11.4-None.ppc64"
+  }, 
+  {
+    "from_pdid": "1044", 
+    "from_product": "sle-hae-11.2-None.ppc64", 
+    "to_pdid": "1042", 
+    "to_product": "sle-hae-11.3-None.ppc64"
+  }, 
+  {
+    "from_pdid": "1046", 
+    "from_product": "sle-hae-11.1-None.ppc64", 
+    "to_pdid": "1044", 
+    "to_product": "sle-hae-11.2-None.ppc64"
+  }, 
+  {
+    "from_pdid": "1051", 
+    "from_product": "SUSE-Linux-Enterprise-RT-11.1-None.None", 
+    "to_pdid": "1052", 
+    "to_product": "SUSE-Linux-Enterprise-RT-11.2-None.None"
+  }, 
+  {
+    "from_pdid": "1052", 
+    "from_product": "SUSE-Linux-Enterprise-RT-11.2-None.None", 
+    "to_pdid": "1058", 
+    "to_product": "SUSE-Linux-Enterprise-RT-11.3-None.None"
+  }, 
+  {
+    "from_pdid": "1058", 
+    "from_product": "SUSE-Linux-Enterprise-RT-11.3-None.None", 
+    "to_pdid": "1296", 
+    "to_product": "SUSE-Linux-Enterprise-RT-11.4-None.x86_64"
+  }, 
+  {
+    "from_pdid": "1060", 
+    "from_product": "sle-hae-11.2-None.ia64", 
+    "to_pdid": "1063", 
+    "to_product": "sle-hae-11.3-None.ia64"
+  }, 
+  {
+    "from_pdid": "1061", 
+    "from_product": "sle-hae-11.1-None.ia64", 
+    "to_pdid": "1060", 
+    "to_product": "sle-hae-11.2-None.ia64"
+  }, 
+  {
+    "from_pdid": "1063", 
+    "from_product": "sle-hae-11.3-None.ia64", 
+    "to_pdid": "1259", 
+    "to_product": "sle-hae-11.4-None.ia64"
+  }, 
+  {
+    "from_pdid": "1072", 
+    "from_product": "sle-pos-11.1-None.None", 
+    "to_pdid": "1068", 
+    "to_product": "sle-pos-11.2-None.None"
+  }, 
+  {
+    "from_pdid": "1080", 
+    "from_product": "sle-hae-11.3-None.s390x", 
+    "to_pdid": "1257", 
+    "to_product": "sle-hae-11.4-None.s390x"
+  }, 
+  {
+    "from_pdid": "1082", 
+    "from_product": "sle-hae-11.2-None.s390x", 
+    "to_pdid": "1080", 
+    "to_product": "sle-hae-11.3-None.s390x"
+  }, 
+  {
+    "from_pdid": "1084", 
+    "from_product": "sle-hae-11.1-None.s390x", 
+    "to_pdid": "1082", 
+    "to_product": "sle-hae-11.2-None.s390x"
+  }, 
+  {
+    "from_pdid": "1107", 
+    "from_product": "sle-haegeo-11.3-None.x86_64", 
+    "to_pdid": "1286", 
+    "to_product": "sle-haegeo-11.4-None.x86_64"
+  }, 
+  {
+    "from_pdid": "1110", 
+    "from_product": "sle-haegeo-11.3-None.s390x", 
+    "to_pdid": "1287", 
+    "to_product": "sle-haegeo-11.4-None.s390x"
+  }, 
+  {
+    "from_pdid": "1130", 
+    "from_product": "SUSE_SLES_SAP-11.2-None.None", 
+    "to_pdid": "1131", 
+    "to_product": "SUSE_SLES_SAP-11.3-None.None"
+  }, 
+  {
+    "from_pdid": "1131", 
+    "from_product": "SUSE_SLES_SAP-11.3-None.None", 
+    "to_pdid": "1329", 
+    "to_product": "SUSE_SLES_SAP-11.4-None.x86_64"
+  }, 
+  {
+    "from_pdid": "1159", 
+    "from_product": "sle-sdk-11.1-None.None", 
+    "to_pdid": "1160", 
+    "to_product": "sle-sdk-11.2-None.None"
+  }, 
+  {
+    "from_pdid": "1160", 
+    "from_product": "sle-sdk-11.2-None.None", 
+    "to_pdid": "1161", 
+    "to_product": "sle-sdk-11.3-None.None"
+  }, 
+  {
+    "from_pdid": "1161", 
+    "from_product": "sle-sdk-11.3-None.None", 
+    "to_pdid": "1320", 
+    "to_product": "sle-sdk-11.4-None.None"
+  }, 
+  {
+    "from_pdid": "1177", 
+    "from_product": "SUSE-Linux-Enterprise-SDK-SP2-10-None.None", 
+    "to_pdid": "1179", 
+    "to_product": "SUSE-Linux-Enterprise-SDK-SP3-10-None.None"
+  }, 
+  {
+    "from_pdid": "1179", 
+    "from_product": "SUSE-Linux-Enterprise-SDK-SP3-10-None.None", 
+    "to_pdid": "1181", 
+    "to_product": "SUSE-Linux-Enterprise-SDK-SP4-10-None.None"
+  }, 
+  {
+    "from_pdid": "1193", 
+    "from_product": "sle-smt-11.2-None.None", 
+    "to_pdid": "1198", 
+    "to_product": "sle-smt-11.3-None.None"
+  }, 
+  {
+    "from_pdid": "1196", 
+    "from_product": "sle-smt-11-None.None", 
+    "to_pdid": "1193", 
+    "to_product": "sle-smt-11.2-None.None"
+  }, 
+  {
+    "from_pdid": "1232", 
+    "from_product": "Open_Enterprise_Server-11-None.None", 
+    "to_pdid": "1241", 
+    "to_product": "Open_Enterprise_Server-11.1-None.None"
+  }, 
+  {
+    "from_pdid": "1241", 
+    "from_product": "Open_Enterprise_Server-11.1-None.None", 
+    "to_pdid": "1242", 
+    "to_product": "Open_Enterprise_Server-11.2-None.x86_64"
+  }, 
+  {
+    "from_pdid": "1242", 
+    "from_product": "Open_Enterprise_Server-11.2-None.x86_64", 
+    "to_pdid": "44", 
+    "to_product": "Open_Enterprise_Server-11.3-None.x86_64"
+  }
+]

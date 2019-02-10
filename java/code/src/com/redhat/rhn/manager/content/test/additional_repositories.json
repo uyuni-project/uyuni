@@ -1,1 +1,52 @@
-../../../../../../../../../susemanager-sync-data/additional_repositories.json
+[
+    {
+        "id" : -71,
+        "url" : "http://localhost/pub/repositories/empty/",
+        "name" : "rhel-i386-server-5",
+        "distro_target" : "i386",
+        "description" : "RES 5",
+        "enabled" : true,
+        "autorefresh" : false,
+        "installer_updates" : false
+    },
+    {
+        "id" : -72,
+        "url" : "http://localhost/pub/repositories/empty/",
+        "name" : "rhel-x86_64-server-5",
+        "distro_target" : "x86_64",
+        "description" : "RES 5",
+        "enabled" : true,
+        "autorefresh" : false,
+        "installer_updates" : false
+    },
+    {
+        "id" : -73,
+        "url" : "http://localhost/pub/repositories/empty/",
+        "name" : "rhel-i386-server-6",
+        "distro_target" : "i386",
+        "description" : "RES 6",
+        "enabled" : true,
+        "autorefresh" : false,
+        "installer_updates" : false
+    },
+    {
+        "id" : -74,
+        "url" : "http://localhost/pub/repositories/empty/",
+        "name" : "rhel-x86_64-server-6",
+        "distro_target" : "x86_64",
+        "description" : "RES 6",
+        "enabled" : true,
+        "autorefresh" : false,
+        "installer_updates" : false
+    },
+    {
+        "id" : -75,
+        "url" : "http://localhost/pub/repositories/empty/",
+        "name" : "rhel-x86_64-server-7",
+        "distro_target" : "x86_64",
+        "description" : "RES 7",
+        "enabled" : true,
+        "autorefresh" : false,
+        "installer_updates" : false
+    }
+]
