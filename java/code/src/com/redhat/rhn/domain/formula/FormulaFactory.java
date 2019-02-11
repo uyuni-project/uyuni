@@ -185,9 +185,9 @@ public class FormulaFactory {
         catch (FileAlreadyExistsException e) {
         }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write(GSON.toJson(formData));
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(GSON.toJson(formData));
+        }
     }
 
     /**
@@ -209,9 +209,9 @@ public class FormulaFactory {
         catch (FileAlreadyExistsException e) {
         }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write(GSON.toJson(formData));
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(GSON.toJson(formData));
+        }
     }
 
     /**
@@ -429,9 +429,9 @@ public class FormulaFactory {
 
         // Save selected Formulas
         groupFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
-        writer.write(GSON.toJson(groupFormulas));
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
+            writer.write(GSON.toJson(groupFormulas));
+        }
     }
 
     /**
@@ -477,9 +477,9 @@ public class FormulaFactory {
         }
 
         // Write server_formulas file
-        BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
-        writer.write(GSON.toJson(serverFormulas));
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
+            writer.write(GSON.toJson(serverFormulas));
+        }
     }
 
     /**
