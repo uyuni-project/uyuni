@@ -55,8 +55,9 @@ class DebPackage(object):
         return setattr(self, key, value)
 
     def is_populated(self):
-        return all([attribute is not None for attribute in (self.name, self.epoch, self.version, self.release,
-                                                            self.arch, self.relativepath, self.checksum_type,
+        return all([attribute is not None for attribute in (self.name, self.epoch,
+                                                            self.version, self.release, self.arch,
+                                                            self.relativepath, self.checksum_type,
                                                             self.checksum)])
 
 
@@ -83,7 +84,8 @@ class DebRepo(object):
     def _download(self, url):
         for _ in range(0, RETRIES):
             try:
-                data = requests.get(url, cert=(self.sslclientcert, self.sslclientkey), verify=self.sslcacert)
+                data = requests.get(url, cert=(self.sslclientcert, self.sslclientkey),
+                                    verify=self.sslcacert)
                 if not data.ok:
                     return ''
                 filename = self.basecachedir + '/' + os.path.basename(url)
@@ -96,7 +98,7 @@ class DebRepo(object):
                         fd.close()
                 return filename
             except requests.exceptions.RequestException:
-                print "ERROR: requests.exceptions.RequestException occured"
+                print("ERROR: requests.exceptions.RequestException occured")
                 time.sleep(RETRY_DELAY)
 
         return ''
@@ -107,9 +109,14 @@ class DebRepo(object):
         to_return = []
 
         for extension in FORMAT_PRIORITY:
-            url = self.url + '/Packages' + extension
+            (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.url)
+            url = urlparse.urlunsplit((scheme, netloc,
+                                       path + '/Packages' + extension, query, fragid))
             filename = self._download(url)
             if filename:
+                if query:
+                    os.rename(filename, filename.strip('?' + query))
+                    filename = filename.strip('?' + query)
                 decompressed = fileutils.decompress_open(filename)
                 break
 
@@ -166,14 +173,14 @@ class DebRepo(object):
 
             if package.is_populated():
                 to_return.append(package)
-
         return to_return
 
 
 class ContentSource(object):
 
-    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None, org="1", channel_label="", 
-                 no_mirrors=False, ca_cert_file=None, client_cert_file=None, client_key_file=None): 
+    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None,
+                 org="1", channel_label="", no_mirrors=False, ca_cert_file=None,
+                 client_cert_file=None, client_key_file=None):
         # pylint: disable=W0613
         self.url = url
         self.name = name
@@ -279,18 +286,18 @@ class ContentSource(object):
             if sense == '+':
                 # include
                 for excluded_pkg in excluded:
-                    if (reobj.match(excluded_pkg['name'])):
-                        allmatched_include.insert(0,excluded_pkg)
-                        selected.insert(0,excluded_pkg)
+                    if reobj.match(excluded_pkg['name']):
+                        allmatched_include.insert(0, excluded_pkg)
+                        selected.insert(0, excluded_pkg)
                 for pkg in allmatched_include:
                     if pkg in excluded:
                         excluded.remove(pkg)
             elif sense == '-':
                 # exclude
                 for selected_pkg in selected:
-                    if (reobj.match(selected_pkg['name'])):
-                        allmatched_exclude.insert(0,selected_pkg)
-                        excluded.insert(0,selected_pkg)
+                    if reobj.match(selected_pkg['name']):
+                        allmatched_exclude.insert(0, selected_pkg)
+                        excluded.insert(0, selected_pkg)
 
                 for pkg in allmatched_exclude:
                     if pkg in selected:
@@ -322,8 +329,8 @@ class ContentSource(object):
         return None
 
     # Get download parameters for threaded downloader
-    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None,
-                                bytes_range=None):
+    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None,
+                                checksum_value=None, bytes_range=None):
         # Create directories if needed
         target_dir = os.path.dirname(target_file)
         if not os.path.exists(target_dir):
@@ -345,7 +352,8 @@ class ContentSource(object):
         params['proxy_password'] = self.repo.proxy_password
         params['http_headers'] = self.repo.http_headers
         # Older urlgrabber compatibility
-        params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username, self.repo.proxy_password)
+        params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
+                                        self.repo.proxy_password)
 
     @staticmethod
     def get_file(path, local_base=None):
