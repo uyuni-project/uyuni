@@ -174,27 +174,27 @@
 
   <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
     <echo message="Copying files to remote host..." />
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --delete --rsh 'ssh ${ssh.socket.option}' ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
     </exec>
 
     <echo message="Linking the branding jar..." />
-    <exec executable="ssh">
+    <exec failonerror="true" executable="ssh">
       <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
     </exec>
 
-    <exec executable="ssh">
+    <exec failonerror="true" executable="ssh">
       <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
     </exec>
 
     <echo message="Linking jars for Taskomatic..."/>
-    <exec executable="ssh">
+    <exec failonerror="true" executable="ssh">
       <arg line="${ssh.command.args} ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
     </exec>
-    <exec executable="ssh">
+    <exec failonerror="true" executable="ssh">
       <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
     </exec>
-    <exec executable="ssh">
+    <exec failonerror="true" executable="ssh">
       <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
     </exec>
 
@@ -226,19 +226,19 @@
     </exec>
 
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
     </exec>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
     </exec>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
     </exec>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
     </exec>
-    <exec executable="rsync">
+    <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.vendors.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/vendors/" />
     </exec>
   </target>
