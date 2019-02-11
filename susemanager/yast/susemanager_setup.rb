@@ -17,7 +17,6 @@ module Yast
         "susemanager_manager",
         "susemanager_cert",
         "susemanager_db",
-        "susemanager_scc",
         "susemanager_write",
         "susemanager_congratulate"
       ]

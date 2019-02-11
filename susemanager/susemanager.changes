@@ -1,3 +1,4 @@
+- remove SCC setup from YaST SUSE Manager setup
 - Do not show false errors when configuring swapfile during setup
 
 -------------------------------------------------------------------
