@@ -2,7 +2,7 @@
   <settings defaultResolver="default" />
   <resolvers>
     <url name="default">
-      <artifact pattern="http://ramrod.mgr.suse.de/ivy/[artifact]-[revision].[ext]" />
+      <artifact pattern="http://ramrod.mgr.suse.de/ivy/master/[artifact]-[revision].[ext]" />
     </url>
   </resolvers>
 </ivysettings>
