@@ -31,8 +31,8 @@ from spacewalk.common.rhnLib import rfc822time, timestamp
 
 # local modules imports
 from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL
-from rhnServer import server_lib
-from repomd import repository
+from .rhnServer import server_lib
+from .repomd import repository
 
 
 class Repository(rhnRepository.Repository):

@@ -23,7 +23,7 @@ try: # python2
     from types import StringType
 except ImportError: # python3
     from collections import UserDict
-    StringType = bytes
+    StringType = str
     from functools import reduce
 
 # A dictionary with case insensitive keys

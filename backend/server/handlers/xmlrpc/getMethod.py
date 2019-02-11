@@ -20,8 +20,8 @@
 # hierarchical route to the class/module, and method name.
 #
 
-import os
 import string
+import os
 import sys
 from spacewalk.common.usix import ClassType
 from distutils.sysconfig import get_python_lib
@@ -37,7 +37,7 @@ class GetMethodException(Exception):
 def sanity(methodNameComps):
     """ Verifies if all the components have proper names."""
     # Allowed characters in each string
-    alpha = string.lowercase + string.uppercase
+    alpha = string.ascii_lowercase + string.ascii_uppercase
     allowedChars = alpha + string.digits + '_'
     for comp in methodNameComps:
         if not len(comp):
@@ -57,7 +57,7 @@ def getMethod(methodName, baseClass):
         route/label.
     """
     # First split the method name
-    methodNameComps = ['spacewalk'] + string.split(baseClass, '.') + string.split(methodName, '.')
+    methodNameComps = ['spacewalk'] + baseClass.split('.') + methodName.split('.')
     # Sanity checks
     sanity(methodNameComps)
     # Build the path to the file
@@ -85,7 +85,7 @@ def getMethod(methodName, baseClass):
     # The position of the file
     fIndex = index + 1
     # Now build the module name
-    modulename = string.join(methodNameComps[:fIndex], '.')
+    modulename = '.'.join(methodNameComps[:fIndex])
     # And try to import it
     try:
         actions = __import__(modulename)
@@ -102,7 +102,7 @@ def getMethod(methodName, baseClass):
             if not hasattr(className, comp):
                 # Hmmm... Not there
                 raise GetMethodException("Class %s has no attribute %s" % (
-                    string.join(methodNameComps[:index], '.'), comp))
+                    '.'.join(methodNameComps[:index]), comp))
             className = getattr(className, comp)
             # print type(className)
             continue
@@ -110,11 +110,11 @@ def getMethod(methodName, baseClass):
         # We look for the special __rhnexport__ array
         if not hasattr(className, '__rhnexport__'):
             raise GetMethodException("Class %s is not valid" % \
-                                     string.join(methodNameComps[:index], '.'))
+                                     '.'.join(methodNameComps[:index]))
         export = getattr(className, '__rhnexport__')
         if comp not in export:
             raise GetMethodException("Class %s does not export '%s'" % (
-                string.join(methodNameComps[:index], '.'), comp))
+                '.'.join(methodNameComps[:index]), comp))
         className = getattr(className, comp)
         if type(className) is ClassType:
             # Try to instantiate it
@@ -144,8 +144,7 @@ if __name__ == '__main__':
             method = getMethod(m, 'Actions')
         except GetMethodException:
             e = sys.exc_info()[1]
-            print(("Error getting the method %s: %s" % (m,
-                                                       string.join(map(str, e.args)))))
+            print(("Error getting the method %s: %s" % (m , e.args)))
         else:
             method()
 #-----------------------------------------------------------------------------

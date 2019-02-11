@@ -38,14 +38,12 @@ from .server_lib import check_entitlement_by_machine_id
 def gen_secret():
     """ Generate a secret """
     seed = repr(time.time())
-    sum = hashlib.new('sha256', seed)
+    sum = hashlib.new('sha256', seed.encode())
     # feed some random numbers
     for k in range(1, random.randint(5, 15)):
-        sum.update(repr(random.random()))
-    sum.update(socket.gethostname())
-    ret = ""
-    for i in sum.digest()[:]:
-        ret = ret + "%02x" % ord(i)
+        sum.update(repr(random.random()).encode())
+    sum.update(socket.gethostname().encode())
+    ret = sum.hexdigest()
     del sum
     return ret
 
@@ -58,7 +56,7 @@ class Checksum:
         algo = 'sha256'
         if 'algo' in kwargs:
             algo = kwargs['algo']
-        self.sum = hashlib.new(algo, secret)
+        self.sum = hashlib.new(algo, secret.encode())
         if len(args) > 0:
             self.feed(*args)
 
@@ -66,16 +64,14 @@ class Checksum:
         #sys.stderr.write("arg = %s, type = %s\n" % (arg, type(arg)))
         if type(arg) == type(()) or type(arg) == type([]):
             for s in arg:
-                self.sum.update(s)
+                self.sum.update(s.encode())
         else:
             if type(arg) == type(0):
                 arg = str(arg)
-            self.sum.update(to_string(arg))
+            self.sum.update(to_string(arg).encode())
 
     def __repr__(self):
-        t = ""
-        for i in self.sum.digest()[:]:
-            t = t + "%02x" % ord(i)
+        t = self.sum.hexdigest()
         return t
     __str__ = __repr__
 
@@ -220,7 +216,7 @@ class Certificate:
                 """)
 
         if 'type' in self.attrs and self.attrs['type'] \
-                and string.upper(self.attrs['type']) == "ANONYMOUS":
+                and self.attrs['type'].upper() == "ANONYMOUS":
             raise rhnFault(28, """
             You need to re-register your system with SUSE Manager.
             Previously you have chosen to skip the creation of a system profile

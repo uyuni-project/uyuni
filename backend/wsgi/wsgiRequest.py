@@ -58,6 +58,8 @@ class WsgiRequest:
         return repr(self.__dict__)
 
     def write(self, msg):
+        if isinstance(msg, str):
+            msg = msg.encode()
         self.output.append(msg)
 
     def send_http_header(self, status=None):

@@ -23,7 +23,6 @@
 # class.
 #
 
-import string
 import sys
 from . import sql_types
 from spacewalk.common import usix
@@ -60,7 +59,7 @@ class SQLSchemaError(SQLError):
 
     def __init__(self, errno, errmsg, *args):
         self.errno = errno
-        (self.errmsg, errmsg) = string.split(errmsg, '\n', 1)
+        (self.errmsg, errmsg) = errmsg.split('\n', 1)
         SQLError.__init__(self, self.errno, self.errmsg, errmsg, *args)
 
 

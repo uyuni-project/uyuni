@@ -14,7 +14,6 @@
 #
 
 # system module imports
-import string
 try:
     #  python 2
     import xmlrpclib
@@ -169,7 +168,7 @@ class Applet(rhnHandler):
         label_list = [str(a["id"]) for a in channel_list]
         label_list.sort()
         log_debug(4, "label_list", label_list)
-        cache_key = "applet-poll-%s" % string.join(label_list, "-")
+        cache_key = "applet-poll-%s" % "-".join(label_list)
 
         ret = rhnCache.get(cache_key, last_channel_changed_ts)
         if ret:  # we have a good entry with matching timestamp
@@ -193,7 +192,7 @@ class Applet(rhnHandler):
             k = "channel_%s" % v
             qlist.append(":%s" % k)
             qdict[k] = v
-        qlist = string.join(qlist, ", ")
+        qlist = ", ".join(qlist)
 
         # This query is kind of big. One of these days I'm gonna start
         # pulling them out and transforming them into views. We can

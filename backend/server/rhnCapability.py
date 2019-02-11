@@ -22,7 +22,7 @@ from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
 
 # local module
-import rhnSQL
+from . import rhnSQL
 
 # Globally store the parsed capabilities in rhnFlags
 

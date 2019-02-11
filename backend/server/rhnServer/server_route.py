@@ -16,8 +16,6 @@
 # Module for storing client route through proxies
 #
 
-import string
-
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL, apacheAuth
@@ -51,7 +49,7 @@ def store_client_route(server_id):
     # code block if there *is* routing info in the headers
     # NOTE: X-RHN-Proxy-Auth described in proxy/broker/rhnProxyAuth.py
     if rhnFlags.test('X-RHN-Proxy-Auth'):
-        tokens = string.split(rhnFlags.get('X-RHN-Proxy-Auth'), ',')
+        tokens = rhnFlags.get('X-RHN-Proxy-Auth').split(',')
         tokens = [token for token in tokens if token]
 
         log_debug(4, "route tokens", tokens)

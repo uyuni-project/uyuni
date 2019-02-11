@@ -18,7 +18,6 @@
 #
 
 
-import string
 import time
 import sys
 
@@ -475,7 +474,7 @@ class VirtualizationEventHandler:
 
         # Only touch the database if something changed.
         if new_values_array:
-            new_values = string.join(new_values_array, ', ')
+            new_values = ', '.join(new_values_array)
 
             bindings['row_id'] = existing_row['id']
 
@@ -599,7 +598,7 @@ class VirtualizationEventHandler:
 
         # Only touch the database if something changed.
         if new_values_array:
-            new_values = string.join(new_values_array, ', ')
+            new_values = ', '.join(new_values_array)
 
             bindings['row_id'] = existing_row['rvi_id']
 
@@ -657,7 +656,7 @@ class VirtualizationEventHandler:
 
         # Only touch the database if something changed.
         if new_values_array:
-            new_values = string.join(new_values_array, ', ')
+            new_values = ', '.join(new_values_array)
 
             bindings['row_id'] = existing_row['instance_id']
 
@@ -732,7 +731,7 @@ class VirtualizationEventHandler:
         if PropertyType.UUID in properties:
             uuid = properties[PropertyType.UUID]
             if uuid:
-                uuid_as_number = string.atol(uuid, 16)
+                uuid_as_number = int(uuid, 16)
 
                 if uuid_as_number == 0:
                     # If the UUID is a bunch of null bytes, we will convert it

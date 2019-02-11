@@ -17,7 +17,7 @@
 
 __all__ = []
 
-import rhn_config_management
+from . import rhn_config_management
 
 rpcClasses = {
     'config': rhn_config_management.ConfigManagement,

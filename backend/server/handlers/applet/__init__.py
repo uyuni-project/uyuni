@@ -18,7 +18,7 @@
 
 __all__ = []
 
-import applet
+from . import applet
 
 rpcClasses = {
     "applet": applet.Applet,

@@ -15,7 +15,6 @@
 #
 
 import time
-import string
 import re
 
 from spacewalk.common import rhnFlags
@@ -24,13 +23,13 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 
-from rhnLib import computeSignature
+from .rhnLib import computeSignature
 
 
 def splitProxyAuthToken(token):
     """ given a token:hostname, split it into a token-list, hostname """
 
-    token = string.split(token, ':')
+    token = token.split(':')
     hostname = ''
     if len(token) > 5:
         hostname = token[-1]
@@ -126,7 +125,7 @@ def auth_proxy():
     #     "token1:hostname1,token2:hostname2" the first tuple is the first
     #     proxy hit.
 
-    tokens = string.split(rhnFlags.get('X-RHN-Proxy-Auth'), ',')
+    tokens = rhnFlags.get('X-RHN-Proxy-Auth').split(',')
     tokens = [token for token in tokens if token]
 
     for auth_token in tokens:

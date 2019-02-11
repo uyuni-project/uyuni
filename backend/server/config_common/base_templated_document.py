@@ -18,7 +18,6 @@
 
 import re
 import sys
-import string
 
 from spacewalk.common.rhnLog import log_error
 
@@ -93,7 +92,7 @@ class TemplatedDocument(BaseTemplatedDocument):
 
     def _repl_func(self, match_object):
         funcname = match_object.groups()[0]
-        funcname = string.strip(funcname)
+        funcname = funcname.strip()
         fname, params, defval = self.parse_func_name(funcname)
         return self.call(fname, params, defval)
 
@@ -112,15 +111,15 @@ class TemplatedDocument(BaseTemplatedDocument):
 
         if fname[-1] == ')':
             # Params are present
-            i = string.rfind(fname, '(')
+            i = fname.rfind('(')
             if i < 0:
                 raise ValueError("Missing (")
 
             params = fname[i + 1:-1]
-            fname = string.strip(fname[:i])
+            fname = fname[:i].strip()
 
             # Parse the params
-            params = list(map(self.unquote, [_f for _f in string.split(params, ',') if _f]))
+            params = list(map(self.unquote, [_f for _f in params.split(',') if _f]))
 
         # Validate the function name
         if not self.funcname_regex.match(fname):
@@ -131,7 +130,7 @@ class TemplatedDocument(BaseTemplatedDocument):
     def null_call(self, fname, params, defval):
         val = fname
         if params:
-            val = "%s(%s)" % (val, string.join(params, ', '))
+            val = "%s(%s)" % (val, ', '.join(params))
         if defval is not None:
             val = "%s = %s" % (val, defval)
         return "%s %s %s" % (self.start_delim, val, self.end_delim)
@@ -167,12 +166,12 @@ class TemplatedDocument(BaseTemplatedDocument):
     def strip(self, s):
         if s is None:
             return None
-        return string.strip(s)
+        return s.strip()
 
     def unquote(self, s):
         if s is None:
             return None
-        s = string.strip(s)
+        s = s.strip()
         if len(s) <= 1:
             # Nothing to unquote
             return s

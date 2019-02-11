@@ -17,7 +17,6 @@
 # certificate
 #
 
-import string
 import sys
 from xml.dom.minidom import parseString
 from xml.sax import SAXParseException
@@ -48,9 +47,8 @@ class Item:
 
     def __repr__(self):
         return "<%s; %s>" % (self.pretty_name,
-                             string.join(
-                                 ['%s="%s"' % (x, getattr(self, x)) for x in list(self.attributes.values())],
-                                 ', '
+                             ', '.join(
+                                 ['%s="%s"' % (x, getattr(self, x)) for x in list(self.attributes.values())]
                              ))
 
 
@@ -214,4 +212,4 @@ class SatelliteCert:
 
 
 def get_text(node):
-    return string.join([x.data for x in node.childNodes if x.nodeType == x.TEXT_NODE], "")
+    return "".join([x.data for x in node.childNodes if x.nodeType == x.TEXT_NODE])

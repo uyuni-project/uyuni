@@ -16,7 +16,6 @@
 #
 
 # system modules
-import string
 import sys
 
 from spacewalk.common.usix import raise_with_tb
@@ -278,7 +277,7 @@ class Server(ServerWrapper):
             on your system and has updated your channel subscriptions
             to reflect that.
             Your server has been automatically subscribed to the following
-            channels:\n%s\n""" % (string.join(channel_list, "\n"),)
+            channels:\n%s\n""" % ("\n".join(channel_list),)
         else:
             msg = """*** ERROR: ***
             While trying to subscribe this server to software channels:
@@ -490,7 +489,7 @@ class Server(ServerWrapper):
         if uuid is not None:
             uuid = str(uuid)
         if not uuid:
-            log_debug('Nothing to do')
+            log_debug(3, 'Nothing to do')
             return
 
         uuid = uuid[:uuid_col_length]

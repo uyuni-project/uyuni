@@ -18,7 +18,6 @@
 #
 
 import os
-import string
 import sys
 from spacewalk.common.usix import TupleType
 
@@ -365,7 +364,7 @@ class Packages(RPC_Base):
             importer.run()
         except IncompatibleArchError:
             e = sys.exc_info()[1]
-            raise_with_tb(rhnFault(50, string.join(e.args), explain=0), sys.exc_info()[2])
+            raise_with_tb(rhnFault(50, ' '.join(e.args), explain=0), sys.exc_info()[2])
         except InvalidChannelError:
             e = sys.exc_info()[1]
             raise_with_tb(rhnFault(50, str(e), explain=0), sys.exc_info()[2])
