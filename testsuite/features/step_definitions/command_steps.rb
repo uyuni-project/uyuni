@@ -162,6 +162,23 @@ Then(/^I execute spacewalk-debug on the server$/) do
   end
 end
 
+When(/^the susmanager repo file should exist on the "([^"]*)"$/) do |host|
+  step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
+end
+
+Then(/^I should see "([^"]*)", "([^"]*)" and "([^"]*)" in the repo file on the "([^"]*)"$/) do |protocol, hostname, port, target|
+  node = get_target(target)
+  hostname = hostname == "server" ? $server.full_hostname : hostname
+  base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
+  base_url = base_url.strip.split('=')[1].delete '"'
+  uri = URI.parse(base_url)
+  puts 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
+  parameters_matches = (uri.scheme == protocol && uri.host == hostname && uri.port == port.to_i)
+  if !parameters_matches
+    raise 'Some parameters are not as expected'
+  end
+end
+
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
   return_code = file_inject(node, file, File.basename(file))
