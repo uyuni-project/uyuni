@@ -181,9 +181,10 @@ public class SaltService {
 
         SALT_CLIENT = new SaltClient(SALT_MASTER_URI, new HttpAsyncClientImpl(asyncHttpClient));
         saltSSHService = new SaltSSHService(SALT_CLIENT, SaltActionChainGeneratorService.INSTANCE);
-        defaultBatch = Batch.asAmount(ConfigDefaults.get().getSaltBatchSize())
-                .delayed(ConfigDefaults.get().getSaltBatchDelay()
-        );
+        defaultBatch = Batch.custom().withBatchAsAmount(ConfigDefaults.get().getSaltBatchSize())
+                        .withDelay(ConfigDefaults.get().getSaltBatchDelay())
+                        .withPresencePingTimeout(ConfigDefaults.get().getSaltPresencePingTimeout())
+                        .build();
     }
 
     /**
