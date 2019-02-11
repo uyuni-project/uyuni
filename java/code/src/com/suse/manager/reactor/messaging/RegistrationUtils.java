@@ -303,7 +303,8 @@ public class RegistrationUtils {
                 )
         );
 
-        // this is only needed for "special" cases like RES6 that has multiple architectures in one product.
+        // this is needed for "special" cases like RES6 that has multiple architectures in one product, or in case an
+        // activation key specifies a base channel for an incorrect arch
         Set<Channel> compatibleChannels = unfilteredChannels.stream()
                 .filter(
                     channel -> channel.getChannelArch().getCompatibleServerArches().contains(server.getServerArch()))
