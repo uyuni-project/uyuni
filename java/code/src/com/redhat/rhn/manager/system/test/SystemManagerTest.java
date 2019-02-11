@@ -30,6 +30,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
@@ -113,6 +114,8 @@ import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -232,6 +235,28 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
         assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
         assertFalse(formulaValues.exists());
+    }
+
+    public void testEmptyFormulaDataCleanUp() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        String minionId = minion.getMinionId();
+
+        String formulaName = "test-formula";
+        File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
+        FormulaFactory.saveServerFormulas(minionId, singletonList(formulaName));
+        try (FileChannel outChan = new FileOutputStream(new File(FormulaFactory.getServerDataFile()), true).getChannel()) {
+            outChan.truncate(0);
+        }
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).deleteKey(minionId);
+        }});
+        SystemManager.deleteServer(user, minion.getId());
+
+        assertTrue(FormulaFactory.getFormulasByMinionId(minionId).isEmpty());
+        assertFalse(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionId).isPresent());
+        assertFalse(formulaValues.exists());
+        assertEquals("{}", FileUtils.readStringFromFile(FormulaFactory.getServerDataFile()));
     }
 
     public void testDeleteVirtualServer() throws Exception {

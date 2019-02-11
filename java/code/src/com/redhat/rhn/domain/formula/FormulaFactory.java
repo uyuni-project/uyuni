@@ -454,7 +454,9 @@ public class FormulaFactory {
             serverFormulas = new HashMap<>();
         }
         else {
-            serverFormulas = GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class);
+            serverFormulas = Optional
+                    .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
+                    .orElse(new HashMap());
         }
 
         // Remove formula data for unselected formulas
