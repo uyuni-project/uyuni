@@ -1,3 +1,5 @@
+- prevent an error when onboarding a RES 6 minion (bsc#1124794)
+
 -------------------------------------------------------------------
 Fri Feb 01 15:11:21 CET 2019 - mc@suse.de
 
