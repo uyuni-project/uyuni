@@ -57,13 +57,11 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -83,7 +81,6 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
-
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -167,7 +164,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             }};
 
     private ActivationKeySupplier ACTIVATION_KEY_SUPPLIER = (contactMethod) -> {
-        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
+        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setBaseChannel(baseChannel);
         key.setOrg(user.getOrg());
@@ -1364,8 +1361,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel baseChannelX8664 = DistUpgradeManagerTest
                 .createTestBaseChannel(channelFamily, channelProduct, channelArch);
         SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product, true);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel channel3 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         channel2.setParentChannel(baseChannelX8664);
         channel3.setParentChannel(baseChannelX8664);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product, true);
