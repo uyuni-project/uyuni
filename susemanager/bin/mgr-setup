@@ -52,8 +52,7 @@ SATELLITE_DB_SID=""
 SATELLITE_FQDN=""
 SATELLITE_IP=""
 
-SATELLITE_IS_RH=0
-FROMVERSION="undefined"
+FROMVERSION="3.2"
 KEYFILE="/root/migration-key"
 DBDUMPFILE="susemanager.dmp.gz"
 SERVER_CRT="/etc/pki/tls/certs/spacewalk.crt"
@@ -79,7 +78,7 @@ helper script to do migration or setup of SUSE Manager
   -m             full migration of an existing SUSE Manager
   -r             only sync remote files (useful for migration only)
   -f             version of SUSE Manager to migrate from.
-                 Must be one of: 2.1 3.0 3.1 satellite
+                 Must be one of: 3.1 or 3.2
                  NOTE: Needs to be specified before '-r' or '-m'
   -s             fresh setup of the SUSE Manager installation
   -w             wait between steps (in case you do -r -m)
@@ -393,20 +392,40 @@ upgrade_schema() {
     fi
 }
 
-copy_remote_files_common() {
-    # copy only new files (new kickstart profiles, snippets, trigger, etc.)
-    echo "`date +"%H:%M:%S"`   Copy /var/lib/cobbler ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/ >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /var/lib/rhn/kickstarts ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/ >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /srv/tftpboot ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/srv/tftpboot /srv >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /root/ssl-build ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/ssl-build /root/ >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /var/log/rhn ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/log/rhn /var/log >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /var/cache/rhn ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/cache/rhn/ /var/cache/rhn >> $RSYNC_LOG
+copy_remote_files() {
+    SUMAFILES="/etc/salt
+               /root/ssl-build
+               /srv/formula_metadata
+               /srv/pillar
+               /srv/salt
+               /srv/susemanager
+               /srv/tftpboot
+               /srv/www/htdocs/pub
+               /srv/www/os-images
+               /var/cache/rhn
+               /var/cache/salt
+               /var/lib/cobbler
+               /var/lib/Kiwi
+               /var/lib/rhn
+               /var/lib/salt
+               /var/log/rhn
+               /var/spacewalk"
+
+    echo "Copy files from old SUSE Manager..."
+
+    for DIR in $SUMAFILES; do
+        DEST=`dirname "$DIR"`
+        ssh -i $KEYFILE root@$SATELLITE_IP "test -d $DIR"
+        if [ $? -eq 0 ]; then
+            echo "`date +"%H:%M:%S"`   Copy $DIR ..."
+            rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:$DIR $DEST >> $RSYNC_LOG
+        else
+            echo "`date +"%H:%M:%S"`   Skipping non-existing $DIR ..."
+        fi
+    done
+
+    echo "`date +"%H:%M:%S"`   Copy /root/.ssh ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/.ssh/ /root/.ssh.new >> $RSYNC_LOG
 
     echo "`date +"%H:%M:%S"`   Copy certificates ..."
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
@@ -414,44 +433,14 @@ copy_remote_files_common() {
     scp -i $KEYFILE root@$SATELLITE_IP:$SERVER_KEY /etc/apache2/ssl.key/server.key
     ln -sf ../../../apache2/ssl.crt/server.crt /etc/pki/tls/certs/spacewalk.crt
     ln -sf ../../../apache2/ssl.key/server.key /etc/pki/tls/private/spacewalk.key
-
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/rhn/rhn.conf /etc/rhn/rhn.conf-$FROMVERSION
+
+    # assert correct ownership and permissions
     chown -R tomcat:tomcat /var/lib/rhn/kickstarts
     chmod 600 /etc/pki/spacewalk/jabberd/server.pem
     chown jabber:jabber /etc/pki/spacewalk/jabberd/server.pem
     chown wwwrun:tftp /srv/tftpboot
     chmod 750 /srv/tftpboot
-}
-
-copy_remote_files_redhat() {
-    echo "Copy files from old satellite..."
-    # maybe add -H for hardlinks?
-    rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/satellite/ /var/spacewalk/ >> $RSYNC_LOG
-    chown -R wwwrun.www /var/spacewalk
-    rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/ >> $RSYNC_LOG
-}
-
-copy_remote_files_suse() {
-    echo "Copy files from old SUSE Manager..."
-    # maybe add -H for hardlinks?
-    echo "`date +"%H:%M:%S"`   Copy /var/spacewalk ..."
-    rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/spacewalk/ /var/spacewalk/ >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /srv/www/htdocs/pub ..."
-    rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/ >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /root/.ssh ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/.ssh/ /root/.ssh.new >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /srv/www/os-images ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/srv/www/os-images /srv/www/ >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /srv/susemanager ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/srv/susemanager /srv/ >> $RSYNC_LOG
-    echo "`date +"%H:%M:%S"`   Copy /srv/salt ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/srv/salt /srv/ >> $RSYNC_LOG
-    ssh -i $KEYFILE root@$SATELLITE_IP "test -d /var/lib/Kiwi"
-    if [ $? -eq 0 ]; then
-        echo "`date +"%H:%M:%S"`   Copy /var/lib/Kiwi ..."
-        rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/lib/Kiwi /var/lib/ >> $RSYNC_LOG
-    fi
-
     chown -R wwwrun.www /var/spacewalk
     ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
     update-ca-certificates
@@ -506,27 +495,11 @@ remove_ssh_key() {
 
 check_remote_type() {
     case "$FROMVERSION" in
-        2.1)
-            echo "Migrating from remote system SUSE Manager 2.1"
-            ssh -i $KEYFILE root@$SATELLITE_IP "test -e /var/lib/spacewalk/scc/migrated"
-            if [ $? -eq 0 ]; then
-                echo "Remote system is already migrated to SCC. Good."
-            else
-                echo
-                echo "Remote system has not yet been migrated to SCC! Exit."
-                echo
-                exit 1
-            fi
-            ;;
-        3.0)
-            echo "Migrating from remote system SUSE Manager 3.0"
-            ;;
         3.1)
             echo "Migrating from remote system SUSE Manager 3.1"
             ;;
-        satellite)
-            echo "Migrating from remote system Red Hat Satellite"
-            SATELLITE_IS_RH=1
+        3.2)
+            echo "Migrating from remote system SUSE Manager 3.2"
             ;;
         *)
             echo
@@ -562,16 +535,6 @@ check_remote_type() {
     fi
 
     echo "Found $SERVER_CRT and $SERVER_KEY on source system."
-}
-
-copy_remote_files() {
-    if [ $SATELLITE_IS_RH = "1" ];then
-        copy_remote_files_redhat
-        mv /var/spacewalk/redhat /var/spacewalk/packages
-    else
-        copy_remote_files_suse
-    fi
-    copy_remote_files_common
 }
 
 postgres_fast() {
@@ -654,6 +617,7 @@ do_migration() {
         postgres_safe
     fi
 
+    echo "Upgrade database schema..."
     upgrade_schema
     wait_step
 
