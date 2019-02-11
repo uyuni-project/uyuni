@@ -18,7 +18,7 @@
 
 import os
 
-import xmlSource
+from . import xmlSource
 from spacewalk.common.rhnLib import hash_object_id
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.channelImport import ChannelImport, ChannelFamilyImport

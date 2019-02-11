@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.domain.reactor;
 
-import static java.util.stream.Collectors.toList;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.log4j.Logger;
@@ -74,13 +72,9 @@ public class SaltEventFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Long> deleteSaltEvents(Collection<Long> ids) {
-        List<Object[]> idObjects = singleton.listObjectsByNamedQuery(
+        return singleton.listObjectsByNamedQuery(
                 "SaltEvent.deleteSaltEvents",
                 new HashMap() { { put("ids", ids); } }
         );
-
-        return idObjects.stream()
-                .map(o -> (Long) o[0])
-                .collect(toList());
     }
 }

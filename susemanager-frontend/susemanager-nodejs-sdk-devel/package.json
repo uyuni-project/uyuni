@@ -44,6 +44,6 @@
   },
   "scripts": {
     "clean": "rm -rf node_modules",
-    "postinstall": "rm -f susemanager-nodejs-modules.tar.gz && (tar czf susemanager-nodejs-modules.tar.gz node_modules/)"
+    "postinstall": "test -n \"$NOYARNPOSTINSTALL\" || (rm -f susemanager-nodejs-modules.tar.gz && (tar czf susemanager-nodejs-modules.tar.gz node_modules/))"
   }
 }

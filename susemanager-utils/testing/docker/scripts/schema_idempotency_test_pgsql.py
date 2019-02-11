@@ -107,7 +107,7 @@ def manage_postgresql(action):
     actions = ['start', 'stop']
     if action not in actions:
         raise "Invalid action for the PostgreSQL service"
-    if run_command("/usr/bin/su - postgres -c '/usr/lib/postgresql-init %s'" % action):
+    if run_command("/usr/bin/su - postgres -c '/usr/lib/postgresql10/bin/pg_ctl %s'" % action):
         print("PostgreSQL %sed" % action)
     else:
         raise RuntimeError("Could not %s PostgreSQL!" % action)

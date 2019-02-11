@@ -44,7 +44,7 @@ def is_sha256_capable():
     mi = ts.dbMatch('Providename', 'spacewalk-schema')
     cmp = -1
     try:
-        h = mi.next()
+        h = next(mi)
         cmp = rpm.labelCompare([h['name'], h['version'], h['release']],
                                [h['name'], '0.8.1', '1'])
     except StopIteration:
@@ -86,7 +86,7 @@ def package_query(options, bind_path=False):
 
 
 def check_db_vs_disk(options):
-    for k in report_msg.keys():
+    for k in list(report_msg.keys()):
         report[k] = 0
     query = package_query(options)
     h = rhnSQL.prepare(query)
@@ -228,7 +228,7 @@ def restore_file_path(file, row):
     cleanup = True
     try:  # 1st, make dirs needed
         os.makedirs(new_path.rsplit('/', 1)[0])
-    except OSError, e:
+    except OSError as e:
         if e.errno != 17:  # something broke up
             log(0, "File path restoration failed: %s" % row['path'])
             return 1
@@ -242,7 +242,7 @@ def restore_file_path(file, row):
         if cleanup == True:
             try:
                 os.removedirs(new_path.rsplit('/', 1)[0])
-            except OSError, e:
+            except OSError as e:
                 if e.errno != 39:
                     log(0, "Could not rollback file path restoration: %s" % row['path'] or '')
                     return 1
@@ -255,7 +255,7 @@ def restore_file_path(file, row):
             if os.path.isfile(backup_path):
                 os.remove(backup_path)
             os.removedirs(backup_path.rsplit('/', 1)[0])
-    except OSError, e:
+    except OSError as e:
         if e.errno == 2:
             log(2, "File %s%s was removed by someone else but transaction has been successfully completed" %
                 (prefix, row['path']))
@@ -299,7 +299,7 @@ def check_disk_checksum(abs_path, checksum_type, db_checksum):
 
 
 def check_disk_vs_db(disk_content=None, db_content=None):
-    for k in report_msg.keys():
+    for k in list(report_msg.keys()):
         report[k] = 0
     query = package_query(options, bind_path=True)
     h = rhnSQL.prepare(query)
@@ -379,7 +379,7 @@ def log(level, *args):
     if not verbose:
         verbose = 0
     if verbose >= level:
-        print (', '.join(map(lambda i: str(i), args)))
+        print((', '.join([str(i) for i in args])))
 
 if __name__ == '__main__':
 

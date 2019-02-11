@@ -95,7 +95,7 @@ def __getMinionsByChannel(labels):
     server_list = h.fetchall_dict()
     if not server_list:
         return []
-    server_ids = map(lambda s: s['server_id'], server_list)
+    server_ids = [s['server_id'] for s in server_list]
     return server_ids;
 
 

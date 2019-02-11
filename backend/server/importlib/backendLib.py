@@ -19,7 +19,12 @@
 import time
 import string
 
-from UserDict import UserDict
+try:
+    #  python 2
+    from UserDict import UserDict
+except ImportError:
+    #  python3
+    from collections import UserDict
 from spacewalk.common.usix import ListType, StringType, DictType, IntType, UnicodeType
 
 # A function that formats a UNIX timestamp to the session's format
@@ -72,12 +77,12 @@ class Table:
     keywords = {
         'fields': DictType,
         'pk': ListType,
-        'attribute': StringType,
+        'attribute': str,
         'map': DictType,
         'nullable': ListType,  # Will become a hash eventually
         'severityHash': DictType,
         'defaultSeverity': IntType,
-        'sequenceColumn': StringType,
+        'sequenceColumn': str,
     }
 
     def __init__(self, name, **kwargs):
@@ -208,7 +213,7 @@ class BaseTableLookup:
         # Now put the queries in self.sqlqueries, keyed on the list of 0/1
         for i in range(len(keys)):
             key = tuple(keys[i])
-            query = string.join(queries[i], ' and ')
+            query = ' and '.join(queries[i])
             self.whereclauses[key] = query
 
     def _selectQueryKey(self, value):
@@ -275,8 +280,7 @@ class TableUpdate(BaseTableLookup):
                 self.blob_fields.append(field)
             else:
                 self.otherfields.append(field)
-        self.updateclause = string.join(
-            ["%s = :%s" % (x, x) for x in self.otherfields], ', ')
+        self.updateclause = ', '.join(["%s = :%s" % (x, x) for x in self.otherfields])
         # key
         self.firstkey = None
         for pk in self.pks:
@@ -354,7 +358,7 @@ class TableUpdate(BaseTableLookup):
     def _update_blobs(self, blobValuesHash):
         # Now update BLOB fields
         template = "select %s from %s where %s for update"
-        blob_fields_string = string.join(self.blob_fields, ", ")
+        blob_fields_string = ", ".join(self.blob_fields)
         for key, val in list(blobValuesHash.items()):
             statement = template % (blob_fields_string, self.table.name,
                                     self.whereclauses[key])
@@ -436,8 +440,8 @@ class TableInsert(TableUpdate):
 
     def _buildQuery(self, key):
         q = self.queryTemplate % (self.table.name,
-                                  string.join(self.insert_fields, ', '),
-                                  string.join(self.insert_values, ', '))
+                                  ', '.join(self.insert_fields),
+                                  ', '.join(self.insert_values))
         return q
 
     def query(self, values):
@@ -490,19 +494,13 @@ def sanitizeValue(value, datatype):
             # and not depend on Oracle converting
             # empty strings to NULLs -- PostgreSQL
             # does not do this
-        elif isinstance(value, UnicodeType):
-            value = UnicodeType.encode(value, 'utf-8')
         if len(value) > datatype.limit:
             value = value[:datatype.limit]
             # ignore incomplete characters created after truncating
-            value = value.decode('utf-8', 'ignore')
-            value = value.encode('utf-8')
         return value
     if isinstance(datatype, DBblob):
         if value is None:
             value = ''
-        if isinstance(value, UnicodeType):
-            value = UnicodeType.encode(value, 'utf-8')
         return str(value)
     if value in [None, '']:
         return None

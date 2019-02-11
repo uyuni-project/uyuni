@@ -55,10 +55,10 @@ from spacewalk.satellite_tools.repo_plugins import yum_src
 from spacewalk.server import taskomatic, rhnPackageUpload
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 
-from syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
+from spacewalk.satellite_tools.syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
-_ = translation.ugettext
+_ = translation.gettext
 hostname = socket.gethostname()
 if '.' not in hostname:
     hostname = socket.getfqdn()
@@ -1882,11 +1882,11 @@ class RepoSync(object):
             """)
             query.execute(**product)
             row = query.fetchone_dict()
-            if not row or not row.has_key('id'):
+            if not row or 'id' not in row:
                 get_id_q = rhnSQL.prepare("""SELECT sequence_nextval('suse_prod_file_id_seq') as id FROM dual""")
                 get_id_q.execute()
                 row = get_id_q.fetchone_dict() or {}
-                if not row or not row.has_key('id'):
+                if not row or 'id' not in row:
                     print("no id for sequence suse_prod_file_id_seq")
                     continue
 
@@ -1923,7 +1923,7 @@ class RepoSync(object):
 
             query.execute(**params)
             packrow = query.fetchone_dict()
-            if not packrow or not packrow.has_key('id'):
+            if not packrow or 'id' not in packrow:
                 # package not in DB
                 continue
 
@@ -1958,7 +1958,7 @@ class RepoSync(object):
                           arch=package['arch'], pkgid=package['pkgid'],
                           channel_id=int(self.channel['id']))
             row = query.fetchone_dict() or None
-            if not row or not row.has_key('id'):
+            if not row or 'id' not in row:
                 # package not found in DB
                 continue
             pkgid = int(row['id'])
@@ -1996,7 +1996,7 @@ class RepoSync(object):
                     kadd.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[keyword])
                     self.regen = True
 
-            if package.has_key('eula'):
+            if 'eula' in package:
                 eula_id = suseEula.find_or_create_eula(package['eula'])
                 rhnPackage.add_eula_to_package(
                   package_id=pkgid,

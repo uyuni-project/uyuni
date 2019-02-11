@@ -54,11 +54,11 @@ if __name__ == '__main__':
         h.execute()
         row = h.fetchone_dict()
         if row:
-            print row['evrsimple']
+            print(row['evrsimple'])
     except KeyboardInterrupt:
         sys.stderr.write("\nUser interrupted process.\n")
         sys.exit(0)
-    except (rhnSQL.SQLError, rhnSQL.SQLSchemaError, rhnSQL.SQLConnectError), e:
+    except (rhnSQL.SQLError, rhnSQL.SQLSchemaError, rhnSQL.SQLConnectError) as e:
         # really a stub for better exception handling in the future.
         sys.stderr.write("SQL error occurred, traceback follows...\n")
         raise

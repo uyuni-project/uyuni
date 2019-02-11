@@ -16,7 +16,12 @@
 #
 
 import re
-import StringIO
+try:
+    #  python2
+    import StringIO as StringIO
+except ImportError:
+    #  python3
+    import io as StringIO
 import simplejson as json
 import shutil
 import sys
@@ -174,7 +179,7 @@ def main():
 
         # Channels
         if 'channel' in config:
-            for ch,repo in config['channel'].iteritems():
+            for ch,repo in config['channel'].items():
                  if not isinstance(repo, list):
                     systemExit(
                         1,
@@ -214,7 +219,7 @@ def main():
         log(0, "|   Channel Label   |   Repository   |")
         log(0, "======================================")
 
-        for ch,repo in d_ch_repo_sync.items():
+        for ch,repo in list(d_ch_repo_sync.items()):
             if repo:
                 log(0, " %s : %s" % (ch,", ".join(repo)))
             else:
@@ -239,7 +244,7 @@ def main():
 
     total_time = datetime.timedelta()
     ret_code = 0
-    for ch,repo in d_ch_repo_sync.items():
+    for ch,repo in list(d_ch_repo_sync.items()):
 
         log(0, "======================================")
         log(0, "| Channel: %s" % ch)
@@ -281,9 +286,9 @@ if __name__ == '__main__':
         sys.exit(abs(main() or 0))
     except KeyboardInterrupt:
         systemExit(1, "\nProcess has been interrupted.")
-    except SystemExit, e:
+    except SystemExit as e:
         releaseLOCK()
         sys.exit(e.code)
-    except Exception, e:
+    except Exception as e:
         releaseLOCK()
         raise

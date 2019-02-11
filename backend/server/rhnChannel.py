@@ -16,7 +16,6 @@
 #
 
 import time
-import string
 import rpm
 import sys
 try:
@@ -37,9 +36,9 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
 # local module
-import rhnUser
-import rhnSQL
-import rhnLib
+from . import rhnUser
+from . import rhnSQL
+from . import rhnLib
 
 
 class NoBaseChannelError(Exception):
@@ -994,7 +993,7 @@ def channels_for_release_arch(release, server_arch, org_id=-1, user_id=None):
     if not org_id:
         org_id = -1
 
-    org_id = string.strip(str(org_id))
+    org_id = str(org_id).strip()
     log_debug(3, release, server_arch, org_id)
 
     # Can raise BaseChannelDeniedError or InvalidServerArchError

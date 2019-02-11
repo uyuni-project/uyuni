@@ -16,10 +16,10 @@
 # Converts headers to the intermediate format
 #
 
-import headerSource
+from . import headerSource
 import time
-from importLib import Channel
-from backendLib import gmtime, localtime
+from .importLib import Channel
+from .backendLib import gmtime, localtime
 from spacewalk.common.usix import IntType, UnicodeType
 from spacewalk.common.stringutils import to_string
 

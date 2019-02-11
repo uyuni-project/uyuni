@@ -28,7 +28,7 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   if host == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif host == 'ssh-minion' or host == 'ceos-minion'
+  elsif host == 'ssh-minion' or host == 'ceos-minion' or host == 'ceos-ssh-minion'
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -145,6 +145,23 @@ Then(/^I execute spacewalk-debug on the server$/) do
   command_output = `#{cmd}`
   unless $CHILD_STATUS.success?
     raise "Execute command failed: #{$ERROR_INFO}: #{command_output}"
+  end
+end
+
+When(/^the susmanager repo file should exist on the "([^"]*)"$/) do |host|
+  step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
+end
+
+Then(/^I should see "([^"]*)", "([^"]*)" and "([^"]*)" in the repo file on the "([^"]*)"$/) do |protocol, hostname, port, target|
+  node = get_target(target)
+  hostname = hostname == "server" ? $server.full_hostname : hostname
+  base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
+  base_url = base_url.strip.split('=')[1].delete '"'
+  uri = URI.parse(base_url)
+  puts 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
+  parameters_matches = (uri.scheme == protocol && uri.host == hostname && uri.port == port.to_i)
+  if !parameters_matches
+    raise 'Some parameters are not as expected'
   end
 end
 

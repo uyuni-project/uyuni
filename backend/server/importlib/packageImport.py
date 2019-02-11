@@ -19,10 +19,10 @@
 import rpm
 import sys
 import os.path
-from importLib import GenericPackageImport, IncompletePackage, \
+from .importLib import GenericPackageImport, IncompletePackage, \
     Import, InvalidArchError, InvalidChannelError, \
     IncompatibleArchError
-from mpmSource import mpmBinaryPackage
+from .mpmSource import mpmBinaryPackage
 from spacewalk.common import rhn_pkg
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.server import taskomatic
@@ -255,7 +255,7 @@ class PackageImport(ChannelPackageSubscription):
             for dep in depList:
                 nv = []
                 for f in ('name', 'version'):
-                    nv.append(dep[f])
+                    nv.append(dep[f].decode("utf-8"))
                     del dep[f]
                 nv = tuple(nv)
                 dep['capability'] = nv
@@ -270,6 +270,7 @@ class PackageImport(ChannelPackageSubscription):
             f['capability'] = nv
             if nv not in self.capabilities:
                 self.capabilities[nv] = None
+            f['checksum'] = self._fix_encoding(f['checksum'])
             fchecksumTuple = (f['checksum_type'], f['checksum'])
             if fchecksumTuple not in self.checksums:
                 self.checksums[fchecksumTuple] = None
@@ -278,7 +279,7 @@ class PackageImport(ChannelPackageSubscription):
         unique_package_changelog_hash = {}
         unique_package_changelog = []
         for changelog in package['changelog']:
-            key = (changelog['name'], changelog['time'], changelog['text'])
+            key = (self._fix_encoding(changelog['name']), self._fix_encoding(changelog['time']), self._fix_encoding(changelog['text']))
             if key not in unique_package_changelog_hash:
                 self.changelog_data[key] = None
                 unique_package_changelog.append(changelog)

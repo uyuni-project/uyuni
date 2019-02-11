@@ -27,14 +27,14 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnChannel, rhnUser, rhnSQL, rhnLib, rhnAction, \
     rhnVirtualization
-from search_notify import SearchNotify
+from .search_notify import SearchNotify
 
 # Local Modules
-import server_kickstart
-import server_lib
-import server_token
-from server_certificate import Certificate, gen_secret
-from server_wrapper import ServerWrapper
+from . import server_kickstart
+from . import server_lib
+from . import server_token
+from .server_certificate import Certificate, gen_secret
+from .server_wrapper import ServerWrapper
 
 
 class Server(ServerWrapper):

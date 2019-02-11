@@ -16,8 +16,8 @@
 # Converts headers to the intermediate format
 #
 
-import headerSource
-import debPackage
+from . import headerSource
+from . import debPackage
 
 
 class mpmBinaryPackage(headerSource.rpmBinaryPackage):

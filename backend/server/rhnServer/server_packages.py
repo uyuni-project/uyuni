@@ -27,7 +27,7 @@ from spacewalk.common import rhn_rpm
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL, rhnAction
-from server_lib import snapshot_server, check_entitlement
+from .server_lib import snapshot_server, check_entitlement
 
 UNCHANGED = 0
 ADDED = 1
@@ -466,7 +466,7 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
         # No package to associate, continue with next
         return
 
-    sigkeys = rhn_rpm.RPM_Header(header).signatures
+    sigkeys = header.signatures
     key_id = None  # _key_ids(sigkeys)[0]
     for sig in sigkeys:
         if sig['signature_type'] in ['gpg', 'pgp']:

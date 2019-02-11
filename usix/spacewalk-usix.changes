@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 08 17:39:36 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.3-1
+- Fix StringType as str on Python 3
+
+-------------------------------------------------------------------
 Fri Oct 26 10:45:34 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.2-1

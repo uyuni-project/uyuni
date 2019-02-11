@@ -22,7 +22,6 @@ import hashlib
 import time
 import random
 import socket
-import string
 try:
     #  python 2
     import xmlrpclib
@@ -33,8 +32,8 @@ except ImportError:
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.stringutils import to_string
-from server_lib import getServerSecret
-from server_lib import check_entitlement_by_machine_id
+from .server_lib import getServerSecret
+from .server_lib import check_entitlement_by_machine_id
 
 def gen_secret():
     """ Generate a secret """
@@ -155,7 +154,7 @@ class Certificate:
     def reload(self, text):
         """ load data from a text certificate passed on by a client """
         log_debug(4)
-        text_id = string.strip(text)
+        text_id = text.strip()
         if not text_id:
             return -1
         # Now decode this certificate

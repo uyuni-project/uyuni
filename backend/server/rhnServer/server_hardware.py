@@ -18,7 +18,6 @@
 #
 
 import socket
-import string
 import sys
 import time
 import uuid
@@ -34,7 +33,7 @@ from spacewalk.common import rhnFlags
 from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
 
 # Local imports
-import server_class
+from .server_class import *
 
 def kudzu_mapping(dict=None):
     """ this is a class we use to get the mapping for a kudzu entry """
@@ -51,7 +50,7 @@ def kudzu_mapping(dict=None):
     # we need to have a bus type to be able to continue
     if not hw_bus:
         return mapping
-    hw_bus = string.lower(hw_bus)
+    hw_bus = hw_bus.lower()
     extra = {}
     if hw_bus == "ddc":
         extra = {
@@ -317,7 +316,7 @@ class Device(GenericDevice):
         try:
             for k in list(self.data.keys()):
                 if type(self.data[k]) == type("") and len(self.data[k]):
-                    self.data[k] = string.strip(self.data[k])
+                    self.data[k] = self.data[k].strip()
                     if not len(self.data[k]):
                         continue
                     if self.data[k][0] == '"' and self.data[k][-1] == '"':
@@ -900,7 +899,7 @@ class SystemInformation():
         guestid = guest.getid()
         if not hid:
             # create a new host entry
-            host = server_class.Server(guest.user, hw.get('arch'))
+            host = Server(guest.user, hw.get('arch'))
             host.server["name"] = hw.get('name')
             host.server["os"] = hw.get('os')
             host.server["release"] = hw.get('type')
@@ -925,7 +924,7 @@ class SystemInformation():
             host.reload(hid)
             log_debug(4, "New host created: ", host)
         else:
-            host = server_class.Server(None)
+            host = Server(None)
             host.reload(hid)
             host.checkin(commit=0)
             log_debug(4, "Found host: ", host)

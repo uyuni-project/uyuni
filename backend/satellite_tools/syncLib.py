@@ -33,7 +33,7 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_time, log_clean
 from spacewalk.common.fileutils import createPath, setPermsPath
 
-import messages
+from . import messages
 
 EMAIL_LOG = None
 

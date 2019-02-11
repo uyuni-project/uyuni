@@ -19,13 +19,13 @@
 import os
 import shutil
 from spacewalk.common.usix import IntType, StringType, InstanceType
-from UserDict import UserDict
 try:
     #  python 2
+    from UserDict import UserDict
     from UserList import UserList
 except ImportError:
     #  python3
-    from collections import UserList
+    from collections import UserList, UserDict
 
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.fileutils import createPath
@@ -789,11 +789,10 @@ class Import:
     def _fix_encoding(self, text):
         if text is None:
             return None
-        try:
-            return text.decode('utf8')
-        except UnicodeDecodeError:
-            return text.decode('iso8859-1')
-
+        elif isinstance(text, str):
+            return text
+        elif isinstance(text, bytes):
+            return text.decode("utf8")
 
 # Any package processing import class
 class GenericPackageImport(Import):

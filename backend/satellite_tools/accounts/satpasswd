@@ -21,10 +21,10 @@ from spacewalk.server import rhnSQL, rhnUser
 
 
 def print_help():
-    print "Usage: satpasswd [OPTIONS] user\n"
-    print "Options:"
-    print "\t-h, --help\tPrint this help message."
-    print "\t-s, --stdin\tRead the password from standard input."
+    print("Usage: satpasswd [OPTIONS] user\n")
+    print("Options:")
+    print("\t-h, --help\tPrint this help message.")
+    print("\t-s, --stdin\tRead the password from standard input.")
 
 
 def read_passwd(stdin, msg):
@@ -57,22 +57,22 @@ if __name__ == '__main__':
 
     user = rhnUser.search(userIn)
     if not user:
-        print "User %s is not a valid Satellite user." % userIn
+        print("User %s is not a valid Satellite user." % userIn)
         sys.exit(1)
 
     passwordIn = read_passwd(stdin, "Password:")
     passwordCheck = read_passwd(stdin, "Retype password:")
 
     if passwordIn != passwordCheck:
-        print "Sorry, passwords do not match."
+        print("Sorry, passwords do not match.")
         sys.exit(1)
 
     if len(passwordIn) == 0:
-        print "Empty password is not permitted."
+        print("Empty password is not permitted.")
         sys.exit(1)
 
     if len(passwordIn) < CFG.MIN_PASSWD_LEN:
-        print ("User password should be at least %d characters long.") % CFG.MIN_PASSWD_LEN
+        print(("User password should be at least %d characters long.") % CFG.MIN_PASSWD_LEN)
         sys.exit(1)
 
     user.contact['password'] = rhnUser.encrypt_password(passwordIn)
