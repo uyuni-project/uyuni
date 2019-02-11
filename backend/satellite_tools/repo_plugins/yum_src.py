@@ -401,6 +401,7 @@ class ContentSource:
         # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
         if CFG.http_proxy:
             self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
+            self.proxy_hostname = self.proxy_url
         elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
             zypper_cfg = configparser.ConfigParser()
             zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
