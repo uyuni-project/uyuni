@@ -154,11 +154,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(a2);
     }
 
-    public void testActionsArchivedOnSystemDelete() throws Exception {
+    public void testActionsArchivedOnSystemDeleteUser() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
-        User admin = UserTestUtils.createUser("admin", user.getOrg().getId());
-        admin.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndReload(admin);
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
@@ -179,11 +176,26 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         }
         catch (LookupException ignored) {
         }
+    }
 
-        // Admins should see orphan actions
-        result = ActionManager.lookupAction(admin, action.getId());
+    public void testActionsArchivedOnSystemDeleteAdmin() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerTestUtils.createTestSystem(user);
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+
+        action.addServerAction(serverAction);
+        ActionManager.storeAction(action);
+
+        Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
-        assertEquals(1, (long)result.getArchived());
+
+        SystemManager.deleteServer(user, server.getId());
+        // Admins should see orphan actions
+        result = ActionManager.lookupAction(user, action.getId());
+        assertNotNull(result);
+        assertEquals(1, (long) result.getArchived());
         assertServerActionCount(action, 0);
     }
 
