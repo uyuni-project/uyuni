@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.reactor.test;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.reactor.SaltEvent;
 import com.redhat.rhn.domain.reactor.SaltEventFactory;
@@ -25,7 +26,6 @@ import org.hibernate.query.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -38,7 +38,12 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
             "INSERT INTO suseSaltEvent (id, minion_id, data) VALUES (:id, :minionId, :data)";
 
     public void testCountSaltEvents() {
-        // verify there are no salt events
+        // skip test on Oracle
+        if (ConfigDefaults.get().isOracle()) {
+            return;
+        }
+
+            // verify there are no salt events
         long saltEventsCount = SaltEventFactory.countSaltEvents();
         assertEquals(saltEventsCount, 0);
 
@@ -63,6 +68,11 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
     }
 
     public void testPopSaltEvents() {
+        // skip test on Oracle
+        if (ConfigDefaults.get().isOracle()) {
+            return;
+        }
+
         // verify there are no salt events
         long saltEventsCount = SaltEventFactory.countSaltEvents();
         assertEquals(saltEventsCount, 0);
@@ -105,6 +115,11 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
     }
 
     public void testDeleteSaltEvents() {
+        // skip test on Oracle
+        if (ConfigDefaults.get().isOracle()) {
+            return;
+        }
+
         // verify there are no salt events
         long saltEventsCount = SaltEventFactory.countSaltEvents();
         assertEquals(saltEventsCount, 0);
