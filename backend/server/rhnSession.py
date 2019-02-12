@@ -19,7 +19,6 @@
 
 import hashlib
 import time
-import string
 import sys
 
 from spacewalk.common.rhnConfig import CFG
@@ -71,10 +70,9 @@ class Session:
         secrets = self.get_secrets()
 
         ctx = hashlib.new('sha256')
-        ctx.update(string.join(secrets[:2] + [str(self.session_id)] +
-                               secrets[2:], ':'))
+        ctx.update(':'.join(secrets[:2] + [str(self.session_id)] + secrets[2:]))
 
-        return string.join(["%02x" % ord(a) for a in ctx.digest()], '')
+        return ''.join(["%02x" % ord(a) for a in ctx.digest()])
 
     def get_session(self):
         return "%sx%s" % (self.session_id, self.digest())
@@ -85,7 +83,7 @@ class Session:
         return self.uid
 
     def load(self, session):
-        arr = string.split(session, 'x', 1)
+        arr = session.split('x', 1)
         if len(arr) != 2:
             raise InvalidSessionError("Invalid session string")
 

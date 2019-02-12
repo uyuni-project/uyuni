@@ -18,7 +18,6 @@
 import os
 import hashlib
 import time
-import string
 import sys
 
 if sys.version_info[0] == 3:
@@ -89,7 +88,7 @@ def getServerID(server, fields=[]):
     archdb = ""
     archjoin = ""
     # look at the fields
-    fields = list(map(string.lower, fields))
+    fields = [f.lower() for f in fields]
     for k in fields:
         if k == "id":  # already there
             continue
@@ -361,8 +360,8 @@ def generate_random_string(length=20):
 
     devrandom.close()
 
-    result = string.join(result, '')[:length]
-    return string.lower(result)
+    result = ''.join(result)[:length]
+    return result.lower()
 
 if __name__ == '__main__':
     rhnSQL.initDB()

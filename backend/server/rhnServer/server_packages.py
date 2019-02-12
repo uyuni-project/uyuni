@@ -17,7 +17,6 @@
 # profiles.
 #
 
-import string
 import sys
 import time
 from spacewalk.common.usix import DictType
@@ -48,7 +47,7 @@ class dbPackage:
             return None
         if ('arch' not in pdict) or (pdict['arch'] is None):
             pdict['arch'] = ""
-        if string.lower(str(pdict['epoch'])) == "(none)" or pdict['epoch'] == "" or pdict['epoch'] is None:
+        if str(pdict['epoch']).lower() == "(none)" or pdict['epoch'] == "" or pdict['epoch'] is None:
             pdict['epoch'] = None
         else:
             pdict['epoch'] = str(pdict['epoch'])

@@ -18,7 +18,6 @@
 # system modules
 import sys
 import base64
-import string
 try:
     #  python 2
     import xmlrpclib
@@ -43,11 +42,11 @@ from spacewalk.common.rhnTB import Traceback
 from spacewalk.server.auditlog import auditlog_xmlrpc, AuditLogException
 
 # local modules
-import rhnRepository
-import rhnImport
-import rhnSQL
-import rhnCapability
-import apacheAuth
+from . import rhnRepository
+from . import rhnImport
+from . import rhnSQL
+from . import rhnCapability
+from . import apacheAuth
 
 # Exceptions
 
@@ -396,7 +395,7 @@ class apacheRequest:
                           extra="Error \"%s\" encoding response = %s" % (e, response),
                           severity="notification")
                 return apache.HTTP_INTERNAL_SERVER_ERROR
-            except:
+            except Exception as exc:
                 # Uncaught exception; signal the error
                 Traceback("apacheHandler.response", self.req,
                           severity="unhandled")
@@ -406,7 +405,7 @@ class apacheRequest:
         output.process(response)
         # Copy the rest of the fields
         for k, v in list(output.headers.items()):
-            if string.lower(k) == 'content-type':
+            if k.lower() == 'content-type':
                 # Content-type
                 self.req.content_type = v
             else:
@@ -476,7 +475,7 @@ class apachePOST(apacheRequest):
                              (self.server,))
 
         try:
-            classname, funcname = string.split(method, '.', 1)
+            classname, funcname = method.split('.', 1)
         except:
             raise_with_tb(UnknownXML("method '%s' doesn't have a class and function" %
                              (method,)), sys.exc_info()[2])
@@ -605,7 +604,7 @@ class GetHandler(apacheRequest):
             response = f.getxml()
             self.response(response)
             return apache.HTTP_NOT_FOUND
-        except Exception:
+        except Exception as exc:
             e = sys.exc_info()[1]
             rhnSQL.rollback()
             # otherwise we do a full stop
@@ -618,7 +617,7 @@ class GetHandler(apacheRequest):
         # Returns the method name and params for this call
 
         # Split the request into parts
-        array = string.split(self.req.path_info, '/')
+        array = self.req.path_info.split('/')
         if len(array) < 4:
             log_error("Invalid URI for GET request", self.req.path_info)
             raise rhnFault(21, _("Invalid URI %s" % self.req.path_info))
@@ -649,12 +648,11 @@ class GetHandler(apacheRequest):
 
             self.req.headers_out["X-RHN-Fault-Code"] = \
                 str(response.faultCode)
-            faultString = string.strip(base64.encodestring(
-                response.faultString))
+            faultString = base64.encodestring(response.faultString).strip()
             # Split the faultString into multiple lines
-            for line in string.split(faultString, '\n'):
+            for line in faultString.split('\n'):
                 self.req.headers_out.add("X-RHN-Fault-String",
-                                             string.strip(line))
+                                             line.strip())
             # And then send all the other things
             for k, v in list(rhnFlags.get('outputTransportOptions').items()):
                 setHeaderValue(self.req.headers_out, k, v)

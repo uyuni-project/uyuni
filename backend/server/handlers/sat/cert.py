@@ -20,7 +20,7 @@ from spacewalk.common.rhnException import rhnException
 
 # server imports
 from spacewalk.server import rhnSQL
-from auth import Authentication
+from .auth import Authentication
 
 
 class Certificate(Authentication):

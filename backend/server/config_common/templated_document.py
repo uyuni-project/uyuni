@@ -15,7 +15,7 @@
 #
 #
 
-from base_templated_document import TemplatedDocument
+from .base_templated_document import TemplatedDocument
 
 from spacewalk.common.rhnLog import log_debug
 

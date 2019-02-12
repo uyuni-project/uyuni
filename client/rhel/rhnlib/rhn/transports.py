@@ -682,7 +682,7 @@ class BaseOutput:
             encoding_name = self.encodings[self.ENCODE_ZLIB][0]
             self.set_header("Content-Encoding", encoding_name)
             obj = zlib.compressobj(COMPRESS_LEVEL)
-            self.data = obj.compress(data) + obj.flush()
+            self.data = obj.compress(data.encode()) + obj.flush()
         elif self.encoding == self.ENCODE_GPG:
             # XXX: fix me.
             raise NotImplementedError(self.transfer, self.encoding)

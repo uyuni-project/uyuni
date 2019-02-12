@@ -40,7 +40,7 @@ from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server.config_common.templated_document import ServerTemplatedDocument, var_interp_prep
 
 
-import rhnSession
+from . import rhnSession
 
 # Exceptions
 

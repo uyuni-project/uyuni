@@ -14,7 +14,6 @@
 #
 #
 
-import string
 import sys
 from spacewalk.common import apache
 
@@ -127,11 +126,11 @@ class UploadHandler:
 
     # Adds an error code and error string to the headers passed in
     def _error_to_headers(self, headers, error_code, error_string):
-        error_string = string.strip(error_string)
+        error_string = error_string.strip()
         import base64
-        error_string = string.strip(base64.encodestring(error_string))
-        for line in map(string.strip, string.split(error_string, '\n')):
-            headers.add(self.server.error_header_prefix + '-String', line)
+        error_string = base64.encodestring(error_string).strip()
+        for line in error_string.split('\n'):
+            headers.add(self.server.error_header_prefix + '-String', line.strip())
         headers[self.server.error_header_prefix + '-Code'] = str(error_code)
 
     def _exception_to_text(self, exception):
@@ -140,8 +139,8 @@ Error Message:
     %s
 Error Class Code: %s
 Error Class Info: %s
-""" % (string.strip(exception.text), exception.code,
-            string.rstrip(exception.arrayText))
+""" % (exception.text.strip(), exception.code,
+            exception.arrayText.rstrip())
 
 # Instantiate external entry points:
 apache_server = UploadHandler()

@@ -16,7 +16,6 @@
 import sys
 import os
 import time
-import string
 
 from spacewalk.common import apache, rhnApache, rhnTB, rhnFlags
 from spacewalk.common.rhnException import rhnException, rhnFault
@@ -24,10 +23,10 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLog import log_debug, log_error, initLOG, log_setreq
 
 # local module imports
-import rhnSQL
+from . import rhnSQL
 
-from apacheRequest import apacheGET, apachePOST, HandlerNotFoundError
-import rhnCapability
+from .apacheRequest import apacheGET, apachePOST, HandlerNotFoundError
+from . import rhnCapability
 
 # a lame timer function for pretty logs
 
@@ -96,7 +95,7 @@ class apacheHandler(apacheSession):
         client_cap_header = 'X-RHN-Client-Capability'
         if client_cap_header in req.headers_in:
             client_caps = req.headers_in[client_cap_header]
-            client_caps = [_f for _f in list(map(string.strip, string.split(client_caps, ","))) if _f]
+            client_caps = [_f.strip() for _f in client_caps.split(',') if _f.strip()]
             rhnCapability.set_client_capabilities(client_caps)
 
         # Enabling the input header flags associated with the redirects/newer clients
@@ -202,7 +201,7 @@ class apacheHandler(apacheSession):
         try:
             ret = self._req_processor.process()
             rhnSQL.rollback()
-        except:
+        except Exception as exc:
             if not CFG.SEND_MESSAGE_TO_ALL:
                 rhnSQL.rollback()
             raise

@@ -1077,8 +1077,8 @@ def list_packages_source(channel_id):
     if results:
         for r in results:
             r = r['name']
-            if string.find(r, ".rpm") != -1:
-                r = string.replace(r, ".rpm", "")
+            if r.find(".rpm") != -1:
+                r = r.replace(".rpm", "")
                 new_evr = rhnLib.make_evr(r, source=1)
                 new_evr_list = [new_evr['name'], new_evr['version'], new_evr['release'], new_evr['epoch']]
             ret.append(new_evr_list)

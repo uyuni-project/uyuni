@@ -15,7 +15,6 @@
 
 import os
 import hashlib
-import string
 import base64
 import posixpath
 
@@ -57,9 +56,9 @@ def parseRPMFilename(pkgFilename):
 
     # Check that this is a package NAME (with arch.rpm) and strip
     # that crap off.
-    pkg = string.split(pkgFilename, '.')
+    pkg = pkgFilename.split('.')
 
-    dist = string.lower(pkg[-1])
+    dist = pkg[-1].lower()
 
     # 'rpm' at end?
     if dist not in ['rpm', 'deb']:
@@ -72,7 +71,7 @@ def parseRPMFilename(pkgFilename):
     _arch = pkg[-2]
 
     # Nuke that arch.rpm.
-    pkg = string.join(pkg[:-2], '.')
+    pkg = '.'.join(pkg[:-2])
 
     if dist == "deb":
         ret = list(parseDEBName(pkg))

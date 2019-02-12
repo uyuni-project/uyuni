@@ -17,7 +17,6 @@
 
 # system module import
 import time
-import string
 
 from spacewalk.server.rhnServer import server_lib
 from spacewalk.common.usix import ListType, TupleType, StringType
@@ -111,9 +110,9 @@ class Up2date(rhnHandler):
         transport = rhnFlags.get('outputTransportOptions')
         for k, v in list(loginDict.items()):
             # Special case for channels
-            if string.lower(k) == string.lower('X-RHN-Auth-Channels'):
+            if k.lower() == 'X-RHN-Auth-Channels'.lower():
                 # Concatenate the channel information column-separated
-                transport[k] = [string.join(x, ':') for x in v]
+                transport[k] = [':'.join(x) for x in v]
             else:
                 transport[k] = v
         log_debug(5, "loginDict", loginDict, transport)

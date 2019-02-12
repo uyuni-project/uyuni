@@ -38,7 +38,7 @@ from spacewalk.server import rhnSQL, rhnCapability, rhnAction
 from spacewalk.server.rhnLib import InvalidAction, EmptyAction, ShadowAction
 from spacewalk.server.rhnServer import server_kickstart
 
-import getMethod
+from . import getMethod
 
 
 class Queue(rhnHandler):

@@ -1,3 +1,6 @@
+- Fix issues with HTTP proxy and reposync.
+- Solve Python 3 problem and allow traditional registration.
+
 -------------------------------------------------------------------
 Fri Feb 08 17:38:16 CET 2019 - jgonzalez@suse.com
 

@@ -525,8 +525,8 @@ class NetIfaceInformation(Device):
 
         columns = list(self.key_mapping.values()) + ['server_id', 'name']
         columns.sort()
-        bind_params = string.join([':' + x for x in columns], ", ")
-        h = rhnSQL.prepare(q % (string.join(columns, ", "), bind_params))
+        bind_params = ", ".join([':' + x for x in columns])
+        h = rhnSQL.prepare(q % (", ".join(columns), bind_params))
         return _dml(h, params)
 
     def _delete(self, params):
@@ -535,7 +535,7 @@ class NetIfaceInformation(Device):
 
         columns = ['server_id', 'name']
         wheres = ['%s = :%s' % (x, x) for x in columns]
-        h = rhnSQL.prepare(q % string.join(wheres, " and "))
+        h = rhnSQL.prepare(q % " and ".join(wheres))
         return _dml(h, params)
 
     def _update(self, params):
@@ -546,12 +546,12 @@ class NetIfaceInformation(Device):
 
         wheres = ['server_id', 'name']
         wheres = ['%s = :%s' % (x, x) for x in wheres]
-        wheres = string.join(wheres, " and ")
+        wheres = " and ".join(wheres)
 
         updates = list(self.key_mapping.values())
         updates.sort()
         updates = ['%s = :%s' % (x, x) for x in updates]
-        updates = string.join(updates, ", ")
+        updates = ", ".join(updates)
 
         h = rhnSQL.prepare(q % (updates, wheres))
         return _dml(h, params)
@@ -692,8 +692,8 @@ class NetIfaceAddress(Device):
 
         columns = list(self.key_mapping.values()) + ['interface_id']
         columns.sort()
-        bind_params = string.join([':' + x for x in columns], ", ")
-        h = rhnSQL.prepare(q % (self.table, string.join(columns, ", "), bind_params))
+        bind_params = ", ".join([':' + x for x in columns])
+        h = rhnSQL.prepare(q % (self.table, ", ".join(columns), bind_params))
         return _dml(h, params)
 
     def _delete(self, params):
@@ -702,7 +702,7 @@ class NetIfaceAddress(Device):
 
         columns = self.unique
         wheres = ['%s = :%s' % (x, x) for x in columns]
-        h = rhnSQL.prepare(q % (self.table, string.join(wheres, " and ")))
+        h = rhnSQL.prepare(q % (self.table, " and ".join(wheres)))
         return _dml(h, params)
 
     def _update(self, params):
@@ -713,12 +713,12 @@ class NetIfaceAddress(Device):
 
         wheres = self.unique
         wheres = ['%s = :%s' % (x, x) for x in wheres]
-        wheres = string.join(wheres, " and ")
+        wheres = " and ".join(wheres)
 
         updates = list(self.key_mapping.values())
         updates.sort()
         updates = ['%s = :%s' % (x, x) for x in updates]
-        updates = string.join(updates, ", ")
+        updates = ", ".join(updates)
 
         h = rhnSQL.prepare(q % (self.table, updates, wheres))
         return _dml(h, params)
@@ -1081,7 +1081,7 @@ class Hardware:
         hw_class = hardware.get("class")
         if hw_class is None:
             return -1
-        hw_class = string.lower(hw_class)
+        hw_class = hw_class.lower()
 
         class_type = None
 
