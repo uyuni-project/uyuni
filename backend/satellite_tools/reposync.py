@@ -1614,7 +1614,7 @@ class RepoSync(object):
                            "for this URL: "+url.getURL(), stream=sys.stderr)
                 sys.exit(1)
             url.username = credentials['username']
-            url.password = base64.decodestring(credentials['password'])
+            url.password = base64.decodestring(credentials['password'].encode()).decode()
             # remove query parameter from url
             url.query = ""
         return url.getURL()
