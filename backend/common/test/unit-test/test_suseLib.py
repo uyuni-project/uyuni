@@ -38,7 +38,7 @@ class SuseLibTest(unittest.TestCase):
         self.initCFG.stop()
 
     @mock.patch('spacewalk.common.suseLib.CFG')
-    @mock.patch('__builtin__.open')
+    @mock.patch('builtins.open')
     def test_get_proxy_from_yast(self, mocked_open, mocked_CFG):
         mocked_CFG.http_proxy          = None
         mocked_CFG.http_proxy_username = None
@@ -56,7 +56,7 @@ class SuseLibTest(unittest.TestCase):
         )
 
     @mock.patch('spacewalk.common.suseLib.CFG')
-    @mock.patch('__builtin__.open')
+    @mock.patch('builtins.open')
     def test_get_proxy_from_yast_no_creds(self, mocked_open, mocked_CFG):
         mocked_CFG.http_proxy          = None
         mocked_CFG.http_proxy_username = None
@@ -72,7 +72,7 @@ class SuseLibTest(unittest.TestCase):
 
     @mock.patch('spacewalk.common.suseLib.CFG')
     @mock.patch('spacewalk.common.suseLib.log_debug')
-    @mock.patch('__builtin__.open')
+    @mock.patch('builtins.open')
     def test_get_proxy_none(self, mocked_open, mocked_log_debug, mocked_CFG):
         mocked_CFG.http_proxy          = None
         mocked_CFG.http_proxy_username = None

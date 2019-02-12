@@ -247,7 +247,7 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(len(bugs), 3)
         for bug in bugs:
-            self.assertEqual(list(bug.keys()), ['bug_id', 'href', 'summary'])
+            self.assertCountEqual(list(bug.keys()), ['bug_id', 'href', 'summary'])
             assert set(bug.values()) in bug_values, (
                 "Bug set(%s) not in %s" % (list(bug.values()), bug_values))
 
@@ -262,7 +262,7 @@ class RepoSyncTest(unittest.TestCase):
                   'description': None}
         cves = self.reposync.RepoSync._update_cve(notice)
 
-        self.assertEqual(cves, ["CVE-1234-5678", "CVE-1234-123456"])
+        self.assertCountEqual(cves, ["CVE-1234-5678", "CVE-1234-123456"])
 
     def test_update_cves_with_description(self):
         notice = {'references': [{'type': 'cve',
@@ -275,7 +275,7 @@ class RepoSyncTest(unittest.TestCase):
                   'description': 'This is a text with two CVE numbers CVE-1234-5678, CVE-1234-567901'}
         cves = self.reposync.RepoSync._update_cve(notice)
 
-        self.assertEqual(cves, ["CVE-1234-567901", "CVE-1234-5678", "CVE-1234-1234"])
+        self.assertCountEqual(cves, ["CVE-1234-567901", "CVE-1234-5678", "CVE-1234-1234"])
 
 
     def test_update_keywords_reboot(self):
@@ -786,7 +786,7 @@ class SyncTest(unittest.TestCase):
         config = {
             'return_value.fetchone_dict.return_value': {
                 "username": "user#1",
-                "password": base64.encodestring(password)
+                "password": base64.encodestring(password.encode()).decode()
             }
         }
         patcher = patch(
@@ -879,7 +879,7 @@ class RunScriptTest(unittest.TestCase):
 								"chann_2": []
 							}
 						}
-					).decode()
+					)
                 )
             ),
             rhnLockfile=Mock(),
@@ -925,7 +925,7 @@ class RunScriptTest(unittest.TestCase):
                     "fail": True,
                     "channel": {"chann_1": "http://example.com/repo1"}
                 }
-            ).decode()
+            )
         )
         self.assertRaises(SystemExit, self.repo_sync.main)
         self.repo_sync.systemExit.assert_called_once_with(
@@ -934,6 +934,8 @@ class RunScriptTest(unittest.TestCase):
         )
 
     def test_config_parameter_channel_as_list(self):
+        self.repo_sync.CFG = Mock()
+        self.repo_sync.CFG.DEBUG = 3
         self.repo_sync.main()
         self.assertEqual(self.repo_sync.reposync.RepoSync.call_count, 2)
 
