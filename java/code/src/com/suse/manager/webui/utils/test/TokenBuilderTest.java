@@ -2,7 +2,9 @@ package com.suse.manager.webui.utils.test;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.webui.utils.TokenBuilder;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jose4j.jwt.NumericDate;
 
@@ -40,7 +42,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
     }
 
     public void testDefaultExpiresInAYear() throws Exception {
-        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        TokenBuilder tokenBuilder = new TokenBuilder();
         tokenBuilder.useServerSecret();
         NumericDate expDate = tokenBuilder.getClaims().getExpirationTime();
         assertNotNull(expDate);

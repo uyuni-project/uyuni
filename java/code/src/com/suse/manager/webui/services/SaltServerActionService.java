@@ -96,11 +96,11 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -1279,7 +1279,7 @@ public class SaltServerActionService {
                 Collectors.toMap(minion -> {
 
                     //TODO: refactor ActivationKeyHandler.listChannels to share this logic
-                    TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
+                    DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
                     tokenBuilder.useServerSecret();
                     tokenBuilder.setExpirationTimeMinutesInTheFuture(
                             Config.get().getInt(

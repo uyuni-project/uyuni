@@ -16,8 +16,10 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.suse.manager.webui.utils.TokenBuilder;
+
+import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.utils.Opt;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import org.jose4j.lang.JoseException;
@@ -237,7 +239,7 @@ public class AccessTokenFactory extends HibernateFactory {
     public static Optional<AccessToken> generate(MinionServer minion,
             Set<Channel> channels) {
         try {
-            TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
+            DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
             tokenBuilder.useServerSecret();
             tokenBuilder.onlyChannels(channels.stream().map(Channel::getLabel)
                     .collect(Collectors.toSet()));
@@ -272,7 +274,7 @@ public class AccessTokenFactory extends HibernateFactory {
      * the old token will not be unlinked.
      */
     public static AccessToken regenerate(AccessToken token) throws JoseException {
-        TokenBuilder tokenBuilder = new TokenBuilder(token.getMinion().getOrg().getId());
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(token.getMinion().getOrg().getId());
         tokenBuilder.useServerSecret();
         tokenBuilder.onlyChannels(token.getChannels().stream().map(Channel::getLabel)
                 .collect(Collectors.toSet()));

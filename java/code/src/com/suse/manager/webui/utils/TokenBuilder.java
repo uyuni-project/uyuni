@@ -29,27 +29,13 @@ import org.jose4j.lang.JoseException;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * Utility functions to generate download access tokens.
+ * Utility functions to generate JWT tokens.
  */
 public class TokenBuilder {
 
     private static final int NOT_BEFORE_MINUTES = 2;
-
-    /**
-     * The organization the token will give access to
-     */
-    private final long orgId;
-
-    /**
-     * By default, a token gives access to all channels in the organization.
-     * If this is set, only the specified channels will be allowed
-     * (whitelist of channel label list)
-     */
-    private Optional<Set<String>> onlyChannels = Optional.empty();
 
     /**
      * The secret used to generate the token signature
@@ -68,14 +54,6 @@ public class TokenBuilder {
     );
 
     private Instant issuedAt = Instant.now();
-
-    /**
-     * Constructs a token builder.
-     * @param orgIdIn Organization id the generated tokens will give access to
-     */
-    public TokenBuilder(long orgIdIn) {
-        this.orgId = orgIdIn;
-    }
 
     /**
      * Use the server configured secret key string as the secret.
@@ -158,15 +136,6 @@ public class TokenBuilder {
     }
 
     /**
-     * The token would only allow access to the given list of channels
-     * in the organization.
-     * @param channels list of channels to allow access to
-     */
-    public void onlyChannels(Set<String> channels) {
-        this.onlyChannels = Optional.of(channels);
-    }
-
-    /**
      * @return the current token JWT claims
      */
     public JwtClaims getClaims() {
@@ -174,11 +143,7 @@ public class TokenBuilder {
         claims.setExpirationTimeMinutesInTheFuture(expirationTimeMinutesInTheFuture);
         claims.setIssuedAt(NumericDate.fromSeconds(issuedAt.getEpochSecond()));
         claims.setNotBeforeMinutesInThePast(NOT_BEFORE_MINUTES);
-        claims.setClaim("org", this.orgId);
         claims.setGeneratedJwtId();
-        onlyChannels.ifPresent(channels ->
-                claims.setStringListClaim("onlyChannels",
-                        channels.stream().collect(Collectors.toList())));
         return claims;
     }
 
