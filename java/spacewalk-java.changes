@@ -1,3 +1,4 @@
+- Improve salt events processing performance (bsc#1125097)
 - prevent an error when onboarding a RES 6 minion (bsc#1124794)
 
 -------------------------------------------------------------------
