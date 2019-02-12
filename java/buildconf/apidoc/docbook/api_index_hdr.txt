@@ -6,7 +6,7 @@
   <bookinfo>
     <pubdate><?dbtimestamp?></pubdate>
     <productname>SUSE Manager</productname>
-    <productnumber>3.1</productnumber>
+    <productnumber>3.2</productnumber>
     <bibliosource class="uri">http://www.suse.com/products/suse-manager</bibliosource>
     <abstract>
       <para>
