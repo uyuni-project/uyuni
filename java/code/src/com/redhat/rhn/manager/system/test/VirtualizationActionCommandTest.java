@@ -54,6 +54,7 @@ public class VirtualizationActionCommandTest extends BaseTestCaseWithUser {
         VirtualizationActionCommand testCommand =
             new VirtualizationActionCommand(this.user,
                                             new Date(),
+                                            null,
                                             VirtualizationActionCommand.lookupActionType(
                                               "stopped", "start"),
                                             server,

@@ -2642,6 +2642,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="actionchain.jsp.virt.create">
+        <source>Create or update a virtual machine on</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      </trans-unit>
       <!-- packagelist.jsp -->
       <trans-unit id="packagelist.jsp.header.packages">
         <source>Packages</source>

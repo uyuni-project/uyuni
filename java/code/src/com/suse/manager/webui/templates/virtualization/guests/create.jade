@@ -1,26 +1,26 @@
 include ../../system-common.jade
-#virtualguests-edit
+#virtualguests-create
 
 script(src='/javascript/momentjs/moment-with-langs.min.js', type='text/javascript')
 script(src='/javascript/validator/validator.min.js', type='text/javascript')
-script(src='/javascript/manager/virtualization/guests/edit/guests-edit.renderer.bundle.js', type='text/javascript')
+script(src='/javascript/manager/virtualization/guests/create/guests-create.renderer.bundle.js', type='text/javascript')
 
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
 +userPreferences
 
 script(type='text/javascript').
-    pageRenderers.guests.edit.guestsEditRenderer(
-        'virtualguests-edit',
+    pageRenderers.guests.create.guestsCreateRenderer(
+        'virtualguests-create',
         {
             host: {
-                "id": "#{server.id}",
-                "cpu": {
-                    "count": #{server.cpu.nrCPU}
+                id: "#{server.id}",
+                cpu: {
+                    count: #{server.cpu.nrCPU},
+                    arch: "#{server.cpu.archName}"
                 },
                 saltEntitled: #{isSalt},
             },
-            guestUuid: "#{guestUuid}",
             actionChains: !{actionChains},
             timezone: "#{h.renderTimezone()}",
             localTime: "#{h.renderLocalTime()}",

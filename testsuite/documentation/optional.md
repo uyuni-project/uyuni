@@ -183,11 +183,13 @@ One of the virtualization servers can be disabled by not providing the correspon
 environment variables.
 
 Make sure the image to use for the test virtual machines is located in
-`/var/testsuite-data/disk-image-template.qcow2` on the virtual hosts and then run
-the testsuite. In order for the virtual hosts to be able to report to the test server,
+`/var/testsuite-data/disk-image-template.qcow2` on the virtual hosts.
+A `/var/testsuite-data/disk-image-template-xenpv.qcow2` disk image to use for Xen ParaVirtualized
+guests is needed on the machine pointed by `VIRTHOST_XEN_URL`.
+In order for the virtual hosts to be able to report to the test server,
 use a bridge virtual network for the test machines.
 
-The virtual disk image should have the root file system on the `/dev/sda1` partition,
+The `disk-image-template.qcow2` virtual disk image should have the root file system on the `/dev/sda1` partition,
 have avahi daemon installed and running at first boot, and should be capable to be booted
 as either a Xen HVM or KVM guest. The disk images used by sumaform are good candidates
 for this.
@@ -195,7 +197,7 @@ for this.
 Note that the virtualization host needs to be a physical machine that needs
 to be accessible via SSH without a passphrase from the machine running the test suite. It
 also requires the `qemu-img`, `virt-install` and `guestmount` tools to be installed and
-the controller SSH public key needs to be added to the `autho
+the controller SSH public key needs to be added to the `authorized_keys` file.
 
 Inside of the testsuite, the scenarios that are tagged with one of:
 ```

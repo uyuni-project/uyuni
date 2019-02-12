@@ -1,23 +1,22 @@
+/* global module */
 const React = require('react');
 const ReactDOM = require('react-dom');
-const { GuestsEdit } = require('./guests-edit');
+const { GuestsCreate } = require('./guests-create');
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.guests = window.pageRenderers.guests || {};
-window.pageRenderers.guests.edit = window.pageRenderers.guests.edit || {};
-window.pageRenderers.guests.edit.guestsEditRenderer = (id, {
+window.pageRenderers.guests.create = window.pageRenderers.guests.create || {};
+window.pageRenderers.guests.create.guestsCreateRenderer = (id, {
   host,
-  guestUuid,
   timezone,
   localTime,
   actionChains,
 }) => {
   ReactDOM.render(
-    <GuestsEdit
+    <GuestsCreate
       host={host}
-      guestUuid={guestUuid}
-      timezone={timezone}
       localTime={localTime}
+      timezone={timezone}
       actionChains={actionChains}
     />,
     document.getElementById(id),

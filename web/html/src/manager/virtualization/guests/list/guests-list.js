@@ -239,6 +239,16 @@ class GuestsList extends React.Component<Props, State> {
             ];
             const panelButtons = (
               <div className="pull-right btn-group">
+                {this.props.saltEntitled
+                  && (
+                  <LinkButton
+                    text={t('Create Guest')}
+                    title={t('Create Guest')}
+                    className="btn-default"
+                    icon="fa-plus"
+                    href={`/rhn/manager/systems/details/virtualization/guests/${this.props.serverId}/new`}
+                  />)
+                }
                 {modalsData
                   .filter(action => action.type !== 'delete' || this.props.saltEntitled)
                   .map(action => this.createSelectedModalButton(action))}

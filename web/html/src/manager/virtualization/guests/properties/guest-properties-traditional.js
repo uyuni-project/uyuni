@@ -1,5 +1,7 @@
 // @flow
 
+import type { ActionChain } from 'components/action-schedule';
+
 const React = require('react');
 const { Panel } = require('components/panels/Panel');
 const { Text } = require('components/input/Text');
@@ -13,8 +15,11 @@ type Props = {
   host: Object,
   submitText: string,
   submit: Function,
-  initialModel: Object,
+  initialModel: ?Object,
   messages: Array<String>,
+  localTime: string,
+  timezone: string,
+  actionChains: Array<ActionChain>,
 };
 
 type State = {
@@ -41,6 +46,9 @@ class GuestPropertiesTraditional extends React.Component<Props, State> {
         initialModel={this.props.initialModel}
         validationChecks={this.validationChecks}
         messages={this.props.messages}
+        localTime={this.props.localTime}
+        timezone={this.props.timezone}
+        actionChains={this.props.actionChains}
       >
         {
           () => (

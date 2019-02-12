@@ -5530,6 +5530,7 @@ public class SystemHandler extends BaseHandler {
 
         VirtualizationActionCommand cmd = new VirtualizationActionCommand(loggedInUser,
                 new Date(),
+                null,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
                 vi.getHostSystem(),
                 vi.getUuid(),
@@ -5570,6 +5571,7 @@ public class SystemHandler extends BaseHandler {
 
         VirtualizationActionCommand cmd = new VirtualizationActionCommand(loggedInUser,
                 new Date(),
+                null,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
                 vi.getHostSystem(),
                 vi.getUuid(),
@@ -5628,6 +5630,7 @@ public class SystemHandler extends BaseHandler {
 
         VirtualizationActionCommand cmd = new VirtualizationActionCommand(loggedInUser,
                 date == null ? new Date() : date,
+                        null,
                         action,
                         vi.getHostSystem(),
                         vi.getUuid(),

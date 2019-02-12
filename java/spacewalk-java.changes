@@ -1,3 +1,4 @@
+- Add UI to create virtual machine for salt minions
 - Fix "Add Selected to SSM" on System Groups -> systems page (bsc#1121856)
 
 -------------------------------------------------------------------

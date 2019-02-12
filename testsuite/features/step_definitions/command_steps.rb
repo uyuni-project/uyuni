@@ -3,6 +3,7 @@
 
 require 'xmlrpc/client'
 require 'timeout'
+require 'nokogiri'
 
 Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
   node = get_target(host)
@@ -753,7 +754,7 @@ end
 
 When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   node = get_target(host)
-  disk_path = "/tmp/#{vm_name}-disk.qcow2"
+  disk_path = "/tmp/#{vm_name}_disk.qcow2"
 
   # Create the throwable overlay image
   raise 'not found: qemu-img or /var/testsuite-data/disk-image-template.qcow2' unless file_exists?(node, '/usr/bin/qemu-img') and file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
@@ -764,7 +765,36 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} --network network=default --import --hvm --noautoconsole --noreboot")
+  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} --network network=default --graphics vnc --import --hvm --noautoconsole --noreboot")
+end
+
+When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
+  node = get_target(host)
+
+  networks = {
+    "default" => { "bridge" => "virbr0", "subnet" => 122 },
+    "test-net0" => { "bridge" => "virbr1", "subnet" => 124 }
+  }
+
+  net = networks[net_name]
+
+  netdef = "<network>" \
+           "  <name>#{net_name}</name>"\
+           "  <forward mode='nat'/>"\
+           "  <bridge name='#{net['bridge']}' stp='on' delay='0'/>"\
+           "  <ip address='192.168.#{net['subnet']}.1' netmask='255.255.255.0'>"\
+           "    <dhcp>"\
+           "      <range start='192.168.#{net['subnet']}.2' end='192.168.#{net['subnet']}.254'/>"\
+           "    </dhcp>"\
+           "  </ip>"\
+           "</network>"
+
+  # Some networks like the default one may already be defined.
+  _output, code = node.run("virsh net-dumpxml #{net_name}", false)
+  node.run("echo -e \"#{netdef}\" >/tmp/#{net_name}.xml && virsh net-define /tmp/#{net_name}.xml") unless code.zero?
+
+  # Ensure the network is started
+  node.run("virsh net-start #{net_name}", false)
 end
 
 Then(/^I should see "([^"]*)" virtual machine (shut off|running|paused) on "([^"]*)"$/) do |vm, state, host|
@@ -826,6 +856,89 @@ Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and (
     end
   rescue Timeout::Error
     raise "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus"
+  end
+end
+
+Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        check_nographics = type == "no" and not output.include? '<graphics'
+        break if output.include? "<graphics type='#{type}'" or check_nographics
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got #{type} graphics device"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*) NIC using "([^"]*)" network$/) do |vm, host, count, net|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        break if Nokogiri::XML(output).xpath("//interface/source[@network='#{net}']").size == count.to_i
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got #{count} network interface using #{net}"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a NIC with ([0-9a-zA-Z:]*) MAC address$/) do |vm, host, mac|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        break if output.include? "<mac address='#{mac}'/>"
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got a network interface with #{mac} MAC address"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) disk$/) do |vm, host, path, bus|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        tree = Nokogiri::XML(output)
+        disks = tree.xpath("//disk")
+        disk = disks[disks.find_index { |x| x.xpath('source/@file')[0].to_s.include? path }]
+        break if disk.xpath('target/@bus')[0].to_s == bus
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} never got a #{path} #{bus} disk"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$/) do |vm, host, presence, bus|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output, _code = node.run("virsh dumpxml #{vm}")
+        tree = Nokogiri::XML(output)
+        disks = tree.xpath("//disk")
+        disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
+        break if (disk_index.nil? && presence == 'no') ||
+                 (!disk_index.nil? && disks[disk_index].xpath('target/@bus')[0].to_s == bus && presence == 'a')
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "#{vm} virtual machine on #{host} #{presence == 'a' ? 'never got' : 'still has'} a #{bus} cdrom"
   end
 end
 

@@ -48,8 +48,6 @@ const oldPagesEntries = {
   'subscription-matching': './manager/subscription-matching.js',
   'taskotop': './manager/taskotop.js',
   'virtualhostmanager': './manager/virtualhostmanager.js',
-  'virtualization/guests/list/guests-list.renderer': './manager/virtualization/guests/list/guests-list.renderer.js',
-  'virtualization/guests/edit/guests-edit.renderer': './manager/virtualization/guests/edit/guests-edit.renderer.js',
   'activation-key/activation-key-channels.renderer': './manager/activation-key/activation-key-channels.renderer.js',
 }
 

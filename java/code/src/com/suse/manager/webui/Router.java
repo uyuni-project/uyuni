@@ -340,6 +340,8 @@ public class Router implements SparkApplication {
                 withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::show))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
                 withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::edit))), jade);
+        get("/manager/systems/details/virtualization/guests/:sid/new",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::create))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
                 withUser(VirtualGuestsController::data));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",

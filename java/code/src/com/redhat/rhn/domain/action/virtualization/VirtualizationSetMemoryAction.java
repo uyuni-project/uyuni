@@ -49,7 +49,7 @@ public class VirtualizationSetMemoryAction extends BaseVirtualizationAction {
      */
     public void extractParameters(Map context) {
         if (context.containsKey(VirtualizationSetMemoryAction.SET_MEMORY_STRING)) {
-            setMemory(new Integer((String)context.get(
+            setMemory(Integer.valueOf((String)context.get(
                     VirtualizationSetMemoryAction.SET_MEMORY_STRING)));
         }
     }
