@@ -301,7 +301,7 @@ end
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = "spacecmd -u admin -p admin api sync.content.listProducts"
-  refresh_timeout = 900
+  refresh_timeout = 1800
   begin
     Timeout.timeout(refresh_timeout) do
       loop do
