@@ -290,11 +290,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
             //ToDo Just a hacked version for ubuntu
             if (osfamily.equals("Debian")) {
-                server.setServerArch(
+                minion.setServerArch(
                         ServerFactory.lookupServerArchByLabel(osarch + "-debian-linux"));
             }
             else {
-                server.setServerArch(
+                minion.setServerArch(
                         ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
             }
 
