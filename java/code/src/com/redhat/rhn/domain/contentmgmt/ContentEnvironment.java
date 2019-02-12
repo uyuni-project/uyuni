@@ -65,11 +65,13 @@ public class ContentEnvironment extends BaseDomainHelper {
      *
      * @param labelIn label
      * @param nameIn name
+     * @param descriptionIn description
      * @param contentProjectIn content project
      */
-    public ContentEnvironment(String labelIn, String nameIn, ContentProject contentProjectIn) {
+    public ContentEnvironment(String labelIn, String nameIn, String descriptionIn, ContentProject contentProjectIn) {
         this.label = labelIn;
         this.name = nameIn;
+        this.description = descriptionIn;
         this.contentProject = contentProjectIn;
     }
 

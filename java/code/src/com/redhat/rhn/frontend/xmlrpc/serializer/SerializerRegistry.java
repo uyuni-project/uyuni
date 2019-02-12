@@ -132,6 +132,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ImageProfileSerializer.class);
         SERIALIZER_CLASSES.add(ImageInfoSerializer.class);
         SERIALIZER_CLASSES.add(ImageOverviewSerializer.class);
+        SERIALIZER_CLASSES.add(ContentProjectSerializer.class);
+        SERIALIZER_CLASSES.add(ContentEnvironmentSerializer.class);
     }
 
     /**

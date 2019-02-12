@@ -34,12 +34,15 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 /**
  * Tests for {@link com.redhat.rhn.domain.contentmgmt.ContentProjectFactory}
@@ -50,25 +53,25 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
 
-        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
 
-        ContentEnvironment envtest = new ContentEnvironment("test", "Test", cp);
+        ContentEnvironment envtest = new ContentEnvironment("test", "Test", null, cp);
         ContentProjectFactory.save(envtest);
-        ContentProjectFactory.insertEnvironment(envtest, envdev);
+        ContentProjectFactory.insertEnvironment(envtest, of(envdev));
 
-        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", cp);
+        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", null, cp);
         ContentProjectFactory.save(envprod);
-        ContentProjectFactory.insertEnvironment(envprod, envtest);
+        ContentProjectFactory.insertEnvironment(envprod, of(envtest));
 
-        ContentEnvironment envint = new ContentEnvironment("int", "Integration", cp);
+        ContentEnvironment envint = new ContentEnvironment("int", "Integration", null, cp);
         ContentProjectFactory.save(envint);
-        ContentProjectFactory.insertEnvironment(envint, envdev);
+        ContentProjectFactory.insertEnvironment(envint, of(envdev));
 
         HibernateFactory.getSession().flush();
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
         assertEquals("This is project 1", fromDb.getDescription());
 
@@ -101,17 +104,17 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
 
-        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
 
-        ContentEnvironment envtest = new ContentEnvironment("test", "Test", cp);
+        ContentEnvironment envtest = new ContentEnvironment("test", "Test", null, cp);
         ContentProjectFactory.save(envtest);
-        ContentProjectFactory.insertEnvironment(envtest, envdev);
+        ContentProjectFactory.insertEnvironment(envtest, of(envdev));
 
-        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", cp);
+        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", null, cp);
         ContentProjectFactory.save(envprod);
-        ContentProjectFactory.insertEnvironment(envprod, envtest);
+        ContentProjectFactory.insertEnvironment(envprod, of(envtest));
 
         HibernateFactory.getSession().flush();
         envtest = TestUtils.reload(envtest);
@@ -120,7 +123,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
         assertEquals("This is project 1", fromDb.getDescription());
 
@@ -139,7 +142,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
+        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         ContentEnvironment newfirst = fromDb.getFirstEnvironmentOpt().get();
         assertEquals("prod", newfirst.getLabel());
         assertEquals("Production", newfirst.getName());
@@ -158,7 +161,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProject cp2 = new ContentProject("cplabel2", "cpname2", "cpdesc2", org2);
         ContentProjectFactory.save(cp2);
 
-        List<ContentProject> contentProjects = ContentProjectFactory.listContentProjects(user.getOrg());
+        List<ContentProject> contentProjects = ContentProjectFactory.listProjects(user.getOrg());
         assertEquals(1, contentProjects.size());
         ContentProject fromDb = contentProjects.get(0);
         assertNotNull(fromDb.getId());
@@ -169,30 +172,55 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(empty(), cp.getFirstEnvironmentOpt());
     }
 
+    /**
+     * Tests a Content Project lookup when different Orgs are involved
+     */
+    public void testLookupCrossOrg() {
+        Org org1 = user.getOrg();
+        ContentProject cp1 = new ContentProject("cplabel", "cpname", "cpdesc", org1);
+        ContentProjectFactory.save(cp1);
+        Org org2 = UserTestUtils.createNewOrgFull("testOrg2");
+        UserTestUtils.createUser("testUserIn2ndOrg", org2.getId());
+        ContentProject cp2 = new ContentProject("cplabel2", "cpname2", "cpdesc2", org2);
+        ContentProjectFactory.save(cp2);
+
+        // happy paths
+        Optional<ContentProject> fromDb1 = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", org1);
+        assertEquals(cp1, fromDb1.get());
+        Optional<ContentProject> fromDb2 = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel2", org2);
+        assertEquals(cp2, fromDb2.get());
+
+        // cross-org access test
+        fromDb1 = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", org2);
+        assertFalse(fromDb1.isPresent());
+        fromDb2 = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel2", org1);
+        assertFalse(fromDb2.isPresent());
+    }
+
     public void testListEnvironments() {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
 
-        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
 
-        ContentEnvironment envtest = new ContentEnvironment("test", "Test", cp);
+        ContentEnvironment envtest = new ContentEnvironment("test", "Test", null, cp);
         ContentProjectFactory.save(envtest);
-        ContentProjectFactory.insertEnvironment(envtest, envdev);
+        ContentProjectFactory.insertEnvironment(envtest, of(envdev));
 
-        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", cp);
+        ContentEnvironment envprod = new ContentEnvironment("prod", "Production", null, cp);
         ContentProjectFactory.save(envprod);
-        ContentProjectFactory.insertEnvironment(envprod, envtest);
+        ContentProjectFactory.insertEnvironment(envprod, of(envtest));
 
-        ContentEnvironment envint = new ContentEnvironment("int", "Integration", cp);
+        ContentEnvironment envint = new ContentEnvironment("int", "Integration", null, cp);
         ContentProjectFactory.save(envint);
-        ContentProjectFactory.insertEnvironment(envint, envdev);
+        ContentProjectFactory.insertEnvironment(envint, of(envdev));
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel("project1");
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         List<ContentEnvironment> envs = ContentProjectFactory.listProjectEnvironments(fromDb);
         assertEquals("dev", envs.get(0).getLabel());
         assertEquals("int", envs.get(1).getLabel());
@@ -252,19 +280,18 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.addFilter(packageFilter);
         cp.addFilter(packageFilter2);
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel(cp.getLabel());
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
         assertEquals(asList(packageFilter, packageFilter2), fromDb.getFilters());
 
         cp.removeFilter(packageFilter);
-        fromDb = ContentProjectFactory.lookupContentProjectByLabel(cp.getLabel());
+        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
         assertEquals(asList(packageFilter2), fromDb.getFilters());
 
         // check if the order is honored if filters are "swapped"
         cp.addFilter(packageFilter);
-        fromDb = ContentProjectFactory.lookupContentProjectByLabel(cp.getLabel());
+        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
         assertEquals(asList(packageFilter2, packageFilter), fromDb.getFilters());
     }
-
 
     /**
      * Tests adding/removing filters in wrong organization
@@ -301,7 +328,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     public void testEnvironmentTarget() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
@@ -332,7 +359,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
         ContentProjectFactory.addHistoryEntryToProject(cp, sndEntry);
 
-        ContentProject fromDb = ContentProjectFactory.lookupContentProjectByLabel(cp.getLabel());
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
         ContentProjectHistoryEntry fstEntryFromDb = fromDb.getHistoryEntries().get(0);
         ContentProjectHistoryEntry sndEntryFromDb = fromDb.getHistoryEntries().get(1);
 

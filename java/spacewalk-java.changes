@@ -1,3 +1,4 @@
+- Add Content Project and Content Environment CRUD operations and expose them via XMLRPC
 - Fix the config channels assignment via SSM (bsc#1117759)
 - Introduce Loggerhead-module.js to store logs from the frontend
 - change SCC sync backend to adapt quicker to SCC changes and improve
