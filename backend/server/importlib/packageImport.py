@@ -255,7 +255,7 @@ class PackageImport(ChannelPackageSubscription):
             for dep in depList:
                 nv = []
                 for f in ('name', 'version'):
-                    nv.append(dep[f].decode("utf-8"))
+                    nv.append(self._fix_encoding(dep[f]))
                     del dep[f]
                 nv = tuple(nv)
                 dep['capability'] = nv
