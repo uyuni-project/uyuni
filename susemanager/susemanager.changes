@@ -1,3 +1,4 @@
+- enable and start tftp socket (bsc#1124822)
 - support migration from 3.2 to 4.0
 - remove SCC setup from YaST SUSE Manager setup
 - Do not show false errors when configuring swapfile during setup
