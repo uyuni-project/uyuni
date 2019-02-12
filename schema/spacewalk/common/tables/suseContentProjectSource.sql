@@ -17,6 +17,7 @@ CREATE TABLE suseContentProjectSource(
     id         NUMBER NOT NULL
                    CONSTRAINT suse_ct_prj_src_id_pk PRIMARY KEY,
     type       VARCHAR2(16) NOT NULL,
+    state      VARCHAR2(16) NOT NULL,
     project_id NUMBER NOT NULL
                    CONSTRAINT suse_ct_prj_src_prjid_fk
                        REFERENCES suseContentProject(id)

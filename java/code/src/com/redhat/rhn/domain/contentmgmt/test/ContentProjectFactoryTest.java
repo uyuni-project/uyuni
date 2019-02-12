@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource.State;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.org.Org;
@@ -409,5 +410,29 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         catch (IllegalArgumentException e) {
             // expected
         }
+    }
+
+    /**
+     * Tests changing State of a Project Source
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testProjectSourceState() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
+        cp.addSource(swSource);
+        ContentProjectFactory.save(swSource);
+
+        ProjectSource fromDb = ContentProjectFactory.listProjectSourcesByProject(cp).get(0);
+        assertEquals(State.ADDED, fromDb.getState());
+
+        fromDb.setState(State.REMOVED);
+        ContentProjectFactory.save(fromDb);
+
+        fromDb = ContentProjectFactory.listProjectSourcesByProject(cp).get(0);
+        assertEquals(State.REMOVED, fromDb.getState());
     }
 }
