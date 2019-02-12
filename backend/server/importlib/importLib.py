@@ -792,7 +792,10 @@ class Import:
         elif isinstance(text, str):
             return text
         elif isinstance(text, bytes):
-            return text.decode("utf8")
+            try:
+                return text.decode("utf8")
+            except:
+                return text.decode("iso8859-1")
 
 # Any package processing import class
 class GenericPackageImport(Import):
