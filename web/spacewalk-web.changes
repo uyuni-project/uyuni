@@ -1,3 +1,4 @@
+- Add VNC display for virtual machines on salt minions
 - Fix action scheduler time picker prefill when the server is on  "UTC/GMT" timezone (bsc#1121195)
 
 -------------------------------------------------------------------

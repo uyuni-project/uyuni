@@ -1,3 +1,4 @@
+- Add virtual machine display page
 - Change default image download protocol from tftp to ftp
 - Fix apidoc issues
 - Read and update running kernel release value at each startup of minion (bsc#1122381)

@@ -54,7 +54,7 @@ but it does generate a number of sub-packages.
 
 %package -n susemanager-web-libs
 Summary:        Vendor bundles for spacewalk-web
-License:		BSD-3-Clause and MIT
+License:		BSD-3-Clause and MIT and MPL-2.0
 Group:          Applications/Internet
 
 BuildArch:      noarch

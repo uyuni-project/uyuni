@@ -9,6 +9,7 @@
         <pattern>/manager/download/saltssh/pubkey</pattern>
     </excludes>
     <decorator name="layout_bare" page="layout_bare.jsp">
+        <pattern>/manager/systems/details/virtualization/guests/*/console/*</pattern>
     </decorator>
     <decorator name="layout_c" page="layout_c.jsp">
         <pattern>/*</pattern>
