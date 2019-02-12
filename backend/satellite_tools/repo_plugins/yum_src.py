@@ -462,10 +462,10 @@ type=rpm-md
 '''
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(
-				reponame=self.channel_label or self.reponame,
-				baseurl=zypp_repo_url,
-				gpgcheck="0" if self.insecure else "1"
-			))
+                reponame=self.channel_label or self.reponame,
+                baseurl=zypp_repo_url,
+                gpgcheck="0" if self.insecure else "1"
+            ))
         zypper_cmd = "zypper"
         if not self.interactive:
             zypper_cmd = "{} -n".format(zypper_cmd)
