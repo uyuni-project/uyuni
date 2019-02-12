@@ -325,6 +325,7 @@ sub setup_cobbler {
   if (($answers{'enable-tftp'} and $answers{'enable-tftp'} =~ /^[Yy]/) || $opts{"non-interactive"}) {
       if (-e '/usr/lib/systemd/system/tftp.socket') {
         system("systemctl --quiet enable tftp.socket 2>&1");
+        system("systemctl start tftp.socket 2>&1");
       } else {
         if (-e '/usr/lib/systemd/system/atftpd.socket') {
           system("systemctl --quiet enable atftpd.socket 2>&1");
