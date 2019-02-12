@@ -1,5 +1,7 @@
 package com.suse.manager.reactor.messaging.test;
 
+import static java.util.Arrays.asList;
+
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
@@ -11,6 +13,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
@@ -20,6 +23,7 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -40,8 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.Arrays.asList;
 
 /**
  * Test for {@link com.suse.manager.webui.utils.salt.ImageDeployedEvent}
@@ -68,6 +70,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
 
         // setup a minion
         testMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         grains = getGrains();
 
         // setup channels & product
@@ -121,8 +124,10 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         grains.put("machine_id", testMinion.getMachineId());
 
         Channel oldBase = ChannelTestUtils.createBaseChannel(user);
+        oldBase.setChannelArch(ChannelFactory.lookupArchByName("x86_64"));
         SystemManager.subscribeServerToChannel(user, testMinion, oldBase);
         Channel oldChild = ChannelTestUtils.createChildChannel(user, oldBase);
+        oldChild.setChannelArch(ChannelFactory.lookupArchByName("x86_64"));
         SystemManager.subscribeServerToChannel(user, testMinion, oldChild);
         System.out.println(testMinion.getChannels());
 
@@ -155,8 +160,8 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         Channel baseChannelX8664 = DistUpgradeManagerTest
                 .createTestBaseChannel(channelFamily, channelProduct, channelArch);
         SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product, true);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel channel3 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         channel2.setParentChannel(baseChannelX8664);
         channel3.setParentChannel(baseChannelX8664);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product, true);

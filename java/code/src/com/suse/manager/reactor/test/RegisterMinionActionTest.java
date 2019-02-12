@@ -164,7 +164,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             }};
 
     private ActivationKeySupplier ACTIVATION_KEY_SUPPLIER = (contactMethod) -> {
-        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
+        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setBaseChannel(baseChannel);
         key.setOrg(user.getOrg());
@@ -1507,8 +1507,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel baseChannelX8664 = DistUpgradeManagerTest
                 .createTestBaseChannel(channelFamily, channelProduct, channelArch);
         SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product, true);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel channel3 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         channel2.setParentChannel(baseChannelX8664);
         channel3.setParentChannel(baseChannelX8664);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product, true);
