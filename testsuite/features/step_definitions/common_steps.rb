@@ -813,6 +813,20 @@ And(/^the notification badge and the table should count the same amount of messa
   end
 end
 
+And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if has_checked_field?(arg1)
+        sleep 1
+        page.evaluate_script 'window.location.reload()'
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find checked radio button #{arg1} in webpage"
+  end
+end
+
 Then(/^I check the first notification message$/) do
   if count_table_items == '0'
     puts "There are no notification messages, nothing to do then"
