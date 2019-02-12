@@ -18,8 +18,11 @@ package com.redhat.rhn.domain.contentmgmt;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Optional;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,7 +45,17 @@ import javax.persistence.Table;
 public abstract class ProjectSource {
 
     private Long id;
+    private State state;
     private ContentProject contentProject;
+
+    /**
+     * State of the Source
+     */
+    public enum State {
+        ADDED,
+        REMOVED,
+        BUILT
+    }
 
     /**
      * Utility enum for the ProjectSource types
@@ -120,13 +133,16 @@ public abstract class ProjectSource {
     /**
      * Standard constructor
      */
-    public ProjectSource() { }
+    public ProjectSource() {
+        state = State.ADDED;
+    }
 
     /**
      * Standard constructor
      * @param project the ContentProject
      */
     public ProjectSource(ContentProject project) {
+        this();
         this.contentProject = project;
     }
 
@@ -149,6 +165,26 @@ public abstract class ProjectSource {
      */
     public void setId(Long idIn) {
         id = idIn;
+    }
+
+    /**
+     * Gets the state.
+     *
+     * @return state
+     */
+    @Enumerated(EnumType.STRING)
+    @Column
+    public State getState() {
+        return state;
+    }
+
+    /**
+     * Sets the state.
+     *
+     * @param stateIn the state
+     */
+    public void setState(State stateIn) {
+        this.state = stateIn;
     }
 
     /**
