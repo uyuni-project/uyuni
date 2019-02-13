@@ -357,7 +357,7 @@ class ConfigFilesHandler(rhnHandler):
 
         # We have to insert a new file now
         content_seq = rhnSQL.Sequence('rhn_confcontent_id_seq')
-        config_content_id = next(content_seq)
+        config_content_id = content_seq.next()
         file['config_content_id'] = config_content_id
         file['contents'] = file_contents
 
@@ -511,7 +511,7 @@ class ConfigFilesHandler(rhnHandler):
         return CFG.maximum_config_file_size
 
     def new_config_channel_id(self):
-        return next(rhnSQL.Sequence('rhn_confchan_id_seq'))
+        return rhnSQL.Sequence('rhn_confchan_id_seq').next()
 
 
 def format_file_results(row, server=None):

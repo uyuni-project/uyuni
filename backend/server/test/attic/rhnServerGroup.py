@@ -63,7 +63,7 @@ class ServerGroup:
     def _set(self, name, val):
         if self._row_server_group is None:
             self._row_server_group = rhnSQL.Row('rhnServerGroup', 'id')
-            server_group_id = next(rhnSQL.Sequence('rhn_server_group_id_seq'))
+            server_group_id = rhnSQL.Sequence('rhn_server_group_id_seq').next()
             self._row_server_group.create(server_group_id)
 
         self._row_server_group[name] = val
