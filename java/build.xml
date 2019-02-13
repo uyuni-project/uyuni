@@ -626,7 +626,12 @@ delete from rhnChannel where label like 'ChannelLabel%';
       <include name="**/*.jspf"/>
       <include name="**/*.jsp"/>
     </fileset>
+    <fileset id="apidoc_jspffiles" dir="${prefix}${webapp-dir}/rhn">
+      <include name="**/*.jspf"/>
+      <include name="**/*.jsp"/>
+    </fileset>
     <pathconvert targetos="unix" pathsep="," property="jspflist" refid="jspffiles"/>
+    <pathconvert targetos="unix" pathsep="," property="apidoc_jspflist" refid="apidoc_jspffiles"/>
     <jasper2
         verbose="2"
         uriroot="${build.dir}/webapp/rhnjava"
@@ -636,6 +641,7 @@ delete from rhnChannel where label like 'ChannelLabel%';
     <jasper2
         verbose="2"
         uriroot="${prefix}${webapp-dir}/rhn"
+        jspfiles="${apidoc_jspflist}"
         webXmlFragment="${build.dir}/webapp/generated_apidoc.xml"
         outputDir="${build.dir}/apidoc-temp" />
     <javac destdir="${build.dir}/webapp/rhnjava/WEB-INF/classes"
