@@ -28,7 +28,7 @@ import socket
 
 ## local imports
 from spacewalk.common.fileutils import cleanupNormPath, rotateFile, rhn_popen, cleanupAbsPath
-from certs.sslToolLib import getMachineName, daysTil18Jan2038, incSerial, fixSerial
+from .sslToolLib import getMachineName, daysTil18Jan2038, incSerial, fixSerial
 from rhn.i18n import sstr
 
 # defaults where we can see them (NOTE: directory is figured at write time)

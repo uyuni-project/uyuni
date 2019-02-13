@@ -21,7 +21,7 @@ import os
 import sys
 import shutil
 import tempfile
-from certs.timeLib import DAY, now, secs2days, secs2years
+from .timeLib import DAY, now, secs2days, secs2years
 
 class RhnSslToolException(Exception):
     """ general exception class for the tool """

@@ -42,10 +42,10 @@ import shutil
 import getpass
 
 ## local imports
-from certs.sslToolCli import processCommandline, CertExpTooShortException, \
+from .sslToolCli import processCommandline, CertExpTooShortException, \
         CertExpTooLongException, InvalidCountryCodeException
 
-from certs.sslToolLib import RhnSslToolException, \
+from .sslToolLib import RhnSslToolException, \
         gendir, chdir, getMachineName, fixSerial, TempDir, \
         errnoGeneralError, errnoSuccess
 
@@ -54,7 +54,7 @@ from spacewalk.common.fileutils import rotateFile, rhn_popen, cleanupAbsPath
 from spacewalk.common.rhn_rpm import hdrLabelCompare, sortRPMs, get_package_header, \
         getInstalledHeader
 
-from certs.sslToolConfig import ConfigFile, figureSerial, getOption, CERT_PATH, \
+from .sslToolConfig import ConfigFile, figureSerial, getOption, CERT_PATH, \
         DEFS, MD, CRYPTO, LEGACY_SERVER_RPM_NAME1, LEGACY_SERVER_RPM_NAME2, \
         CA_OPENSSL_CNF_NAME, SERVER_OPENSSL_CNF_NAME, POST_UNINSTALL_SCRIPT, \
         SERVER_RPM_SUMMARY, CA_CERT_RPM_SUMMARY
