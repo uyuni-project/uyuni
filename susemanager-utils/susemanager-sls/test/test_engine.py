@@ -122,6 +122,29 @@ def test_insert_job_return_event(responder):
     assert resp
     assert responder.tokens == DEFAULT_COMMIT_BURST - 1
 
+def test_insert_batch_start_event(responder):
+    responder.event_bus.unpack.return_value = ('salt/batch/12345/start', {'value': 1})
+    responder.add_event_to_queue('')
+    responder.cursor.execute("SELECT * FROM suseSaltEvent;")
+    resp = responder.cursor.fetchall()
+    assert resp
+    assert responder.tokens == DEFAULT_COMMIT_BURST - 1
+
+def test_discard_batch_presence_ping_event(responder):
+    responder.event_bus.unpack.return_value = ('salt/job/12345/ret/6789', {'value': 1, 'fun': 'test.ping', 'metadata': {'batch-mode': True}})
+    responder.add_event_to_queue('')
+    responder.cursor.execute("SELECT * FROM suseSaltEvent;")
+    resp = responder.cursor.fetchall()
+    assert len(resp) == 0
+
+
+def test_keep_presence_ping_event_without_batch(responder):
+    responder.event_bus.unpack.return_value = ('salt/job/12345/ret/6789', {'value': 1, 'fun': 'test.ping'})
+    responder.add_event_to_queue('')
+    responder.cursor.execute("SELECT * FROM suseSaltEvent;")
+    resp = responder.cursor.fetchall()
+    assert len(resp) == 1
+
 
 def test_commit_scheduled_on_init(responder):
     assert responder.event_bus.io_loop.call_later.call_count == 1
