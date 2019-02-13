@@ -337,7 +337,7 @@ def get_package_header(filename=None, file_obj=None, fd=None):
         raise ValueError("No parameters passed")
 
     if filename is not None:
-        f = open(filename, 'rb')
+        f = open(filename, 'r')
     elif file_obj is not None:
         f = file_obj
         f.seek(0, 0)

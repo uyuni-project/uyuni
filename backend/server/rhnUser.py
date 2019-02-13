@@ -600,7 +600,7 @@ def encrypt_password(key, salt=None, method='SHA-256'):
         # add the pid too
         salt = (time.time() % 1) * 1e15 + os.getpid()
         # base64 it and keep only the first n chars
-        salt = base64.encodestring(str(salt))[:pw_params[method][0]]
+        salt = base64.encodestring(str(salt).encode()).decode()[:pw_params[method][0]]
         # slap the magic in front of the salt
         salt = pw_params[method][1] + salt + '$'
     salt = str(salt)

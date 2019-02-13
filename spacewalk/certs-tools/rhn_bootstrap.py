@@ -644,7 +644,7 @@ def generateBootstrapScript(options):
     newScript = ''.join(newScript)
 
     if os.path.exists(_script):
-        oldScript = open(_script, 'rb').read()
+        oldScript = open(_script, 'r').read()
         if oldScript == newScript:
             writeYN = 0
         elif os.path.exists(_script):

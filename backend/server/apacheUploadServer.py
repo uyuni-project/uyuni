@@ -128,7 +128,7 @@ class UploadHandler:
     def _error_to_headers(self, headers, error_code, error_string):
         error_string = error_string.strip()
         import base64
-        error_string = base64.encodestring(error_string).strip()
+        error_string = base64.encodestring(error_string.encode()).decode().strip()
         for line in error_string.split('\n'):
             headers.add(self.server.error_header_prefix + '-String', line.strip())
         headers[self.server.error_header_prefix + '-Code'] = str(error_code)

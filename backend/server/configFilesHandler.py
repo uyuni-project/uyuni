@@ -535,7 +535,7 @@ def format_file_results(row, server=None):
         client_caps = rhnCapability.get_client_capabilities()
         if client_caps and 'configfiles.base64_enc' in client_caps:
             encoding = 'base64'
-            contents = base64.encodestring(contents)
+            contents = base64.encodestring(contents.encode()).decode()
     if row.get('modified', False):
         m_date = xmlrpclib.DateTime(str(row['modified']))
     else:

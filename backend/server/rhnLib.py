@@ -31,8 +31,8 @@ def computeSignature(*fields):
     m = hashlib.new('sha256')
     for i in fields:
         # use str(i) since some of the fields may be non-string
-        m.update(str(i))
-    return base64.encodestring(m.digest()).rstrip()
+        m.update(str(i).encode())
+    return base64.encodestring(m.digest()).decode().rstrip()
 
 
 # 'n_n-n-v.v.v-r_r.r:e.ARCH.rpm' ---> [n,v,r,e,a]
