@@ -148,7 +148,7 @@ def find_root_channel_labels(pdids):
     :return: list of root channel labels
     """
     h = rhnSQL.Statement( _sql_find_root_channel_label.format(pdids))
-    return map(lambda x: x['label'], rhnSQL.fetchall_dict(h) or [])
+    return [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
 
 def find_custom_parent_channel_labels():
     """
@@ -157,7 +157,7 @@ def find_custom_parent_channel_labels():
     :return: list of custom parent channel labels
     """
     h = rhnSQL.Statement(_sql_find_custom_parent_channel_labels)
-    return map(lambda x: x['label'], rhnSQL.fetchall_dict(h) or [])
+    return [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
 
 
 def list_labels():

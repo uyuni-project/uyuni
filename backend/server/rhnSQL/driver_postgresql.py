@@ -289,7 +289,7 @@ class Cursor(sql_base.Cursor):
             raise rhnException("Cannot execute empty cursor")
         if self.blob_map:
             for blob_var in list(self.blob_map.keys()):
-                kw[blob_var] = BufferType(kw[blob_var])
+                kw[blob_var] = BufferType(kw[blob_var].encode())
 
         try:
             retval = function(*p, **kw)

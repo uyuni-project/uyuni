@@ -39,13 +39,13 @@ from optparse import Option, OptionParser, SUPPRESS_HELP
 ## local imports
 from spacewalk.common import rhn_rpm
 from spacewalk.common.rhnConfig import CFG, initCFG
-from client_config_update import readConfigFile
-from certs.rhn_bootstrap_strings import \
+from .client_config_update import readConfigFile
+from .rhn_bootstrap_strings import \
     getHeader, getConfigFilesSh, getUp2dateScriptsSh, getGPGKeyImportSh, \
     getCorpCACertSh, getRegistrationSh, getUp2dateTheBoxSh, \
     getAllowConfigManagement, getAllowRemoteCommands, \
     getRegistrationStackSh, getRegistrationSaltSh, removeTLSCertificate
-from certs.sslToolConfig import CA_CRT_NAME, CA_CRT_RPM_NAME
+from .sslToolConfig import CA_CRT_NAME, CA_CRT_RPM_NAME
 from spacewalk.common.fileutils import rotateFile, cleanupAbsPath
 from spacewalk.common.checksum  import getFileChecksum
 
@@ -547,7 +547,7 @@ def writeClientConfigOverrides(options):
   '%s'\n""" % _overrides)
 
     if writeYN:
-        fout = open(_overrides, 'wb')
+        fout = open(_overrides, 'w')
         # header
         fout.write("""\
 # RHN Client (rhn_register/up2date) config-overrides file v4.0
@@ -644,7 +644,7 @@ def generateBootstrapScript(options):
     newScript = ''.join(newScript)
 
     if os.path.exists(_script):
-        oldScript = open(_script, 'rb').read()
+        oldScript = open(_script, 'r').read()
         if oldScript == newScript:
             writeYN = 0
         elif os.path.exists(_script):
@@ -654,7 +654,7 @@ def generateBootstrapScript(options):
         del oldScript
 
     if writeYN:
-        fout = open(_script, 'wb')
+        fout = open(_script, 'w')
         fout.write(newScript)
         fout.close()
         print("""\
