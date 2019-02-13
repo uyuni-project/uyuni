@@ -47,7 +47,7 @@ class RefreshOperationsTest(unittest.TestCase):
 
     def test_refresh_from_mirror(self):
         """ Test the refresh action """
-	mirror_url = "http://smt.suse.de"
+        mirror_url = "http://smt.suse.de"
         options = get_options("refresh --from-mirror {0}".format(mirror_url).split())
         stubbed_xmlrpm_call = MagicMock(return_value=True)
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call

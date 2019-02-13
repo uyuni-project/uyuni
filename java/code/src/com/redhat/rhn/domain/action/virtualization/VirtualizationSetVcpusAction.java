@@ -47,7 +47,7 @@ public class VirtualizationSetVcpusAction extends BaseVirtualizationAction {
      */
     public void extractParameters(Map context) {
         if (context.containsKey(VirtualizationSetVcpusAction.SET_CPU_STRING)) {
-            setVcpu(new Integer((String)context.get(
+            setVcpu(Integer.valueOf((String)context.get(
                     VirtualizationSetVcpusAction.SET_CPU_STRING)));
         }
     }

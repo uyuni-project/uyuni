@@ -658,10 +658,16 @@ To make sure the virtual machine is completely booted:
   When I wait until virtual machine "test-vm" on "virt-server" is started
 ```
 
-* Check the amount of memory and CPUs allocated to a virtual machine
+* Check the definition of a virtual machine
 
 ```cucumber
 Then "test-vm" virtual machine on "virt-server" should have 1024MB memory and 2 vcpus
+Then "test-vm" virtual machine on "virt-server" should have spice graphics device
+Then "test-vm" virtual machine on "virt-server" should have 2 NIC using "default" network
+Then "test-vm" virtual machine on "virt-server" should have a NIC with 02:34:56:78:9a:bc MAC address
+Then "test-vm" virtual machine on "virt-server" should have a "disk.qcow2" scsi disk
+Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
+Then "test-vm" virtual machine on "virt-server" should have no cdrom
 ```
 
 <a name="c" />
