@@ -342,7 +342,7 @@ SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/
 /usr/sbin/fetch-certificate $SYSTEMID_PATH
 
 if [ ! -r $SYSTEMID_PATH ]; then
-    echo ERROR: SUSE Manager Proxy does not appear to be registered
+    echo ERROR: This machine does not appear to be registered with SUSE Manager Server
     exit 2
 fi
 
