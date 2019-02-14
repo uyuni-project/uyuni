@@ -26955,7 +26955,7 @@
         "channel_name": "SLE12-SP1-SAP-Debuginfo-Pool for x86_64"
     },
     {
-        "channel_label": "suse-openstack-cloud-6-updates-x86_64-sp1",
+        "channel_label": "suse-openstack-cloud-6-updates-x86_64",
         "parent_channel_label": "sles12-sp1-pool-x86_64",
         "product_id": 1347,
         "repository_id": 1941,
@@ -26970,7 +26970,7 @@
         "channel_name": "SUSE-OpenStack-Cloud-6-Updates for x86_64 SP1"
     },
     {
-        "channel_label": "suse-openstack-cloud-6-debuginfo-updates-x86_64-sp1",
+        "channel_label": "suse-openstack-cloud-6-debuginfo-updates-x86_64",
         "parent_channel_label": "sles12-sp1-pool-x86_64",
         "product_id": 1347,
         "repository_id": 1942,
@@ -26985,7 +26985,7 @@
         "channel_name": "SUSE-OpenStack-Cloud-6-Debuginfo-Updates for x86_64 SP1"
     },
     {
-        "channel_label": "suse-openstack-cloud-6-pool-x86_64-sp1",
+        "channel_label": "suse-openstack-cloud-6-pool-x86_64",
         "parent_channel_label": "sles12-sp1-pool-x86_64",
         "product_id": 1347,
         "repository_id": 1943,
@@ -27000,7 +27000,7 @@
         "channel_name": "SUSE-OpenStack-Cloud-6-Pool for x86_64 SP1"
     },
     {
-        "channel_label": "suse-openstack-cloud-6-debuginfo-pool-x86_64-sp1",
+        "channel_label": "suse-openstack-cloud-6-debuginfo-pool-x86_64",
         "parent_channel_label": "sles12-sp1-pool-x86_64",
         "product_id": 1347,
         "repository_id": 1944,
