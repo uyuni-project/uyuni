@@ -1563,28 +1563,33 @@ public class ContentSyncManager {
         String label = dbChannel.getLabel();
         List<SUSEProductSCCRepository> suseProductSCCRepositories = SUSEProductFactory.lookupPSRByChannelLabel(label);
 
-        SUSEProductSCCRepository productrepo = suseProductSCCRepositories.stream().findFirst().get();
-        SUSEProduct product = productrepo.getProduct();
+        Opt.consume(suseProductSCCRepositories.stream().findFirst(),
+                () -> log.error("No product tree entry found for label: '" + label + "'"),
+                productrepo -> {
+                    SUSEProduct product = productrepo.getProduct();
 
-        // update only the fields which are save to be updated
-        dbChannel.setChannelFamily(product.getChannelFamily());
-        dbChannel.setName(productrepo.getChannelName());
-        dbChannel.setSummary(product.getFriendlyName());
-        dbChannel.setDescription(Optional.ofNullable(product.getDescription()).orElse(product.getFriendlyName()));
-        dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
-        dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
-        dbChannel.setUpdateTag(productrepo.getUpdateTag());
-        ChannelFactory.save(dbChannel);
+                    // update only the fields which are save to be updated
+                    dbChannel.setChannelFamily(product.getChannelFamily());
+                    dbChannel.setName(productrepo.getChannelName());
+                    dbChannel.setSummary(product.getFriendlyName());
+                    dbChannel.setDescription(
+                            Optional.ofNullable(product.getDescription())
+                                    .orElse(product.getFriendlyName()));
+                    dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
+                    dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
+                    dbChannel.setUpdateTag(productrepo.getUpdateTag());
+                    ChannelFactory.save(dbChannel);
 
-        // update Mandatory Flag
-        dbChannel.getSuseProductChannels().forEach(pc -> {
-            suseProductSCCRepositories.forEach(pr -> {
-                if (pr.getProduct().equals(pc.getProduct()) && pr.isMandatory() != pc.isMandatory()) {
-                    pc.setMandatory(pr.isMandatory());
-                    SUSEProductFactory.save(pc);
-                }
-            });
-        });
+                    // update Mandatory Flag
+                    dbChannel.getSuseProductChannels().forEach(pc -> {
+                        suseProductSCCRepositories.forEach(pr -> {
+                            if (pr.getProduct().equals(pc.getProduct()) && pr.isMandatory() != pc.isMandatory()) {
+                                pc.setMandatory(pr.isMandatory());
+                                SUSEProductFactory.save(pc);
+                            }
+                        });
+                    });
+                });
     }
 
     /**
