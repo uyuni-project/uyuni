@@ -1,3 +1,4 @@
+- fix channel label for suse-openstack-cloud-6 and packagehub-12-sp4-* (bsc#1125451)
 - add SLES11 SP4 LTSS channels (bsc#1123989)
 
 -------------------------------------------------------------------
