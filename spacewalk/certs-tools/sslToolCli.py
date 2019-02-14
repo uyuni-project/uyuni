@@ -26,11 +26,11 @@ import sys
 from optparse import Option, OptionParser, make_option
 
 ## local imports
-from certs.sslToolLib import daysTil18Jan2038, yearsTil18Jan2038, \
+from .sslToolLib import daysTil18Jan2038, yearsTil18Jan2038, \
                        RhnSslToolException, errnoGeneralError
-from certs.sslToolConfig import figureDEFS_dirs, figureDEFS_CA, figureDEFS_server
-from certs.sslToolConfig import figureDEFS_distinguishing
-from certs.sslToolConfig import DEFS, getOption, reInitDEFS
+from .sslToolConfig import figureDEFS_dirs, figureDEFS_CA, figureDEFS_server
+from .sslToolConfig import figureDEFS_distinguishing
+from .sslToolConfig import DEFS, getOption, reInitDEFS
 
 
 #

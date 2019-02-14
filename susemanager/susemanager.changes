@@ -1,5 +1,6 @@
 - migrate existing rhn.conf; do not allow new database credentials
   during migration
+- Fix issue with map() on Python3 when '--with-custom-channels' (bsc#1125272)
 - Fix setup for openSUSE Leap 15.0
 - support migration from 3.2 to 4.0
 - remove SCC setup from YaST SUSE Manager setup

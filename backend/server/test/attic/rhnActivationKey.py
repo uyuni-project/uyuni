@@ -139,7 +139,7 @@ class ActivationKey:
     def _set(self, name, val):
         if self._row_reg_token is None:
             self._row_reg_token = rhnSQL.Row('rhnRegToken', 'id')
-            token_id = next(rhnSQL.Sequence('rhn_reg_token_seq'))
+            token_id = rhnSQL.Sequence('rhn_reg_token_seq').next()
             self._row_reg_token.create(token_id)
             self._row_reg_token['usage_limit'] = None
 

@@ -48,7 +48,7 @@ class ExceptionsTest(unittest.TestCase):
         rhnSQL.commit()
 
     def test_lobs(self):
-        new_id = next(rhnSQL.Sequence('misatestlob_id_seq'))
+        new_id = rhnSQL.Sequence('misatestlob_id_seq').next()
         h = rhnSQL.prepare("""
             insert into misatestlob (id, val) values (:id, empty_blob())
         """)

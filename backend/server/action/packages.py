@@ -79,7 +79,7 @@ def handle_action(serverId, actionId, packagesIn, dry_run=0):
     multiarch = 0
     if client_caps and 'packages.update' in client_caps:
         cap_info = client_caps['packages.update']
-        if cap_info['version'] > 1:
+        if int(cap_info['version']) > 1:
             multiarch = 1
     if not packagesIn:
         raise InvalidAction("Packages scheduled in action %s for server %s could not be found." %
