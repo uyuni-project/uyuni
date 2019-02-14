@@ -20,6 +20,12 @@ module Yast
 
       @migration_file = Ops.add(Directory.tmpdir, "/susemanager_migration")
       @migration = FileUtils.Exists(@migration_file)
+      if @migration
+        Builtins.y2milestone(
+          "migration was chosen, skipping this step"
+        )
+        return deep_copy(@ret)
+      end
 
       @display_info = UI.GetDisplayInfo
       @text_mode = Ops.get_boolean(@display_info, "TextMode", false)
