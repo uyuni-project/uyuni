@@ -27,7 +27,7 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Check the default RPM download point values
     Given I am on the Systems overview page of this "sle-minion"
     Then the susmanager repo file should exist on the "sle-minion"
-    And I should see "https", "server" and "443" in the repo file on the "sle-minion"
+    And I should see "https", "proxy" and "443" in the repo file on the "sle-minion"
  
   Scenario: Set the custom RPM download point
     Given I am on the Systems overview page of this "sle-minion"
@@ -80,5 +80,5 @@ Feature: Repos file generation based on custom pillar data
   Scenario: ReCheck the default RPM download point values
     Given I am on the Systems overview page of this "sle-minion"
     Then the susmanager repo file should exist on the "sle-minion"
-    And I should see "https", "server" and "443" in the repo file on the "sle-minion"  
+    And I should see "https", "proxy" and "443" in the repo file on the "sle-minion"  
     
