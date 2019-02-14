@@ -350,7 +350,7 @@ if [ $? -eq 0 ]; then
 fi
 
 if [ ! -r $SYSTEMID_PATH ]; then
-    echo ERROR: SUSE Manager Proxy does not appear to be registered
+    echo ERROR: This machine does not appear to be registered with SUSE Manager Server
     exit 2
 fi
 
