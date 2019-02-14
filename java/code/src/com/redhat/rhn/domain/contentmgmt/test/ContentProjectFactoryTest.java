@@ -259,7 +259,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
         ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
-        cp.addSource(swSource);
+        cp.addSource(swSource, empty());
         ContentProjectFactory.save(swSource);
 
         List<ProjectSource> fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
@@ -267,7 +267,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
         ProjectSource swSource2 = new SoftwareProjectSource(cp, childChannel);
-        cp.addSource(swSource2);
+        cp.addSource(swSource2, empty());
         ContentProjectFactory.save(swSource2);
 
         fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
@@ -423,7 +423,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
         ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
-        cp.addSource(swSource);
+        cp.addSource(swSource, empty());
         ContentProjectFactory.save(swSource);
 
         ProjectSource fromDb = ContentProjectFactory.listProjectSourcesByProject(cp).get(0);
@@ -434,5 +434,34 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         fromDb = ContentProjectFactory.listProjectSourcesByProject(cp).get(0);
         assertEquals(State.REMOVED, fromDb.getState());
+    }
+
+    /**
+     * Test ordering of Project leader
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLookupProjectLeader() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
+        cp.addSource(swSource, empty());
+        ContentProjectFactory.save(swSource);
+        Channel baseChannel2 = ChannelTestUtils.createBaseChannel(user);
+        ProjectSource swSource2 = new SoftwareProjectSource(cp, baseChannel2);
+        cp.addSource(swSource2, empty());
+        ContentProjectFactory.save(swSource2);
+
+        cp.addSource(swSource, empty());
+        cp.addSource(swSource2, empty());
+        cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
+        assertEquals(swSource, cp.lookupSwSourceLeader().get());
+
+        // let's re-arrange the sources and test that the leader lookup works
+        cp.removeSource(swSource2);
+        cp.addSource(swSource2, of(0));
+        cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
+        assertEquals(swSource2, cp.lookupSwSourceLeader().get());
     }
 }

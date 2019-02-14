@@ -235,13 +235,15 @@ public class ContentManager {
      * @param projectLabel - the Project label
      * @param sourceType - the Source Type (e.g. SW_CHANNEL)
      * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
+     * @param position - the position of the Source (Optional)
      * @param user the user
      * @throws EntityNotExistsException when either the Project or the Source is not found
      * @throws EntityExistsException when Source with given parameters is already attached
      * @throws java.lang.IllegalArgumentException if the sourceType is unsupported
      * @return the created or existing Source
      */
-    public static ProjectSource attachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
+    public static ProjectSource attachSource(String projectLabel, Type sourceType, String sourceLabel,
+            Optional<Integer> position, User user) {
         ensureOrgAdmin(user);
 
         lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
@@ -252,7 +254,7 @@ public class ContentManager {
                     .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
             Channel channel = getChannel(sourceLabel, user);
             SoftwareProjectSource source = new SoftwareProjectSource(project, channel);
-            project.addSource(source);
+            project.addSource(source, position);
             ContentProjectFactory.save(project);
             ContentProjectFactory.save(source);
             return source;

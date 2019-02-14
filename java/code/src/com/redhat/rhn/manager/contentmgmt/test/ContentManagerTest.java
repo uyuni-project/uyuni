@@ -284,7 +284,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(cp);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
 
-        ProjectSource source = ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ProjectSource source = ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         ProjectSource fromDb = ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).get();
         assertEquals(source, fromDb);
         assertEquals(channel, fromDb.asSoftwareSource().get().getChannel());
@@ -305,9 +305,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(cp);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
 
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         try {
-            ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+            ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
             fail("An exception should have been thrown");
         }
         catch (EntityExistsException e) {
@@ -327,7 +327,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         Channel channel = ChannelTestUtils.createBaseChannel(user);
 
         try {
-            ContentManager.attachSource("cplabel", SW_CHANNEL, "notthere", user);
+            ContentManager.attachSource("cplabel", SW_CHANNEL, "notthere", empty(), user);
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -335,7 +335,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         }
 
         try {
-            ContentManager.attachSource("idontexist", SW_CHANNEL, channel.getLabel(), user);
+            ContentManager.attachSource("idontexist", SW_CHANNEL, channel.getLabel(), empty(), user);
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -353,7 +353,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
         assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
         ChannelFactory.remove(channel);
@@ -370,7 +370,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
         assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
         ContentManager.removeProject("cplabel", user);

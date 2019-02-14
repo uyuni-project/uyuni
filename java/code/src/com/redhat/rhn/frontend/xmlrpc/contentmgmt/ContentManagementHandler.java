@@ -29,8 +29,11 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.redhat.rhn.common.util.StringUtil.nullIfEmpty;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -350,6 +353,31 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
+     * @param sourcePosition the Source position
+     * @throws EntityExistsFaultException when Source already exists
+     * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
+     * @return the created Source
+     *
+     * @xmlrpc.doc Attach a Source to a Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
+     * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @xmlrpc.param #param_desc("int", "sourcePosition", "Project Source label")
+     * @xmlrpc.returntype $ContentProjectSourceSerializer
+     */
+    public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel,
+            int sourcePosition) {
+        return attachSource(loggedInUser, projectLabel, sourceType, sourceLabel, of(sourcePosition));
+    }
+
+    /**
+     * Attach a Source to a Project
+     *
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Project label
+     * @param sourceType the Source type (e.g. "software")
+     * @param sourceLabel the Source label (e.g. software channel label)
      * @throws EntityExistsFaultException when Source already exists
      * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
      * @return the created Source
@@ -362,9 +390,16 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype $ContentProjectSourceSerializer
      */
     public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
+        return attachSource(loggedInUser, projectLabel, sourceType, sourceLabel, empty());
+    }
+
+    // helper method
+    private ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel,
+            Optional<Integer> sourcePosition) {
+        ensureOrgAdmin(loggedInUser);
         Type type = Type.lookupByLabel(sourceType);
         try {
-            return ContentManager.attachSource(projectLabel, type, sourceLabel, loggedInUser);
+            return ContentManager.attachSource(projectLabel, type, sourceLabel, sourcePosition, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
