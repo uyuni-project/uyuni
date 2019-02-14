@@ -169,7 +169,7 @@ end
 
 Then(/^I should see "([^"]*)", "([^"]*)" and "([^"]*)" in the repo file on the "([^"]*)"$/) do |protocol, hostname, port, target|
   node = get_target(target)
-  hostname = hostname == "server" ? $server.full_hostname : hostname
+  hostname = hostname == "proxy" ? $proxy.full_hostname : hostname
   base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
   base_url = base_url.strip.split('=')[1].delete '"'
   uri = URI.parse(base_url)
