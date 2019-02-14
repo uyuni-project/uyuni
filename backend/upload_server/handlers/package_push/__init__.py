@@ -18,6 +18,6 @@
 
 __all__ = []
 
-import package_push
+from . import package_push
 
 upload_class = package_push.PackagePush

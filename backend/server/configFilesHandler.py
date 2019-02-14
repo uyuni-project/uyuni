@@ -528,7 +528,7 @@ def format_file_results(row, server=None):
         contents = interpolator.interpolate(contents)
         if row['checksum_type']:
             checksummer = hashlib.new(row['checksum_type'])
-            checksummer.update(contents)
+            checksummer.update(contents.encode())
             checksum = checksummer.hexdigest()
 
     if contents:
