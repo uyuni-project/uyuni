@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -40,6 +41,8 @@ import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import static com.suse.utils.Opt.consume;
 
 /**
  * A Content Project
@@ -208,6 +211,7 @@ public class ContentProject extends BaseDomainHelper {
      * @return sources
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contentProject", orphanRemoval = true)
+    @OrderColumn(name = "position")
     public List<ProjectSource> getSources() {
         return sources;
     }
@@ -225,17 +229,22 @@ public class ContentProject extends BaseDomainHelper {
      * Adds a source to content project
      *
      * @param source the Source
+     * @param position the (optional) position
      * @throws java.lang.IllegalArgumentException if the given Source does not match to the Project
      * @return true if Source was added, false if the Source had been present already
      */
-    public boolean addSource(ProjectSource source) {
+    public boolean addSource(ProjectSource source, Optional<Integer> position) {
         if (!source.getContentProject().equals(this)) {
             throw new IllegalArgumentException("Trying to attach source " + source + " with mismatched Project.");
         }
         if (sources.contains(source)) {
             return false;
         }
-        return sources.add(source);
+        consume(position,
+                () -> sources.add(source),
+                (p) -> sources.add(p, source)
+        );
+        return true;
     }
 
     /**
@@ -249,6 +258,21 @@ public class ContentProject extends BaseDomainHelper {
             throw new IllegalArgumentException("Trying to remove source " + source + " with mismatched Project.");
         }
         sources.remove(source);
+    }
+
+    /**
+     * Looks up {@link SoftwareProjectSource} "leader" of the {@link ContentProject}
+     *
+     * When a Project contains at least one {@link SoftwareProjectSource}, one of them has a special "leader" role:
+     * After building the Project, the "leader" will be used as a base Channel for Channels from other Project Sources.
+     *
+     * The "leader" is the first {@link SoftwareProjectSource} in the list of Project sources.
+     *
+     * @return
+     */
+    public Optional<SoftwareProjectSource> lookupSwSourceLeader() {
+        // todo re-read in the morning
+        return sources.stream().flatMap(s -> Opt.stream(s.asSoftwareSource())).findFirst();
     }
 
     /**
