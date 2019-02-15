@@ -31,7 +31,7 @@ def xccdf_eval(server_id, action_id, data={}):
         return
 
     for item in ('resume', 'errors'):
-        data[item] = decodestring(data[item])
+        data[item] = decodestring(data[item].encode()).decode()
 
     resume = xml.dom.minidom.parseString(data['resume'])
     benchmark = resume.getElementsByTagName('benchmark-resume')[0]
