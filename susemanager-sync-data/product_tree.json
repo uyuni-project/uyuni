@@ -61035,7 +61035,7 @@
         "channel_name": "SLE-Module-CAP-Tools15-SP1-Debuginfo-Pool for x86_64 SAP"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-aarch64",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-aarch64",
         "parent_channel_label": "sles12-sp4-pool-aarch64",
         "product_id": 1810,
         "repository_id": 3451,
@@ -61080,7 +61080,7 @@
         "channel_name": "SUSE-PackageHub-12-SP4-Pool for aarch64"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-aarch64-hpc-sp4",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-aarch64-hpc-sp4",
         "parent_channel_label": "sle12-sp4-hpc-pool-aarch64",
         "product_id": 1810,
         "repository_id": 3451,
@@ -61125,7 +61125,7 @@
         "channel_name": "SUSE-PackageHub-12-SP4-Pool for aarch64 HPC"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-ppc64le",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-ppc64le",
         "parent_channel_label": "sles12-sp4-pool-ppc64le",
         "product_id": 1811,
         "repository_id": 3454,
@@ -61170,7 +61170,7 @@
         "channel_name": "SUSE-PackageHub-12-SP4-Pool for ppc64le"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-ppc64le-sap-sp4",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-ppc64le-sap-sp4",
         "parent_channel_label": "sle12-sp4-sap-pool-ppc64le",
         "product_id": 1811,
         "repository_id": 3454,
@@ -61215,7 +61215,7 @@
         "channel_name": "SUSE-PackageHub-12-SP4-Pool for ppc64le SAP"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-s390x",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-s390x",
         "parent_channel_label": "sles12-sp4-pool-s390x",
         "product_id": 1812,
         "repository_id": 3457,
@@ -61260,7 +61260,7 @@
         "channel_name": "SUSE-PackageHub-12-SP4-Pool for s390x"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-x86_64",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-x86_64",
         "parent_channel_label": "sles12-sp4-pool-x86_64",
         "product_id": 1813,
         "repository_id": 3460,
@@ -61305,7 +61305,7 @@
         "channel_name": "SUSE-PackageHub-12-SP4-Pool for x86_64"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-x86_64-sled-sp4",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-x86_64-sled-sp4",
         "parent_channel_label": "sled12-sp4-pool-x86_64",
         "product_id": 1813,
         "repository_id": 3460,
@@ -61350,7 +61350,7 @@
         "channel_name": "SUSE-PackageHub-12-SP4-Pool for x86_64 SLED"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-x86_64-sap-sp4",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-x86_64-sap-sp4",
         "parent_channel_label": "sle12-sp4-sap-pool-x86_64",
         "product_id": 1813,
         "repository_id": 3460,
@@ -61395,7 +61395,7 @@
         "channel_name": "SUSE-PackageHub-12-SP4-Pool for x86_64 SAP"
     },
     {
-        "channel_label": "suse-packagehub-12-sp4-x86_64-hpc-sp4",
+        "channel_label": "suse-packagehub-12-sp4-standard-pool-x86_64-hpc-sp4",
         "parent_channel_label": "sle12-sp4-hpc-pool-x86_64",
         "product_id": 1813,
         "repository_id": 3460,
