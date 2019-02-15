@@ -1,3 +1,5 @@
+- Prevent spacecmd crashing when piping the output in Python 3 (bsc#1125610)
+
 -------------------------------------------------------------------
 Thu Jan 31 16:34:26 CET 2019 - jgonzalez@suse.com
 
