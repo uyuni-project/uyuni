@@ -80,6 +80,8 @@ public class ImageDeployedEventMessageAction implements MessageAction {
                     .flatMap(suma -> suma.getOptionalAsString("activation_key"));
             Optional<ActivationKey> activationKey = activationKeyLabel.map(ActivationKeyFactory::lookupByKey);
 
+            // we want to clear assigned channels first
+            m.getChannels().clear();
             RegistrationUtils.subscribeMinionToChannels(saltService, m, grains, activationKey, activationKeyLabel);
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(m, ak, grains));
             RegistrationUtils.finishRegistration(m, activationKey, Optional.empty(), false);

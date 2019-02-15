@@ -14,11 +14,6 @@
  */
 package com.suse.manager.reactor.test;
 
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
-import static java.util.Collections.singletonMap;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -57,17 +52,15 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -83,7 +76,6 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
-
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -103,6 +95,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static java.util.Collections.singletonMap;
 
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.
@@ -361,7 +358,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Server server = ServerTestUtils.createTestSystem(otherUser);
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
-        //SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
@@ -373,10 +369,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(optMinion.isPresent());
         MinionServer minion = optMinion.get();
 
-        // no base/required channels - e.g. we need an SCC sync
         assertEquals(MINION_ID, minion.getName());
-        assertNull(minion.getBaseChannel());
-        assertTrue(minion.getChannels().isEmpty());
+        // assigned channels are preserved
+        Set<Channel> originalChannels = ((Server) HibernateFactory.reload(server)).getChannels();
+        assertEquals(originalChannels, minion.getChannels());
 
         // Invalid Activation Key should be reported because
         // org of server does not match org of activation key
@@ -1356,6 +1352,153 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 DEFAULT_CONTACT_METHOD);
     }
 
+    /**
+     * Test that a traditional -> salt migration respects the channels from the Activation Key (and overrides
+     * the channels that have been assigned to the system)
+     *
+     * @throws java.lang.Exception if anything goes wrong
+     */
+    public void testMigrationSystemWithChannelsAndAK() throws Exception {
+        Channel akBaseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel akChildChannel = ChannelTestUtils.createChildChannel(user, akBaseChannel);
+
+        Channel assignedChannel = ChannelTestUtils.createBaseChannel(user);
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        Server server = ServerTestUtils.createTestSystem(user);
+        server.setMachineId(MACHINE_ID);
+        server.addChannel(assignedChannel);
+        ServerFactory.save(server);
+
+        executeTest((saltServiceMock, key) -> new Expectations() {
+            {
+                allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                will(returnValue(Optional.of(MINION_ID)));
+                allowing(saltServiceMock).getMachineId(MINION_ID);
+                will(returnValue(Optional.of(MACHINE_ID)));
+                allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                allowing(saltServiceMock).getGrains(MINION_ID);
+                will(returnValue(getGrains(MINION_ID, null, key)));
+            }
+        }, (DEFAULT_CONTACT_METHOD) -> {
+            ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+            key.setBaseChannel(akBaseChannel);
+            key.addChannel(akChildChannel);
+            key.setOrg(user.getOrg());
+            ActivationKeyFactory.save(key);
+            return key.getKey();
+        }, (optMinion, machineId, key) -> {
+            assertTrue(optMinion.isPresent());
+            MinionServer minion = optMinion.get();
+            assertEquals(MINION_ID, minion.getName());
+
+            assertNotNull(minion.getBaseChannel());
+            assertEquals(akBaseChannel, minion.getBaseChannel());
+
+            HashSet<Channel> channels = new HashSet<>();
+            channels.add(akBaseChannel);
+            channels.add(akChildChannel);
+            assertEquals(channels, minion.getChannels());
+            assertTrue(minion.getFqdns().isEmpty());
+        }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test that a traditional -> salt migration respects the channels from the Activation Key (and overrides
+     * the channels that have been assigned to the system)
+     * In this case, the already assigned base channel was same the one in the AK, but the child channels differ.
+     *
+     * @throws java.lang.Exception if anything goes wrong
+     */
+    public void testMigrationSystemWithChannelsAndAKSameBase() throws Exception {
+        Channel akBaseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel akChildChannel = ChannelTestUtils.createChildChannel(user, akBaseChannel);
+        Channel assignedChildChannel = ChannelTestUtils.createChildChannel(user, akBaseChannel);
+
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        Server server = ServerTestUtils.createTestSystem(user);
+        server.setMachineId(MACHINE_ID);
+        server.addChannel(akBaseChannel);
+        server.addChannel(assignedChildChannel);
+        ServerFactory.save(server);
+
+        executeTest((saltServiceMock, key) -> new Expectations() {
+            {
+                allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                will(returnValue(Optional.of(MINION_ID)));
+                allowing(saltServiceMock).getMachineId(MINION_ID);
+                will(returnValue(Optional.of(MACHINE_ID)));
+                allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                allowing(saltServiceMock).getGrains(MINION_ID);
+                will(returnValue(getGrains(MINION_ID, null, key)));
+            }
+        }, (DEFAULT_CONTACT_METHOD) -> {
+            ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+            key.setBaseChannel(akBaseChannel);
+            key.addChannel(akChildChannel);
+            key.setOrg(user.getOrg());
+            ActivationKeyFactory.save(key);
+            return key.getKey();
+        }, (optMinion, machineId, key) -> {
+            assertTrue(optMinion.isPresent());
+            MinionServer minion = optMinion.get();
+            assertEquals(MINION_ID, minion.getName());
+
+            assertNotNull(minion.getBaseChannel());
+            assertEquals(akBaseChannel, minion.getBaseChannel());
+
+            HashSet<Channel> channels = new HashSet<>();
+            channels.add(akBaseChannel);
+            channels.add(akChildChannel);
+            assertEquals(channels, minion.getChannels());
+            assertTrue(minion.getFqdns().isEmpty());
+        }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test that a traditional -> salt migration preserves assigned channels when no AK is used
+     *
+     * @throws java.lang.Exception if anything goes wrong
+     */
+    public void testMigrationSystemWithChannelsNoAK() throws Exception {
+        Channel assignedChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel assignedChildChannel = ChannelTestUtils.createChildChannel(user, assignedChannel);
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        Server server = ServerTestUtils.createTestSystem(user);
+        server.setMachineId(MACHINE_ID);
+        server.getChannels().clear();
+        server.addChannel(assignedChannel);
+        server.addChannel(assignedChildChannel);
+        ServerFactory.save(server);
+
+        executeTest((saltServiceMock, key) -> new Expectations() {
+            {
+                allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                will(returnValue(Optional.of(MINION_ID)));
+                allowing(saltServiceMock).getMachineId(MINION_ID);
+                will(returnValue(Optional.of(MACHINE_ID)));
+                allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                allowing(saltServiceMock).getGrains(MINION_ID);
+                will(returnValue(getGrains(MINION_ID, null, key)));
+            }
+        }, (DEFAULT_CONTACT_METHOD) -> null,
+        (optMinion, machineId, key) -> {
+            assertTrue(optMinion.isPresent());
+            MinionServer minion = optMinion.get();
+            assertEquals(MINION_ID, minion.getName());
+
+            assertNotNull(minion.getBaseChannel());
+            assertEquals(assignedChannel, minion.getBaseChannel());
+
+            HashSet<Channel> channels = new HashSet<>();
+            channels.add(assignedChannel);
+            channels.add(assignedChildChannel);
+            assertEquals(channels, minion.getChannels());
+            assertTrue(minion.getFqdns().isEmpty());
+        }, DEFAULT_CONTACT_METHOD);
+    }
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
             SUSEProduct product)
         throws Exception {
