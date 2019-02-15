@@ -364,7 +364,7 @@ problems, isn't running, or the token is somehow corrupt.
         satInfo = None
         for key in ('X-RHN-Server-Id', 'X-RHN-Auth-User-Id', 'X-RHN-Auth',
                     'X-RHN-Auth-Server-Time', 'X-RHN-Auth-Expire-Offset'):
-            if token.has_key(key):
+            if key in token:
                 dumbToken[key] = token[key]
         try:
             s = self.__getXmlrpcServer()

@@ -56,12 +56,12 @@ def getComponentType(req):
     """
 
     # NOTE: X-RHN-Proxy-Auth described in broker/rhnProxyAuth.py
-    if not req.headers_in.has_key('X-RHN-Proxy-Auth'):
+    if 'X-RHN-Proxy-Auth' not in req.headers_in:
         # Request comes from a client, Must be the broker
         return COMPONENT_BROKER
 
     # Might be obsolete if proxy is traditionally registered
-    if req.headers_in.has_key('X-Suse-Auth-Token'):
+    if 'X-Suse-Auth-Token' in req.headers_in:
         return COMPONENT_REDIRECT
 
     # pull server id out of "t:o:k:e:n:hostname1,t:o:k:e:n:hostname2,..."
@@ -200,7 +200,7 @@ class apacheHandler(rhnApache):
         # If we don't get the actual URI in the headers, we'll decline the
         # request.
 
-        if not req.headers_in or not req.headers_in.has_key(HEADER_ACTUAL_URI):
+        if not req.headers_in or HEADER_ACTUAL_URI not in req.headers_in:
             log_error("Kickstart request header did not include '%s'"
                       % HEADER_ACTUAL_URI)
             return apache.DECLINED
@@ -282,7 +282,7 @@ class apacheHandler(rhnApache):
             log_error("HEAD response - No HTTP headers!")
             return (apache.OK, None)
 
-        if not responseHdrs.has_key(HEADER_CHECKSUM):
+        if HEADER_CHECKSUM not in responseHdrs:
             # No checksum was provided.  This could happen if a newer
             # proxy is talking to an older satellite.  To keep things
             # running smoothly, we'll just revert to the BZ 158236
@@ -410,7 +410,7 @@ class apacheHandler(rhnApache):
         response_size = file_size
 
         # Serve up the requested byte range
-        if req.headers_in.has_key("Range"):
+        if "Range" in req.headers_in:
             try:
                 range_start, range_end = \
                     byterange.parse_byteranges(req.headers_in["Range"],
@@ -442,7 +442,7 @@ class apacheHandler(rhnApache):
         if response.name:
             req.headers_out["X-Package-FileName"] = response.name
 
-        xrepcon = req.headers_in.has_key("X-Replace-Content-Active") \
+        xrepcon = "X-Replace-Content-Active" in req.headers_in \
             and rhnFlags.test("Download-Accelerator-Path")
         if xrepcon:
             fpath = rhnFlags.get("Download-Accelerator-Path")
@@ -456,7 +456,7 @@ class apacheHandler(rhnApache):
         # send the headers
         req.send_http_header()
 
-        if req.headers_in.has_key("Range"):
+        if "Range" in req.headers_in:
             # and the file
             read = 0
             while read < response_size:

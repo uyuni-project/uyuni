@@ -78,7 +78,7 @@ class BrokerHandler(SharedHandler):
         hostname = ''
         # should *always* exist and be my ip address
         my_ip_addr = req.headers_in['SERVER_ADDR']
-        if req.headers_in.has_key('Host'):
+        if 'Host' in req.headers_in:
             # the client has provided a host header
             try:
                 # When a client with python 2.4 (RHEL 5) uses SSL
@@ -161,10 +161,10 @@ class BrokerHandler(SharedHandler):
         #
         # Traditional SLE and RHEL clients uses 'X-RHN-Auth' header, but
         # no auth token is used in order to authenticate.
-        if self.req.headers_in.has_key('X-Mgr-Auth'):
+        if 'X-Mgr-Auth' in self.req.headers_in:
             self.authToken = self.req.headers_in['X-Mgr-Auth']
             del self.req.headers_in['X-Mgr-Auth']
-        elif not self.req.headers_in.has_key('X-RHN-Auth'):
+        elif 'X-RHN-Auth' not in self.req.headers_in:
             self.authToken = effectiveURI_parts.query
 
         if req.method == 'GET':
@@ -240,7 +240,7 @@ class BrokerHandler(SharedHandler):
         else:
             log_debug(5, 'X-RHN-Proxy-Auth is not set')
 
-        if self.req.headers_in.has_key('X-RHN-Proxy-Auth'):
+        if 'X-RHN-Proxy-Auth' in self.req.headers_in:
             tokens = []
             if 'X-RHN-Proxy-Auth' in _oto:
                 tokens = _oto['X-RHN-Proxy-Auth'].split(',')
@@ -305,7 +305,7 @@ class BrokerHandler(SharedHandler):
             # check for proxy authentication blowup.
             respHeaders = self.responseContext.getHeaders()
             if not respHeaders or \
-               not respHeaders.has_key('X-RHN-Proxy-Auth-Error'):
+               'X-RHN-Proxy-Auth-Error' not in respHeaders:
                 # No proxy auth errors
                 # XXX: need to verify that with respHeaders ==
                 #      None that is is correct logic. It should be -taw
@@ -315,7 +315,7 @@ class BrokerHandler(SharedHandler):
 
             # If a proxy other than this one needs to update its auth token
             # pass the error on up to it
-            if (respHeaders.has_key('X-RHN-Proxy-Auth-Origin') and
+            if ('X-RHN-Proxy-Auth-Origin' in respHeaders and
                     respHeaders['X-RHN-Proxy-Auth-Origin'] != self.proxyAuth.hostname):
                 break
 
@@ -413,7 +413,7 @@ class BrokerHandler(SharedHandler):
         log_debug(1)
         # Check if proxy is interested in this action, and execute any
         # action required:
-        if not headers.has_key('X-RHN-Action'):
+        if 'X-RHN-Action' not in headers:
             # Don't know what to do
             return
 
@@ -524,7 +524,7 @@ class BrokerHandler(SharedHandler):
 
         log_debug(1)
         # Get the server ID
-        if not headers.has_key('X-RHN-Server-ID'):
+        if 'X-RHN-Server-ID' not in headers:
             log_debug(3, "Client server ID not found in headers")
             # XXX: no client server ID in headers, should we care?
             #raise rhnFault(1000, _("Client Server ID not found in headers!"))
@@ -563,9 +563,9 @@ class BrokerHandler(SharedHandler):
         log_debug(2, req_type, identifier, funct, params)
 
         # NOTE: X-RHN-Proxy-Auth described in broker/rhnProxyAuth.py
-        if rhnFlags.get('outputTransportOptions').has_key('X-RHN-Proxy-Auth'):
+        if 'X-RHN-Proxy-Auth' in rhnFlags.get('outputTransportOptions'):
             self.cachedClientInfo['X-RHN-Proxy-Auth'] = rhnFlags.get('outputTransportOptions')['X-RHN-Proxy-Auth']
-        if rhnFlags.get('outputTransportOptions').has_key('Host'):
+        if 'Host' in rhnFlags.get('outputTransportOptions'):
             self.cachedClientInfo['Host'] = rhnFlags.get('outputTransportOptions')['Host']
 
         if req_type == 'tinyurl':
@@ -708,12 +708,12 @@ def _dictEquals(d1, d2, exceptions=None):
     for k, v in list(d1.items()):
         if k.lower() in exceptions:
             continue
-        if not d2.has_key(k) or d2[k] != v:
+        if k not in d2 or d2[k] != v:
             return 0
     for k, v in list(d2.items()):
         if k.lower() in exceptions:
             continue
-        if not d1.has_key(k) or d1[k] != v:
+        if k not in d1 or d1[k] != v:
             return 0
     return 1
 

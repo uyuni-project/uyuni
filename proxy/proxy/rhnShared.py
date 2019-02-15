@@ -409,7 +409,7 @@ class SharedHandler:
         return status, headers, bodyFd
 
     def _getEffectiveURI(self):
-        if self.req.headers_in.has_key(rhnConstants.HEADER_EFFECTIVE_URI):
+        if rhnConstants.HEADER_EFFECTIVE_URI in self.req.headers_in:
             return self.req.headers_in[rhnConstants.HEADER_EFFECTIVE_URI]
 
         return self.req.uri
@@ -423,7 +423,7 @@ class SharedHandler:
 
         # Get the size of the body
         size = 0
-        if headers.has_key(rhnConstants.HEADER_CONTENT_LENGTH):
+        if rhnConstants.HEADER_CONTENT_LENGTH in headers:
             try:
                 size = int(headers[rhnConstants.HEADER_CONTENT_LENGTH])
             except ValueError:
