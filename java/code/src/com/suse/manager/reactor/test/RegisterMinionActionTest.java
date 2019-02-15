@@ -14,6 +14,11 @@
  */
 package com.suse.manager.reactor.test;
 
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static java.util.Collections.singletonMap;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -61,6 +66,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -95,11 +101,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
-import static java.util.Collections.singletonMap;
 
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.
@@ -1359,8 +1360,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * @throws java.lang.Exception if anything goes wrong
      */
     public void testMigrationSystemWithChannelsAndAK() throws Exception {
-        Channel akBaseChannel = ChannelTestUtils.createBaseChannel(user);
-        Channel akChildChannel = ChannelTestUtils.createChildChannel(user, akBaseChannel);
+        Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
+        Channel akChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        akChildChannel.setParentChannel(akBaseChannel);
+        TestUtils.saveAndFlush(akChildChannel);
 
         Channel assignedChannel = ChannelTestUtils.createBaseChannel(user);
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
@@ -1411,9 +1414,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * @throws java.lang.Exception if anything goes wrong
      */
     public void testMigrationSystemWithChannelsAndAKSameBase() throws Exception {
-        Channel akBaseChannel = ChannelTestUtils.createBaseChannel(user);
-        Channel akChildChannel = ChannelTestUtils.createChildChannel(user, akBaseChannel);
-        Channel assignedChildChannel = ChannelTestUtils.createChildChannel(user, akBaseChannel);
+        Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
+        Channel akChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        akChildChannel.setParentChannel(akBaseChannel);
+        TestUtils.saveAndFlush(akChildChannel);
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        assignedChildChannel.setParentChannel(akBaseChannel);
+        TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         Server server = ServerTestUtils.createTestSystem(user);
@@ -1462,8 +1469,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * @throws java.lang.Exception if anything goes wrong
      */
     public void testMigrationSystemWithChannelsNoAK() throws Exception {
-        Channel assignedChannel = ChannelTestUtils.createBaseChannel(user);
-        Channel assignedChildChannel = ChannelTestUtils.createChildChannel(user, assignedChannel);
+        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        assignedChildChannel.setParentChannel(assignedChannel);
+        TestUtils.saveAndFlush(assignedChildChannel);
+
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         Server server = ServerTestUtils.createTestSystem(user);
         server.setMachineId(MACHINE_ID);
