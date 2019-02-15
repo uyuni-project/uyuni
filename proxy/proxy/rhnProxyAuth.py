@@ -426,7 +426,7 @@ problems, isn't running, or the token is somehow corrupt.
         return serverObj
 
     def __cache_proxy_key(self):
-        return 'p' + str(self.__serverid) + sha1(self.hostname).hexdigest()
+        return 'p' + str(self.__serverid) + sha1(self.hostname.encode()).hexdigest()
 
     def getProxyServerId(self):
         return self.__serverid

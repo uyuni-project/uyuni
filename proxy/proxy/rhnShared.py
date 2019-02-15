@@ -23,7 +23,6 @@ except ImportError:
     import urllib
 import socket
 import sys
-from types import ListType, TupleType
 
 # global imports
 from rhn import connections
@@ -38,7 +37,7 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common import rhnFlags, rhnLib, apache
 from spacewalk.common.rhnTranslate import _
-from spacewalk.common.usix import raise_with_tb
+from spacewalk.common.usix import raise_with_tb, ListType, TupleType
 
 # local imports
 from . import rhnConstants
@@ -340,7 +339,7 @@ class SharedHandler:
         # Set the content type
 
         headers = self.responseContext.getHeaders()
-        self.req.content_type = headers.gettype()
+        self.req.content_type = headers.get_content_type()
         self.req.send_http_header()
 
         # Forward the response body back to the client.
