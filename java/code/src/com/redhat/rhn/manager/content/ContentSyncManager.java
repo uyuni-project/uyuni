@@ -528,19 +528,25 @@ public class ContentSyncManager {
         if (orphan != null) {
             log.debug("found orphan vendor content sources: " + orphan.size());
             // find sccrepositoryauth and link
-            orphan.forEach(cs -> {
-                cs.getChannels().forEach(c -> {
-                    SCCRepository r = ChannelFactory.findVendorRepositoryByChannel(c);
-                    if (r.getBestAuth().isPresent()) {
-                        log.debug("Has new auth: " + cs.getLabel());
-                        r.getBestAuth().get().setContentSource(cs);
-                    }
-                    else {
-                        log.debug("No auth anymore - remove content source: " + cs.getLabel());
+            orphan.forEach(cs ->
+                cs.getChannels().forEach(c ->
+                    Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
+                    () -> {
+                        log.debug("No repository found for channel: '" + cs.getLabel() + "' - remove content source");
                         ChannelFactory.remove(cs);
-                    }
-                });
-            });
+                    },
+                    repo ->
+                        Opt.consume(repo.getBestAuth(),
+                        () -> {
+                            log.debug("No auth anymore - remove content source: " + cs.getLabel());
+                            ChannelFactory.remove(cs);
+                        }, auth -> {
+                            log.debug("Has new auth: " + cs.getLabel());
+                            auth.setContentSource(cs);
+                        })
+                    )
+                )
+            );
         }
         // find all rhnChannel with org id == null and no content source
         List<Channel> orphanChannels = ChannelFactory.lookupOrphanVendorChannels();
@@ -548,8 +554,10 @@ public class ContentSyncManager {
             log.debug("found orphan vendor channels: " + orphanChannels.size());
             // find sccrepository auth and create content source and link
             orphanChannels.forEach(c -> {
-                SCCRepository r = ChannelFactory.findVendorRepositoryByChannel(c);
-                r.getBestAuth().ifPresent(a -> createOrUpdateContentSource(a, c, mirrorUrl));
+                Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
+                    () -> log.error("No repository found for channel: '" + c.getLabel() + "'"),
+                    repo -> repo.getBestAuth().ifPresent(a -> createOrUpdateContentSource(a, c, mirrorUrl))
+                );
             });
         }
         // update URL if needed
