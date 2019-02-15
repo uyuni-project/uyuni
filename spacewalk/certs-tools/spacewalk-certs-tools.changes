@@ -1,4 +1,4 @@
-- Fix problem with spacewalk certs tools and Python3
+- Fix problem with spacewalk certs tools and Python3 (bsc#1125282)
 
 -------------------------------------------------------------------
 Wed Jan 16 12:22:08 CET 2019 - jgonzalez@suse.com
