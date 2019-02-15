@@ -446,21 +446,28 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(cp);
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
         ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
-        cp.addSource(swSource, empty());
         ContentProjectFactory.save(swSource);
         Channel baseChannel2 = ChannelTestUtils.createBaseChannel(user);
         ProjectSource swSource2 = new SoftwareProjectSource(cp, baseChannel2);
-        cp.addSource(swSource2, empty());
         ContentProjectFactory.save(swSource2);
+        Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
+        ProjectSource childChannelSource = new SoftwareProjectSource(cp, childChannel);
+        ContentProjectFactory.save(swSource);
 
+        cp.addSource(childChannelSource, empty());
+        cp.addSource(swSource, empty());
+        cp.addSource(swSource2, empty());
+
+        cp.addSource(childChannelSource, empty());
         cp.addSource(swSource, empty());
         cp.addSource(swSource2, empty());
         cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
         assertEquals(swSource, cp.lookupSwSourceLeader().get());
 
         // let's re-arrange the sources and test that the leader lookup works
+        // but keep the "child source" as the first element - it is supposed to be skipped on leader lookup
         cp.removeSource(swSource2);
-        cp.addSource(swSource2, of(0));
+        cp.addSource(swSource2, of(1));
         cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
         assertEquals(swSource2, cp.lookupSwSourceLeader().get());
     }
