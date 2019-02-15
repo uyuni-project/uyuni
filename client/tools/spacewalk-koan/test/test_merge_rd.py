@@ -51,7 +51,7 @@ class MergeRdTest(unittest.TestCase):
             helper.path_to_fixture("ks-tree-shadow/")
         ])
 
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
 
         self.assertNotEqual(0, status)
         if not "tar: command not found" in errors:
@@ -67,7 +67,7 @@ class MergeRdTest(unittest.TestCase):
             helper.path_to_fixture("ks-tree-shadow/")
         ])
 
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
 
         self.assertNotEqual(0, status)
         if not "Error uncompressing" in errors:
@@ -82,7 +82,7 @@ class MergeRdTest(unittest.TestCase):
             helper.path_to_fixture("ks-tree-shadow/")
         ])
 
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
 
         self.assertNotEqual(0, status)
         if not "Error uncompressing" in errors:
@@ -97,7 +97,7 @@ class MergeRdTest(unittest.TestCase):
             helper.path_to_fixture("ks-tree-shadow/")
         ])
 
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
 
         self.assertNotEqual(0, status)
         if not "Cannot find initrd" in errors:
@@ -113,7 +113,7 @@ class MergeRdTest(unittest.TestCase):
             helper.path_to_fixture("ks-tree-shadow/")
         ])
 
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
 
         self.assertNotEqual(0, status)
         if not "Cannot find final destination dir" in errors:
@@ -129,7 +129,7 @@ class MergeRdTest(unittest.TestCase):
             "/does/not/exist/ks-tree-shadow/"
         ])
 
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
 
         self.assertNotEqual(0, status)
         if not "Cannot find user tree" in errors:
@@ -148,7 +148,7 @@ class MergeRdTest(unittest.TestCase):
         ])
 
         # ensure the new initrd has been created
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
         self.assertEqual(0, status,
             "Something wrong happened: {0}".format(errors))
         self.assertTrue(os.path.exists(self.final_initrd))
@@ -158,16 +158,16 @@ class MergeRdTest(unittest.TestCase):
             "file",
             self.final_initrd,
         ])
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
         self.assertEqual(0, status,
             "Something wrong happened: {0}".format(errors))
-        self.assertTrue("gzip compressed data" in "".join(stdout.readlines()))
+        self.assertTrue("gzip compressed data" in b"".join(stdout.readlines()).decode())
 
         # uncompress the initrd
         (status, stdout, stderr) = my_popen([
             "gzip", "-d", self.final_initrd 
         ])
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
         self.assertEqual(0, status,
             "Something wrong happened: {0}".format(errors))
 
@@ -179,7 +179,7 @@ class MergeRdTest(unittest.TestCase):
         (status, stdout, stderr) = my_popen([
             "cpio", "-idF", self.final_initrd.replace(".gz", "")
         ])
-        errors = "".join(stderr.readlines())
+        errors = b"".join(stderr.readlines()).decode()
         self.assertEqual(0, status,
             "Something wrong happened: {0}".format(errors))
 
@@ -208,7 +208,7 @@ class MergeRdTest(unittest.TestCase):
         if status != 0:
             self.fail(
                 "Something went wrong while ensuring {0} was "
-                "installed: {1}".format(pkg, "".join(stderr.readlines()))
+                "installed: {1}".format(pkg, b"".join(stderr.readlines()).decode())
             )
 
     def ensure_package_is_not_installed(self, *pkgs):
@@ -221,6 +221,6 @@ class MergeRdTest(unittest.TestCase):
         if status != 0:
             self.fail(
                 "Something went wrong while ensuring {0} was not "
-                "installed: {1}".format(pkg, "".join(stderr.readlines()))
+                "installed: {1}".format(pkg, b"".join(stderr.readlines()).decode())
             )
 
