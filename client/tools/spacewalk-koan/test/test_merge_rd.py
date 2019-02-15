@@ -23,7 +23,7 @@ import shutil
 import os
 import tempfile
 from spacewalkkoan.spacewalkkoan import my_popen
-import helper
+from . import helper
 
 MERGE_RD_CMD = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
