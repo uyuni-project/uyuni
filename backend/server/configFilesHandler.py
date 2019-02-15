@@ -319,7 +319,7 @@ class ConfigFilesHandler(rhnHandler):
         file_contents = file.get('file_contents') or ''
 
         if 'enc64' in file and file_contents:
-            file_contents = base64.decodestring(file_contents)
+            file_contents = base64.decodestring(file_contents.encode())
 
         if 'config_file_type_id' not in file:
             log_debug(4, "Client does not support config directories, so set file_type_id to 1")
@@ -340,7 +340,7 @@ class ConfigFilesHandler(rhnHandler):
             # XXX Yes this is iterating over a string
             try:
                 file_contents.decode('UTF-8')
-            except UnicodeDecodeError:
+            except Exception:
                 file['is_binary'] = 'Y'
 
         h = rhnSQL.prepare(self._query_content_lookup)
