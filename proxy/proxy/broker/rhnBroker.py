@@ -38,7 +38,7 @@ from spacewalk.common import suseLib
 # local module imports
 from proxy.rhnShared import SharedHandler
 from proxy.rhnConstants import URI_PREFIX_KS_CHECKSUM
-import rhnRepository
+from . import rhnRepository
 import proxy.rhnProxyAuth
 
 
@@ -538,7 +538,7 @@ class BrokerHandler(SharedHandler):
         # "x-rhn-auth"
         prefix = "x-rhn-auth"
         l = len(prefix)
-        tokenKeys = [x for x in headers.keys() if x[:l].lower() == prefix]
+        tokenKeys = [x for x in list(headers.keys()) if x[:l].lower() == prefix]
         for k in tokenKeys:
             if k.lower() == 'x-rhn-auth-channels':
                 # Multivalued header
@@ -705,12 +705,12 @@ class BrokerHandler(SharedHandler):
 def _dictEquals(d1, d2, exceptions=None):
     """ Function that compare two dictionaries, ignoring certain keys """
     exceptions = [x.lower() for x in (exceptions or [])]
-    for k, v in d1.items():
+    for k, v in list(d1.items()):
         if k.lower() in exceptions:
             continue
         if not d2.has_key(k) or d2[k] != v:
             return 0
-    for k, v in d2.items():
+    for k, v in list(d2.items()):
         if k.lower() in exceptions:
             continue
         if not d1.has_key(k) or d1[k] != v:

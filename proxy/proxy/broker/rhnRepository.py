@@ -44,6 +44,7 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common import rhnRepository
 from spacewalk.common.rhnTranslate import _
+from spacewalk.common.usix import raise_with_tb
 
 ## local imports
 from rhn import rpclib
@@ -143,8 +144,8 @@ class Repository(rhnRepository.Repository):
             retval = server.proxy.package_source_in_channel(
                 pkgFilename, self.channelName, self.clientInfo)
         except xmlrpclib.Fault as e:
-            raise rhnFault(1000,
-                           _("Error retrieving source package: %s") % str(e)), None, sys.exc_info()[2]
+            raise_with_tb(rhnFault(1000,
+                           _("Error retrieving source package: %s") % str(e)), sys.exc_info()[2])
 
         if not retval:
             raise rhnFault(17, _("Invalid SRPM package requested: %s")
@@ -237,8 +238,8 @@ class Repository(rhnRepository.Repository):
             packageList = self._listPackages()
         except xmlrpclib.ProtocolError as e:
             errcode, errmsg = rpclib.reportError(e.headers)
-            raise rhnFault(1000, "SpacewalkProxy error (xmlrpclib.ProtocolError): "
-                           "errode=%s; errmsg=%s" % (errcode, errmsg)), None, sys.exc_info()[2]
+            raise_with_tb(rhnFault(1000, "SpacewalkProxy error (xmlrpclib.ProtocolError): "
+                           "errode=%s; errmsg=%s" % (errcode, errmsg)), sys.exc_info()[2])
 
         # Hash the list
         _hash = {}

@@ -38,10 +38,11 @@ from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common import rhnFlags, rhnLib, apache
 from spacewalk.common.rhnTranslate import _
+from spacewalk.common.usix import raise_with_tb
 
 # local imports
-import rhnConstants
-from responseContext import ResponseContext
+from . import rhnConstants
+from .responseContext import ResponseContext
 
 
 class SharedHandler:
@@ -145,9 +146,9 @@ class SharedHandler:
         except socket.error as e:
             log_error("Error opening connection", self.rhnParent, e)
             Traceback(mail=0)
-            raise rhnFault(1000,
+            raise_with_tb(rhnFault(1000,
                            _("SUSE Manager Proxy could not successfully connect its SUSE Manager parent. "
-                             "Please contact your system administrator.")), None, sys.exc_info()[2]
+                             "Please contact your system administrator.")), sys.exc_info()[2])
 
         # At this point the server should be okay
         log_debug(3, "Connected to parent: %s " % self.rhnParent)
@@ -229,13 +230,13 @@ class SharedHandler:
             # Server closed connection on us, no need to mail out
             # XXX: why are we not mailing this out???
             Traceback("SharedHandler._serverCommo", self.req, mail=0)
-            raise rhnFault(1000, _(
-                "SUSE Manager Proxy error: connection with the SUSE Manager server failed")), None, sys.exc_info()[2]
+            raise_with_tb(rhnFault(1000, _(
+                "SUSE Manager Proxy error: connection with the SUSE Manager server failed")), sys.exc_info()[2])
         except socket.error:
             # maybe self.req.read() failed?
             Traceback("SharedHandler._serverCommo", self.req)
-            raise rhnFault(1000, _(
-                "SUSE Manager Proxy error: connection with the SUSE Manager server failed")), None, sys.exc_info()[2]
+            raise_with_tb(rhnFault(1000, _(
+                "SUSE Manager Proxy error: connection with the SUSE Manager server failed")), sys.exc_info()[2])
 
         log_debug(2, "HTTP status code (200 means all is well): %s" % status)
 
