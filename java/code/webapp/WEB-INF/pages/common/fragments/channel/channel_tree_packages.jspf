@@ -1,7 +1,19 @@
-<rhn:column
-   header="channels.overview.packages"
-   url="/rhn/channels/ChannelPackages.do?cid=${current.id}"
-   style="text-align: right;"
-   usesRefactoredList="true">
-      ${current.packageCount}
-</rhn:column>
+<c:choose>
+      <c:when test="${current.accessible}">
+            <rhn:column
+                    header="channels.overview.packages"
+                    url="/rhn/channels/ChannelPackages.do?cid=${current.id}"
+                    style="text-align: right;"
+                    usesRefactoredList="true">
+                  ${current.packageCount}
+            </rhn:column>
+      </c:when>
+      <c:otherwise>
+            <rhn:column
+                    header="channels.overview.packages"
+                    style="text-align: right;"
+                    usesRefactoredList="true">
+                  -
+            </rhn:column>
+      </c:otherwise>
+</c:choose>
