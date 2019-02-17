@@ -101,8 +101,16 @@ public class CloneChannelAction extends RhnAction {
             if (!subscribableCids.contains(channel.getId()) || channel.isParent()) {
                 continue;
             }
-            nameToId.put(channel.getName(), channel.getId());
-            parentToChildren.get(channel.getParentId()).add(channel.getName());
+            if (parentToChildren.containsKey(channel.getParentId())) {
+                nameToId.put(channel.getName(), channel.getId());
+                parentToChildren.get(channel.getParentId()).add(channel.getName());
+            }
+            else {
+                // Case when a child channel is public and belongs to a private base channel
+                nameToId.put(channel.getName(), channel.getId());
+                parents.add(channel.getName());
+                parentToChildren.put(channel.getId(), new TreeSet<String>());
+            }
         }
 
         // construct channel tree (string TreeSets are alphabetically ordered)
