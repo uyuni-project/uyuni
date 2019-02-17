@@ -1,7 +1,19 @@
-<rhn:column
-   header="channels.overview.erratas"
-   style="text-align: right;"
-   url="/rhn/channels/ChannelErrata.do?cid=${current.id}"
-   usesRefactoredList="true">
-      ${empty current.errataCount ? '0' : current.errataCount}
-</rhn:column>
+<c:choose>
+      <c:when test="${current.accessible}">
+            <rhn:column
+                    header="channels.overview.erratas"
+                    style="text-align: right;"
+                    url="/rhn/channels/ChannelErrata.do?cid=${current.id}"
+                    usesRefactoredList="true">
+                  ${empty current.errataCount ? '0' : current.errataCount}
+            </rhn:column>
+      </c:when>
+      <c:otherwise>
+            <rhn:column
+                    header="channels.overview.erratas"
+                    style="text-align: right;"
+                    usesRefactoredList="true">
+                  -
+            </rhn:column>
+      </c:otherwise>
+</c:choose>
