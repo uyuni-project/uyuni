@@ -1,3 +1,4 @@
+- Fix a problem when cloning public child channels with a private base channel (bsc#1124639)
 - set max length for xccdf rule identifier to 255 to prevent internal server error (bsc#1125492)
 - add configurable option to auto deploy new tokens (bsc#1123019)
 - support products with multiple base channels

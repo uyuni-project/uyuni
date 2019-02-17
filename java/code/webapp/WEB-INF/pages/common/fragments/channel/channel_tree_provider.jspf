@@ -1,30 +1,36 @@
 <c:choose>
-   <c:when test="${satAdmin}">
-      <c:choose>
-        <c:when test="${current.orgId != null}">
-          <rhn:column header="channels.overview.provider"
-           url="/rhn/admin/multiorg/OrgDetails.do?oid=${current.orgId}"
-           style="text-align: right;" usesRefactoredList="true">
-            <c:out value="${current.orgName}"/>
-          </rhn:column>
-        </c:when>
-        <c:otherwise>
-          <rhn:column header="channels.overview.provider" style="text-align: right;"
-           usesRefactoredList="true">
-           SUSE
-          </rhn:column>
-        </c:otherwise>
-      </c:choose>
-   </c:when>
-   <c:otherwise>
-      <rhn:column header="channels.overview.provider" style="text-align: right;"
-         usesRefactoredList="true">
-         <c:choose>
-            <c:when
-                    test="${current.orgId != null}"><c:out
-                    value="${current.orgName}"/></c:when>
-            <c:otherwise>SUSE</c:otherwise>
-         </c:choose>
-      </rhn:column>
-   </c:otherwise>
+    <c:when test="${!current.accessible}">
+        <rhn:column header="channels.overview.provider"
+                    style="text-align: right;" usesRefactoredList="true">
+            -
+        </rhn:column>
+    </c:when>
+    <c:when test="${satAdmin}">
+        <c:choose>
+            <c:when test="${current.orgId != null}">
+                <rhn:column header="channels.overview.provider"
+                            url="/rhn/admin/multiorg/OrgDetails.do?oid=${current.orgId}"
+                            style="text-align: right;" usesRefactoredList="true">
+                    <c:out value="${current.orgName}"/>
+                </rhn:column>
+            </c:when>
+            <c:otherwise>
+                <rhn:column header="channels.overview.provider" style="text-align: right;"
+                            usesRefactoredList="true">
+                    SUSE
+                </rhn:column>
+            </c:otherwise>
+        </c:choose>
+    </c:when>
+    <c:otherwise>
+        <rhn:column header="channels.overview.provider" style="text-align: right;"
+                    usesRefactoredList="true">
+            <c:choose>
+                <c:when
+                        test="${current.orgId != null}"><c:out
+                        value="${current.orgName}"/></c:when>
+                <c:otherwise>SUSE</c:otherwise>
+            </c:choose>
+        </rhn:column>
+    </c:otherwise>
 </c:choose>
