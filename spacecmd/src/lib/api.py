@@ -78,7 +78,6 @@ def do_api(self, args):
     else:
         output = sys.stdout
 
-    output = codecs.getwriter('utf8')(output.buffer)
     api = getattr(self.client, api_name, None)
 
     if not callable(api):

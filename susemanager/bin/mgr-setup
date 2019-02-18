@@ -428,12 +428,12 @@ copy_remote_files() {
     rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/.ssh/ /root/.ssh.new >> $RSYNC_LOG
 
     echo "`date +"%H:%M:%S"`   Copy certificates ..."
-    scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
-    scp -i $KEYFILE root@$SATELLITE_IP:$SERVER_CRT /etc/apache2/ssl.crt/server.crt
-    scp -i $KEYFILE root@$SATELLITE_IP:$SERVER_KEY /etc/apache2/ssl.key/server.key
+    scp -i $KEYFILE -p root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
+    scp -i $KEYFILE -p root@$SATELLITE_IP:$SERVER_CRT /etc/apache2/ssl.crt/server.crt
+    scp -i $KEYFILE -p root@$SATELLITE_IP:$SERVER_KEY /etc/apache2/ssl.key/server.key
     ln -sf ../../../apache2/ssl.crt/server.crt /etc/pki/tls/certs/spacewalk.crt
     ln -sf ../../../apache2/ssl.key/server.key /etc/pki/tls/private/spacewalk.key
-    scp -i $KEYFILE root@$SATELLITE_IP:/etc/rhn/rhn.conf /etc/rhn/rhn.conf-$FROMVERSION
+    scp -i $KEYFILE -p root@$SATELLITE_IP:/etc/rhn/rhn.conf /etc/rhn/rhn.conf-$FROMVERSION
 
     # assert correct ownership and permissions
     chown -R tomcat:tomcat /var/lib/rhn/kickstarts
@@ -575,11 +575,18 @@ do_migration() {
         echo -n "SATELLITE_DB_PASS"; read SATELLITE_DB_PASS
         echo -n "SATELLITE_DB_SID";  read SATELLITE_DB_SID
         echo -n "MANAGER_IP";        read MANAGER_IP
-        echo -n "MANAGER_USER";      read MANAGER_USER
-        echo -n "MANAGER_PASS";      read MANAGER_PASS
     fi;
 
+    # re-use database configuration from source system on new one
+    DB_BACKEND="postgresql"
+    LOCAL_DB="1"
+    MANAGER_DB_HOST="localhost"
+    MANAGER_DB_PORT="5432"
+    MANAGER_DB_PROTOCOL="TCP"
     MANAGER_DB_NAME=$SATELLITE_DB_SID
+    MANAGER_USER=$SATELLITE_DB_USER
+    MANAGER_PASS=$SATELLITE_DB_PASS
+    MANAGER_PASS2=$SATELLITE_DB_PASS
 
     setup_hostname
 
@@ -632,6 +639,11 @@ do_migration() {
     fi
 
     sed -i -e "s/^web\.ssl_available.*$/web.ssl_available = 1/" /etc/rhn/rhn.conf
+
+    mv /etc/rhn/rhn.conf /etc/rhn/rhn.conf.setup
+    cp /etc/rhn/rhn.conf-$FROMVERSION /etc/rhn/rhn.conf
+    chmod 640 /etc/rhn/rhn.conf
+    chown root:www /etc/rhn/rhn.conf
 }
 
 do_setup() {

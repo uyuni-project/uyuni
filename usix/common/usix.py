@@ -23,7 +23,7 @@ PY3 = sys.version_info[0] == 3
 # Common data types
 # Common data types
 if PY3:
-    BufferType = memoryview
+    BufferType = bytes
     UnicodeType = str
     StringType = str
     DictType = dict
