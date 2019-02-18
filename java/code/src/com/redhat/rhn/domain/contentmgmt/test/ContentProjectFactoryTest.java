@@ -149,6 +149,23 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test removing a single environment and check that the reference
+     * to the first environment of the project is updated
+     */
+    public void testRemoveSingleEnvironment() {
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+
+        ContentProjectFactory.removeEnvironment(envdev);
+        assertFalse(ContentProjectFactory.lookupEnvironmentByLabelAndProject("dev", cp).isPresent());
+        assertFalse(cp.getFirstEnvironmentOpt().isPresent());
+    }
+
+    /**
      * Tests saving a ContentProject and listing it from the DB.
      */
     public void testSaveAndList() {
