@@ -23,7 +23,7 @@ from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 from spacewalk.satellite_tools.syncLib import log, log2
 from spacewalk.server.importlib.importLib import ContentSource, ContentSourceSsl
 
-import constants
+from . import constants
 
 
 class CdnRepositoryManager(object):

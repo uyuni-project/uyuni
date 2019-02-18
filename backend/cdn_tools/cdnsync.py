@@ -19,7 +19,7 @@ import sys
 import fnmatch
 from datetime import datetime, timedelta
 
-import constants
+from . import constants
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common import rhnLog
 from spacewalk.server import rhnSQL
@@ -37,8 +37,8 @@ from spacewalk.satellite_tools.satCerts import get_certificate_info, verify_cert
 from spacewalk.satellite_tools.syncLib import log, log2disk, log2, initEMAIL_LOG, log2email, log2background
 from spacewalk.satellite_tools.repo_plugins import yum_src
 
-from common import CustomChannelSyncError, CountingPackagesError, verify_mappings, human_readable_size
-from repository import CdnRepositoryManager, CdnRepositoryNotFoundError
+from .common import CustomChannelSyncError, CountingPackagesError, verify_mappings, human_readable_size
+from .repository import CdnRepositoryManager, CdnRepositoryNotFoundError
 
 
 class CdnSync(object):
