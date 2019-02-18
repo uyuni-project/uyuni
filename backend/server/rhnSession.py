@@ -45,7 +45,7 @@ class Session:
 
     def generate(self, duration=None, web_user_id=None):
         # Grabs a session ID
-        self.session_id = next(rhnSQL.Sequence('pxt_id_seq'))
+        self.session_id = rhnSQL.Sequence('pxt_id_seq').next()
         self.duration = int(duration or CFG.SESSION_LIFETIME)
         self.web_user_id(web_user_id)
         return self
@@ -70,9 +70,9 @@ class Session:
         secrets = self.get_secrets()
 
         ctx = hashlib.new('sha256')
-        ctx.update(':'.join(secrets[:2] + [str(self.session_id)] + secrets[2:]))
+        ctx.update(':'.join(secrets[:2] + [str(self.session_id)] + secrets[2:]).encode())
 
-        return ''.join(["%02x" % ord(a) for a in ctx.digest()])
+        return ctx.hexdigest()
 
     def get_session(self):
         return "%sx%s" % (self.session_id, self.digest())

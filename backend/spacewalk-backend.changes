@@ -1,3 +1,4 @@
+- Fix "rhnpush" after migration to Python 3.
 - Fix package import issues when package encoding is ISO8859-1.
 - Fix issues with HTTP proxy and reposync.
 - Solve Python 3 problem and allow traditional registration.

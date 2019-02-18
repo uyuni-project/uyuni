@@ -354,16 +354,6 @@ class rpmFile(File, ChangeLog):
         if type(self['filedigest']) == StringType:
             self['checksum'] = self['filedigest']
             del(self['filedigest'])
-        if type(self['linkto'] == bytes):
-            self['linkto'] = self['linkto'].decode("utf8")
-        if type(self['lang'] == bytes):
-            self['lang'] = self['lang'].decode("utf8")
-        if type(self['filedigest'] == bytes):
-            self['filedigest'] = self['filedigest'].decode("utf8")
-        if type(self['groupname'] == bytes):
-            self['groupname'] = self['groupname'].decode("utf8")
-        if type(self['username'] == bytes):
-            self['username'] = self['username'].decode("utf8")
 
 
 class rpmProvides(Dependency):
@@ -500,10 +490,11 @@ class rpmChangeLog(ChangeLog):
         # In changelog, data is either in UTF-8, or in any other
         # undetermined encoding. Assume ISO-Latin-1 if not UTF-8.
         for i in ('text', 'name'):
-            try:
-                self[i] = UnicodeType(self[i], "utf-8")
-            except UnicodeDecodeError:
-                self[i] = UnicodeType(self[i], "iso-8859-1")
+            if type(self[i]) == bytes:
+                try:
+                    self[i] = self[i].encode("utf-8")
+                except:
+                    self[i] = self[i].encode("iso-8859-1")
 
 
 def sanitizeList(l):

@@ -86,6 +86,8 @@ class RPM_Header:
         item = self.hdr[name]
         if isinstance(item, bytes):
             item = sstr(item)
+        elif isinstance(item, list):
+            item = [sstr(i) if isinstance(i, bytes) else i for i in item]
         return item
 
     def __setitem__(self, name, item):
@@ -98,6 +100,8 @@ class RPM_Header:
         item = getattr(self.hdr, name)
         if isinstance(item, bytes):
             item = sstr(item)
+        elif isinstance(item, list):
+            item = [sstr(i) if isinstance(i, bytes) else i for i in item]
         return item
 
     def __len__(self):
@@ -333,7 +337,7 @@ def get_package_header(filename=None, file_obj=None, fd=None):
         raise ValueError("No parameters passed")
 
     if filename is not None:
-        f = open(filename, 'rb')
+        f = open(filename, 'r')
     elif file_obj is not None:
         f = file_obj
         f.seek(0, 0)

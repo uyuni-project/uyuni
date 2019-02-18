@@ -191,7 +191,7 @@ def schedule_kickstart_delta(server_id, kickstart_session_id,
         delta_time=0, scheduler=scheduler, org_id=org_id,
     )
 
-    package_delta_id = next(rhnSQL.Sequence('rhn_packagedelta_id_seq'))
+    package_delta_id = rhnSQL.Sequence('rhn_packagedelta_id_seq').next()
 
     h = rhnSQL.prepare(_query_insert_package_delta)
     h.execute(package_delta_id=package_delta_id)

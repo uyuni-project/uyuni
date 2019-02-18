@@ -200,7 +200,7 @@ class BaseChannelObject(BaseDatabaseObject):
     def _new_row(self):
         if self._row is None:
             self._row = rhnSQL.Row(self._table_name, 'id')
-            channel_id = next(rhnSQL.Sequence(self._sequence_name))
+            channel_id = rhnSQL.Sequence(self._sequence_name).next()
             self._row.create(channel_id)
 
     def as_dict(self):

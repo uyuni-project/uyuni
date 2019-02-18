@@ -34,7 +34,7 @@ from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common.usix import raise_with_tb
-from rhnAuthProtocol import CommunicationError, send, recv
+from .rhnAuthProtocol import CommunicationError, send, recv
 
 #
 # Protocol description:

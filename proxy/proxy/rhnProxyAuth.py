@@ -37,11 +37,12 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnTranslate import _
+from spacewalk.common.usix import raise_with_tb
 
 # local imports
 from rhn import rpclib
 from rhn import SSL
-import rhnAuthCacheClient
+from . import rhnAuthCacheClient
 
 
 sys.path.append('/usr/share/rhn')
@@ -92,9 +93,9 @@ class ProxyAuth:
             mtime = os.stat(ProxyAuth.__systemid_filename)[-2]
         except IOError as e:
             log_error("unable to stat %s: %s" % (ProxyAuth.__systemid_filename, repr(e)))
-            raise rhnFault(1000,
+            raise_with_tb(rhnFault(1000,
                       _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                        "Please contact your system administrator.")), None, sys.exc_info()[2]
+                        "Please contact your system administrator.")), sys.exc_info()[2])
 
         if not self.__systemid_mtime:
             ProxyAuth.__systemid_mtime = mtime
@@ -109,9 +110,9 @@ class ProxyAuth:
             ProxyAuth.__systemid = open(ProxyAuth.__systemid_filename, 'r').read()
         except IOError as e:
             log_error("unable to read %s" % ProxyAuth.__systemid_filename)
-            raise rhnFault(1000,
+            raise_with_tb(rhnFault(1000,
                       _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                        "Please contact your system administrator.")), None, sys.exc_info()[2]
+                        "Please contact your system administrator.")), sys.exc_info()[2])
 
         # get serverid
         sysid, _cruft = xmlrpclib.loads(ProxyAuth.__systemid)
@@ -169,9 +170,9 @@ Either the authentication caching daemon is experiencing
 problems, isn't running, or the token is somehow corrupt.
 """) % self.__serverid
             Traceback("ProxyAuth.set_cached_token", extra=text)
-            raise rhnFault(1000,
+            raise_with_tb(rhnFault(1000,
                       _("SUSE Manager Proxy error (auth caching issue). "
-                        "Please contact your system administrator.")), None, sys.exc_info()[2]
+                        "Please contact your system administrator.")), sys.exc_info()[2])
         log_debug(4, "successfully returning")
         return token
 
@@ -305,15 +306,15 @@ problems, isn't running, or the token is somehow corrupt.
                 if e.faultCode == 10000:
                     # reraise it for the users (outage or "important message"
                     # coming through")
-                    raise rhnFault(e.faultCode, e.faultString), None, sys.exc_info()[2]
+                    raise_with_tb(rhnFault(e.faultCode, e.faultString), sys.exc_info()[2])
                 # ok... it's some other fault
                 Traceback("ProxyAuth.login (Fault) - SUSE Manager Proxy not "
                           "able to log in.")
                 # And raise a Proxy Error - the server made its point loud and
                 # clear
-                raise rhnFault(1000,
+                raise_with_tb(rhnFault(1000,
                           _("SUSE Manager Proxy error (during proxy login). "
-                            "Please contact your system administrator.")), None, sys.exc_info()[2]
+                            "Please contact your system administrator.")), sys.exc_info()[2])
             except Exception as e:
                 token = None
                 log_error("Unhandled exception", e)
@@ -363,7 +364,7 @@ problems, isn't running, or the token is somehow corrupt.
         satInfo = None
         for key in ('X-RHN-Server-Id', 'X-RHN-Auth-User-Id', 'X-RHN-Auth',
                     'X-RHN-Auth-Server-Time', 'X-RHN-Auth-Expire-Offset'):
-            if token.has_key(key):
+            if key in token:
                 dumbToken[key] = token[key]
         try:
             s = self.__getXmlrpcServer()
@@ -425,7 +426,7 @@ problems, isn't running, or the token is somehow corrupt.
         return serverObj
 
     def __cache_proxy_key(self):
-        return 'p' + str(self.__serverid) + sha1(self.hostname).hexdigest()
+        return 'p' + str(self.__serverid) + sha1(self.hostname.encode()).hexdigest()
 
     def getProxyServerId(self):
         return self.__serverid

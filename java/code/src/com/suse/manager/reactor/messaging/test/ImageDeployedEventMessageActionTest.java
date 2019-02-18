@@ -115,7 +115,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     /**
      * Happy path scenario: machine_id grain is present.
      * In this case we test that at the end of the Action, the minion has correct channels
-     * (based on its product) assigned. Old channel assignments will be overriden.
+     * (based on its product) assigned. Old channel assignments will be overridden.
      */
     public void testBaseChannelChanged() throws Exception {
         grains.put("machine_id", testMinion.getMachineId());

@@ -319,7 +319,7 @@ class ConfigFilesHandler(rhnHandler):
         file_contents = file.get('file_contents') or ''
 
         if 'enc64' in file and file_contents:
-            file_contents = base64.decodestring(file_contents)
+            file_contents = base64.decodestring(file_contents.encode())
 
         if 'config_file_type_id' not in file:
             log_debug(4, "Client does not support config directories, so set file_type_id to 1")
@@ -340,7 +340,7 @@ class ConfigFilesHandler(rhnHandler):
             # XXX Yes this is iterating over a string
             try:
                 file_contents.decode('UTF-8')
-            except UnicodeDecodeError:
+            except Exception:
                 file['is_binary'] = 'Y'
 
         h = rhnSQL.prepare(self._query_content_lookup)
@@ -357,7 +357,7 @@ class ConfigFilesHandler(rhnHandler):
 
         # We have to insert a new file now
         content_seq = rhnSQL.Sequence('rhn_confcontent_id_seq')
-        config_content_id = next(content_seq)
+        config_content_id = content_seq.next()
         file['config_content_id'] = config_content_id
         file['contents'] = file_contents
 
@@ -511,7 +511,7 @@ class ConfigFilesHandler(rhnHandler):
         return CFG.maximum_config_file_size
 
     def new_config_channel_id(self):
-        return next(rhnSQL.Sequence('rhn_confchan_id_seq'))
+        return rhnSQL.Sequence('rhn_confchan_id_seq').next()
 
 
 def format_file_results(row, server=None):
@@ -528,14 +528,14 @@ def format_file_results(row, server=None):
         contents = interpolator.interpolate(contents)
         if row['checksum_type']:
             checksummer = hashlib.new(row['checksum_type'])
-            checksummer.update(contents)
+            checksummer.update(contents.encode())
             checksum = checksummer.hexdigest()
 
     if contents:
         client_caps = rhnCapability.get_client_capabilities()
         if client_caps and 'configfiles.base64_enc' in client_caps:
             encoding = 'base64'
-            contents = base64.encodestring(contents)
+            contents = base64.encodestring(contents.encode()).decode()
     if row.get('modified', False):
         m_date = xmlrpclib.DateTime(str(row['modified']))
     else:
