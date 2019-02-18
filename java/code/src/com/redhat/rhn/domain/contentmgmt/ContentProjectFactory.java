@@ -229,6 +229,12 @@ public class ContentProjectFactory extends HibernateFactory {
             prev.setNextEnvironment(null);
             save(prev);
         }
+        else {
+            // Only Env - change the project
+            ContentProject project = toRemove.getContentProject();
+            project.setFirstEnvironment(null);
+            save(project);
+        }
         toRemove.setPrevEnvironment(null);
         toRemove.setNextEnvironment(null);
         remove(toRemove);
