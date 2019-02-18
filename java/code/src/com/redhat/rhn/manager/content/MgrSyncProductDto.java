@@ -181,7 +181,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      */
     public MgrSyncStatus getStatus() {
         MgrSyncStatus result = MgrSyncStatus.INSTALLED;
-        for (MgrSyncChannelDto channel : channels) {
+        for (MgrSyncChannelDto channel : getChannels()) {
             if (channel.isMandatory()) {
                 if (channel.getStatus() == MgrSyncStatus.UNAVAILABLE) {
                     return MgrSyncStatus.UNAVAILABLE;

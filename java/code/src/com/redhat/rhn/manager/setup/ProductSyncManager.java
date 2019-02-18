@@ -47,6 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -385,26 +386,26 @@ public class ProductSyncManager {
      */
     private SetupWizardProductDto convertProduct(final MgrSyncProductDto productIn) {
         // Sort product channels (mandatory/optional)
-        List<Channel> mandatoryChannelsOut = new ArrayList<Channel>();
-        List<Channel> optionalChannelsOut = new ArrayList<Channel>();
-        for (MgrSyncChannelDto channelIn : productIn.getChannels()) {
+
+        Map<Boolean, List<MgrSyncChannelDto>> collect = productIn.getChannels().stream()
+                .collect(Collectors.partitioningBy(c -> c.isMandatory()));
+
+        Function<MgrSyncChannelDto, Channel> mapping = channelIn -> {
             MgrSyncStatus statusIn = channelIn.getStatus();
             String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED) ?
                     Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
-            Channel channelOut = new Channel(channelIn.getLabel(), statusOut);
-            if (!channelIn.isMandatory()) {
-                optionalChannelsOut.add(channelOut);
-            }
-            else {
-                mandatoryChannelsOut.add(channelOut);
-            }
-        }
+            return new Channel(channelIn.getLabel(), statusOut);
+        };
 
+        List<Channel> mandatoryChannelsOut = collect.get(true).stream()
         // Add base channel on top of everything else so it can be added first.
-        mandatoryChannelsOut.sort(
-                (a, b) -> a.getLabel().equals(productIn.getBaseChannel().getLabel()) ? -1 :
-                          b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0
-        );
+        .sorted((a, b) -> {
+            return StringUtils.isBlank(a.getParentLabel()) ? -1 :
+                    StringUtils.isBlank(b.getParentLabel()) ? 1 : 0;
+        }).map(mapping).collect(Collectors.toList());
+
+        List<Channel> optionalChannelsOut = collect.get(false).stream()
+                .map(mapping).collect(Collectors.toList());
 
         // Setup the product that will be displayed
         SetupWizardProductDto displayProduct = new SetupWizardProductDto(
