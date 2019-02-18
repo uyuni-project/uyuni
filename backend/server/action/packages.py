@@ -146,7 +146,7 @@ def setLocks(serverId, actionId, dry_run=0):
     client_caps = rhnCapability.get_client_capabilities()
     log_debug(3,"Client Capabilities", client_caps)
     multiarch = 0
-    if not client_caps or not client_caps.has_key('packages.setLocks'):
+    if not client_caps or 'packages.setLocks' not in client_caps:
         raise InvalidAction("Client is not capable of locking packages.")
 
     h = rhnSQL.prepare(_query_action_setLocks)
