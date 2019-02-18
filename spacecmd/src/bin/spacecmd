@@ -52,7 +52,7 @@ if __name__ == '__main__':
     # pylint: disable=E1101
 
     if not sys.stdout.isatty():
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout.buffer)
 
     usage = '%(prog)s [options] [command]'
     parser = argparse.ArgumentParser(usage=usage)
