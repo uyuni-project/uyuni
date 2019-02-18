@@ -23,6 +23,7 @@ DOCKER_VOLUMES        = -v "$(CURDIR)/../../../:/manager"
 
 docker_tests ::
 	mkdir -p $(CURDIR)/reports
+	docker pull $(DOCKER_REGISTRY)/$(DOCKER_IMAGE)
 	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_IMAGE) nosetests --with-xunit --xunit-file /manager/client/tools/spacewalk-koan/reports/spacewalk-koan_tests.xml -s /manager/client/tools/spacewalk-koan/test
 
 docker_shell ::
