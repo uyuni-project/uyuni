@@ -599,7 +599,7 @@ do_migration() {
     CERT_COUNTRY="DE"
     CERT_PASS="dummy"
     CERT_EMAIL="dummy@example.net"
-    MANAGER_ENABLE_TFTP="n"
+    MANAGER_ENABLE_TFTP="y"
     ACTIVATE_SLP="n"
 
     check_remote_type

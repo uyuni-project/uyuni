@@ -1,3 +1,4 @@
+- enable and start tftp socket (bsc#1124822)
 - migrate existing rhn.conf; do not allow new database credentials
   during migration
 - Fix issue with map() on Python3 when '--with-custom-channels' (bsc#1125272)
