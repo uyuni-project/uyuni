@@ -6,13 +6,33 @@ if (codeBuild !== 0) {
   shell.exit(codeBuild);
 }
 
+const editedLicenseFilesByBuild = [
+  "spacewalk-web.spec",
+  "vendors/npm.licenses.structured.js",
+  "vendors/npm.licenses.txt"
+];
+
 fillSpecFile()
   .then(() => {
     // let's make a sanity check if the generated specfile with the right  licenses is commited on git
-    const { stdout } = shell.exec("(cd ../../;hash git && git ls-files -m)");
+    const { code: gitCheckCode, stdout } = shell.exec("(cd ../../;git ls-files -m)");
+    if (gitCheckCode !== 0) {
+      shell.exit(gitCheckCode);
+    }
 
-    if(stdout && stdout.includes("spacewalk-web.spec")) {
-      shell.echo("It seems the most recent spacewalk-web.spec file isn't on git, run build again and commit the new generated susemanager-web-libs.spec file ");
+    if(stdout && editedLicenseFilesByBuild.some(fileName  => stdout.includes(fileName))) {
+      shell.echo(`
+                It seems the most recent ${editedLicenseFilesByBuild} files aren't on git.
+                Run build again and commit the generated ${editedLicenseFilesByBuild} files `);
+      shell.exit(1);
+    }
+
+    const { stdout: auditStdout } = shell.exec("yarn audit");
+
+    if(auditStdout && !auditStdout.includes("0 vulnerabilities found")) {
+      shell.echo(`
+                There are vulnerabilities on the downloaded npm libraries.
+                Please run "yarn audit" locally and fix the vulnerabilities `);
       shell.exit(1);
     }
   });
