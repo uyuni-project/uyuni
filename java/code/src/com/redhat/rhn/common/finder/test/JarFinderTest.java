@@ -28,12 +28,12 @@ public class JarFinderTest extends TestCase {
     // Sigh.
     // At least make it clear what we're looking for...
 
-    // As of this writing, velocity-1.5.jar
+    // Currently used jarfile: postgresql-jdbc-9.4.jar
     // (previously redstone.xmlrpc could find either redstone-xmlrpc.jar or
     //  redstone-xmlrpc-client.jar, making test-results indeterminate)
-    private static final String TESTJAR = "org.apache.velocity";
-    private static final int NUM_CLASSES_IN_TESTJAR = 246;
-    private static final int NUM_SUBDIRS_IN_TESTJAR = 249;
+    private static final String TESTJAR = "org.postgresql";
+    private static final int NUM_CLASSES_IN_TESTJAR = 248;
+    private static final int NUM_SUBDIRS_IN_TESTJAR = 248;
 
     public void testGetFinder() throws Exception {
         Finder f = FinderFactory.getFinder(TESTJAR);

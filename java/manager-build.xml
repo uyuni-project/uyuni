@@ -69,8 +69,8 @@
     <mkdir dir="${build.dir}/java-branding" />
 
     <javac destdir="${build.dir}/java-branding"
-           source="1.8"
-           target="1.8"
+           source="11"
+           target="11"
            includeantruntime="no"
            nowarn="true"
            srcdir="${branding.src.dir}" />
@@ -93,8 +93,8 @@
     <javac destdir="${build.dir}/classes"
            optimize="off"
            debug="on"
-           source="1.8"
-           target="1.8"
+           source="11"
+           target="11"
            deprecation="${deprecation}"
            nowarn="${nowarn}"
            encoding="utf-8"

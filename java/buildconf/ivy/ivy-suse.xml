@@ -1,87 +1,70 @@
 <ivy-module version="1.0">
     <info organisation="suse" module="manager" />
     <dependencies>
-        <dependency org="suse" name="ant" rev="1.9.4" />
-        <dependency org="suse" name="ant-contrib" rev="1.0b2" />
-        <dependency org="suse" name="ant-junit" rev="1.9.4" />
+        <!-- Runtime dependencies -->
         <dependency org="suse" name="antlr" rev="2.7.7" />
-        <dependency org="suse" name="asm" rev="1.5.3" />
-        <dependency org="suse" name="asm-attrs" rev="1.5.3" />
-        <dependency org="suse" name="bcel" rev="5.1" />
+        <dependency org="suse" name="asm" rev="3.3.1" />
+        <dependency org="suse" name="bcel" rev="5.2" />
         <dependency org="suse" name="byte-buddy" rev="1.8.17" />
-        <dependency org="suse" name="c3p0" rev="0.9.5_pre8" />
-        <dependency org="suse" name="cglib" rev="2.1.3" />
-        <dependency org="suse" name="cglib-nodep" rev="2.2.3" />
-        <dependency org="suse" name="checkstyle-all" rev="6.11.2" />
+        <dependency org="suse" name="c3p0" rev="0.9.5.2" />
+        <dependency org="suse" name="cglib" rev="2.2" />
         <dependency org="suse" name="classmate" rev="1.3.4" />
+        <dependency org="suse" name="classpathx-mail-1.3.1-monolithic" rev="1.1.2" />
         <dependency org="suse" name="commons-beanutils" rev="1.9.2" />
         <dependency org="suse" name="commons-cli" rev="1.2" />
-        <dependency org="suse" name="commons-codec" rev="1.8" />
-        <dependency org="suse" name="commons-collections" rev="3.2.1" />
+        <dependency org="suse" name="commons-codec" rev="1.10" />
+        <dependency org="suse" name="commons-collections" rev="3.2.2" />
         <dependency org="suse" name="commons-digester" rev="1.7" />
         <dependency org="suse" name="commons-discovery" rev="0.4" />
         <dependency org="suse" name="commons-el" rev="1.0" />
         <dependency org="suse" name="commons-fileupload" rev="1.1.1" />
-        <dependency org="suse" name="commons-io" rev="1.3.2" />
+        <dependency org="suse" name="commons-io" rev="2.4" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
         <dependency org="suse" name="commons-lang3" rev="3.1" />
-        <dependency org="suse" name="commons-logging" rev="1.1.3" />
+        <dependency org="suse" name="commons-logging" rev="1.2" />
         <dependency org="suse" name="commons-validator" rev="1.1.4" />
         <dependency org="suse" name="concurrent" rev="1.3.4" />
         <dependency org="suse" name="concurrentlinkedhashmap-lru" rev="1.3.1" />
         <dependency org="suse" name="dom4j" rev="1.6.1" />
-        <dependency org="suse" name="dwr" rev="3.0rc2+svn4059" />
+        <dependency org="suse" name="dwr" rev="3.0.2" />
         <dependency org="suse" name="ehcache-core" rev="2.10.1" />
+        <dependency org="suse" name="geronimo-jta-1.1-api" rev="1.1.0" />
         <dependency org="suse" name="google-gson" rev="2.8.2" />
-        <dependency org="suse" name="gsbase" rev="2.0.1" />
-        <dependency org="suse" name="hamcrest-core" rev="1.3" />
-        <dependency org="suse" name="hamcrest-library" rev="1.3" />
         <dependency org="suse" name="hibernate-c3p0" rev="5.3.7" />
         <dependency org="suse" name="hibernate-commons-annotations" rev="5.0.4" />
         <dependency org="suse" name="hibernate-core" rev="5.3.7" />
         <dependency org="suse" name="hibernate-ehcache" rev="5.3.7" />
-        <dependency org="suse" name="httpasyncclient" rev="4.1.3" />
+        <dependency org="suse" name="httpasyncclient" rev="4.1.4" />
         <dependency org="suse" name="httpclient" rev="4.5" />
         <dependency org="suse" name="httpcore" rev="4.4.1" />
-        <dependency org="suse" name="httpcore-nio" rev="4.4.6" />
-        <dependency org="suse" name="jacocoant" rev="0.7.7" />
+        <dependency org="suse" name="httpcore-nio" rev="4.4.1" />
         <dependency org="suse" name="jade4j" rev="1.0.7" />
-        <dependency org="suse" name="jaf" rev="1.0.2" />
+        <dependency org="suse" name="jaf" rev="1.1.1" />
         <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
-        <dependency org="suse" name="jasper" rev="8.0.23" />
-        <dependency org="suse" name="jasper-el" rev="8.0.23" />
         <dependency org="suse" name="javassist" rev="3.20.0" />
-        <dependency org="suse" name="javamail" rev="1.1.1" />
-        <dependency org="suse" name="jcommon" rev="1.0.16" />
-        <dependency org="suse" name="jdom" rev="1.0" />
-        <dependency org="suse" name="jfreechart" rev="1.0.13" />
         <dependency org="suse" name="jboss-logging" rev="3.3.0" />
-        <dependency org="suse" name="jmock" rev="2.6.0" />
-        <dependency org="suse" name="jmock-junit3" rev="2.6.0" />
-        <dependency org="suse" name="jmock-legacy" rev="2.6.0" />
+        <dependency org="suse" name="jcommon" rev="1.0.16" />
+        <dependency org="suse" name="jdom" rev="1.1" />
         <dependency org="suse" name="jose4j" rev="0.5.1" />
+        <dependency org="suse" name="log4j" rev="1.2.17" />
         <dependency org="suse" name="jsch" rev="0.1.54" />
-        <dependency org="suse" name="jta" rev="1.1" />
-        <dependency org="suse" name="junit" rev="3.8.2" />
-        <dependency org="suse" name="log4j" rev="1.2.15" />
-        <dependency org="suse" name="mockobjects" rev="0.09" />
-        <dependency org="suse" name="mockobjects-core" rev="0.09" />
-        <dependency org="suse" name="mockobjects-jdk1.4-j2ee1.3" rev="0.09" />
-        <dependency org="suse" name="objenesis" rev="1.0" />
-        <dependency org="suse" name="ojdbc7" rev="1.0" />
+        <dependency org="suse" name="netty-buffer" rev="4.1.8" />
+        <dependency org="suse" name="netty-codec" rev="4.1.8" />
+        <dependency org="suse" name="netty-common" rev="4.1.8" />
+        <dependency org="suse" name="netty-handler" rev="4.1.8" />
+        <dependency org="suse" name="netty-resolver" rev="4.1.8" />
+        <dependency org="suse" name="netty-transport" rev="4.1.8" />
         <dependency org="suse" name="oro" rev="2.0.8" />
-        <dependency org="suse" name="oscache" rev="2.2" />
-        <dependency org="suse" name="pgjdbc-ng" rev="0.7" />
+        <dependency org="suse" name="pgjdbc-ng" rev="0.7.1" />
         <dependency org="suse" name="postgresql-jdbc" rev="9.4" />
         <dependency org="suse" name="quartz" rev="2.3.0" />
         <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
         <dependency org="suse" name="redstone-xmlrpc-client" rev="1.1_20071120" />
-        <dependency org="suse" name="regexp" rev="1.4" />
-        <dependency org="suse" name="salt-netapi-client" rev="0.15.0" />
+        <dependency org="suse" name="salt-netapi-client" rev="0.15.1" />
         <dependency org="suse" name="simpleclient" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_common" rev="0.3.0" />
-        <dependency org="suse" name="simpleclient_servlet" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_httpserver" rev="0.3.0" />
+        <dependency org="suse" name="simpleclient_servlet" rev="0.3.0" />
         <dependency org="suse" name="simple-core" rev="3.1.3" />
         <dependency org="suse" name="simple-xml" rev="2.6.2" />
         <dependency org="suse" name="sitemesh" rev="2.1" />
@@ -93,19 +76,40 @@
         <dependency org="suse" name="statistics" rev="1.0.2" />
         <dependency org="suse" name="stringtree-json" rev="2.0.9" />
         <dependency org="suse" name="struts" rev="1.2.9" />
-        <dependency org="suse" name="strutstest" rev="2.1.3" />
         <dependency org="suse" name="taglibs-standard-impl" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-spec" rev="1.2.5" />
-        <dependency org="suse" name="tanukiwrapper" rev="3.2.3" />
-        <dependency org="suse" name="tomcat-el-3.0-api" rev="8.0.23" />
-        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="8.0.23" />
-        <dependency org="suse" name="tomcat-juli" rev="8.0.23" />
-        <dependency org="suse" name="tomcat-servlet-3.1-api" rev="8.0.23" />
-        <dependency org="suse" name="velocity" rev="1.5" />
+        <dependency org="suse" name="tanukiwrapper" rev="3.5.32" />
+        <dependency org="suse" name="xalan-j2" rev="2.7.2" />
+        <dependency org="suse" name="xalan-j2-serializer" rev="2.7.2" />
+        <dependency org="suse" name="xerces-j2" rev="2.11.0" />
+        <dependency org="suse" name="xerces-j2-xml-apis" rev="2.11.0" />
+
+        <!-- Tomcat jars -->
+        <dependency org="suse" name="jasper" rev="9.0.12" />
+        <dependency org="suse" name="jasper-el" rev="9.0.12" />
+        <dependency org="suse" name="tomcat-el-3.0-api" rev="9.0.12" />
+        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="9.0.12" />
+        <dependency org="suse" name="tomcat-juli" rev="9.0.12" />
+        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.12" />
+
+        <!-- Compilation and testing -->
+        <dependency org="suse" name="checkstyle-all" rev="6.11.2" />
+        <dependency org="suse" name="hamcrest-core" rev="1.3" />
+        <dependency org="suse" name="hamcrest-library" rev="1.3" />
+        <dependency org="suse" name="jacocoant" rev="0.7.7" />
+        <dependency org="suse" name="jaxb-api" rev="2.3.0" />
+        <dependency org="suse" name="jaxb-core" rev="2.3.0" />
+        <dependency org="suse" name="jaxb-impl" rev="2.3.0" />
+        <dependency org="suse" name="junit" rev="3.8.2" />
+        <dependency org="suse" name="jmock" rev="2.6.0" />
+        <dependency org="suse" name="jmock-junit3" rev="2.6.0" />
+        <dependency org="suse" name="jmock-legacy" rev="2.6.0" />
+        <dependency org="suse" name="mockobjects" rev="0.09" />
+        <dependency org="suse" name="mockobjects-core" rev="0.09" />
+        <dependency org="suse" name="mockobjects-jdk1.4-j2ee1.3" rev="0.09" />
+        <dependency org="suse" name="objenesis" rev="1.0" />
+        <dependency org="suse" name="strutstest" rev="2.1.3" />
         <dependency org="suse" name="websocket-api" rev="1.1" />
-        <dependency org="suse" name="xalan-j2" rev="2.7.0" />
-        <dependency org="suse" name="xalan-j2-serializer" rev="2.7.0" />
-        <dependency org="suse" name="xerces-j2" rev="2.8.1" />
     </dependencies>
 </ivy-module>
