@@ -73,7 +73,8 @@ import salt.utils.event
 import json
 
 # Import third-party libs
-import tornado.ioloop
+import tornado
+from salt.utils.zeromq import ZMQDefaultLoop
 
 log = logging.getLogger(__name__)
 
@@ -178,7 +179,7 @@ def start(**config):
     '''
     Listen to events and write them to the Postgres database
     '''
-    io_loop = tornado.ioloop.IOLoop()
+    io_loop = ZMQDefaultLoop.current()
     event_bus = salt.utils.event.get_master_event(
             __opts__,
             __opts__['sock_dir'],
