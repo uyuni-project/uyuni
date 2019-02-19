@@ -11,12 +11,11 @@
     "dev": "webpack -d --config build/webpack.config.js --mode development",
     "watch": "webpack -d --config build/webpack.config.js --mode development --watch",
     "proxy": "webpack-dev-server -d --mode development --hot --inline --config build/webpack.config.js",
-    "lint": "eslint .",
     "build": "node build",
-    "postinstall": "yarn build"
+    "lint": "eslint . -f codeframe"
   },
   "devDependencies": {
-    "flow-bin": "^0.82.0",
+    "flow-bin": "^0.93.0",
     "webpack-dev-server": "^3.1.10"
   },
   "engines": {

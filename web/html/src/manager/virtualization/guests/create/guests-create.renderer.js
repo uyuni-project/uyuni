@@ -1,4 +1,3 @@
-/* global module */
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { GuestsCreate } = require('./guests-create');

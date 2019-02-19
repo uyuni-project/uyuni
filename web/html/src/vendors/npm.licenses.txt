@@ -3,13 +3,13 @@ Do Not Translate or Localize
 
 
 --------------------------------------------------------------------------------
-@babel/polyfill v7.0.0 - Sebastian McKenzie <sebmck@gmail.com>
+@babel/polyfill v7.2.5 - Sebastian McKenzie <sebmck@gmail.com>
 https://github.com/babel/babel/tree/master/packages/babel-polyfill
 --------------------------------------------------------------------------------
 
 MIT License
 
-Copyright (c) 2014-2018 Sebastian McKenzie <sebmck@gmail.com>
+Copyright (c) 2014-2018 Sebastian McKenzie and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -32,13 +32,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@babel/runtime v7.1.5 - Sebastian McKenzie <sebmck@gmail.com>
+@babel/runtime v7.3.1 - Sebastian McKenzie <sebmck@gmail.com>
 https://github.com/babel/babel/tree/master/packages/babel-runtime
 --------------------------------------------------------------------------------
 
 MIT License
 
-Copyright (c) 2014-2018 Sebastian McKenzie and other contributors
+Copyright (c) 2014-present Sebastian McKenzie and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -173,11 +173,11 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-core-js v2.5.7
+core-js v2.6.5
 https://github.com/zloirock/core-js.git
 --------------------------------------------------------------------------------
 
-Copyright (c) 2014-2018 Denis Pushkarev
+Copyright (c) 2014-2019 Denis Pushkarev
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -391,7 +391,7 @@ terms above.
 
 
 --------------------------------------------------------------------------------
-memoize-one v4.0.3 - Alex Reardon <alexreardon@gmail.com>
+memoize-one v5.0.0 - Alex Reardon <alexreardon@gmail.com>
 https://github.com/alexreardon/memoize-one.git
 --------------------------------------------------------------------------------
 
@@ -499,7 +499,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-prop-types v15.6.2
+prop-types v15.7.2
 facebook/prop-types
 --------------------------------------------------------------------------------
 
@@ -552,8 +552,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react v16.6.1
-facebook/react
+react v16.8.2
+https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
 MIT License
@@ -580,8 +580,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-dom v16.6.1
-facebook/react
+react-dom v16.8.2
+https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
 MIT License
@@ -608,7 +608,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-hot-loader v4.3.12 - Dan Abramov
+react-hot-loader v4.7.0 - Dan Abramov
 https://github.com/gaearon/react-hot-loader/
 --------------------------------------------------------------------------------
 
@@ -691,7 +691,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-react-select v2.1.1 - Jed Watson
+react-select v2.4.1 - Jed Watson
 https://github.com/JedWatson/react-select.git
 --------------------------------------------------------------------------------
 
@@ -719,13 +719,13 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-transition-group v2.5.0
+react-transition-group v2.5.3
 https://github.com/reactjs/react-transition-group.git
 --------------------------------------------------------------------------------
 
 BSD 3-Clause License
 
-Copyright (c) 2016, React Community
+Copyright (c) 2018, React Community
 Forked from React (https://github.com/facebook/react) Copyright 2013-present,
 Facebook, Inc.
 All rights reserved.
@@ -757,15 +757,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
-regenerator-runtime v0.11.1 - Ben Newman <bn@cs.stanford.edu>
+regenerator-runtime v0.12.1 - Ben Newman <bn@cs.stanford.edu>
 https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
 --------------------------------------------------------------------------------
 
 MIT
 
 --------------------------------------------------------------------------------
-scheduler v0.11.0
-facebook/react
+scheduler v0.13.2
+https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
 MIT License
@@ -799,7 +799,7 @@ https://github.com/thysultan/stylis.js
 MIT
 
 --------------------------------------------------------------------------------
-webpack v4.25.1 - Tobias Koppers @sokra
+webpack v4.29.5 - Tobias Koppers @sokra
 https://github.com/webpack/webpack.git
 --------------------------------------------------------------------------------
 
