@@ -62,10 +62,10 @@ def get_target(host)
     'proxy' => $proxy,
     'ceos-minion' => $ceos_minion,
     'ceos-ssh-minion' => $ceos_minion,
+    'ceos-client' => $ceos_minion,
     'ssh-minion' => $ssh_minion,
     'sle-minion' => $minion,
     'sle-client' => $client,
-    'ceos-traditional-client' => $ceos_minion,
     'kvm-server' => $kvm_server,
     'xen-server' => $xen_server,
     'sle-migrated-minion' => $client
