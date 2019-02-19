@@ -1,4 +1,4 @@
-/* global module, getServerId */
+/* global getServerId */
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { SubscribeChannels } = require('./subscribe-channels');
