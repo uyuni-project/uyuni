@@ -38,7 +38,7 @@ BuildRequires: apache2
 Requires:      susemanager(twitter-bootstrap-js)
 Requires:      susemanager(bootstrap-datepicker)
 Requires:      susemanager(font-awesome) = 4.4.0
-Requires:      susemanager(jquery-timepicker) = 1.3.2
+Requires:      susemanager(jquery-timepicker) = 1.11.14
 Requires:      susemanager(roboto) = 1.2
 Requires:      susemanager(pwstrength-bootstrap)
 Requires:      susemanager(momentjs)
