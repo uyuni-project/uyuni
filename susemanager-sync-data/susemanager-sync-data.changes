@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Feb 20 11:33:45 CET 2019 - jgonzalez@suse.com
+
+- version 3.1.18-1
 - add SLES11 SP4 LTSS channels (bsc#1123989)
 - fix parent channel for Cloud 9 (bsc#1123376)
 - add Web-Scripting Module to OES 2018 (bsc#1119233)
