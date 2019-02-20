@@ -1,3 +1,4 @@
+- Upgrade react, eslint packages
 - Fix nodejs tests
 
 -------------------------------------------------------------------
