@@ -206,6 +206,12 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I reload the page
 ```
 
+* Close current page
+
+```cucumber
+  When I close the window
+```
+
 <a name="b3" />
 
 #### Texts

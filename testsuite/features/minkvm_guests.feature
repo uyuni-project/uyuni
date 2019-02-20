@@ -45,6 +45,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see "test-vm" virtual machine running on "kvm-server"
 
 @virthost_kvm
+  Scenario: Show the VNC graphical console for KVM
+    Given I am on the "Virtualization" page of this "kvm-server"
+    When I click on "Graphical Console" in row "test-vm"
+    Then I wait until I see the VNC graphical console
+    And I close the window
+
+@virthost_kvm
   Scenario: Suspend a virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I wait until table row for "test-vm" contains button "Suspend"
@@ -146,6 +153,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I select "Spice" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
@@ -153,6 +161,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm-server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm-server" should have 1 NIC using "default" network
     And "test-vm2" virtual machine on "kvm-server" should have a "test-vm2_system.qcow2" virtio disk
+
+@virthost_kvm
+  Scenario: Show the Spice graphical console for KVM
+    Given I am on the "Virtualization" page of this "kvm-server"
+    When I click on "Graphical Console" in row "test-vm2"
+    Then I wait until I see the spice graphical console
+    And I close the window
 
 @virthost_kvm
   Scenario: Cleanup: Unregister the virtualization host
