@@ -119,7 +119,9 @@ public class JobReturnEventMessageAction implements MessageAction {
             // The Salt reactor triggers a "suma-action-chain" job (mgractionchains.resume) at
             // 'minion/startup/event/'. This means the result might not be a JSON in case of
             // a Salt error when the 'mgractionchains' custom module is not yet deployed.
-            if (jobReturnEvent.getData().getRetcode() == 254 && !jobReturnEvent.getData().isSuccess()) {
+            if (jobReturnEvent.getData().getRetcode() == 1 && !jobReturnEvent.getData().isSuccess() &&
+                    jobReturnEvent.getData().getResult().toString()
+                            .contains("'mgractionchains.resume' is not available")) {
                 return;
             }
 
