@@ -2483,7 +2483,7 @@ class Backend:
             query = "update % set %s where %s" % (
                 table_name,
                 ', '.join(["%s = :s" + (x, x) for x in fields]),
-                ', '.join(["%s = :%s" % (x, x) for x in uq_fields]),
+                ' and '.join(["%s = :%s" % (x, x) for x in uq_fields]),
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
