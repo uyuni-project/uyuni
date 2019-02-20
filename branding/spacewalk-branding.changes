@@ -1,3 +1,5 @@
+- Update jquery.timepicker dependency to 1.11.14 to allow parsing
+  the new time format from JDK11. (bsc#1119081)
 - Add dropdown number list to jump to a specific table page
 
 -------------------------------------------------------------------
