@@ -1,3 +1,6 @@
+- Update jquery.timepicker dependency to 1.11.14 to allow parsing
+  the time format without depending on the language. (bsc#1119081)
+
 -------------------------------------------------------------------
 Thu Dec 13 10:42:26 CET 2018 - jgonzalez@suse.com
 
