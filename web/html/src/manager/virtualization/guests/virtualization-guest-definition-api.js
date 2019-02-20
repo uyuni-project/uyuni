@@ -3,8 +3,6 @@ const React = require('react');
 const Network = require('utils/network');
 const MessagesUtils = require('components/messages').Utils;
 
-declare function t(msg: string, ...args: Array<any>): string;
-
 type Props = {
   hostid: string,
   guestUuid: string,

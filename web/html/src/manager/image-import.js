@@ -14,8 +14,6 @@ const {Messages} = require("../components/messages");
 const MessagesUtils = require("../components/messages").Utils;
 const {Utils} = require("../utils/functions");
 
-declare function t(msg: string): string;
-
 const msgMap = {
   "not_found":
     t("Image store not found"),

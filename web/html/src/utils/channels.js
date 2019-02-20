@@ -2,8 +2,6 @@
  // @flow
  'use strict';
 
-declare function t(msg: string): string;
-
 export type ChannelsDependencies = {
   requiredChannels: Map<number, Set<number>>,
   requiredByChannels: Map<number, Set<number>>

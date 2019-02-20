@@ -19,7 +19,6 @@ const { Utils: GuestsListUtils } = require('./guests-list.utils');
 
 const { Utils } = Functions;
 
-declare function t(msg: string, ...args: Array<any>): string;
 declare var userPrefPageSize: number;
 
 type Props = {

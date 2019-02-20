@@ -12,8 +12,6 @@ const GuestPropertiesUtils = require('../properties/guest-properties-utils');
 const GuestNicsPanel = require('../properties/guest-nics-panel');
 const GuestDisksPanel = require('../properties/guest-disks-panel');
 
-declare function t(msg: string, ...args: Array<any>): string;
-
 type Props = {
   host: Object,
   localTime: string,
