@@ -73,13 +73,13 @@ public class VirtualPoolsController {
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
         Map<String, JsonElement> infos = VirtManager.getPools(minionId);
-        List<VirtualStoragePoolInfoJson> networks = infos.entrySet().stream().map(entry -> {
-            VirtualStoragePoolInfoJson net = new VirtualStoragePoolInfoJson(entry.getKey(),
+        List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
+            VirtualStoragePoolInfoJson pool = new VirtualStoragePoolInfoJson(entry.getKey(),
                     entry.getValue().getAsJsonObject());
 
-            return net;
+            return pool;
         }).collect(Collectors.toList());
 
-        return json(response, networks);
+        return json(response, pools);
     }
 }
