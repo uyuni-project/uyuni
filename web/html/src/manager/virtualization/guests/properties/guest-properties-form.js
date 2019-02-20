@@ -10,8 +10,6 @@ const { Messages } = require('components/messages');
 const { ActionSchedule } = require('components/action-schedule');
 const Functions = require('utils/functions');
 
-declare function t(msg: string, ...args: Array<any>): string;
-
 type Props = {
   submitText: string,
   submit: Function,

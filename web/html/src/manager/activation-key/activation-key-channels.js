@@ -14,9 +14,6 @@ import {Utils} from '../../utils/functions';
 
 const MandatoryChannelsApiStatePersisted = withStatePersisted(MandatoryChannelsApi);
 
-declare function t(msg: string): string;
-declare function t(msg: string, arg: string): string;
-
 type ActivationKeyChannelsProps = {
   activationKeyId: number
 }

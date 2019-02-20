@@ -10,8 +10,6 @@ const {Combobox} = require("./combobox");
 import type {ComboboxItem} from "./combobox";
 const Functions = require("../utils/functions");
 
-declare function t(msg: string): string;
-
 export type ActionChain = {
   id: number,
   text: string

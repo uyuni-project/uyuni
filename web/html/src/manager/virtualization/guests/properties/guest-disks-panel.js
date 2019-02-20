@@ -9,9 +9,6 @@ const { Utils: MessagesUtils } = require('components/messages');
 const { Button } = require('components/buttons');
 const GuestPropertiesUtils = require('./guest-properties-utils');
 
-declare function t(msg: string, ...args: Array<any>): string;
-
-
 function getFileSourceFields(model: Object, index: number, pools: Array<Object>, onlyHandledDisks: boolean) {
   if (Object.keys(model).includes(`disk${index}_editable`)) {
     // We can't assign a disk image, size or pool to a cdrom

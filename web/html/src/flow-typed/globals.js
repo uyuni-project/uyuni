@@ -1,2 +1,1 @@
-declare function t(msg: string): string;
-declare function t(msg: string, arg: string): string;
+declare function t(msg: string, ...args?: Array<any>): string;

@@ -9,9 +9,6 @@ import {ChannelAnchorLink} from "../../components/links";
 
 import type {ChannelDto} from "./activation-key-channels-api";
 
-declare function t(msg: string): string;
-declare function t(msg: string, arg: string): string;
-
 type ChildChannelsProps = {
   channels: Array<ChannelDto>,
   base: Object,

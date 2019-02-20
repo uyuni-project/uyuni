@@ -1,8 +1,6 @@
 // @flow
 const React = require('react');
 
-declare function t(msg: string, ...args: Array<any>): string;
-
 type Props = {
   helpUrl?: string,
   button?: React.Node,

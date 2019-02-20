@@ -9,8 +9,6 @@ const Validation = require('components/validation');
 const MessagesUtils = require('components/messages').Utils;
 const { GuestPropertiesForm } = require('./guest-properties-form');
 
-declare function t(msg: string, ...args: Array<any>): string;
-
 type Props = {
   host: Object,
   submitText: string,

@@ -36,9 +36,6 @@ const msgMap = {
   "invalid_channel_id": t("Invalid channel id")
 };
 
-declare function t(msg: string): string;
-declare function t(msg: string, arg: string): string;
-
 class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {
     super(props);

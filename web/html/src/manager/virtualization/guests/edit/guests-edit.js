@@ -16,8 +16,6 @@ const GuestDisksPanel = require('../properties/guest-disks-panel');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 const { VirtualizationGuestDefinitionApi } = require('../virtualization-guest-definition-api');
 
-declare function t(msg: string): string;
-
 type Props = {
   host: Object,
   guestUuid: string,

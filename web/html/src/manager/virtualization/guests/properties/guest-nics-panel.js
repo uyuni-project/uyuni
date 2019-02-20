@@ -9,8 +9,6 @@ const { Messages } = require('components/messages');
 const { Utils: MessagesUtils } = require('components/messages');
 const GuestPropertiesUtils = require('./guest-properties-utils');
 
-declare function t(msg: string, ...args: Array<any>): string;
-
 function addNic(model: Object, changeModel: Function, networks: Array<Object>) {
   const allNics = GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'network');
   const index = Number.parseInt(allNics[allNics.length - 1].substring('network'.length), 10) + 1;

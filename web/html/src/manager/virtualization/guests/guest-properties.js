@@ -17,8 +17,6 @@ const { VirtualizationDomainsCapsApi } = require('./virtualization-domains-caps-
 const { VirtualizationNetsListRefreshApi } = require('../nets/virtualization-nets-list-refresh-api');
 const { VirtualizationPoolsListRefreshApi } = require('../pools/virtualization-pools-list-refresh-api');
 
-declare function t(msg: string, ...args: Array<any>): string;
-
 type Props = {
   host: Object,
   submitText: string,

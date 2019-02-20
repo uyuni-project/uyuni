@@ -15,9 +15,6 @@ const msgMap = {
     "invalid_channel_id": t("Invalid channel id")
 };
 
-declare function t(msg: string): string;
-declare function t(msg: string, arg: string): string;
-
 type ChannelDto = {
   id: number,
   name: string,
