@@ -187,7 +187,7 @@ class Repository(rhnRepository.Repository):
         if os.access(filePath, os.R_OK):
             try:
                 # Slurp the file
-                f = open(filePath, "r")
+                f = open(filePath, "rb")
                 data = f.read()
                 f.close()
                 stringObject = cPickle.loads(data)

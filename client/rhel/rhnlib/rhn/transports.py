@@ -699,7 +699,7 @@ class BaseOutput:
             transfer_name = self.transfers[self.TRANSFER_BASE64]
             self.set_header("Content-Transfer-Encoding", transfer_name)
             self.set_header("Content-Type", "text/base64")
-            self.data = base64.encodestring(self.data)
+            self.data = base64.encodestring(self.data).decode()
 
         self.set_header("Content-Length", len(self.data))
 

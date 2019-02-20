@@ -277,18 +277,8 @@ class SharedHandler:
 
         if hasattr(headerObj, 'getheaders'):
             return headerObj.getheaders(k)
-        # The pain of python 1.5.2
-        headers = headerObj.getallmatchingheaders(k)
-        hname = str(k).lower() + ':'
-        hlen = len(hname)
-        ret = []
-        for header in headers:
-            hn = header[:hlen].lower()
-            if hn != hname:
-                log_debug(1, "Invalid header", header)
-                continue
-            ret.append(header[hlen:].strip())
-        return ret
+
+        return headerObj.get_all(k)
 
     def _clientCommo(self, status=apache.OK):
         """ Handler part 3
