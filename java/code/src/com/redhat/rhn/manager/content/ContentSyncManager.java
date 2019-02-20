@@ -1295,6 +1295,30 @@ public class ContentSyncManager {
                                 prodRepoLink.setChannelLabel(entry.getChannelLabel());
                                 prodRepoLink.setParentChannelLabel(entry.getParentChannelLabel().orElse(null));
                             }
+                            else {
+                                if (!entry.getParentChannelLabel()
+                                        .equals(Optional.ofNullable(prodRepoLink.getParentChannelLabel()))) {
+                                    log.error("parent_channel_label changed from '" +
+                                            prodRepoLink.getParentChannelLabel() +
+                                            "' to '" + entry.getParentChannelLabel() +
+                                            "' but its not allowed to change.");
+                                }
+
+                                if (!entry.getUpdateTag()
+                                        .equals(Optional.ofNullable(prodRepoLink.getUpdateTag()))) {
+                                    log.error("updatetag changed from '" +
+                                            prodRepoLink.getUpdateTag() +
+                                            "' to '" + entry.getUpdateTag() +
+                                            "' but its not allowed to change.");
+                                }
+
+                                if (!entry.getChannelLabel().equals(prodRepoLink.getChannelLabel())) {
+                                    log.error("channel_label changed from '" +
+                                            prodRepoLink.getChannelLabel() +
+                                            "' to '" + entry.getChannelLabel() +
+                                            "' but its not allowed to change.");
+                                }
+                            }
                             prodRepoLink.setChannelName(entry.getChannelName());
                             prodRepoLink.setMandatory(entry.isMandatory());
 
