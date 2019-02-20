@@ -27,7 +27,7 @@ from spacewalk.common.stringutils import to_string
 
 
 def __check_headers(h):
-    if not isinstance(h, type({})) or not hasattr(h, "has_key"):
+    if not isinstance(h, type({})):
         # does not look like a dictionary
         h = {}
     if "Subject" not in h:
