@@ -586,7 +586,7 @@ class apacheHandler(rhnApache):
     @staticmethod
     def _response_fault_get(req, response):
         req.headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
-        faultString = base64.encodestring(response.faultString).strip()
+        faultString = base64.encodestring(response.faultString.encode()).decode().strip()
         # Split the faultString into multiple lines
         for line in faultString.split('\n'):
             req.headers_out.add("X-RHN-Fault-String", line.strip())

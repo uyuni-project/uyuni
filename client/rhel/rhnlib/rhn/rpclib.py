@@ -272,7 +272,7 @@ class Server:
         content_range = headers.get('Content-Range')
         if not content_range:
             return None
-        arr = filter(None, content_range.split())
+        arr = list(filter(None, content_range.split()))
         assert arr[0] == "bytes"
         assert len(arr) == 2
         arr = arr[1].split('/')
@@ -562,7 +562,7 @@ class GETServer(Server):
         if not params or len(params) < 1:
             raise Exception("Required parameter channel not found")
         # Strip the multiple / from the handler
-        h_comps = filter(lambda x: x != '', self._orig_handler.split('/'))
+        h_comps = list(filter(lambda x: x != '', self._orig_handler.split('/')))
         # Set the handler we are going to request
         hndl = h_comps + ["$RHN", params[0], methodname] + list(params[1:])
         self._handler = '/' + '/'.join(hndl)

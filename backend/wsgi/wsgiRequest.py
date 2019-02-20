@@ -140,10 +140,13 @@ class WsgiMPtable:
         self.dict = {}
 
     def add(self, key, value):
-        if key in self.dict:
+        if key in self.dict and value not in self.dict[key]:
             self.dict[key].append(str(value))
         else:
             self.dict[key] = [str(value)]
+
+    def __contains__(self, key):
+        return self.has_key(key)
 
     def __getitem__(self, key):
         if len(self.dict[key]) == 1:
@@ -167,4 +170,4 @@ class WsgiMPtable:
         return list(self.dict.keys())
 
     def __str__(self):
-        return str(list(self.items()))
+        return str(self.items())

@@ -546,7 +546,7 @@ type=rpm-md
         """
         if not self.repo.is_configured:
             self.setup_repo(self.repo)
-        return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.name, "repodata")
+        return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame, "repodata")
 
     def get_md_checksum_type(self):
         """
