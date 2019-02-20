@@ -111,7 +111,7 @@ class Repository(RPC_Base):
             transport_cap = rhnFlags.get('x-rhn-transport-capability')
             if transport_cap:
                 transport_cap_list = transport_cap.split('=')
-                redirectsSupported = transport_cap_list[0] == 'follow-redirects' and transport_cap_list[1] >= 2
+                redirectsSupported = transport_cap_list[0] == 'follow-redirects' and int(transport_cap_list[1]) >= 2
 
         if redirectsSupported:
             log_debug(3, "Client supports redirects.")
