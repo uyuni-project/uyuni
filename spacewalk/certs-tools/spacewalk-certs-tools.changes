@@ -1,3 +1,5 @@
+- clean up downloaded gpg keys after bootstrap (bsc#1126075)
+
 -------------------------------------------------------------------
 Mon Sep 10 09:50:05 CEST 2018 - jgonzalez@suse.com
 
