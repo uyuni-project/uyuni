@@ -158,7 +158,7 @@ make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 %if 0%{?suse_version}
 pushd html/src
 ln -sf %{nodejs_sitelib} .
-node build
+BUILD_VALIDATION=false node build.js
 popd
 %endif
 
