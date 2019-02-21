@@ -287,7 +287,7 @@ public class Config {
         if (val == null) {
             return null;
         }
-        return new Float(val);
+        return Float.valueOf(val);
     }
 
     /**
@@ -303,7 +303,7 @@ public class Config {
         if (val == null) {
             return defaultValue;
         }
-        return val.floatValue();
+        return val;
     }
 
     /**
