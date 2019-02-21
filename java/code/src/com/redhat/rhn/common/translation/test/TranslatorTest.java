@@ -61,7 +61,7 @@ public class TranslatorTest extends RhnBaseTestCase {
     }
 
     public void testDouble2SomethingElse() {
-        Double d = new Double(10.0);
+        Double d = 10.0;
         String s = Translator.double2String(d);
         assertEquals("10.0", s);
     }

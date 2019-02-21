@@ -494,12 +494,12 @@ public class StringUtil {
         String number = null;
         String type = null;
         if (bytes >= (1024 * 1024)) { // show in megabytes (with two decimals)
-            number = ls.formatNumber(new Double(bytes / (1024.0 * 1024)),
+            number = ls.formatNumber(bytes / (1024.0 * 1024),
                     (wholeNum ? 0 : 2));
             type = "mb";
         }
         else if (bytes >= 1024) { // show in kilobytes (with one decimal)
-            number = ls.formatNumber(new Double(bytes / 1024.0), (wholeNum ? 0 : 1));
+            number = ls.formatNumber(bytes / 1024.0, (wholeNum ? 0 : 1));
             type = "kb";
         }
         else { // show in bytes (with no decimals)

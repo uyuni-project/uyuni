@@ -399,7 +399,7 @@ public class MockConnection extends CobblerConnection {
     }
 
     public Double getVersion() {
-        return new Double(2.2);
+        return 2.2;
     }
 
     /**

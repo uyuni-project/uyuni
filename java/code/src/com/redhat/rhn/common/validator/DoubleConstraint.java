@@ -64,7 +64,7 @@ public class DoubleConstraint extends RequiredIfConstraint {
 
         // Validate against range specifications
         try {
-            double doubleValue = new Double(value.toString()).doubleValue();
+            double doubleValue = Double.valueOf(value.toString());
             // Now we know its a valid number, lets check for a decimal value
             if (value.toString().indexOf(".") > -1) {
                 Object[] args = new Object[2];
@@ -73,14 +73,14 @@ public class DoubleConstraint extends RequiredIfConstraint {
                 return new ValidatorError("errors.decimalvalue", args);
             }
 
-            if (doubleValue < getMinInclusive().doubleValue()) {
+            if (doubleValue < getMinInclusive()) {
                 log.debug("Decimal too small ...");
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;
                 args[1] = getMinInclusive();
                 return new ValidatorError("errors.minsize", args);
             }
-            if (doubleValue > getMaxInclusive().doubleValue()) {
+            if (doubleValue > getMaxInclusive()) {
                 log.debug("Decimal too big ...");
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;
