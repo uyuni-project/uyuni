@@ -292,7 +292,7 @@ public class ConfigTest extends RhnBaseTestCase {
         c.setBoolean("prefix.boolean_true", Boolean.FALSE.toString());
         assertFalse(c.getBoolean("prefix.boolean_true"));
         assertEquals("0", c.getString("prefix.boolean_true"));
-        c.setBoolean("prefix.boolean_true", new Boolean(oldValue).toString());
+        c.setBoolean("prefix.boolean_true", Boolean.valueOf(oldValue).toString());
     }
 
     public void testSetString() throws Exception {

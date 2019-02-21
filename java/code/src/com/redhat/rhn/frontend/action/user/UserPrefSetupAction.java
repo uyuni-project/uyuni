@@ -73,8 +73,8 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         form.set("emailNotif", BooleanUtils.toBooleanObject(user
                 .getEmailNotify()));
         request.setAttribute("showTaskoNotify",
-                Boolean.valueOf(user.hasRole(RoleFactory.ORG_ADMIN) ||
-                        user.hasRole(RoleFactory.SAT_ADMIN)));
+                user.hasRole(RoleFactory.ORG_ADMIN) ||
+                        user.hasRole(RoleFactory.SAT_ADMIN));
 
         requestContext.getRequest().setAttribute("targetuser", user);
         requestContext.getRequest().setAttribute("supportedLocales", buildImageMap());

@@ -224,20 +224,20 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
         handler.addOrRemoveSystems(regular, group.getName(),
                 Arrays.asList(new Integer []{
-                            new Integer(server3.getId().intValue())}), new Boolean(true));
+                            new Integer(server3.getId().intValue())}), Boolean.valueOf(true));
 
         List systems = new ArrayList();
         systems.add(server1.getId());
         systems.add(server2.getId());
         systems.add(server3.getId());
-        handler.addOrRemoveSystems(regular, group.getName(), systems, new Boolean(true));
+        handler.addOrRemoveSystems(regular, group.getName(), systems, Boolean.TRUE);
 
 
         List actual = handler.listSystems(unpriv, group.getName());
         assertTrue(actual.contains(server1));
 
         handler.addOrRemoveSystems(regular, group.getName(), systems,
-                new Boolean(false));
+                Boolean.FALSE);
 
         actual = handler.listSystems(regular, group.getName());
         assertFalse(actual.contains(server1));
@@ -250,7 +250,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         systems.add(server1.getId());
         try {
             handler.addOrRemoveSystems(admin, group.getName(), systems,
-                    new Boolean(false));
+                    Boolean.FALSE);
             fail();
         }
         catch (ServerNotInGroupException e) {

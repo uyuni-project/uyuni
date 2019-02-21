@@ -538,7 +538,7 @@ public class DatePicker {
     }
 
     private Map getFieldCalMap() {
-        return (Map) FIELD_CALENDAR_MAP.get(Boolean.valueOf(isLatin()));
+        return (Map) FIELD_CALENDAR_MAP.get(isLatin());
     }
 
 

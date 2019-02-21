@@ -444,7 +444,7 @@ public  class UserFactory extends HibernateFactory {
         Boolean wasOrgAdmin = uimpl.wasOrgAdmin();
         if (wasOrgAdmin != null) {
             orgAdminChanged =
-                    usr.hasRole(RoleFactory.ORG_ADMIN) != wasOrgAdmin.booleanValue();
+                    usr.hasRole(RoleFactory.ORG_ADMIN) != wasOrgAdmin;
         }
 
         if (orgAdminChanged) {

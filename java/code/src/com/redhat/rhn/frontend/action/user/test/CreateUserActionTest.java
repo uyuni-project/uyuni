@@ -68,8 +68,8 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         f.set("address1", "123 somewhere ln");
         f.set("address2", "");
         f.set("city", "Cincinnati");
-        f.set("contact_email", new Boolean(true));
-        f.set("contact_fax", new Boolean(true));
+        f.set("contact_email", Boolean.TRUE);
+        f.set("contact_fax", Boolean.TRUE);
         f.set("contact_partner", "");
         f.set("company", "Red Hat");
         f.set("country", "US");

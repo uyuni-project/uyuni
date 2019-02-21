@@ -234,6 +234,6 @@ public class Translator extends Translations {
      * @return a boolean primitive
      */
     public static boolean boolean2boolean(Boolean b) {
-        return (b != null) && b.booleanValue();
+        return (b != null) && b;
     }
 }
