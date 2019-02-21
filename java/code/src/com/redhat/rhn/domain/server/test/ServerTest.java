@@ -103,7 +103,7 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     public void testNetworkInterfaces() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
-        NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(s);
+        NetworkInterfaceTest.createTestNetworkInterface(s);
         s = TestUtils.saveAndReload(s);
         Server s2 = ServerTestUtils.createTestSystem(user);
         s2 = TestUtils.saveAndReload(s2);
@@ -165,19 +165,19 @@ public class ServerTest extends BaseTestCaseWithUser {
         String hwAddr = "AA:AA:BB:BB:CC:CC";
         String ipAddr = "172.31.1.102";
 
-        NetworkInterface aaa = NetworkInterfaceTest.createTestNetworkInterface(s, "aaa",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "aaa",
                 ipAddr, hwAddr);
 
-        NetworkInterface bbb = NetworkInterfaceTest.createTestNetworkInterface(s, "bbb",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "bbb",
                 ipAddr, hwAddr);
 
-        NetworkInterface zzz = NetworkInterfaceTest.createTestNetworkInterface(s, "zzz",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "zzz",
                 ipAddr, hwAddr);
 
-        NetworkInterface eth0 = NetworkInterfaceTest.createTestNetworkInterface(s, "eth0",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "eth0",
                 ipAddr, hwAddr);
 
-        NetworkInterface eth1 = NetworkInterfaceTest.createTestNetworkInterface(s, "eth1",
+        NetworkInterfaceTest.createTestNetworkInterface(s, "eth1",
                 ipAddr, hwAddr);
 
         s = TestUtils.saveAndReload(s);

@@ -14,41 +14,58 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.activationkey.test;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.server.*;
-import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
-import com.redhat.rhn.frontend.xmlrpc.activationkey.AuthenticationException;
-import com.redhat.rhn.frontend.xmlrpc.activationkey.ChannelInfo;
-import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
-import com.redhat.rhn.testing.*;
-import com.suse.manager.utils.MachinePasswordUtils;
-import org.apache.commons.codec.digest.DigestUtils;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.AuthenticationException;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.ChannelInfo;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ActivationKeySerializer;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.ServerGroupTestUtils;
+import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.utils.MachinePasswordUtils;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import redstone.xmlrpc.XmlRpcSerializer;
 
 public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
@@ -607,7 +624,6 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, result);
         assertEquals(3, activationKey.getPackages().size());
 
-        String name = null, arch = null;
         boolean foundPkg1 = false, foundPkg2 = false, foundPkg3 = false;
 
         for (TokenPackage pkg : activationKey.getPackages()) {

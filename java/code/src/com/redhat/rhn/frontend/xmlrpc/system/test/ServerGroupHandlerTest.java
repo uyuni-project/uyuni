@@ -49,7 +49,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     private static final String DESCRIPTION =  TestUtils.randomString();
 
     public void testCreate() {
-        ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
+        handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
 
         try {
@@ -195,7 +195,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testDelete() {
-        ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
+        handler.create(admin, NAME, DESCRIPTION);
         handler.delete(admin, NAME);
         try {
             manager.lookup(NAME, admin);

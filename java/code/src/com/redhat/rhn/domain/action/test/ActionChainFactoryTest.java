@@ -17,16 +17,6 @@
  */
 package com.redhat.rhn.domain.action.test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.hibernate.ObjectNotFoundException;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -41,6 +31,16 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.hibernate.ObjectNotFoundException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Tests for {@link ActionChainFactory}.
@@ -415,7 +415,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      */
     public static void assertDeleted(ActionChain actionChain) {
         try {
-            ActionChain ac = ActionChainFactory.getActionChain(actionChain.getUser(),
+            ActionChainFactory.getActionChain(actionChain.getUser(),
                             actionChain.getId());
             fail();
         }
