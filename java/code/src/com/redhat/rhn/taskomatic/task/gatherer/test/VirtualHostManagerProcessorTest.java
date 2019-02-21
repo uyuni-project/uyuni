@@ -318,7 +318,6 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * VirtualHostManagers are both processed, but no duplicate VirtualInstances should
      * be created for the guest in the database.).
      */
-    @SuppressWarnings("unchecked")
     public void testTwoVHMsSameVM() {
         Map<String, HostJson> data = createHostData("esxi_host_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));

@@ -57,7 +57,6 @@ import spark.HaltException;
 /**
  * Tests for VirtualGuestsController
  */
-@SuppressWarnings("serial")
 public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
     private TaskomaticApi taskomaticMock;

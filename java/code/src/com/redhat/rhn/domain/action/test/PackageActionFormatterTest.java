@@ -32,7 +32,6 @@ public class PackageActionFormatterTest extends BaseTestCaseWithUser {
      * Tests getRelatedObjectDescription().
      * @throws Exception if something bad happens
      */
-    @SuppressWarnings("unchecked")
     public void testGetRelatedObjectDescription() throws Exception {
         PackageAction action = (PackageAction) ActionFactoryTest.createAction(user,
             ActionFactory.TYPE_PACKAGES_UPDATE);

@@ -32,8 +32,8 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
-import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -499,7 +499,6 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     /**
      * Test package verification.
      */
-    @SuppressWarnings("unchecked")
     public void testAcPackageVerify() {
         DataResult<PackageListItem> packageListItems =
                 PackageManager.systemPackageList(this.server.getId(), null);

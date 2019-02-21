@@ -71,7 +71,6 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * mgr-ncc-sync).
      * @throws Exception if anything goes wrong
      */
-    @SuppressWarnings("unchecked")
     public void skipTestListProducts() throws Exception {
         File expectedProductsCSV = new File(TestUtils.findTestData(EXPECTED_PRODUCTS_CSV).getPath());
 
