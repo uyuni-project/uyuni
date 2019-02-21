@@ -1,4 +1,4 @@
-- Fix mgr_events to use current ioloop
+- Fix mgr_events to use current ioloop (bsc#1126280)
 - add states for virtual machine actions
 - Added option to read 'pkg_download_point_...' pillar values and use it in repo url
 
