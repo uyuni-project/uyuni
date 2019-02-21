@@ -120,7 +120,7 @@ public class ErrataMailer extends RhnJavaJob {
 
     private void sendEmails(Long errataId, Long orgId, Long channelId) {
         Errata errata = (Errata) HibernateFactory.getSession().load(PublishedErrata.class,
-                new Long(errataId.longValue()));
+                errataId);
         List orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 
         if (orgServers == null || orgServers.size() == 0) {

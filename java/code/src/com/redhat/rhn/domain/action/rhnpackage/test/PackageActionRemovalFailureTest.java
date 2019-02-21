@@ -57,8 +57,8 @@ public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
         failure.setPackageName(name);
         failure.setEvr(evr);
         failure.setCapability(cap);
-        failure.setFlags(new Long(1));
-        failure.setSense(new Long(1));
+        failure.setFlags(1L);
+        failure.setSense(1L);
 
         TestUtils.saveAndFlush(failure);
 

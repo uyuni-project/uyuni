@@ -105,8 +105,8 @@ public class LocalRevisionDeployAction extends RhnAction {
         if (cc.isLocalChannel() || cc.isSandboxChannel()) {
             List infos = ConfigurationManager.getInstance().getSystemInfo(usr, cc);
             if (infos != null && infos.size() > 0) {
-                long srvId = ((ConfigSystemDto)infos.get(0)).getId().longValue();
-                srv = ServerFactory.lookupById(new Long(srvId));
+                long srvId = ((ConfigSystemDto)infos.get(0)).getId();
+                srv = ServerFactory.lookupById(srvId);
             }
         }
         return srv;

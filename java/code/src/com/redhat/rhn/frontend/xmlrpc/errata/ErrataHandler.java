@@ -412,7 +412,7 @@ public class ErrataHandler extends BaseHandler {
             errata.setAdvisoryName((String)details.get("advisory_name"));
         }
         if (details.containsKey("advisory_release")) {
-            Long rel = new Long((Integer)details.get("advisory_release"));
+            Long rel = Long.valueOf((Integer)details.get("advisory_release"));
             if (rel.longValue() > ErrataManager.MAX_ADVISORY_RELEASE) {
                 throw new InvalidAdvisoryReleaseException(rel.longValue());
             }
@@ -486,7 +486,7 @@ public class ErrataHandler extends BaseHandler {
                     }
 
                     Bug bug = ErrataFactory.createPublishedBug(
-                            new Long((Integer) bugMap.get("id")),
+                            Long.valueOf((Integer) bugMap.get("id")),
                             (String) bugMap.get("summary"), url);
 
                     errata.addBug(bug);
@@ -817,7 +817,7 @@ public class ErrataHandler extends BaseHandler {
         int packagesAdded = 0;
         for (Integer packageId : packageIds) {
 
-            Package pkg = PackageManager.lookupByIdAndUser(new Long(packageId),
+            Package pkg = PackageManager.lookupByIdAndUser(Long.valueOf(packageId),
                     loggedInUser);
 
             if ((pkg != null) && (!errata.getPackages().contains(pkg))) {
@@ -867,7 +867,7 @@ public class ErrataHandler extends BaseHandler {
         int packagesRemoved = 0;
         for (Integer packageId : packageIds) {
 
-            Package pkg = PackageManager.lookupByIdAndUser(new Long(packageId),
+            Package pkg = PackageManager.lookupByIdAndUser(Long.valueOf(packageId),
                     loggedInUser);
 
             if ((pkg != null) && (errata.getPackages().contains(pkg))) {
@@ -1270,7 +1270,7 @@ public class ErrataHandler extends BaseHandler {
         newErrata.setSynopsis(synopsis);
         newErrata.setAdvisory(advisoryName + "-" + advisoryRelease.toString());
         newErrata.setAdvisoryName(advisoryName);
-        newErrata.setAdvisoryRel(new Long(advisoryRelease.longValue()));
+        newErrata.setAdvisoryRel(advisoryRelease.longValue());
 
         if (advisoryType.equals("Security Advisory") ||
                 advisoryType.equals("Product Enhancement Advisory") ||
@@ -1304,7 +1304,7 @@ public class ErrataHandler extends BaseHandler {
             }
 
             Bug bug = ErrataFactory.createPublishedBug(
-                    new Long(((Integer)bugMap.get("id")).longValue()),
+                    ((Integer)bugMap.get("id")).longValue(),
                     (String)bugMap.get("summary"), url);
             newErrata.addBug(bug);
         }
@@ -1316,7 +1316,7 @@ public class ErrataHandler extends BaseHandler {
         newErrata.setPackages(new HashSet());
         for (Iterator<Integer> itr = packageIds.iterator(); itr.hasNext();) {
             Integer pid = itr.next();
-            Package pack = PackageFactory.lookupByIdAndOrg(new Long(pid.longValue()),
+            Package pack = PackageFactory.lookupByIdAndOrg(pid.longValue(),
                     loggedInUser.getOrg());
             if (pack != null) {
                 newErrata.addPackage(pack);

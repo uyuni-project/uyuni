@@ -127,7 +127,7 @@ public class RebootActionCleanup extends RhnJavaJob {
         if (retval != null) {
             for (Iterator<?> itr = retval.iterator(); itr.hasNext();) {
                 String val = (String)itr.next();
-                childActions.add(new Long(val));
+                childActions.add(Long.valueOf(val));
             }
         }
         return childActions;

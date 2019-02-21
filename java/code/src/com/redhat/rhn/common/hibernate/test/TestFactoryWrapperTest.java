@@ -59,7 +59,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         // 1 is a magic number, this is basically checking that the id is set
         // correctly.  We know this will be 1, because we create the sequence
         // to start at 0, and Blarg is the first value inserted.
-        assertTrue(obj.getId().longValue() == 1);
+        assertTrue(obj.getId() == 1);
     }
 
      public void testNullIntoPrimitive() throws Exception {
@@ -69,17 +69,17 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
          // 1 is a magic number, this is basically checking that the id is set
          // correctly.  We know this will be 1, because we create the sequence
          // to start at 0, and Blarg is the first value inserted.
-         assertTrue(obj.getId().longValue() == 1);
+         assertTrue(obj.getId() == 1);
      }
 
     public void testNewInsert() throws Exception {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("testNewInsert");
         TestFactory.save(obj);
-        assertTrue(obj.getId().longValue() != 0L);
+        assertTrue(obj.getId() != 0L);
         TestFactory.lookupByFoobar("testNewInsert");
         assertEquals("testNewInsert", obj.getFoobar());
-        assertTrue(obj.getId().longValue() != 0);
+        assertTrue(obj.getId() != 0);
     }
 
 

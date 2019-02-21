@@ -539,7 +539,7 @@ public class CachedStatement implements Serializable {
             Integer pos = positions.next();
             Object o = cs.getObject(pos.intValue());
             if (o instanceof BigDecimal) {
-                o = new Long(((BigDecimal) o).longValue());
+                o = ((BigDecimal) o).longValue();
             }
             result.put(param, o);
         }

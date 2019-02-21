@@ -25,7 +25,7 @@ import com.redhat.rhn.testing.TestUtils;
 public class KickstartInstallTypeTest extends RhnBaseTestCase {
 
     public void testKsInstallType() throws Exception {
-        Long testid = new Long(1);
+        Long testid = 1L;
         String query = "KickstartInstallType.findById";
 
         KickstartInstallType kit1 = (KickstartInstallType)

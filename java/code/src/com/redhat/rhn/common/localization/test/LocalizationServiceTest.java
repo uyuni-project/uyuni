@@ -220,7 +220,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     * Test formatNumber
     */
     public void testFormatNumber() {
-        String number = ls.formatNumber(new Long(10000), Locale.GERMAN);
+        String number = ls.formatNumber(10000L, Locale.GERMAN);
         assertNotNull(number);
         // Make sure we translated it to a german number
         // German numbers have commas (EN_US ones dont):

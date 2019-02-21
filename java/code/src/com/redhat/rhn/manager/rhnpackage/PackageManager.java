@@ -571,7 +571,7 @@ public class PackageManager extends BaseManager {
         DataResult dr = m.execute(params);
         if (dr.size() > 0) {
             Long id = (Long) ((Map) dr.get(0)).get("id");
-            return new Long(id.longValue());
+            return id;
         }
         return null;
     }

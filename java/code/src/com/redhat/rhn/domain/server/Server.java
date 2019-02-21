@@ -1124,7 +1124,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return String of RAM.
      */
     public String getRamString() {
-        return new Long(getRam()).toString();
+        return Long.valueOf(getRam()).toString();
     }
 
     /**

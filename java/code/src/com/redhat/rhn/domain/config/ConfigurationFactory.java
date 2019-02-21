@@ -82,7 +82,7 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigRevision newConfigRevision() {
         ConfigRevision cr = new ConfigRevision();
         Date now = new Date();
-        cr.setRevision(new Long(1));
+        cr.setRevision(1L);
         cr.setCreated(now);
         cr.setModified(now);
         return cr;
@@ -240,8 +240,7 @@ public class ConfigurationFactory extends HibernateFactory {
             inParams.put("config_content_id_in", null);
         }
         inParams.put("config_info_id_in", revision.getConfigInfo().getId());
-        inParams.put("config_file_type_id", new Long(
-                            revision.getConfigFileType().getId()));
+        inParams.put("config_file_type_id", revision.getConfigFileType().getId());
 
         // Outparam
         outParams.put("configRevisionId", new Integer(Types.NUMERIC));
@@ -427,10 +426,10 @@ public class ConfigurationFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Query query =
             session.getNamedQuery("ConfigFile.findByChannelAndName")
-                    .setLong("channel_id", channel.longValue())
-                    .setLong("name_id", name.longValue())
+                    .setLong("channel_id", channel)
+                    .setLong("name_id", name)
                     .setLong("state_id", ConfigFileState.normal().
-                                                    getId().longValue());
+                            getId());
         try {
             return (ConfigFile) query.uniqueResult();
         }
@@ -459,7 +458,7 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigRevision lookupConfigRevisionByRevId(ConfigFile cf, Long revId) {
         Session session = HibernateFactory.getSession();
         Query q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
-        q.setLong("rev", revId.longValue());
+        q.setLong("rev", revId);
         q.setEntity("cf", cf);
         return (ConfigRevision) q.uniqueResult();
     }
@@ -947,7 +946,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static Long getNextRevisionForFile(ConfigFile file) {
         Map results = getMaxRevisionForFile(file);
-        return new Long(((Long) results.get("revision")).longValue() + 1);
+        return ((Long) results.get("revision")) + 1;
     }
 
     /**
@@ -973,7 +972,7 @@ public class ConfigurationFactory extends HibernateFactory {
         ConfigFile file = lookupConfigFileByChannelAndName(channel.getId(), name.getId());
         Long rev = null;
         if (file == null) { //if a candidate does not exist, create one.
-            rev = new Long(1);
+            rev = 1L;
             file = ConfigurationFactory.newConfigFile();
             file.setConfigChannel(channel);
             file.setConfigFileName(name);

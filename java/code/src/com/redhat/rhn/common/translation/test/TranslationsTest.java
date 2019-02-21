@@ -40,7 +40,7 @@ public class TranslationsTest extends RhnBaseTestCase {
     public void testlongDateTranslation() throws Exception {
 
         long current = System.currentTimeMillis();
-        Date translated = (Date)TestTranslations.convert(new Long(current),
+        Date translated = (Date)TestTranslations.convert(current,
                                                    Date.class);
         assertEquals(new Date(current), translated);
     }

@@ -116,7 +116,7 @@ public class Token implements Identifiable {
      * @return Returns true if disabled == 1
      */
     public boolean isTokenDisabled() {
-        return getDisabled().equals(new Long(1));
+        return getDisabled().equals(1L);
     }
 
     /**
@@ -124,7 +124,7 @@ public class Token implements Identifiable {
      * Sets the disabled attribute to 1
      */
     public void disable() {
-        setDisabled(new Long(1));
+        setDisabled(1L);
     }
 
     /**
@@ -132,7 +132,7 @@ public class Token implements Identifiable {
      * attribute to 0
      */
     public void enable() {
-        setDisabled(new Long(0));
+        setDisabled(0L);
     }
 
     /**

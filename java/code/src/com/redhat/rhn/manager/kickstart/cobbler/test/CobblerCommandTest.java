@@ -44,7 +44,7 @@ import java.util.Map;
 public class CobblerCommandTest extends CobblerCommandTestBase {
 
     /*public void testDupSystems() throws Exception {
-        Server s = ServerFactory.lookupById(new Long(1000010339));
+        Server s = ServerFactory.lookupById(Long.valueOf(1000010339));
         CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(user, s, ksdata,
                 "http://localhost/test/path", TestUtils.randomString());
         cmd.store();

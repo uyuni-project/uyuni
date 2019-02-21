@@ -503,7 +503,7 @@ public class StringUtil {
             type = "kb";
         }
         else { // show in bytes (with no decimals)
-            number = ls.formatNumber(new Long(bytes), 0);
+            number = ls.formatNumber(bytes, 0);
             type = "b";
         }
 

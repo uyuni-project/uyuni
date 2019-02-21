@@ -274,7 +274,7 @@ public class ChannelAction extends RhnSetAction {
     private ActionMessages getMessages(Errata errata) {
         ActionMessages msgs = new ActionMessages();
         //get the size of the channels set into a string
-        String size = new Long(errata.getChannels().size()).toString();
+        String size = Long.valueOf(errata.getChannels().size()).toString();
         if (errata.getChannels().size() == 1) { //singular version '1 channel'
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                      new ActionMessage("errata.channels.updated.singular",

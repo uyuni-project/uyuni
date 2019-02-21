@@ -629,7 +629,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         for (int i = 0; i < results.length; i++) {
             Map map = (Map) results[i];
             Number id = (Number) map.get("id");
-            Long cid = new Long(id.longValue());
+            Long cid = id.longValue();
             Channel c = ChannelManager.lookupByIdAndUser(cid, admin);
             assertNull(c.getParentChannel());
         }
@@ -671,7 +671,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         for (int i = 0; i < results.length; i++) {
             Map map = (Map) results[i];
             Number id = (Number) map.get("id");
-            Long cid = new Long(id.longValue());
+            Long cid = id.longValue();
             Channel c = ChannelManager.lookupByIdAndUser(cid, admin);
             assertNull(c.getParentChannel());
         }
@@ -1416,8 +1416,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Map memory = handler.getMemory(admin,
                 new Integer(server.getId().intValue()));
-        assertEquals(new Long(server.getRam()), memory.get("ram"));
-        assertEquals(new Long(server.getSwap()), memory.get("swap"));
+        assertEquals(server.getRam(), memory.get("ram"));
+        assertEquals(server.getSwap(), memory.get("swap"));
     }
 
     public void testGetDevices() throws Exception {
@@ -1428,7 +1428,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         device.setDeviceClass(Device.CLASS_FLOPPY);
         device.setDescription("description_string");
         device.setDriver("mighty_mouse");
-        device.setPcitype(new Long(-3));
+        device.setPcitype((long) -3);
         device.setDevice("device_string");
 
         device.setServer(server);
@@ -1465,7 +1465,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testScheduleScript() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
-        SystemManagerTest.giveCapability(server.getId(), "script.run", new Long(1));
+        SystemManagerTest.giveCapability(server.getId(), "script.run", 1L);
 
         List serverIds = new ArrayList();
         serverIds.add(server.getId().intValue());
@@ -1475,7 +1475,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 new Integer(600), "", new Date());
 
         ScriptRunAction newAction = (ScriptRunAction)ActionManager.lookupAction(
-                admin, new Long(actionId.longValue()));
+                admin, actionId.longValue());
         assertNotNull(newAction);
         ScriptActionDetails newActionDetails = newAction.getScriptActionDetails();
         assertNotNull(newActionDetails);
@@ -1538,7 +1538,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         futureCal.set(2050, 12, 14);
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
-        SystemManagerTest.giveCapability(server.getId(), "script.run", new Long(1));
+        SystemManagerTest.giveCapability(server.getId(), "script.run", 1L);
 
         List serverIds = new ArrayList();
         serverIds.add(server.getId().intValue());
@@ -1548,14 +1548,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 new Integer(600), "", new Date());
 
         ScriptRunAction newAction = (ScriptRunAction)ActionManager.lookupAction(
-                admin, new Long(actionId.longValue()));
+                admin, actionId.longValue());
 
         ScriptActionDetails newActionDetails = newAction.getScriptActionDetails();
         newActionDetails.setParentAction(newAction);
 
         ScriptResult result = new ScriptResult();
         result.setServerId(server.getId());
-        result.setReturnCode(new Long(1));
+        result.setReturnCode(1L);
         result.setStartDate(new Date());
         result.setStopDate(futureCal.getTime());
         result.setParentScriptActionDetails(newActionDetails);
@@ -2091,7 +2091,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testListOutOfDateSystems() throws Exception {
         Server testServer = ServerFactoryTest.createTestServer(regular, true);
 
-        Long sid = new Long(testServer.getId().longValue());
+        Long sid = testServer.getId().longValue();
         Package pack = PackageTest.createTestPackage(admin.getOrg());
 
         ErrataCacheManager.insertNeededErrataCache(sid, null,
@@ -2314,8 +2314,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server proxy1 = ServerFactoryTest.createTestServer(admin, true);
         Server proxy2 = ServerFactoryTest.createTestServer(admin, true);
 
-        Long position1 = new Long(0);
-        Long position2 = new Long(1);
+        Long position1 = 0L;
+        Long position2 = 1L;
 
         WriteMode m = ModeFactory.getWriteMode("test_queries",
         "insert_into_rhnServerPath");

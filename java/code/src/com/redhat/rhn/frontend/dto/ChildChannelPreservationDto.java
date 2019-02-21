@@ -51,7 +51,7 @@ public class ChildChannelPreservationDto {
         this.otherChannelName = otherChannelNameIn;
 
         this.systemsAffected = systemsAffectedIn;
-        this.systemsAffectedCount = new Long(systemsAffected.size());
+        this.systemsAffectedCount = (long) systemsAffected.size();
     }
 
     /**

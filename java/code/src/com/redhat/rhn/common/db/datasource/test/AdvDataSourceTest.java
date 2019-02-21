@@ -70,7 +70,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertEquals(size, dr.size());
         if (size > 0) {
             assertEquals(foobar, dr.get(0).getFoobar());
-            assertEquals(new Long(id), dr.get(0).getId());
+            assertEquals(Long.valueOf(id), dr.get(0).getId());
         }
     }
 

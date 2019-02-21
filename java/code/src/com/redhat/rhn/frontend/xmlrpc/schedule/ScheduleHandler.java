@@ -57,7 +57,7 @@ public class ScheduleHandler extends BaseHandler {
             ActionIsChildException, LookupException {
         List actions = new ArrayList<Action>();
         for (Integer actionId : actionIds) {
-            Action action = ActionManager.lookupAction(loggedInUser, new Long(actionId));
+            Action action = ActionManager.lookupAction(loggedInUser, Long.valueOf(actionId));
             for (ServerAction sa : action.getServerActions()) {
                 if (ActionFactory.STATUS_PICKEDUP.equals(sa.getStatus())) {
                     throw new ActionIsPickedUpException("Cannot cancel actions in " +
@@ -313,7 +313,7 @@ public class ScheduleHandler extends BaseHandler {
         try {
             for (Integer actionId : actionIds) {
                 Action action =
-                        ActionManager.lookupAction(loggedInUser, new Long(actionId));
+                        ActionManager.lookupAction(loggedInUser, Long.valueOf(actionId));
                 if (action != null) {
                     ActionManager.rescheduleAction(action, onlyFailed);
                 }
@@ -342,9 +342,9 @@ public class ScheduleHandler extends BaseHandler {
     public int archiveActions(User loggedInUser, List<Integer> actionIds)
             throws FaultException {
         for (Integer actionId : actionIds) {
-            Action action = ActionManager.lookupAction(loggedInUser, new Long(actionId));
+            Action action = ActionManager.lookupAction(loggedInUser, Long.valueOf(actionId));
             if (action != null) {
-                action.setArchived(new Long(1));
+                action.setArchived(Long.valueOf(1));
             }
         }
         return 1;

@@ -86,14 +86,14 @@ public class RhnSetElement implements Serializable {
     public  RhnSetElement(Long uid, String lbl, String elements) {
         String[] parts = elements.split("\\|");
         if (parts.length > 2) {
-            setup(uid, lbl, new Long(parts[0].trim()), new Long(parts[1].trim()),
-                new Long(parts[2].trim()));
+            setup(uid, lbl, Long.valueOf(parts[0].trim()), Long.valueOf(parts[1].trim()),
+                Long.valueOf(parts[2].trim()));
         }
         else if (parts.length > 1) {
-            setup(uid, lbl, new Long(parts[0].trim()), new Long(parts[1].trim()), null);
+            setup(uid, lbl, Long.valueOf(parts[0].trim()), Long.valueOf(parts[1].trim()), null);
         }
         else {
-            setup(uid, lbl, new Long(parts[0].trim()), null, null);
+            setup(uid, lbl, Long.valueOf(parts[0].trim()), null, null);
         }
     }
 

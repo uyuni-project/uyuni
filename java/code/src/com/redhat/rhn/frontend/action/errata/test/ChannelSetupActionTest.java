@@ -106,9 +106,9 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
         //Set the setupdated variable to make sure we are keeping changes from the set
         User usr = requestContext.getCurrentUser();
         RhnSet newset = RhnSetDecl.CHANNELS_FOR_ERRATA.create(usr);
-        newset.addElement(new Long(42));
-        newset.addElement(new Long(43));
-        newset.addElement(new Long(44));
+        newset.addElement(42L);
+        newset.addElement(43L);
+        newset.addElement(44L);
         RhnSetManager.store(newset);
 
         //setup the request

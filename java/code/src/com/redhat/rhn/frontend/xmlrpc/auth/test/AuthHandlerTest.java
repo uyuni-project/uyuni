@@ -43,8 +43,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
         AuthHandler handler = new AuthHandler();
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        long dbLifetime = new Long(Config.get().getString("session_database_lifetime"))
-                                  .longValue();
+        long dbLifetime = Long.valueOf(Config.get().getString("session_database_lifetime"));
         long currentTime = System.currentTimeMillis() / 1000;
 
         Integer invalidDuration = new Integer(String.valueOf(dbLifetime + 100));

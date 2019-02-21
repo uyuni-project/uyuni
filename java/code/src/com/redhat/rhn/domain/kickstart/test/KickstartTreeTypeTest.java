@@ -25,7 +25,7 @@ import com.redhat.rhn.testing.TestUtils;
 public class KickstartTreeTypeTest extends RhnBaseTestCase {
 
     public void testKsTreeType() throws Exception {
-        Long testid = new Long(1);
+        Long testid = 1L;
         String query = "KickstartTreeType.findById";
 
         KickstartTreeType ktt1 = (KickstartTreeType)

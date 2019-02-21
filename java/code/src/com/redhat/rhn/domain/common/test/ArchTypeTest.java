@@ -26,7 +26,7 @@ public class ArchTypeTest extends RhnBaseTestCase {
 
     public void testArchType() throws Exception {
 
-        Long testid = new Long(1);
+        Long testid = 1L;
         String query = "ArchType.findById";
 
         ArchType at1 = (ArchType) TestUtils.lookupFromCacheById(testid, query);

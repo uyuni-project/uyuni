@@ -95,9 +95,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         this.server = ServerFactoryTest.createTestServer(this.admin, true);
 
         // Add capabilities
-        SystemManagerTest.giveCapability(this.server.getId(), "script.run", new Long(1));
+        SystemManagerTest.giveCapability(this.server.getId(), "script.run", 1L);
         SystemManagerTest.giveCapability(this.server.getId(),
-                                         SystemManager.CAP_CONFIGFILES_DEPLOY, new Long(2));
+                                         SystemManager.CAP_CONFIGFILES_DEPLOY, 2L);
 
         // Channels
         this.pkg = PackageTest.createTestPackage(this.admin.getOrg());

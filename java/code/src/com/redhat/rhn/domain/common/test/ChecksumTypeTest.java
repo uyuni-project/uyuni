@@ -26,7 +26,7 @@ public class ChecksumTypeTest extends RhnBaseTestCase {
 
     public void testChecksumType() throws Exception {
 
-        Long testid = new Long(1);
+        Long testid = 1L;
         String query = "ChecksumType.findById";
 
         ChecksumType at1 = (ChecksumType) TestUtils.lookupFromCacheById(testid, query);

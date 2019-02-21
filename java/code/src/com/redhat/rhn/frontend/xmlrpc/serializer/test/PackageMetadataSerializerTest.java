@@ -44,7 +44,7 @@ public class PackageMetadataSerializerTest extends TestCase {
         PackageListItem systemListItem = new PackageListItem();
         systemListItem.setEvr("2.2.23-5.3.el4");
         systemListItem.setName("fakepkg");
-        systemListItem.setNameId(new Long(10));
+        systemListItem.setNameId(10L);
 
         // Configure the list item for the other system:
         PackageListItem otherListItem = new PackageListItem();

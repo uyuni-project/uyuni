@@ -425,8 +425,8 @@ public class ServerGroupHandler extends BaseHandler {
 
     private List<Long> activeSystemsInGroup(User loggedInUser, String systemGroupName) {
         ServerGroup sg = lookup(systemGroupName, loggedInUser);
-        Long threshold = new Long(Config.get().getInt(
-                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
+        Long threshold = (long) Config.get().getInt(
+                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
         return ServerGroupManager.getInstance().listActiveServers(sg, threshold);
     }
 
@@ -467,8 +467,8 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
             String systemGroupName) {
-        Long threshold = new Long(Config.get().getInt(
-                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
+        Long threshold = (long) Config.get().getInt(
+                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
         return listInactiveSystemsInGroup(loggedInUser, systemGroupName,
                 threshold.intValue());
     }

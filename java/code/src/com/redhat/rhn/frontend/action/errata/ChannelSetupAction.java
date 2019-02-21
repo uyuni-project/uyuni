@@ -81,27 +81,23 @@ public class ChannelSetupAction extends RhnListAction {
             //so if the channel is not a clone or the errata is not cloned, we simply allow
             //the package name match to be used
             if (channel.getOriginalId() == null || !e.isCloned()) {
-                pkgs = ChannelManager.relevantPackages(new Long(channel.getId()
-                                                       .longValue()),
-                                                       e);
+                pkgs = ChannelManager.relevantPackages(channel.getId(), e);
             }
             //Else we check and see if the original channel was listed in
             //      the original errata
             else if (e.isCloned() && errataInChannel(((ClonedErrata)e).getOriginal(),
                     channel.getOriginalId())) {
-                pkgs = ChannelManager.relevantPackages(new Long(channel.getId()
-                        .longValue()),
-                        e);
+                pkgs = ChannelManager.relevantPackages(channel.getId(), e);
             } //if it wasn't then no packages are listed
             else {
                 pkgs = new ArrayList<Long>();
             }
 
             if (pkgs.isEmpty()) { //There must be 0 relevant packages
-                channel.setRelevantPackages(new Long(0));
+                channel.setRelevantPackages(0L);
             }
             else { //set relevantPackages to the number of items in the data result
-                channel.setRelevantPackages(new Long(pkgs.size()));
+                channel.setRelevantPackages((long) pkgs.size());
             }
         }
 

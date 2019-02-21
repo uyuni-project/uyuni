@@ -73,7 +73,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(host.getId());
         assertNotNull(virtualInstance);
-        assertEquals(new Long(1L), virtualInstance.getConfirmed());
+        assertEquals(Long.valueOf(1L), virtualInstance.getConfirmed());
         assertNull(virtualInstance.getUuid());
         assertNull(virtualInstance.getGuestSystem());
         assertEquals(VirtualInstanceFactory.getInstance().getUnknownState().getLabel(),
@@ -120,7 +120,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(existingHost.getId());
         assertNotNull(virtualInstance);
-        assertEquals(new Long(1L), virtualInstance.getConfirmed());
+        assertEquals(Long.valueOf(1L), virtualInstance.getConfirmed());
         assertNull(virtualInstance.getUuid());
         assertNull(virtualInstance.getGuestSystem());
         assertEquals(VirtualInstanceFactory.getInstance().getUnknownState().getLabel(),
@@ -154,7 +154,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 .lookupHostVirtInstanceByHostId(existingHost.getId());
         assertEquals(virtualInstance, virtualInstanceAfter);
         assertEquals(virtualInstance.getId(), virtualInstanceAfter.getId());
-        assertEquals(new Long(1L), virtualInstanceAfter.getConfirmed());
+        assertEquals(Long.valueOf(1L), virtualInstanceAfter.getConfirmed());
         assertNull(virtualInstanceAfter.getGuestSystem());
     }
 

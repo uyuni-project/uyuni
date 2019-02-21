@@ -56,7 +56,7 @@ public class VirtualSystemOverviewFilter extends SystemOverviewFilter {
                         // VirtualSystemOverview.processList()
                         VirtualSystemOverview fakeSystem = new VirtualSystemOverview();
                         fakeSystem.setServerName(VirtualSystemOverview.FAKENODE_LABEL);
-                        fakeSystem.setHostSystemId(new Long(0));
+                        fakeSystem.setHostSystemId(0L);
                         filteredList.add(i, fakeSystem);
                         i++;
                     }

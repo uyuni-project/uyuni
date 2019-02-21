@@ -809,7 +809,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             cmd.setProxyHost(phostCname);
         }
         else if (!StringUtils.isEmpty(phost)) {
-            cmd.setProxy(SystemManager.lookupByIdAndOrg(new Long(phost), ctx
+            cmd.setProxy(SystemManager.lookupByIdAndOrg(Long.valueOf(phost), ctx
                     .getCurrentUser().getOrg()));
         }
     }

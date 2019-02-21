@@ -84,11 +84,11 @@ public class ErrataTest extends BaseTestCaseWithUser {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
 
         Bug bug1 = new PublishedBug();
-        bug1.setId(new Long(1001));
+        bug1.setId(1001L);
         bug1.setSummary("This is a test summary");
 
         Bug bug2 = new PublishedBug();
-        bug2.setId(new Long(1002));
+        bug2.setId(1002L);
         bug2.setSummary("This is another test summary");
 
         errata.addBug(bug1);
@@ -117,11 +117,11 @@ public class ErrataTest extends BaseTestCaseWithUser {
                 .createTestUnpublishedErrata(user.getOrg().getId());
 
         Bug bug1 = new UnpublishedBug();
-        bug1.setId(new Long(1003));
+        bug1.setId(1003L);
         bug1.setSummary("This is a test summary");
 
         Bug bug2 = new UnpublishedBug();
-        bug2.setId(new Long(1004));
+        bug2.setId(1004L);
         bug2.setSummary("This is another test summary");
 
         errata.addBug(bug1);
@@ -283,8 +283,8 @@ public class ErrataTest extends BaseTestCaseWithUser {
     }
 
     private void runBeanMethodsTest(Errata err, int idOffset) throws Exception {
-        Long one = new Long(3475 + idOffset);
-        Long two = new Long(5438 + idOffset);
+        Long one = 3475L + idOffset;
+        Long two = 5438L + idOffset;
         String foo = "foo";
         String product = "Product Enhancement Advisory";
         String security = "Security Advisory";

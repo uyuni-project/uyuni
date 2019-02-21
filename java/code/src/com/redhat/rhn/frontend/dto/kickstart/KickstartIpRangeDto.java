@@ -36,10 +36,10 @@ public class KickstartIpRangeDto extends BaseDto {
      *
      */
     public KickstartIpRangeDto() {
-        this.id = new Long(0);
-        this.orgId = new Long(0);
-        this.min = new Long(0);
-        this.max = new Long(0);
+        this.id = 0L;
+        this.orgId = 0L;
+        this.min = 0L;
+        this.max = 0L;
         this.label = "";
         this.iprange = new IpAddressRange();
     }

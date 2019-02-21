@@ -254,7 +254,7 @@ public class ActionFactory extends HibernateFactory {
         sa.setStatus(STATUS_QUEUED);
         sa.setServer(server);
         sa.setParentAction(parent);
-        sa.setRemainingTries(new Long(5)); //arbitrary number from perl
+        sa.setRemainingTries(5L); //arbitrary number from perl
         parent.addServerAction(sa);
     }
 
@@ -467,8 +467,8 @@ public class ActionFactory extends HibernateFactory {
         retval.setEarliestAction(earliest);
         //in perl(modules/rhn/RHN/DB/Scheduler.pm) version is given a 2.
         //So that's what I did.
-        retval.setVersion(new Long(2));
-        retval.setArchived(new Long(0)); //not archived
+        retval.setVersion(2L);
+        retval.setArchived(0L); //not archived
         return retval;
     }
 

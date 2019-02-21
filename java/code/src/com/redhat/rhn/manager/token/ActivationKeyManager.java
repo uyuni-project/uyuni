@@ -119,7 +119,7 @@ public class ActivationKeyManager {
      */
     public ActivationKey createNewReActivationKey(User user, Server server,
                                        String note, KickstartSession session) {
-        return createNewReActivationKey(user, server, "", note, new Long(0),
+        return createNewReActivationKey(user, server, "", note, 0L,
                 null, false, session);
     }
 
@@ -133,7 +133,7 @@ public class ActivationKeyManager {
      */
     public ActivationKey createNewReActivationKey(User user, Server server,
                                                        String note) {
-        return createNewReActivationKey(user, server, "", note, new Long(0), null,
+        return createNewReActivationKey(user, server, "", note, 0L, null,
                 false, null);
     }
 
@@ -173,7 +173,7 @@ public class ActivationKeyManager {
      * @return Returns a newly created and filled out Activationkey
      */
     public ActivationKey createNewActivationKey(User user, String note) {
-        return createNewActivationKey(user,  "", note, new Long(0), null,
+        return createNewActivationKey(user,  "", note, 0L, null,
                 false);
     }
 

@@ -729,7 +729,7 @@ public class ActionManager extends BaseManager {
 
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
-        sa.setRemainingTries(new Long(5));
+        sa.setRemainingTries(5L);
         sa.setServer(server);
 
         sa.setParentAction(action);
@@ -794,7 +794,7 @@ public class ActionManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
-        params.put("age", new Long(age));
+        params.put("age", age);
 
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
@@ -1625,7 +1625,7 @@ public class ActionManager extends BaseManager {
         kad.setDiskGb(pcmd.getLocalStorageSize());
         kad.setMemMb(pcmd.getMemoryAllocation().longValue());
         kad.setDiskPath(pcmd.getFilePath());
-        kad.setVcpus(new Long(pcmd.getVirtualCpus()));
+        kad.setVcpus(Long.valueOf(pcmd.getVirtualCpus()));
         kad.setGuestName(pcmd.getGuestName());
         kad.setMacAddress(pcmd.getMacAddress());
         kad.setKickstartSessionId(ksSessionId);

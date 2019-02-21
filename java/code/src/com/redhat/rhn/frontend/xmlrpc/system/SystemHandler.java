@@ -252,7 +252,7 @@ public class SystemHandler extends BaseHandler {
         ActivationKey key = ActivationKeyManager.getInstance().
                 createNewReActivationKey(loggedInUser, server, note);
 
-        key.setUsageLimit(new Long(1));
+        key.setUsageLimit(1L);
 
         // Return the "key" for this activation key :-/
         return key.getKey();
@@ -395,7 +395,7 @@ public class SystemHandler extends BaseHandler {
             // therefore, convert the input to Long, since channel ids are
             // internally represented as Long
             for (Object channelId : channelIdsOrLabels) {
-                channelIds.add(new Long((Integer) channelId));
+                channelIds.add(Long.valueOf((Integer) channelId));
             }
         }
 
@@ -437,7 +437,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, sid);
         UpdateBaseChannelCommand cmd =
                 new UpdateBaseChannelCommand(
-                        loggedInUser, server, new Long(cid.longValue()));
+                        loggedInUser, server, cid.longValue());
         cmd.setScheduleApplyChannelsState(true);
         ValidatorError ve = cmd.store();
         if (ve != null) {
@@ -480,7 +480,7 @@ public class SystemHandler extends BaseHandler {
         if (StringUtils.isEmpty(channelLabel)) {
             // if user provides an empty string for the channel label, they are requesting
             // to remove the base channel
-            cmd = new UpdateBaseChannelCommand(loggedInUser, server, new Long(-1));
+            cmd = new UpdateBaseChannelCommand(loggedInUser, server, -1L);
         }
         else {
             List<String> channelLabels = new ArrayList<String>();
@@ -791,8 +791,8 @@ public class SystemHandler extends BaseHandler {
                 m.put("name", server.getName());
                 m.put("last_checkin", convertLocalToUtc(server.getLastCheckin()));
 
-                m.put("ram", new Long(server.getRam()));
-                m.put("swap", new Long(server.getSwap()));
+                m.put("ram", server.getRam());
+                m.put("swap", server.getSwap());
 
                 CPU cpu = server.getCpu();
                 if (cpu == null) {
@@ -1771,7 +1771,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, sid);
         ServerGroupManager manager = ServerGroupManager.getInstance();
         try {
-            ManagedServerGroup group = manager.lookup(new Long(sgid.longValue()),
+            ManagedServerGroup group = manager.lookup(sgid.longValue(),
                     loggedInUser);
 
 
@@ -2714,13 +2714,13 @@ public class SystemHandler extends BaseHandler {
         }
 
         ProvisionVirtualInstanceCommand cmd = new ProvisionVirtualInstanceCommand(
-                new Long(sid.longValue()), ksdata.getId(), loggedInUser, new Date(),
+                sid.longValue(), ksdata.getId(), loggedInUser, new Date(),
                 ConfigDefaults.get().getCobblerHost());
 
         cmd.setGuestName(guestName);
-        cmd.setMemoryAllocation(new Long(memoryMb));
-        cmd.setVirtualCpus(new Long(vcpus.toString()));
-        cmd.setLocalStorageSize(new Long(storageGb));
+        cmd.setMemoryAllocation(Long.valueOf(memoryMb));
+        cmd.setVirtualCpus(Long.valueOf(vcpus.toString()));
+        cmd.setLocalStorageSize(Long.valueOf(storageGb));
         // setting an empty string generates a random mac address
         cmd.setMacAddress(macAddress);
         // setting an empty string generates a default virt path
@@ -2918,7 +2918,7 @@ public class SystemHandler extends BaseHandler {
      */
     public String getRunningKernel(User loggedInUser, Integer sid) {
         try {
-            Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                     loggedInUser);
             if (server.getRunningKernel() != null) {
                 return server.getRunningKernel();
@@ -3304,9 +3304,9 @@ public class SystemHandler extends BaseHandler {
         Server target = null;
         Server source = null;
         try {
-            target = SystemManager.lookupByIdAndUser(new Long(sid1.longValue()),
+            target = SystemManager.lookupByIdAndUser(sid1.longValue(),
                     loggedInUser);
-            source = SystemManager.lookupByIdAndUser(new Long(sid2.longValue()),
+            source = SystemManager.lookupByIdAndUser(sid2.longValue(),
                     loggedInUser);
         }
         catch (LookupException e) {
@@ -3321,8 +3321,8 @@ public class SystemHandler extends BaseHandler {
         DataResult result = null;
         try {
             result = ProfileManager.compareServerToServer(
-                    new Long(sid1.longValue()),
-                    new Long(sid2.longValue()), loggedInUser.getOrg().getId(), null);
+                    sid1.longValue(),
+                    sid2.longValue(), loggedInUser.getOrg().getId(), null);
         }
         catch (MissingEntitlementException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
@@ -3393,8 +3393,8 @@ public class SystemHandler extends BaseHandler {
     public Map<String, Long> getMemory(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         Map<String, Long> memory = new HashMap<String, Long>();
-        memory.put("swap", new Long(server.getSwap()));
-        memory.put("ram", new Long(server.getRam()));
+        memory.put("swap", server.getSwap());
+        memory.put("ram", server.getRam());
         return memory;
     }
 
@@ -3437,7 +3437,7 @@ public class SystemHandler extends BaseHandler {
         if (!allowModules) {
             boolean hasModules = false;
             for (Integer sid : sids) {
-                Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()), loggedInUser);
+                Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
                 for (Channel channel : server.getChannels()) {
                     if (channel.getModules() != null) {
                         hasModules = true;
@@ -3451,7 +3451,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         for (Integer sid : sids) {
-            Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                     loggedInUser);
 
             // Would be nice to do this check at the Manager layer but upset many tests,
@@ -3499,7 +3499,7 @@ public class SystemHandler extends BaseHandler {
 
             Map<String, Long> pkgMap = new HashMap<String, Long>();
 
-            Package p = PackageManager.lookupByIdAndUser(new Long(pkgId.longValue()), user);
+            Package p = PackageManager.lookupByIdAndUser(pkgId.longValue(), user);
 
             if (p == null) {
                 throw new InvalidPackageException("cannot find package with name " +
@@ -4105,7 +4105,7 @@ public class SystemHandler extends BaseHandler {
      *  #array_end()
      */
     public Set<Note> listNotes(User loggedInUser , Integer sid) {
-        Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                 loggedInUser);
         return server.getNotes();
     }
@@ -4123,7 +4123,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "fqdn")
      */
     public List<String> listFqdns(User loggedInUser, Integer sid) {
-        return ServerFactory.listFqdns(new Long(sid.longValue()));
+        return ServerFactory.listFqdns(sid.longValue());
     }
 
     /**
@@ -4155,7 +4155,7 @@ public class SystemHandler extends BaseHandler {
     public List<Map<String, Object>> listPackagesFromChannel(User loggedInUser,
             Integer sid,
             String channelLabel) {
-        SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+        SystemManager.lookupByIdAndUser(sid.longValue(),
                 loggedInUser);
         Channel channel = ChannelFactory.lookupByLabelAndUser(channelLabel,
                 loggedInUser);
@@ -4179,7 +4179,7 @@ public class SystemHandler extends BaseHandler {
      */
     public Long scheduleHardwareRefresh(User loggedInUser, Integer sid,
             Date earliestOccurrence) {
-        Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                 loggedInUser);
 
         try {
@@ -4214,7 +4214,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int schedulePackageRefresh(User loggedInUser, Integer sid,
             Date earliestOccurrence) {
-        Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                 loggedInUser);
 
         try {
@@ -4263,16 +4263,16 @@ public class SystemHandler extends BaseHandler {
                                      Date earliest) {
 
         ScriptActionDetails scriptDetails = ActionManager.createScript(username, groupname,
-                new Long(timeout.longValue()), script);
+                timeout.longValue(), script);
         ScriptAction action = null;
 
         List<Long> servers = new ArrayList<Long>();
 
         for (Iterator<Integer> sysIter = systemIds.iterator(); sysIter.hasNext();) {
             Integer sidAsInt = sysIter.next();
-            Long sid = new Long(sidAsInt.longValue());
+            Long sid = sidAsInt.longValue();
             try {
-                SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+                SystemManager.lookupByIdAndUser(sid.longValue(),
                         loggedInUser);
                 servers.add(sid);
             }
@@ -4486,7 +4486,7 @@ public class SystemHandler extends BaseHandler {
         ScriptRunAction action = null;
         try {
             action = (ScriptRunAction)ActionManager.lookupAction(loggedInUser,
-                    new Long(actionId.longValue()));
+                    actionId.longValue());
         }
         catch (LookupException e) {
             throw new NoSuchActionException(actionId.toString(), e);
@@ -4515,7 +4515,7 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleReboot(User loggedInUser, Integer sid,
             Date earliestOccurrence) {
         try {
-            Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                     loggedInUser);
 
             Action a = ActionManager.scheduleRebootAction(loggedInUser, server,
@@ -4545,7 +4545,7 @@ public class SystemHandler extends BaseHandler {
     public Object getDetails(User loggedInUser, Integer serverId) {
         Server server = null;
         try {
-            server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()),
+            server = SystemManager.lookupByIdAndUser(serverId.longValue(),
                     loggedInUser);
         }
         catch (LookupException e) {
@@ -4615,7 +4615,7 @@ public class SystemHandler extends BaseHandler {
 
         Server server = null;
         try {
-            server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()),
+            server = SystemManager.lookupByIdAndUser(serverId.longValue(),
                     loggedInUser);
         }
         catch (LookupException e) {
@@ -4747,7 +4747,7 @@ public class SystemHandler extends BaseHandler {
     public Integer setLockStatus(User loggedInUser, Integer serverId, boolean lockStatus) {
         Server server = null;
         try {
-            server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()),
+            server = SystemManager.lookupByIdAndUser(serverId.longValue(),
                     loggedInUser);
         }
         catch (LookupException e) {
@@ -4807,7 +4807,7 @@ public class SystemHandler extends BaseHandler {
         }
         Server server = null;
         try {
-            server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()),
+            server = SystemManager.lookupByIdAndUser(serverId.longValue(),
                     loggedInUser);
         }
         catch (LookupException e) {
@@ -4888,7 +4888,7 @@ public class SystemHandler extends BaseHandler {
 
         Server server = null;
         try {
-            server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()),
+            server = SystemManager.lookupByIdAndUser(serverId.longValue(),
                     loggedInUser);
         }
         catch (LookupException e) {
@@ -5111,7 +5111,7 @@ public class SystemHandler extends BaseHandler {
     public int createPackageProfile(User loggedInUser, Integer sid,
             String profileLabel, String desc) {
 
-        Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                 loggedInUser);
 
         try {
@@ -5155,7 +5155,7 @@ public class SystemHandler extends BaseHandler {
     public Object[] comparePackageProfile(User loggedInUser, Integer serverId,
             String profileLabel) {
 
-        Long sid = new Long(serverId.longValue());
+        Long sid = serverId.longValue();
         SystemManager.lookupByIdAndUser(sid, loggedInUser);
 
         Profile profile = ProfileFactory.findByNameAndOrgId(profileLabel,
@@ -5220,9 +5220,9 @@ public class SystemHandler extends BaseHandler {
         Server target = null;
         Server source = null;
         try {
-            target = SystemManager.lookupByIdAndUser(new Long(targetServerId.longValue()),
+            target = SystemManager.lookupByIdAndUser(targetServerId.longValue(),
                     loggedInUser);
-            source = SystemManager.lookupByIdAndUser(new Long(sourceServerId.longValue()),
+            source = SystemManager.lookupByIdAndUser(sourceServerId.longValue(),
                     loggedInUser);
         }
         catch (LookupException e) {
@@ -5257,8 +5257,8 @@ public class SystemHandler extends BaseHandler {
         Action action = null;
         try {
            action = ProfileManager.syncToSystem(loggedInUser,
-                   new Long(targetServerId.longValue()),
-                   new Long(sourceServerId.longValue()), pkgIdCombos, null,
+                   targetServerId.longValue(),
+                   sourceServerId.longValue(), pkgIdCombos, null,
                     earliest);
         }
         catch (MissingEntitlementException e) {
@@ -6366,7 +6366,7 @@ public class SystemHandler extends BaseHandler {
     public List<Map<String, Object>> listExtraPackages(User loggedInUser,
             Integer serverId) {
         DataResult<PackageListItem> dr =
-                SystemManager.listExtraPackages(new Long(serverId));
+                SystemManager.listExtraPackages(Long.valueOf(serverId));
 
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 

@@ -92,7 +92,7 @@ public class Translator extends Translations {
      */
     public static User long2User(Integer l)
         throws Exception {
-        return UserFactory.lookupById(new Long(l.longValue()));
+        return UserFactory.lookupById(l.longValue());
     }
 
     /** Convert from Long to long
@@ -102,7 +102,7 @@ public class Translator extends Translations {
      */
     public static long long2Objlong(Long l)
         throws Exception {
-        return (l == null) ? 0 : l.longValue();
+        return (l == null) ? 0 : l;
     }
 
     /**
@@ -161,7 +161,7 @@ public class Translator extends Translations {
      */
     public static Long bigDecimal2LongObj(BigDecimal bd)
         throws Exception {
-        return (bd == null) ? null : new Long(bd.longValue());
+        return (bd == null) ? null : bd.longValue();
     }
 
     /**

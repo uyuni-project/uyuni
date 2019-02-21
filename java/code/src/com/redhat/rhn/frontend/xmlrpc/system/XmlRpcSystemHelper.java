@@ -66,7 +66,7 @@ public class XmlRpcSystemHelper {
      * corresponding to sid cannot be found.
      */
     public Server lookupServer(User user, Number sid) throws NoSuchSystemException {
-        Long serverId = new Long(sid.longValue());
+        Long serverId = sid.longValue();
 
         try {
             Server server = SystemManager.lookupByIdAndUser(serverId, user);

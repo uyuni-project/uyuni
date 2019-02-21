@@ -69,7 +69,7 @@ public class SessionCleanup extends RhnJavaJob {
         }
 
         //input parameters of the proc
-        inParams.put("bound", new Long(bound));
+        inParams.put("bound", bound);
         inParams.put("commit_interval", new Integer(commitInterval));
         inParams.put("batch_size", new Integer(batchSize));
 

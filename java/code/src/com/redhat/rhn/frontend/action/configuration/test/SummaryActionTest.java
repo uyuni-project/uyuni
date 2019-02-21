@@ -37,7 +37,7 @@ public class SummaryActionTest extends RhnMockStrutsTestCase {
         Long sid = ServerFactoryTest.createTestServer(user, true).getId();
 
         RhnSet set = RhnSetDecl.CONFIG_ENABLE_SYSTEMS.create(user);
-        set.addElement(sid, new Long(ConfigurationManager.ENABLE_SUCCESS));
+        set.addElement(sid, (long) ConfigurationManager.ENABLE_SUCCESS);
         RhnSetManager.store(set);
 
         setRequestPathInfo("/configuration/system/Summary");

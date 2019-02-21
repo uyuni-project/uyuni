@@ -62,16 +62,16 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
         Channel newChannel = null;
 
         // if new channel equals old, there's nothing to do
-        if ((oldChannel == null && baseChannelId.longValue() == -1) ||
+        if ((oldChannel == null && baseChannelId == -1) ||
             (oldChannel != null && oldChannel.getId() == baseChannelId.longValue())) {
             return null;
         }
 
         // If the new ID is -1 we are unsubscribing to a no-base-channel
         // for the server.
-        if (baseChannelId.longValue() != -1) {
+        if (baseChannelId != -1) {
             newChannel = ChannelManager.lookupByIdAndUser(
-                    new Long(baseChannelId.longValue()),
+                    baseChannelId,
                     user);
             // Make sure we got a valid base channel from the user
             if (newChannel == null || newChannel.getParentChannel() != null ||

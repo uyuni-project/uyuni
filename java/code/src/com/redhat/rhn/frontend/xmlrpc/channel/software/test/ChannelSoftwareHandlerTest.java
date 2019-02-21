@@ -113,7 +113,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         handler.addPackages(admin, channel.getLabel(), packages2add);
         assertEquals(2, channel.getPackageCount());
 
-        Long bogusId = new Long(System.currentTimeMillis());
+        Long bogusId = System.currentTimeMillis();
         packages2add.add(bogusId);
 
         try {
@@ -828,7 +828,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         details.put("checksum", "sha256");
 
         int id = handler.clone(admin, original.getLabel(), details, false);
-        Channel chan = ChannelFactory.lookupById(new Long(id));
+        Channel chan = ChannelFactory.lookupById((long) id);
         chan = (Channel) TestUtils.reload(chan);
         assertNotNull(chan);
         assertEquals(label, chan.getLabel());
@@ -859,7 +859,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         details.put("gpg_check", "True");
 
         int id = handler.clone(admin, original.getLabel(), details, false);
-        Channel chan = ChannelFactory.lookupById(new Long(id));
+        Channel chan = ChannelFactory.lookupById((long) id);
         chan = (Channel) TestUtils.reload(chan);
         assertNotNull(chan);
         assertEquals(label, chan.getLabel());
@@ -890,7 +890,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         details.put("checksum", "sha256");
 
         int id = handler.clone(admin, original.getLabel(), details, true);
-        Channel chan = ChannelFactory.lookupById(new Long(id));
+        Channel chan = ChannelFactory.lookupById((long) id);
         chan = (Channel) TestUtils.reload(chan);
 
 

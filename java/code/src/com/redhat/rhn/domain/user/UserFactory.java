@@ -297,7 +297,7 @@ public  class UserFactory extends HibernateFactory {
      */
     private static long getLongValue(DataResult dr, String key) {
         Long id = (Long)((Map)dr.get(0)).get(key);
-        return id.longValue();
+        return id;
     }
 
     /**
@@ -398,12 +398,12 @@ public  class UserFactory extends HibernateFactory {
             usr.setOrg(org);
         }
 
-        long userId = ((Long) result.get("userId")).longValue();
+        long userId = (Long) result.get("userId");
 
 
         // We need to lookup the User to make sure that the Address in the
         // User object has an Id and that the User has an org_id.
-        User retval = lookupById(new Long(userId));
+        User retval = lookupById(userId);
         saveObject(retval);
         return retval;
     }
@@ -621,7 +621,7 @@ public  class UserFactory extends HibernateFactory {
         DataResult dr = m.execute(new HashMap<String, Object>());
         Map row = (Map) dr.get(0);
         Long count = (Long) row.get("user_count");
-        return (count.longValue() > 0);
+        return (count > 0);
     }
 
     /**

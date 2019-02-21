@@ -172,7 +172,7 @@ public class ChannelOverviewTasks extends RhnAction {
         Set crids = new HashSet();
         for (Iterator itr = revs.iterator(); itr.hasNext();) {
             ConfigFileDto cfd = (ConfigFileDto)itr.next();
-            crids.add(new Long(cfd.getLatestConfigRevisionId().longValue()));
+            crids.add(cfd.getLatestConfigRevisionId());
         }
 
         Map<Long, Collection<Long>> serverConfigMap =

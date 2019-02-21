@@ -150,7 +150,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         ActivationKey key = ActivationKeyManager.getInstance().
                 createNewReActivationKey(UserFactory.findRandomOrgAdmin(
                         server.getOrg()), server, note);
-        key.setUsageLimit(new Long(1));
+        key.setUsageLimit(1L);
         log.debug("created reactivation key: " + key.getKey());
         String keys = key.getKey();
         if (ksData != null) {

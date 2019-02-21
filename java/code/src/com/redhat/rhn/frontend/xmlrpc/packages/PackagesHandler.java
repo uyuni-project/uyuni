@@ -389,7 +389,7 @@ public class PackagesHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
         PackageSource pkg = PackageFactory.lookupPackageSourceByIdAndOrg(
-                new Long(psid.longValue()), loggedInUser.getOrg());
+                psid.longValue(), loggedInUser.getOrg());
         if (pkg == null) {
             throw new NoSuchPackageException();
         }
@@ -477,7 +477,7 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException Occurs when the package is not found
      */
     private Package lookupPackage(User user, Integer pid) throws FaultException {
-        Package pkg = PackageManager.lookupByIdAndUser(new Long(pid.longValue()), user);
+        Package pkg = PackageManager.lookupByIdAndUser(pid.longValue(), user);
 
         /*
          * PackageManager.lookupByIdAndUser() could return null, so we need to check

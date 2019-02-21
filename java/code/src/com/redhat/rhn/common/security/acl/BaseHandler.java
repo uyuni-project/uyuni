@@ -57,13 +57,13 @@ public abstract class BaseHandler implements AclHandler {
             if (o instanceof String[]) {
                 String[] s = (String[])o;
                 if (s.length > 0 && !StringUtils.isEmpty(s[0])) {
-                    ret = new Long(s[0]);
+                    ret = Long.valueOf(s[0]);
                 }
             }
             else if (o instanceof String) {
                 String s = (String)o;
                 if (!StringUtils.isEmpty(s)) {
-                    ret = new Long(s);
+                    ret = Long.valueOf(s);
                 }
             }
             else if (o instanceof Long) {

@@ -1203,7 +1203,7 @@ public class ConfigurationManager extends BaseManager {
         DataResult dr = getFileInfo(user, channel);
         if (dr != null && dr.size() > 0) {
             ConfigFileDto mostRecent = (ConfigFileDto)dr.get(0);
-            Long revid = new Long(mostRecent.getId().longValue());
+            Long revid = mostRecent.getId().longValue();
             ConfigRevision rev =
                     ConfigurationManager.getInstance().lookupConfigRevision(user, revid);
             summary.setMostRecentMod(rev);
@@ -1215,7 +1215,7 @@ public class ConfigurationManager extends BaseManager {
         dr = getSystemInfo(user, channel);
         if (dr != null && dr.size() > 0) {
             ConfigSystemDto mostRecent = (ConfigSystemDto)dr.get(0);
-            Long sysid = new Long(mostRecent.getId().longValue());
+            Long sysid = mostRecent.getId().longValue();
             Server sys = ServerFactory.lookupById(sysid);
             summary.setMostRecentSystem(sys);
             Date modDate = mostRecent.getModified();
@@ -2380,10 +2380,10 @@ public class ConfigurationManager extends BaseManager {
         Map m = new HashMap();
 
         if (revSucceeded > 0) {
-            m.put("success", new Long(revSucceeded));
+            m.put("success", (long) revSucceeded);
         }
         if (revOverridden > 0) {
-            m.put("override", new Long(revOverridden));
+            m.put("override", (long) revOverridden);
         }
         return m;
     }

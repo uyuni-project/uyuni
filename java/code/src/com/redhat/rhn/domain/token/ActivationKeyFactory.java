@@ -91,7 +91,7 @@ public class ActivationKeyFactory extends HibernateFactory {
      * @return Returns the newly created ActivationKey.
      */
     public static ActivationKey createNewKey(User user, String note) {
-        return createNewKey(user, null, "", note, new Long(0), null, false);
+        return createNewKey(user, null, "", note, 0L, null, false);
     }
 
 

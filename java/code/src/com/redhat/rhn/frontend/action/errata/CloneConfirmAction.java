@@ -73,7 +73,7 @@ public class CloneConfirmAction extends RhnAction {
         while (i.hasNext()) {
             ErrataOverview eo = (ErrataOverview) i.next();
 
-            Errata e = ErrataFactory.lookupById(new Long(eo.getId().longValue()));
+            Errata e = ErrataFactory.lookupById(eo.getId());
             ErrataManager.createClone(user, e);
 
         }

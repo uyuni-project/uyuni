@@ -197,14 +197,14 @@ public class KickstartIpRangeAction extends RhnAction {
      * @param form DynaActionForm
      */
     private void setupFormValues(DynaActionForm form) {
-        form.set(OCTET1A, new Long(0));
-        form.set(OCTET1B, new Long(0));
-        form.set(OCTET1C, new Long(0));
-        form.set(OCTET1D, new Long(0));
-        form.set(OCTET2A, new Long(0));
-        form.set(OCTET2B, new Long(0));
-        form.set(OCTET2C, new Long(0));
-        form.set(OCTET2D, new Long(0));
+        form.set(OCTET1A, 0L);
+        form.set(OCTET1B, 0L);
+        form.set(OCTET1C, 0L);
+        form.set(OCTET1D, 0L);
+        form.set(OCTET2A, 0L);
+        form.set(OCTET2B, 0L);
+        form.set(OCTET2C, 0L);
+        form.set(OCTET2D, 0L);
     }
 
 }

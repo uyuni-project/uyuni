@@ -175,9 +175,9 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testCompareServerToProfile() {
-        Long sid = new Long(1005385254);
-        Long prid = new Long(4908);
-        Long orgid = new Long(4116748);
+        Long sid = 1005385254L;
+        Long prid = 4908L;
+        Long orgid = 4116748L;
         DataResult<PackageMetadata> dr = ProfileManager.compareServerToProfile(sid, prid, orgid, null);
         assertNotNull("DataResult was null", dr);
     }
@@ -212,10 +212,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|258204");
-        pli.setEvrId(new Long(258204));
+        pli.setEvrId(258204L);
         pli.setName("kernel");
         pli.setRelease("27.EL");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.21-27.EL");
         pli.setVersion("2.4.21");
         pli.setEpoch(null);
@@ -223,10 +223,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
-        pli.setEvrId(new Long(000000));
+        pli.setEvrId(000000L);
         pli.setName("kernel");
         pli.setRelease("27.EL-bretm");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
@@ -235,10 +235,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("500000341|258204");
-        pli.setEvrId(new Long(258204));
+        pli.setEvrId(258204L);
         pli.setName("kernel");
         pli.setRelease("27.EL");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.21-27.EL");
         pli.setVersion("2.4.21");
         pli.setEpoch(null);
@@ -261,10 +261,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
-        pli.setEvrId(new Long(000000));
+        pli.setEvrId(000000L);
         pli.setName("kernel");
         pli.setRelease("27.EL-bretm");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
@@ -273,10 +273,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("500000341|258204");
-        pli.setEvrId(new Long(258204));
+        pli.setEvrId(258204L);
         pli.setName("kernel");
         pli.setRelease("27.EL");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.21-27.EL");
         pli.setVersion("2.4.21");
         pli.setEpoch(null);
@@ -296,10 +296,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> b = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
-        pli.setEvrId(new Long(000000));
+        pli.setEvrId(000000L);
         pli.setName("kernel");
         pli.setRelease("27.EL-bretm");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
@@ -308,10 +308,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> a = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("500000341|258204");
-        pli.setEvrId(new Long(258204));
+        pli.setEvrId(258204L);
         pli.setName("kernel");
         pli.setRelease("27.EL");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.21-27.EL");
         pli.setVersion("2.4.21");
         pli.setEpoch(null);
@@ -337,20 +337,20 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> a = new ArrayList<PackageListItem>();
         PackageListItem pli1 = new PackageListItem();
         pli1.setIdCombo("500000341|000000");
-        pli1.setEvrId(new Long(000000));
+        pli1.setEvrId(000000L);
         pli1.setName("kernel");
         pli1.setRelease("27.EL-bretm");
-        pli1.setNameId(new Long(500000341));
+        pli1.setNameId(500000341L);
         pli1.setEvr("kernel-2.4.22-27.EL-bretm");
         pli1.setVersion("2.4.22");
 
         List<PackageListItem> b = new ArrayList<PackageListItem>();
         PackageListItem pli2 = new PackageListItem();
         pli2.setIdCombo("500000341|258204");
-        pli2.setEvrId(new Long(258204));
+        pli2.setEvrId(258204L);
         pli2.setName("kernel");
         pli2.setRelease("27.EL");
-        pli2.setNameId(new Long(500000341));
+        pli2.setNameId(500000341L);
         pli2.setEvr("kernel-2.4.21-27.EL");
         pli2.setVersion("2.4.21");
 
@@ -382,10 +382,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setName(evr[0]);
         pli.setVersion(evr[1]);
         pli.setRelease(evr[2]);
-        pli.setEvrId(new Long(evrString.hashCode()));
+        pli.setEvrId((long) evrString.hashCode());
         pli.setIdCombo(nameId + "|" + evrString.hashCode());
         pli.setEvr(evrString);
-        pli.setNameId(new Long(nameId));
+        pli.setNameId((long) nameId);
         return pli;
     }
 
@@ -425,10 +425,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setName(evr[0]);
         pli.setVersion(evr[1]);
         pli.setRelease(evr[2]);
-        pli.setEvrId(new Long(evrString.hashCode()));
+        pli.setEvrId((long) evrString.hashCode());
         pli.setIdCombo(nameId + "|" + evrString.hashCode());
         pli.setEvr(evrString);
-        pli.setNameId(new Long(nameId));
+        pli.setNameId((long) nameId);
         PackageArch pa = PackageFactory.lookupPackageArchByLabel("x86_64");
         pli.setArch(pa.getLabel());
         pli.setArchId(pa.getId());
@@ -439,10 +439,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
-        pli.setEvrId(new Long(000000));
+        pli.setEvrId(000000L);
         pli.setName("kernel");
         pli.setRelease("27.EL-bretm");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
@@ -452,10 +452,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
-        pli.setEvrId(new Long(000000));
+        pli.setEvrId(000000L);
         pli.setName("kernel");
         pli.setRelease("27.EL-bretm");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
@@ -470,10 +470,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("390|2069");
-        pli.setEvrId(new Long(2069));
+        pli.setEvrId(2069L);
         pli.setName("kernel");
         pli.setRelease("5.0.3.EL");
-        pli.setNameId(new Long(390));
+        pli.setNameId(390L);
         pli.setEvr("pkg1");
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
@@ -482,10 +482,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("390|1628");
-        pli.setEvrId(new Long(1628));
+        pli.setEvrId(1628L);
         pli.setName("kernel");
         pli.setRelease("5.EL");
-        pli.setNameId(new Long(390));
+        pli.setNameId(390L);
         pli.setEvr("pkg2");
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
@@ -494,10 +494,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("1620|2069");
-        pli.setEvrId(new Long(2069));
+        pli.setEvrId(2069L);
         pli.setName("kernel-devel");
         pli.setRelease("5.0.3.EL");
-        pli.setNameId(new Long(1620));
+        pli.setNameId(1620L);
         pli.setEvr("pkg3");
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
@@ -506,10 +506,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("1620|1628");
-        pli.setEvrId(new Long(1628));
+        pli.setEvrId(1628L);
         pli.setName("kernel-devel");
         pli.setRelease("5.EL");
-        pli.setNameId(new Long(1620));
+        pli.setNameId(1620L);
         pli.setEvr("pkg4");
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
@@ -518,10 +518,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("398|1629");
-        pli.setEvrId(new Long(1629));
+        pli.setEvrId(1629L);
         pli.setName("kernel-utils");
         pli.setRelease("13.1.48");
-        pli.setNameId(new Long(398));
+        pli.setNameId(398L);
         pli.setEvr("pkg5");
         pli.setVersion("2.4");
         pli.setEpoch("1");
@@ -532,10 +532,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo(null);
-        pli.setEvrId(new Long(1628));
+        pli.setEvrId(1628L);
         pli.setName("kernel");
         pli.setRelease("5.EL");
-        pli.setNameId(new Long(390));
+        pli.setNameId(390L);
         pli.setEvr("pkg1b");
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
@@ -544,10 +544,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo(null);
-        pli.setEvrId(new Long(1628));
+        pli.setEvrId(1628L);
         pli.setName("kernel-devel");
         pli.setRelease("5.EL");
-        pli.setNameId(new Long(1620));
+        pli.setNameId(1620L);
         pli.setEvr("pkg2b");
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
@@ -556,10 +556,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo(null);
-        pli.setEvrId(new Long(1629));
+        pli.setEvrId(1629L);
         pli.setName("kernel-utils");
         pli.setRelease("13.1.48");
-        pli.setNameId(new Long(398));
+        pli.setNameId(398L);
         pli.setEvr("pkg3b");
         pli.setVersion("2.4");
         pli.setEpoch("1");
@@ -581,10 +581,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> serverList = new ArrayList<>();
         PackageListItem pli3 = new PackageListItem();
         pli3.setIdCombo("500000341|000000");
-        pli3.setEvrId(new Long(000000));
+        pli3.setEvrId(000000L);
         pli3.setName("kernel");
         pli3.setRelease("42.0.2.EL");
-        pli3.setNameId(new Long(500000341));
+        pli3.setNameId(500000341L);
         pli3.setEvr("kernel-2.6.9-42.0.2.EL");
         pli3.setVersion("2.6.9");
         pli3.setEpoch(null);
@@ -593,10 +593,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageListItem> otherServerList = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|000001");
-        pli.setEvrId(new Long(000000));
+        pli.setEvrId(000000L);
         pli.setName("kernel");
         pli.setRelease("22.EL");
-        pli.setNameId(new Long(500000341));
+        pli.setNameId(500000341L);
         pli.setEvr("kernel-2.6.9-22.EL");
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
@@ -604,10 +604,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         PackageListItem pli2 = new PackageListItem();
         pli2.setIdCombo("500000341|000000");
-        pli2.setEvrId(new Long(000000));
+        pli2.setEvrId(000000L);
         pli2.setName("kernel");
         pli2.setRelease("42.0.2.EL");
-        pli2.setNameId(new Long(500000341));
+        pli2.setNameId(500000341L);
         pli2.setEvr("kernel-2.6.9-42.0.2.EL");
         pli2.setVersion("2.6.9");
         pli2.setEpoch(null);

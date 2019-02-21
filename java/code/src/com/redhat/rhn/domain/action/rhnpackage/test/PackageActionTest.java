@@ -74,7 +74,7 @@ public class PackageActionTest extends RhnBaseTestCase {
         PackageActionResult result = new PackageActionResult();
         result.setServer(testserver);
         result.setDetails(firstDetail);
-        result.setResultCode(new Long(42));
+        result.setResultCode(42L);
         result.setCreated(new Date());
         result.setModified(new Date());
 
@@ -149,7 +149,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
-        sa.setRemainingTries(new Long(10));
+        sa.setRemainingTries(10L);
         sa.setServer(srvr);
         log.debug("Creating PackageRemoveAction.");
         PackageAction pra = (PackageAction) ActionFactory.createAction(

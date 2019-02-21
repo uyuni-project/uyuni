@@ -112,14 +112,14 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         ConfigFile file = ConfigTestUtils.createConfigFile(user.getOrg());
 
         //Create a content and info to put into this revision
-        ConfigContent content = ConfigTestUtils.createConfigContent(new Long(234L), true);
-        ConfigInfo info = ConfigTestUtils.createConfigInfo("root", "root", new Long(777));
+        ConfigContent content = ConfigTestUtils.createConfigContent(234L, true);
+        ConfigInfo info = ConfigTestUtils.createConfigInfo("root", "root", 777L);
         commitAndCloseSession();
         commitHappened();
 
         //Create a config revision
         ConfigRevision revision =
-            ConfigTestUtils.createConfigRevision(file, content, info, new Long(23));
+            ConfigTestUtils.createConfigRevision(file, content, info, 23L);
         assertNotNull(revision.getId());
 
         //evict it so we can look it back up
@@ -137,9 +137,9 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         //one problem is that looking up the same thing must be done in such a way that
         //hibernate doesn't yell about it.
         ConfigInfo info1 = ConfigurationFactory.lookupOrInsertConfigInfo("testman",
-                "testgroup", new Long(665), "", null);
+                "testgroup", 665L, "", null);
         ConfigInfo info2 = ConfigurationFactory.lookupOrInsertConfigInfo("testman",
-                "testgroup", new Long(665), "", null);
+                "testgroup", 665L, "", null);
         assertNotNull(info1.getId());
         assertNotNull(info2.getId());
         assertEquals(info1.getId(), info2.getId());
@@ -150,9 +150,9 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         ConfigContent content = ConfigTestUtils.createConfigContent();
 
         ConfigRevision rev1 =
-            ConfigTestUtils.createConfigRevision(file, content, info1, new Long(1));
+            ConfigTestUtils.createConfigRevision(file, content, info1, 1L);
         ConfigRevision rev2 =
-            ConfigTestUtils.createConfigRevision(file, content, info2, new Long(2));
+            ConfigTestUtils.createConfigRevision(file, content, info2, 2L);
 
         //The revisions have now been inserted,  now let's see if hibernate can handle
         //an update for them.
@@ -226,7 +226,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
             new ByteArrayInputStream(stringBuffer1.toString().getBytes("UTF-8"));
         ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
         ConfigRevision cr2 = ConfigurationFactory.createNewRevisionFromStream(
-                user, stream, new Long(startData.length()), cr.getConfigFile());
+                user, stream, (long) startData.length(), cr.getConfigFile());
         assertEquals(user.getId(), cr2.getChangedById());
         assertEquals(user.getLogin(), cr2.getChangedBy().getLogin());
     }

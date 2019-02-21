@@ -56,7 +56,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
 
         RequestContext requestContext = new RequestContext(request);
 
-        Long uid = new Long(Long.parseLong(request.getParameter("uid")));
+        Long uid = Long.parseLong(request.getParameter("uid"));
         request.setupAddParameter("uid", uid.toString()); //put it back
         assertNotNull(UserFactory.lookupById(uid));
 

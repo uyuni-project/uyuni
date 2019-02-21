@@ -313,7 +313,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigTestUtils.createConfigRevision(aFile);
         ConfigurationFactory.commit(local4);
 
-        Long ver = new Long(2);
+        Long ver = 2L;
         // System 1 - no outranks, no overrides
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
 
@@ -966,7 +966,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // In 'my' channel
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
@@ -1040,7 +1040,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // gcc1 only
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
@@ -1107,7 +1107,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // gcc1 only
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
@@ -1160,7 +1160,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         revs.add(g1f2.getId());
         Map m = mgr.deployFiles(user, revs, systems, new Date());
         assertNotNull(m);
-        assertEquals(m.get("success"), new Long(2));
+        assertEquals(m.get("success"), 2L);
         assertNull(m.get("override"));
 
         // System 3 - g2f2 should be overridden by g1f2, and g2f3 should deploy
@@ -1171,8 +1171,8 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         revs.add(g2f3.getId());
         m = mgr.deployFiles(user, revs, systems, new Date());
         assertNotNull(m);
-        assertEquals(m.get("success"), new Long(1));
-        assertEquals(m.get("override"), new Long(1));
+        assertEquals(m.get("success"), 1L);
+        assertEquals(m.get("override"), 1L);
     }
 
     public void testListManagedFilePaths() throws Exception {
@@ -1202,7 +1202,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         rev1 = ConfigTestUtils.createConfigRevision(g1f1,
                                 ConfigTestUtils.createConfigContent(),
                                 ConfigTestUtils.createConfigInfo(),
-                                new Long(rev1.getRevision().longValue() + 1));
+                rev1.getRevision().longValue() + 1);
         ConfigurationFactory.commit(gcc1);
 
         //add a duuplicate file to gcc2
@@ -1329,8 +1329,8 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
             ConfigRevision rev = ConfigTestUtils.createConfigRevision(fl,
                                                ConfigTestUtils.createConfigContent(),
                                                ConfigTestUtils.createConfigInfo(),
-                                               new Long(RandomUtils.nextInt(0,
-                                                       Integer.MAX_VALUE))
+                    (long) RandomUtils.nextInt(0,
+                            Integer.MAX_VALUE)
                                                );
             revisions.add(rev.getRevision());
             ConfigurationFactory.commit(sandbox);

@@ -216,7 +216,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(1, activationKey.getChannels().size());
         assertEquals(baseChannel2, activationKey.getChannels().iterator().next());
-        assertEquals(new Long(15), activationKey.getUsageLimit());
+        assertEquals(Long.valueOf(15), activationKey.getUsageLimit());
         assertFalse(activationKey.isUniversalDefault());
     }
 

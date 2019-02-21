@@ -337,7 +337,7 @@ public class ServerFactory extends HibernateFactory {
         String idstr = clientcert.getValueByName(ClientCertificate.SYSTEM_ID);
         String[] parts = StringUtils.split(idstr, '-');
         if (parts != null && parts.length > 0) {
-            Long sid = new Long(parts[1]);
+            Long sid = Long.valueOf(parts[1]);
             Server s = ServerFactory.lookupById(sid);
             if (s != null) {
                 clientcert.validate(s.getSecret());
@@ -750,7 +750,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static Server unsubscribeFromAllChannels(User user, Server server) {
         UpdateBaseChannelCommand command = new UpdateBaseChannelCommand(user,
-                server, new Long(-1));
+                server, -1L);
         ValidatorError error = command.store();
         if (error != null) {
             throw new ChannelSubscriptionException(error.getKey());
@@ -870,7 +870,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ServerSnapshot lookupSnapshotById(Integer id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("snapId", new Long(id));
+        params.put("snapId", Long.valueOf(id));
         return (ServerSnapshot) singleton.lookupObjectByNamedQuery(
                 "ServerSnapshot.findById", params);
     }

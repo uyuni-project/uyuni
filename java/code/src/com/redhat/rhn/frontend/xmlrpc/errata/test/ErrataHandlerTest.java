@@ -222,7 +222,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertEquals(errata.getSynopsis(), "synopsis-1");
         assertEquals(errata.getAdvisory(), "advisory-1-123");
         assertEquals(errata.getAdvisoryName(), "advisory-1");
-        assertEquals(errata.getAdvisoryRel(), new Long(123));
+        assertEquals(errata.getAdvisoryRel(), Long.valueOf(123));
         assertEquals(errata.getAdvisoryType(), "Security Advisory");
         assertEquals(errata.getProduct(), "product text");
         assertEquals(errata.getTopic(), "topic text");
@@ -233,11 +233,11 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         boolean foundBug1 = false, foundBug2 = false;
         for (Bug bug : (Set<Bug>) errata.getBugs()) {
-            if (bug.getId().equals(new Long(1)) &&
+            if (bug.getId().equals(1L) &&
                 bug.getSummary().equals("bug1 summary")) {
                 foundBug1 = true;
             }
-            if (bug.getId().equals(new Long(2)) &&
+            if (bug.getId().equals(2L) &&
                 bug.getSummary().equals("bug2 summary")) {
                 foundBug2 = true;
             }
@@ -311,7 +311,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         Bug bug1 = new PublishedBug();
-        bug1.setId(new Long(1001));
+        bug1.setId(1001L);
         bug1.setSummary("This is a test summary for bug1");
 
         userErrata.addBug(bug1);
@@ -331,13 +331,13 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         //map should contain an 'id' key only
         Set keys = bugs.keySet();
         assertEquals(1, keys.size());
-        assertEquals("This is a test summary for bug1", bugs.get(new Long(1001)));
+        assertEquals("This is a test summary for bug1", bugs.get(1001L));
 
         //two erratas, for user's and vendor's org, with the same advisoryName
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null, Optional.of(userErrata.getAdvisory()));
 
         Bug bug2 = new PublishedBug();
-        bug2.setId(new Long(1002));
+        bug2.setId(1002L);
         bug2.setSummary("This is a test summary for bug2");
 
         vendorErrata.addBug(bug2);
@@ -359,8 +359,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         //map should contain one only element
         assertEquals(2, bugs.size());
-        assertEquals("This is a test summary for bug1", bugs.get(new Long(1001)));
-        assertEquals("This is a test summary for bug2", bugs.get(new Long(1002)));
+        assertEquals("This is a test summary for bug1", bugs.get(1001L));
+        assertEquals("This is a test summary for bug2", bugs.get(1002L));
     }
 
     public void testListKeywords() throws Exception {

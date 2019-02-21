@@ -187,7 +187,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testServerLookup() {
-        assertNull(ServerFactory.lookupByIdAndOrg(new Long(-1234), user.getOrg()));
+        assertNull(ServerFactory.lookupByIdAndOrg(-1234L, user.getOrg()));
         assertNotNull(ServerFactory.lookupByIdAndOrg(server.getId(),
                 user.getOrg()));
     }
@@ -522,7 +522,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         populateServer(newS, owner, stype);
         createProvisionState(newS, "Test Description", "Test Label");
-        createServerInfo(newS, dateCreated, new Long(0));
+        createServerInfo(newS, dateCreated, 0L);
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr("AA:AA:BB:BB:CC:CC");
@@ -1221,7 +1221,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         proxiedProxy.getServerPaths().addAll(proxyPaths);
 
         assertEquals(1, proxyPaths.size());
-        assertEquals(new Long(0L), proxyPaths.iterator().next().getPosition());
+        assertEquals(Long.valueOf(0L), proxyPaths.iterator().next().getPosition());
         assertEquals(proxiedProxy, proxyPaths.iterator().next().getId().getServer());
         assertEquals(proxy, proxyPaths.iterator().next().getId().getProxyServer());
         assertEquals("proxy1", proxyPaths.iterator().next().getHostname());
@@ -1242,13 +1242,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(2, proxyPaths.size());
 
         ServerPath first = minion.getFirstServerPath().get();
-        assertEquals(new Long(0L), first.getPosition());
+        assertEquals(Long.valueOf(0L), first.getPosition());
         assertEquals(minion, first.getId().getServer());
         assertEquals(proxiedProxy, first.getId().getProxyServer());
         assertEquals("proxy2", first.getHostname());
 
         ServerPath second = serverPath1.stream().filter(p -> p.getPosition() == 1L).findFirst().get();
-        assertEquals(new Long(1L), second.getPosition());
+        assertEquals(Long.valueOf(1L), second.getPosition());
         assertEquals(minion, second.getId().getServer());
         assertEquals(proxy, second.getId().getProxyServer());
         assertEquals("proxy1", second.getHostname());

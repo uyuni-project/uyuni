@@ -184,7 +184,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         Date modified = new Date();
         Date lastmodified = new Date();
 
-        Long testid = new Long(1);
+        Long testid = 1L;
         String query = "KickstartInstallType.findById";
         KickstartInstallType installtype = (KickstartInstallType)
                                             TestUtils.lookupFromCacheById(testid, query);

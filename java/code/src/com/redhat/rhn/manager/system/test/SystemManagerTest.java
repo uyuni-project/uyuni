@@ -131,7 +131,7 @@ import java.util.Set;
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
-    public static final Long NUM_CPUS = new Long(5);
+    public static final Long NUM_CPUS = 5L;
     public static final int HOST_RAM_MB = 2048;
     public static final int HOST_SWAP_MB = 1024;
 
@@ -608,7 +608,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Server server = ServerFactoryTest.createTestServer(user);
-        Long ver = new Long(1);
+        Long ver = 1L;
         giveCapability(server.getId(), SystemManager.CAP_PACKAGES_VERIFY, ver);
         assertTrue(SystemManager.clientCapable(server.getId(),
                 SystemManager.CAP_PACKAGES_VERIFY));
@@ -721,7 +721,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(dr);
         assertEquals(dr.size(), 1);
         EssentialServerDto m = dr.get(0);
-        Long id = m.getId().longValue();
+        Long id = m.getId();
         assertTrue(s.getId().equals(id));
 
         // Create a new no-base-channel-server

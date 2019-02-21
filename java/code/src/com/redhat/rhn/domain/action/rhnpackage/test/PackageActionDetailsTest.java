@@ -40,11 +40,11 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
 
     public void testBeanMethods() throws Exception {
         PackageActionDetails pad = new PackageActionDetails();
-        Long id = new Long(456);
+        Long id = 456L;
         Date now = new Date();
         String foo = "foo";
 
-        Long testid = new Long(100);
+        Long testid = 100L;
         PackageArch arch = (PackageArch) TestUtils
             .lookupFromCacheById(testid, "PackageArch.findById");
 
@@ -83,8 +83,8 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         PackageActionResult par = new PackageActionResult();
         PackageActionResult par1 = new PackageActionResult();
         PackageActionResult par2 = new PackageActionResult();
-        par.setResultCode(new Long(20));
-        par1.setResultCode(new Long(40)); //so that none are equal
+        par.setResultCode(20L);
+        par1.setResultCode(40L); //so that none are equal
 
         assertNotNull(pad.getResults());
         pad.addResult(par);
@@ -113,8 +113,8 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
 
         Action parent = new Action();
         Action parent1 = new Action();
-        parent.setId(new Long(3));
-        parent1.setId(new Long(2));
+        parent.setId(3L);
+        parent1.setId(2L);
 
 
         assertTrue(pad.equals(pad1));
@@ -126,20 +126,20 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         pad1.setParentAction(parent1);
         assertFalse(pad.equals(pad1));
 
-        parent1.setId(new Long(3));
+        parent1.setId(3L);
         assertTrue(pad.equals(pad1));
 
         pad1.setParentAction(parent);
         assertTrue(pad.equals(pad1));
 
-        pad.setPackageId(new Long(2));
+        pad.setPackageId(2L);
         assertFalse(pad.equals(pad1));
         assertFalse(pad1.equals(pad));
 
-        pad1.setPackageId(new Long(3));
+        pad1.setPackageId(3L);
         assertFalse(pad.equals(pad1));
 
-        pad.setPackageId(new Long(3));
+        pad.setPackageId(3L);
         assertTrue(pad.equals(pad1));
 
     }
@@ -151,7 +151,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         PackageActionDetails pad = new PackageActionDetails();
 
         pad.setParameter("upgrade");
-        Long testid = new Long(100);
+        Long testid = 100L;
         pad.setArch((PackageArch) TestUtils
                 .lookupFromCacheById(testid, "PackageArch.findById"));
         pad.setPackageName(PackageNameTest.createTestPackageName());
@@ -161,7 +161,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
 
         PackageActionResult par = new PackageActionResult();
         par.setServer(ServerFactoryTest.createTestServer(user));
-        par.setResultCode(new Long(3));
+        par.setResultCode(3L);
         par.setCreated(new Date());
         par.setModified(new Date());
         pad.addResult(par);
@@ -176,7 +176,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         PackageActionDetails pad = new PackageActionDetails();
 
         pad.setParameter("upgrade");
-        Long testid = new Long(100);
+        Long testid = 100L;
         pad.setArch((PackageArch) TestUtils
                 .lookupFromCacheById(testid, "PackageArch.findById"));
         pad.setPackageName(PackageNameTest.createTestPackageName());
@@ -187,7 +187,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
 
         PackageActionResult par = new PackageActionResult();
         par.setServer(ServerFactoryTest.createTestServer(user));
-        par.setResultCode(new Long(3));
+        par.setResultCode(3L);
         par.setCreated(new Date());
         par.setModified(new Date());
         pad.addResult(par);

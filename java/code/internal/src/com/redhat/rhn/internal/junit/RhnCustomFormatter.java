@@ -111,9 +111,9 @@ public class RhnCustomFormatter implements JUnitResultFormatter {
 
     private void buildSummaryMsg(JUnitTest suite, StringBuffer sb) {
         Object [] args = {
-            new Long(suite.runCount()),
-            new Long(suite.failureCount()),
-            new Long(suite.errorCount()),
+            Long.valueOf(suite.runCount()),
+            Long.valueOf(suite.failureCount()),
+            Long.valueOf(suite.errorCount()),
             nf.format(suite.getRunTime() / RhnCustomFormatter.MS_PER_S)
         };
 
@@ -183,7 +183,7 @@ public class RhnCustomFormatter implements JUnitResultFormatter {
      * @param t the test
      */
     public void startTest(Test t) {
-        testStarts.put(t, new Long(System.currentTimeMillis()));
+        testStarts.put(t, Long.valueOf(System.currentTimeMillis()));
         failed.put(t, Boolean.FALSE);
     }
 

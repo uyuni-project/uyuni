@@ -69,7 +69,7 @@ public class SystemRemoteCommandAction extends RhnAction {
         public static final String LABEL = "lbl";
         public static final String TIMEOUT = "timeout";
         public static final Long DEFAULT_TIMEOUT = 600L;
-        public static final Long MAX_TIMEOUT = new Long(Integer.MAX_VALUE);
+        public static final Long MAX_TIMEOUT = (long) Integer.MAX_VALUE;
 
         public static final String[] MANDATORY_FIELDS = {
             FormData.UID,

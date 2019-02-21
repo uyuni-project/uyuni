@@ -77,8 +77,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testPublish() throws Exception {
         Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
-        e.addBug(ErrataManagerTest.createNewUnpublishedBug(new Long(42), "test bug 1"));
-        e.addBug(ErrataManagerTest.createNewUnpublishedBug(new Long(43), "test bug 2"));
+        e.addBug(ErrataManagerTest.createNewUnpublishedBug(42L, "test bug 1"));
+        e.addBug(ErrataManagerTest.createNewUnpublishedBug(43L, "test bug 2"));
         e.addPackage(PackageTest.createTestPackage(user.getOrg()));
         e.addKeyword("foo");
         e.addKeyword("bar");
@@ -124,8 +124,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testPublishToChannel()  throws Exception {
         Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
-        e.addBug(ErrataManagerTest.createNewUnpublishedBug(new Long(42), "test bug 1"));
-        e.addBug(ErrataManagerTest.createNewUnpublishedBug(new Long(43), "test bug 2"));
+        e.addBug(ErrataManagerTest.createNewUnpublishedBug(42L, "test bug 1"));
+        e.addBug(ErrataManagerTest.createNewUnpublishedBug(43L, "test bug 2"));
         e.addPackage(PackageTest.createTestPackage(user.getOrg()));
         e.addKeyword("foo");
         e.addKeyword("bar");
@@ -306,13 +306,13 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         //test unpublished
         Errata e = createTestUnpublishedErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
-        e.addBug(ErrataFactoryTest.createUnpublishedBug(new Long(123), "test bug"));
+        e.addBug(ErrataFactoryTest.createUnpublishedBug(123L, "test bug"));
         assertEquals(1, e.getBugs().size());
 
         //test published
         e = createTestPublishedErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
-        e.addBug(ErrataFactoryTest.createPublishedBug(new Long(123), "test bug"));
+        e.addBug(ErrataFactoryTest.createPublishedBug(123L, "test bug"));
         assertEquals(1, e.getBugs().size());
     }
 
@@ -436,7 +436,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setUpdateDate(new Date());
         e.setIssueDate(new Date());
         e.setAdvisoryName(name);
-        e.setAdvisoryRel(new Long(2));
+        e.setAdvisoryRel(2L);
         e.setLocallyModified(Boolean.FALSE);
         e.addKeyword("keyword");
         Package testPackage = PackageTest.createTestPackage(org);

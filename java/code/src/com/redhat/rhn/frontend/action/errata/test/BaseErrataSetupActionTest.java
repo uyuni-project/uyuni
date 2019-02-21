@@ -54,7 +54,7 @@ public class BaseErrataSetupActionTest extends RhnBaseTestCase {
                 .createTestPublishedErrata(user.getOrg().getId());
 
         //test lookup exception
-        request.setupAddParameter("eid", new Long(-92861).toString());
+        request.setupAddParameter("eid", Long.valueOf(-92861).toString());
         try {
             action.execute(mapping, form, request, response);
             fail();

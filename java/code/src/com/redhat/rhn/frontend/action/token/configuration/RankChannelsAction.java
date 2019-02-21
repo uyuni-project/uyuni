@@ -116,7 +116,7 @@ public class RankChannelsAction  extends RhnAction {
         if (StringUtils.isNotBlank(rankedValues)) {
             String [] values = rankedValues.split(",");
             for (int i = 0; i < values.length; i++) {
-                channels.add(new Long(values[i]));
+                channels.add(Long.valueOf(values[i]));
             }
         }
         return channels;

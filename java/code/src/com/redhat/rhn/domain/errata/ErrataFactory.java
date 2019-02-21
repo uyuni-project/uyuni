@@ -134,7 +134,7 @@ public class ErrataFactory extends HibernateFactory {
         Long eid = null;
         List retval = new LinkedList();
         try {
-            eid = new Long(Long.parseLong(identifier));
+            eid = Long.parseLong(identifier);
         }
         catch (NumberFormatException e) {
             eid = null;

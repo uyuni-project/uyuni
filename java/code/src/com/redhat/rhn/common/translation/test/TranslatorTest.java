@@ -57,7 +57,7 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertEquals(1, l);
 
         Long bl = Translator.bigDecimal2LongObj(bd);
-        assertEquals(new Long(1), bl);
+        assertEquals(Long.valueOf(1), bl);
     }
 
     public void testDouble2SomethingElse() {
@@ -67,7 +67,7 @@ public class TranslatorTest extends RhnBaseTestCase {
     }
 
     public void testLong2SomethingElse() throws Exception {
-        Long bl = new Long(10);
+        Long bl = 10L;
         long ll = Translator.long2Objlong(bl);
         assertEquals(10, ll);
 

@@ -229,7 +229,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveUsers(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfActiveUsers")
-                .setLong("org_id", orgIn.getId().longValue())
+                .setLong("org_id", orgIn.getId())
                 .uniqueResult();
 
     }
@@ -242,7 +242,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveSystems(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfSystems")
-                .setLong("org_id", orgIn.getId().longValue())
+                .setLong("org_id", orgIn.getId())
                 .uniqueResult();
     }
 
@@ -254,7 +254,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getServerGroups(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfServerGroups")
-                .setLong("org_id", orgIn.getId().longValue())
+                .setLong("org_id", orgIn.getId())
                 .uniqueResult();
     }
 
@@ -266,7 +266,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getConfigChannels(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfConfigChannels")
-                .setLong("org_id", orgIn.getId().longValue())
+                .setLong("org_id", orgIn.getId())
                 .uniqueResult();
     }
 
@@ -282,7 +282,7 @@ public class OrgFactory extends HibernateFactory {
         Map<String, Long> params = new HashMap<String, Long>();
         params.put("org_id", orgIn.getId());
         DataList keys = DataList.getDataList(m, params, Collections.EMPTY_MAP);
-        return new Long(keys.size());
+        return (long) keys.size();
     }
 
     /**
@@ -296,7 +296,7 @@ public class OrgFactory extends HibernateFactory {
         Map<String, Long> params = new HashMap<String, Long>();
         params.put("org_id", orgIn.getId());
         DataList kickstarts = DataList.getDataList(m, params, Collections.EMPTY_MAP);
-        return new Long(kickstarts.size());
+        return (long) kickstarts.size();
     }
     /**
      * Lookup a Template String by label
@@ -325,7 +325,7 @@ public class OrgFactory extends HibernateFactory {
      * @return Default organization
      */
     public static Org getSatelliteOrg() {
-        return lookupById(new Long(1));
+        return lookupById(1L);
     }
 
     /**

@@ -360,7 +360,7 @@ public class OrgHandler extends BaseHandler {
         List<Server> servers = new LinkedList<Server>();
 
         for (Integer sid : sids) {
-            Long serverId = new Long(sid.longValue());
+            Long serverId = sid.longValue();
             Server server = null;
             try {
                 server = ServerFactory.lookupById(serverId);
@@ -447,7 +447,7 @@ public class OrgHandler extends BaseHandler {
         if (limit < 0) {
             throw new InvalidParameterException("Limit value must be non-negative.");
         }
-        org.getOrgConfig().setCrashFileSizelimit(new Long(limit.longValue()));
+        org.getOrgConfig().setCrashFileSizelimit(limit.longValue());
 
         return 1;
     }
@@ -621,8 +621,8 @@ public class OrgHandler extends BaseHandler {
             orgConfig.setScapfileUploadEnabled(enabled);
         }
         if (newSettings.containsKey("size_limit")) {
-            Long sizeLimit = new Long(((Integer)
-                newSettings.get("size_limit")).longValue());
+            Long sizeLimit = ((Integer)
+                    newSettings.get("size_limit")).longValue();
             orgConfig.setScapFileSizelimit(sizeLimit);
         }
         return 1;
@@ -655,7 +655,7 @@ public class OrgHandler extends BaseHandler {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("enabled", retentionPeriod != null);
         result.put("retention_period",
-                (retentionPeriod != null) ? retentionPeriod : new Long(0));
+                (retentionPeriod != null) ? retentionPeriod : Long.valueOf(0));
         return result;
     }
 
@@ -692,15 +692,15 @@ public class OrgHandler extends BaseHandler {
         OrgConfig orgConfig = verifyOrgExists(orgId).getOrgConfig();
         if (newSettings.containsKey("enabled")) {
             if ((Boolean) newSettings.get("enabled")) {
-                orgConfig.setScapRetentionPeriodDays(new Long(90));
+                orgConfig.setScapRetentionPeriodDays(90L);
             }
             else {
                 orgConfig.setScapRetentionPeriodDays(null);
             }
         }
         if (newSettings.containsKey("retention_period")) {
-            Long retentionPeriod = new Long(((Integer)
-                newSettings.get("retention_period")).longValue());
+            Long retentionPeriod = ((Integer)
+                    newSettings.get("retention_period")).longValue();
             if (orgConfig.getScapRetentionPeriodDays() != null) {
                 orgConfig.setScapRetentionPeriodDays(retentionPeriod);
             }

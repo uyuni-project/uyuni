@@ -296,7 +296,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
-        sa.setRemainingTries(new Long(0));
+        sa.setRemainingTries(0L);
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleFailedServerActions(a1, 5L);
@@ -315,7 +315,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
-        sa.setRemainingTries(new Long(0));
+        sa.setRemainingTries(0L);
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleAllServerActions(a1, 5L);
@@ -418,7 +418,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
             sad.setGroupname("AFTestTestGroup");
             String script = "#!/bin/csh\nls -al";
             sad.setScript(script.getBytes("UTF-8"));
-            sad.setTimeout(new Long(9999));
+            sad.setTimeout(9999L);
             sad.setParentAction(newA);
             ((ScriptRunAction) newA).setScriptActionDetails(sad);
         }
@@ -442,7 +442,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
             d.setParameter(parameter);
 
             //create packageArch
-            Long testid = new Long(100);
+            Long testid = 100L;
             String query = "PackageArch.findById";
             PackageArch arch = (PackageArch) TestUtils.lookupFromCacheById(testid, query);
             d.setArch(arch);
@@ -470,7 +470,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         else if (type.equals(ActionFactory.TYPE_DAEMON_CONFIG)) {
             DaemonConfigDetails dcd = new DaemonConfigDetails();
             dcd.setRestart("Y");
-            dcd.setInterval(new Long(1440));
+            dcd.setInterval(1440L);
             dcd.setDaemonConfigCreated(new Date());
             dcd.setDaemonConfigModified(new Date());
             dcd.setParentAction(newA);
@@ -501,8 +501,8 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         newA.setActionType(type);
         newA.setOrg(usr.getOrg());
         newA.setEarliestAction(new Date());
-        newA.setVersion(new Long(0));
-        newA.setArchived(new Long(0));
+        newA.setVersion(0L);
+        newA.setArchived(0L);
         newA.setCreated(new Date());
         newA.setModified(new Date());
         ActionFactory.save(newA);
@@ -520,7 +520,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         throws Exception {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
-        sa.setRemainingTries(new Long(10));
+        sa.setRemainingTries(10L);
         sa.setCreated(new Date());
         sa.setModified(new Date());
         sa.setServer(newS);

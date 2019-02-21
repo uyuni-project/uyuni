@@ -376,7 +376,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Date earliestAction = new Date();
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
-                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+                "root", "root", 10L, "#!/bin/csh\necho hello");
         Set<Action> scriptActions = ActionChainManager.scheduleScriptRuns(user,
                 Arrays.asList(minion1.getId(), minion2.getId(), server1.getId()),
                 "script", sad, earliestAction, actionChain);

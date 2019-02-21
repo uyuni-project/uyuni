@@ -63,7 +63,7 @@ public class KickstartSessionCreateCommand {
         this.ksession.setKickstartMode(KickstartSession.MODE_DEFAULT_SESSION);
         this.ksession.setOrg(owner);
         this.ksession.setDeployConfigs(Boolean.FALSE);
-        this.ksession.setPackageFetchCount(new Long(0));
+        this.ksession.setPackageFetchCount(0L);
         this.ksession.setKsdata(ksdata);
         this.ksession.setVirtualizationType(ksdata
             .getKickstartDefaults().getVirtualizationType());

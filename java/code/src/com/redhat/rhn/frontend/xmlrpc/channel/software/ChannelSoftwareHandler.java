@@ -1974,7 +1974,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     private Channel lookupChannelById(User user, Long id)
         throws NoSuchChannelException {
 
-        Channel channel = ChannelManager.lookupByIdAndUser(new Long(id), user);
+        Channel channel = ChannelManager.lookupByIdAndUser(id, user);
         if (channel == null) {
             throw new NoSuchChannelException(id);
         }
@@ -2025,7 +2025,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     @Deprecated
     public int subscribeSystem(User loggedInUser, Integer sid, List<String> labels) {
-        Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                 loggedInUser);
 
 
