@@ -4,5 +4,6 @@ module.exports = {
     'guests/edit/guests-edit.renderer.js',
     'guests/create/guests-create.renderer.js',
     'guests/console/guests-console.renderer.js',
+    'pools/list/pools-list.renderer.js',
   ],
 };
