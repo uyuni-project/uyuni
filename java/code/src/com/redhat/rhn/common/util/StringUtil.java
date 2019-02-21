@@ -15,6 +15,15 @@
 
 package com.redhat.rhn.common.util;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.validator.ValidatorException;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.xml.utils.XMLChar;
+import org.stringtree.json.JSONReader;
+import org.stringtree.json.JSONWriter;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -31,16 +40,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.xml.utils.XMLChar;
-import org.stringtree.json.JSONReader;
-import org.stringtree.json.JSONWriter;
-
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.validator.ValidatorException;
 
 /**
  * A simple class that assists with String manipulation
@@ -439,8 +438,8 @@ public class StringUtil {
 
         // end characters
         Set<Character> endChars = new HashSet<Character>();
-        endChars.add(new Character('.'));
-        endChars.add(new Character(','));
+        endChars.add('.');
+        endChars.add(',');
 
         if (space == -1 || (space > line && line != -1)) {
             end = line;
@@ -455,12 +454,12 @@ public class StringUtil {
 
         // dot before the end
         if (end > 0 && (endChars.contains(
-                new Character(entireToken.charAt(end - 1))))) {
+                entireToken.charAt(end - 1)))) {
             end--;
         }
         // dot at the end
         else if (endChars.contains(
-                new Character(entireToken.charAt(entireToken.length() - 1)))) {
+                entireToken.charAt(entireToken.length() - 1))) {
             end = entireToken.length() - 1;
         }
 
