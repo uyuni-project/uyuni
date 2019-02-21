@@ -110,8 +110,8 @@ Feature: Adding channels
 
   Scenario: Add Ubuntu AMD64 base channel
     When I follow "Software"
-    And I follow "Manage Software Channels" in the left menu
-    And I follow "Overview" in the left menu
+    And I follow "Manage" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Create Channel"
     And I enter "Test-Channel-Deb-AMD64" as "Channel Name"
     And I enter "test-channel-deb-amd64" as "Channel Label"

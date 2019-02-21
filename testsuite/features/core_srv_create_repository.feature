@@ -100,8 +100,8 @@ Feature: Add a repository to a channel
   Scenario: Add a test repository for Ubuntu
     Given I am authorized as "testing" with password "testing"
     When I follow "Home" in the left menu
-    And I follow "Channels"
-    And I follow "Manage Software Channels" in the left menu
+    And I follow "Channel List"
+    And I follow "Manage" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Create Repository"
     And I enter "Test-Repository-Deb" as "label"
@@ -114,9 +114,9 @@ Feature: Add a repository to a channel
   Scenario: Add the Ubuntu repository to the AMD64 channel
     Given I am authorized as "testing" with password "testing"
     When I follow "Home" in the left menu
-    And I follow "Channels"
-    And I follow "Manage Software Channels" in the left menu
-    And I follow "Overview" in the left menu
+    And I follow "Channel List"
+    And I follow "Manage" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
     And I select the "Test-Repository-Deb" repo
@@ -127,9 +127,10 @@ Feature: Add a repository to a channel
   Scenario: Synchronize the Ubuntu repository in the AMD64 channel
     Given I am authorized as "testing" with password "testing"
     When I follow "Home" in the left menu
-    And I follow "Channels"
-    And I follow "Manage Software Channels" in the left menu
-    And I follow "Overview" in the left menu
+    And I follow "Channel List"
+    And I follow "Manage" in the left menu
+    And I follow "Repositories" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
@@ -169,7 +170,7 @@ Feature: Add a repository to a channel
   Scenario: Reposync handles wrong encoding on DEB attributes
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
-    And I follow "Channels"
+    And I follow "Channel List"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Packages" in the content area
     Then I should see a "blackhole-dummy" text
