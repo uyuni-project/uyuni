@@ -15,8 +15,6 @@
 package com.redhat.rhn.domain.errata.test;
 
 import static java.util.Optional.empty;
-import static java.util.Optional.of;
-
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;

@@ -54,7 +54,6 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import java.net.InetAddress;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Base64;

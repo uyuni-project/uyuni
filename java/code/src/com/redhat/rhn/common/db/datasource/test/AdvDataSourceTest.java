@@ -29,8 +29,6 @@ import java.util.Random;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;

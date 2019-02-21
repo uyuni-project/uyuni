@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.configchannel.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
