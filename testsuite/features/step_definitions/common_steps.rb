@@ -57,6 +57,7 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
     And I wait until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
+    And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
     And I wait at most #{final_timeout} seconds until the event is completed, refreshing the page
   )
