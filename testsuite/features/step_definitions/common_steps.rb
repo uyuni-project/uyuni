@@ -894,3 +894,22 @@ And(/^I check for failed events on history event page$/) do
   count_failures = failings.length
   raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
+
+And(/^I remove package "([^"]*)" from highstate$/) do |package|
+  steps %(
+    When I follow "States" in the content area
+    And I follow "Packages" in the content area
+    Then I should see a "Package States" text
+  )
+  event_table_xpath = "//div[@class='table-responsive']/table/tbody"
+  rows = find(:xpath, event_table_xpath)
+  rows.all('tr').each do |tr|
+    next unless tr.text.include?(package)
+    puts tr.text
+    tr.find('#sles-release-pkg-state').select('Removed')
+    steps %(
+      Then I click on "Save"
+      And I click on "Apply"
+    )
+  end
+end
