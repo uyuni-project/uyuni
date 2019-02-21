@@ -245,9 +245,9 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     public void testGetInteger() throws Exception {
-        assertEquals(new Integer(-10), c.getInteger("prefix.int_minus10"));
-        assertEquals(new Integer(0), c.getInteger("prefix.int_zero"));
-        assertEquals(new Integer(100), c.getInteger("prefix.int_100"));
+        assertEquals(Integer.valueOf(-10), c.getInteger("prefix.int_minus10"));
+        assertEquals(Integer.valueOf(0), c.getInteger("prefix.int_zero"));
+        assertEquals(Integer.valueOf(100), c.getInteger("prefix.int_100"));
         assertNull(c.getInteger(null));
         assertEquals(c.getInt("prefix.int_100"),
                 c.getInteger("prefix.int_100").intValue());

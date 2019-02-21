@@ -171,7 +171,7 @@ public class OrgFactory extends HibernateFactory {
         // password is currently required as an input to the create_new_org
         // stored proc; however, it is not used by the proc.
         inParams.put("password", org.getName());
-        outParams.put("org_id", new Integer(Types.NUMERIC));
+        outParams.put("org_id", Types.NUMERIC);
 
         Map<String, Object> row = m.execute(inParams, outParams);
         // Get the out params

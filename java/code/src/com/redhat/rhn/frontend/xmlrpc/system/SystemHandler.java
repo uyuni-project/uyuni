@@ -852,7 +852,7 @@ public class SystemHandler extends BaseHandler {
         ret.put("id", channel.getId());
         ret.put("name", channel.getName());
         ret.put("label", channel.getLabel());
-        ret.put("current_base", currentBase ? new Integer(1) : new Integer(0));
+        ret.put("current_base", currentBase ? Integer.valueOf(1) : Integer.valueOf(0));
         return ret;
     }
 
@@ -2532,7 +2532,7 @@ public class SystemHandler extends BaseHandler {
     public int provisionVirtualGuest(User loggedInUser, Integer sid, String guestName,
             String profileName) {
         return provisionVirtualGuest(loggedInUser, sid, guestName, profileName,
-                new Integer(512), new Integer(1), new Integer(3), "");
+                512, 1, 3, "");
     }
 
     /**
@@ -4295,7 +4295,7 @@ public class SystemHandler extends BaseHandler {
             throw new TaskomaticApiException(e.getMessage());
         }
 
-        return new Integer(action.getId().intValue());
+        return action.getId().intValue();
     }
 
     /**
@@ -5526,7 +5526,7 @@ public class SystemHandler extends BaseHandler {
         Map<String, String> context = new HashMap<String, String>();
         //convert from mega to kilo bytes
         context.put(VirtualizationSetMemoryAction.SET_MEMORY_STRING,
-                new Integer(memory * 1024).toString());
+                Integer.valueOf(memory * 1024).toString());
 
 
         VirtualizationActionCommand cmd = new VirtualizationActionCommand(loggedInUser,

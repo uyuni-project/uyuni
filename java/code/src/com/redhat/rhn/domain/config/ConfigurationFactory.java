@@ -145,7 +145,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("label_in", channel.getLabel());
         inParams.put("description_in", channel.getDescription());
         //Outparam
-        outParams.put("channelId", new Integer(Types.NUMERIC));
+        outParams.put("channelId", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);
 
@@ -188,7 +188,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("config_channel_id_in", file.getConfigChannel().getId());
         inParams.put("name_in", file.getConfigFileName().getPath());
         // Outparam
-        outParams.put("configFileId", new Integer(Types.NUMERIC));
+        outParams.put("configFileId", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);
         return (Long)result.get("configFileId");
@@ -243,7 +243,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("config_file_type_id", revision.getConfigFileType().getId());
 
         // Outparam
-        outParams.put("configRevisionId", new Integer(Types.NUMERIC));
+        outParams.put("configRevisionId", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);
 
@@ -612,7 +612,7 @@ public class ConfigurationFactory extends HibernateFactory {
             inParams.put("symlink_target_file_in", null);
         }
 
-        outParams.put("info_id", new Integer(Types.NUMERIC));
+        outParams.put("info_id", Types.NUMERIC);
 
         Map out = m.execute(inParams, outParams);
 
@@ -657,7 +657,7 @@ public class ConfigurationFactory extends HibernateFactory {
         Map outParams = new HashMap();
 
         inParams.put("name_in", path);
-        outParams.put("name_id", new Integer(Types.NUMERIC));
+        outParams.put("name_id", Types.NUMERIC);
 
         Map out = m.execute(inParams, outParams);
 

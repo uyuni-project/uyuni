@@ -152,7 +152,7 @@ public class EnableConfirmSetupAction extends RhnListAction {
         }
 
         msg.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage(messageKey.toString(), new Integer(count)));
+                new ActionMessage(messageKey.toString(), count));
         strutsDelegate.saveMessages(request, msg);
 
         if (errors.isEmpty()) {

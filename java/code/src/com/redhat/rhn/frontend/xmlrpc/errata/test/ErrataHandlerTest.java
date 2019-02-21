@@ -165,7 +165,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Map<String, Object> details = new HashMap<String, Object>();
-        details.put("advisory_release", new Integer(10000));
+        details.put("advisory_release", 10000);
         try {
             handler.setDetails(admin, errata.getAdvisory(), details);
             fail("invalid advisory of 10000 accepted");
@@ -735,7 +735,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
     private void populateErrataInfo(Map errataInfo) {
         errataInfo.put("synopsis", TestUtils.randomString());
-        errataInfo.put("advisory_release", new Integer(2));
+        errataInfo.put("advisory_release", 2);
         errataInfo.put("advisory_type", "Bug Fix Advisory");
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
@@ -781,7 +781,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         String advisoryName = TestUtils.randomString();
         populateErrataInfo(errataInfo);
         errataInfo.put("advisory_name", advisoryName);
-        errataInfo.put("advisory_release", new Integer(10000));
+        errataInfo.put("advisory_release", 10000);
 
         ArrayList packages = new ArrayList();
         ArrayList bugs = new ArrayList();
@@ -808,7 +808,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         String advisoryName = TestUtils.randomString();
         populateErrataInfo(errataInfo);
         errataInfo.put("advisory_name", advisoryName);
-        errataInfo.put("advisory_release", new Integer(9999));
+        errataInfo.put("advisory_release", 9999);
 
         ArrayList packages = new ArrayList();
         ArrayList bugs = new ArrayList();

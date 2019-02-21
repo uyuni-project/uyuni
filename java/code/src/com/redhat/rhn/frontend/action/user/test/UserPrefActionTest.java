@@ -35,8 +35,8 @@ import org.apache.struts.action.ActionMapping;
  */
 public class UserPrefActionTest extends RhnBaseTestCase {
 
-    private static final Integer PAGE_SIZE = new Integer(50);
-    private static final Integer PREF_LOC = new Integer(7018);
+    private static final Integer PAGE_SIZE = 50;
+    private static final Integer PREF_LOC = 7018;
 
     /**
      *

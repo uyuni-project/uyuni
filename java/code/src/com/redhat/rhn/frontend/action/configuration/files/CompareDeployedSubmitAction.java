@@ -147,7 +147,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
             //get how many servers this action was created for.
             int successes = action.getServerActions().size();
             String number = LocalizationService.getInstance()
-                    .formatNumber(new Integer(successes));
+                    .formatNumber(successes);
 
             //build the url for the action we have created.
             String url = "/rhn/schedule/ActionDetails.do?aid=" + action.getId();

@@ -67,6 +67,6 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
 
     private void setupExpectations(RhnMockDynaActionForm form, User user) {
         form.addExpectedProperty("uid", user.getId());
-        form.addExpectedProperty("pagesize", new Integer(user.getPageSize()));
+        form.addExpectedProperty("pagesize", user.getPageSize());
     }
 }

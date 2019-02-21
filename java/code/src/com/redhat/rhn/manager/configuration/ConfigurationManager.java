@@ -2134,7 +2134,7 @@ public class ConfigurationManager extends BaseManager {
         inParams.put(name, oid);
 
         Map outParams = new HashMap();
-        outParams.put("access", new Integer(Types.NUMERIC));
+        outParams.put("access", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);
         int access = ((Long)result.get("access")).intValue();

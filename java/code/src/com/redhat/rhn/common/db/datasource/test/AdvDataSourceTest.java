@@ -65,7 +65,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         SelectMode m = ModeFactory.getMode("test_queries", "find_in_table");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("foobar", foobar);
-        params.put("id", new Integer(id));
+        params.put("id", id);
         DataResult<AdvDataSourceDto> dr = m.execute(params);
         assertEquals(size, dr.size());
         if (size > 0) {
@@ -78,7 +78,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         WriteMode m = ModeFactory.getWriteMode("test_queries", "insert_into_table");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("foobar", foobar);
-        params.put("id", Integer.valueOf(id));
+        params.put("id", id);
         params.put("test_column", "test-" + TestUtils.randomString());
         params.put("pin", random.nextInt(100));
         int res = m.executeUpdate(params);
@@ -195,7 +195,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         WriteMode m = ModeFactory.getWriteMode("test_queries", "update_in_table");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("foobar", "after_update");
-        params.put("id", new Integer(4));
+        params.put("id", 4);
         int res = m.executeUpdate(params);
         assertEquals(1, res);
         // Close our Session so we test to make sure it
@@ -214,7 +214,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         WriteMode m = ModeFactory.getWriteMode("test_queries", "update_in_table");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("foobar", "after_update_multi");
-        params.put("id", new Integer(5));
+        params.put("id", 5);
         int res = m.executeUpdate(params);
         m = ModeFactory.getWriteMode("test_queries", "update_in_table");
         // Call it 5 times to make sure we can
@@ -250,7 +250,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         Map inParams = new HashMap();
         Map outParams = new HashMap();
         inParams.put("label", "noarch");
-        outParams.put("arch", new Integer(Types.NUMERIC));
+        outParams.put("arch", Types.NUMERIC);
         Map row = m.execute(inParams, outParams);
         assertNotNull(row);
         assertEquals(100, ((Long)row.get("arch")).intValue());
@@ -263,7 +263,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         Map inParams = new HashMap();
         Map outParams = new HashMap();
         inParams.put("label", "noarch");
-        outParams.put("arch", new Integer(Types.NUMERIC));
+        outParams.put("arch", Types.NUMERIC);
         Map row = m.execute(inParams, outParams);
         assertNotNull(row);
         assertEquals(100, ((Long)row.get("arch")).intValue());

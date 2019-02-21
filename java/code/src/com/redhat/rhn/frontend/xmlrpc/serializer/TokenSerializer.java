@@ -105,7 +105,7 @@ public class TokenSerializer extends RhnXmlRpcCustomSerializer {
 
        List<Integer> serverGroupIds = new LinkedList<Integer>();
        for (ServerGroup group : token.getServerGroups()) {
-           serverGroupIds.add(new Integer(group.getId().intValue()));
+           serverGroupIds.add(group.getId().intValue());
        }
 
        List<String> packageNames = new LinkedList<String>();
@@ -123,9 +123,9 @@ public class TokenSerializer extends RhnXmlRpcCustomSerializer {
        }
        helper.add("description", token.getNote());
 
-       Integer usageLimit = new Integer(0);
+       Integer usageLimit = 0;
        if (token.getUsageLimit() != null) {
-           usageLimit = new Integer(token.getUsageLimit().intValue());
+           usageLimit = token.getUsageLimit().intValue();
        }
        helper.add("usage_limit", usageLimit);
 

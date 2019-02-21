@@ -74,7 +74,7 @@ public class ChannelTreeNodeSerializer extends RhnXmlRpcCustomSerializer {
             // it is possible for the current query to result in the count
             // being null; however, in this scenario, we still want to serialize the
             // result as 0.
-            helper.add("systems", new Integer(0));
+            helper.add("systems", 0);
         }
         else {
             helper.add("systems", ctn.getSystemCount());

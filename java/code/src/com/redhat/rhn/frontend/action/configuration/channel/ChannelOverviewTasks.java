@@ -206,7 +206,7 @@ public class ChannelOverviewTasks extends RhnAction {
     private void makeMessage(int successes, HttpServletRequest request) {
         if (successes > 0) {
             String number = LocalizationService.getInstance()
-                    .formatNumber(new Integer(successes));
+                    .formatNumber(successes);
 
             //create the success message
             ActionMessages msg = new ActionMessages();

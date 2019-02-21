@@ -301,7 +301,7 @@ public class ServerFactory extends HibernateFactory {
         inParams.put("server_id", sid);
         inParams.put("server_group_id", sgid);
         // Outparam
-        outParams.put("retval", new Integer(Types.NUMERIC));
+        outParams.put("retval", Types.NUMERIC);
 
         m.execute(inParams, outParams);
     }
@@ -320,7 +320,7 @@ public class ServerFactory extends HibernateFactory {
         inParams.put("server_id", sid);
         inParams.put("server_group_id", sgid);
         // Outparam
-        // outParams.put("retval", new Integer(Types.NUMERIC));
+        // outParams.put("retval", Integer.valueOf(Types.NUMERIC));
 
         m.execute(inParams, outParams);
     }

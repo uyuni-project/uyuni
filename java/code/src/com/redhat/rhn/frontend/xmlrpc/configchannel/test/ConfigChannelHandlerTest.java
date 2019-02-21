@@ -496,7 +496,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(
                 "Show differences between profiled config files and deployed config files",
                 ((ScheduledAction)dr.get(0)).getTypeName());
-        assertEquals(actionId, new Integer(
+        assertEquals(actionId, Integer.valueOf(
                 ((ScheduledAction)dr.get(0)).getId().intValue()));
     }
 

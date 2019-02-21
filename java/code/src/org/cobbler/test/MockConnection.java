@@ -287,11 +287,11 @@ public class MockConnection extends CobblerConnection {
         profileMap.put(key, profile);
 
         profile.put("virt_bridge", "xenb0");
-        profile.put("virt_cpus", Integer.valueOf(1));
+        profile.put("virt_cpus", 1);
         profile.put("virt_type", KickstartVirtualizationType.XEN_FULLYVIRT);
         profile.put("virt_path", "/tmp/foo");
-        profile.put("virt_file_size", Integer.valueOf(8));
-        profile.put("virt_ram", Integer.valueOf(512));
+        profile.put("virt_file_size", 8);
+        profile.put("virt_ram", 512);
         profile.put("kernel_options", new HashMap());
         profile.put("kernel_options_post", new HashMap());
         profile.put("ks_meta", new HashMap());
@@ -329,11 +329,11 @@ public class MockConnection extends CobblerConnection {
         distroMap.put(key, distro);
 
         distro.put("virt_bridge", "xenb0");
-        distro.put("virt_cpus", Integer.valueOf(1));
+        distro.put("virt_cpus", 1);
         distro.put("virt_type", KickstartVirtualizationType.XEN_FULLYVIRT);
         distro.put("virt_path", "/tmp/foo");
-        distro.put("virt_file_size", Integer.valueOf(8));
-        distro.put("virt_ram", Integer.valueOf(512));
+        distro.put("virt_file_size", 8);
+        distro.put("virt_ram", 512);
         distro.put("kernel_options", new HashMap());
         distro.put("kernel_options_post", new HashMap());
         distro.put("ks_meta", new HashMap());

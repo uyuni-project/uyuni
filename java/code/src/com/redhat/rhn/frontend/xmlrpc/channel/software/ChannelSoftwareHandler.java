@@ -2047,14 +2047,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
                 throw new MultipleBaseChannelException(base.getLabel(), label);
             }
             else {
-                childChannelIds.add(new Integer(channel.getId().intValue()));
+                childChannelIds.add(channel.getId().intValue());
             }
         }
         SystemHandler sysHandler = new SystemHandler();
         if (base != null) {
 
             sysHandler.setBaseChannel(loggedInUser, sid,
-                    new Integer(base.getId().intValue()));
+                    base.getId().intValue());
         }
         sysHandler.setChildChannels(loggedInUser, sid, childChannelIds);
 

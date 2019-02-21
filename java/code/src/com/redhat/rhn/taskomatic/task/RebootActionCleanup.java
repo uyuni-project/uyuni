@@ -87,7 +87,7 @@ public class RebootActionCleanup extends RhnJavaJob {
 
         Map<String, Integer> params = new HashMap<String, Integer>();
         // 6 hours
-        params.put("threshold", new Integer(6));
+        params.put("threshold", 6);
         return m.execute(params);
     }
 

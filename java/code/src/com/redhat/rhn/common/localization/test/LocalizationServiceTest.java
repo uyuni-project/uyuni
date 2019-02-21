@@ -227,7 +227,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
 
         assertTrue(number.indexOf('.') > 0);
 
-        number = ls.formatNumber(new Integer(10), Locale.ENGLISH, 2);
+        number = ls.formatNumber(10, Locale.ENGLISH, 2);
         assertNotNull(number);
         assertEquals(3, number.length() - number.indexOf("."));
     }

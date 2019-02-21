@@ -90,7 +90,7 @@ public class SummaryPopulation extends RhnJavaJob {
         if (log.isDebugEnabled()) {
             log.debug("Server checkin threshold for AWOL servers: " + checkin);
         }
-        params.put("checkin_threshold", new Integer(checkin));
+        params.put("checkin_threshold", checkin);
         return m.execute(params);
     }
 

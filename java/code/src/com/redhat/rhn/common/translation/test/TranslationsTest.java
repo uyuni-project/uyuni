@@ -58,7 +58,7 @@ public class TranslationsTest extends RhnBaseTestCase {
 
     public void testPrivateTranslator() throws Exception {
         try {
-            TestTranslations.convert(new Integer(1), java.lang.Long.class);
+            TestTranslations.convert(1, java.lang.Long.class);
             fail("Translation should have failed");
         }
         catch (TranslationException e) {
@@ -68,14 +68,14 @@ public class TranslationsTest extends RhnBaseTestCase {
 
     public void testListToString() {
         List list = new ArrayList();
-        list.add(new Integer(10));
+        list.add(10);
         list.add("list");
         String s = (String) TestTranslations.convert(list, String.class);
         assertNotNull(s);
         assertEquals("[10, list]", s);
 
         list = new LinkedList();
-        list.add(new Integer(20));
+        list.add(20);
         list.add("list");
         s = (String) TestTranslations.convert(list, String.class);
         assertNotNull(s);

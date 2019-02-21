@@ -73,7 +73,7 @@ public class Translator extends Translations {
      * @return Returns the boolean representation of i
      */
     public static boolean int2Boolean(Integer i) {
-        return (i != null) && i.equals(new Integer(1));
+        return (i != null) && i.equals(1);
     }
 
     /**
@@ -111,7 +111,7 @@ public class Translator extends Translations {
      * @return Integer version of the Long.
      */
     public static Integer long2Integer(Long l) {
-        return (l == null) ? null : new Integer(l.intValue());
+        return (l == null) ? null : l.intValue();
     }
 
     /**
@@ -140,7 +140,7 @@ public class Translator extends Translations {
      */
     public static Integer bigDecimal2IntObject(BigDecimal bd)
         throws Exception {
-        return (bd == null) ? new Integer(0) : new Integer(bd.intValue());
+        return (bd == null) ? Integer.valueOf(0) : Integer.valueOf(bd.intValue());
     }
 
     /** Convert from BigDecimal to long

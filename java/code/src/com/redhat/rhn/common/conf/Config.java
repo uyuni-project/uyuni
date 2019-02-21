@@ -259,7 +259,7 @@ public class Config {
         if (val == null) {
             return defaultValue;
         }
-        return val.intValue();
+        return val;
     }
 
     /**
@@ -273,7 +273,7 @@ public class Config {
         if (val == null) {
             return null;
         }
-        return new Integer(val);
+        return Integer.valueOf(val);
     }
 
     /**

@@ -224,7 +224,7 @@ public class CachedStatement implements Serializable {
 
     int executeUpdate(Map<String, ?> parameters, List<?> inClause) {
         Integer res = (Integer) internalExecute(parameters, inClause, null);
-        return res.intValue();
+        return res;
     }
 
     /**
@@ -318,8 +318,7 @@ public class CachedStatement implements Serializable {
                         returnInt = (Integer) resultObj;
                     }
                     else {
-                        returnInt = new Integer(
-                                returnInt.intValue() + ((Integer) resultObj).intValue());
+                        returnInt = returnInt + (Integer) resultObj;
                     }
                 }
             }
@@ -499,7 +498,7 @@ public class CachedStatement implements Serializable {
             if (returnType) {
                 return processResultSet(ps.getResultSet(), (SelectMode) mode, dr);
             }
-            return new Integer(ps.getUpdateCount());
+            return ps.getUpdateCount();
         }
         finally {
             HibernateHelper.cleanupDB(ps);
@@ -537,7 +536,7 @@ public class CachedStatement implements Serializable {
             // For now assume that we only specify each output parameter once,
             // to do otherwise just doesn't make a lot of sense.
             Integer pos = positions.next();
-            Object o = cs.getObject(pos.intValue());
+            Object o = cs.getObject(pos);
             if (o instanceof BigDecimal) {
                 o = ((BigDecimal) o).longValue();
             }
@@ -622,7 +621,7 @@ public class CachedStatement implements Serializable {
                          * effect. Decide what to do about it.
                          */
                         resultMap =
-                                (Map<String, Object>) currentResults.get(pos.intValue());
+                                (Map<String, Object>) currentResults.get(pos);
                     }
                     addToMap(columns, rs, resultMap,
                             mode.getElaborators().indexOf(parentStatement));
@@ -649,7 +648,7 @@ public class CachedStatement implements Serializable {
                             throw new IllegalArgumentException("Null elab match for " +
                                     getColumn() + " " + getObject(rs, getColumn()));
                         }
-                        obj = currentResults.get(pos.intValue());
+                        obj = currentResults.get(pos);
                     }
                     // if pointers are null, we are doing an elaborator.
                     addToObject(columns, rs, obj, (pointers != null));
@@ -890,12 +889,12 @@ public class CachedStatement implements Serializable {
             Object row = i.next();
 
             if (row instanceof Map) {
-                pointers.put(((Map<String, Object>) row).get(key), new Integer(pos));
+                pointers.put(((Map<String, Object>) row).get(key), pos);
             }
             else {
                 Object keyData = MethodUtil.callMethod(row,
                         StringUtil.beanify("get " + key), new Object[0]);
-                pointers.put(keyData, new Integer(pos));
+                pointers.put(keyData, pos);
             }
             pos++;
         }

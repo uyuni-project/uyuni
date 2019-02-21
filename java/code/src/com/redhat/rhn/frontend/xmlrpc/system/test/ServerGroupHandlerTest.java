@@ -223,8 +223,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         Server server3 = ServerFactoryTest.createTestServer(regular, true);
 
         handler.addOrRemoveSystems(regular, group.getName(),
-                Arrays.asList(new Integer []{
-                            new Integer(server3.getId().intValue())}), Boolean.valueOf(true));
+                Arrays.asList(server3.getId().intValue()), Boolean.TRUE);
 
         List systems = new ArrayList();
         systems.add(server1.getId());
@@ -270,7 +269,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     public void testGetDetailsById() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg = handler.getDetails(admin,
-                new Integer(group.getId().intValue()));
+                group.getId().intValue());
         assertEquals(sg, group);
     }
 
@@ -285,7 +284,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         boolean exceptCaught = false;
         int badValue = -80;
         try {
-            ServerGroup sg = handler.getDetails(admin, new Integer(badValue));
+            ServerGroup sg = handler.getDetails(admin, badValue);
         }
         catch (FaultException e) {
             exceptCaught = true;

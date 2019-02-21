@@ -162,8 +162,8 @@ public class SCCClientTest extends TestCase {
         assertEquals("EXPIRED", s.getStatus());
         assertEquals(null, s.getStartsAt());
         assertEquals(Date.from(Instant.parse("2014-03-14T13:10:21.164Z")), s.getExpiresAt());
-        assertEquals(new Integer(6), s.getSystemLimit());
-        assertEquals(new Integer(1), s.getSystemsCount());
+        assertEquals(Integer.valueOf(6), s.getSystemLimit());
+        assertEquals(Integer.valueOf(1), s.getSystemsCount());
         assertEquals(null, s.getVirtualCount());
         assertFalse(s.getProductIds().contains(11L));
         assertTrue(s.getProductIds().contains(12L));

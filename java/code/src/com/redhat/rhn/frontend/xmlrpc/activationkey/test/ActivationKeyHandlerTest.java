@@ -55,7 +55,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     private ActivationKeyHandler keyHandler = new ActivationKeyHandler();
     private static final String KEY = "myexplicitkey";
     private static final String KEY_DESCRIPTION = "Test Key";
-    private static final Integer KEY_USAGE_LIMIT = new Integer(0);
+    private static final Integer KEY_USAGE_LIMIT = 0;
     private static final List<String> KEY_ENTITLEMENTS;
     static {
         KEY_ENTITLEMENTS = new LinkedList<String>();
@@ -105,7 +105,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     public void testCreateWithZeroUsageLimit() throws Exception {
         String key = keyHandler.create(admin, "", KEY_DESCRIPTION, null,
-                                new Integer(0), KEY_ENTITLEMENTS, Boolean.TRUE);
+                0, KEY_ENTITLEMENTS, Boolean.TRUE);
         assertTrue(key.length() > 0);
         ActivationKey activationKey = ActivationKeyManager.getInstance().
                lookupByKey(key, admin);
@@ -114,7 +114,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     public void testCreateWithExplicitKey() throws Exception {
         String resultingKey = keyHandler.create(admin, KEY, "testing",
-                baseChannelLabel, new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                baseChannelLabel, 0, KEY_ENTITLEMENTS, Boolean.FALSE);
         assertFalse(KEY.equals(resultingKey));
         ActivationKey activationKey = ActivationKeyManager.getInstance().
                                                 lookupByKey(resultingKey, admin);
@@ -124,10 +124,10 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
     public void testCreateWithSameKey() throws Exception {
         keyHandler.create(admin, KEY, "testing",
-                baseChannelLabel, new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                baseChannelLabel, 0, KEY_ENTITLEMENTS, Boolean.FALSE);
         try {
             keyHandler.create(admin, KEY, "testing",
-                baseChannelLabel, new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                baseChannelLabel, 0, KEY_ENTITLEMENTS, Boolean.FALSE);
             fail();
         }
         catch (FaultException e) {
@@ -138,7 +138,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     public void testCreateWithInvaidChannelId() throws Exception {
         try {
             keyHandler.create(admin, "", "testing", "NOT A CHANNEL",
-                new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                    0, KEY_ENTITLEMENTS, Boolean.FALSE);
             fail();
         }
         catch (InvalidChannelException e) {
@@ -151,7 +151,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String childChannelLabel = childChannel.getLabel();
         try {
             keyHandler.create(admin, "", "testing", childChannelLabel,
-                new Integer(0), KEY_ENTITLEMENTS, Boolean.FALSE);
+                    0, KEY_ENTITLEMENTS, Boolean.FALSE);
             fail();
         }
         catch (InvalidChannelException e) {
@@ -164,7 +164,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         badEntitlements.add("enterprise_entitled");
         try {
             keyHandler.create(admin, "", "testing", baseChannelLabel,
-                    new Integer(0), badEntitlements, Boolean.FALSE);
+                    0, badEntitlements, Boolean.FALSE);
             fail();
         }
         catch (FaultException fe) {
@@ -177,7 +177,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         badEntitlements.add("provisioning_foobar");
         try {
             keyHandler.create(admin, "", "testing", baseChannelLabel,
-                    new Integer(0), badEntitlements, Boolean.FALSE);
+                    0, badEntitlements, Boolean.FALSE);
             fail();
         }
         catch (FaultException fe) {
@@ -207,7 +207,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String baseChannelId2 = baseChannel2.getLabel();
         details.put("description", description2);
         details.put("base_channel_label", baseChannelId2);
-        details.put("usage_limit", new Integer(15));
+        details.put("usage_limit", 15);
         details.put("universal_default", Boolean.FALSE);
         keyHandler.setDetails(admin, key, details);
 
@@ -226,7 +226,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
 
         Map details = new HashMap();
-        details.put("usage_limit", new Integer(15)); // should be ignored
+        details.put("usage_limit", 15); // should be ignored
         details.put("unlimited_usage_limit", Boolean.TRUE);
         keyHandler.setDetails(admin, key, details);
 
@@ -287,7 +287,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = ServerGroupTestUtils.createManaged(admin);
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
 
         PackageName newName = PackageNameTest.createTestPackageName();
         keyHandler.addPackageNames(admin, newKey, buildList(newName.getName()));
@@ -492,7 +492,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = ServerGroupTestUtils.createManaged(admin);
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(1, activationKey.getServerGroups().size());
     }
 
@@ -508,11 +508,11 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = ServerGroupTestUtils.createManaged(admin);
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(1, activationKey.getServerGroups().size());
 
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(1, activationKey.getServerGroups().size());
     }
 
@@ -525,11 +525,11 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = ServerGroupTestUtils.createManaged(admin);
         keyHandler.addServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(1, activationKey.getServerGroups().size());
 
         keyHandler.removeServerGroups(admin, newKey,
-                buildList(new Integer(group.getId().intValue())));
+                buildList(group.getId().intValue()));
         assertEquals(0, activationKey.getServerGroups().size());
     }
 
@@ -545,7 +545,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, activationKey.getServerGroups().size());
         ManagedServerGroup sg = ServerGroupTestUtils.createManaged(admin);
         keyHandler.removeServerGroups(admin, newKey, buildList(
-                new Integer(sg.getId().intValue())));
+                sg.getId().intValue()));
         assertEquals(0, activationKey.getServerGroups().size());
     }
 

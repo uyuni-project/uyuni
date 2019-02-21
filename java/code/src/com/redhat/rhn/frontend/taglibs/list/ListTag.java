@@ -670,7 +670,7 @@ public class ListTag extends BodyTagSupport {
              */
             if (refLinkKey != null) {
                 Object[] args = new Object[2];
-                args[0] = new Integer(getPageRowCount());
+                args[0] = getPageRowCount();
                 args[1] = refLinkKeyArg0;
                 String message = LocalizationService.getInstance().
                     getMessage(refLinkKey, args);
@@ -878,12 +878,12 @@ public class ListTag extends BodyTagSupport {
                 if (manip.getAllData().size() == 0) {
                     ListTagUtil.write(pageContext, ls.getMessage(
                             "listtag.filteredmessageempty",
-                            new Integer(manip.getTotalDataSetSize())));
+                            manip.getTotalDataSetSize()));
                 }
                 else {
                     ListTagUtil.write(pageContext,
                                         ls.getMessage("listtag.filteredmessage",
-                            new Integer(manip.getTotalDataSetSize())));
+                                                manip.getTotalDataSetSize()));
                 }
 
                 ListTagUtil.write(pageContext, "<br /><a href=\"");
@@ -903,7 +903,7 @@ public class ListTag extends BodyTagSupport {
                 ListTagUtil.write(pageContext, "\">" +
                                             ls.getMessage("listtag.clearfilter"));
                 ListTagUtil.write(pageContext, ls.getMessage("listtag.seeall",
-                        new Integer(manip.getUnfilteredDataSize())));
+                        manip.getUnfilteredDataSize()));
                 ListTagUtil.write(pageContext, "</a>");
             }
             else {

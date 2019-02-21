@@ -87,13 +87,13 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_Multi_test");
-        obj.setPin(new Integer(12345));
+        obj.setPin(12345);
         TestFactory.save(obj);
         TestInterface result = TestFactory.lookupByFoobar("update_Multi_test");
         assertEquals("update_Multi_test", result.getFoobar());
 
         result.setFoobar("After_multi_change");
-        result.setPin(new Integer(54321));
+        result.setPin(54321);
         TestFactory.save(result);
         TestInterface updated = TestFactory.lookupByFoobar("After_multi_change");
         assertEquals("After_multi_change", updated.getFoobar());

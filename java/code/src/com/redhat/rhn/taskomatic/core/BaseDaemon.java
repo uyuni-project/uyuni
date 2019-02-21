@@ -54,13 +54,13 @@ public abstract class BaseDaemon implements WrapperListener {
         if (options != null) {
             status = startupWithOptions(options, argv);
             if (status != BaseDaemon.SUCCESS) {
-                retval = new Integer(status);
+                retval = status;
             }
         }
         else {
             status = startupWithoutOptions();
             if (status != BaseDaemon.SUCCESS) {
-                retval  = new Integer(status);
+                retval  = status;
             }
         }
         return retval;

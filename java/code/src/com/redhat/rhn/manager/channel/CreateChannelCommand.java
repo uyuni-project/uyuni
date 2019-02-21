@@ -412,7 +412,7 @@ public class CreateChannelCommand {
         }
 
         if (cname.length() < CHANNEL_NAME_MIN_LENGTH) {
-            Integer minLength = new Integer(CreateChannelCommand.CHANNEL_NAME_MIN_LENGTH);
+            Integer minLength = CreateChannelCommand.CHANNEL_NAME_MIN_LENGTH;
             throw new InvalidChannelNameException(cname,
                 InvalidChannelNameException.Reason.TOO_SHORT,
                 "edit.channel.invalidchannelname.minlength",
@@ -420,7 +420,7 @@ public class CreateChannelCommand {
         }
 
         if (cname.length() > CHANNEL_NAME_MAX_LENGTH) {
-            Integer maxLength = new Integer(CreateChannelCommand.CHANNEL_NAME_MAX_LENGTH);
+            Integer maxLength = CreateChannelCommand.CHANNEL_NAME_MAX_LENGTH;
             throw new InvalidChannelNameException(cname,
                 InvalidChannelNameException.Reason.TOO_LONG,
                 "edit.channel.invalidchannelname.maxlength",
@@ -448,7 +448,7 @@ public class CreateChannelCommand {
         }
 
         if (clabel.length() < CHANNEL_LABEL_MIN_LENGTH) {
-            Integer minLength = new Integer(CreateChannelCommand.CHANNEL_LABEL_MIN_LENGTH);
+            Integer minLength = CreateChannelCommand.CHANNEL_LABEL_MIN_LENGTH;
             throw new InvalidChannelLabelException(clabel,
                 InvalidChannelLabelException.Reason.TOO_SHORT,
                 "edit.channel.invalidchannellabel.minlength",

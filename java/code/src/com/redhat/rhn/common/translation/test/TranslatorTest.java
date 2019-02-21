@@ -29,13 +29,13 @@ import java.util.Map;
 public class TranslatorTest extends RhnBaseTestCase {
 
     public void testInt2String() {
-        Integer i = new Integer(42);
+        Integer i = 42;
         assertEquals("42", Translator.int2String(i));
         assertEquals("", Translator.int2String(null));
     }
 
     public void testInt2List() {
-        Integer i = new Integer(42);
+        Integer i = 42;
         List list = Translator.int2List(i);
         assertEquals(1, list.size());
         Integer result = (Integer) list.iterator().next();
@@ -51,7 +51,7 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertEquals(1, i);
 
         Integer bi = Translator.bigDecimal2IntObject(bd);
-        assertEquals(new Integer(1), bi);
+        assertEquals(Integer.valueOf(1), bi);
 
         long l = Translator.bigDecimal2Long(bd);
         assertEquals(1, l);
@@ -73,7 +73,7 @@ public class TranslatorTest extends RhnBaseTestCase {
 
         Long uid = UserTestUtils.createUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        User user = Translator.long2User(new Integer(uid.intValue()));
+        User user = Translator.long2User(uid.intValue());
         assertNotNull(user);
         assertEquals(uid, user.getId());
         assertTrue(user.getLogin().startsWith("testUser"));
@@ -96,9 +96,9 @@ public class TranslatorTest extends RhnBaseTestCase {
     }
 
     public void testInteger2Boolean() {
-        Integer zero = new Integer(0);
-        Integer one = new Integer(1);
-        Integer two = new Integer(2);
+        Integer zero = 0;
+        Integer one = 1;
+        Integer two = 2;
 
         assertTrue(Translator.int2Boolean(one));
         assertFalse(Translator.int2Boolean(zero));

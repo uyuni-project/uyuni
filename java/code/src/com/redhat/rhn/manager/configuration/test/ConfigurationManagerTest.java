@@ -584,14 +584,14 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         //Call the function we are testing,  list more than we created to make sure
         //we have only that many.
-        DataResult dr = cm.getRecentlyModifiedConfigFiles(user, new Integer(numFiles + 5));
+        DataResult dr = cm.getRecentlyModifiedConfigFiles(user, numFiles + 5);
         assertEquals(numFiles, dr.getTotalSize());
         assertTrue(dr.get(0) instanceof ConfigFileDto);
 
         //Now test that limiting the results works as well.
         int numToShow = 2;
         //show only a few of the files.
-        dr = cm.getRecentlyModifiedConfigFiles(user, new Integer(numToShow));
+        dr = cm.getRecentlyModifiedConfigFiles(user, numToShow);
         assertEquals(numToShow, dr.getTotalSize());
 
         //This last test really doesn't work if we limit more than we create.

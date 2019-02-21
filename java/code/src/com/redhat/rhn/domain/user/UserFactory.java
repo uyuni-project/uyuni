@@ -373,7 +373,7 @@ public  class UserFactory extends HibernateFactory {
         inParams.put("phone", StringUtils.defaultIfEmpty(usr.getPhone(), null));
         inParams.put("fax", StringUtils.defaultIfEmpty(usr.getFax(), null));
         inParams.put("email", StringUtils.defaultIfEmpty(usr.getEmail(), null));
-        inParams.put("pin", new Integer(0));
+        inParams.put("pin", 0);
         inParams.put("fnameOl", " ");
         inParams.put("lnameOl", " ");
         inParams.put("addr1", StringUtils.defaultIfEmpty(usr.getAddress1(), null));
@@ -390,7 +390,7 @@ public  class UserFactory extends HibernateFactory {
         inParams.put("contFax", "N");
         inParams.put("contEmail", "N");
 
-        outParams.put("userId", new Integer(Types.NUMERIC));
+        outParams.put("userId", Types.NUMERIC);
         Map<String, Object> result = m.execute(inParams, outParams);
 
         Org org = OrgFactory.lookupById(orgId);

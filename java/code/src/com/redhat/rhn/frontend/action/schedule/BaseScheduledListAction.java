@@ -123,13 +123,13 @@ public abstract class BaseScheduledListAction extends RhnAction implements Lista
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                      new ActionMessage("message.actionArchived",
                              LocalizationService.getInstance()
-                                                .formatNumber(new Integer(set.size()))));
+                                                .formatNumber(set.size())));
         }
         else {
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                      new ActionMessage("message.actionsArchived",
                              LocalizationService.getInstance()
-                                                .formatNumber(new Integer(set.size()))));
+                                                .formatNumber(set.size())));
         }
         strutsDelegate.saveMessages(request, msgs);
 

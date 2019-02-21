@@ -27,7 +27,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class PackageEvr implements Comparable {
 
     private static final RpmVersionComparator VERCMP = new RpmVersionComparator();
-    private static final Integer ZERO = new Integer(0);
+    private static final Integer ZERO = 0;
 
     private Long id;
     private String epoch;
@@ -169,7 +169,7 @@ public class PackageEvr implements Comparable {
     private Integer epochAsInteger() {
         Integer result = ZERO;
         if (getEpoch() != null) {
-            result = new Integer(getEpoch());
+            result = Integer.valueOf(getEpoch());
         }
         return result;
     }

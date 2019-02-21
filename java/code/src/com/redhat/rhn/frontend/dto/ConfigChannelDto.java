@@ -153,21 +153,21 @@ public class ConfigChannelDto extends BaseDto {
         if (fileCount == null) {
             int totalFiles = 0;
             if (filesOnlyCount != null) {
-                totalFiles += filesOnlyCount.intValue();
+                totalFiles += filesOnlyCount;
             }
 
             if (slsOnlyCount != null) {
-                totalFiles += slsOnlyCount.intValue();
+                totalFiles += slsOnlyCount;
             }
 
             if (dirsOnlyCount != null) {
-                totalFiles += dirsOnlyCount.intValue();
+                totalFiles += dirsOnlyCount;
             }
 
             if (symlinksOnlyCount != null) {
-                totalFiles += symlinksOnlyCount.intValue();
+                totalFiles += symlinksOnlyCount;
             }
-            fileCount = new Integer(totalFiles);
+            fileCount = totalFiles;
         }
         return fileCount;
     }
@@ -265,12 +265,12 @@ public class ConfigChannelDto extends BaseDto {
     public String getSystemCountString() {
         LocalizationService service =  LocalizationService.getInstance();
         Integer count = getSystemCount();
-        final Integer one = new Integer(1);
+        final Integer one = 1;
         if (one.equals(count)) {
             return service.getMessage("system.common.onesystem");
         }
         if (count == null) {
-            count = new Integer(0);
+            count = 0;
         }
         return service.getMessage("system.common.numsystems",
                                         new Object[] {count});
@@ -434,16 +434,16 @@ public class ConfigChannelDto extends BaseDto {
     public String getFilesAndDirsDisplayString() {
         int files = 0, slsFiles = 0, dirs = 0, symlinks = 0;
         if (filesOnlyCount != null) {
-            files = filesOnlyCount.intValue();
+            files = filesOnlyCount;
         }
         if (slsOnlyCount != null) {
-            slsFiles = slsOnlyCount.intValue();
+            slsFiles = slsOnlyCount;
         }
         if (dirsOnlyCount != null) {
-            dirs = dirsOnlyCount.intValue();
+            dirs = dirsOnlyCount;
         }
         if (symlinksOnlyCount != null) {
-            symlinks = symlinksOnlyCount.intValue();
+            symlinks = symlinksOnlyCount;
         }
         ConfigFileCount count = ConfigFileCount.create(files, slsFiles,  dirs, symlinks);
         return ConfigActionHelper.makeFileCountsMessage(count, null, false);

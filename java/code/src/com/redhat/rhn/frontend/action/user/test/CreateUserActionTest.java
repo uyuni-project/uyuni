@@ -84,7 +84,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         f.set("state", "OH");
         f.set("title", "Heavyweight");
         f.set("zip", "45241");
-        f.set("timezone", new Integer(7010));
+        f.set("timezone", 7010);
         f.set("preferredLocale", "en_US");
         return f;
     }

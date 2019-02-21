@@ -113,13 +113,13 @@ public class PendingActionsDeleteConfirmAction extends RhnAction implements List
                 msgs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("message.actionCancelled",
                                 LocalizationService.getInstance()
-                                        .formatNumber(new Integer(set.size()))));
+                                        .formatNumber(set.size())));
             }
             else {
                 msgs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("message.actionsCancelled",
                                 LocalizationService.getInstance()
-                                        .formatNumber(new Integer(set.size()))));
+                                        .formatNumber(set.size())));
             }
             strutsDelegate.saveMessages(request, msgs);
         }

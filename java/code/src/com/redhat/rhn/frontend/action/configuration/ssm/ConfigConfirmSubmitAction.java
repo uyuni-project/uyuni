@@ -198,7 +198,7 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
         }
         else {
             msg.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage(prefix + ".ssm.successes", new Integer(successes)));
+                new ActionMessage(prefix + ".ssm.successes", successes));
         }
         getStrutsDelegate().saveMessages(request, msg);
     }

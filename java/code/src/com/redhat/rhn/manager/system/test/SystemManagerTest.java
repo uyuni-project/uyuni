@@ -164,11 +164,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Long id = server.getId();
 
         assertTrue(SystemManager.serverHasFeature(id, "ftr_snapshotting"));
-        assertEquals(new Integer(0), numberOfSnapshots(id));
+        assertEquals(Integer.valueOf(0), numberOfSnapshots(id));
         SystemManager.snapshotServer(null, "test");
-        assertEquals(new Integer(0), numberOfSnapshots(id));
+        assertEquals(Integer.valueOf(0), numberOfSnapshots(id));
         SystemManager.snapshotServer(server, "Testing snapshots");
-        assertEquals(new Integer(1), numberOfSnapshots(id));
+        assertEquals(Integer.valueOf(1), numberOfSnapshots(id));
     }
 
     /*

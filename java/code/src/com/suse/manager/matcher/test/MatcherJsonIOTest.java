@@ -222,7 +222,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
                     .findFirst().get();
 
             assertEquals("662644474670", resultSubscription1.getPartNumber());
-            assertEquals(new Integer(10), resultSubscription1.getQuantity());
+            assertEquals(Integer.valueOf(10), resultSubscription1.getQuantity());
             assertTrue(resultSubscription1.getProductIds().contains(1322L));
             assertTrue(resultSubscription1.getProductIds().contains(1324L));
             assertEquals("extFile", resultSubscription1.getSccUsername());
@@ -232,7 +232,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
                     .findFirst().get();
 
             assertEquals("874-005117", resultSubscription2.getPartNumber());
-            assertEquals(new Integer(100), resultSubscription2.getQuantity());
+            assertEquals(Integer.valueOf(100), resultSubscription2.getQuantity());
             assertTrue(resultSubscription2.getProductIds().contains(1322L));
             assertTrue(resultSubscription2.getProductIds().contains(1324L));
             assertEquals("extFile", resultSubscription2.getSccUsername());

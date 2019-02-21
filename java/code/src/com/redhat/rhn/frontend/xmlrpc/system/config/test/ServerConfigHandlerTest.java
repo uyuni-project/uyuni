@@ -308,7 +308,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         paths.add("/no/such/file.txt");
 
         // Should not throw a NullPointerException (anymore):
-        handler.lookupFileInfo(admin, new Integer(srv1.getId().intValue()),
+        handler.lookupFileInfo(admin, srv1.getId().intValue(),
                 paths, true);
     }
 

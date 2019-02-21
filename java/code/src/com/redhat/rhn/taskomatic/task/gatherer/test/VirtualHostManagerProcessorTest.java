@@ -552,9 +552,9 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertEquals(data.keySet().stream().findFirst().get(), nodeInfo.getName());
         assertEquals("Windows", nodeInfo.getOs());
         assertEquals("Vista", nodeInfo.getOsVersion());
-        assertEquals(new Integer(128), nodeInfo.getRam());
-        assertEquals(new Integer(1), nodeInfo.getCpuCores());
-        assertEquals(new Integer(1), nodeInfo.getCpuSockets());
+        assertEquals(Integer.valueOf(128), nodeInfo.getRam());
+        assertEquals(Integer.valueOf(1), nodeInfo.getCpuCores());
+        assertEquals(Integer.valueOf(1), nodeInfo.getCpuSockets());
         assertEquals("x86_64-redhat-linux", nodeInfo.getNodeArch().getLabel());
     }
 

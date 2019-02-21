@@ -606,7 +606,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test schedule on precise time.
      */
     public void testAcScheduleOnTime() {
-        assertEquals(new Integer(1),
+        assertEquals(Integer.valueOf(1),
                      this.ach.scheduleChain(this.admin, CHAIN_LABEL, new Date()));
     }
 
@@ -636,7 +636,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         revisionSpecifier.put("filePath", configFile.getConfigFileName().getPath());
         revisionSpecifier.put("revision", configRevision.getRevision().intValue());
 
-        assertEquals(new Integer(BaseHandler.VALID),
+        assertEquals(Integer.valueOf(BaseHandler.VALID),
                      this.ach.addConfigurationDeployment(this.admin,
                              CHAIN_LABEL,
                              this.server.getId().intValue(),
@@ -680,7 +680,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcRenameActionChain() {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
-        assertEquals(new Integer(1),
+        assertEquals(Integer.valueOf(1),
                      this.ach.renameChain(
                              this.admin, CHAIN_LABEL, TestUtils.randomString()));
         assertEquals(false, actionChain.getLabel().equals(CHAIN_LABEL));
@@ -692,7 +692,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRenameActionChainFailureOnSameLabel() {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
         try {
-            assertEquals(new Integer(1),
+            assertEquals(Integer.valueOf(1),
                          this.ach.renameChain(this.admin, CHAIN_LABEL, CHAIN_LABEL));
             fail("Expected exception: " +
                  InvalidParameterException.class.getCanonicalName());
@@ -708,7 +708,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRenameActionChainFailureOnEmptyPreviousLabel() {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
         try {
-            assertEquals(new Integer(1),
+            assertEquals(Integer.valueOf(1),
                          this.ach.renameChain(this.admin, "", CHAIN_LABEL));
             fail("Expected exception: " +
                  InvalidParameterException.class.getCanonicalName());
@@ -724,7 +724,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRenameActionChainFailureOnEmptyNewLabel() {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
         try {
-            assertEquals(new Integer(1),
+            assertEquals(Integer.valueOf(1),
                          this.ach.renameChain(this.admin, CHAIN_LABEL, ""));
             fail("Expected exception: " +
                  InvalidParameterException.class.getCanonicalName());

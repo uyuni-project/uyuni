@@ -858,10 +858,10 @@ public class PackageManager extends BaseManager {
         Integer e1 = null;
         Integer e2 = null;
         if (epoch1 != null && StringUtils.isNumeric(epoch1)) {
-            e1 = new Integer(epoch1);
+            e1 = Integer.valueOf(epoch1);
         }
         if (epoch2 != null && StringUtils.isNumeric(epoch2)) {
-            e2 = new Integer(epoch2);
+            e2 = Integer.valueOf(epoch2);
         }
         //handle null cases
         if (e1 != null && e2 == null) {

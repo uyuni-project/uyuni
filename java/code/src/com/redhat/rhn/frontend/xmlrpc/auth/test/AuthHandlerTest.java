@@ -46,7 +46,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
         long dbLifetime = Long.valueOf(Config.get().getString("session_database_lifetime"));
         long currentTime = System.currentTimeMillis() / 1000;
 
-        Integer invalidDuration = new Integer(String.valueOf(dbLifetime + 100));
+        Integer invalidDuration = Integer.valueOf(String.valueOf(dbLifetime + 100));
 
         //Test the login(String username, String password) method
         // - make sure we create a valid session
