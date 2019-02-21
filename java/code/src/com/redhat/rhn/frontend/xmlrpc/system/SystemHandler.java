@@ -83,6 +83,7 @@ import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.PackageListItem;
+import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
 import com.redhat.rhn.frontend.dto.ServerPath;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
@@ -304,7 +305,7 @@ public class SystemHandler extends BaseHandler {
         final Entitlement entitlement = EntitlementManager.getByName(entitlementLevel);
 
         // Make sure we got a valid entitlement and the server can be entitled to it
-        validateEntitlements(new ArrayList() { { add(entitlement); } });
+        validateEntitlements(new ArrayList<Entitlement>() { { add(entitlement); } });
         if (!SystemManager.canEntitleServer(server, entitlement)) {
             throw new PermissionCheckFailureException();
         }
@@ -5164,7 +5165,7 @@ public class SystemHandler extends BaseHandler {
             throw new InvalidProfileLabelException(profileLabel);
         }
 
-        DataResult dr = ProfileManager.compareServerToProfile(sid, profile.getId(),
+        DataResult<PackageMetadata> dr = ProfileManager.compareServerToProfile(sid, profile.getId(),
                 loggedInUser.getOrg().getId(), null);
 
         return dr.toArray();

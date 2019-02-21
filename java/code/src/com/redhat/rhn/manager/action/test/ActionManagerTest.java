@@ -15,15 +15,19 @@
 
 package com.redhat.rhn.manager.action.test;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
@@ -40,7 +44,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
-import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -108,10 +111,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
-import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 
 /**
  * Tests for {@link ActionManager}.
@@ -686,7 +685,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         SystemManagerTest.giveCapability(srvr.getId(), "script.run", new Long(1));
         assertNotNull(srvr);
 
-        List<Long> serverIds = new ArrayList();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(srvr.getId());
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
@@ -785,10 +784,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("2", kad.getDiskGb().toString());
     }
 
+    @SuppressWarnings("rawtypes")
     public void testSchedulePackageDelta() throws Exception {
         Server srvr = ServerFactoryTest.createTestServer(user, true);
 
-        List profileList = new ArrayList();
+        List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(ProfileManagerTest.
                 createPackageListItem("kernel-2.4.23-EL-mmccune", 500341));
         profileList.add(ProfileManagerTest.
@@ -798,7 +798,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         //profileList.add(ProfileManagerTest.
         //        createPackageListItem("other-2.1.0-EL-mmccune", 500400));
 
-        List systemList = new ArrayList();
+        List<PackageListItem> systemList = new ArrayList<>();
         systemList.add(ProfileManagerTest.
                 createPackageListItem("kernel-2.4.23-EL-mmccune", 500341));
 
@@ -806,8 +806,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(user);
 
 
-        List pkgs = ProfileManager.comparePackageLists(new DataResult(profileList),
-                new DataResult(systemList), "foo");
+        List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(profileList),
+                new DataResult<PackageListItem>(systemList), "foo");
 
         Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
                 new Date());
@@ -900,7 +900,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Server srvr = ServerFactory.lookupById(new Long(1005385254));
         RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(user);
 
-        List a = new ArrayList();
+        List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("3427|195967");
         pli.setEvrId(new Long(195967));
@@ -934,7 +934,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         pli.setEpoch("2");
         a.add(pli);
 
-        List b = new ArrayList();
+        List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("26980|182097");
         pli.setEvrId(new Long(182097));
@@ -968,11 +968,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         pli.setEpoch(null);
         b.add(pli);
 
-        List pkgs = ProfileManager.comparePackageLists(new DataResult(a),
-                new DataResult(b), "foo");
+        List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
+                new DataResult<PackageListItem>(b), "foo");
 
-        for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-            PackageMetadata pm = (PackageMetadata) itr.next();
+        for (Iterator<PackageMetadata> itr = pkgs.iterator(); itr.hasNext();) {
+            PackageMetadata pm = itr.next();
             log.warn("pm [" + pm.toString() + "] compare [" +
                     pm.getComparison() + "] release [" +
                     (pm.getSystem() != null ? pm.getSystem().getRelease() :

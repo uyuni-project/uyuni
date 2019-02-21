@@ -110,11 +110,11 @@ public class KickstartSessionCreateCommand {
             ActivationKey key) {
         log.debug("** addChildChannelsForProfile");
         User orgAdmin = UserFactory.findRandomOrgAdmin(this.ksession.getOrg());
-        List channels = ProfileManager.getChildChannelsNeededForProfile(orgAdmin,
+        List<Channel> channels = ProfileManager.getChildChannelsNeededForProfile(orgAdmin,
                 baseChannel, profile);
-        Iterator i = channels.iterator();
+        Iterator<Channel> i = channels.iterator();
         while (i.hasNext()) {
-            Channel child = (Channel) i.next();
+            Channel child = i.next();
             log.debug("** adding child channel for profile: " + child.getLabel());
             key.addChannel(child);
         }

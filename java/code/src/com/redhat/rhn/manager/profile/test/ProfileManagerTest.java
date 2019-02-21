@@ -14,15 +14,6 @@
  */
 package com.redhat.rhn.manager.profile.test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -50,6 +41,15 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * ProfileManagerTest
@@ -93,7 +93,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         idCombo.append(p1.getPackageName().getId()).append("|");
         idCombo.append(p1.getPackageEvr().getId()).append("|");
         idCombo.append(p1.getPackageArch().getId());
-        Set idCombos = new HashSet();
+        Set<String> idCombos = new HashSet<>();
         idCombos.add(idCombo.toString());
 
         // This call has an embedded transaction in the stored procedure:
@@ -164,10 +164,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertNotNull("Profile is null", p);
         assertNotNull("Profile has no id", p.getId());
 
-        List list = ProfileManager.compatibleWithServer(server, user.getOrg());
+        List<Profile> list = ProfileManager.compatibleWithServer(server, user.getOrg());
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
-        for (Iterator itr = list.iterator(); itr.hasNext();) {
+        for (Iterator<Profile> itr = list.iterator(); itr.hasNext();) {
             Object o = itr.next();
             assertEquals("List contains something other than Profiles",
                     Profile.class, o.getClass());
@@ -178,13 +178,13 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Long sid = new Long(1005385254);
         Long prid = new Long(4908);
         Long orgid = new Long(4116748);
-        DataResult dr = ProfileManager.compareServerToProfile(sid, prid, orgid, null);
+        DataResult<PackageMetadata> dr = ProfileManager.compareServerToProfile(sid, prid, orgid, null);
         assertNotNull("DataResult was null", dr);
     }
 
     public void testCompatibleWithChannel() throws Exception {
         Profile p = createProfileWithServer(user);
-        DataResult dr = ProfileManager.compatibleWithChannel(p.getBaseChannel(),
+        DataResult<ProfileDto> dr = ProfileManager.compatibleWithChannel(p.getBaseChannel(),
                 user.getOrg(), null);
         assertNotNull(dr);
         assertTrue(dr.size() > 0);
@@ -209,7 +209,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
             DataResult systems, String param) {
          */
 
-        List a = new ArrayList();
+        List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|258204");
         pli.setEvrId(new Long(258204));
@@ -232,7 +232,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEpoch(null);
         a.add(pli);
 
-        List b = new ArrayList();
+        List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("500000341|258204");
         pli.setEvrId(new Long(258204));
@@ -244,8 +244,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEpoch(null);
         b.add(pli);
 
-        List diff = ProfileManager.comparePackageLists(new DataResult(a),
-                new DataResult(b), "foo");
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
+                new DataResult<PackageListItem>(b), "foo");
 
         assertEquals(1, diff.size());
         PackageMetadata pm = (PackageMetadata) diff.get(0);
@@ -258,7 +258,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testDifferingVersionsofSamePackage() {
-        List a = new ArrayList();
+        List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
         pli.setEvrId(new Long(000000));
@@ -270,7 +270,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEpoch(null);
         a.add(pli);
 
-        List b = new ArrayList();
+        List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("500000341|258204");
         pli.setEvrId(new Long(258204));
@@ -282,8 +282,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEpoch(null);
         b.add(pli);
 
-        List diff = ProfileManager.comparePackageLists(new DataResult(a),
-                new DataResult(b), "foo");
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
+                new DataResult<PackageListItem>(b), "foo");
         assertEquals(1, diff.size());
         PackageMetadata pm = (PackageMetadata) diff.get(0);
         assertNotNull(pm);
@@ -293,7 +293,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testDifferentVersionsOfSamePackageReverseOrder() {
-        List b = new ArrayList();
+        List<PackageListItem> b = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
         pli.setEvrId(new Long(000000));
@@ -305,7 +305,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEpoch(null);
         b.add(pli);
 
-        List a = new ArrayList();
+        List<PackageListItem> a = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("500000341|258204");
         pli.setEvrId(new Long(258204));
@@ -317,8 +317,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEpoch(null);
         a.add(pli);
 
-        List diff = ProfileManager.comparePackageLists(new DataResult(a),
-                new DataResult(b), "foo");
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
+                new DataResult<PackageListItem>(b), "foo");
         assertEquals(1, diff.size());
         PackageMetadata pm = (PackageMetadata) diff.get(0);
         assertNotNull(pm);
@@ -363,8 +363,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
             b.clear();
             b.add(pli2);
 
-            List diff = ProfileManager.comparePackageLists(
-                new DataResult(a), new DataResult(b), "foo");
+            List<PackageMetadata> diff = ProfileManager.comparePackageLists(
+                new DataResult<PackageListItem>(a), new DataResult<PackageListItem>(b), "foo");
             assertEquals(1, diff.size());
             PackageMetadata pm = (PackageMetadata) diff.get(0);
             assertNotNull(pm);
@@ -390,32 +390,32 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testMorePackagesInProfile() {
-        List profileList = new ArrayList();
+        List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(createItem("kernel-2.4.21-EL-mmccune", 500341));
         profileList.add(createItem("kernel-2.4.22-EL-mmccune", 500341));
         profileList.add(createItem("kernel-2.4.23-EL-mmccune", 500341));
         profileList.add(createItem("other-2.4.23-EL-mmccune", 500400));
 
-        List systemList = new ArrayList();
+        List<PackageListItem> systemList = new ArrayList<>();
         systemList.add(createItem("kernel-2.4.23-EL-mmccune", 500341));
 
-        List diff = ProfileManager.comparePackageLists(new DataResult(profileList),
-                new DataResult(systemList), "system");
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(profileList),
+                new DataResult<PackageListItem>(systemList), "system");
         assertEquals(3, diff.size());
 
     }
 
     public void testMorePackagesInSystem() {
-        List profileList = new ArrayList();
+        List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(createItem("kernel-2.4.23-EL-mmccune", 500341));
 
-        List systemList = new ArrayList();
+        List<PackageListItem> systemList = new ArrayList<>();
         systemList.add(createItem("kernel-2.4.21-EL-mmccune", 500341));
         systemList.add(createItem("kernel-2.4.22-EL-mmccune", 500341));
         systemList.add(createItem("kernel-2.4.23-EL-mmccune", 500341));
 
-        List diff = ProfileManager.comparePackageLists(new DataResult(profileList),
-                new DataResult(systemList), "system");
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(profileList),
+                new DataResult<PackageListItem>(systemList), "system");
         assertEquals(2, diff.size());
     }
 
@@ -436,7 +436,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
      public void testIdenticalPackages() {
-        List a = new ArrayList();
+        List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
         pli.setEvrId(new Long(000000));
@@ -449,7 +449,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         a.add(pli);
 
 
-        List b = new ArrayList();
+        List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("500000341|000000");
         pli.setEvrId(new Long(000000));
@@ -461,13 +461,13 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEpoch(null);
         b.add(pli);
 
-        List diff = ProfileManager.comparePackageLists(new DataResult(a),
-                new DataResult(b), "foo");
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
+                new DataResult<PackageListItem>(b), "foo");
         assertEquals(0, diff.size());
     }
 
     public void testVzlatkinTest() {
-        List a = new ArrayList();
+        List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("390|2069");
         pli.setEvrId(new Long(2069));
@@ -529,7 +529,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         a.add(pli);
 
         // SETUP B
-        List b = new ArrayList();
+        List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo(null);
         pli.setEvrId(new Long(1628));
@@ -566,8 +566,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setArch(null);
         b.add(pli);
 
-        List diff = ProfileManager.comparePackageLists(new DataResult(a),
-                new DataResult(b), "foo");
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
+                new DataResult<PackageListItem>(b), "foo");
         // This used to assert: assertEquals(0, diff.size());
         // but we now support showing what older packages exist on a system
         assertEquals(2, diff.size());
@@ -578,7 +578,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         // kernel-2.6.9-22.EL
         // kernel-2.6.9-42.0.2.EL
 
-        List serverList = new ArrayList();
+        List<PackageListItem> serverList = new ArrayList<>();
         PackageListItem pli3 = new PackageListItem();
         pli3.setIdCombo("500000341|000000");
         pli3.setEvrId(new Long(000000));
@@ -590,7 +590,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli3.setEpoch(null);
         serverList.add(pli3);
 
-        List otherServerList = new ArrayList();
+        List<PackageListItem> otherServerList = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("500000341|000001");
         pli.setEvrId(new Long(000000));
@@ -614,8 +614,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         otherServerList.add(pli2);
 
 
-        List diff = ProfileManager.comparePackageLists(new DataResult(otherServerList),
-                new DataResult(serverList), "foo");
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(otherServerList),
+                new DataResult<PackageListItem>(serverList), "foo");
         assertEquals(1, diff.size());
 
         PackageMetadata pm = (PackageMetadata) diff.get(0);
@@ -646,7 +646,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
                 "Profile test name" + TestUtils.randomString(), "test desc");
         ProfileManager.copyFrom(server, p);
 
-        List channels = ProfileManager.getChildChannelsNeededForProfile(
+        List<Channel> channels = ProfileManager.getChildChannelsNeededForProfile(
                 server.getCreator(),
                 server.getBaseChannel(), p);
 

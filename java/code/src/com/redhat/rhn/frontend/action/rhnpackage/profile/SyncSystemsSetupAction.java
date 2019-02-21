@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.rhnpackage.profile;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -44,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  * SyncSystemsSetupAction
  * @version $Rev$
  */
-public class SyncSystemsSetupAction extends RhnAction implements Listable {
+public class SyncSystemsSetupAction extends RhnAction implements Listable<PackageMetadata> {
 
     private static final CompareSystemSetupAction DECL_ACTION =
         new CompareSystemSetupAction();
@@ -71,7 +72,7 @@ public class SyncSystemsSetupAction extends RhnAction implements Listable {
         if (requestContext.wasDispatched("schedulesync.jsp.schedulesync")) {
             Date time = getStrutsDelegate().readDatePicker(dynaForm, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
-            Map syncParam = new HashMap();
+            Map<String, Object> syncParam = new HashMap<>();
             syncParam.put(RequestContext.SID, sid);
             syncParam.put(RequestContext.SID1, sid1);
             syncParam.put(RequestContext.DISPATCH,
@@ -95,7 +96,7 @@ public class SyncSystemsSetupAction extends RhnAction implements Listable {
      * @param context RequestContext
      * @return List of packages and differences
      */
-    public List getResult(RequestContext context) {
+    public List<PackageMetadata> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Long sid1 = context.getRequiredParam(RequestContext.SID1);
         User user = context.getCurrentUser();
