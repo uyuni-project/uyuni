@@ -1,3 +1,5 @@
+- Fix package installation on python3 based operating systems
+
 -------------------------------------------------------------------
 Thu Jan 17 14:45:24 CET 2019 - jgonzalez@suse.com
 

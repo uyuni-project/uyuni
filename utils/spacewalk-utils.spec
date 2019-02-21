@@ -84,7 +84,7 @@ Requires:       rpm-python
 %if 0%{?rhel} == 6
 Requires:       %{pythonX}-argparse
 %endif
-Requires:       rhnlib >= 2.5.20
+Requires:       %{pythonX}-rhnlib >= 2.5.20
 Requires:       rpm
 %if ! 0%{?suse_version}
 Requires:       setup
@@ -92,17 +92,24 @@ Requires:       setup
 Requires:       salt
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend
+%if 0%{?suse_version} >= 1320
+Requires:       python3-spacewalk-backend-libs
+%else
 Requires:       spacewalk-backend-libs
+%endif
 Requires:       spacewalk-backend-tools >= 2.2.27
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-config
 Requires:       spacewalk-reports
 Requires:       spacewalk-setup
-Requires:       yum-utils
 
 Requires:       %{pythonX}-curses
 Requires:       %{pythonX}-ldap
+%if 0%{?suse_version} >= 1320
+Requires:       python3-PyYAML
+%else
 Requires:       %{pythonX}-yaml
+%endif
 
 %description
 Generic utilities that may be run against a Spacewalk server.
