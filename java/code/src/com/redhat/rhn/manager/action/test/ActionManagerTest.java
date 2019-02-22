@@ -92,8 +92,8 @@ import com.suse.salt.netapi.utils.Xor;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 

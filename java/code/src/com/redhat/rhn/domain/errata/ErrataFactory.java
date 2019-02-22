@@ -56,7 +56,7 @@ import com.suse.utils.Opt;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
