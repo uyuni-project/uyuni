@@ -19,12 +19,9 @@ package com.redhat.rhn.domain.contentmgmt.test;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentFilter;
-import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
-import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.State;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
@@ -276,69 +273,6 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.removeSource(swSource2);
         fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
         assertEquals(singletonList(swSource), fromDb);
-    }
-
-    /**
-     * Tests adding/removing filters
-     */
-    public void testFilter() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
-        ContentProjectFactory.save(cp);
-
-        ContentFilter packageFilter = new PackageFilter();
-        packageFilter.setName("No-kernel-package filter");
-        packageFilter.setCriteria("criteria1");
-        packageFilter.setOrg(user.getOrg());
-        ContentProjectFactory.save(packageFilter);
-
-        ContentFilter packageFilter2 = new PackageFilter();
-        packageFilter2.setName("No-kernel-package filter2");
-        packageFilter2.setCriteria("criteria2");
-        packageFilter2.setOrg(user.getOrg());
-        ContentProjectFactory.save(packageFilter2);
-
-        cp.addFilter(packageFilter);
-        cp.addFilter(packageFilter2);
-
-        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
-        assertEquals(asList(packageFilter, packageFilter2), fromDb.getFilters());
-
-        cp.removeFilter(packageFilter);
-        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
-        assertEquals(asList(packageFilter2), fromDb.getFilters());
-
-        // check if the order is honored if filters are "swapped"
-        cp.addFilter(packageFilter);
-        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
-        assertEquals(asList(packageFilter2, packageFilter), fromDb.getFilters());
-    }
-
-    /**
-     * Tests adding/removing filters in wrong organization
-     */
-    public void testFilterWrongOrg() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", OrgFactory.createOrg());
-        ContentProjectFactory.save(cp);
-
-        ContentFilter packageFilter = new PackageFilter();
-        packageFilter.setName("No-kernel-package filter");
-        packageFilter.setCriteria("criteria1");
-        packageFilter.setOrg(user.getOrg());
-        ContentProjectFactory.save(packageFilter);
-
-        try {
-            cp.addFilter(packageFilter);
-            fail("A ContentManagementException should have been thrown.");
-        } catch (ContentManagementException e) {
-            // no op
-        }
-
-        try {
-            cp.removeFilter(packageFilter);
-            fail("A ContentManagementException should have been thrown.");
-        } catch (ContentManagementException e) {
-            // no op
-        }
     }
 
     /**
