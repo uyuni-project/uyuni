@@ -86,9 +86,9 @@ def _process_ruleresults(testresult_id, tr):
 
             inserts['rr_id'].append(rr_id)
             inserts['system'].append('#IDREF#')
-            inserts['ident'].append(_truncate(rr.getAttribute('id'), 100))
+            inserts['ident'].append(_truncate(rr.getAttribute('id'), 255))
             for ident in rr.childNodes:
-                trunc_ident = _truncate(_get_text(ident), 100)
+                trunc_ident = _truncate(_get_text(ident), 255)
                 if not trunc_ident:
                     continue
                 inserts['rr_id'].append(rr_id)
