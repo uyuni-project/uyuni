@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Feb 22 16:25:48 CET 2019 - jgonzalez@suse.com
+
+- version 2.8.5.4-1
 - Support token authentication for Debian/Ubuntu clients
 
 -------------------------------------------------------------------
