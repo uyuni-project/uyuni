@@ -1,3 +1,4 @@
+- Add `python-setuptools` package dependency to SLES12 bootstrap repo (bsc#1119964)
 - enable and start tftp socket (bsc#1124822)
 - migrate existing rhn.conf; do not allow new database credentials
   during migration
