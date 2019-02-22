@@ -6,9 +6,9 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js?cb=${rhn:getConfig('web.version')}"></script>
-        <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.version')}"></script>
-        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-mirror-credentials.js?cb=${rhn:getConfig('web.version')}"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-mirror-credentials.js"></script>
     </head>
     <body>
         <!-- MODAL: Edit credentials -->

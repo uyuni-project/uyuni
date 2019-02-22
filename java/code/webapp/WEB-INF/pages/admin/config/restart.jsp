@@ -7,7 +7,7 @@
 
 <head>
         <c:if test="${requestScope.restart == 'true'}">
-            <script src="/javascript/restart.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"> </script>
+            <script src="/javascript/restart.js" type="text/javascript"> </script>
         </c:if>
 </head>
 <body  <c:if test="${requestScope.restart == 'true'}">onload="checkConnection(${requestScope.restartDelay})"</c:if> >

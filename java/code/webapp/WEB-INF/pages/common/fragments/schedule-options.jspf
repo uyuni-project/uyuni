@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
-<script type="text/javascript" src="/javascript/schedule-options.js?cb=${rhn:getConfig('web.version')}"></script>
+<script type="text/javascript" src="/javascript/schedule-options.js"></script>
 <div class="spacewalk-scheduler">
     <div class="form-horizontal">
         <div class="form-group">

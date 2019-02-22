@@ -6,10 +6,10 @@
 
 <html>
 <head>
-    <script type="text/javascript" src="/rhn/dwr/interface/ActionChainEntriesRenderer.js?cb=${rhn:getConfig('web.version')}"></script>
-    <script type="text/javascript" src="/rhn/dwr/interface/ActionChainSaveAction.js?cb=${rhn:getConfig('web.version')}"></script>
-    <script type="text/javascript" src="/javascript/jquery-ui.js?cb=${rhn:getConfig('web.version')}"></script>
-    <script type="text/javascript" src="/javascript/actionchain.js?cb=${rhn:getConfig('web.version')}"></script>
+    <script type="text/javascript" src="/rhn/dwr/interface/ActionChainEntriesRenderer.js"></script>
+    <script type="text/javascript" src="/rhn/dwr/interface/ActionChainSaveAction.js"></script>
+    <script type="text/javascript" src="/javascript/jquery-ui.js"></script>
+    <script type="text/javascript" src="/javascript/actionchain.js"></script>
 </head>
 <body>
     <rhn:toolbar base="h1" icon="header-chain"

@@ -50,7 +50,7 @@
         </c:if>
         <decorator:body />
       </section>
-      <script src='/javascript/manager/menu.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
+      <script src='/javascript/manager/menu.bundle.js'></script>
     </div>
   </body>
 </html:html>

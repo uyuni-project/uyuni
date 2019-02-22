@@ -2,9 +2,9 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="/rhn/dwr/interface/ProxySettingsRenderer.js?cb=${rhn:getConfig('web.version')}"></script>
-        <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.version')}"></script>
-        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-proxy-settings.js?cb=${rhn:getConfig('web.version')}"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/ProxySettingsRenderer.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-proxy-settings.js"></script>
     </head>
     <body>
         <div class="responsive-wizard">
