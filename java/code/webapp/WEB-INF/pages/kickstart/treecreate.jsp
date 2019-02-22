@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 <html:html>
-<script language="javascript" src="/javascript/refresh.js"></script>
+<script language="javascript" src="/javascript/refresh.js?cb=${rhn:getConfig('web.version')}"></script>
 <head>
     <meta http-equiv="Pragma" content="no-cache" />
 </head>

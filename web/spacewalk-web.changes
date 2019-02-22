@@ -1,3 +1,5 @@
+- Add cache buster for static files (js/css) to fix caching issues after upgrading.
+
 -------------------------------------------------------------------
 Wed Feb 27 00:45:28 CET 2019 - jgonzalez@suse.com
 
