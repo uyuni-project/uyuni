@@ -21,6 +21,7 @@ Feature: PXE boot a Retail terminal
 @pxeboot_minion
   Scenario: Install or update PXE formulas on the server
     When I manually install the "tftpd" formula on the server
+    And I manually install the "vsftpd" formula on the server
     And I manually install the "saltboot" formula on the server
     And I manually install the "pxe" formula on the server
     And I wait for "16" seconds
@@ -32,6 +33,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I check the "tftpd" formula
+    And I check the "vsftpd" formula
     And I check the "pxe" formula
     And I click on "Save"
     Then the "tftpd" formula should be checked
@@ -89,6 +91,18 @@ Feature: PXE boot a Retail terminal
     And I enter "pxeboot" in third reserved hostname field
     And I enter the local IP address of "pxeboot" in third reserved IP field
     And I enter the MAC address of "pxeboot-minion" in third reserved MAC field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved!" text
+
+@proxy
+@private_net
+@pxeboot_minion
+  Scenario: Parametrize vsFTPd on the branch server
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Formulas" in the content area
+    And I follow first "Vsftpd" in the content area
+    And I enter the local IP address of "proxy" in internal network address field for vsftpd
+    And I enter "/srv/saltboot" in FTP server directory field
     And I click on "Save Formula"
     Then I should see a "Formula saved!" text
 

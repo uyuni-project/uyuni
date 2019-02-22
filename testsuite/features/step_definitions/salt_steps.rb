@@ -349,6 +349,35 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
   fill_in fieldids[field], with: net_prefix + addresses[host]
 end
 
+When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do |host, field|
+  fieldids = { 'IP'                       => 'branch_network#ip',
+               'domain name server'       => 'dhcpd#domain_name_servers#0',
+               'network IP'               => 'dhcpd#subnets#0#$key',
+               'dynamic IP range begin'   => 'dhcpd#subnets#0#range#0',
+               'dynamic IP range end'     => 'dhcpd#subnets#0#range#1',
+               'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
+               'routers'                  => 'dhcpd#subnets#0#routers#0',
+               'next server'              => 'dhcpd#subnets#0#next_server',
+               'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
+               'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
+               'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
+               'first A address'          => 'bind#available_zones#0#records#A#0#1',
+               'second A address'         => 'bind#available_zones#0#records#A#1#1',
+               'third A address'          => 'bind#available_zones#0#records#A#2#1',
+               'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
+               'internal network address' => 'vsftpd_config#listen_address' }
+  addresses = { 'network'     => '0',
+                'client'      => '2',
+                'minion'      => '3',
+                'pxeboot'     => '4',
+                'range begin' => '128',
+                'range end'   => '253',
+                'proxy'       => '254',
+                'broadcast'   => '255' }
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  fill_in fieldids[field], with: net_prefix + addresses[host]
+end
+
 # rubocop:disable Metrics/BlockLength
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
   fieldids = { 'NIC'                             => 'branch_network#nic',
@@ -397,7 +426,8 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'second partition id'             => 'partitioning#0#partitions#1#$key',
                'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
                'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
-               'second OS image'                 => 'partitioning#0#partitions#1#image' }
+               'second OS image'                 => 'partitioning#0#partitions#1#image',
+               'FTP server directory'            => 'vsftpd_config#anon_root' }
   fill_in fieldids[field], with: value
 end
 # rubocop:enable Metrics/BlockLength
