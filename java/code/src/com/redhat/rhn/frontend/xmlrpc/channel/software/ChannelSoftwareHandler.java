@@ -842,7 +842,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
      * @xmlrpc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
-     *              see channel.software.listArches API for complete listing")
+     *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
      * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
@@ -919,7 +919,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
      * @xmlrpc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
-     *              see channel.software.listArches API for complete listing")
+     *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
      * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
@@ -975,7 +975,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
      * @xmlrpc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
-     *              see channel.software.listArches API for complete listing")
+     *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
      * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
@@ -1024,7 +1024,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
      * @xmlrpc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
-     *              see channel.software.listArches API for complete listing")
+     *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
      * @xmlrpc.returntype int - 1 if the creation operation succeeded, 0 otherwise
