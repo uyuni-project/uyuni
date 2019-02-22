@@ -1,4 +1,4 @@
-
+- Add cache buster for static files (js/css) to fix caching issues after upgrading.
 - Sort activation key list on create image profile page (bsc#1122770)
 - Sort channel lists on the product page of the setup wizard
 - Sort activation key list on bootstrap page (bsc#1122770)

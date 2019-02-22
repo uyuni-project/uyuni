@@ -6,5 +6,5 @@ script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
     const serverId = "#{serverId}";
 +userPreferences
-script(src='/javascript/manager/key-management.bundle.js', type='text/javascript')
+script(src='/javascript/manager/key-management.bundle.js?cb=#{webVersion}', type='text/javascript')
 

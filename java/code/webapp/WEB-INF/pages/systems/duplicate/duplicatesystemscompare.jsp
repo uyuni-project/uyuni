@@ -227,6 +227,6 @@ function getServerIdsToDelete() {
 <c:otherwise><p><bean:message key = "nosystems.message"/></p></c:otherwise>
 </c:choose>
 </rl:listset>
-<script src="/javascript/manager/duplicate-systems-compare-delete.bundle.js" type="text/javascript"></script>
+<script src="/javascript/manager/duplicate-systems-compare-delete.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
 </body>
 </html>

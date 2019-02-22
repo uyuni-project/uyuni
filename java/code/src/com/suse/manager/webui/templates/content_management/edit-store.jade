@@ -6,5 +6,5 @@ script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
     const storeId = "#{store_id}"
 
-script(src='/javascript/manager/image-store-edit.bundle.js', type='text/javascript')
+script(src='/javascript/manager/image-store-edit.bundle.js?cb=#{webVersion}', type='text/javascript')
 

@@ -5,26 +5,28 @@
 
 <html>
 <head>
+<c:set var="cb_version" value="${rhn:getConfig('web.version')}" />
+
 <c:if test="${requestScope.inactiveSystems == 'y'}">
-        <script type="text/javascript" src="/rhn/dwr/interface/InactiveSystemsRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/InactiveSystemsRenderer.js?cb=${cb_version}"></script>
 </c:if>
 <c:if test="${requestScope.tasks == 'y'}">
-        <script type="text/javascript" src="/rhn/dwr/interface/TasksRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/TasksRenderer.js?cb=${cb_version}"></script>
 </c:if>
 <c:if test="${requestScope.recentlyRegisteredSystems == 'y'}">
-        <script type="text/javascript" src="/rhn/dwr/interface/RecentSystemsRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/RecentSystemsRenderer.js?cb=${cb_version}"></script>
 </c:if>
 <c:if test="${requestScope.latestErrata == 'y'}">
-        <script type="text/javascript" src="/rhn/dwr/interface/LatestErrataRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/LatestErrataRenderer.js?cb=${cb_version}"></script>
 </c:if>
 <c:if test="${requestScope.criticalSystems == 'y'}">
-        <script type="text/javascript" src="/rhn/dwr/interface/CriticalSystemsRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/CriticalSystemsRenderer.js?cb=${cb_version}"></script>
 </c:if>
 <c:if test="${requestScope.pendingActions =='y'}">
-        <script type="text/javascript" src="/rhn/dwr/interface/PendingActionsRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/PendingActionsRenderer.js?cb=${cb_version}"></script>
 </c:if>
 <c:if test="${requestScope.systemGroupsWidget == 'y'}">
-        <script type="text/javascript" src="/rhn/dwr/interface/SystemGroupsRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/SystemGroupsRenderer.js?cb=${cb_version}"></script>
 </c:if>
 
 </head>
