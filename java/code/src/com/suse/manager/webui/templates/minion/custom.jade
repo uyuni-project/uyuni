@@ -6,8 +6,8 @@ script(type='text/javascript').
     var csrfToken = "#{csrf_token}";
     var serverId = "#{server.id}";
 
-script(src='/javascript/ace-editor/src-min-noconflict/ace.js')
-script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js')
-script(src='/javascript/jquery-ui.js')
+script(src='/javascript/ace-editor/src-min-noconflict/ace.js?cb=#{webVersion}')
+script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js?cb=#{webVersion}')
+script(src='/javascript/jquery-ui.js?cb=#{webVersion}')
 
-script(src='/javascript/manager/minion-config-channels.bundle.js', type='text/javascript')
+script(src='/javascript/manager/minion-config-channels.bundle.js?cb=#{webVersion}', type='text/javascript')

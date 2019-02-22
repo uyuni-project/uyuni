@@ -2,11 +2,11 @@ include ../common.jade
 
 #notification-messages
 
-script(src='/javascript/momentjs/moment-with-langs.min.js', type='text/javascript')
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webVersion}', type='text/javascript')
 
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
 
 +userPreferences
-script(src='/javascript/manager/notifications/notification-messages.bundle.js')
+script(src='/javascript/manager/notifications/notification-messages.bundle.js?cb=#{webVersion}')
 

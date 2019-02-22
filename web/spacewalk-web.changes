@@ -1,3 +1,4 @@
+- Add cache buster for static files (js/css) to fix caching issues after upgrading.
 - Show undetected subscription-matching message object as a string anyway (bsc#1125600)
 
 -------------------------------------------------------------------

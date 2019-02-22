@@ -50,7 +50,7 @@
         </c:if>
         <decorator:body />
       </section>
-      <script src='/javascript/manager/menu.bundle.js'></script>
+      <script src='/javascript/manager/menu.bundle.js?cb=${rhn:getConfig('web.version')}'></script>
     </div>
     <button id="scroll-top"><i class='fa fa-angle-up'></i></button>
   </body>
