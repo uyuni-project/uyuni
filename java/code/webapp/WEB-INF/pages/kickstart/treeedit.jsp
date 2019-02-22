@@ -6,7 +6,7 @@
 <html:html >
     <head>
         <meta http-equiv="Pragma" content="no-cache" />
-        <script language="javascript" src="/javascript/refresh.js?cb=${rhn:getConfig('web.version')}"></script>
+        <script language="javascript" src="/javascript/refresh.js"></script>
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-kickstart"

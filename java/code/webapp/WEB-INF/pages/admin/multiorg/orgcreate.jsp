@@ -100,7 +100,7 @@
             </div>
 
             <script type="text/javascript" src="/javascript/pwstrength-bootstrap-1.0.2.js"></script>
-            <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js?cb=${rhn:getConfig('web.version')}"></script>
+            <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js"></script>
             <script type="text/javascript">
 function toggleAsterisk() {
   $("[name='password-asterisk']").toggle()

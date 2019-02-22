@@ -77,7 +77,7 @@
                     activationKeyId: '<c:out value="${param.tid}" />'
                 }
         </script>
-        <script src="/javascript/manager/activation-key/activation-key-channels.renderer.bundle.js?cb=${rhn:getConfig('web.version')}"></script>
+        <script src="/javascript/manager/activation-key/activation-key-channels.renderer.bundle.js"></script>
 
         <div class="form-group">
             <label class="col-lg-3 control-label">

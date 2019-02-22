@@ -22,6 +22,6 @@
             return ${sid};
         }
     </script>
-    <script src="/javascript/manager/delete-system-confirm.bundle.js?cb=${rhn:getConfig('web.version')}" type="text/javascript"></script>
+    <script src="/javascript/manager/delete-system-confirm.bundle.js" type="text/javascript"></script>
 </body>
 </html:html>

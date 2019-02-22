@@ -258,7 +258,6 @@ public class SparkApplicationHelper {
         sharedVariables.put("h", ViewHelper.getInstance());
         sharedVariables.put("isDevMode",
                 Config.get().getBoolean("java.development_environment"));
-        sharedVariables.put("webVersion", Config.get().getString("web.version"));
         JadeConfiguration config = jade.configuration();
         config.setSharedVariables(sharedVariables);
 

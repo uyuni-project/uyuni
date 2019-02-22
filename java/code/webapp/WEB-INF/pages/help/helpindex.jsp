@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<script type="text/javascript" src="/javascript/highlander.js?cb=${rhn:getConfig('web.version')}"></script>
+<script type="text/javascript" src="/javascript/highlander.js"></script>
 </head>
 <body>
 

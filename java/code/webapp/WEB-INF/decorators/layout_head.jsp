@@ -22,19 +22,16 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <c:set var="cb_version" value="${rhn:getConfig('web.version')}" />
-
-
-<!-- import default fonts/icons styles -->
-    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css?cb=${cb_version}" />
+    <!-- import default fonts/icons styles -->
+    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" />
     <!-- import custom fonts/icons styles -->
-    <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css?cb=${cb_version}" />
+    <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css" />
 
     <!-- import plugins styles -->
-    <link rel="stylesheet" href="/css/jquery.timepicker.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/css/bootstrap-datepicker.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
+    <link rel="stylesheet" href="/css/jquery.timepicker.css" />
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="/javascript/select2/select2.css" />
+    <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css" />
 
     <!-- import spacewalk styles -->
     <rhn:require acl="is(development_environment)">
@@ -43,24 +40,24 @@
       <script src="/javascript/less.js"></script>
     </rhn:require>
     <rhn:require acl="not is(development_environment)">
-      <link rel="stylesheet" href="/css/spacewalk.css?cb=${cb_version}" />
+      <link rel="stylesheet" href="/css/spacewalk.css" />
     </rhn:require>
 
-    <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
-    <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
+    <script src="/javascript/loggerhead.js"></script>
+    <script src="/javascript/frontend-log.js"></script>
 
-    <script src="/javascript/jquery.js?cb=${cb_version}"></script>
-    <script src="/javascript/bootstrap.js?cb=${cb_version}"></script>
-    <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
-    <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
-    <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
+    <script src="/javascript/jquery.js"></script>
+    <script src="/javascript/bootstrap.js"></script>
+    <script src="/javascript/select2/select2.js"></script>
+    <script src="/javascript/spacewalk-essentials.js"></script>
+    <script src="/javascript/spacewalk-checkall.js"></script>
 
-    <script src="/rhn/dwr/engine.js?cb=${cb_version}"></script>
-    <script src="/rhn/dwr/util.js?cb=${cb_version}"></script>
-    <script src="/rhn/dwr/interface/DWRItemSelector.js?cb=${cb_version}"></script>
-    <script src="/javascript/jquery.timepicker.js?cb=${cb_version}"></script>
-    <script src="/javascript/bootstrap-datepicker.js?cb=${cb_version}"></script>
+    <script src="/rhn/dwr/engine.js"></script>
+    <script src="/rhn/dwr/util.js"></script>
+    <script src="/rhn/dwr/interface/DWRItemSelector.js"></script>
+    <script src="/javascript/jquery.timepicker.js"></script>
+    <script src="/javascript/bootstrap-datepicker.js"></script>
 
-    <script src='/vendors/vendors.bundle.js?cb=${cb_version}'></script>
-    <script src='/javascript/manager/polyfill.bundle.js?cb=${cb_version}'></script>
-    <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>
+    <script src='/vendors/vendors.bundle.js'></script>
+    <script src='/javascript/manager/polyfill.bundle.js'></script>
+    <script src='/javascript/momentjs/moment-with-langs.min.js' type='text/javascript'></script>
