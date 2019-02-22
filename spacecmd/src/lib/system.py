@@ -1782,9 +1782,8 @@ def do_system_delete(self, args):
     self.generate_system_cache(True, delay=1)
 
     # remove these systems from the SSM
-    for s in systems:
-        if s in self.ssm:
-            self.ssm.remove(s)
+    all(self.ssm.pop(system_name) for system_name in systems)
+
 
 ####################
 
