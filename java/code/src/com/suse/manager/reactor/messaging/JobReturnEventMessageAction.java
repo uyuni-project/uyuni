@@ -142,22 +142,21 @@ public class JobReturnEventMessageAction implements MessageAction {
                     actionChainResult,
                     stateResult -> false);
 
-            actionChainResult.forEach((stateIdKey, actionStateApply) -> {
-                // check each action state result and schedule a pkg refresh if needed
-                boolean refreshScheduled = SaltActionChainGeneratorService.parseActionChainStateId(stateIdKey)
-                        .map(stateId ->
-                                refreshPackagesIfNeeded(jobReturnEvent, actionStateApply.getName(),
-                                        Optional.ofNullable(actionStateApply.getChanges().getRet())))
-                        .orElse(false);
-                if (refreshScheduled) {
-                    // make sure no more than one pkg refresh is scheduled
-                    return;
-                }
-            });
+            boolean packageRefreshNeeded = actionChainResult.entrySet().stream()
+                    .map(entry -> SaltActionChainGeneratorService.parseActionChainStateId(entry.getKey())
+                            .map(stateId -> handlePackageChanges(jobReturnEvent, entry.getValue().getName(),
+                                    Optional.ofNullable(entry.getValue().getChanges().getRet())))
+                            .orElse(false))
+                    .collect(Collectors.toList())//This is needed to make sure we don't return early but execute
+                    .stream()                    // handlePackageChange for all the results in actions chain result.
+                    .anyMatch(s->Boolean.TRUE.equals(s));
+            if (packageRefreshNeeded) {
+                schedulePackageRefresh(jobReturnEvent.getMinionId());
+            }
         });
         //For all jobs except when action chains are involved
-        if (!isActionChainInvolved) {
-            refreshPackagesIfNeeded(jobReturnEvent,function, jobResult);
+        if (!isActionChainInvolved && handlePackageChanges(jobReturnEvent, function, jobResult)) {
+            schedulePackageRefresh(jobReturnEvent.getMinionId());
         }
         // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
@@ -282,35 +281,54 @@ public class JobReturnEventMessageAction implements MessageAction {
        }
     }
 
-    private boolean refreshPackagesIfNeeded(JobReturnEvent jobReturnEvent, String function,
-                                                            Optional<JsonElement> jobResult) {
-        return MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
-            .flatMap(minionServer ->
+    /**
+     * This method does two things
+     * 1) Update database with delta package info if enough information is available
+     * 2) If there is not enough information then return true to indicate that full package refresh is needed
+     * @param jobReturnEvent jobReturnEvent
+     * @param function salt module name
+     * @param jobResult result
+     * @return return false If there is enough information to update database with new Package information(delta)
+     *         return true If information is not enough and a full package refresh is needed
+     */
+    private boolean handlePackageChanges(JobReturnEvent jobReturnEvent, String function,
+                                                Optional<JsonElement> jobResult) {
+
+        return MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).flatMap(minionServer ->
                 jobResult.map(result -> {
+                    boolean fullPackageRefreshNeeded = false;
                     try {
                         if (forcePackageListRefresh(jobReturnEvent) ||
-                            SaltUtils.handlePackageChanges(function, result,
-                                    minionServer) ==
-                                PackageChangeOutcome.NEEDS_REFRESHING) {
-                                ActionManager.schedulePackageRefresh(minionServer.getOrg(),
-                                        minionServer);
-                                return true;
-                            }
+                                SaltUtils.handlePackageChanges(function, result,
+                                        minionServer) ==  PackageChangeOutcome.NEEDS_REFRESHING) {
+                            fullPackageRefreshNeeded = true;
                         }
-                    catch (JsonParseException e) {
+                    }
+                     catch (JsonParseException e) {
                         LOG.warn("Could not determine if packages changed " +
                                 "in call to " + function +
                                 " because of a parse error");
                         LOG.warn(e);
                     }
-                    catch (TaskomaticApiException e) {
-                        LOG.error(e);
-                    }
-                    return false;
+                    return fullPackageRefreshNeeded;
                 })
-            ).orElse(false);
+        ).orElse(false);
     }
 
+    /**
+     * Schedule package refresh on the minion
+     * @param minionId ID of the minion for which package refresh should be scheduled
+     */
+    private void schedulePackageRefresh(String minionId) {
+        MinionServerFactory.findByMinionId(minionId).ifPresent(minionServer -> {
+            try {
+                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error(e);
+            }
+        });
+    }
     /**
      * Update the action properly based on the Job results from Salt.
      *
