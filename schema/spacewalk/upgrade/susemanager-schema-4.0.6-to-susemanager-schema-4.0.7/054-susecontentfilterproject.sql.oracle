@@ -14,6 +14,8 @@
 --
 
 CREATE TABLE suseContentFilterProject(
+    id         NUMERIC NOT NULL
+                   CONSTRAINT suse_ct_project_id_pk PRIMARY KEY,
     filter_id  NUMBER NOT NULL
                    CONSTRAINT suse_ct_filter_fid_fk
                        REFERENCES suseContentFilter(id)
@@ -22,10 +24,13 @@ CREATE TABLE suseContentFilterProject(
                    CONSTRAINT suse_ct_filter_pid_fk
                        REFERENCES suseContentProject(id)
                        ON DELETE CASCADE,
-    position   NUMBER NOT NULL
+    state      VARCHAR2(16),
+    position   NUMBER
 )
 ENABLE ROW MOVEMENT
 ;
+
+CREATE SEQUENCE suse_ct_f_p_seq;
 
 CREATE UNIQUE INDEX suse_ct_filter_project_uq
     ON suseContentFilterProject(filter_id, project_id);
