@@ -544,10 +544,10 @@ public class ScapManager extends BaseManager {
                             new RuntimeException("no xccdf result type found for label=" +
                                     label)));
             ruleResult.getIdents().add(
-                    getOrCreateIdent("#IDREF#", truncate(rr.getId(), 100, truncated)));
+                    getOrCreateIdent("#IDREF#", truncate(rr.getId(), 255, truncated)));
             if (rr.getIdents() != null) {
                 for (TestResultRuleResultIdent rrIdent : rr.getIdents()) {
-                    String text = truncate(rrIdent.getText(), 100, truncated);
+                    String text = truncate(rrIdent.getText(), 255, truncated);
                     if (StringUtils.isEmpty(text)) {
                         continue;
                     }
