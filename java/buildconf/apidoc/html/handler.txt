@@ -57,7 +57,7 @@ $call.returnDoc
 </code>
 <p />
 #if($call.sinceAvailable)
-Available since: $call.sinceVersion <p />
+Available since API version: $call.sinceVersion <p />
 #end
 <hr />
 #end

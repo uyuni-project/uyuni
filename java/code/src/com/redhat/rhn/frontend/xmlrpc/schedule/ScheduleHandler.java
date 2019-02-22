@@ -226,7 +226,7 @@ public class ScheduleHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of systems that have completed a specific action.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "actionId")
+     * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
      * #array()
      *   $ScheduleSystemSerializer
@@ -251,7 +251,7 @@ public class ScheduleHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of systems that have a specific action in progress.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "actionId")
+     * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
      * #array()
      *   $ScheduleSystemSerializer
@@ -276,7 +276,7 @@ public class ScheduleHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of systems that have failed a specific action.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "actionId")
+     * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
      * #array()
      *   $ScheduleSystemSerializer

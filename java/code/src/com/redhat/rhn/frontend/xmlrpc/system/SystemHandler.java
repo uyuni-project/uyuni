@@ -1267,6 +1267,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
+     * #array()
      *      #struct("package")
      *          #prop("string", "name")
      *          #prop("string", "version")
@@ -1275,6 +1276,7 @@ public class SystemHandler extends BaseHandler {
      *          #prop("int", "id")
      *          #prop("string", "arch_label")
      *      #struct_end()
+     * #array_end()
      */
     public List<Map<String, Object>> listAllInstallablePackages(User loggedInUser,
             Integer sid) throws FaultException {
