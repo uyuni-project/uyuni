@@ -459,7 +459,7 @@ public class ConfigurationFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Query q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
         q.setLong("rev", revId);
-        q.setEntity("cf", cf);
+        q.setParameter("cf", cf);
         return (ConfigRevision) q.uniqueResult();
     }
 
@@ -471,7 +471,7 @@ public class ConfigurationFactory extends HibernateFactory {
     public static List lookupConfigRevisions(ConfigFile cf) {
         Session session = HibernateFactory.getSession();
         Query q = session.getNamedQuery("ConfigRevision.findByConfigFile");
-        q.setEntity("cf", cf);
+        q.setParameter("cf", cf);
         return q.list();
     }
 

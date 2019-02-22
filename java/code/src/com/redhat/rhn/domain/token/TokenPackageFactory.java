@@ -51,7 +51,7 @@ public class TokenPackageFactory extends HibernateFactory {
 
             retval = session.getNamedQuery(
                 "TokenPackage.lookupByToken")
-                .setEntity("token", tokenIn)
+                .setParameter("token", tokenIn)
                 //Retrieve from cache if there
                 .setCacheable(true).list();
         }
@@ -81,8 +81,8 @@ public class TokenPackageFactory extends HibernateFactory {
             session = HibernateFactory.getSession();
 
             retval = session.getNamedQuery("TokenPackage.lookupByName")
-                .setEntity("token", tokenIn)
-                .setEntity("name", nameIn)
+                .setParameter("token", tokenIn)
+                .setParameter("name", nameIn)
                 //Retrieve from cache if there
                 .setCacheable(true).list();
         }
@@ -113,9 +113,9 @@ public class TokenPackageFactory extends HibernateFactory {
             session = HibernateFactory.getSession();
             retval = (TokenPackage) session.getNamedQuery(
                 "TokenPackage.lookupByNameAndArch")
-                .setEntity("token", tokenIn)
-                .setEntity("name", nameIn)
-                .setEntity("arch", archIn)
+                .setParameter("token", tokenIn)
+                .setParameter("name", nameIn)
+                .setParameter("arch", archIn)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();

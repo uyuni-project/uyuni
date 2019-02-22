@@ -92,8 +92,8 @@ public class ServerFactory extends HibernateFactory {
 
         Session session = HibernateFactory.getSession();
         return (CustomDataValue) session.getNamedQuery(
-                "CustomDataValue.findByServerAndKey").setEntity("server",
-                        server).setEntity("key", key)
+                "CustomDataValue.findByServerAndKey").setParameter("server",
+                        server).setParameter("key", key)
                         // Retrieve from cache if there
                         .setCacheable(true).uniqueResult();
     }

@@ -126,6 +126,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }
 
+
     public void testGetSystemGroups() throws Exception {
         ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
@@ -255,7 +256,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery("from ServerAction sa where " +
             "sa.parentAction = :parent_action");
-        query.setEntity("parent_action", parentAction);
+        query.setParameter("parent_action", parentAction);
         return query.list();
     }
 
@@ -280,7 +281,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery("from ServerAction sa where " +
             "sa.parentAction.schedulerUser = :user");
-        query.setEntity("user", user);
+        query.setParameter("user", user);
         List results = query.list();
         int initialSize = results.size();
         assertEquals(expected, initialSize);
@@ -289,7 +290,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void assertActionsForUser(User user, int expected) throws Exception {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery("from Action a where a.schedulerUser = :user");
-        query.setEntity("user", user);
+        query.setParameter("user", user);
         List results = query.list();
         int initialSize = results.size();
         assertEquals(expected, initialSize);
@@ -505,7 +506,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Query kickstartSessions = session.createQuery(
                 "from KickstartSession ks where ks.action = :action");
-        kickstartSessions.setEntity("action", parentAction);
+        kickstartSessions.setParameter("action", parentAction);
         List results = kickstartSessions.list();
         assertEquals(1, results.size());
 

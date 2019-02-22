@@ -77,7 +77,7 @@ public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
         Session session = HibernateFactory.getSession();
         String queryname = "PackageActionRemovalFailure.findByKey";
         return (PackageActionRemovalFailure) session.getNamedQuery(queryname)
-                .setEntity("server", s).setEntity("action", a).setEntity(
+                .setParameter("server", s).setParameter("action", a).setParameter(
                         "packageName", n).uniqueResult();
     }
 }

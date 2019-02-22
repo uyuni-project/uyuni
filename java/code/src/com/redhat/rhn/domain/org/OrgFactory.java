@@ -139,7 +139,7 @@ public class OrgFactory extends HibernateFactory {
 
         return (CustomDataKey) session.getNamedQuery("CustomDataKey.findByLabelAndOrg")
                 .setString("label", label)
-                .setEntity("org", org)
+                .setParameter("org", org)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();

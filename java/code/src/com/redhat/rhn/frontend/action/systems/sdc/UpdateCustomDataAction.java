@@ -80,8 +80,8 @@ public class UpdateCustomDataAction extends RhnAction {
 
         Session session = HibernateFactory.getSession();
         CustomDataValue cdv = (CustomDataValue) session.getNamedQuery(
-                "CustomDataValue.findByServerAndKey").setEntity("server", server)
-                .setEntity("key", key)
+                "CustomDataValue.findByServerAndKey").setParameter("server", server)
+                .setParameter("key", key)
                 .setCacheable(true).uniqueResult();
 
         form.set(LABEL_PARAM, key.getLabel());

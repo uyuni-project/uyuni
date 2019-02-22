@@ -78,7 +78,7 @@ public class ActivationKeyFactory extends HibernateFactory {
         }
         return (ActivationKey) HibernateFactory.getSession()
             .getNamedQuery("ActivationKey.findByToken")
-                                      .setEntity("token", tokenIn)
+                                      .setParameter("token", tokenIn)
                                       .uniqueResult();
     }
 
@@ -238,7 +238,7 @@ public class ActivationKeyFactory extends HibernateFactory {
     public static ActivationKey lookupByKickstartSession(KickstartSession sess) {
         return (ActivationKey) HibernateFactory.getSession()
                                       .getNamedQuery("ActivationKey.findBySession")
-                                      .setEntity("session", sess)
+                                      .setParameter("session", sess)
                                       //Retrieve from cache if there
                                       .setCacheable(true)
                                       .uniqueResult();
@@ -255,7 +255,7 @@ public class ActivationKeyFactory extends HibernateFactory {
             return null;
         }
         return getSession().getNamedQuery("ActivationKey.findByServer").
-            setEntity("server", server).list();
+            setParameter("server", server).list();
     }
 
     /**
@@ -266,7 +266,7 @@ public class ActivationKeyFactory extends HibernateFactory {
      */
     public static List<ActivationKey> lookupByActivatedServer(Server server) {
         return getSession().getNamedQuery("ActivationKey.findByActivatedServer").
-                setEntity("server", server).list();
+                setParameter("server", server).list();
     }
 
     /**
