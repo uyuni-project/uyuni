@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Feb 22 16:28:12 CET 2019 - jgonzalez@suse.com
+
+- version 3.2.17-1
 - set max length for xccdf rule identifier to 255 to prevent internal server error (bsc#1125492)
 - removing invalid suse-openstack-cloud-6 and suse-packagehub-12-sp4 channel_labels (bsc#1125451)
 - clean the susesccrepository table before modify it (bsc#1125456)
