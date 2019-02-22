@@ -601,8 +601,14 @@ When(/^I enable repositories before installing branch server$/) do
     puts $proxy.run("zypper mr --enable openSUSE-Leap-#{os_version}-Update")
   else
     arch, _code = $proxy.run('uname -m')
-    puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
-    puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+    # if it is a SLE15, repos are more than one Pool and one Update, they are both for each Module
+    if os_version.include? '15'
+      repos, _code = $proxy.run("zypper lr | grep #{os_version} | cut -d'|' -f2")
+      puts $proxy.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+    else
+      puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
+      puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+    end
   end
 end
 
@@ -615,8 +621,14 @@ When(/^I disable repositories after installing branch server$/) do
     puts $proxy.run("zypper mr --disable openSUSE-Leap-#{os_version}-Update")
   else
     arch, _code = $proxy.run('uname -m')
-    puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
-    puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
+    # if it is a SLE15, repos are more than one Pool and one Update, they are both for each Module
+    if os_version.include? '15'
+      repos, _code = $proxy.run("zypper lr | grep #{os_version} | cut -d'|' -f2")
+      puts $proxy.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+    else
+      puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
+      puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
+    end
   end
 end
 
