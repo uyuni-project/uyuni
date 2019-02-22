@@ -1,3 +1,5 @@
+- Fix system_delete with SSM (bsc#1125744)
+
 -------------------------------------------------------------------
 Fri Feb 22 16:22:51 CET 2019 - jgonzalez@suse.com
 
