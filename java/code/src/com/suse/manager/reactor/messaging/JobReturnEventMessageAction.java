@@ -105,12 +105,11 @@ public class JobReturnEventMessageAction implements MessageAction {
                             jobReturnEvent.getJobId(),
                             jobResult.get(),
                             jobReturnEvent.getData().getFun()));
-
-                refreshPackagesIfNeeded(jobReturnEvent, function, jobResult);
         });
 
         // Check if the event was triggered by an action chain execution
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
+        boolean isActionChainInvolved = isActionChainResult.filter(isActionChain -> isActionChain).orElse(false);
         isActionChainResult.filter(isActionChain -> isActionChain).ifPresent(isActionChain -> {
             if (!jobResult.isPresent()) {
                 return;
@@ -156,7 +155,10 @@ public class JobReturnEventMessageAction implements MessageAction {
                 }
             });
         });
-
+        //For all jobs except when action chains are involved
+        if (!isActionChainInvolved) {
+            refreshPackagesIfNeeded(jobReturnEvent,function, jobResult);
+        }
         // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
                 jobReturnEvent.getMinionId());
