@@ -25,6 +25,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,8 +33,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -59,7 +58,7 @@ public class ContentProject extends BaseDomainHelper {
     private String description;
     private ContentEnvironment firstEnvironment;
     private List<ProjectSource> sources = new ArrayList<>();
-    private List<ContentFilter> filters = new ArrayList<>();
+    private List<ContentProjectFilter> filters = new ArrayList<>();
     private List<ContentProjectHistoryEntry> historyEntries = new ArrayList<>();
 
     /**
@@ -269,7 +268,7 @@ public class ContentProject extends BaseDomainHelper {
      *
      * The "leader" is the first {@link SoftwareProjectSource} in the list of Project sources.
      *
-     * @return
+     * @return the leader {@link SoftwareProjectSource}
      */
     public Optional<SoftwareProjectSource> lookupSwSourceLeader() {
         return sources.stream()
@@ -279,53 +278,23 @@ public class ContentProject extends BaseDomainHelper {
     }
 
     /**
-     * Gets the filters.
+     * Gets the links to Project Filters.
      *
      * @return filters
      */
-    @ManyToMany
-    @JoinTable(
-            name = "suseContentFilterProject",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "filter_id")
-    )
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
     @OrderColumn(name = "position")
-    public List<ContentFilter> getFilters() {
+    protected List<ContentProjectFilter> getProjectFilters() {
         return filters;
     }
 
     /**
-     * Sets the filters.
+     * Sets the links to Project Filters.
      *
      * @param filtersIn - the filters
      */
-    public void setFilters(List<ContentFilter> filtersIn) {
+    public void setProjectFilters(List<ContentProjectFilter> filtersIn) {
         filters = filtersIn;
-    }
-
-    /**
-     * Adds a filter.
-     *
-     * @param contentFilter the content filter
-     */
-    public void addFilter(ContentFilter contentFilter) {
-        if (!org.equals(contentFilter.getOrg())) {
-            throw new ContentManagementException("Filter organization does not match Content Project");
-        }
-        filters.add(contentFilter);
-    }
-
-    /**
-     * Removes filter.
-     *
-     * @param contentFilter - the filter to remove
-     * @return true if the filter was contained in the collection
-     */
-    public boolean removeFilter(ContentFilter contentFilter) {
-        if (!org.equals(contentFilter.getOrg())) {
-            throw new ContentManagementException("Filter organization does not match Content Project");
-        }
-        return filters.remove(contentFilter);
     }
 
     /**
