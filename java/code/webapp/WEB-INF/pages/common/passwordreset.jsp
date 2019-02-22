@@ -6,7 +6,7 @@
 
 <html:html>
 <head>
-<script type="text/javascript" src="/javascript/highlander.js"></script>
+<script type="text/javascript" src="/javascript/highlander.js?cb=${rhn:getConfig('web.version')}"></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>

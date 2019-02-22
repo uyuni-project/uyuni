@@ -6,7 +6,7 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="/javascript/highlander.js"></script>
+        <script type="text/javascript" src="/javascript/highlander.js?cb=${rhn:getConfig('web.version')}"></script>
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-search"
