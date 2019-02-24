@@ -1,3 +1,5 @@
+- Generate InRelease file for Debian/Ubuntu repos when metadata signing is enabled
+
 -------------------------------------------------------------------
 Fri Feb 22 16:25:22 CET 2019 - jgonzalez@suse.com
 
