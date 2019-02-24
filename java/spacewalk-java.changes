@@ -1,3 +1,4 @@
+- Expose necessary Java modules on JDK 9+
 - Add configuration option to limit the number of changelog entries added
   to the repository metadata (FATE#325676)
 - Fix a problem when cloning public child channels with a private base channel (bsc#1124639)
