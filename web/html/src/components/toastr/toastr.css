@@ -1,8 +1,9 @@
-.toast-top-full-width {
+
+:global(.toast-top-full-width) {
     margin-top: 60px;
 }
 
-.toast {
+:global(.toast) {
     padding: 15px !important;
     text-align: center !important;
     width: 25% !important;
