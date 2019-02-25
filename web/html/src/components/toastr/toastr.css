@@ -1,0 +1,10 @@
+.toast-top-full-width {
+    margin-top: 60px;
+}
+
+.toast {
+    padding: 15px !important;
+    text-align: center !important;
+    width: 25% !important;
+    font-size: 15px;
+}
