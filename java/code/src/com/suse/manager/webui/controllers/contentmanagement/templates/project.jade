@@ -5,7 +5,16 @@ include /templates/common.jade
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
 
+div#init_data_project(style="display: none")
+    | #{projectToEdit}
+
 script(src='/javascript/manager/content-management/project/project.renderer.bundle.js')
 
 script(type='text/javascript').
-    pageRenderers.contentManagement.project.renderer('content-management-project');
+    pageRenderers.contentManagement.project.renderer(
+        'content-management-project',
+         {
+            project: document.getElementById('init_data_project').textContent,
+            wasFreshlyCreatedMessage: "#{wasFreshlyCreatedMessage}"
+         }
+    );
