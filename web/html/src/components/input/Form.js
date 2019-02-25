@@ -7,14 +7,14 @@ const { Check } = require('./Check');
 const { Select } = require('./Select');
 const { DateTime } = require('./DateTime');
 
-
 type Props = {
   model: Object,
   onSubmit?: Function,
   onSubmitInvalid?: Function,
   formRef?: string,
-  className: string,
+  className?: string,
   divClass?: string,
+  formDirection?: string,
   children: React.Node,
   onChange?: Function,
   onValidate?: Function,
@@ -33,6 +33,7 @@ class Form extends React.Component<Props, State> {
     divClass: '',
     onChange: undefined,
     onValidate: undefined,
+    formDirection: "form-horizontal"
   };
 
   inputs = {};
@@ -186,7 +187,7 @@ class Form extends React.Component<Props, State> {
   render() {
     return (
       <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
-        <div className={`form-horizontal${this.props.divClass ? ` ${this.props.divClass}` : ''}`}>
+        <div className={`${this.props.formDirection || ''} ${this.props.divClass ? ` ${this.props.divClass}` : ''}`}>
           {this.renderChildren(this.props.children)}
         </div>
       </form>
