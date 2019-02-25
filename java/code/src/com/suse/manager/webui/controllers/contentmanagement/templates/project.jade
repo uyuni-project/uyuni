@@ -8,7 +8,7 @@ script(type='text/javascript').
 div#init_data_project(style="display: none")
     | #{projectToEdit}
 
-script(src='/javascript/manager/content-management/project/project.renderer.bundle.js')
+script(src='/javascript/manager/content-management/project/project.renderer.bundle.js?cb=#{webVersion}')
 
 script(type='text/javascript').
     pageRenderers.contentManagement.project.renderer(

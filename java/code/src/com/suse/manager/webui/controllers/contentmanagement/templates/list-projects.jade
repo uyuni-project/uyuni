@@ -5,7 +5,7 @@ include /templates/common.jade
 div#init_data_projects(style="display: none")
     | #{contentProjects}
 
-script(src='/javascript/manager/content-management/list-projects/list-projects.renderer.bundle.js')
+script(src='/javascript/manager/content-management/list-projects/list-projects.renderer.bundle.js?cb=#{webVersion}')
 
 script(type='text/javascript').
     pageRenderers.contentManagement.listProjects.renderer(
