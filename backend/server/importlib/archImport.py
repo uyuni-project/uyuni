@@ -16,7 +16,7 @@
 # Arch import process
 #
 
-from importLib import Import
+from .importLib import Import
 
 
 class ArchImport(Import):

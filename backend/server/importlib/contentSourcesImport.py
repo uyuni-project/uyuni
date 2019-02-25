@@ -14,7 +14,7 @@
 #
 #
 
-from importLib import Import, Channel
+from .importLib import Import, Channel
 from spacewalk.server.rhnChannel import channel_info
 
 

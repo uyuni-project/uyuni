@@ -1569,7 +1569,7 @@ class Backend:
             SELECT scc_id FROM suseSCCRepository
             """)
         _query_repo.execute()
-        existing_data = ["%s" % (x['sccid']) for x in _query_repo.fetchall_dict() or []]
+        existing_data = ["%s" % (x['sccid']) for x in _query_repo.fetchall_dict() if 'sccid' in x or []]
         toinsert = [[], [], [], [], [], [], [], []]
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], []]
@@ -2544,7 +2544,7 @@ def _buildDatabaseValue(row, fieldsHash):
     # sanitized
     dict = {}
     for f, datatype in list(fieldsHash.items()):
-        dict[f] = sanitizeValue(row[f], datatype)
+        dict[f] = sanitizeValue(row.get(f), datatype)
     return dict
 
 

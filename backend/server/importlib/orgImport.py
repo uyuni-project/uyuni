@@ -16,7 +16,7 @@
 # Org import process
 #
 
-from importLib import Import
+from .importLib import Import
 
 # Thanks for this class goes to Alex Martelli:
 # http://stackoverflow.com/questions/1151658/python-hashable-dicts
