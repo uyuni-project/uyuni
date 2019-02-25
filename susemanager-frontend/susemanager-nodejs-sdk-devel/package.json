@@ -43,7 +43,8 @@
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-hot-loader": "^4.7.0",
-    "react-select": "^2.4.1"
+    "react-select": "^2.4.1",
+    "toastr": "^2.1.4"
   },
   "scripts": {
     "clean": "rm -rf node_modules",
