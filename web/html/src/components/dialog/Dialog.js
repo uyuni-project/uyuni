@@ -1,22 +1,27 @@
-/* eslint-disable */
-"use strict";
-
 const React = require("react");
 const PopUp = require("../popup").PopUp;
 
+function closeDialog(modalId: string) {
+  const closeModalPromise = new Promise((resolve) => {
+    $('#' + modalId).on('hidden.bs.modal', () => resolve());
+  });
+  $('#' + modalId).modal('hide');
+  return closeModalPromise;
+}
+
 function Dialog(props) {
+  const {onClosePopUp, buttons, ...OtherProps} = props;
+
   return (
       <PopUp
-          id={props.id}
-          className={props.className}
-          content={props.content}
-          title={props.title}
-          footer={props.buttons}
-          onClosePopUp={() => props.onClosePopUp && props.onClosePopUp(props.item)}
+          footer={buttons}
+          onClosePopUp={() => onClosePopUp && onClosePopUp()}
+          {...OtherProps}
       />
   );
 }
 
 module.exports = {
-    Dialog
+    Dialog,
+    closeDialog
 };
