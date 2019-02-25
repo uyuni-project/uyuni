@@ -229,6 +229,11 @@ public class MenuTree {
                     .withAltUrl("/rhn/channels/manage/DistChannelMapEdit.do").withAltUrl("/rhn/channels/manage/DistChannelMapDelete.do")
                     .withVisibility(adminRoles.get("org"))));
 
+            // Content Management
+            nodes.add(new MenuItem("contentmanagement.nav.title").withIcon("spacewalk-icon-software-channels")
+                .addChild(new MenuItem("contentmanagement.nav.list")
+                        .withPrimaryUrl("/rhn/manager/contentmanagement/projects")));
+
             // Audit
             nodes.add(new MenuItem("Audit").withIcon("fa-search").withDir("/rhn/audit")
                 .addChild(new MenuItem("cveaudit.nav.title").withPrimaryUrl("/rhn/manager/audit/cve"))
