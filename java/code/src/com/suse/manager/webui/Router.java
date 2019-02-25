@@ -52,6 +52,7 @@ import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VirtualNetsController;
 import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.controllers.VisualizationController;
+import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.errors.NotFoundException;
 
@@ -95,6 +96,7 @@ public class Router implements SparkApplication {
 
         // Content Management Routes
         ContentManagementViewsController.initRoutes(jade);
+        ContentManagementApiController.initRoutes();
 
         // Minions
         get("/manager/systems/keys",
