@@ -15,12 +15,26 @@
 package com.suse.manager.webui.controllers.contentmanagement;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
+
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentManager;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.user.User;
+
+import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
+import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.utils.Json;
+
+import com.google.gson.Gson;
 
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -33,57 +47,54 @@ import spark.template.jade.JadeTemplateEngine;
 public class ContentManagementViewsController {
 
     private static Logger log = Logger.getLogger(ContentManagementViewsController.class);
+    private static final Gson GSON = Json.GSON;
 
     private ContentManagementViewsController() {
     }
 
-    /**
-     * Init all the routes used by ContentManagementViewsController
-     * @param jade the used jade template engine
-     */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/contentmanagement/createproject",
-                withCsrfToken(ContentManagementViewsController::createProjectView), jade);
-        get("/manager/contentmanagement/listprojects",
-                withCsrfToken(ContentManagementViewsController::listProjectsView), jade);
         get("/manager/contentmanagement/project",
-                withCsrfToken(ContentManagementViewsController::projectView), jade);
+                withCsrfToken(ContentManagementViewsController::createProjectView), jade);
+        get("/manager/contentmanagement/project/:label",
+                withCsrfToken(withUser(ContentManagementViewsController::editProjectView)), jade);
+        get("/manager/contentmanagement/projects",
+                withUser(ContentManagementViewsController::listProjectsView), jade);
     }
 
-    /**
-     * Returns a view to create a new management projects
-     *
-     * @param req  the request object
-     * @param res  the response object
-     * @return the model and view
-     */
     public static ModelAndView createProjectView(Request req, Response res) {
         Map<String, Object> data = new HashMap<>();
         return new ModelAndView(data, "controllers/contentmanagement/templates/create-project.jade");
     }
 
-    /**
-     * Returns a view to list management projects
-     *
-     * @param req  the request object
-     * @param res  the response object
-     * @return the model and view
-     */
-    public static ModelAndView listProjectsView(Request req, Response res) {
+    public static ModelAndView editProjectView(Request req, Response res, User user) {
+
+        String projectToEditLabel = req.params("label");
+
+        Optional<ContentProject> projectToEdit = ContentManager.lookupProject(projectToEditLabel, user);
+
+        // TODO: Handle errors
+
         Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "controllers/contentmanagement/templates/list-projects.jade");
+        projectToEdit.ifPresent(project -> {
+            List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(project.getLabel(), user);
+            data.put("projectToEdit", GSON.toJson(ResponseMappers.mapProjectFromDB(project, contentEnvironments)));
+        });
+        data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(req));
+
+        return new ModelAndView(data, "controllers/contentmanagement/templates/project.jade");
     }
 
-    /**
-     * Returns a view to show a management project detail.
-     *
-     * @param req  the request object
-     * @param res  the response object
-     * @return the model and view
-     */
-    public static ModelAndView projectView(Request req, Response res) {
+    public static ModelAndView listProjectsView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "controllers/contentmanagement/templates/project.jade");
+
+        List<ContentProject> projects = ContentManager.listProjects(user);
+        Map<ContentProject, List<ContentEnvironment>> environmentsByProject = new HashMap<>();
+        projects.forEach(project -> environmentsByProject.put(project, ContentManager.listProjectEnvironments(project.getLabel(), user)));
+
+        data.put("flashMessage", FlashScopeHelper.flash(req));
+        data.put("contentProjects", GSON.toJson(ResponseMappers.mapProjectListingFromDB(environmentsByProject)));
+
+        return new ModelAndView(data, "controllers/contentmanagement/templates/list-projects.jade");
     }
 
 }
