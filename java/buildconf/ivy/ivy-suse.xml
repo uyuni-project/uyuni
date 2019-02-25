@@ -20,7 +20,7 @@
         <dependency org="suse" name="commons-fileupload" rev="1.1.1" />
         <dependency org="suse" name="commons-io" rev="2.4" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
-        <dependency org="suse" name="commons-lang3" rev="3.1" />
+        <dependency org="suse" name="commons-lang3" rev="3.4" />
         <dependency org="suse" name="commons-logging" rev="1.2" />
         <dependency org="suse" name="commons-validator" rev="1.1.4" />
         <dependency org="suse" name="concurrent" rev="1.3.4" />
