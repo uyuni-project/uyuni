@@ -217,7 +217,7 @@ class SSLSocket:
 
                 # More bytes to read?
                 pending = self._connection.pending()
-                if pending == 0:
+                if pending == 0 and buffer_length == amt:
                     # we're done here
                     break
             except SSL.ZeroReturnError:
