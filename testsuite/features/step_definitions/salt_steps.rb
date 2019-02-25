@@ -321,6 +321,7 @@ When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   select(value, from: boxids[box])
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, field|
   fieldids = { 'IP'                       => 'branch_network#ip',
                'domain name server'       => 'dhcpd#domain_name_servers#0',
@@ -337,7 +338,8 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
                'second A address'         => 'bind#available_zones#0#records#A#1#1',
                'third A address'          => 'bind#available_zones#0#records#A#2#1',
                'fourth A address'         => 'bind#available_zones#0#records#A#3#1',
-               'internal network address' => 'tftpd#listen_ip' }
+               'internal network address' => 'tftpd#listen_ip',
+               'vsftpd internal network address' => 'vsftpd_config#listen_address' }
   addresses = { 'network'     => '0',
                 'client'      => '2',
                 'minion'      => '3',
@@ -398,7 +400,8 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'second partition id'             => 'partitioning#0#partitions#1#$key',
                'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
                'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
-               'second OS image'                 => 'partitioning#0#partitions#1#image' }
+               'second OS image'                 => 'partitioning#0#partitions#1#image',
+               'FTP server directory'            => 'vsftpd_config#anon_root' }
   fill_in fieldids[field], with: value
 end
 # rubocop:enable Metrics/BlockLength
