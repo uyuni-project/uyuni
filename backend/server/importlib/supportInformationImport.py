@@ -10,7 +10,7 @@
 #
 # Support Information Import
 
-from importLib import GenericPackageImport
+from .importLib import GenericPackageImport
 from spacewalk.satellite_tools import syncCache
 
 class SupportInformationImport(GenericPackageImport):

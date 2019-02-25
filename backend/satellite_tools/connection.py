@@ -16,7 +16,7 @@
 #
 #
 
-import gzipstream
+import gzip
 
 from rhn import rpclib
 from spacewalk.satellite_tools import constants
@@ -149,8 +149,8 @@ class CompressedStream:
         # gzipstream tries to flush stuff; add a noop function
         self._real_stream.flush = noop
         self.stream = self._real_stream
-        if not isinstance(self._real_stream, gzipstream.GzipStream):
-            self.stream = gzipstream.GzipStream(stream=self._real_stream, mode="r")
+        if not isinstance(self._real_stream, gzip.GzipFile):
+            self.stream = gzip.GzipFile(fileobj=self._real_stream, mode="r")
 
     def close(self):
         if self.stream:

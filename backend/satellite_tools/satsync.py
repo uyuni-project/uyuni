@@ -23,7 +23,6 @@ import os
 import sys
 import stat
 import time
-import exceptions
 import fnmatch
 try:
     #  python 2
@@ -52,32 +51,32 @@ from spacewalk.server.rhnLib import get_package_path
 from spacewalk.common import fileutils
 
 # __rhn sync/import imports__
-from . import xmlWireSource
-from . import xmlDiskSource
-from .progress_bar import ProgressBar
-from .xmlSource import FatalParseException, ParseException
-from .diskImportLib import rpmsPath
+from spacewalk.satellite_tools import xmlWireSource
+from spacewalk.satellite_tools import xmlDiskSource
+from spacewalk.satellite_tools.progress_bar import ProgressBar
+from spacewalk.satellite_tools.xmlSource import FatalParseException, ParseException
+from spacewalk.satellite_tools.diskImportLib import rpmsPath
 
-from .syncLib import log, log2, log2disk, log2stderr, log2email
-from .syncLib import RhnSyncException, RpmManip, ReprocessingNeeded
-from .syncLib import initEMAIL_LOG, dumpEMAIL_LOG
-from .syncLib import FileCreationError, FileManip
+from spacewalk.satellite_tools.syncLib import log, log2, log2disk, log2stderr, log2email
+from spacewalk.satellite_tools.syncLib import RhnSyncException, RpmManip, ReprocessingNeeded
+from spacewalk.satellite_tools.syncLib import initEMAIL_LOG, dumpEMAIL_LOG
+from spacewalk.satellite_tools.syncLib import FileCreationError, FileManip
 
-from .SequenceServer import SequenceServer
+from spacewalk.satellite_tools.SequenceServer import SequenceServer
 from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
 
 from spacewalk.server.importlib.importLib import InvalidChannelFamilyError
 from spacewalk.server.importlib.importLib import MissingParentChannelError
 from spacewalk.server.importlib.importLib import get_nevra, get_nevra_dict
 
-from . import satCerts
-from . import req_channels
-from . import messages
-from . import sync_handlers
-from . import constants
+from spacewalk.satellite_tools import satCerts
+from spacewalk.satellite_tools import req_channels
+from spacewalk.satellite_tools import messages
+from spacewalk.satellite_tools import sync_handlers
+from spacewalk.satellite_tools import constants
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
-_ = translation.ugettext
+_ = translation.gettext
 initCFG('server.satellite')
 initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
@@ -599,7 +598,7 @@ class Syncer:
                            e._msg))
             elif isinstance(e, ParseException):
                 msg = (_('ERROR: parser exception occurred: %s') % (e))
-            elif isinstance(e, exceptions.SystemExit):
+            elif isinstance(e, SystemExit):
                 log(-1, _('*** SYSTEM INTERRUPT CALLED ***'), stream=sys.stderr)
                 raise
             else:
