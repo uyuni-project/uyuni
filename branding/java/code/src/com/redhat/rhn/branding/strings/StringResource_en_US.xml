@@ -2081,6 +2081,14 @@ tree will not be usable for autoinstalling.
         <source>Provisioning is currently not supported for systems managed with push via SSH tunnel.</source>
       </trans-unit>
 
+      <!-- Content Management -->
+      <trans-unit id="contentmanagement.nav.title">
+        <source>Content Management</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.nav.list">
+        <source>Content Projects</source>
+      </trans-unit>
+
       <!-- CVE Audit Messages -->
       <trans-unit id="cveaudit.nav.title">
         <source>CVE Audit</source>
