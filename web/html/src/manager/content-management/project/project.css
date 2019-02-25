@@ -1,0 +1,42 @@
+/*Grouped Pannels*/
+
+.panel-group-contentmngt {
+    margin-top: 60px;
+}
+
+.panel-group-contentmngt>.panel {
+    margin: 0px;
+    border-radius: 0px;
+    overflow: hidden;
+}
+
+.panel-group-contentmngt>.panel:first-child {
+    border-bottom: none;
+}
+
+
+/*Colapsed pannels*/
+
+.panel-heading .collapsed .hide-on-collapsed {
+    display: inline;
+}
+
+.panel-heading .collapsed .show-on-collapsed {
+    display: none;
+}
+
+.panel-heading .hide-on-collapsed {
+    display: none;
+}
+
+.panel-heading .show-on-collapsed {
+    display: inline;
+}
+
+.panel-heading .accordion-toggle {
+    cursor: pointer;
+}
+
+.panel-body .min-height-panel {
+    min-height: 20px;
+}
