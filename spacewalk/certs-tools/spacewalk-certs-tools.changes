@@ -1,3 +1,4 @@
+- clean up downloaded gpg keys after bootstrap (bsc#1126075)
 - Fix problem with spacewalk certs tools and Python3 (bsc#1125282)
 
 -------------------------------------------------------------------

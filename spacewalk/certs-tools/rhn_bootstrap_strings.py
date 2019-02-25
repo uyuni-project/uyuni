@@ -627,6 +627,7 @@ if [ ! -z "$ORG_GPG_KEY" ] ; then
         else
             rpm --import $GPG_KEY
         fi
+        rm -f ${GPG_KEY}
     done
 else
     echo "* no organizational GPG keys to import"
