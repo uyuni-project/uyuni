@@ -65,6 +65,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
+          exclude: /node_modules/,
           use: [
             {loader: 'style-loader'},
             {
@@ -74,6 +75,11 @@ module.exports = (env, argv) => {
               }
             }
           ]
+        },
+        {
+          test: /\.css$/,
+          include: /node_modules/,
+          use: [{loader: 'style-loader'}, {loader: 'css-loader'}]
         }
       ]
     },
