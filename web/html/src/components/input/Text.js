@@ -1,17 +1,14 @@
 // @flow
-
 const React = require('react');
-
 const { InputBase } = require('./InputBase');
 
 type Props = {
-  type?: string,
+  type: string,
   placeholder?: string,
   inputClass?: string,
 } & InputBase.Props;
 
-// $FlowFixMe  // upgrade flow
-const Text = React.forwardRef((props: Props, ref) => {
+const Text = (props: Props) => {
   const {
     type,
     placeholder,
@@ -22,16 +19,15 @@ const Text = React.forwardRef((props: Props, ref) => {
     <InputBase {...propsToPass}>
       {
         ({
-          setValue,
-          onBlur,
-        }) => {
+           setValue,
+           onBlur,
+         }) => {
           const onChange = (event: Object) => {
             setValue(event.target.name, event.target.value);
           };
           return (
             <input
               className={`form-control${inputClass ? ` ${inputClass}` : ''}`}
-              ref={ref}
               type={type || 'text'}
               name={props.name}
               value={props.value}
@@ -44,8 +40,7 @@ const Text = React.forwardRef((props: Props, ref) => {
         }
       }
     </InputBase>
-  );
-})
+  )};
 
 Text.defaultProps = Object.assign({
   type: 'text',

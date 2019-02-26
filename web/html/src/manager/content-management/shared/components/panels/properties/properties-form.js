@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
-
 import {Form} from "components/input/Form";
 import {Text} from "components/input/Text";
 
+import type {projectPropertiesType} from '../../../type/project.type.js';
+
 type Props = {
-  properties: Object,
+  properties: projectPropertiesType,
   onChange: Function,
   editing?: boolean
 };

@@ -1,14 +1,12 @@
 // @flow
-// $FlowFixMe  // upgrade flow
 import React, { useState } from 'react';
-import { hot } from 'react-hot-loader/root';
 import useProjectActionsApi from "../shared/api/use-project-actions-api";
 import {TopPanel} from "components/panels/TopPanel";
 import TopPanelButtons from "./top-panel-buttons";
 import PropertiesCreate from "../shared/components/panels/properties/properties-create";
 import {handlePropertiesChange} from "../shared/state/project/project.state";
 import {showErrorToastr} from "components/toastr/toastr";
-
+import PageWrapper from 'components/general/page-wrapper';
 
 const CreateProject = () => {
 
@@ -18,8 +16,9 @@ const CreateProject = () => {
         name: null,
         description: null,
         historyEntries: [],
-      },
+      }
   });
+
   const { onAction } = useProjectActionsApi({});
 
   return (
@@ -32,7 +31,7 @@ const CreateProject = () => {
                   onAction(project, "create")
                     .then(
                       (data) => {
-                        window.location.href = `/rhn/manager/contentmanagement/project/${project.properties.label}`
+                        window.location.href = `/rhn/manager/contentmanagement/project/${project.properties.label || ''}`
                       }
                     )
                     .catch((error) => {

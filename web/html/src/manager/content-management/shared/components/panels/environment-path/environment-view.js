@@ -1,8 +1,10 @@
 //@flow
 import React from 'react';
 
+import type {projectEnvironmentType} from '../../../type/project.type.js';
+
 type Props = {
-  environment: Object,
+  environment: projectEnvironmentType,
 }
 
 // $FlowFixMe  // upgrade flow
