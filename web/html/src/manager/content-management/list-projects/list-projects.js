@@ -5,7 +5,7 @@ import {Table, Column, SearchField} from 'components/table';
 import Functions from 'utils/functions';
 import {LinkButton} from 'components/buttons';
 import { showSuccessToastr } from 'components/toastr/toastr';
-import pageWrapper from 'components/general/page-wrapper';
+import withPageWrapper from 'components/general/with-page-wrapper';
 
 type ContentProjectOverviewType = {
   properties: {
@@ -109,4 +109,4 @@ const ListProjects = (props: Props) => {
     );
 }
 
-export default hot(ListProjects);
+export default withPageWrapper<Props>(ListProjects);
