@@ -5,16 +5,10 @@ import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import {addSource, modifySource, deleteSource} from "./sources.utils";
 import {showSuccessToastr} from "components/toastr/toastr";
 
-export type sourcesType = {
-  id: string,
-  name: string,
-  type: string,
-  level: string,
-  state: string
-}
+import type {projectSourceType} from '../../../type/project.type.js';
 
 type SourcesProps = {
-  sources: Array<sourcesType>,
+  sources: Array<projectSourceType>,
   onChange: Function,
 };
 

@@ -9,9 +9,11 @@ import Promote from "../promote/promote";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import { mapAddEnvironmentRequest, mapUpdateEnvironmentRequest } from './environment.utils';
 
+import type {projectEnvironmentType} from '../../../type/project.type.js';
+
 type Props = {
   projectId: string,
-  environments: Array<Object>,
+  environments: Array<projectEnvironmentType>,
   onChange: Function,
 };
 

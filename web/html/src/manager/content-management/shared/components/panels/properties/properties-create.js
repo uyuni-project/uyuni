@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
 import {Panel} from "../../../../../../components/panels/Panel";
-
 import PropertiesForm from "./properties-form";
 
+import type {projectPropertiesType} from '../../../type/project.type.js';
+
 type Props = {
-  properties: Object,
+  properties: projectPropertiesType,
   onChange: Function,
 };
 

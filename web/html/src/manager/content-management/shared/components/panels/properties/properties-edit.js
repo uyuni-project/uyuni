@@ -7,9 +7,11 @@ import useProjectActionsApi from "../../../api/use-project-actions-api";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import PropertiesView from "./properties-view";
 
+import type {projectPropertiesType} from '../../../type/project.type.js';
+
 type Props = {
   projectId: string,
-  properties: Object,
+  properties: projectPropertiesType,
   onChange: Function,
 };
 

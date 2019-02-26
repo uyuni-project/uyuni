@@ -1,6 +1,5 @@
 // @flow
 
-// $FlowFixMe  // upgrade flow
 import {useState} from 'react';
 import Network from '../../../../utils/network';
 
