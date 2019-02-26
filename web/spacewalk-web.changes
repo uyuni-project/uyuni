@@ -1,3 +1,4 @@
+- Fix initializing of the datetime picker (bsc#1126862)
 - show feedback messages after using the retry option on the notification messages page
 
 -------------------------------------------------------------------
