@@ -2,7 +2,7 @@
 #
 # VERSION               1.0.0
 
-FROM registry.mgr.suse.de/suma-head-base:latest
+FROM registry.mgr.suse.de/suma-3.2-base:latest
 MAINTAINER Matei Albu "malbu@suse.de"
 
 # Add the repositories
