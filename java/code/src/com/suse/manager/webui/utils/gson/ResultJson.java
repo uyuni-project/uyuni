@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils.gson;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,6 +26,7 @@ public class ResultJson<T> {
 
     private final boolean success;
     private final List<String> messages;
+    private final HashMap<String,String> errors;
     private final T data;
 
     /**
@@ -44,7 +46,17 @@ public class ResultJson<T> {
      * @return a ResultJson
      */
     public static ResultJson error(List<String> messagesIn) {
-        return new ResultJson<>(false, messagesIn, null);
+        return error(messagesIn, new HashMap<>());
+    }
+
+    /**
+     * Create an error result with the given messages.
+     *
+     * @param messagesIn a list of messages
+     * @return a ResultJson
+     */
+    public static ResultJson error(List<String> messagesIn, HashMap<String, String> errorsIn) {
+        return new ResultJson<>(false, messagesIn, null, errorsIn);
     }
 
     /**
@@ -101,6 +113,22 @@ public class ResultJson<T> {
         this.success = successIn;
         this.messages = messagesIn;
         this.data = dataIn;
+        this.errors = new HashMap<>();
+    }
+
+    /**
+     * Instantiates a new Json result.
+     *
+     * @param successIn  the success
+     * @param messagesIn the messages
+     * @param dataIn     the data
+     * @param errorsIn   errorsByKey
+     */
+    public ResultJson(boolean successIn, List<String> messagesIn, T dataIn, HashMap errorsIn) {
+        this.success = successIn;
+        this.messages = messagesIn;
+        this.data = dataIn;
+        this.errors = errorsIn;
     }
 
     /**
