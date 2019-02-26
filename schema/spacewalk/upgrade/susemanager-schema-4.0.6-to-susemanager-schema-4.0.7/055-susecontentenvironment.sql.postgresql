@@ -48,6 +48,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_env_pid_name_uq
 --     ON suseContentEnvironment(next_env_id);
 
 ALTER TABLE suseContentProject
+  DROP CONSTRAINT IF EXISTS suse_ct_project_fenvid_fk;
+
+ALTER TABLE suseContentProject
   ADD CONSTRAINT suse_ct_project_fenvid_fk
   FOREIGN KEY (first_env_id)
   REFERENCES suseContentEnvironment(id)
