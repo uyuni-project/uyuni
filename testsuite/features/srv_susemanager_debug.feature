@@ -1,4 +1,4 @@
-# Copyright (c) 2015-17 SUSE LLC
+# Copyright (c) 2015-19 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Debug SUSE Manager after the testsuite has run
@@ -11,3 +11,6 @@ Feature: Debug SUSE Manager after the testsuite has run
 
   Scenario: Check the tomcat logs on server
     Then I check the tomcat logs for errors
+
+  Scenario: Check salt event log for failures on server 
+    Then I control that salt event log on server contains no failures 

@@ -107,6 +107,11 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     And I should see a "rpm_" link
 
 @centos_minion
+  Scenario: Check events history for failures on CentOS minion
+    Given I am on the Systems overview page of this "ceos-minion"
+    Then I check for failed events on history event page
+
+@centos_minion
   Scenario: Cleanup: delete the CentOS minion
     When I am on the Systems overview page of this "ceos-minion"
     And I follow "Delete System"

@@ -95,6 +95,20 @@ Then(/^I control that up2date logs on client under test contains no Traceback er
   raise 'error found, check the client up2date logs' if code.nonzero?
 end
 
+# salt failures log check
+Then(/^I control that salt event log on server contains no failures$/) do
+  # upload salt event parser log
+  file = 'salt_event_parser.py'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/tmp/" + file
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  # print failures from salt event log
+  output = $server.run("python3 /tmp/#{file}")
+  count_failures = output.to_s.scan(/false/).length
+  raise "\nFound #{count_failures} failures in salt event log:\n#{output.join.to_s}\n" if count_failures.nonzero?
+end
+
 # action chains
 When(/^I check radio button "(.*?)"$/) do |arg1|
   raise unless choose(arg1)
@@ -861,4 +875,22 @@ And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
 
     step %(I wait until I see "1 message read status updated successfully." text)
   end
+end
+
+And(/^I check for failed events on history event page$/) do
+  steps %(
+    When I follow "Events" in the content area
+    And I follow "History" in the content area
+    Then I should see a "System History" text
+  )
+  failings = ""
+  event_table_xpath = "//div[@class='table-responsive']/table/tbody"
+  rows = find(:xpath, event_table_xpath)
+  rows.all('tr').each do |tr|
+    if tr.has_css?('.fa.fa-times-circle-o.fa-1-5x.text-danger')
+      failings << "#{tr.text}\n"
+    end
+  end
+  count_failures = failings.length
+  raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
