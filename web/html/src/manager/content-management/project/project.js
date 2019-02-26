@@ -14,7 +14,7 @@ import "./project.css";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 import {ModalButton} from "components/dialog/ModalButton";
 import useProjectActionsApi from '../shared/api/use-project-actions-api';
-import PageWrapper from 'components/general/page-wrapper';
+import withPageWrapper from 'components/general/with-page-wrapper';
 
 import type {projectType} from '../shared/type/project.type';
 
@@ -118,4 +118,4 @@ const Project = (props: Props) => {
   );
 }
 
-export default hot(Project);
+export default withPageWrapper<Props>(Project);
