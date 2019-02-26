@@ -34,10 +34,22 @@ Tracks # **add downstream PR, if any**
 
 ## Changelogs
 
-Copy the following sentence as a new comment if you don't need changelog entries:
+If you don't need a changelog check, please mark this checkbox:
 
-> gitarro no changelog needed !!!
+- [ ] No changelog needed
 
-If the test `changelog_test`already run, then add another new comment with the following text:
+If you uncheck the checkbox after the PR is created, you will need to re-run `changelog_test` (see below)
 
-> gitarro rerun changelog_test !!!
+
+## Re-run a test
+
+If you need to re-run a test, please mark the related checkbox, it will be unchecked automatically once it has re-run:
+
+- [ ] Re-run test "changelog_test"
+- [ ] Re-run test "backend_unittests_pgsql"
+- [ ] Re-run test "java_lint_checkstyle"		 
+- [ ] Re-run test "java_pgsql_tests"		 
+- [ ] Re-run test "ruby_rubocop"
+- [ ] Re-run test "schema_migration_test_oracle"
+- [ ] Re-run test "schema_migration_test_pgsql"		 
+- [ ] Re-run test "susemanager_unittests"
