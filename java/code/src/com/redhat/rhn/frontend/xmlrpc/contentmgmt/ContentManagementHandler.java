@@ -424,9 +424,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
      * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @xmlrpc.returntype int - the number of removed objects
+     * @xmlrpc.returntype int - the number of detached sources
      */
     public int detachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
+        ensureOrgAdmin(loggedInUser);
         Type type = Type.lookupByLabel(sourceType);
         try {
             return ContentManager.detachSource(projectLabel, type, sourceLabel, loggedInUser);

@@ -291,8 +291,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(singletonList(source), cp.getSources());
 
         ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
-        assertFalse(ContentProjectFactory.lookupProjectSource(cp, SW_CHANNEL, channel.getLabel(), user).isPresent());
-        assertTrue(cp.getSources().isEmpty());
+        ProjectSource projectSource = ContentProjectFactory.lookupProjectSource(cp, SW_CHANNEL, channel.getLabel(), user).get();
+        assertEquals(ProjectSource.State.DETACHED, projectSource.getState());
+        assertEquals(singletonList(source), cp.getSources());
     }
 
     /**

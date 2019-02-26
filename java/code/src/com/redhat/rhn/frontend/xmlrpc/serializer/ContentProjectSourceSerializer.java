@@ -48,6 +48,7 @@ public class ContentProjectSourceSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("contentProjectLabel", source.getContentProject().getLabel());
         helper.add("state", source.getState());
         helper.add("type", ProjectSource.Type.lookupBySourceClass(source.getClass()).getLabel());
+        helper.add("state", source.getState());
         source.asSoftwareSource().ifPresent(s -> {
             helper.add("channelLabel", s.getChannel().getLabel());
         });
