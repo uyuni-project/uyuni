@@ -1,13 +1,15 @@
 // @flow
 import React from 'react';
 
+import type {projectPropertiesType} from '../../../type/project.type.js';
+
 type Props = {
-  properties: Object,
+  properties: projectPropertiesType,
 }
 
 const PropertiesView= (props: Props) => {
 
-  //TODO: CORY HOUSE -> DATA FROM API -> normalize and error handling?
+  //TODO: Improve data normalization
   const historyEntries = props.properties.historyEntries || [];
   const sortVersionsHistoryBackwards = [...historyEntries.sort((a, b) => b.version - a.version)]
 

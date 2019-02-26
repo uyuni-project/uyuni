@@ -1,12 +1,11 @@
 // @flow
-// $FlowFixMe  // upgrade flow
 import React, {useEffect} from 'react';
-import {hot} from 'react-hot-loader/root';
 import {TopPanel} from 'components/panels/TopPanel';
 import {Table, Column, SearchField} from 'components/table';
 import Functions from 'utils/functions';
 import {LinkButton} from 'components/buttons';
 import { showSuccessToastr } from 'components/toastr/toastr';
+import pageWrapper from 'components/general/page-wrapper';
 
 type ContentProjectOverviewType = {
   properties: {
@@ -15,7 +14,7 @@ type ContentProjectOverviewType = {
     description: String,
   },
   environments: Array<String>,
-  isPublished: Boolean
+  needRebuild: Boolean
 };
 
 type Props = {
@@ -95,11 +94,11 @@ const ListProjects = (props: Props) => {
           <Column
             columnKey="name"
             cell={
-              row => row.isPublished
+              row => row.needRebuild
                 && (
                   <LinkButton
                     className="btn-primary"
-                    text="Re-Publish"
+                    text="Re-Build"
                     href={`/rhn/manager/contentmanagement/project/${row.id}`}
                   />
                 )

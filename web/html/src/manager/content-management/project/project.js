@@ -1,26 +1,25 @@
 // @flow
 
-// $FlowFixMe  // upgrade flow
 import React, { useState, useEffect } from 'react';
-import { hot } from 'react-hot-loader/root';
 import {TopPanel} from "../../../components/panels/TopPanel";
 import Sources from "../shared/components/panels/sources/sources";
 import PropertiesEdit from "../shared/components/panels/properties/properties-edit";
 import Build from "../shared/components/panels/build/build";
 import EnvironmentPath from "../shared/components/panels/environment-path/environment-path";
-
 import {handleSourcesChange, handleBuild} from "../shared/state/project/project.state";
 import { showErrorToastr, showSuccessToastr } from 'components/toastr/toastr';
 import Filters from "../shared/components/panels/filters/filters";
 import _isEmpty from "lodash/isEmpty";
-
 import "./project.css";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 import {ModalButton} from "components/dialog/ModalButton";
 import useProjectActionsApi from '../shared/api/use-project-actions-api';
+import PageWrapper from 'components/general/page-wrapper';
+
+import type {projectType} from '../shared/type/project.type';
 
 type Props = {
-  project: Object,
+  project: projectType,
   wasFreshlyCreatedMessage?: string,
 };
 
