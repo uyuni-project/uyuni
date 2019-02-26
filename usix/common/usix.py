@@ -24,7 +24,7 @@ PY3 = sys.version_info[0] == 3
 # Common data types
 if PY3:
     BufferType = bytes
-    UnicodeType = str
+    UnicodeType = bytes
     StringType = str
     DictType = dict
     IntType = int
