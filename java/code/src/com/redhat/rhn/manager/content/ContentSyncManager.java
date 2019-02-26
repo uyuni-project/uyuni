@@ -215,13 +215,20 @@ public class ContentSyncManager {
      * from the local file instead of the network.
      * @return List of {@link Credentials}
      */
-    private List<Credentials> filterCredentials() {
+    private List<Credentials> filterCredentials() throws ContentSyncException {
         // if repos are read with "fromdir", no credentials are used. We signal this
         // with one null Credentials object
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
             return new ArrayList<Credentials>() { { add(null); } };
         }
-        return CredentialsFactory.lookupSCCCredentials();
+
+        List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+        if (credentials.isEmpty()) {
+            throw new ContentSyncException("No SCC credentials found.");
+        }
+        else {
+            return credentials;
+        }
     }
 
     /**
