@@ -1,3 +1,7 @@
+- Sync with Spacewalk
+- make filemod more readable
+- 1665858 - diff expects string not bytes
+
 -------------------------------------------------------------------
 Mon Dec 17 14:31:58 CET 2018 - jgonzalez@suse.com
 
