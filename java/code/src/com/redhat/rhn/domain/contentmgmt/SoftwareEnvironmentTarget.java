@@ -19,9 +19,12 @@ import com.redhat.rhn.domain.channel.Channel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Optional;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+
+import static java.util.Optional.of;
 
 /**
  * Content Environment Target targeting software Channel
@@ -31,6 +34,28 @@ import javax.persistence.OneToOne;
 public class SoftwareEnvironmentTarget extends EnvironmentTarget {
 
     private Channel channel;
+
+    /**
+     * Standard constructor
+     */
+    public SoftwareEnvironmentTarget() {
+    }
+
+    /**
+     * Standard constructor
+     *
+     * @param envIn the environment
+     * @param channelIn the channel
+     */
+    public SoftwareEnvironmentTarget(ContentEnvironment envIn, Channel channelIn) {
+        super(envIn);
+        this.channel = channelIn;
+    }
+
+    @Override
+    public Optional<SoftwareEnvironmentTarget> asSoftwareTarget() {
+        return of(this);
+    }
 
     /**
      * Gets the channel.
