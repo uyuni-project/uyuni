@@ -17,6 +17,7 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.translation.SqlExceptionTranslator;
 import com.redhat.rhn.domain.channel.Channel;
@@ -127,6 +128,8 @@ public class OtherXmlWriter extends RepomdWriter {
         Long pkgId = pkgDto.getId();
         Collection<PackageChangelogDto> changelogEntries = TaskManager
                 .getPackageChangelogDtos(pkgId);
+        int limit = Config.get().getInt(ConfigDefaults.CHANGELOG_ENTRY_LIMIT, 0);
+        int count = 0;
         for (PackageChangelogDto changelogEntry : changelogEntries) {
             String author = changelogEntry.getAuthor();
             String text = changelogEntry.getText();
@@ -137,6 +140,12 @@ public class OtherXmlWriter extends RepomdWriter {
             tmpHandler.startElement("changelog", attr);
             tmpHandler.addCharacters(sanitize(pkgId, text));
             tmpHandler.endElement("changelog");
+            count++;
+            if (limit > 0 && count >= limit) {
+                // stop adding changelog entries when limit is reached
+                // limit == 0 means add all changelog entries
+                break;
+            }
         }
     }
 

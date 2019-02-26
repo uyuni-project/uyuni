@@ -186,6 +186,8 @@ public class ConfigDefaults {
     private static final String SYSTEM_CURRENCY_BUG  = "java.sc_bug";
     private static final String SYSTEM_CURRENCY_ENH  = "java.sc_enh";
 
+    public static final String CHANGELOG_ENTRY_LIMIT = "java.max_changelog_entries";
+
     /**
      * Taskomatic defaults
      */
