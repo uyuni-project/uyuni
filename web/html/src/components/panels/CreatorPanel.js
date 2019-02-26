@@ -1,5 +1,4 @@
 // @flow
-// $FlowFixMe  // upgrade flow
 import React, {useState, useEffect} from 'react';
 import {Panel} from "./Panel";
 import {ModalLink} from "../dialog/ModalLink";
