@@ -6,7 +6,7 @@ import TopPanelButtons from "./top-panel-buttons";
 import PropertiesCreate from "../shared/components/panels/properties/properties-create";
 import {handlePropertiesChange} from "../shared/state/project/project.state";
 import {showErrorToastr} from "components/toastr/toastr";
-import PageWrapper from 'components/general/page-wrapper';
+import withPageWrapper from 'components/general/with-page-wrapper';
 
 const CreateProject = () => {
 
@@ -49,4 +49,4 @@ const CreateProject = () => {
   )
 }
 
-export default hot(CreateProject);
+export default withPageWrapper<{}>(CreateProject);
