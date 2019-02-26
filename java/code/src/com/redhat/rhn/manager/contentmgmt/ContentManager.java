@@ -274,24 +274,21 @@ public class ContentManager {
     }
 
     /**
-     * Detach (and delete) a Source from given Project
+     * Detach a Source from given Project
+     *
      * @param projectLabel - the Project label
      * @param sourceType - the Source Type (e.g. SW_CHANNEL)
      * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
      * @param user the user
      * @throws EntityNotExistsException when either the Project or the Source is not found
-     * @return number of Sources removed
+     * @return number of Sources detached
      */
     public static int detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
         ensureOrgAdmin(user);
-        ContentProject project = lookupProject(projectLabel, user)
-                .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
         ProjectSource source = lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(ProjectSource.class, sourceLabel));
-
-        project.removeSource(source);
-        ContentProjectFactory.save(project);
-        return ContentProjectFactory.remove(source);
+        source.setState(ProjectSource.State.DETACHED);
+        return 1;
     }
 
     /**

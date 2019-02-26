@@ -41,7 +41,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.REMOVED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.suse.utils.Opt.consume;
 
 /**
@@ -273,8 +273,9 @@ public class ContentProject extends BaseDomainHelper {
     public Optional<SoftwareProjectSource> lookupSwSourceLeader() {
         return sources.stream()
                 .flatMap(s -> Opt.stream(s.asSoftwareSource()))
-                .filter(src -> !src.getState().equals(REMOVED) && src.getChannel().isBaseChannel())
-                .filter(src -> src.getChannel().isBaseChannel()).findFirst();
+                .filter(src -> !src.getState().equals(DETACHED) && src.getChannel().isBaseChannel())
+                .filter(src -> src.getChannel().isBaseChannel())
+                .findFirst();
     }
 
     /**
