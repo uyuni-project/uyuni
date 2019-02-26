@@ -107,7 +107,8 @@ public class DebRepositoryWriter extends RepositoryWriter {
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
             SystemCommandExecutor sce = new SystemCommandExecutor();
             int exitCode = sce.execute(
-                    new String[] {"/usr/bin/mgr-sign-metadata", prefix + "Release", prefix + "Release.gpg", prefix + "InRelease"});
+                    new String[] {"/usr/bin/mgr-sign-metadata", prefix + "Release", prefix + "Release.gpg",
+                            prefix + "InRelease"});
             if (exitCode != 0) {
                 log.error("Could not sign file " + prefix + "Release. " +
                         "This will prevent the repository " + channel.getLabel() + " from working correctly. " +
