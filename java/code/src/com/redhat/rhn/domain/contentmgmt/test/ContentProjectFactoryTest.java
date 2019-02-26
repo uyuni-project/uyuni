@@ -360,14 +360,14 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.addSource(swSource, empty());
         ContentProjectFactory.save(swSource);
 
-        ProjectSource fromDb = ContentProjectFactory.listProjectSourcesByProject(cp).get(0);
-        assertEquals(State.ADDED, fromDb.getState());
+        ProjectSource fromDb = cp.getSources().get(0);
+        assertEquals(State.ATTACHED, fromDb.getState());
 
-        fromDb.setState(State.REMOVED);
+        fromDb.setState(State.DETACHED);
         ContentProjectFactory.save(fromDb);
 
-        fromDb = ContentProjectFactory.listProjectSourcesByProject(cp).get(0);
-        assertEquals(State.REMOVED, fromDb.getState());
+        fromDb = cp.getSources().get(0);
+        assertEquals(State.DETACHED, fromDb.getState());
     }
 
     /**

@@ -52,8 +52,8 @@ public abstract class ProjectSource {
      * State of the Source
      */
     public enum State {
-        ADDED,
-        REMOVED,
+        ATTACHED,
+        DETACHED,
         BUILT
     }
 
@@ -134,7 +134,7 @@ public abstract class ProjectSource {
      * Standard constructor
      */
     public ProjectSource() {
-        state = State.ADDED;
+        state = State.ATTACHED;
     }
 
     /**
