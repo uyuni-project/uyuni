@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Feb 27 13:17:30 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
 - Fix mgr_events to use current ioloop (bsc#1126280)
 - add states for virtual machine actions
 - Added option to read 'pkg_download_point_...' pillar values and use it in repo url
