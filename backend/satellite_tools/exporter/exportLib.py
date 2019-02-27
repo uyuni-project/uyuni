@@ -612,15 +612,9 @@ class ChannelsDumper(BaseSubelementDumper):
     subelement_dumper_class = _ChannelDumper
 
     def __init__(self, writer, channels=()):
-        BaseSubelementDumper.__init__(self, writer)
+        super(BaseSubelementDumper, self).__init__(writer)
         self._channels = channels
 
-    def set_iterator(self):
-        if not self._channels:
-            # Nothing to do
-            return
-
-        raise NotImplementedError("To be overridden in a child class")
 
 
 class ChannelDumper(_ChannelDumper):
@@ -882,7 +876,7 @@ class _SuseProductRepositoryDumper(BaseRowDumper):
         return {
             'root-product-id' : self._row['rootid'],
             'product-id' : self._row['pdid'],
-            'repository-id' : self._row['repoid'],
+            'repository-id' : self._row['repo_id'],
             'channel-label': self._row['channel_label'],
             'parent-channel-label': self._row['parent_channel_label'],
             'channel-name': self._row['channel_name'],
@@ -890,12 +884,12 @@ class _SuseProductRepositoryDumper(BaseRowDumper):
             'update-tag': self._row['update_tag']
             }
 
-class SuseProductExtensionDumper(BaseQueryDumper):
+class SuseProductRepositoryDumper(BaseQueryDumper):
     tag_name = 'suse-product-repositories'
     iterator_query = """
     SELECT p1.product_id AS pdid,
            p2.product_id AS rootid,
-           r.scc_id AS repoid,
+           r.scc_id AS repo_id,
            pr.channel_label,
            pr.parent_channel_label,
            pr.channel_name,
