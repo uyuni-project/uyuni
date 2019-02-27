@@ -1,3 +1,4 @@
+- minion-action-cleanup Taskomatic task: do not clean actions younger than one hour
 - Add support for custom username when bootstrapping with Salt-SSH
 - Archive orphan actions when a system is deleted and make them visible in the UI (bsc#1118213)
 - Cobbler version have been updated to >= 3.0
