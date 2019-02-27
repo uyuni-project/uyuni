@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2018 SUSE
+# Copyright (c) 2014-2019 SUSE
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -8,6 +8,11 @@ require 'nokogiri'
 Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
   node = get_target(host)
   node.run("rpm -q #{package}")
+end
+
+Then(/^Deb package "([^"]*)" with version "([^"]*)" should be installed on "([^"]*)"$/) do |package, version, host|
+  node = get_target(host)
+  node.run("test $(dpkg-query -W -f='${Version}' #{package}) = \"#{version}\"")
 end
 
 Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
@@ -24,12 +29,21 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
 end
 
+When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
+  node = get_target(host)
+  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  result.split("\n")[0, 15].each do |line|
+    line.force_encoding("UTF-8")
+    puts line
+  end
+end
+
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host == 'sle-minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif host == 'ssh-minion' or host == 'ceos-minion' or host == 'ceos-ssh-minion'
+  elsif ['ssh-minion', 'ceos-minion', 'ceos-ssh-minion', 'ubuntu-minion', 'ubuntu-ssh-minion'].include?(host)
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -517,8 +531,10 @@ When(/^I enable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
     cmd = "zypper mr --enable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -529,8 +545,10 @@ When(/^I disable repository "([^"]*)" on this "([^"]*)"$/) do |repo, host|
     cmd = "zypper mr --disable #{repo}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -553,8 +571,10 @@ When(/^I install package "([^"]*)" on this "([^"]*)"$/) do |package, host|
     cmd = "zypper --non-interactive install -y #{package}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y install #{package}"
+  elsif file_exists?(node, '/usr/bin/apt-get')
+    cmd = "apt-get --assume-yes install #{package}"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or apt-get'
   end
   node.run(cmd)
 end
@@ -565,8 +585,10 @@ When(/^I remove package "([^"]*)" from this "([^"]*)"$/) do |package, host|
     cmd = "zypper --non-interactive remove -y #{package}"
   elsif file_exists?(node, '/usr/bin/yum')
     cmd = "yum -y remove #{package}"
+  elsif file_exists?(node, '/usr/bin/dpkg')
+    cmd = "dpkg --remove #{package}"
   else
-    raise 'Not found: zypper or yum'
+    raise 'Not found: zypper, yum or dpkg'
   end
   node.run(cmd)
 end

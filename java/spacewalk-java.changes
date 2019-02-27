@@ -1,3 +1,8 @@
+- Generate InRelease file for Debian/Ubuntu repos when metadata signing is enabled
+- Add support for Ubuntu minions (FATE#324534, FATE#326848, FATE#326811)
+- Fix/enhance Debian/Ubuntu repository generation
+- Implement HTTP token authentication for Ubuntu clients
+
 -------------------------------------------------------------------
 Wed Feb 27 13:01:45 CET 2019 - jgonzalez@suse.com
 

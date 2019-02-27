@@ -1,12 +1,6 @@
-{%- set repos_to_disable = [] %}
-{%- set repos = salt['pkg.list_repos']() %}
-{%- for alias, data in repos.items() %}
-  {%- if 'spacewalk:' in alias %}
-    {%- if data.get('enabled', true) %}
-      {%- do repos_to_disable.append(alias) %}
-    {%- endif %}
-  {%- endif %}
-{%- endfor %}
+# disable all spacewalk:* repos
+{% set repos_disabled = {'match_str': 'spacewalk:', 'matching': true} %}
+{%- include 'channels/disablelocalrepos.sls' %}
 
 disable_spacewalksd:
   service.dead:
@@ -45,21 +39,11 @@ remove_traditional_stack:
       - rhncfg
       - rhnlib
       - rhnmd
-{%- if repos_to_disable|length > 0 %}
+{%- if repos_disabled.count > 0 %}
     - require:
       - module: disable_repo*
 {%- endif %}
     - unless: rpm -q spacewalk-proxy-common
-
-# disable all spacewalk:* repos
-{%- for alias in repos_to_disable %}
-disable_repo_{{ alias }}:
-  module.run:
-    - name: pkg.mod_repo
-    - repo: {{ alias }}
-    - kwargs:
-        enabled: False
-{%- endfor %}
 
 # Remove suseRegisterInfo in a separate yum transaction to avoid being called by
 # the yum plugin.

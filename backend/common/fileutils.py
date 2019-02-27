@@ -488,7 +488,7 @@ class payload:
         return getattr(self.fileobj, x)
 
 
-def decompress_open(filename, mode='r'):
+def decompress_open(filename, mode='rt'):
     file_obj = None
     if filename.endswith('.gz'):
         file_obj = gzip.open(filename, mode)

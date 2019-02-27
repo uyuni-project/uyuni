@@ -20,6 +20,7 @@ import time
 import re
 import fnmatch
 import requests
+from functools import cmp_to_key
 from spacewalk.common import fileutils
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
@@ -233,7 +234,7 @@ class ContentSource(object):
         if latest:
             # TODO
             pass
-        pkglist.sort(self._sort_packages)
+        pkglist.sort(key = cmp_to_key(self._sort_packages))
 
         if not filters:
             # if there's no include/exclude filter on command line or in database

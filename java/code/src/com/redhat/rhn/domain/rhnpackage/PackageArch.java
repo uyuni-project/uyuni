@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.rhnpackage;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.common.ArchType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -108,6 +109,17 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
             builder.append("archType", this.getArchType());
         }
         return builder.toString();
+    }
+
+    /**
+     * Returns the channel architecture as a universal arch string, practically
+     * stripping away any arch type suffixes (e.g. "-deb"). The universal string is
+     * meant to be recognized in the whole linux ecosystem.
+     *
+     * @return a package architecture string
+     */
+    public String toUniversalArchString() {
+        return StringUtils.substringBeforeLast(getLabel(), "-deb");
     }
 
     /**

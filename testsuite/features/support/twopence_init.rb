@@ -20,13 +20,14 @@ $proxy = Twopence.init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = Twopence.init("ssh:#{ENV['SERVER']}")
 $minion = Twopence.init("ssh:#{ENV['MINION']}")
 $ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
+$ubuntu_minion = Twopence.init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
 $ssh_minion = Twopence.init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
 $kvm_server = Twopence.init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
 $xen_server = Twopence.init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
 
 # Lavanda library module extension
 # Look at support/lavanda.rb for more details
-nodes = [$server, $proxy, $client, $minion, $ceos_minion, $ssh_minion, $kvm_server, $xen_server]
+nodes = [$server, $proxy, $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion, $kvm_server, $xen_server]
 nodes.each do |node|
   next if node.nil?
 
@@ -63,6 +64,8 @@ def get_target(host)
     'ceos-minion' => $ceos_minion,
     'ceos-ssh-minion' => $ceos_minion,
     'ceos-client' => $ceos_minion,
+    'ubuntu-minion' => $ubuntu_minion,
+    'ubuntu-ssh-minion' => $ubuntu_minion,
     'ssh-minion' => $ssh_minion,
     'sle-minion' => $minion,
     'sle-client' => $client,

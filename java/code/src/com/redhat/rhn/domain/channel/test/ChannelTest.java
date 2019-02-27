@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.channel.test;
 
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
@@ -209,5 +210,20 @@ public class ChannelTest extends BaseTestCaseWithUser {
         assertNotEmpty(c.getSources());
     }
 
+    public void testIsTypeRpm() throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user);
+        ChannelArch arch = ChannelFactory.lookupArchByLabel("channel-ia64");
+        c.setChannelArch(arch);
+
+        assertTrue(c.isTypeRpm());
+    }
+
+    public void testIsTypeDeb() throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user);
+        ChannelArch arch = ChannelFactory.lookupArchByLabel("channel-ia64-deb");
+        c.setChannelArch(arch);
+
+        assertTrue(c.isTypeDeb());
+    }
 
 }

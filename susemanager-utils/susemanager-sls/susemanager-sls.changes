@@ -1,3 +1,6 @@
+- Add support for Ubuntu minions
+- Add Ubuntu SSL-Cert SLS-Files
+
 -------------------------------------------------------------------
 Wed Feb 27 13:17:30 CET 2019 - jgonzalez@suse.com
 
@@ -35,7 +38,7 @@ Fri Oct 26 10:52:53 CEST 2018 - jgonzalez@suse.com
 - Fix: Cleanup Kiwi cache in highstate (bsc#1109892)
 - removed the ssl certificate verification while checking bootstrap repo URL (bsc#1095220)
 - Removed the need for curl to be present at bootstrap phase (bsc#1095220)
-- Migrate Python code to be Python 2/3 compatible 
+- Migrate Python code to be Python 2/3 compatible
 - Fix merging of image pillars
 - Fix: delete old custom OS images pillar before generation (bsc#1105107)
 - Generate OS image pillars via Java
