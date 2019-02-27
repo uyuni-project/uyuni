@@ -150,9 +150,9 @@ class SuseProductRepositoriesImport(GenericPackageImport):
             if item['product_id'] not in pid_trans:
                 pid_trans[item['product_id']] = self.backend.lookupSuseProductIdByProductId(item['product_id'])
             item['product_pdid'] = pid_trans[item['product_id']]
-            if item['root_id'] not in pid_trans:
-                pid_trans[item['root_id']] = self.backend.lookupSuseProductIdByProductId(item['root_id'])
-            item['root_pdid'] = pid_trans[item['root_id']]
+            if item['rootid'] not in pid_trans:
+                pid_trans[item['rootid']] = self.backend.lookupSuseProductIdByProductId(item['rootid'])
+            item['root_pdid'] = pid_trans[item['rootid']]
             if item['repo_id'] not in rid_trans:
                 rid_trans[item['repo_id']] = self.backend.lookupRepoIdBySCCRepoId(item['repo_id'])
             item['repo_pdid'] = rid_trans[item['repo_id']]

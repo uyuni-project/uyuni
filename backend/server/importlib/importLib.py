@@ -215,10 +215,10 @@ class SuseProductExtension(Information):
         'recommended' : StringType
     }
 
-class SuseProductRepositories(Information):
+class SuseProductRepository(Information):
     attributeTypes = {
         'product_id'          : IntType,
-        'root_id'             : IntType,
+        'rootid'              : IntType,
         'repo_id'             : IntType,
         'channel_label'       : StringType,
         'parent_channel_label': StringType,
@@ -227,7 +227,7 @@ class SuseProductRepositories(Information):
         'update_tag'          : StringType
     }
 
-class SCCRepositories(Information):
+class SCCRepository(Information):
     attributeTypes = {
         'sccid'        : IntType,
         'autorefresh'  : StringType,
