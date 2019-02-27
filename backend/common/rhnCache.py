@@ -358,7 +358,7 @@ class CompressedCache:
 
     def get_file(self, name, modified=None):
         compressed_file = self.cache.get_file(name, modified)
-        return ClosingZipFile('r', compressed_file)
+        return ClosingZipFile('rb', compressed_file)
 
     def set_file(self, name, modified=None, user='root', group='root',
                  mode=int('0755', 8)):
@@ -385,10 +385,7 @@ class ObjectCache:
 
     def set(self, name, value, modified=None, user='root', group='root',
             mode=int('0755', 8)):
-        if sys.version_info[0] >= 3:
-            pickled = cPickle.dumps(value, -1).decode('latin-1')
-        else:
-            pickled = cPickle.dumps(value, -1)
+        pickled = cPickle.dumps(value, -1)
         self.cache.set(name, pickled, modified, user, group, mode)
 
     def has_key(self, name, modified=None):
