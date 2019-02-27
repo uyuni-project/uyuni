@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Feb 27 12:59:35 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
 - Allow errata import from local repositories.
 - Fix "rhnpush" after migration to Python 3.
 - Fix package import issues when package encoding is ISO8859-1.
