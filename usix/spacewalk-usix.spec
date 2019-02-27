@@ -54,7 +54,7 @@
 %global pythonrhnroot %{python2_sitelib}/spacewalk
 
 Name:           spacewalk-usix
-Version:        4.0.3
+Version:        4.0.4
 Release:        1%{?dist}
 Summary:        Spacewalk server and client nano six library
 %if %{_vendor} == "debbuild"
