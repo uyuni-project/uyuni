@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Feb 27 13:14:42 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
 - add configurable option to auto deploy new tokens (bsc#1123019)
 - Add `python-setuptools` package dependency to SLES12 bootstrap repo (bsc#1119964)
 - enable and start tftp socket (bsc#1124822)
