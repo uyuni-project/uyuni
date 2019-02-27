@@ -344,7 +344,7 @@ class _ChannelDumper(BaseRowDumper):
             ('rhn-channel-update-tag', 'update_tag'),
         ]
         for k, v in mappings:
-            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+            arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
 
         arr.append(SimpleDumper(self._writer, 'rhn-channel-last-modified',
                                 _dbtime2timestamp(self._row['last_modified'])))
@@ -640,7 +640,7 @@ class ChannelDumper(_ChannelDumper):
             ('rhn-channel-receiving-updates', 'receiving_updates'),
         ]
         for k, v in mappings:
-            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+            arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
 
         #channel_id = self._row['id']
         # Add EUS info
@@ -1031,7 +1031,7 @@ class _ChannelFamilyDumper(BaseRowDumper):
             ('rhn-channel-family-product-url', 'product_url'),
         ]
         for k, v in mappings:
-            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+            arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
 
         return ArrayIterator(arr)
 
@@ -1103,7 +1103,7 @@ class _PackageDumper(BaseRowDumper):
             ('rhn-package-header-end', 'header_end')
         ]
         for k, v in mappings:
-            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+            arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
 
         # checksums
         checksum_arr = [{'type':  self._row['checksum_type'],
@@ -1277,7 +1277,7 @@ class _ChangelogEntryDumper(BaseRowDumper):
             ('rhn-package-changelog-entry-text', 'text'),
         ]
         for k, v in mappings:
-            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+            arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
 
         arr.append(SimpleDumper(self._writer, 'rhn-package-changelog-entry-time',
                                 _dbtime2timestamp(self._row['time'])))
@@ -1306,7 +1306,7 @@ class _SuseProductEntryDumper(BaseRowDumper):
             ('suse-product-file-entry-description', 'description'),
         ]
         for k, v in mappings:
-            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+            arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
         return ArrayIterator(arr)
 
 class _SuseProductFilesDumper(BaseSubelementDumper):
@@ -1324,7 +1324,7 @@ class _SuseEulasEntryDumper(BaseRowDumper):
             ('suse-eula-entry-checksum', 'checksum'),
         ]
         for k, v in mappings:
-            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+            arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
         return ArrayIterator(arr)
 
 class _SuseEulasDumper(BaseSubelementDumper):
@@ -1430,7 +1430,7 @@ class _ErratumDumper(BaseRowDumper):
             ('rhn-erratum-severity', 'severity_id', 127)
         ]
         for k, v, b in mappings:
-            value = self._row[v] if self._row[v] is not None else ""
+            value = self._row.get(v) if self._row.get(v) is not None else ""
             arr.append(SimpleDumper(self._writer, k, value, b))
         arr.append(SimpleDumper(self._writer, 'rhn-erratum-issue-date',
                                 _dbtime2timestamp(self._row['issue_date'])))
