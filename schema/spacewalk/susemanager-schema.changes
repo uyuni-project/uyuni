@@ -1,3 +1,5 @@
+- Set minion-action-cleanup run frequency from hourly to daily at midnight
+
 -------------------------------------------------------------------
 Fri Feb 22 16:28:12 CET 2019 - jgonzalez@suse.com
 
