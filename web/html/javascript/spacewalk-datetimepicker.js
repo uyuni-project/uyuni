@@ -54,8 +54,7 @@ function setupDatePicker() {
       input.timepicker('show');
     });
 
-    // compatibility with the forms expected by struts
-    input.on('changeTime', function() {
+    var updateVars = () => {
       var pickerTime = input.timepicker('getTime');
       var am_pm = $('input#' + name + '_am_pm');
       var hour = $('input#' + name + '_hour');
@@ -68,7 +67,10 @@ function setupDatePicker() {
       }
       $('input#' + name + '_minute').val(pickerTime.getMinutes());
       am_pm.val(pickerTime.getHours() >= 12 ? 1 : 0);
-    });
+    };
+
+    // compatibility with the forms expected by struts
+    input.on('changeTime', updateVars);
 
     // set initial time
     var date = new Date();
@@ -81,6 +83,7 @@ function setupDatePicker() {
       date.setMinutes(minute);
     }
     input.timepicker('setTime', date);
+    updateVars();
   });
 }
 
