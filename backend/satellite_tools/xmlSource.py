@@ -117,7 +117,7 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
     container_dispatch = {}
 
     def __init__(self):
-        ContentHandler.__init__(self)
+        super(ContentHandler, self).__init__()
         self.rootAttributes = None
         self.__parser = make_parser()
         # Init the parser's handlers
@@ -134,9 +134,8 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
         self.__parser.setContentHandler(self)
         self.__parser.setErrorHandler(self)
 
-    @staticmethod
-    def setStream(stream):
-        BaseDispatchHandler.__stream = stream
+    def setStream(self, stream):
+        self.__stream = stream
 
     # Starts processing the data from the XML stream
     def process(self, stream=None):
@@ -858,8 +857,8 @@ class SuseProductRepositoryItem(BaseItem):
     item_class = importLib.SuseProductRepository
     tagMap = {
         'product-id'    : 'product_id',
-        'root-product-id' : 'root_id',
-        'repo-id' : 'repo_id',
+        'root-product-id' : 'rootid',
+        'repository-id' : 'repo_id',
         'channel-label': 'channel_label',
         'parent-channel-label': 'parent_channel_label',
         'channel-name': 'channel_name',
