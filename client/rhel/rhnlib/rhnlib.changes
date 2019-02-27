@@ -1,3 +1,6 @@
+- Read SSL decoded buffer completely when no pending bytes on the
+  underlying connection.
+
 -------------------------------------------------------------------
 Wed Feb 27 12:58:36 CET 2019 - jgonzalez@suse.com
 
