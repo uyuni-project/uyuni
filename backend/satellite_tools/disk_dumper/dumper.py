@@ -295,7 +295,7 @@ class XML_Dumper:
             log_debug(4, "Cache HIT for %s (%s)" % (channel_label,
                                                     channel_id))
             temp_stream = tempfile.TemporaryFile()
-            temp_stream.write(val)
+            temp_stream.write(bytes(val, encoding="latin-1"))
             temp_stream.flush()
             stream = self._normalize_compressed_stream(temp_stream)
 
@@ -337,9 +337,9 @@ class XML_Dumper:
         """ Caches the short package entries for channel_id """
         # Create a temporary file
         temp_stream = tempfile.TemporaryFile()
+        stream = StringIO()
         # Always compress the result
         compress_level = 5
-        stream = gzip.GzipFile(None, "wb", compress_level, temp_stream)
         writer = xmlWriter.XMLWriter(stream=stream)
 
         # Fetch packages
@@ -347,12 +347,14 @@ class XML_Dumper:
         h.execute(channel_id=channel_id)
         package_ids = h.fetchall_dict() or []
         # Sort packages
-        package_ids.sort(lambda a, b: cmp(a['package_id'], b['package_id']))
+        package_ids.sort(key=lambda a: a['package_id'])
 
         dumper = SatelliteDumper(writer,
                                  ShortPackagesDumper(writer, package_ids))
         dumper.dump()
         writer.flush()
+        stream.seek(0, 0)
+        temp_stream.write(gzip.compress(data=stream.read().encode(), compresslevel=compress_level))
         # We're done with the stream object
         stream.close()
         del stream

@@ -567,7 +567,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     # Opens the file and sends the stream
     def _send_stream(self, path):
         try:
-            stream = open(path)
+            stream = open(path, mode="rb")
         except IOError:
             e = sys.exc_info()[1]
             if e.errno == 2:
