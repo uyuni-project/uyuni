@@ -306,8 +306,8 @@ class Runner:
     @staticmethod
     def _get_elapsed_time(elapsed):
         elapsed = int(elapsed)
-        hours = elapsed / 60 / 60
-        mins = elapsed / 60 - hours * 60
+        hours = int(elapsed / 60 / 60)
+        mins = int(elapsed / 60) - (hours * 60)
         secs = elapsed - mins * 60 - hours * 60 * 60
 
         delta_list = [[hours, _("hours")], [mins, _("minutes")], [secs, _("seconds")]]
@@ -703,9 +703,9 @@ class Syncer:
             for label in requested_channels:
                 timestamp = self._channel_collection.get_channel_timestamp(label)
                 ch = self._channel_collection.get_channel(label, timestamp)
-                if ch.has_key('comps_last_modified') and ch['comps_last_modified'] is not None:
+                if 'comps_last_modified' in ch and ch['comps_last_modified'] is not None:
                     self._process_comps(importer.backend, label, sync_handlers._to_timestamp(ch['comps_last_modified']))
-                if ch.has_key('modules_last_modified') and ch['modules_last_modified'] is not None:
+                if 'modules_last_modified' in ch and ch['modules_last_modified'] is not None:
                     self._process_modules(importer.backend, label, \
                         sync_handlers._to_timestamp(ch['modules_last_modified']))
 
