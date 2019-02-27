@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Feb 27 13:11:14 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
 - Fix initializing of the datetime picker (bsc#1126862)
 - Sort activation key list on create image profile page (bsc#1122770)
 - Sort activation key list on bootstrap page (bsc#1122770)
