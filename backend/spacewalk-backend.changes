@@ -1,3 +1,4 @@
+- Fix "mgr-inter-sync" problems after Python 3 migration.
 - mgr-sign-metadata can optionally clear-sign metadata files
 - Added 'mgr-sign-metadata-ctl' for repository metadata signing
 
