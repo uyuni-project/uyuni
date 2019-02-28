@@ -1,3 +1,5 @@
+- Fix: compute scroll offset on window scroll for sticky button bar
+
 -------------------------------------------------------------------
 Wed Feb 27 13:11:14 CET 2019 - jgonzalez@suse.com
 
