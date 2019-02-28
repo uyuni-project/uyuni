@@ -176,7 +176,8 @@ class SCCRepositoriesImport(GenericPackageImport):
         self._data = []
 
     def preprocess(self):
-        pass
+        for item in self.batch:
+            self._data.append(item)
 
     def fix(self):
         pass

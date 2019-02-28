@@ -1294,7 +1294,7 @@ class Backend:
                    version = :version,
                    friendly_name = :friendly_name,
                    arch_type_id = :arch_type_id,
-                   release = :release,
+                   release = :release
              WHERE product_id = :product_id
              """)
         _query_product = self.dbmodule.prepare("""
@@ -1306,8 +1306,9 @@ class Backend:
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], []]
         for item in batch:
-            if item['product_id'] in existing_data:
-                existing_data.remove(item['product_id'])
+            ident = "%s" % (item['product_id'])
+            if ident in existing_data:
+                existing_data.remove(ident)
                 toupdate[0].append(item['name'])
                 toupdate[1].append(item['version'])
                 toupdate[2].append(item['friendly_name'])
@@ -1347,7 +1348,7 @@ class Backend:
             """)
         update_pc = self.dbmodule.prepare("""
             UPDATE suseProductChannel
-               SET mandatory = :mand,
+               SET mandatory = :mand
              WHERE product_id = :pid
                AND channel_id = :cid
              """)
@@ -1502,7 +1503,7 @@ class Backend:
             SELECT product_id, root_product_id, repo_id FROM suseProductSCCRepository
             """)
         _query_pr.execute()
-        existing_data = ["%s-%s-%s" % (x['product_pdid'], x['root_pdid'], x['repo_pdid']) for x in _query_pr.fetchall_dict() or []]
+        existing_data = ["%s-%s-%s" % (x['product_id'], x['root_product_id'], x['repo_id']) for x in _query_pr.fetchall_dict() or []]
         toinsert = [[], [], [], [], [], [], [], [], []]
         todelete = [[], [], []]
         toupdate = [[], [], [], [], [], [], [], []]
@@ -1515,9 +1516,9 @@ class Backend:
                 toupdate[2].append(item['channel_name'])
                 toupdate[3].append(item['mandatory'])
                 toupdate[4].append(item['update_tag'])
-                toupdate[5].append(item['product_pdid'])
-                toupdate[6].append(item['root_pdid'])
-                toupdate[7].append(item.get('repo_pdid'))
+                toupdate[5].append(int(item['product_pdid']))
+                toupdate[6].append(int(item['root_pdid']))
+                toupdate[7].append(int(item['repo_pdid']))
                 continue
             toinsert[0].append(self.sequences['suseProductSCCRepository'].next())
             toinsert[1].append(int(item['product_pdid']))
@@ -1558,31 +1559,32 @@ class Backend:
         update_repo = self.dbmodule.prepare("""
             UPDATE suseSCCRepository
                SET name = :name,
-                   autorefresh = :autorefresh
+                   autorefresh = :autorefresh,
                    distro_target = :target,
                    description = :description,
                    url = :url,
-                   signed = :signed,
+                   signed = :signed
              WHERE scc_id = :sccid
              """)
         _query_repo = self.dbmodule.prepare("""
             SELECT scc_id FROM suseSCCRepository
             """)
         _query_repo.execute()
-        existing_data = ["%s" % (x['sccid']) for x in _query_repo.fetchall_dict() if 'sccid' in x or []]
+        existing_data = ["%s" % (x['scc_id']) for x in _query_repo.fetchall_dict() or []]
         toinsert = [[], [], [], [], [], [], [], []]
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], []]
         for item in batch:
-            if item['sccid'] in existing_data:
-                existing_data.remove(item['sccid'])
+            ident = "%s" % item['sccid']
+            if ident in existing_data:
+                existing_data.remove(ident)
                 toupdate[0].append(item['name'])
                 toupdate[1].append(item['autorefresh'])
                 toupdate[2].append(item['distro_target'])
                 toupdate[3].append(item['description'])
                 toupdate[4].append(item['url'])
                 toupdate[5].append(item['signed'])
-                toupdate[6].append(int(item['sccid']))
+                toupdate[6].append(item['sccid'])
                 continue
             toinsert[0].append(self.sequences['suseSCCRepository'].next())
             toinsert[1].append(item['sccid'])
