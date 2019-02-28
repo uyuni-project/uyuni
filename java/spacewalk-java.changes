@@ -1,3 +1,4 @@
+- Fix deleting server when minion_formulas.json is empty (bsc#1122230)
 - minion-action-cleanup Taskomatic task: do not clean actions younger than one hour
 - Schedule full package refresh only once per action chain if needed (bsc#1126518)
 - Check and schedule package refresh in response to events independently of what originates them (bsc#1126099)
