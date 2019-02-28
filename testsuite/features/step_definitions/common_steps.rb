@@ -518,6 +518,12 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
   node.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
 end
 
+When(/^I set the activation key "([^"]*)" in the bootstrap script on the server$/) do |key|
+  $server.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
+  output, code = $server.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
+  assert(output.include?(key))
+end
+
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
   node = get_target(host)
   node.run("test -f #{filename}")
