@@ -8,3 +8,6 @@ gpgkeys:
   res:
     name: gpg-pubkey-0182b964
     file: res-gpg-pubkey-0182b964.key
+  ubuntutools:
+    name: gpg-pubkey-39db7c82
+    file: sle12-gpg-pubkey-39db7c82.key

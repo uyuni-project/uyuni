@@ -1,3 +1,4 @@
+- Automatically trust SUSE GPG key for client tools channels on Ubuntu systems
 - util.systeminfo sls has been added to perform different actions at minion startup(bsc#1122381) 
 
 -------------------------------------------------------------------
