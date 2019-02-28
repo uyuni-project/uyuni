@@ -86,12 +86,12 @@
         <dependency org="suse" name="xerces-j2-xml-apis" rev="2.11.0" />
 
         <!-- Tomcat jars -->
-        <dependency org="suse" name="jasper" rev="9.0.12" />
-        <dependency org="suse" name="jasper-el" rev="9.0.12" />
-        <dependency org="suse" name="tomcat-el-3.0-api" rev="9.0.12" />
-        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="9.0.12" />
-        <dependency org="suse" name="tomcat-juli" rev="9.0.12" />
-        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.12" />
+        <dependency org="suse" name="jasper" rev="9.0.14" />
+        <dependency org="suse" name="jasper-el" rev="9.0.14" />
+        <dependency org="suse" name="tomcat-el-3.0-api" rev="9.0.14" />
+        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="9.0.14" />
+        <dependency org="suse" name="tomcat-juli" rev="9.0.14" />
+        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.14" />
 
         <!-- Compilation and testing -->
         <dependency org="suse" name="checkstyle-all" rev="6.11.2" />
