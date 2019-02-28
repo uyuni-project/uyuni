@@ -51,6 +51,7 @@
 - features/min_ubuntu_salt_install_package.feature
 - features/min_bootstrap_xmlrpc.feature
 - features/minssh_bootstrap_xmlrpc.feature
+- features/min_bootstrap_script.feature
 - features/min_activationkey.feature
 - features/trad_migrate_to_minion.feature
 - features/trad_migrate_to_sshminion.feature
