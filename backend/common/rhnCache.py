@@ -258,17 +258,20 @@ class Cache:
         fd.close()
 
         if sys.version_info[0] >= 3 and isinstance(s, bytes):
-            s = s.decode('latin-1')
 
+            try:
+               s = s.decode('utf8')
+            except:
+               s = s.decode('latin-1')
         return s
 
     def set(self, name, value, modified=None, user='root', group='root',
             mode=int('0755', 8)):
         fd = self.set_file(name, modified, user, group, mode)
 
-        if sys.version_info[0] >= 3:
-            if isinstance(value, str):
-                value = value.encode('latin-1')
+        if sys.version_info[0] >= 3 and isinstance(value, str):
+            value = value.encode('utf8')
+
         fd.write(value)
         fd.close()
 
