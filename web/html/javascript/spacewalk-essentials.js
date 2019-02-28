@@ -99,7 +99,7 @@ function sstScrollBehaviorSetup(sst) {
 
   // override the empty function hooked on window.scroll event                                              │
   sstScrollBehavior = function() {
-    var currentScroll = $('section#spacewalk-content').scrollTop();
+    var currentScroll = $(window).scrollTop();
     if (currentScroll >= fixedTop) {
       sst.after(adjustSpaceObject);
       $(sst).addClass('fixed');
