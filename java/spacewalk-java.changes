@@ -1,3 +1,5 @@
+- Schedule full package refresh only once per action chain if needed (bsc#1126518)
+- Check and schedule package refresh in response to events independently of what originates them (bsc#1126099)
 - Add configuration option to limit the number of changelog entries added
   to the repository metadata (FATE#325676)
 - Generate InRelease file for Debian/Ubuntu repos when metadata signing is enabled
