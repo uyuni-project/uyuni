@@ -64,7 +64,7 @@ bootstrap_repo:
 {%- endif %}
 
 {%- if grains['os_family'] == 'RedHat' %}
-trust_suse_manager_tools_gpg_key:
+trust_suse_manager_tools_rhel_gpg_key:
   cmd.run:
 {%- if grains['osmajorrelease']|int == 6 %}
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res6tools:file') }}
@@ -83,6 +83,10 @@ trust_res_gpg_key:
 
 {%- elif grains['os_family'] == 'Debian' %}
 {%- include 'channels/debiankeyring.sls' %}
+trust_suse_manager_tools_deb_gpg_key:
+  module.run:
+    - name: pkg.add_repo_key
+    - path: https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:ubuntutools:file') }}
 {%- endif %}
 
 salt-minion-package:
