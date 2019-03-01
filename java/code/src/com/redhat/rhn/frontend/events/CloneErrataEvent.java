@@ -33,12 +33,11 @@ import java.util.Collection;
  */
 public class CloneErrataEvent implements EventDatabaseMessage {
 
-
-
     private Long chanId;
     private Collection<Long> errata;
     private Transaction txn;
     private Long userId;
+    private boolean requestRepodataRegen = true;
 
     /**
      * constructor
@@ -54,11 +53,34 @@ public class CloneErrataEvent implements EventDatabaseMessage {
     }
 
     /**
+     * constructor
+     * @param chanIn channel to clone errata into
+     * @param errataIn the errata list to clone
+     * @param requestRepodataRegenIn if repodata regeneration should be requested after cloning
+     * @param userIn the user
+     */
+    public CloneErrataEvent(Channel chanIn, Collection<Long> errataIn, boolean requestRepodataRegenIn, User userIn) {
+        this.chanId = chanIn.getId();
+        this.errata = errataIn;
+        this.userId = userIn.getId();
+        this.requestRepodataRegen = requestRepodataRegenIn;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public String toText() {
         // really a noop
         return "";
+    }
+
+    /**
+     * Gets the requestRepodataRegen.
+     *
+     * @return requestRepodataRegen
+     */
+    public boolean isRequestRepodataRegen() {
+        return requestRepodataRegen;
     }
 
     /**
