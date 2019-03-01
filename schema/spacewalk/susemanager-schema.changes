@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Sat Mar 02 00:15:31 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
 - removing invalid suse-openstack-cloud-6 and suse-packagehub-12-sp4 channel_labels (bsc#1125451)
 
 -------------------------------------------------------------------
