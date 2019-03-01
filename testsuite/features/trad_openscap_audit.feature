@@ -19,7 +19,7 @@ Feature: openSCAP audit of traditional client
   Scenario: Check results of the audit job
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_RHEL6-Default"
+    And I follow "xccdf_org.open-scap_testresult_default-profile"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL6-Default" text
     And I should see a "XCCDF Rule Results" text
@@ -39,7 +39,7 @@ Feature: openSCAP audit of traditional client
   Scenario: Check results of the audit job SUSE profile
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_Default"
+    And I follow "xccdf_org.open-scap_testresult_default-profile"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "Default" text
     And I should see a "XCCDF Rule Results" text
