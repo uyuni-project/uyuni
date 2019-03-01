@@ -757,3 +757,13 @@ When(/^I delete a salt "([^"]*)" file with name "([^"]*)" on the server$/) do |t
   return_code = file_delete($server, path)
   raise 'File Deletion failed' unless return_code.zero?
 end
+
+When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/srv/formula_metadata/" + formula + '/' + file
+
+  $server.run("mkdir -p /srv/formula_metadata/" + formula)
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  $server.run("chmod 644 " + dest)
+end
