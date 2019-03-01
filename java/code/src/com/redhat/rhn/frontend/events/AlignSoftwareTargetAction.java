@@ -50,12 +50,12 @@ public class AlignSoftwareTargetAction implements MessageAction {
         LOG.warn("Asynchronously aligning: " + msg); // todo lvl
         Instant start = Instant.now();
         ChannelManager.alignChannelsSync(source, target, msg.getUser());
-        LOG.warn("Finished aligning in sec : " + msg + " in " + Duration.between(start, Instant.now()));
+        LOG.warn("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
     }
 
     @Override
     public boolean canRunConcurrently() {
-        return true;
+        return false;
     }
 
     @Override
