@@ -36,6 +36,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -292,7 +294,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
         ProjectSource projectSource = ContentProjectFactory.lookupProjectSource(cp, SW_CHANNEL, channel.getLabel(), user).get();
-        assertEquals(ProjectSource.State.DETACHED, projectSource.getState());
+        assertEquals(DETACHED, projectSource.getState());
         assertEquals(singletonList(source), cp.getSources());
     }
 
@@ -307,14 +309,28 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         Channel channel = ChannelTestUtils.createBaseChannel(user);
 
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        try {
-            ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-            fail("An exception should have been thrown");
-        }
-        catch (EntityExistsException e) {
-            // expected
-        }
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
         assertEquals(1, cp.getSources().size());
+        assertEquals(ATTACHED, cp.getSources().get(0).getState());
+    }
+
+    /**
+     * Test detaching same Source multiple times
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testMultipleDetachingProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+
+        assertEquals(1, cp.getSources().size());
+        assertEquals(DETACHED, cp.getSources().get(0).getState());
     }
 
     /**
