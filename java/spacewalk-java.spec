@@ -77,6 +77,7 @@ Requires:       jade4j
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jose4j
+Requires:       netty
 Requires:       objectweb-asm
 Requires:       /sbin/unix2_chkpwd
 Requires:       prometheus-client-java
@@ -101,6 +102,7 @@ BuildRequires:  java-devel >= 11
 BuildRequires:  javassist
 BuildRequires:  jboss-logging
 BuildRequires:  jsch
+BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  snakeyaml
 BuildRequires:  statistics
