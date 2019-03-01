@@ -32,6 +32,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import java.util.List;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
@@ -237,27 +239,31 @@ public class ContentManager {
      * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
      * @param position - the position of the Source (Optional)
      * @param user the user
-     * @throws EntityNotExistsException when either the Project or the Source is not found
-     * @throws EntityExistsException when Source with given parameters is already attached
+     * @throws EntityNotExistsException when either the Project or the Source reference (e.g. Channel) is not found
      * @throws java.lang.IllegalArgumentException if the sourceType is unsupported
      * @return the created or existing Source
      */
     public static ProjectSource attachSource(String projectLabel, Type sourceType, String sourceLabel,
             Optional<Integer> position, User user) {
         ensureOrgAdmin(user);
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
 
-        lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
-                .ifPresent(s -> { throw new EntityExistsException(s); });
+        Optional<? extends ProjectSource> source = lookupProjectSource(projectLabel, sourceType, sourceLabel, user);
+        if (source.isPresent()) {
+            ProjectSource src = source.get();
+            src.setState(ATTACHED);
+            ContentProjectFactory.save(src);
+            return src;
+        }
 
         if (sourceType == SW_CHANNEL) {
-            ContentProject project = lookupProject(projectLabel, user)
-                    .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
             Channel channel = getChannel(sourceLabel, user);
-            SoftwareProjectSource source = new SoftwareProjectSource(project, channel);
-            project.addSource(source, position);
+            SoftwareProjectSource newSource = new SoftwareProjectSource(project, channel);
+            project.addSource(newSource, position);
             ContentProjectFactory.save(project);
-            ContentProjectFactory.save(source);
-            return source;
+            ContentProjectFactory.save(newSource);
+            return newSource;
         }
         else {
             throw new IllegalArgumentException("Unsupported source type " + sourceType);
@@ -280,15 +286,13 @@ public class ContentManager {
      * @param sourceType - the Source Type (e.g. SW_CHANNEL)
      * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
      * @param user the user
-     * @throws EntityNotExistsException when either the Project or the Source is not found
      * @return number of Sources detached
      */
     public static int detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
         ensureOrgAdmin(user);
-        ProjectSource source = lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
-                .orElseThrow(() -> new EntityNotExistsException(ProjectSource.class, sourceLabel));
-        source.setState(ProjectSource.State.DETACHED);
-        return 1;
+        Optional<? extends ProjectSource> src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user);
+        src.ifPresent(s -> s.setState(DETACHED));
+        return src.isPresent() ? 1 : 0;
     }
 
     /**
