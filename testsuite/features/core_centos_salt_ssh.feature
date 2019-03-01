@@ -54,7 +54,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
 @centos_minion
   Scenario: Prepare a SSH-managed CentOS minion 
     Given I am authorized
-    When I enable repository "Devel_Galaxy_Manager_3.2_RES-Manager-Tools-7-x86_64" on this "ceos-client"
+    When I enable repository "Devel_Galaxy_Manager_Head_RES-Manager-Tools-7-x86_64" on this "ceos-client"
     And  I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos-client"
     And  I enable repository "CentOS-Base" on this "ceos-client"
     And  I install package "hwdata m2crypto wget" on this "ceos-client"
