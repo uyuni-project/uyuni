@@ -601,8 +601,9 @@ When(/^I enable repositories before installing branch server$/) do
     puts $proxy.run("zypper mr --enable openSUSE-Leap-#{os_version}-Update")
   else
     arch, _code = $proxy.run('uname -m')
-    puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Pool")
-    puts $proxy.run("zypper mr --enable SLE-#{os_version}-#{arch.strip}-Update")
+    # take all repos that matche the following pattern "SLE.*#{os_version}-#{arch.strip}.*"
+    repos, _code = $proxy.run("zypper lr | grep SLE.*#{os_version}-#{arch.strip}.* | cut -d'|' -f2")
+    puts $proxy.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   end
 end
 
@@ -615,8 +616,9 @@ When(/^I disable repositories after installing branch server$/) do
     puts $proxy.run("zypper mr --disable openSUSE-Leap-#{os_version}-Update")
   else
     arch, _code = $proxy.run('uname -m')
-    puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Pool")
-    puts $proxy.run("zypper mr --disable SLE-#{os_version}-#{arch.strip}-Update")
+    # take all repos that matche the following pattern "SLE.*#{os_version}-#{arch.strip}.*"
+    repos, _code = $proxy.run("zypper lr | grep SLE.*#{os_version}-#{arch.strip}.* | cut -d'|' -f2")
+    puts $proxy.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   end
 end
 
