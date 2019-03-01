@@ -70,8 +70,7 @@ public class CloneErrataAction implements MessageAction {
                 Set<Channel> channelSet = new HashSet<Channel>();
                 channelSet.add(currChan);
 
-                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(
-                                                                msg.getUser(), errata);
+                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(msg.getUser(), errata);
                 if (clones.size() == 0) {
                     log.debug("Cloning errata");
                     Errata published = PublishErrataHelper.cloneErrataFast(errata,
@@ -84,8 +83,6 @@ public class CloneErrataAction implements MessageAction {
                     log.debug("Re-publishing clone");
                     ErrataManager.publish(clones.get(0), cids, msg.getUser());
                 }
-
-
             }
         }
         // Trigger channel repodata re-generation
