@@ -293,7 +293,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         ContentProjectFactory.save(target);
 
-        assertEquals(target, ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel()).get());
+        assertEquals(target, ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel(), user).get());
     }
 
     /**

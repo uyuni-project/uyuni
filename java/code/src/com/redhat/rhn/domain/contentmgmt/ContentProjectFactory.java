@@ -268,14 +268,17 @@ public class ContentProjectFactory extends HibernateFactory {
      * Looks up SoftwareEnvironmentTarget with a given channel
      *
      * @param label the {@link Channel} label
+     * @param user the user
      * @return Optional of {@link com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget}
      */
-    public static Optional<SoftwareEnvironmentTarget> lookupEnvironmentTargetByChannelLabel(String label) {
+    public static Optional<SoftwareEnvironmentTarget> lookupEnvironmentTargetByChannelLabel(String label, User user) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<SoftwareEnvironmentTarget> query = builder.createQuery(SoftwareEnvironmentTarget.class);
         Root<SoftwareEnvironmentTarget> from = query.from(SoftwareEnvironmentTarget.class);
         query.where(builder.equal(from.get("channel").get("label"), label));
-        return getSession().createQuery(query).uniqueResultOptional();
+        return getSession().createQuery(query)
+                .uniqueResultOptional()
+                .filter(tgt -> ChannelFactory.isAccessibleByUser(tgt.getChannel().getLabel(), user.getId()));
     }
 
     /**
