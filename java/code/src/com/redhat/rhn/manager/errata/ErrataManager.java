@@ -288,7 +288,7 @@ public class ErrataManager extends BaseManager {
         errataToMerge.removeAll(brothers);
         errataToMerge.removeAll(clones);
 
-        Logger.getLogger(ErrataManager.class).debug("Publishing");
+        log.debug("Publishing");
         CloneErrataEvent eve = new CloneErrataEvent(toChannel, getErrataIds(errataToMerge), repoRegen, user);
         if (async) {
             MessageQueue.publish(eve);
@@ -307,6 +307,22 @@ public class ErrataManager extends BaseManager {
             ids.add(erratum.getId());
         }
         return ids;
+    }
+
+    /**
+     * Removes errata from target channel that are not present in the source channel.
+     *
+     * @param srcChannel the source channel
+     * @param tgtChannel the target channel
+     * @param user the user
+     */
+    public static void truncateErrata(Channel srcChannel, Channel tgtChannel, User user) {
+        // 2-pass approach to prevent concurrent modification error
+        Set<Errata> toRemove = tgtChannel.getErratas().stream()
+                .filter(e -> !srcChannel.getErratas().contains(e))
+                .collect(toSet());
+        toRemove.forEach(e -> removeErratumFromChannel(e, tgtChannel, user));
+        // todo cleanup orphans?
     }
 
     /**
@@ -1433,7 +1449,6 @@ public class ErrataManager extends BaseManager {
      * @param user the user doing the removing
      */
     public static void removeErratumFromChannel(Errata errata, Channel chan, User user) {
-
         if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
@@ -1442,10 +1457,8 @@ public class ErrataManager extends BaseManager {
         //       in case they aren't already there.
         // So we are inserting   (systemID, packageId) entries, because we're
         //      going to delete the (systemId, packageId, errataId) entries
-        List<Long> pids = ErrataFactory.listErrataChannelPackages(
-                chan.getId(), errata.getId());
+        List<Long> pids = ErrataFactory.listErrataChannelPackages(chan.getId(), errata.getId());
         ErrataCacheManager.insertCacheForChannelPackages(chan.getId(), null, pids);
-
 
         //Remove the errata from the channel
         chan.getErratas().remove(errata);
@@ -1476,7 +1489,6 @@ public class ErrataManager extends BaseManager {
                 ErrataCacheManager.insertCacheForChannelErrataAsync(tmpCidList, errata);
             }
         }
-
     }
 
     /**
