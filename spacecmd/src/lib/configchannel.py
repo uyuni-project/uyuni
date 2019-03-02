@@ -646,7 +646,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                 options.mode = '0644'
 
         logging.debug("base64 encoding contents")
-        contents = base64.b64encode(contents)
+        contents = base64.b64encode(contents.encode('utf8')).decode()
 
         file_info = {'contents': ''.join(contents),
                      'owner': options.owner,
@@ -887,7 +887,7 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
             logging.error('You must provide the file contents')
             return
 
-    contents = base64.b64encode(contents)
+    contents = base64.b64encode(contents.encode('utf8')).decode()
 
     file_info = {'contents': ''.join(contents),
                  'contents_enc64': True
