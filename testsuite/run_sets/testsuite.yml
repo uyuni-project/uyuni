@@ -70,12 +70,14 @@
 - features/min_salt_install_with_staging.feature
 - features/srv_xmlrpc_activationkey.feature
 - features/allcli_overview_systems_details.feature
-- features/srv_distro_cobbler.feature
+# temporary disable as long as cobbler is broken
+#- features/srv_distro_cobbler.feature
 - features/srv_mainpage.feature
 - features/srv_xmlrpc_user.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
-- features/trad_baremetal_discovery.feature
+# temporary disable as long as cobbler is broken
+#- features/trad_baremetal_discovery.feature
 - features/trad_action_chain.feature
 - features/min_action_chain.feature
 - features/minssh_action_chain.feature
