@@ -32,6 +32,7 @@ Feature: Setup SUSE Manager proxy
 @proxy
   Scenario: Copy the keys and configure the proxy
     When I copy server's keys to the proxy
+    And I remove package "zypp-plugin-spacewalk" from this "proxy"
     And I configure the proxy
     Then I should see "proxy" in spacewalk
 
