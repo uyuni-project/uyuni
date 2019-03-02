@@ -108,7 +108,6 @@ PKGLIST12 = [
                 "python",
                 "python-cffi",
                 "python-cryptography",
-                "python-setuptools",
                 "python-dmidecode",
                 "python-ethtool",
                 "python-gobject2",
@@ -183,6 +182,7 @@ ENHANCE12SP1 = [
                 "python-enum34",
                 "python-idna",
                 "python-ipaddress",
+                "python-setuptools",
                ]
 
 RES6 = [
