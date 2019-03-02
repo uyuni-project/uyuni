@@ -161,7 +161,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
+    And I follow "Channels" in the left menu
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
     And I check the "ubuntu-minion" client
