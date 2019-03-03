@@ -20,6 +20,7 @@ server = ENV['SERVER']
 DEFAULT_TIMEOUT = 250
 $stdout.sync = true
 Capybara.default_wait_time = 10
+STARTTIME = Time.new.to_i
 
 def enable_assertions
   # include assertion globally
