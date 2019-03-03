@@ -1,3 +1,5 @@
+- fix reading LOB objects with python3
+
 -------------------------------------------------------------------
 Sat Mar 02 00:09:45 CET 2019 - jgonzalez@suse.com
 

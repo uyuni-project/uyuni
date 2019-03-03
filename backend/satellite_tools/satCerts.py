@@ -104,7 +104,7 @@ def _checkCertMatch_rhnCryptoKey(cert, description, org_id, deleteRowYN=0,
     row = lookup_cert(description, org_id)
     rhn_cryptokey_id = -1
     if row:
-        if cert == rhnSQL.read_lob(row['key']):
+        if cert == rhnSQL.read_lob(row['key']).decode():
             # match found, nothing to do
             if verbosity:
                 print("Nothing to do: certificate to be pushed matches certificate in database.")

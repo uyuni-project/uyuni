@@ -496,7 +496,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         # Empty files or directories may have NULL instead of lobs
         fc_lob = f.get('file_contents')
         if fc_lob:
-            f['file_content'] = rhnSQL.read_lob(fc_lob).splitlines()
+            f['file_content'] = rhnSQL.read_lob(fc_lob).decode().splitlines()
         else:
             f['file_content'] = ''
         return f

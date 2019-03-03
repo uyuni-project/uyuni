@@ -257,7 +257,7 @@ class Database(sql_base.Database):
         return Cursor(dbh=self.dbh)
 
     def _read_lob(self, lob):
-        return str(lob)
+        return bytes(lob)
 
 
 class Cursor(sql_base.Cursor):
