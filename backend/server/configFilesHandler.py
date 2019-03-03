@@ -348,7 +348,7 @@ class ConfigFilesHandler(rhnHandler):
         row = h.fetchone_dict()
 
         if row:
-            db_contents = rhnSQL.read_lob(row['contents']) or ''
+            db_contents = rhnSQL.read_lob(row['contents']).decode() or ''
             if file_contents == db_contents:
                 # Same content
                 file['config_content_id'] = row['id']
@@ -517,7 +517,7 @@ class ConfigFilesHandler(rhnHandler):
 def format_file_results(row, server=None):
     encoding = ''
     contents = None
-    contents = rhnSQL.read_lob(row['file_contents']) or ''
+    contents = rhnSQL.read_lob(row['file_contents']).decode() or ''
     checksum = row['checksum'] or ''
 
     if server and (row['is_binary'] == 'N') and contents:

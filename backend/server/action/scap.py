@@ -36,7 +36,7 @@ def xccdf_eval(server_id, action_id, dry_run=0):
         'path': d['path'],
         'id': action_id,
         'file_size': _scap_file_limit(server_id),
-        'params': rhnSQL.read_lob(d['parameters']) or ''
+        'params': rhnSQL.read_lob(d['parameters']).decode() or ''
     },)
 
 
