@@ -19,7 +19,7 @@ from spacewalk.common.rhnConfig import initCFG
 def resultExit(code, msg=None):
     rhnSQL.closeDB()
     if msg:
-        print msg
+        print(msg)
     sys.exit(code)
 
 #############################################################################
