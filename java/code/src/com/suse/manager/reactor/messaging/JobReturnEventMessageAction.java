@@ -34,6 +34,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
@@ -106,7 +107,6 @@ public class JobReturnEventMessageAction implements MessageAction {
                             jobResult.get(),
                             jobReturnEvent.getData().getFun()));
         });
-
         // Check if the event was triggered by an action chain execution
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         boolean isActionChainInvolved = isActionChainResult.filter(isActionChain -> isActionChain).orElse(false);
@@ -154,11 +154,22 @@ public class JobReturnEventMessageAction implements MessageAction {
                 schedulePackageRefresh(jobReturnEvent.getMinionId());
             }
         });
+
         //For all jobs except when action chains are involved
         if (!isActionChainInvolved && handlePackageChanges(jobReturnEvent, function, jobResult)) {
             schedulePackageRefresh(jobReturnEvent.getMinionId());
         }
-        // For all jobs: update minion last checkin
+
+        // Check if event was triggered in response to state scheduled at minion start-up event
+        if (isMinionStartup(jobReturnEvent)) {
+            MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
+                    .ifPresent(minion -> jobResult
+                            .ifPresent(result-> {
+                                SystemInfo systemInfo = Json.GSON.fromJson(result, SystemInfo.class);
+                                SaltUtils.INSTANCE.updateSystemInfo(systemInfo, minion);
+                            }));
+        }
+      // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
                 jobReturnEvent.getMinionId());
         if (minion.isPresent()) {
@@ -417,6 +428,16 @@ public class JobReturnEventMessageAction implements MessageAction {
     private Optional<Long> getActionId(JobReturnEvent event) {
         return event.getData().getMetadata(ScheduleMetadata.class).map(
             ScheduleMetadata::getSumaActionId);
+    }
+
+    /**
+     * Lookup the metadata to check if minion was restarted
+     * @return
+     */
+    private boolean isMinionStartup(JobReturnEvent event) {
+        return event.getData().getMetadata(ScheduleMetadata.class)
+                .map(ScheduleMetadata::isMinionStartup)
+                .orElse(false);
     }
 
     /**

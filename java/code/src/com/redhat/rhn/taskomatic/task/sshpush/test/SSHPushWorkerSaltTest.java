@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task.sshpush.test;
 
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -27,24 +28,33 @@ import com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.reactor.messaging.test.JobReturnEventMessageActionTest;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.utils.Xor;
+import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -67,6 +77,8 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SSHPushSystem sshPushSystemMock;
     private SaltSSHService saltSSHServiceMock;
+    private SystemInfo sampleSystemInfo;
+    
 
     @Override
     public void setUp() throws Exception {
@@ -83,6 +95,8 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         if (!scriptDir.exists()) {
             scriptDir.mkdirs();
         }
+        String jsonResult = TestUtils.readAll(TestUtils.findTestData("minion.startup.applied.state.response.json"));
+        sampleSystemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
     }
 
     /**
@@ -102,16 +116,22 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
         worker = successWorker();
         mockSyncCallResult();
-
+       
         context().checking(new Expectations() {{
-            oneOf(saltServiceMock).getUptimeForMinion(minion);
-            will(returnValue(Optional.of(100L)));
-
+           
             oneOf(sshPushSystemMock).getId();
             will(returnValue(minion.getId()));
 
             oneOf(sshPushSystemMock).isRebooting();
             will(returnValue(false));
+
+            Map<String, Result<SystemInfo>> systemInfoMap = new HashMap<>();
+            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sampleSystemInfo)));
+            allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)));
+            will(returnValue(systemInfoMap));
+            
+            
         }});
 
         worker.setParentQueue(mockQueue());
@@ -164,15 +184,17 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() {{
 
-
-            oneOf(saltServiceMock).getUptimeForMinion(minion);
-            will(returnValue(Optional.of(100L)));
-
             oneOf(sshPushSystemMock).getId();
             will(returnValue(minion.getId()));
 
             oneOf(sshPushSystemMock).isRebooting();
             will(returnValue(false));
+
+            Map<String, Result<SystemInfo>> systemInfoMap = new HashMap<>();
+            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sampleSystemInfo)));
+            allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)));
+            will(returnValue(systemInfoMap));
         }});
 
         worker.setParentQueue(mockQueue());
@@ -222,14 +244,18 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
             oneOf(saltSSHServiceMock).cleanPendingActionChainAsync(with(any(MinionServer.class)));
 
-            oneOf(saltServiceMock).getUptimeForMinion(minion);
-            will(returnValue(Optional.of(100L)));
-
             oneOf(sshPushSystemMock).getId();
             will(returnValue(minion.getId()));
 
             oneOf(sshPushSystemMock).isRebooting();
             will(returnValue(true));
+
+            Map<String, Result<SystemInfo>> systemInfoMap = new HashMap<>();
+            systemInfoMap.put(minion.getMinionId(),  new Result<>(Xor.right(sampleSystemInfo)));
+            allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
+                    with(any(MinionList.class)));
+            will(returnValue(systemInfoMap));
+            
         }});
 
         worker.setParentQueue(mockQueue());
