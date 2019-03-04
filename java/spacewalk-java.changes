@@ -1,3 +1,4 @@
+- Fix apidoc issues
 - Read and update running kernel release value at each startup of minion (bsc#1122381)
 - Schedule full package refresh only once per action chain if needed(bsc#1126518)
 - Check and schedule package refresh in response to events independently of what originates them (bsc#1126099)
