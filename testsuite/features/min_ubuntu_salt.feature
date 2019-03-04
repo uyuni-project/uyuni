@@ -118,6 +118,11 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
     And I should see a "results.xml" link
 
 @ubuntu_minion
+  Scenario: Check events history for failures on Ubuntu minion
+    Given I am on the Systems overview page of this "ubuntu-minion"
+    Then I check for failed events on history event page
+
+@ubuntu_minion
   Scenario: Cleanup: delete the Ubuntu minion
     When I am on the Systems overview page of this "ubuntu-minion"
     And I follow "Delete System"

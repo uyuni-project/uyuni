@@ -60,3 +60,8 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And  I install package "hwdata m2crypto wget" on this "ceos-client"
     And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd mgr-osad rhncfg-actions" on this "ceos-client"
     And  I install package "spacewalk-oscap scap-security-guide" on this "ceos-client"
+
+@centos_minion
+  Scenario: Check events history for failures on SSH-managed CentOS minion
+    Given I am on the Systems overview page of this "ceos-ssh-minion"
+    Then I check for failed events on history event page

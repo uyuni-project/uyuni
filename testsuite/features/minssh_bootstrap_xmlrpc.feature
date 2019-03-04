@@ -45,6 +45,11 @@ Feature: Register a salt-ssh system via XML-RPC
     Then I run spacecmd listevents for "ssh-minion"
 
 @ssh_minion
+  Scenario: Check events history for failures on SSH minion after XML-RPC bootstrap
+    Given I am on the Systems overview page of this "ssh-minion"
+    Then I check for failed events on history event page
+
+@ssh_minion
   Scenario: Cleanup: subscribe SSH minion to base channel
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Software" in the content area

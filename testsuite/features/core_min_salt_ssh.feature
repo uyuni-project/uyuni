@@ -71,3 +71,8 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
     Then "hoag-dummy-1.1-2.1" should be installed on "ssh-minion"
+
+@ssh_minion
+  Scenario: Check events history for failures on SSH minion
+    Given I am on the Systems overview page of this "ssh-minion"
+    Then I check for failed events on history event page

@@ -165,3 +165,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
+
+  Scenario: Check events history for failures on SLES minion
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I check for failed events on history event page
