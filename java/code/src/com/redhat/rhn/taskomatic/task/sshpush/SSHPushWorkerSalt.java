@@ -21,11 +21,14 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Test;
 
@@ -38,6 +41,7 @@ import org.apache.log4j.Logger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
@@ -116,8 +120,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 if (checkinNeeded) {
                     performCheckin(m);
                 }
-                saltService.getUptimeForMinion(m).ifPresent(uptime ->
-                        SaltUtils.INSTANCE.handleUptimeUpdate(m, uptime));
+
+                updateSystemInfo(new MinionList(m.getMinionId()));
                 log.debug("Nothing left to do for " + m.getMinionId() + ", exiting worker");
             });
         }
@@ -335,4 +339,23 @@ public class SSHPushWorkerSalt implements QueueWorker {
         result.ifPresent(res -> minion.updateServerInfo());
     }
 
+    /**
+     * Apply util.systeminfo state on the specified ssh-minion list in a synchronous away
+     * @param minionTarget minion list
+     */
+    private void updateSystemInfo(MinionList minionTarget) {
+        try {
+            LocalCall<SystemInfo> systeminfo =
+                    com.suse.manager.webui.utils.salt.State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
+                    Optional.empty(), Optional.of(true), Optional.empty(), SystemInfo.class);
+            Map<String, Result<SystemInfo>> systemInfoMap = saltSSHService.callSyncSSH(systeminfo, minionTarget);
+            systemInfoMap.entrySet().stream().forEach(entry-> entry.getValue().result().ifPresent(si-> {
+                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(entry.getKey());
+                minionServer.ifPresent(minion -> SaltUtils.INSTANCE.updateSystemInfo(si, minion));
+            }));
+        }
+        catch (SaltException ex) {
+            log.debug("Error while executing util.systeminfo state: " + ex.getMessage());
+        }
+    }
 }

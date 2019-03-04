@@ -60,6 +60,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -94,6 +95,7 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
@@ -1513,6 +1515,33 @@ public class SaltUtils {
              return Collections.singleton(installedProduct);
          }).orElse(Collections.emptySet());
      }
+
+    /**
+     * Update the system info through grains and data returned by status.uptime
+     * @param jsonResult response from salt master against util.systeminfo state
+     * @param minionId ID of the minion for which information should be updated
+     */
+    public void updateSystemInfo(JsonElement jsonResult, String minionId) {
+        Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
+        minionServer.ifPresent(minion -> {
+            SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
+            updateSystemInfo(systemInfo, minion);
+        });
+    }
+
+    /**
+     * Update the system info of the minion
+     * @param systemInfo response from salt master against util.systeminfo state
+     * @param minion  minion for which information should be updated
+     */
+    public void updateSystemInfo(SystemInfo systemInfo, MinionServer minion) {
+        systemInfo.getKerneRelese().ifPresent(kerneRelese -> {
+            minion.setRunningKernel(kerneRelese);
+            ServerFactory.save(minion);
+        });
+        //Update the uptime
+        systemInfo.getUptimeSeconds().ifPresent(us-> handleUptimeUpdate(minion, us.longValue()));
+    }
 
     /**
      * Handle the minion uptime update, that means:

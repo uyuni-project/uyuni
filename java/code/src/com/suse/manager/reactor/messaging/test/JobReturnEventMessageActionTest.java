@@ -1846,8 +1846,25 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
         //Verify that there is only one action scheduled, the apply state one that we scheduled above
         assertEquals("2 actions have been scheduled for server 1", 1, serversActions.size());
-
-
     }
 
+    public void testMinionStartupResponse() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        String runningKernel = minion.getRunningKernel();
+        Long lastBoot = minion.getLastBoot();
+        String name = minion.getName();
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("minion.startup.applied.state.response.json", 0,
+                        placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+        assertEquals(name, minion.getName());
+        assertNotSame(runningKernel, minion.getRunningKernel());
+        assertNotSame(lastBoot, minion.getLastBoot());
+    }
 }

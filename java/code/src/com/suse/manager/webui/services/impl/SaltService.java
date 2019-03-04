@@ -22,6 +22,7 @@ import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.SaltReactor;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
@@ -30,6 +31,7 @@ import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -907,6 +909,22 @@ public class SaltService {
             LOG.error(e);
         }
         return uptime;
+    }
+
+    /**
+     * Apply util.systeminfo state on the specified minion list
+     * @param minionTarget minion list
+     */
+    public void updateSystemInfo(MinionList minionTarget) {
+        try {
+            Map<String, Object> metadata = new HashMap<>();
+            metadata.put(ScheduleMetadata.SUMA_MINION_STARTUP, true);
+            callAsync(State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
+                            Optional.empty()).withMetadata(metadata), minionTarget);
+        }
+        catch (SaltException ex) {
+            LOG.debug("Error while executing util.systeminfo state: " + ex.getMessage());
+        }
     }
 
     /**
