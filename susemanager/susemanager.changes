@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 04 09:57:04 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.8-1
 - move `python-setuptools` package dependency to SLES12 SP1
   or later
 - add bootstrap repo definition for SLE15 SP1
