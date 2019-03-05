@@ -2,10 +2,10 @@
 
 DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
 case ${DISTRIBUTION_ID} in
-    sles)                    JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
-    opensuse|opensuse-leap)  JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
-    *)                       echo 'Unknown distribution!'
-                             exit 1;;
+    sles|suse-manager-server) JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
+    opensuse|opensuse-leap)   JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
+    *)                        echo 'Unknown distribution!'
+                              exit 1;;
 esac
 
 if [ ! $UID -eq 0 ]; then
