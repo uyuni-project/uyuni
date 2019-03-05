@@ -24,6 +24,7 @@ public class ScheduleMetadata {
     public static final String SUMA_ACTION_ID = "suma-action-id";
     public static final String SUMA_FORCE_PGK_LIST_REFRESH = "suma-force-pkg-list-refresh";
     public static final String SUMA_ACTION_CHAIN = "suma-action-chain";
+    public static final String SUMA_MINION_STARTUP = "suma-minion-startup";
 
     @SerializedName(SUMA_ACTION_ID)
     private long sumaActionId = 0L;
@@ -33,6 +34,9 @@ public class ScheduleMetadata {
 
     @SerializedName(SUMA_ACTION_CHAIN)
     private boolean actionChain;
+
+    @SerializedName(SUMA_MINION_STARTUP)
+    private boolean minionStartup;
 
     /**
      * @param sumaActionIdIn the action id
@@ -60,5 +64,12 @@ public class ScheduleMetadata {
      */
     public boolean isActionChain() {
         return actionChain;
+    }
+
+    /**
+     * @return true in case of minion startup
+     */
+    public boolean isMinionStartup() {
+         return minionStartup;
     }
 }

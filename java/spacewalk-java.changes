@@ -1,3 +1,4 @@
+- Read and update running kernel release value at each startup of minion (bsc#1122381)
 - Add error message on sync refresh when there are no scc credentials
 - Fix apidoc issues 
 - Fix deleting server when minion_formulas.json is empty (bsc#1122230)

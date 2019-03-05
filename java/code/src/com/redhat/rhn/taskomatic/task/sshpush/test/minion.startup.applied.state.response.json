@@ -1,0 +1,77 @@
+{
+    "module_|-sync_beacons_|-saltutil.sync_beacons_|-run": {
+      "comment": "Module function saltutil.sync_beacons executed",
+      "name": "saltutil.sync_beacons",
+      "start_time": "15:10:28.808934",
+      "result": true,
+      "duration": 93.715,
+      "__run_num__": 2,
+      "__sls__": "util.syncbeacons",
+      "changes": {
+        "ret": []
+      },
+      "__id__": "sync_beacons"
+    },
+    "module_|-status_uptime_|-status.uptime_|-run": {
+      "comment": "Module function status.uptime executed",
+      "name": "status.uptime",
+      "start_time": "15:10:28.902879",
+      "result": true,
+      "duration": 16.436,
+      "__run_num__": 3,
+      "__sls__": "util.systeminfo",
+      "changes": {
+        "ret": {
+          "users": 2,
+          "seconds": 27,
+          "since_t": 1551709288,
+          "days": 0,
+          "since_iso": "2019-03-04T14:21:28.933041",
+          "time": "0:0"
+        }
+
+      },
+      "__id__": "status_uptime"
+    },
+    "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+      "comment": "Module function saltutil.sync_grains executed",
+      "name": "saltutil.sync_grains",
+      "start_time": "15:10:27.968460",
+      "result": true,
+      "duration": 832.525,
+      "__run_num__": 1,
+      "__sls__": "util.syncgrains",
+      "changes": {
+        "ret": []
+      },
+      "__id__": "sync_grains"
+    },
+    "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+      "comment": "Module function saltutil.sync_modules executed",
+      "name": "saltutil.sync_modules",
+      "start_time": "15:10:27.664062",
+      "result": true,
+      "duration": 304.157,
+      "__run_num__": 0,
+      "__sls__": "util.syncmodules",
+      "changes": {
+        "ret": []
+      },
+      "__id__": "sync_modules"
+    },
+    "module_|-grains_update_|-grains.item_|-run": {
+      "comment": "Module function grains.item executed",
+      "name": "grains.item",
+      "start_time": "15:10:28.919644",
+      "result": true,
+      "duration": 2.556,
+      "__run_num__": 4,
+      "__sls__": "util.systeminfo",
+      "changes": {
+        "ret": {
+          "kernelrelease": "4.4.73-5-default"
+        }
+      },
+      "__id__": "grains_update"
+    }
+  }
