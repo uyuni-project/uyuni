@@ -48,9 +48,10 @@ public class MenuItem {
      * Standard constructor for MenuItem.
      *
      * @param labelIn the label of the menu item
+     * @param args arguments for the message
      */
-    public MenuItem(String labelIn) {
-        this.setLabel(labelIn);
+    public MenuItem(String labelIn, Object... args) {
+        this.setLabel(labelIn, args);
     }
 
     /**
@@ -64,9 +65,10 @@ public class MenuItem {
 
     /**
      * @param labelKey The label to set.
+     * @param args arguments for the message
      */
-    public void setLabel(String labelKey) {
-        String unescapedName = LocalizationService.getInstance().getMessage(labelKey);
+    public void setLabel(String labelKey, Object... args) {
+        String unescapedName = LocalizationService.getInstance().getMessage(labelKey, args);
         this.label = StringEscapeUtils.escapeHtml4(unescapedName);
     }
 
