@@ -7953,12 +7953,6 @@
           <forward name="default" path="/WEB-INF/pages/help/chatindex.jsp"/>
       </action>
 
-    <action path="/help/index"
-        scope="request"
-        type="com.redhat.rhn.frontend.action.help.HelpAction">
-        <forward name="default" path="/WEB-INF/pages/help/helpindex.jsp"/>
-    </action>
-
     <action path="/help/about"
         scope="request"
         type="com.redhat.rhn.frontend.action.help.ChatAction">

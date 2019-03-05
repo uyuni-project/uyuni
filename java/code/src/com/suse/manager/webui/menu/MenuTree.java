@@ -17,6 +17,7 @@ package com.suse.manager.webui.menu;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
@@ -351,17 +352,9 @@ public class MenuTree {
                 );
 
             // Help
-            nodes.add(new MenuItem("Help").withIcon("fa-book")
-                .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/index.do")
-                    .withDir("/rhn/help"))
-                .addChild(new MenuItem("Getting Started Guide").withPrimaryUrl("/rhn/help/dispatcher/getting_started_guide")
-                    .withDir("/rhn/help/getting-started"))
-                .addChild(new MenuItem("Reference Guide").withPrimaryUrl("/rhn/help/dispatcher/reference_guide")
-                    .withDir("/rhn/help/reference"))
-                .addChild(new MenuItem("Best Practices Guide").withPrimaryUrl("/rhn/help/dispatcher/best_practices_guide")
-                    .withDir("/rhn/help/best-practices"))
-                .addChild(new MenuItem("Advanced Topics Guide").withPrimaryUrl("/rhn/help/dispatcher/advanced_topics_guide")
-                    .withDir("/rhn/help/advanced-topics"))
+            nodes.add(new MenuItem("Help").withIcon("fa-book").withTarget("blank")
+                .addChild(new MenuItem("Documentation_version", Config.get().getString("web.version"))
+                    .withPrimaryUrl("/docs/index.html").withTarget("blank"))
                 .addChild(new MenuItem("Release Notes").withPrimaryUrl("/rhn/help/dispatcher/release_notes")
                     .withDir("/rhn/help/release-notes/manager"))
                 .addChild(new MenuItem("API")
@@ -393,16 +386,9 @@ public class MenuTree {
             nodes.add(new MenuItem("About Spacewalk").withIcon("fa-question-circle")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
                 .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/Login.do"))
-                .addChild(new MenuItem("Help Desk").withPrimaryUrl("/rhn/help/index.do"))
+                .addChild(new MenuItem("Documentation_version", Config.get().getString("web.version"))
+                    .withPrimaryUrl("/docs/index.html").withTarget("blank"))
                 .addChild(new MenuItem("Lookup Login/Password").withPrimaryUrl("/rhn/help/ForgotCredentials.do"))
-                .addChild(new MenuItem("Getting Started Guide").withPrimaryUrl("/rhn/help/dispatcher/getting_started_guide")
-                    .withDir("/rhn/help/getting-started"))
-                .addChild(new MenuItem("Reference Guide").withPrimaryUrl("/rhn/help/dispatcher/reference_guide")
-                    .withDir("/rhn/help/reference"))
-                .addChild(new MenuItem("Best Practices Guide").withPrimaryUrl("/rhn/help/dispatcher/best_practices_guide")
-                    .withDir("/rhn/help/best-practices"))
-                .addChild(new MenuItem("Advanced Topics Guide").withPrimaryUrl("/rhn/help/dispatcher/advanced_topics_guide")
-                    .withDir("/rhn/help/advanced-topics"))
                 .addChild(new MenuItem("Release Notes").withPrimaryUrl("/rhn/help/dispatcher/release_notes")
                     .withDir("/rhn/help/release-notes/manager"))
                 .addChild(new MenuItem("API")

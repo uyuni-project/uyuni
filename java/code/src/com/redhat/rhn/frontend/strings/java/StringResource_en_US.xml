@@ -549,6 +549,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Documentation_version">
+        <source>Documentation {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Inactive">
         <source>Inactive</source>
         <context-group name="ctx">
