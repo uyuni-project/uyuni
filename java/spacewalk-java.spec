@@ -89,6 +89,7 @@ Requires:       statistics
 Requires:       sudo
 Requires:       tomcat-taglibs-standard
 Requires:       pgjdbc-ng
+Requires:       susemanager-docs_en
 BuildRequires:  apache-commons-lang
 BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
