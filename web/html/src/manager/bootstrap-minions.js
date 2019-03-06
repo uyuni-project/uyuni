@@ -62,7 +62,6 @@ class BootstrapMinions extends React.Component {
     manageWithSSHChanged(event) {
         this.setState({
             manageWithSSH: event.target.checked,
-            user: "",
             port: ""
         });
     }
@@ -165,9 +164,11 @@ class BootstrapMinions extends React.Component {
             <AsyncButton id="clear-btn" defaultType="btn-default pull-right" icon="fa-eraser" text={t("Clear fields")} action={this.clearFields}/>
         ];
 
+        const productName = _IS_UYUNI ? "Uyuni" : "SUSE Manager"
+
         return (
         <Panel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="/rhn/help/reference/en-US/ref.webui.systems.bootstrapping.jsp#ref.webui.systems.bootstrapping">
-            <p>{t('You can add systems to be managed by providing SSH credentials only. SUSE Manager will prepare the system remotely and will perform the registration.')}</p>
+            <p>{t('You can add systems to be managed by providing SSH credentials only. {0} will prepare the system remotely and will perform the registration.', productName)}</p>
             {messages}
             <div className="form-horizontal">
                 <div className="form-group">
@@ -187,7 +188,12 @@ class BootstrapMinions extends React.Component {
                 <div className="form-group">
                     <label className="col-md-3 control-label">User:</label>
                     <div className="col-md-6">
-                        <input name="user" className="form-control" type="text" placeholder="root" value={this.state.user} disabled={this.state.manageWithSSH} onChange={this.userChanged}/>
+                        <input name="user" className="form-control" type="text" placeholder="root" value={this.state.user} onChange={this.userChanged}/>
+                        { this.state.manageWithSSH &&
+                            <div className="help-block">
+                              <i className="fa fa-exclamation-triangle"/>{t("The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH key is deployed during the bootstrap procedure.", productName)}
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="form-group">
