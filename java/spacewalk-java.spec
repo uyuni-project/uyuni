@@ -829,7 +829,6 @@ fi
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
 %{appdir}/rhn/errata/
-%{appdir}/rhn/help/
 %{appdir}/rhn/img/
 %{appdir}/rhn/META-INF/
 %{appdir}/rhn/schedule/
