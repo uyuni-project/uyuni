@@ -42,12 +42,12 @@ If you don't need a changelog check, please mark this checkbox:
 
 - [ ] No changelog needed
 
-If you uncheck the checkbox after the PR is created, you will need to rerun `changelog_test` (see below)
+If you uncheck the checkbox after the PR is created, you will need to re-run `changelog_test` (see below)
 
 
 ## Re-run a test
 
-If you need to re-run a test, please mark the related checkbox, it will be unchecked automatically after re-run it:
+If you need to re-run a test, please mark the related checkbox, it will be unchecked automatically once it has re-run:
 
 - [ ] Re-run test "changelog_test"
 - [ ] Re-run test "backend_unittests_pgsql"
