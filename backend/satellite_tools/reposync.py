@@ -843,6 +843,31 @@ class RepoSync(object):
         e['locally_modified'] = None
         return e
 
+    def __process_mpm_bin_batch(self, mpm_bin_batch, backend, upload_caller, affected_channels):
+        importer = packageImport.PackageImport(mpm_bin_batch, backend, caller=upload_caller)
+        importer.setUploadForce(1)
+        importer.run()
+        rhnSQL.commit()
+        del importer.batch
+        affected_channels.extend(importer.affected_channels)
+        del mpm_bin_batch
+        mpm_bin_batch = importLib.Collection()
+
+    def __process_mpm_src_batch(self, mpm_src_batch, backend, upload_caller):
+        src_importer = packageImport.SourcePackageImport(mpm_src_batch, backend, caller=upload_caller)
+        src_importer.setUploadForce(1)
+        src_importer.run()
+        rhnSQL.commit()
+        del mpm_src_batch
+        mpm_src_batch = importLib.Collection()
+
+    def __handle_general_exception(self):
+        e = str(sys.exc_info()[1])
+        if e:
+            log2(0, 1, e, stream=sys.stderr)
+        if self.fail:
+            raise
+
     def upload_updates(self, notices):
         batch = []
         backend = SQLBackend()
@@ -1011,6 +1036,7 @@ class RepoSync(object):
             if not to_download:
                 continue
             import_count += 1
+            is_last_download_element = (import_count == to_download_count)
             stage_path = pack.path
 
             # pylint: disable=W0703
@@ -1073,45 +1099,34 @@ class RepoSync(object):
                     to_disassociate[(pack.checksum_type, pack.checksum)] = False
                     # Set to_link to False, no need to link again
                     to_process[index] = (pack, True, False)
-
-                # importing packages by batch or if the current packages is the last
-                if mpm_bin_batch and (import_count == to_download_count
-                                      or len(mpm_bin_batch) % self.import_batch_size == 0):
-                    importer = packageImport.PackageImport(mpm_bin_batch, backend, caller=upload_caller)
-                    importer.setUploadForce(1)
-                    importer.run()
-                    rhnSQL.commit()
-                    del importer.batch
-                    affected_channels.extend(importer.affected_channels)
-                    del mpm_bin_batch
-                    mpm_bin_batch = importLib.Collection()
-
-                if mpm_src_batch and (import_count == to_download_count
-                                      or len(mpm_src_batch) % self.import_batch_size == 0):
-                    src_importer = packageImport.SourcePackageImport(mpm_src_batch, backend, caller=upload_caller)
-                    src_importer.setUploadForce(1)
-                    src_importer.run()
-                    rhnSQL.commit()
-                    del mpm_src_batch
-                    mpm_src_batch = importLib.Collection()
-
-                progress_bar.log(True, None)
             except KeyboardInterrupt:
-                raise
-            except rhnSQL.SQLError:
                 raise
             except Exception:
                 failed_packages += 1
-                e = str(sys.exc_info()[1])
-                if e:
-                    log2(0, 1, e, stream=sys.stderr)
-                if self.fail:
-                    raise
+                progress_bar_success = False
+                self.__handle_general_exception()
                 to_process[index] = (pack, False, False)
-                progress_bar.log(False, None)
             finally:
-                if is_non_local_repo and stage_path and os.path.exists(stage_path):
-                    os.remove(stage_path)
+                try:
+                    # importing packages by batch or if the current packages is the last
+                    if mpm_bin_batch and (is_last_download_element or len(mpm_bin_batch) % self.import_batch_size == 0):
+                        log(0, "  DO A COMMIT. - {} - {} - {}".format(bool(mpm_bin_batch), is_last_download_element, len(mpm_bin_batch) % self.import_batch_size == 0))
+                        self.__process_mpm_bin_batch(mpm_bin_batch, backend, upload_caller, affected_channels)
+                    if mpm_src_batch and (is_last_download_element or len(mpm_src_batch) % self.import_batch_size == 0):
+                        log(0, "  DO A SRC COMMIT. - {} - {} - {}".format(bool(mpm_src_batch), is_last_download_element, len(mpm_src_batch) % self.import_batch_size == 0))
+                        self.__process_mpm_src_batch(mpm_src_batch, backend, upload_caller)
+                    progress_bar_success = True
+                except rhnSQL.SQLError:
+                    raise
+                except KeyboardInterrupt:
+                    raise
+                except Exception:
+                    progress_bar_success = False
+                    self.__handle_general_exception()
+                finally:
+                    progress_bar.log(progress_bar_success, None)
+                    if is_non_local_repo and stage_path and os.path.exists(stage_path):
+                        os.remove(stage_path)
             pack.clear_header()
         if affected_channels:
             errataCache.schedule_errata_cache_update(affected_channels)
