@@ -232,8 +232,10 @@ public class MenuTree {
 
             // Content Management
             nodes.add(new MenuItem("contentmanagement.nav.title").withIcon("spacewalk-icon-software-channels")
-                .addChild(new MenuItem("contentmanagement.nav.list")
-                        .withPrimaryUrl("/rhn/manager/contentmanagement/projects")));
+                    .withDir("/rhn/manager/contentmanagement")
+                .addChild(new MenuItem("contentmanagement.nav.projects")
+                        .withPrimaryUrl("/rhn/manager/contentmanagement/projects")
+                        .withDir("/rhn/manager/contentmanagement/project")));
 
             // Audit
             nodes.add(new MenuItem("Audit").withIcon("fa-search").withDir("/rhn/audit")
