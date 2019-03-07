@@ -17,7 +17,7 @@ type Props = {
   onChange: Function,
 };
 
-const EnvironmentPath = (props: Props) => {
+const EnvironmentLifecycle = (props: Props) => {
 
   const {onAction, cancelAction, isLoading} = useProjectActionsApi({
     projectId: props.projectId, nestedResource:"environments"
@@ -25,8 +25,8 @@ const EnvironmentPath = (props: Props) => {
 
   return (
     <CreatorPanel
-      id="environmentPath"
-      title="Environment Path"
+      id="environmentLifecycle"
+      title="Environment Lifecycle"
       creatingText="Add new Environment"
       panelLevel="2"
       collapsible
@@ -137,4 +137,4 @@ const EnvironmentPath = (props: Props) => {
   )
 }
 
-export default EnvironmentPath;
+export default EnvironmentLifecycle;

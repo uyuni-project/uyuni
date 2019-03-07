@@ -5,7 +5,7 @@ import {TopPanel} from "../../../components/panels/TopPanel";
 import Sources from "../shared/components/panels/sources/sources";
 import PropertiesEdit from "../shared/components/panels/properties/properties-edit";
 import Build from "../shared/components/panels/build/build";
-import EnvironmentPath from "../shared/components/panels/environment-path/environment-path";
+import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
 import {handleSourcesChange, handleBuild} from "../shared/state/project/project.state";
 import { showErrorToastr, showSuccessToastr } from 'components/toastr/toastr';
 import Filters from "../shared/components/panels/filters/filters";
@@ -53,7 +53,7 @@ const Project = (props: Props) => {
 
   return (
     <TopPanel
-      title={t('Create Project')}
+      title={t('Create a new Content Lifecycle Project')}
       // icon="fa-plus"
       button= {
         <div className="pull-right btn-group">
@@ -107,7 +107,7 @@ const Project = (props: Props) => {
         changesToBuild={changesToBuild}
       />
 
-      <EnvironmentPath
+      <EnvironmentLifecycle
         projectId={projectId}
         environments={project.environments}
         onChange={(projectWithNewEnvironment) => {
