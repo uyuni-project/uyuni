@@ -24,6 +24,7 @@ Feature: Register a salt-ssh system via XML-RPC
      And I navigate to "rhn/systems/Overview.do" page
      And I wait until I see the name of "ssh-minion", refreshing the page
      And I wait until onboarding is completed for "ssh-minion"
+     Then I remove package "sle-manager-tools-release" from highstate
 
 @ssh_minion
   Scenario: Check contact method of this Salt SSH system
