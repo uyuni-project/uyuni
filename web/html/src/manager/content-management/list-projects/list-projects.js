@@ -31,7 +31,7 @@ const ListProjects = (props: Props) => {
   }, [])
 
   const searchData = (row, criteria) => {
-    const keysToSearch = ['name', 'description', 'environmentPath'];
+    const keysToSearch = ['name', 'description', 'environmentLifecycle'];
     if (criteria) {
       return keysToSearch.map(key => row[key]).join().toLowerCase().includes(criteria.toLowerCase());
     }
@@ -42,7 +42,7 @@ const ListProjects = (props: Props) => {
     label: project.properties.label,
     name: project.properties.name,
     description: project.properties.description,
-    environmentPath: project.environments.join(' - ')
+    environmentLifecycle: project.environments.join(' - ')
   }));
 
   const panelButtons = (
@@ -51,7 +51,7 @@ const ListProjects = (props: Props) => {
         id="createcontentproject"
         icon="fa-plus"
         className="btn-link"
-        title={t('Create a new content project')}
+        title={t('Create a new content lifecycle project')}
         text={t('Create Project')}
         href="/rhn/manager/contentmanagement/project"
       />
@@ -59,7 +59,7 @@ const ListProjects = (props: Props) => {
   );
 
   return (
-      <TopPanel title={t('Content Projects')} icon="spacewalk-icon-software-channels" button={panelButtons}>
+      <TopPanel title={t('Content Lifecycle Projects')} icon="spacewalk-icon-software-channels" button={panelButtons}>
         <Table
           data={normalizedProjects}
           identifier={row => row.label}
@@ -87,9 +87,9 @@ const ListProjects = (props: Props) => {
             cell={row => row.description}
           />
           <Column
-            columnKey="environmentPath"
-            header={t('Environment Path')}
-            cell={row => row.environmentPath}
+            columnKey="environmentLifecycle"
+            header={t('Environment Lifecycle')}
+            cell={row => row.environmentLifecycle}
           />
           <Column
             columnKey="name"
