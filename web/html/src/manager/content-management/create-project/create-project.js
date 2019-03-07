@@ -23,7 +23,7 @@ const CreateProject = () => {
 
   return (
           <TopPanel
-            title={t('Create Project')}
+            title={t('Create a new Content Lifecycle Project')}
             icon="fa-plus"
             button={
               <TopPanelButtons
