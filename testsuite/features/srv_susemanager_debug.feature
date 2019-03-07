@@ -11,3 +11,6 @@ Feature: Debug SUSE Manager after the testsuite has run
 
   Scenario: Check the tomcat logs on server
     Then I check the tomcat logs for errors
+
+  Scenario: Check salt event log for failures on server 
+    Then I control that salt event log on server contains no failures 

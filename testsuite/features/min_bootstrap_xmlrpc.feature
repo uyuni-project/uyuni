@@ -53,6 +53,10 @@ Feature: Register a Salt minion via XML-RPC API
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
+  Scenario: Check events history for failures on SLES minion after XML-RPC bootstrap
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I check for failed events on history event page
+
   Scenario: Bootstrap via XML-RPC a non-existing system
     Given I am logged in via XML-RPC system as user "admin" and password "admin"
     When I call system.bootstrap() on unknown host, I should get an XML-RPC fault with code -1

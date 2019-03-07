@@ -149,3 +149,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Cleanup: check that the minion is now a build host after activation key tests
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
+
+  Scenario: Check events history for failures on SLES minion with activation key
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I check for failed events on history event page

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -33,3 +33,8 @@ Feature: Setup SUSE Manager proxy
   Scenario: Cleanup: remove proxy bootstrap scripts
     When I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh" on "server"
     And I run "rm /root/bootstrap-proxy.sh" on "proxy"
+
+@proxy
+  Scenario: Check events history for failures on the proxy
+    Given I am on the Systems overview page of this "proxy"
+    Then I check for failed events on history event page
