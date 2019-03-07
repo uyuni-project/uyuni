@@ -1110,10 +1110,8 @@ class RepoSync(object):
                 try:
                     # importing packages by batch or if the current packages is the last
                     if mpm_bin_batch and (is_last_download_element or len(mpm_bin_batch) % self.import_batch_size == 0):
-                        log(0, "  DO A COMMIT. - {} - {} - {}".format(bool(mpm_bin_batch), is_last_download_element, len(mpm_bin_batch) % self.import_batch_size == 0))
                         self.__process_mpm_bin_batch(mpm_bin_batch, backend, upload_caller, affected_channels)
                     if mpm_src_batch and (is_last_download_element or len(mpm_src_batch) % self.import_batch_size == 0):
-                        log(0, "  DO A SRC COMMIT. - {} - {} - {}".format(bool(mpm_src_batch), is_last_download_element, len(mpm_src_batch) % self.import_batch_size == 0))
                         self.__process_mpm_src_batch(mpm_src_batch, backend, upload_caller)
                     progress_bar_success = True
                 except rhnSQL.SQLError:
