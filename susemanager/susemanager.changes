@@ -1,4 +1,7 @@
+- Allow alternative names for bootstrap packages, to allow
+  using old client tools after package renames
 - Feat: create Ubuntu empty repository
+
 -------------------------------------------------------------------
 Tue Mar 05 14:30:39 CET 2019 - jgonzalez@suse.com
 
