@@ -1,3 +1,6 @@
+- Avoid reposync crashing by ensuring import batches are commited
+  even if some packages failed while downloading (bsc#1127488)
+
 -------------------------------------------------------------------
 Mon Mar 04 09:54:01 CET 2019 - jgonzalez@suse.com
 
