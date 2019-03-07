@@ -17,6 +17,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "ssh-minion", refreshing the page
     And I wait until onboarding is completed for "ssh-minion"
+    Then I remove package "sle-manager-tools-release" from highstate
 
 @proxy
 @ssh_minion
