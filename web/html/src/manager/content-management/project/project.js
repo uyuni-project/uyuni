@@ -62,22 +62,22 @@ const Project = (props: Props) => {
             title={t("Delete")}
             text={t('Delete')}
             target="delete-project-modal" />
-          <DeleteDialog id="delete-project-modal"
-                        title={t("Delete Store")}
-                        content={<span>{t("Are you sure you want to delete project")} <strong>{projectId}</strong>?</span>}
-                        onConfirm={() =>
-                          onAction(project, 'delete')
-                            .then(() => {
-                              window.location.href = `/rhn/manager/contentmanagement/projects`
-                            })
-                            .catch((error) => {
-                              showErrorToastr(error);
-                            })
-                        }
-          />
         </div>
       }
     >
+      <DeleteDialog id="delete-project-modal"
+          title={t("Delete Store")}
+          content={<span>{t("Are you sure you want to delete project")} <strong>{projectId}</strong>?</span>}
+          onConfirm={() =>
+            onAction(project, 'delete')
+            .then(() => {
+              window.location.href = `/rhn/manager/contentmanagement/projects`
+            })
+            .catch((error) => {
+              showErrorToastr(error);
+            })
+          }
+      />
       <PropertiesEdit
         projectId={projectId}
         properties={project.properties}
