@@ -218,7 +218,11 @@ class DownloadThread(Thread):
             ## This also needs a patched urlgrabber AFAIK
             if 'authtoken' in params and params['authtoken']:
                 (scheme, netloc, path, query, _) = urlparse.urlsplit(params['urls'][self.mirror])
-                url = "%s://%s%s/%s?%s" % (scheme,netloc,path,params['relative_path'],query.rstrip('/'))
+                url = urlparse.urlunsplit((
+                    scheme,
+                    netloc,
+                    urlparse.urljoin(path, params['relative_path']),
+                    query.rstrip('/'), ''))
             try:
                 try:
                     fo = PyCurlFileObjectThread(url, params['target_file'], opts, self.curl, self.parent)
