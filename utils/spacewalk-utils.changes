@@ -1,3 +1,5 @@
+- Create /etc/rhn with correct ownership to prevent file conflicts
+
 -------------------------------------------------------------------
 Thu Dec 13 10:44:27 CET 2018 - jgonzalez@suse.com
 
