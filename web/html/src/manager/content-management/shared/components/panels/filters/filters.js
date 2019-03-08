@@ -10,6 +10,7 @@ const Filters = (props:  Props) => {
       headingLevel="h2"
       title={t('Filters')}
       collapseId="filters-id"
+      customIconClass="fa-small"
       // buttons={ this.renderModalAddButton('newFilter', t('Add new Filter')) }
     >
       <div className="min-height-panel">

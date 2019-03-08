@@ -19,6 +19,7 @@ type Props = {
   onDelete?: Function,
   disableOperations?: boolean,
   collapsible?: boolean,
+  customIconClass?: string,
 };
 
 const panelLevels = {
@@ -49,6 +50,7 @@ const CreatorPanel = (props: Props) => {
       <Panel
         headingLevel={panelLevels[props.panelLevel]}
         collapseId={panelCollapseId}
+        customIconClass={props.customIconClass ? props.customIconClass : ""}
         title={props.title}
         className={props.className}
         buttons={
