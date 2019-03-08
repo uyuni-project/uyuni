@@ -52,8 +52,8 @@ function Panel(props: Props) {
               {
                 props.collapseId ?
                   <div data-toggle="collapse" href={`#${props.collapseId}-panel-closable`} className="accordion-toggle">
-                    <i className="fa fa-chevron-right show-on-collapsed" />
-                    <i className="fa fa-chevron-down hide-on-collapsed" />
+                    <i className="fa fa-chevron-down show-on-collapsed" />
+                    <i className="fa fa-chevron-right hide-on-collapsed" />
                     {titleContent}
                   </div>
                   : titleContent
