@@ -1,3 +1,5 @@
+- Make sure the package download url does not have '//' (bsc#1127488)
+
 -------------------------------------------------------------------
 Mon Feb 25 15:04:28 CET 2019 - jgonzalez@suse.com
 
