@@ -63401,7 +63401,7 @@
         "release_stage": "beta",
         "mandatory": true,
         "signed": true,
-        "recommended": false,
+        "recommended": true,
         "channel_name": "SLE-Module-Python2-15-SP1-Updates for x86_64 SLED"
     },
     {
@@ -63416,7 +63416,7 @@
         "release_stage": "beta",
         "mandatory": false,
         "signed": true,
-        "recommended": false,
+        "recommended": true,
         "channel_name": "SLE-Module-Python2-15-SP1-Debuginfo-Updates for x86_64 SLED"
     },
     {
@@ -63431,7 +63431,7 @@
         "release_stage": "beta",
         "mandatory": true,
         "signed": true,
-        "recommended": false,
+        "recommended": true,
         "channel_name": "SLE-Module-Python2-15-SP1-Pool for x86_64 SLED"
     },
     {
@@ -63446,7 +63446,7 @@
         "release_stage": "beta",
         "mandatory": false,
         "signed": true,
-        "recommended": false,
+        "recommended": true,
         "channel_name": "SLE-Module-Python2-15-SP1-Debuginfo-Pool for x86_64 SLED"
     },
     {
