@@ -3,6 +3,7 @@ const React = require('react');
 type Props = {
   headingLevel: string,
   collapseId?: string,
+  customIconClass?: string,
   title?: string,
   className?: string,
   icon?: string,
@@ -52,8 +53,8 @@ function Panel(props: Props) {
               {
                 props.collapseId ?
                   <div data-toggle="collapse" href={`#${props.collapseId}-panel-closable`} className="accordion-toggle">
-                    <i className="fa fa-chevron-down show-on-collapsed" />
-                    <i className="fa fa-chevron-right hide-on-collapsed" />
+                    <i className={`fa fa-chevron-down show-on-collapsed ${props.customIconClass}`} />
+                    <i className={`fa fa-chevron-right hide-on-collapsed ${props.customIconClass}`} />
                     {titleContent}
                   </div>
                   : titleContent

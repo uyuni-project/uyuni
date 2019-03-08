@@ -30,6 +30,7 @@ const EnvironmentLifecycle = (props: Props) => {
       creatingText="Add new Environment"
       panelLevel="2"
       collapsible
+      customIconClass="fa-small"
       disableOperations={isLoading}
       onSave={({ item, closeDialog }) =>
         onAction(mapAddEnvironmentRequest(item, props.environments, props.projectId), "create")
