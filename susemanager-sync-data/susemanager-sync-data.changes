@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Mar 08 16:29:50 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
 - add minimal channel data to setup SUSE Manager Proxy 4.0
 - adapt to SCC changes
 - add CaaSP 4 Toolchain
