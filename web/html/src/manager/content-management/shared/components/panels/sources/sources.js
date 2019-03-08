@@ -74,6 +74,7 @@ const Sources = (props: SourcesProps) => {
       creatingText="Add new Source"
       panelLevel="2"
       collapsible
+      customIconClass="fa-small"
       onSave={({closeDialog}) => {
         const randomSource = generateNewSource();
         props.onChange(addSource(props.sources, {...randomSource, state:  "0"}))

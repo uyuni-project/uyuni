@@ -27,6 +27,7 @@ const PropertiesEdit = (props: Props) => {
         panelLevel="2"
         title={t('Project Properties')}
         collapsible
+        customIconClass="fa-small"
         onOpen={({ setItem }) => setItem(props.properties)}
         disableOperations={isLoading}
         onSave={({ item, closeDialog }) => {
