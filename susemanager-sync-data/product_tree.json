@@ -57570,6 +57570,21 @@
         "channel_name": "SLE-Product-WE15-SP1-Debuginfo-Pool for x86_64"
     },
     {
+        "channel_label": "sle-15-sp1-desktop-nvidia-driver-we",
+        "parent_channel_label": "sle-product-sles15-sp1-pool-x86_64",
+        "product_id": 1781,
+        "repository_id": 3792,
+        "parent_product_id": 1776,
+        "root_product_id": 1763,
+        "update_tag": null,
+        "url": "https://download.nvidia.com/suse/sle15sp1/",
+        "release_stage": "beta",
+        "mandatory": true,
+        "signed": true,
+        "recommended": false,
+        "channel_name": "SLE-15-SP1-Desktop-NVIDIA-Driver for x86_64 WE"
+    },
+    {
         "channel_label": "sle-15-ga-desktop-nvidia-driver-sp1",
         "parent_channel_label": "sle-product-sled15-sp1-pool-x86_64",
         "product_id": 1781,
@@ -57645,6 +57660,21 @@
         "channel_name": "SLE-Product-WE15-SP1-Debuginfo-Pool for x86_64 SLED"
     },
     {
+        "channel_label": "sle-15-sp1-desktop-nvidia-driver",
+        "parent_channel_label": "sle-product-sled15-sp1-pool-x86_64",
+        "product_id": 1781,
+        "repository_id": 3792,
+        "parent_product_id": 1776,
+        "root_product_id": 1764,
+        "update_tag": null,
+        "url": "https://download.nvidia.com/suse/sle15sp1/",
+        "release_stage": "beta",
+        "mandatory": true,
+        "signed": true,
+        "recommended": true,
+        "channel_name": "SLE-15-SP1-Desktop-NVIDIA-Driver for x86_64"
+    },
+    {
         "channel_label": "sle-15-ga-desktop-nvidia-driver-sap-sp1",
         "parent_channel_label": "sle-product-sles_sap15-sp1-pool-x86_64",
         "product_id": 1781,
@@ -57718,6 +57748,21 @@
         "signed": true,
         "recommended": false,
         "channel_name": "SLE-Product-WE15-SP1-Debuginfo-Pool for x86_64 SAP"
+    },
+    {
+        "channel_label": "sle-15-sp1-desktop-nvidia-driver-sap",
+        "parent_channel_label": "sle-product-sles_sap15-sp1-pool-x86_64",
+        "product_id": 1781,
+        "repository_id": 3792,
+        "parent_product_id": 1776,
+        "root_product_id": 1766,
+        "update_tag": null,
+        "url": "https://download.nvidia.com/suse/sle15sp1/",
+        "release_stage": "beta",
+        "mandatory": true,
+        "signed": true,
+        "recommended": false,
+        "channel_name": "SLE-15-SP1-Desktop-NVIDIA-Driver for x86_64 SAP"
     },
     {
         "channel_label": "sle-product-ha15-sp1-updates-aarch64",
