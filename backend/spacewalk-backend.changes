@@ -1,3 +1,4 @@
+- Make sure the package download url does not have '//' (bsc#1127488)
 - Fix bootstrapping SLE15 traditional client (bsc#1128564)
 
 -------------------------------------------------------------------
