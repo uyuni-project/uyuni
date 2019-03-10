@@ -60,8 +60,8 @@ Feature: The channels page
     And I should see a "Test-Channel-x86_64" link
     And I should see a "openSUSE Build Service" text
     And I should see a "SHA256sum:" text
-    And I should see a "3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30" text
-    And I should see a "packages/1/3bb/andromeda-dummy/2.0-1.1/noarch/3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30/andromeda-dummy-2.0-1.1.noarch.rpm" text
+    And I should see a "9150047f536ea98655f3a4bb23ddfcedb4dbdff32cb5130c2e18e5caf0e6fd66" text
+    And I should see a "packages/1/915/andromeda-dummy/2.0-1.1/noarch/9150047f536ea98655f3a4bb23ddfcedb4dbdff32cb5130c2e18e5caf0e6fd66/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check package dependencies page
     Given I am authorized as "admin" with password "admin"
