@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
@@ -252,12 +253,14 @@ public class ContentManager {
         Optional<? extends ProjectSource> source = lookupProjectSource(projectLabel, sourceType, sourceLabel, user);
         if (source.isPresent()) {
             ProjectSource src = source.get();
-            src.setState(ATTACHED);
+            if (src.getState() == DETACHED) {
+                // if a source has been DETACHED and we attach it again -> it gets back to original state (BUILT)
+                src.setState(BUILT);
+            }
             ContentProjectFactory.save(src);
             return src;
         }
-
-        if (sourceType == SW_CHANNEL) {
+        else if (sourceType == SW_CHANNEL) {
             Channel channel = getChannel(sourceLabel, user);
             SoftwareProjectSource newSource = new SoftwareProjectSource(project, channel);
             project.addSource(newSource, position);
@@ -291,8 +294,15 @@ public class ContentManager {
     public static int detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
         ensureOrgAdmin(user);
         Optional<? extends ProjectSource> src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user);
-        src.ifPresent(s -> s.setState(DETACHED));
-        return src.isPresent() ? 1 : 0;
+        return src.map(s -> {
+            if (s.getState() == ATTACHED) {
+                s.getContentProject().removeSource(s);
+            }
+            else {
+                s.setState(DETACHED);
+            }
+            return 1;
+        }).orElse(0);
     }
 
     /**
