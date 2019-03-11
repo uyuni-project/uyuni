@@ -65,7 +65,7 @@ Feature: Be able to manipulate activation keys
     And I select "Test-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
-    And I enter "man" as "packages"
+    And I enter "sed" as "packages"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
     And I should see a "Details" link
@@ -84,7 +84,7 @@ Feature: Be able to manipulate activation keys
     And I select "Test-Channel-i586" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
-    And I enter "man" as "packages"
+    And I enter "sed" as "packages"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key i586 has been modified." text
     And I should see a "Details" link
