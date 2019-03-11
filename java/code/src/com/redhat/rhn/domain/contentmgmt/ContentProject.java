@@ -230,13 +230,10 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @param source the Source
      * @param position the (optional) position
-     * @throws java.lang.IllegalArgumentException if the given Source does not match to the Project
      * @return true if Source was added, false if the Source had been present already
      */
     public boolean addSource(ProjectSource source, Optional<Integer> position) {
-        if (!source.getContentProject().equals(this)) {
-            throw new IllegalArgumentException("Trying to attach source " + source + " with mismatched Project.");
-        }
+        source.setContentProject(this);
         if (sources.contains(source)) {
             return false;
         }
@@ -251,12 +248,8 @@ public class ContentProject extends BaseDomainHelper {
      * Removes a source from content project
      *
      * @param source the source
-     * @throws java.lang.IllegalArgumentException if the given Source does not match to the Project
      */
     public void removeSource(ProjectSource source) {
-        if (!source.getContentProject().equals(this)) {
-            throw new IllegalArgumentException("Trying to remove source " + source + " with mismatched Project.");
-        }
         sources.remove(source);
     }
 
