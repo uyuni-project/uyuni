@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static java.util.Arrays.asList;
@@ -292,10 +293,27 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(channel, fromDb.asSoftwareSource().get().getChannel());
         assertEquals(singletonList(source), cp.getSources());
 
+        source.setState(BUILT); // programmatically set to BUILT (normally this happens after building project)
         ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
         ProjectSource projectSource = ContentProjectFactory.lookupProjectSource(cp, SW_CHANNEL, channel.getLabel(), user).get();
         assertEquals(DETACHED, projectSource.getState());
         assertEquals(singletonList(source), cp.getSources());
+    }
+
+    /**
+     * Test attaching Source
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testAttachProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        assertEquals(1, cp.getSources().size());
+        assertEquals(ATTACHED, cp.getSources().get(0).getState());
     }
 
     /**
@@ -316,21 +334,45 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test detaching same Source multiple times
+     * Test attaching built Source multiple times
      *
      * @throws Exception - if anything goes wrong
      */
-    public void testMultipleDetachingProjectSource() throws Exception {
+    public void testAttachBuiltProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
 
-        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
-        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ProjectSource src = ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        src.setState(BUILT); // programmatically set to BUILT (normally this happens after building project)
 
+        // attach the same source
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        // it should stay in BUILT state
         assertEquals(1, cp.getSources().size());
-        assertEquals(DETACHED, cp.getSources().get(0).getState());
+        assertEquals(BUILT, cp.getSources().get(0).getState());
+    }
+
+    /**
+     * Test attaching detached Source multiple times
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testAttachDetachedProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ProjectSource src = ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        src.setState(DETACHED); // programmatically set to DETACHED (normally this happens when detaching BUILT source))
+
+        // attach the same source
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        // it should go back to BUILT state
+        assertEquals(1, cp.getSources().size());
+        assertEquals(BUILT, cp.getSources().get(0).getState());
     }
 
     /**
@@ -358,6 +400,60 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         catch (EntityNotExistsException e) {
             // expected
         }
+    }
+
+    /**
+     * Test detaching a {@link ProjectSource}
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testDetachProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ProjectSource src = ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        src.setState(BUILT); // programmatically set to BUILT (normally this happens after building project)
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+
+        assertEquals(1, cp.getSources().size());
+        assertEquals(DETACHED, cp.getSources().get(0).getState());
+    }
+
+    /**
+     * Test detaching a {@link ProjectSource}
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testDetachAttachedProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+
+        // freshly attached, non-built source should be removed after detaching
+        assertEquals(0, cp.getSources().size());
+    }
+
+    /**
+     * Test detaching same Source multiple times
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testMultipleDetachingProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ProjectSource src = ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        src.setState(BUILT); // programmatically set to BUILT (normally this happens after building project)
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+
+        assertEquals(1, cp.getSources().size());
+        assertEquals(DETACHED, cp.getSources().get(0).getState());
     }
 
     /**
