@@ -1550,3 +1550,4 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                 channel.getOrg()));
     }
 }
+
