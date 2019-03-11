@@ -19,13 +19,11 @@ package com.redhat.rhn.domain.contentmgmt.test;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentFilter;
-import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
-import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource.State;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.org.Org;
@@ -39,6 +37,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 import java.util.List;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
@@ -255,16 +255,16 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(cp);
 
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
-        ProjectSource swSource = new SoftwareProjectSource(baseChannel);
-        cp.addSource(swSource);
+        ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
+        cp.addSource(swSource, empty());
         ContentProjectFactory.save(swSource);
 
         List<ProjectSource> fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
         assertEquals(singletonList(swSource), fromDb);
 
         Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
-        ProjectSource swSource2 = new SoftwareProjectSource(childChannel);
-        cp.addSource(swSource2);
+        ProjectSource swSource2 = new SoftwareProjectSource(cp, childChannel);
+        cp.addSource(swSource2, empty());
         ContentProjectFactory.save(swSource2);
 
         fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
@@ -273,69 +273,6 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.removeSource(swSource2);
         fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
         assertEquals(singletonList(swSource), fromDb);
-    }
-
-    /**
-     * Tests adding/removing filters
-     */
-    public void testFilter() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
-        ContentProjectFactory.save(cp);
-
-        ContentFilter packageFilter = new PackageFilter();
-        packageFilter.setName("No-kernel-package filter");
-        packageFilter.setCriteria("criteria1");
-        packageFilter.setOrg(user.getOrg());
-        ContentProjectFactory.save(packageFilter);
-
-        ContentFilter packageFilter2 = new PackageFilter();
-        packageFilter2.setName("No-kernel-package filter2");
-        packageFilter2.setCriteria("criteria2");
-        packageFilter2.setOrg(user.getOrg());
-        ContentProjectFactory.save(packageFilter2);
-
-        cp.addFilter(packageFilter);
-        cp.addFilter(packageFilter2);
-
-        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
-        assertEquals(asList(packageFilter, packageFilter2), fromDb.getFilters());
-
-        cp.removeFilter(packageFilter);
-        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
-        assertEquals(asList(packageFilter2), fromDb.getFilters());
-
-        // check if the order is honored if filters are "swapped"
-        cp.addFilter(packageFilter);
-        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
-        assertEquals(asList(packageFilter2, packageFilter), fromDb.getFilters());
-    }
-
-    /**
-     * Tests adding/removing filters in wrong organization
-     */
-    public void testFilterWrongOrg() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", OrgFactory.createOrg());
-        ContentProjectFactory.save(cp);
-
-        ContentFilter packageFilter = new PackageFilter();
-        packageFilter.setName("No-kernel-package filter");
-        packageFilter.setCriteria("criteria1");
-        packageFilter.setOrg(user.getOrg());
-        ContentProjectFactory.save(packageFilter);
-
-        try {
-            cp.addFilter(packageFilter);
-            fail("A ContentManagementException should have been thrown.");
-        } catch (ContentManagementException e) {
-            // no op
-        }
-
-        try {
-            cp.removeFilter(packageFilter);
-            fail("A ContentManagementException should have been thrown.");
-        } catch (ContentManagementException e) {
-            // no op
-        }
     }
 
     /**
@@ -392,5 +329,80 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         sndEntryFromDb = (ContentProjectHistoryEntry) HibernateFactory.reload(sndEntryFromDb);
         assertNull(fstEntryFromDb.getUser());
         assertNull(sndEntryFromDb.getUser());
+    }
+
+    /**
+     * Test looking up Source by label
+     */
+    public void testSourceTypeLookup() {
+        assertEquals(SW_CHANNEL, lookupByLabel("software"));
+
+        try {
+            lookupByLabel("thisdoesntexist");
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Tests changing State of a Project Source
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testProjectSourceState() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
+        cp.addSource(swSource, empty());
+        ContentProjectFactory.save(swSource);
+
+        ProjectSource fromDb = cp.getSources().get(0);
+        assertEquals(State.ATTACHED, fromDb.getState());
+
+        fromDb.setState(State.DETACHED);
+        ContentProjectFactory.save(fromDb);
+
+        fromDb = cp.getSources().get(0);
+        assertEquals(State.DETACHED, fromDb.getState());
+    }
+
+    /**
+     * Test ordering of Project leader
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLookupProjectLeader() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
+        ContentProjectFactory.save(swSource);
+        Channel baseChannel2 = ChannelTestUtils.createBaseChannel(user);
+        ProjectSource swSource2 = new SoftwareProjectSource(cp, baseChannel2);
+        ContentProjectFactory.save(swSource2);
+        Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
+        ProjectSource childChannelSource = new SoftwareProjectSource(cp, childChannel);
+        ContentProjectFactory.save(swSource);
+
+        cp.addSource(childChannelSource, empty());
+        cp.addSource(swSource, empty());
+        cp.addSource(swSource2, empty());
+
+        cp.addSource(childChannelSource, empty());
+        cp.addSource(swSource, empty());
+        cp.addSource(swSource2, empty());
+        cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
+        assertEquals(swSource, cp.lookupSwSourceLeader().get());
+
+        // let's re-arrange the sources and test that the leader lookup works
+        // but keep the "child source" as the first element - it is supposed to be skipped on leader lookup
+        cp.removeSource(swSource2);
+        cp.addSource(swSource2, of(1));
+        cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
+        assertEquals(swSource2, cp.lookupSwSourceLeader().get());
     }
 }

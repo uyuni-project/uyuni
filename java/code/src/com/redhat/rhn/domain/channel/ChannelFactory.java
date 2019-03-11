@@ -451,6 +451,20 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Checks if a channel is accessible by a User.
+     *
+     * @param channelLabel the channel label
+     * @param userId user id
+     * @return true if it is accessible
+     */
+    public static boolean isAccessibleByUser(String channelLabel, Long userId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("channelLabel", channelLabel);
+        params.put("userId", userId);
+        return singleton.lookupObjectByNamedQuery("Channel.isAccessibleByUser", params) != null;
+    }
+
+    /**
      * returns a ChannelArch by label
      * @param label ChannelArch label
      * @return a ChannelArch by label

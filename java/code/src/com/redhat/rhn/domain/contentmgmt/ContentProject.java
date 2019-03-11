@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,6 +25,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,8 +33,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -40,6 +40,9 @@ import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
+import static com.suse.utils.Opt.consume;
 
 /**
  * A Content Project
@@ -55,7 +58,7 @@ public class ContentProject extends BaseDomainHelper {
     private String description;
     private ContentEnvironment firstEnvironment;
     private List<ProjectSource> sources = new ArrayList<>();
-    private List<ContentFilter> filters = new ArrayList<>();
+    private List<ContentProjectFilter> filters = new ArrayList<>();
     private List<ContentProjectHistoryEntry> historyEntries = new ArrayList<>();
 
     /**
@@ -208,6 +211,7 @@ public class ContentProject extends BaseDomainHelper {
      * @return sources
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contentProject", orphanRemoval = true)
+    @OrderColumn(name = "position")
     public List<ProjectSource> getSources() {
         return sources;
     }
@@ -224,11 +228,20 @@ public class ContentProject extends BaseDomainHelper {
     /**
      * Adds a source to content project
      *
-     * @param source the source
+     * @param source the Source
+     * @param position the (optional) position
+     * @return true if Source was added, false if the Source had been present already
      */
-    public void addSource(ProjectSource source) {
+    public boolean addSource(ProjectSource source, Optional<Integer> position) {
         source.setContentProject(this);
-        sources.add(source);
+        if (sources.contains(source)) {
+            return false;
+        }
+        consume(position,
+                () -> sources.add(source),
+                (p) -> sources.add(p, source)
+        );
+        return true;
     }
 
     /**
@@ -241,53 +254,41 @@ public class ContentProject extends BaseDomainHelper {
     }
 
     /**
-     * Gets the filters.
+     * Looks up {@link SoftwareProjectSource} "leader" of the {@link ContentProject}
+     *
+     * When a Project contains at least one {@link SoftwareProjectSource}, one of them has a special "leader" role:
+     * After building the Project, the "leader" will be used as a base Channel for Channels from other Project Sources.
+     *
+     * The "leader" is the first {@link SoftwareProjectSource} in the list of Project sources.
+     *
+     * @return the leader {@link SoftwareProjectSource}
+     */
+    public Optional<SoftwareProjectSource> lookupSwSourceLeader() {
+        return sources.stream()
+                .flatMap(s -> Opt.stream(s.asSoftwareSource()))
+                .filter(src -> !src.getState().equals(DETACHED) && src.getChannel().isBaseChannel())
+                .filter(src -> src.getChannel().isBaseChannel())
+                .findFirst();
+    }
+
+    /**
+     * Gets the links to Project Filters.
      *
      * @return filters
      */
-    @ManyToMany
-    @JoinTable(
-            name = "suseContentFilterProject",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "filter_id")
-    )
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
     @OrderColumn(name = "position")
-    public List<ContentFilter> getFilters() {
+    protected List<ContentProjectFilter> getProjectFilters() {
         return filters;
     }
 
     /**
-     * Sets the filters.
+     * Sets the links to Project Filters.
      *
      * @param filtersIn - the filters
      */
-    public void setFilters(List<ContentFilter> filtersIn) {
+    public void setProjectFilters(List<ContentProjectFilter> filtersIn) {
         filters = filtersIn;
-    }
-
-    /**
-     * Adds a filter.
-     *
-     * @param contentFilter the content filter
-     */
-    public void addFilter(ContentFilter contentFilter) {
-        if (!org.equals(contentFilter.getOrg())) {
-            throw new ContentManagementException("Filter organization does not match Content Project");
-        }
-        filters.add(contentFilter);
-    }
-
-    /**
-     * Removes filter.
-     *
-     * @param contentFilter - the filter to remove
-     * @return true if the filter was contained in the collection
-     */
-    public boolean removeFilter(ContentFilter contentFilter) {
-        if (!org.equals(contentFilter.getOrg())) {
-            throw new ContentManagementException("Filter organization does not match Content Project");
-        }
-        return filters.remove(contentFilter);
     }
 
     /**

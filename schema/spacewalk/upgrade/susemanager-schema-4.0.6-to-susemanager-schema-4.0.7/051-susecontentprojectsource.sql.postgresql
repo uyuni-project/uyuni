@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 67d8f52d8e6e5591d5c65175b78541ae76d1d466
+-- oracle equivalent source sha1 4de4b59b8633c20373936815312476db7475d58d
 --
 -- Copyright (c) 2018 SUSE LLC
 --
@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS suseContentProjectSource(
     id         NUMERIC NOT NULL
                    CONSTRAINT suse_ct_prj_src_id_pk PRIMARY KEY,
     type       VARCHAR(16) NOT NULL,
+    state      VARCHAR(16) NOT NULL,
+    position   NUMERIC,
     project_id NUMERIC NOT NULL
                    CONSTRAINT suse_ct_prj_src_prjid_fk
                        REFERENCES suseContentProject(id)

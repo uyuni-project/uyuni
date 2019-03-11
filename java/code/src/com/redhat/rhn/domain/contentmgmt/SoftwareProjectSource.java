@@ -19,10 +19,13 @@ import com.redhat.rhn.domain.channel.Channel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Optional;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import static java.util.Optional.of;
 
 /**
  * Software Project Source
@@ -36,15 +39,16 @@ public class SoftwareProjectSource extends ProjectSource {
     /**
      * Standard constructor
      */
-    public SoftwareProjectSource() {
-    }
+    public SoftwareProjectSource() { }
 
     /**
      * Standard constructor
      *
      * @param channelIn the channel
+     * @param projectIn the project
      */
-    public SoftwareProjectSource(Channel channelIn) {
+    public SoftwareProjectSource(ContentProject projectIn, Channel channelIn) {
+        super(projectIn);
         this.channel = channelIn;
     }
 
@@ -66,6 +70,14 @@ public class SoftwareProjectSource extends ProjectSource {
      */
     public void setChannel(Channel channelIn) {
         channel = channelIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<SoftwareProjectSource> asSoftwareSource() {
+        return of(this);
     }
 
     @Override

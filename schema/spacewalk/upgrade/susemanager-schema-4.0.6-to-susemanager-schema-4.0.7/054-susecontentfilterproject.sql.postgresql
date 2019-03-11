@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 c59cb9b32f9f2b399a58e97abe8ee0f7cae2d6df
+-- oracle equivalent source sha1 433aede04eb48bf5a4b68577ee3e59eb0173bd3b
 --
 -- Copyright (c) 2018 SUSE LLC
 --
@@ -15,6 +15,7 @@
 --
 
 CREATE TABLE IF NOT EXISTS suseContentFilterProject(
+    id         NUMERIC PRIMARY KEY,
     filter_id  NUMERIC NOT NULL
                    CONSTRAINT suse_ct_filter_fid_fk
                        REFERENCES suseContentFilter(id)
@@ -23,10 +24,11 @@ CREATE TABLE IF NOT EXISTS suseContentFilterProject(
                    CONSTRAINT suse_ct_filter_pid_fk
                        REFERENCES suseContentProject(id)
                        ON DELETE CASCADE,
-    position   NUMERIC NOT NULL
-)
+    state      VARCHAR(16) NOT NULL,
+    position   NUMERIC
+);
 
-;
+CREATE SEQUENCE IF NOT EXISTS suse_ct_f_p_seq;
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_ct_filter_project_uq
     ON suseContentFilterProject(filter_id, project_id);

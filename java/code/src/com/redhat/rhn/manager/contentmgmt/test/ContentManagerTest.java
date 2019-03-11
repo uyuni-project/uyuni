@@ -13,23 +13,32 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt.test;
+package com.redhat.rhn.manager.contentmgmt.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
-import com.redhat.rhn.domain.contentmgmt.ContentManager;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Arrays;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
@@ -58,6 +67,13 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test creating & looking up nonexisting Content Project
+     */
+    public void testLookupNonexistingProject() {
+        assertFalse(ContentManager.lookupProject("idontexist", user).isPresent());
+    }
+
+    /**
      * Test creating & listing Content Projects
      */
     public void testListContentProjects() {
@@ -81,7 +97,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
             ContentManager.createProject("cplabel", "differentname", null, user);
             fail("An exception should have been thrown");
         }
-        catch (ContentManagementException e) {
+        catch (EntityExistsException e) {
             // expected
         }
     }
@@ -126,11 +142,17 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
             ContentManager.updateProject(cp.getLabel(), of("new name"), of("new desc"), anotherUser);
             fail("An exception should have been thrown");
         }
-        catch (ContentManagementException e) {
+        catch (EntityNotExistsException e) {
             // no-op
         }
 
-        assertEquals(0, ContentManager.removeProject(cp.getLabel(), anotherUser));
+        try {
+            ContentManager.removeProject(cp.getLabel(), anotherUser);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityNotExistsException e) {
+            // no-op
+        }
     }
 
     /**
@@ -198,7 +220,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
                     user);
             fail("An exception should have been thrown");
         }
-        catch (ContentManagementException e) {
+        catch (EntityNotExistsException e) {
             // expected
         }
     }
@@ -252,5 +274,128 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         catch (PermissionException e) {
             // expected
         }
+    }
+
+    /**
+     * Test attaching/detaching Project Sources, the happy path scenario
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testChangeProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ProjectSource source = ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ProjectSource fromDb = ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).get();
+        assertEquals(source, fromDb);
+        assertEquals(channel, fromDb.asSoftwareSource().get().getChannel());
+        assertEquals(singletonList(source), cp.getSources());
+
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ProjectSource projectSource = ContentProjectFactory.lookupProjectSource(cp, SW_CHANNEL, channel.getLabel(), user).get();
+        assertEquals(DETACHED, projectSource.getState());
+        assertEquals(singletonList(source), cp.getSources());
+    }
+
+    /**
+     * Test attaching same Source multiple times
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testMultipleAttachProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        assertEquals(1, cp.getSources().size());
+        assertEquals(ATTACHED, cp.getSources().get(0).getState());
+    }
+
+    /**
+     * Test detaching same Source multiple times
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testMultipleDetachingProjectSource() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+
+        assertEquals(1, cp.getSources().size());
+        assertEquals(DETACHED, cp.getSources().get(0).getState());
+    }
+
+    /**
+     * Test attaching source to with some missing data (e.g. missing channel)
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testAttachSourceMissingEntities() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        try {
+            ContentManager.attachSource("cplabel", SW_CHANNEL, "notthere", empty(), user);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityNotExistsException e) {
+            // expected
+        }
+
+        try {
+            ContentManager.attachSource("idontexist", SW_CHANNEL, channel.getLabel(), empty(), user);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityNotExistsException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Test deleting underlying channel of a Source.
+     * In this case, the Source is supposed to be deleted too.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testDeleteSourceChannel() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
+        ChannelFactory.remove(channel);
+        assertFalse(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
+    }
+
+    /**
+     * Test deleting underlying Project of a Source.
+     * In this case, the Source is supposed to be deleted too.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testDeleteSourceProject() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
+        ContentManager.removeProject("cplabel", user);
+        // we can't use ContentManager.lookupProjectSource because the project does not exist
+        assertTrue(HibernateFactory.getSession()
+                .createQuery("SELECT 1 FROM SoftwareProjectSource s where s.contentProject = :cp")
+                .setParameter("cp", cp)
+                .list()
+                .isEmpty());
     }
 }

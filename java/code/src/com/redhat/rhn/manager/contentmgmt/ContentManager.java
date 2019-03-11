@@ -13,14 +13,28 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt;
+package com.redhat.rhn.manager.contentmgmt;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.channel.ChannelManager;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 /**
@@ -38,14 +52,14 @@ public class ContentManager {
      * @param name - the name
      * @param description - the description
      * @param user - the creator
-     * @throws ContentManagementException if a project with given label already exists
+     * @throws EntityExistsException if a project with given label already exists
      * @throws PermissionException if given user does not have required role
      * @return the created Content Project
      */
     public static ContentProject createProject(String label, String name, String description, User user) {
         ensureOrgAdmin(user);
         lookupProject(label, user).ifPresent(cp -> {
-            throw new ContentManagementException("Content Project with label " + label + " already exists");
+            throw new EntityExistsException(cp);
         });
         ContentProject contentProject = new ContentProject(label, name, description, user.getOrg());
         ContentProjectFactory.save(contentProject);
@@ -80,7 +94,7 @@ public class ContentManager {
      * @param newName - new name
      * @param newDesc - new description
      * @param user - the user
-     * @throws ContentManagementException - if Content Project with given label is not found
+     * @throws EntityNotExistsException - if Content Project with given label is not found
      * @throws PermissionException if given user does not have required role
      * @return the updated Content Project
      */
@@ -93,8 +107,7 @@ public class ContentManager {
                     newDesc.ifPresent(desc -> cp.setDescription(desc));
                     return cp;
                 })
-                .orElseThrow(() ->
-                        new ContentManagementException("Content Project with label " + label + " not found."));
+                .orElseThrow(() -> new EntityNotExistsException(label));
     }
 
     /**
@@ -103,13 +116,14 @@ public class ContentManager {
      * @param label - the label
      * @param user - the user
      * @throws PermissionException if given user does not have required role
+     * @throws EntityNotExistsException - if Content Project with given label is not found
      * @return the number of objects affected
      */
     public static int removeProject(String label, User user) {
         ensureOrgAdmin(user);
         return lookupProject(label, user)
                 .map(cp -> ContentProjectFactory.remove(cp))
-                .orElse(0);
+                .orElseThrow(() -> new EntityNotExistsException(label));
     }
 
     /**
@@ -121,25 +135,25 @@ public class ContentManager {
      * @param name - the Environment name
      * @param description - the Environment description
      * @param user - the user performing the action
-     * @throws ContentManagementException - if Content Project with given label or Content Environment in the Project
+     * @throws EntityNotExistsException - if Content Project with given label or Content Environment in the Project
      * is not found
+     * @throws EntityExistsException - if Environment with given parameters already exists
      * @throws PermissionException if given user does not have required role
      * @return the created Content Environment
      */
     public static ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
             String label, String name, String description, User user) {
         ensureOrgAdmin(user);
+        lookupEnvironment(label, projectLabel, user).ifPresent(e -> { throw new EntityExistsException(e); });
         return lookupProject(projectLabel, user)
                 .map(cp -> {
                     ContentEnvironment newEnv = new ContentEnvironment(label, name, description, cp);
                     Optional<ContentEnvironment> predecessor = predecessorLabel.map(pl ->
                             ContentProjectFactory.lookupEnvironmentByLabelAndProject(pl, cp)
-                                    .orElseThrow(() -> new ContentManagementException("Environment " + pl +
-                                            " in Project " + label + " not found.")));
+                                    .orElseThrow(() -> new EntityNotExistsException(ContentEnvironment.class, label)));
                     ContentProjectFactory.insertEnvironment(newEnv, predecessor);
                     return newEnv;
-                }).orElseThrow(() ->
-                        new ContentManagementException("Content Project with label " + label + " not found."));
+                }).orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
     }
 
     /**
@@ -147,27 +161,28 @@ public class ContentManager {
      *
      * @param projectLabel - the Content Project label
      * @param user - the user
-     * @throws ContentManagementException - if Content Project with given label is not found
+     * @throws EntityNotExistsException - if Content Project with given label is not found
      * @return the List of Content Environments with respect to their ordering
      */
     public static List<ContentEnvironment> listProjectEnvironments(String projectLabel, User user) {
         return lookupProject(projectLabel, user)
                 .map(cp -> ContentProjectFactory.listProjectEnvironments(cp))
-                .orElseThrow(() -> new ContentManagementException("Content Project with label " + projectLabel +
-                        " not found."));
+                .orElseThrow(() -> new EntityNotExistsException(projectLabel));
     }
 
     /**
-     * Look up Content Environment based on its label, Content Project label and Org
+     * Look up Content Environment based on its label, Content Project label and User
      *
      * @param envLabel - the Content Environment label
-     * @param contentLabel - the Content Project label
+     * @param projectLabel - the Content Project label
      * @param user - the user
+     * @throws EntityNotExistsException - if Content Project with given label is not found
      * @return the optional of matching Content Environment
      */
-    public static Optional<ContentEnvironment> lookupEnvironment(String envLabel, String contentLabel, User user) {
-        return lookupProject(contentLabel, user)
-                .flatMap(cp -> ContentProjectFactory.lookupEnvironmentByLabelAndProject(envLabel, cp));
+    public static Optional<ContentEnvironment> lookupEnvironment(String envLabel, String projectLabel, User user) {
+        return lookupProject(projectLabel, user)
+                .map(cp -> ContentProjectFactory.lookupEnvironmentByLabelAndProject(envLabel, cp))
+                .orElseThrow(() -> new EntityNotExistsException(projectLabel));
     }
 
     /**
@@ -178,7 +193,7 @@ public class ContentManager {
      * @param newName - new name
      * @param newDescription - new description
      * @param user - the user
-     * @throws ContentManagementException - if the Environment is not found
+     * @throws EntityNotExistsException - if Project or Environment is not found
      * @throws PermissionException if given user does not have required role
      * @return the updated Environment
      */
@@ -191,10 +206,8 @@ public class ContentManager {
                     newDescription.ifPresent(desc -> env.setDescription(desc));
                     return env;
                 })
-                .orElseThrow(() -> new ContentManagementException("Environment with label " + envLabel +
-                        " in Project " + projectLabel + " not found."));
+                .orElseThrow(() -> new EntityNotExistsException(envLabel));
     }
-
 
     /**
      * Remove a Content Environment
@@ -202,6 +215,8 @@ public class ContentManager {
      * @param envLabel - the Content Environment label
      * @param projectLabel - the Content Project label
      * @param user - the user
+     * @throws PermissionException if given user does not have required role
+     * @throws EntityNotExistsException - if Project or Environment is not found
      * @throws PermissionException if given user does not have required role
      * @return number of deleted objects
      */
@@ -212,7 +227,89 @@ public class ContentManager {
                     ContentProjectFactory.removeEnvironment(env);
                     return 1;
                 })
-                .orElse(0);
+                .orElseThrow(() -> new EntityNotExistsException(envLabel));
+    }
+
+    /**
+     * Create and attach a Source to given Project.
+     * If the Source is already attached to the Project, this is a no-op.
+     *
+     * @param projectLabel - the Project label
+     * @param sourceType - the Source Type (e.g. SW_CHANNEL)
+     * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
+     * @param position - the position of the Source (Optional)
+     * @param user the user
+     * @throws EntityNotExistsException when either the Project or the Source reference (e.g. Channel) is not found
+     * @throws java.lang.IllegalArgumentException if the sourceType is unsupported
+     * @return the created or existing Source
+     */
+    public static ProjectSource attachSource(String projectLabel, Type sourceType, String sourceLabel,
+            Optional<Integer> position, User user) {
+        ensureOrgAdmin(user);
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
+
+        Optional<? extends ProjectSource> source = lookupProjectSource(projectLabel, sourceType, sourceLabel, user);
+        if (source.isPresent()) {
+            ProjectSource src = source.get();
+            src.setState(ATTACHED);
+            ContentProjectFactory.save(src);
+            return src;
+        }
+
+        if (sourceType == SW_CHANNEL) {
+            Channel channel = getChannel(sourceLabel, user);
+            SoftwareProjectSource newSource = new SoftwareProjectSource(project, channel);
+            project.addSource(newSource, position);
+            ContentProjectFactory.save(project);
+            ContentProjectFactory.save(newSource);
+            return newSource;
+        }
+        else {
+            throw new IllegalArgumentException("Unsupported source type " + sourceType);
+        }
+    }
+
+    private static Channel getChannel(String sourceLabel, User user) {
+        try {
+            return ChannelManager.lookupByLabelAndUser(sourceLabel, user);
+        }
+        catch (LookupException e) {
+            throw new EntityNotExistsException(Channel.class, e);
+        }
+    }
+
+    /**
+     * Detach a Source from given Project
+     *
+     * @param projectLabel - the Project label
+     * @param sourceType - the Source Type (e.g. SW_CHANNEL)
+     * @param sourceLabel - the Source label (e.g. SoftwareChannel label)
+     * @param user the user
+     * @return number of Sources detached
+     */
+    public static int detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
+        ensureOrgAdmin(user);
+        Optional<? extends ProjectSource> src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user);
+        src.ifPresent(s -> s.setState(DETACHED));
+        return src.isPresent() ? 1 : 0;
+    }
+
+    /**
+     * Look up Source
+     *
+     * @param projectLabel the Project label
+     * @param sourceType the Source type
+     * @param sourceLabel  the Source label
+     * @param user the User
+     * @throws EntityNotExistsException if Project with given label cannot be found
+     * @return Optional with matching Source
+     */
+    public static Optional<? extends ProjectSource> lookupProjectSource(String projectLabel, Type sourceType,
+            String sourceLabel, User user) {
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(projectLabel));
+        return ContentProjectFactory.lookupProjectSource(project, sourceType, sourceLabel, user);
     }
 
     /**

@@ -17,7 +17,10 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 
 import java.util.LinkedList;
@@ -25,10 +28,12 @@ import java.util.List;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import static com.suse.utils.Opt.consume;
 import static java.util.Collections.unmodifiableList;
+import static java.util.Optional.empty;
 
 /**
  *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class and related classes.
@@ -307,6 +312,50 @@ public class ContentProjectFactory extends HibernateFactory {
         save(entry);
         entries.add(entry);
         save(project);
+    }
+
+    /**
+     * Remove a Project Source
+     *
+     * @param source the Source
+     * @return the number of object affected
+     */
+    public static int remove(ProjectSource source) {
+        return INSTANCE.removeObject(source);
+    }
+
+    /**
+     * Look up Project Source based with given Project and Channel
+     *
+     * @param project the Project
+     * @param sourceType the Source type
+     * @param sourceLabel the Source label
+     * @param user the User
+     * @return Optional with matching Source
+     */
+    public static Optional<ProjectSource> lookupProjectSource(ContentProject project, Type sourceType,
+            String sourceLabel, User user) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ProjectSource> query = builder.createQuery(sourceType.getSourceClass());
+        Root<ProjectSource> root = query.from(sourceType.getSourceClass());
+
+        Predicate sourcePredicate;
+        switch (sourceType) {
+            case SW_CHANNEL:
+                if (!ChannelFactory.isAccessibleByUser(sourceLabel, user.getId())) {
+                    return empty();
+                }
+                sourcePredicate = builder.equal(root.get("channel").get("label"), sourceLabel);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported Source type " + sourceType);
+        }
+
+        query.where(
+                builder.and(
+                        builder.equal(root.get("contentProject"), project),
+                        sourcePredicate));
+        return getSession().createQuery(query).uniqueResultOptional();
     }
 
     /**
