@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Generate a bootstrap script and use it to register a client
@@ -12,7 +12,7 @@ Feature: Generate a bootstrap script and use it to register a client
     When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle-client"
     And I run "sh ./bootstrap-test.sh" on "sle-client"
     Then I should see "sle-client" in spacewalk
-    And "man" should be installed on "sle-client"
+    And "sed" should be installed on "sle-client"
     And config-actions are enabled
     And remote-commands are enabled
 
