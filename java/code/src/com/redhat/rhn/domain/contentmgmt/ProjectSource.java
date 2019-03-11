@@ -52,9 +52,9 @@ public abstract class ProjectSource {
      * State of the Source
      */
     public enum State {
-        ATTACHED,
-        DETACHED,
-        BUILT
+        ATTACHED, // attached to a ContentProject (soft-add)
+        DETACHED, // detached from a ContentProject (soft-delete)
+        BUILT // part of the latest build of ContentProject
     }
 
     /**
