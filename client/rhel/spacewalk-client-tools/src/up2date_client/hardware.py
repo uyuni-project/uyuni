@@ -979,10 +979,10 @@ def read_all_fqdns():
     interfaces = flatten_dict(read_network_interfaces())
     ips = []
     
-    for ipv4 in list(value for key, value in interfaces.iteritems() if key.endswith('ipaddr') and not key.startswith('lo')):
+    for ipv4 in list(value for key, value in interfaces.items() if key.endswith('ipaddr') and not key.startswith('lo')):
         if ipv4:
             ips.append(ipv4)
-    for ipv6 in list(value for key, value in interfaces.iteritems() if key.endswith('ipv6') and not key.startswith('lo')):
+    for ipv6 in list(value for key, value in interfaces.items() if key.endswith('ipv6') and not key.startswith('lo')):
         if ipv6:
             ips.append(ipv6[0]['addr'])
     for ip in ips:

@@ -1,3 +1,5 @@
+- Fix bootstrapping SLE15 traditional client (bsc#1128564)
+
 -------------------------------------------------------------------
 Mon Mar 04 09:54:01 CET 2019 - jgonzalez@suse.com
 
