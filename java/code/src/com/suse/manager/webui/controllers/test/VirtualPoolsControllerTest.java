@@ -71,7 +71,6 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         SystemManager.mockSaltService(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
-        host.asMinionServer().get().setMinionId("testminion.local");
     }
 
     public void testData() throws Exception {
@@ -83,6 +82,13 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                     "/com/suse/manager/webui/controllers/test/virt.pool.info.json",
                     null,
                     new TypeToken<Map<String, JsonElement>>() { }.getType())));
+            oneOf(saltServiceMock).callSync(
+                    with(SaltTestUtils.functionEquals("virt", "volume_infos")),
+                    with(host.asMinionServer().get().getMinionId()));
+            will(returnValue(SaltTestUtils.getSaltResponse(
+                    "/com/suse/manager/webui/controllers/test/virt.volume.info.json",
+                    null,
+                    new TypeToken<Map<String, Map<String, JsonElement>>>() { }.getType())));
         }});
 
         String json = VirtualPoolsController.data(getRequestWithCsrf(

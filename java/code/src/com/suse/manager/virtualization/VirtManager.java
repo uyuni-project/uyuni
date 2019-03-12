@@ -19,8 +19,10 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,10 +87,10 @@ public class VirtManager {
     }
 
     /**
-     * Query the list of virtual networks defined on a salt minion.
+     * Query the list of virtual storage pools defined on a salt minion.
      *
      * @param minionId the minion to ask about
-     * @return a list of the network names
+     * @return a map associating pool names with their informations as Json elements
      */
     public static Map<String, JsonElement> getPools(String minionId) {
         Map<String, Object> args = new LinkedHashMap<>();
@@ -103,6 +105,22 @@ public class VirtManager {
         return result.entrySet().stream()
                     .filter(entry -> entry.getValue().isJsonObject())
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
+    }
+
+    /**
+     * Query the list of virtual storage volumes defined on a salt minion.
+     *
+     * @param minionId the minion to ask about
+     * @return a map associating pool names with the list of volumes it contains mapped by their names
+     */
+    public static Map<String, Map<String, JsonElement>> getVolumes(String minionId) {
+        List<?> args = Arrays.asList(null, null);
+        LocalCall<Map<String, Map<String, JsonElement>>> call =
+                new LocalCall<>("virt.volume_infos", Optional.of(args), Optional.empty(),
+                        new TypeToken<Map<String, Map<String, JsonElement>>>() { });
+
+        Optional<Map<String, Map<String, JsonElement>>> volumes = saltService.callSync(call, minionId);
+        return volumes.orElse(new HashMap<String, Map<String, JsonElement>>());
     }
 
     /**
