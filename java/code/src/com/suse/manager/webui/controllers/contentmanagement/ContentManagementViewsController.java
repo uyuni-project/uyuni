@@ -43,7 +43,7 @@ import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
- * Spark controller class for content management pages and API endpoints.
+ * Spark controller class for content management pages.
  */
 public class ContentManagementViewsController {
 
@@ -53,6 +53,11 @@ public class ContentManagementViewsController {
     private ContentManagementViewsController() {
     }
 
+
+    /**
+     * @param jade JadeTemplateEngine
+     * Invoked from Router. Init routes for ContentManagement Views.
+     */
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/contentmanagement/project",
                 withCsrfToken(ContentManagementViewsController::createProjectView), jade);
@@ -62,11 +67,26 @@ public class ContentManagementViewsController {
                 withUser(ContentManagementViewsController::listProjectsView), jade);
     }
 
+    /**
+     * Handler for the server create project page.
+     *
+     * @param req the request object
+     * @param res the response object
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView createProjectView(Request req, Response res) {
         Map<String, Object> data = new HashMap<>();
         return new ModelAndView(data, "controllers/contentmanagement/templates/create-project.jade");
     }
 
+    /**
+     * Handler for the server edit project page.
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView editProjectView(Request req, Response res, User user) {
 
         String projectToEditLabel = req.params("label");
@@ -75,7 +95,9 @@ public class ContentManagementViewsController {
 
         Map<String, Object> data = new HashMap<>();
         projectToEdit.ifPresent(project -> {
-            List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(project.getLabel(), user);
+            List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
+                    project.getLabel(), user
+            );
             data.put("projectToEdit", GSON.toJson(ResponseMappers.mapProjectFromDB(project, contentEnvironments)));
         });
         data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(req));
@@ -83,6 +105,14 @@ public class ContentManagementViewsController {
         return new ModelAndView(data, "controllers/contentmanagement/templates/project.jade");
     }
 
+    /**
+     * Handler for the server listing projects page.
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView listProjectsView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
 
