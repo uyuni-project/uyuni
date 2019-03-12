@@ -305,20 +305,6 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * List Project Sources in a Content Project
-     *
-     * @param cp the content project
-     * @return the sources in the project
-     */
-    public static List<ProjectSource> listProjectSourcesByProject(ContentProject cp) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ProjectSource> query = builder.createQuery(ProjectSource.class);
-        Root<ProjectSource> root = query.from(ProjectSource.class);
-        query.where(builder.equal(root.get("contentProject"), cp));
-        return getSession().createQuery(query).list();
-    }
-
-    /**
      * Save the Content Project history entry
      *
      * @param entry  - the Content Project history entry

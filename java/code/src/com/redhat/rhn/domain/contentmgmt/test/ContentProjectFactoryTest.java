@@ -262,7 +262,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.addSource(swSource, empty());
         ContentProjectFactory.save(swSource);
 
-        List<ProjectSource> fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
+        List<ProjectSource> fromDb = cp.getSources();
         assertEquals(singletonList(swSource), fromDb);
 
         Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
@@ -270,11 +270,11 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.addSource(swSource2, empty());
         ContentProjectFactory.save(swSource2);
 
-        fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
+        fromDb = cp.getSources();
         assertEquals(asList(swSource, swSource2), fromDb);
 
         cp.removeSource(swSource2);
-        fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
+        fromDb = cp.getSources();
         assertEquals(singletonList(swSource), fromDb);
     }
 
