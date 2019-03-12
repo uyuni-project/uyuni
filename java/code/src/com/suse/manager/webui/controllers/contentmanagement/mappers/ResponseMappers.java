@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2019 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.controllers.contentmanagement.mappers;
 
 
@@ -16,8 +30,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class to map db entities into view response beans
+ */
 public class ResponseMappers {
 
+    private ResponseMappers() { }
+
+    /**
+     * Map a project db entity to a project properties response view bean
+     *
+     * @param projectDB the project db entity
+     * @return the ProjectPropertiesResponse view bean
+     */
     public static ProjectPropertiesResponse mapProjectPropertiesFromDB(ContentProject projectDB) {
         ProjectPropertiesResponse properties = new ProjectPropertiesResponse();
 
@@ -38,6 +63,12 @@ public class ResponseMappers {
         return properties;
     }
 
+    /**
+     * Map a list of db envs entities to a list of view response beans
+     *
+     * @param envsDB the list of db envs
+     * @return the List<EnvironmentResponse> view beans
+     */
     public static List<EnvironmentResponse> mapEnvironmentsFromDB(List<ContentEnvironment> envsDB) {
         return envsDB
                 .stream()
@@ -52,6 +83,13 @@ public class ResponseMappers {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Map a list of db envs entities and project db into a full project view response bean
+     *
+     * @param projectDB the project db entity
+     * @param envsDB the list of db envs
+     * @return full project view response bean
+     */
     public static ProjectResponse mapProjectFromDB(ContentProject projectDB, List<ContentEnvironment> envsDB) {
 
         ProjectResponse project = new ProjectResponse();
@@ -64,8 +102,15 @@ public class ResponseMappers {
         return project;
     }
 
+    /**
+     * Map db info into a list with resume of projects views beans
+     *
+     * @param envsByProjDB list of projects db with environments
+     * @return list with a project resume response bean
+     */
     public static List<ProjectResumeResponse> mapProjectListingFromDB(
-            Map<ContentProject, List<ContentEnvironment>> envsByProjDB) {
+            Map<ContentProject, List<ContentEnvironment>> envsByProjDB
+    ) {
         return envsByProjDB.entrySet().stream()
                 .map(e -> {
                     ContentProject project = e.getKey();

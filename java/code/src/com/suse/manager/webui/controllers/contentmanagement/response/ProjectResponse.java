@@ -17,7 +17,7 @@ package com.suse.manager.webui.controllers.contentmanagement.response;
 import java.util.List;
 
 /**
- * JSON request wrapper for a content project.
+ * JSON response wrapper for a content project.
  */
 public class ProjectResponse {
 
@@ -25,15 +25,15 @@ public class ProjectResponse {
     private List<ProjectSourcesResponse> sources;
     private List<EnvironmentResponse> environments;
 
-    public void setProperties(ProjectPropertiesResponse properties) {
-        this.properties = properties;
+    public void setProperties(ProjectPropertiesResponse propertiesIn) {
+        this.properties = propertiesIn;
     }
 
-    public void setEnvironments(List<EnvironmentResponse> environments) {
-        this.environments = environments;
+    public void setEnvironments(List<EnvironmentResponse> environmentsIn) {
+        this.environments = environmentsIn;
     }
 
-    public void setSources(List<ProjectSourcesResponse> sources) {
-        this.sources = sources;
+    public void setSources(List<ProjectSourcesResponse> sourcesIn) {
+        this.sources = sourcesIn;
     }
 }

@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2019 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.EnvironmentRequest;
@@ -14,9 +28,19 @@ import java.util.HashMap;
 import spark.Request;
 import spark.Spark;
 
+/**
+ * Utility class to help the handling of the EnvironmentApiController
+ */
 public class EnvironmentHandler {
     private static final Gson GSON = Json.GSON;
 
+    private EnvironmentHandler() { }
+
+    /**
+     * map request into the environment request bean
+     * @param req the http request
+     * @return environment request bean
+     */
     public static EnvironmentRequest getEnvironmentRequest(Request req) {
         try {
             return GSON.fromJson(req.body(), EnvironmentRequest.class);
@@ -26,14 +50,19 @@ public class EnvironmentHandler {
         }
     }
 
-    public static HashMap<String,String> validateEnvironmentRequest(EnvironmentRequest envRequest) {
-        HashMap<String,String> requestErrors = new HashMap<>();
+    /**
+     * map validate environment request bean
+     * @param envRequest the environment request bean
+     * @return validation errors
+     */
+    public static HashMap<String, String> validateEnvironmentRequest(EnvironmentRequest envRequest) {
+        HashMap<String, String> requestErrors = new HashMap<>();
 
-        if(StringUtils.isEmpty(envRequest.getLabel())) {
+        if (StringUtils.isEmpty(envRequest.getLabel())) {
             requestErrors.put("label", "Label is required");
         }
 
-        if(StringUtils.isEmpty(envRequest.getName())) {
+        if (StringUtils.isEmpty(envRequest.getName())) {
             requestErrors.put("name", "Name is required");
         }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -43,7 +43,7 @@ import spark.Request;
 import spark.Response;
 
 /**
- * Spark controller class for content management pages and API endpoints.
+ * Spark controller ContentManagement Environment Api.
  */
 public class EnvironmentApiController {
 
@@ -52,6 +52,7 @@ public class EnvironmentApiController {
     private EnvironmentApiController() {
     }
 
+    /** Init routes for ContentManagement Environment Api.*/
     public static void initRoutes() {
         post("/manager/contentmanagement/api/projects/:projectId/environments",
                 withUser(EnvironmentApiController::createContentEnvironemnt));
@@ -63,6 +64,13 @@ public class EnvironmentApiController {
                 withUser(EnvironmentApiController::removeContentEnvironemnt));
     }
 
+    /**
+     * Return the JSON with the result of the creation of a content project environemnt.
+     * @param req the http request
+     * @param res the http response
+     * @param user the current user
+     * @return the JSON data
+     */
     public static String createContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest createEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
@@ -81,11 +89,22 @@ public class EnvironmentApiController {
         );
 
         ContentProject contentProject = createdEnvironment.getContentProject();
-        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(contentProject.getLabel(), user);
+        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
+                contentProject.getLabel(), user
+        );
 
-        return json(GSON, res, ResultJson.success(ResponseMappers.mapProjectFromDB(contentProject, contentEnvironments)));
+        return json(GSON, res, ResultJson.success(
+                ResponseMappers.mapProjectFromDB(contentProject, contentEnvironments))
+        );
     }
 
+    /**
+     * Return the JSON with the result of updating a content project environemnt.
+     * @param req the http request
+     * @param res the http response
+     * @param user the current user
+     * @return the JSON data
+     */
     public static String updateContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest updateEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
@@ -103,11 +122,22 @@ public class EnvironmentApiController {
         );
 
         ContentProject contentProject = updatedEnvironment.getContentProject();
-        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(contentProject.getLabel(), user);
+        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
+                contentProject.getLabel(), user
+        );
 
-        return json(GSON, res, ResultJson.success(ResponseMappers.mapProjectFromDB(contentProject, contentEnvironments)));
+        return json(GSON, res, ResultJson.success(
+                ResponseMappers.mapProjectFromDB(contentProject, contentEnvironments))
+        );
     }
 
+    /**
+     * Return the JSON with the result of removing a content project environemnt.
+     * @param req the http request
+     * @param res the http response
+     * @param user the current user
+     * @return the JSON data
+     */
     public static String removeContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest removeEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 

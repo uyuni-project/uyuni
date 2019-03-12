@@ -18,7 +18,7 @@ import com.suse.manager.webui.controllers.contentmanagement.handlers.Environment
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ProjectApiController;
 
 /**
- * Spark controller class for content management pages and API endpoints.
+ * Spark controller ContentManagement Api.
  */
 public class ContentManagementApiController {
 
@@ -26,6 +26,7 @@ public class ContentManagementApiController {
     private ContentManagementApiController() {
     }
 
+    /** Invoked from Router. Init routes for ContentManagement Api.*/
     public static void initRoutes() {
         ProjectApiController.initRoutes();
         EnvironmentApiController.initRoutes();
