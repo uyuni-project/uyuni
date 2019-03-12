@@ -80,6 +80,7 @@
             <property name="allowMissingParamTags" value="${javadoc.lazy}" />
             <property name="allowMissingThrowsTags" value="${javadoc.lazy}" />
             <property name="allowMissingReturnTag" value="${javadoc.lazy}" />
+            <property name="allowMissingPropertyJavadoc" value="true" />
         </module>
         <module name="JavadocType">
           <property name="scope" value="${javadoc.type.scope}" />
