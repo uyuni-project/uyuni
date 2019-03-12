@@ -1,3 +1,5 @@
+- fix syntax error in proxy firewall file (bsc#1128885)
+
 -------------------------------------------------------------------
 Sat Mar 02 00:11:37 CET 2019 - jgonzalez@suse.com
 
