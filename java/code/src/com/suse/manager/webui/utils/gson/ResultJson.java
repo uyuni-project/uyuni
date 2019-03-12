@@ -26,7 +26,7 @@ public class ResultJson<T> {
 
     private final boolean success;
     private final List<String> messages;
-    private final HashMap<String,String> errors;
+    private final HashMap<String, String> errors;
     private final T data;
 
     /**
@@ -53,6 +53,7 @@ public class ResultJson<T> {
      * Create an error result with the given messages.
      *
      * @param messagesIn a list of messages
+     * @param errorsIn a list of errors
      * @return a ResultJson
      */
     public static ResultJson error(List<String> messagesIn, HashMap<String, String> errorsIn) {

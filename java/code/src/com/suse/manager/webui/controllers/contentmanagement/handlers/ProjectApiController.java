@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2019 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 
@@ -33,7 +47,7 @@ import spark.Request;
 import spark.Response;
 
 /**
- * Spark controller class for content management pages and API endpoints.
+ * Spark controller ContentManagement Project Api.
  */
 public class ProjectApiController {
 
@@ -42,18 +56,26 @@ public class ProjectApiController {
     private ProjectApiController() {
     }
 
+    /** Init routes for ContentManagement Project Api.*/
     public static void initRoutes() {
         post("/manager/contentmanagement/api/projects",
                 withUser(ProjectApiController::createContentProject));
 
         delete("/manager/contentmanagement/api/projects/:projectId",
-                withUser(ProjectApiController::deleteContentProject));
+                withUser(ProjectApiController::removeContentProject));
 
         put("/manager/contentmanagement/api/projects/:projectId/properties",
                 withUser(ProjectApiController::updateContentProjectProperties));
 
     }
 
+    /**
+     * Return the JSON with the result of the creation of a content project.
+     * @param req the http request
+     * @param res the http response
+     * @param user the current user
+     * @return the JSON data
+     */
     public static String createContentProject(Request req, Response res, User user) {
         ProjectRequest createProjectRequest = ProjectHandler.getProjectRequest(req);
         HashMap<String, String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest);
@@ -90,7 +112,14 @@ public class ProjectApiController {
         );
     }
 
-    public static String deleteContentProject(Request req, Response res, User user) {
+    /**
+     * Return the JSON with the result of removing a content project.
+     * @param req the http request
+     * @param res the http response
+     * @param user the current user
+     * @return the JSON data
+     */
+    public static String removeContentProject(Request req, Response res, User user) {
         String projectLabel = req.params("projectId");
 
         int removingResult = ContentManager.removeProject(projectLabel, user);
@@ -107,10 +136,19 @@ public class ProjectApiController {
         return json(GSON, res, ResultJson.error());
     }
 
+    /**
+     * Return the JSON with the result of updating the properties of a content project.
+     * @param req the http request
+     * @param res the http response
+     * @param user the current user
+     * @return the JSON data
+     */
     public static String updateContentProjectProperties(Request req, Response res, User user) {
         ProjectPropertiesRequest updateProjectPropertiesRequest = ProjectHandler.getProjectPropertiesRequest(req);
 
-        HashMap<String, String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(updateProjectPropertiesRequest);
+        HashMap<String, String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(
+                updateProjectPropertiesRequest
+        );
         if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }

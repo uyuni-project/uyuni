@@ -14,12 +14,10 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.response;
 
-import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
-
 import java.util.List;
 
 /**
- * JSON request wrapper for the properties of a content project.
+ * JSON response wrapper for the properties of a content project.
  */
 public class ProjectPropertiesResponse {
 
@@ -28,19 +26,19 @@ public class ProjectPropertiesResponse {
     private String description;
     private List<ProjectHistoryEntryResponse> historyEntries;
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
     }
 
-    public void setHistoryEntries(List<ProjectHistoryEntryResponse> historyEntries) {
-        this.historyEntries = historyEntries;
+    public void setHistoryEntries(List<ProjectHistoryEntryResponse> historyEntriesIn) {
+        this.historyEntries = historyEntriesIn;
     }
 }

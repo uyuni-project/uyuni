@@ -15,7 +15,7 @@
 package com.suse.manager.webui.controllers.contentmanagement.response;
 
 /**
- * JSON request wrapper for the sources of a content project.
+ * JSON response wrapper for the sources of a content project.
  */
 public class ProjectSourcesResponse {
 
@@ -25,7 +25,7 @@ public class ProjectSourcesResponse {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 }
