@@ -16,8 +16,8 @@ disable_repo_{{ repos_disabled.count }}:
     - repo: {{ entry.line }}
     - kwargs:
         disabled: True
-{% endif %}
 {% do repos_disabled.update({'count': repos_disabled.count + 1}) %}
+{% endif %}
 {% endfor %}
 {% else %}
 {% if (repos_disabled.match_str in alias)|string == repos_disabled.matching|string and data.get('enabled', True) %}
