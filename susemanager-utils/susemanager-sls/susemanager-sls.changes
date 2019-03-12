@@ -1,3 +1,5 @@
+- Fix Salt error related to remove_traditional_stack when bootstrapping an Ubuntu
+  minion (bsc#1128724)
 - Adapt disablelocalrepos.sls syntax for Salt 2016.10 (rhel6, sle11) (bsc#1127706)
 - util.systeminfo sls has been added to perform different actions at minion startup(bsc#1122381)
 
