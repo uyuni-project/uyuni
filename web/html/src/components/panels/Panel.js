@@ -35,7 +35,7 @@ function Panel(props: Props) {
   </React.Fragment>
 
 
-  //TODO [LN] REVIEW 5PX and styles of collapsing!!!!
+  //TODO [LN] review 5PX and styles of collapsing!
   return (
     <div className={"panel " + (props.className ? props.className : "panel-default")}>
       {(props.title || props.header || props.buttons)

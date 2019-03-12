@@ -1,7 +1,5 @@
 package com.suse.manager.webui.controllers.contentmanagement.request;
 
-import java.util.Optional;
-
 public class EnvironmentRequest {
 
     private String projectLabel;

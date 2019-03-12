@@ -52,7 +52,7 @@ function errorMessageByStatus(status) {
     } else if (status >= 500) {
         return [t("Server error, please check log files.")];
     } else {
-        return [t("Server error, please check log files.")];
+      return [t("")];
     }
 }
 
