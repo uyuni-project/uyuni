@@ -155,7 +155,6 @@ public abstract class CobblerObject {
      */
     public void save() {
         invokeSave();
-        update();
     }
 
     /**
@@ -459,10 +458,6 @@ public abstract class CobblerObject {
      */
     public void setKernelOptionsPost(Map<String, Object> kernelOptionsPostIn) {
         modify(SET_KERNEL_OPTIONS_POST, kernelOptionsPostIn);
-    }
-
-    protected void update() {
-        client.invokeTokenMethod("update");
     }
 
     protected boolean isBlank(String str) {

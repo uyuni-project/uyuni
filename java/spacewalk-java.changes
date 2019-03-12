@@ -1,3 +1,4 @@
+- Removed cobbler's 'update' method call which is now invalid(bsc#1128917)
 - support ubuntu products and debian architectures in mgr-sync
 - adapt check for available repositories to debian style repositories
 - Add virtual machine display page
