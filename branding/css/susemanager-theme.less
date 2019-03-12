@@ -1318,3 +1318,35 @@ select.small-select {
   position: fixed;
   z-index: 1000;
 }
+
+/*Colapsed pannels*/
+
+.panel-heading {
+
+  .collapsed {
+    .hide-on-collapsed {
+      display: inline;
+    }
+
+    .show-on-collapsed {
+      display: none;
+    }
+  }
+
+  .hide-on-collapsed {
+    display: none;
+  }
+
+  .show-on-collapsed {
+    display: inline;
+  }
+
+  .accordion-toggle {
+    cursor: pointer;
+  }
+
+}
+
+.panel-body .min-height-panel {
+  min-height: 20px;
+}

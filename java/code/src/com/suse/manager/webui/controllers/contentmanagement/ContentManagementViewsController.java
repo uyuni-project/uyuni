@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -72,8 +73,6 @@ public class ContentManagementViewsController {
 
         Optional<ContentProject> projectToEdit = ContentManager.lookupProject(projectToEditLabel, user);
 
-        // TODO: Handle errors
-
         Map<String, Object> data = new HashMap<>();
         projectToEdit.ifPresent(project -> {
             List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(project.getLabel(), user);
@@ -88,8 +87,9 @@ public class ContentManagementViewsController {
         Map<String, Object> data = new HashMap<>();
 
         List<ContentProject> projects = ContentManager.listProjects(user);
-        Map<ContentProject, List<ContentEnvironment>> environmentsByProject = new HashMap<>();
-        projects.forEach(project -> environmentsByProject.put(project, ContentManager.listProjectEnvironments(project.getLabel(), user)));
+
+        Map<ContentProject, List<ContentEnvironment>> environmentsByProject = projects.stream()
+                .collect(Collectors.toMap(p -> p, p -> ContentManager.listProjectEnvironments(p.getLabel(), user)));
 
         data.put("flashMessage", FlashScopeHelper.flash(req));
         data.put("contentProjects", GSON.toJson(ResponseMappers.mapProjectListingFromDB(environmentsByProject)));

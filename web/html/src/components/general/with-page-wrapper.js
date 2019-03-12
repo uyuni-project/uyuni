@@ -1,7 +1,7 @@
 // @flow
 // globals Loggerhead
 import * as React from 'react';
-import DefaultError500 from '../../manager/errors/default-error-500';
+import DefaultJsError from '../../manager/errors/default-js-error';
 import { hot } from 'react-hot-loader';
 
 declare var Loggerhead: any;
@@ -23,7 +23,7 @@ class ErrorBoundary extends React.Component<{children: React.Node}, {hasError: b
 
   render() {
     if (this.state.hasError) {
-      return <DefaultError500/>;
+      return <DefaultJsError/>;
     }
     return this.props.children;
   }

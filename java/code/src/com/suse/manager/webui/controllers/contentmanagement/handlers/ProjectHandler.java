@@ -36,22 +36,22 @@ public class ProjectHandler {
         }
     }
 
-    public static HashMap<String,String> validateProjectPropertiesRequest(ProjectPropertiesRequest projPropsRequest) {
-        HashMap<String,String> requestErrors = new HashMap<>();
+    public static HashMap<String, String> validateProjectPropertiesRequest(ProjectPropertiesRequest projPropsRequest) {
+        HashMap<String, String> requestErrors = new HashMap<>();
 
-        if(StringUtils.isEmpty(projPropsRequest.getLabel())) {
-            requestErrors.put("label", "Label is Required");
+        if (StringUtils.isEmpty(projPropsRequest.getLabel())) {
+            requestErrors.put("label", "Label is required");
         }
 
-        if(StringUtils.isEmpty(projPropsRequest.getName())) {
-            requestErrors.put("name", "Name is Required");
+        if (StringUtils.isEmpty(projPropsRequest.getName())) {
+            requestErrors.put("name", "Name is required");
         }
 
         return requestErrors;
     }
 
-    public static HashMap<String,String> validateProjectRequest(ProjectRequest projectRequest) {
-        HashMap<String,String> requestErrors = new HashMap<>();
+    public static HashMap<String, String> validateProjectRequest(ProjectRequest projectRequest) {
+        HashMap<String, String> requestErrors = new HashMap<>();
 
         requestErrors.putAll(validateProjectPropertiesRequest(projectRequest.getProperties()));
 

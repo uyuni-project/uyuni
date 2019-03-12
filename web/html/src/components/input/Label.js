@@ -17,6 +17,7 @@ function Label(props: Props) {
     >
       { props.name }
       { props.required ? <span className="required-form-field"> *</span> : undefined }
+      :
     </label>
   );
 }
