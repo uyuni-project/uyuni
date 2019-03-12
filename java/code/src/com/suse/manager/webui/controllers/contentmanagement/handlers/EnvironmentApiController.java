@@ -66,8 +66,8 @@ public class EnvironmentApiController {
     public static String createContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest createEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        HashMap<String,String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(createEnvironmentRequest);
-        if(!requestErrors.isEmpty()) {
+        HashMap<String, String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(createEnvironmentRequest);
+        if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
@@ -89,8 +89,8 @@ public class EnvironmentApiController {
     public static String updateContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest updateEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        HashMap<String,String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(updateEnvironmentRequest);
-        if(!requestErrors.isEmpty()) {
+        HashMap<String, String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(updateEnvironmentRequest);
+        if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
@@ -111,8 +111,8 @@ public class EnvironmentApiController {
     public static String removeContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest removeEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        HashMap<String,String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(removeEnvironmentRequest);
-        if(!requestErrors.isEmpty()) {
+        HashMap<String, String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(removeEnvironmentRequest);
+        if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
@@ -127,19 +127,14 @@ public class EnvironmentApiController {
                 user
         );
 
-        if(updatedProject.isPresent()) {
+
+        return updatedProject.map(p -> {
             List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
-                    updatedProject.get().getLabel(),
+                    p.getLabel(),
                     user
             );
-
-            return json(GSON, res, ResultJson.success(ResponseMappers.mapProjectFromDB(
-                    updatedProject.get(),
-                    contentEnvironments))
-            );
-        }
-
-        return json(GSON, res, ResultJson.error());
+            return json(GSON, res, ResultJson.success(ResponseMappers.mapProjectFromDB(p, contentEnvironments)));
+        }).orElseGet(() -> json(GSON, res, ResultJson.error()));
     }
 
 }

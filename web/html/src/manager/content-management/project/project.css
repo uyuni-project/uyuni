@@ -13,30 +13,3 @@
 :global(.panel-group-contentmngt > .panel:first-child) {
     border-bottom: none;
 }
-
-
-/*Colapsed pannels*/
-
-:global(.panel-heading .collapsed .hide-on-collapsed) {
-    display: inline;
-}
-
-:global(.panel-heading .collapsed .show-on-collapsed) {
-    display: none;
-}
-
-:global(.panel-heading .hide-on-collapsed) {
-    display: none;
-}
-
-:global(.panel-heading .show-on-collapsed) {
-    display: inline;
-}
-
-:global(.panel-heading .accordion-toggle) {
-    cursor: pointer;
-}
-
-:global(.panel-body .min-height-panel) {
-    min-height: 20px;
-}
