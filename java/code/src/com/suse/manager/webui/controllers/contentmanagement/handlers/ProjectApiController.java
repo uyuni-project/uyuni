@@ -56,8 +56,8 @@ public class ProjectApiController {
 
     public static String createContentProject(Request req, Response res, User user) {
         ProjectRequest createProjectRequest = ProjectHandler.getProjectRequest(req);
-        HashMap<String,String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest);
-        if(!requestErrors.isEmpty()) {
+        HashMap<String, String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest);
+        if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
@@ -71,7 +71,8 @@ public class ProjectApiController {
                     projectPropertiesRequest.getDescription(),
                     user
             );
-        } catch (ContentManagementException error) {
+        }
+        catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
         }
 
@@ -80,20 +81,21 @@ public class ProjectApiController {
                 String.format("Project %s created successfully.", projectPropertiesRequest.getLabel())
         );
 
-        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(createdProject.getLabel(), user);
+        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
+                createdProject.getLabel(), user
+        );
 
-        return json(GSON, res, ResultJson.success(ResponseMappers.mapProjectFromDB(createdProject, contentEnvironments)));
+        return json(GSON, res, ResultJson.success(
+                ResponseMappers.mapProjectFromDB(createdProject, contentEnvironments))
+        );
     }
 
     public static String deleteContentProject(Request req, Response res, User user) {
         String projectLabel = req.params("projectId");
 
-        int removingResult = ContentManager.removeProject(
-                projectLabel,
-                user
-        );
+        int removingResult = ContentManager.removeProject(projectLabel, user);
 
-        if(removingResult == 1) {
+        if (removingResult == 1) {
             String successMessage = String.format("Project %s deleted successfully.", projectLabel);
             FlashScopeHelper.flash(
                     req,
@@ -108,8 +110,8 @@ public class ProjectApiController {
     public static String updateContentProjectProperties(Request req, Response res, User user) {
         ProjectPropertiesRequest updateProjectPropertiesRequest = ProjectHandler.getProjectPropertiesRequest(req);
 
-        HashMap<String,String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(updateProjectPropertiesRequest);
-        if(!requestErrors.isEmpty()) {
+        HashMap<String, String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(updateProjectPropertiesRequest);
+        if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
@@ -121,13 +123,18 @@ public class ProjectApiController {
                     Optional.ofNullable(updateProjectPropertiesRequest.getDescription()),
                     user
             );
-        } catch (ContentManagementException error) {
+        }
+        catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
         }
 
-        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(updatedProject.getLabel(), user);
+        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
+                updatedProject.getLabel(), user
+        );
 
-        return json(GSON, res, ResultJson.success(ResponseMappers.mapProjectFromDB(updatedProject, contentEnvironments)));
+        return json(GSON, res, ResultJson.success(
+                ResponseMappers.mapProjectFromDB(updatedProject, contentEnvironments))
+        );
     }
 
 }

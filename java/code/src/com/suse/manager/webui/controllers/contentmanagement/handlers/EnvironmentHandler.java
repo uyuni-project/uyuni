@@ -30,11 +30,11 @@ public class EnvironmentHandler {
         HashMap<String,String> requestErrors = new HashMap<>();
 
         if(StringUtils.isEmpty(envRequest.getLabel())) {
-            requestErrors.put("label", "Label is Required");
+            requestErrors.put("label", "Label is required");
         }
 
         if(StringUtils.isEmpty(envRequest.getName())) {
-            requestErrors.put("name", "Label is Required");
+            requestErrors.put("name", "Name is required");
         }
 
         return requestErrors;

@@ -1,3 +1,4 @@
+- Add styling for the feature Content Lifecycle Management
 - Update jquery.timepicker dependency to 1.11.14 to allow parsing
   the time format without depending on the language. (bsc#1119081)
 - Add dropdown number list to jump to a specific table page

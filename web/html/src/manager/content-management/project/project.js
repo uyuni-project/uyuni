@@ -23,8 +23,6 @@ type Props = {
   wasFreshlyCreatedMessage?: string,
 };
 
-//TODO:  React 16 -> Default error handling implement
-
 const Project = (props: Props) => {
 
   const [project, setProject] = useState(props.project)
@@ -66,7 +64,7 @@ const Project = (props: Props) => {
       }
     >
       <DeleteDialog id="delete-project-modal"
-          title={t("Delete Store")}
+          title={t("Delete Project")}
           content={<span>{t("Are you sure you want to delete project")} <strong>{projectId}</strong>?</span>}
           onConfirm={() =>
             onAction(project, 'delete')

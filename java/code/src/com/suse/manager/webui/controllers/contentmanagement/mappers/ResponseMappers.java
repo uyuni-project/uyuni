@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class ResponseMappers {
 
-
     public static ProjectPropertiesResponse mapProjectPropertiesFromDB(ContentProject projectDB) {
         ProjectPropertiesResponse properties = new ProjectPropertiesResponse();
 
@@ -65,19 +64,23 @@ public class ResponseMappers {
         return project;
     }
 
-    public static List<ProjectResumeResponse> mapProjectListingFromDB(Map<ContentProject, List<ContentEnvironment>> envsByProjDB) {
-        List<ProjectResumeResponse> projectsResume = new ArrayList<ProjectResumeResponse>();
-        envsByProjDB.forEach((project, environments) -> {
-            ProjectResumeResponse contentProjectResumeResponse = new ProjectResumeResponse();
-            contentProjectResumeResponse.setProperties(mapProjectPropertiesFromDB(project));
-            contentProjectResumeResponse.setEnvironments(
-                    environments.stream()
-                            .map(env -> env.getName())
-                            .collect(Collectors.toList())
-            );
-            projectsResume.add(contentProjectResumeResponse);
-        });
-        return projectsResume;
+    public static List<ProjectResumeResponse> mapProjectListingFromDB(
+            Map<ContentProject, List<ContentEnvironment>> envsByProjDB) {
+        return envsByProjDB.entrySet().stream()
+                .map(e -> {
+                    ContentProject project = e.getKey();
+                    List<ContentEnvironment> environments = e.getValue();
+
+                    ProjectResumeResponse contentProjectResumeResponse = new ProjectResumeResponse();
+                    contentProjectResumeResponse.setProperties(mapProjectPropertiesFromDB(project));
+                    contentProjectResumeResponse.setEnvironments(
+                            environments.stream()
+                                    .map(env -> env.getName())
+                                    .collect(Collectors.toList())
+                    );
+                    return contentProjectResumeResponse;
+                })
+                .collect(Collectors.toList());
     }
 
 }
