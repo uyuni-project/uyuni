@@ -22,7 +22,7 @@ import java.util.List;
 public class ProjectResponse {
 
     private ProjectPropertiesResponse properties;
-    private List<ProjectSourcesResponse> sources;
+    private List<ProjectSourceResponse> sources;
     private List<EnvironmentResponse> environments;
 
     public void setProperties(ProjectPropertiesResponse propertiesIn) {
@@ -33,7 +33,7 @@ public class ProjectResponse {
         this.environments = environmentsIn;
     }
 
-    public void setSources(List<ProjectSourcesResponse> sourcesIn) {
+    public void setSources(List<ProjectSourceResponse> sourcesIn) {
         this.sources = sourcesIn;
     }
 }

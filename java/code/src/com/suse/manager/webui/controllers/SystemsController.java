@@ -184,6 +184,7 @@ public class SystemsController {
                     user, server);
             List<ChannelsJson.ChannelJson> baseChannels =
                     orgChannels.stream().map(c -> new ChannelsJson.ChannelJson(c.getId(),
+                            c.getLabel(),
                             c.getName(),
                             c.isCustom(),
                             true
@@ -372,6 +373,7 @@ public class SystemsController {
                 List<ChannelsJson.ChannelJson> jsonList = children.stream()
                         .filter(c -> c.isSubscribable(user.getOrg(), server))
                         .map(c -> new ChannelsJson.ChannelJson(c.getId(),
+                                c.getLabel(),
                                 c.getName(),
                                 c.isCustom(),
                                 c.isSubscribable(user.getOrg(), server),

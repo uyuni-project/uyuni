@@ -17,15 +17,28 @@ package com.suse.manager.webui.controllers.contentmanagement.response;
 /**
  * JSON response wrapper for the sources of a content project.
  */
-public class ProjectSourcesResponse {
+// After adding more project source types it might be handy to break this bean into 2
+public class ProjectSourceResponse {
 
-    private String name;
+    private String id;
+    private String sourceLabel;
+    private String state;
+    private String sourceType;
 
-    public String getName() {
-        return name;
+    public void setState(String stateIn) {
+        this.state = stateIn;
     }
 
-    public void setName(String nameIn) {
-        this.name = nameIn;
+    public void setSourceType(String sourceTypeIn) {
+        this.sourceType = sourceTypeIn;
+    }
+
+    public void setSourceLabel(String sourceLabelIn) {
+        this.sourceLabel = sourceLabelIn;
+    }
+
+    public void setId(String idIn) {
+        this.id = idIn;
     }
 }
+
