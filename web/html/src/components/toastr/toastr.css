@@ -6,6 +6,87 @@
 :global(.toast) {
     padding: 15px !important;
     text-align: center !important;
-    width: 25% !important;
+    width: 32% !important;
     font-size: 15px;
+}
+
+:global(.toast-container) {
+    opacity: 1;
+}
+
+
+:global(.toast-success) {
+    background-color: #dff0d8 !important;
+    border-color: #d6e9c6 !important;
+    color: #3c763d !important;
+    opacity: 0.85 !important;
+    position: relative !important;
+}
+
+:global(.toast-success .toast-message:after) {
+    font-family: 'spacewalk-icon';
+    position: absolute;
+    top: 15px;
+    right: 7px;
+    font-size: 20px;
+    line-height: 1;
+    content: "\e63d" !important;
+    color: #57a81c;
+}
+
+
+:global(.toast-error) {
+    color: #a94442 !important;
+    background-color: #f2dede !important;
+    border-color: #ebccd1 !important;
+    opacity: 0.85 !important;
+}
+
+:global(.toast-error .toast-message:after) {
+    font-family: 'spacewalk-icon';
+    position: absolute;
+    top: 15px;
+    right: 7px;
+    font-size: 20px;
+    line-height: 1;
+    content: "\e640" ;
+    color: #c90813;
+}
+
+
+:global(.toast-warning) {
+    color: #8a6d3b !important;
+    background-color: #fcf8e3 !important;
+    border-color: #faebcc !important;
+    opacity: 0.85 !important;
+}
+
+:global(.toast-warning .toast-message:after) {
+    font-family: 'spacewalk-icon';
+    position: absolute;
+    top: 15px;
+    right: 7px;
+    font-size: 20px;
+    line-height: 1;
+    content: "\e63f" ;
+    color: #eb7720;
+}
+
+
+:global(.toast-info) {
+    color: #31708f !important;
+    background-color: #d9edf7 !important;
+    border-color: #bce8f1 !important;
+    opacity: 0.85 !important;
+}
+
+:global(.toast-info .toast-message:after) {
+    font-family: 'spacewalk-icon';
+    position: absolute;
+    top: 15px;
+    right: 7px;
+    font-size: 20px;
+    line-height: 1;
+    content: "\e63e" ;
+    color: #306899;
 }
