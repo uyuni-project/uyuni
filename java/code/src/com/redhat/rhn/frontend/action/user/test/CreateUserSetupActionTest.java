@@ -44,8 +44,8 @@ public class CreateUserSetupActionTest extends RhnBaseTestCase {
 
     private void setupExpectations(RhnMockDynaActionForm form, User user) {
         form.addExpectedProperty("country", "US");
-        form.addExpectedProperty("contact_email", new Boolean(true));
-        form.addExpectedProperty("contact_partner", new Boolean(true));
+        form.addExpectedProperty("contact_email", Boolean.TRUE);
+        form.addExpectedProperty("contact_partner", Boolean.TRUE);
         form.addExpectedProperty("prefix",
             LocalizationService.getInstance().getMessage("user prefix Mr."));
     }

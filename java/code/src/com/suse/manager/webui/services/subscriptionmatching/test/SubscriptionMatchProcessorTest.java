@@ -196,7 +196,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals(1, products.size());
         assertEquals(1, products.get("100").getUnmatchedSystemCount().intValue());
         assertEquals(
-                new Long(1L),
+                Long.valueOf(1L),
                 products.get("100").getUnmatchedSystemIds().iterator().next());
     }
 

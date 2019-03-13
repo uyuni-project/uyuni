@@ -87,7 +87,7 @@ public class CreateAction extends RhnAction {
         Errata e = ErrataManager.createNewErrata();
         e.setSynopsis(form.getString("synopsis"));
         e.setAdvisoryName(form.getString("advisoryName"));
-        e.setAdvisoryRel(new Long(form.getString("advisoryRelease")));
+        e.setAdvisoryRel(Long.valueOf(form.getString("advisoryRelease")));
         e.setAdvisoryType(form.getString("advisoryType"));
         e.setProduct(form.getString("product"));
         e.setErrataFrom(form.getString("errataFrom"));
@@ -155,7 +155,7 @@ public class CreateAction extends RhnAction {
         //if id and summary are not null, we can create a new bug, otherwise return null
         if (form.getString("buglistId").length() > 0 &&
             form.getString("buglistSummary").length() > 0) {
-            Long id = new Long(form.getString("buglistId"));
+            Long id = Long.valueOf(form.getString("buglistId"));
             String summary = form.getString("buglistSummary");
             String url = form.getString("buglistUrl");
             return ErrataManager.createNewUnpublishedBug(id, summary, url);

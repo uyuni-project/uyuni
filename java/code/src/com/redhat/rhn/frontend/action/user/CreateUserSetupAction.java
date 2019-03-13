@@ -80,12 +80,12 @@ public class CreateUserSetupAction extends BaseUserSetupAction {
 
         request.setAttribute("timezones", getTimeZones());
         if (currentUser.getTimeZone() != null) {
-            request.setAttribute("default_tz", new Integer(currentUser.getTimeZone()
-                .getTimeZoneId()));
+            request.setAttribute("default_tz", currentUser.getTimeZone()
+                    .getTimeZoneId());
         }
         else {
-            request.setAttribute("default_tz", new Integer(UserManager
-                .getDefaultTimeZone().getTimeZoneId()));
+            request.setAttribute("default_tz", UserManager
+                    .getDefaultTimeZone().getTimeZoneId());
         }
         request.setAttribute("noLocale", buildNoneLocale());
         request.setAttribute("supportedLocales", buildImageMap());

@@ -48,7 +48,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         ScriptResult result1 = new ScriptResult();
         Server s1 = ServerFactoryTest.createTestServer(usr);
         result1.setServerId(s1.getId());
-        result1.setReturnCode(new Long(1));
+        result1.setReturnCode(1L);
         result1.setStartDate(new Date());
         Calendar futureCal = GregorianCalendar.getInstance();
         futureCal.set(2050, 12, 14);
@@ -57,7 +57,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         Server s2 = ServerFactoryTest.createTestServer(usr);
         ScriptResult result2 = new ScriptResult();
         result2.setServerId(s2.getId());
-        result2.setReturnCode(new Long(1));
+        result2.setReturnCode(1L);
         result2.setStartDate(new Date());
         result2.setStopDate(futureCal.getTime());
 
@@ -67,7 +67,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         sad.setParentAction(action);
         sad.setUsername("SRTestUser");
         sad.setGroupname("SRTestGroup");
-        sad.setTimeout(new Long(9999));
+        sad.setTimeout(9999L);
         result1.setParentScriptActionDetails(sad);
         result2.setParentScriptActionDetails(sad);
         sad.addResult(result1);
@@ -115,7 +115,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         ScriptResult result1 = new ScriptResult();
         Server s1 = ServerFactoryTest.createTestServer(usr);
         result1.setServerId(s1.getId());
-        result1.setReturnCode(new Long(1));
+        result1.setReturnCode(1L);
         result1.setStartDate(startDate);
         result1.setStopDate(stopDate);
 
@@ -124,7 +124,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         sad.setParentAction(action);
         sad.setUsername("SRTestUser");
         sad.setGroupname("SRTestGroup");
-        sad.setTimeout(new Long(9999));
+        sad.setTimeout(9999L);
         result1.setParentScriptActionDetails(sad);
         sad.addResult(result1);
         action.setScriptActionDetails(sad);

@@ -103,7 +103,7 @@ public class MinionController {
     public static ModelAndView packageStates(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(new Long(serverId));
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
         return new ModelAndView(data, "templates/minion/packages.jade");
     }
@@ -119,7 +119,7 @@ public class MinionController {
         String orgId = request.queryParams("oid");
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", orgId);
-        data.put("orgName", OrgFactory.lookupById(new Long(orgId)).getName());
+        data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         return new ModelAndView(data, "templates/org/custom.jade");
     }
 
@@ -152,7 +152,7 @@ public class MinionController {
         String orgId = request.queryParams("sgid");
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", orgId);
-        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(orgId),
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(orgId),
                 user.getOrg()).getName());
         return new ModelAndView(data, "templates/groups/custom.jade");
     }
@@ -179,7 +179,7 @@ public class MinionController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", grpId);
-        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(grpId),
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(grpId),
                 user.getOrg()).getName());
         data.put("minions", Json.GSON.toJson(minions));
         addActionChains(user, data);
@@ -215,7 +215,7 @@ public class MinionController {
     public static ModelAndView minionCustomStates(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(new Long(serverId));
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
         return new ModelAndView(data, "templates/minion/custom.jade");
     }
@@ -231,7 +231,7 @@ public class MinionController {
     public static ModelAndView highstate(Request request, Response response, User user) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(new Long(serverId));
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
         addActionChains(user, data);
         return new ModelAndView(data, "templates/minion/highstate.jade");

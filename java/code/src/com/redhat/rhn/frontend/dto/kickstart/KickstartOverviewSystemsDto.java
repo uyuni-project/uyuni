@@ -136,7 +136,7 @@ public class KickstartOverviewSystemsDto extends BaseDto {
      * @return Server Name
      */
     public String getServerName() {
-        Server s = ServerFactory.lookupById(new Long(getServerId().longValue()));
+        Server s = ServerFactory.lookupById(getServerId());
         return s.getName();
     }
 

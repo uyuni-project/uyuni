@@ -126,7 +126,7 @@ public class ChildChannelDto {
      * @param isSubscribableIn The isSubscribable to set.
      */
     public void setSubscribable(Long isSubscribableIn) {
-        this.isSubscribable = !new Long(0).equals(isSubscribableIn);
+        this.isSubscribable = !Long.valueOf(0).equals(isSubscribableIn);
     }
 
     /**

@@ -151,7 +151,7 @@ public class ShowProfileAction extends RhnAction {
 
         request.setAttribute("profiles", profiles);
         request.setAttribute("servers", servers);
-        form.set("profile", new Long(0));
-        form.set("server", new Long(0));
+        form.set("profile", 0L);
+        form.set("server", 0L);
     }
 }

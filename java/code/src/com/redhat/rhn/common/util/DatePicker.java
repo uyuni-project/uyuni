@@ -396,7 +396,7 @@ public class DatePicker {
                 fieldValue = (Integer)value;
             }
             else if (value instanceof String) {
-                fieldValue = new Integer(Integer.parseInt((String)value));
+                fieldValue = Integer.parseInt((String) value);
             }
             //this is necessary for reading request parameters.
             else if (value instanceof String[]) {
@@ -405,7 +405,7 @@ public class DatePicker {
                     fieldValue = null;
                 }
                 else {
-                    fieldValue = new Integer(Integer.parseInt(s[0]));
+                    fieldValue = Integer.parseInt(s[0]);
                 }
             }
             else {
@@ -481,9 +481,9 @@ public class DatePicker {
             int result = cal.get(calField);
 
             if (isLatin() && field.equals(HOUR) && result == 0) {
-                return new Integer(12);
+                return 12;
             }
-            return new Integer(result);
+            return result;
         }
         catch (IllegalArgumentException e) {
             // Ignore and return null to indicate invalid date
@@ -505,11 +505,11 @@ public class DatePicker {
 
         //HACK: instituted for UI's that display 1:00 - 12:00 for hours
         //instead of 0:00 - 11:00 like the Java calendar
-        if (isLatin() && field.equals(HOUR) && value != null && value.intValue() == 12) {
+        if (isLatin() && field.equals(HOUR) && value != null && value == 12) {
             cal.set(calField, 0);
         }
         else {
-           cal.set(calField, value == null ? -1 : value.intValue());
+           cal.set(calField, value == null ? -1 : value);
         }
 
     }
@@ -534,11 +534,11 @@ public class DatePicker {
 
     private int getCalField(String field) {
         Map fieldCalMap = getFieldCalMap();
-        return ((Integer) fieldCalMap.get(field)).intValue();
+        return (Integer) fieldCalMap.get(field);
     }
 
     private Map getFieldCalMap() {
-        return (Map) FIELD_CALENDAR_MAP.get(Boolean.valueOf(isLatin()));
+        return (Map) FIELD_CALENDAR_MAP.get(isLatin());
     }
 
 
@@ -563,17 +563,17 @@ public class DatePicker {
 
     private static Map makeFieldCalendarMap(boolean isLatin) {
         Map result = new HashMap();
-        result.put(YEAR, new Integer(Calendar.YEAR));
-        result.put(MONTH, new Integer(Calendar.MONTH));
-        result.put(DAY, new Integer(Calendar.DAY_OF_MONTH));
+        result.put(YEAR, Calendar.YEAR);
+        result.put(MONTH, Calendar.MONTH);
+        result.put(DAY, Calendar.DAY_OF_MONTH);
         if (isLatin) {
-            result.put(HOUR, new Integer(Calendar.HOUR));
-            result.put(AM_PM, new Integer(Calendar.AM_PM));
+            result.put(HOUR, Calendar.HOUR);
+            result.put(AM_PM, Calendar.AM_PM);
         }
         else {
-            result.put(HOUR, new Integer(Calendar.HOUR_OF_DAY));
+            result.put(HOUR, Calendar.HOUR_OF_DAY);
         }
-        result.put(MINUTE, new Integer(Calendar.MINUTE));
+        result.put(MINUTE, Calendar.MINUTE);
         return result;
     }
 

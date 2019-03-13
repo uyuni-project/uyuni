@@ -36,7 +36,7 @@ public class TaskTest extends RhnBaseTestCase {
 
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();
-        Long testdata = new Long(42);
+        Long testdata = 42L;
         Task t = TaskFactory.createTask(org, testname, testdata);
 
         flushAndEvict(t);
@@ -67,7 +67,7 @@ public class TaskTest extends RhnBaseTestCase {
     public void testLookupNameLike() throws Exception {
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();
-        Long testdata = new Long(42);
+        Long testdata = 42L;
         Task t = TaskFactory.createTask(org, testname, testdata);
 
         List lookedup = TaskFactory.getTaskListByNameLike("task_object_unit_test_");

@@ -62,7 +62,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
 
         manager = new PxtCookieManager();
 
-        pxtSessionId = new Long(2658447890L);
+        pxtSessionId = 2658447890L;
 
         mockRequest = mock(HttpServletRequest.class);
 

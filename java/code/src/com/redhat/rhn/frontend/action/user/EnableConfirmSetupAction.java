@@ -131,8 +131,8 @@ public class EnableConfirmSetupAction extends RhnListAction {
         int count = 0;
 
         while (users.hasNext()) {
-            long id = ((UserOverview) users.next()).getId().longValue();
-            User nextUser = UserManager.lookupUser(user, new Long(id));
+            long id = ((UserOverview) users.next()).getId();
+            User nextUser = UserManager.lookupUser(user, id);
             try {
                  UserManager.enableUser(user, nextUser);
                  count++;
@@ -152,7 +152,7 @@ public class EnableConfirmSetupAction extends RhnListAction {
         }
 
         msg.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage(messageKey.toString(), new Integer(count)));
+                new ActionMessage(messageKey.toString(), count));
         strutsDelegate.saveMessages(request, msg);
 
         if (errors.isEmpty()) {

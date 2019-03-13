@@ -70,11 +70,11 @@ public class ChannelPermsAction extends RhnListAction {
             boolean isSet = selectedList.contains(currentChannel);
 
             if (isSet) {
-                UserManager.removeChannelPerm(user, new Long(currentChannel), role);
-                UserManager.addChannelPerm(user, new Long(currentChannel), role);
+                UserManager.removeChannelPerm(user, Long.valueOf(currentChannel), role);
+                UserManager.addChannelPerm(user, Long.valueOf(currentChannel), role);
             }
             else {
-                UserManager.removeChannelPerm(user, new Long(currentChannel), role);
+                UserManager.removeChannelPerm(user, Long.valueOf(currentChannel), role);
             }
 
         }

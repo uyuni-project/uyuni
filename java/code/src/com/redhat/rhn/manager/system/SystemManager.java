@@ -800,8 +800,8 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<SystemOverview> systemListShortInactive(User user,
             PageControl pc) {
-        return systemListShortInactive(user, new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD)), pc);
+        return systemListShortInactive(user, Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD), pc);
     }
 
     /**
@@ -838,8 +838,8 @@ public class SystemManager extends BaseManager {
                 "System_queries", "xmlrpc_visible_to_user_active", SystemOverview.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD)));
+        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<String, Object>();
 
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
@@ -952,8 +952,8 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD)));
+        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
     }
@@ -998,7 +998,7 @@ public class SystemManager extends BaseManager {
         else {
             m = ModeFactory.getMode("System_queries",
                     "recently_registered");
-            params.put("threshold", new Integer(threshold));
+            params.put("threshold", threshold);
         }
 
         params.put("org_id", user.getOrg().getId());
@@ -1021,8 +1021,8 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD)));
+        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
     }
@@ -2271,7 +2271,7 @@ public class SystemManager extends BaseManager {
         in.put("entitlement", ent.getLabel());
 
         Map<String, Integer> out = new HashMap<String, Integer>();
-        out.put("retval", new Integer(Types.NUMERIC));
+        out.put("retval", Types.NUMERIC);
 
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "can_entitle_server");
@@ -2541,7 +2541,7 @@ public class SystemManager extends BaseManager {
                 currentGuestCpus.intValue()) {
                     result.addWarning(new ValidatorWarning(
                             "systems.details.virt.vcpu.increase.warning",
-                            new Object [] {new Integer(proposedVcpuSetting),
+                            new Object [] {proposedVcpuSetting,
                                 guest.getName()}));
                 }
             }
@@ -3505,7 +3505,7 @@ public class SystemManager extends BaseManager {
         params.put("value", value);
 
         Map<String, Integer> out = new HashMap<String, Integer>();
-        out.put("retval", new Integer(Types.NUMERIC));
+        out.put("retval", Types.NUMERIC);
 
         Map<String, Object> result = mode.execute(params, out);
         Long retval = (Long) result.get("retval");

@@ -202,7 +202,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action a = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
-        a.setArchived(new Long(1));
+        a.setArchived(1L);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatus(ActionFactory.STATUS_QUEUED);
 

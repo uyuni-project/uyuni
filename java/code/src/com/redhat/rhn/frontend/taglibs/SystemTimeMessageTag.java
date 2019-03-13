@@ -74,7 +74,7 @@ public class SystemTimeMessageTag extends TagSupport {
         Date expectedCheckIn = new Date(lastCheckIn.getTime() + (1000 * 60 * 60 * 2));
         //expected check in is two hours after last check in, regardless of threshold
         long checkInAgo = now.getTime() - lastCheckIn.getTime();
-        Long days = new Long((((checkInAgo / 1000) / 60) / 60) / 24);
+        Long days = (((checkInAgo / 1000) / 60) / 60) / 24;
         boolean awol = days.intValue() >
                        Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
 

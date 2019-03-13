@@ -99,7 +99,7 @@ public class ErrataMailer extends RhnJavaJob {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATAMAILER_FIND_ERRATA);
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("threshold", new Integer(1));
+        params.put("threshold", 1);
         List results = select.execute(params);
         return results;
     }
@@ -120,7 +120,7 @@ public class ErrataMailer extends RhnJavaJob {
 
     private void sendEmails(Long errataId, Long orgId, Long channelId) {
         Errata errata = (Errata) HibernateFactory.getSession().load(PublishedErrata.class,
-                new Long(errataId.longValue()));
+                errataId);
         List orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 
         if (orgServers == null || orgServers.size() == 0) {

@@ -122,7 +122,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
             Action update = ActionManager.createErrataAction(user, currentErrata);
             for (int i = 0; i < systems.size(); i++) {
                 ActionManager.addServerToAction(
-                        new Long(((SystemOverview) systems.get(i)).getId().longValue()),
+                        ((SystemOverview) systems.get(i)).getId(),
                         update);
             }
 
@@ -146,7 +146,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
             }
             args = new Object[4];
             args[0] = currentErrata.getAdvisoryName();
-            args[1] = new Long(systems.size());
+            args[1] = (long) systems.size();
             args[2] = currentErrata.getId().toString();
             args[3] = update.getId();
         }

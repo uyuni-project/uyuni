@@ -90,7 +90,7 @@ public class OrgTrustHandler extends BaseHandler {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
-        Org trustOrg = OrgFactory.lookupById(new Long(trustOrgId));
+        Org trustOrg = OrgFactory.lookupById(Long.valueOf(trustOrgId));
         if (trustOrg == null) {
             throw new NoSuchOrgException(trustOrgId.toString());
         }
@@ -133,7 +133,7 @@ public class OrgTrustHandler extends BaseHandler {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
-        Org trustOrg = OrgFactory.lookupById(new Long(trustOrgId));
+        Org trustOrg = OrgFactory.lookupById(Long.valueOf(trustOrgId));
         if (trustOrg == null) {
             throw new NoSuchOrgException(trustOrgId.toString());
         }
@@ -181,7 +181,7 @@ public class OrgTrustHandler extends BaseHandler {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
-        Org trustOrg = OrgFactory.lookupById(new Long(trustOrgId));
+        Org trustOrg = OrgFactory.lookupById(Long.valueOf(trustOrgId));
         if (trustOrg == null) {
             throw new NoSuchOrgException(trustOrgId.toString());
         }

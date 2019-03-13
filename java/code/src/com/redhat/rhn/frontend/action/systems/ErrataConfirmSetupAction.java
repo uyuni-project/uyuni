@@ -149,7 +149,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
                         messageKey += ".plural";
                     }
                     args = new Object[3];
-                    args[0] = new Long(errataList.size());
+                    args[0] = (long) errataList.size();
                     args[1] = server.getName();
                     args[2] = server.getId().toString();
                 }

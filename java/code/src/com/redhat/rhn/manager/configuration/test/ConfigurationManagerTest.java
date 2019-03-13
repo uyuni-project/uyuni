@@ -313,7 +313,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigTestUtils.createConfigRevision(aFile);
         ConfigurationFactory.commit(local4);
 
-        Long ver = new Long(2);
+        Long ver = 2L;
         // System 1 - no outranks, no overrides
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
 
@@ -584,14 +584,14 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         //Call the function we are testing,  list more than we created to make sure
         //we have only that many.
-        DataResult dr = cm.getRecentlyModifiedConfigFiles(user, new Integer(numFiles + 5));
+        DataResult dr = cm.getRecentlyModifiedConfigFiles(user, numFiles + 5);
         assertEquals(numFiles, dr.getTotalSize());
         assertTrue(dr.get(0) instanceof ConfigFileDto);
 
         //Now test that limiting the results works as well.
         int numToShow = 2;
         //show only a few of the files.
-        dr = cm.getRecentlyModifiedConfigFiles(user, new Integer(numToShow));
+        dr = cm.getRecentlyModifiedConfigFiles(user, numToShow);
         assertEquals(numToShow, dr.getTotalSize());
 
         //This last test really doesn't work if we limit more than we create.
@@ -966,7 +966,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // In 'my' channel
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
@@ -1040,7 +1040,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // gcc1 only
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
@@ -1107,7 +1107,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // gcc1 only
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
@@ -1160,7 +1160,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         revs.add(g1f2.getId());
         Map m = mgr.deployFiles(user, revs, systems, new Date());
         assertNotNull(m);
-        assertEquals(m.get("success"), new Long(2));
+        assertEquals(m.get("success"), 2L);
         assertNull(m.get("override"));
 
         // System 3 - g2f2 should be overridden by g1f2, and g2f3 should deploy
@@ -1171,8 +1171,8 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         revs.add(g2f3.getId());
         m = mgr.deployFiles(user, revs, systems, new Date());
         assertNotNull(m);
-        assertEquals(m.get("success"), new Long(1));
-        assertEquals(m.get("override"), new Long(1));
+        assertEquals(m.get("success"), 1L);
+        assertEquals(m.get("override"), 1L);
     }
 
     public void testListManagedFilePaths() throws Exception {
@@ -1202,7 +1202,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         rev1 = ConfigTestUtils.createConfigRevision(g1f1,
                                 ConfigTestUtils.createConfigContent(),
                                 ConfigTestUtils.createConfigInfo(),
-                                new Long(rev1.getRevision().longValue() + 1));
+                rev1.getRevision().longValue() + 1);
         ConfigurationFactory.commit(gcc1);
 
         //add a duuplicate file to gcc2
@@ -1329,8 +1329,8 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
             ConfigRevision rev = ConfigTestUtils.createConfigRevision(fl,
                                                ConfigTestUtils.createConfigContent(),
                                                ConfigTestUtils.createConfigInfo(),
-                                               new Long(RandomUtils.nextInt(0,
-                                                       Integer.MAX_VALUE))
+                    (long) RandomUtils.nextInt(0,
+                            Integer.MAX_VALUE)
                                                );
             revisions.add(rev.getRevision());
             ConfigurationFactory.commit(sandbox);

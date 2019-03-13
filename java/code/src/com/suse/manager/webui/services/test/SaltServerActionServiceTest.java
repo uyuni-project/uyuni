@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
@@ -47,9 +46,7 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.task.SSHPush;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem;
-import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -376,7 +373,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Date earliestAction = new Date();
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
-                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+                "root", "root", 10L, "#!/bin/csh\necho hello");
         Set<Action> scriptActions = ActionChainManager.scheduleScriptRuns(user,
                 Arrays.asList(minion1.getId(), minion2.getId(), server1.getId()),
                 "script", sad, earliestAction, actionChain);

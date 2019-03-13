@@ -17,16 +17,13 @@ package com.redhat.rhn.frontend.xmlrpc.errata.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestCve;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestErrata;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
@@ -41,18 +38,12 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidAdvisoryReleaseException;
 import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.manager.audit.test.CVEAuditManagerTest;
-import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -68,7 +59,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -165,7 +155,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Map<String, Object> details = new HashMap<String, Object>();
-        details.put("advisory_release", new Integer(10000));
+        details.put("advisory_release", 10000);
         try {
             handler.setDetails(admin, errata.getAdvisory(), details);
             fail("invalid advisory of 10000 accepted");
@@ -222,7 +212,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertEquals(errata.getSynopsis(), "synopsis-1");
         assertEquals(errata.getAdvisory(), "advisory-1-123");
         assertEquals(errata.getAdvisoryName(), "advisory-1");
-        assertEquals(errata.getAdvisoryRel(), new Long(123));
+        assertEquals(errata.getAdvisoryRel(), Long.valueOf(123));
         assertEquals(errata.getAdvisoryType(), "Security Advisory");
         assertEquals(errata.getProduct(), "product text");
         assertEquals(errata.getTopic(), "topic text");
@@ -233,11 +223,11 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         boolean foundBug1 = false, foundBug2 = false;
         for (Bug bug : (Set<Bug>) errata.getBugs()) {
-            if (bug.getId().equals(new Long(1)) &&
+            if (bug.getId().equals(1L) &&
                 bug.getSummary().equals("bug1 summary")) {
                 foundBug1 = true;
             }
-            if (bug.getId().equals(new Long(2)) &&
+            if (bug.getId().equals(2L) &&
                 bug.getSummary().equals("bug2 summary")) {
                 foundBug2 = true;
             }
@@ -311,7 +301,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         Bug bug1 = new PublishedBug();
-        bug1.setId(new Long(1001));
+        bug1.setId(1001L);
         bug1.setSummary("This is a test summary for bug1");
 
         userErrata.addBug(bug1);
@@ -331,13 +321,13 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         //map should contain an 'id' key only
         Set keys = bugs.keySet();
         assertEquals(1, keys.size());
-        assertEquals("This is a test summary for bug1", bugs.get(new Long(1001)));
+        assertEquals("This is a test summary for bug1", bugs.get(1001L));
 
         //two erratas, for user's and vendor's org, with the same advisoryName
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null, Optional.of(userErrata.getAdvisory()));
 
         Bug bug2 = new PublishedBug();
-        bug2.setId(new Long(1002));
+        bug2.setId(1002L);
         bug2.setSummary("This is a test summary for bug2");
 
         vendorErrata.addBug(bug2);
@@ -359,8 +349,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         //map should contain one only element
         assertEquals(2, bugs.size());
-        assertEquals("This is a test summary for bug1", bugs.get(new Long(1001)));
-        assertEquals("This is a test summary for bug2", bugs.get(new Long(1002)));
+        assertEquals("This is a test summary for bug1", bugs.get(1001L));
+        assertEquals("This is a test summary for bug2", bugs.get(1002L));
     }
 
     public void testListKeywords() throws Exception {
@@ -735,7 +725,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
     private void populateErrataInfo(Map errataInfo) {
         errataInfo.put("synopsis", TestUtils.randomString());
-        errataInfo.put("advisory_release", new Integer(2));
+        errataInfo.put("advisory_release", 2);
         errataInfo.put("advisory_type", "Bug Fix Advisory");
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
@@ -781,7 +771,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         String advisoryName = TestUtils.randomString();
         populateErrataInfo(errataInfo);
         errataInfo.put("advisory_name", advisoryName);
-        errataInfo.put("advisory_release", new Integer(10000));
+        errataInfo.put("advisory_release", 10000);
 
         ArrayList packages = new ArrayList();
         ArrayList bugs = new ArrayList();
@@ -808,7 +798,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         String advisoryName = TestUtils.randomString();
         populateErrataInfo(errataInfo);
         errataInfo.put("advisory_name", advisoryName);
-        errataInfo.put("advisory_release", new Integer(9999));
+        errataInfo.put("advisory_release", 9999);
 
         ArrayList packages = new ArrayList();
         ArrayList bugs = new ArrayList();

@@ -80,7 +80,7 @@ public class UnpublishedDeleteConfirmSetupActionTest extends RhnMockStrutsTestCa
         /* Verify that we only got unpublished results back */
         while (i.hasNext()) {
             OwnedErrata e = (OwnedErrata) i.next();
-            assertTrue(e.getPublished().equals(new Integer(0)));
+            assertEquals(0, e.getPublished().intValue());
         }
     }
 }

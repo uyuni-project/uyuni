@@ -159,8 +159,8 @@ public class ChannelDeployConfirmAction extends RhnAction {
         Map m = ConfigurationManager.getInstance().
             deployFiles(usr, fileIds, systemIds, datePicked, actionChain);
 
-        Long successes = m.get("success") == null ? new Long(0) : (Long)m.get("success");
-        Long overrides = m.get("override") == null ? new Long(0) : (Long)m.get("override");
+        Long successes = m.get("success") == null ? 0L : (Long)m.get("success");
+        Long overrides = m.get("override") == null ? 0L : (Long)m.get("override");
 
         ActionMessages msgs = new ActionMessages();
         if (successes.longValue() == 1) {

@@ -235,7 +235,7 @@ public class AssignedGroupsSetupAction extends RhnListAction {
 
         Set groupSet = new HashSet();
         for (int i = 0; i < groupArray.length; i++) {
-            groupSet.add(new Long(groupArray[i]));
+            groupSet.add(Long.valueOf(groupArray[i]));
         }
         user.setDefaultSystemGroupIds(groupSet);
 

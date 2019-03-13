@@ -28,7 +28,7 @@ import java.util.List;
 public class UpgradeCommandTest extends BaseTestCaseWithUser {
 
     public void testUpgradeProfiles() throws Exception {
-        TaskFactory.createTask(user.getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, new Long(0));
+        TaskFactory.createTask(user.getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, 0L);
         List l = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);
         assertTrue(l.get(0) instanceof Task);
 

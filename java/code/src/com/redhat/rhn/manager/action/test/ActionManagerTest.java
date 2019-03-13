@@ -15,15 +15,19 @@
 
 package com.redhat.rhn.manager.action.test;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
@@ -40,7 +44,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
-import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -89,8 +92,8 @@ import com.suse.salt.netapi.utils.Xor;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -109,10 +112,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
-import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
-import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
-
 /**
  * Tests for {@link ActionManager}.
  */
@@ -126,6 +125,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }
+
 
     public void testGetSystemGroups() throws Exception {
         ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
@@ -183,7 +183,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         DataResult dr = ActionManager.pendingActions(user, null);
 
-        Long actionid = new Long(parent.getId().longValue());
+        Long actionid = parent.getId().longValue();
         TestUtils.arraySearch(dr.toArray(), "getId", actionid);
         assertNotEmpty(dr);
     }
@@ -256,7 +256,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery("from ServerAction sa where " +
             "sa.parentAction = :parent_action");
-        query.setEntity("parent_action", parentAction);
+        query.setParameter("parent_action", parentAction);
         return query.list();
     }
 
@@ -281,7 +281,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery("from ServerAction sa where " +
             "sa.parentAction.schedulerUser = :user");
-        query.setEntity("user", user);
+        query.setParameter("user", user);
         List results = query.list();
         int initialSize = results.size();
         assertEquals(expected, initialSize);
@@ -290,7 +290,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void assertActionsForUser(User user, int expected) throws Exception {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery("from Action a where a.schedulerUser = :user");
-        query.setEntity("user", user);
+        query.setParameter("user", user);
         List results = query.list();
         int initialSize = results.size();
         assertEquals(expected, initialSize);
@@ -506,7 +506,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Query kickstartSessions = session.createQuery(
                 "from KickstartSession ks where ks.action = :action");
-        kickstartSessions.setEntity("action", parentAction);
+        kickstartSessions.setParameter("action", parentAction);
         List results = kickstartSessions.list();
         assertEquals(1, results.size());
 
@@ -559,7 +559,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     public void testLookupFailLookupAction() throws Exception {
         try {
-            ActionManager.lookupAction(user, new Long(-1));
+            ActionManager.lookupAction(user, -1L);
             fail("Expected to fail");
         }
         catch (LookupException le) {
@@ -579,7 +579,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
-        sa.setRemainingTries(new Long(0));
+        sa.setRemainingTries(0L);
         ActionFactory.save(a1);
 
         ActionManager.rescheduleAction(a1);
@@ -598,7 +598,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(dr.size() > 0);
         assertTrue(dr.get(0) instanceof ActionedSystem);
         ActionedSystem as = (ActionedSystem) dr.get(0);
-        as.setSecurityErrata(new Long(1));
+        as.setSecurityErrata(1L);
         assertNotNull(as.getSecurityErrata());
     }
 
@@ -683,14 +683,14 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     public void testScheduleScriptRun() throws Exception {
         Server srvr = ServerFactoryTest.createTestServer(user, true);
-        SystemManagerTest.giveCapability(srvr.getId(), "script.run", new Long(1));
+        SystemManagerTest.giveCapability(srvr.getId(), "script.run", 1L);
         assertNotNull(srvr);
 
-        List<Long> serverIds = new ArrayList();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(srvr.getId());
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
-                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+                "root", "root", 10L, "#!/bin/csh\necho hello");
         assertNotNull(sad);
         ScriptRunAction sra = ActionManager.scheduleScriptRun(
                 user, serverIds, "Run script test", sad, new Date());
@@ -785,10 +785,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("2", kad.getDiskGb().toString());
     }
 
+    @SuppressWarnings("rawtypes")
     public void testSchedulePackageDelta() throws Exception {
         Server srvr = ServerFactoryTest.createTestServer(user, true);
 
-        List profileList = new ArrayList();
+        List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(ProfileManagerTest.
                 createPackageListItem("kernel-2.4.23-EL-mmccune", 500341));
         profileList.add(ProfileManagerTest.
@@ -798,7 +799,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         //profileList.add(ProfileManagerTest.
         //        createPackageListItem("other-2.1.0-EL-mmccune", 500400));
 
-        List systemList = new ArrayList();
+        List<PackageListItem> systemList = new ArrayList<>();
         systemList.add(ProfileManagerTest.
                 createPackageListItem("kernel-2.4.23-EL-mmccune", 500341));
 
@@ -806,8 +807,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(user);
 
 
-        List pkgs = ProfileManager.comparePackageLists(new DataResult(profileList),
-                new DataResult(systemList), "foo");
+        List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(profileList),
+                new DataResult<PackageListItem>(systemList), "foo");
 
         Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
                 new Date());
@@ -897,16 +898,16 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void aTestSchedulePackageDelta() throws Exception {
-        Server srvr = ServerFactory.lookupById(new Long(1005385254));
+        Server srvr = ServerFactory.lookupById(1005385254L);
         RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(user);
 
-        List a = new ArrayList();
+        List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
         pli.setIdCombo("3427|195967");
-        pli.setEvrId(new Long(195967));
+        pli.setEvrId(195967L);
         pli.setName("apr");
         pli.setRelease("0.4");
-        pli.setNameId(new Long(3427));
+        pli.setNameId(3427L);
         pli.setEvr("0.9.5-0.4");
         pli.setVersion("0.9.5");
         pli.setEpoch(null);
@@ -914,10 +915,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("23223|196372");
-        pli.setEvrId(new Long(196372));
+        pli.setEvrId(196372L);
         pli.setName("bcel");
         pli.setRelease("1jpp_2rh");
-        pli.setNameId(new Long(23223));
+        pli.setNameId(23223L);
         pli.setEvr("5.1-1jpp_2rh:0");
         pli.setVersion("5.1");
         pli.setEpoch("0");
@@ -925,22 +926,22 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("500000103|250840");
-        pli.setEvrId(new Long(250840));
+        pli.setEvrId(250840L);
         pli.setName("aspell");
         pli.setRelease("25.1");
-        pli.setNameId(new Long(500000103));
+        pli.setNameId(500000103L);
         pli.setEvr("0.33.7.1-25.1:2");
         pli.setVersion("0.33.7.1");
         pli.setEpoch("2");
         a.add(pli);
 
-        List b = new ArrayList();
+        List<PackageListItem> b = new ArrayList<>();
         pli = new PackageListItem();
         pli.setIdCombo("26980|182097");
-        pli.setEvrId(new Long(182097));
+        pli.setEvrId(182097L);
         pli.setName("asm");
         pli.setRelease("2jpp");
-        pli.setNameId(new Long(26980));
+        pli.setNameId(26980L);
         pli.setEvr("1.4.1-2jpp:0");
         pli.setVersion("1.4.1");
         pli.setEpoch("0");
@@ -948,10 +949,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("500000103|271970");
-        pli.setEvrId(new Long(271970));
+        pli.setEvrId(271970L);
         pli.setName("aspell");
         pli.setRelease("25.3");
-        pli.setNameId(new Long(500000103));
+        pli.setNameId(500000103L);
         pli.setEvr("0.33.7.1-25.3:2");
         pli.setVersion("0.33.7.1");
         pli.setEpoch("2");
@@ -959,20 +960,20 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         pli = new PackageListItem();
         pli.setIdCombo("23223|700004953");
-        pli.setEvrId(new Long(700004953));
+        pli.setEvrId(700004953L);
         pli.setName("bcel");
         pli.setRelease("10");
-        pli.setNameId(new Long(23223));
+        pli.setNameId(23223L);
         pli.setEvr("5.0-10");
         pli.setVersion("5.0");
         pli.setEpoch(null);
         b.add(pli);
 
-        List pkgs = ProfileManager.comparePackageLists(new DataResult(a),
-                new DataResult(b), "foo");
+        List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
+                new DataResult<PackageListItem>(b), "foo");
 
-        for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-            PackageMetadata pm = (PackageMetadata) itr.next();
+        for (Iterator<PackageMetadata> itr = pkgs.iterator(); itr.hasNext();) {
+            PackageMetadata pm = itr.next();
             log.warn("pm [" + pm.toString() + "] compare [" +
                     pm.getComparison() + "] release [" +
                     (pm.getSystem() != null ? pm.getSystem().getRelease() :

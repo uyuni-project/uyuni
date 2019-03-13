@@ -113,7 +113,6 @@ public abstract class KickstartVariableAction extends RhnAction {
             DynaActionForm form,
             String cId) {
 
-        ValidatorError error = null;
         RequestContext ctx = new RequestContext(request);
 
         try {

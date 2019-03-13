@@ -29,7 +29,7 @@ import java.util.List;
  * side.
  * @version $Rev$
  */
-public class PackageMetadata extends BaseDto implements Comparable {
+public class PackageMetadata extends BaseDto implements Comparable<PackageMetadata> {
     public static final int KEY_NO_DIFF = 0;
     public static final int KEY_THIS_ONLY = 1;
     public static final int KEY_THIS_NEWER = 2;
@@ -47,7 +47,7 @@ public class PackageMetadata extends BaseDto implements Comparable {
     private int comparison;
     private String compareParam;
     private int actionStatus;
-    private List channels;
+    private List<Channel> channels;
 
     /**
      * Constructs a PackageMetadata
@@ -60,7 +60,7 @@ public class PackageMetadata extends BaseDto implements Comparable {
         comparison = KEY_NO_DIFF;
         compareParam = null;
         actionStatus = ACTION_NONE;
-        channels = new ArrayList();
+        channels = new ArrayList<>();
     }
 
     /**
@@ -302,9 +302,8 @@ public class PackageMetadata extends BaseDto implements Comparable {
     /**
      * {@inheritDoc}
      */
-    public int compareTo(Object o) {
-        PackageMetadata pm = (PackageMetadata) o;
-        return getName().toLowerCase().compareTo(pm.getName().toLowerCase());
+    public int compareTo(PackageMetadata o) {
+        return getName().toLowerCase().compareTo(o.getName().toLowerCase());
     }
 
     /**
@@ -350,7 +349,7 @@ public class PackageMetadata extends BaseDto implements Comparable {
      * Returns the list of Channels which supply this package.
      * @return the list of Channels which supply this package.
      */
-    public List getChannels() {
+    public List<Channel> getChannels() {
         return channels;
     }
 
@@ -358,7 +357,7 @@ public class PackageMetadata extends BaseDto implements Comparable {
      * Sets the list of Channels which supply this package.
      * @param chanList list of Channels which supply this package.
      */
-    public void setChannels(List chanList) {
+    public void setChannels(List<Channel> chanList) {
         channels.addAll(chanList);
     }
 

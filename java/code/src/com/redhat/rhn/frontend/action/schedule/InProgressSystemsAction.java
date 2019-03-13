@@ -96,14 +96,14 @@ public class InProgressSystemsAction extends RhnSetAction {
                         new ActionMessage("message.unscheduled.system",
                                 action.getFormatter().getName(),
                                 LocalizationService.getInstance()
-                                        .formatNumber(new Integer(numSystems))));
+                                        .formatNumber(numSystems)));
             }
             else {
                 msgs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("message.unscheduled.systems",
                                 action.getFormatter().getName(),
                                 LocalizationService.getInstance()
-                                        .formatNumber(new Integer(numSystems))));
+                                        .formatNumber(numSystems)));
             }
             strutsDelegate.saveMessages(request, msgs);
         }

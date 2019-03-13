@@ -105,7 +105,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(RequestContext.SID, sid);
             params.put(RequestContext.PRID, prid);
-            params.put("time", new Long(time.getTime()));
+            params.put("time", time.getTime());
             return getStrutsDelegate().forwardParams(mapping.findForward("success"),
                     params);
         }
@@ -114,7 +114,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
             params.put(RequestContext.SID, sid);
             params.put(RequestContext.PRID, prid);
             params.put("sync", "profile");
-            params.put("time", new Long(time.getTime()));
+            params.put("time", time.getTime());
             return getStrutsDelegate().forwardParams(mapping.findForward("missing"),
                     params);
         }
@@ -128,7 +128,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
             params.put(RequestContext.SID, sid);
             params.put(RequestContext.PRID, prid);
             params.put("sync", "profile");
-            params.put("time", new Long(time.getTime()));
+            params.put("time", time.getTime());
             return getStrutsDelegate().forwardParams(mapping.findForward("missing"),
                     params);
         }

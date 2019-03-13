@@ -105,15 +105,15 @@ public class PackageTest extends RhnBaseTestCase {
         p.setRpmVersion("foo");
         p.setDescription("RHN-JAVA Package Test");
         p.setSummary("Created by RHN-JAVA unit tests. Please disregard.");
-        p.setPackageSize(new Long(42));
-        p.setPayloadSize(new Long(42));
+        p.setPackageSize(42L);
+        p.setPayloadSize(42L);
         p.setBuildHost("foo2");
         p.setBuildTime(new Date());
         p.setChecksum(ChecksumFactory.safeCreate(
                 MD5Crypt.crypt(TestUtils.randomString()), "md5"));
         p.setVendor("Rhn-Java");
         p.setPayloadFormat("testpayloadformat");
-        p.setCompat(new Long(0));
+        p.setCompat(0L);
         p.setPath(MD5Crypt.crypt(TestUtils.randomString()));
         p.setHeaderSignature("Rhn-Java Unit Test");
         p.setCopyright("Red Hat - RHN - 2005");

@@ -56,7 +56,7 @@ import com.suse.utils.Opt;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class ErrataFactory extends HibernateFactory {
         Long eid = null;
         List retval = new LinkedList();
         try {
-            eid = new Long(Long.parseLong(identifier));
+            eid = Long.parseLong(identifier);
         }
         catch (NumberFormatException e) {
             eid = null;

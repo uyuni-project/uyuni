@@ -297,7 +297,7 @@ public  class UserFactory extends HibernateFactory {
      */
     private static long getLongValue(DataResult dr, String key) {
         Long id = (Long)((Map)dr.get(0)).get(key);
-        return id.longValue();
+        return id;
     }
 
     /**
@@ -373,7 +373,7 @@ public  class UserFactory extends HibernateFactory {
         inParams.put("phone", StringUtils.defaultIfEmpty(usr.getPhone(), null));
         inParams.put("fax", StringUtils.defaultIfEmpty(usr.getFax(), null));
         inParams.put("email", StringUtils.defaultIfEmpty(usr.getEmail(), null));
-        inParams.put("pin", new Integer(0));
+        inParams.put("pin", 0);
         inParams.put("fnameOl", " ");
         inParams.put("lnameOl", " ");
         inParams.put("addr1", StringUtils.defaultIfEmpty(usr.getAddress1(), null));
@@ -390,7 +390,7 @@ public  class UserFactory extends HibernateFactory {
         inParams.put("contFax", "N");
         inParams.put("contEmail", "N");
 
-        outParams.put("userId", new Integer(Types.NUMERIC));
+        outParams.put("userId", Types.NUMERIC);
         Map<String, Object> result = m.execute(inParams, outParams);
 
         Org org = OrgFactory.lookupById(orgId);
@@ -398,12 +398,12 @@ public  class UserFactory extends HibernateFactory {
             usr.setOrg(org);
         }
 
-        long userId = ((Long) result.get("userId")).longValue();
+        long userId = (Long) result.get("userId");
 
 
         // We need to lookup the User to make sure that the Address in the
         // User object has an Id and that the User has an org_id.
-        User retval = lookupById(new Long(userId));
+        User retval = lookupById(userId);
         saveObject(retval);
         return retval;
     }
@@ -444,7 +444,7 @@ public  class UserFactory extends HibernateFactory {
         Boolean wasOrgAdmin = uimpl.wasOrgAdmin();
         if (wasOrgAdmin != null) {
             orgAdminChanged =
-                    usr.hasRole(RoleFactory.ORG_ADMIN) != wasOrgAdmin.booleanValue();
+                    usr.hasRole(RoleFactory.ORG_ADMIN) != wasOrgAdmin;
         }
 
         if (orgAdminChanged) {
@@ -621,7 +621,7 @@ public  class UserFactory extends HibernateFactory {
         DataResult dr = m.execute(new HashMap<String, Object>());
         Map row = (Map) dr.get(0);
         Long count = (Long) row.get("user_count");
-        return (count.longValue() > 0);
+        return (count > 0);
     }
 
     /**

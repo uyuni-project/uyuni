@@ -725,7 +725,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         // TODO: Proxy logic
 
         // Setup the KickstartSession
-        kickstartSession.setPackageFetchCount(new Long(0));
+        kickstartSession.setPackageFetchCount(0L);
         kickstartSession.setKickstartMode(KickstartSession.MODE_ONETIME);
         kickstartSession.setDeployConfigs(deployConfig);
         kickstartSession.setAction(firstAction);

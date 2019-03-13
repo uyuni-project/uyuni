@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.configchannel.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -496,7 +495,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(
                 "Show differences between profiled config files and deployed config files",
                 ((ScheduledAction)dr.get(0)).getTypeName());
-        assertEquals(actionId, new Integer(
+        assertEquals(actionId, Integer.valueOf(
                 ((ScheduledAction)dr.get(0)).getId().intValue()));
     }
 

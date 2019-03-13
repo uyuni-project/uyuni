@@ -29,14 +29,14 @@ public class AbstractLabelNameHelperTest extends RhnBaseTestCase {
 
         h1.setLabel("foo");
         h1.setName("bar");
-        h1.setId(new Long(1));
+        h1.setId(1L);
 
         assertFalse(h1.equals(h2));
 
         h2 = new AbstractLabelNameHelper();
         h2.setLabel("bar");
         h2.setName("foo");
-        h2.setId(new Long(2));
+        h2.setId(2L);
         assertFalse(h1.equals(h2));
 
         h2.setLabel("foo");
@@ -44,7 +44,7 @@ public class AbstractLabelNameHelperTest extends RhnBaseTestCase {
         h2.setId(null);
         assertFalse(h1.equals(h2));
 
-        h2.setId(new Long(1));
+        h2.setId(1L);
         assertTrue(h1.equals(h2));
         assertTrue(h1.equals(h1));
     }

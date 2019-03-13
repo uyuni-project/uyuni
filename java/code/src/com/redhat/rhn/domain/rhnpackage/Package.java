@@ -70,8 +70,8 @@ public class Package extends BaseDomainHelper {
     private PackageArch packageArch;
     private Set<PackageKey> packageKeys = new HashSet();
 
-    private Long headerStart = new Long(0L);
-    private Long headerEnd = new Long(0L);
+    private Long headerStart = 0L;
+    private Long headerEnd = 0L;
 
     private Set<PackageProvides> provides = new HashSet();
     private Set<PackageRequires> requires = new HashSet();

@@ -36,7 +36,7 @@ import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -92,8 +92,8 @@ public class ServerFactory extends HibernateFactory {
 
         Session session = HibernateFactory.getSession();
         return (CustomDataValue) session.getNamedQuery(
-                "CustomDataValue.findByServerAndKey").setEntity("server",
-                        server).setEntity("key", key)
+                "CustomDataValue.findByServerAndKey").setParameter("server",
+                        server).setParameter("key", key)
                         // Retrieve from cache if there
                         .setCacheable(true).uniqueResult();
     }
@@ -301,7 +301,7 @@ public class ServerFactory extends HibernateFactory {
         inParams.put("server_id", sid);
         inParams.put("server_group_id", sgid);
         // Outparam
-        outParams.put("retval", new Integer(Types.NUMERIC));
+        outParams.put("retval", Types.NUMERIC);
 
         m.execute(inParams, outParams);
     }
@@ -320,7 +320,7 @@ public class ServerFactory extends HibernateFactory {
         inParams.put("server_id", sid);
         inParams.put("server_group_id", sgid);
         // Outparam
-        // outParams.put("retval", new Integer(Types.NUMERIC));
+        // outParams.put("retval", Integer.valueOf(Types.NUMERIC));
 
         m.execute(inParams, outParams);
     }
@@ -337,7 +337,7 @@ public class ServerFactory extends HibernateFactory {
         String idstr = clientcert.getValueByName(ClientCertificate.SYSTEM_ID);
         String[] parts = StringUtils.split(idstr, '-');
         if (parts != null && parts.length > 0) {
-            Long sid = new Long(parts[1]);
+            Long sid = Long.valueOf(parts[1]);
             Server s = ServerFactory.lookupById(sid);
             if (s != null) {
                 clientcert.validate(s.getSecret());
@@ -750,7 +750,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static Server unsubscribeFromAllChannels(User user, Server server) {
         UpdateBaseChannelCommand command = new UpdateBaseChannelCommand(user,
-                server, new Long(-1));
+                server, -1L);
         ValidatorError error = command.store();
         if (error != null) {
             throw new ChannelSubscriptionException(error.getKey());
@@ -870,7 +870,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ServerSnapshot lookupSnapshotById(Integer id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("snapId", new Long(id));
+        params.put("snapId", Long.valueOf(id));
         return (ServerSnapshot) singleton.lookupObjectByNamedQuery(
                 "ServerSnapshot.findById", params);
     }

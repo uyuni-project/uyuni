@@ -107,7 +107,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
     public void testDeleteNoSuchOrg() throws Exception {
         try {
-            handler.delete(admin, new Integer(-1));
+            handler.delete(admin, -1);
             fail();
         }
         catch (NoSuchOrgException e) {
@@ -127,7 +127,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
     public void testDelete() throws Exception {
         Org testOrg = createOrg();
-        handler.delete(admin, new Integer(testOrg.getId().intValue()));
+        handler.delete(admin, testOrg.getId().intValue());
         testOrg = OrgFactory.lookupByName(orgName[0]);
         assertNull(testOrg);
     }
@@ -200,7 +200,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createTestSystem(admin);
         assertNotNull(server.getOrg());
         List<Integer> servers = new LinkedList<Integer>();
-        servers.add(new Integer(server.getId().intValue()));
+        servers.add(server.getId().intValue());
         // Actual migration is tested internally, just make sure the API call doesn't
         // error out:
         handler.migrateSystems(admin, newOrgAdmin.getOrg().getId().intValue(), servers);
@@ -215,7 +215,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
         Server server = ServerTestUtils.createTestSystem(admin);
         List<Integer> servers = new LinkedList<Integer>();
-        servers.add(new Integer(server.getId().intValue()));
+        servers.add(server.getId().intValue());
 
         // attempt migration where user is not a satellite admin and orginating
         // org is not the same as the user's.
@@ -230,7 +230,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
         // attempt to migrate systems to an org that does not exist
         try {
-            handler.migrateSystems(admin, new Integer(-1), servers);
+            handler.migrateSystems(admin, -1, servers);
             fail();
         }
         catch (NoSuchOrgException e) {
@@ -258,7 +258,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
         // attempt to migrate systems that do not exist
         List<Integer> invalidServers = new LinkedList<Integer>();
-        invalidServers.add(new Integer(-1));
+        invalidServers.add(-1);
         try {
             handler.migrateSystems(admin, orgAdmin1.getOrg().getId().intValue(),
                     invalidServers);

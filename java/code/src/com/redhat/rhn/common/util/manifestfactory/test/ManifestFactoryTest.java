@@ -36,7 +36,7 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
         assertEquals("Foo", s);
 
         Integer i = (Integer)PrimitiveFactory.getObject("integer-object");
-        assertEquals(new Integer(17), i);
+        assertEquals(Integer.valueOf(17), i);
 
         List l = (List)PrimitiveFactory.getObject("list-object");
         assertEquals(l.size(), 12);

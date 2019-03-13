@@ -145,7 +145,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     public void testLookupNotExists() throws Exception {
-        User usr = UserFactory.lookupById(new Long(-99999));
+        User usr = UserFactory.lookupById(-99999L);
         assertNull(usr);
     }
 

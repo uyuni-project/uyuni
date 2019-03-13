@@ -130,7 +130,7 @@ public class KickstartHelper {
             String hashed = options.get(SESSION);
             String[] ids = SessionSwap.extractData(hashed);
             retval.put(SESSION_ID, ids[0]);
-            Long kssid = new Long(ids[0]);
+            Long kssid = Long.valueOf(ids[0]);
             log.debug("sessionid: " + kssid);
             KickstartSessionUpdateCommand cmd = new KickstartSessionUpdateCommand(kssid);
             ksdata = cmd.getKsdata();
@@ -161,7 +161,7 @@ public class KickstartHelper {
             }
 
 
-            Org org = OrgFactory.lookupById(new Long((String) retval.get(ORG_ID)));
+            Org org = OrgFactory.lookupById(Long.valueOf((String) retval.get(ORG_ID)));
             if (mode.equals(LABEL)) {
                 String label = (String) retval.get(LABEL);
                 ksdata = KickstartFactory.

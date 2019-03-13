@@ -358,7 +358,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @param lockedIn The locked to set.
      */
     public void setLocked(Integer lockedIn) {
-        setLocked(new Long(lockedIn));
+        setLocked(Long.valueOf(lockedIn));
     }
     /**
      * @param lockedIn The locked to set.
@@ -718,15 +718,15 @@ public class SystemOverview extends BaseDto implements Serializable  {
         LocalizationService ls = LocalizationService.getInstance();
         StringBuilder buffer = new StringBuilder();
 
-        if (lastCheckinDaysAgo.compareTo(new Long(1)) < 0) {
-            buffer.append(lastCheckinDaysAgo * new Long(24));
+        if (lastCheckinDaysAgo.compareTo(1L) < 0) {
+            buffer.append(lastCheckinDaysAgo * 24L);
             ls.getMessage("filter-form.jspf.hours");
         }
-        else if (lastCheckinDaysAgo.compareTo(new Long(7)) < 0) {
+        else if (lastCheckinDaysAgo.compareTo(7L) < 0) {
             buffer.append(lastCheckinDaysAgo.longValue());
             ls.getMessage("filter-form.jspf.days");
         }
-        else if (lastCheckinDaysAgo.compareTo(new Long(7)) >= 0) {
+        else if (lastCheckinDaysAgo.compareTo(7L) >= 0) {
             buffer.append(lastCheckinDaysAgo.longValue() / 7);
             ls.getMessage("filter-form.jspf.weeks");
         }
@@ -874,8 +874,8 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns <code>true</code> if the last checkin dates too much.
      */
     public boolean checkinOverdue() {
-        Long threshold = new Long(Config.get().getInt(
-                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
+        Long threshold = (long) Config.get().getInt(
+                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
 
         return getLastCheckinDaysAgo() != null &&
                 getLastCheckinDaysAgo().compareTo(threshold) > 0;

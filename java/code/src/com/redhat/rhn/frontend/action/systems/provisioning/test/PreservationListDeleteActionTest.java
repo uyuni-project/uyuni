@@ -66,7 +66,7 @@ public class PreservationListDeleteActionTest extends RhnBaseTestCase {
         ActionForward testforward = ah.executeAction("operateOnSelectedSet");
         assertEquals("path?lower=10", testforward.getPath());
         assertNotNull(ah.getRequest().getSession().getAttribute(Globals.MESSAGE_KEY));
-        assertNull(CommonFactory.lookupFileList(new Long(ids.get(0).toString()),
+        assertNull(CommonFactory.lookupFileList(Long.valueOf(ids.get(0).toString()),
                                                          ah.getUser().getOrg()));
     }
 }

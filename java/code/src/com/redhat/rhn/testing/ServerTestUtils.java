@@ -56,7 +56,7 @@ import java.util.Set;
 public class ServerTestUtils {
 
     private static final String REDHAT_RELEASE = "redhat-release";
-    private static final Long I386_PACKAGE_ARCH_ID = new Long(101);
+    private static final Long I386_PACKAGE_ARCH_ID = 101L;
 
     private ServerTestUtils() {
     }

@@ -33,7 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -607,7 +607,7 @@ public class KickstartFactory extends HibernateFactory {
         Session session = null;
         session = HibernateFactory.getSession();
         return session.getNamedQuery("KickstartIpRange.lookupByOrg")
-                .setEntity("org", org)
+                .setParameter("org", org)
                 .list();
     }
 
@@ -1021,7 +1021,7 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session
                 .getNamedQuery("KickstartData.findOrgDefault")
-                .setEntity("org", org)
+                .setParameter("org", org)
                 .setString("isOrgDefault", "Y")
                 .uniqueResult();
     }
@@ -1100,8 +1100,8 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Query q = session.getNamedQuery(
                 "KickstartSessionHistory.findByKickstartSessionAndState");
-        q.setEntity("state", state);
-        q.setEntity("kickstartSession", ksSession);
+        q.setParameter("state", state);
+        q.setParameter("kickstartSession", ksSession);
         List results = q.list();
         Iterator iter = results.iterator();
         while (iter.hasNext()) {

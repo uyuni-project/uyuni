@@ -29,10 +29,10 @@ import java.util.Map;
  * method.
  * <pre>
  *       Map&lt;Character, Integer&gt; charset = new HashMap&lt;Character, Integer&gt;();
- *       charset.add(new Character('A'));
- *       charset.add(new Character('M'));
- *       charset.add(new Character('Z'));
- *       charset.add(new Character('5'));
+ *       charset.add(Character.valueOf('A'));
+ *       charset.add(Character.valueOf('M'));
+ *       charset.add(Character.valueOf('Z'));
+ *       charset.add(Character.valueOf('5'));
  *       AlphaBar ab = new AlphaBar("{0}* ", "{0} ");
  *       System.out.println(ab.getAlphaList(charset));
  * </pre>

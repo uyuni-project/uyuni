@@ -95,7 +95,7 @@ public class SoftwareHandler extends BaseHandler {
         KickstartFactory.saveKickstartData(ksdata);
         //We need to flush session to make the change cascade into DB
         HibernateFactory.getSession().flush();
-        Long pos = new Long(packages.size()); // position package in list
+        Long pos = (long) packages.size(); // position package in list
         for (String p : packageList) {
             PackageName pn = PackageFactory.lookupOrCreatePackageByName(p);
             pos++;
@@ -164,7 +164,7 @@ public class SoftwareHandler extends BaseHandler {
         checkKickstartPerms(loggedInUser);
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         Set<KickstartPackage> packages = ksdata.getKsPackages();
-        Long pos = new Long(packages.size()); // position package in list
+        Long pos = (long) packages.size(); // position package in list
         for (String p : packageList) {
             PackageName pn = PackageFactory.lookupOrCreatePackageByName(p);
             pos++;

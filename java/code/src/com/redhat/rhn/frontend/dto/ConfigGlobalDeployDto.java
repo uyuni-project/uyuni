@@ -131,9 +131,8 @@ public class ConfigGlobalDeployDto extends BaseDto {
     public ConfigRevision getLastDeployedRevision() {
         ConfigRevision cr = null;
         if (getRevId() != null) {
-            Long crid = new Long(getRevId().longValue());
             cr = ConfigurationFactory.
-                lookupConfigRevisionById(crid);
+                lookupConfigRevisionById(getRevId());
         }
         return cr;
     }
@@ -145,8 +144,7 @@ public class ConfigGlobalDeployDto extends BaseDto {
     public Server getServer() {
         Server s = null;
         if (getId() != null) {
-            Long sid = new Long(getId().longValue());
-            s = ServerFactory.lookupById(sid);
+            s = ServerFactory.lookupById(getId());
         }
         return s;
     }

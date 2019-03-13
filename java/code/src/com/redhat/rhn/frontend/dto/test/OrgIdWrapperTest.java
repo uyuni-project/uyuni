@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 public class OrgIdWrapperTest extends TestCase {
 
     public void testWrapper() {
-        Long l = new Long(1000);
+        Long l = 1000L;
         OrgIdWrapper oiw = new OrgIdWrapper();
         oiw.setOrgId(l);
         assertEquals(l, oiw.toLong());

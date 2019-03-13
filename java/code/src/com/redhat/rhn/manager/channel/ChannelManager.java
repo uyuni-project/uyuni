@@ -1505,7 +1505,7 @@ public class ChannelManager extends BaseManager {
         Map<String, Object> inParams = new HashMap<String, Object>();
         inParams.put("server_id", s.getId());
         Map<String, Integer> outParams = new HashMap<String, Integer>();
-        outParams.put("result", new Integer(Types.NUMERIC));
+        outParams.put("result", Types.NUMERIC);
         Map<String, Object> result = sbm.execute(inParams, outParams);
 
         Optional<Channel> guessedChannel = Opt.fold(ofNullable((Long) result.get("result")),

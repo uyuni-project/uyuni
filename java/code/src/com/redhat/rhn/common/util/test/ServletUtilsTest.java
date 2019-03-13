@@ -85,8 +85,8 @@ public class ServletUtilsTest extends MockObjectTestCase {
 
     public void testPathWithParams() {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("a", new Object[] { new Integer(1), new Integer(3) });
-        params.put("b", new Integer(2));
+        params.put("a", new Object[] {1, 3});
+        params.put("b", 2);
 
         String result = ServletUtils.pathWithParams("/foo", params);
 

@@ -123,8 +123,8 @@ public class TokenFactory extends HibernateFactory {
         try {
             session = HibernateFactory.getSession();
             return session.getNamedQuery("Token.findByServerAndOrg")
-                .setEntity("server", server)
-                .setEntity("org", server.getOrg())
+                .setParameter("server", server)
+                .setParameter("org", server.getOrg())
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .list();

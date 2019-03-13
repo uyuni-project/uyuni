@@ -50,9 +50,9 @@ public class VirtualInstanceManufacturer {
         guest.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
         guest.setName(unique);
         guest.setType(VirtualInstanceFactory.getInstance().getParaVirtType());
-        guest.setTotalMemory(new Long(1024 * DEFAULT_GUEST_RAM_MB));
+        guest.setTotalMemory(1024L * DEFAULT_GUEST_RAM_MB);
         guest.setState(state);
-        guest.setNumberOfCPUs(new Integer(1));
+        guest.setNumberOfCPUs(1);
         guest.setConfirmed(0L);
 
         return guest;

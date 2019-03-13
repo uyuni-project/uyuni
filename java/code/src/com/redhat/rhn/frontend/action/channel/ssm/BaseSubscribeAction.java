@@ -497,7 +497,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         SystemsPerChannelDto rslt;
         String none = localizationInstance.getMessage("none");
         rslt = new SystemsPerChannelDto();
-        rslt.setId(new Long(-1L));
+        rslt.setId(-1L);
         rslt.setSystemCount(noBase.size());
         rslt.setName(none);
         return rslt;

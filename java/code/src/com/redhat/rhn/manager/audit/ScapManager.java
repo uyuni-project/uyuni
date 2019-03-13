@@ -386,7 +386,7 @@ public class ScapManager extends BaseManager {
      * @return a number of successfully removed testResult
      */
     public static Long deleteScansInSet(Iterable<XccdfTestResultDto> set) {
-        Long deleted = new Long(0);
+        Long deleted = 0L;
         for (XccdfTestResultDto dto : set) {
             if (deleteScan(dto.getXid())) {
                 deleted++;

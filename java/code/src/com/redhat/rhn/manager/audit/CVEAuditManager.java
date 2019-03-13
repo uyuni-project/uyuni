@@ -55,6 +55,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -186,7 +187,6 @@ public class CVEAuditManager {
      * @param parentChannelID ID of a parent channel
      * @return list of channels relevant for given channel products
      */
-    @SuppressWarnings("unchecked")
     public static List<Channel> findProductChannels(List<Long> channelProductIDs,
             Long parentChannelID) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
@@ -816,7 +816,6 @@ public class CVEAuditManager {
      * @return list of system records with patch status
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
-    @SuppressWarnings("unchecked")
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user,
         String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
@@ -847,7 +846,6 @@ public class CVEAuditManager {
      * @return list of images records with patch status
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
-    @SuppressWarnings("unchecked")
     public static List<CVEAuditImage> listImagesByPatchStatus(User user,
             String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {

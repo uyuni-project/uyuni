@@ -95,11 +95,11 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         }
 
         assertTrue(map.containsKey("org_id"));
-        assertEquals(minion.getOrg().getId(), new Long((int) map.get("org_id")));
+        assertEquals(minion.getOrg().getId(), Long.valueOf((int) map.get("org_id")));
 
         assertTrue(map.containsKey("group_ids"));
         List<Integer> groups = (List<Integer>) map.get("group_ids");
-        assertContains(groups.stream().map(id -> new Long((int) id))
+        assertContains(groups.stream().map(id -> (long) id)
                 .collect(Collectors.toList()), group.getId());
 
         assertTrue(map.containsKey("channels"));

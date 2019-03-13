@@ -376,7 +376,7 @@ public class SessionManager extends BaseManager {
         }
 
         //Load the session
-        Long sessionId = new Long(keyParts[0]);
+        Long sessionId = Long.valueOf(keyParts[0]);
         WebSession session = WebSessionFactory.lookupById(sessionId);
 
         //Make sure we found a session

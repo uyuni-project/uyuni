@@ -57,7 +57,7 @@ public class UnitTestHandler extends BaseHandler {
      */
     public Integer add(Integer a, Integer b)
         throws Exception {
-        return new Integer(a.intValue() + b.intValue());
+        return a + b;
     }
 
     public String getUserLogin(User u) {

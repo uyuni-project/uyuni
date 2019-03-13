@@ -46,7 +46,7 @@ public class ActionAclHandler implements AclHandler {
     public boolean aclGenericActionType(Object ctx, String[] params) {
         Map map = (Map) ctx;
         String said = (String) map.get("aid");
-        Long aid = new Long(said);
+        Long aid = Long.valueOf(said);
         Action action = ActionFactory.lookupById(aid);
 
         return ActionFactory.checkActionArchType(action, params[0]);

@@ -91,8 +91,8 @@ public class SSHPushDriver implements QueueDriver {
         }
 
         // Init random checkin threshold generation
-        int thresholdDays = new Integer(Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD));
+        int thresholdDays = Config.get().getInt(ConfigDefaults
+                .SYSTEM_CHECKIN_THRESHOLD);
         thresholdMax = thresholdDays * 86400;
         thresholdMin = Math.round(thresholdMax / 2);
         mean = thresholdMax;

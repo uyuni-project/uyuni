@@ -110,7 +110,7 @@ public class FormulaController {
      * @return the JSON data
      */
     public static String formulaData(Request request, Response response, User user) {
-        Long id = new Long(request.params("id"));
+        Long id = Long.valueOf(request.params("id"));
         StateTargetType type = StateTargetType.valueOf(request.params("targetType"));
         int formulaId = Integer.parseInt(request.params("formula_id"));
 
@@ -331,7 +331,7 @@ public class FormulaController {
      */
     public static ModelAndView minionFormula(Request request, Response response) {
         Map<String, Object> data = new HashMap<>();
-        data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
+        data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
         data.put("formula_id", request.params("formula_id"));
         return new ModelAndView(data, "templates/minion/formula.jade");
     }
@@ -347,7 +347,7 @@ public class FormulaController {
    public static ModelAndView minionFormulas(Request request, Response response,
            User user) {
        Map<String, Object> data = new HashMap<>();
-       data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
+       data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
        return new ModelAndView(data, "templates/minion/formulas.jade");
    }
 

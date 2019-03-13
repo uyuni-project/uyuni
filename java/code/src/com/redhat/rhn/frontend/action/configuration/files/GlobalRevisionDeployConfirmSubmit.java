@@ -160,7 +160,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
             }
             else {
                 msg.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage(prefix + ".successes", new Integer(successes)));
+                    new ActionMessage(prefix + ".successes", successes));
             }
         }
         else {

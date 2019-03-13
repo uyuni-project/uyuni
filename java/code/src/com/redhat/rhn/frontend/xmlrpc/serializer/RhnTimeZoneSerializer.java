@@ -48,7 +48,7 @@ public class RhnTimeZoneSerializer extends RhnXmlRpcCustomSerializer {
         RhnTimeZone tz = (RhnTimeZone) value;
 
         SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("time_zone_id", new Integer(tz.getTimeZoneId()));
+        helper.add("time_zone_id", tz.getTimeZoneId());
         helper.add("olson_name", tz.getOlsonName());
         helper.writeTo(output);
     }

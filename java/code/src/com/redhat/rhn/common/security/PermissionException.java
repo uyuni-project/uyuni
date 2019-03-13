@@ -87,7 +87,7 @@ public class PermissionException extends RhnRuntimeException  {
 
         //The second reason gives the minutes for a login session to expire.
         int seconds = Config.get().getInt(ConfigDefaults.WEB_SESSION_DATABASE_LIFETIME);
-        Integer minutes = new Integer(seconds / 60);
+        Integer minutes = seconds / 60;
         String loginUrl = "/";
         addReason(ol, "permission.jsp.summary.acl.reason2",
                 new Object[] {minutes, loginUrl});

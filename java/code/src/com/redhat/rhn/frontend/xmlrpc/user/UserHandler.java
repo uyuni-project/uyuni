@@ -445,7 +445,7 @@ public class UserHandler extends BaseHandler {
 
         // If we didn't get a value for pamAuth, default to no
         return create(loggedInUser, desiredLogin, desiredPassword, firstName, lastName,
-                      email, new Integer(0));
+                      email, 0);
     }
 
     /**
@@ -481,7 +481,7 @@ public class UserHandler extends BaseHandler {
         ensurePasswordOrPamAuth(usePamAuth, desiredPassword);
 
         boolean pamAuth = BooleanUtils.toBoolean(
-                usePamAuth, new Integer(1), new Integer(0));
+                usePamAuth, Integer.valueOf(1), Integer.valueOf(0));
 
         if (pamAuth) {
             desiredPassword = getDefaultPasswordForPamAuth();
@@ -615,7 +615,7 @@ public class UserHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
 
-        if (val.equals(new Integer(1))) {
+        if (val.equals(1)) {
             target.setUsePamAuthentication(true);
         }
         else {
@@ -630,7 +630,7 @@ public class UserHandler extends BaseHandler {
 
     private void ensurePasswordOrPamAuth(Integer usePamAuth, String password)
         throws FaultException {
-        if (!BooleanUtils.toBoolean(usePamAuth, new Integer(1), new Integer(0)) &&
+        if (!BooleanUtils.toBoolean(usePamAuth, Integer.valueOf(1), Integer.valueOf(0)) &&
                 StringUtils.isEmpty(password)) {
             throw new FaultException(-501, "passwordRequiredOrUsePam",
                     "Password is required if not using PAM authentication");

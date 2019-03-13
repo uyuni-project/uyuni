@@ -42,7 +42,7 @@ public class KickstartCommandNameTest extends BaseTestCaseWithUser {
         assertTrue(l1.size() > 0);
 
         KickstartCommandName c = (KickstartCommandName) l1.get(0);
-        assertEquals(c.getOrder(), new Long(1));
+        assertEquals(c.getOrder(), Long.valueOf(1));
 
         KickstartData ks = KickstartDataTest.
                 createTestKickstartData(user.getOrg());

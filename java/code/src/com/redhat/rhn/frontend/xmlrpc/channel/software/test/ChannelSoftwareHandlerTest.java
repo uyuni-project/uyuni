@@ -113,7 +113,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         handler.addPackages(admin, channel.getLabel(), packages2add);
         assertEquals(2, channel.getPackageCount());
 
-        Long bogusId = new Long(System.currentTimeMillis());
+        Long bogusId = System.currentTimeMillis();
         packages2add.add(bogusId);
 
         try {
@@ -262,7 +262,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         // thing regardless of where the base channel is.
         labels.add(base.getLabel());
 
-        Integer sid = new Integer(server.getId().intValue());
+        Integer sid = server.getId().intValue();
         int rc = csh.setSystemChannels(admin, sid, labels);
 
         server = (Server) reload(server);
@@ -299,7 +299,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(0, server.getChannels().size());
         int result = csh.setSystemChannels(admin,
-                             new Integer(server.getId().intValue()), channelsToSubscribe);
+                server.getId().intValue(), channelsToSubscribe);
 
         server = (Server) reload(server);
 
@@ -312,7 +312,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channelsToSubscribe.add(c2.getLabel());
         assertEquals(1, channelsToSubscribe.size());
         result = csh.setSystemChannels(admin,
-                         new Integer(server.getId().intValue()), channelsToSubscribe);
+                server.getId().intValue(), channelsToSubscribe);
 
         server = (Server) reload(server);
 
@@ -325,7 +325,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channelsToSubscribe.add(TestUtils.randomString());
         try {
             csh.setSystemChannels(admin,
-                         new Integer(server.getId().intValue()), channelsToSubscribe);
+                    server.getId().intValue(), channelsToSubscribe);
             fail("subscribed system to invalid channel.");
         }
         catch (Exception e) {
@@ -353,7 +353,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             ServerFactory.save(server);
 
             int rc = csh.setSystemChannels(admin,
-                    new Integer(server.getId().intValue()), channels);
+                    server.getId().intValue(), channels);
 
             fail("allowed incompatible channel arch to be set, returned: " + rc);
         }
@@ -370,19 +370,19 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         //Server shouldn't have any channels yet
         Object[] result = csh.listSystemChannels(admin,
-                                  new Integer(s.getId().intValue()));
+                s.getId().intValue());
         assertEquals(0, result.length);
 
         SystemManager.subscribeServerToChannel(admin, s, c);
 
         //should be subscribed to 1 channel
         result = csh.listSystemChannels(admin,
-                         new Integer(s.getId().intValue()));
+                s.getId().intValue());
         assertEquals(1, result.length);
 
         //try no_such_system fault exception
         try {
-            csh.listSystemChannels(admin, new Integer(-2390));
+            csh.listSystemChannels(admin, -2390);
             fail("ChannelSoftwareHandler.listSystemChannels didn't throw an exception " +
                  "for invalid system id");
         }
@@ -795,7 +795,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         labels.add(childChan.getLabel());
 
         int returned = handler.subscribeSystem(admin,
-                new Integer(server.getId().intValue()), labels);
+                server.getId().intValue(), labels);
 
         assertEquals(1, returned);
         server = (Server)HibernateFactory.reload(server);
@@ -805,7 +805,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         labels.clear();
         returned = handler.subscribeSystem(admin,
-                new Integer(server.getId().intValue()), labels);
+                server.getId().intValue(), labels);
         assertEquals(1, returned);
         server = (Server)HibernateFactory.reload(server);
         assertEquals(0, server.getChannels().size());
@@ -828,7 +828,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         details.put("checksum", "sha256");
 
         int id = handler.clone(admin, original.getLabel(), details, false);
-        Channel chan = ChannelFactory.lookupById(new Long(id));
+        Channel chan = ChannelFactory.lookupById((long) id);
         chan = (Channel) TestUtils.reload(chan);
         assertNotNull(chan);
         assertEquals(label, chan.getLabel());
@@ -859,7 +859,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         details.put("gpg_check", "True");
 
         int id = handler.clone(admin, original.getLabel(), details, false);
-        Channel chan = ChannelFactory.lookupById(new Long(id));
+        Channel chan = ChannelFactory.lookupById((long) id);
         chan = (Channel) TestUtils.reload(chan);
         assertNotNull(chan);
         assertEquals(label, chan.getLabel());
@@ -890,7 +890,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         details.put("checksum", "sha256");
 
         int id = handler.clone(admin, original.getLabel(), details, true);
-        Channel chan = ChannelFactory.lookupById(new Long(id));
+        Channel chan = ChannelFactory.lookupById((long) id);
         chan = (Channel) TestUtils.reload(chan);
 
 
@@ -1114,7 +1114,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         server.addChannel(child1);
         server.addChannel(child2);
 
-        Integer sid = new Integer(server.getId().intValue());
+        Integer sid = server.getId().intValue();
 
         Date earliest = new Date();
         SystemHandler systemHandler = new SystemHandler();
@@ -1153,7 +1153,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         server.addChannel(child1);
         server.addChannel(child2);
 
-        Integer sid = new Integer(server.getId().intValue());
+        Integer sid = server.getId().intValue();
 
         Date earliest = new Date();
         SystemHandler systemHandler = new SystemHandler();

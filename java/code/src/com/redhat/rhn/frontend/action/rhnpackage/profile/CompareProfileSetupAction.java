@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.rhnpackage.profile;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -84,7 +85,7 @@ public class CompareProfileSetupAction extends RhnAction {
             return getStrutsDelegate().forwardParams(
                     mapping.findForward("error"), params);
         }
-        DataResult dataSet = getDataResult(requestContext);
+        DataResult<PackageMetadata> dataSet = getDataResult(requestContext);
         // if its a list action update the set and the selections
         if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
             helper.execute(sessionSet, LIST_NAME, dataSet);
@@ -134,7 +135,7 @@ public class CompareProfileSetupAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext requestContext) {
+    protected DataResult<PackageMetadata> getDataResult(RequestContext requestContext) {
 
         Long sid = requestContext.getRequiredParam("sid");
         Long prid = requestContext.getRequiredParam("prid");

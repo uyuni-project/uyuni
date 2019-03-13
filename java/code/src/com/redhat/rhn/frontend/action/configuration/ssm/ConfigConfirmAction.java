@@ -46,7 +46,7 @@ public class ConfigConfirmAction extends BaseListAction {
     protected void processRequestAttributes(RequestContext rctxIn) {
         User user = rctxIn.getCurrentUser();
         int size = RhnSetDecl.CONFIG_FILE_NAMES.get(user).size();
-        rctxIn.getRequest().setAttribute("filenum", new Integer(size));
+        rctxIn.getRequest().setAttribute("filenum", size);
         super.processRequestAttributes(rctxIn);
     }
 

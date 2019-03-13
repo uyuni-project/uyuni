@@ -602,8 +602,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
             assertNotNull(server);
             assertNotNull(server.getCpu());
-            assertEquals(new Long(1), server.getCpu().getNrsocket());
-            assertEquals(new Long(1), server.getCpu().getNrCPU());
+            assertEquals(Long.valueOf(1), server.getCpu().getNrsocket());
+            assertEquals(Long.valueOf(1), server.getCpu().getNrCPU());
             assertEquals("Intel Xeon E312xx (Sandy Bridge)", server.getCpu().getModel());
             assertEquals("3492.164", server.getCpu().getMHz());
             assertEquals("GenuineIntel", server.getCpu().getVendor());
@@ -914,7 +914,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(server.getCpu());
 
             assertNull(server.getCpu().getNrsocket());
-            assertEquals(new Long(0), server.getCpu().getNrCPU());
+            assertEquals(Long.valueOf(0), server.getCpu().getNrCPU());
             assertEquals("s390x", server.getCpu().getModel());
             assertEquals("0", server.getCpu().getMHz());
             assertEquals("IBM/S390", server.getCpu().getVendor());
@@ -930,15 +930,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(server.getVirtualInstance().getHostSystem());
             assertEquals("z/OS", server.getVirtualInstance().getHostSystem().getOs());
             assertEquals("IBM Mainframe 2827 0000000000069A27", server.getVirtualInstance().getHostSystem().getName());
-            assertEquals(new Long(45), server.getVirtualInstance().getHostSystem().getCpu().getNrCPU());
-            assertEquals(new Long(45), server.getVirtualInstance().getHostSystem().getCpu().getNrsocket());
+            assertEquals(Long.valueOf(45), server.getVirtualInstance().getHostSystem().getCpu().getNrCPU());
+            assertEquals(Long.valueOf(45), server.getVirtualInstance().getHostSystem().getCpu().getNrsocket());
 
             assertEquals(VirtualInstanceFactory.getInstance().getFullyVirtType(),
                     server.getVirtualInstance().getType());
             assertNotNull(server.getVirtualInstance().getUuid());
             assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
                     server.getVirtualInstance().getState());
-            assertEquals(new Long(1),
+            assertEquals(Long.valueOf(1),
                     server.getVirtualInstance().getConfirmed());
             assertNull(server.getDmi());
 
@@ -1727,7 +1727,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 earliestAction);
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
-                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+                "root", "root", 10L, "#!/bin/csh\necho hello");
         ScriptRunAction runScript = ActionManager.scheduleScriptRun(
                 user, Arrays.asList(minion.getId()), "Run script test", sad, earliestAction);
 

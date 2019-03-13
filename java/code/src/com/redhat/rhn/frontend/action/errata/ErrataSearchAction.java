@@ -274,8 +274,8 @@ public class ErrataSearchAction extends BaseSearchAction {
         // kernel:2, gtk:0.
         for (int x = results.size() - 1; x >= 0; x--) {
             Map item = (Map) results.get(x);
-            lookupmap.put(new Long((String)item.get("id")), x);
-            Long id = new Long((String)item.get("id"));
+            lookupmap.put(Long.valueOf((String)item.get("id")), x);
+            Long id = Long.valueOf((String)item.get("id"));
             ids.add(id);
         }
 

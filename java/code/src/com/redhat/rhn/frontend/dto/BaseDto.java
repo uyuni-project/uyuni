@@ -40,7 +40,7 @@ public abstract class BaseDto extends SelectableAdapter implements Identifiable 
      * @param set The set to which we are adding an element.
      */
     public void addToSet(RhnSet set) {
-        set.addElement(new Long(getId().longValue()));
+        set.addElement(getId());
     }
 
     /**

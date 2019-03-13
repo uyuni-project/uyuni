@@ -97,7 +97,7 @@ public class CSVWriterTest extends RhnBaseTestCase {
             dto.setFieldOne("f1 - " + i);
             dto.setFieldTwo("f2 - " + i);
             dto.setFieldThree("f3 - " + i);
-            dto.setId(new Long(i));
+            dto.setId(Long.valueOf(i));
             values.add(dto);
         }
 

@@ -133,10 +133,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata e = ErrataManager.createNewErrata();
         assertTrue(e instanceof UnpublishedErrata);
 
-        Bug b = createNewUnpublishedBug(new Long(87), "test bug");
+        Bug b = createNewUnpublishedBug(87L, "test bug");
         assertTrue(b instanceof UnpublishedBug);
 
-        Bug b2 = ErrataManagerTest.createNewPublishedBug(new Long(42), "test bug");
+        Bug b2 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
         assertTrue(b2 instanceof PublishedBug);
     }
 
@@ -158,13 +158,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
-        Bug b1 = ErrataManagerTest.createNewPublishedBug(new Long(42), "test bug");
+        Bug b1 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
         assertTrue(b1 instanceof PublishedBug);
         Errata e = ErrataManager.createNewErrata();
         assertTrue(e instanceof UnpublishedErrata);
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
-        e.setAdvisoryRel(new Long(1));
+        e.setAdvisoryRel(1L);
         e.setAdvisoryType("Security Advisory");
         e.setProduct("Red Hat Enterprise Linux");
         e.setSynopsis("Just a test errata");
@@ -213,7 +213,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(e instanceof UnpublishedErrata);
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
-        e.setAdvisoryRel(new Long(1));
+        e.setAdvisoryRel(1L);
         e.setAdvisoryType("Security Advisory");
         e.setProduct("Red Hat Enterprise Linux");
         e.setSynopsis("Just a test errata");
@@ -319,7 +319,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         // Check for non-existant errata
         try {
-            check = ErrataManager.lookupErrata(new Long(-1234), user);
+            check = ErrataManager.lookupErrata((long) -1234, user);
             fail();
         }
         catch (LookupException e) {
@@ -342,7 +342,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(systems.isEmpty());
         assertFalse(systems.size() > 0);
 
-        DataResult systems2 = ErrataManager.systemsAffected(user, new Long(-2), pc);
+        DataResult systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
         assertTrue(systems2.isEmpty());
     }
 
