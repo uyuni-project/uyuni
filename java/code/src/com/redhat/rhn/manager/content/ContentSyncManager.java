@@ -638,15 +638,25 @@ public class ContentSyncManager {
             if (tokenOpt.isPresent()) {
                 newAuth = new SCCRepositoryTokenAuth(tokenOpt.get());
             }
-            else if (accessibleUrl(url)) {
+            else {
                 try {
-                    URI uri = new URI(url);
-                    if (uri.getUserInfo() == null) {
-                        newAuth = new SCCRepositoryNoAuth();
+                    String fullUrl = buildRepoFileUrl(url, repo);
+                    if (accessibleUrl(fullUrl)) {
+                        URI uri = new URI(url);
+                        if (uri.getUserInfo() == null) {
+                            newAuth = new SCCRepositoryNoAuth();
+                        }
+                        else {
+                            // we do not handle the case where the credentials are part of the URL
+                            log.error("URLs with credentials not supported");
+                            continue;
+                        }
+                    }
+                    else if (c != null && accessibleUrl(fullUrl, c.getUsername(), c.getPassword())) {
+                        newAuth = new SCCRepositoryBasicAuth();
                     }
                     else {
-                        // we do not handle the case where the credentials are part of the URL
-                        log.error("URLs with credentials not supported");
+                        // typical happens with fromdir where not all repos are synced
                         continue;
                     }
                 }
@@ -655,14 +665,6 @@ public class ContentSyncManager {
                     continue;
                 }
             }
-            else if (c != null && accessibleUrl(url, c.getUsername(), c.getPassword())) {
-                newAuth = new SCCRepositoryBasicAuth();
-            }
-            else {
-                // typical happens with fromdir where not all repos are synced
-                continue;
-            }
-
             repoIdsFromCredential.add(jrepo.getSCCId());
             if (authsThisCred.isEmpty()) {
                 // We need to create a new auth for this repo
@@ -757,7 +759,13 @@ public class ContentSyncManager {
             if (c == null) {
                 // we need to check every repo if it is available
                 String url = MgrSyncUtils.urlToFSPath(repo.getUrl(), repo.getName()).toString();
-                if (!accessibleUrl(url)) {
+                try {
+                    if (!accessibleUrl(buildRepoFileUrl(url, repo))) {
+                        continue;
+                    }
+                }
+                catch (URISyntaxException e) {
+                    log.error("Failed to parse URL", e);
                     continue;
                 }
                 newAuth = new SCCRepositoryNoAuth();
@@ -833,7 +841,7 @@ public class ContentSyncManager {
             URI testUri = new URI(mirrorUri.getScheme(), mirrorUri.getUserInfo(), mirrorUri.getHost(),
                     mirrorUri.getPort(), combinedPath, mirrorUri.getQuery(), null);
 
-            if (accessibleUrl(testUri.toString())) {
+            if (accessibleUrl(buildRepoFileUrl(testUri.toString(), repo))) {
                 return testUri.toString();
             }
         }
@@ -841,6 +849,28 @@ public class ContentSyncManager {
             log.warn(e.getMessage());
         }
         return defaultUrl;
+    }
+
+    /**
+     * Build URL pointing to a file to test availablity of a repository.
+     * Support either repomd or Debian style repos.
+     *
+     * @param url the repo url
+     * @param repo the repo object
+     * @return full URL pointing to a file which should be available depending on the repo type
+     * @throws URISyntaxException in case of an error
+     */
+    public String buildRepoFileUrl(String url, SCCRepository repo) throws URISyntaxException {
+        URI uri = new URI(url);
+        String relFile = "/repodata/repomd.xml";
+
+        // Debian repo
+        if (repo.getDistroTarget() != null && repo.getDistroTarget().equals("amd64")) {
+            relFile = "Release";
+        }
+        Path urlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"), relFile).toPath();
+        return new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), urlPath.toString(),
+                uri.getQuery(), null).toString();
     }
 
     /**
@@ -1870,8 +1900,7 @@ public class ContentSyncManager {
             URI uri = new URI(url);
 
             // SMT doesn't do dir listings, so we try to get the metadata
-            Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"),
-                    "/repodata/repomd.xml").toPath();
+            Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/")).toPath();
 
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
