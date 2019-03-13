@@ -20,6 +20,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -1773,6 +1774,79 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 "-rwxr-xr-x  1 root root 1636 Sep 12 17:07 netcat.py\n" +
                 "drwxr-xr-x 14 root root 4096 Jul 25  2017 salt\n",
                 new String(scriptResult.getOutput()));
+    }
+
+    public void testActionChainPackageRefreshNeeded() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() {
+            {
+                allowing(taskomaticMock).scheduleActionExecution(with(any(PackageAction.class)));
+            }
+        });
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(user, Arrays.asList(minion.getId()),
+                new ArrayList<>(), new Date());
+
+        ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
+        applyHighstate.addServerAction(saHighstate);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+        placeholders.put("${action1-id}", applyHighstate.getId() + "");
+        
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(getJobReturnEvent("action.chain.refresh.needed.json", applyHighstate.getId(),
+                        placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+        List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
+        //Verify that there are 2 actions scheduled, one apply state that we scheduled above and
+        //2nd was because full package refresh was needed.
+        assertEquals("2 actions have been scheduled for server 1", 2, serversActions.size());
+    }
+
+    public void testActionChainPackageRefreshNotNeeded() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() {
+            {
+                allowing(taskomaticMock).scheduleActionExecution(with(any(PackageAction.class)));
+            }
+        });
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(user, Arrays.asList(minion.getId()),
+                new ArrayList<>(), new Date());
+
+        ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
+        applyHighstate.addServerAction(saHighstate);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+        placeholders.put("${action1-id}", applyHighstate.getId() + "");
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(getJobReturnEvent("action.chain.refresh.not.needed.json", applyHighstate.getId(),
+                placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+        List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
+        //Verify that there is only one action scheduled, the apply state one that we scheduled above
+        assertEquals("2 actions have been scheduled for server 1", 1, serversActions.size());
+
+
     }
 
 }
