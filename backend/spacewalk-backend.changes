@@ -1,3 +1,4 @@
+- Fix HTTP headers handling to avoid duplicated entries (bsc#1125090)
 - Use suseLib.get_proxy to get the HTTP proxy configuration 
   properly on DEB repos (bsc#1133424)
 
