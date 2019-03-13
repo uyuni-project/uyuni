@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -922,8 +923,10 @@ public class ErrataHandler extends BaseHandler {
     private Errata lookupErratumByAdvisoryAndOrg(String advisoryName, Org org) throws FaultException {
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, org);
 
-       return erratas.stream().filter(e -> e.getOrg().getId() == org.getId())
-                .findFirst().orElse(erratas.stream().findFirst().orElse(null));
+        return erratas.stream()
+                .filter(e -> Optional.ofNullable(e.getOrg()).isPresent() && e.getOrg().getId() == org.getId())
+                .findFirst()
+                .orElse(erratas.stream().findFirst().orElse(null));
     }
 
     /**
