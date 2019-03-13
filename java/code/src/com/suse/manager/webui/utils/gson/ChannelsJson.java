@@ -39,6 +39,7 @@ public class ChannelsJson {
     public static class ChannelJson {
 
         private Long id;
+        private String label;
         private String name;
         private boolean custom;
         private boolean subscribable;
@@ -49,15 +50,17 @@ public class ChannelsJson {
          * Instantiates a new Channel json.
          *
          * @param idIn   the id
+         * @param labelIn the label
          * @param nameIn the name
          * @param customIn custom channel flag
          * @param subscribableIn subscribable flag
          * @param recommendedIn the channel is recommended by its parent channel
          * @param compatibleChannelPreviousSelectionIn the compatible channel id of the previous selection
          */
-        public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn, boolean recommendedIn,
-                           Long compatibleChannelPreviousSelectionIn) {
+        public ChannelJson(Long idIn, String labelIn, String nameIn, boolean customIn, boolean subscribableIn,
+                           boolean recommendedIn, Long compatibleChannelPreviousSelectionIn) {
             this.id = idIn;
+            this.label = labelIn;
             this.name = nameIn;
             this.custom = customIn;
             this.subscribable = subscribableIn;
@@ -69,12 +72,13 @@ public class ChannelsJson {
          * Instantiates a new Channel json.
          *
          * @param idIn   the id
+         * @param labelIn the label
          * @param nameIn the name
          * @param customIn custom channel flag
          * @param subscribableIn subscribable flag
          */
-        public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn) {
-            this(idIn, nameIn, customIn, subscribableIn, false, null);
+        public ChannelJson(Long idIn, String labelIn, String nameIn, boolean customIn, boolean subscribableIn) {
+            this(idIn, labelIn, nameIn, customIn, subscribableIn, false, null);
         }
 
         /**
@@ -85,11 +89,19 @@ public class ChannelsJson {
         }
 
         /**
+         * @return the label
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
          * @return the name
          */
         public String getName() {
             return name;
         }
+
 
         /**
          * @return custom to get
@@ -145,7 +157,8 @@ public class ChannelsJson {
      * @param baseIn the base channel
      */
     public void setBase(Channel baseIn) {
-        this.base = new ChannelJson(baseIn.getId(), baseIn.getName(), baseIn.isCustom(), true);
+        this.base = new ChannelJson(
+                baseIn.getId(), baseIn.getLabel(), baseIn.getName(), baseIn.isCustom(), true);
     }
 
     /**
@@ -159,7 +172,8 @@ public class ChannelsJson {
      * @param childrenIn the child channels
      */
     public void setChildren(Stream<Channel> childrenIn) {
-        this.children = childrenIn.map((c) -> new ChannelJson(c.getId(), c.getName(), c.isCustom(), true))
+        this.children = childrenIn.map(
+                (c) -> new ChannelJson(c.getId(), c.getLabel(), c.getName(), c.isCustom(), true))
                 .collect(Collectors.toList());
     }
 
@@ -171,6 +185,7 @@ public class ChannelsJson {
         this.children = childrenIn.map((c) ->
                 new ChannelJson(
                         c.getId(),
+                        c.getLabel(),
                         c.getName(),
                         c.isCustom(),
                         true,

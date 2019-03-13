@@ -147,6 +147,20 @@ public abstract class ProjectSource {
     }
 
     /**
+     * Gets the source Label.
+     *
+     * @return source label
+     */
+    public abstract String sourceLabel();
+
+    /**
+     * Gets the source Type.
+     *
+     * @return source Type
+     */
+    public abstract Type sourceType();
+
+    /**
      * Gets the id.
      *
      * @return id

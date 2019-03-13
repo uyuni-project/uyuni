@@ -17,15 +17,15 @@ package com.suse.manager.webui.controllers.contentmanagement.mappers;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 
 import com.suse.manager.webui.controllers.contentmanagement.response.EnvironmentResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectHistoryEntryResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectPropertiesResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResumeResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.ProjectSourcesResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectSourceResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,6 +64,26 @@ public class ResponseMappers {
     }
 
     /**
+     * Map a list of db sources entities to a list of view response beans
+     *
+     * @param sourcesDB the list of db envs
+     * @return the List<EnvironmentResponse> view beans
+     */
+    public static List<ProjectSourceResponse> mapSourcesFromDB(List<ProjectSource> sourcesDB) {
+        return sourcesDB
+                .stream()
+                .map(sourceDb -> {
+                    ProjectSourceResponse projectSourceResponse = new ProjectSourceResponse();
+                    projectSourceResponse.setId(sourceDb.getId().toString());
+                    projectSourceResponse.setSourceLabel(sourceDb.sourceLabel());
+                    projectSourceResponse.setSourceType(sourceDb.sourceType().getLabel());
+                    projectSourceResponse.setState(sourceDb.getState().name());
+                    return projectSourceResponse;
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Map a list of db envs entities to a list of view response beans
      *
      * @param envsDB the list of db envs
@@ -93,10 +113,9 @@ public class ResponseMappers {
     public static ProjectResponse mapProjectFromDB(ContentProject projectDB, List<ContentEnvironment> envsDB) {
 
         ProjectResponse project = new ProjectResponse();
-        List<ProjectSourcesResponse> sources = new ArrayList<>();
 
         project.setProperties(mapProjectPropertiesFromDB(projectDB));
-        project.setSources(sources);
+        project.setSources(mapSourcesFromDB(projectDB.getSources()));
         project.setEnvironments(mapEnvironmentsFromDB(envsDB));
 
         return project;

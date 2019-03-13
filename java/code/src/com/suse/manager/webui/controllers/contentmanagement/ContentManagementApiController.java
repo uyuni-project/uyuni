@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.contentmanagement;
 
 import com.suse.manager.webui.controllers.contentmanagement.handlers.EnvironmentApiController;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ProjectApiController;
+import com.suse.manager.webui.controllers.contentmanagement.handlers.ProjectSourcesApiController;
 
 /**
  * Spark controller ContentManagement Api.
@@ -29,6 +30,7 @@ public class ContentManagementApiController {
     /** Invoked from Router. Init routes for ContentManagement Api.*/
     public static void initRoutes() {
         ProjectApiController.initRoutes();
+        ProjectSourcesApiController.initRoutes();
         EnvironmentApiController.initRoutes();
     }
 
