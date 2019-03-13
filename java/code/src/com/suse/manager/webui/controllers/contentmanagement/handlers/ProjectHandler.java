@@ -15,7 +15,7 @@
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
-import com.suse.manager.webui.controllers.contentmanagement.request.ProjectRequest;
+import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRequest;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
@@ -56,9 +56,9 @@ public class ProjectHandler {
      * @param req the http request
      * @return project request bean
      */
-    public static ProjectRequest getProjectRequest(Request req) {
+    public static NewProjectRequest getProjectRequest(Request req) {
         try {
-            return GSON.fromJson(req.body(), ProjectRequest.class);
+            return GSON.fromJson(req.body(), NewProjectRequest.class);
         }
         catch (JsonParseException e) {
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
@@ -89,7 +89,7 @@ public class ProjectHandler {
      * @param projectRequest the project request bean
      * @return validation errors
      */
-    public static HashMap<String, String> validateProjectRequest(ProjectRequest projectRequest) {
+    public static HashMap<String, String> validateProjectRequest(NewProjectRequest projectRequest) {
         HashMap<String, String> requestErrors = new HashMap<>();
 
         requestErrors.putAll(validateProjectPropertiesRequest(projectRequest.getProperties()));

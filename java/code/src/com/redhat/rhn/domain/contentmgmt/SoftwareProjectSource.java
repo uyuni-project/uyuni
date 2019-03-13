@@ -73,6 +73,24 @@ public class SoftwareProjectSource extends ProjectSource {
     }
 
     /**
+     * Gets the source Label.
+     *
+     * @return source label
+     */
+    public String sourceLabel() {
+        return this.channel.getLabel();
+    }
+
+    /**
+     * Gets the source Type.
+     *
+     * @return source Type
+     */
+    public Type sourceType() {
+        return Type.SW_CHANNEL;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
