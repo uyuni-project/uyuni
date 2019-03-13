@@ -14,10 +14,12 @@
  */
 package com.suse.manager.webui.utils.salt;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.google.gson.reflect.TypeToken;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 
@@ -38,5 +40,42 @@ public class State {
      */
     public static LocalCall<Map<String, ApplyResult>> apply(List<String> mods, Optional<Map<String, Object>> pillar) {
         return com.suse.salt.netapi.calls.modules.State.apply(mods, pillar, Optional.of(true), Optional.empty());
+    }
+
+    /**
+     * Method which accepts Class type and return result after parsing actual json to that particular class
+     * instead of ApplyResult
+     * @param mods state modules
+     * @param pillar pillar data
+     * @param queue add to the queue
+     * @param test  if run in test mode
+     * @param returnType return type
+     * @param <R> R
+     * @return LocalCall<R> result
+     */
+    public static <R> LocalCall<R> apply(List<String> mods, Optional<Map<String, Object>> pillar,
+                                         Optional<Boolean> queue, Optional<Boolean> test, Class<R> returnType) {
+        return apply(mods, pillar, queue, test, TypeToken.get(returnType));
+    }
+    /**
+     * Method which accepts TypeToken and return result after parsing actual json to that particular class
+     * instead of ApplyResult
+     * @param mods state modules
+     * @param pillar pillar data
+     * @param queue add to the queue
+     * @param test  if run in test mode
+     * @param returnType return type
+     * @param <R> R
+     * @return LocalCall<R> result
+     */
+    public static <R> LocalCall<R> apply(List<String> mods, Optional<Map<String, Object>> pillar,
+                                         Optional<Boolean> queue, Optional<Boolean> test,
+                                         TypeToken<R> returnType) {
+        Map<String, Object> kwargs = new LinkedHashMap<>();
+        kwargs.put("mods", mods);
+        pillar.ifPresent(p -> kwargs.put("pillar", p));
+        queue.ifPresent(q -> kwargs.put("queue", q));
+        test.ifPresent(t -> kwargs.put("test", t));
+        return new LocalCall<>("state.apply", Optional.empty(), Optional.of(kwargs), returnType);
     }
 }
