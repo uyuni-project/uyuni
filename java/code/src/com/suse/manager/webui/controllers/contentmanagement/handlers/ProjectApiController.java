@@ -29,7 +29,7 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
-import com.suse.manager.webui.controllers.contentmanagement.request.ProjectRequest;
+import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
@@ -77,7 +77,7 @@ public class ProjectApiController {
      * @return the JSON data
      */
     public static String createContentProject(Request req, Response res, User user) {
-        ProjectRequest createProjectRequest = ProjectHandler.getProjectRequest(req);
+        NewProjectRequest createProjectRequest = ProjectHandler.getProjectRequest(req);
         HashMap<String, String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest);
         if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));

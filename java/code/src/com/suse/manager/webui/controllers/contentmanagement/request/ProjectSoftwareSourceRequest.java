@@ -15,17 +15,17 @@
 package com.suse.manager.webui.controllers.contentmanagement.request;
 
 /**
- * JSON request wrapper for the sources of a content project.
+ * JSON request wrapper for one source of a content project.
  */
-public class ProjectSourceRequest {
+public class ProjectSoftwareSourceRequest {
 
-    private String name;
+    private String label;
 
     /**
      * @return the name
      */
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
 }

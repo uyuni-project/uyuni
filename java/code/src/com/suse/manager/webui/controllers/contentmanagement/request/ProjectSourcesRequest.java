@@ -14,18 +14,22 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.request;
 
+import java.util.List;
+
 /**
- * JSON request wrapper for a content project.
+ * JSON request wrapper to update the sources of a content project.
  */
-public class ProjectRequest {
+public class ProjectSourcesRequest {
 
-    private ProjectPropertiesRequest properties;
+    private String projectLabel;
+    private List<ProjectSoftwareSourceRequest> softwareSources;
 
-    /**
-     * @return the properties
-     */
-    public ProjectPropertiesRequest getProperties() {
-        return properties;
+    public String getProjectLabel() {
+        return projectLabel;
+    }
+
+    public List<ProjectSoftwareSourceRequest> getSoftwareSources() {
+        return softwareSources;
     }
 
 }
