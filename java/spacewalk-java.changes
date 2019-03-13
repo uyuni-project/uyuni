@@ -1,3 +1,4 @@
+- adapt check for available repositories to debian style repositories
 - Add virtual machine display page
 - Change default image download protocol from tftp to ftp
 - Fix apidoc issues
