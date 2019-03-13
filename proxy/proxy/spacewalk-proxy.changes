@@ -1,3 +1,4 @@
+- Fix HTTP headers handling to avoid duplicated entries (bsc#1125090)
 - do not reset rhn.conf on proxy during upgrade (bsc#1132197)
 
 -------------------------------------------------------------------
