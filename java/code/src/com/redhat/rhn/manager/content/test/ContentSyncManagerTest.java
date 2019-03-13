@@ -1415,6 +1415,24 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test debian and repomd url building
+     * @throws Exception
+     */
+    public void testBuildRepoFileUrl() throws Exception {
+        SCCRepository debrepo = new SCCRepository();
+        debrepo.setDistroTarget("amd64");
+        SCCRepository rpmrepo = new SCCRepository();
+        rpmrepo.setDistroTarget("sle-12-x86_64");
+
+        String repourl = "http://localhost/pub/myrepo/";
+        ContentSyncManager csm = new ContentSyncManager();
+
+        assertEquals(repourl + "Release", csm.buildRepoFileUrl(repourl, debrepo));
+        assertEquals(repourl + "repodata/repomd.xml", csm.buildRepoFileUrl(repourl, rpmrepo));
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     @Override
