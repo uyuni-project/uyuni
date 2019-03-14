@@ -19,27 +19,17 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.tanukisoftware.wrapper.WrapperListener;
-import org.tanukisoftware.wrapper.WrapperManager;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import org.apache.log4j.Logger;
 
 /**
  * This is the base implementation for all RHN Java daemons.
- * It serves at the interface between the Tanuki service/daemon
- * wrapper library and also provides very basic lifecycle callbacks.
- * @version $Rev: $
+ * It serves at the interface between the taskomatic service/daemon
+ * library and also provides very basic lifecycle callbacks.
  */
-public abstract class BaseDaemon implements WrapperListener {
-
-    public static final int LOG_DEBUG = WrapperManager.WRAPPER_LOG_LEVEL_DEBUG;
-    public static final int LOG_INFO = WrapperManager.WRAPPER_LOG_LEVEL_INFO;
-    public static final int LOG_ERROR = WrapperManager.WRAPPER_LOG_LEVEL_ERROR;
-    public static final int LOG_FATAL = WrapperManager.WRAPPER_LOG_LEVEL_FATAL;
-    public static final int LOG_STATUS = WrapperManager.WRAPPER_LOG_LEVEL_STATUS;
+public abstract class BaseDaemon {
 
     public static final int SUCCESS = Integer.MIN_VALUE;
+    public static final Logger LOG = Logger.getLogger(BaseDaemon.class);
 
     /**
      * Interface method required by WrapperListener
@@ -67,64 +57,11 @@ public abstract class BaseDaemon implements WrapperListener {
     }
 
     /**
-     * Interface method required by WrapperListener
-     * @param code int
-     * @return int
-     */
-    public int stop(int code) {
-        int retval = onShutdown(false);
-        if (retval == BaseDaemon.SUCCESS) {
-            return 0;
-        }
-        return retval;
-    }
-
-    /**
-     * Interface method required by WrapperListener
-     * @param event int
-     */
-    public void controlEvent(int event) {
-        switch(event) {
-            case WrapperManager.WRAPPER_CTRL_C_EVENT:
-                onShutdown(true);
-                break;
-            case WrapperManager.WRAPPER_CTRL_CLOSE_EVENT:
-            case WrapperManager.WRAPPER_CTRL_LOGOFF_EVENT:
-            case WrapperManager.WRAPPER_CTRL_SHUTDOWN_EVENT:
-                onShutdown(false);
-                break;
-            default:
-                break;
-        }
-    }
-    /**
-     * Convenience method to allow daemon implementations to log messages directly
-     * to the host system's system log, ie not log4j or commons-logging. If a
-     * java.lang.Throwable is passed in then the stack trace will be logged as well.
-     * @param logLevel Desired log level
-     * @param msg Message to log
-     * @param err Optional
-     */
-    public void logMessage(int logLevel, String msg, Throwable err) {
-        StringBuilder buf  = new StringBuilder();
-        buf.append(msg);
-        if (err != null) {
-           buf.append("\n");
-           StringWriter writer = new StringWriter();
-           PrintWriter printWriter = new PrintWriter(writer);
-           err.printStackTrace(printWriter);
-           printWriter.flush();
-           buf.append(writer.toString());
-        }
-        WrapperManager.log(logLevel, buf.toString());
-    }
-
-    /**
      * Registers the daemon implementation with the Tanuki wrapper
      * @param argv startup parameters (if any)
      */
     protected void registerImplementation(String[] argv) {
-        WrapperManager.start(this, argv);
+        start(argv);
     }
 
     /**
@@ -177,7 +114,6 @@ public abstract class BaseDaemon implements WrapperListener {
      * @return int indicates status where <code>BaseDaemon.SUCCESS</code>
      * indicates success and any other number indicates failure
      *
-     * @see buildOptionsList
      */
     private int startupWithOptions(Options options, String[] argv) {
         int retval = BaseDaemon.SUCCESS;
