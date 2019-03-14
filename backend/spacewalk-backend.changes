@@ -1,3 +1,4 @@
+- Make Zypper to use the spacewalk GPG keyring in reposync (bsc#1128529)
 - Fix: handle non-standard filenames for comps.xml (bsc#1120242)
 - Make reposync use and append token correctly to the URL
 - Avoid DB constraint violations caused by extended UTF8 characters on the RPM headers
