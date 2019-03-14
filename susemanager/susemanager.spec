@@ -100,6 +100,9 @@ install -d -m 755 %{buildroot}/srv/www/os-images/
 mkdir -p %{buildroot}/srv/www/htdocs/pub/repositories/
 cp -r pub/empty %{buildroot}/srv/www/htdocs/pub/repositories/
 
+# empty repo for Ubuntu base fake channel
+cp -r pub/empty-deb %{buildroot}/srv/www/htdocs/pub/repositories/
+
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
 mkdir -p %{buildroot}%{_datadir}/YaST2/scrconf
@@ -213,6 +216,7 @@ fi
 %dir /srv/www/htdocs/pub/repositories
 %dir /srv/www/htdocs/pub/repositories/empty
 %dir /srv/www/htdocs/pub/repositories/empty/repodata
+%dir /srv/www/htdocs/pub/repositories/empty-deb
 %attr(0755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
@@ -232,5 +236,6 @@ fi
 %{_datadir}/susemanager/mgr_bootstrap_data.py*
 %{_mandir}/man8/mgr-sync.8*
 /srv/www/htdocs/pub/repositories/empty/repodata/*.xml*
-
+/srv/www/htdocs/pub/repositories/empty-deb/Packages
+/srv/www/htdocs/pub/repositories/empty-deb/Release
 %changelog

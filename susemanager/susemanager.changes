@@ -1,3 +1,4 @@
+- Feat: create Ubuntu empty repository
 - move `python-setuptools` package dependency to SLES12 SP1
   or later
 - add bootstrap repo definition for SLE15 SP1
