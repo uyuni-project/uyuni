@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
@@ -2817,4 +2818,22 @@ public class ChannelManager extends BaseManager {
                 }));
     }
 
+    /**
+     * Return a compatible Content Source Type for a given Channel Arch
+     * @param cArch the channel architecture
+     * @return content source type
+     */
+    public static ContentSourceType findCompatibleContentSourceType(ChannelArch cArch) {
+        ContentSourceType cType = null;
+        switch (cArch.getArchType().getLabel()) {
+        case "deb":
+            cType = ChannelFactory.lookupContentSourceType("deb");
+            break;
+
+        default:
+            cType = ChannelFactory.lookupContentSourceType("yum");
+            break;
+        }
+        return cType;
+    }
 }
