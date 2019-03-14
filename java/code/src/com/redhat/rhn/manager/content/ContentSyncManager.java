@@ -121,9 +121,9 @@ public class ContentSyncManager {
             "/usr/share/susemanager/scc/upgrade_paths.json");
     private static File channelFamiliesJson = new File(
             "/usr/share/susemanager/scc/channel_families.json");
-    private static File oesProductsJson = new File(
+    private static File additionalProductsJson = new File(
             "/usr/share/susemanager/scc/additional_products.json");
-    private static File rhelRepositoriesJson = new File(
+    private static File additionalRepositoriesJson = new File(
             "/usr/share/susemanager/scc/additional_repositories.json");
     private static File sumaProductTreeJson = new File(
             "/usr/share/susemanager/scc/product_tree.json");
@@ -267,32 +267,38 @@ public class ContentSyncManager {
         return new ArrayList<>(productList);
     }
 
-    /*
-     * Return static list of RHEL repositories
+    /**
+     * @return the list of additional repositories (aka fake repositories) we
+     * defined in the sumatoolbox which are not part of SCC. Those fake repos come from
+     * 2 places.
+     *  - the additional_repositories.json which contains a list of fake repos.
+     *  - the additional_products.json which contains fake products which may also contain
+     *    additional fake repositories.
      */
-    private static List<SCCRepositoryJson> getRHELRepositories() {
+    private static List<SCCRepositoryJson> getAdditionalRepositories() {
         Gson gson = new GsonBuilder().create();
         List<SCCRepositoryJson> repos = new ArrayList<>();
         try {
             repos = gson.fromJson(new BufferedReader(new InputStreamReader(
-                            new FileInputStream(rhelRepositoriesJson))),
+                            new FileInputStream(additionalRepositoriesJson))),
                     SCCClientUtils.toListType(SCCRepositoryJson.class));
         }
         catch (IOException e) {
             log.error(e);
         }
+        repos.addAll(collectRepos(flattenProducts(getAdditionalProducts()).collect(Collectors.toList())));
         return repos;
     }
 
     /*
      * Return static list or OES products
      */
-    private static List<SCCProductJson> getOESProducts() {
+    private static List<SCCProductJson> getAdditionalProducts() {
         Gson gson = new GsonBuilder().create();
         List<SCCProductJson> oes = new ArrayList<>();
         try {
             oes = gson.fromJson(new BufferedReader(new InputStreamReader(
-                            new FileInputStream(oesProductsJson))),
+                            new FileInputStream(additionalProductsJson))),
                     SCCClientUtils.toListType(SCCProductJson.class));
         }
         catch (IOException e) {
@@ -476,7 +482,7 @@ public class ContentSyncManager {
                 log.debug("Getting repos for: " + c);
                 SCCClient scc = getSCCClient(c);
                 List<SCCRepositoryJson> repos = scc.listRepositories();
-                repos.addAll(getRHELRepositories());
+                repos.addAll(getAdditionalRepositories());
                 refreshRepositoriesAuthentication(repos, c, mirrorUrl);
             }
             catch (SCCClientException | URISyntaxException e) {
@@ -1388,10 +1394,10 @@ public class ContentSyncManager {
         updateSUSEProducts(
                 Stream.concat(
                         products.stream(),
-                        getOESProducts().stream()
+                        getAdditionalProducts().stream()
                 ).collect(Collectors.toList()),
                 readUpgradePaths(), loadStaticTree(),
-                getRHELRepositories());
+                getAdditionalRepositories());
     }
 
     /**
