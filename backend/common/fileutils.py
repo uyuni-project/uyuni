@@ -24,6 +24,7 @@ import subprocess
 import select
 import stat
 import tempfile
+import io
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnLib import isSUSE
 from spacewalk.common.usix import ListType, TupleType, MaxInt
@@ -488,23 +489,25 @@ class payload:
         return getattr(self.fileobj, x)
 
 
-def decompress_open(filename, mode='rt'):
+def decompress_open(filename):
     file_obj = None
     if filename.endswith('.gz'):
-        file_obj = gzip.open(filename, mode)
+        file_obj = gzip.open(filename, 'rb')
     elif filename.endswith('.bz2'):
-        file_obj = bz2.BZ2File(filename, mode)
+        file_obj = bz2.BZ2File(filename, 'rb')
     elif filename.endswith('.xz'):
         try:
             # pylint: disable=F0401,E1101
             import lzma
-            file_obj = lzma.LZMAFile(filename, mode)
+            file_obj = lzma.LZMAFile(filename, 'rb')
         except ImportError: # No LZMA lib - be sad
             # xz uncompresses foo.xml.xz to foo.xml
             # uncompress, keep both, return uncompressed file
             subprocess.call(['xz', '-d', '-k', filename])
             uncompressed_path = filename.rsplit('.', 1)[0]
-            file_obj = open(uncompressed_path, mode)
+            file_obj = open(uncompressed_path, 'rb')
     else:
-        file_obj = open(filename, mode)
+        file_obj = open(filename, 'r')
+    if filename.endswith(('.gz', '.bz2', '.xz')):
+        return io.TextIOWrapper(file_obj)
     return file_obj
