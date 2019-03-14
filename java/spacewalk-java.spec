@@ -60,7 +60,7 @@ Requires:       classpathx-mail
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-collections
 Requires:       apache-commons-lang3
-Requires:       cobbler >= 2.0.0
+Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       google-gson >= 2.2.4
 Requires:       httpcomponents-client
@@ -415,7 +415,7 @@ Requires:       cglib
 Requires:       bcel
 Requires:       c3p0 >= 0.9.1
 %if 0%{?suse_version}
-Requires:       cobbler >= 2.0.0
+Requires:       cobbler >= 3.0.0
 Requires:       java >= 11
 Requires:       jsch
 Requires:       /sbin/unix2_chkpwd
