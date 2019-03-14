@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Mar 14 14:15:54 CET 2019 - jgonzalez@suse.com
+
+- version 2.7.8.15-1
 - Fix importing state channels using configchannel_import
 - Fix getting file info for latest revision (via configchannel_filedetails)
 
