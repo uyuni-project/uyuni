@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Mar 14 14:23:14 CET 2019 - jgonzalez@suse.com
+
+- version 2.7.46.19-1
 - Fix a problem when cloning public child channels with a private base channel (bsc#1124639)
 - Keep assigned channels on traditional to minion migration (bsc#1122836)
 - Fix "Add Selected to SSM" on System Groups -> systems page (bsc#1121856)
