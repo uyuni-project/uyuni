@@ -263,7 +263,7 @@ public enum SaltStateGeneratorService {
         imagePillarDetails.put("size", image.getSize());
         imagePillarDetails.put("sync", imagePillarDetailsSync);
         imagePillarDetails.put("type", image.getType());
-        imagePillarDetails.put("url", "tftp://tftp/" + localPath + "/" + image.getFilename());
+        imagePillarDetails.put("url", "ftp://ftp/" + localPath + "/" + image.getFilename());
 
         imagePillarBase.put(version, imagePillarDetails);
         imagePillar.put(name, imagePillarBase);

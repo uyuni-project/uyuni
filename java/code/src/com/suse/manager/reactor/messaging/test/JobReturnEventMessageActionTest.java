@@ -1445,6 +1445,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 Map<String, Map<String, Map<String, Object>>> bootImages = (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
                 assertEquals("tftp://tftp/boot/POS_Image_JeOS6-6.0.0/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz", bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
                 Map<String, Map<String, Map<String, Object>>> images = (Map<String, Map<String, Map<String, Object>>>) map.get("images");
+                assertEquals("ftp://ftp/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0", images.get("POS_Image_JeOS6").get("6.0.0").get("url"));
                 assertEquals(1490026496, images.get("POS_Image_JeOS6").get("6.0.0").get("size"));
                 assertEquals("a64dbc025c748bde968b888db6b7b9e3", images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
             } catch (FileNotFoundException e) {
