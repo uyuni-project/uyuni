@@ -1,5 +1,10 @@
+-------------------------------------------------------------------
+Thu Mar 14 14:41:47 CET 2019 - jgonzalez@suse.com
+
+- version 3.1.18-1
 - Add `python-setuptools` package dependency to SLES12 bootstrap repo (bsc#1119964)
 - rhnlib was renamed to python2-rhnlib. Change bootstrap data accordingly.
+
 -------------------------------------------------------------------
 Thu Dec 13 10:45:55 CET 2018 - jgonzalez@suse.com
 
