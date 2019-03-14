@@ -29,6 +29,7 @@ import gzip
 import os
 import solv
 import sys
+import tempfile
 import types
 import urlgrabber
 
@@ -55,7 +56,7 @@ PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
 REPO_XML = '{http://linux.duke.edu/metadata/repo}'
 
 CACHE_DIR = '/var/cache/rhn/reposync'
-RPM_DATABASE = '/var/lib/rpm'
+SPACEWALK_GPG_KEYRING = '/var/lib/spacewalk/gpgdir/pubring.gpg'
 ZYPP_CACHE_PATH = 'var/cache/zypp'
 ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'raw')
 ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
@@ -94,9 +95,10 @@ class ZyppoSync:
                 if not os.path.exists(pth):
                     if pth == os.path.join(CACHE_DIR, "root"):
                         # If the Zypper root is being created for the first time
-                        # we copy the system RPM database to get the already imported
-                        # repository GPG keys (SUSE keys)
-                        copytree(RPM_DATABASE, os.path.join(pth, "var/lib/rpm/"))
+                        # we need to import the spacewalk keyring into the new RPM database
+                        with tempfile.NamedTemporaryFile() as f:
+                            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
+                            os.system("rpmkeys -v --dbpath {} --import {}".format(os.path.join(pth, "var/lib/rpm/"), f.name))
                     else:
                         os.makedirs(pth)
 
