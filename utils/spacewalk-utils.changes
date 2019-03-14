@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Mar 14 14:23:49 CET 2019 - jgonzalez@suse.com
+
+- version 2.7.10.11-1
 - Create /etc/rhn with correct ownership to prevent file conflicts
 
 -------------------------------------------------------------------
