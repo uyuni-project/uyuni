@@ -29,10 +29,9 @@ import java.util.Map;
  * This class serves merely as an interface between the native daemon
  * library and the actual scheduler setup and running logic implemented
  * in SchedulerKernel.
- * @version $Rev$
  * @see SchedulerKernel
  */
-public class TaskomaticDaemon  extends BaseDaemon {
+public class TaskomaticDaemon extends BaseDaemon {
 
     public static final int ERR_SCHED_CREATE = -5;
 
@@ -86,7 +85,7 @@ public class TaskomaticDaemon  extends BaseDaemon {
                         kernel.startup();
                     }
                     catch (Throwable e) {
-                        logMessage(BaseDaemon.LOG_FATAL, e.getMessage(), e);
+                        LOG.fatal(e.getMessage());
                         System.exit(-1);
                     }
                 }
@@ -95,7 +94,7 @@ public class TaskomaticDaemon  extends BaseDaemon {
             t.start();
         }
         catch (Throwable t) {
-            logMessage(BaseDaemon.LOG_FATAL, t.getMessage(), t);
+            LOG.fatal(t.getMessage());
             System.exit(-1);
         }
         return retval;
@@ -103,7 +102,7 @@ public class TaskomaticDaemon  extends BaseDaemon {
 
     protected int onShutdown(boolean breakFromUser) {
         // TODO Auto-generated method stub
-        return 0;
+       return 0;
     }
 
     private Map parseOverrides(CommandLine commandLine) {

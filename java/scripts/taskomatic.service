@@ -2,14 +2,10 @@
 Description=Taskomatic
 After=local-fs.target cobblerd.service sendmail.service apache2.service postgresql.service
 Requires=apache2.service
-Wants=postgresql.service
 
 [Service]
-TasksMax=576
-LimitNOFILE=8192
-Type=forking
-ExecStart=/usr/sbin/taskomatic start
-ExecStop=/usr/sbin/taskomatic stop
+Type=simple
+ExecStart=/usr/sbin/taskomatic
 Restart=on-failure
 
 [Install]
