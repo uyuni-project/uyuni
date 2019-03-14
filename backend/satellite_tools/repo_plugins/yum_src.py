@@ -56,10 +56,12 @@ PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
 REPO_XML = '{http://linux.duke.edu/metadata/repo}'
 
 CACHE_DIR = '/var/cache/rhn/reposync'
-SPACEWALK_GPG_KEYRING = '/var/lib/spacewalk/gpgdir/pubring.gpg'
+SPACEWALK_LIB = '/var/lib/spacewalk'
+SPACEWALK_GPG_KEYRING = os.path.join(SPACEWALK_LIB, 'gpgdir/pubring.gpg')
 ZYPP_CACHE_PATH = 'var/cache/zypp'
 ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'raw')
 ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
+REPOSYNC_ZYPPER_ROOT = os.path.join(SPACEWALK_LIB, "reposync/root")
 REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
 
 
@@ -91,16 +93,15 @@ class ZyppoSync:
         :return: None
         """
         try:
-            for pth in [root, os.path.join(CACHE_DIR, "root"), os.path.join(root, "etc/zypp/repos.d")]:
+            for pth in [root, os.path.join(root, "etc/zypp/repos.d"), REPOSYNC_ZYPPER_ROOT]:
                 if not os.path.exists(pth):
-                    if pth == os.path.join(CACHE_DIR, "root"):
-                        # If the Zypper root is being created for the first time
-                        # we need to import the spacewalk keyring into the new RPM database
-                        with tempfile.NamedTemporaryFile() as f:
-                            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
-                            os.system("rpmkeys -v --dbpath {} --import {}".format(os.path.join(pth, "var/lib/rpm/"), f.name))
-                    else:
-                        os.makedirs(pth)
+                    os.makedirs(pth)
+
+            # We need to import keep reposync zypper RPM database updated according
+            # to the Spacewalk GPG keyring
+            with tempfile.NamedTemporaryFile() as f:
+                os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
+                os.system("rpmkeys --dbpath {} --import {}".format(os.path.join(REPOSYNC_ZYPPER_ROOT, "var/lib/rpm/"), f.name))
 
         except Exception as exc:
             # TODO: a proper logging somehow?
@@ -473,7 +474,7 @@ type=rpm-md
             zypper_cmd = "{} -n".format(zypper_cmd)
         ret_error = os.system("{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
             zypper_cmd,
-            os.path.join(CACHE_DIR, "root"),
+            REPOSYNC_ZYPPER_ROOT,
             os.path.join(repo.root, "etc/zypp/repos.d/"),
             os.path.join(repo.root, "var/cache/zypp/"),
             os.path.join(repo.root, "var/cache/zypp/raw/"),
