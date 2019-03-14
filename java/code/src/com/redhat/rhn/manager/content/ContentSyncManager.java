@@ -511,7 +511,7 @@ public class ContentSyncManager {
             source.setMetadataSigned(auth.getRepository().isSigned());
             source.setOrg(null);
             source.setSourceUrl(url);
-            source.setType(ChannelFactory.lookupContentSourceType("yum"));
+            source.setType(ChannelManager.findCompatibleContentSourceType(channel.getChannelArch()));
             ChannelFactory.save(source);
         }
         Set<ContentSource> css = channel.getSources();
@@ -1722,7 +1722,7 @@ public class ContentSyncManager {
                 source.setMetadataSigned(repository.isSigned());
                 source.setOrg(null);
                 source.setSourceUrl(url);
-                source.setType(ChannelFactory.lookupContentSourceType("yum"));
+                source.setType(ChannelManager.findCompatibleContentSourceType(dbChannel.getChannelArch()));
             }
             else {
                 // update the URL as the token might have changed
