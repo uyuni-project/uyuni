@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Mar 14 14:41:12 CET 2019 - jgonzalez@suse.com
+
+- version 2.7.1.21-1
 - Fix action scheduler time picker prefill when the server is on  "UTC/GMT" timezone (bsc#1121195)
 - Fix initializing of the datetime picker (bsc#1126862)
 - show feedback messages after using the retry option on the notification messages page
