@@ -14,7 +14,7 @@ After:
 
 ## Documentation
 - No documentation needed: **add explanation. This can't be used if there is a GUI diff**
-- [doc-susemanager](https://github.com/SUSE/doc-susemanager) PR or issue was created (GitHub automatic link expected below)
+- [doc-susemanager PR](https://github.com/SUSE/doc-susemanager/pulls) or [documentation board issue](https://github.com/SUSE/spacewalk/projects/31) was created (GitHub automatic link expected below)
 
 - [ ] **DONE**
 
