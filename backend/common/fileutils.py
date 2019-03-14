@@ -489,8 +489,7 @@ class payload:
         return getattr(self.fileobj, x)
 
 
-def decompress_open(filename, mode='rt'):
-    #import pdb; pdb.set_trace()
+def decompress_open(filename):
     file_obj = None
     if filename.endswith('.gz'):
         file_obj = gzip.open(filename, 'rb')
@@ -506,9 +505,9 @@ def decompress_open(filename, mode='rt'):
             # uncompress, keep both, return uncompressed file
             subprocess.call(['xz', '-d', '-k', filename])
             uncompressed_path = filename.rsplit('.', 1)[0]
-            file_obj = open(uncompressed_path, mode)
+            file_obj = open(uncompressed_path, 'rb')
     else:
-        file_obj = open(filename, mode)
-    if "t" in mode and filename.endswith(('.gz', '.bz2', '.xz')):
+        file_obj = open(filename, 'r')
+    if filename.endswith(('.gz', '.bz2', '.xz')):
         return io.TextIOWrapper(file_obj)
     return file_obj
