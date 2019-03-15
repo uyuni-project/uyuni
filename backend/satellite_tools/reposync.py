@@ -714,9 +714,13 @@ class RepoSync(object):
         absdir = os.path.join(CFG.MOUNT_POINT, relativedir)
         if not os.path.exists(absdir):
             os.makedirs(absdir)
+        compressed_suffixes = ['.gz', '.bz', '.xz']
+        if comps_type == 'comps' and not re.match('comps.xml(' + "|".join(compressed_suffixes) + ')*', basename):
+            log(0, "  Renaming non-standard filename %s to %s." % (basename, 'comps' + basename[basename.find('.'):]))
+            basename = 'comps' + basename[basename.find('.'):]
         relativepath = os.path.join(relativedir, basename)
         abspath = os.path.join(absdir, basename)
-        for suffix in ['.gz', '.bz', '.xz']:
+        for suffix in compressed_suffixes:
             if basename.endswith(suffix):
                 abspath = abspath.rstrip(suffix)
                 relativepath = relativepath.rstrip(suffix)

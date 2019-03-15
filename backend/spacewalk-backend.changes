@@ -1,3 +1,4 @@
+- Fix: handle non-standard filenames for comps.xml (bsc#1120242)
 - Make reposync use and append token correctly to the URL
 - Avoid DB constraint violations caused by extended UTF8 characters on the RPM headers
 - Prevent mgr-inter-sync crash because 'SuseProductRepository' not found (bsc#1129300)
