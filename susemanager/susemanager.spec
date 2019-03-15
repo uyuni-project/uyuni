@@ -43,7 +43,9 @@ Requires:       SuSEfirewall2
 Requires:       postfix
 # mgr-setup want to call mksubvolume
 Requires:       snapper
+Requires:       reprepro
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
 
