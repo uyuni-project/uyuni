@@ -4,7 +4,7 @@
 Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
-  Scenario: Bootstrap virtual host
+  Scenario: Bootstrap KVM virtual host
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
@@ -21,7 +21,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I reduce virtpoller run interval on "kvm-server"
 
 @virthost_kvm
-  Scenario: Setting the virtualization entitlement
+  Scenario: Setting the virtualization entitlement for KVM
     Given I am on the Systems overview page of this "kvm-server"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
@@ -31,7 +31,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 
 @virthost_kvm
-  Scenario: Prepare a test virtual machine and list it
+  Scenario: Prepare a KVM test virtual machine and list it
     Given I am on the "Virtualization" page of this "kvm-server"
     When I create default virtual network on "kvm-server"
     And I create test-net0 virtual network on "kvm-server"
@@ -39,13 +39,20 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until I see "test-vm" text
 
 @virthost_kvm
-  Scenario: Start a virtual machine
+  Scenario: Start a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Start" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm-server"
 
 @virthost_kvm
-  Scenario: Suspend a virtual machine
+  Scenario: Show the VNC graphical console for KVM
+    Given I am on the "Virtualization" page of this "kvm-server"
+    When I click on "Graphical Console" in row "test-vm"
+    Then I wait until I see the VNC graphical console
+    And I close the window
+
+@virthost_kvm
+  Scenario: Suspend a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I wait until table row for "test-vm" contains button "Suspend"
     And I click on "Suspend" in row "test-vm"
@@ -53,14 +60,14 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see "test-vm" virtual machine paused on "kvm-server"
 
 @virthost_kvm
-  Scenario: Resume a virtual machine
+  Scenario: Resume a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I wait until table row for "test-vm" contains button "Resume"
     And I click on "Resume" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm-server"
 
 @virthost_kvm
-  Scenario: Shutdown a virtual machine
+  Scenario: Shutdown a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I wait until table row for "test-vm" contains button "Stop"
     And I wait until virtual machine "test-vm" on "kvm-server" is started
@@ -69,7 +76,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see "test-vm" virtual machine shut off on "kvm-server"
 
 @virthost_kvm
-  Scenario: Edit a virtual machine
+  Scenario: Edit a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
     Then I should see "512" in field "memory"
@@ -92,7 +99,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm-server" should have a "test-vm_disk.qcow2" scsi disk
 
 @virthost_kvm
-  Scenario: Add a network interface to a virtual machine
+  Scenario: Add a network interface to a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
     And I click on "add_nic"
@@ -102,7 +109,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm-server" should have 2 NIC using "test-net0" network
 
 @virthost_kvm
-  Scenario: Delete a network interface from a virtual machine
+  Scenario: Delete a network interface from a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
     And I click on "remove_nic1"
@@ -111,7 +118,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm-server" should have 1 NIC using "test-net0" network
 
 @virthost_kvm
-  Scenario: Add a disk and a cdrom to a virtual machine
+  Scenario: Add a disk and a cdrom to a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
     And I click on "add_disk"
@@ -124,7 +131,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm-server" should have a ide cdrom
 
 @virthost_kvm
-  Scenario: Delete a disk from a virtual machine
+  Scenario: Delete a disk from a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
     And I click on "remove_disk2"
@@ -133,19 +140,20 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm-server" should have no cdrom
 
 @virthost_kvm
-  Scenario: Delete a virtual machine
+  Scenario: Delete a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Delete" in row "test-vm"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm" virtual machine on "kvm-server"
 
 @virthost_kvm
-  Scenario: Create a virtual machine
+  Scenario: Create a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I select "Spice" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
@@ -155,7 +163,14 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm-server" should have a "test-vm2_system.qcow2" virtio disk
 
 @virthost_kvm
-  Scenario: Cleanup: Unregister the virtualization host
+  Scenario: Show the Spice graphical console for KVM
+    Given I am on the "Virtualization" page of this "kvm-server"
+    When I click on "Graphical Console" in row "test-vm2"
+    Then I wait until I see the spice graphical console
+    And I close the window
+
+@virthost_kvm
+  Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm-server"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
@@ -163,7 +178,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I wait until I see "has been deleted" text
 
 @virthost_kvm
-  Scenario: Cleanup: Cleanup virtualization host
+  Scenario: Cleanup: Cleanup KVM virtualization host
     When I run "zypper -n mr -e --all" on "kvm-server" without error control
     And I run "zypper -n rr SUSE-Manager-Bootstrap" on "kvm-server" without error control
     And I run "systemctl stop salt-minion" on "kvm-server" without error control

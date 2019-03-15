@@ -4,7 +4,7 @@
 Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
-  Scenario: Bootstrap virtual host
+  Scenario: Bootstrap Xen virtual host
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
@@ -21,7 +21,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I reduce virtpoller run interval on "xen-server"
 
 @virthost_xen
-  Scenario: Setting the virtualization entitlement
+  Scenario: Setting the virtualization entitlement for Xen
     Given I am on the Systems overview page of this "xen-server"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
@@ -31,7 +31,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 
 @virthost_xen
-  Scenario: Prepare a test virtual machine and list it
+  Scenario: Prepare a Xen test virtual machine and list it
     Given I am on the "Virtualization" page of this "xen-server"
     When I create default virtual network on "xen-server"
     And I create test-net0 virtual network on "xen-server"
@@ -39,13 +39,20 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait until I see "test-vm" text
 
 @virthost_xen
-  Scenario: Start a virtual machine
+  Scenario: Start a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I click on "Start" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "xen-server"
 
 @virthost_xen
-  Scenario: Suspend a virtual machine
+  Scenario: Show the VNC graphical console for Xen
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I click on "Graphical Console" in row "test-vm"
+    Then I wait until I see the VNC graphical console
+    And I close the window
+
+@virthost_xen
+  Scenario: Suspend a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I wait until table row for "test-vm" contains button "Suspend"
     And I click on "Suspend" in row "test-vm"
@@ -53,14 +60,14 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see "test-vm" virtual machine paused on "xen-server"
 
 @virthost_xen
-  Scenario: Resume a virtual machine
+  Scenario: Resume a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I wait until table row for "test-vm" contains button "Resume"
     And I click on "Resume" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "xen-server"
 
 @virthost_xen
-  Scenario: Shutdown a virtual machine
+  Scenario: Shutdown a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I wait until table row for "test-vm" contains button "Stop"
     And I wait until virtual machine "test-vm" on "xen-server" is started
@@ -69,7 +76,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see "test-vm" virtual machine shut off on "xen-server"
 
 @virthost_xen
-  Scenario: Edit a virtual machine
+  Scenario: Edit a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I click on "Edit" in row "test-vm"
     Then I should see "512" in field "memory"
@@ -89,7 +96,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm" virtual machine on "xen-server" should have a "test-vm_disk.qcow2" ide disk
 
 @virthost_xen
-  Scenario: Add a network interface to a virtual machine
+  Scenario: Add a network interface to a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I click on "Edit" in row "test-vm"
     And I click on "add_nic"
@@ -99,7 +106,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm" virtual machine on "xen-server" should have 2 NIC using "test-net0" network
 
 @virthost_xen
-  Scenario: Delete a network interface to a virtual machine
+  Scenario: Delete a network interface from a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I click on "Edit" in row "test-vm"
     And I click on "remove_nic1"
@@ -108,7 +115,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm" virtual machine on "xen-server" should have 1 NIC using "test-net0" network
 
 @virthost_xen
-  Scenario: Add a disk and a cdrom to a virtual machine
+  Scenario: Add a disk and a cdrom to a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I click on "Edit" in row "test-vm"
     And I click on "add_disk"
@@ -121,7 +128,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm" virtual machine on "xen-server" should have a ide cdrom
 
 @virthost_xen
-  Scenario: Delete a disk from a virtual machine
+  Scenario: Delete a disk from a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I click on "Edit" in row "test-vm"
     # The libvirt disk order is not the same than for KVM
@@ -131,19 +138,20 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm" virtual machine on "xen-server" should have no cdrom
 
 @virthost_xen
-  Scenario: Delete a virtual machine
+  Scenario: Delete a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I click on "Delete" in row "test-vm"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm" virtual machine on "xen-server"
 
 @virthost_xen
-  Scenario: Create a paravirtualized guest
+  Scenario: Create a Xen paravirtualized guest
     Given I am on the "Virtualization" page of this "xen-server"
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "/var/testsuite-data/disk-image-template-xenpv.qcow2" as "disk0_source_template"
+    And I select "Spice" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
@@ -153,7 +161,14 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm2" virtual machine on "xen-server" should have a "test-vm2_system.qcow2" xen disk
 
 @virthost_xen
-  Scenario: Create a fully virtualized guest
+  Scenario: Show the Spice graphical console for Xen
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I click on "Graphical Console" in row "test-vm2"
+    Then I wait until I see the spice graphical console
+    And I close the window
+
+@virthost_xen
+  Scenario: Create a Xen fully virtualized guest
     Given I am on the "Virtualization" page of this "xen-server"
     When I follow "Create Guest"
     And I wait until I see "General" text
@@ -169,7 +184,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm3" virtual machine on "xen-server" should have a "test-vm3_system.qcow2" xen disk
 
 @virthost_xen
-  Scenario: Cleanup: Unregister the virtualization host
+  Scenario: Cleanup: Unregister the Xen virtualization host
     Given I am on the Systems overview page of this "xen-server"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
@@ -177,7 +192,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I wait until I see "has been deleted" text
 
 @virthost_xen
-  Scenario: Cleanup: Cleanup virtualization host
+  Scenario: Cleanup: Cleanup Xen virtualization host
     When I run "zypper -n mr -e --all" on "xen-server" without error control
     And I run "zypper -n rr SUSE-Manager-Bootstrap" on "xen-server" without error control
     And I run "systemctl stop salt-minion" on "xen-server" without error control

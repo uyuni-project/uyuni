@@ -54,7 +54,7 @@ but it does generate a number of sub-packages.
 
 %package -n susemanager-web-libs
 Summary:        Vendor bundles for spacewalk-web
-License:		BSD-3-Clause and MIT
+License:		BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
 Group:          Applications/Internet
 
 BuildArch:      noarch
@@ -92,6 +92,11 @@ Group:          Applications/Internet
 Provides:       spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       susemanager-frontend-libs
+%if 0%{?suse_version} >= 1500
+Requires:       python3-websockify
+%else
+Requires:       python-websockify
+%endif
 %endif
 Requires:       httpd
 Requires:       sudo

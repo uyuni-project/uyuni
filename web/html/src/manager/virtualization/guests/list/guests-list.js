@@ -394,6 +394,15 @@ class GuestsList extends React.Component<Props, State> {
                                 {state !== 'stopped' && row.name !== 'Domain-0'
                                  && this.createModalButton('shutdown', modalsData, row) }
                                 {(state === 'paused' || state === 'running') && this.createModalButton('restart', modalsData, row) }
+                                {state === 'running' && (
+                                  <LinkButton
+                                    title={t('Graphical Console')}
+                                    className="btn-default btn-sm"
+                                    icon="fa-desktop"
+                                    href={`/rhn/manager/systems/details/virtualization/guests/${this.props.serverId}/console/${row.uuid}`}
+                                    target="_blank"
+                                  />
+                                )}
                                 <LinkButton
                                   title={t('Edit')}
                                   className="btn-default btn-sm"

@@ -754,6 +754,16 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
+"@novnc/novnc@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@novnc/novnc/-/novnc-1.0.0.tgz#76b0e89e6f8738ca8154195baf5b8e6a80bc9105"
+  integrity sha1-drDonm+HOMqBVBlbr1uOaoC8kQU=
+
+"@spice-project/spice-html5@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@spice-project/spice-html5/-/spice-html5-0.2.1.tgz#9452fc7435a8b1c67937d86ea3b6d6d7e0616725"
+  integrity sha512-NY86i+x/0ldKK89enXghsXCzWwfb5DQ91hQFu9hbyLcAfCVn+ZKoYsw7xUWX6/HQBRrdu/4F1id7SdOwNqpG9g==
+
 "@webassemblyjs/ast@1.8.3":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.8.3.tgz#63a741bd715a6b6783f2ea5c6ab707516aa215eb"

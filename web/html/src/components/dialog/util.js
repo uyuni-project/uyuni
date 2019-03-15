@@ -5,7 +5,7 @@ function showDialog(dialogId) {
   $('#' + dialogId).modal('show');
 }
 
-function hideDialog(modalId) {
+function hideDialog(dialogId) {
   $('#' + dialogId).modal('hide');
 }
 

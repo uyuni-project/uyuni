@@ -1,0 +1,28 @@
+.navbar_pf_console {
+  top: 0px;
+}
+
+.navbar_header_console {
+  color: #dcddde;
+  line-height: 1.2em;
+  font-size: 1.6em;
+}
+
+.display_area_console {
+  height: 100%;
+  background-color: rgb(40, 40, 40);
+}
+
+.canvas {
+  height: 100%;
+  margin: auto;
+}
+
+/* Client-specific classes */
+
+.display_area_vnc {
+}
+
+.display_area_spice {
+  display: flex;
+}

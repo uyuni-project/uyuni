@@ -132,6 +132,23 @@ When(/^I wait until I do not see the name of "([^"]*)", refreshing the page$/) d
   step %(I wait until I do not see "#{system_name}" text, refreshing the page)
 end
 
+Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break unless page.has_xpath?('.//canvas')
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "The #{type} graphical console didn't load"
+  end
+end
+
+When(/^I close the window$/) do
+  page.evaluate_script 'window.close();'
+end
+
 #
 # Check a checkbox of the given id
 #

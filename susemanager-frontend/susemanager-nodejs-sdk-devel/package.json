@@ -37,6 +37,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "@novnc/novnc": "^1.0.0",
+    "@spice-project/spice-html5": "^0.2.1",
     "create-react-class": "^15.6.3",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",

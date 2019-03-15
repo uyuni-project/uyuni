@@ -15,7 +15,9 @@
 
 package com.suse.manager.webui.controllers.test;
 
-import com.mockobjects.servlet.MockHttpServletResponse;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessToken;
@@ -28,28 +30,34 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.mockobjects.servlet.MockHttpServletResponse;
 import com.suse.manager.webui.controllers.DownloadController;
+import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SparkTestUtils;
-import com.suse.manager.webui.utils.TokenBuilder;
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import spark.Request;
-import spark.RequestResponseFactory;
-import spark.Response;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import spark.Request;
+import spark.RequestResponseFactory;
+import spark.Response;
 
 /**
  * Tests for the {@link DownloadController} endpoint.
@@ -277,7 +285,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testTwoTokens() throws Exception {
-        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         String token = tokenBuilder.getToken();
 
@@ -303,7 +311,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     public void testTokenDifferentChannel() throws Exception {
         // The added token is for a different channel
-        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         tokenBuilder.onlyChannels(
                 new HashSet<>(
@@ -331,7 +339,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testTokenWrongOrg() throws Exception {
-        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId() + 1);
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId() + 1);
         tokenBuilder.useServerSecret();
         tokenBuilder.onlyChannels(
                 new HashSet<>(
@@ -426,7 +434,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     private void testCorrectChannel(Supplier<File> pkgFile, Function<String, Request> requestFactory) throws Exception {
-        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         tokenBuilder.onlyChannels(
                 new HashSet<>(
@@ -452,7 +460,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCorrectOrg() throws Exception {
-        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         String tokenOrg = tokenBuilder.getToken();
 
@@ -478,7 +486,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testExpiredToken() throws Exception {
-        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         // already expired
         tokenBuilder.setExpirationTimeMinutesInTheFuture(-1);
@@ -505,7 +513,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testDownloadComps() throws Exception {
-        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         String tokenOrg = tokenBuilder.getToken();
 

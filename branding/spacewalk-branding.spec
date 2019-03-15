@@ -109,6 +109,7 @@ jar -cf java-branding.jar -C java/code/src com
 ln -s /srv/www/htdocs/css/bootstrap css/bootstrap
 ln -s /srv/www/htdocs/css/patternfly1 css/patternfly1
 lessc css/spacewalk.less > css/spacewalk.css
+lessc css/susemanager-fullscreen.less > css/susemanager-fullscreen.css
 rm -f css/bootstrap
 rm -f css/patternfly1
 

@@ -165,7 +165,7 @@ class LinkButton extends _ButtonBase {
 
   render() {
     return (
-      <a id={this.props.id} title={this.props.title} className={'btn ' + this.props.className} href={this.props.href}>
+      <a id={this.props.id} title={this.props.title} className={'btn ' + this.props.className} href={this.props.href} target={this.props.target}>
         {this.renderIcon()}{this.props.text}
       </a>
     )
@@ -189,7 +189,9 @@ LinkButton.props = {
   /** If true, disable the button. */
   disabled: PropTypes.bool,
   /** className of the button. 'btn' class is always prepended. */
-  className: PropTypes.string
+  className: PropTypes.string,
+  /** target of the link. */
+  target: PropTypes.string,
 };
 
 /**

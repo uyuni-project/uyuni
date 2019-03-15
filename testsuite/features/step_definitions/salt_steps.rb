@@ -352,7 +352,6 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
   fill_in fieldids[field], with: net_prefix + addresses[host]
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
   fieldids = { 'NIC'                             => 'branch_network#nic',
                'domain name'                     => 'dhcpd#domain_name',
