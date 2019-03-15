@@ -13,7 +13,7 @@
 disable_repo_{{ repos_disabled.count }}:
   module.run:
     - name: pkg.mod_repo
-    - repo: {{ entry.line }}
+    - repo: {{ "'" ~ entry.line ~ "'" }}
     - kwargs:
         disabled: True
 {% do repos_disabled.update({'count': repos_disabled.count + 1}) %}
@@ -31,3 +31,4 @@ disable_repo_{{ alias }}:
 {% endif %}
 {% endif %}
 {% endfor %}
+
