@@ -1,3 +1,6 @@
+- Avoid DB constraint violations caused by extended UTF8 characters on the RPM headers
+- Prevent mgr-inter-sync crash because 'SuseProductRepository' not found (bsc#1129300)
+
 -------------------------------------------------------------------
 Fri Mar 08 13:20:01 CET 2019 - jgonzalez@suse.com
 
