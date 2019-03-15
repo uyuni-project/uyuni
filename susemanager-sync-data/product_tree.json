@@ -1,5 +1,35 @@
 [
     {
+        "channel_label": "ubuntu-16.04-pool-amd64",
+        "parent_channel_label": null,
+        "product_id": -2,
+        "repository_id": -76,
+        "parent_product_id": null,
+        "root_product_id": -2,
+        "update_tag": null,
+        "url": "http://localhost/pub/repositories/empty-deb",
+        "release_stage": "alpha",
+        "mandatory": true,
+        "signed": false,
+        "recommended": false,
+        "channel_name": "ubuntu-16.04-pool for amd64"
+    },
+    {
+        "channel_label": "ubuntu-18.04-pool-amd64",
+        "parent_channel_label": null,
+        "product_id": -1,
+        "repository_id": -77,
+        "parent_product_id": null,
+        "root_product_id": -1,
+        "update_tag": null,
+        "url": "http://localhost/pub/repositories/empty-deb",
+        "release_stage": "alpha",
+        "mandatory": true,
+        "signed": false,
+        "recommended": false,
+        "channel_name": "ubuntu-18.04-pool for amd64"
+    },
+    {
         "channel_label": "oes2015-updates-x86_64",
         "parent_channel_label": "sles11-sp3-pool-x86_64",
         "product_id": 42,
@@ -64453,5 +64483,35 @@
         "signed": true,
         "recommended": false,
         "channel_name": "SUSE-CAASP-Toolchain-4-Debuginfo-Pool for x86_64 4.0"
+    },
+    {
+        "channel_label": "ubuntu-16.04-suse-manager-tools-amd64",
+        "parent_channel_label": "ubuntu-16.04-pool-amd64",
+        "product_id": 1917,
+        "repository_id": 3869,
+        "parent_product_id": -2,
+        "root_product_id": -2,
+        "update_tag": null,
+        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/16.04-CLIENT-TOOLS/x86_64/update/",
+        "release_stage": "alpha",
+        "mandatory": true,
+        "signed": true,
+        "recommended": true,
+        "channel_name": "Ubuntu-16.04-SUSE-Manager-Tools for amd64"
+    },
+    {
+        "channel_label": "ubuntu-18.04-suse-manager-tools-amd64",
+        "parent_channel_label": "ubuntu-18.04-pool-amd64",
+        "product_id": 1918,
+        "repository_id": 3870,
+        "parent_product_id": -1,
+        "root_product_id": -1,
+        "update_tag": null,
+        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/18.04-CLIENT-TOOLS/x86_64/update/",
+        "release_stage": "alpha",
+        "mandatory": true,
+        "signed": true,
+        "recommended": true,
+        "channel_name": "Ubuntu-18.04-SUSE-Manager-Tools for amd64"
     }
 ]
