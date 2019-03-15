@@ -31,16 +31,16 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {% endif %}
 {%- elif grains['os_family'] == 'Debian' %}
+{%- set osrelease = grains['osrelease'].split('.') %}
 {%- if grains['os'] == 'Ubuntu' %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
 {%- else %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
 {%- endif %}
 {%- endif %}
-
-{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
 
 {%- if not grains['os_family'] == 'Debian' %}
+{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False)['status'] < 300) %}
 bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
@@ -48,6 +48,25 @@ bootstrap_repo:
 {%- elif grains['os_family'] == 'RedHat' %}
     - name: /etc/yum.repos.d/susemanager:bootstrap.repo
 {%- endif %}
+    - source:
+      - salt://bootstrap/bootstrap.repo
+    - template: jinja
+    - context:
+      bootstrap_repo_url: {{bootstrap_repo_url}}
+    - mode: 644
+    - require:
+      - host: mgr_server_localhost_alias_absent
+{%- if repos_disabled.count > 0 %}
+      - module: disable_repo_*
+{%- endif %}
+    - onlyif:
+      - ([ {{ bootstrap_repo_exists }} = "True" ])
+
+{%- else %}
+{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'dists/bootstrap/Release', status=True, verify_ssl=False)['status'] < 300) %}
+bootstrap_repo:
+  file.managed:
+    - name: /etc/apt/sources.list.d/susemanager_bootstrap.list
     - source:
       - salt://bootstrap/bootstrap.repo
     - template: jinja
@@ -92,10 +111,8 @@ trust_suse_manager_tools_deb_gpg_key:
 salt-minion-package:
   pkg.installed:
     - name: salt-minion
-{%- if not grains['os_family'] == 'Debian' %}
     - require:
       - file: bootstrap_repo
-{%- endif %}
 
 /etc/salt/minion.d/susemanager.conf:
   file.managed:

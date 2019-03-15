@@ -80,6 +80,7 @@ Requires:       postfix
 Requires:       yast2-users
 # mgr-setup want to call mksubvolume
 Requires:       snapper
+Requires:       reprepro
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
