@@ -495,6 +495,9 @@ public class SCCProductJson {
      * @return the arch
      */
     public String getArch() {
+        if (arch != null && arch.equals("amd64")) {
+            return arch + "-deb";
+        }
         return arch;
     }
 

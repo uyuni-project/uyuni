@@ -121,9 +121,9 @@ public class ContentSyncManager {
             "/usr/share/susemanager/scc/upgrade_paths.json");
     private static File channelFamiliesJson = new File(
             "/usr/share/susemanager/scc/channel_families.json");
-    private static File oesProductsJson = new File(
+    private static File additionalProductsJson = new File(
             "/usr/share/susemanager/scc/additional_products.json");
-    private static File rhelRepositoriesJson = new File(
+    private static File additionalRepositoriesJson = new File(
             "/usr/share/susemanager/scc/additional_repositories.json");
     private static File sumaProductTreeJson = new File(
             "/usr/share/susemanager/scc/product_tree.json");
@@ -267,32 +267,38 @@ public class ContentSyncManager {
         return new ArrayList<>(productList);
     }
 
-    /*
-     * Return static list of RHEL repositories
+    /**
+     * @return the list of additional repositories (aka fake repositories) we
+     * defined in the sumatoolbox which are not part of SCC. Those fake repos come from
+     * 2 places.
+     *  - the additional_repositories.json which contains a list of fake repos.
+     *  - the additional_products.json which contains fake products which may also contain
+     *    additional fake repositories.
      */
-    private static List<SCCRepositoryJson> getRHELRepositories() {
+    private static List<SCCRepositoryJson> getAdditionalRepositories() {
         Gson gson = new GsonBuilder().create();
         List<SCCRepositoryJson> repos = new ArrayList<>();
         try {
             repos = gson.fromJson(new BufferedReader(new InputStreamReader(
-                            new FileInputStream(rhelRepositoriesJson))),
+                            new FileInputStream(additionalRepositoriesJson))),
                     SCCClientUtils.toListType(SCCRepositoryJson.class));
         }
         catch (IOException e) {
             log.error(e);
         }
+        repos.addAll(collectRepos(flattenProducts(getAdditionalProducts()).collect(Collectors.toList())));
         return repos;
     }
 
     /*
      * Return static list or OES products
      */
-    private static List<SCCProductJson> getOESProducts() {
+    private static List<SCCProductJson> getAdditionalProducts() {
         Gson gson = new GsonBuilder().create();
         List<SCCProductJson> oes = new ArrayList<>();
         try {
             oes = gson.fromJson(new BufferedReader(new InputStreamReader(
-                            new FileInputStream(oesProductsJson))),
+                            new FileInputStream(additionalProductsJson))),
                     SCCClientUtils.toListType(SCCProductJson.class));
         }
         catch (IOException e) {
@@ -476,7 +482,7 @@ public class ContentSyncManager {
                 log.debug("Getting repos for: " + c);
                 SCCClient scc = getSCCClient(c);
                 List<SCCRepositoryJson> repos = scc.listRepositories();
-                repos.addAll(getRHELRepositories());
+                repos.addAll(getAdditionalRepositories());
                 refreshRepositoriesAuthentication(repos, c, mirrorUrl);
             }
             catch (SCCClientException | URISyntaxException e) {
@@ -504,7 +510,7 @@ public class ContentSyncManager {
             source.setMetadataSigned(auth.getRepository().isSigned());
             source.setOrg(null);
             source.setSourceUrl(url);
-            source.setType(ChannelFactory.lookupContentSourceType("yum"));
+            source.setType(ChannelManager.findCompatibleContentSourceType(channel.getChannelArch()));
             ChannelFactory.save(source);
         }
         Set<ContentSource> css = channel.getSources();
@@ -638,15 +644,25 @@ public class ContentSyncManager {
             if (tokenOpt.isPresent()) {
                 newAuth = new SCCRepositoryTokenAuth(tokenOpt.get());
             }
-            else if (accessibleUrl(url)) {
+            else {
                 try {
-                    URI uri = new URI(url);
-                    if (uri.getUserInfo() == null) {
-                        newAuth = new SCCRepositoryNoAuth();
+                    String fullUrl = buildRepoFileUrl(url, repo);
+                    if (accessibleUrl(fullUrl)) {
+                        URI uri = new URI(url);
+                        if (uri.getUserInfo() == null) {
+                            newAuth = new SCCRepositoryNoAuth();
+                        }
+                        else {
+                            // we do not handle the case where the credentials are part of the URL
+                            log.error("URLs with credentials not supported");
+                            continue;
+                        }
+                    }
+                    else if (c != null && accessibleUrl(fullUrl, c.getUsername(), c.getPassword())) {
+                        newAuth = new SCCRepositoryBasicAuth();
                     }
                     else {
-                        // we do not handle the case where the credentials are part of the URL
-                        log.error("URLs with credentials not supported");
+                        // typical happens with fromdir where not all repos are synced
                         continue;
                     }
                 }
@@ -655,14 +671,6 @@ public class ContentSyncManager {
                     continue;
                 }
             }
-            else if (c != null && accessibleUrl(url, c.getUsername(), c.getPassword())) {
-                newAuth = new SCCRepositoryBasicAuth();
-            }
-            else {
-                // typical happens with fromdir where not all repos are synced
-                continue;
-            }
-
             repoIdsFromCredential.add(jrepo.getSCCId());
             if (authsThisCred.isEmpty()) {
                 // We need to create a new auth for this repo
@@ -757,7 +765,13 @@ public class ContentSyncManager {
             if (c == null) {
                 // we need to check every repo if it is available
                 String url = MgrSyncUtils.urlToFSPath(repo.getUrl(), repo.getName()).toString();
-                if (!accessibleUrl(url)) {
+                try {
+                    if (!accessibleUrl(buildRepoFileUrl(url, repo))) {
+                        continue;
+                    }
+                }
+                catch (URISyntaxException e) {
+                    log.error("Failed to parse URL", e);
                     continue;
                 }
                 newAuth = new SCCRepositoryNoAuth();
@@ -833,7 +847,7 @@ public class ContentSyncManager {
             URI testUri = new URI(mirrorUri.getScheme(), mirrorUri.getUserInfo(), mirrorUri.getHost(),
                     mirrorUri.getPort(), combinedPath, mirrorUri.getQuery(), null);
 
-            if (accessibleUrl(testUri.toString())) {
+            if (accessibleUrl(buildRepoFileUrl(testUri.toString(), repo))) {
                 return testUri.toString();
             }
         }
@@ -841,6 +855,28 @@ public class ContentSyncManager {
             log.warn(e.getMessage());
         }
         return defaultUrl;
+    }
+
+    /**
+     * Build URL pointing to a file to test availablity of a repository.
+     * Support either repomd or Debian style repos.
+     *
+     * @param url the repo url
+     * @param repo the repo object
+     * @return full URL pointing to a file which should be available depending on the repo type
+     * @throws URISyntaxException in case of an error
+     */
+    public String buildRepoFileUrl(String url, SCCRepository repo) throws URISyntaxException {
+        URI uri = new URI(url);
+        String relFile = "/repodata/repomd.xml";
+
+        // Debian repo
+        if (repo.getDistroTarget() != null && repo.getDistroTarget().equals("amd64")) {
+            relFile = "Release";
+        }
+        Path urlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"), relFile).toPath();
+        return new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), urlPath.toString(),
+                uri.getQuery(), null).toString();
     }
 
     /**
@@ -1041,10 +1077,11 @@ public class ContentSyncManager {
      * @param p the SCC product
      * @param product the database product whcih should be updated
      * @param channelFamilyByLabel lookup map for channel family by label
+     * @param packageArchMap lookup map for package archs
      * @return the updated product
      */
     public static SUSEProduct updateProduct(SCCProductJson p, SUSEProduct product,
-            Map<String, ChannelFamily> channelFamilyByLabel) {
+            Map<String, ChannelFamily> channelFamilyByLabel, Map<String, PackageArch> packageArchMap) {
         // it is not guaranteed for this ID to be stable in time, as it
         // depends on IBS
         product.setProductId(p.getId());
@@ -1062,6 +1099,17 @@ public class ContentSyncManager {
         product.setChannelFamily(
                 !StringUtils.isBlank(productClass) ?
                         createOrUpdateChannelFamily(productClass, null, channelFamilyByLabel) : null);
+
+        PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
+        if (pArch == null && p.getArch() != null) {
+            // unsupported architecture, skip the product
+            log.error("Unknown architecture '" + p.getArch() +
+                    "'. This may be caused by a missing database migration");
+        }
+        else {
+            product.setArch(pArch);
+        }
+
         return product;
     }
 
@@ -1195,7 +1243,7 @@ public class ContentSyncManager {
                                     // tag for later cleanup all assosicated repositories
                                     productIdsSwitchedToReleased.add(prod.getProductId());
                                 }
-                                updateProduct(productJson, prod, channelFamilyMap);
+                                updateProduct(productJson, prod, channelFamilyMap, packageArchMap);
                                 dbProductsById.put(prod.getProductId(), prod);
                                 return prod;
                             }
@@ -1219,7 +1267,7 @@ public class ContentSyncManager {
                                 return prod;
                             },
                             prod -> {
-                                updateProduct(productJson, prod, channelFamilyMap);
+                                updateProduct(productJson, prod, channelFamilyMap, packageArchMap);
                                 dbProductsById.put(prod.getProductId(), prod);
                                 return prod;
                             }
@@ -1388,10 +1436,10 @@ public class ContentSyncManager {
         updateSUSEProducts(
                 Stream.concat(
                         products.stream(),
-                        getOESProducts().stream()
+                        getAdditionalProducts().stream()
                 ).collect(Collectors.toList()),
                 readUpgradePaths(), loadStaticTree(),
-                getRHELRepositories());
+                getAdditionalRepositories());
     }
 
     /**
@@ -1685,7 +1733,7 @@ public class ContentSyncManager {
                 source.setMetadataSigned(repository.isSigned());
                 source.setOrg(null);
                 source.setSourceUrl(url);
-                source.setType(ChannelFactory.lookupContentSourceType("yum"));
+                source.setType(ChannelManager.findCompatibleContentSourceType(dbChannel.getChannelArch()));
             }
             else {
                 // update the URL as the token might have changed
@@ -1870,8 +1918,7 @@ public class ContentSyncManager {
             URI uri = new URI(url);
 
             // SMT doesn't do dir listings, so we try to get the metadata
-            Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"),
-                    "/repodata/repomd.xml").toPath();
+            Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/")).toPath();
 
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
