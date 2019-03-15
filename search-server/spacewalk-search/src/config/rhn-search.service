@@ -3,10 +3,10 @@ Description=Spacewalk search engine
 After=local-fs.target network.target httpd.service
 
 [Service]
-Type=forking
-ExecStart=/usr/sbin/rhn-search start
-ExecStop=/usr/sbin/rhn-search stop
+Type=simple
+ExecStart=/usr/sbin/rhn-search 
 PIDFile=/var/run/rhn-search.pid
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

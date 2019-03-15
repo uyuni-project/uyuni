@@ -23,15 +23,11 @@ import com.redhat.satellite.search.scheduler.ScheduleManager;
 
 import org.apache.log4j.Logger;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.tanukisoftware.wrapper.WrapperListener;
-import org.tanukisoftware.wrapper.WrapperManager;
 
 /**
- * Entry point for the Tanuki daemon wrapper
- *
- * @version $Rev$
+ * Entry point for the rhn-search daemon
  */
-public class Main implements WrapperListener {
+public class Main {
 
     private static Logger log = Logger.getLogger(Main.class);
     private static final Class[] COMPONENTS = {DatabaseManager.class,
@@ -43,13 +39,6 @@ public class Main implements WrapperListener {
     private ContainerRunner runner;
 
     /**
-     * {@inheritDoc}
-     */
-    public void controlEvent(int arg) {
-    }
-
-    /**
-     * {@inheritDoc}
      */
     public Integer start(String[] argv) {
         Configuration config = new Configuration();
@@ -67,8 +56,7 @@ public class Main implements WrapperListener {
     }
 
     /**
-     * {@inheritDoc}
-     */
+    */
     public int stop(int arg) {
         log.info("Stopping Main");
         runner.stop();
@@ -81,9 +69,9 @@ public class Main implements WrapperListener {
      */
     public static void main(String[] argv) {
         Main m = new Main();
-        WrapperManager.start(m, argv);
+        m.start(argv);
         if (log.isDebugEnabled()) {
-            log.debug("Returned from WrapperManager.start");
+            log.debug("Returned from Main.start");
         }
     }
 }
