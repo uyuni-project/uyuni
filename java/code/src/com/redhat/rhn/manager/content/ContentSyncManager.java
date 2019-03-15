@@ -1078,10 +1078,11 @@ public class ContentSyncManager {
      * @param p the SCC product
      * @param product the database product whcih should be updated
      * @param channelFamilyByLabel lookup map for channel family by label
+     * @param packageArchMap lookup map for package archs
      * @return the updated product
      */
     public static SUSEProduct updateProduct(SCCProductJson p, SUSEProduct product,
-            Map<String, ChannelFamily> channelFamilyByLabel) {
+            Map<String, ChannelFamily> channelFamilyByLabel, Map<String, PackageArch> packageArchMap) {
         // it is not guaranteed for this ID to be stable in time, as it
         // depends on IBS
         product.setProductId(p.getId());
@@ -1099,6 +1100,17 @@ public class ContentSyncManager {
         product.setChannelFamily(
                 !StringUtils.isBlank(productClass) ?
                         createOrUpdateChannelFamily(productClass, null, channelFamilyByLabel) : null);
+
+        PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
+        if (pArch == null && p.getArch() != null) {
+            // unsupported architecture, skip the product
+            log.error("Unknown architecture '" + p.getArch() +
+                    "'. This may be caused by a missing database migration");
+        }
+        else {
+            product.setArch(pArch);
+        }
+
         return product;
     }
 
@@ -1232,7 +1244,7 @@ public class ContentSyncManager {
                                     // tag for later cleanup all assosicated repositories
                                     productIdsSwitchedToReleased.add(prod.getProductId());
                                 }
-                                updateProduct(productJson, prod, channelFamilyMap);
+                                updateProduct(productJson, prod, channelFamilyMap, packageArchMap);
                                 dbProductsById.put(prod.getProductId(), prod);
                                 return prod;
                             }
@@ -1256,7 +1268,7 @@ public class ContentSyncManager {
                                 return prod;
                             },
                             prod -> {
-                                updateProduct(productJson, prod, channelFamilyMap);
+                                updateProduct(productJson, prod, channelFamilyMap, packageArchMap);
                                 dbProductsById.put(prod.getProductId(), prod);
                                 return prod;
                             }
