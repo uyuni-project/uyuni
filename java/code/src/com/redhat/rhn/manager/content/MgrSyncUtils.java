@@ -49,7 +49,7 @@ public class MgrSyncUtils {
     private static final List<String> OFFICIAL_UPDATE_HOSTS =
             Arrays.asList("updates.suse.com", OFFICIAL_NOVELL_UPDATE_HOST);
     private static final List<String> PRODUCT_ARCHS = Arrays.asList("i386", "i486", "i586", "i686", "ia64", "ppc64le",
-            "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64");
+            "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64");
 
     // No instances should be created
     private MgrSyncUtils() {
@@ -125,6 +125,9 @@ public class MgrSyncUtils {
         }
         else if (arch.equals("ppc64")) {
             arch = "ppc";
+        }
+        else if (arch.equals("amd64")) {
+            arch = "amd64-deb";
         }
         return ChannelFactory.findArchByLabel("channel-" + arch);
     }
