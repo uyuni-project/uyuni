@@ -19,6 +19,14 @@ Feature: Install a package on the minion with staging enabled
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
     And I run "zypper -n rm orion-dummy" on "sle-minion" without error control
 
+  Scenario: Pre-requisite: refresh package list on SLE minion
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I follow "Events" in the content area
+    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    Then I wait until event "Package List Refresh scheduled by admin" is completed
+
   Scenario: Pre-requisite: ensure the errata cache is computed
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
@@ -28,13 +36,6 @@ Feature: Install a package on the minion with staging enabled
     Then I click on "Single Run Schedule"
     And I should see a "bunch was scheduled" text
     Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-
-  Scenario: Pre-requisite: ensure the known package list is correct
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Software" in the content area
-    And I follow "List / Remove" in the content area
-    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "virgo-dummy-1.0" text
 
   Scenario: Enable content staging
     Given I am authorized as "admin" with password "admin"
