@@ -58,8 +58,8 @@ sequences = {
     'suseMdKeyword': 'suse_mdkeyword_id_seq',
     'suseEula': 'suse_eula_id_seq',
     'suseProducts': 'suse_products_id_seq',
-    'suseRepositories': 'suse_sccrepository_id_seq',
-    'suseProductSCCRepositories': 'suse_prdrepo_id_seq'
+    'suseSCCRepository': 'suse_sccrepository_id_seq',
+    'suseProductSCCRepository': 'suse_prdrepo_id_seq'
 }
 
 
@@ -1295,7 +1295,7 @@ class Backend:
                    version = :version,
                    friendly_name = :friendly_name,
                    arch_type_id = :arch_type_id,
-                   release = :release,
+                   release = :release
              WHERE product_id = :product_id
              """)
         _query_product = self.dbmodule.prepare("""
@@ -1307,8 +1307,9 @@ class Backend:
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], []]
         for item in batch:
-            if item['product_id'] in existing_data:
-                existing_data.remove(item['product_id'])
+            ident = "%s" % (item['product_id'])
+            if ident in existing_data:
+                existing_data.remove(ident)
                 toupdate[0].append(item['name'])
                 toupdate[1].append(item['version'])
                 toupdate[2].append(item['friendly_name'])
@@ -1348,7 +1349,7 @@ class Backend:
             """)
         update_pc = self.dbmodule.prepare("""
             UPDATE suseProductChannel
-               SET mandatory = :mand,
+               SET mandatory = :mand
              WHERE product_id = :pid
                AND channel_id = :cid
              """)
@@ -1476,20 +1477,20 @@ class Backend:
            If not add it.
         """
         insert_pr = self.dbmodule.prepare("""
-            INSERT INTO suseProductRepository
+            INSERT INTO suseProductSCCRepository
                    (id, product_id, root_product_id, repo_id, channel_label, parent_channel_label,
                     channel_name, mandatory, update_tag)
             VALUES (:id, :product_id, :root_id, :repo_id, :channel_label, :parent_channel_label,
                     :channel_name, :mandatory, :update_tag)
             """)
         delete_pr = self.dbmodule.prepare("""
-            DELETE FROM suseProductRepository
+            DELETE FROM suseProductSCCRepository
              WHERE product_id = :product_id
                AND root_product_id = :root_id
                AND repo_id = :repo_id
             """)
         update_pr = self.dbmodule.prepare("""
-            UPDATE suseProductRepository
+            UPDATE suseProductSCCRepository
                SET channel_label = :channel_label,
                    parent_channel_label = :parent_channel_label,
                    channel_name = :channel_name,
@@ -1500,7 +1501,7 @@ class Backend:
                AND repo_id = :repo_id
         """)
         _query_pr = self.dbmodule.prepare("""
-            SELECT product_id, root_product_id, repo_id FROM suseProductRepository
+            SELECT product_id, root_product_id, repo_id FROM suseProductSCCRepository
             """)
         _query_pr.execute()
         existing_data = ["%s-%s-%s" % (x['product_id'], x['root_product_id'], x['repo_id']) for x in _query_pr.fetchall_dict() or []]
@@ -1508,7 +1509,7 @@ class Backend:
         todelete = [[], [], []]
         toupdate = [[], [], [], [], [], [], [], []]
         for item in batch:
-            ident = "%s-%s-%s" % (item['product_id'], item['root_id'], item['repo_id'])
+            ident = "%s-%s-%s" % (item['product_pdid'], item['root_pdid'], item['repo_pdid'])
             if ident in existing_data:
                 existing_data.remove(ident)
                 toupdate[0].append(item['channel_label'])
@@ -1516,23 +1517,23 @@ class Backend:
                 toupdate[2].append(item['channel_name'])
                 toupdate[3].append(item['mandatory'])
                 toupdate[4].append(item['update_tag'])
-                toupdate[5].append(item['product_id'])
-                toupdate[6].append(item['root_id'])
-                toupdate[7].append(item['repo_id'])
+                toupdate[5].append(int(item['product_pdid']))
+                toupdate[6].append(int(item['root_pdid']))
+                toupdate[7].append(int(item['repo_pdid']))
                 continue
-            toinsert[0].append(next(self.sequences['suseProductSCCRepositories']))
-            toinsert[1].append(int(item['product_id']))
-            toinsert[2].append(int(item['root_id']))
-            toinsert[3].append(int(item['repo_id']))
+            toinsert[0].append(next(self.sequences['suseProductSCCRepository']))
+            toinsert[1].append(int(item['product_pdid']))
+            toinsert[2].append(int(item['root_pdid']))
+            toinsert[3].append(int(item['repo_pdid']))
             toinsert[4].append(item['channel_label'])
             toinsert[5].append(item['parent_channel_label'])
             toinsert[6].append(item['channel_name'])
             toinsert[7].append(item['mandatory'])
             toinsert[8].append(item['update_tag'])
         for ident in existing_data:
-            product_id, root_id, repo_id = ident.split('-', 2)
+            product_id, rootid, repo_id = ident.split('-', 2)
             todelete[0].append(int(product_id))
-            todelete[1].append(int(root_id))
+            todelete[1].append(int(rootid))
             todelete[2].append(int(repo_id))
         if todelete[0]:
             delete_pr.executemany(product_id=todelete[0], root_id=todelete[1], repo_id=todelete[2])
@@ -1559,33 +1560,34 @@ class Backend:
         update_repo = self.dbmodule.prepare("""
             UPDATE suseSCCRepository
                SET name = :name,
-                   autorefresh = :autorefresh
+                   autorefresh = :autorefresh,
                    distro_target = :target,
                    description = :description,
                    url = :url,
-                   signed = :signed,
+                   signed = :signed
              WHERE scc_id = :sccid
              """)
         _query_repo = self.dbmodule.prepare("""
             SELECT scc_id FROM suseSCCRepository
             """)
         _query_repo.execute()
-        existing_data = ["%s" % (x['sccid']) for x in _query_repo.fetchall_dict() or []]
+        existing_data = ["%s" % (x['scc_id']) for x in _query_repo.fetchall_dict() or []]
         toinsert = [[], [], [], [], [], [], [], []]
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], []]
         for item in batch:
-            if item['sccid'] in existing_data:
-                existing_data.remove(item['sccid'])
+            ident = "%s" % item['sccid']
+            if ident in existing_data:
+                existing_data.remove(ident)
                 toupdate[0].append(item['name'])
                 toupdate[1].append(item['autorefresh'])
                 toupdate[2].append(item['distro_target'])
                 toupdate[3].append(item['description'])
                 toupdate[4].append(item['url'])
                 toupdate[5].append(item['signed'])
-                toupdate[6].append(int(item['sccid']))
+                toupdate[6].append(item['sccid'])
                 continue
-            toinsert[0].append(next(self.sequences['suseRepositories']))
+            toinsert[0].append(next(self.sequences['suseSCCRepository']))
             toinsert[1].append(item['sccid'])
             toinsert[2].append(item['autorefresh'])
             toinsert[3].append(item['name'])
@@ -2548,7 +2550,7 @@ def _buildDatabaseValue(row, fieldsHash):
     # sanitized
     dict = {}
     for f, datatype in fieldsHash.items():
-        dict[f] = sanitizeValue(row[f], datatype)
+        dict[f] = sanitizeValue(row.get(f), datatype)
     return dict
 
 
