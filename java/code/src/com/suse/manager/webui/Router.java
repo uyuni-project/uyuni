@@ -336,24 +336,9 @@ public class Router implements SparkApplication {
     }
 
     private void initVirtualizationRoutes(JadeTemplateEngine jade) {
-        get("/manager/systems/details/virtualization/guests/:sid",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::show))), jade);
-        get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::edit))), jade);
-        get("/manager/systems/details/virtualization/guests/:sid/new",
-                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::create))), jade);
-        get("/manager/api/systems/details/virtualization/guests/:sid/data",
-                withUser(VirtualGuestsController::data));
-        post("/manager/api/systems/details/virtualization/guests/:sid/:action",
-                withUser(VirtualGuestsController::action));
-        get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
-                withUser(VirtualGuestsController::getGuest));
-        get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
-                withUser(VirtualGuestsController::getDomainsCapabilities));
-        get("/manager/api/systems/details/virtualization/nets/:sid/data",
-                withUser(VirtualNetsController::data));
-        get("/manager/api/systems/details/virtualization/pools/:sid/data",
-                withUser(VirtualPoolsController::data));
+        VirtualGuestsController.initRoutes(jade);
+        VirtualNetsController.initRoutes(jade);
+        VirtualPoolsController.initRoutes(jade);
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {

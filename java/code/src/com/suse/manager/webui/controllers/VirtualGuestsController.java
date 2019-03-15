@@ -15,6 +15,11 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -69,6 +74,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend for Virtual Guests list page
@@ -85,6 +91,28 @@ public class VirtualGuestsController {
             .create();
 
     private VirtualGuestsController() { }
+
+    /**
+     * Initialize request routes for the pages served by VirtualGuestsController
+     *
+     * @param jade jade engine
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/virtualization/guests/:sid",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::show))), jade);
+        get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::edit))), jade);
+        get("/manager/systems/details/virtualization/guests/:sid/new",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::create))), jade);
+        get("/manager/api/systems/details/virtualization/guests/:sid/data",
+                withUser(VirtualGuestsController::data));
+        post("/manager/api/systems/details/virtualization/guests/:sid/:action",
+                withUser(VirtualGuestsController::action));
+        get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
+                withUser(VirtualGuestsController::getGuest));
+        get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
+                withUser(VirtualGuestsController::getDomainsCapabilities));
+    }
 
     /**
      * Displays the virtual guests page.
