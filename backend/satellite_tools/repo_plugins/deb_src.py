@@ -115,8 +115,9 @@ class DebRepo(object):
             filename = self._download(url)
             if filename:
                 if query:
-                    os.rename(filename, filename.strip('?' + query))
-                    filename = filename.strip('?' + query)
+                    newfilename = filename.split('?')[0]
+                    os.rename(filename, newfilename)
+                    filename = newfilename
                 decompressed = fileutils.decompress_open(filename)
                 break
 
