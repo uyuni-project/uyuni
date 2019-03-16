@@ -1,0 +1,6 @@
+[Unit]
+Description=Check libvirtd for VMs and report it to Uyuni Server
+
+[Service]
+Type=oneshot
+ExecStart=@PYTHON@ < @PYTHONPATH@/virtualization/poller.py
