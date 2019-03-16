@@ -839,5 +839,79 @@
                 "installer_updates" : false
             }
         ]
+    },
+    {
+        "id" : -1,
+        "name" : "Ubuntu Client 18.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "18.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu Client 18.04",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -77,
+                "url" : "http://localhost/pub/repositories/empty-deb",
+                "name" : "ubuntu-18.04-pool",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 18.04 LTS",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -2,
+        "name" : "Ubuntu Client 16.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "16.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu Client 16.04",
+        "product_class" : "SLE-M-T-ALPHA",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -76,
+                "url" : "http://localhost/pub/repositories/empty-deb",
+                "name" : "ubuntu-16.04-pool",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 16.04 LTS",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
     }
 ]
