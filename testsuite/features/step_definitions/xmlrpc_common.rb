@@ -24,7 +24,7 @@ When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/)
   system_name = get_system_name(host)
   salt_ssh = (salt_ssh_enabled == 'enabled')
   akey = salt_ssh ? '1-SUSE-SSH-DEV-x86_64' : '1-SUSE-DEV-x86_64'
-  systest.bootstrap_system(system_name, akey, salt_ssh)
+  result = systest.bootstrap_system(system_name, akey, salt_ssh)
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
 
