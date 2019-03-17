@@ -22,8 +22,11 @@ end
 
 When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
   system_name = get_system_name(host)
-  salt_ssh = (salt_ssh_enabled == 'enabled')
-  result = systest.bootstrap_system(system_name, '1-SUSE-DEV-x86_64', salt_ssh)
+  if salt_ssh_enabled == 'enabled'
+    result = systest.bootstrap_system(system_name, '1-SUSE-SSH-DEV-x86_64', true)
+  else
+    result = systest.bootstrap_system(system_name, '1-SUSE-DEV-x86_64', false)
+  end
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
 
