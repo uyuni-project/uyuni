@@ -27,8 +27,11 @@ import configparser
 import glob
 import gzip
 import os
+import re
 import solv
+import subprocess
 import sys
+import tempfile
 import types
 import urlgrabber
 
@@ -55,11 +58,16 @@ PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
 REPO_XML = '{http://linux.duke.edu/metadata/repo}'
 
 CACHE_DIR = '/var/cache/rhn/reposync'
-RPM_DATABASE = '/var/lib/rpm'
+SPACEWALK_LIB = '/var/lib/spacewalk'
+SPACEWALK_GPG_KEYRING = os.path.join(SPACEWALK_LIB, 'gpgdir/pubring.gpg')
 ZYPP_CACHE_PATH = 'var/cache/zypp'
 ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'raw')
 ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
+REPOSYNC_ZYPPER_ROOT = os.path.join(SPACEWALK_LIB, "reposync/root")
+REPOSYNC_ZYPPER_RPMDB_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, 'var/lib/rpm')
 REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
+
+RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
 
 
 class ZyppoSync:
@@ -89,22 +97,59 @@ class ZyppoSync:
 
         :return: None
         """
-        try:
-            for pth in [root, os.path.join(CACHE_DIR, "root"), os.path.join(root, "etc/zypp/repos.d")]:
-                if not os.path.exists(pth):
-                    if pth == os.path.join(CACHE_DIR, "root"):
-                        # If the Zypper root is being created for the first time
-                        # we copy the system RPM database to get the already imported
-                        # repository GPG keys (SUSE keys)
-                        copytree(RPM_DATABASE, os.path.join(pth, "var/lib/rpm/"))
-                    else:
-                        os.makedirs(pth)
-
-        except Exception as exc:
-            # TODO: a proper logging somehow?
-            sys.stderr("Unable to initialise Zypper root for {}: {}".format(root, exc))
-            raise
 #        self._conf["zypper_root"] = root
+        try:
+            for pth in [root, os.path.join(root, "etc/zypp/repos.d"), REPOSYNC_ZYPPER_ROOT]:
+                if not os.path.exists(pth):
+                    os.makedirs(pth)
+        except Exception as exc:
+            msg = "Unable to initialise Zypper root for {}: {}".format(root, exc)
+            rhnLog.log_clean(0, msg)
+            sys.stderr.write(str(msg) + "\n")
+            raise
+        try:
+            # Synchronize new GPG keys that come from the Spacewalk GPG keyring
+            self._synchronize_gpg_keys()
+        except Exception as exc:
+            msg = "Unable to synchronize Spacewalk GPG keyring: {}".format(exc)
+            rhnLog.log_clean(0, msg)
+            sys.stderr.write(str(msg) + "\n")
+
+    def _synchronize_gpg_keys(self):
+        # We need to import keep reposync zypper RPM database updated according
+        # to the Spacewalk GPG keyring
+        spacewalk_gpg_keys = {}
+        zypper_gpg_keys = {}
+        with tempfile.NamedTemporaryFile() as f:
+            # Collect GPG keys from the Spacewalk GPG keyring
+            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
+            process = subprocess.Popen(['gpg', '--verbose', '--with-colons', f.name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            for line in process.stdout.readlines():
+               line_l = line.decode().split(":")
+               if line_l[0] == "sig" and "selfsig" in line_l[10]:
+                   spacewalk_gpg_keys.setdefault(line_l[4][8:].lower(), []).append(format(int(line_l[5]), 'x'))
+
+            # Collect GPG keys from reposync Zypper RPM database
+            process = subprocess.Popen(['rpm', '-q', 'gpg-pubkey', '--dbpath', REPOSYNC_ZYPPER_RPMDB_PATH], stdout=subprocess.PIPE)
+            for line in process.stdout.readlines():
+                match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
+                if match:
+                    zypper_gpg_keys[match.groups()[0]] = match.groups()[1]
+
+            # Compare GPG keys and remove keys from reposync that are going to be imported with a newer release.
+            for key in zypper_gpg_keys:
+                # If the GPG key id already exists, is that new key actually newer? We need to check the release
+                release_i = int(zypper_gpg_keys[key], 16)
+                if key in spacewalk_gpg_keys and any(int(i, 16) > release_i for i in spacewalk_gpg_keys[key]):
+                    # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
+                    # We delete this key from the RPM database to allow importing the newer version.
+                    os.system("rpm --dbpath {} -e gpg-pubkey-{}-{}".format(REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]))
+
+            # Finally, once we deleted the existing old key releases from the Zypper RPM database
+            # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
+            # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
+            # properly
+            os.system("rpmkeys --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
 
     def _get_call(self, key):
         """
@@ -471,7 +516,7 @@ type=rpm-md
             zypper_cmd = "{} -n".format(zypper_cmd)
         ret_error = os.system("{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
             zypper_cmd,
-            os.path.join(CACHE_DIR, "root"),
+            REPOSYNC_ZYPPER_ROOT,
             os.path.join(repo.root, "etc/zypp/repos.d/"),
             os.path.join(repo.root, "var/cache/zypp/"),
             os.path.join(repo.root, "var/cache/zypp/raw/"),
