@@ -187,7 +187,9 @@ public class SystemsController {
                             c.getLabel(),
                             c.getName(),
                             c.isCustom(),
-                            true
+                            true,
+                            c.isCloned(),
+                            c.getArchLabel()
                             ))
                     .collect(Collectors.toList());
 
@@ -377,6 +379,8 @@ public class SystemsController {
                                 c.getName(),
                                 c.isCustom(),
                                 c.isSubscribable(user.getOrg(), server),
+                                c.isCloned(),
+                                c.getChannelArch().getLabel(),
                                 channelRecommendedFlags.get(c.getId()),
                                 preservationsByNewChild.get(c) != null ? preservationsByNewChild.get(c).getId() : null))
                         .collect(Collectors.toList());
