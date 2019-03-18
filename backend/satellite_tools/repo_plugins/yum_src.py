@@ -64,6 +64,7 @@ ZYPP_CACHE_PATH = 'var/cache/zypp'
 ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'raw')
 ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
 REPOSYNC_ZYPPER_ROOT = os.path.join(SPACEWALK_LIB, "reposync/root")
+REPOSYNC_ZYPPER_RPMDB_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, 'var/lib/rpm')
 REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
@@ -129,7 +130,7 @@ class ZyppoSync:
                    spacewalk_gpg_keys.setdefault(line_l[4][8:].lower(), []).append(format(int(line_l[5]), 'x'))
 
             # Collect GPG keys from reposync Zypper RPM database
-            process = subprocess.Popen(['rpm', '-q', 'gpg-pubkey', '--dbpath', os.path.join(REPOSYNC_ZYPPER_ROOT, "var/lib/rpm/")], stdout=subprocess.PIPE)
+            process = subprocess.Popen(['rpm', '-q', 'gpg-pubkey', '--dbpath', REPOSYNC_ZYPPER_RPMDB_PATH], stdout=subprocess.PIPE)
             for line in process.stdout.readlines():
                 match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
                 if match:
@@ -142,13 +143,13 @@ class ZyppoSync:
                 if key in spacewalk_gpg_keys and any(int(i, 16) > release_i for i in spacewalk_gpg_keys[key]):
                     # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
                     # We delete this key from the RPM database to allow importing the newer version.
-                    os.system("rpm --dbpath {} -e gpg-pubkey-{}-{}".format(os.path.join(REPOSYNC_ZYPPER_ROOT, "var/lib/rpm/"), key, zypper_gpg_keys[key]))
+                    os.system("rpm --dbpath {} -e gpg-pubkey-{}-{}".format(REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]))
 
             # Finally, once we deleted the existing old key releases from the Zypper RPM database
             # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
             # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
             # properly
-            os.system("rpmkeys --dbpath {} --import {}".format(os.path.join(REPOSYNC_ZYPPER_ROOT, "var/lib/rpm/"), f.name))
+            os.system("rpmkeys --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
 
     def _get_call(self, key):
         """
