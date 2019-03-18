@@ -169,8 +169,8 @@ public class ActivationKeysController {
         List<Channel> children = ChannelFactory.getAccessibleChildChannels(base, user);
         Map<Long, Boolean> recommendedFlags = ChannelManager.computeChannelRecommendedFlags(base, children.stream());
         ChannelsJson jsonChannel = new ChannelsJson();
-        jsonChannel.setBase(base);
-        jsonChannel.setChildrenWithRecommended(children.stream(), recommendedFlags);
+        jsonChannel.setBaseWithArchLabel(base);
+        jsonChannel.setChildrenWithRecommendedAndArch(children.stream(), recommendedFlags);
         return jsonChannel;
     }
 }
