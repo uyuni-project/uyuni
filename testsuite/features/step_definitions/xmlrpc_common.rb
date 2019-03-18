@@ -1,4 +1,4 @@
-# COPYRIGHT 2015-2018 SUSE LLC
+# COPYRIGHT 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'json'
@@ -23,7 +23,8 @@ end
 When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
   system_name = get_system_name(host)
   salt_ssh = (salt_ssh_enabled == 'enabled')
-  result = systest.bootstrap_system(system_name, '', salt_ssh)
+  akey = salt_ssh ? '1-SUSE-SSH-DEV-x86_64' : '1-SUSE-DEV-x86_64'
+  result = systest.bootstrap_system(system_name, akey, salt_ssh)
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
 
