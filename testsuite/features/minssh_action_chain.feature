@@ -17,11 +17,8 @@ Feature: Salt SSH action chain
 
 @ssh_minion
   Scenario: Pre-requisite: refresh package list
-    Given I am on the Systems overview page of this "ssh-minion"
-    When I follow "Software" in the content area
-    And I click on "Update Package List"
-    And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    When I refresh packages list via spacecmd on "ssh-minion"
+    And I wait until refresh package list on "ssh-minion" is finished
 
 @ssh_minion
   Scenario: Pre-requisite: wait until downgrade is finished

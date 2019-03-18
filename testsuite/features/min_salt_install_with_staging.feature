@@ -20,12 +20,8 @@ Feature: Install a package on the minion with staging enabled
     And I run "zypper -n rm orion-dummy" on "sle-minion" without error control
 
   Scenario: Pre-requisite: refresh package list on SLE minion 
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Software" in the content area
-    And I click on "Update Package List"
-    And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
-    Then I wait until event "Package List Refresh scheduled by admin" is completed
+    When I refresh packages list via spacecmd on "sle-minion"
+    And I wait until refresh package list on "sle-minion" is finished
 
   Scenario: Pre-requisite: ensure the errata cache is computed
     Given I am authorized as "admin" with password "admin"
