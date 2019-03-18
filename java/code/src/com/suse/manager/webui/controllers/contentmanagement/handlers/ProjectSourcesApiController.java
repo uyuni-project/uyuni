@@ -21,6 +21,7 @@ import static spark.Spark.put;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
@@ -50,8 +51,8 @@ public class ProjectSourcesApiController {
 
     /** Init routes for ContentManagement Sources Api.*/
     public static void initRoutes() {
-        put("/manager/contentmanagement/api/projects/:projectId/sources",
-                withUser(ProjectSourcesApiController::updateContentSources));
+        put("/manager/contentmanagement/api/projects/:projectId/softwaresources",
+                withUser(ProjectSourcesApiController::updateContentSoftwareSources));
 
     }
 
@@ -62,7 +63,7 @@ public class ProjectSourcesApiController {
      * @param user the current user
      * @return the JSON data
      */
-    public static String updateContentSources(Request req, Response res, User user) {
+    public static String updateContentSoftwareSources(Request req, Response res, User user) {
         ProjectSourcesRequest createSourceRequest = ProjectSourcesHandler.getSourcesRequest(req);
         String projectLabel = createSourceRequest.getProjectLabel();
 
@@ -70,8 +71,11 @@ public class ProjectSourcesApiController {
                 createSourceRequest.getProjectLabel(), user
         ).get();
 
-        List<String> sourceLabelsToDetach = dbContentProject.getSources().stream()
-                .map(source -> source.sourceLabel())
+        List<String> sourceLabelsToDetach = dbContentProject.getSources()
+                .stream()
+                .filter(SoftwareProjectSource.class::isInstance)
+                .map(SoftwareProjectSource.class::cast)
+                .map(softwareSource -> softwareSource.getChannel().getLabel())
                 .collect(Collectors.toList());
         sourceLabelsToDetach.forEach(sourceLabel -> ContentManager.detachSource(
                 projectLabel,
@@ -80,7 +84,8 @@ public class ProjectSourcesApiController {
                 user
         ));
 
-        List<String> sourceLabelsToAttach = createSourceRequest.getSoftwareSources().stream()
+        List<String> sourceLabelsToAttach = createSourceRequest.getSoftwareSources()
+                .stream()
                 .map(source -> source.getLabel())
                 .collect(Collectors.toList());
         int sourcePosition = 0;

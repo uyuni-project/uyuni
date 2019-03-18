@@ -18,13 +18,14 @@ package com.suse.manager.webui.controllers.contentmanagement.mappers;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 
 import com.suse.manager.webui.controllers.contentmanagement.response.EnvironmentResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectHistoryEntryResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectPropertiesResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResumeResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.ProjectSourceResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectSoftwareSourceResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -69,14 +70,15 @@ public class ResponseMappers {
      * @param sourcesDB the list of db envs
      * @return the List<EnvironmentResponse> view beans
      */
-    public static List<ProjectSourceResponse> mapSourcesFromDB(List<ProjectSource> sourcesDB) {
+    public static List<ProjectSoftwareSourceResponse> mapSourcesFromDB(List<SoftwareProjectSource> sourcesDB) {
         return sourcesDB
                 .stream()
                 .map(sourceDb -> {
-                    ProjectSourceResponse projectSourceResponse = new ProjectSourceResponse();
-                    projectSourceResponse.setId(sourceDb.getId().toString());
-                    projectSourceResponse.setSourceLabel(sourceDb.sourceLabel());
-                    projectSourceResponse.setSourceType(sourceDb.sourceType().getLabel());
+                    ProjectSoftwareSourceResponse projectSourceResponse = new ProjectSoftwareSourceResponse();
+                    projectSourceResponse.setId(sourceDb.getChannel().getId().toString());
+                    projectSourceResponse.setName(sourceDb.getChannel().getName());
+                    projectSourceResponse.setLabel(sourceDb.getChannel().getLabel());
+                    projectSourceResponse.setType(ProjectSource.Type.SW_CHANNEL.getLabel());
                     projectSourceResponse.setState(sourceDb.getState().name());
                     return projectSourceResponse;
                 })
@@ -115,7 +117,13 @@ public class ResponseMappers {
         ProjectResponse project = new ProjectResponse();
 
         project.setProperties(mapProjectPropertiesFromDB(projectDB));
-        project.setSources(mapSourcesFromDB(projectDB.getSources()));
+        project.setSoftwareSources(mapSourcesFromDB(
+                projectDB.getSources()
+                        .stream()
+                        .filter(SoftwareProjectSource.class::isInstance)
+                        .map(SoftwareProjectSource.class::cast)
+                        .collect(Collectors.toList())
+        ));
         project.setEnvironments(mapEnvironmentsFromDB(envsDB));
 
         return project;
