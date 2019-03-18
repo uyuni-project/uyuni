@@ -7,6 +7,7 @@ import PropertiesCreate from "../shared/components/panels/properties/properties-
 import {handlePropertiesChange} from "../shared/state/project/project.state";
 import {showErrorToastr} from "components/toastr/toastr";
 import withPageWrapper from 'components/general/with-page-wrapper';
+import { hot } from 'react-hot-loader';
 
 const CreateProject = () => {
 
@@ -49,4 +50,4 @@ const CreateProject = () => {
   )
 }
 
-export default withPageWrapper<{}>(CreateProject);
+export default hot(module)(withPageWrapper<{}>(CreateProject));

@@ -13,3 +13,12 @@
 :global(.panel-group-contentmngt > .panel:first-child) {
     border-bottom: none;
 }
+
+:global(.modal-dialog){
+    overflow-y: initial !important
+}
+:global(.modal-body){
+    height: auto;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px)
+}

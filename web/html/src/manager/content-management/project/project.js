@@ -6,7 +6,7 @@ import Sources from "../shared/components/panels/sources/sources";
 import PropertiesEdit from "../shared/components/panels/properties/properties-edit";
 import Build from "../shared/components/panels/build/build";
 import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
-import {handleSourcesChange, handleBuild} from "../shared/state/project/project.state";
+import {handleBuild} from "../shared/state/project/project.state";
 import { showErrorToastr, showSuccessToastr } from 'components/toastr/toastr';
 import Filters from "../shared/components/panels/filters/filters";
 import _isEmpty from "lodash/isEmpty";
@@ -17,6 +17,7 @@ import useProjectActionsApi from '../shared/api/use-project-actions-api';
 import withPageWrapper from 'components/general/with-page-wrapper';
 
 import type {projectType} from '../shared/type/project.type';
+import { hot } from 'react-hot-loader';
 
 type Props = {
   project: projectType,
@@ -45,7 +46,7 @@ const Project = (props: Props) => {
 
   const projectId = project.properties.label;
 
-  const changesToBuild = project.sources
+  const changesToBuild = project.softwareSources
     .filter(source => editedStates.includes(source.state))
     .map(source => ({type: "Source", name: source.name, state: statesDesc[source.state]}));
 
@@ -87,9 +88,9 @@ const Project = (props: Props) => {
       <div className="panel-group-contentmngt">
         <Sources
           projectId={projectId}
-          sources={project.sources}
-          onChange={(newSources) => {
-            setProject(handleSourcesChange(project, newSources))
+          softwareSources={project.softwareSources}
+          onChange={(projectWithNewSources) => {
+            setProject(projectWithNewSources)
           }}
         />
         <Filters/>
@@ -116,4 +117,4 @@ const Project = (props: Props) => {
   );
 }
 
-export default withPageWrapper<Props>(Project);
+export default hot(module)(withPageWrapper<Props>(Project));

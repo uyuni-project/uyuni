@@ -1,37 +1,7 @@
-import _maxBy from "lodash/maxBy";
-
 export function handlePropertiesChange (project, newProperties) {
   return {
     ...project,
     properties: newProperties
-  }
-}
-
-export function handleSourcesChange (project, newSources) {
-
-  const hasAnyEntryNotBuilt = project.properties.historyEntries.some((entry) => "draft" in entry && entry.draft);
-  if(!hasAnyEntryNotBuilt) {
-    const mostRecentVersion = _maxBy(project.properties.historyEntries, (entry) => entry.version);
-
-    const newDraftVersion = {
-      version: mostRecentVersion ? mostRecentVersion.version + 1 : 1,
-      message: "(draft - not built) - Check the colors bellow for all the changes",
-      draft: true
-    };
-
-    return {
-      ...project,
-      properties: {
-        ...project.properties,
-        historyEntries: [newDraftVersion, ...project.properties.historyEntries],
-      },
-      sources: newSources
-    }
-  }
-
-  return {
-    ...project,
-    sources: newSources
   }
 }
 

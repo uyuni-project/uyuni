@@ -34,7 +34,7 @@ const CreatorPanel = (props: Props) => {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({});
 
-  const setStateItem = (item: Object) => setItem({...item});
+  const setStateItem = (item: Object) => setItem(item);
   const modalNameId = `${props.id}-modal`;
   const panelCollapseId = props.collapsible && `${props.id}-panel`;
 
@@ -75,6 +75,7 @@ const CreatorPanel = (props: Props) => {
       <Dialog id={modalNameId}
               title={props.title}
               closableModal={false}
+              className="modal-lg"
               content={
                 props.renderCreationContent({
                   open,

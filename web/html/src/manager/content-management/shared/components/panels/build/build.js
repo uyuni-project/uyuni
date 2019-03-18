@@ -14,8 +14,8 @@ import DownArrow from '../../down-arrow/down-arrow';
 type Props = {
   versionToBuild: Object,
   onBuild: Function,
-  changesToBuild: Array<Object>,
-  disabled: boolean,
+  changesToBuild?: Array<Object>,
+  disabled?: boolean,
 }
 
 const Build = (props: Props) => {
@@ -48,6 +48,7 @@ const Build = (props: Props) => {
           <Dialog id={modalNameId}
                   title="Build Project"
                   closableModal={false}
+                  className="modal-lg"
                   content={
                     isLoading
                       ? <Loading text='Building project..'/>
@@ -72,8 +73,8 @@ const Build = (props: Props) => {
                             divClass="col-md-9"/>
                         </div>
                         <dl className="row">
-                          <dt className="col-xs-3">Version {buildVersionForm.version} history:</dt>
-                          <dd className="col-xs-6">
+                          <dt className="col-md-3 control-label">Version {buildVersionForm.version} history:</dt>
+                          <dd className="col-md-9">
                             <ul className="list-unstyled">
                               {
                                 props.changesToBuild.map((change, index) => {

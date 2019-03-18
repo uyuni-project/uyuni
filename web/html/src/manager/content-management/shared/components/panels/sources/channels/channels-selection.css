@@ -1,0 +1,11 @@
+.search_icon_container {
+    color: rgba(167, 169, 172, 0.6);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 1.4em;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-top: 4px;
+    padding: 0px;
+}

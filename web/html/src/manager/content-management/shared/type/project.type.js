@@ -1,30 +1,30 @@
+// @flow
 export type projectPropertiesType = {
-  label?: string,
-  name?: string,
-  description?: string,
-  historyEntries?: string,
+  label: String,
+  name: String,
+  description?: String,
+  historyEntries?: String,
 }
 
-export type projectSourceType = {
-  id: string,
-  name: string,
-  type: string,
-  level: string,
-  state: string
+export type projectSoftwareSourceType = {
+  id: String,
+  name: String,
+  label: String,
+  state: String,
+  type: String,
 }
 
 export type projectEnvironmentType = {
-  projectLabel: string,
-  label: string,
-  name: string,
-  description: string,
+  projectLabel: String,
+  label: String,
+  name: String,
+  description: String,
 }
 
 
 export type projectType = {
-  properties: projectProperties,
-  sources: Array<projectSource>,
+  properties: projectPropertiesType,
+  softwareSources: Array<projectSoftwareSourceType>,
   filters: Array<any>,
-  environments: Array<projectEnvironment>
-
+  environments: Array<projectEnvironmentType>
 }

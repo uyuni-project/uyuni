@@ -2,70 +2,84 @@
 import React from 'react';
 import {Select} from "../../../../../../components/input/Select";
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
-import {addSource, modifySource, deleteSource} from "./sources.utils";
-import {showSuccessToastr} from "components/toastr/toastr";
+import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 
-import type {projectSourceType} from '../../../type/project.type.js';
+import type {projectSoftwareSourceType} from '../../../type/project.type.js';
+import useProjectActionsApi from "../../../api/use-project-actions-api";
+import ChannelsSelection from "./channels/channels-selection";
+import {Panel} from "../../../../../../components/panels/Panel";
 
 type SourcesProps = {
-  sources: Array<projectSourceType>,
+  projectId: string,
+  softwareSources: Array<projectSoftwareSourceType>,
   onChange: Function,
 };
 
-// TODO: Implement STATE logic in backend
-const panelsStateClassName = {
-  "0": "panel-success",
-  "1": "panel-default",
-  "2": "panel-warning",
-  "3": "panel-danger",
-}
-
-const generateNewSource = () => ({
-  id: Math.floor((Math.random() * 10000)),
-  name: ["SLES11 SP4 Pool x86_64", "SLES15 x86_64"][Math.floor(Math.random() * 2)],
-  type: "Software Channel",
-  level: "Child Channel",
-})
-
 const ModalSourceCreationContent = (props) => {
+
+  // The sourcetypes are hardcoded, but this could be improved in the future injecting the ProjectSource.type enum by server
   return (
-    <React.Fragment>
+    <form className="form-horizontal">
       <div className="row">
         <Select
           name="sourceType"
           label={t("Type")}
           labelClass="col-md-3"
-          divClass="col-md-9">
-          <option key="0" value="1">Channel</option>
+          divClass="col-md-8">
+          <option key="0" value="software">Channel</option>
         </Select>
       </div>
-      <div className="row">
-        <Select
-          name="sourceBaseChannel"
-          label={t("Base Channel")}
-          labelClass="col-md-3"
-          divClass="col-md-9">
-          <option key="0" value="1">SLES11 SP4 Pool x86_64</option>
-          <option key="1" value="2">SLES12 SP3 Pool x86_64</option>
-        </Select>
-      </div>
-      <div className="row">
-        <div className="form-group">
-          <label className="col-lg-3 control-label">Child Channels:</label>
-          <div className="col-lg-9">
-            <input type="checkbox" />&nbsp;&nbsp;<label>SLES12 SP3 Updates x86_64</label>
-            <br />
-            <input type="checkbox" />&nbsp;&nbsp;<label>SLES12 SP3 Updates x86_64</label>
-            <br />
-            <input type="checkbox" />&nbsp;&nbsp;<label>SLES12 SP3 Updates x86_64</label>
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
+      <ChannelsSelection
+        initialSelectedIds={props.softwareSources.map(source => source.id)}
+        onChange={(selectedChannels) => {
+          props.onChange(selectedChannels.map(c => c.label))
+        }}
+      />
+    </form>
   )
 }
 
+const renderSourceEntry = (source) => {
+  if (source.state === 'ATTACHED') {
+    return (
+      <div
+        style={{padding: "3px 3px 3px 0px"}}
+        className="text-success"
+        href="#">
+        <i className='fa fa-plus'/>
+        <b>{source.name}</b>
+      </div>
+    );
+  }
+  if (source.state === 'DETACHED') {
+    return (
+      <div
+        style={{
+          padding: "3px 3px 3px 0px",
+          textDecoration: "line-through"
+        }}
+        className="text-danger"
+        href="#">
+        <i className='fa fa-minus'/>
+        <b>{source.name}</b>
+      </div>
+    );
+  }
+  return (
+    <div
+      style={{padding: "3px 3px 3px 0px"}}
+      href="#">
+      {source.name}
+    </div>
+  );
+}
+
 const Sources = (props: SourcesProps) => {
+
+  const {onAction, cancelAction, isLoading} = useProjectActionsApi({
+    projectId: props.projectId, nestedResource: "softwaresources"
+  });
+
 
   return (
     <CreatorPanel
@@ -75,54 +89,65 @@ const Sources = (props: SourcesProps) => {
       panelLevel="2"
       collapsible
       customIconClass="fa-small"
-      onSave={({closeDialog}) => {
-        const randomSource = generateNewSource();
-        props.onChange(addSource(props.sources, {...randomSource, state:  "0"}))
-        closeDialog();
-        showSuccessToastr(`${randomSource.name} added successfully`)
+      onOpen={({setItem}) => setItem(props.softwareSources.map(source => source.label))}
+      onSave={({closeDialog, item}) => {
+        const requestParam = {
+          projectLabel: props.projectId,
+          softwareSources: item.map(label => ({label})),
+        };
+
+        onAction(requestParam, "update")
+          .then((projectWithUpdatedSources) => {
+            props.onChange(projectWithUpdatedSources)
+            closeDialog();
+            showSuccessToastr(t("Sources edited successfully"));
+            props.onChange(projectWithUpdatedSources)
+          })
+          .catch((error) => {
+            showErrorToastr(error);
+          });
       }}
-      renderCreationContent={() => <ModalSourceCreationContent source={{}} />}
+      renderCreationContent={({setItem}) =>
+        <ModalSourceCreationContent
+          softwareSources={props.softwareSources}
+          onChange={(channelsLabel) => {
+            setItem(channelsLabel);
+          }}
+        />}
       renderContent={() =>
         <div className="min-height-panel">
           {
-            props.sources.map(source =>
-              <div className="col-xs-3">
-                <CreatorPanel
-                  id={`source${source.id}`}
-                  title={source.name}
-                  creatingText="Edit"
-                  panelLevel="4"
-                  className={panelsStateClassName[source.state]}
-                  onSave={({closeDialog}) => {
-                    const nextState = source.state === "0" ? "0" : "2";
-                    props.onChange(modifySource(props.sources, {...source, state:  nextState}))
-                    closeDialog();
-                    showSuccessToastr(`${source.name} edited successfully`)
-                  }}
-                  onDelete={({closeDialog}) => {
-                    if(source.state === "0") {
-                      props.onChange(deleteSource(props.sources, source))
-                    } else {
-                      props.onChange(modifySource(props.sources, {...source, state:  "3"}))
-                    }
-                    closeDialog();
-                    showSuccessToastr(`${source.name} deleted successfully`)
-                  }}
-                  renderCreationContent={() => <ModalSourceCreationContent source={{}} />}
-                  renderContent={() => (
-                    <React.Fragment>
-                      <dl className="row">
-                        <dt className="col-xs-3">Type:</dt>
-                        <dd className="col-xs-9">{source.type}</dd>
-                      </dl>
-                      <dl className="row">
-                        <dt className="col-xs-3">Level:</dt>
-                        <dd className="col-xs-9">{source.level}</dd>
-                      </dl>
-                    </React.Fragment>
-                  )}/>
+            props.softwareSources.length > 0 &&
+            <Panel
+              headingLevel="h4"
+              title={t('Software Channels')}
+            >
+              <div className="col-xs-12">
+                <React.Fragment>
+                  <dl className="row">
+                    <dt className="col-xs-2">Base Channel:</dt>
+                    <dd className="col-xs-10">
+                      {renderSourceEntry(props.softwareSources[0])}
+                    </dd>
+                  </dl>
+
+                  <dl className="row">
+                    <dt className="col-xs-2">Child Channels:</dt>
+                    <dd className="col-xs-6">
+                      <ul className="list-unstyled">
+                        {
+                          props.softwareSources.slice(1, props.softwareSources.length).map(source =>
+                            <li>
+                              {renderSourceEntry(source)}
+                            </li>
+                          )
+                        }
+                      </ul>
+                    </dd>
+                  </dl>
+                </React.Fragment>
               </div>
-            )
+            </Panel>
           }
         </div>
       }
