@@ -257,6 +257,9 @@ public class ContentManager {
                 // if a source has been DETACHED and we attach it again -> it gets back to original state (BUILT)
                 src.setState(BUILT);
             }
+            project.removeSource(src);
+            project.addSource(src, position);
+            ContentProjectFactory.save(project);
             ContentProjectFactory.save(src);
             return src;
         }
