@@ -97,7 +97,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 user,
                 Arrays.asList(minion1.getId(), minion2.getId()),
                 Collections.singletonList(ApplyStatesEventMessage.PACKAGES),
-                Date.from(Instant.now().minus(6, ChronoUnit.MINUTES)));
+                Date.from(Instant.now().minus(62, ChronoUnit.MINUTES)));
         action.addServerAction(ActionFactoryTest.createServerAction(minion1, action));
         action.addServerAction(ActionFactoryTest.createServerAction(minion2, action));
 
