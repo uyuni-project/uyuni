@@ -136,7 +136,7 @@ class CursesDisplayBuilder:
     def add_column_value_to_screen(self, screen, value, ypos, xpos, column_width, justify, maxy, maxx):
         if len(value) > column_width:
             value = self.string_of_length(column_width)
-        addxpos = xpos + justify * (column_width - len(value)) / 2
+        addxpos = int(xpos + justify * (column_width - len(value)) / 2)
         # need to skip writing to the last character on the last line
         # so the cursor has a place to exist, even though its not
         # visible
