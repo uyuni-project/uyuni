@@ -989,6 +989,11 @@ When(/^I delete all "([^"]*)" volumes from "([^"]*)" pool on "([^"]*)" without e
   output.each_line { |volume| node.run("virsh vol-delete #{volume} #{pool}", false) }
 end
 
+When(/I refresh the "([^"]*)" storage pool of this "([^"]*)"/) do |pool, host|
+  node = get_target(host)
+  node.run("virsh pool-refresh #{pool}")
+end
+
 When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
   node = get_target(host)
   source = File.dirname(__FILE__) + '/../upload_files/susemanager-virtpoller.conf'

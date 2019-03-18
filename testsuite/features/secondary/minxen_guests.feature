@@ -195,6 +195,13 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And "test-vm3" virtual machine on "xen-server" should have a "test-vm3_system.qcow2" xen disk
 
 @virthost_xen
+  Scenario: Show the virtual storage pools and volumes for Xen
+    Given I am on the "Virtualization" page of this "xen-server"
+    When I follow "Storage"
+    And I open the sub-list of the product "default"
+    Then I wait until I see "test-vm2_system.qcow2" text
+
+@virthost_xen
   Scenario: delete a running Xen virtual machine
     Given I am on the "Virtualization" page of this "xen-server"
     When I click on "Delete" in row "test-vm3"
