@@ -180,6 +180,14 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I close the window
 
 @virthost_kvm
+  Scenario: Show the virtual storage pools and volumes for KVM
+    Given I am on the "Virtualization" page of this "kvm-server"
+    When I refresh the "test-pool0" storage pool of this "kvm-server"
+    When I follow "Storage"
+    And I open the sub-list of the product "test-pool0"
+    Then I wait until I see "test-vm2_system.qcow2" text
+
+@virthost_kvm
   Scenario: delete a running KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Delete" in row "test-vm2"
