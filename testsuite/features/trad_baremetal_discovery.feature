@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Bare metal discovery
@@ -6,10 +6,11 @@ Feature: Bare metal discovery
   Scenario: Delete the normal traditional client for bare metal feature
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
     Then I should see a "System profile" text
-    And I should see a "has been deleted" text
+    When I wait until I see "has been deleted" text
+    Then "sle-client" should not be registered
 
   Scenario: Enable bare metal discovery
     Given I am authorized as "admin" with password "admin"
@@ -103,8 +104,10 @@ Feature: Bare metal discovery
   Scenario: Cleanup: delete the bare metal system profile
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle-client" should not be registered
 
   Scenario: Cleanup: disable bare metal discovery
     Given I am authorized as "admin" with password "admin"

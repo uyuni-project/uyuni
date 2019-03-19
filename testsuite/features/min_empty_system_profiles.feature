@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Empty minion profile operations
@@ -34,19 +34,19 @@ Feature: Empty minion profile operations
 
   Scenario: Cleanup: Delete first empty minion profile
     Given I am authorized
-    And I navigate to "rhn/systems/SystemList.do" page
-    When I follow "empty-profile"
-    When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
-    
+    When I navigate to "rhn/systems/SystemList.do" page
+    And I follow "empty-profile"
+    And I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+
   Scenario: Cleanup: Delete second empty minion profiles
     Given I am authorized
-    And I navigate to "rhn/systems/SystemList.do" page
-    When I follow "empty-profile-hostname"
-    When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
+    When I navigate to "rhn/systems/SystemList.do" page
+    And I follow "empty-profile-hostname"
+    And I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
 

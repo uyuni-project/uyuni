@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Register a Salt minion via XML-RPC API
@@ -6,10 +6,11 @@ Feature: Register a Salt minion via XML-RPC API
   Scenario: Delete SLES minion system profile before XML-RPC bootstrap test
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     And I cleanup minion "sle-minion"
+    Then "sle-minion" should not be registered
 
   Scenario: Bootstrap a SLES minion via XML-RPC
     Given I am logged in via XML-RPC system as user "admin" and password "admin"

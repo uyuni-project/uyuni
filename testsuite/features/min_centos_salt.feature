@@ -14,8 +14,8 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-    And "ceos-ssh-minion" should not be registered
+    And I wait until I see "has been deleted" text
+    Then "ceos-ssh-minion" should not be registered
 
 @centos_minion
   Scenario: Bootstrap a CentOS minion
@@ -117,8 +117,8 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-    And "ceos-minion" should not be registered
+    And I wait until I see "has been deleted" text
+    Then "ceos-minion" should not be registered
 
 @centos_minion
   Scenario: Cleanup: bootstrap a SSH-managed CentOS minion
