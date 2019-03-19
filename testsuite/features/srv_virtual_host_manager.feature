@@ -68,7 +68,6 @@ Feature: Virtual host manager web UI
     And I follow "Delete System"
     And I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "10.162.186.111" should not be registered
 
   Scenario: Cleanup: delete virtual host 10.162.186.112
     Given I am on the Systems page
@@ -76,4 +75,3 @@ Feature: Virtual host manager web UI
     And I follow "Delete System"
     And I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "10.162.186.112" should not be registered
