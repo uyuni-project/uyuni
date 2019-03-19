@@ -46,7 +46,6 @@
         <archive path="/usr/share/java/taglibs-core.jar"/>
         <archive path="/usr/share/java/quartz.jar" source="/rhn-java/code/libsrc/quartz-1.5.1-src.jar"/>
         <archive javadoc="file:/usr/share/javadoc/jakarta-commons-cli/" path="/usr/share/java/commons-cli.jar" source="/rhn-java/code/libsrc/commons-cli-1.0-src.jar"/>
-        <archive path="/usr/share/java/tanukiwrapper.jar"/>
         <archive path="/usr/share/java/concurrent.jar"/>
         <archive path="/usr/share/java/jakarta-commons-discovery.jar"/>
     </library>
