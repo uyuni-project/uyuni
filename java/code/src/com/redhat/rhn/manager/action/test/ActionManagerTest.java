@@ -83,6 +83,7 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -151,6 +152,51 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action a2 = ActionManager.lookupAction(user, actionId);
         assertNotNull(a2);
+    }
+
+    public void testActionsArchivedOnSystemDeleteUser() throws Exception {
+        Server server = ServerTestUtils.createTestSystem(user);
+
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+
+        action.addServerAction(serverAction);
+        ActionManager.storeAction(action);
+
+        Action result = ActionManager.lookupAction(user, action.getId());
+        assertNotNull(result);
+
+        SystemManager.deleteServer(user, server.getId());
+
+        try {
+            // Regular users cannot see orphan actions
+            ActionManager.lookupAction(user, action.getId());
+            fail("Must throw LookupException.");
+        }
+        catch (LookupException ignored) {
+        }
+    }
+
+    public void testActionsArchivedOnSystemDeleteAdmin() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerTestUtils.createTestSystem(user);
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+
+        action.addServerAction(serverAction);
+        ActionManager.storeAction(action);
+
+        Action result = ActionManager.lookupAction(user, action.getId());
+        assertNotNull(result);
+
+        SystemManager.deleteServer(user, server.getId());
+        // Admins should see orphan actions
+        result = ActionManager.lookupAction(user, action.getId());
+        assertNotNull(result);
+        assertEquals(1, (long) result.getArchived());
+        assertServerActionCount(action, 0);
     }
 
     public void testFailedActions() throws Exception {
