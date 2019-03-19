@@ -62,7 +62,7 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
 #    Then I should see "ubuntu-minion" hostname
 
 @ubuntu_minion
-  Scenario: Re-subscribe the SSH-managed Ubuntu minion to a base channel
+  Scenario: Subscribe the Ubuntu minion to a base channel
     Given I am on the Systems overview page of this "ubuntu-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
