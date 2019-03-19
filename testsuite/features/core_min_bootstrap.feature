@@ -159,6 +159,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     And I apply highstate on "sle-minion"
     And I wait until "docker" service is active on "sle-minion"
     And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle-minion"
+    And I wait until event "Apply highstate scheduled by admin" is completed
     And I disable repositories after installing Docker
 
   Scenario: Check that the minion is now a build host
