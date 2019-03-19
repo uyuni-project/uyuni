@@ -64,7 +64,6 @@ Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 #Requires: picocontainer
 Requires:       simple-core
-Requires:       tanukiwrapper
 Obsoletes:      rhn-search < 5.3.0
 BuildRequires:  ant
 #BuildRequires: apache-ibatis-sqlmap
@@ -81,7 +80,6 @@ BuildRequires:  redstone-xmlrpc
 #BuildRequires: picocontainer
 BuildRequires:  simple-core
 BuildRequires:  slf4j
-BuildRequires:  tanukiwrapper
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1315
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -166,7 +164,6 @@ install -p -m 644 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
 %else
 install -p -m 755 src/config/rhn-search.init $RPM_BUILD_ROOT%{_initrddir}/rhn-search
 %endif
-ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/rhnsearchd
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar

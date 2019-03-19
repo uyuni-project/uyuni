@@ -9,7 +9,6 @@
         <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
         <dependency org="suse" name="mybatis" rev="3.2.3" />
         <dependency org="suse" name="quartz" rev="2.3.0" />
-        <dependency org="suse" name="tanukiwrapper" rev="3.2.3" />
         <dependency org="suse" name="log4j" rev="1.2.15" />
         <dependency org="suse" name="nutch-core" rev="1.0" />
         <dependency org="suse" name="junit" rev="3.8.2" />
