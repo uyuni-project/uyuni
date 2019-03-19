@@ -1,3 +1,5 @@
+- Fix creation of bootstrap repositories for SLE12 (no SP) by
+  requiring python-setuptools only for SLE12 >= SP1 (bsc#1129765)
 - Allow alternative names for bootstrap packages, to allow
   using old client tools after package renames
 - Feat: create Ubuntu empty repository
