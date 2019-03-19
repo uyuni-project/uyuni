@@ -105,7 +105,6 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
 
         updateCobblerFields(prof);
 
-        invokeCobblerUpdate();
         ksData.setCobblerId(prof.getUid());
         if (callCobblerSync) {
             return new CobblerSyncCommand(user).store();
