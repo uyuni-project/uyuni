@@ -747,6 +747,22 @@ ORDER BY si.checkin
   </query>
 </mode>
 
+<mode name="find_regular_minions_checkin_candidates" class="com.redhat.rhn.taskomatic.task.checkin.SystemSummary">
+  <query params="checkin_threshold">
+      SELECT s.id,
+             s.name,
+             TO_CHAR(si.checkin, 'YYYY-MM-DD HH24:MI:SS') as last_checkin,
+             smi.minion_id
+      FROM rhnServer s
+          JOIN rhnServerInfo si ON si.server_id = s.id
+          JOIN suseServerContactMethod scm ON s.contact_method_id = scm.id
+          JOIN suseMinionInfo smi ON smi.server_id = s.id
+      WHERE scm.label = 'default'
+          AND si.checkin &lt; current_timestamp - numtodsinterval(:checkin_threshold, 'second')
+      ORDER BY si.checkin
+  </query>
+</mode>
+
 <write-mode name="skip_running_and_ready_jobs_by_label">
   <query params="job_label">
 UPDATE rhnTaskoRun SET status = 'SKIPPED'
