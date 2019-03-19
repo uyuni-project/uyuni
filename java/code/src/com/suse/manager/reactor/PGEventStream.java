@@ -41,8 +41,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
@@ -55,8 +56,12 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     private static final int THREAD_POOL_SIZE = ConfigDefaults.get().getSaltEventThreadPoolSize();
 
     private PGConnection connection;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(
+    private final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
             THREAD_POOL_SIZE,
+            THREAD_POOL_SIZE,
+            0L,
+            TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<Runnable>(),
             new BasicThreadFactory.Builder().namingPattern("salt-event-thread-%d").build()
     );
 
@@ -84,7 +89,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             startConnectionWatchdog();
 
             LOG.debug("Listening succeeded, making sure there is no event left in queue...");
-            notification(0, null, null);
+            notification(SaltEventFactory.countSaltEvents());
         }
         catch (SQLException e) {
             throw new SaltException(e);
@@ -93,6 +98,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     /**
      * Checks every 5s that the connection is alive. If not, notifies all listeners that we are shutting down.
+     * Additionally, a cleanup of possible stale events is fired.
      *
      * It is up to SaltReactor to create a new instance of this class and restart from scratch.
      */
@@ -103,6 +109,17 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                 try {
                     try (Statement s = connection.createStatement()) {
                         s.execute("SELECT 'salt-event-connection-watchdog';");
+
+                        // if we have any rows in suseSaltEvent that do not yet have a process task queued or executing
+                        // then schedule tasks for them
+                        // this can only happen in case we lost notifications somehow
+                        long allJobs = SaltEventFactory.countSaltEvents();
+                        long queuedJobs = executorService.getTaskCount() - executorService.getCompletedTaskCount();
+                        long missingJobs = allJobs - queuedJobs;
+                        if (missingJobs > 0) {
+                            LOG.warn("Found " + missingJobs + " events without a job. Scheduling...");
+                            notification(missingJobs);
+                        }
                     }
                 }
                 catch (SQLException e) {
@@ -115,9 +132,17 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     @Override
     public void notification(int processId, String channelName, String payload) {
+        notification(Long.parseLong(payload));
+    }
+
+    /**
+     * Called every time a notification from Postgres (ultimately from mgr_engine.py) is fired.
+     * @param count the number of INSERTed events to be handled
+     */
+    public void notification(long count) {
         // compute the number of jobs we need to do - each job COMMITs individually
         // jobs = events / MAX_EVENTS_PER_COMMIT (rounded up)
-        long jobs = (SaltEventFactory.countSaltEvents() + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
+        long jobs = (count + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
 
         // queue one handlingTransaction(processEvents) call per job
         for (int j = 0; j < jobs; j++) {

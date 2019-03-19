@@ -170,7 +170,7 @@ class Responder:
         if self.tokens > 0 and self.counter > 0:
             log.debug("%s: commit", __name__)
             self.cursor.execute(
-                'NOTIFY {};'.format(self.config['postgres_db']['notify_channel'])
+                "NOTIFY {}, '{}';".format(self.config['postgres_db']['notify_channel'], self.counter)
             )
             self.connection.commit()
             self.counter = 0
