@@ -2721,6 +2721,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="osimage_build_host">
         <source>OS Image Build Host</source>
       </trans-unit>
+      <trans-unit id="monitoring_entitled">
+        <source>Monitoring</source>
+      </trans-unit>
       <trans-unit id="task.status.matcher">
         <source>Subscription Matcher Run</source>
       </trans-unit>
