@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Virtual host manager web UI
@@ -63,13 +63,17 @@ Feature: Virtual host manager web UI
     Then I should see a "No Virtual Host Managers." text
 
   Scenario: Cleanup: delete virtual host 10.162.186.111
-   Given I am on the Systems page
+    Given I am on the Systems page
     When I follow "10.162.186.111"
     And I follow "Delete System"
     And I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "10.162.186.111" should not be registered
 
   Scenario: Cleanup: delete virtual host 10.162.186.112
-   Given I am on the Systems page
+    Given I am on the Systems page
     When I follow "10.162.186.112"
     And I follow "Delete System"
     And I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "10.162.186.112" should not be registered
