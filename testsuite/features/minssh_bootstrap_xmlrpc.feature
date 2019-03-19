@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC.
+# Copyright (c) 2017-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 Feature: Register a salt-ssh system via XML-RPC
@@ -7,10 +7,11 @@ Feature: Register a salt-ssh system via XML-RPC
   Scenario: Setup XML-RPC bootstrap: delete SSH minion system profile
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     And I cleanup minion "ssh-minion"
+    Then "ssh-minion" should not be registered
 
 @ssh_minion
   Scenario: Bootstrap a SLES SSH minion via XML-RPC

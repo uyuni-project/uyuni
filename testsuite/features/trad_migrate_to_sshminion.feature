@@ -113,7 +113,8 @@ Feature: Migrate a traditional client into a Salt SSH minion
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
+    And I wait until I see "has been deleted" text
+    Then "sle-migrated-minion" should not be registered
     When I enable SUSE Manager tools repository on "sle-migrated-minion"
     And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-migrated-minion"
     And I register using "1-SUSE-DEV-x86_64" key

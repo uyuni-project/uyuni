@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on a JeOS image present on the proxy
@@ -266,9 +266,10 @@ Feature: PXE boot a Retail terminal
   Scenario: Cleanup: delete the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I should see a "has been deleted" text
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "pxeboot-minion" should not be registered
     # TODO: for full idempotency, also stop salt-minion service
 
 @proxy

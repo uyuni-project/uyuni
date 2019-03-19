@@ -12,10 +12,11 @@ Feature: Register a Salt minion via Bootstrap-script
   Scenario: Delete SLES minion system profile before script bootstrap test
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     And I cleanup minion "sle-minion"
+    Then "sle-minion" should not be registered
 
   Scenario: Create bootstrap script
     Given I am authorized as "admin" with password "admin"

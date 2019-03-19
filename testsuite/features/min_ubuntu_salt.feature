@@ -11,7 +11,7 @@
 Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on it
 
 #TODO: External repos are disabled, so we need to figure out how to enable the repo
-#      for salt service before uncomment it
+#      for salt service before we uncomment it
 #@ubuntu_minion
 #  Scenario: Install Salt service from Ubuntu minion
 #    When I install Salt packages from "ubuntu-minion"
@@ -23,8 +23,8 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-    And "ubuntu-ssh-minion" should not be registered
+    And I wait until I see "has been deleted" text
+    Then "ubuntu-ssh-minion" should not be registered
 
 @ubuntu_minion
   Scenario: Bootstrap an Ubuntu minion
@@ -128,8 +128,8 @@ Feature: Be able to bootstrap an Ubuntu minion and do some basic operations on i
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-    And "ubuntu-minion" should not be registered
+    And I wait until I see "has been deleted" text
+    Then "ubuntu-minion" should not be registered
 
 @ubuntu_minion
   Scenario: Cleanup: bootstrap a SSH-managed Ubuntu minion

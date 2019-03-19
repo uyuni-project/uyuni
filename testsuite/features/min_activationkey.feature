@@ -1,4 +1,4 @@
-# Copyright (c) 2018 SUSE LLC
+# Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Bootstrap a Salt minion via the GUI with an activation key
@@ -6,10 +6,11 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Delete SLES minion system profile
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     And I cleanup minion "sle-minion"
+    Then "sle-minion" should not be registered
 
   Scenario: Create a configuration channel for the activation key
     Given I am authorized as "admin" with password "admin"
