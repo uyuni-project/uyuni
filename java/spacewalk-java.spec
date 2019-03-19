@@ -300,7 +300,6 @@ BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
 BuildRequires:  stringtree-json
-BuildRequires:  tanukiwrapper
 %if 0%{?run_checkstyle}
 BuildRequires:  checkstyle
 %endif
@@ -436,7 +435,6 @@ Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib
-Requires:       tanukiwrapper
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 %if 0%{?suse_version}
@@ -718,7 +716,6 @@ install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdi
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{cobdirsnippets}/wait_for_networkmanager_script
 
-ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/taskomaticd
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT%{realcobsnippetsdir}/spacewalk
@@ -928,7 +925,6 @@ fi
 %{jardir}/simple-xml.jar
 %{jardir}/sitemesh.jar
 %{jardir}/stringtree-json.jar
-%{jardir}/tanukiwrapper.jar
 # %{jardir}/velocity-*.jar
 %{jardir}/xalan-j2.jar
 %{jardir}/xalan-j2-serializer.jar

@@ -79,7 +79,6 @@
         <dependency org="suse" name="taglibs-standard-impl" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-spec" rev="1.2.5" />
-        <dependency org="suse" name="tanukiwrapper" rev="3.5.32" />
         <dependency org="suse" name="xalan-j2" rev="2.7.2" />
         <dependency org="suse" name="xalan-j2-serializer" rev="2.7.2" />
         <dependency org="suse" name="xerces-j2" rev="2.11.0" />

@@ -63,7 +63,6 @@
         <dependency org="redhat" name="strutstest" rev="2.1.3" />
         <dependency org="redhat" name="taglibs-core" rev="1.1.0" />
         <dependency org="redhat" name="taglibs-standard" rev="1.1.0" />
-        <dependency org="redhat" name="tanukiwrapper" rev="3.5.29" />
         <dependency org="redhat" name="tyrex" rev="1.0" />
         <dependency org="redhat" name="xalan-j2" rev="2.6.0" />
         <dependency org="redhat" name="xerces-j2" rev="2.6.2" />
