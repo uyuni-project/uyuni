@@ -828,7 +828,8 @@ And(/^I remove package "([^"]*)" from highstate$/) do |package|
   rows.all('tr').each do |tr|
     next unless tr.text.include?(package)
     puts tr.text
-    tr.find('#sles-release-pkg-state').select('Removed')
+    tr.find("##{package}-pkg-state").select('Removed')
+    next if page.has_css?('#save[disabled]')
     steps %(
       Then I click on "Save"
       And I click on "Apply"
