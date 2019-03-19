@@ -186,6 +186,9 @@ public class TaskConstants {
     public static final String TASK_QUERY_SSH_PUSH_FIND_CHECKIN_CANDIDATES =
             "ssh_push_find_checkin_candidates";
 
+    public static final String TASK_QUERY_MINION_CHECKIN_FIND_CHECKIN_CANDIDATES =
+            "find_regular_minions_checkin_candidates";
+
     public static final String TASK_QUERY_SKIP_RUNNING_AND_READY_JOBS_BY_LABEL =
             "skip_running_and_ready_jobs_by_label";
 

@@ -816,14 +816,17 @@ public class SaltService {
     /**
      * Pings a target set of minions.
      * @param targetIn the target
-     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
+     * @return the LocalAsyncResult of the test.ping call
      * @throws SaltException if we get a failure from Salt
      */
-    public Map<String, Result<Boolean>> ping(MinionList targetIn) throws SaltException {
-        return callSync(
-            Test.ping(),
-            targetIn
-        );
+    public LocalAsyncResult<Boolean> ping(MinionList targetIn) throws SaltException {
+        try {
+            LocalCall<Boolean> call = Test.ping();
+            return callAsync(call, targetIn);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
