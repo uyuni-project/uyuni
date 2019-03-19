@@ -843,7 +843,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
                     SUSEProductFactory.getSession().flush();
                     // select from view should succeed
-                    SUSEProductFactory.getSession().createNativeQuery("select * from rhnServerOverview").list();
+                    SUSEProductFactory.getSession().createNativeQuery("select org_id, server_id, last_checkin, os, locked from rhnServerOverview").list();
 
                 }, DEFAULT_CONTACT_METHOD);
     }
