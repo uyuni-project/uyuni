@@ -1,4 +1,4 @@
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2016-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Register a traditional system to be managed via SSH push
@@ -6,8 +6,10 @@ Feature: Register a traditional system to be managed via SSH push
   Scenario: Delete the traditional client for ssh-reverse bootrap
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle-client" should not be registered
 
   Scenario: Create an activation key for SSH push
     Given I am on the Systems page
@@ -45,8 +47,10 @@ Feature: Register a traditional system to be managed via SSH push
   Scenario: Cleanup: delete the traditional SSH push client
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle-client" should not be registered
 
   Scenario: Cleanup: delete the activation key for SSH push
     Given I am on the Systems page

@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Management of minion keys
@@ -9,9 +9,10 @@ Feature: Management of minion keys
   Scenario: Delete SLES minion system profile before exploring the onboarding page
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle-minion" should not be registered
 
   Scenario: Completeness of the onboarding page
     Given I am authorized as "testing" with password "testing"
@@ -65,8 +66,8 @@ Feature: Management of minion keys
     When I click on "Delete Profile"
     Then I should see a "minion_unreachable" text
     When I click on "Delete Profile Without Cleanup"
-    And I wait for "1" second
-    Then I should see a "has been deleted" text
+    And I wait until I see "has been deleted" text
+    Then "sle-minion" should not be registered
 
   Scenario: Cleanup: bootstrap again the minion
     Given I am authorized
