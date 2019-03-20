@@ -182,29 +182,38 @@ def create_repo(label, flush, additional=[]):
     packagelist.extend(additional)
     logging.debug("The bootstrap repo should contain the following packages: {0}".format(packagelist))
 
-    for pkgname in packagelist:
-        h.execute(parentchannel=options.parentchannel, pkgname=pkgname)
-        pkgs = h.fetchall_dict() or []
-        logging.debug("Package {0} found {1} resulting packages:".format(
-            pkgname, len(pkgs)))
-        if len(pkgs) == 0:
-            messages.append("ERROR: package '%s' not found" % pkgname)
-            errors += 1
-            if not suggestions['no-packages']:
-                suggestions['no-packages'] = ('mgr-create-bootstrap-repo uses the locally synchronized ' +
-                                              'versions of files from the SUSE Manager Tools repository, ' +
-                                              'and uses the locally synchronized pool channel for dependency resolution. ' +
-                                              'Both should be fully synched before running the mgr-create-bootstrap script.')
-            continue
-        for p in pkgs:
-            logging.debug(p)
-            rpmdir = os.path.join(destdir, p['arch'])
-            if not os.path.exists(rpmdir):
-                os.makedirs(rpmdir)
-            print("copy '%s'" % p['nvrea'])
-            logging.debug("copy {0} / {1} to {2}".format(basepath, p['path'], rpmdir))
-            if not dryrun:
-                shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
+    for pkgaltstr in packagelist:
+        alt = pkgaltstr.split("|")
+        altpretty =  ', '.join("'%s'" %(e) for e in alt)
+        altcount = 0
+        for pkgname in alt:
+            altcount += 1
+            h.execute(parentchannel=options.parentchannel, pkgname=pkgname)
+            pkgs = h.fetchall_dict() or []
+            logging.debug("Package {0} found {1} resulting packages:".format(
+                pkgname, len(pkgs)))
+            if len(pkgs) == 0:
+                if altcount >= len(alt):
+                    if len(alt) > 1:
+                        messages.append("ERROR: none of %s found" % altpretty)
+                    else:
+                        messages.append("ERROR: package '%s' not found" % pkgname)
+                    errors += 1
+                    if not suggestions['no-packages']:
+                       suggestions['no-packages'] = ('mgr-create-bootstrap-repo uses the locally synchronized ' +
+                                                      'versions of files from the Tools repository, ' +
+                                                      'and uses the locally synchronized pool channel for dependency resolution. ' +
+                                                      'Both should be fully synced before running the mgr-create-bootstrap-repo script.')
+                continue
+            for p in pkgs:
+                logging.debug(p)
+                rpmdir = os.path.join(destdir, p['arch'])
+                if not os.path.exists(rpmdir):
+                    os.makedirs(rpmdir)
+                print("copy '%s'" % p['nvrea'])
+                logging.debug("copy {0} / {1} to {2}".format(basepath, p['path'], rpmdir))
+                if not dryrun:
+                    shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
 
     if dryrun:
         print("createrepo -s sha %s" % destdir)
