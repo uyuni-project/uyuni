@@ -46,7 +46,7 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem;
+import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -95,7 +95,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private MinionServer minion;
     private SaltServerActionService saltServerActionService;
-    private SSHPushSystem sshPushSystemMock;
+    private SystemSummary sshPushSystemMock;
 
     @Override
     public void setUp() throws Exception {
@@ -109,7 +109,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         saltServerActionService.setSaltService(saltServiceMock);
         saltServerActionService.setSkipCommandScriptPerms(true);
 
-        sshPushSystemMock = mock(SSHPushSystem.class);
+        sshPushSystemMock = mock(SystemSummary.class);
     }
 
     public void testPackageUpdate() throws Exception {

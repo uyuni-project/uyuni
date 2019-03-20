@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
@@ -51,7 +52,7 @@ import java.util.Optional;
 public class SSHPushWorkerSalt implements QueueWorker {
 
     private Logger log;
-    private SSHPushSystem system;
+    private SystemSummary system;
     private TaskQueue parentQueue;
 
     private SaltService saltService;
@@ -63,7 +64,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param logger Logger for this instance
      * @param systemIn the system to work with
      */
-    public SSHPushWorkerSalt(Logger logger, SSHPushSystem systemIn) {
+    public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn) {
         log = logger;
         system = systemIn;
         saltService = SaltService.INSTANCE;
@@ -79,7 +80,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param saltSSHServiceIn the {@link SaltSSHService} to work with
      * @param saltServerActionServiceIn the {@link SaltServerActionService} to work with
      */
-    public SSHPushWorkerSalt(Logger logger, SSHPushSystem systemIn,
+    public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn,
             SaltService saltServiceIn, SaltSSHService saltSSHServiceIn,
             SaltServerActionService saltServerActionServiceIn) {
         log = logger;
