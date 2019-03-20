@@ -247,7 +247,6 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
             CobblerDistroHelper.getInstance().createDistroFromTree(
                     CobblerXMLRPCHelper.getAutomatedConnection(),
                     tree);
-            invokeCobblerUpdate();
         }
         else if (tree.doesParaVirt() && xen) {
             log.debug("tree missing in cobbler. " +

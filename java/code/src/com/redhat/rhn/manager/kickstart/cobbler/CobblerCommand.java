@@ -183,10 +183,6 @@ public abstract class CobblerCommand {
         return makeCobblerName(data.getLabel(), data.getOrg());
     }
 
-    protected void invokeCobblerUpdate() {
-        invokeXMLRPC("update", xmlRpcToken);
-    }
-
     protected CobblerConnection getCobblerConnection() {
         return getCobblerConnection(user);
     }
