@@ -105,25 +105,19 @@ public class MatcherJsonIO {
         s390arch = ServerFactory.lookupServerArchByLabel("s390x");
 
         productIdsForS390xSystem = of(
-                productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z"),
-                productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
+                productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z")
         ).filter(Optional::isPresent).map(Optional::get).collect(toList());
 
         Optional<Long> mgmtUnlimitedVirtualProd = productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual");
-        Optional<Long> provUnlimitedVirtualProd = productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual");
 
         Optional<Long> mgmtSingleProd = productIdForEntitlement("SUSE-Manager-Mgmt-Single");
-        Optional<Long> provSingleProd = productIdForEntitlement("SUSE-Manager-Prov-Single");
         productIdsForSystem = of(
-                mgmtSingleProd,
-                provSingleProd
+                mgmtSingleProd
         ).filter(Optional::isPresent).map(Optional::get).collect(toList());
 
         lifecycleProductsTranslation = new HashMap<>();
         mgmtUnlimitedVirtualProd.ifPresent(
                 from -> mgmtSingleProd.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
-        provUnlimitedVirtualProd.ifPresent(
-                from -> provSingleProd.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
         productFactory = new CachingSUSEProductFactory();
     }
