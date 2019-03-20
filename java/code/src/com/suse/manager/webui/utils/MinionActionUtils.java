@@ -178,7 +178,7 @@ public class MinionActionUtils {
             ActionFactory.pendingMinionServerActions().stream().flatMap(a -> {
                     if (a.getEarliestAction().toInstant()
                             .atZone(ZoneId.systemDefault())
-                            .isBefore(now.minus(5, ChronoUnit.MINUTES))) {
+                            .isBefore(now.minus(1, ChronoUnit.HOURS))) {
                         return a.getServerActions()
                                 .stream()
                                 .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
