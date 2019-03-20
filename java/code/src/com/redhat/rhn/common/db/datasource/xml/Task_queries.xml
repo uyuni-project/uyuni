@@ -665,7 +665,7 @@ where snc.errata_id = :errata_id
   </query>
 </write-mode>
 
-<mode name="ssh_push_find_traditional_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
+<mode name="ssh_push_find_traditional_candidates" class="com.redhat.rhn.taskomatic.task.checkin.SystemSummary">
   <query>
 SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_action) as earliest_action
   FROM rhnServer s
@@ -684,7 +684,7 @@ SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_
   </query>
 </mode>
 
-<mode name="ssh_push_find_rebooting_minions" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
+<mode name="ssh_push_find_rebooting_minions" class="com.redhat.rhn.taskomatic.task.checkin.SystemSummary">
   <query>
 SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, smi.minion_id
   FROM rhnServer s
@@ -716,7 +716,7 @@ WHERE sa.status = 0
   </query>
 </mode>
 
-<mode name="ssh_push_find_checkin_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
+<mode name="ssh_push_find_checkin_candidates" class="com.redhat.rhn.taskomatic.task.checkin.SystemSummary">
   <query params="checkin_threshold">
 SELECT s.id,
        s.name,
