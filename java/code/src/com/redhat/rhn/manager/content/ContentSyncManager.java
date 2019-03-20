@@ -28,14 +28,15 @@ import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
-import com.redhat.rhn.domain.product.Tuple2;
-import com.redhat.rhn.domain.product.Tuple3;
+import com.redhat.rhn.domain.product.ProductType;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
+import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.domain.product.Tuple3;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -1205,6 +1206,21 @@ public class ContentSyncManager {
        return products.stream().flatMap(p -> p.getRepositories().stream()).collect(Collectors.toList());
     }
 
+    private static Map<Long, Optional<ProductType>> productTypesById(List<StaticInfoEntry> tree) {
+        return tree.stream()
+                .collect(Collectors.groupingBy(
+                        e -> e.getProductId(), Collectors.mapping(
+                                e -> e.getProductType(), Collectors.toSet())))
+                .entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> {
+                    if (e.getValue().size() != 1) {
+                        throw new RuntimeException("");
+                    }
+                    else {
+                        return e.getValue().iterator().next();
+                    }
+                })).entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+    }
+
     /**
      * Update Products, Repositories and relation ship table in DB.
      * @param productsById map of scc products by id
@@ -1233,7 +1249,13 @@ public class ContentSyncManager {
                 ));
         Set<Long> productIdsSwitchedToReleased = new HashSet<>();
 
-        Map<Long, SUSEProduct> productMap = productsById.values().stream().map(productJson -> {
+        Map<Long, Optional<ProductType>> productTypeById = productTypesById(tree);
+
+        Map<Long, SUSEProduct> productMap = productsById.values().stream().map(p -> {
+                SCCProductJson productJson = Optional.ofNullable(productTypeById.get(p.getId()))
+                    .flatMap(Function.identity())
+                    .map(pt -> p.copy().setProductType(pt).build()).orElse(p);
+
                 // If the product is release the id should be stable
                 // so we don't do the fuzzy matching to reduce unexpected behaviour
                 if (productJson.getReleaseStage() == ReleaseStage.released) {
