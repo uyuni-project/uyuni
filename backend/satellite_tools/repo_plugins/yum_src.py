@@ -24,6 +24,7 @@ from __future__ import absolute_import, unicode_literals
 from shutil import rmtree, copytree
 
 import configparser
+import fnmatch
 import glob
 import gzip
 import os
@@ -46,6 +47,7 @@ import xml.etree.ElementTree as etree
 #import salt.client
 #import salt.config
 
+from functools import cmp_to_key
 from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
@@ -187,6 +189,8 @@ class ZypperRepo:
        if not os.path.isdir(self.pkgdir):
            fileutils.makedirs(self.pkgdir, user='wwwrun', group='www')
        self.is_configured = False
+       self.includepkgs = []
+       self.exclude = []
 
 
 class RawSolvablePackage:
@@ -609,12 +613,95 @@ type=rpm-md
                     return checksum_elem.get('type')
         return "sha1"
 
+    def _get_solvable_packages(self):
+        """
+        Return the full list of solvable packages available at the configured repo.
+        This information is read from the solv file created by Zypper.
+
+        :returns: list
+        """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
+        self.solv_pool = solv.Pool()
+        self.solv_repo = self.solv_pool.add_repo(str(self.channel_label or self.reponame))
+        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
+        if not os.path.isfile(solv_path) or not self.solv_repo.add_solv(solv.xfopen(str(solv_path)), 0):
+            raise SolvFileNotFound(solv_path)
+        # Solvables with ":" in name are not packages
+        return [pack for pack in self.solv_repo.solvables if ':' not in pack.name]
+
+    def _apply_filters(self, pkglist, filters):
+        """
+        Return a list of packages where defined filters were applied.
+
+        :returns: list
+        """
+        if not filters:
+            # if there's no include/exclude filter on command line or in database
+            for p in self.repo.includepkgs:
+                filters.append(('+', [p]))
+            for p in self.repo.exclude:
+                filters.append(('-', [p]))
+
+        if filters:
+            pkglist = self._filter_packages(pkglist, filters)
+            self.num_excluded = self.num_packages - len(pkglist)
+        return pkglist
+
     @staticmethod
     def _fix_encoding(text):
         if text is None:
             return None
         else:
             return str(text)
+
+    @staticmethod
+    def _filter_packages(packages, filters):
+        """ implement include / exclude logic
+            filters are: [ ('+', includelist1), ('-', excludelist1),
+                           ('+', includelist2), ... ]
+        """
+        if filters is None:
+            return
+
+        selected = []
+        excluded = []
+        allmatched_include = []
+        allmatched_exclude = []
+        if filters[0][0] == '-':
+            # first filter is exclude, start with full package list
+            # and then exclude from it
+            selected = packages
+        else:
+            excluded = packages
+
+        for filter_item in filters:
+            sense, pkg_list = filter_item
+            regex = fnmatch.translate(pkg_list[0])
+            reobj = re.compile(regex)
+            if sense == '+':
+                # include
+                for excluded_pkg in excluded:
+                    if reobj.match(excluded_pkg.name):
+                        allmatched_include.insert(0, excluded_pkg)
+                        selected.insert(0, excluded_pkg)
+                for pkg in allmatched_include:
+                    if pkg in excluded:
+                        excluded.remove(pkg)
+            elif sense == '-':
+                # exclude
+                for selected_pkg in selected:
+                    if reobj.match(selected_pkg.name):
+                        allmatched_exclude.insert(0, selected_pkg)
+                        excluded.insert(0, selected_pkg)
+
+                for pkg in allmatched_exclude:
+                    if pkg in selected:
+                        selected.remove(pkg)
+                excluded = (excluded + allmatched_exclude)
+            else:
+                raise IOError("Filters are malformed")
+        return selected
 
     def get_susedata(self):
         """
@@ -741,21 +828,13 @@ type=rpm-md
         return modules
 
     def raw_list_packages(self, filters=None):
-        if not self.repo.is_configured:
-            self.setup_repo(self.repo)
-        pool = solv.Pool()
-        repo = pool.add_repo(str(self.channel_label or self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not os.path.isfile(solv_path) or not repo.add_solv(solv.xfopen(str(solv_path)), 0):
-            raise SolvFileNotFound(solv_path)
-        rawpkglist = []
-        for solvable in repo.solvables_iter():
-            # Solvables with ":" in name are not packages
-            if ':' in solvable.name:
-                continue
-            rawpkglist.append(RawSolvablePackage(solvable))
-        self.num_packages = len(rawpkglist)
-        return rawpkglist
+        """
+        Return a list of available packages.
+
+        :returns: list
+        """
+        rawpkglist = [RawSolvablePackage(solvable) for solvable in self._get_solvable_packages()]
+        return self._apply_filters(rawpkglist, filters)
 
     def list_packages(self, filters, latest):
         """
@@ -763,26 +842,19 @@ type=rpm-md
 
         :returns: list
         """
-        if not self.repo.is_configured:
-            self.setup_repo(self.repo)
-        pool = solv.Pool()
-        repo = pool.add_repo(str(self.channel_label or self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not os.path.isfile(solv_path) or not repo.add_solv(solv.xfopen(str(solv_path)), 0):
-            raise SolvFileNotFound(solv_path)
+        pkglist = self._get_solvable_packages()
+        pkglist.sort(key = cmp_to_key(self._sort_packages))
+        self.num_packages = len(pkglist)
 
-        #TODO: Implement latest
-        #if latest:
-        #     pkglist = pkglist.returnNewestByNameArch()
+        if latest:
+            # TODO
+            # pkglist = pkglist.returnNewestByNameArch()
+            pass
 
-        #TODO: Implement sort
-        #pkglist.sort(self._sort_packages)
+        pkglist = self._apply_filters(pkglist, filters)
 
         to_return = []
-        for pack in repo.solvables:
-            # Solvables with ":" in name are not packages
-            if ':' in pack.name:
-                continue
+        for pack in pkglist:
             new_pack = ContentPackage()
             epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)
             new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
@@ -791,10 +863,7 @@ type=rpm-md
             new_pack.checksum_type = checksum.typestr()
             new_pack.checksum = checksum.hex()
             to_return.append(new_pack)
-
-        self.num_packages = len(to_return)
         return to_return
-
 
     @staticmethod
     def _sort_packages(pkg1, pkg2):
@@ -805,54 +874,6 @@ type=rpm-md
             return 0
         else:
             return -1
-
-    @staticmethod
-    def _filter_packages(packages, filters):
-        """ implement include / exclude logic
-            filters are: [ ('+', includelist1), ('-', excludelist1),
-                           ('+', includelist2), ... ]
-        """
-        if filters is None:
-            return
-
-        selected = []
-        excluded = []
-        allmatched_include = []
-        allmatched_exclude = []
-        if filters[0][0] == '-':
-            # first filter is exclude, start with full package list
-            # and then exclude from it
-            selected = packages
-        else:
-            excluded = packages
-
-        for filter_item in filters:
-            sense, pkg_list = filter_item
-            regex = fnmatch.translate(pkg_list[0])
-            reobj = re.compile(regex)
-            if sense == '+':
-                # include
-                for excluded_pkg in excluded:
-                    if (reobj.match(excluded_pkg['name'])):
-                        allmatched_include.insert(0,excluded_pkg)
-                        selected.insert(0,excluded_pkg)
-                for pkg in allmatched_include:
-                    if pkg in excluded:
-                        excluded.remove(pkg)
-            elif sense == '-':
-                # exclude
-                for selected_pkg in selected:
-                    if (reobj.match(selected_pkg['name'])):
-                        allmatched_exclude.insert(0,selected_pkg)
-                        excluded.insert(0,selected_pkg)
-
-                for pkg in allmatched_exclude:
-                    if pkg in selected:
-                        selected.remove(pkg)
-                excluded = (excluded + allmatched_exclude)
-            else:
-                raise IOError("Filters are malformed")
-        return selected
 
     def clear_cache(self, directory=None, keep_repomd=False):
         """
