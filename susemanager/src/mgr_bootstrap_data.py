@@ -117,7 +117,6 @@ PKGLIST12 = [
                 "python-pyasn1",
                 "python-pycparser",
                 "python-pyOpenSSL",
-                "python-setuptools",
                 "python-six",
                 "python-xml",
                 "python-pyudev",
@@ -182,6 +181,7 @@ ENHANCE12SP1 = [
                 "python-enum34",
                 "python-idna",
                 "python-ipaddress",
+                "python-setuptools",
                ]
 
 RES6 = [
