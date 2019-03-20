@@ -1,3 +1,4 @@
+- Add a Taskomatic job to perform minion check-in regularly, drop use of Salt's Mine (bsc#1122837)
 - changed regex in spacewalk-schema-upgrade to also match alnum characters in release
 
 -------------------------------------------------------------------
