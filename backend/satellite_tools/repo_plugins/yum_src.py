@@ -92,13 +92,13 @@ class ZyppoSync:
             raise
         try:
             # Synchronize new GPG keys that come from the Spacewalk GPG keyring
-            self._synchronize_gpg_keys()
+            self.__synchronize_gpg_keys()
         except Exception as exc:
             msg = "Unable to synchronize Spacewalk GPG keyring: {}".format(exc)
             rhnLog.log_clean(0, msg)
             sys.stderr.write(str(msg) + "\n")
 
-    def _synchronize_gpg_keys(self):
+    def __synchronize_gpg_keys(self):
         """
         This method does update the Zypper RPM database with new keys coming from the Spacewalk GPG keyring
 
