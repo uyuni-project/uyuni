@@ -1,3 +1,4 @@
+- fix encoding bug in salt event processing (bsc#1129851)
 - Add websockify service for VNC/Spice display
 
 -------------------------------------------------------------------
