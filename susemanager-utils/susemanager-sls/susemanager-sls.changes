@@ -1,3 +1,4 @@
+- Do not configure Salt Mine in newly registered minions (bsc#1122837)
 - Fix Salt error related to remove_traditional_stack when bootstrapping an Ubuntu
   minion (bsc#1128724)
 - Automatically trust SUSE GPG key for client tools channels on Ubuntu systems
