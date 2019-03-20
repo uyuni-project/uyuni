@@ -38,20 +38,12 @@ begin
             (package_arch_id is null and package_arch_id_in is null));
 
     if not found then
-        nevra_id := nextval('rhn_pkgnevra_id_seq');
-
-        insert into rhnPackageNEVRA(id, name_id, evr_id, package_arch_id)
-            values (nevra_id, name_id_in, evr_id_in, package_arch_id_in)
-            on conflict do nothing;
-
-        select id
-            into strict nevra_id
-            from rhnPackageNEVRA
-            where name_id = name_id_in and evr_id = evr_id_in and
-                (package_arch_id = package_arch_id_in or
-                (package_arch_id is null and package_arch_id_in is null));
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_package_nevra(name_id_in, evr_id_in, package_arch_id_in);
     end if;
 
     return nevra_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

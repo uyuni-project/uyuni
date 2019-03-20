@@ -15,8 +15,7 @@
 --
 
 create or replace function
-lookup_config_info
-(
+lookup_config_info(
     username_in     in varchar,
     groupname_in    in varchar,
     filemode_in     in numeric,
@@ -27,34 +26,24 @@ returns numeric
 as
 $$
 declare
-    r numeric;
-    v_id    numeric;
-    lookup_cursor cursor  for
-        select id
-          from rhnConfigInfo
-         where 1=1
-           and (username = username_in or (username is null and username_in is null))
-           and (groupname = groupname_in or (groupname is null and groupname_in is null))
-           and (filemode = filemode_in or (filemode is null and filemode_in is null))
-           and (selinux_ctx = selinux_ctx_in or
-               (selinux_ctx is null and selinux_ctx_in is null))
-           and (symlink_target_filename_id = symlink_target_id or
-               (symlink_target_filename_id is null and symlink_target_id is null))
-        ;
+    config_info_id    numeric;
 begin
-    for r in lookup_cursor loop
-        return r.id;
-    end loop;
-    -- If we got here, we don't have the id
-    v_id := nextval('rhn_confinfo_id_seq');
+    select id
+      into config_info_id
+      from rhnConfigInfo
+      where (username = username_in or (username is null and username_in is null))
+        and (groupname = groupname_in or (groupname is null and groupname_in is null))
+        and (filemode = filemode_in or (filemode is null and filemode_in is null))
+        and (selinux_ctx = selinux_ctx_in or (selinux_ctx is null and selinux_ctx_in is null))
+        and (symlink_target_filename_id = symlink_target_id or (symlink_target_filename_id is null and symlink_target_id is null));
 
-    insert into rhnConfigInfo (id, username, groupname, filemode, selinux_ctx, symlink_target_filename_id)
-        values (v_id, username_in, groupname_in, filemode_in, selinux_ctx_in, symlink_target_id)
-        on conflict do nothing;
+    if not found then
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_config_info(username_in, groupname_in, filemode_in, selinux_ctx_in, symlink_target_id);
+    end if;
 
-    for r in lookup_cursor loop
-        return r.id;
-    end loop;
-    return v_id;
+    return config_info_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;
