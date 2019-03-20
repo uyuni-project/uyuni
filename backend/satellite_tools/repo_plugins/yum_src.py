@@ -613,6 +613,41 @@ type=rpm-md
                     return checksum_elem.get('type')
         return "sha1"
 
+    def _get_solvable_packages(self):
+        """
+        Return the full list of solvable packages available at the configured repo.
+        This information is read from the solv file created by Zypper.
+
+        :returns: list
+        """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
+        self.solv_pool = solv.Pool()
+        self.solv_repo = self.solv_pool.add_repo(str(self.channel_label or self.reponame))
+        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
+        if not os.path.isfile(solv_path) or not self.solv_repo.add_solv(solv.xfopen(str(solv_path)), 0):
+            raise SolvFileNotFound(solv_path)
+        # Solvables with ":" in name are not packages
+        return [pack for pack in self.solv_repo.solvables if ':' not in pack.name]
+
+    def _apply_filters(self, pkglist, filters):
+        """
+        Return a list of packages where defined filters were applied.
+
+        :returns: list
+        """
+        if not filters:
+            # if there's no include/exclude filter on command line or in database
+            for p in self.repo.includepkgs:
+                filters.append(('+', [p]))
+            for p in self.repo.exclude:
+                filters.append(('-', [p]))
+
+        if filters:
+            pkglist = self._filter_packages(pkglist, filters)
+            self.num_excluded = self.num_packages - len(pkglist)
+        return pkglist
+
     @staticmethod
     def _fix_encoding(text):
         if text is None:
@@ -793,28 +828,13 @@ type=rpm-md
         return modules
 
     def raw_list_packages(self, filters=None):
-        if not self.repo.is_configured:
-            self.setup_repo(self.repo)
-        pool = solv.Pool()
-        repo = pool.add_repo(str(self.channel_label or self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not os.path.isfile(solv_path) or not repo.add_solv(solv.xfopen(str(solv_path)), 0):
-            raise SolvFileNotFound(solv_path)
-        # Solvables with ":" in name are not packages
-        rawpkglist = [RawSolvablePackage(pack) for pack in repo.solvables_iter() if ':' not in pack.name]
-        self.num_packages = len(rawpkglist)
+        """
+        Return a list of available packages.
 
-        if not filters:
-            # if there's no include/exclude filter on command line or in database
-            for p in self.repo.includepkgs:
-                filters.append(('+', [p]))
-            for p in self.repo.exclude:
-                filters.append(('-', [p]))
-
-        if filters:
-            rawpkglist = self._filter_packages(rawpkglist, filters)
-            self.num_excluded = self.num_packages - len(rawpkglist)
-        return rawpkglist
+        :returns: list
+        """
+        rawpkglist = [RawSolvablePackage(solvable) for solvable in self._get_solvable_packages()]
+        return self._apply_filters(rawpkglist, filters)
 
     def list_packages(self, filters, latest):
         """
@@ -822,33 +842,16 @@ type=rpm-md
 
         :returns: list
         """
-        if not self.repo.is_configured:
-            self.setup_repo(self.repo)
-        pool = solv.Pool()
-        repo = pool.add_repo(str(self.channel_label or self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not os.path.isfile(solv_path) or not repo.add_solv(solv.xfopen(str(solv_path)), 0):
-            raise SolvFileNotFound(solv_path)
-
-        # Solvables with ":" in name are not packages
-        pkglist = [pack for pack in repo.solvables if ':' not in pack.name]
+        pkglist = self._get_solvable_packages()
+        pkglist.sort(key = cmp_to_key(self._sort_packages))
         self.num_packages = len(pkglist)
+
         if latest:
             # TODO
             # pkglist = pkglist.returnNewestByNameArch()
             pass
-        pkglist.sort(key = cmp_to_key(self._sort_packages))
 
-        if not filters:
-            # if there's no include/exclude filter on command line or in database
-            for p in self.repo.includepkgs:
-                filters.append(('+', [p]))
-            for p in self.repo.exclude:
-                filters.append(('-', [p]))
-
-        if filters:
-            pkglist = self._filter_packages(pkglist, filters)
-            self.num_excluded = self.num_packages - len(pkglist)
+        pkglist = self._apply_filters(pkglist, filters)
 
         to_return = []
         for pack in pkglist:
@@ -861,7 +864,6 @@ type=rpm-md
             new_pack.checksum = checksum.hex()
             to_return.append(new_pack)
         return to_return
-
 
     @staticmethod
     def _sort_packages(pkg1, pkg2):
