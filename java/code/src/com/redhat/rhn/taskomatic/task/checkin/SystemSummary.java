@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.sshpush;
+package com.redhat.rhn.taskomatic.task.checkin;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Simple DTO class used to encapsulate rows queried from the database.
  */
-public class SSHPushSystem {
+public class SystemSummary {
 
     private String contactMethodLabel;
     private Date earliestAction;
@@ -36,7 +36,7 @@ public class SSHPushSystem {
     /**
      * No arg constructor needed for instantiation.
      */
-    public SSHPushSystem() {
+    public SystemSummary() {
     }
 
     /**
@@ -46,7 +46,7 @@ public class SSHPushSystem {
      * @param minionIdIn minion id
      * @param rebootingIn whether system is rebooting or not
      */
-    public SSHPushSystem(long idIn, String nameIn, String minionIdIn, boolean rebootingIn) {
+    public SystemSummary(long idIn, String nameIn, String minionIdIn, boolean rebootingIn) {
         this.id = idIn;
         this.name = nameIn;
         this.minionId = minionIdIn;
@@ -202,7 +202,7 @@ public class SSHPushSystem {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        SSHPushSystem other = (SSHPushSystem) obj;
+        SystemSummary other = (SystemSummary) obj;
         if (id != other.id) {
             return false;
         }

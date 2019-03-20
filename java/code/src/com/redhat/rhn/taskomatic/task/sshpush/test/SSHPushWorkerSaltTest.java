@@ -24,7 +24,7 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem;
+import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -75,7 +75,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     private SSHPushWorkerSalt worker;
     private MinionServer minion;
     private SaltService saltServiceMock;
-    private SSHPushSystem sshPushSystemMock;
+    private SystemSummary sshPushSystemMock;
     private SaltSSHService saltSSHServiceMock;
     private SystemInfo sampleSystemInfo;
     
@@ -85,7 +85,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
-        sshPushSystemMock = mock(SSHPushSystem.class);
+        sshPushSystemMock = mock(SystemSummary.class);
         saltSSHServiceMock = mock(SaltSSHService.class);
         worker = new SSHPushWorkerSalt(logger, sshPushSystemMock, saltServiceMock,
                 saltSSHServiceMock, SaltServerActionService.INSTANCE);

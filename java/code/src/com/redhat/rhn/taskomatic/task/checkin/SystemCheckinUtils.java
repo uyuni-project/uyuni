@@ -12,14 +12,14 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.sshpush;
+package com.redhat.rhn.taskomatic.task.checkin;
 
 import java.util.Random;
 
 /**
- * Utils for {@link SSHPushDriver}.
+ * Utils for {@link CheckinCandidatesResolver}.
  */
-public class SSHPushUtils {
+public class SystemCheckinUtils {
 
     // How often we check for systems to checkin (minutes)
     public static final int CHECK_INTERVAL = 20;
@@ -30,7 +30,7 @@ public class SSHPushUtils {
     /**
      * Private constructor.
      */
-    private SSHPushUtils() {
+    private SystemCheckinUtils() {
     }
 
     /**
@@ -71,7 +71,7 @@ public class SSHPushUtils {
     public static int getRandomThreshold(double mean, double stddev, long min, long max) {
         int val = 0;
         while (val < min || val > max) {
-            val = SSHPushUtils.getRandomGaussian(mean, stddev);
+            val = SystemCheckinUtils.getRandomGaussian(mean, stddev);
         }
         return val;
     }
