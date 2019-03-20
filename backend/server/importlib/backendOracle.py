@@ -373,7 +373,6 @@ class OracleBackend(Backend):
                   'id': DBint(),
                   'name': DBstring(128),
                   'label': DBstring(128),
-                  'product_url': DBstring(128),
               },
               pk=['label'],
               defaultSeverity=4,
