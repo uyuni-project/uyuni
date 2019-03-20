@@ -1,6 +1,6 @@
 - Feat: create Ubuntu empty repository
-- move `python-setuptools` package dependency to SLES12 SP1
-  or later
+- Fix creation of bootstrap repositories for SLE12 (no SP) by
+  requiring python-setuptools only for SLE12 >= SP1 (bsc#1129765)
 - add bootstrap repo definition for SLE15 SP1
 
 -------------------------------------------------------------------

@@ -117,7 +117,6 @@ PKGLIST12 = [
                 "python-pyasn1",
                 "python-pycparser",
                 "python-pyOpenSSL",
-                "python-setuptools",
                 "python-six",
                 "python-xml",
                 "python-pyudev",
