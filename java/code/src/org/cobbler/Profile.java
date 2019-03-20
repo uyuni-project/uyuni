@@ -37,7 +37,7 @@ public class Profile extends CobblerObject {
     private static Logger log = Logger.getLogger(Profile.class);
 
     private static final String DHCP_TAG = "dhcp_tag";
-    private static final String KICKSTART = "kickstart";
+    private static final String KICKSTART = "autoinstall";
     private static final String VIRT_BRIDGE = "virt_bridge";
     private static final String VIRT_CPUS = "virt_cpus";
     private static final String VIRT_TYPE = "virt_type";
