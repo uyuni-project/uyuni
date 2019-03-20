@@ -1,3 +1,4 @@
+- fix performance regression in inter-server-sync (bsc#1128781)
 - Set minion-action-cleanup run frequency from hourly to daily at midnight
 
 -------------------------------------------------------------------

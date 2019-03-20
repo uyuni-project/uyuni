@@ -28,18 +28,12 @@ begin
      where identifier = identifier_in and version = version_in;
 
     if not found then
-        benchmark_id := nextval('rhn_xccdf_benchmark_id_seq');
-
-        insert into rhnXccdfBenchmark (id, identifier, version)
-            values (benchmark_id, identifier_in, version_in)
-            on conflict do nothing;
-
-        select id
-            into strict benchmark_id
-            from rhnXccdfBenchmark
-            where identifier = identifier_in and version = version_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_xccdf_benchmark(identifier_in, version_in);
     end if;
 
     return benchmark_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

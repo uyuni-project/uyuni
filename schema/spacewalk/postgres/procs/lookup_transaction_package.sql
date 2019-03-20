@@ -57,18 +57,11 @@ begin
            (package_arch_id = p_arch_id or (p_arch_id is null and package_arch_id is null));
 
     if not found then
-        tp_id := nextval('rhn_transpack_id_seq');
-
-        insert into rhnTransactionPackage (id, operation, name_id, evr_id, package_arch_id)
-            values (tp_id, o_id, n_id, e_id, p_arch_id)
-            on conflict do nothing;
-
-        select id
-            into strict tp_id
-            from rhnTransactionPackage
-         where operation = o_id and name_id = n_id and evr_id = e_id and
-            (package_arch_id = p_arch_id or (p_arch_id is null and package_arch_id is null));
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_transaction_package(o_id, n_id, e_id, p_arch_id);
     end if;
     return tp_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

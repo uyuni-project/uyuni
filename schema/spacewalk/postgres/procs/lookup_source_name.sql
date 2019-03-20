@@ -27,18 +27,12 @@ begin
      where name = name_in;
 
     if not found then
-        source_id := nextval('rhn_sourcerpm_id_seq');
-
-        insert into rhnSourceRPM(id, name)
-            values (source_id, name_in)
-            on conflict do nothing;
-
-        select id
-            into strict source_id
-            from rhnSourceRPM
-            where name = name_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_source_name(name_in);
     end if;
 
     return source_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;
