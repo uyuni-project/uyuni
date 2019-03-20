@@ -99,8 +99,10 @@ class ZyppoSync:
             sys.stderr.write(str(msg) + "\n")
 
     def _synchronize_gpg_keys(self):
-        # We need to import keep reposync zypper RPM database updated according
-        # to the Spacewalk GPG keyring
+        """
+        This method does update the Zypper RPM database with new keys coming from the Spacewalk GPG keyring
+
+        """
         spacewalk_gpg_keys = {}
         zypper_gpg_keys = {}
         with tempfile.NamedTemporaryFile() as f:
@@ -791,7 +793,7 @@ type=rpm-md
 
     def raw_list_packages(self, filters=None):
         """
-        Return a list of available packages.
+        Return a raw list of available packages.
 
         :returns: list
         """
