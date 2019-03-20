@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Mar 20 17:29:06 CET 2019 - jgonzalez@suse.com
+
+- version 3.1.19-1
 - Fix creation of bootstrap repositories for SLE12 (no SP) by
   requiring python-setuptools only for SLE12 >= SP1 (bsc#1129765)
 
