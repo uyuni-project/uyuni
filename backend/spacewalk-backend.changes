@@ -1,3 +1,4 @@
+- Fix crash when importing new channel families on 'mgr-inter-sync' (bsc#1129300)
 - Make Zypper to use the spacewalk GPG keyring in reposync (bsc#1128529)
 - Fix: handle non-standard filenames for comps.xml (bsc#1120242)
 - Make reposync use and append token correctly to the URL
