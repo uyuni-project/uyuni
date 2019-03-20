@@ -1,3 +1,4 @@
+- Do not configure Salt Mine in newly registered minions (bsc#1122837)
 - use default 'master' branch in OSImage profile URL (bsc#1108218)
 - Add Python linting makefile and PyLint configuration file
 
