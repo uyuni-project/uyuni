@@ -207,7 +207,7 @@ sed -i 's,@PYTHON@,python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
 
 %else
 install -d $RPM_BUILD_ROOT%{cron_dir}
-install -D -m 0644 scripts/rhn-virtualization.cron %{cron_dir}/rhn-virtualization.cron
+install -D -m 0644 scripts/rhn-virtualization.cron $RPM_BUILD_ROOT%{cron_dir}/rhn-virtualization.cron
 sed -i 's,@PYTHON@,python,; s,@PYTHONPATH@,%{python_sitelib},;' \
         $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
 %endif
