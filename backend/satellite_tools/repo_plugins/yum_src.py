@@ -44,9 +44,6 @@ except:
 
 import xml.etree.ElementTree as etree
 
-#import salt.client
-#import salt.config
-
 from functools import cmp_to_key
 from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
@@ -73,25 +70,10 @@ RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-f
 
 
 class ZyppoSync:
-    """
-    Wrapper for underlying package manager for the reposync via Salt.
-
-    Example usage:
-
-    >>> zyppo = ZyppoSync()
-    >>> for idx, repo_meta in enumerate(zyppo.list_repos().values()):
-    >>>    print(idx + 1, repo_meta["name"])
-    >>>    print("  ", repo_meta["baseurl"])
-
-    """
-    def __init__(self, cfg_path="/etc/salt/minion", root=None):
-#        self._conf = salt.config.minion_config(cfg_path)
-#        self._conf["file_client"] = "local"
-#        self._conf["server_id_use_crc"] = "Adler32"
+    def __init__(self, root=None):
         self._root = root
         if self._root is not None:
             self._init_root(self._root)
-#        self._caller = salt.client.Caller(mopts=self._conf)
 
     def _init_root(self, root):
         """
@@ -99,7 +81,6 @@ class ZyppoSync:
 
         :return: None
         """
-#        self._conf["zypper_root"] = root
         try:
             for pth in [root, os.path.join(root, "etc/zypp/repos.d"), REPOSYNC_ZYPPER_ROOT]:
                 if not os.path.exists(pth):
@@ -152,25 +133,6 @@ class ZyppoSync:
             # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
             # properly
             os.system("rpmkeys --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
-
-    def _get_call(self, key):
-        """
-        Prepare a call to the pkg module.
-        """
-        def make_call(*args, **kwargs):
-            """
-            Makes a call to the underlying package.
-            """
-            kwargs["root"] = self._conf.get("zypper_root")
-            return self._caller.cmd("pkg.{}".format(key), *args, **kwargs)
-        return make_call
-
-    def __getattr__(self, attr):
-        """
-        Prepare a callable on the requested
-        attribute name.
-        """
-        return self._get_call(attr)
 
 
 class ZypperRepo:
@@ -497,7 +459,7 @@ class ContentSource:
         """
         Setup repository and fetch metadata
         """
-        self.salt = ZyppoSync(root=repo.root)
+        self.zypposync = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url)
 
         # Manually call Zypper
