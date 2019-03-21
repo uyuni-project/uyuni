@@ -1,0 +1,26 @@
+# Docker tests variables
+DOCKER_CONTAINER_BASE = uyuni-master
+DOCKER_REGISTRY       = registry.mgr.suse.de
+DOCKER_RUN_EXPORT     = "PYTHONPATH=$PYTHONPATH"
+DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
+
+define update_pip_env
+	rpm -e python3-pylint &>/dev/null
+	pip3 install --upgrade pip
+	pip3 uninstall -y pylint
+	pip3 install pylint==2.3.1
+	mkdir -p reports
+endef
+
+pylint ::
+	pylint --errors-only --disable=W src/
+
+pylint_inside_docker ::
+	$(call update_pip_env)
+	pylint --rcfile=usix-pylintrc common/ > reports/pylint.log || :
+
+docker_pylint ::
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/usix; make -f Makefile.usix pylint_inside_docker"
+
+docker_shell ::
+	docker run -t -i --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
