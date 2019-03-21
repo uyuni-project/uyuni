@@ -600,6 +600,17 @@ type=rpm-md
         return [pack for pack in self.solv_repo.solvables if ':' not in pack.name]
 
     def _get_solvable_dependencies(self, solvables):
+        """
+        Return a list containing all passed solvables and all its calculated dependencies.
+
+        For each solvable we explore the "SOLVABLE_REQUIRES" to add any new solvable where "SOLVABLE_PROVIDES"
+        is matching the requirement. All the new solvables that are added will be again processed in order to get
+        a new level of dependencies.
+
+        The exploration of dependencies is done when all the solvables are been processed and no new solvables are added
+
+        :returns: list
+        """
         if not self.repo.is_configured:
             self.setup_repo(self.repo)
         known_solvables = set()
@@ -607,13 +618,18 @@ type=rpm-md
 
         new_deps = True
         next_solvables = solvables
+
+        # Collect solvables dependencies in depth
         while new_deps:
             new_deps = False
             for sol in next_solvables:
+                # Do not explore dependencies from solvables that are already proceesed
                 if sol not in known_solvables:
+                    # This solvable has not been proceesed yet. We need to calculate its dependencies
                     known_solvables.add(sol)
                     resolved_deps.add(sol.Selection())
                     new_deps = True
+                    # Adding solvables that provide the dependencies
                     for _req in sol.lookup_deparray(keyname=solv.SOLVABLE_REQUIRES):
                         resolved_deps.matchdepid(_req.id, flags=solv.Selection.SELECTION_ADD, keyname=solv.SOLVABLE_PROVIDES)
             next_solvables = resolved_deps.solvables()
