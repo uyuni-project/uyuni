@@ -215,10 +215,8 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-  When I am authorized as "admin" with password "admin"
-  And I follow "Home" in the left menu
-  And I follow "Systems" in the left menu
-  And I follow "Overview" in the left menu
+    When I am authorized as "admin" with password "admin"
+    And I follow "Systems > Overview" in the left menu
   )
 end
 
@@ -375,7 +373,6 @@ end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
   steps %(
-    And I follow "Channels > All" in the left menu
     And I follow "#{channel}"
     And I follow "Packages"
     Then I should see package "#{pkg}"

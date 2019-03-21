@@ -7,8 +7,7 @@ Feature: State Configuration channels
 
   Scenario: Create the 1st state channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Create State Channel"
     Then I should see a "New Config Channel" text
@@ -24,8 +23,7 @@ Feature: State Configuration channels
 
   Scenario: Create the 2nd state channel with same name
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Create State Channel"
     Then I should see a "New Config Channel" text
@@ -98,8 +96,7 @@ Feature: State Configuration channels
 
   Scenario: Cleanup: remove the 1st state channel and the deployed file
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow first "My State Channel"
     And I follow "Delete Channel"
@@ -110,8 +107,7 @@ Feature: State Configuration channels
 
   Scenario: Cleanup: remove the 2nd state channel and the deployed file
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow first "My State Channel"
     And I follow "Delete Channel"
@@ -122,8 +118,7 @@ Feature: State Configuration channels
 
   Scenario: Cleanup: remove the 3rd state channel and the deployed file
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow first "statechannel3"
     And I follow "Delete Channel"

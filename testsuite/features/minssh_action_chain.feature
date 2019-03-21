@@ -86,8 +86,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Create a configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
@@ -99,8 +98,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Add a configuration file to configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
@@ -113,9 +111,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Subscribe system to configuration channel for testing action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
+    And I follow "Systems > Overview" in the left menu
     And I follow this "ssh-minion" link
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
@@ -128,8 +124,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Add a configuration file deployment to the action chain on SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
@@ -283,7 +278,6 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Cleanup: remove Salt client from configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
     When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Action Chain Channel"
@@ -295,8 +289,7 @@ Feature: Salt SSH action chain
 @ssh_minion
   Scenario: Cleanup: remove configuration channel for SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
