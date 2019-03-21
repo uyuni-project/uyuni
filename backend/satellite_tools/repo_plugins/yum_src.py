@@ -45,6 +45,7 @@ except:
 import xml.etree.ElementTree as etree
 
 from functools import cmp_to_key
+from salt.utils.versions import LooseVersion
 from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
@@ -840,13 +841,15 @@ type=rpm-md
         pkglist = self._get_solvable_packages()
         pkglist.sort(key = cmp_to_key(self._sort_packages))
         self.num_packages = len(pkglist)
+        pkglist = self._apply_filters(pkglist, filters)
 
         if latest:
-            # TODO
-            # pkglist = pkglist.returnNewestByNameArch()
-            pass
-
-        pkglist = self._apply_filters(pkglist, filters)
+            latest_pkgs = {}
+            new_pkgs = []
+            for pkg in pkglist:
+               if pkg.name not in latest_pkgs.keys() or LooseVersion(str(pkg.evr)) > LooseVersion(str(latest_pkgs[pkg.name].evr)):
+                  latest_pkgs[pkg.name] = pkg
+            pkglist = list(latest_pkgs.values())
 
         to_return = []
         for pack in pkglist:
