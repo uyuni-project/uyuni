@@ -124,7 +124,7 @@ class Responder:
             fnmatch.fnmatch(tag, "salt/beacon/*"),
             fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
             fnmatch.fnmatch(tag, "suse/systemid/generate")
-        ]):
+        ]) and not self._is_salt_mine_event(tag, data):
             log.debug("%s: Adding event to queue -> %s", __name__, tag)
             try:
                 self.cursor.execute(
@@ -139,6 +139,12 @@ class Responder:
                 log.debug("%s: %s", __name__, self.cursor.query)
         else:
             log.debug("%s: Discarding event -> %s", __name__, tag)
+
+    def _is_salt_mine_event(self, tag, data):
+        return fnmatch.fnmatch(tag, "salt/job/*/ret/*") and self._is_salt_mine_update(data)
+
+    def _is_salt_mine_update(self, data):
+        return data.get("fun") == "mine.update"
 
     def debug_log(self):
         log.debug("%s: queue_size -> %s", __name__, self.counter)
