@@ -70,6 +70,10 @@ RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-f
 
 
 class ZyppoSync:
+    """
+    This class prepares a environment for running Zypper inside a dedicated reposync root
+
+    """
     def __init__(self, root=None):
         self._root = root
         if self._root is not None:
