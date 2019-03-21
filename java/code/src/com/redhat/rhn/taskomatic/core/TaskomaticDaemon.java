@@ -15,9 +15,13 @@
 package com.redhat.rhn.taskomatic.core;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
+import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,20 +35,85 @@ import java.util.Map;
  * in SchedulerKernel.
  * @see SchedulerKernel
  */
-public class TaskomaticDaemon extends BaseDaemon {
+public class TaskomaticDaemon {
 
     public static final int ERR_SCHED_CREATE = -5;
+    public static final int SUCCESS = Integer.MIN_VALUE;
+    public static final Logger LOG = Logger.getLogger(TaskomaticDaemon.class);
 
     private Map masterOptionsMap = new HashMap();
     private SchedulerKernel kernel;
 
     /**
      * Main entry point for the native daemon
+     *
      * @param argv "Command-line" parameters
      */
     public static void main(String[] argv) {
         TaskomaticDaemon daemon = new TaskomaticDaemon();
         daemon.registerImplementation(argv);
+    }
+
+    /**
+     * Starts TaskomaticDaemon
+     *
+     * @param argv Arguments configured in the daemon's config file
+     * @return Integer indicating status (null indicates success, else value indicates
+     * error code)
+     */
+    public Integer start(String[] argv) {
+        Integer retval = null;
+        Options options = buildOptionsList();
+        int status = SUCCESS;
+        if (options != null) {
+            status = startupWithOptions(options, argv);
+            if (status != SUCCESS) {
+                retval = status;
+            }
+        }
+        else {
+            status = startupWithoutOptions();
+            if (status != SUCCESS) {
+                retval = status;
+            }
+        }
+        return retval;
+    }
+
+    /**
+     * Parse startup options using jakarta-commons-cli and start
+     * the daemon implementation
+     *
+     * @param options Master list of options built by the daemon implementation
+     * @param argv    Startup arguments
+     * @return int indicates status where <code>TaskomaticDaemon.SUCCESS</code>
+     * indicates success and any other number indicates failure
+     */
+    private int startupWithOptions(Options options, String[] argv) {
+        int retval = SUCCESS;
+        CommandLineParser parser = null;
+        try {
+            parser = new PosixParser();
+            CommandLine cl = parser.parse(options, argv);
+            retval = onStartup(cl);
+        }
+        catch (ParseException e) {
+            retval = onOptionsParseError(e);
+            if (retval == SUCCESS) {
+                retval = onStartup(null);
+            }
+        }
+        return retval;
+    }
+
+    /**
+     * Start the daemon implementation with no startup parameters
+     *
+     * @return int indicates status where <code>TaskomaticDaemon.SUCCESS</code>
+     * indicates success and any other number indicates failure
+     */
+    private int startupWithoutOptions() {
+        return onStartup(null);
     }
 
     protected Options buildOptionsList() {
@@ -72,7 +141,7 @@ public class TaskomaticDaemon extends BaseDaemon {
 
     protected int onStartup(CommandLine commandLine) {
         Map overrides = null;
-        int retval = BaseDaemon.SUCCESS;
+        int retval = SUCCESS;
 
         if (commandLine != null) {
             overrides = parseOverrides(commandLine);
@@ -102,7 +171,7 @@ public class TaskomaticDaemon extends BaseDaemon {
 
     protected int onShutdown(boolean breakFromUser) {
         // TODO Auto-generated method stub
-       return 0;
+        return 0;
     }
 
     private Map parseOverrides(CommandLine commandLine) {
@@ -145,7 +214,7 @@ public class TaskomaticDaemon extends BaseDaemon {
     }
 
     private void createOption(Options accum, String longopt, boolean arg,
-            String argName, String description) {
+                              String argName, String description) {
         OptionBuilder.withArgName(argName);
         OptionBuilder.withLongOpt(longopt);
         OptionBuilder.hasArg(arg);
@@ -155,5 +224,27 @@ public class TaskomaticDaemon extends BaseDaemon {
         if (this.masterOptionsMap.get(longopt) == null) {
             this.masterOptionsMap.put(longopt, option);
         }
+    }
+
+    /**
+     * Registers the daemon implementation with the scheduler
+     *
+     * @param argv startup parameters (if any)
+     */
+    protected void registerImplementation(String[] argv) {
+        start(argv);
+    }
+
+    /**
+     * Lifecycle method called when startup parameters cannot be parsed. This gives
+     * the daemon implementation an opportunity to do something about the error such
+     * as display a usage message.
+     *
+     * @param e the ParseException
+     * @return int indicates error code. If TaskomaticDaemon.SUCCESS is returned, then
+     * the framework will still try to start the daemon implementation _without_ parameters.
+     */
+    protected int onOptionsParseError(ParseException e) {
+        return SUCCESS;
     }
 }
