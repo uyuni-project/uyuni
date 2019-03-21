@@ -125,7 +125,7 @@ class Responder:
             fnmatch.fnmatch(tag, "salt/engines/*"),
             fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
             fnmatch.fnmatch(tag, "suse/systemid/generate")
-        ]):
+        ]) and not self._is_salt_mine_event(tag, data):
             log.debug("%s: Adding event to queue -> %s", __name__, tag)
             try:
                 self.cursor.execute(
@@ -144,6 +144,12 @@ class Responder:
     def trace_log(self):
         log.trace("%s: queue_size -> %s", __name__, self.counter)
         log.trace("%s: tokens -> %s", __name__, self.tokens)
+    
+    def _is_salt_mine_event(self, tag, data):
+        return fnmatch.fnmatch(tag, "salt/job/*/ret/*") and self._is_salt_mine_update(data)
+
+    def _is_salt_mine_update(self, data):
+        return data.get("fun") == "mine.update"
 
     @tornado.gen.coroutine
     def add_event_to_queue(self, raw):
