@@ -1,3 +1,7 @@
+## Maintenance Update status
+
+Check http://ramrod.mgr.suse.de/pub/mu-badges/ and if any of the versions has an active Maintenance Update, please consider if this PR should be ported to the Maintenance Update branch.
+
 ## What does this PR change?
 
 Port of # **remove rest of file if this is a port**
