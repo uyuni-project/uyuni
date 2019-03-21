@@ -598,6 +598,26 @@ type=rpm-md
         # Solvables with ":" in name are not packages
         return [pack for pack in self.solv_repo.solvables if ':' not in pack.name]
 
+    def _get_solvable_dependencies(self, solvables):
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
+        known_solvables = set()
+        resolved_deps = self.solv_pool.Selection()
+
+        new_deps = True
+        next_solvables = solvables
+        while new_deps:
+            new_deps = False
+            for sol in next_solvables:
+                if sol not in known_solvables:
+                    known_solvables.add(sol)
+                    resolved_deps.add(sol.Selection())
+                    new_deps = True
+                    for _req in sol.lookup_deparray(keyname=solv.SOLVABLE_REQUIRES):
+                        resolved_deps.matchdepid(_req.id, flags=solv.Selection.SELECTION_ADD, keyname=solv.SOLVABLE_PROVIDES)
+            next_solvables = resolved_deps.solvables()
+        return resolved_deps.solvables()
+
     def _apply_filters(self, pkglist, filters):
         """
         Return a list of packages where defined filters were applied.
@@ -613,7 +633,12 @@ type=rpm-md
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)
+            pkglist = self._get_solvable_dependencies(pkglist)
+
+            # Do not pull in dependencies if there're explicitly excluded
+            pkglist = self._filter_packages(pkglist, filters, True)
             self.num_excluded = self.num_packages - len(pkglist)
+
         return pkglist
 
     @staticmethod
@@ -624,7 +649,7 @@ type=rpm-md
             return str(text)
 
     @staticmethod
-    def _filter_packages(packages, filters):
+    def _filter_packages(packages, filters, exclude_only=False):
         """ implement include / exclude logic
             filters are: [ ('+', includelist1), ('-', excludelist1),
                            ('+', includelist2), ... ]
@@ -636,7 +661,7 @@ type=rpm-md
         excluded = []
         allmatched_include = []
         allmatched_exclude = []
-        if filters[0][0] == '-':
+        if exclude_only or filters[0][0] == '-':
             # first filter is exclude, start with full package list
             # and then exclude from it
             selected = packages
@@ -648,6 +673,8 @@ type=rpm-md
             regex = fnmatch.translate(pkg_list[0])
             reobj = re.compile(regex)
             if sense == '+':
+                if exclude_only:
+                    continue
                 # include
                 for excluded_pkg in excluded:
                     if reobj.match(excluded_pkg.name):
