@@ -1,12 +1,8 @@
 #!/bin/sh
-SEARCH_LIBRARY_PATH="/usr/lib:/usr/lib64:/usr/lib/oracle/11.2/client64/lib:/usr/lib/oracle/11.2/client/lib:/usr/lib/gcj/postgresql-jdbc:/usr/lib64/gcj/postgresql-jdbc"
-SEARCH_RHN_CLASSPATH="/usr/share/rhn/classes:/usr/share/nutch-core:/usr/share/nutch-core/conf"
-SEARCH_RHN_JARS="/usr/share/rhn/lib/spacewalk-asm.jar:/usr/share/rhn/lib/rhn.jar:/usr/share/rhn/lib/java-branding.jar"
-SEARCH_JARS="/usr/share/rhn/search/lib/*"
-SEARCH_INIT_MEMORY=32
-SEARCH_MAX_MEMORY=96
+echo "Sourcing config file..."
+ . /usr/share/rhn/config-defaults/rhn_search_daemon.conf
+
 SEARCH_CLASSPATH="${SEARCH_JARS}:${SEARCH_RHN_CLASSPATH}:${SEARCH_RHN_JARS}"
-#SEARCH_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${SEARCH_INIT_MEMORY}m -Xmx${SEARCH_MAX_MEMORY}m"
 SEARCH_PARAMS="-Dfile.encoding=UTF-8 -Xms${SEARCH_INIT_MEMORY}m -Xmx${SEARCH_MAX_MEMORY}m"
 
 JAVACMD="/usr/bin/java -Djava.library.path=${SEARCH_LIBRARY_PATH} -classpath ${SEARCH_CLASSPATH} ${SEARCH_PARAMS}"
@@ -17,7 +13,7 @@ else
     case $1 in 
         'cleanindex')
         systemctl stop rhn-search
-        $JAVACMD com.redhat.satellite.search.DeleteIndexes > /dev/null
+        $JAVACMD  com.redhat.satellite.search.DeleteIndexes > /dev/null
         systemctl start rhn-search
         ;;
         *)

@@ -1,19 +1,16 @@
 #!/bin/sh
-TASKO_LIBRARY_PATH="/usr/lib:/usr/lib64:/usr/lib/oracle/11.2/client64/lib:/usr/lib/oracle/11.2/client/lib"
-TASKO_RHN_CLASSPATH="/usr/share/rhn/classes"
-TASKO_RHN_JARS="/usr/share/rhn/lib/spacewalk-asm.jar:/usr/share/rhn/lib/rhn.jar:/usr/share/rhn/lib/java-branding.jar"
-TASKO_JARS="/usr/share/spacewalk/taskomatic/*"
-TASKO_INIT_MEMORY=256
-TASKO_MAX_MEMORY=2048
-TASKO_CLASSPATH="${TASKO_RHN_CLASSPATH}:${TASKO_RHN_JARS}:${TASKO_JARS}"
+# TaskomaticDaemon start script
+. /etc/rhn/taskomatic.conf
+
+TASKO_MEM_LINE=$(grep "taskomatic.java.maxmemory" /etc/rhn/rhn.conf)
+# Check if commented out
+if [[ $TASKO_MEM_LINE != \#* ]]; then
+  # strip whitespace and then get value after =
+  TASKO_MAX_MEMORY=$(echo $TASKO_MEM_LINE | sed -r 's/\s+//g' | sed 's/^.*=//');
+fi
+
 TASKO_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${TASKO_INIT_MEMORY}m -Xmx${TASKO_MAX_MEMORY}m ${TASKO_CRASH_PARAMS}"
+TASKO_CLASSPATH="${TASKO_RHN_CLASSPATH}:${TASKO_RHN_JARS}:${TASKO_JARS}"
 
-#echo ${TASKO_CLASSPATH}
-
-#exit 0
-/usr/bin/java   -Djava.library.path=${TASKO_LIBRARY_PATH} -classpath ${TASKO_CLASSPATH} ${TASKO_PARAMS} com.redhat.rhn.taskomatic.core.TaskomaticDaemon
-#/usr/bin/java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8001 -Djava.library.path=${TASKO_LIBRARY_PATH} -classpath ${TASKO_CLASSPATH} ${TASKO_PARAMS} com.redhat.rhn.taskomatic.core.TaskomaticDaemon
-
-
- 
-
+# options sourced from /usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf (do not touch). Add additional options to /etc/rhn/taskomatic.conf
+/usr/bin/java -Djava.library.path=${TASKO_LIBRARY_PATH} -classpath ${TASKO_CLASSPATH} ${TASKO_PARAMS} ${JAVA_OPTS} com.redhat.rhn.taskomatic.core.TaskomaticDaemon

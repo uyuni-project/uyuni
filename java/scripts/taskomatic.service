@@ -5,8 +5,11 @@ Requires=apache2.service
 
 [Service]
 Type=simple
+EnvironmentFile=/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 ExecStart=/usr/sbin/taskomatic
 Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
+
+

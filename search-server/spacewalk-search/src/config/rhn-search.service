@@ -5,7 +5,6 @@ After=local-fs.target network.target httpd.service
 [Service]
 Type=simple
 ExecStart=/usr/sbin/rhn-search 
-PIDFile=/var/run/rhn-search.pid
 Restart=on-failure
 
 [Install]
