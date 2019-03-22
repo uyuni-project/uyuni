@@ -8,9 +8,7 @@ Feature: Reboot required after patch
 
   Scenario: Check requiring reboot in the web UI
     Given I am authorized
-    And I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
+    And I follow "Systems > Overview" in the left menu
     When I click Systems, under Systems node
     Then I should see a "All" link in the left menu
     And  I follow "All" in the left menu

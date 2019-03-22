@@ -9,8 +9,7 @@ Feature: Add a repository to a channel
 
   Scenario: Add a test repository for x86_64
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Software > Channels > All" in the left menu
     And I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Create Repository"
@@ -22,8 +21,7 @@ Feature: Add a repository to a channel
 
   Scenario: Disable metadata check for the x86_64 test repository
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Software > Channels > All" in the left menu
     And I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Test-Repository-x86_64"
@@ -34,8 +32,7 @@ Feature: Add a repository to a channel
 
   Scenario: Add the repository to the x86_64 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Software > Channels > All" in the left menu
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-x86_64"
@@ -46,8 +43,7 @@ Feature: Add a repository to a channel
 
   Scenario: Synchronize the repository in the x86_64 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Software > Channels > All" in the left menu
     And I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Overview" in the left menu
@@ -59,8 +55,7 @@ Feature: Add a repository to a channel
 
   Scenario: Add a test repository for i586
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Software > Channels > All" in the left menu
     And I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Create Repository"
@@ -72,8 +67,7 @@ Feature: Add a repository to a channel
 
   Scenario: Add the repository to the i586 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Software > Channels > All" in the left menu
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-i586"
@@ -84,8 +78,7 @@ Feature: Add a repository to a channel
 
   Scenario: Synchronize the repository in the i586 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Software > Channels > All" in the left menu
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-i586"
@@ -157,8 +150,7 @@ Feature: Add a repository to a channel
 
   Scenario: Reposync handles wrong encoding on RPM attributes
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Software > Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages" in the content area
     Then I should see a "blackhole-dummy" text
