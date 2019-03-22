@@ -422,7 +422,7 @@ public class ConfigDefaults {
      * @return the dir which has the kickstarts
      */
     public String getKickstartConfigDir() {
-        return Config.get().getString(KICKSTART_COBBLER_DIR, "/var/lib/rhn/kickstarts/");
+        return Config.get().getString(KICKSTART_COBBLER_DIR, "/var/lib/cobbler/templates/");
     }
 
     /**
