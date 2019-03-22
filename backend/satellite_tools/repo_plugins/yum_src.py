@@ -45,6 +45,7 @@ except:
 import xml.etree.ElementTree as etree
 
 from functools import cmp_to_key
+from salt.utils.versions import LooseVersion
 from spacewalk.common import checksum, rhnLog, fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
@@ -598,6 +599,42 @@ type=rpm-md
         # Solvables with ":" in name are not packages
         return [pack for pack in self.solv_repo.solvables if ':' not in pack.name]
 
+    def _get_solvable_dependencies(self, solvables):
+        """
+        Return a list containing all passed solvables and all its calculated dependencies.
+
+        For each solvable we explore the "SOLVABLE_REQUIRES" to add any new solvable where "SOLVABLE_PROVIDES"
+        is matching the requirement. All the new solvables that are added will be again processed in order to get
+        a new level of dependencies.
+
+        The exploration of dependencies is done when all the solvables are been processed and no new solvables are added
+
+        :returns: list
+        """
+        if not self.repo.is_configured:
+            self.setup_repo(self.repo)
+        known_solvables = set()
+        resolved_deps = self.solv_pool.Selection()
+
+        new_deps = True
+        next_solvables = solvables
+
+        # Collect solvables dependencies in depth
+        while new_deps:
+            new_deps = False
+            for sol in next_solvables:
+                # Do not explore dependencies from solvables that are already proceesed
+                if sol not in known_solvables:
+                    # This solvable has not been proceesed yet. We need to calculate its dependencies
+                    known_solvables.add(sol)
+                    resolved_deps.add(sol.Selection())
+                    new_deps = True
+                    # Adding solvables that provide the dependencies
+                    for _req in sol.lookup_deparray(keyname=solv.SOLVABLE_REQUIRES):
+                        resolved_deps.matchdepid(_req.id, flags=solv.Selection.SELECTION_ADD, keyname=solv.SOLVABLE_PROVIDES)
+            next_solvables = resolved_deps.solvables()
+        return resolved_deps.solvables()
+
     def _apply_filters(self, pkglist, filters):
         """
         Return a list of packages where defined filters were applied.
@@ -613,7 +650,12 @@ type=rpm-md
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)
+            pkglist = self._get_solvable_dependencies(pkglist)
+
+            # Do not pull in dependencies if there're explicitly excluded
+            pkglist = self._filter_packages(pkglist, filters, True)
             self.num_excluded = self.num_packages - len(pkglist)
+
         return pkglist
 
     @staticmethod
@@ -624,7 +666,7 @@ type=rpm-md
             return str(text)
 
     @staticmethod
-    def _filter_packages(packages, filters):
+    def _filter_packages(packages, filters, exclude_only=False):
         """ implement include / exclude logic
             filters are: [ ('+', includelist1), ('-', excludelist1),
                            ('+', includelist2), ... ]
@@ -636,7 +678,7 @@ type=rpm-md
         excluded = []
         allmatched_include = []
         allmatched_exclude = []
-        if filters[0][0] == '-':
+        if exclude_only or filters[0][0] == '-':
             # first filter is exclude, start with full package list
             # and then exclude from it
             selected = packages
@@ -648,6 +690,8 @@ type=rpm-md
             regex = fnmatch.translate(pkg_list[0])
             reobj = re.compile(regex)
             if sense == '+':
+                if exclude_only:
+                    continue
                 # include
                 for excluded_pkg in excluded:
                     if reobj.match(excluded_pkg.name):
@@ -813,13 +857,15 @@ type=rpm-md
         pkglist = self._get_solvable_packages()
         pkglist.sort(key = cmp_to_key(self._sort_packages))
         self.num_packages = len(pkglist)
+        pkglist = self._apply_filters(pkglist, filters)
 
         if latest:
-            # TODO
-            # pkglist = pkglist.returnNewestByNameArch()
-            pass
-
-        pkglist = self._apply_filters(pkglist, filters)
+            latest_pkgs = {}
+            new_pkgs = []
+            for pkg in pkglist:
+               if pkg.name not in latest_pkgs.keys() or LooseVersion(str(pkg.evr)) > LooseVersion(str(latest_pkgs[pkg.name].evr)):
+                  latest_pkgs[pkg.name] = pkg
+            pkglist = list(latest_pkgs.values())
 
         to_return = []
         for pack in pkglist:

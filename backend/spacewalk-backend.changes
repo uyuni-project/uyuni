@@ -1,3 +1,7 @@
+- Add support for getting latest versions from RPM packages
+  when running "spacewalk-repo-sync" after migration to Zypper.
+- Include packages dependencies on "spacewalk-repo-sync" when using filters
+  for RPM packages.
 - Allow package filtering (name matching) on spacewalk-repo-sync after
   migrating away from yum.
 - Fix crash when importing new channel families on 'mgr-inter-sync' (bsc#1129300)
