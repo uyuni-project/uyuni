@@ -17,12 +17,12 @@
 #
 
 
-%define cobprofdir      %{_localstatedir}/lib/rhn/kickstarts
-%define cobprofdirup    %{_localstatedir}/lib/rhn/kickstarts/upload
-%define cobprofdirwiz   %{_localstatedir}/lib/rhn/kickstarts/wizard
-%define cobdirsnippets  %{_localstatedir}/lib/rhn/kickstarts/snippets
-%define realcobsnippetsdir  %{_localstatedir}/lib/cobbler/snippets
-%define cobblerdir          %{_localstatedir}/lib/cobbler
+%define cobblerdir      %{_localstatedir}/lib/cobbler
+%define cobprofdir      %{cobblerdir}/templates
+%define cobprofdirup    %{cobprofdir}/upload
+%define cobprofdirwiz   %{cobprofdir}/wizard
+%define cobdirsnippets  %{cobblerdir}/snippets
+%define realcobsnippetsdir  %{cobdirsnippets}/spacewalk
 %define run_checkstyle  1
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -707,19 +707,18 @@ cp -a build/classes/com/redhat/rhn/common/conf/test/conf $RPM_BUILD_ROOT%{_datad
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 install -m 644 code/src/ehcache.xml $RPM_BUILD_ROOT%{_datadir}/rhn/classes/ehcache.xml
 
-install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{cobdirsnippets}/default_motd
-install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{cobdirsnippets}/keep_system_id
-install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{cobdirsnippets}/post_reactivation_key
-install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{cobdirsnippets}/post_delete_system
-install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{cobdirsnippets}/redhat_register
-install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register
-install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register_script
-install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
-install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{cobdirsnippets}/wait_for_networkmanager_script
+install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
+install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{realcobsnippetsdir}/default_motd
+install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{realcobsnippetsdir}/keep_system_id
+install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{realcobsnippetsdir}/post_reactivation_key
+install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{realcobsnippetsdir}/post_delete_system
+install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{realcobsnippetsdir}/redhat_register
+install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_register
+install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_register_script
+install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_no_signature_checks
+install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{realcobsnippetsdir}/wait_for_networkmanager_script
 
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
-install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
-ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT%{realcobsnippetsdir}/spacewalk
 %if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit
 install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
