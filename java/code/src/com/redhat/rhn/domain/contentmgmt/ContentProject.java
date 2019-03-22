@@ -36,6 +36,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -211,7 +212,7 @@ public class ContentProject extends BaseDomainHelper {
      * @return sources
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contentProject", orphanRemoval = true)
-    @OrderColumn(name = "position")
+    @OrderBy("position")
     public List<ProjectSource> getSources() {
         return sources;
     }
@@ -223,6 +224,10 @@ public class ContentProject extends BaseDomainHelper {
      */
     public void setSources(List<ProjectSource> sourcesIn) {
         sources = sourcesIn;
+        // fix the order
+        for (int idx = 0; idx < sources.size(); idx++) {
+            sources.get(idx).setPosition(idx);
+        }
     }
 
     /**
@@ -241,6 +246,12 @@ public class ContentProject extends BaseDomainHelper {
                 () -> sources.add(source),
                 (p) -> sources.add(p, source)
         );
+
+        // fix the order
+        for (int idx = position.orElse(sources.size() - 1); idx < sources.size(); idx++) {
+            sources.get(idx).setPosition(idx);
+        }
+
         return true;
     }
 
@@ -251,6 +262,11 @@ public class ContentProject extends BaseDomainHelper {
      */
     public void removeSource(ProjectSource source) {
         sources.remove(source);
+        source.setContentProject(null);
+        // fix the order
+        for (int idx = source.getPosition(); idx < sources.size(); idx++) {
+            sources.get(idx).setPosition(idx);
+        }
     }
 
     /**
