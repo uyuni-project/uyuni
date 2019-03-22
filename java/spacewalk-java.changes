@@ -1,3 +1,4 @@
+- change cobblers template directory
 - Remove tanukiwrapper from taskomatic
 - Add error message on sync refresh when there are no scc credentials
 - rename cobbler keyword ksmeta to autoinstall_meta which changed with cobbler 3
