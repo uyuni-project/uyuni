@@ -13,6 +13,10 @@ Feature: Action chain on salt minions
     And I run "zypper -n ref" on "sle-minion"
     And I run "echo '/dev/vda1 / ext4 defaults 0 0' > /etc/fstab" on "sle-minion"
 
+  Scenario: Pre-requisite: refresh package list first on SLE minion
+    When I refresh packages list via spacecmd on "sle-minion"
+    And I wait until refresh package list on "sle-minion" is finished
+
   Scenario: Pre-requisite: wait until downgrade is finished
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area

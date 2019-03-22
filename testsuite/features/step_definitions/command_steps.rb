@@ -954,3 +954,28 @@ When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
   raise 'File injection failed' unless return_code.zero?
   node.run("systemctl restart salt-minion")
 end
+
+When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
+  node = get_system_name(client)
+  command = "spacecmd -u admin -p admin system_schedulepackagerefresh #{node}"
+  $server.run(command)
+end
+
+Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
+  current_time = Time.now.strftime('%Y%m%d%H%M')
+  timeout_time = (Time.now + DEFAULT_TIMEOUT).strftime('%Y%m%d%H%M')
+  node = get_system_name(client)
+  cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node}"
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        result, code = $server.run(cmd, false)
+        break if result.include? '1    0    0'
+        raise 'refresh package list failed' if result.include? '0    1    0'
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "'refresh package list' did not finish in #{DEFAULT_TIMEOUT} seconds"
+  end
+end

@@ -12,6 +12,10 @@ Feature: Salt package states
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion" without error control
 
+  Scenario: Pre-requisite: refresh package list on SLES minion
+    When I refresh packages list via spacecmd on "sle-minion"
+    And I wait until refresh package list on "sle-minion" is finished
+
   Scenario: Pre-requisite: ensure the errata cache is computed
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
