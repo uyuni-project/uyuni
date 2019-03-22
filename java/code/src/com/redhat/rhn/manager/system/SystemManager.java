@@ -2014,8 +2014,17 @@ public class SystemManager extends BaseManager {
                 }
             }
         }
-        if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
+        else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
             saltServiceInstance.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+        }
+        else if (EntitlementManager.MONITORING.equals(ent)) {
+            try {
+                FormulaFactory.saveServerFormulas(server.asMinionServer().get().getMinionId(),
+                        Arrays.asList("prometheus-exporters"));
+            } catch (UnsupportedOperationException | IOException e) {
+                log.error("Error assigning formula: " + e.getMessage(), e);
+                result.addError(new ValidatorError("system.entitle.formula_error"));
+            }
         }
 
         Map<String, Object> in = new HashMap<String, Object>();
@@ -2230,6 +2239,8 @@ public class SystemManager extends BaseManager {
             }
             return;
         }
+
+        // TODO: If this is monitoring, unassign the formula
 
         Map<String, Object> in = new HashMap<String, Object>();
         in.put("sid", sid);
