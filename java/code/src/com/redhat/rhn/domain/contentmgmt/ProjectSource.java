@@ -45,6 +45,7 @@ import javax.persistence.Table;
 public abstract class ProjectSource {
 
     private Long id;
+    private Integer position;
     private State state;
     private ContentProject contentProject;
 
@@ -165,6 +166,15 @@ public abstract class ProjectSource {
      */
     public void setId(Long idIn) {
         id = idIn;
+    }
+
+    @Column
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer positionIn) {
+        this.position = positionIn;
     }
 
     /**
