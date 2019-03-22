@@ -49,17 +49,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
 /**
  * Factory class for working with formulas.
  */
 public class FormulaFactory {
+
+    /** This formula is coupled with the monitoring system type */
+    public static final String PROMETHEUS_EXPORTERS = "prometheus-exporters";
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
@@ -474,6 +481,18 @@ public class FormulaFactory {
         }
         else {
             serverFormulas.put(minionId, orderedFormulas);
+        }
+
+        // Assign monitoring system type in case "prometheus-exporters" is used
+        if (orderedFormulas.contains(PROMETHEUS_EXPORTERS)) {
+            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
+                if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING)) {
+                    if (!SystemManager.canEntitleServer(s, EntitlementManager.MONITORING) ||
+                            SystemManager.entitleServer(s, EntitlementManager.MONITORING).hasErrors()) {
+                        throw new UnsupportedOperationException("Monitoring system type cannot be assigned");
+                    }
+                }
+            });
         }
 
         // Write server_formulas file

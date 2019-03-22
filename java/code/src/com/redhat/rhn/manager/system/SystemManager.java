@@ -2017,15 +2017,6 @@ public class SystemManager extends BaseManager {
         else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
             saltServiceInstance.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
-        else if (EntitlementManager.MONITORING.equals(ent)) {
-            try {
-                FormulaFactory.saveServerFormulas(server.asMinionServer().get().getMinionId(),
-                        Arrays.asList("prometheus-exporters"));
-            } catch (UnsupportedOperationException | IOException e) {
-                log.error("Error assigning formula: " + e.getMessage(), e);
-                result.addError(new ValidatorError("system.entitle.formula_error"));
-            }
-        }
 
         Map<String, Object> in = new HashMap<String, Object>();
         in.put("sid", sid);
@@ -2041,6 +2032,16 @@ public class SystemManager extends BaseManager {
         if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
                 !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
             server.asMinionServer().ifPresent(SystemManager::updateLibvirtEngine);
+        }
+        else if (EntitlementManager.MONITORING.equals(ent)) {
+            try {
+                FormulaFactory.saveServerFormulas(server.asMinionServer().get().getMinionId(),
+                        Arrays.asList(FormulaFactory.PROMETHEUS_EXPORTERS));
+            }
+            catch (UnsupportedOperationException | IOException e) {
+                log.error("Error assigning formula: " + e.getMessage(), e);
+                result.addError(new ValidatorError("system.entitle.formula_error"));
+            }
         }
 
         log.debug("done.  returning null");
