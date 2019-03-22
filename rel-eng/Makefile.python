@@ -1,0 +1,7 @@
+define update_pip_env
+	rpm -e python3-pylint &>/dev/null
+	pip3 install --upgrade pip
+	pip3 uninstall -y pylint
+	pip3 install pylint==2.3.1
+	mkdir -p reports
+endef

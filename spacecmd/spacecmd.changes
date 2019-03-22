@@ -1,3 +1,4 @@
+- Add Pylint setup
 - Replace iteritems with items for python2/3 compat (bsc#1129243)
 
 -------------------------------------------------------------------
