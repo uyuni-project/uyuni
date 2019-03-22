@@ -11,12 +11,8 @@ Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 
 @centos_minion
   Scenario: Pre-requisite: refresh package list on Centos SSH minion 
-    Given I am on the Systems overview page of this "ceos-ssh-minion"
-    When I follow "Software" in the content area
-    And I click on "Update Package List"
-    And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
-    Then I wait until event "Package List Refresh scheduled by admin" is completed
+    When I refresh packages list via spacecmd on "ceos-ssh-minion"
+    And I wait until refresh package list on "ceos-ssh-minion" is finished
 
 @centos_minion
   Scenario: Schedule errata refresh to reflect channel assignment on Centos SSH minion 
