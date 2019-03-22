@@ -1,26 +1,21 @@
+THIS_MAKEFILE := $(realpath $(lastword $(MAKEFILE_LIST)))
+CURRENT_DIR := $(dir $(THIS_MAKEFILE))
+include $(CURRENT_DIR)../rel-eng/Makefile.python
+
 # Docker tests variables
 DOCKER_CONTAINER_BASE = uyuni-master
 DOCKER_REGISTRY       = registry.mgr.suse.de
-DOCKER_RUN_EXPORT     = "PYTHONPATH=$PYTHONPATH"
+#DOCKER_RUN_EXPORT     = "PYTHONPATH=$PYTHONPATH"
+DOCKER_RUN_EXPORT     := ''
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
 
-define update_pip_env
-	rpm -e python3-pylint &>/dev/null
-	pip3 install --upgrade pip
-	pip3 uninstall -y pylint
-	pip3 install pylint==2.3.1
-	mkdir -p reports
-endef
-
-pylint ::
-	pylint --errors-only --disable=W src/
-
-pylint_inside_docker ::
+__pylint ::
 	$(call update_pip_env)
 	pylint --rcfile=usix-pylintrc common/ > reports/pylint.log || :
 
 docker_pylint ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/usix; make -f Makefile.usix pylint_inside_docker"
+#	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/usix; make -f Makefile.usix __pylint"
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/usix; make -f Makefile.usix __pylint"
 
 docker_shell ::
 	docker run -t -i --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
