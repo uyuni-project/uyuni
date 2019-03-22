@@ -16,6 +16,8 @@
 Usix is a library to bring compatibility between Python2 and Python3.
 """
 
+# pylint: disable=E1101
+
 import sys
 import types
 
@@ -66,6 +68,9 @@ else:
 # pylint: disable=W0122
 if PY3:
     def raise_with_tb(value, tb=None):
+        """
+        Re-raise an exception with the traceback.
+        """
         try:
             if value.__traceback__ is not tb:
                 raise value.with_traceback(tb)
@@ -89,5 +94,8 @@ try:
     advance_iterator = next
 except NameError:
     def advance_iterator(it):
+        """
+        Iterator invocation.
+        """
         return it.next()
 next = advance_iterator  # pylint: disable=W0622
