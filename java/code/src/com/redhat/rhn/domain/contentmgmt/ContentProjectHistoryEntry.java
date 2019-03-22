@@ -28,14 +28,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * Content Project History entry
  */
 @Entity
 @Table(name = "suseContentProjectHistoryEntry")
+@NamedQueries
+        ({
+                @NamedQuery(
+                        name = "ContentProjectHistoryEntry.latestEntryVersion",
+                        query = "SELECT MAX(e.version) " +
+                                "FROM ContentProjectHistoryEntry e " +
+                                "WHERE contentProject = :project")
+        })
 public class ContentProjectHistoryEntry {
 
     private Long id;
@@ -168,7 +180,7 @@ public class ContentProjectHistoryEntry {
         return new ToStringBuilder(this)
                 .append("id", id)
                 .append("version", version)
-                .append("contentProject", contentProject.getLabel())
+                .append("contentProject", ofNullable(contentProject).map(p -> p.getLabel()).orElse("null"))
                 .append("created", created)
                 .append("user", user)
                 .toString();
