@@ -12,6 +12,9 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+"""
+Usix is a library to bring compatibility between Python2 and Python3.
+"""
 
 import sys
 import types
