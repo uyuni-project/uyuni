@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 20 17:30:30 CET 2019 - jgonzalez@suse.com
+
+- version 3.1.21-1
+- fix performance regression in inter-server-sync (bsc#1129300)
+
+-------------------------------------------------------------------
 Thu Nov 01 11:11:08 CET 2018 - jgonzalez@suse.com
 
 - version 3.1.20-1

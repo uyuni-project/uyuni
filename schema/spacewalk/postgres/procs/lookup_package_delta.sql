@@ -13,7 +13,8 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 
-create or replace function lookup_package_delta(n_in in varchar)
+create or replace function
+lookup_package_delta(n_in in varchar)
 returns numeric
 as
 $$
@@ -26,18 +27,12 @@ begin
      where label = n_in;
 
     if not found then
-        name_id := nextval('rhn_packagedelta_id_seq');
-
-        insert into rhnPackageDelta(id, label)
-            values (name_id, n_in)
-            on conflict do nothing;
-
-        select id
-            into strict name_id
-            from rhnpackagedelta
-            where label = n_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_package_delta(n_in);
     end if;
 
     return name_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

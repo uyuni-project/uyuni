@@ -30,19 +30,12 @@ begin
            name_id = tag_name_id;
 
     if not found then
-        tag_id := nextval('rhn_tag_id_seq');
-
-        insert into rhnTag(id, org_id, name_id)
-            values (tag_id, org_id_in, tag_name_id)
-            on conflict do nothing;
-
-        select id
-            into strict tag_id
-            from rhnTag
-            where org_id = org_id_in and
-                name_id = lookup_tag_name(name_in);
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_tag(org_id_in, tag_name_id);
     end if;
 
     return tag_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;
