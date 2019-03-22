@@ -37,7 +37,7 @@ if PY3:
     InstanceType = object
 else:
     BufferType = types.BufferType
-    UnicodeType = unicode
+    UnicodeType = unicode  # pylint: disable=E0602
     StringType = types.StringType
     DictType = types.DictType
     IntType = types.IntType
