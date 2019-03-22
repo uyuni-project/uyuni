@@ -321,11 +321,17 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static void addHistoryEntryToProject(ContentProject project, ContentProjectHistoryEntry entry) {
         List<ContentProjectHistoryEntry> entries = project.getHistoryEntries();
-        entry.setVersion(entries.size() == 0 ? 1 : entries.get(entries.size() - 1).getVersion() + 1);
+        entry.setVersion(latestHistoryEntryVersion(project).orElse(0L) + 1);
         entry.setContentProject(project);
         save(entry);
         entries.add(entry);
         save(project);
+    }
+
+    private static Optional<Long> latestHistoryEntryVersion(ContentProject project) {
+        return HibernateFactory.getSession().getNamedQuery("ContentProjectHistoryEntry.latestEntryVersion")
+                .setParameter("project", project)
+                .uniqueResultOptional();
     }
 
     /**
