@@ -255,7 +255,6 @@ fi
 %else
 %attr(755, root, root) %{_initrddir}/rhn-search
 %endif
-%{_bindir}/rhnsearchd
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
 %{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %{_sysconfdir}/logrotate.d/rhn-search
