@@ -811,7 +811,6 @@ fi
 %files
 %if 0%{?suse_version}
 %defattr(-,root,root)
-%dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
 %endif
 %defattr(644,tomcat,tomcat,775)
@@ -949,27 +948,26 @@ fi
 %dir %{cobprofdirup}
 %dir %{cobprofdirwiz}
 %dir %{cobdirsnippets}
-%config %{cobdirsnippets}/default_motd
-%config %{cobdirsnippets}/keep_system_id
-%config %{cobdirsnippets}/post_reactivation_key
-%config %{cobdirsnippets}/post_delete_system
-%config %{cobdirsnippets}/redhat_register
-%config %{cobdirsnippets}/sles_register
-%config %{cobdirsnippets}/sles_register_script
-%config %{cobdirsnippets}/sles_no_signature_checks
-%config %{cobdirsnippets}/wait_for_networkmanager_script
+%dir %{realcobsnippetsdir}
+%config %{realcobsnippetsdir}/default_motd
+%config %{realcobsnippetsdir}/keep_system_id
+%config %{realcobsnippetsdir}/post_reactivation_key
+%config %{realcobsnippetsdir}/post_delete_system
+%config %{realcobsnippetsdir}/redhat_register
+%config %{realcobsnippetsdir}/sles_register
+%config %{realcobsnippetsdir}/sles_register_script
+%config %{realcobsnippetsdir}/sles_no_signature_checks
+%config %{realcobsnippetsdir}/wait_for_networkmanager_script
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %else
 %if  0%{?suse_version}
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %attr(755,root,root) %dir %{cobblerdir}
-%attr(755,root,root) %dir %{realcobsnippetsdir}
 %else
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %endif
 %endif
-%{realcobsnippetsdir}/spacewalk
 
 %if 0%{?suse_version}
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
@@ -995,6 +993,7 @@ fi
 %files config
 %defattr(644,root,root,755)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
+%attr(0750,root,www) %dir /etc/rhn
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
