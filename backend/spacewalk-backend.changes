@@ -1,3 +1,4 @@
+- remove apache access_compat module and adapt config files
 - Add support for getting latest versions from RPM packages
   when running "spacewalk-repo-sync" after migration to Zypper.
 - Include packages dependencies on "spacewalk-repo-sync" when using filters
