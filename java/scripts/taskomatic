@@ -9,7 +9,7 @@ if [[ $TASKO_MEM_LINE != \#* ]]; then
   TASKO_MAX_MEMORY=$(echo $TASKO_MEM_LINE | sed -r 's/\s+//g' | sed 's/^.*=//');
 fi
 
-TASKO_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${TASKO_INIT_MEMORY}m -Xmx${TASKO_MAX_MEMORY}m ${TASKO_CRASH_PARAMS}"
+TASKO_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${TASKO_INIT_MEMORY}m -Xmx${TASKO_MAX_MEMORY}m ${TASKO_CRASH_PARAMS} ${TASKO_JAVA_OPTS}"
 TASKO_CLASSPATH="${TASKO_RHN_CLASSPATH}:${TASKO_RHN_JARS}:${TASKO_JARS}"
 
 # options sourced from /usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf (do not touch). Add additional options to /etc/rhn/taskomatic.conf
