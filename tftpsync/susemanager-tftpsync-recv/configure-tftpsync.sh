@@ -164,6 +164,7 @@ fi
 
 
 sed -i "s/^[[:space:]]*allow from[[:space:]].*$/    allow from $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+sed -i "s/^[[:space:]]*#?Require ip[[:space:]].*$/    Require ip $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
 
 
 #######################################
