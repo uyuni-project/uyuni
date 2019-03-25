@@ -41,10 +41,10 @@ public abstract class CobblerObject {
     protected static final String OWNERS = "owners";
     protected static final String CTIME = "ctime";
     protected static final String KERNEL_OPTIONS_POST = "kernel_options_post";
-    protected static final String SET_KERNEL_OPTIONS_POST = "kopts_post";
+    protected static final String SET_KERNEL_OPTIONS_POST = "kernel_options_post";
     protected static final String DEPTH = "depth";
     protected static final String KERNEL_OPTIONS = "kernel_options";
-    protected static final String SET_KERNEL_OPTIONS = "kopts";
+    protected static final String SET_KERNEL_OPTIONS = "kernel_options";
     protected static final String NAME = "name";
     protected static final String KS_META = "autoinstall_meta";
     protected static final String SET_KS_META = "autoinstall_meta";
