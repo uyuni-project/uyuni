@@ -179,15 +179,6 @@ public class ChannelsJson {
     }
 
     /**
-     * @param baseIn the base channel
-     */
-    public void setBaseWithArchLabel(Channel baseIn) {
-        this.base = new ChannelJson(
-                baseIn.getId(), baseIn.getLabel(), baseIn.getName(), baseIn.isCustom(), true,
-                baseIn.isCloned(), baseIn.getChannelArch().getLabel());
-    }
-
-    /**
      * @return the child channels
      */
     public List<ChannelJson> getChildren() {
