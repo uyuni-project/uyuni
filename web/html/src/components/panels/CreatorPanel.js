@@ -34,16 +34,9 @@ const CreatorPanel = (props: Props) => {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({});
 
-  const setStateItem = (item: Object) => setItem({...item});
+  const setStateItem = (item: Object) => setItem(item);
   const modalNameId = `${props.id}-modal`;
   const panelCollapseId = props.collapsible && `${props.id}-panel`;
-
-  // We could delegate this to react, but it would be quite a challenge to integrate it with the bootstrap animations.
-  useEffect(() => {
-    $('#' + modalNameId).on('shown.bs.modal', function () {
-      $('#' + modalNameId + ' :input:visible:enabled:first').focus();
-    })
-  }, [])
 
   return (
     <React.Fragment>
@@ -75,6 +68,7 @@ const CreatorPanel = (props: Props) => {
       <Dialog id={modalNameId}
               title={props.title}
               closableModal={false}
+              className="modal-lg"
               content={
                 props.renderCreationContent({
                   open,

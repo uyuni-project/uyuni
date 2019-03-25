@@ -12,6 +12,12 @@ function closeDialog(modalId: string) {
 function Dialog(props) {
   const {onClosePopUp, buttons, ...OtherProps} = props;
 
+  React.useEffect(() => {
+    $('#' + props.id).on('shown.bs.modal', function () {
+      $('#' + props.id + ' :input:visible:enabled:first').focus();
+    })
+  }, [])
+
   return (
       <PopUp
           footer={buttons}
