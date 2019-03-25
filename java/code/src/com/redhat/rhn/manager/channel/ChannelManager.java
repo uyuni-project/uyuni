@@ -39,8 +39,6 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
-import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
-import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.org.Org;
@@ -2753,16 +2751,15 @@ public class ChannelManager extends BaseManager {
     /**
      * Align packages and errata of the target channel to the source one
      *
-     * @param src the source
-     * @param tgt the target
+     * @param src the source Channel
+     * @param tgt the target Channel
      * @param async run this operation asynchronously?
      * @param user the user
      */
-    public static void alignChannels(SoftwareProjectSource src, SoftwareEnvironmentTarget tgt, boolean async,
-            User user) {
-        if (!UserManager.verifyChannelAdmin(user, tgt.getChannel())) {
+    public static void alignChannels(Channel src, Channel tgt, boolean async, User user) {
+        if (!UserManager.verifyChannelAdmin(user, tgt)) {
             throw new PermissionException("User " + user.getLogin() + " has no permission for channel " +
-                    tgt.getChannel().getLabel());
+                    tgt.getLabel());
         }
         AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, user);
         if (async) {
@@ -2775,30 +2772,27 @@ public class ChannelManager extends BaseManager {
 
     /**
      * Synchronously align packages and errata of the target channel to the source one.
-     * This method is potentially time-expensive and should be run asynchronously (e.g. via alignChannels method)
+     * This method is potentially time-expensive and should be run asynchronously (@see alignChannels)
      *
      * @param src the source
      * @param tgt the target
      * @param user the user
      */
-    public static void alignChannelsSync(SoftwareProjectSource src, SoftwareEnvironmentTarget tgt, User user) {
-        Channel tgtChannel = tgt.getChannel();
-        Channel srcChannel = src.getChannel();
-
+    public static void alignChannelsSync(Channel src, Channel tgt, User user) {
         // align packages and the cache (rhnServerNeededCache)
-        alignPackages(srcChannel, tgtChannel);
+        alignPackages(src, tgt);
 
         // align errata and the cache (rhnServerNeededCache)
-        ErrataManager.mergeErrataToChannel(user, srcChannel.getErratas(), tgtChannel, srcChannel, false, false);
-        ErrataManager.truncateErrata(srcChannel, tgtChannel, user);
+        ErrataManager.mergeErrataToChannel(user, src.getErratas(), tgt, src, false, false);
+        ErrataManager.truncateErrata(src, tgt, user);
 
         // update the channel newest packages cache
-        ChannelFactory.refreshNewestPackageCache(tgtChannel, "java::alignPackages");
+        ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
 
         // now request repo regen
-        tgtChannel.setLastModified(new Date());
-        HibernateFactory.getSession().saveOrUpdate(tgtChannel);
-        ChannelManager.queueChannelChange(tgtChannel.getLabel(), "java::alignChannel", "Channel aligned");
+        tgt.setLastModified(new Date());
+        HibernateFactory.getSession().saveOrUpdate(tgt);
+        ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 
     private static void alignPackages(Channel srcChannel, Channel tgtChannel) {
