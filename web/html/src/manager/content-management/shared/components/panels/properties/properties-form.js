@@ -3,10 +3,10 @@ import React from 'react';
 import {Form} from "components/input/Form";
 import {Text} from "components/input/Text";
 
-import type {projectPropertiesType} from '../../../type/project.type.js';
+import type {ProjectPropertiesType} from '../../../type/project.type.js';
 
 type Props = {
-  properties: projectPropertiesType,
+  properties: ProjectPropertiesType,
   onChange: Function,
   editing?: boolean
 };
