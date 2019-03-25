@@ -1,5 +1,4 @@
 // @flow
-import React from 'react';
 import useMandatoryChannelsApi from "./use-mandatory-channels-api";
 
 type ChannelDto = {
