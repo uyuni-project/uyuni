@@ -18,14 +18,12 @@
 # in this software or its documentation
 
 import logging
-import re
-import shutil
 import sys
-import yum
-from yum.misc import prco_tuple_to_string
-from yum.packageSack import ListPackageSack
-from yum.packages import parsePackages
-from yum.repos import RepoStorage
+import solv
+import os
+import yaml
+
+from optparse import OptionParser, Option
 
 try:
     from spacewalk.satellite_tools.progress_bar import ProgressBar
@@ -45,15 +43,13 @@ PERSIST_DIR = "/var/lib/yum"
 
 class DepSolver:
 
-    def __init__(self, repos, pkgs_in=None):
+    def __init__(self, repos, pkgs_in=None, quiet=True):
         self._override_sigchecks = False
+        self.quiet = quiet
         self.pkgs = pkgs_in or []
         self.repos = repos
-        self._repostore = RepoStorage(self)
-        self.cleanup()  # call cleanup before and after, to ensure no stale metadata
+        self.pool = solv.Pool()
         self.setup()
-        self.loadPackages()
-        self.yrepo = None
 
     def setPackages(self, pkgs_in):
         self.pkgs = pkgs_in
@@ -63,30 +59,12 @@ class DepSolver:
          Load the repos into repostore to query package dependencies
         """
         for repo in self.repos:
-            self.yrepo = yum.yumRepo.YumRepository(repo['id'])
-            self.yrepo.baseurl = ["file://%s/" % str(repo['relative_path'])]
-            self.yrepo.basecachedir = CACHE_DIR
-            self.yrepo.base_persistdir = PERSIST_DIR
-            self._repostore.add(self.yrepo)
-
-    def loadPackages(self):
-        """
-         populate the repostore with packages
-        """
-        # pylint: disable=W0212
-        self._repostore._setup = True
-        self._repostore.populateSack(which='all')
-
-    def cleanup(self):
-        """
-         clean up the repo metadata cache from /tmp/cache/yum
-        """
-        for repo in self._repostore.repos:
-            cachedir = "%s/%s" % (CACHE_DIR, repo)
-            try:
-                shutil.rmtree(cachedir)
-            except IOError:
-                pass
+            solv_repo = self.pool.add_repo(str(repo['id']))
+            solv_path = os.path.join(repo['relative_path'], 'solv')
+            if not os.path.isfile(solv_path) or not solv_repo.add_solv(solv.xfopen(str(solv_path)), 0):
+                raise Exception("Repository solv file cannot be found at: {}".format(solv_path))
+        self.pool.addfileprovides()
+        self.pool.createwhatprovides()
 
     def getDependencylist(self):
         """
@@ -96,13 +74,12 @@ class DepSolver:
          name, name.arch, name-ver-rel.arch, name-ver, name-ver-rel,
          epoch:name-ver-rel.arch, name-epoch:ver-rel.arch
         """
-
-        ematch, match, _unmatch = parsePackages(self._repostore.pkgSack, self.pkgs)
-        pkgs = []
-        for po in ematch + match:
-            pkgs.append(po)
-        results = self.__locateDeps(pkgs)
-        return results
+        pkgselection = self.pool.Selection()
+        flags = solv.Selection.SELECTION_NAME|solv.Selection.SELECTION_PROVIDES|solv.Selection.SELECTION_GLOB
+        flags |= solv.Selection.SELECTION_CANON|solv.Selection.SELECTION_DOTARCH|solv.Selection.SELECTION_ADD
+        for pkg in self.pkgs:
+            pkgselection.select(pkg, flags)
+        return self.__locateDeps(pkgselection.solvables())
 
     def getRecursiveDepList(self):
         """
@@ -127,52 +104,33 @@ class DepSolver:
             to_solve = []
             for _dep, pkgs in list(found.items()):
                 for pkg in pkgs:
-                    name, version, _epoch, release, arch = pkg
-                    ndep = "%s-%s-%s.%s" % (name, version, release, arch)
                     solved = list(set(solved))
-                    if ndep not in solved:
-                        to_solve.append(ndep)
+                    if str(pkg) not in solved:
+                        to_solve.append(str(pkg))
             self.pkgs = to_solve
         return all_results
 
     def __locateDeps(self, pkgs):
         results = {}
-        regex_filename_match = re.compile(r'[/*?]|\[[^]]*/[^]]*\]').match
 
-        print(("Solving Dependencies (%i): " % len(pkgs)))
-        pb = ProgressBar(prompt='', endTag=' - complete',
-                         finalSize=len(pkgs), finalBarLength=40, stream=sys.stdout)
-        pb.printAll(1)
+        if not self.quiet:
+            print(("Solving Dependencies (%i): " % len(pkgs)))
+            pb = ProgressBar(prompt='', endTag=' - complete',
+                             finalSize=len(pkgs), finalBarLength=40, stream=sys.stdout)
+            pb.printAll(1)
 
         for pkg in pkgs:
-            pb.addTo(1)
-            pb.printIncrement()
+            if not self.quiet:
+                pb.addTo(1)
+                pb.printIncrement()
             results[pkg] = {}
-            reqs = pkg.requires
-            reqs.sort()
+            reqs = pkg.lookup_deparray(solv.SOLVABLE_REQUIRES)
             pkgresults = results[pkg]
             for req in reqs:
-                (r, f, v) = req
-                if r.startswith('rpmlib('):
-                    continue
-                satisfiers = []
-                for po in self.__whatProvides(r, f, v):
-                    # verify this po indeed provides the dep,
-                    # el5 version could give some false positives
-                    if regex_filename_match(r) or \
-                       po.checkPrco('provides', (r, f, v)):
-                        satisfiers.append(po)
-                pkgresults[req] = satisfiers
-        pb.printComplete()
+                pkgresults[req] = self.pool.whatprovides(req)
+        if not self.quiet:
+            pb.printComplete()
         return results
-
-    def __whatProvides(self, name, flags, version):
-        # pylint: disable=W0702
-        try:
-            return ListPackageSack(self._repostore.pkgSack.searchProvides((name, flags, version)))
-        except:
-            #perhaps we're on older version of yum try old style
-            return ListPackageSack(self._repostore.pkgSack.searchProvides(name))
 
     @staticmethod
     def processResults(results):
@@ -185,14 +143,14 @@ class DepSolver:
                 rlist = results[pkg][req]
                 if not rlist:
                     # Unsatisfied dependency
-                    notfound[prco_tuple_to_string(req)] = []
+                    notfound[str(req)] = []
                     continue
-                reqlist[prco_tuple_to_string(req)] = rlist
+                reqlist[str(req)] = rlist
         found = {}
         for req, rlist in list(reqlist.items()):
             found[req] = []
             for r in rlist:
-                dep = [r.name, r.version, r.epoch, r.release, r.arch]
+                dep = [r.name, r.evr, r.arch]
                 if dep not in found[req]:
                     found[req].append(dep)
         return found, notfound
@@ -205,14 +163,14 @@ class DepSolver:
                 continue
             for req in results[pkg]:
                 rlist = results[pkg][req]
-                print_doc_str += "\n dependency: %s \n" % prco_tuple_to_string(req)
+                print_doc_str += "\n dependency: %s \n" % req
                 if not rlist:
                     # Unsatisfied dependency
                     print_doc_str += "   Unsatisfied dependency \n"
                     continue
 
                 for po in rlist:
-                    print_doc_str += "   provider: %s\n" % po.compactPrint()
+                    print_doc_str += "   provider: %s\n" % str(po)
         return print_doc_str
 
 
