@@ -5,7 +5,7 @@ import Network from '../../../../utils/network';
 
 type Props = {
   projectId?: string,
-  nestedResource?: string,
+  projectResource?: string,
 };
 
 type returnUseProjectActionsApi = {
@@ -17,18 +17,19 @@ type returnUseProjectActionsApi = {
 const networkAction = {
   "get": Network.get,
   "create": Network.post,
+  "action": Network.post,
   "update": Network.put,
   "delete": Network.del,
 }
 
-const getApiUrl = (projectId, nestedResource) => {
+const getApiUrl = (projectId, projectResource) => {
   if (!projectId) {
     return "/rhn/manager/contentmanagement/api/projects";
   } else {
-    if(!nestedResource) {
+    if(!projectResource) {
       return `/rhn/manager/contentmanagement/api/projects/${projectId}`;
     } else {
-      return `/rhn/manager/contentmanagement/api/projects/${projectId}/${nestedResource}`;
+      return `/rhn/manager/contentmanagement/api/projects/${projectId}/${projectResource}`;
     }
   }
 }
@@ -41,7 +42,7 @@ const useProjectActionsApi = (props:Props): returnUseProjectActionsApi => {
     if(!isLoading) {
       setIsLoading(true);
 
-      const apiUrl = getApiUrl(props.projectId, props.nestedResource);
+      const apiUrl = getApiUrl(props.projectId, props.projectResource);
       const networkMethod = networkAction[action] || networkAction["get"];
       const networkRequest = networkMethod(apiUrl, JSON.stringify(actionBodyRequest), 'application/json');
       setOnGoingNetworkRequest(networkRequest);
