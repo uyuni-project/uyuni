@@ -17,24 +17,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.errata;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Collectors.toMap;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -74,6 +56,24 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
+import com.suse.utils.Opt;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 
 /**
@@ -923,10 +923,20 @@ public class ErrataHandler extends BaseHandler {
     private Errata lookupErratumByAdvisoryAndOrg(String advisoryName, Org org) throws FaultException {
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, org);
 
-        return erratas.stream()
-                .filter(e -> Optional.ofNullable(e.getOrg()).isPresent() && e.getOrg().getId() == org.getId())
-                .findFirst()
-                .orElse(erratas.stream().findFirst().orElse(null));
+        return Opt.fold(
+                Optional.ofNullable(erratas),
+                null, // no errata found
+                r -> Opt.fold(
+                        r.stream().filter(e ->
+                                Opt.fold(Optional.ofNullable(e.getOrg()),
+                                        () -> false, // filter out vendor's erratas
+                                        o -> o.getId() == org.getId() // filter in only user's erratas
+                                )
+                        ).findFirst(),
+                        () -> erratas.stream().findFirst().get(),  // no user's errata, get the vendor's one
+                        Function.identity()
+                )
+        );
     }
 
     /**
