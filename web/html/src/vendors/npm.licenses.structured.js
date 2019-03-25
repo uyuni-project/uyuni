@@ -5,7 +5,7 @@ const npmLicensesArray = [
 
 const npmDependencies = [
     { name: "@babel/polyfill", license: "MIT",  version: "7.2.5" }, 
-  { name: "@babel/runtime", license: "MIT",  version: "7.3.1" }, 
+  { name: "@babel/runtime", license: "MIT",  version: "7.4.2" }, 
   { name: "@emotion/hash", license: "MIT",  version: "0.6.6" }, 
   { name: "@emotion/memoize", license: "MIT",  version: "0.6.6" }, 
   { name: "@emotion/stylis", license: "MIT",  version: "0.7.1" }, 
@@ -31,8 +31,8 @@ const npmDependencies = [
   { name: "react-hot-loader", license: "MIT",  version: "4.7.0" }, 
   { name: "react-input-autosize", license: "MIT",  version: "2.2.1" }, 
   { name: "react-lifecycles-compat", license: "MIT",  version: "3.0.4" }, 
-  { name: "react-select", license: "MIT",  version: "2.4.1" }, 
-  { name: "react-transition-group", license: "BSD-3-Clause",  version: "2.5.3" }, 
+  { name: "react-select", license: "MIT",  version: "2.4.2" }, 
+  { name: "react-transition-group", license: "BSD-3-Clause",  version: "2.7.0" }, 
   { name: "regenerator-runtime", license: "MIT",  version: "0.12.1" }, 
   { name: "scheduler", license: "MIT",  version: "0.13.2" }, 
   { name: "style-loader", license: "MIT",  version: "0.23.1" }, 
