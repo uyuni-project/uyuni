@@ -14,29 +14,30 @@ const editedLicenseFilesByBuild = [
 
 const shouldValidateBuild = process.env.BUILD_VALIDATION !== "false";
 
-if(shouldValidateBuild) {
-  fillSpecFile()
-    .then(() => {
+
+fillSpecFile()
+  .then(() => {
+    if(shouldValidateBuild) {
       // let's make a sanity check if the generated specfile with the right  licenses is commited on git
-      const { code: gitCheckCode, stdout } = shell.exec("(cd ../../;git ls-files -m)");
+      const {code: gitCheckCode, stdout} = shell.exec("(cd ../../;git ls-files -m)");
       if (gitCheckCode !== 0) {
         shell.exit(gitCheckCode);
       }
 
-      if(stdout && editedLicenseFilesByBuild.some(fileName  => stdout.includes(fileName))) {
+      if (stdout && editedLicenseFilesByBuild.some(fileName => stdout.includes(fileName))) {
         shell.echo(`
                 It seems the most recent ${editedLicenseFilesByBuild} files aren't on git.
                 Run "yarn build" again and commit the generated ${editedLicenseFilesByBuild} files `);
         shell.exit(1);
       }
 
-      const { stdout: auditStdout } = shell.exec("yarn audit");
+      const {stdout: auditStdout} = shell.exec("yarn audit");
 
-      if(auditStdout && !auditStdout.includes("0 vulnerabilities found")) {
+      if (auditStdout && !auditStdout.includes("0 vulnerabilities found")) {
         shell.echo(`
                 There are vulnerabilities on the downloaded npm libraries.
                 Please run "yarn audit" and fix the detected vulnerabilities `);
         shell.exit(1);
       }
-    });
-}
+    }
+  });
