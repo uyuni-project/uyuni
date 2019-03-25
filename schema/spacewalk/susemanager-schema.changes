@@ -1,3 +1,4 @@
+- upgrade xccdf ident data for changed table structure
 - Set minion-action-cleanup run frequency from hourly to daily at midnight
 - Archive orphan actions when a system is deleted and make them visible in the UI (bsc#1118213)
 
