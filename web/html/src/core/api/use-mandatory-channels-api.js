@@ -1,5 +1,5 @@
 // @flow
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Network from '../../utils/network';
 import ChannelUtils from '../../utils/channels';
 
@@ -42,7 +42,7 @@ const useMandatoryChannelsApi = (props: ChildChannelsProps) : UseMandatoryChanne
 
   const fetchMandatoryChannelsByChannelIds = () => {
     // fetch dependencies data for all child channels and base channel as well
-    const needDepsInfoChannels = props.base && props.base.id != -1 ?
+    const needDepsInfoChannels = props.base && props.base.id !== -1 ?
       [props.base.id, ...props.channels.map(c => c.id)]
       : props.channels.map(c => c.id);
 
@@ -70,7 +70,7 @@ const useMandatoryChannelsApi = (props: ChildChannelsProps) : UseMandatoryChanne
   const dependenciesTooltip = (channelId: number) => {
     const resolveChannelNames : Function = (channelIds: Array<number>): Array<?string> => {
       return Array.from(channelIds || new Set())
-        .map((channelId: number): ?ChannelDto  => props.channels.find(c => c.id == channelId))
+        .map((channelId: number): ?ChannelDto  => props.channels.find(c => c.id === channelId))
         .filter((channel: ?ChannelDto): boolean => channel != null)
         .map((channel: ?ChannelDto): ?string => channel && channel.name);
     }
