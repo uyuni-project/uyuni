@@ -27,7 +27,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-hooks": "^1.0.2",
-    "eslint-plugin-you-dont-need-lodash-underscore": "^6.4.0",
     "license-checker-webpack-plugin": "^0.0.9",
     "shelljs": "^0.8.3",
     "style-loader": "^0.23.1",
@@ -40,13 +39,15 @@
     "@novnc/novnc": "^1.0.0",
     "@spice-project/spice-html5": "^0.2.1",
     "create-react-class": "^15.6.3",
+    "immer": "^2.1.4",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-hot-loader": "^4.7.0",
     "react-select": "^2.4.2",
-    "toastr": "^2.1.4"
+    "toastr": "^2.1.4",
+    "use-immer": "^0.1.0"
   },
   "scripts": {
     "clean": "rm -rf node_modules",
