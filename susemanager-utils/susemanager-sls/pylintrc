@@ -1,4 +1,4 @@
-# spacewalk pylint configuration
+# susemanager-sls package pylint configuration
 
 [MASTER]
 
