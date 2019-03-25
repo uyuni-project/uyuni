@@ -24,11 +24,7 @@ import os.path
 
 from spacewalk.server import rhnSQL
 
-try:
-    # python 2
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+from io import BytesIO
 
 
 DEFAULT_LOGFILE = './taskotop.log'
@@ -304,12 +300,13 @@ def extract_channel_ids(bytes):
     # represent numbers, we assume they are channel_ids
     # (currently this is the case)
     java_strings = []
-    io = StringIO(bytes)
+    io = BytesIO(bytes)
+
     while True:
         char = io.read(1)
-        if char == "":
+        if char == b"":
             break
-        elif char == "t":
+        elif char == b"t":
             oldpos = io.tell()
             try:
                 length = struct.unpack(">H", io.read(2))[0]
@@ -319,7 +316,7 @@ def extract_channel_ids(bytes):
                 pass # not a real string, ignore
             io.seek(oldpos)
     # of those found, filter the ones looking like a number
-    return [java_string for java_string in java_strings if java_string.isdigit()]
+    return [java_string.decode() for java_string in java_strings if java_string.isdigit()]
 
 # column indexes for ps output
 IX_PID  = 0
@@ -483,7 +480,7 @@ def seconds_to_hms_string(seconds):
     retval += '%02d:' % m
     retval += '%02d' % s
     return retval
-    
+
 def format_elapsed_time(rowdata, data_key, width):
     """Formats the elapsed time for display."""
     end = datetime.datetime.now()
@@ -491,7 +488,7 @@ def format_elapsed_time(rowdata, data_key, width):
         end = rowdata["end_time"]
 
     td = end.replace(tzinfo=None) - rowdata["start_time"].replace(tzinfo=None)
-    seconds = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
+    seconds = int((td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6)
     if HUMAN_READABLE:
         return seconds_to_hms_string(seconds)
     return "{0}s".format(seconds)
@@ -674,7 +671,7 @@ if args.showStart:
 if args.hideElapsed:
     SHOW_ELAPSED_TIME = False
     log_debug('ELAPSED column will be hidden')
-    
+
 try:
     curses.wrapper(main)
 except rhnSQL.SQLConnectError:
