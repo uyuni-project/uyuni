@@ -15,6 +15,8 @@
 package com.suse.manager.webui.controllers.contentmanagement.mappers;
 
 
+import static com.suse.utils.Opt.stream;
+
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
@@ -120,8 +122,7 @@ public class ResponseMappers {
         project.setSoftwareSources(mapSourcesFromDB(
                 projectDB.getSources()
                         .stream()
-                        .filter(SoftwareProjectSource.class::isInstance)
-                        .map(SoftwareProjectSource.class::cast)
+                        .flatMap(source -> stream(source.asSoftwareSource()))
                         .collect(Collectors.toList())
         ));
         project.setEnvironments(mapEnvironmentsFromDB(envsDB));
