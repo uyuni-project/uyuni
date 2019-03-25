@@ -14,11 +14,11 @@ const Filters = (props:  Props) => {
       // buttons={ this.renderModalAddButton('newFilter', t('Add new Filter')) }
     >
       <div className="min-height-panel">
-
+        <h4>{t("To be implemented in the next beta")}</h4>
       </div>
 
     </Panel>
   );
-}
+};
 
 export default Filters;
