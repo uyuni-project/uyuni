@@ -17,8 +17,7 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
-import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
-import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.user.User;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.Transaction;
@@ -28,18 +27,18 @@ import org.hibernate.Transaction;
  */
 public class AlignSoftwareTargetMsg implements EventDatabaseMessage {
 
-    private final SoftwareProjectSource source;
-    private final SoftwareEnvironmentTarget target;
+    private final Channel source;
+    private final Channel target;
     private final User user;
     private final Transaction txn;
 
     /**
      * Standard constructor
-     * @param src the Source
-     * @param tgt the Target
+     * @param src the source Channel
+     * @param tgt the target Channel
      * @param userIn the User
      */
-    public AlignSoftwareTargetMsg(SoftwareProjectSource src, SoftwareEnvironmentTarget tgt, User userIn) {
+    public AlignSoftwareTargetMsg(Channel src, Channel tgt, User userIn) {
         this.source = src;
         this.target = tgt;
         this.user = userIn;
@@ -47,20 +46,20 @@ public class AlignSoftwareTargetMsg implements EventDatabaseMessage {
     }
 
     /**
-     * Gets the source.
+     * Gets the source Channel.
      *
      * @return source
      */
-    public SoftwareProjectSource getSource() {
+    public Channel getSource() {
         return source;
     }
 
     /**
-     * Gets the target.
+     * Gets the target Channel.
      *
      * @return target
      */
-    public SoftwareEnvironmentTarget getTarget() {
+    public Channel getTarget() {
         return target;
     }
 
