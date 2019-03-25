@@ -1,13 +1,12 @@
 // @flow
 
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {TopPanel} from "../../../components/panels/TopPanel";
 import Sources from "../shared/components/panels/sources/sources";
 import PropertiesEdit from "../shared/components/panels/properties/properties-edit";
 import Build from "../shared/components/panels/build/build";
 import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
-import {handleSourcesChange, handleBuild} from "../shared/state/project/project.state";
-import { showErrorToastr, showSuccessToastr } from 'components/toastr/toastr';
+import {showErrorToastr, showSuccessToastr} from 'components/toastr/toastr';
 import Filters from "../shared/components/panels/filters/filters";
 import _isEmpty from "lodash/isEmpty";
 import "./project.css";
@@ -16,10 +15,12 @@ import {ModalButton} from "components/dialog/ModalButton";
 import useProjectActionsApi from '../shared/api/use-project-actions-api';
 import withPageWrapper from 'components/general/with-page-wrapper';
 
-import type {projectType} from '../shared/type/project.type';
+import type {ProjectType} from '../shared/type/project.type';
+import {hot} from 'react-hot-loader';
+import _last from "lodash/last";
 
 type Props = {
-  project: projectType,
+  project: ProjectType,
   wasFreshlyCreatedMessage?: string,
 };
 
@@ -35,23 +36,25 @@ const Project = (props: Props) => {
     }
   }, [])
 
-  const editedStates = ["0","2","3"];
+  // TODO: transform this in an enum and reuse in sources.js as well
+  const editedStates = ["ATTACHED","DETACHED"];
   const statesDesc = {
-    "0": "added",
-    "1": "built",
-    "2": "edited",
-    "3": "deleted",
+    "ATTACHED": "added",
+    "DETACHED": "deleted",
+    "BUILT": "built",
   };
 
   const projectId = project.properties.label;
+  const currentHistoryEntry = _last(project.properties.historyEntries);
 
-  const changesToBuild = project.sources
+  const changesToBuild = project.softwareSources
     .filter(source => editedStates.includes(source.state))
-    .map(source => ({type: "Source", name: source.name, state: statesDesc[source.state]}));
+    .map(source => ({id: source.id, type: "Source", name: source.name, state: statesDesc[source.state]}));
+  const isProjectEdited = changesToBuild.length > 0;
 
   return (
     <TopPanel
-      title={t('Create a new Content Lifecycle Project')}
+      title={t('Content Lifecycle Project - {0}', project.properties.name)}
       // icon="fa-plus"
       button= {
         <div className="pull-right btn-group">
@@ -79,6 +82,8 @@ const Project = (props: Props) => {
       <PropertiesEdit
         projectId={projectId}
         properties={project.properties}
+        currentHistoryEntry={currentHistoryEntry}
+        showDraftVersion={isProjectEdited}
         onChange={(projectWithNewProperties) => {
           setProject(projectWithNewProperties)
         }}
@@ -87,20 +92,20 @@ const Project = (props: Props) => {
       <div className="panel-group-contentmngt">
         <Sources
           projectId={projectId}
-          sources={project.sources}
-          onChange={(newSources) => {
-            setProject(handleSourcesChange(project, newSources))
+          softwareSources={project.softwareSources}
+          onChange={(projectWithNewSources) => {
+            setProject(projectWithNewSources)
           }}
         />
         <Filters/>
       </div>
 
       <Build
-        disabled={_isEmpty(project.environments) || changesToBuild.length < 1}
-        versionToBuild={project.properties.historyEntries[0]}
-        onBuild={(builtVersion) => {
-          setProject(handleBuild(project, builtVersion))
-          showSuccessToastr(`Version ${builtVersion.version} successfully built into ${project.environments[0].name}`)
+        projectId={projectId}
+        disabled={_isEmpty(project.environments) || !isProjectEdited}
+        currentHistoryEntry={currentHistoryEntry}
+        onBuild={(projectWithNewSources) => {
+          setProject(projectWithNewSources)
         }}
         changesToBuild={changesToBuild}
       />
@@ -116,4 +121,4 @@ const Project = (props: Props) => {
   );
 }
 
-export default withPageWrapper<Props>(Project);
+export default hot(module)(withPageWrapper<Props>(Project));

@@ -4,11 +4,11 @@ import {Text} from "components/input/Text";
 import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
 
-import type {projectEnvironmentType} from '../../../type/project.type.js';
+import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 
 type Props = {
-  environment: projectEnvironmentType,
-  environments: Array<projectEnvironmentType>,
+  environment: ProjectEnvironmentType,
+  environments: Array<ProjectEnvironmentType>,
   onChange: Function,
   editing?: boolean
 }

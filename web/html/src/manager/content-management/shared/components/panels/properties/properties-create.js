@@ -3,10 +3,10 @@ import React from 'react';
 import {Panel} from "../../../../../../components/panels/Panel";
 import PropertiesForm from "./properties-form";
 
-import type {projectPropertiesType} from '../../../type/project.type.js';
+import type {ProjectPropertiesType} from '../../../type/project.type.js';
 
 type Props = {
-  properties: projectPropertiesType,
+  properties: ProjectPropertiesType,
   onChange: Function,
 };
 
