@@ -26,7 +26,7 @@ type Props = {
 
 const Project = (props: Props) => {
 
-  const [project, setProject] = useState(props.project)
+  const [project, setProject] = useState(props.project);
   const {onAction} = useProjectActionsApi({ projectId: project.properties.label });
 
 
@@ -34,7 +34,7 @@ const Project = (props: Props) => {
     if(props.wasFreshlyCreatedMessage) {
       showSuccessToastr(props.wasFreshlyCreatedMessage)
     }
-  }, [])
+  }, []);
 
   // TODO: transform this in an enum and reuse in sources.js as well
   const editedStates = ["ATTACHED","DETACHED"];
@@ -49,7 +49,7 @@ const Project = (props: Props) => {
 
   const changesToBuild = project.softwareSources
     .filter(source => editedStates.includes(source.state))
-    .map(source => ({id: source.id, type: "Source", name: source.name, state: statesDesc[source.state]}));
+    .map(source => ({channelId: source.channelId, type: "Source", name: source.name, state: statesDesc[source.state]}));
   const isProjectEdited = changesToBuild.length > 0;
 
   return (
@@ -102,7 +102,7 @@ const Project = (props: Props) => {
 
       <Build
         projectId={projectId}
-        disabled={_isEmpty(project.environments) || !isProjectEdited}
+        disabled={_isEmpty(project.environments)}
         currentHistoryEntry={currentHistoryEntry}
         onBuild={(projectWithNewSources) => {
           setProject(projectWithNewSources)
@@ -119,6 +119,6 @@ const Project = (props: Props) => {
       />
     </TopPanel>
   );
-}
+};
 
 export default hot(module)(withPageWrapper<Props>(Project));

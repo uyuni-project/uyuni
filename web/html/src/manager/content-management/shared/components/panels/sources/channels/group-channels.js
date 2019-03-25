@@ -1,22 +1,24 @@
 // @flow
 import React from 'react';
-import {Toggler} from "../../../../../../../components/toggler";
+import {Toggler} from "components/toggler";
 import {Highlight} from "components/data-handler";
 import ChildChannels from "./child-channels";
-import {getAllRecommentedIdsByBaseId} from "./channels-selection.utils";
-import type {ChannelsTreeType} from "./api/use-channels";
+import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
+import {getAllRecommentedIdsByBaseId} from "core/channels/state/channels.utils";
+import type {RequiredChannelsResultType} from "core/channels/api/use-mandatory-channels-api";
 
 type PropsType = {
   base: Object,
   search: string,
-  childChannelsId: Array<string>,
-  selectedChannelsIdsInGroup: Array<string>,
-  selectedBaseChannelId: string,
+  childChannelsId: Array<number>,
+  selectedChannelsIdsInGroup: Array<number>,
+  selectedBaseChannelId: number,
   isOpen: boolean,
   setAllRecommentedChannels: Function,
   onChannelsToggle: Function,
   onOpenGroup: Function,
   channelsTree: ChannelsTreeType,
+  requiredChannelsResult: RequiredChannelsResultType,
 }
 
 const GroupChannels = (props: PropsType) => {

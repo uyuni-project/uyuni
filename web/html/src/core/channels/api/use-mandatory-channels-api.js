@@ -1,10 +1,10 @@
 // @flow
 import {useState} from 'react';
-import Network from '../../utils/network';
-import ChannelUtils from '../../utils/channels';
-
-import type JsonResult from '../../utils/network';
-import type {ChannelsDependencies} from '../../utils/channels';
+import type JsonResult from 'utils/network';
+import Network from 'utils/network';
+import type {ChannelsDependencies} from 'utils/channels';
+import ChannelUtils from 'utils/channels';
+import type {ChannelType} from "core/channels/type/channels.type";
 
 const msgMap = {
   "base_not_found_or_not_authorized": t("Base channel not found or not authorized."),
@@ -12,35 +12,33 @@ const msgMap = {
   "invalid_channel_id": t("Invalid channel id")
 };
 
-type ChannelDto = {
-  id: number,
-  name: string,
-  custom: boolean,
-  subscribable: boolean,
-  recommended: boolean
-}
 
 type ChildChannelsProps = {
   base: Object,
-  channels: Array<ChannelDto>,
+  channels: Array<ChannelType>,
 }
 
-type UseMandatoryChannelsApiReturn = {
+export type RequiredChannelsResultType = {
+  requiredChannels: Map<number, Set<number>>,
   requiredByChannels: Map<number, Set<number>>,
-  dependencyDataAvailable: boolean,
   dependenciesTooltip: Function,
+}
+
+export type UseMandatoryChannelsApiReturn = {
+  requiredChannelsResult: RequiredChannelsResultType,
+  isDependencyDataLoaded: boolean,
   fetchMandatoryChannelsByChannelIds: Function,
 }
 
-const useMandatoryChannelsApi = (props: ChildChannelsProps) : UseMandatoryChannelsApiReturn => {
+const useMandatoryChannelsApi = () : UseMandatoryChannelsApiReturn => {
 
   const [messages, setMessages] = useState([]);
   const [requiredChannels, setRequiredChannels] = useState(new Map());
   const [requiredByChannels, setRequiredByChannels] = useState(new Map());
   const [mandatoryChannelsRaw, setMandatoryChannelsRaw] = useState(new Map());
-  const [dependencyDataAvailable, setDependencyDataAvailable] = useState(false);
+  const [isDependencyDataLoaded, setIsDependencyDataLoaded] = useState(false);
 
-  const fetchMandatoryChannelsByChannelIds = () => {
+  const fetchMandatoryChannelsByChannelIds = (props: ChildChannelsProps) => {
     // fetch dependencies data for all child channels and base channel as well
     const needDepsInfoChannels = props.base && props.base.id !== -1 ?
       [props.base.id, ...props.channels.map(c => c.id)]
@@ -56,34 +54,36 @@ const useMandatoryChannelsApi = (props: ChildChannelsProps) : UseMandatoryChanne
           setMandatoryChannelsRaw(allTheNewMandatoryChannelsData);
           setRequiredChannels(dependencies.requiredChannels);
           setRequiredByChannels(dependencies.requiredByChannels);
-          setDependencyDataAvailable(true);
+          setIsDependencyDataLoaded(true);
         })
         .catch((jqXHR: Object, arg: string = '') => {
           const msg = Network.responseErrorMessage(jqXHR, (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
           setMessages(messages.concat(msg))
         });
     } else {
-      setDependencyDataAvailable(true);
+      setIsDependencyDataLoaded(true);
     }
   }
 
-  const dependenciesTooltip = (channelId: number) => {
+  const dependenciesTooltip = (channelId: string, channels: Array<ChannelType>) => {
     const resolveChannelNames : Function = (channelIds: Array<number>): Array<?string> => {
       return Array.from(channelIds || new Set())
-        .map((channelId: number): ?ChannelDto  => props.channels.find(c => c.id === channelId))
-        .filter((channel: ?ChannelDto): boolean => channel != null)
-        .map((channel: ?ChannelDto): ?string => channel && channel.name);
+        .map((channelId: number): ?ChannelType  => channels.find(c => c.id === channelId))
+        .filter((channel: ?ChannelType): boolean => channel != null)
+        .map((channel: ?ChannelType): ?string => channel && channel.name);
     }
     return ChannelUtils.dependenciesTooltip(
-      resolveChannelNames(requiredChannels.get(channelId)),
-      resolveChannelNames(requiredByChannels.get(channelId)));
+      resolveChannelNames(requiredChannels.get(+channelId)),
+      resolveChannelNames(requiredByChannels.get(+channelId)));
   }
 
   return {
-    requiredChannels,
-    requiredByChannels,
-    dependencyDataAvailable,
-    dependenciesTooltip,
+    requiredChannelsResult: {
+      requiredChannels,
+      requiredByChannels,
+      dependenciesTooltip,
+    },
+    isDependencyDataLoaded,
     fetchMandatoryChannelsByChannelIds,
   };
 }

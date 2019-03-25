@@ -13,7 +13,7 @@ export type ProjectPropertiesType = {
 }
 
 export type ProjectSoftwareSourceType = {
-  id: string,
+  channelId: number,
   name: string,
   label: string,
   state: string,

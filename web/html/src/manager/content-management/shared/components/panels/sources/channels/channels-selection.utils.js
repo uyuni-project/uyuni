@@ -1,11 +1,10 @@
 // @flow
 
-import type {ChannelsTreeType} from "./api/use-channels";
+import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
+import type {ChannelType} from "core/channels/type/channels.type";
 import {channelsFiltersAvailable} from "./channels-selection.state";
-import type {ChannelType} from "core/type/channels/channels.type";
-import _intersection from "lodash/intersection";
 
-export function orderBaseChannels (channelsTree: ChannelsTreeType, selectedBaseChannelId: string): Array<ChannelType> {
+export function orderBaseChannels (channelsTree: ChannelsTreeType, selectedBaseChannelId: number): Array<ChannelType> {
   const orderedBaseChannels = channelsTree.baseIds
     .map(cId => channelsTree.channelsById[cId])
     .sort((b1, b2) => b1.id - b2.id)
@@ -18,7 +17,7 @@ export function orderBaseChannels (channelsTree: ChannelsTreeType, selectedBaseC
   return orderedBaseChannels;
 }
 
-export function getVisibleChannels (channelsTree: ChannelsTreeType, activeFilters: Array<string>): Array<string> {
+export function getVisibleChannels (channelsTree: ChannelsTreeType, activeFilters: Array<string>): Array<number> {
   return Object.values(channelsTree.channelsById)
     .filter( c =>
       activeFilters
@@ -28,19 +27,12 @@ export function getVisibleChannels (channelsTree: ChannelsTreeType, activeFilter
     .map((c: ChannelType) => c.id);
 }
 
-export function getSelectedChannelsIdsInGroup (selectedChannelsIds: Array<string>, baseChannel: ChannelType): Array<string> {
-  return _intersection(
-    selectedChannelsIds,
-    [baseChannel.id, ...baseChannel.children]
-  );
-}
-
 export function isGroupVisible (
   baseChannel: ChannelType,
   channelsTree: ChannelsTreeType,
-  visibleChannels: Array<ChannelType>,
-  selectedChannelsIdsInGroup: Array<string>,
-  selectedBaseChannelId: string,
+  visibleChannels: Array<number>,
+  selectedChannelsIdsInGroup: Array<number>,
+  selectedBaseChannelId: number,
   search:string
 ) {
   const isSearchPresentInGroup = baseChannel.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -60,29 +52,4 @@ export function isGroupVisible (
 
 
   return isGroupVisible;
-}
-
-export function getAllRecommentedIdsByBaseId (
-  baseId: string,
-  channelsTree: ChannelsTreeType,
-  selectedChannelsIds: Array<string>
-): {
-  recommendedIds: Array<string>,
-  recommendedIdsSelected: Array<string>,
-  areRecommendedChildrenSelected: boolean,
-} {
-  const recommendedChildrenIds = channelsTree.channelsById[baseId]
-    .children
-    .map(cId => channelsTree.channelsById[cId])
-    .filter(c => c.recommended)
-    .map(c => c.id);
-  const recommendedIds = [baseId, ...recommendedChildrenIds];
-  const recommendedIdsSelected = _intersection(recommendedIds, selectedChannelsIds);
-  const areRecommendedChildrenSelected = recommendedIds.length === recommendedIdsSelected.length;
-
-  return {
-    recommendedIds,
-    recommendedIdsSelected,
-    areRecommendedChildrenSelected
-  }
 }
