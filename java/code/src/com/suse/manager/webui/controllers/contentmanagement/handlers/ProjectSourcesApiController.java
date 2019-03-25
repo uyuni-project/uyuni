@@ -16,12 +16,12 @@ package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.utils.Opt.stream;
 import static spark.Spark.put;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
-import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
@@ -32,6 +32,7 @@ import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,10 +72,8 @@ public class ProjectSourcesApiController {
                 createSourceRequest.getProjectLabel(), user
         ).get();
 
-        List<String> sourceLabelsToDetach = dbContentProject.getSources()
-                .stream()
-                .filter(SoftwareProjectSource.class::isInstance)
-                .map(SoftwareProjectSource.class::cast)
+        List<String> sourceLabelsToDetach = dbContentProject.getSources().stream()
+                .flatMap(source -> stream(source.asSoftwareSource()))
                 .map(softwareSource -> softwareSource.getChannel().getLabel())
                 .collect(Collectors.toList());
         sourceLabelsToDetach.forEach(sourceLabel -> ContentManager.detachSource(
@@ -88,17 +87,14 @@ public class ProjectSourcesApiController {
                 .stream()
                 .map(source -> source.getLabel())
                 .collect(Collectors.toList());
-        int sourcePosition = 0;
-        for (String sourceLabel: sourceLabelsToAttach) {
-            ContentManager.attachSource(
-                    projectLabel,
-                    ProjectSource.Type.SW_CHANNEL,
-                    sourceLabel,
-                    Optional.of(sourcePosition),
-                    user
-            );
-            sourcePosition++;
-        }
+        Collections.reverse(sourceLabelsToAttach);
+        sourceLabelsToAttach.forEach(sourceLabel -> ContentManager.attachSource(
+                projectLabel,
+                ProjectSource.Type.SW_CHANNEL,
+                sourceLabel,
+                Optional.of(0),
+                user
+        ));
 
         List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
 
