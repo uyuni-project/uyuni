@@ -23,6 +23,7 @@ public class EnvironmentResponse {
     private String label;
     private String name;
     private String description;
+    private Long version;
 
     public void setProjectLabel(String projectLabelIn) {
         this.projectLabel = projectLabelIn;
@@ -38,5 +39,9 @@ public class EnvironmentResponse {
 
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
+    }
+
+    public void setVersion(Long versionIn) {
+        this.version = versionIn;
     }
 }
