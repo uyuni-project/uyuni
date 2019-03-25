@@ -1,3 +1,4 @@
+- Generate solv file when repository metadata is created
 - Fix errata_details to return details correctly (bsc#128228)
 - prevent an error when onboarding a RES 6 minion (bsc#1124794)
 
