@@ -215,5 +215,7 @@ def main():
     mapNewSettings(configFilename, readConfigFile(newMappings))
 
 if __name__ == '__main__':
-    sys.exit(main() or 0)
-
+    try:
+        sys.exit(main() or 0)
+    except Exception as err:
+        print(err)
