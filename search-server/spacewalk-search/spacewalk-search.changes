@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 25 16:45:08 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.5-1
 - Remove old file from spec file
 - Remove tanukiwrapper dependency for rhn-search
 
