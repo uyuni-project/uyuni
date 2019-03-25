@@ -732,10 +732,10 @@ class ChannelCloner:
 
     @staticmethod
     def pkg_exists(needed_list, pkg_list):
-        """Given a list of packages in [N, V, E, R, A] format, do any of them
+        """Given a list of packages in [N, EVR, A] format, do any of them
             exist in the pkg_hash with key of N-V-R.A  format"""
         for i in needed_list:
-            key = "%s-%s-%s.%s" % (i[0], i[1], i[3], i[4])
+            key = "%s-%s-.%s" % (i[0], i[1], i[2])
             if key in pkg_list:
                 return pkg_list[key]
         return False
