@@ -1,3 +1,5 @@
+- Add VNC display for virtual machines on salt minions
+
 -------------------------------------------------------------------
 Wed Feb 27 13:00:05 CET 2019 - jgonzalez@suse.com
 
