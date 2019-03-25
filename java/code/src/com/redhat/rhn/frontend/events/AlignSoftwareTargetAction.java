@@ -15,12 +15,10 @@
 
 package com.redhat.rhn.frontend.events;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
-import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.user.UserManager;
 import org.apache.log4j.Logger;
@@ -29,7 +27,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 /**
- * Align Errata and Packages of {@link SoftwareEnvironmentTarget} to its corresponding {@link SoftwareProjectSource}
+ * Align Errata and Packages of {@link Channel} to given {@link Channel}
  *
  */
 public class AlignSoftwareTargetAction implements MessageAction {
@@ -39,12 +37,12 @@ public class AlignSoftwareTargetAction implements MessageAction {
     @Override
     public void execute(EventMessage msgIn) {
         AlignSoftwareTargetMsg msg = (AlignSoftwareTargetMsg) msgIn;
-        SoftwareProjectSource source = (SoftwareProjectSource) HibernateFactory.reload(msg.getSource());
-        SoftwareEnvironmentTarget target = (SoftwareEnvironmentTarget) HibernateFactory.reload(msg.getTarget());
+        Channel source = msg.getSource();
+        Channel target = msg.getTarget();
 
-        if (!UserManager.verifyChannelAdmin(msg.getUser(), target.getChannel())) {
+        if (!UserManager.verifyChannelAdmin(msg.getUser(), target)) {
             throw new PermissionException("User " + msg.getUser().getLogin() + " has no permission for channel " +
-                    target.getChannel().getLabel());
+                    target.getLabel());
         }
 
         LOG.info("Asynchronously aligning: " + msg);
