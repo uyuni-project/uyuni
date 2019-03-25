@@ -22,8 +22,6 @@
 import logging
 import os
 import sys
-import string
-from string import lower
 from optparse import OptionParser, OptionGroup
 from os import path, access, R_OK
 from os.path import expanduser
@@ -481,10 +479,10 @@ def apply_slave_template(slave_session, slave_setup_filename):
         moids = slave_setup.options(fqdn)
         # key is either master-org-id, or one of (isDefault, cacert) - skip those
         for moid in moids:  # moid|moname|local_oid
-            if lower(moid) == "isdefault" or lower(moid) == "cacert":
+            if moid.lower() == "isdefault" or moid.lower() == "cacert":
                 continue
             minfo = slave_setup.get(fqdn, moid)
-            elts = string.split(minfo, '|')
+            elts = minfo.split('|')
             orginfo = {}
             orginfo['masterOrgId'] = int(elts[0])
             orginfo['masterOrgName'] = elts[1]
@@ -527,10 +525,10 @@ def describe_slave_template(slave_setup_filename):
 
         moids = slave_setup.options(fqdn)
         for moid in moids:  # moid|moname|local_oid
-            if lower(moid) == "isdefault" or lower(moid) == "cacert":
+            if moid.lower() == "isdefault" or moid.lower() == "cacert":
                 continue
             minfo = slave_setup.get(fqdn, moid)
-            elts = string.split(minfo, '|')
+            elts = minfo.split('|')
             logging.info("  Mapping master OrgId [%s], named [%s], to local OrgId [%s]" %
                          (elts[0], elts[1], elts[2]))
         logging.info("")

@@ -37,7 +37,7 @@ except ImportError:
 try:
     import httplib
 except ImportError:
-    import httplib.client as httplib  # pylint: disable=F0401
+    import http.client as httplib  # pylint: disable=F0401
 
 prog = sys.argv[0]
 today = "%d-%d-%d" % (localtime()[2], localtime()[1], localtime()[0])
