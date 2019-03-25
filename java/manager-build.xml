@@ -225,7 +225,7 @@
     </condition>
     <echo message="Calling yarn build ..."/>
     <exec failonerror="true" executable="yarn" dir="${js.components.dir}">
-      <arg line="build"/>
+      <arg line="build:novalidate"/>
     </exec>
 
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
