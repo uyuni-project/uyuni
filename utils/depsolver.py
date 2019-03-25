@@ -175,14 +175,60 @@ class DepSolver:
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        print("USAGE: python depsolver.py <repoid> <repodata_path> <pkgname1> <pkgname2> ....<pkgnameN>")
-        sys.exit(0)
-    arg_repo = {'id': sys.argv[1],
-                'relative_path': sys.argv[2], }  # path to where repodata is located
-    arg_pkgs = sys.argv[3:]
-    dsolve = DepSolver([arg_repo], arg_pkgs)
+    parser = OptionParser(usage="Usage: %prog [repoid] [repodata_path] [pkgname1] [pkgname2] ... [pkgnameM]")
+    parser.add_option("-i", "--input-file", action="store",
+        help="YAML file to use as input. This would ignore all other input passed in the command line")
+    parser.add_option("-y", "--output-yaml", action="count", help="Produce a YAML formatted output")
+    (options, _args) = parser.parse_args()
+
+    arg_repo = []
+    arg_pkgs = []
+
+    if options.input_file:
+        # Example of YAML input file:
+        #
+        # repositories:
+        #   sles12-sp3-pool-x86_64: /var/cache/rhn/repodata/sles12-sp3-pool-x86_64/
+        #   sles12-sp3-updates-x86_64: /var/cache/rhn/repodata/sles12-sp3-updates-x86_64/
+        #
+        # packages:
+        #   - libapr-util1-1.5.3-2.3.1.x86_64
+        #   - apache2-utils-2.4.23-29.3.2.x86_64
+        #   - python3-base
+        #   - apache2-utils
+        #
+        try:
+           repo_cfg = yaml.load(open(options.input_file))
+           for repo in repo_cfg['repositories']:
+               arg_repo.append({'id': repo, 'relative_path': repo_cfg['repositories'][repo]})
+           arg_pkgs = repo_cfg['packages']
+        except Exception as exc:
+           parser.error("Error reading input file: {}".format(exc))
+           sys.exit(1)
+    elif len(_args) >= 3:
+        arg_repo = [{'id': _args[0],
+                    'relative_path': _args[1] }]  # path to where repodata is located
+        arg_pkgs = _args[2:]
+    else:
+        parser.error("Wrong number of arguments")
+        sys.exit(1)
+
+    dsolve = DepSolver(arg_repo, arg_pkgs, quiet=options.output_yaml)
     deplist = dsolve.getDependencylist()
-    result_set = dsolve.processResults(deplist)
-    print(result_set)
-    print("Printable dependency Results: \n\n %s" % dsolve.printable_result(deplist))
+
+    if options.output_yaml:
+        output = {
+            'packages': [],
+            'dependencies' : {}
+        }
+        for pkg in deplist:
+           pkg_tag = str(pkg)
+           output['packages'].append(pkg_tag)
+           output['dependencies'][pkg_tag] = {}
+           for dep in deplist[pkg]:
+               output['dependencies'][pkg_tag][str(dep)] = [str(x) for x in deplist[pkg][dep]]
+        sys.stdout.write(yaml.dump(output))
+    else:
+        result_set = dsolve.processResults(deplist)
+        print(result_set)
+        print("Printable dependency Results: \n\n %s" % dsolve.printable_result(deplist))
