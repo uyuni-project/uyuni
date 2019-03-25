@@ -12,16 +12,14 @@
 
 Feature: Install a package on the minion with staging enabled
 
-  Scenario: Pre-requisite: install virgo-dummy-1.0 and orion-dummy-1.1 packages
-    Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
-    And I run "zypper -n ref" on "sle-minion"
-    And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
-    And I run "zypper -n rm orion-dummy" on "sle-minion" without error control
+  Scenario: Pre-requisite: install virgo-dummy-1.0 package
+    When I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
+    And I install package "virgo-dummy-1.0" on this "sle-minion"
 
-  Scenario: Pre-requisite: refresh package list on SLE minion 
+  Scenario: Pre-requisite: refresh package list and check newly installed packages on SLE minion client
     When I refresh packages list via spacecmd on "sle-minion"
     And I wait until refresh package list on "sle-minion" is finished
+    Then spacecmd should show packages "virgo-dummy-1.0" installed on "sle-minion"
 
   Scenario: Pre-requisite: ensure the errata cache is computed
     Given I am authorized as "admin" with password "admin"
@@ -32,13 +30,6 @@ Feature: Install a package on the minion with staging enabled
     Then I click on "Single Run Schedule"
     And I should see a "bunch was scheduled" text
     Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-
-  Scenario: Pre-requisite: ensure the known package list is correct
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Software" in the content area
-    And I follow "List / Remove" in the content area
-    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter" until page does contain "virgo-dummy-1.0" text
 
   Scenario: Enable content staging
     Given I am authorized as "admin" with password "admin"
@@ -83,8 +74,12 @@ Feature: Install a package on the minion with staging enabled
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle-minion"
     Then I disable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
 
-  Scenario: Cleanup: remove virgo-dummy and orion-dummy packages from SLES minion
-    Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
-    And I run "zypper -n rm orion-dummy" on "sle-minion" without error control
-    And I run "zypper -n ref" on "sle-minion"
+  Scenario: Cleanup: remove virgo-dummy package from SLES minion
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Software" in the content area
+    And I follow "List / Remove"
+    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I check "virgo-dummy" in the list
+    And I click on "Remove Packages"
+    And I click on "Confirm"

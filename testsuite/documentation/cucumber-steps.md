@@ -383,10 +383,13 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I install package "virgo-dummy-1.0-1.1" on this "sle-minion"
   When I remove package "orion-dummy" from this "sle-minion"
+  When I refresh packages list via spacecmd on "sle-minion"
   When I wait for "virgo-dummy-1.0" to be installed on this "sle-minion"
   When I wait for "milkyway-dummy" to be uninstalled on "sle-minion"
+  When I wait until refresh package list on "sle-minion" is finished
   Then "man" should be installed on "sle-client"
   Then "milkyway-dummy" should not be installed on "sle-minion"
+  Then spacecmd should show packages "virgo-dummy-1.0 milkyway-dummy" installed on "sle-minion"
 ```
 
 * Services

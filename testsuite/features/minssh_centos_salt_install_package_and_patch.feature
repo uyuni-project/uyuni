@@ -4,15 +4,16 @@
 Feature: Install a patch on the CentOS SSH minion via Salt through the UI
 
 @centos_minion
-  Scenario: Pre-requisite: install virgo-dummy-1.0 packages
+  Scenario: Pre-requisite: install virgo-dummy-1.0 and remove andromeda-dummy packages
     When I enable repository "Devel_Galaxy_BuildRepo" on this "ceos-ssh-minion"
     And I remove package "andromeda-dummy" from this "ceos-ssh-minion"
     And I install package "virgo-dummy-1.0" on this "ceos-ssh-minion"
 
 @centos_minion
-  Scenario: Pre-requisite: refresh package list on Centos SSH minion 
+  Scenario: Pre-requisite: refresh package list and check newly installed packages on Centos SSH minion
     When I refresh packages list via spacecmd on "ceos-ssh-minion"
     And I wait until refresh package list on "ceos-ssh-minion" is finished
+    Then spacecmd should show packages "virgo-dummy-1.0" installed on "ceos-ssh-minion"
 
 @centos_minion
   Scenario: Schedule errata refresh to reflect channel assignment on Centos SSH minion 
