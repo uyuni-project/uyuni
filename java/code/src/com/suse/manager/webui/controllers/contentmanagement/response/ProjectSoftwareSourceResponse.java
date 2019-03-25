@@ -20,11 +20,15 @@ package com.suse.manager.webui.controllers.contentmanagement.response;
 // After adding more project source types it might be handy to break this bean into 2
 public class ProjectSoftwareSourceResponse {
 
-    private String id;
+    private Long channelId;
     private String name;
     private String label;
     private String state;
     private String type;
+
+    public void setChannelId(Long channelIdIn) {
+        this.channelId = channelIdIn;
+    }
 
     public void setState(String stateIn) {
         this.state = stateIn;
@@ -32,10 +36,6 @@ public class ProjectSoftwareSourceResponse {
 
     public void setType(String typeIn) {
         this.type = typeIn;
-    }
-
-    public void setId(String idIn) {
-        this.id = idIn;
     }
 
     public void setName(String nameIn) {

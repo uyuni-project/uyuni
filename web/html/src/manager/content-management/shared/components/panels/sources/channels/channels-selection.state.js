@@ -1,15 +1,13 @@
 // @flow
-
-import {ChannelType} from "core/type/channels/channels.type"
-
+import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
 import _xor from "lodash/xor";
-import type {ChannelsTreeType} from "./api/use-channels";
 import _difference from "lodash/difference";
 import _union from "lodash/union";
-import {getAllRecommentedIdsByBaseId} from "./channels-selection.utils";
+import type {ChannelType} from "core/channels/type/channels.type";
+import {getAllRecommentedIdsByBaseId} from "core/channels/state/channels.utils";
 
 
-export type FilterType = {id: string, text: string, isVisible: (ChannelType) => Boolean}
+export type FilterType = {id: string, text: string, isVisible: (ChannelType) => boolean}
 export type FiltersType = { [key: string]: FilterType }
 
 export const channelsFiltersAvailable: FiltersType = {
@@ -37,22 +35,22 @@ export const getInitialFiltersState = (): Array<string> => Object.keys(channelsF
 
 export type StateChannelsSelectionType = {
   activeFilters: Array<string>,
-  selectedBaseChannelId: string,
-  selectedChannelsIds: Array<string>,
-  openGroupsIds: Array<string>,
+  selectedBaseChannelId: number,
+  selectedChannelsIds: Array<number>,
+  openGroupsIds: Array<number>,
   search: string,
 }
 
 export type ActionChannelsSelectionType =
   | {type: "search", search: string}
   | {type: "toggle_filter", filter: string}
-  | {type: "toggle_channels", channelsIds: Array<string>, baseId: string}
-  | {type: "set_recommended", enable: boolean, baseId: string}
-  | {type: "open_group",  open: boolean, baseId: string}
-  | {type: "lead_channel", newBaseId: string};
+  | {type: "toggle_channels", channelsIds: Array<number>, baseId: number}
+  | {type: "set_recommended", enable: boolean, baseId: number}
+  | {type: "open_group",  open: boolean, baseId: number}
+  | {type: "lead_channel", newBaseId: number};
 
 
-export const initialStateChannelsSelection = ({initialSelectedIds}: {initialSelectedIds: Array<string>}) => ({
+export const initialStateChannelsSelection = ({initialSelectedIds}: {initialSelectedIds: Array<number>}) => ({
   activeFilters: getInitialFiltersState(),
   selectedBaseChannelId: initialSelectedIds[0],
   selectedChannelsIds: initialSelectedIds,

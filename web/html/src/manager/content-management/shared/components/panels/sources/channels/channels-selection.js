@@ -1,7 +1,8 @@
 // @flow
 import React, {useEffect} from 'react';
-import {Loading} from "../../../../../../../components/loading/loading";
-import useChannels from "./api/use-channels";
+import {Loading} from "components/loading/loading";
+import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
+import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
 import styles from "./channels-selection.css";
 import GroupChannels from "./group-channels";
 import {useImmerReducer} from "use-immer";
@@ -12,40 +13,55 @@ import {
   initialStateChannelsSelection,
   reducerChannelsSelection
 } from "./channels-selection.state"
-import type {UseChannelsType} from "./api/use-channels.js"
-import {
-  getSelectedChannelsIdsInGroup,
-  getVisibleChannels,
-  isGroupVisible,
-  orderBaseChannels
-} from "./channels-selection.utils";
+import type {UseChannelsType} from "core/channels/api/use-channels-tree-api.js"
+import {getVisibleChannels, isGroupVisible, orderBaseChannels} from "./channels-selection.utils";
+import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
+import {getSelectedChannelsIdsInGroup} from "core/channels/state/channels.utils";
 
 type PropsType = {
-  initialSelectedIds: Array<string>,
+  initialSelectedIds: Array<number>,
   onChange: Function,
 }
 
 const ChannelsSelection = (props: PropsType) => {
-  const {isLoading, channelsTree}: UseChannelsType = useChannels();
+  const {
+    fetchChannelsTree,
+    isChannelsTreeLoaded,
+    channelsTree
+  }: UseChannelsType = useChannelsTreeApi();
+  const {
+    fetchMandatoryChannelsByChannelIds,
+    isDependencyDataLoaded,
+    requiredChannelsResult
+  }= useMandatoryChannelsApi();
   const [state, dispatchChannelsSelection] : [StateChannelsSelectionType, (ActionChannelsSelectionType) => void]
     = useImmerReducer(
     (draft, action) => reducerChannelsSelection(draft, action, channelsTree) ,
     initialStateChannelsSelection(props)
   );
 
+  const isAllApiDataLoaded = isChannelsTreeLoaded && isDependencyDataLoaded;
+
+  useEffect(() => {
+    fetchChannelsTree()
+      .then((channelsTree: ChannelsTreeType) => {
+        fetchMandatoryChannelsByChannelIds({channels: Object.values(channelsTree.channelsById)});
+      })
+  }, [])
+
   useEffect(() => {
     // set lead base channel as first and notify
     const sortedSelectedChannelsId = state.selectedChannelsIds
       .filter(cId => cId !== state.selectedBaseChannelId);
     sortedSelectedChannelsId.unshift(state.selectedBaseChannelId)
-    !isLoading && props.onChange(
+    isAllApiDataLoaded && props.onChange(
       sortedSelectedChannelsId
         .filter(cId => channelsTree.channelsById[cId])
         .map(cId => channelsTree.channelsById[cId])
     );
   }, [state.selectedChannelsIds])
 
-  if (isLoading) {
+  if (!isAllApiDataLoaded) {
     return (
       <div className='form-group'>
         <Loading text='Loading..' />
@@ -73,8 +89,10 @@ const ChannelsSelection = (props: PropsType) => {
             name='selectedBaseChannel'
             className='form-control'
             value={state.selectedBaseChannelId}
-            onChange={event => dispatchChannelsSelection({type: "lead_channel", newBaseId: event.target.value})}
-          >
+            onChange={event => dispatchChannelsSelection({
+              type: "lead_channel",
+              newBaseId: parseInt(event.target.value, 10)
+            })}>
             <option></option>
             {
               orderedBaseChannels.map(b => <option key={b.id} value={b.id}>{b.name}</option>)
@@ -176,6 +194,7 @@ const ChannelsSelection = (props: PropsType) => {
                         open
                       })}
                       channelsTree={channelsTree}
+                      requiredChannelsResult={requiredChannelsResult}
                     />
                   )
                 })

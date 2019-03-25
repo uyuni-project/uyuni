@@ -1,8 +1,8 @@
 // @flow
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Panel} from "./Panel";
 import {ModalLink} from "../dialog/ModalLink";
-import {Dialog, closeDialog} from "../dialog/Dialog";
+import {closeDialog, Dialog} from "../dialog/Dialog";
 import {Button} from "../buttons";
 
 type Props = {

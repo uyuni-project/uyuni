@@ -19,7 +19,7 @@ type Props = {
   onBuild: Function,
   currentHistoryEntry?: ProjectHistoryEntry,
   changesToBuild: Array<{
-    id: string,
+    channelId: number,
     type: string,
     name: string,
     state: string,
@@ -99,7 +99,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                             changesToBuild.map((change) => {
                               const versionMessage = `${change.type} ${change.name} ${change.state}`
                               return (
-                                <li key={change.id}>
+                                <li key={change.channelId}>
                                   {versionMessage}
                                 </li>
                               )

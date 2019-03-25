@@ -77,7 +77,7 @@ public class ResponseMappers {
                 .stream()
                 .map(sourceDb -> {
                     ProjectSoftwareSourceResponse projectSourceResponse = new ProjectSoftwareSourceResponse();
-                    projectSourceResponse.setId(sourceDb.getChannel().getId().toString());
+                    projectSourceResponse.setChannelId(sourceDb.getChannel().getId());
                     projectSourceResponse.setName(sourceDb.getChannel().getName());
                     projectSourceResponse.setLabel(sourceDb.getChannel().getLabel());
                     projectSourceResponse.setType(ProjectSource.Type.SW_CHANNEL.getLabel());

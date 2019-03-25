@@ -35,7 +35,7 @@ const ModalSourceCreationContent = (props) => {
         initialSelectedIds={
           props.softwareSources
             .filter(source => selectedStates.includes(source.state))
-            .map(source => source.id)
+            .map(source => source.channelId)
         }
         onChange={(selectedChannels) => {
           props.onChange(selectedChannels.map(c => c.label))
@@ -146,7 +146,7 @@ const Sources = (props: SourcesProps) => {
                       <ul className="list-unstyled">
                         {
                           props.softwareSources.slice(1, props.softwareSources.length).map(source =>
-                            <li key={`softwareSources_entry_${source.id}`}>
+                            <li key={`softwareSources_entry_${source.channelId}`}>
                               {renderSourceEntry(source)}
                             </li>
                           )

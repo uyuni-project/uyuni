@@ -129,24 +129,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
                          hidden='hidden' checked={this.props.selectedChannelsIds.includes(c.id)} readOnly={true}/>
                   : null
               }
-              <label title={toolTip} htmlFor={"child_" + c.id}>{c.name}</label>
-              &nbsp;
-              {
-                toolTip ?
-                  <a href="#"><i className="fa fa-info-circle spacewalk-help-link" title={toolTip}></i></a>
-                  : null
-              }
-              &nbsp;
-              {
-                c.recommended ?
-                  <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
-                  : null
-              }
-              {
-                isMandatory ?
-                  <span className='mandatory-tag-base' title={'This channel is mandatory'}>{t('mandatory')}</span>
-                  : null
-              }
+              requiredByChannels
               <ChannelAnchorLink id={c.id} newWindow={true}/>
             </div>
           )
