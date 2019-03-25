@@ -1,16 +1,13 @@
 /* eslint-disable */
 // @flow
 import ChildChannels from './child-channels';
+import type {availableChannelsType, ChannelDto} from "./activation-key-channels-api";
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
-import type {ChannelDto, availableChannelsType} from "./activation-key-channels-api";
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {Loading} from '../../components/loading/loading';
 import withStatePersisted from '../../components/hoc/state-persisted/with-state-persisted';
-import MandatoryChannelsApi from "../../core/api/mandatory-channels-api";
-
-import {Utils} from '../../utils/functions';
+import MandatoryChannelsApi from "../../core/channels/api/mandatory-channels-api";
 
 const MandatoryChannelsApiStatePersisted = withStatePersisted(MandatoryChannelsApi);
 
