@@ -6,19 +6,31 @@ import {Loading} from "components/loading/loading";
 import useProjectActionsApi from "../../../api/use-project-actions-api";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import PropertiesView from "./properties-view";
+import produce from "immer";
 
-import type {projectPropertiesType} from '../../../type/project.type.js';
+import type {ProjectHistoryEntry, ProjectPropertiesType} from '../../../type/project.type.js';
 
 type Props = {
   projectId: string,
-  properties: projectPropertiesType,
+  properties: ProjectPropertiesType,
+  showDraftVersion: boolean,
   onChange: Function,
+  currentHistoryEntry: ProjectHistoryEntry
 };
 
 const PropertiesEdit = (props: Props) => {
   const {onAction, cancelAction, isLoading} = useProjectActionsApi({
-    projectId: props.projectId, nestedResource:"properties"
+    projectId: props.projectId, projectResource: "properties"
   });
+
+  const defaultDraftHistory = {
+    version: props.currentHistoryEntry ? props.currentHistoryEntry.version + 1 : 1 ,
+    message:'(draft - not built) - Check the colors bellow for all the changes'
+  };
+
+  let propertiesToShow = produce(props.properties, draftProperties => {
+      draftProperties.historyEntries.unshift(defaultDraftHistory);
+    });
 
   return (
       <CreatorPanel
@@ -42,7 +54,7 @@ const PropertiesEdit = (props: Props) => {
             })
         }}
         onCancel={() => cancelAction()}
-        renderContent={() => <PropertiesView properties={props.properties}/>}
+        renderContent={() => <PropertiesView properties={propertiesToShow}/>}
         renderCreationContent={({ open, item, setItem }) => {
 
           if (isLoading) {

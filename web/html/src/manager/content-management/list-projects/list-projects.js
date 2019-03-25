@@ -6,6 +6,7 @@ import Functions from 'utils/functions';
 import {LinkButton} from 'components/buttons';
 import { showSuccessToastr } from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';
+import { hot } from 'react-hot-loader';
 
 type ContentProjectOverviewType = {
   properties: {
@@ -109,4 +110,4 @@ const ListProjects = (props: Props) => {
     );
 }
 
-export default withPageWrapper<Props>(ListProjects);
+export default hot(module)(withPageWrapper<Props>(ListProjects));
