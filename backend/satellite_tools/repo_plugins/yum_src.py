@@ -596,6 +596,8 @@ type=rpm-md
         solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
         if not os.path.isfile(solv_path) or not self.solv_repo.add_solv(solv.xfopen(str(solv_path)), 0):
             raise SolvFileNotFound(solv_path)
+        self.solv_pool.addfileprovides()
+        self.solv_pool.createwhatprovides()
         # Solvables with ":" in name are not packages
         return [pack for pack in self.solv_repo.solvables if ':' not in pack.name]
 
@@ -614,7 +616,6 @@ type=rpm-md
         if not self.repo.is_configured:
             self.setup_repo(self.repo)
         known_solvables = set()
-        resolved_deps = self.solv_pool.Selection()
 
         new_deps = True
         next_solvables = solvables
@@ -627,13 +628,11 @@ type=rpm-md
                 if sol not in known_solvables:
                     # This solvable has not been proceesed yet. We need to calculate its dependencies
                     known_solvables.add(sol)
-                    resolved_deps.add(sol.Selection())
                     new_deps = True
                     # Adding solvables that provide the dependencies
                     for _req in sol.lookup_deparray(keyname=solv.SOLVABLE_REQUIRES):
-                        resolved_deps.matchdepid(_req.id, flags=solv.Selection.SELECTION_ADD, keyname=solv.SOLVABLE_PROVIDES)
-            next_solvables = resolved_deps.solvables()
-        return resolved_deps.solvables()
+                        next_solvables.extend(self.solv_pool.whatprovides(_req))
+        return list(known_solvables)
 
     def _apply_filters(self, pkglist, filters):
         """
