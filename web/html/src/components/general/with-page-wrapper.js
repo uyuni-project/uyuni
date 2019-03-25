@@ -2,7 +2,6 @@
 // globals Loggerhead
 import * as React from 'react';
 import DefaultJsError from '../../manager/errors/default-js-error';
-import { hot } from 'react-hot-loader';
 
 declare var Loggerhead: any;
 
@@ -29,7 +28,7 @@ class ErrorBoundary extends React.Component<{children: React.Node}, {hasError: b
   }
 }
 
-const PageWrapper = hot(module)(ErrorBoundary)
+const PageWrapper = ErrorBoundary
 
 function withPageWrapper<Config: {}>(
   Component: React.AbstractComponent<Config>
