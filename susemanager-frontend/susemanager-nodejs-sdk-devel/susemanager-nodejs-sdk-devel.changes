@@ -1,3 +1,4 @@
+- Add immer
 - Upgrade react, eslint packages
 - Fix nodejs tests
 
