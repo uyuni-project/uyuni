@@ -510,7 +510,7 @@ public class SaltService {
         }
     }
 
-    private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
+    private <R> Optional<Map<String, CompletionStage<Result<R>>>> completableAsyncCall(
             LocalCall<R> call, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
         return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel, Optional.empty()));
@@ -547,7 +547,7 @@ public class SaltService {
             try {
                 results.putAll(
                         completableAsyncCall(call, target,
-                        reactor.getEventStream(), cancel));
+                        reactor.getEventStream(), cancel).orElseGet(Collections::emptyMap));
             }
             catch (SaltException e) {
                 throw new RuntimeException(e);
@@ -631,7 +631,7 @@ public class SaltService {
             String target, CompletableFuture<GenericError> cancel) {
         try {
             return completableAsyncCall(Match.glob(target), new Glob(target),
-                    reactor.getEventStream(), cancel);
+                    reactor.getEventStream(), cancel).orElseGet(Collections::emptyMap);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -808,7 +808,7 @@ public class SaltService {
      * @return the LocalAsyncResult of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target)
+    public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> call, Target<?> target)
             throws SaltException {
         return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH));
     }
@@ -819,7 +819,7 @@ public class SaltService {
      * @return the LocalAsyncResult of the test.ping call
      * @throws SaltException if we get a failure from Salt
      */
-    public LocalAsyncResult<Boolean> ping(MinionList targetIn) throws SaltException {
+    public Optional<LocalAsyncResult<Boolean>> ping(MinionList targetIn) throws SaltException {
         try {
             LocalCall<Boolean> call = Test.ping();
             return callAsync(call, targetIn);
