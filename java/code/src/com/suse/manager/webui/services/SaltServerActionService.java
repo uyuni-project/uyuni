@@ -1660,7 +1660,7 @@ public class SaltServerActionService {
 
             List<String> results = SaltService.INSTANCE
                     .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
-                    .getMinions();
+                    .get().getMinions();
 
             result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minionId -> results.contains(minionId.getMinionId())));
@@ -1698,6 +1698,7 @@ public class SaltServerActionService {
         try {
             List<String> results = SaltService.INSTANCE
                     .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
+                    .get()
                     .getMinions();
 
             Map<Boolean, ? extends Collection<MinionSummary>> result = minionSummaries.stream().collect(Collectors

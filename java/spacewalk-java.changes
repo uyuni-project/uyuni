@@ -1,3 +1,4 @@
+- fix NPE on remote commands when no targets match (bsc1123375)
 - change release notes URL
 - provide Proxy release notes as well
 - Add a Taskomatic job to perform minion check-in regularly, drop use of Salt's Mine (bsc#1122837)
