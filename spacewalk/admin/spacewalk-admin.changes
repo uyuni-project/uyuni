@@ -1,3 +1,5 @@
+- fix encoding bug in salt event processing (bsc#1129851)
+
 -------------------------------------------------------------------
 Fri Jan 18 11:23:59 CET 2019 - jgonzalez@suse.com
 
