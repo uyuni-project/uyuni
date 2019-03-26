@@ -154,9 +154,9 @@ fi
 
 %build
 #%{__python} setup.py build
-make -f Makefile.rhnlib PYTHON=%{__python2}
+make -f Makefile.rhnlib_build PYTHON=%{__python2}
 %if 0%{?build_py3}
-make -f Makefile.rhnlib PYTHON=%{__python3}
+make -f Makefile.rhnlib_build PYTHON=%{__python3}
 %endif
 
 
