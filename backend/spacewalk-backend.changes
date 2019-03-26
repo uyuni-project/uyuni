@@ -1,3 +1,4 @@
+- Include arch to distinct latest packages on reposync.
 - Migrate missing spacewalk-cfg-get script to Python3
 - Improve dependency solving algorithm for spacewalk-repo-sync.
 
