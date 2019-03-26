@@ -862,8 +862,9 @@ type=rpm-md
             latest_pkgs = {}
             new_pkgs = []
             for pkg in pkglist:
-               if pkg.name not in latest_pkgs.keys() or LooseVersion(str(pkg.evr)) > LooseVersion(str(latest_pkgs[pkg.name].evr)):
-                  latest_pkgs[pkg.name] = pkg
+               ident = '{}.{}'.format(pkg.name, pkg.arch)
+               if ident not in latest_pkgs.keys() or LooseVersion(str(pkg.evr)) > LooseVersion(str(latest_pkgs[ident].evr)):
+                  latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
 
         to_return = []
