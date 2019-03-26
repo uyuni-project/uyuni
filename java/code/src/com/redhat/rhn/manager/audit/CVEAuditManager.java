@@ -915,8 +915,8 @@ public class CVEAuditManager {
             // When live patching is available, the original kernel packages ('-default' or '-xen') must be ignored.
             // Keep a list of package names to be ignored.
             Set<String> livePatchedPackages = resultsByPackage.keySet().stream()
-                    .map(p -> Pattern.compile("^kgraft-patch-.*-([^-]*)$").matcher(p)).filter(Matcher::matches)
-                    .map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
+                    .map(p -> Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$").matcher(p))
+                    .filter(Matcher::matches).map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
 
             // Loop through affected packages one by one
             for (Map.Entry<String, List<CVEPatchStatus>> packageResults : resultsByPackage.entrySet()) {
