@@ -624,10 +624,7 @@ And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/)
 end
 
 When(/^I open avahi port on the proxy$/) do
-  sed = 's/FW_DEV_EXT=""/FW_DEV_EXT="eth0"/'
-  $proxy.run("sed -i '#{sed}' /etc/sysconfig/SuSEfirewall2")
-  sed = 's/FW_CONFIGURATIONS_EXT=""/FW_CONFIGURATIONS_EXT="avahi"/'
-  $proxy.run("sed -i '#{sed}' /etc/sysconfig/SuSEfirewall2")
+  $proxy.run('firewall-cmd --add-service=mdns')
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
