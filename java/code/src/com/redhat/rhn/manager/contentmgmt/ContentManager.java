@@ -363,6 +363,7 @@ public class ContentManager {
                         " with no environments."));
         buildSoftwareSources(project, firstEnv, async, user);
         addHistoryEntry(message, user, project);
+        firstEnv.increaseVersion();
     }
 
     /**
