@@ -603,6 +603,12 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals("cplabel-fst-" + newChannel.getLabel(), tgts.get(0).asSoftwareTarget().get().getChannel().getLabel());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
         assertEquals(channel.getErratas(), tgtChannel.getErratas());
+
+        ContentEnvironment env2 = ContentManager.createEnvironment(cp.getLabel(), of("fst"), "snd", "second env", "desc", user);
+
+        System.out.println(ContentProjectFactory.lookupEnvironmentTargets(env2).collect(toList()));
+        ContentManager.promoteProject("cplabel", "fst", user);
+        System.out.println(ContentProjectFactory.lookupEnvironmentTargets(env2).collect(toList()));
     }
 
     /**
