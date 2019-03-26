@@ -11,3 +11,4 @@ endef
 
 __unspecified ::
 	@echo "Specify some target, please"
+	@exit 1
