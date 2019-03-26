@@ -1,3 +1,4 @@
+- Add support for SLES 15 live patches in CVE audit
 - Add a Taskomatic job to perform minion check-in regularly, drop use of Salt's Mine (bsc#1122837)
 - Fix errata_details to return details correctly (bsc#1128228)
 - support ubuntu products and debian architectures in mgr-sync
