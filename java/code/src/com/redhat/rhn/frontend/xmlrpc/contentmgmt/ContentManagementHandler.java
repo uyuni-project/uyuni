@@ -491,7 +491,7 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
-        ContentManager.promoteProject(projectLabel, envLabel, loggedInUser);
+        ContentManager.promoteProject(projectLabel, envLabel, true, loggedInUser);
         return 1;
     }
 }
