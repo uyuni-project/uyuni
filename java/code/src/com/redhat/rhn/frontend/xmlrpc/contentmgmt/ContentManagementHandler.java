@@ -445,7 +445,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @return 1 if successful
      *
      * @xmlrpc.doc Build a Project
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -464,7 +464,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @return 1 if successful
      *
      * @xmlrpc.doc Build a Project
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "message" "Log message to be assigned to the build")
      * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
      * @xmlrpc.returntype #return_int_success()
@@ -472,6 +472,26 @@ public class ContentManagementHandler extends BaseHandler {
     public int buildProject(User loggedInUser, String projectLabel, String message) {
         ensureOrgAdmin(loggedInUser);
         ContentManager.buildProject(projectLabel, of(message), true, loggedInUser);
+        return 1;
+    }
+
+    /**
+     * Promote an Environment in a Project
+     *
+     * @param loggedInUser the user
+     * @param projectLabel the Project label
+     * @param envLabel the Environment label
+     * @return 1 if successful
+     *
+     * @xmlrpc.doc Promote an Environment in a Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
+     * @xmlrpc.param #param_desc("string", "envLabel" "Environment label")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {
+        ensureOrgAdmin(loggedInUser);
+        ContentManager.promoteProject(projectLabel, envLabel, loggedInUser);
         return 1;
     }
 }
