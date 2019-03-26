@@ -375,22 +375,7 @@ public class ContentManager {
             throw new IllegalStateException("Environment " + envLabel + " must have exactly one leader channel");
         }
 
-        // ensure targets for the sources exist
-        List<Pair<Channel, Channel>> newSrcTgtPairs = cloneChannelsToEnv(baseChannels.get(0), childChannels.stream(),
-                nextEnv, user);
-
-        // remove targets that are not needed anymore
-        Set<Channel> newTargets = newSrcTgtPairs.stream()
-                .map(pair -> pair.getRight())
-                .collect(toSet());
-        ContentProjectFactory.lookupEnvironmentTargets(nextEnv)
-                .flatMap(t -> stream(t.asSoftwareTarget()))
-                .filter(tgt -> !newTargets.contains(tgt.getChannel()))
-                .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
-
-        // align the contents
-        newSrcTgtPairs
-                .forEach(srcTgt -> ChannelManager.alignChannels(srcTgt.getLeft(), srcTgt.getRight(), async, user));
+        alignEnvironment(nextEnv, baseChannels.get(0), childChannels.stream(), async, user);
 
         nextEnv.setVersion(env.getVersion());
     }
@@ -419,33 +404,22 @@ public class ContentManager {
     /**
      * Build {@link SoftwareProjectSource}s assigned to {@link ContentProject}
      *
-     * @param project the Project
      * @param firstEnv first Environment of the Project
      * @param async run the time-expensive operations asynchronously?
      * @param user the user
      */
-    private static void buildSoftwareSources(ContentProject project, ContentEnvironment firstEnv, boolean async,
-            User user) {
-        Channel leaderChan = project.lookupSwSourceLeader()
+    private static void buildSoftwareSources(ContentEnvironment firstEnv, boolean async, User user) {
+        ContentProject project = firstEnv.getContentProject();
+        Channel leader = project.lookupSwSourceLeader()
                 .map(l -> l.getChannel())
                 .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + project.getLabel() +
                         " with no base channel associated with it."));
-        Stream<Channel> otherChans = project.getSources().stream()
+        Stream<Channel> otherChannels = project.getSources().stream()
                 .flatMap(s -> stream(s.asSoftwareSource()))
-                .filter(src -> !src.getChannel().equals(leaderChan) && src.getState() != DETACHED)
+                .filter(src -> !src.getChannel().equals(leader) && src.getState() != DETACHED)
                 .map(s -> s.getChannel());
 
-        // ensure targets for the sources exist
-        List<Pair<Channel, Channel>> newSrcTgtPairs = cloneChannelsToEnv(leaderChan, otherChans, firstEnv, user);
-
-        // remove targets that are not needed anymore
-        Set<Channel> newTargets = newSrcTgtPairs.stream()
-                .map(pair -> pair.getRight())
-                .collect(toSet());
-        ContentProjectFactory.lookupEnvironmentTargets(firstEnv)
-                .flatMap(t -> stream(t.asSoftwareTarget()))
-                .filter(tgt -> !newTargets.contains(tgt.getChannel()))
-                .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
+        alignEnvironment(firstEnv, leader, otherChannels, async, user);
 
         // remove the detached sources
         project.getSources().stream()
@@ -460,6 +434,30 @@ public class ContentManager {
                         ContentProjectFactory.remove(src);
                     }
                 });
+    }
+
+    /**
+     * Align {@link ContentEnvironment} {@link Channel}s to given {@link Channel}s
+     *
+     * @param env the Environment
+     * @param baseChannel the base Channel
+     * @param childChannels the child Channels
+     * @param async run the time-expensive operations asynchronously?
+     * @param user the user
+     */
+    private static void alignEnvironment(ContentEnvironment env, Channel baseChannel, Stream<Channel> childChannels,
+            boolean async, User user) {
+        // ensure targets for the sources exist
+        List<Pair<Channel, Channel>> newSrcTgtPairs = cloneChannelsToEnv(env, baseChannel, childChannels, user);
+
+        // remove targets that are not needed anymore
+        Set<Channel> newTargets = newSrcTgtPairs.stream()
+                .map(pair -> pair.getRight())
+                .collect(toSet());
+        ContentProjectFactory.lookupEnvironmentTargets(env)
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .filter(tgt -> !newTargets.contains(tgt.getChannel()))
+                .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
         // align the contents
         newSrcTgtPairs
@@ -469,9 +467,9 @@ public class ContentManager {
     /**
      * Clone {@link Channel}s to given {@link ContentEnvironment}
      *
+     * @param env the Environment to which the Sources are cloned
      * @param leader the "leader" Channel
      * @param channels the "non-leader" Channels
-     * @param env the Environment to which the Sources are cloned
      * @param user the user
      * @return the List of [original Channel, newly cloned Channel] Pairs
      */
