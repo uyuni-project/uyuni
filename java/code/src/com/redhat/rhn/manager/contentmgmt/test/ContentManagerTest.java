@@ -607,7 +607,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentEnvironment env2 = ContentManager.createEnvironment(cp.getLabel(), of("fst"), "snd", "second env", "desc", user);
 
         System.out.println(ContentProjectFactory.lookupEnvironmentTargets(env2).collect(toList()));
-        ContentManager.promoteProject("cplabel", "fst", user);
+        ContentManager.promoteProject("cplabel", "fst", false, user);
         System.out.println(ContentProjectFactory.lookupEnvironmentTargets(env2).collect(toList()));
     }
 
