@@ -1,7 +1,7 @@
 # Makefile for Update Agent
 #
 
-include Makefile.defs
+include Makefile.python
 
 PREFIX		?=
 MANPATH		?= /usr/share/man
