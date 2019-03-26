@@ -1,7 +1,7 @@
 # Makefile for Update Agent
 #
 
-include Makefile.python
+include Makefile.spacewalk-client-tools
 
 PREFIX		?=
 MANPATH		?= /usr/share/man
