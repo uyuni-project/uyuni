@@ -1,3 +1,4 @@
+- Update get_kernel_live_version module to support SLES 15 live patches
 - Support register minion using bootstrap repos for 18.04 and 16.04.
 
 -------------------------------------------------------------------
