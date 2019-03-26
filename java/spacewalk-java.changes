@@ -1,4 +1,4 @@
-- Fix errata_details to return details correctly (bsc#128228)
+- Fix errata_details to return details correctly (bsc#1128228)
 - support ubuntu products and debian architectures in mgr-sync
 - adapt check for available repositories to debian style repositories
 - Add support for custom username when bootstrapping with Salt-SSH
