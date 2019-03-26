@@ -538,6 +538,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         catch (ContentManagementException e) {
             // expected
         }
+        assertEquals(Long.valueOf(0), env.getVersion());
     }
 
     /**
@@ -549,6 +550,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
+        assertEquals(Long.valueOf(0), env.getVersion());
 
         // 1. build a project with a source
         Channel channel = createPopulatedChannel();
@@ -564,12 +566,14 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(channel, tgtChannel.getOriginal());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
         assertEquals(channel.getErratas(), tgtChannel.getErratas());
+        assertEquals(Long.valueOf(1), env.getVersion());
 
         // 2. change a project source and rebuild
         Channel newChannel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, newChannel.getLabel(), empty(), user);
         assertEquals(channel, cp.lookupSwSourceLeader().get().getChannel()); // leader is the same
         ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(Long.valueOf(2), env.getVersion());
 
         tgts = ContentProjectFactory.lookupEnvironmentTargets(env).collect(toList());
         assertEquals(2, tgts.size());
@@ -591,6 +595,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
         cp = (ContentProject) HibernateFactory.reload(cp);
         ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(Long.valueOf(3), env.getVersion());
 
         assertEquals(newChannel, cp.lookupSwSourceLeader().get().getChannel()); // leader is changed
         tgts = ContentProjectFactory.lookupEnvironmentTargets(env).collect(toList());
@@ -630,7 +635,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testBuildProjectExistingChannelCrossOrg() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
+        ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
 
         Channel channel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
@@ -648,6 +653,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         catch (InvalidChannelLabelException e) {
             // expected
         }
+        assertEquals(Long.valueOf(0), env.getVersion());
     }
 
     /**
@@ -665,12 +671,13 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // project is created by one user
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
+        ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
 
         // ... build by another user
         Channel channel = createPopulatedChannel(user);
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         ContentManager.buildProject("cplabel", empty(), false, adminSameOrg);
+        assertEquals(Long.valueOf(1), env.getVersion());
 
         ContentEnvironment envUser1 = ContentManager.lookupEnvironment("fst", "cplabel", userSameOrg).get();
         List<EnvironmentTarget> tgts = ContentProjectFactory.lookupEnvironmentTargets(envUser1).collect(toList());
@@ -692,11 +699,12 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         adminSameOrg.addPermanentRole(ORG_ADMIN);
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
+        ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
 
         Channel channel = createPopulatedChannel(user);
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(Long.valueOf(1), env.getVersion());
 
         List<ContentProjectHistoryEntry> history = ContentManager.lookupProject("cplabel", user).get().getHistoryEntries();
         assertEquals(1, history.size());
@@ -704,6 +712,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(user, history.get(0).getUser());
 
         ContentManager.buildProject("cplabel", empty(), false, adminSameOrg);
+        assertEquals(Long.valueOf(2), env.getVersion());
         history = ContentManager.lookupProject("cplabel", user).get().getHistoryEntries();
         assertEquals(2, history.size());
         assertEquals(Long.valueOf(2), history.get(1).getVersion());
