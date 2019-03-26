@@ -1,3 +1,4 @@
+- Add support for SLES 15 live patches in CVE audit
 - Implement Content Project promote function
 - Implement Content Project build function
 - Add Content Project Sources CRUD operations and expose them via XMLRPC
