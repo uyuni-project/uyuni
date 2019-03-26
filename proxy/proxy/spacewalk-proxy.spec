@@ -234,7 +234,7 @@ A ZeroMQ Proxy for Salt Minions
 %setup -q
 
 %build
-make -f Makefile.proxy all
+make -f Makefile.proxy
 
 # Fixing shebang for Python 3
 %if 0%{?build_py3}
