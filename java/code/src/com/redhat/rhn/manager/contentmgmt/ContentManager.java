@@ -385,7 +385,7 @@ public class ContentManager {
                 .map(s -> s.getChannel());
 
         // ensure targets for the sources exist
-        List<Pair<Channel, Channel>> newSrcTgtPairs = cloneSoftwareSources(leaderChan, otherChans, firstEnv, user);
+        List<Pair<Channel, Channel>> newSrcTgtPairs = cloneChannelsToEnv(leaderChan, otherChans, firstEnv, user);
 
         // remove targets that are not needed anymore
         Set<Channel> newTargets = newSrcTgtPairs.stream()
@@ -422,7 +422,7 @@ public class ContentManager {
      * @param channels the "non-leader" Channels
      * @param env the Environment to which the Sources are cloned
      * @param user the user
-     * @return the List of [Source Channel, Target Channel] Pairs
+     * @return the List of [original Channel, newly cloned Channel] Pairs
      */
     private static List<Pair<Channel, Channel>> cloneChannelsToEnv(ContentEnvironment env, Channel leader,
             Stream<Channel> channels, User user) {
@@ -451,21 +451,21 @@ public class ContentManager {
 
     private static Optional<Channel> lookupTargetChannel(Channel srcChannel, ContentEnvironment env, User user) {
         return ContentProjectFactory
-                .lookupEnvironmentTargetByChannelLabel(prefixString(srcChannel.getLabel(), env), user)
+                .lookupEnvironmentTargetByChannelLabel(channelLabelInEnvironment(srcChannel.getLabel(), env), user)
                 .map(t -> t.getChannel());
     }
 
     private static Channel createSoftwareTarget(Channel sourceChannel, Optional<Channel> leader, ContentEnvironment env,
             User user) {
-        String targetLabel = prefixString(sourceChannel.getLabel(), env);
+        String targetLabel = channelLabelInEnvironment(sourceChannel.getLabel(), env);
 
         Channel targetChannel = ofNullable(ChannelFactory.lookupByLabelAndUser(targetLabel, user))
                 .orElseGet(() -> {
                     CloneChannelCommand cloneCmd = new CloneChannelCommand(EMPTY, sourceChannel);
                     cloneCmd.setUser(user);
-                    cloneCmd.setName(prefixString(sourceChannel.getName(), env));
+                    cloneCmd.setName(channelLabelInEnvironment(sourceChannel.getName(), env));
                     cloneCmd.setLabel(targetLabel);
-                    cloneCmd.setSummary(prefixString(sourceChannel.getSummary(), env));
+                    cloneCmd.setSummary(channelLabelInEnvironment(sourceChannel.getSummary(), env));
                     leader.ifPresent(l -> cloneCmd.setParentLabel(l.getLabel()));
                     return cloneCmd.create();
                 });
@@ -476,14 +476,31 @@ public class ContentManager {
     }
 
     /**
-     * Prefix string with a Content Project and Environment labels
+     * Create a channel label in given {@link ContentEnvironment} based on {@link Channel} label in previous
+     * {@link ContentEnvironment}
      *
-     * @param string the string
+     * @param srcChannelLabel the source Channel label
      * @param env the Environment
-     * @return the prefixed string
+     * @return the prefixed channel label
      */
-    private static String prefixString(String string, ContentEnvironment env) {
-        return env.getContentProject().getLabel() + DELIMITER + env.getLabel() + DELIMITER + string;
+    private static String channelLabelInEnvironment(String srcChannelLabel, ContentEnvironment env) {
+        String envPrefix = prefixString(env);
+        return env.getPrevEnvironmentOpt()
+                .map(prevEnv -> srcChannelLabel.replaceAll("^" + prefixString(prevEnv), envPrefix))
+                .orElse(envPrefix + srcChannelLabel);
+    }
+
+    /**
+     * Create a prefix from given {@link ContentEnvironment}
+     *
+     * e.g. Environment with label "bar" in a Project with label "foo"
+     * will return "foo-bar-".
+     *
+     * @param env the Environment
+     * @return the prefix
+     */
+    private static String prefixString(ContentEnvironment env) {
+        return env.getContentProject().getLabel() + DELIMITER + env.getLabel() + DELIMITER;
     }
 
     private static void addHistoryEntry(Optional<String> message, User user, ContentProject project) {
