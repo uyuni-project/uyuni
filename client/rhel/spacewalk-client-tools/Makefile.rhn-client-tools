@@ -1,6 +1,8 @@
 # Makefile for Update Agent
 #
 
+include Makefile.defs
+
 PREFIX		?=
 MANPATH		?= /usr/share/man
 
