@@ -1,4 +1,5 @@
 - Add makefile and pylint configuration
+- allow access to susemanager tools channels without res subscription (bsc#1127542)
 
 -------------------------------------------------------------------
 Fri Mar 29 10:31:49 CET 2019 - jgonzalez@suse.com
