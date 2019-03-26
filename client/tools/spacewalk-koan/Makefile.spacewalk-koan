@@ -1,3 +1,5 @@
+include Makefile.python
+
 # what is the top dir
 TOP     = .
 
