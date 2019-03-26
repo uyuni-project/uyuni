@@ -49,7 +49,7 @@ public class ContentEnvironment extends BaseDomainHelper {
     private String label;
     private String name;
     private String description;
-    private Long version;
+    private Long version = 0L;
     private ContentProject contentProject;
     private ContentEnvironment nextEnvironment;
     private ContentEnvironment prevEnvironment;
@@ -159,6 +159,13 @@ public class ContentEnvironment extends BaseDomainHelper {
      */
     public void setVersion(Long versionIn) {
         version = versionIn;
+    }
+
+    /**
+     * Bump the Environment version
+     */
+    public void increaseVersion() {
+        version++;
     }
 
     /**
