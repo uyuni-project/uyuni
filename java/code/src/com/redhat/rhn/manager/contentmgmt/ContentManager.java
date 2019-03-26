@@ -36,6 +36,7 @@ import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -50,6 +51,7 @@ import static com.suse.utils.Opt.stream;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
@@ -342,6 +344,55 @@ public class ContentManager {
         ContentProject project = lookupProject(projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(projectLabel));
         return ContentProjectFactory.lookupProjectSource(project, sourceType, sourceLabel, user);
+    }
+
+    /**
+     * Promote given {@link ContentEnvironment} of given {@link ContentProject}
+     * to the successor {@link ContentEnvironment}
+     *
+     * @param projectLabel the Project label
+     * @param envLabel the Environment label
+     * @param async run the time-expensive operations asynchronously? (in the test code it is useful to run them
+     * synchronously)
+     * @param user the user
+     */
+    public static void promoteProject(String projectLabel, String envLabel, boolean async, User user) {
+        ensureOrgAdmin(user);
+        ContentEnvironment env = lookupEnvironment(envLabel, projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(envLabel));
+        ContentEnvironment nextEnv = env.getNextEnvironmentOpt()
+                .orElseThrow(() -> new ContentManagementException("Environment " + envLabel +
+                        " does not have successor"));
+
+        Map<Boolean, List<Channel>> envChannels = ContentProjectFactory.lookupEnvironmentTargets(env)
+                .flatMap(tgt -> stream(tgt.asSoftwareTarget()))
+                .map(tgt -> tgt.getChannel())
+                .collect(partitioningBy(Channel::isBaseChannel));
+        List<Channel> baseChannels = envChannels.get(true);
+        List<Channel> childChannels = envChannels.get(false);
+
+        if (baseChannels.size() != 1) {
+            throw new IllegalStateException("Environment " + envLabel + " must have exactly one leader channel");
+        }
+
+        // ensure targets for the sources exist
+        List<Pair<Channel, Channel>> newSrcTgtPairs = cloneChannelsToEnv(baseChannels.get(0), childChannels.stream(),
+                nextEnv, user);
+
+        // remove targets that are not needed anymore
+        Set<Channel> newTargets = newSrcTgtPairs.stream()
+                .map(pair -> pair.getRight())
+                .collect(toSet());
+        ContentProjectFactory.lookupEnvironmentTargets(nextEnv)
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .filter(tgt -> !newTargets.contains(tgt.getChannel()))
+                .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
+
+        // align the contents
+        newSrcTgtPairs
+                .forEach(srcTgt -> ChannelManager.alignChannels(srcTgt.getLeft(), srcTgt.getRight(), async, user));
+
+        nextEnv.setVersion(env.getVersion());
     }
 
     /**
