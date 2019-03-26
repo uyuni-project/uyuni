@@ -325,8 +325,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         renameSolv(prefix, channel.getLastModified().getTime());
     }
 
-    private void generateSolv(Channel channel)
-    {
+    private void generateSolv(Channel channel) {
         String repodir  = mountPoint + File.separator + pathPrefix +
                           File.separator + channel.getLabel() + File.separator;
         String solvout  = repodir + SOLV_FILE;
@@ -339,12 +338,14 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             // Determine the exit value
             int exitVal = pr.waitFor();
             if (exitVal != 0) {
-                log.error("Unable to create the solv file for '"+
+                log.error("Unable to create the solv file for '" +
                           channel.getLabel() + "'");
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         log.info("Solv file successfully create for '" + channel.getLabel() + "'");
