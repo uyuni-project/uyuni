@@ -19,6 +19,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.user.UserManager;
 import org.apache.log4j.Logger;
@@ -37,8 +38,8 @@ public class AlignSoftwareTargetAction implements MessageAction {
     @Override
     public void execute(EventMessage msgIn) {
         AlignSoftwareTargetMsg msg = (AlignSoftwareTargetMsg) msgIn;
-        Channel source = msg.getSource();
-        Channel target = msg.getTarget();
+        Channel source = ChannelFactory.lookupById(msg.getSource().getId());
+        Channel target = ChannelFactory.lookupById(msg.getTarget().getId());
 
         if (!UserManager.verifyChannelAdmin(msg.getUser(), target)) {
             throw new PermissionException("User " + msg.getUser().getLogin() + " has no permission for channel " +
