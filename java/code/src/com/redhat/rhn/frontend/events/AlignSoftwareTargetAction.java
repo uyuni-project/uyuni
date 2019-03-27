@@ -47,10 +47,10 @@ public class AlignSoftwareTargetAction implements MessageAction {
                     target.getChannel().getLabel());
         }
 
-        LOG.warn("Asynchronously aligning: " + msg); // todo lvl
+        LOG.info("Asynchronously aligning: " + msg);
         Instant start = Instant.now();
         ChannelManager.alignChannelsSync(source, target, msg.getUser());
-        LOG.warn("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
+        LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
     }
 
     @Override
