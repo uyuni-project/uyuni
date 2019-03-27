@@ -113,6 +113,7 @@ const Project = (props: Props) => {
       <EnvironmentLifecycle
         projectId={projectId}
         environments={project.environments}
+        historyEntries={project.properties.historyEntries}
         onChange={(projectWithNewEnvironment) => {
           setProject(projectWithNewEnvironment)
         }}

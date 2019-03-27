@@ -56,6 +56,7 @@ const ChildChannels = (props: PropsType): Node => {
           &nbsp;
           {
             toolTip ?
+              // eslint-disable-next-line
               <a href="#"><i className="fa fa-info-circle spacewalk-help-link" title={toolTip}></i></a>
               : null
           }

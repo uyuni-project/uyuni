@@ -10,10 +10,12 @@ import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import { mapAddEnvironmentRequest, mapUpdateEnvironmentRequest } from './environment.utils';
 
 import type {ProjectEnvironmentType} from '../../../type/project.type.js';
+import type {ProjectHistoryEntry} from "../../../type/project.type";
 
 type Props = {
   projectId: string,
   environments: Array<ProjectEnvironmentType>,
+  historyEntries: Array<ProjectHistoryEntry>,
   onChange: Function,
 };
 
@@ -128,7 +130,10 @@ const EnvironmentLifecycle = (props: Props) => {
                           />
                         )
                       }}
-                      renderContent={() => <EnvironmentView environment={environment}/>}/>
+                      renderContent={() => <EnvironmentView
+                        environment={environment}
+                        historyEntries={props.historyEntries}
+                      />}/>
                   </div>
                   {
                     props.environments.length - 1 !== i &&
