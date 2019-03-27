@@ -459,6 +459,7 @@ public class ContentManager {
         ContentProjectFactory.lookupEnvironmentTargets(env)
                 .flatMap(t -> stream(t.asSoftwareTarget()))
                 .filter(tgt -> !newTargets.contains(tgt.getChannel()))
+                .sorted((c1, c2) -> Boolean.compare(c1.getChannel().isBaseChannel(), c2.getChannel().isBaseChannel()))
                 .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
         // align the contents
