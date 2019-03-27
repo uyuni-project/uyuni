@@ -74,9 +74,9 @@ public class ProjectActionsApiController {
         }
 
         String projectLabel = projectLabelRequest.getProjectLabel();
-        ContentProject dbContentProject = ContentManager.lookupProject(projectLabel, user).get();
-
         ContentManager.buildProject(projectLabel, Optional.ofNullable(projectLabelRequest.getMessage()), true, user);
+
+        ContentProject dbContentProject = ContentManager.lookupProject(projectLabel, user).get();
 
         // [LN] Todo centralize this logic for all api
         List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
@@ -101,15 +101,9 @@ public class ProjectActionsApiController {
         }
 
         String projectLabel = projectPromoteReq.getProjectLabel();
-        ContentProject dbContentProject = ContentManager.lookupProject(projectLabel, user).get();
-
         ContentManager.promoteProject(projectLabel, projectPromoteReq.getEnvironmentPromoteLabel(), true, user);
 
-        List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
-
-        return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments)
-        ));
+        return json(GSON, res, ResultJson.success());
     }
 
 }

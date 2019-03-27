@@ -43,7 +43,12 @@ function Panel(props: Props) {
         <div className="panel-heading accordion-toggle">
           { props.buttons
             && (
-              <div className="pull-right btn-group" style={{ paddingLeft: '0px 10px 0px 100px' }}>
+              <div
+                className="pull-right btn-group"
+                style={{
+                  paddingLeft: '0px 10px 0px 100px',
+                  top: '-5px'
+                }}>
                 { props.buttons }
               </div>
             )

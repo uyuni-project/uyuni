@@ -95,6 +95,7 @@ public class ProjectSourcesApiController {
                 user
         ));
 
+        dbContentProject = ContentManager.lookupProject(createSourceRequest.getProjectLabel(), user).get();
         List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
 
         return json(GSON, res, ResultJson.success(
