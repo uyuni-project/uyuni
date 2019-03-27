@@ -8,7 +8,6 @@ import type {ProjectSoftwareSourceType} from '../../../type/project.type.js';
 import useProjectActionsApi from "../../../api/use-project-actions-api";
 import ChannelsSelection from "./channels/channels-selection";
 import {Panel} from "../../../../../../components/panels/Panel";
-import {Loading} from "components/loading/loading";
 
 type SourcesProps = {
   projectId: string,

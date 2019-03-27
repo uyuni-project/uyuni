@@ -36,7 +36,7 @@ export const getInitialFiltersState = (): Array<string> => Object.keys(channelsF
 
 export type StateChannelsSelectionType = {
   activeFilters: Array<string>,
-  selectedBaseChannelId: number,
+  selectedBaseChannelId: ?number,
   selectedChannelsIds: Array<number>,
   openGroupsIds: Array<number>,
   search: string,
@@ -117,6 +117,17 @@ export const reducerChannelsSelection = (
     }
     case 'lead_channel': {
       const newBaseId = action.newBaseId;
+      // const newBase = channelsTree.channelsById[newBaseId];
+
+      if(!newBaseId){
+         // reset state
+         draftState.activeFilters = getInitialFiltersState();
+         draftState.selectedBaseChannelId = null;
+         draftState.selectedChannelsIds = [];
+         draftState.openGroupsIds = [];
+         draftState.search = "";
+        return draftState;
+      }
       const newBaseArchLabel = channelsTree.channelsById[newBaseId].archLabel
 
       let channelsToToggle = [newBaseId];
