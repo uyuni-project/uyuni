@@ -48,9 +48,11 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.EMPTY;
 import static com.suse.utils.Opt.stream;
+import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -421,19 +423,19 @@ public class ContentManager {
 
         alignEnvironment(firstEnv, leader, otherChannels, async, user);
 
+        Map<ProjectSource.State, List<ProjectSource>> sourcesToHandle = project.getSources().stream()
+                .collect(groupingBy(src -> src.getState()));
+        // newly attached sources get built
+        sourcesToHandle.getOrDefault(ATTACHED, emptyList()).stream()
+                .forEach(src -> src.setState(BUILT));
         // remove the detached sources
-        project.getSources().stream()
-                .filter(src -> src.getState() != BUILT)
-                .forEach(src -> {
-                    if (src.getState() == ATTACHED) {
-                        // newly ATTACHED sources get BUILT
-                        src.setState(BUILT);
-                    }
-                    else {
-                        // newly DETACHED sources get deleted
-                        ContentProjectFactory.remove(src);
-                    }
-                });
+        sourcesToHandle.getOrDefault(DETACHED, emptyList()).stream()
+                .forEach(src -> removeSource(src));
+    }
+
+    private static void removeSource(ProjectSource source) {
+        source.getContentProject().removeSource(source);
+        ContentProjectFactory.remove(source);
     }
 
     /**
