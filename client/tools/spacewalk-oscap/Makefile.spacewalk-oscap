@@ -1,5 +1,3 @@
-include Makefile.python
-
 # Makefile for spacewalk-oscap
 #
 

@@ -1,5 +1,3 @@
-include Makefile.python
-
 PREFIX ?= /
 SYSCONF ?= etc
 PYTHON ?= python
