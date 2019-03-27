@@ -1781,8 +1781,9 @@ def do_system_delete(self, args):
     # regenerate the system name cache
     self.generate_system_cache(True, delay=1)
 
-    # remove these systems from the SSM
-    all(self.ssm.pop(system_name) for system_name in systems)
+    # remove these systems from the SSM and update the cache
+    all(self.ssm.pop(system_name) for system_name in list(systems))
+    save_cache(self.ssm_cache_file, self.ssm)
 
 
 ####################
