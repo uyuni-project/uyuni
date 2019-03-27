@@ -8,7 +8,6 @@ import type {ChannelType} from "core/channels/type/channels.type";
 import {getAllRecommentedIdsByBaseId} from "core/channels/utils/channels-state.utils";
 import {getChannelsToToggleWithDependencies} from "core/channels/utils/channels-dependencies.utils";
 
-
 export type FilterType = {id: string, text: string, isVisible: (ChannelType) => boolean}
 export type FiltersType = { [key: string]: FilterType }
 
@@ -52,7 +51,7 @@ export type ActionChannelsSelectionType =
   | {type: "lead_channel", newBaseId: number};
 
 
-export const initialStateChannelsSelection = ({initialSelectedIds}: {initialSelectedIds: Array<number>}) => ({
+export const initialStateChannelsSelection = (initialSelectedIds: Array<number>) => ({
   activeFilters: getInitialFiltersState(),
   selectedBaseChannelId: initialSelectedIds[0],
   selectedChannelsIds: initialSelectedIds,

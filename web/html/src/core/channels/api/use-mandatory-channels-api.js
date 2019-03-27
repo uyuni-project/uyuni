@@ -44,6 +44,7 @@ const useMandatoryChannelsApi = () : UseMandatoryChannelsApiReturnType => {
       [props.base.id, ...props.channels.map(c => c.id)]
       : props.channels.map(c => c.id);
 
+    // $FlowFixMe
     const mandatoryChannelsNotCached = needDepsInfoChannels.filter((channelId) => !mandatoryChannelsRaw[channelId]);
     if(mandatoryChannelsNotCached.length > 0) {
       Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(mandatoryChannelsNotCached), "application/json").promise

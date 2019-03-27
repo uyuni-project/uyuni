@@ -19,6 +19,7 @@ import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-ap
 import {getSelectedChannelsIdsInGroup} from "core/channels/utils/channels-state.utils";
 
 type PropsType = {
+  isLoading: boolean,
   initialSelectedIds: Array<number>,
   onChange: Function,
 }
@@ -29,7 +30,7 @@ const ChannelsSelection = (props: PropsType) => {
   const [state, dispatchChannelsSelection] : [StateChannelsSelectionType, (ActionChannelsSelectionType) => void]
     = useImmerReducer(
     (draft, action) => reducerChannelsSelection(draft, action, channelsTree, requiredChannelsResult),
-    initialStateChannelsSelection(props),
+    initialStateChannelsSelection(props.initialSelectedIds),
   );
 
   const isAllApiDataLoaded = isChannelsTreeLoaded && isDependencyDataLoaded;
@@ -53,7 +54,7 @@ const ChannelsSelection = (props: PropsType) => {
     );
   }, [state.selectedChannelsIds])
 
-  if (!isAllApiDataLoaded) {
+  if (!isAllApiDataLoaded || props.isLoading) {
     return (
       <div className='form-group'>
         <Loading text='Loading..' />
