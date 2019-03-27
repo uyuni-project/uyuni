@@ -141,6 +141,14 @@ public class DownloadFile extends DownloadAction {
             }
         }
         else if (url.startsWith("/cblr/svc/op/ks/")) {
+            url = url.replaceFirst("ks", "autoinstall");
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
+            params.put(URL_STRING, url);
+            request.setAttribute(PARAMS, params);
+            return super.execute(mapping, formIn, request, response);
+        }
+        else if (url.startsWith("/cblr/svc/op/autoinstall/")) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
             params.put(URL_STRING, url);

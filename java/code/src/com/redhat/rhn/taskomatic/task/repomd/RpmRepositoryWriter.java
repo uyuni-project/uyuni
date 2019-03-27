@@ -61,6 +61,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     private static final String PRODUCTS_FILE = "products.xml";
     private static final String SUSEDATA_FILE = "susedata.xml.gz.new";
     private static final String NOREPO_FILE = "noyumrepo.txt";
+    private static final String SOLV_FILE = "solv.new";
+    private static final String REPO2SOLV = "/usr/bin/repo2solv.sh";
 
     private static final String GROUP = "groups";
     private static final String MODULES = "modules";
@@ -318,6 +320,35 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         log.info("Repository metadata generation for '" +
                 channel.getLabel() + "' finished in " +
                 (int) (new Date().getTime() - start.getTime()) / 1000 + " seconds");
+
+        generateSolv(channel);
+        renameSolv(prefix, channel.getLastModified().getTime());
+    }
+
+    private void generateSolv(Channel channel) {
+        String repodir  = mountPoint + File.separator + pathPrefix +
+                          File.separator + channel.getLabel() + File.separator;
+        String solvout  = repodir + SOLV_FILE;
+        try {
+            // Execute the command
+            Runtime rt = Runtime.getRuntime();
+            String[] command = {REPO2SOLV, "-o", solvout, repodir};
+            Process pr = rt.exec(command, new String[]{});
+
+            // Determine the exit value
+            int exitVal = pr.waitFor();
+            if (exitVal != 0) {
+                log.error("Unable to create the solv file for '" +
+                          channel.getLabel() + "'");
+            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("Solv file successfully create for '" + channel.getLabel() + "'");
     }
 
     /**
@@ -574,4 +605,11 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         repomd.renameTo(new File(prefix + "repomd.xml"));
     }
 
+    private void renameSolv(String prefix, Long lastModified) {
+        File solv = new File(prefix + SOLV_FILE);
+
+        solv.setLastModified(lastModified);
+
+        solv.renameTo(new File(prefix + "solv"));
+    }
 }

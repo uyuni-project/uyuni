@@ -26,6 +26,7 @@ import os
 import re
 import sys
 import time
+from salt.ext import six
 from optparse import Option, OptionParser
 from socket import gethostname
 
@@ -472,7 +473,7 @@ if len(phases) < 2:
     sys.exit(1)
 
 # determine if you want to enable XMLRPC debugging
-if options.debug > 1:
+if options.debug and options.debug > 1:
     xmlrpc_debug = True
 else:
     xmlrpc_debug = False

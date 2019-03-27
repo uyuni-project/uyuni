@@ -1,3 +1,19 @@
+- Include arch to distinct latest packages on reposync.
+- Migrate missing spacewalk-cfg-get script to Python3
+- Improve dependency solving algorithm for spacewalk-repo-sync.
+
+-------------------------------------------------------------------
+Mon Mar 25 16:41:48 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
+- remove apache access_compat module and adapt config files
+- Add support for getting latest versions from RPM packages
+  when running "spacewalk-repo-sync" after migration to Zypper.
+- Include packages dependencies on "spacewalk-repo-sync" when using filters
+  for RPM packages.
+- Allow package filtering (name matching) on spacewalk-repo-sync after
+  migrating away from yum.
+- Fix crash when importing new channel families on 'mgr-inter-sync' (bsc#1129300)
 - Make Zypper to use the spacewalk GPG keyring in reposync (bsc#1128529)
 - Fix: handle non-standard filenames for comps.xml (bsc#1120242)
 - Make reposync use and append token correctly to the URL

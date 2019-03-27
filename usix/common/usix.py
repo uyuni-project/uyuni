@@ -12,6 +12,11 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+"""
+Usix is a library to bring compatibility between Python2 and Python3.
+"""
+
+# pylint: disable=E1101
 
 import sys
 import types
@@ -37,7 +42,7 @@ if PY3:
     InstanceType = object
 else:
     BufferType = types.BufferType
-    UnicodeType = unicode
+    UnicodeType = unicode  # pylint: disable=E0602
     StringType = types.StringType
     DictType = types.DictType
     IntType = types.IntType
@@ -63,6 +68,9 @@ else:
 # pylint: disable=W0122
 if PY3:
     def raise_with_tb(value, tb=None):
+        """
+        Re-raise an exception with the traceback.
+        """
         try:
             if value.__traceback__ is not tb:
                 raise value.with_traceback(tb)
@@ -86,5 +94,8 @@ try:
     advance_iterator = next
 except NameError:
     def advance_iterator(it):
+        """
+        Iterator invocation.
+        """
         return it.next()
 next = advance_iterator  # pylint: disable=W0622

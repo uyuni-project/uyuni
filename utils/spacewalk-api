@@ -17,6 +17,7 @@
 
 from getpass import getpass
 from optparse import Option, OptionParser
+import io
 import re
 import sys
 
@@ -49,7 +50,7 @@ def processCommandline(argv):
         sys.exit(1)
 
     if not options.username and options.login:
-        with open('/dev/tty', 'r+') as tty:
+        with io.TextIOWrapper(open('/dev/tty', 'r+b', buffering=0)) as tty:
             tty.write('Enter username: ')
             try:
                 options.username = tty.readline()

@@ -17,12 +17,12 @@
 #
 
 
-%define cobprofdir      %{_localstatedir}/lib/rhn/kickstarts
-%define cobprofdirup    %{_localstatedir}/lib/rhn/kickstarts/upload
-%define cobprofdirwiz   %{_localstatedir}/lib/rhn/kickstarts/wizard
-%define cobdirsnippets  %{_localstatedir}/lib/rhn/kickstarts/snippets
-%define realcobsnippetsdir  %{_localstatedir}/lib/cobbler/snippets
-%define cobblerdir          %{_localstatedir}/lib/cobbler
+%define cobblerdir      %{_localstatedir}/lib/cobbler
+%define cobprofdir      %{cobblerdir}/templates
+%define cobprofdirup    %{cobprofdir}/upload
+%define cobprofdirwiz   %{cobprofdir}/wizard
+%define cobdirsnippets  %{cobblerdir}/snippets
+%define realcobsnippetsdir  %{cobdirsnippets}/spacewalk
 %define run_checkstyle  1
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -44,7 +44,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.10
+Version:        4.0.11
 Release:        1%{?dist}
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -300,7 +300,6 @@ BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
 BuildRequires:  stringtree-json
-BuildRequires:  tanukiwrapper
 %if 0%{?run_checkstyle}
 BuildRequires:  checkstyle
 %endif
@@ -436,7 +435,6 @@ Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib
-Requires:       tanukiwrapper
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 %if 0%{?suse_version}
@@ -684,6 +682,7 @@ cp conf/default/rhn_hibernate.conf.SUSE conf/default/rhn_hibernate.conf
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
+install -m 644 conf/default/taskomatic.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/taskomatic.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
@@ -708,20 +707,18 @@ cp -a build/classes/com/redhat/rhn/common/conf/test/conf $RPM_BUILD_ROOT%{_datad
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 install -m 644 code/src/ehcache.xml $RPM_BUILD_ROOT%{_datadir}/rhn/classes/ehcache.xml
 
-install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{cobdirsnippets}/default_motd
-install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{cobdirsnippets}/keep_system_id
-install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{cobdirsnippets}/post_reactivation_key
-install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{cobdirsnippets}/post_delete_system
-install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{cobdirsnippets}/redhat_register
-install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register
-install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register_script
-install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
-install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{cobdirsnippets}/wait_for_networkmanager_script
-
-ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/taskomaticd
-ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
-ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT%{realcobsnippetsdir}/spacewalk
+install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{realcobsnippetsdir}/default_motd
+install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{realcobsnippetsdir}/keep_system_id
+install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{realcobsnippetsdir}/post_reactivation_key
+install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{realcobsnippetsdir}/post_delete_system
+install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{realcobsnippetsdir}/redhat_register
+install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_register
+install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_register_script
+install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{realcobsnippetsdir}/sles_no_signature_checks
+install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{realcobsnippetsdir}/wait_for_networkmanager_script
+
+ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 %if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit
 install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
@@ -814,7 +811,6 @@ fi
 %files
 %if 0%{?suse_version}
 %defattr(-,root,root)
-%dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
 %endif
 %defattr(644,tomcat,tomcat,775)
@@ -928,7 +924,6 @@ fi
 %{jardir}/simple-xml.jar
 %{jardir}/sitemesh.jar
 %{jardir}/stringtree-json.jar
-%{jardir}/tanukiwrapper.jar
 # %{jardir}/velocity-*.jar
 %{jardir}/xalan-j2.jar
 %{jardir}/xalan-j2-serializer.jar
@@ -953,27 +948,26 @@ fi
 %dir %{cobprofdirup}
 %dir %{cobprofdirwiz}
 %dir %{cobdirsnippets}
-%config %{cobdirsnippets}/default_motd
-%config %{cobdirsnippets}/keep_system_id
-%config %{cobdirsnippets}/post_reactivation_key
-%config %{cobdirsnippets}/post_delete_system
-%config %{cobdirsnippets}/redhat_register
-%config %{cobdirsnippets}/sles_register
-%config %{cobdirsnippets}/sles_register_script
-%config %{cobdirsnippets}/sles_no_signature_checks
-%config %{cobdirsnippets}/wait_for_networkmanager_script
+%dir %{realcobsnippetsdir}
+%config %{realcobsnippetsdir}/default_motd
+%config %{realcobsnippetsdir}/keep_system_id
+%config %{realcobsnippetsdir}/post_reactivation_key
+%config %{realcobsnippetsdir}/post_delete_system
+%config %{realcobsnippetsdir}/redhat_register
+%config %{realcobsnippetsdir}/sles_register
+%config %{realcobsnippetsdir}/sles_register_script
+%config %{realcobsnippetsdir}/sles_no_signature_checks
+%config %{realcobsnippetsdir}/wait_for_networkmanager_script
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %else
 %if  0%{?suse_version}
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %attr(755,root,root) %dir %{cobblerdir}
-%attr(755,root,root) %dir %{realcobsnippetsdir}
 %else
 %config(noreplace) %{appdir}/rhn/META-INF/context.xml
 %endif
 %endif
-%{realcobsnippetsdir}/spacewalk
 
 %if 0%{?suse_version}
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
@@ -993,15 +987,16 @@ fi
 %else
 %attr(755, root, root) %{_initrddir}/taskomatic
 %endif
-%{_bindir}/taskomaticd
 %{_datarootdir}/spacewalk/taskomatic
 %{_sbindir}/rctaskomatic
 
 %files config
 %defattr(644,root,root,755)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
+%attr(0750,root,www) %dir /etc/rhn
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
+%config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 %{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api

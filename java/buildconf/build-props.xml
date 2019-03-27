@@ -118,7 +118,7 @@
 
   <property name="build.jar.dependencies"
       value="ant ant-junit ${ant-contrib.path} antlr  ${test.build.jar.dependencies}
-      ${common.jar.dependencies} tanukiwrapper ${tomcat-jars} ${jasper-jars}
+      ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars}
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
@@ -141,7 +141,7 @@
 
   <property name="install.build.jar.dependencies"
       value="ant ant/ant-junit ${ant-contrib.path} antlr ${jasper-jars} ${test.build.jar.dependencies}
-      ${install.common.jar.dependencies} tanukiwrapper xalan-j2" />
+      ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
       value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j dwr jaf jta sitemesh
@@ -169,7 +169,7 @@
              ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
-             tanukiwrapper postgresql-jdbc snakeyaml simple-xml
+             postgresql-jdbc snakeyaml simple-xml
              ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xalan-j2-serializer xerces-j2 xml-commons-apis simple-core ${ehcache}" />
 

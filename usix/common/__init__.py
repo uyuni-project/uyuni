@@ -15,6 +15,9 @@
 # Initialization file for the common module
 #
 
+"""
+Usix package.
+"""
 
 # try to figure out if we're running under Apache or not
 try:

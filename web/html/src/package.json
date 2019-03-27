@@ -12,6 +12,7 @@
     "watch": "webpack -d --config build/webpack.config.js --mode development --watch",
     "proxy": "webpack-dev-server -d --mode development --hot --inline --config build/webpack.config.js",
     "build": "node build",
+    "build:novalidate": "BUILD_VALIDATION=false node build",
     "lint": "eslint . -f codeframe"
   },
   "devDependencies": {

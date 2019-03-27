@@ -35,7 +35,7 @@
 %endif
 
 Name:           spacewalk-utils
-Version:        4.0.6
+Version:        4.0.7
 Release:        1%{?dist}
 Summary:        Utilities that may be run against a Spacewalk server.
 License:        GPL-2.0-only AND GPL-3.0-or-later
@@ -118,13 +118,9 @@ Generic utilities that may be run against a Spacewalk server.
 %prep
 %setup -q
 
-%if  0%{?rhel} && 0%{?rhel} < 6
-%define pod2man POD2MAN=pod2man
-%endif
 %if  0%{?suse_version} && 0%{?suse_version} < 1200
 %define pod2man POD2MAN=pod2man
 %endif
-
 %build
 make all %{?pod2man}
 

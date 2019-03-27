@@ -68,7 +68,7 @@ class ExtOptionParser(OptionParser):
 def connect(user, password, server):
     server_url = "http://%s/rpc/api" % server
 
-    if options.verbose > 2:
+    if options.verbose and options.verbose > 2:
         client_verbose = options.verbose - 2
     else:
         client_verbose = 0
@@ -89,7 +89,7 @@ def add_channels(channels, section, arch, client):
 
     if config.has_option(section, 'base_channels'):
         base_channels = re.split(SPLIT_PATTERN,
-                                 config.get(section, 'base_channels', 1))
+                                 config.get(section, 'base_channels'), 1)
 
     config.set(section, 'arch', arch)
     config.set(section, 'section', section)

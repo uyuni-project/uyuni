@@ -75,6 +75,69 @@ public class DownloadController {
      */
     private static boolean checkTokens = Config.get().getBoolean(ConfigDefaults.SALT_CHECK_DOWNLOAD_TOKENS);
 
+    /**
+     * Encapsulates package info.
+     * Public only for unit tests.
+     */
+    public static class PkgInfo {
+        private String name;
+        private String version;
+        private String release;
+        private String epoch;
+        private String arch;
+
+        /**
+         * Constructor
+         * @param nameIn package name
+         * @param epochIn epoch
+         * @param versionIn version
+         * @param releaseIn release
+         * @param archIn architecture
+         */
+        public PkgInfo(String nameIn, String epochIn, String versionIn, String releaseIn, String archIn) {
+            this.name = nameIn;
+            this.version = versionIn;
+            this.release = releaseIn;
+            this.epoch = epochIn;
+            this.arch = archIn;
+        }
+
+        /**
+         * @return package name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * @return version
+         */
+        public String getVersion() {
+            return version;
+        }
+
+        /**
+         * @return release
+         */
+        public String getRelease() {
+            return release;
+        }
+
+        /**
+         * @return epoch
+         */
+        public String getEpoch() {
+            return epoch;
+        }
+
+        /**
+         * @return arch
+         */
+        public String getArch() {
+            return arch;
+        }
+    }
+
     private DownloadController() {
     }
 
@@ -167,31 +230,14 @@ public class DownloadController {
         }
 
         String basename = FilenameUtils.getBaseName(path);
-        String extension = FilenameUtils.getExtension(path);
-        String arch = StringUtils.substringAfterLast(basename, ".");
-        String rest = StringUtils.substringBeforeLast(basename, ".");
-        String release = StringUtils.substringAfterLast(rest, "-");
-        rest = StringUtils.substringBeforeLast(rest, "-");
-        String version = StringUtils.substringAfterLast(rest, "-");
-        String name = StringUtils.substringBeforeLast(rest, "-");
-        String epoch = null;
-
-        // Debian packages names need spacial handling
-        if ("deb".equalsIgnoreCase(extension) || "udeb".equalsIgnoreCase(extension)) {
-            name = StringUtils.substringBeforeLast(rest, "_");
-            rest = StringUtils.substringAfterLast(rest, "_");
-            // Parse only epoch and version since release was already stripped away before
-            PackageEvr pkgEv = PackageUtils.parseDebianEvr(rest);
-            epoch = pkgEv.getEpoch();
-            version = pkgEv.getVersion();
-        }
-
         if (checkTokens) {
             String token = getTokenFromRequest(request);
             validateToken(token, channel, basename);
         }
 
-        Package pkg = PackageFactory.lookupByChannelLabelNevra(channel, name, version, release, epoch, arch);
+        PkgInfo pkgInfo = parsePackageFileName(path);
+        Package pkg = PackageFactory.lookupByChannelLabelNevra(channel,
+                pkgInfo.getName(), pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch());
         if (pkg == null) {
             halt(HttpStatus.SC_NOT_FOUND,
                  String.format("%s not found in %s", basename, channel));
@@ -201,6 +247,41 @@ public class DownloadController {
                 pkg.getPath()).getAbsoluteFile();
 
         return downloadFile(request, response, file);
+    }
+
+    /**
+     * Parse URL path to extract package info.
+     * Only public for unit tests.
+     * @param path url path
+     * @return name, epoch, vesion, release, arch of package
+     */
+    public static PkgInfo parsePackageFileName(String path) {
+        String extension = FilenameUtils.getExtension(path);
+        String basename = FilenameUtils.getBaseName(path);
+        String arch = StringUtils.substringAfterLast(basename, ".");
+        String rest = StringUtils.substringBeforeLast(basename, ".");
+        String release = "";
+        String name = "";
+        String version = "";
+        String epoch = "";
+
+        // Debian packages names need spacial handling
+        if ("deb".equalsIgnoreCase(extension) || "udeb".equalsIgnoreCase(extension)) {
+            name = StringUtils.substringBeforeLast(rest, "_");
+            rest = StringUtils.substringAfterLast(rest, "_");
+            PackageEvr pkgEv = PackageUtils.parseDebianEvr(rest);
+            epoch = pkgEv.getEpoch();
+            version = pkgEv.getVersion();
+            release = pkgEv.getRelease();
+        }
+        else {
+            release = StringUtils.substringAfterLast(rest, "-");
+            rest = StringUtils.substringBeforeLast(rest, "-");
+            version = StringUtils.substringAfterLast(rest, "-");
+            name = StringUtils.substringBeforeLast(rest, "-");
+            epoch = null;
+        }
+        return new PkgInfo(name, epoch, version, release, arch);
     }
 
     /**

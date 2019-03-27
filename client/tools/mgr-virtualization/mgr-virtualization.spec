@@ -45,7 +45,7 @@ Name:           mgr-virtualization
 Summary:        Spacewalk action support for virualization
 License:        GPL-2.0-only
 Group:          System Environment/Base
-Version:        4.0.2
+Version:        4.0.3
 Provides:       rhn-virtualization = %{oldversion}
 Obsoletes:      rhn-virtualization < %{oldversion}
 Release:        1%{?dist}
@@ -207,7 +207,7 @@ sed -i 's,@PYTHON@,python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
 
 %else
 install -d $RPM_BUILD_ROOT%{cron_dir}
-install -D -m 0644 scripts/rhn-virtualization.cron %{cron_dir}/rhn-virtualization.cron
+install -D -m 0644 scripts/rhn-virtualization.cron $RPM_BUILD_ROOT%{cron_dir}/rhn-virtualization.cron
 sed -i 's,@PYTHON@,python,; s,@PYTHONPATH@,%{python_sitelib},;' \
         $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
 %endif

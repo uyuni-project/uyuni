@@ -33,7 +33,7 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.0.4
+Version:        4.0.5
 Release:        1%{?dist}
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -161,7 +161,6 @@ chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-sate
 %post
 %if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES access_compat
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_wstunnel

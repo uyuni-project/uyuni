@@ -151,6 +151,33 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    /**
+     * Do not fail in case orgId is null: it means errata is just a vendor one (bsc#1128228)
+     */
+    public void testGetVendorErrataDetails() throws Exception {
+        Errata vendorErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        vendorErrata.setOrg(null);
+
+        Map details = handler.getDetails(admin, vendorErrata.getAdvisory());
+        assertNotNull(details);
+    }
+
+    /**
+     * Make sure that if two erratas exist with the same advisoryName,
+     * but one with current user's orgId and one with orgId null (vendor org)
+     * it returns the one with the user org over the vendor one.
+     */
+    public void testGetUserErrataOverVendorErrata() throws Exception {
+        Errata vendorErrata = ErrataFactoryTest.createTestErrata(null);
+        vendorErrata.setOrg(null);
+
+        Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        userErrata.setAdvisoryName(vendorErrata.getAdvisoryName());
+
+        Map details = handler.getDetails(admin, vendorErrata.getAdvisory());
+        assertEquals(details.get("id"), userErrata.getId());
+    }
+
     public void testSetDetailsAdvRelAboveMax() throws Exception {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());

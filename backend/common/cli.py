@@ -15,6 +15,7 @@
 
 import sys
 import getpass
+import io
 try:
     #  python 2
     import xmlrpclib
@@ -35,7 +36,7 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
     password = cmdlinePassword
 
     # Read the username, if not already specified
-    tty = open("/dev/tty", "r+")
+    tty = io.TextIOWrapper(open("/dev/tty", "r+b", buffering=0))
     while not username:
         tty.write("SUSE Manager username: ")
         try:

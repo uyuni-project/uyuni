@@ -1,4 +1,9 @@
 - fix encoding bug in salt event processing (bsc#1129851)
+
+-------------------------------------------------------------------
+Mon Mar 25 16:41:21 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.5-1
 - Add websockify service for VNC/Spice display
 
 -------------------------------------------------------------------

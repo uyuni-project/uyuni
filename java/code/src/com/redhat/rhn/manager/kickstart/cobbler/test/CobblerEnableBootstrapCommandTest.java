@@ -124,7 +124,7 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
         expectedOptions.put("spacewalk_hostname", config.getHostname());
         expectedOptions.put("spacewalk_activationkey", activationKeyToken);
         expectedOptions.put("ROOTFS_FSCK", "0");
-        assertEquals(expectedOptions, newProfile.get("kopts"));
+        assertEquals(expectedOptions, newProfile.get("kernel_options"));
 
         criteria.put("name", SystemRecord.BOOTSTRAP_NAME);
         Map<String, Object> newSystem = CobblerDisableBootstrapCommandTest.invoke(

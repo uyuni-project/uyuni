@@ -42,7 +42,7 @@ import java.util.Date;
 public class KickstartUrlHelper {
 
     private static Logger log = Logger.getLogger(KickstartUrlHelper.class);
-    public static final String COBBLER_URL_BASE_PATH = "/cblr/svc/op/ks/profile/";
+    public static final String COBBLER_URL_BASE_PATH = "/cblr/svc/op/autoinstall/profile/";
     public static final String KS_DIST = "/ks/dist";
     public static final String KS_CFG = "/ks/cfg";
     public static final String COBBLER_SERVER_VARIABLE = "$http_server";

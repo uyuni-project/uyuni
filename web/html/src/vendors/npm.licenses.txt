@@ -32,7 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@babel/runtime v7.3.1 - Sebastian McKenzie <sebmck@gmail.com>
+@babel/runtime v7.4.2 - Sebastian McKenzie <sebmck@gmail.com>
 https://github.com/babel/babel/tree/master/packages/babel-runtime
 --------------------------------------------------------------------------------
 
@@ -799,7 +799,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-react-select v2.4.1 - Jed Watson
+react-select v2.4.2 - Jed Watson
 https://github.com/JedWatson/react-select.git
 --------------------------------------------------------------------------------
 
@@ -827,7 +827,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-transition-group v2.5.3
+react-transition-group v2.7.0
 https://github.com/reactjs/react-transition-group.git
 --------------------------------------------------------------------------------
 

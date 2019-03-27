@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 25 16:43:43 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.7-1
+- remove apache access_compat module and adapt config files
+
+-------------------------------------------------------------------
 Sat Mar 02 00:11:10 CET 2019 - jgonzalez@suse.com
 
 - version 4.0.6-1

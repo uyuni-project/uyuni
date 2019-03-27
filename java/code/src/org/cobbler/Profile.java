@@ -15,6 +15,9 @@
 
 package org.cobbler;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.StringUtil;
+
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
@@ -37,7 +40,7 @@ public class Profile extends CobblerObject {
     private static Logger log = Logger.getLogger(Profile.class);
 
     private static final String DHCP_TAG = "dhcp_tag";
-    private static final String KICKSTART = "kickstart";
+    private static final String KICKSTART = "autoinstall";
     private static final String VIRT_BRIDGE = "virt_bridge";
     private static final String VIRT_CPUS = "virt_cpus";
     private static final String VIRT_TYPE = "virt_type";
@@ -207,7 +210,7 @@ public class Profile extends CobblerObject {
      * @return the Kickstart file path
      */
      public String getKickstart() {
-         return (String)dataMap.get(KICKSTART);
+         return getFullAutoinstallPath((String)dataMap.get(KICKSTART));
      }
 
      /**
@@ -299,7 +302,7 @@ public class Profile extends CobblerObject {
       * @param kickstartIn the Kickstart
       */
       public void  setKickstart(String kickstartIn) {
-          modify(KICKSTART, kickstartIn);
+          modify(KICKSTART, getRelativeAutoinstallPath(kickstartIn));
       }
 
       /**
@@ -406,4 +409,22 @@ public class Profile extends CobblerObject {
           }
       }
 
+      private String getFullAutoinstallPath(String pathIn) {
+          String cobblerPath = ConfigDefaults.get().getKickstartConfigDir();
+          if (pathIn.startsWith(cobblerPath)) {
+              return pathIn;
+          }
+          return StringUtil.addPath(cobblerPath, pathIn);
+      }
+
+      private String getRelativeAutoinstallPath(String pathIn) {
+          String cobblerPath = ConfigDefaults.get().getKickstartConfigDir();
+          if (!cobblerPath.endsWith("/")) {
+              cobblerPath += "/";
+          }
+          if (pathIn.startsWith(cobblerPath)) {
+              return pathIn.substring(cobblerPath.length());
+          }
+          return pathIn;
+      }
 }
