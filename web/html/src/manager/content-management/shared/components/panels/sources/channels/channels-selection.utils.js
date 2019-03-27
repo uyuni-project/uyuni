@@ -1,6 +1,7 @@
 // @flow
 
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
+import {getChannelsTreeValues} from "core/channels/api/use-channels-tree-api";
 import type {ChannelType} from "core/channels/type/channels.type";
 import {channelsFiltersAvailable} from "./channels-selection.state";
 
@@ -18,7 +19,7 @@ export function orderBaseChannels (channelsTree: ChannelsTreeType, selectedBaseC
 }
 
 export function getVisibleChannels (channelsTree: ChannelsTreeType, activeFilters: Array<string>): Array<number> {
-  return Object.values(channelsTree.channelsById)
+  return getChannelsTreeValues(channelsTree)
     .filter( c =>
       activeFilters
         .map(filterId => channelsFiltersAvailable[filterId])

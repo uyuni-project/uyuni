@@ -16,7 +16,7 @@ type SourcesProps = {
   onChange: Function,
 };
 
-const ModalSourceCreationContent = (props) => {
+const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
 
   // TODO: transform this in an enum and reuse in sources.js as well
   const selectedStates = ["ATTACHED","BUILT"];
@@ -33,13 +33,14 @@ const ModalSourceCreationContent = (props) => {
         </Select>
       </div>
       <ChannelsSelection
+        isLoading={isLoading}
         initialSelectedIds={
-          props.softwareSources
+          softwareSources
             .filter(source => selectedStates.includes(source.state))
             .map(source => source.channelId)
         }
         onChange={(selectedChannels) => {
-          props.onChange(selectedChannels.map(c => c.label))
+          onChange(selectedChannels.map(c => c.label))
         }}
       />
     </form>
@@ -115,19 +116,13 @@ const Sources = (props: SourcesProps) => {
           });
       }}
       renderCreationContent={({setItem}) => {
-
-        if (isLoading) {
-          return (
-            <Loading text={t('Adding sources...')}/>
-          )
-        }
-
         return (
           <ModalSourceCreationContent
             softwareSources={props.softwareSources}
             onChange={(channelsLabel) => {
               setItem(channelsLabel);
             }}
+            isLoading={isLoading}
           />
         )
       }}
