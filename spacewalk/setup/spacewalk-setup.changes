@@ -1,3 +1,4 @@
+- add makefile and configuration for the pylint
 - Add proper argument parsing to the embedded diskspace check.
 - Fix Python3 porting issues
 
