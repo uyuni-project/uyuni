@@ -1,11 +1,16 @@
 /* eslint-disable */
- // @flow
- 'use strict';
+// @flow
+'use strict';
+
+import type {RequiredChannelsResultType} from "core/channels/api/use-mandatory-channels-api";
 
 export type ChannelsDependencies = {
   requiredChannels: Map<number, Set<number>>,
   requiredByChannels: Map<number, Set<number>>
 }
+
+const _union = require("lodash/union");
+
 
 // Converts array of channel names into a human-readable tooltip
 // containing information about channel dependencies
@@ -36,17 +41,17 @@ function computeReverseDependencies(dependencyMap : Map<number, Set<number>>) : 
 {
   // merges entry e to the accMap
   const mergeEntries = (accMap, e) => {
-      if (accMap.has(e[0])) {
-          accMap.get(e[0]).add(e[1]);
-      } else {
-          accMap.set(e[0], new Set([e[1]]));
-      }
-      return accMap;
+    if (accMap.has(e[0])) {
+      accMap.get(e[0]).add(e[1]);
+    } else {
+      accMap.set(e[0], new Set([e[1]]));
+    }
+    return accMap;
   }
 
   return Array.from(dependencyMap.keys())
-      .flatMap(key => Array.from(dependencyMap.get(key)).map(val => [val, key]))
-      .reduce(mergeEntries, new Map());
+    .flatMap(key => Array.from(dependencyMap.get(key)).map(val => [val, key]))
+    .reduce(mergeEntries, new Map());
 }
 
 function processChannelDependencies(requiredChannelsRaw) : ChannelsDependencies {
@@ -68,7 +73,24 @@ function processChannelDependencies(requiredChannelsRaw) : ChannelsDependencies 
   };
 }
 
+function getChannelsToToggleWithDependencies(
+  channelsId: Array<number>,
+  requiredChannelsResult: RequiredChannelsResultType,
+  isSelection: boolean
+): Array<number> {
+  let channelsToToggle: Array<number> = [...channelsId];
+  channelsId.forEach((channelId) => {
+    if(isSelection) {
+      channelsToToggle = _union(channelsToToggle, Array.from(requiredChannelsResult.requiredChannels.get(channelId) || []))
+    } else {
+      channelsToToggle = _union(channelsToToggle, Array.from(requiredChannelsResult.requiredByChannels.get(channelId) || []))
+    }
+  });
+  return channelsToToggle;
+}
+
 module.exports = {
   dependenciesTooltip: dependenciesTooltip,
-  processChannelDependencies: processChannelDependencies
+  processChannelDependencies: processChannelDependencies,
+  getChannelsToToggleWithDependencies
 }

@@ -8,6 +8,7 @@ import type {ProjectSoftwareSourceType} from '../../../type/project.type.js';
 import useProjectActionsApi from "../../../api/use-project-actions-api";
 import ChannelsSelection from "./channels/channels-selection";
 import {Panel} from "../../../../../../components/panels/Panel";
+import {Loading} from "components/loading/loading";
 
 type SourcesProps = {
   projectId: string,
@@ -82,7 +83,7 @@ const renderSourceEntry = (source) => {
 
 const Sources = (props: SourcesProps) => {
 
-  const {onAction, cancelAction} = useProjectActionsApi({
+  const {onAction, cancelAction, isLoading} = useProjectActionsApi({
     projectId: props.projectId, projectResource: "softwaresources"
   });
 
@@ -114,6 +115,13 @@ const Sources = (props: SourcesProps) => {
           });
       }}
       renderCreationContent={({setItem}) => {
+
+        if (isLoading) {
+          return (
+            <Loading text={t('Adding sources...')}/>
+          )
+        }
+
         return (
           <ModalSourceCreationContent
             softwareSources={props.softwareSources}

@@ -3,8 +3,10 @@ import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
 import _xor from "lodash/xor";
 import _difference from "lodash/difference";
 import _union from "lodash/union";
+import type {RequiredChannelsResultType} from "core/channels/api/use-mandatory-channels-api";
 import type {ChannelType} from "core/channels/type/channels.type";
-import {getAllRecommentedIdsByBaseId} from "core/channels/state/channels.utils";
+import {getAllRecommentedIdsByBaseId} from "core/channels/utils/channels-state.utils";
+import {getChannelsToToggleWithDependencies} from "core/channels/utils/channels-dependencies.utils";
 
 
 export type FilterType = {id: string, text: string, isVisible: (ChannelType) => boolean}
@@ -44,7 +46,7 @@ export type StateChannelsSelectionType = {
 export type ActionChannelsSelectionType =
   | {type: "search", search: string}
   | {type: "toggle_filter", filter: string}
-  | {type: "toggle_channels", channelsIds: Array<number>, baseId: number}
+  | {type: "toggle_channel", channelId: number, baseId: number}
   | {type: "set_recommended", enable: boolean, baseId: number}
   | {type: "open_group",  open: boolean, baseId: number}
   | {type: "lead_channel", newBaseId: number};
@@ -61,12 +63,13 @@ export const initialStateChannelsSelection = ({initialSelectedIds}: {initialSele
 export const reducerChannelsSelection = (
   draftState: StateChannelsSelectionType,
   action: ActionChannelsSelectionType,
-  channelsTree: ChannelsTreeType
+  channelsTree: ChannelsTreeType,
+  requiredChannelsResult: RequiredChannelsResultType,
 ) => {
   switch (action.type) {
     case 'search': {
       draftState.search = action.search;
-      if(action.search) {
+      if (action.search) {
         const search = action.search;
         // If the search term is present in the group it will open it
         const openGroupsIds =
@@ -79,9 +82,9 @@ export const reducerChannelsSelection = (
               || base.name.toLowerCase().includes(search.toLowerCase())
             )
             .map(c => c.id);
-        draftState.openGroupsIds = openGroupsIds ;
+        draftState.openGroupsIds = openGroupsIds;
       } else {
-        draftState.openGroupsIds = [] ;
+        draftState.openGroupsIds = [];
       }
       return draftState;
     }
@@ -89,46 +92,59 @@ export const reducerChannelsSelection = (
       draftState.activeFilters = _xor(draftState.activeFilters, [action.filter]);
       return draftState;
     }
-    case "toggle_channels": {
-      const shouldEnableRecomended =
-        action.channelsIds.length === 1
-        && action.channelsIds[0] === action.baseId
-        && !draftState.selectedChannelsIds.includes(action.channelsIds[0]);
+    case "toggle_channel": {
+      const channelId = action.channelId;
+      const isSelection = !draftState.selectedChannelsIds.includes(channelId);
+      const isBaseChannel = channelId === action.baseId;
+      const shouldEnableRecomended = isBaseChannel && isSelection;
 
-      if(shouldEnableRecomended) {
+      let channelsToToggle = [channelId];
+      if (shouldEnableRecomended) {
         const {recommendedIds} = getAllRecommentedIdsByBaseId(action.baseId, channelsTree, draftState.selectedChannelsIds);
-        draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, recommendedIds);
+        channelsToToggle = _union(channelsToToggle, recommendedIds);
+      }
+      channelsToToggle = getChannelsToToggleWithDependencies(channelsToToggle, requiredChannelsResult, isSelection);
+
+      if (isSelection) {
+        if(isBaseChannel) {
+          draftState.openGroupsIds.push(channelId);
+        }
+        draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, channelsToToggle);
       } else {
-        draftState.selectedChannelsIds = _xor(draftState.selectedChannelsIds, action.channelsIds);
+        const channelsToToggleWithoutLeadChannel = channelsToToggle.filter(id => draftState.selectedBaseChannelId !== id);
+        draftState.selectedChannelsIds = _difference(draftState.selectedChannelsIds, channelsToToggleWithoutLeadChannel);
       }
       return draftState;
     }
     case 'lead_channel': {
+      let channelsToToggle = [action.newBaseId];
       const {recommendedIds} = getAllRecommentedIdsByBaseId(action.newBaseId, channelsTree, draftState.selectedChannelsIds);
+      channelsToToggle = _union(channelsToToggle, recommendedIds);
+      channelsToToggle = getChannelsToToggleWithDependencies(channelsToToggle, requiredChannelsResult, true);
+
       draftState.search = "";
       draftState.activeFilters = getInitialFiltersState();
       draftState.selectedBaseChannelId = action.newBaseId;
-      draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, recommendedIds);
-      draftState.openGroupsIds = draftState.selectedChannelsIds ;
+      draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, channelsToToggle);
+      draftState.openGroupsIds = draftState.selectedChannelsIds;
       return draftState;
     }
     case 'set_recommended': {
-      const {recommendedIds} = getAllRecommentedIdsByBaseId(
-        action.baseId,
-        channelsTree,
-        draftState.selectedChannelsIds
-      );
+      let channelsToToggle = [];
+      const {recommendedIds} = getAllRecommentedIdsByBaseId(action.baseId, channelsTree, draftState.selectedChannelsIds);
+      channelsToToggle = _union(channelsToToggle, recommendedIds);
+      channelsToToggle = getChannelsToToggleWithDependencies(channelsToToggle, requiredChannelsResult, action.enable);
 
       if (action.enable) {
-        draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, recommendedIds)
+        draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, channelsToToggle)
       } else {
-        const recommendedWithoutLeadChannel =  recommendedIds.filter(id => draftState.selectedBaseChannelId !== id);
-        draftState.selectedChannelsIds = _difference(draftState.selectedChannelsIds, recommendedWithoutLeadChannel);
+        const channelsToToggleWithoutLeadChannel = channelsToToggle.filter(id => draftState.selectedBaseChannelId !== id);
+        draftState.selectedChannelsIds = _difference(draftState.selectedChannelsIds, channelsToToggleWithoutLeadChannel);
       }
       return draftState;
     }
     case 'open_group': {
-      if(action.open) {
+      if (action.open) {
         draftState.openGroupsIds.push(action.baseId);
       } else {
         const baseId = action.baseId;
@@ -141,4 +157,4 @@ export const reducerChannelsSelection = (
     default:
       throw new Error();
   }
-};
+}
