@@ -1,15 +1,12 @@
 /* eslint-disable */
 // @flow
 import ChildChannels from './child-channels';
-import type {availableChannelsType, ChannelDto} from "./activation-key-channels-api";
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
-
 import React from 'react';
 import {Loading} from '../../components/loading/loading';
-import withStatePersisted from '../../components/hoc/state-persisted/with-state-persisted';
-import MandatoryChannelsApi from "../../core/channels/api/mandatory-channels-api";
-
-const MandatoryChannelsApiStatePersisted = withStatePersisted(MandatoryChannelsApi);
+import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
+import type {availableChannelsType, ChannelDto} from "./activation-key-channels-api";
+import type {Node} from 'react';
 
 type ActivationKeyChannelsProps = {
   activationKeyId: number
@@ -62,7 +59,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     this.setState({currentSelectedBaseId, currentChildSelectedIds});
   };
 
-  renderChildChannels = (loadingChildren: boolean, availableChannels: availableChannelsType) => {
+  renderChildChannels = (loadingChildren: boolean, availableChannels: availableChannelsType): Node =>  {
     return loadingChildren ?
       <Loading text='Loading child channels..' />
       : availableChannels.map(g => {
@@ -70,18 +67,10 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
           const channels = g.children.sort((c1, c2) => c1.name.localeCompare(c2.name));
 
           return (
-            <MandatoryChannelsApiStatePersisted
-              base={base}
-              channels={channels}
-              saveState={(state) => {
-                this.state["ChildChannelsForBase" + (base ? base.id : 'no-base')] = state
-              }}
-              loadState={() => this.state["ChildChannelsForBase" + (base ? base.id : 'no-base')]}>
+            <MandatoryChannelsApi>
               {({
-                  requiredChannels,
-                  requiredByChannels,
-                  dependencyDataAvailable,
-                  dependenciesTooltip,
+                  requiredChannelsResult,
+                  isDependencyDataLoaded,
                   fetchMandatoryChannelsByChannelIds
                 }) => (
                 <ChildChannels
@@ -91,15 +80,13 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   showBase={availableChannels.length > 1}
                   selectedChannelsIds={this.state.currentChildSelectedIds}
                   selectChannels={this.selectChildChannels}
-                  requiredChannels={requiredChannels}
-                  requiredByChannels={requiredByChannels}
-                  dependencyDataAvailable={dependencyDataAvailable}
-                  dependenciesTooltip={dependenciesTooltip}
+                  isDependencyDataLoaded={isDependencyDataLoaded}
+                  requiredChannelsResult={requiredChannelsResult}
                   fetchMandatoryChannelsByChannelIds={fetchMandatoryChannelsByChannelIds}
                   collapsed={Array.from(availableChannels.keys()).length > 1}
                 />
               )}
-            </MandatoryChannelsApiStatePersisted>
+            </MandatoryChannelsApi>
           )
         }
       );

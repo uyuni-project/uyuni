@@ -16,7 +16,7 @@ import {
 import type {UseChannelsType} from "core/channels/api/use-channels-tree-api.js"
 import {getVisibleChannels, isGroupVisible, orderBaseChannels} from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
-import {getSelectedChannelsIdsInGroup} from "core/channels/state/channels.utils";
+import {getSelectedChannelsIdsInGroup} from "core/channels/utils/channels-state.utils";
 
 type PropsType = {
   initialSelectedIds: Array<number>,
@@ -24,20 +24,12 @@ type PropsType = {
 }
 
 const ChannelsSelection = (props: PropsType) => {
-  const {
-    fetchChannelsTree,
-    isChannelsTreeLoaded,
-    channelsTree
-  }: UseChannelsType = useChannelsTreeApi();
-  const {
-    fetchMandatoryChannelsByChannelIds,
-    isDependencyDataLoaded,
-    requiredChannelsResult
-  }= useMandatoryChannelsApi();
+  const {fetchChannelsTree, isChannelsTreeLoaded,channelsTree }: UseChannelsType = useChannelsTreeApi();
+  const {fetchMandatoryChannelsByChannelIds, isDependencyDataLoaded, requiredChannelsResult}= useMandatoryChannelsApi();
   const [state, dispatchChannelsSelection] : [StateChannelsSelectionType, (ActionChannelsSelectionType) => void]
     = useImmerReducer(
-    (draft, action) => reducerChannelsSelection(draft, action, channelsTree) ,
-    initialStateChannelsSelection(props)
+    (draft, action) => reducerChannelsSelection(draft, action, channelsTree, requiredChannelsResult),
+    initialStateChannelsSelection(props),
   );
 
   const isAllApiDataLoaded = isChannelsTreeLoaded && isDependencyDataLoaded;
@@ -183,10 +175,10 @@ const ChannelsSelection = (props: PropsType) => {
                           enable
                         })
                       }}
-                      onChannelsToggle={channelsIds => dispatchChannelsSelection({
-                        type: "toggle_channels",
+                      onChannelToggle={channelId => dispatchChannelsSelection({
+                        type: "toggle_channel",
                         baseId: baseChannel.id,
-                        channelsIds,
+                        channelId,
                       })}
                       onOpenGroup={open => dispatchChannelsSelection({
                         type: "open_group",
