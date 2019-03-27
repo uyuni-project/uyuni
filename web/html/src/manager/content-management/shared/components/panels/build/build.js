@@ -1,6 +1,6 @@
 //@flow
 
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button} from "../../../../../../components/buttons";
 import {closeDialog, Dialog} from "../../../../../../components/dialog/Dialog";
 import {ModalButton} from "../../../../../../components/dialog/ModalButton";
@@ -12,7 +12,7 @@ import DownArrow from '../../down-arrow/down-arrow';
 import useProjectActionsApi from "../../../api/use-project-actions-api";
 
 import type {ProjectHistoryEntry} from '../../../type/project.type.js';
-import {showSuccessToastr, showErrorToastr} from "../../../../../../components/toastr/toastr";
+import {showErrorToastr, showSuccessToastr} from "../../../../../../components/toastr/toastr";
 
 type Props = {
   projectId: string,
@@ -45,7 +45,9 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
   }, [open]);
 
   return (
-    <React.Fragment>
+    <div
+      {...(disabled ? {toolTip: "Add an environment to build"} : {})}
+    >
       <DownArrow/>
 
       <div className="text-center">
@@ -147,7 +149,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
       />
 
       <DownArrow/>
-    </React.Fragment>
+    </div>
   );
 };
 

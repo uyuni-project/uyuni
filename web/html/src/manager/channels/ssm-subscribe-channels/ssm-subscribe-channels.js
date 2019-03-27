@@ -15,7 +15,7 @@ const MessagesUtils = require("../../../components/messages").Utils;
 const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("../../../components/links");
 const {PopUp} = require("../../../components/popup");
 const {Toggler} = require("../../../components/toggler");
-const ChannelUtils = require("../../../utils/channels");
+const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
 
 import type JsonResult from "../../../utils/network";
 import type {ActionChain} from "../../../components/action-schedule";

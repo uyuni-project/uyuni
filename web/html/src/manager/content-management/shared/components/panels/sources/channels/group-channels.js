@@ -4,8 +4,8 @@ import {Toggler} from "components/toggler";
 import {Highlight} from "components/data-handler";
 import ChildChannels from "./child-channels";
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
-import {getAllRecommentedIdsByBaseId} from "core/channels/state/channels.utils";
 import type {RequiredChannelsResultType} from "core/channels/api/use-mandatory-channels-api";
+import {getAllRecommentedIdsByBaseId} from "core/channels/utils/channels-state.utils";
 
 type PropsType = {
   base: Object,
@@ -15,7 +15,7 @@ type PropsType = {
   selectedBaseChannelId: number,
   isOpen: boolean,
   setAllRecommentedChannels: Function,
-  onChannelsToggle: Function,
+  onChannelToggle: Function,
   onOpenGroup: Function,
   channelsTree: ChannelsTreeType,
   requiredChannelsResult: RequiredChannelsResultType,
@@ -46,7 +46,7 @@ const GroupChannels = (props: PropsType) => {
                checked={props.selectedChannelsIdsInGroup.includes(props.base.id)}
                value={props.base.id}
                onChange={() => {
-                 props.onChannelsToggle([props.base.id])
+                 props.onChannelToggle(props.base.id)
                }}
                disabled={props.base.id === props.selectedBaseChannelId}
         />

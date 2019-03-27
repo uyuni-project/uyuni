@@ -1,6 +1,6 @@
 // @flow
-import React from 'react';
 import type {Node} from 'react';
+import React from 'react';
 import {Highlight} from "components/data-handler";
 import {ChannelAnchorLink} from "components/links";
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
@@ -12,7 +12,7 @@ type PropsType = {
   search: string,
   childChannelsId: Array<number>,
   selectedChannelsIdsInGroup: Array<number>,
-  onChannelsToggle: Function,
+  onChannelToggle: Function,
   channelsTree: ChannelsTreeType,
   requiredChannelsResult: RequiredChannelsResultType,
 }
@@ -25,7 +25,6 @@ const ChildChannels = (props: PropsType): Node => {
 
   const {
     requiredChannels,
-    requiredByChannels,
     dependenciesTooltip,
   } = props.requiredChannelsResult;
 
@@ -42,7 +41,7 @@ const ChildChannels = (props: PropsType): Node => {
                  id={'child_' + c.id}
                  name='childChannels'
                  checked={props.selectedChannelsIdsInGroup.includes(c.id)}
-                 onChange={(event) => props.onChannelsToggle([parseInt(event.target.value, 10)])}
+                 onChange={(event) => props.onChannelToggle(parseInt(event.target.value, 10))}
           />
           <label
             title={toolTip}
