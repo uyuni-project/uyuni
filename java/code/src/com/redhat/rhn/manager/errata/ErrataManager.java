@@ -322,7 +322,6 @@ public class ErrataManager extends BaseManager {
                 .filter(e -> !srcChannel.getErratas().contains(e))
                 .collect(toSet());
         toRemove.forEach(e -> removeErratumFromChannel(e, tgtChannel, user));
-        // todo cleanup orphans?
     }
 
     /**
