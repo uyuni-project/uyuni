@@ -3,6 +3,7 @@ import React from 'react';
 import produce from "immer";
 
 import type {ProjectPropertiesType} from '../../../type/project.type.js';
+import {getVersionMessage} from "./properties.utils";
 
 type Props = {
   properties: ProjectPropertiesType,
@@ -35,7 +36,7 @@ const PropertiesView= (props: Props) => {
             <ul className="list-unstyled">
               {
                 propertiesToShow.historyEntries.map((history, index) => {
-                  const versionMessage = `Version ${history.version}: ${history.message || ""}`
+                  const versionMessage = getVersionMessage(history)
                   return (
                     <li key={`historyentries_${index}`}>
                       {

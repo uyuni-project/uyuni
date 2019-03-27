@@ -137,7 +137,14 @@ const EnvironmentLifecycle = (props: Props) => {
                   </div>
                   {
                     props.environments.length - 1 !== i &&
-                    <Promote environment={environment}/>
+                    <Promote
+                      projectId={props.projectId}
+                      environmentPromote={environment}
+                      environmentTarget={props.environments[i + 1]}
+                      historyEntries={props.historyEntries}
+                      versionToPromote={environment.version}
+                      onChange={props.onChange}
+                    />
                   }
                 </React.Fragment>
               )
