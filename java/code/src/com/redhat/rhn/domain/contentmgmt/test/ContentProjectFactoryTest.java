@@ -310,12 +310,13 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectHistoryEntry fstEntry = new ContentProjectHistoryEntry();
         fstEntry.setMessage("First Content Project build");
         fstEntry.setUser(user);
+        ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
+        HibernateFactory.getSession().flush(); // so that the CreationTimestamp gets updated
 
         ContentProjectHistoryEntry sndEntry = new ContentProjectHistoryEntry();
         sndEntry.setMessage("Second Content Project build");
         sndEntry.setUser(user);
 
-        ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
         ContentProjectFactory.addHistoryEntryToProject(cp, sndEntry);
 
         ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
