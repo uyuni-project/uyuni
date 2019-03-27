@@ -18,12 +18,9 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.post;
 
-import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
-import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectBuildRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPromoteRequest;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -35,7 +32,6 @@ import org.apache.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import spark.Request;
@@ -76,14 +72,7 @@ public class ProjectActionsApiController {
         String projectLabel = projectLabelRequest.getProjectLabel();
         ContentManager.buildProject(projectLabel, Optional.ofNullable(projectLabelRequest.getMessage()), true, user);
 
-        ContentProject dbContentProject = ContentManager.lookupProject(projectLabel, user).get();
-
-        // [LN] Todo centralize this logic for all api
-        List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
-
-        return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments)
-        ));
+        return ControllerUtils.fullProjectJson(res, projectLabel, user);
     }
 
     /**
@@ -103,7 +92,7 @@ public class ProjectActionsApiController {
         String projectLabel = projectPromoteReq.getProjectLabel();
         ContentManager.promoteProject(projectLabel, projectPromoteReq.getEnvironmentPromoteLabel(), true, user);
 
-        return json(GSON, res, ResultJson.success());
+        return ControllerUtils.fullProjectJson(res, projectLabel, user);
     }
 
 }

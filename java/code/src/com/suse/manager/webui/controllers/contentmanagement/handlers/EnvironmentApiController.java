@@ -20,12 +20,9 @@ import static spark.Spark.delete;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
-import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.contentmanagement.request.EnvironmentRequest;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
@@ -36,7 +33,6 @@ import org.apache.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import spark.Request;
@@ -79,7 +75,7 @@ public class EnvironmentApiController {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
-        ContentEnvironment createdEnvironment = ContentManager.createEnvironment(
+        ContentManager.createEnvironment(
                 createEnvironmentRequest.getProjectLabel(),
                 Optional.ofNullable(createEnvironmentRequest.getPredecessorLabel()),
                 createEnvironmentRequest.getLabel(),
@@ -88,14 +84,7 @@ public class EnvironmentApiController {
                 user
         );
 
-        ContentProject contentProject = createdEnvironment.getContentProject();
-        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
-                contentProject.getLabel(), user
-        );
-
-        return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(contentProject, contentEnvironments))
-        );
+        return ControllerUtils.fullProjectJson(res, createEnvironmentRequest.getProjectLabel(), user);
     }
 
     /**
@@ -113,7 +102,7 @@ public class EnvironmentApiController {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
 
-        ContentEnvironment updatedEnvironment = ContentManager.updateEnvironment(
+        ContentManager.updateEnvironment(
                 updateEnvironmentRequest.getLabel(),
                 updateEnvironmentRequest.getProjectLabel(),
                 Optional.ofNullable(updateEnvironmentRequest.getName()),
@@ -121,14 +110,8 @@ public class EnvironmentApiController {
                 user
         );
 
-        ContentProject contentProject = updatedEnvironment.getContentProject();
-        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
-                contentProject.getLabel(), user
-        );
+        return ControllerUtils.fullProjectJson(res, updateEnvironmentRequest.getProjectLabel(), user);
 
-        return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(contentProject, contentEnvironments))
-        );
     }
 
     /**
@@ -152,19 +135,7 @@ public class EnvironmentApiController {
                 user
         );
 
-        Optional<ContentProject> updatedProject = ContentManager.lookupProject(
-                removeEnvironmentRequest.getProjectLabel(),
-                user
-        );
-
-
-        return updatedProject.map(p -> {
-            List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
-                    p.getLabel(),
-                    user
-            );
-            return json(GSON, res, ResultJson.success(ResponseMappers.mapProjectFromDB(p, contentEnvironments)));
-        }).orElseGet(() -> json(GSON, res, ResultJson.error()));
+        return ControllerUtils.fullProjectJson(res, removeEnvironmentRequest.getProjectLabel(), user);
     }
 
 }

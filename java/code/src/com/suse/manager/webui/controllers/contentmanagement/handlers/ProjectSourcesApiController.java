@@ -14,20 +14,16 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.utils.Opt.stream;
 import static spark.Spark.put;
 
-import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
-import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectSourcesRequest;
-import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
@@ -95,12 +91,7 @@ public class ProjectSourcesApiController {
                 user
         ));
 
-        dbContentProject = ContentManager.lookupProject(createSourceRequest.getProjectLabel(), user).get();
-        List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
-
-        return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments)
-        ));
+        return ControllerUtils.fullProjectJson(res, projectLabel, user);
     }
 
 }
