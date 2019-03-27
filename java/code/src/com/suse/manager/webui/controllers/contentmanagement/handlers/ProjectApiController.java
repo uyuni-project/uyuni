@@ -21,15 +21,13 @@ import static spark.Spark.delete;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
-import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
-import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRequest;
+import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
@@ -40,7 +38,6 @@ import org.apache.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import spark.Request;
@@ -103,13 +100,7 @@ public class ProjectApiController {
                 String.format("Project %s created successfully.", projectPropertiesRequest.getLabel())
         );
 
-        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
-                createdProject.getLabel(), user
-        );
-
-        return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(createdProject, contentEnvironments))
-        );
+        return ControllerUtils.fullProjectJson(res, createdProject.getLabel(), user);
     }
 
     /**
@@ -166,13 +157,7 @@ public class ProjectApiController {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
         }
 
-        List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
-                updatedProject.getLabel(), user
-        );
-
-        return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(updatedProject, contentEnvironments))
-        );
+        return ControllerUtils.fullProjectJson(res, updatedProject.getLabel(), user);
     }
 
 }
