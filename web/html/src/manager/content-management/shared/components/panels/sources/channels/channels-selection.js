@@ -19,7 +19,7 @@ import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-ap
 import {getSelectedChannelsIdsInGroup} from "core/channels/utils/channels-state.utils";
 
 type PropsType = {
-  isLoading: boolean,
+  isSourcesApiLoading: boolean,
   initialSelectedIds: Array<number>,
   onChange: Function,
 }
@@ -54,10 +54,10 @@ const ChannelsSelection = (props: PropsType) => {
     );
   }, [state.selectedChannelsIds])
 
-  if (!isAllApiDataLoaded || props.isLoading) {
+  if (!isAllApiDataLoaded || props.isSourcesApiLoading) {
     return (
       <div className='form-group'>
-        <Loading text='Loading..' />
+        <Loading text={ props.isSourcesApiLoading ? "Adding sources..." : "Loading.."} />
       </div>
     )
   }
@@ -86,7 +86,7 @@ const ChannelsSelection = (props: PropsType) => {
               type: "lead_channel",
               newBaseId: parseInt(event.target.value, 10)
             })}>
-            <option></option>
+            <option disabled selected value> -- select a base channel -- </option>
             {
               orderedBaseChannels.map(b => <option key={b.id} value={b.id}>{b.name}</option>)
             }

@@ -8,6 +8,7 @@ import type {ProjectSoftwareSourceType} from '../../../type/project.type.js';
 import useProjectActionsApi from "../../../api/use-project-actions-api";
 import ChannelsSelection from "./channels/channels-selection";
 import {Panel} from "../../../../../../components/panels/Panel";
+import styles from "./sources.css";
 
 type SourcesProps = {
   projectId: string,
@@ -17,7 +18,7 @@ type SourcesProps = {
 
 const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
 
-  // TODO: transform this in an enum and reuse in sources.js as well
+  // TODO: [LuNeves] transform this in an enum and reuse in sources.js as well
   const selectedStates = ["ATTACHED","BUILT"];
 
   return (
@@ -32,7 +33,7 @@ const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
         </Select>
       </div>
       <ChannelsSelection
-        isLoading={isLoading}
+        isSourcesApiLoading={isLoading}
         initialSelectedIds={
           softwareSources
             .filter(source => selectedStates.includes(source.state))
@@ -50,8 +51,7 @@ const renderSourceEntry = (source) => {
   if (source.state === 'ATTACHED') {
     return (
       <div
-        style={{padding: "3px 3px 3px 0px"}}
-        className="text-success"
+        className={`text-success ${styles.attached}`}
         href="#">
         <i className='fa fa-plus'/>
         <b>{source.name}</b>
@@ -60,22 +60,14 @@ const renderSourceEntry = (source) => {
   }
   if (source.state === 'DETACHED') {
     return (
-      <div
-        style={{
-          padding: "3px 3px 3px 0px",
-          textDecoration: "line-through"
-        }}
-        className="text-danger"
-        href="#">
+      <div className={`text-danger ${styles.dettached}`}>
         <i className='fa fa-minus'/>
         <b>{source.name}</b>
       </div>
     );
   }
   return (
-    <div
-      style={{padding: "3px 3px 3px 0px"}}
-      href="#">
+    <div className={styles.built}>
       {source.name}
     </div>
   );
