@@ -408,10 +408,14 @@ end
 
 # login, logout steps
 
-Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2|
+Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   visit Capybara.app_host
-  fill_in 'username', with: arg1
-  fill_in 'password', with: arg2
+  next if page.has_xpath?("//ul[@class='nav navbar-nav navbar-utility']//*[text()='#{user}']")
+
+  page.find(:xpath, "//a[@href='/rhn/Logout.do']").click if page.has_xpath?("//a[@href='/rhn/Logout.do']")
+
+  fill_in 'username', with: user
+  fill_in 'password', with: passwd
   click_button 'Sign In'
   step %(I should be logged in)
 end
