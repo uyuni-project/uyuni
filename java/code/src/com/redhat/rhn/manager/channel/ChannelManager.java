@@ -197,9 +197,7 @@ public class ChannelManager extends BaseManager {
     public static void refreshWithNewestPackages(Long channelId, String label) {
         Channel chan = ChannelFactory.lookupById(channelId);
         ChannelFactory.refreshNewestPackageCache(channelId, label);
-        if (chan != null) {
-            ChannelManager.queueChannelChange(chan.getLabel(), label, label);
-        }
+        ofNullable(chan).ifPresent(c -> ChannelManager.queueChannelChange(chan.getLabel(), label, label));
     }
 
     /**
