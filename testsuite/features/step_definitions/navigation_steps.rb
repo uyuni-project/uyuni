@@ -354,10 +354,9 @@ end
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   visit Capybara.app_host
-  return if page.has_xpath?("//ul[@class='nav navbar-nav navbar-utility']//*[text()='#{user}']")
+  next if page.has_xpath?("//ul[@class='nav navbar-nav navbar-utility']//*[text()='#{user}']")
 
-  logout_button = page.find(:xpath, "//a[@href='/rhn/Logout.do']")
-  logout_button.click unless logout_button.nil?
+  page.find(:xpath, "//a[@href='/rhn/Logout.do']").click if page.has_xpath?("//a[@href='/rhn/Logout.do']")
 
   fill_in 'username', with: user
   fill_in 'password', with: passwd
