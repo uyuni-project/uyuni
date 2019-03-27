@@ -396,7 +396,7 @@ public class ContentManager {
         ContentEnvironment firstEnv = project.getFirstEnvironmentOpt()
                 .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + projectLabel +
                         " with no environments."));
-        buildSoftwareSources(project, firstEnv, async, user);
+        buildSoftwareSources(firstEnv, async, user);
         addHistoryEntry(message, user, project);
         firstEnv.increaseVersion();
     }
