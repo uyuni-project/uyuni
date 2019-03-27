@@ -15,6 +15,7 @@
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectBuildRequest;
+import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPromoteRequest;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
@@ -37,7 +38,7 @@ public class ProjectActionsHandler {
     private ProjectActionsHandler() { }
 
     /**
-     * map request into the project label request bean
+     * map request into the project build request bean
      * @param req the http request
      * @return project label request bean
      */
@@ -51,11 +52,11 @@ public class ProjectActionsHandler {
     }
 
     /**
-     * validate project label request bean
+     * validate project build request bean
      * @param projectBuild the project label request bean
      * @return validation errors
      */
-    public static HashMap<String, String> validateProjectBuildlRequest(ProjectBuildRequest projectBuild) {
+    public static HashMap<String, String> validateProjectBuildRequest(ProjectBuildRequest projectBuild) {
         HashMap<String, String> requestErrors = new HashMap<>();
 
         if (StringUtils.isEmpty(projectBuild.getProjectLabel())) {
@@ -63,6 +64,37 @@ public class ProjectActionsHandler {
         }
 
         // TODO: Validate characters limit for message - Check database
+
+        return requestErrors;
+    }
+
+    /**
+     * map request into the project promote request bean
+     * @param req the http request
+     * @return project label request bean
+     */
+    public static ProjectPromoteRequest getProjectPromoteRequest(Request req) {
+        try {
+            return GSON.fromJson(req.body(), ProjectPromoteRequest.class);
+        }
+        catch (JsonParseException e) {
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * validate project promote request bean
+     * @param projectBuild the project label request bean
+     * @return validation errors
+     */
+    public static HashMap<String, String> validateProjectPromoteRequest(ProjectPromoteRequest projectBuild) {
+        HashMap<String, String> requestErrors = new HashMap<>();
+
+        if (StringUtils.isEmpty(projectBuild.getProjectLabel())) {
+            requestErrors.put("projectLabel", "Project label is required");
+        }
+
+        // TODO: Validate environment
 
         return requestErrors;
     }

@@ -54,7 +54,6 @@ public class ProjectSourcesApiController {
     public static void initRoutes() {
         put("/manager/contentmanagement/api/projects/:projectId/softwaresources",
                 withUser(ProjectSourcesApiController::updateContentSoftwareSources));
-
     }
 
     /**
