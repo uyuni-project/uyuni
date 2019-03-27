@@ -603,12 +603,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals("cplabel-fst-" + newChannel.getLabel(), tgts.get(0).asSoftwareTarget().get().getChannel().getLabel());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
         assertEquals(channel.getErratas(), tgtChannel.getErratas());
-
-        ContentEnvironment env2 = ContentManager.createEnvironment(cp.getLabel(), of("fst"), "snd", "second env", "desc", user);
-
-        System.out.println(ContentProjectFactory.lookupEnvironmentTargets(env2).collect(toList()));
-        ContentManager.promoteProject("cplabel", "fst", false, user);
-        System.out.println(ContentProjectFactory.lookupEnvironmentTargets(env2).collect(toList()));
     }
 
     /**
@@ -723,6 +717,136 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, history.size());
         assertEquals(Long.valueOf(2), history.get(1).getVersion());
         assertEquals(adminSameOrg, history.get(1).getUser());
+    }
+
+    /**
+     * Test promoting a project, complex happy-path scenario
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPromoteProject() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment devEnv = ContentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", user);
+
+        // 1. build a project with a source
+        Channel channel1 = createPopulatedChannel();
+        Channel channel2 = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+
+        // 2. add new environments
+        ContentEnvironment testEnv = ContentManager.createEnvironment(cp.getLabel(), of("dev"), "test", "test env", "desc", user);
+        ContentEnvironment prodEnv = ContentManager.createEnvironment(cp.getLabel(), of("test"), "prod", "prod env", "desc", user);
+
+        // 3. promote
+        ContentManager.promoteProject("cplabel", "dev", false, user);
+        assertEquals(devEnv.getVersion(), testEnv.getVersion());
+        List<EnvironmentTarget> testTgts = ContentProjectFactory.lookupEnvironmentTargets(testEnv).collect(toList());
+        assertEquals(2, testTgts.size());
+        Channel tgtChannel1 = testTgts.get(0).asSoftwareTarget().get().getChannel();
+        Channel tgtChannel2 = testTgts.get(1).asSoftwareTarget().get().getChannel();
+        assertEquals("cplabel-test-" + channel1.getLabel(), tgtChannel1.getLabel());
+        assertEquals("cplabel-test-" + channel2.getLabel(), tgtChannel2.getLabel());
+
+        // 3. change project sources (this shouldn't effect the next promotion and should be effective only after build)
+        ContentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), user);
+
+        // 4. promote further
+        ContentManager.promoteProject("cplabel", "test", false, user);
+        assertEquals(devEnv.getVersion(), prodEnv.getVersion());
+        List<EnvironmentTarget> prodTgts = ContentProjectFactory.lookupEnvironmentTargets(prodEnv).collect(toList());
+        assertEquals(2, prodTgts.size());
+        tgtChannel1 = prodTgts.get(0).asSoftwareTarget().get().getChannel();
+        tgtChannel2 = prodTgts.get(1).asSoftwareTarget().get().getChannel();
+        assertEquals("cplabel-prod-" + channel1.getLabel(), tgtChannel1.getLabel());
+        assertEquals("cplabel-prod-" + channel2.getLabel(), tgtChannel2.getLabel());
+
+        // 5. build with changed sources
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(Long.valueOf(2), devEnv.getVersion());
+        assertEquals(1, ContentProjectFactory.lookupEnvironmentTargets(devEnv).count());
+        assertEquals(2, ContentProjectFactory.lookupEnvironmentTargets(testEnv).count());
+        assertEquals(2, ContentProjectFactory.lookupEnvironmentTargets(prodEnv).count());
+        assertNull(ChannelFactory.lookupByLabel("cplabel-dev-" + channel1.getLabel())); // channel has been deleted
+
+        // 6. next promotion cycle
+        ContentManager.promoteProject("cplabel", "dev", false, user);
+        assertEquals(devEnv.getVersion(), testEnv.getVersion());
+        testTgts = ContentProjectFactory.lookupEnvironmentTargets(testEnv).collect(toList());
+        assertEquals(1, testTgts.size());
+        Channel tgtChannel = testTgts.get(0).asSoftwareTarget().get().getChannel();
+        assertEquals("cplabel-test-" + channel2.getLabel(), tgtChannel.getLabel());
+        assertNull(ChannelFactory.lookupByLabel("cplabel-test-" + channel1.getLabel())); // channel has been deleted
+
+        // 7. last promotion cycle
+        ContentManager.promoteProject("cplabel", "test", false, user);
+        assertEquals(devEnv.getVersion(), prodEnv.getVersion());
+        prodTgts = ContentProjectFactory.lookupEnvironmentTargets(prodEnv).collect(toList());
+        assertEquals(1, prodTgts.size());
+        tgtChannel = prodTgts.get(0).asSoftwareTarget().get().getChannel();
+        assertEquals("cplabel-prod-" + channel2.getLabel(), tgtChannel.getLabel());
+        assertNull(ChannelFactory.lookupByLabel("cplabel-prod-" + channel1.getLabel())); // channel has been deleted
+    }
+
+    /**
+     * Test promoting a project with no environments
+     */
+    public void testPromoteEmptyProject() {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        try {
+            ContentManager.promoteProject("cplabel", "idontexist", false, user);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityNotExistsException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Tests promoting a project with single environment
+     *
+     * @throws Exception
+     */
+    public void testPromoteSingleEnv() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", user);
+
+        Channel channel1 = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+
+        try {
+            ContentManager.promoteProject("cplabel", "dev", false, user);
+            fail("An exception should have been thrown");
+        }
+        catch (ContentManagementException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Tests promoting a project with single environment
+     */
+    public void testPromoteWithNoBuild() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", user);
+        ContentManager.createEnvironment(cp.getLabel(), of("dev"), "test", "test env", "desc", user);
+
+        Channel channel1 = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+
+        try {
+            ContentManager.promoteProject("cplabel", "dev", false, user);
+            fail("An exception should have been thrown");
+        }
+        catch (IllegalStateException e) {
+            // expected
+        }
     }
 
     private Channel createPopulatedChannel() throws Exception {
