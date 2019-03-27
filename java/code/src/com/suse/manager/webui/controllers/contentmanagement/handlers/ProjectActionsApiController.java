@@ -1,5 +1,5 @@
- /**
- * Copyright (c) 2018 SUSE LLC
+/**
+ * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectBuildRequest;
+import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPromoteRequest;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 
@@ -54,10 +55,12 @@ public class ProjectActionsApiController {
     public static void initRoutes() {
         post("/manager/contentmanagement/api/projects/:projectId/build",
                 withUser(ProjectActionsApiController::buildProject));
+        post("/manager/contentmanagement/api/projects/:projectId/promote",
+                withUser(ProjectActionsApiController::promoteProject));
     }
 
     /**
-     * Return the JSON with the result of updating the content project with a list of sources.
+     * Return the JSON with the result of building the content project.
      * @param req the http request
      * @param res the http response
      * @param user the current user
@@ -65,7 +68,7 @@ public class ProjectActionsApiController {
      */
     public static String buildProject(Request req, Response res, User user) {
         ProjectBuildRequest projectLabelRequest = ProjectActionsHandler.getProjectBuildRequest(req);
-        HashMap<String, String> requestErrors = ProjectActionsHandler.validateProjectBuildlRequest(projectLabelRequest);
+        HashMap<String, String> requestErrors = ProjectActionsHandler.validateProjectBuildRequest(projectLabelRequest);
         if (!requestErrors.isEmpty()) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
         }
@@ -76,6 +79,32 @@ public class ProjectActionsApiController {
         ContentManager.buildProject(projectLabel, Optional.ofNullable(projectLabelRequest.getMessage()), true, user);
 
         // [LN] Todo centralize this logic for all api
+        List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
+
+        return json(GSON, res, ResultJson.success(
+                ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments)
+        ));
+    }
+
+    /**
+     * Return the JSON with the result of promoting the content project.
+     * @param req the http request
+     * @param res the http response
+     * @param user the current user
+     * @return the JSON data
+     */
+    public static String promoteProject(Request req, Response res, User user) {
+        ProjectPromoteRequest projectPromoteReq = ProjectActionsHandler.getProjectPromoteRequest(req);
+        HashMap<String, String> requestErrors = ProjectActionsHandler.validateProjectPromoteRequest(projectPromoteReq);
+        if (!requestErrors.isEmpty()) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+        }
+
+        String projectLabel = projectPromoteReq.getProjectLabel();
+        ContentProject dbContentProject = ContentManager.lookupProject(projectLabel, user).get();
+
+        ContentManager.promoteProject(projectLabel, projectPromoteReq.getEnvironmentPromoteLabel(), true, user);
+
         List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
 
         return json(GSON, res, ResultJson.success(
