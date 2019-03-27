@@ -37,7 +37,9 @@ const Promote = (props: Props) => {
   const disabled = !props.environmentPromote.version
     || props.environmentPromote.version <= props.environmentTarget.version;
   return (
-    <React.Fragment>
+    <div
+      {...(disabled ? {title: "No version to promote"} : {})}
+    >
       <DownArrow/>
       <div className="text-center">
         <ModalButton
@@ -54,6 +56,8 @@ const Promote = (props: Props) => {
 
       <Dialog
         id={modalNameId}
+        closableModal={false}
+        className="modal-lg"
         onClosePopUp={() =>
           setOpen(false)
         }
@@ -109,7 +113,7 @@ const Promote = (props: Props) => {
         }
       />
       <DownArrow/>
-    </React.Fragment>
+    </div>
   );
 };
 
