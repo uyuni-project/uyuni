@@ -18,10 +18,12 @@ package com.redhat.rhn.domain.contentmgmt.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.State;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
@@ -43,6 +45,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Tests for {@link com.redhat.rhn.domain.contentmgmt.ContentProjectFactory}
@@ -256,30 +259,34 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
         ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
+        assertNull(swSource.getPosition());
         cp.addSource(swSource, empty());
+        assertEquals(Integer.valueOf(0), swSource.getPosition());
         ContentProjectFactory.save(swSource);
 
-        List<ProjectSource> fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
+        List<ProjectSource> fromDb = cp.getSources();
         assertEquals(singletonList(swSource), fromDb);
 
         Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
         ProjectSource swSource2 = new SoftwareProjectSource(cp, childChannel);
         cp.addSource(swSource2, empty());
+        assertEquals(Integer.valueOf(1), swSource2.getPosition());
         ContentProjectFactory.save(swSource2);
 
-        fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
+        fromDb = cp.getSources();
         assertEquals(asList(swSource, swSource2), fromDb);
 
-        cp.removeSource(swSource2);
-        fromDb = ContentProjectFactory.listProjectSourcesByProject(cp);
-        assertEquals(singletonList(swSource), fromDb);
+        cp.removeSource(swSource);
+        fromDb = cp.getSources();
+        assertEquals(singletonList(swSource2), fromDb);
+        assertEquals(Integer.valueOf(0), swSource2.getPosition());
     }
 
     /**
-     * Test saving environment target
+     * Test saving environment target by channel label
      * @throws Exception if anything goes wrong
      */
-    public void testEnvironmentTarget() throws Exception {
+    public void testEnvironmentTargetByChannelLabel() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
@@ -287,12 +294,10 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.setFirstEnvironment(envdev);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
 
-        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget();
-        target.setContentEnvironment(envdev);
-        target.setChannel(channel);
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         ContentProjectFactory.save(target);
 
-        assertEquals(target, ContentProjectFactory.lookupEnvironmentTargetByChannel(channel).get());
+        assertEquals(target, ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel(), user).get());
     }
 
     /**
@@ -305,12 +310,13 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectHistoryEntry fstEntry = new ContentProjectHistoryEntry();
         fstEntry.setMessage("First Content Project build");
         fstEntry.setUser(user);
+        ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
+        HibernateFactory.getSession().flush(); // so that the CreationTimestamp gets updated
 
         ContentProjectHistoryEntry sndEntry = new ContentProjectHistoryEntry();
         sndEntry.setMessage("Second Content Project build");
         sndEntry.setUser(user);
 
-        ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
         ContentProjectFactory.addHistoryEntryToProject(cp, sndEntry);
 
         ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
@@ -404,5 +410,63 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.addSource(swSource2, of(1));
         cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
         assertEquals(swSource2, cp.lookupSwSourceLeader().get());
+    }
+
+    /**
+     * Test looking up {@link EnvironmentTarget}s
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLookupEnvironmentTargets() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+        ContentEnvironment envtest = new ContentEnvironment("test", "Test", null, cp);
+        ContentProjectFactory.save(envtest);
+        cp.setFirstEnvironment(envtest);
+
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
+        ContentProjectFactory.save(target);
+        Channel channel2 = ChannelTestUtils.createBaseChannel(user);
+        SoftwareEnvironmentTarget target2 = new SoftwareEnvironmentTarget(envdev, channel2);
+        ContentProjectFactory.save(target2);
+
+        List<EnvironmentTarget> targetsDev = ContentProjectFactory.lookupEnvironmentTargets(envdev).collect(toList());
+        assertEquals(2, targetsDev.size());
+        assertContains(targetsDev, target);
+        assertContains(targetsDev, target2);
+
+        Channel channel3 = ChannelTestUtils.createBaseChannel(user);
+        SoftwareEnvironmentTarget target3 = new SoftwareEnvironmentTarget(envtest, channel3);
+        ContentProjectFactory.save(target3);
+        List<EnvironmentTarget> targetsTest = ContentProjectFactory.lookupEnvironmentTargets(envtest).collect(toList());
+        assertEquals(1, targetsTest.size());
+        assertContains(targetsTest, target3);
+    }
+
+    /**
+     * Test purging {@link SoftwareEnvironmentTarget}
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPurgeSwTarget() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
+        ContentProjectFactory.save(target);
+        String channelLabel = channel.getLabel();
+
+        assertEquals(1, ContentProjectFactory.lookupEnvironmentTargets(envdev).count());
+        assertNotNull(ChannelFactory.lookupByLabel(channelLabel));
+        ContentProjectFactory.purgeTarget(target);
+        assertEquals(0, ContentProjectFactory.lookupEnvironmentTargets(envdev).count());
+        assertNull(ChannelFactory.lookupByLabel(channelLabel));
     }
 }

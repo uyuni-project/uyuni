@@ -1,3 +1,4 @@
+- Implement Content Project build function
 - Add Countent Project Sources CRUD operations and expose them via XMLRPC
 - Add Content Project and Content Environment CRUD operations and expose them via XMLRPC
 - Add Content Project CRUD operations and expose them via XMLRPC

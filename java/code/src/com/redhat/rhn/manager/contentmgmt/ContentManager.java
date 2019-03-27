@@ -18,30 +18,47 @@ package com.redhat.rhn.manager.contentmgmt;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.channel.CloneChannelCommand;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.EMPTY;
+import static com.suse.utils.Opt.stream;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Content Management functionality
  */
 public class ContentManager {
+
+    private static final String DELIMITER = "-";
 
     // forbid instantiation
     private ContentManager() { }
@@ -325,6 +342,153 @@ public class ContentManager {
         ContentProject project = lookupProject(projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(projectLabel));
         return ContentProjectFactory.lookupProjectSource(project, sourceType, sourceLabel, user);
+    }
+
+
+    /**
+     * Build a {@link ContentProject}
+     *
+     * @param projectLabel the Project label
+     * @param message the optional message
+     * @param async run the time-expensive operations asynchronously? (in the test code it is useful to run them
+     * synchronously)
+     * @param user the user
+     */
+    public static void buildProject(String projectLabel, Optional<String> message, boolean async, User user) {
+        ensureOrgAdmin(user);
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(projectLabel));
+        ContentEnvironment firstEnv = project.getFirstEnvironmentOpt()
+                .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + projectLabel +
+                        " with no environments."));
+        buildSoftwareSources(project, firstEnv, async, user);
+        addHistoryEntry(message, user, project);
+        firstEnv.increaseVersion();
+    }
+
+    /**
+     * Build {@link SoftwareProjectSource}s assigned to {@link ContentProject}
+     *
+     * @param project the Project
+     * @param firstEnv first Environment of the Project
+     * @param async run the time-expensive operations asynchronously?
+     * @param user the user
+     */
+    private static void buildSoftwareSources(ContentProject project, ContentEnvironment firstEnv, boolean async,
+            User user) {
+        SoftwareProjectSource leader = project.lookupSwSourceLeader()
+                .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + project.getLabel() +
+                        " with no base channel associated with it."));
+        Stream<SoftwareProjectSource> swSources = project.getSources().stream()
+                .filter(src -> !src.equals(leader) && src.getState() != DETACHED)
+                .flatMap(s -> stream(s.asSoftwareSource()));
+
+        // ensure targets for the sources exist
+        List<Pair<SoftwareProjectSource, SoftwareEnvironmentTarget>> newSrcTgtPairs = cloneSoftwareSources(leader,
+                swSources, firstEnv, user);
+
+        // remove targets that are not needed anymore
+        Set<SoftwareEnvironmentTarget> newTargets = newSrcTgtPairs.stream()
+                .map(pair -> pair.getRight())
+                .collect(toSet());
+        ContentProjectFactory.lookupEnvironmentTargets(firstEnv)
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .filter(tgt -> !newTargets.contains(tgt))
+                .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
+
+        // remove the detached sources
+        project.getSources().stream()
+                .filter(src -> src.getState() != BUILT)
+                .forEach(src -> {
+                    if (src.getState() == ATTACHED) {
+                        // newly ATTACHED sources get BUILT
+                        src.setState(BUILT);
+                    }
+                    else {
+                        // newly DETACHED sources get deleted
+                        ContentProjectFactory.remove(src);
+                    }
+                });
+
+        // align the contents
+        newSrcTgtPairs
+                .forEach(srcTgt -> ChannelManager.alignChannels(srcTgt.getLeft(), srcTgt.getRight(), async, user));
+    }
+
+    /**
+     * Clone {@link SoftwareProjectSource}s to given environment
+     *
+     * @param srcLeader the Source "leader"
+     * @param sources the {@link SoftwareProjectSource}delimiter
+     * @param env the Environment to which the Sources are cloned
+     * @param user the user
+     * @return the List of [Source, Target] Pairs
+     */
+    private static List<Pair<SoftwareProjectSource, SoftwareEnvironmentTarget>> cloneSoftwareSources(
+            SoftwareProjectSource srcLeader, Stream<SoftwareProjectSource> sources, ContentEnvironment env, User user) {
+        // first make sure the leader exists
+        SoftwareEnvironmentTarget tgtLeader = lookupTarget(srcLeader, env, user)
+                .map(tgt -> {
+                    tgt.getChannel().setParentChannel(null);
+                    return tgt;
+                })
+                .orElseGet(() -> createSoftwareTarget(srcLeader, empty(), env, user));
+
+        // then do the same with the children
+        Stream<Pair<SoftwareProjectSource, SoftwareEnvironmentTarget>> nonLeaderTargets = sources
+                .map(src -> lookupTarget(src, env, user)
+                        .map(tgt -> {
+                            tgt.getChannel().setParentChannel(tgtLeader.getChannel());
+                            return Pair.of(src, tgt);
+                        })
+                        .orElseGet(() -> Pair.of(src, createSoftwareTarget(src, of(tgtLeader), env, user))));
+
+        return Stream.concat(Stream.of(Pair.of(srcLeader, tgtLeader)), nonLeaderTargets).collect(toList());
+    }
+
+    private static Optional<SoftwareEnvironmentTarget> lookupTarget(SoftwareProjectSource srcLeader,
+            ContentEnvironment env, User user) {
+        return ContentProjectFactory
+                .lookupEnvironmentTargetByChannelLabel(prefixString(srcLeader.getChannel().getLabel(), env), user);
+    }
+
+    private static SoftwareEnvironmentTarget createSoftwareTarget(SoftwareProjectSource source,
+            Optional<SoftwareEnvironmentTarget> leader, ContentEnvironment env, User user) {
+        Channel original = source.getChannel();
+        String targetLabel = prefixString(original.getLabel(), env);
+
+        Channel targetChannel = ofNullable(ChannelFactory.lookupByLabelAndUser(targetLabel, user))
+                .orElseGet(() -> {
+                    CloneChannelCommand cloneCmd = new CloneChannelCommand(EMPTY, original);
+                    cloneCmd.setUser(user);
+                    cloneCmd.setName(prefixString(original.getName(), env));
+                    cloneCmd.setLabel(targetLabel);
+                    cloneCmd.setSummary(prefixString(original.getSummary(), env));
+                    leader.ifPresent(l -> cloneCmd.setParentLabel(l.getChannel().getLabel()));
+                    return cloneCmd.create();
+                });
+
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, targetChannel);
+        ContentProjectFactory.save(target);
+        return target;
+    }
+
+    /**
+     * Prefix string with a Content Project and Environment labels
+     *
+     * @param string the string
+     * @param env the Environment
+     * @return the prefixed string
+     */
+    private static String prefixString(String string, ContentEnvironment env) {
+        return env.getContentProject().getLabel() + DELIMITER + env.getLabel() + DELIMITER + string;
+    }
+
+    private static void addHistoryEntry(Optional<String> message, User user, ContentProject project) {
+        ContentProjectHistoryEntry entry = new ContentProjectHistoryEntry();
+        entry.setUser(user);
+        entry.setMessage(message.orElse("Content Project build"));
+        ContentProjectFactory.addHistoryEntryToProject(project, entry);
     }
 
     /**

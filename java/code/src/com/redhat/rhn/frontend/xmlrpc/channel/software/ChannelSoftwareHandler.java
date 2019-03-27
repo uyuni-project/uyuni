@@ -105,6 +105,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 /**
  * ChannelSoftwareHandler
  * @version $Rev$
@@ -2129,7 +2132,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         Channel originalChan = lookupChannelByLabel(loggedInUser.getOrg(), originalLabel);
 
-        CloneChannelCommand ccc = new CloneChannelCommand(originalState, originalChan);
+        CloneChannelCommand ccc = new CloneChannelCommand(originalState ? ORIGINAL_STATE : CURRENT_STATE, originalChan);
 
         ccc.setUser(loggedInUser);
         setChangedValues(ccc, channelDetails);
@@ -2181,7 +2184,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
 
-        Set<Errata> mergedErrata = mergeErrataToChannel(loggedInUser, new HashSet(mergeFrom
+        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser, new HashSet(mergeFrom
                 .getErratas()), mergeTo, mergeFrom);
 
         return mergedErrata.toArray();
@@ -2224,7 +2227,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         List<Errata> fromErrata = ErrataFactory.lookupByChannelBetweenDates(
                 loggedInUser.getOrg(), mergeFrom, startDate, endDate);
 
-        Set<Errata> mergedErrata = mergeErrataToChannel(loggedInUser,
+        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser,
                 new HashSet<Errata>(fromErrata), mergeTo, mergeFrom);
 
         return mergedErrata.toArray();
@@ -2279,43 +2282,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
             }
         }
 
-        Set<Errata> mergedErrata =
-            mergeErrataToChannel(loggedInUser, errataToMerge, mergeTo, mergeFrom);
-
+        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser, errataToMerge, mergeTo, mergeFrom);
         return mergedErrata.toArray();
-    }
-
-    private Set<Errata> mergeErrataToChannel(User user, Set<Errata> errataToMergeIn,
-            Channel toChannel, Channel fromChannel) {
-
-        Set<Errata> errataToMerge = new HashSet<>(errataToMergeIn);
-
-        // find errata that we do not need to merge
-        List<Errata> same = ErrataManager.listSamePublishedInChannels(
-                user, fromChannel, toChannel);
-        List<Errata> brothers = ErrataManager.listPublishedBrothersInChannels(
-                user, fromChannel, toChannel);
-        List<Errata> clones = ErrataManager.listPublishedClonesInChannels(
-                user, fromChannel, toChannel);
-        // and remove them
-        errataToMerge.removeAll(same);
-        errataToMerge.removeAll(brothers);
-        errataToMerge.removeAll(clones);
-
-        ErrataManager.publishErrataToChannelAsync(toChannel,
-                getErrataIds(errataToMerge), user);
-
-        // no need to regenerate errata cache, because we didn't touch any packages
-
-        return errataToMerge;
-    }
-
-    private Set<Long> getErrataIds(Set<Errata> errata) {
-        Set<Long> ids = new HashSet<Long>();
-        for (Errata erratum : errata) {
-            ids.add(erratum.getId());
-        }
-        return ids;
     }
 
     /**

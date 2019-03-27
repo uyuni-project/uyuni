@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -254,17 +255,44 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Purge the Environment Target - delete it and delete its underlying resource (e.g. {@link Channel}) too
+     *
+     * @param target the Environment Target
+     */
+    public static void purgeTarget(EnvironmentTarget target) {
+        INSTANCE.removeObject(target);
+        target.asSoftwareTarget().ifPresent(swTgt -> ChannelFactory.remove(swTgt.getChannel()));
+    }
+
+    /**
      * Looks up SoftwareEnvironmentTarget with a given channel
      *
-     * @param channel the channel
+     * @param label the {@link Channel} label
+     * @param user the user
      * @return Optional of {@link com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget}
      */
-    public static Optional<SoftwareEnvironmentTarget> lookupEnvironmentTargetByChannel(Channel channel) {
+    public static Optional<SoftwareEnvironmentTarget> lookupEnvironmentTargetByChannelLabel(String label, User user) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<SoftwareEnvironmentTarget> query = builder.createQuery(SoftwareEnvironmentTarget.class);
         Root<SoftwareEnvironmentTarget> from = query.from(SoftwareEnvironmentTarget.class);
-        query.where(builder.equal(from.get("channel"), channel));
-        return getSession().createQuery(query).uniqueResultOptional();
+        query.where(builder.equal(from.get("channel").get("label"), label));
+        return getSession().createQuery(query)
+                .uniqueResultOptional()
+                .filter(tgt -> ChannelFactory.isAccessibleByUser(tgt.getChannel().getLabel(), user.getId()));
+    }
+
+    /**
+     * Looks up {@link EnvironmentTarget}s of given {@link ContentEnvironment}
+     *
+     * @param env the Environment
+     * @return the Stream of {@link EnvironmentTarget}s
+     */
+    public static Stream<EnvironmentTarget> lookupEnvironmentTargets(ContentEnvironment env) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<EnvironmentTarget> query = builder.createQuery(EnvironmentTarget.class);
+        Root<EnvironmentTarget> root = query.from(EnvironmentTarget.class);
+        query.where(builder.equal(root.get("contentEnvironment"), env));
+        return getSession().createQuery(query).stream();
     }
 
     /**
@@ -274,20 +302,6 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static void save(ProjectSource source) {
         INSTANCE.saveObject(source);
-    }
-
-    /**
-     * List Project Sources in a Content Project
-     *
-     * @param cp the content project
-     * @return the sources in the project
-     */
-    public static List<ProjectSource> listProjectSourcesByProject(ContentProject cp) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ProjectSource> query = builder.createQuery(ProjectSource.class);
-        Root<ProjectSource> root = query.from(ProjectSource.class);
-        query.where(builder.equal(root.get("contentProject"), cp));
-        return getSession().createQuery(query).list();
     }
 
     /**
@@ -307,11 +321,17 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static void addHistoryEntryToProject(ContentProject project, ContentProjectHistoryEntry entry) {
         List<ContentProjectHistoryEntry> entries = project.getHistoryEntries();
-        entry.setVersion(entries.size() == 0 ? 1 : entries.get(entries.size() - 1).getVersion() + 1);
+        entry.setVersion(latestHistoryEntryVersion(project).orElse(0L) + 1);
         entry.setContentProject(project);
         save(entry);
         entries.add(entry);
         save(project);
+    }
+
+    private static Optional<Long> latestHistoryEntryVersion(ContentProject project) {
+        return HibernateFactory.getSession().getNamedQuery("ContentProjectHistoryEntry.latestEntryVersion")
+                .setParameter("project", project)
+                .uniqueResultOptional();
     }
 
     /**

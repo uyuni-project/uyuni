@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Optional;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,6 +42,28 @@ public abstract class EnvironmentTarget {
 
     private Long id;
     private ContentEnvironment contentEnvironment;
+
+    /**
+     * Standard constructor
+     */
+    public EnvironmentTarget() {
+    }
+
+    /**
+     * Standard constructor
+     *
+     * @param contentEnvironmentIn the Environment
+     */
+    public EnvironmentTarget(ContentEnvironment contentEnvironmentIn) {
+        this.contentEnvironment = contentEnvironmentIn;
+    }
+
+    /**
+     * Return the Target as Software Target, if it is one.
+     *
+     * @return the {@link Optional} of {@link SoftwareEnvironmentTarget}
+     */
+    public abstract Optional<SoftwareEnvironmentTarget> asSoftwareTarget();
 
     /**
      * Gets the id.

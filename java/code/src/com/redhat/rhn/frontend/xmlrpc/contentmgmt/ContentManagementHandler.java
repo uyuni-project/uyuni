@@ -436,4 +436,42 @@ public class ContentManagementHandler extends BaseHandler {
             throw new EntityNotExistsFaultException(e);
         }
     }
+
+    /**
+     * Build a Project
+     *
+     * @param loggedInUser the user
+     * @param projectLabel the Project label
+     * @return 1 if successful
+     *
+     * @xmlrpc.doc Build a Project
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int buildProject(User loggedInUser, String projectLabel) {
+        ensureOrgAdmin(loggedInUser);
+        ContentManager.buildProject(projectLabel, empty(), true, loggedInUser);
+        return 1;
+    }
+
+    /**
+     * Build a Project
+     *
+     * @param loggedInUser the user
+     * @param message the log message to be assigned to the build
+     * @param projectLabel the Project label
+     * @return 1 if successful
+     *
+     * @xmlrpc.doc Build a Project
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "message" "Log message to be assigned to the build")
+     * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int buildProject(User loggedInUser, String projectLabel, String message) {
+        ensureOrgAdmin(loggedInUser);
+        ContentManager.buildProject(projectLabel, of(message), true, loggedInUser);
+        return 1;
+    }
 }
