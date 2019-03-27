@@ -117,15 +117,25 @@ export const reducerChannelsSelection = (
       return draftState;
     }
     case 'lead_channel': {
-      let channelsToToggle = [action.newBaseId];
-      const {recommendedIds} = getAllRecommentedIdsByBaseId(action.newBaseId, channelsTree, draftState.selectedChannelsIds);
+      const newBaseId = action.newBaseId;
+      const newBaseArchLabel = channelsTree.channelsById[newBaseId].archLabel
+
+      let channelsToToggle = [newBaseId];
+      const {recommendedIds} = getAllRecommentedIdsByBaseId(newBaseId, channelsTree, draftState.selectedChannelsIds);
       channelsToToggle = _union(channelsToToggle, recommendedIds);
       channelsToToggle = getChannelsToToggleWithDependencies(channelsToToggle, requiredChannelsResult, true);
 
+      // Unselect all the incompatible selected channels for the new lead Channel
+      const selectedChannelsWithIncompatible = draftState.selectedChannelsIds
+        .map(cId => channelsTree.channelsById[cId])
+        .filter(c => c.archLabel !== newBaseArchLabel)
+        .map(c => c.id);
+      draftState.selectedChannelsIds = _difference(draftState.selectedChannelsIds, selectedChannelsWithIncompatible);
+
+      draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, channelsToToggle);
       draftState.search = "";
       draftState.activeFilters = getInitialFiltersState();
-      draftState.selectedBaseChannelId = action.newBaseId;
-      draftState.selectedChannelsIds = _union(draftState.selectedChannelsIds, channelsToToggle);
+      draftState.selectedBaseChannelId = newBaseId;
       draftState.openGroupsIds = draftState.selectedChannelsIds;
       return draftState;
     }
