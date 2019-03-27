@@ -46,7 +46,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
 
   return (
     <div
-      {...(disabled ? {toolTip: "Add an environment to build"} : {})}
+      {...(disabled ? {title: "Add an environment to build"} : {})}
     >
       <DownArrow/>
 

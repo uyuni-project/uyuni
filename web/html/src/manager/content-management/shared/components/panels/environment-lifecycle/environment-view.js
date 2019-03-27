@@ -29,13 +29,13 @@ const EnvironmentView = React.memo((props: Props) => {
         <dd className="col-xs-9">{versionMessage}</dd>
       </dl>
       {
-        props.environment.version &&
-        <dl className="row">
-          <dt className="col-xs-3">Status:</dt>
-          <dd className="col-xs-9">To be implemented</dd>
-        </dl>
+        props.environment.version > 0 ?
+          <dl className="row">
+            <dt className="col-xs-3">Status:</dt>
+            <dd className="col-xs-9">To be implemented</dd>
+          </dl>
+          : null
       }
-
     </React.Fragment>
   );
 });
