@@ -63,12 +63,20 @@ const ChildChannels = (props: PropsType): Node => {
           &nbsp;
           {
             c.recommended ?
-              <span className='recommended-tag-base' title={'This channel is recommended'}>{t('recommended')}</span>
+              <span
+                className='recommended-tag-base'
+                title={t('This channel is recommended')} >
+                {t('recommended')}
+              </span>
               : null
           }
           {
             isMandatory ?
-              <span className='mandatory-tag-base' title={'This channel is mandatory'}>{t('mandatory')}</span>
+              <span
+                className='mandatory-tag-base'
+                title={t('This channel is mandatory')} >
+                {t('mandatory')}
+              </span>
               : null
           }
           <ChannelAnchorLink id={c.id} newWindow={true}/>

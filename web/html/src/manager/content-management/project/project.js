@@ -36,7 +36,7 @@ const Project = (props: Props) => {
     }
   }, []);
 
-  // TODO: transform this in an enum and reuse in sources.js as well
+  // TODO: [LuNeves] after beta2 transform this in an enum and reuse in sources.js as well
   const editedStates = ["ATTACHED","DETACHED"];
   const statesDesc = {
     "ATTACHED": "added",

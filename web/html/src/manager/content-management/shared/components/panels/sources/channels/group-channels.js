@@ -12,7 +12,7 @@ type PropsType = {
   search: string,
   childChannelsId: Array<number>,
   selectedChannelsIdsInGroup: Array<number>,
-  selectedBaseChannelId: number,
+  selectedBaseChannelId: ?number,
   isOpen: boolean,
   setAllRecommentedChannels: Function,
   onChannelToggle: Function,
@@ -34,10 +34,15 @@ const GroupChannels = (props: PropsType) => {
       ? props.setAllRecommentedChannels(false)
       : props.setAllRecommentedChannels(true)
 
+  const isNewLeaderChannel = props.base.id === props.selectedBaseChannelId;
+
   return (
-    <div className='row'>
+    <div
+      className='row'
+      {...(isNewLeaderChannel ? {title: "New base channel"} : {})}
+    >
       <h4 style={{
-        backgroundColor: props.base.id === props.selectedBaseChannelId ? "lightBlue" : "",
+        color: isNewLeaderChannel ? "#02A49C" : "",
         marginBottom: "0px"
       }} className='pointer'>
         <input type='checkbox'

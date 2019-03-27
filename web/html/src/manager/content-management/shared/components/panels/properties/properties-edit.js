@@ -25,7 +25,7 @@ const PropertiesEdit = (props: Props) => {
 
   const defaultDraftHistory = {
     version: props.currentHistoryEntry ? props.currentHistoryEntry.version + 1 : 1 ,
-    message:'(draft - not built) - Check the colors bellow for all the changes'
+    message:'(draft - not built) - Check the colors below for all the changes'
   };
 
   let propertiesToShow = produce(props.properties, draftProperties => {

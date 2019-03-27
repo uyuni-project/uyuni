@@ -1,5 +1,4 @@
 // @flow
-
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
 import {getChannelsTreeValues} from "core/channels/api/use-channels-tree-api";
 import type {ChannelType} from "core/channels/type/channels.type";
