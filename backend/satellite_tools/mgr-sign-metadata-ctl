@@ -31,7 +31,7 @@ function regenerate_metadata {
     echo
     echo "Scheduling repo metadata regeneration..."
     read_spacecmd_user_pass
-    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "softwarechannel_regenerateyumcache -f *"
+    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "softwarechannel_regenerateyumcache *"
     RETVAL=$?
     if [ $RETVAL -ne 0 ]; then
         echo "\nERROR queuing repo metadata regeneration. Try executing manually: spacecmd softwarechannel_regenerateyumcache \"*\""
