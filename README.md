@@ -9,15 +9,16 @@ beginning of [SUSE Manager][SUSEManager].
 It began as spacewalk and [SUSE Manager][SUSEManager] and
 [RedHatSatellite][RedHatSatellite] were derived from it.
 
-Nowadays the upstream version of [SUSE Manager][SUSEManager] is [Uyuni][Uyuni].
-Take a look and contribute and your contribution will make it in [SUSE
-Manager][SUSEManager] product.
+Since 2018 the upstream version of [SUSE Manager][SUSEManager] is [Uyuni][Uyuni].
+
+Uyuni is open for patches from the community, and all contributions are
+considered for inclusion in the [SUSE Manager][SUSEManager] product.
 
 For information on how to work with the multiple repositories and how to
-contribute see in the [wiki][Wiki].
+contribute see the [wiki][Wiki].
 
 You can open bugs against [SUSE Manager][SUSEManager] in the [issue tracker (Bugzilla)][issuetracker(Bugzilla)]
-Feel free to contact us in the mailing list: <uyuni-devel@opensuse.org> or in [irc][uyunichannelirc]
+Feel free to contact us on the mailing list: <uyuni-devel@opensuse.org> or on [irc][uyunichannelirc]
 
 Resources
 ---------
