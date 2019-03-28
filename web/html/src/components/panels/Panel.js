@@ -26,35 +26,42 @@ function Panel(props: Props) {
       { props.children }
     </div>
     { props.footer
-      && (
-        <div className="panel-footer">
-          {props.footer}
-        </div>
-      )
+    && (
+      <div className="panel-footer">
+        {props.footer}
+      </div>
+    )
     }
   </React.Fragment>
 
-
-  //TODO [LN] review 5PX and styles of collapsing!
   return (
     <div className={"panel " + (props.className ? props.className : "panel-default")}>
       {(props.title || props.header || props.buttons)
-        && (
-        <div className="panel-heading accordion-toggle">
+      && (
+        <div
+          style={{
+            position: "relative"
+          }}
+          className="panel-heading accordion-toggle"
+        >
           { props.buttons
-            && (
-              <div
-                className="pull-right btn-group"
-                style={{
-                  paddingLeft: '0px 10px 0px 100px',
-                  top: '-5px'
-                }}>
-                { props.buttons }
-              </div>
-            )
+          && (
+            <div
+              className="pull-right btn-group"
+              style={{
+                position: "absolute",
+                right: "20px",
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}>
+              { props.buttons }
+            </div>
+          )
           }
           {
-            <HeadingLevel>
+            <HeadingLevel
+              style={{width: "85%"}}
+            >
               {
                 props.collapseId ?
                   <div data-toggle="collapse" href={`#${props.collapseId}-panel-closable`} className="accordion-toggle">
