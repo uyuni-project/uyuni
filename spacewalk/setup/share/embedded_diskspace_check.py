@@ -158,7 +158,7 @@ def _humanReadable(n):
     return s
 
 
-def main(needsDict=None):  # pylint: disable=redefined-outer-name
+def check(needsDict=None):  # pylint: disable=redefined-outer-name
     """ determine failed needs if any given needsDict.
         needsDict is by default DEFAULT_NEEDS (see top of module)
     """
@@ -192,9 +192,30 @@ def main(needsDict=None):  # pylint: disable=redefined-outer-name
     return 0
 
 
+def main():
+    """
+    Main app function.
+    """
+    prs = argparse.ArgumentParser(description="Check embedded disk space")
+    prs.add_argument('DEFAULT_NEEDS', nargs='+',
+                     help=('Set default map of failed needs: [directory] [size] ... '
+                           'Example: /var/lig/pgsql/data 12288'))
+    args = prs.parse_args()
+
+    if not len(args.DEFAULT_NEEDS) % 2:
+        needs_dict = {}
+        for directory, size in zip(args.DEFAULT_NEEDS[0::2], args.DEFAULT_NEEDS[1::2]):
+            try:
+                needs_dict[directory] = int(size) * 2 ** 20
+            except ValueError as err:
+                prs.error(err)
+        sys.exit(check(needs_dict) or 0)
+    else:
+        prs.print_help()
+
+
 if __name__ == "__main__":
-    needsDict = {}
-    if sys.argv:
-        for i, dir in enumerate(sys.argv[1::2]):  # pylint: disable=redefined-builtin
-            needsDict[dir] = int(sys.argv[i*2+2]) * 2**20 # in MB
-    sys.exit(main(needsDict) or 0)
+    """
+    Run main function if this script is called directly.
+    """
+    main()
