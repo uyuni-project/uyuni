@@ -29,7 +29,9 @@ const PropertiesEdit = (props: Props) => {
   };
 
   let propertiesToShow = produce(props.properties, draftProperties => {
-      draftProperties.historyEntries.unshift(defaultDraftHistory);
+      if(props.showDraftVersion){
+        draftProperties.historyEntries.unshift(defaultDraftHistory);
+      }
     });
 
   return (
@@ -65,7 +67,7 @@ const PropertiesEdit = (props: Props) => {
 
           return (
             <PropertiesForm
-              properties={item}
+              properties={{...item}}
               onChange={(editedProperties) => setItem(editedProperties)}
               editing
             />

@@ -399,8 +399,8 @@ public class ContentManager {
                 .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + projectLabel +
                         " with no environments."));
         buildSoftwareSources(firstEnv, async, user);
-        addHistoryEntry(message, user, project);
-        firstEnv.increaseVersion();
+        ContentProjectHistoryEntry entry = addHistoryEntry(message, user, project);
+        firstEnv.setVersion(entry.getVersion());
     }
 
     /**
@@ -555,11 +555,14 @@ public class ContentManager {
         return env.getContentProject().getLabel() + DELIMITER + env.getLabel() + DELIMITER;
     }
 
-    private static void addHistoryEntry(Optional<String> message, User user, ContentProject project) {
+    private static ContentProjectHistoryEntry addHistoryEntry(
+            Optional<String> message, User user, ContentProject project
+    ) {
         ContentProjectHistoryEntry entry = new ContentProjectHistoryEntry();
         entry.setUser(user);
         entry.setMessage(message.orElse("Content Project build"));
         ContentProjectFactory.addHistoryEntryToProject(project, entry);
+        return entry;
     }
 
     /**

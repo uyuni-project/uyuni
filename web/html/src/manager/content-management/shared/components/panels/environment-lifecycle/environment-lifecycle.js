@@ -7,7 +7,7 @@ import {Loading} from "components/loading/loading";
 import useProjectActionsApi from "../../../api/use-project-actions-api";
 import Promote from "../promote/promote";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
-import { mapAddEnvironmentRequest, mapUpdateEnvironmentRequest } from './environment.utils';
+import {mapAddEnvironmentRequest, mapUpdateEnvironmentRequest} from './environment.utils';
 
 import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 import type {ProjectHistoryEntry} from "../../../type/project.type";
@@ -43,7 +43,6 @@ const EnvironmentLifecycle = (props: Props) => {
           })
           .catch((error) => {
             showErrorToastr(error);
-            // closeDialog();
           })}
       onOpen={({ setItem }) => setItem({})}
       onCancel={() => cancelAction()}
@@ -61,7 +60,7 @@ const EnvironmentLifecycle = (props: Props) => {
 
         return (
           <EnvironmentForm
-            environment={item}
+            environment={{...item}}
             environments={props.environments}
             onChange={(item) => setItem(item)}/>
         )
@@ -87,12 +86,11 @@ const EnvironmentLifecycle = (props: Props) => {
                         onAction(mapUpdateEnvironmentRequest(item, props.projectId), "update")
                           .then((projectWithUpdatedEnvironment) => {
                             props.onChange(projectWithUpdatedEnvironment)
-                            showSuccessToastr(t("Environment updated successfully"));
                             closeDialog();
+                            showSuccessToastr(t("Environment updated successfully"));
                           })
                           .catch((error) => {
                             showErrorToastr(error);
-                            closeDialog();
                           })}
                       onOpen={({ setItem }) => setItem(environment)}
                       onCancel={() => cancelAction()}
@@ -106,7 +104,6 @@ const EnvironmentLifecycle = (props: Props) => {
                             showSuccessToastr(t("Environment deleted successfully"));
                           })
                           .catch((error) => {
-                            closeDialog();
                             showErrorToastr(error);
                           })
                       }}
@@ -123,7 +120,7 @@ const EnvironmentLifecycle = (props: Props) => {
 
                         return (
                           <EnvironmentForm
-                            environment={item}
+                            environment={{...item}}
                             environments={props.environments}
                             onChange={(item) => setItem(item)}
                             editing
