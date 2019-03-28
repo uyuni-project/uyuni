@@ -259,7 +259,7 @@ public class SystemRecord extends CobblerObject {
      * @return true if the command was successful
      */
     public boolean powerOn() {
-        return (Integer)client.invokeTokenMethod("power_system", getHandle(), "on") == 0;
+        return (Boolean)client.invokeTokenMethod("power_system", getHandle(), "on");
     }
 
     /**
@@ -269,7 +269,7 @@ public class SystemRecord extends CobblerObject {
      * @return true if the command was successful
      */
     public boolean powerOff() {
-        return (Integer)client.invokeTokenMethod("power_system", getHandle(), "off") == 0;
+        return (Boolean)client.invokeTokenMethod("power_system", getHandle(), "off");
     }
 
     /**
@@ -279,8 +279,8 @@ public class SystemRecord extends CobblerObject {
      * @return true if the command was successful
      */
     public boolean reboot() {
-        return (Integer)
-            client.invokeTokenMethod("power_system", getHandle(), "reboot") == 0;
+        return (Boolean)
+            client.invokeTokenMethod("power_system", getHandle(), "reboot");
     }
 
     /**
