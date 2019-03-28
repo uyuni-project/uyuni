@@ -38,7 +38,7 @@ This package contains Node.js software needed by SUSE Manager at build time.
 tar xfv %{S:1}
 
 %build
-find . -type f | xargs sed -i -e 's/#!\/usr\/bin\/env node/#!\/usr\/bin\/node/g'
+find . -type f -exec sed -i -e 's/#!\/usr\/bin\/env node/#!\/usr\/bin\/node/g' {} \;
 
 %install
 mkdir -p %{buildroot}%{nodejs_sitelib}
