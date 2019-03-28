@@ -29,19 +29,12 @@ begin
            release = r_in;
 
     if not found then
-        evr_id := nextval('rhn_pkg_evr_seq');
-
-        insert into rhnPackageEVR(id, epoch, version, release, evr)
-            values (evr_id, e_in, v_in, r_in, evr_t(e_in, v_in, r_in))
-            on conflict do nothing;
-
-        select id
-            into strict evr_id
-            from rhnPackageEVR
-            where ((epoch is null and e_in is null) or (epoch = e_in)) and
-               version = v_in and release = r_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_evr(e_in, v_in, r_in);
     end if;
 
     return evr_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

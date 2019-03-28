@@ -33,26 +33,15 @@ begin
            c.checksum_type = checksum_type_in;
 
     if not found then
-        checksum_id := nextval('rhnchecksum_seq');
-
-        insert into rhnChecksum (id, checksum_type_id, checksum)
-          values (
-              checksum_id,
-              (select id from rhnChecksumType where label = checksum_type_in),
-              checksum_in
-          )
-          on conflict do nothing;
-
-          select c.id
-              into strict checksum_id
-              from rhnChecksumView c
-              where c.checksum = checksum_in and
-                  c.checksum_type = checksum_type_in;
+        -- HACK: insert is isolated in own function in order to be able to declare this function immutable
+        -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
+        -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
+        return insert_checksum(checksum_type_in, checksum_in);
     end if;
 
     return checksum_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;
 
 -- NOTE: This is intentionally not thread safe! You must lock rhnChecksum
 -- if you are going to use this procedure!
@@ -84,5 +73,4 @@ begin
 
     return checksum_id;
 end;
-$$
-language plpgsql;
+$$ language plpgsql;
