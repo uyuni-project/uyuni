@@ -8,12 +8,15 @@
     Author: Todd Warner <taw@redhat.com>
 """
 
-from salt.ext import six
+try:
+    from salt.ext import six
+except ImportError:
+    import six
 
 import os
 import sys
 import stat
-import statvfs  # pylint: disable=import-error
+import argparse
 
 # these numbers are for *after* package installation.
 DEFAULT_NEEDS = {'/rhnsat':          12*(2**30),  # 12GB
