@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import spark.Request;
 import spark.Spark;
@@ -34,6 +35,9 @@ import spark.Spark;
  */
 public class ProjectHandler {
     private static final Gson GSON = Json.GSON;
+
+    private static final String PROJECT_LABEL_REGEX =
+            "^[a-z\\d][a-z\\d\\-\\.\\_]*$";
 
     private ProjectHandler() { }
 
@@ -77,8 +81,24 @@ public class ProjectHandler {
             requestErrors.put("label", "Label is required");
         }
 
+        if (!ValidationUtils.isLabelValid(projPropsRequest.getLabel())) {
+            requestErrors.put(
+                    "label",
+                    "Label must contain only lowercase letters, hyphens ('-'), periods ('.'), " +
+                            "underscores ('_'), and numerals."
+            );
+        }
+
+        if (projPropsRequest.getLabel().length() > 24) {
+            requestErrors.put("label", "Label must not exceed 24 characters");
+        }
+
         if (StringUtils.isEmpty(projPropsRequest.getName())) {
             requestErrors.put("name", "Name is required");
+        }
+
+        if (projPropsRequest.getName().length() > 128) {
+            requestErrors.put("name", "Name must not exceed 128 characters");
         }
 
         return requestErrors;

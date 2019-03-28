@@ -34,6 +34,9 @@ const getApiUrl = (projectId, projectResource) => {
   }
 }
 
+const getErrorMessage = ({messages = [], errors}) => messages.filter(Boolean).concat(Object.values(errors)).join("</br>");
+
+
 const useProjectActionsApi = (props:Props): returnUseProjectActionsApi => {
   const [isLoading, setIsLoading] = useState(false);
   const [onGoingNetworkRequest, setOnGoingNetworkRequest] = useState(null);
@@ -53,16 +56,24 @@ const useProjectActionsApi = (props:Props): returnUseProjectActionsApi => {
           setIsLoading(false);
 
           if (!response.success) {
-            throw response.messages[0];
+            throw getErrorMessage(response);
           }
 
           return response.data;
         })
         .catch((xhr) => {
-          const errMessages = xhr.status === 0
-            ? t('Request interrupted or invalid response received from the server. Please try again.')
-            : Network.errorMessageByStatus(xhr.status);
+          let errMessages;
+          if(xhr.status === 0) {
+            errMessages = t('Request interrupted or invalid response received from the server. Please try again.');
+          } else if(xhr.status === 400) {
+            errMessages = getErrorMessage(xhr.responseJSON)
+          } else {
+            errMessages = Network.errorMessageByStatus(xhr.status)
+          }
+
           setIsLoading(false);
+
+
 
           throw errMessages;
         });

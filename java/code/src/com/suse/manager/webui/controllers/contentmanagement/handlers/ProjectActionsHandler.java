@@ -63,8 +63,6 @@ public class ProjectActionsHandler {
             requestErrors.put("projectLabel", "Project label is required");
         }
 
-        // TODO: Validate characters limit for message - Check database
-
         return requestErrors;
     }
 
@@ -93,8 +91,6 @@ public class ProjectActionsHandler {
         if (StringUtils.isEmpty(projectBuild.getProjectLabel())) {
             requestErrors.put("projectLabel", "Project label is required");
         }
-
-        // TODO: Validate environment
 
         return requestErrors;
     }
