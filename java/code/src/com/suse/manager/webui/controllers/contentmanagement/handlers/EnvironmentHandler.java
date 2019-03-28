@@ -58,15 +58,21 @@ public class EnvironmentHandler {
     public static HashMap<String, String> validateEnvironmentRequest(EnvironmentRequest envRequest) {
         HashMap<String, String> requestErrors = new HashMap<>();
 
-        if (StringUtils.isEmpty(envRequest.getLabel())) {
-            requestErrors.put("label", "Label is required");
-        }
-
-        if (StringUtils.isEmpty(envRequest.getName())) {
+        if (StringUtils.isEmpty(envRequest.getName()) || StringUtils.isEmpty(envRequest.getLabel())) {
             requestErrors.put("name", "Name is required");
         }
 
+        if (!ValidationUtils.isLabelValid(envRequest.getLabel())) {
+            requestErrors.put(
+                    "label",
+                    "Label must contain only lowercase letters, hyphens ('-'), periods ('.'), " +
+                            "underscores ('_'), and numerals."
+            );
+        }
+
+        if (envRequest.getLabel().length() > 16) {
+            requestErrors.put("label", "Label must not exceed 16 characters");
+        }
         return requestErrors;
     }
-
 }

@@ -24,6 +24,7 @@ import static spark.Spark.put;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRequest;
@@ -90,6 +91,9 @@ public class ProjectApiController {
                     projectPropertiesRequest.getDescription(),
                     user
             );
+        }
+        catch (EntityExistsException error) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("Project already exists"));
         }
         catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
