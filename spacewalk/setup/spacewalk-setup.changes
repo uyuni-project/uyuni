@@ -1,3 +1,6 @@
+- Add proper argument parsing to the embedded diskspace check.
+- Fix Python3 porting issues
+
 -------------------------------------------------------------------
 Wed Feb 27 13:03:51 CET 2019 - jgonzalez@suse.com
 
