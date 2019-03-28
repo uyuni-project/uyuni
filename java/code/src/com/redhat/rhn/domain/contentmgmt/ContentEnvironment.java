@@ -162,13 +162,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     }
 
     /**
-     * Bump the Environment version
-     */
-    public void increaseVersion() {
-        version++;
-    }
-
-    /**
      * @param contentProjectIn the content project to set
      */
     public void setContentProject(ContentProject contentProjectIn) {

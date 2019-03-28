@@ -102,7 +102,7 @@ const Project = (props: Props) => {
 
       <Build
         projectId={projectId}
-        disabled={_isEmpty(project.environments)}
+        disabled={_isEmpty(project.environments) || _isEmpty(project.softwareSources)}
         currentHistoryEntry={currentHistoryEntry}
         onBuild={(projectWithNewSources) => {
           setProject(projectWithNewSources)
