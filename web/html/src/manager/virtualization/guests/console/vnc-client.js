@@ -1,5 +1,5 @@
 // @flow
-/* global module */
+/* Global Module */
 
 
 import RFB from '@novnc/novnc/core/rfb';

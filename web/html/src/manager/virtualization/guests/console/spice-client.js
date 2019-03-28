@@ -1,5 +1,5 @@
 // @flow
-/* global module */
+/* Global Module */
 
 import { SpiceMainConn } from '@spice-project/spice-html5';
 import type { ConsoleClientType } from './guests-console-types';
