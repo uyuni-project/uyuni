@@ -6,19 +6,19 @@ Spacewalk
 Spacewalk is an open source Linux systems management solution that was the
 beginning of [SUSE Manager][SUSEManager].
 
-It began as spacewalk and [SUSE Manager][SUSEManager] and
+It began as spacewalk, [SUSE Manager][SUSEManager] and
 [RedHatSatellite][RedHatSatellite] were derived from it.
 
-Since 2018 the upstream version of [SUSE Manager][SUSEManager] is [Uyuni][Uyuni].
+Since 2018, the upstream version of [SUSE Manager][SUSEManager] is [Uyuni][Uyuni].
 
 Uyuni is open for patches from the community, and all contributions are
 considered for inclusion in the [SUSE Manager][SUSEManager] product.
 
 For information on how to work with the multiple repositories and how to
-contribute see the [wiki][Wiki].
+contribute, see the [wiki][Wiki].
 
-You can open bugs against [SUSE Manager][SUSEManager] in the [issue tracker (Bugzilla)][issuetracker(Bugzilla)]
-Feel free to contact us on the mailing list: <uyuni-devel@opensuse.org> or on [irc][uyunichannelirc]
+You can open bugs against [SUSE Manager][SUSEManager] in the [issue tracker (Bugzilla)][issuetracker(Bugzilla)].
+Feel free to contact us on the mailing list: <uyuni-devel@opensuse.org> or on [irc][uyunichannelirc].
 
 Resources
 ---------
