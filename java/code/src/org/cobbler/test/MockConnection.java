@@ -210,9 +210,9 @@ public class MockConnection extends CobblerConnection {
         if (firstArgumentValid && secondArgumentValid && thirdArgumentValid) {
             powerCommands.add(name + " " + args[1] + " " +
                     systemMap.get(args[0]).get("uid"));
-            return args[1].equals("status") ? true : 0;
+            return true;
         }
-        return 1;
+        return false;
     }
     // images
     else if ("find_image".equals(name)) {
