@@ -25,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 import spark.Request;
 import spark.Spark;
