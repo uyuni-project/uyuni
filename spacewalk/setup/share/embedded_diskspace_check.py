@@ -102,11 +102,9 @@ def paths2freespace(paths):
     paths = _unique(paths)
     pathsd = {} # 1:1
     for path in paths:
-        _statvfs = os.statvfs(path)
-        f_bavail = _statvfs[statvfs.F_BAVAIL] # non-super user space
-        f_bsize = _statvfs[statvfs.F_BSIZE] # respective blocksize
-        # build dict indexed by path
-        pathsd[path] = (six.PY3 and int or long)(f_bavail) * f_bsize
+        vfs = os.statvfs(path)
+        pathsd[path] = (six.PY3 and int or long)(vfs.f_bavail) * vfs.f_bsize
+
     return pathsd
 
 
