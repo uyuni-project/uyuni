@@ -354,6 +354,10 @@ end
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   visit Capybara.app_host
+  next if page.all(:xpath, "//header//span[text()='#{user}']").any?
+
+  page.find(:xpath, "//header//i[@class='fa fa-sign-out']").click if page.all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
+
   fill_in 'username', with: user
   fill_in 'password', with: passwd
   click_button 'Sign In'
