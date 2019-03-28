@@ -35,9 +35,6 @@ import spark.Spark;
 public class ProjectHandler {
     private static final Gson GSON = Json.GSON;
 
-    private static final String PROJECT_LABEL_REGEX =
-            "^[a-z\\d][a-z\\d\\-\\.\\_]*$";
-
     private ProjectHandler() { }
 
     /**
