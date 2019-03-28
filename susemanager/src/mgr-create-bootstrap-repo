@@ -256,7 +256,7 @@ def create_repo(label, flush, additional=[]):
     if errors:
         for m in messages:
             print(m)
-        if label.startswith('RES') and not options.usecustomchannels:
+        if (label.startswith('RES') or label.lower().startswith('ubuntu'))  and not options.usecustomchannels:
             print("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
         suggestions = list(filter(None, suggestions.values()))
         if suggestions:

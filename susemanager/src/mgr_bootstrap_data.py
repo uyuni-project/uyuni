@@ -735,12 +735,12 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'ubuntu-16.04-amd64' : {
-        'BASECHANNEL' : 'ubuntu-16.04-pool-amd64', 'PKGLIST' : PKGLISTUBUNTU1604,
+        'PDID' : [-2, 1917], 'PKGLIST' : PKGLISTUBUNTU1604,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/16/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'ubuntu-18.04-amd64' : {
-        'BASECHANNEL' : 'ubuntu-18.04-pool-amd64', 'PKGLIST' : PKGLISTUBUNTU1804,
+        'PDID' : [-1, 1918], 'PKGLIST' : PKGLISTUBUNTU1804,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
         'TYPE' : 'deb'
     }
