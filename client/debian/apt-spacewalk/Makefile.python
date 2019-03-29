@@ -13,7 +13,7 @@ __pylint ::
 	pylint --rcfile=pylintrc $(shell find -name '*.py') > reports/pylint.log || true
 
 docker_pylint ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/client/rhel/spacewalk-client-tools/; make -f Makefile.spacewalk-client-tools __pylint"
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/client/debian/apt-spacewalk; make -f Makefile.python __pylint"
 
 docker_shell ::
 	docker run -t -i --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash

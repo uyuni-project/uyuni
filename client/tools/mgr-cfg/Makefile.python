@@ -1,19 +1,19 @@
 THIS_MAKEFILE := $(realpath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(dir $(THIS_MAKEFILE))
-include $(CURRENT_DIR)../../rel-eng/Makefile.python
+include $(CURRENT_DIR)../../../rel-eng/Makefile.python
 
 # Docker tests variables
 DOCKER_CONTAINER_BASE = uyuni-master
 DOCKER_REGISTRY       = registry.mgr.suse.de
 DOCKER_RUN_EXPORT     = "PYTHONPATH=$PYTHONPATH"
-DOCKER_VOLUMES        = -v "$(CURDIR)/../../:/manager"
+DOCKER_VOLUMES        = -v "$(CURDIR)/../../../:/manager"
 
 __pylint ::
 	$(call update_pip_env)
 	pylint --rcfile=pylintrc $(shell find -name '*.py') > reports/pylint.log || true
 
 docker_pylint ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/proxy/installer/; make -f Makefile.installer __pylint"
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/client/tools/mgr-cfg; make -f Makefile.python __pylint"
 
 docker_shell ::
 	docker run -t -i --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash

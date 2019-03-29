@@ -1,8 +1,6 @@
 # Makefile for Update Agent
 #
 
-include Makefile.spacewalk-client-tools
-
 PREFIX		?=
 MANPATH		?= /usr/share/man
 
