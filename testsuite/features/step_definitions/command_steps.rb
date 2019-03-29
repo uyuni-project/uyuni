@@ -50,7 +50,7 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   else
     raise 'Invalid target'
   end
-  $server.run_until_ok("#{cmd} #{system_name} state.highstate #{extra_cmd}")
+  $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
 end
 
 Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
