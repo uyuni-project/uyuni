@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Mar 29 10:31:49 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.12-1
 - Adapt Cobbler power management functionality to use new power_system API call (bsc#1128919)
 - fix doc generation for content management API
 - Add support for SLES 15 live patches in CVE audit
