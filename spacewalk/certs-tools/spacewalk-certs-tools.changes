@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Mar 29 10:31:16 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.6-1
 - Prevent encoding issues when exceptions are triggered.
 
 -------------------------------------------------------------------
