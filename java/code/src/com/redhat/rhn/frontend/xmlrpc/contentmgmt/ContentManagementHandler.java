@@ -38,7 +38,7 @@ import static java.util.Optional.ofNullable;
 
 /**
  * Content Management XMLRPC handler
- * @xmlrpc.ignore
+ *
  * @xmlrpc.namespace contentmgmt
  * @xmlrpc.doc Provides methods to access and modify Content Lifecycle Managemenet Projects,
  * Environments and more
@@ -121,7 +121,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param
      *  #struct("data")
      *      #prop_desc("string", "name", "Content Project name")
-     *      #prop_desc("string", "description", ""Content Project description")
+     *      #prop_desc("string", "description", "Content Project description")
      *  #struct_end()
      * @xmlrpc.returntype $ContentProjectSerializer
      */

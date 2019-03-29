@@ -25,6 +25,14 @@ import java.io.Writer;
 
 /**
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ProjectSource} class and subclasses
+ *
+ * @xmlrpc.doc
+ * #struct("Content Project Source information")
+ *   #prop("string", "contentProjectLabel")
+ *   #prop("string", "type")
+ *   #prop("string", "state")
+     #prop_desc("string", "channelLabel", "(If type is SW_CHANNEL) The label of channel associated with the source")
+ * #struct_end()
  */
 public class ContentProjectSourceSerializer extends RhnXmlRpcCustomSerializer {
 
@@ -46,7 +54,6 @@ public class ContentProjectSourceSerializer extends RhnXmlRpcCustomSerializer {
 
         SerializerHelper helper = new SerializerHelper(serializer);
         helper.add("contentProjectLabel", source.getContentProject().getLabel());
-        helper.add("state", source.getState());
         helper.add("type", ProjectSource.Type.lookupBySourceClass(source.getClass()).getLabel());
         helper.add("state", source.getState());
         source.asSoftwareSource().ifPresent(s -> {
