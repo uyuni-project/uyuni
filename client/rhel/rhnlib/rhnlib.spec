@@ -1,4 +1,5 @@
 #
+
 # spec file for package rhnlib
 #
 # Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
@@ -63,6 +64,7 @@ rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk
 
 %package -n python2-rhnlib
 Summary:        Python libraries for the Spacewalk project
+Group:          Development/Libraries
 
 %if %{_vendor} != "debbuild"
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
