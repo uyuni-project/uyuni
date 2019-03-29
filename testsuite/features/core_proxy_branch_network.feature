@@ -114,10 +114,9 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Enable avahi on the branch server
+  Scenario: Enable repositories for installing branch services
     When I enable repositories before installing branch server
-    And I install package "SuSEfirewall2 expect" on this "proxy"
-    And I open avahi port on the proxy
+    And I install package "expect" on this "proxy"
 
 @proxy
 @private_net
@@ -131,6 +130,15 @@ Feature: Setup SUSE Manager for Retail branch network
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
     And service "named" is active on "proxy"
+    And service "firewalld" is enabled on "proxy"
+    And service "firewalld" is active on "proxy"
+
+@proxy
+@private_net
+  Scenario: Enable avahi and proxy services on the branch server
+    Given service "firewalld" is active on "proxy"
+    And I open avahi port on the proxy
+    And I open proxy ports on the proxy
 
 @proxy
 @private_net
