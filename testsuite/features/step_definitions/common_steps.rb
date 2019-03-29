@@ -69,7 +69,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
         now = Time.now
         current_minute = now.strftime('%H:%M')
         previous_minute = (now - 60).strftime('%H:%M')
-        break if page.has_xpath?("//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]")
+        break if all(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]").any?
         sleep 1
         page.evaluate_script 'window.location.reload()'
       end
@@ -339,7 +339,7 @@ end
 
 # package steps
 Then(/^I should see package "([^"]*)"$/) do |package|
-  raise unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")
+  raise unless all(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]").any?
 end
 
 Given(/^I am on the manage software channels page$/) do
@@ -820,7 +820,7 @@ And(/^the notification badge and the table should count the same amount of messa
 
   if table_notifications_count == '0'
     puts "All notification-messages are read, I expect no notification badge"
-    raise if page.has_xpath?(badge_xpath)
+    raise if all(:xpath, badge_xpath).any?
   else
     puts "Unread notification-messages count = " + table_notifications_count
     raise unless find(:xpath, badge_xpath)

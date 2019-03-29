@@ -380,7 +380,7 @@ When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        break if has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]")
+        break if all(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]").any?
         sleep 1
       end
     end
@@ -391,10 +391,14 @@ end
 
 # login, logout steps
 
-Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2|
+Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   visit Capybara.app_host
-  fill_in 'username', with: arg1
-  fill_in 'password', with: arg2
+  next if page.all(:xpath, "//header//span[text()='#{user}']").any?
+
+  page.find(:xpath, "//header//i[@class='fa fa-sign-out']").click if page.all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
+
+  fill_in 'username', with: user
+  fill_in 'password', with: passwd
   click_button 'Sign In'
   step %(I should be logged in)
 end
@@ -408,11 +412,11 @@ When(/^I sign out$/) do
 end
 
 Then(/^I should not be authorized$/) do
-  raise unless page.has_no_xpath?("//a[@href='/rhn/Logout.do']")
+  raise if all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 Then(/^I should be logged in$/) do
-  raise unless page.has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 Then(/^I am logged in$/) do
@@ -426,7 +430,7 @@ Given(/^I am on the patches page$/) do
 end
 
 Then(/^I should see an update in the list$/) do
-  raise unless has_xpath?('//div[@class="table-responsive"]/table/tbody/tr/td/a')
+  raise unless all(:xpath, '//div[@class="table-responsive"]/table/tbody/tr/td/a').any?
 end
 
 When(/^I check test channel$/) do
@@ -545,7 +549,7 @@ end
 
 Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
   within(:xpath, "//p/strong[contains(normalize-space(string(.)), '#{text}')]") do
-    assert has_xpath?("//a[text() = '#{linktext}']")
+    assert all(:xpath, "//a[text() = '#{linktext}']").any?
   end
 end
 
@@ -594,7 +598,7 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
   end
   raise("Unknown column '#{column}'") unless idx
   # find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
-  raise unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
+  raise unless all(:xpath, "//table//tr/td[#{idx + 1}]//a[text()='#{link}']").any?
 end
 
 When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
@@ -757,7 +761,7 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I should see a Sign Out link$/) do
-  raise unless has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless all(:xpath, "//a[@href='/rhn/Logout.do']").any?
 end
 
 When(/^I check "([^"]*)" in the list$/) do |arg1|
@@ -803,7 +807,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        break if page.has_xpath?(path, visible: true)
+        break if all(:xpath, path, visible: true).any?
         sleep 1
       end
     end
