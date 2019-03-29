@@ -113,10 +113,10 @@ Feature: Setup SUSE Manager for Retail branch network
     Then I should see a "Formula saved!" text
 
 @proxy
- @private_net
+@private_net
   Scenario: Enable repositories for installing branch services
     When I enable repositories before installing branch server
-    Then I install package "expect" on this "proxy"
+    And I install package "expect" on this "proxy"
 
 @proxy
 @private_net
@@ -135,9 +135,10 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Enable avahi on the branch server
-    When service "firewalld" is active on "proxy"
-    Then I open avahi port on the proxy
+  Scenario: Enable avahi and proxy services on the branch server
+    Given service "firewalld" is active on "proxy"
+    And I open avahi port on the proxy
+    And I open proxy ports on the proxy
 
 @proxy
 @private_net

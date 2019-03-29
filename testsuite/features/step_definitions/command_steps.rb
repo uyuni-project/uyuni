@@ -627,6 +627,10 @@ When(/^I open avahi port on the proxy$/) do
   $proxy.run('firewall-cmd --add-service=mdns')
 end
 
+When(/^I open proxy ports on the proxy$/) do
+  $proxy.run('firewall-cmd --add-service=suse-manager-proxy')
+end
+
 When(/^I copy server\'s keys to the proxy$/) do
   ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
     return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
