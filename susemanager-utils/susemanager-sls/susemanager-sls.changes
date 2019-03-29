@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Mar 29 10:37:42 CET 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
 - Update get_kernel_live_version module to support SLES 15 live patches
 - Support register minion using bootstrap repos for 18.04 and 16.04.
 
