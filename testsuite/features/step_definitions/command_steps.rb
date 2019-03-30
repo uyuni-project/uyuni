@@ -624,11 +624,13 @@ And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/)
 end
 
 When(/^I open avahi port on the proxy$/) do
-  $proxy.run('firewall-cmd --add-service=mdns')
+  $proxy.run('firewall-cmd --permanent --add-service=mdns')
+  $proxy.run('firewall-cmd --state 2>/dev/null && firewall-cmd --reload')
 end
 
 When(/^I open proxy ports on the proxy$/) do
-  $proxy.run('firewall-cmd --add-service=suse-manager-proxy')
+  $proxy.run('firewall-cmd --permanent --add-service=suse-manager-proxy')
+  $proxy.run('firewall-cmd --state 2>/dev/null && firewall-cmd --reload')
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
