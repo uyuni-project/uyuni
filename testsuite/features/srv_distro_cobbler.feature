@@ -151,7 +151,7 @@ Feature: Cobbler and distribution autoinstallation
     Then I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
     And the cobbler report contains "testserver.example.com" for system "testserver"
     And the cobbler report contains "1.1.1.1" for system "testserver"
-    And the cobbler report contains "00:22:22:77:EE:CC" for system "testserver"
+    And the cobbler report contains "00:22:22:77:ee:cc" for system "testserver"
 
   Scenario: Cleanup: delete test distro and profiles
     Then I remove kickstart profiles and distros
