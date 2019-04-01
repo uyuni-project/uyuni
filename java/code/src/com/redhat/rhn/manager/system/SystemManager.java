@@ -86,6 +86,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
@@ -2241,8 +2242,6 @@ public class SystemManager extends BaseManager {
             return;
         }
 
-        // TODO: If this is monitoring, unassign the formula
-
         Map<String, Object> in = new HashMap<String, Object>();
         in.put("sid", sid);
         in.put("entitlement", ent.getLabel());
@@ -2251,7 +2250,24 @@ public class SystemManager extends BaseManager {
         m.execute(in, new HashMap<String, Integer>());
 
         Server server = ServerFactory.lookupById(sid);
-        server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
+        server.asMinionServer().ifPresent(s -> {
+            try {
+                // Setup the formula data for a cleanup
+                Map<String, Object> data = new HashMap<>();
+                Map<String, Object> nodeExporter = new HashMap<>();
+                nodeExporter.put("enabled", false);
+                Map<String, Object> postgresExporter = new HashMap<>();
+                postgresExporter.put("enabled", false);
+                postgresExporter.put("data_source_name", "postgresql://user:passwd@localhost:5432/database?sslmode=disable");
+                data.put("node_exporter", nodeExporter);
+                data.put("postgres_exporter", postgresExporter);
+                FormulaFactory.saveServerFormulaData(data, s.getMinionId(), FormulaFactory.PROMETHEUS_EXPORTERS);
+            }
+            catch (UnsupportedOperationException | IOException e) {
+                log.warn("Saving formula data: " + e.getMessage());
+            }
+            SystemManager.refreshPillarDataForMinion(s);
+        });
     }
 
 
