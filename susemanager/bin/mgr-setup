@@ -245,8 +245,13 @@ fi
 open_firewall_ports() {
 echo "Open needed firewall ports..."
 if [ -x /usr/bin/firewall-cmd ]; then
-  firewall-cmd --permanent --zone=public --add-service=suse-manager-server
-  firewall-cmd --state 2>/dev/null && firewall-cmd --reload
+  firewall-cmd --state 2> /dev/null
+  if [ $? -eq 0 ]; then
+    firewall-cmd --permanent --zone=public --add-service=suse-manager-server
+    firewall-cmd --reload
+  else
+    firewall-offline-cmd --zone=public --add-service=suse-manager-server
+  fi
 else
   sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http" > /dev/null 2>&1
   sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https" > /dev/null 2>&1
@@ -829,8 +834,13 @@ fi
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$ACTIVATE_SLP" = "y" ]; then
         if [ -x /usr/bin/firewall-cmd ]; then
-            firewall-cmd --permanent --zone=public --add-service=slp
-            firewall-cmd --state 2>/dev/null && firewall-cmd --reload
+            firewall-cmd --state 2> /dev/null
+            if [ $? -eq 0 ]; then
+              firewall-cmd --permanent --zone=public --add-service=slp
+              firewall-cmd --reload
+            else
+              firewall-offline-cmd --zone=public --add-service=slp
+            fi
         else
             sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
             sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427" > /dev/null 2>&1
