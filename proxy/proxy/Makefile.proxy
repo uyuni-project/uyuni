@@ -1,6 +1,9 @@
 # Makefile for building Spacewalk Proxy snapshots
 #
 
+include Makefile.python
+.DEFAULT_GOAL  :=  all
+
 TOP	= .
 
 SUBDIR  = proxy

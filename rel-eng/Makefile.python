@@ -1,3 +1,5 @@
+.DEFAULT_GOAL  :=  __unspecified
+
 define update_pip_env
 	rpm -e python3-pylint &>/dev/null
 	pip3 install --upgrade pip
@@ -5,3 +7,8 @@ define update_pip_env
 	pip3 install pylint==2.3.1
 	mkdir -p reports
 endef
+
+
+__unspecified ::
+	@echo "Specify some target, please"
+	@exit 1
