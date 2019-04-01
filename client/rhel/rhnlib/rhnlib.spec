@@ -76,12 +76,12 @@ BuildRequires:  python-devel
 Requires:       python-pyOpenSSL
 %else
 Requires:       python-openssl
-%endif # 0%{?suse_version} > 1200
+%endif # 0{?suse_version} > 1200
 %else
 Requires:       pyOpenSSL
-%endif # 0%{?suse_version}
-%endif # 0%{?fedora} >= 28 || 0%{?rhel} >= 8
-%endif # %{_vendor} != "debbuild"
+%endif # 0{?suse_version}
+%endif # 0{?fedora} >= 28 || 0{?rhel} >= 8
+%endif # {_vendor} != "debbuild"
 
 %if %{_vendor} == "debbuild"
 BuildRequires: python-dev

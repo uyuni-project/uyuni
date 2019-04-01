@@ -131,7 +131,7 @@ BuildRequires:  java-devel >= 11
 BuildRequires:  jpam
 BuildRequires:  oscache
 
-%endif # 0%{?suse_version}
+%endif # 0{?suse_version}
 Requires:       jakarta-commons-el
 Requires:       jakarta-commons-fileupload
 Requires:       jcommon
@@ -152,7 +152,7 @@ Requires:       xerces-j2
 %if 0%{?fedora}
 Requires:       classpathx-jaf
 
-%endif # 0%{?fedora}
+%endif # 0{?fedora}
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires:       servlet >= 3.0
@@ -181,8 +181,8 @@ BuildRequires:  struts >= 1.3.0
 BuildRequires:  struts-taglib >= 1.3.0
 BuildRequires:  tomcat6
 BuildRequires:  tomcat6-lib
-%endif # 0%{?suse_version}
-%endif # 0%{?fedora} || 0%{?rhel} >= 7
+%endif # 0{?suse_version}
+%endif # 0{?fedora} || 0{?rhel} >= 7
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -254,8 +254,8 @@ BuildRequires:  jakarta-commons-io
 BuildRequires:  jakarta-commons-logging
 BuildRequires:  jakarta-commons-validator
 BuildRequires:  jpackage-utils
-%endif #0%{?suse_version}
-%endif #0%{?fedora} || 0%{?rhel} >=7
+%endif # 0{?suse_version}
+%endif # 0{?fedora} || 0{?rhel} >=7
 
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
@@ -275,7 +275,7 @@ BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  /usr/bin/perl
 BuildRequires:  /usr/bin/xmllint
 BuildRequires:  jakarta-taglibs-standard
-%endif # 0%{?suse_version}
+%endif # 0{?suse_version}
 BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-junit
@@ -472,8 +472,8 @@ Requires:       jakarta-commons-cli
 Requires:       jakarta-commons-codec
 Requires:       jakarta-commons-lang
 Requires:       jakarta-commons-logging
-%endif # 0%{?suse_version}
-%endif # 0%{?fedora} || 0%{?rhel} >= 7
+%endif # 0{?suse_version}
+%endif # 0{?fedora} || 0{?rhel} >= 7
 Conflicts:      quartz < 2.0
 Obsoletes:      taskomatic < 5.3.0
 Obsoletes:      taskomatic-sat < 5.3.0
@@ -609,7 +609,7 @@ install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
 %else
 install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
-%endif # 0%{?fedora} >= 23
+%endif # 0{?fedora} >= 23
 
 %else
 %if 0%{?suse_version}
@@ -621,13 +621,13 @@ install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/contex
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
 install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
-%endif # 0%{?suse_version} < 1500
+%endif # 0{?suse_version} < 1500
 %else
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
 install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
-%endif # 0%{?suse_version}
-%endif # 0%{?fedora} || 0%{?rhel} >= 7
+%endif # 0{?suse_version}
+%endif # 0{?fedora} || 0{?rhel} >= 7
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US
@@ -924,7 +924,6 @@ fi
 %{jardir}/simple-xml.jar
 %{jardir}/sitemesh.jar
 %{jardir}/stringtree-json.jar
-# %{jardir}/velocity-*.jar
 %{jardir}/xalan-j2.jar
 %{jardir}/xalan-j2-serializer.jar
 %{jardir}/xerces-j2.jar
