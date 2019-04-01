@@ -1,3 +1,5 @@
+- Add makefile and pylintrc for PyLint
+
 -------------------------------------------------------------------
 Tue Mar 05 12:54:17 CET 2019 - jgonzalez@suse.com
 

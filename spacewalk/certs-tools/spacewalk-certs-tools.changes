@@ -1,3 +1,6 @@
+- Add support for Ubuntu to bootstrap script
+- Add makefile and pylintrc for PyLint
+
 -------------------------------------------------------------------
 Fri Mar 29 10:31:16 CET 2019 - jgonzalez@suse.com
 

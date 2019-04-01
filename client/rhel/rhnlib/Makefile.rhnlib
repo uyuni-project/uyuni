@@ -1,6 +1,8 @@
 # Makefile for the rhn modules
 #
 
+include     Makefile.python
+
 PYTHON      = /usr/bin/python
 
 NAME	    = rhnlib
@@ -25,7 +27,7 @@ all:	build
 
 setup.py: setup.py.in $(VERFILE)
 	@sed -e 's/@VERSION@/$(VERSION)/' -e 's/@NAME@/$(NAME)/' $< > $@
-	
+
 setup.cfg: setup.cfg.in $(VERFILE)
 	@sed 's/@RELEASE@/$(RELEASE)/' $< > $@
 
