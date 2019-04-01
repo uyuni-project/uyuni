@@ -104,9 +104,9 @@ Requires:       python-pyliblzma
 %else
 %if 0%{?rhel}
 Requires:       pyliblzma
-%endif # %if 0%{?rhel}
-%endif # 0%{?suse_version}
-%endif # 0%{?build_py3}
+%endif # if 0{?rhel}
+%endif # 0{?suse_version}
+%endif # 0{?build_py3}
 # for Debian support
 Requires:       %{python_prefix}-debian
 %if 0%{?pylint_check}
@@ -465,9 +465,9 @@ Requires:       python-pyliblzma
 %else
 %if 0%{?fedora} || 0%{?rhel} > 6
 Requires:       pyliblzma
-%endif # 0%{?fedora} || 0%{?rhel} > 6
-%endif # 0%{?suse_version}
-%endif # 0%{?build_py3}
+%endif # 0{?fedora} || 0{?rhel} > 6
+%endif # 0{?suse_version}
+%endif # 0{?build_py3}
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 %if 0%{?suse_version}

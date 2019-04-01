@@ -104,9 +104,9 @@ Requires:       zypper
 Requires:       dnf
 %else
 Requires:       yum
-%endif # 0%{?fedora}
-%endif # 0%{?suse_version}
-%endif # %{_vendor} != "debbuild"
+%endif # 0{?fedora}
+%endif # 0{?suse_version}
+%endif # {_vendor} != "debbuild"
 
 %if %{_vendor} == "debbuild"
 Requires: apt
@@ -189,9 +189,9 @@ Requires:       python-gudev
 Requires:       python-hwdata
 %else
 Requires:       hal >= 0.5.8.1-52
-%endif # 0%{?rhel} > 5
-%endif # 0%{?suse_version} >= 1140
-%endif # 0%{?fedora}
+%endif # 0{?rhel} > 5
+%endif # 0{?suse_version} >= 1140
+%endif # 0{?fedora}
 
 %if 0%{?rhel} == 5
 Requires:       newt
@@ -206,7 +206,7 @@ Requires:       dbus-1-python
 Requires:       python-newt
 %else
 Requires:       dbus-python
-%endif # 0%{?suse_version}
+%endif # 0{?suse_version}
 Requires:       logrotate
 Requires:       suseRegisterInfo
 
@@ -215,7 +215,7 @@ Requires:       suseRegisterInfo
 BuildRequires:  python-coverage
 BuildRequires:  rpm-python
 %endif
-%endif #%if %{_vendor} != "debbuild"
+%endif # if {_vendor} != "debbuild"
 
 %if %{_vendor} == "debbuild"
 Requires: python-rpm
@@ -1001,9 +1001,9 @@ make -f Makefile.rhn-client-tools test
 %{python_sitelib}/up2date_client/firstboot/rhn_create_profile_gui.*
 %{python_sitelib}/up2date_client/firstboot/rhn_review_gui.*
 %{python_sitelib}/up2date_client/firstboot/rhn_finish_gui.*
-%endif # 0%{?rhel} == 6
-%endif # 0%{?rhel} == 5
-%endif # 0%{?build_py2}
+%endif # 0{?rhel} == 6
+%endif # 0{?rhel} == 5
+%endif # 0{?build_py2}
 
 %if 0%{?build_py3}
 %files -n python3-spacewalk-client-setup-gnome
@@ -1020,9 +1020,9 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/__pycache__/gtk_compat.*
 %{python3_sitelib}/up2date_client/__pycache__/gui.*
 %{python3_sitelib}/up2date_client/__pycache__/progress.*
-%endif # %{_vendor} != "debbuild"
-%endif # 0%{?build_py3}
-%endif # ! 0%{?without_rhn_register}
+%endif # {_vendor} != "debbuild"
+%endif # 0{?build_py3}
+%endif # ! 0{?without_rhn_register}
 
 %if %{_vendor} == "debbuild"
 
