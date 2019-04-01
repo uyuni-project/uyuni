@@ -17,7 +17,7 @@ For information on how to work with multiple repositories and how to
 contribute, see the [Wiki](https://github.com/spacewalkproject/spacewalk/wiki).
 
 You can open bugs against [SUSE Manager](https://www.suse.com/products/suse-manager/) in [Bugzilla](https://bugzilla.suse.com/enter_bug.cgi?product=SUSE%20Manager%203.2).
-Feel free to contact us on the mailing list: <uyuni-devel@opensuse.org> or on [irc](https://www.uyuni-project.org/contact.html#irc).
+Feel free to contact us on the mailing list: <suse-manager@suse.de> or on #galaxy at irc.suse.de.
 
 Resources
 ---------
@@ -25,5 +25,3 @@ Resources
 Following links might be of value in case you are interested:
 
   * [Uyuni](https://github.com/uyuni-project/)
-  * [project pages](https://spacewalkproject.github.io/),
-  * [submit PR](https://github.com/spacewalkproject/spacewalk-wiki/pulls)
