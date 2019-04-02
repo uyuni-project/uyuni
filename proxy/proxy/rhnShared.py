@@ -439,7 +439,7 @@ class SharedHandler:
             # Get the value
             v = self._get_header(k, fromResponse.msg)
 
-            if (k == 'transfer-encoding') and ('chunked' in v):
+            if (k.lower() == 'transfer-encoding') and ('chunked' in v):
                 log_debug(5, "Filtering header", k, v)
                 continue
 
