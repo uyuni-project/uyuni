@@ -88,8 +88,13 @@ HELP
 open_firewall_ports() {
 echo "Open needed firewall ports..."
 if [ -x /usr/bin/firewall-cmd ]; then
-  firewall-cmd --permanent --zone=public --add-service=suse-manager-proxy
-  firewall-cmd --state 2>/dev/null && firewall-cmd --reload
+  firewall-cmd --state 2> /dev/null
+  if [ $? -eq 0 ]; then
+    firewall-cmd --permanent --zone=public --add-service=suse-manager-proxy
+    firewall-cmd --reload
+  else
+    firewall-offline-cmd --zone=public --add-service=suse-manager-proxy
+  fi
 else
   sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http" > /dev/null 2>&1
   sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https" > /dev/null 2>&1
@@ -707,8 +712,13 @@ default_or_input "Activate advertising proxy via SLP?" ACTIVATE_SLP "Y/n"
 ACTIVATE_SLP=$(yes_no $ACTIVATE_SLP)
 if [ $ACTIVATE_SLP -ne 0 ]; then
     if [ -x /usr/bin/firewall-cmd ]; then
+      firewall-cmd --state 2> /dev/null
+      if [ $? -eq 0 ]; then
         firewall-cmd --permanent --zone=public --add-service=slp
-	firewall-cmd --state 2>/dev/null && firewall-cmd --reload
+        firewall-cmd --reload
+      else
+        firewall-offline-cmd --zone=public --add-service=slp
+      fi
     else
         sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
         sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427" > /dev/null 2>&1

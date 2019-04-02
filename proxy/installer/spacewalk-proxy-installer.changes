@@ -1,3 +1,4 @@
+- open needed firewall ports also when firewall not currently running
 - Add makefile and lintrc for pylint
 
 -------------------------------------------------------------------
