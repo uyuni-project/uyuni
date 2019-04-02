@@ -9,6 +9,18 @@ define update_pip_env
 endef
 
 
+define install_pytest
+	pip3 install pytest==4.4.0
+endef
+
+
+define install_by_setup
+	rm -rf dist
+	python3 setup.py sdist
+	pip3 install dist/*
+	rm -rf dist
+endef
+
 __unspecified ::
 	@echo "Specify some target, please"
 	@exit 1
