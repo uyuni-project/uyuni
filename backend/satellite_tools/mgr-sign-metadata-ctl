@@ -197,7 +197,7 @@ elif [[  $ACTION = "check-config" ]]; then
         fi
 
         if [ -f $GPG_PUB_EXPORT_FILE ]; then
-            if gpg --with-fingerprint $GPG_PUB_EXPORT_FILE | grep --quiet $KEYID; then
+            if cat $GPG_PUB_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet $KEYID; then
                 echo "OK. Key ${KEYID} was exported to ${GPG_PUB_EXPORT_FILE}."
             else
                 echo "ERROR. Public key file ${GPG_PUB_EXPORT_FILE} exists but it doesn't contain key ${KEYID}."
