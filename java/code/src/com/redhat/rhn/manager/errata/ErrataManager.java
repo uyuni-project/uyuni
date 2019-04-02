@@ -317,11 +317,14 @@ public class ErrataManager extends BaseManager {
      * @param user the user
      */
     public static void truncateErrata(Channel srcChannel, Channel tgtChannel, User user) {
-        // 2-pass approach to prevent concurrent modification error
-        Set<Errata> toRemove = tgtChannel.getErratas().stream()
-                .filter(e -> !srcChannel.getErratas().contains(e))
-                .collect(toSet());
-        toRemove.forEach(e -> removeErratumFromChannel(e, tgtChannel, user));
+        Set<Errata> srcErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), srcChannel));
+        Set<Errata> tgtErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), tgtChannel));
+
+        // select errata that are exclusively in tgt channel
+        tgtErrata.removeAll(srcErrata);
+
+        // and remove them
+        tgtErrata.forEach(e -> removeErratumFromChannel(e, tgtChannel, user));
     }
 
     /**
