@@ -1,14 +1,16 @@
-#! /usr/bin/python
+#!/usr/bin/python
 from __future__ import print_function
 import sys
 import os
 import shutil
 import logging
+import subprocess
 from spacewalk.server import rhnSQL
 from spacewalk.common import usix
 from spacewalk.common.rhnConfig import CFG, initCFG
 from optparse import OptionParser
 import textwrap
+from string import Template
 
 msg_wrapper = textwrap.TextWrapper()
 msg_wrapper.initial_indent = '- '
@@ -179,9 +181,11 @@ def create_repo(label, flush, additional=[]):
 
     h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids)))
     packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
+    repotype = mgr_bootstrap_data.DATA[label].get('TYPE', 'yum')
     packagelist.extend(additional)
     logging.debug("The bootstrap repo should contain the following packages: {0}".format(packagelist))
 
+    debs_dir = os.path.join(destdir, 'debs')
     for pkgaltstr in packagelist:
         alt = pkgaltstr.split("|")
         altpretty =  ', '.join("'%s'" %(e) for e in alt)
@@ -207,7 +211,7 @@ def create_repo(label, flush, additional=[]):
                 continue
             for p in pkgs:
                 logging.debug(p)
-                rpmdir = os.path.join(destdir, p['arch'])
+                rpmdir = os.path.join(destdir, p['arch']) if repotype != 'deb' else debs_dir
                 if not os.path.exists(rpmdir):
                     os.makedirs(rpmdir)
                 print("copy '%s'" % p['nvrea'])
@@ -216,13 +220,43 @@ def create_repo(label, flush, additional=[]):
                     shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
 
     if dryrun:
-        print("createrepo -s sha %s" % destdir)
+        if repotype == 'deb':
+            debs = " ".join([os.path.join(debs_dir, f) for f in os.listdir(debs_dir)])
+            print("/usr/bin/reprepro -b {0} includedeb {1} {2}".format(destdir, "bootstrap", debs))
+        else:
+            print("createrepo -s sha %s" % destdir)
     else:
-        os.system("createrepo -s sha %s" % destdir)
+        if repotype == 'deb':
+            reprepro_conf_tmpl = Template("Origin: $origin\n" \
+            "Label: $label\n" \
+            "Codename: $codename\n" \
+            "Architectures: $arches\n" \
+            "Components: $comps\n" \
+            "Description: $desc\n")
+            codename="bootstrap"
+            reprepro_conf = reprepro_conf_tmpl.substitute(origin="mgr",
+                    label="mgr", codename=codename, arches="amd64 i386", comps="main", desc="Bootstrap repo")
+            reprepro_conf_dir = os.path.join(destdir, "conf")
+            if not os.path.exists(reprepro_conf_dir):
+                os.makedirs(reprepro_conf_dir)
+            with open(os.path.join(reprepro_conf_dir, "distributions"), "w") as conf_file:
+                conf_file.write(reprepro_conf)
+            logging.debug("Created reprepro config file in {0}".format(os.path.join(destdir, "distributions")))
+            debs = [os.path.join(debs_dir, f) for f in os.listdir(debs_dir)]
+            try:
+                subprocess.check_call(["/usr/bin/reprepro", "-b", destdir, "includedeb", codename] + debs)
+                logging.debug("Removing directory {0}".format(debs_dir))
+                shutil.rmtree(debs_dir, ignore_errors=True)
+            except subprocess.CalledProcessError as err:
+                print("Error creating bootstrap repo.")
+                logging.debug(err)
+                sys.exit(1)
+        else:
+            os.system("createrepo -s sha %s" % destdir)
     if errors:
         for m in messages:
             print(m)
-        if label.startswith('RES') and not options.usecustomchannels:
+        if (label.startswith('RES') or label.lower().startswith('ubuntu'))  and not options.usecustomchannels:
             print("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
         suggestions = list(filter(None, suggestions.values()))
         if suggestions:

@@ -341,6 +341,86 @@ PKGLIST15_NO_Z = [
                 "libunwind",
             ]
 
+PKGLISTUBUNTU1604 = [
+    "libsodium18",
+    "dctrl-tools",
+    "libzmq5",
+    "python-chardet",
+    "python-croniter",
+    "python-crypto",
+    "python-dateutil",
+    "python-enum34",
+    "python-ipaddress",
+    "python-jinja2",
+    "python-markupsafe",
+    "python-minimal",
+    "python-msgpack",
+    "python-openssl",
+    "python-pkg-resources",
+    "python-psutil",
+    "python-requests",
+    "python-six",
+    "python-systemd",
+    "python-tornado",
+    "python-tz",
+    "python-urllib3",
+    "python-yaml",
+    "python-zmq",
+    "python-pycurl",
+    "salt-common",
+    "salt-minion",
+]
+
+PKGLISTUBUNTU1804 = [
+    "dctrl-tools",
+    "javascript-common",
+    "libjs-jquery",
+    "libjs-sphinxdoc",
+    "libjs-underscore",
+    "libnorm1",
+    "libpgm-5.2-0",
+    "libpython-stdlib",
+    "libpython2.7-minimal",
+    "libpython2.7-stdlib",
+    "libsodium23",
+    "libzmq5",
+    "python",
+    "python-apt",
+    "python-asn1crypto",
+    "python-backports-abc",
+    "python-certifi",
+    "python-cffi-backend",
+    "python-chardet",
+    "python-concurrent.futures",
+    "python-croniter",
+    "python-crypto",
+    "python-cryptography",
+    "python-dateutil",
+    "python-enum34",
+    "python-idna",
+    "python-ipaddress",
+    "python-jinja2",
+    "python-markupsafe",
+    "python-minimal",
+    "python-msgpack",
+    "python-openssl",
+    "python-pkg-resources",
+    "python-psutil",
+    "python-requests",
+    "python-singledispatch",
+    "python-six",
+    "python-systemd",
+    "python-tornado",
+    "python-tz",
+    "python-urllib3",
+    "python-yaml",
+    "python-zmq",
+    "python2.7",
+    "python2.7-minimal",
+    "salt-common",
+    "salt-minion",
+]
+
 DATA = {
     'SLE-11-SP1-i586' : {
                           'PDID' : 684, 'PKGLIST' : PKGLIST11,
@@ -654,5 +734,15 @@ DATA = {
         'PDID' : [1772, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
+    'ubuntu-16.04-amd64' : {
+        'PDID' : [-2, 1917], 'PKGLIST' : PKGLISTUBUNTU1604,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/16/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-18.04-amd64' : {
+        'PDID' : [-1, 1918], 'PKGLIST' : PKGLISTUBUNTU1804,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
+        'TYPE' : 'deb'
+    }
 }
 
