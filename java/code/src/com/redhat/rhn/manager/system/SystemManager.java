@@ -86,7 +86,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
@@ -2029,21 +2028,40 @@ public class SystemManager extends BaseManager {
         m.execute(in, new HashMap<String, Integer>());
         log.debug("entitle_server mode query executed.");
 
-        server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
-        if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
-                !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
-            server.asMinionServer().ifPresent(SystemManager::updateLibvirtEngine);
-        }
-        else if (EntitlementManager.MONITORING.equals(ent)) {
-            try {
-                FormulaFactory.saveServerFormulas(server.asMinionServer().get().getMinionId(),
-                        Arrays.asList(FormulaFactory.PROMETHEUS_EXPORTERS));
+        server.asMinionServer().ifPresent(minion -> {
+            SystemManager.refreshPillarDataForMinion(minion);
+
+            if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
+                    !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
+                SystemManager.updateLibvirtEngine(minion);
             }
-            catch (UnsupportedOperationException | IOException e) {
-                log.error("Error assigning formula: " + e.getMessage(), e);
-                result.addError(new ValidatorError("system.entitle.formula_error"));
+            else if (EntitlementManager.MONITORING.equals(ent)) {
+                try {
+                    // Add the formula to other assigned ones
+                    List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+                    if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
+                        formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
+                    }
+                    FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
+
+                    // Save the default formula data
+                    Map<String, Object> data = new HashMap<>();
+                    Map<String, Object> nodeExporter = new HashMap<>();
+                    nodeExporter.put("enabled", true);
+                    Map<String, Object> postgresExporter = new HashMap<>();
+                    postgresExporter.put("enabled", false);
+                    postgresExporter.put("data_source_name", "postgresql://user:passwd@localhost:5432/database?sslmode=disable");
+                    data.put("node_exporter", nodeExporter);
+                    data.put("postgres_exporter", postgresExporter);
+                    FormulaFactory.saveServerFormulaData(data, minion.getMinionId(),
+                            FormulaFactory.PROMETHEUS_EXPORTERS);
+                }
+                catch (UnsupportedOperationException | IOException e) {
+                    log.error("Error assigning formula: " + e.getMessage(), e);
+                    result.addError(new ValidatorError("system.entitle.formula_error"));
+                }
             }
-        }
+        });
 
         log.debug("done.  returning null");
         return result;
