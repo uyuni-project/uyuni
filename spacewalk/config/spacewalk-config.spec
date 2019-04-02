@@ -169,6 +169,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES xsendfile
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
+sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 %endif
 if [ -e %{apacheconfdir}/ssl.key/spacewalk.key ]; then
   ln -s spacewalk.key %{apacheconfdir}/ssl.key/server.key
