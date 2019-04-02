@@ -23,7 +23,7 @@ docker_pylint ::
 	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/spacecmd; make -f Makefile.python __pylint"
 
 docker_pytest ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/usix; make -f Makefile.python __pytest"
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/spacecmd; make -f Makefile.python __pytest"
 
 docker_shell ::
 	docker run -t -i --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
