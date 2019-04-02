@@ -1,4 +1,5 @@
-- open needed firewall ports also when firewall not currently running
+- open needed firewall ports also when firewall not currently
+  running (bsc#1131231)
 - add makefile and pylint configuration
 
 -------------------------------------------------------------------
