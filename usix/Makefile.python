@@ -15,7 +15,7 @@ __pylint ::
 __pytest ::
 	$(call update_pip_env)
 	$(call install_pytest)
-	$(call install_by_setup)
+	$(call install_by_setup, './')
 	cd tests
 	pytest --disable-warnings --tb=native --color=yes -svv
 

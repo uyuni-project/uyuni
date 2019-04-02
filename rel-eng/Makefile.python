@@ -15,6 +15,7 @@ endef
 
 
 define install_by_setup
+	cd $1
 	rm -rf dist
 	python3 setup.py sdist
 	pip3 install dist/*
