@@ -1,3 +1,5 @@
+- Fix mgr-sign-metadata-ctl checking of exported keys.
+
 -------------------------------------------------------------------
 Fri Mar 29 10:29:46 CET 2019 - jgonzalez@suse.com
 
