@@ -520,7 +520,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(clone.getOriginal().equals(published));
     }
 
-    public void listErrataChannelPackages() {
+    public void testListErrataChannelPackages() {
         try {
             Channel chan = ChannelTestUtils.createBaseChannel(user);
             Errata e = ErrataFactoryTest.createTestErrata(user.getId());
