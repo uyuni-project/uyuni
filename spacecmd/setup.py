@@ -25,7 +25,6 @@ def get_version_changelog():
                     break
     return version
 
-
 setup(
     name='spacecmd',
     version=get_version_changelog(),
