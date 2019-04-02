@@ -204,6 +204,8 @@ if [ -x /usr/bin/zypper ] ; then
     INSTALLER=zypper
 elif [ -x /usr/bin/yum ] ; then
     INSTALLER=yum
+elif [ -x /usr/bin/apt ] ; then
+    INSTALLER=apt
 fi
 
 if [ ! -w . ] ; then
@@ -276,23 +278,19 @@ function clean_up_old_trad_repos() {{
 }}
 
 function clean_up_old_salt_repos() {{
-  local salt_minion_channels_file="susemanager:channels.repo"
-
-  if [ -f "$1/$salt_minion_channels_file" ] ; then
-    echo "Removing $1/$salt_minion_channels_file"
-    rm -f "$1/$salt_minion_channels_file"
+  if [ -f "$1" ] ; then
+    echo "Removing $1"
+    rm -f "$1"
   fi
 }}
 
 function clean_up_old_repos() {{
-  local suse_os_repos_path="/etc/zypp/repos.d"
-  local redhat_os_repos_path="/etc/yum.repos.d"
+  clean_up_old_salt_repos "/etc/zypp/repos.d/susemanager:channels.repo"
+  clean_up_old_salt_repos "/etc/yum.repos.d/susemanager:channels.repo"
+  clean_up_old_salt_repos "/etc/apt/sources.list.d/susemanager:channels.list"
 
-  clean_up_old_salt_repos $suse_os_repos_path
-  clean_up_old_salt_repos $redhat_os_repos_path
-
-  clean_up_old_trad_repos $suse_os_repos_path
-  clean_up_old_trad_repos $redhat_os_repos_path
+  clean_up_old_trad_repos "/etc/zypp/repos.d"
+  clean_up_old_trad_repos "/etc/yum.repos.d"
 }}
 
 clean_up_old_repos
@@ -544,6 +542,99 @@ if [ "$INSTALLER" == zypper ]; then
   zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
 fi
 
+if [ "$INSTALLER" == apt ]; then
+    function check_deb_pkg_installed {{
+        dpkg-query -W -f='${{Status}}' $1 2>/dev/null | grep -q "ok installed"
+    }}
+
+    function getA_CLIENT_CODE_BASE() {{
+        local BASE=""
+        local VERSION=""
+
+	if [ -f /etc/os-release ]; then
+	    BASE=$(source /etc/os-release; echo $ID)
+	    VERSION=$(source /etc/os-release; echo $VERSION_ID)
+        fi
+        A_CLIENT_CODE_BASE="${{BASE:-unknown}}"
+	local VERCOMPS=(${{VERSION/\./ }}) # split into an array 18.04 -> (18 04)
+        A_CLIENT_CODE_MAJOR_VERSION=${{VERCOMPS[0]}}
+	A_CLIENT_CODE_MINOR_VERSION=$((${{VERCOMPS[1]}} + 0)) # convert "04" -> 4
+    }}
+
+    function getA_MISSING() {{
+        local NEEDED="salt-common salt-minion"
+        A_MISSING=""
+        for P in $NEEDED; do
+            check_deb_pkg_installed "$P" || A_MISSING="$A_MISSING $P"
+        done
+    }}
+
+    function test_deb_repo_exists() {{
+      local repourl="$CLIENT_REPO_URL"
+
+      $FETCH $repourl/dists/bootstrap/Release
+      if [ ! -f "Release" ] ; then
+        echo "Bootstrap repo '$repourl' does not exist."
+        repourl=""
+        CLIENT_REPO_URL=""
+      fi
+      rm -f Release
+    }}
+
+    function setup_deb_bootstrap_repo() {{
+      local repopath="$CLIENT_REPO_FILE"
+      local repourl="$CLIENT_REPO_URL"
+
+      test_deb_repo_exists
+
+      if [ -n "$CLIENT_REPO_URL" ]; then
+        echo " adding client software repository at $repourl"
+        echo "deb [trusted=yes] $repourl bootstrap main" >"$repopath"
+      fi
+    }}
+
+    echo "* check for necessary packages being installed..."
+    getA_CLIENT_CODE_BASE
+    echo "* client codebase is ${{A_CLIENT_CODE_BASE}}-${{A_CLIENT_CODE_MAJOR_VERSION}}.${{A_CLIENT_CODE_MINOR_VERSION}}"
+    getA_MISSING
+
+    CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
+    CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/${{A_CLIENT_CODE_MINOR_VERSION}}/bootstrap"
+    CLIENT_REPO_NAME="susemanager_bootstrap"
+    CLIENT_REPO_FILE="/etc/apt/sources.list.d/$CLIENT_REPO_NAME.list"
+
+    setup_deb_bootstrap_repo
+
+    apt-get --yes update
+
+    if [ -z "$A_MISSING" ]; then
+        echo "  no packages missing."
+    else
+        echo "* going to install missing packages..."
+	    # check if there are any leftovers from previous salt-minion installs and purge them
+        if [ dpkg-query -W -f='${{Status}}' salt-minion 2>/dev/null | grep -q "deinstall ok config-files" ]; then
+            echo "* purging previous Salt config files"
+	        apt-get purge salt-minion
+	        apt-get purge salt-common
+	        rm -rf /etc/salt/minion.d/
+        fi
+        apt-get --yes install $A_MISSING
+
+        for P in $A_MISSING; do
+            check_deb_pkg_installed "$P" || {{
+            echo "ERROR: Failed to install all missing packages."
+            exit 1
+        }}
+        done
+    fi
+    # try update main packages for registration from any repo which is available
+    apt-get install --only-upgrade salt-common salt-minion ||:
+
+    # remove bootstrap repo
+    rm -f $CLIENT_REPO_FILE
+
+fi
+
 remove_bootstrap_repo
 
 """.format(PKG_NAME=' '.join(PKG_NAME), PKG_NAME_YUM=' '.join(PKG_NAME_YUM),
@@ -630,13 +721,23 @@ def getCorpCACertSh():
 echo
 if [ $USING_SSL -eq 1 ] ; then
 
-    CERT_DIR=/usr/share/rhn
-    TRUST_DIR=/etc/pki/ca-trust/source/anchors
-    UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+    if [ "$INSTALLER" == "apt" ]; then
+      CERT_DIR=/usr/local/share/ca-certificates/susemanager
+      TRUST_DIR=/usr/local/share/ca-certificates/susemanager
+      UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+      ORG_CA_CERT_IS_RPM_YN=0
+      ORG_CA_CERT=RHN-ORG-TRUSTED-SSL-CERT
+    else
+      CERT_DIR=/usr/share/rhn
+      TRUST_DIR=/etc/pki/ca-trust/source/anchors
+      UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+    fi
 
     if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
       # get name from config
       CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
+    elif [ "$INSTALLER" == "apt" ]; then
+      CERT_FILE="${ORG_CA_CERT}.crt"
     else
       CERT_FILE=${ORG_CA_CERT}
     fi
@@ -648,7 +749,7 @@ if [ $USING_SSL -eq 1 ] ; then
             # SLE 12
             TRUST_DIR=/etc/pki/trust/anchors
             UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
-        elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash ]; then
+        elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash -a "$INSTALLER" == "zypper" ]; then
             # SLE 11
             TRUST_DIR=/etc/ssl/certs
             UPDATE_TRUST_CMD="/usr/bin/c_rehash"
@@ -667,13 +768,13 @@ if [ $USING_SSL -eq 1 ] ; then
         if [ ! -d $TRUST_DIR ]; then
             return
         fi
-
-        if [ -f $CERT_DIR/$CERT_FILE ]; then
-            ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
-        else
-            rm -f $TRUST_DIR/$CERT_FILE
+        if [ "$CERT_DIR" != "$TRUST_DIR" ]; then
+            if [ -f $CERT_DIR/$CERT_FILE ]; then
+                ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
+            else
+                rm -f $TRUST_DIR/$CERT_FILE
+            fi
         fi
-
         $UPDATE_TRUST_CMD
     }
 
@@ -696,7 +797,7 @@ if [ $USING_SSL -eq 1 ] ; then
         rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
         rm -f ${ORG_CA_CERT}
     else
-        mv ${ORG_CA_CERT} ${CERT_DIR}
+        mv ${ORG_CA_CERT} ${CERT_DIR}/${CERT_FILE}
     fi
 
     if [  $ORG_CA_CERT_IS_RPM_YN -eq 0 ] ; then
@@ -871,7 +972,7 @@ removeTLSCertificate
 
 echo "* starting salt daemon and enabling it during boot"
 
-if [ -f /usr/lib/systemd/system/salt-minion.service ] ; then
+if [ -f /usr/lib/systemd/system/salt-minion.service ] || [ -f /lib/systemd/system/salt-minion.service ] ; then
     systemctl enable salt-minion
     systemctl restart salt-minion
 else
@@ -893,16 +994,29 @@ def removeTLSCertificate():
 
     return """\
 function removeTLSCertificate() {
-    CERT_DIR=/usr/share/rhn
-    TRUST_DIR=/etc/pki/ca-trust/source/anchors
-    UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+    if [ "$INSTALLER" == "apt" ]; then
+      CERT_DIR=/usr/local/share/ca-certificates/susemanager
+      TRUST_DIR=/usr/local/share/ca-certificates/susemanager
+      UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+      ORG_CA_CERT_IS_RPM_YN=0
+      ORG_CA_CERT=RHN-ORG-TRUSTED-SSL-CERT
+    else
+       CERT_DIR=/usr/share/rhn
+       TRUST_DIR=/etc/pki/ca-trust/source/anchors
+       UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+    fi
 
     if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
         CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
         rpm -e `basename ${ORG_CA_CERT} .rpm`
     else
-        CERT_FILE=${ORG_CA_CERT}
-        rm -f /usr/share/rhn/${ORG_CA_CERT}
+        if [ -f /usr/share/rhn/${ORG_CA_CERT} ]; then
+                CERT_FILE=${ORG_CA_CERT}
+                rm -f /usr/share/rhn/${ORG_CA_CERT}
+        elif [ -f /usr/local/share/ca-certificates/susemanager/${ORG_CA_CERT}.crt ]; then
+                CERT_FILE=${ORG_CA_CERT}.crt
+                rm -f /usr/local/share/ca-certificates/susemanager/${CERT_FILE}
+        fi
     fi
     updateCertificates
 }

@@ -1,3 +1,4 @@
+- Add support for Ubuntu to bootstrap script
 - clean up downloaded gpg keys after bootstrap (bsc#1126075)
 
 -------------------------------------------------------------------
