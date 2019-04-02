@@ -127,32 +127,33 @@ def get_kernel_live_version():
 
         salt '*' sumautil.get_kernel_live_version
     '''
-    kernel_live_version = _kgr()
+    kernel_live_version = _klp()
     if not kernel_live_version:
         log.debug("No kernel live patch is active")
 
     return kernel_live_version
 
-def _kgr():
+def _klp():
     '''
-    kgr to identify the current kgraft patch
+    klp to identify the current kernel live patch
 
     :return:
     '''
-    kgr = salt.utils.which_bin(['kgr'])
+    # get 'kgr' for versions prior to SLE 15
+    klp = salt.utils.path.which_bin(['klp', 'kgr'])
     patchname = None
-    if kgr is not None:
+    if klp is not None:
         try:
             # loop until patching is finished
             for i in range(10):
-                stat = __salt__['cmd.run_all']('{0} status'.format(kgr), output_loglevel='quiet')
-                log.debug("kgr status: {0}".format(stat['stdout']))
+                stat = __salt__['cmd.run_all']('{0} status'.format(klp), output_loglevel='quiet')
+                log.debug("klp status: {0}".format(stat['stdout']))
                 if stat['stdout'].strip().splitlines()[0] == 'ready':
                     break
                 time.sleep(1)
             re_active = re.compile(r"^\s+active:\s*(\d+)$")
-            ret = __salt__['cmd.run_all']('{0} -v patches'.format(kgr), output_loglevel='quiet')
-            log.debug("kgr patches: {0}".format(ret['stdout']))
+            ret = __salt__['cmd.run_all']('{0} -v patches'.format(klp), output_loglevel='quiet')
+            log.debug("klp patches: {0}".format(ret['stdout']))
             if ret['retcode'] == 0:
                 for line in ret['stdout'].strip().splitlines():
                     if line.startswith('#'):
@@ -161,8 +162,9 @@ def _kgr():
                     match_active = re_active.match(line)
                     if match_active and int(match_active.group(1)) > 0:
                         return {'mgr_kernel_live_version': patchname }
-                    elif line.startswith('kgraft'):
+                    elif line.startswith('kgraft') or line.startswith('livepatch'):
+                        # kgr patches have prefix 'kgraft', whereas klp patches start with 'livepatch'
                         patchname = line.strip()
 
         except Exception as error:
-            log.error("kgr: {0}".format(str(error)))
+            log.error("klp: {0}".format(str(error)))
