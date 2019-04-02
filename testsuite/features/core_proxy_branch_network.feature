@@ -137,8 +137,7 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Enable avahi and proxy services on the branch server
     Given service "firewalld" is active on "proxy"
-    And I open avahi port on the proxy
-    And I open proxy ports on the proxy
+    When I open avahi port on the proxy
 
 @proxy
 @private_net
