@@ -86,7 +86,8 @@
 - features/srv_docker_advanced_content_management.feature
 - features/srv_docker_cve_audit.feature
 # too many failures and takes too long, needs some investigation
-# - features/min_osimage_build_image.feature
+# OS image build tests are required for proxy_retail_pxeboot feature
+- features/min_osimage_build_image.feature
 - features/min_salt_install_package.feature
 - features/srv_power_management.feature
 - features/srv_datepicker.feature
