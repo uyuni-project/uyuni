@@ -67,3 +67,20 @@ class TestSCShell:
             assert not os.path.exists(shell.history_file)
             assert m_logger.error.call_args[0][0] == "Could not read history file"
 
+    @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.sys.exit", MagicMock(side_effect=Exception("Exit attempt")))
+    @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
+    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    def test_shell_precmd_exit_keywords(self):
+        """
+        Test 'precmd' method of the shell on exit keywords.
+        """
+        options = MagicMock()
+        options.nohistory = True
+        shell = SpacewalkShell(options, "", None)
+        shell.config["server"] = ""
+        for cmd in ["exit", "quit", "eof"]:
+            with pytest.raises(Exception) as exc:
+                shell.precmd(cmd)
+            assert "Exit attempt" in str(exc)
+
