@@ -1,3 +1,5 @@
+- changed regex in spacewalk-schema-upgrade to also match alnum characters in release
+
 -------------------------------------------------------------------
 Fri Mar 29 10:37:00 CET 2019 - jgonzalez@suse.com
 
