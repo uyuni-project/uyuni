@@ -84,3 +84,16 @@ class TestSCShell:
                 shell.precmd(cmd)
             assert "Exit attempt" in str(exc)
 
+    @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
+    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    def test_shell_precmd_common_keywords(self):
+        """
+        Test 'precmd' method of the shell on common keywords, e.g. login, logout, clear etc.
+        """
+        options = MagicMock()
+        options.nohistory = True
+        shell = SpacewalkShell(options, "", None)
+        shell.config["server"] = ""
+        for cmd in ["help", "login", "logout", "whoami", "history", "clear"]:
+            assert shell.precmd(cmd) == cmd
