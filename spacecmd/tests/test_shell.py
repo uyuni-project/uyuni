@@ -127,3 +127,20 @@ class TestSCShell:
         with pytest.raises(Exception) as exc:
             shell.precmd("system_list")
         assert "login attempt" in str(exc)
+
+    @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
+    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    def test_shell_precmd_help_keyword(self):
+        """
+        Test 'precmd' method of the shell on --help/-h arguments.
+        """
+        options = MagicMock()
+        options.nohistory = True
+        shell = SpacewalkShell(options, "", None)
+        shell.config["server"] = ""
+        shell.session = True
+
+        assert shell.precmd("system_list --help") == "help system_list"
+        assert shell.precmd("system_list -h") == "help system_list"
+
