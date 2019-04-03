@@ -97,3 +97,16 @@ class TestSCShell:
         shell.config["server"] = ""
         for cmd in ["help", "login", "logout", "whoami", "history", "clear"]:
             assert shell.precmd(cmd) == cmd
+    @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
+    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    def test_shell_precmd_empty_line(self):
+        """
+        Test 'precmd' method of the shell on empty line.
+        """
+        options = MagicMock()
+        options.nohistory = True
+        shell = SpacewalkShell(options, "", None)
+        shell.config["server"] = ""
+        assert shell.precmd("") == ""
+
