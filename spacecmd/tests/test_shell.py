@@ -97,6 +97,7 @@ class TestSCShell:
         shell.config["server"] = ""
         for cmd in ["help", "login", "logout", "whoami", "history", "clear"]:
             assert shell.precmd(cmd) == cmd
+
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
     @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
