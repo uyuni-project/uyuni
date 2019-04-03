@@ -261,7 +261,7 @@ public class ErrataManager extends BaseManager {
      */
     public static Set<Errata> mergeErrataToChannel(User user, Set<Errata> errataToMergeIn,
             Channel toChannel, Channel fromChannel) {
-        return mergeErrataToChannel(user, errataToMergeIn, toChannel, fromChannel, false, true);
+        return mergeErrataToChannel(user, errataToMergeIn, toChannel, fromChannel, true, true);
     }
 
     /**
