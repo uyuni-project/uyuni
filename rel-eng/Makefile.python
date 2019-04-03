@@ -25,3 +25,6 @@ endef
 __unspecified ::
 	@echo "Specify some target, please"
 	@exit 1
+
+__pytest_refresh ::
+	$(call install_by_setup, '.')
