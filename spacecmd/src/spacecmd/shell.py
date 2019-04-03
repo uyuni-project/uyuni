@@ -175,7 +175,6 @@ class SpacewalkShell(Cmd):
             # repeat the last command
             line = readline.get_history_item(
                 readline.get_current_history_length())
-
             if line:
                 history_match = True
             else:
