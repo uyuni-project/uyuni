@@ -14,6 +14,7 @@ class TestSCShell:
     """
     Test shell in spacecmd.
     """
+    @patch("spacecmd.shell.atexit", MagicMock())
     def test_shell_history(self):
         """
         Test history length.
