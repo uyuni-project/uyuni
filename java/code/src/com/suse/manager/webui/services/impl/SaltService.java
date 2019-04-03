@@ -180,6 +180,7 @@ public class SaltService {
         defaultBatch = Batch.custom().withBatchAsAmount(ConfigDefaults.get().getSaltBatchSize())
                         .withDelay(ConfigDefaults.get().getSaltBatchDelay())
                         .withPresencePingTimeout(ConfigDefaults.get().getSaltPresencePingTimeout())
+                        .withPresencePingGatherJobTimeout(ConfigDefaults.get().getSaltPresencePingGatherJobTimeout())
                         .build();
     }
 

@@ -272,6 +272,11 @@ public class ConfigDefaults {
     public static final String SALT_PRESENCE_PING_TIMEOUT = "java.salt_presence_ping_timeout";
 
     /**
+     * Timeout in seconds for gathering the presence ping jobs performed in Salt Minions during salt batch calls
+     */
+    public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT = "java.salt_presence_ping_gather_job_timeout";
+
+    /**
      * Upper limit to the number of minions that execute a single Action concurrently. Lowering this value
      * prevents thundering-herd effects from Action execution but can decrease overall performance as the
      * overall level of parallelization is reduced. This is translated to the `--batch-size` Salt option.
@@ -849,6 +854,14 @@ public class ConfigDefaults {
      */
     public int getSaltPresencePingTimeout() {
         return Config.get().getInt(SALT_PRESENCE_PING_TIMEOUT, 4);
+    }
+
+    /**
+     * Returns salt presence ping job gather_job_timeout
+     * @return salt presence ping job gather_job_timeout
+     */
+    public int getSaltPresencePingGatherJobTimeout() {
+        return Config.get().getInt(SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT, 1);
     }
 
     /**
