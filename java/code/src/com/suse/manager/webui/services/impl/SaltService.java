@@ -823,7 +823,7 @@ public class SaltService {
      * @return the LocalAsyncResult of the test.ping call
      * @throws SaltException if we get a failure from Salt
      */
-    public LocalAsyncResult<Boolean> ping(MinionList targetIn) throws SaltException {
+    public Optional<LocalAsyncResult<Boolean>> ping(MinionList targetIn) throws SaltException {
         try {
             LocalCall<Boolean> call = Test.ping();
             return callAsync(call, targetIn);

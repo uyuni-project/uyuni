@@ -53,7 +53,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper;
-import com.suse.salt.netapi.results.CmdExecCodeAll;
+import com.suse.salt.netapi.results.CmdResult;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
@@ -336,13 +336,13 @@ public class RegistrationUtils {
                     .applyState(server.getMinionId(), "packages.redhatproductinfo");
             Optional<String> centosReleaseContent = applyResultMap.map(
                     map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
+                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
             Optional<String> rhelReleaseContent = applyResultMap.map(
                     map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
+                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
             Optional<String> whatProvidesRes = applyResultMap.map(map -> map
                     .get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
+                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
 
             Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
                     server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);

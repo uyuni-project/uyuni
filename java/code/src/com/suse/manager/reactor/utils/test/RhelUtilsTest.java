@@ -33,7 +33,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.parser.JsonParser;
-import com.suse.salt.netapi.results.CmdExecCodeAll;
+import com.suse.salt.netapi.results.CmdResult;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.Collections;
@@ -64,6 +64,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -106,13 +107,13 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         Map<String, State.ApplyResult> map = new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
                 TestUtils.readAll(TestUtils.findTestData(json)));
         String centosReleaseContent = map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
-                .getChanges(CmdExecCodeAll.class)
+                .getChanges(CmdResult.class)
                 .getStdout();
         String rhelReleaseContent = map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run")
-                .getChanges(CmdExecCodeAll.class)
+                .getChanges(CmdResult.class)
                 .getStdout();
         String whatProvidesRes = map.get("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
-                .getChanges(CmdExecCodeAll.class)
+                .getChanges(CmdResult.class)
                 .getStdout();
         MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
         if (setupMinion != null) {
