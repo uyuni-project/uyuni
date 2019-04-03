@@ -22,6 +22,6 @@ Feel free to contact us on the mailing list: <suse-manager@suse.de> or on #galax
 Resources
 ---------
 
-Following links might be of value in case you are interested:
+Following link might be of value in case you are interested:
 
   * [Uyuni](https://github.com/uyuni-project/)
