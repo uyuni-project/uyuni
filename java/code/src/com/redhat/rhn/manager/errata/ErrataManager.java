@@ -244,8 +244,6 @@ public class ErrataManager extends BaseManager {
         //Save the errata
         log.debug("addChannelsToErrata - storing errata");
         storeErrata(errata);
-
-        errata = (Errata) HibernateFactory.reload(errata);
         log.debug("addChannelsToErrata - errata reloaded from DB");
         return errata;
     }

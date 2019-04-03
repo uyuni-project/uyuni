@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Errata;
@@ -134,8 +135,8 @@ public class ChannelAction extends RhnSetAction {
         errata.clearChannels(); //clear the channels associated with errata.
         //add the channels from the set back to the errata
 
-        errata = ErrataManager.addChannelsToErrata(errata,
-                newChannels, user);
+        errata = ErrataManager.addChannelsToErrata(errata, newChannels, user);
+        errata = (Errata) HibernateFactory.reload(errata);
 
         //Update Errata Cache
         if (errata.isPublished()) {
