@@ -111,3 +111,19 @@ class TestSCShell:
         shell.config["server"] = ""
         assert shell.precmd("") == ""
 
+    @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
+    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    def test_shell_precmd_session_login(self):
+        """
+        Test 'precmd' method of the shell on session login.
+        """
+        options = MagicMock()
+        options.nohistory = True
+        shell = SpacewalkShell(options, "", None)
+        shell.config["server"] = ""
+        shell.do_login = MagicMock(side_effect=Exception("login attempt"))
+
+        with pytest.raises(Exception) as exc:
+            shell.precmd("system_list")
+        assert "login attempt" in str(exc)
