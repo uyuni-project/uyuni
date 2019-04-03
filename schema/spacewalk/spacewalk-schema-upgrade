@@ -96,7 +96,7 @@ if ($ENV{SUMA_TEST_SCHEMA_VERSION}) {
 }
 
 my $target_schema = join '-', $my_schema_name, $my_schema_version, $my_schema_release;
-(my $target_schema_norm = $target_schema) =~ s!^(.+-\d+(\.\d+)*)(\..*)*$!$1!;
+(my $target_schema_norm = $target_schema) =~ s!^(.+-\d+(\.\d+)*-[a-zA-Z0-9]*)(\..*)*$!$1!;
 
 my $schema_version = run_query(<<EOF);
     select rhnPackageName.name || '-' || (PE.evr).version || '-' || (PE.evr).release
@@ -129,7 +129,7 @@ if (not $schema_version =~ /^rhn-satellite-schema-|^spacewalk-schema-|^satellite
 }
 
 my $start_schema = $schema_version;
-(my $start_schema_norm = $start_schema) =~ s!^(.+-\d+(\.\d+)*)(\..*)*$!$1!;
+(my $start_schema_norm = $start_schema) =~ s!^(.+-\d+(\.\d+)*-[a-zA-Z0-9]*)(\..*)*$!$1!;
 
 print "Schema upgrade: [$start_schema] -> [$target_schema]\n";
 
@@ -161,7 +161,7 @@ while (@queue) {
 
 if (!$foundtarget) {
     if (not $retried) {
-        if ($target_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
+        if ($target_schema_norm =~ s!^(.+-.+)-[a-zA-Z0-9]+(\.\d+)*$!$1!) {
             $retried++;
             goto RETRY;
         }
