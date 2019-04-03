@@ -2,7 +2,12 @@
 """
 Unit test for the spacecmd.shell module.
 """
-from spacecmd.shell import SpacewalkShell
+from mock import MagicMock, patch
+import os
+import time
+import readline
+import pytest
+from spacecmd.shell import SpacewalkShell, UnknownCallException
 
 
 class TestSCShell:
