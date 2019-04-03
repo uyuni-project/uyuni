@@ -158,3 +158,20 @@ class TestSCShell:
         shell.session = True
 
         assert shell.precmd("x") == "x"
+
+    @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
+    @patch("spacecmd.shell.readline.get_history_item", MagicMock(return_value="repeated item"))
+    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    def test_shell_precmd_history(self):
+        """
+        Test 'precmd' method getting history item.
+        """
+        options = MagicMock()
+        options.nohistory = True
+        shell = SpacewalkShell(options, "", None)
+        shell.config["server"] = ""
+        shell.session = True
+
+        assert shell.precmd("!!") == "repeated item"
+
