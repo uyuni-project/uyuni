@@ -191,3 +191,22 @@ class TestSCShell:
         shell.ssm = {1: "one"}
         shell.postcmd("result", "command")
         assert shell.prompt == "spacecmd {SSM:1}> "
+
+    @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
+    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    def test_shell_default(self):
+        """
+        Test 'default' method of the shell.
+        """
+        cmd = MagicMock()
+        with patch("spacecmd.shell.Cmd.default", cmd):
+            options = MagicMock()
+            options.nohistory = True
+            shell = SpacewalkShell(options, "", None)
+            shell.config["server"] = ""
+            shell.session = True
+
+            with pytest.raises(UnknownCallException):
+                shell.default("test")
+            assert cmd.call_args[0][1] == "test"
