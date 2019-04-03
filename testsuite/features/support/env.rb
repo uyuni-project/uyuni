@@ -11,6 +11,7 @@ require 'simplecov'
 require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
+require 'multi_test'
 
 ## codecoverage gem
 SimpleCov.start
@@ -20,13 +21,16 @@ server = ENV['SERVER']
 $stdout.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
-DEFAULT_TIMEOUT = 250
+DEFAULT_TIMEOUT = 300
 CLICK_TIMEOUT = Capybara.default_max_wait_time * 2
 
 def enable_assertions
   # include assertion globally
   World(MiniTest::Assertions)
 end
+
+# Fix a problem with minitest and cucumber options passed through rake
+MultiTest.disable_autorun
 
 # register chromedriver headless mode
 Capybara.register_driver(:headless_chrome) do |app|
@@ -40,14 +44,17 @@ Capybara.register_driver(:headless_chrome) do |app|
     desired_capabilities: capabilities
   )
 end
+
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
 Capybara.app_host = "https://#{server}"
+Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
+puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 # embed a screenshot after each failed scenario
 After do |scenario|
   if scenario.failed?
-    img_name = "#{scenario.name.tr(' ', '_')}.png"
+    img_name = "#{scenario.name.tr(' ./', '_')}.png"
     save_screenshot('screenshots/' + img_name)
     # embed the image name in the cucumber HTML report
     embed('screenshots/' + img_name, 'image/png')
@@ -97,7 +104,6 @@ end
 
 # have more infos about the errors
 def debug_server_on_realtime_failure
-  puts
   puts '#' * 51 + ' /var/log/rhn/rhn_web_ui.log ' + '#' * 51
   out, _code = $server.run('tail -n35 /var/log/rhn/rhn_web_ui.log')
   puts out
