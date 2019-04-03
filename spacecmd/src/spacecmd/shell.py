@@ -113,9 +113,10 @@ class SpacewalkShell(Cmd):
                 except IOError:
                     logging.error('Could not read history file')
         # pylint: disable=W0702
-        except:
+        except Exception as exc:
             # pylint: disable=W0702
-            pass
+            logging.error("Exception occurred: {}".format(exc))
+            sys.exit(1)
 
     # handle shell exits and history substitution
     def precmd(self, line):
