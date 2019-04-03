@@ -45,3 +45,25 @@ class TestSCShell:
             assert cpl_setter.call_args[0][0] != readline.get_completer_delims()
             assert cpl_setter.call_args[0][0] == ' \t\n`~!@#$%^&*()=+[{]}\\|;\'",<>?'
 
+    @patch("spacecmd.shell.atexit", MagicMock())
+    @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
+    @patch("spacecmd.shell.readline.get_completer_delims",
+           MagicMock(return_value=readline.get_completer_delims()))
+    @patch("spacecmd.shell.sys.exit", MagicMock())
+    @patch("spacecmd.shell.os.path.isfile", MagicMock(side_effect=IOError("No such file")))
+    def test_shell_no_history_file(self):
+        """
+        Test shell no history file should capture IOError and log it.
+        """
+        cfg_dir = "/tmp/shell/{}/conf".format(int(time.time()))
+        m_logger = MagicMock()
+        cpl_setter = MagicMock()
+        with patch("spacecmd.shell.logging", m_logger):
+            options = MagicMock()
+            options.nohistory = False
+            shell = SpacewalkShell(options, cfg_dir, None)
+
+            assert shell.history_file == "{}/history".format(cfg_dir)
+            assert not os.path.exists(shell.history_file)
+            assert m_logger.error.call_args[0][0] == "Could not read history file"
+
