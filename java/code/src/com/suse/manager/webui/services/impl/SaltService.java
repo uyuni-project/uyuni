@@ -513,7 +513,7 @@ public class SaltService {
     private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
             LocalCall<R> call, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
-        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel));
+        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, events, cancel, Optional.empty()));
     }
 
     /**
