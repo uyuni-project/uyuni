@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.domain.product.ProductType;
 import com.redhat.rhn.domain.product.ReleaseStage;
 
 import com.google.gson.annotations.SerializedName;
@@ -59,6 +60,16 @@ public class StaticInfoEntry {
 
     @SerializedName("release_stage")
     private ReleaseStage releaseStage;
+
+    @SerializedName("product_type")
+    private Optional<ProductType> productType = Optional.empty();
+
+    /**
+     * @return the product type
+     */
+    public Optional<ProductType> getProductType() {
+        return productType;
+    }
 
     /**
      * @return the channel label
