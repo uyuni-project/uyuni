@@ -728,7 +728,7 @@ public class SaltService {
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, MinionList target)
+    public <T> Map<String, Result<T>> callSync(LocalCall<T> callIn, MinionList target)
             throws SaltException {
         HashSet<String> uniqueMinionIds = new HashSet<>(target.getTarget());
         Map<Boolean, List<String>> minionPartitions =
@@ -741,13 +741,14 @@ public class SaltService {
 
         if (!sshMinionIds.isEmpty()) {
             results.putAll(saltSSHService.callSyncSSH(
-                    call,
+                    callIn,
                     new MinionList(sshMinionIds)));
         }
 
         if (!regularMinionIds.isEmpty()) {
+            ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
             List<Map<String, Result<T>>> callResult =
-                    adaptException(call.callSync(SALT_CLIENT,
+                    adaptException(callIn.withMetadata(metadata).callSync(SALT_CLIENT,
                             new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
             results.putAll(
                     callResult.stream().flatMap(map -> map.entrySet().stream())
@@ -798,9 +799,10 @@ public class SaltService {
      * @throws SaltException in case of an error executing the job with Salt
      */
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
-            Optional<ScheduleMetadata> metadata) throws SaltException {
-        LocalCall<T> call = Opt.fold(metadata, () -> callIn, m -> callIn.withMetadata(m.withBatchMode()));
-        return adaptException(call.callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
+            Optional<ScheduleMetadata> metadataIn) throws SaltException {
+        ScheduleMetadata metadata =
+                Opt.fold(metadataIn, () -> ScheduleMetadata.getDefaultMetadata(), Function.identity()).withBatchMode();
+        return adaptException(callIn.withMetadata(metadata).callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
     }
 
     /**
