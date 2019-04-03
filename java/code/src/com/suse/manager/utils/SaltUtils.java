@@ -112,7 +112,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Change;
-import com.suse.salt.netapi.results.CmdExecCodeAll;
+import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
@@ -511,11 +511,11 @@ public class SaltUtils {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            Map<String, StateApplyResult<CmdExecCodeAll>> stateApplyResult = Json.GSON.fromJson(jsonResult,
-                    new TypeToken<Map<String, StateApplyResult<CmdExecCodeAll>>>() { }.getType());
-            CmdExecCodeAll result = stateApplyResult.entrySet().stream()
+            Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
+                    new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
+            CmdResult result = stateApplyResult.entrySet().stream()
                     .findFirst().map(e -> e.getValue().getChanges())
-                    .orElseGet(() -> new CmdExecCodeAll());
+                    .orElseGet(() -> new CmdResult());
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = Optional.ofNullable(
                     scriptAction.getScriptActionDetails().getResults())
@@ -1069,17 +1069,17 @@ public class SaltUtils {
                         Optional.ofNullable(ret.getRhelReleaseFile())
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                                .map(CmdResult::getStdout);
                 Optional<String> centosReleaseFile =
                         Optional.ofNullable(ret.getCentosReleaseFile())
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                                .map(CmdResult::getStdout);
                 Optional<String> resReleasePkg =
                         Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
-                                .map(CmdExecCodeAll::getStdout);
+                                .map(CmdResult::getStdout);
                 if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                         resReleasePkg.isPresent()) {
                     Set<InstalledProduct> products = getInstalledProductsForRhel(
@@ -1143,17 +1143,17 @@ public class SaltUtils {
                 Optional.ofNullable(result.getRhelReleaseFile())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAll::getStdout);
+                .map(CmdResult::getStdout);
         Optional<String> centosReleaseFile =
                 Optional.ofNullable(result.getCentosReleaseFile())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAll::getStdout);
+                .map(CmdResult::getStdout);
         Optional<String> resReleasePkg =
                 Optional.ofNullable(result.getWhatProvidesResReleasePkg())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAll::getStdout);
+                .map(CmdResult::getStdout);
         if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                 resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = getInstalledProductsForRhel(
