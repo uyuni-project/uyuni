@@ -113,9 +113,10 @@ class SpacewalkShell(Cmd):
                 except IOError:
                     logging.error('Could not read history file')
         # pylint: disable=W0702
-        except:
+        except Exception as exc:
             # pylint: disable=W0702
-            pass
+            logging.error("Exception occurred: {}".format(exc))
+            sys.exit(1)
 
     # handle shell exits and history substitution
     def precmd(self, line):
@@ -175,7 +176,6 @@ class SpacewalkShell(Cmd):
             # repeat the last command
             line = readline.get_history_item(
                 readline.get_current_history_length())
-
             if line:
                 history_match = True
             else:

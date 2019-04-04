@@ -103,7 +103,7 @@ touch %{buildroot}/%{_sysconfdir}/spacecmd.conf
 %{__install} -p -m0644 src/misc/spacecmd-bash-completion %{buildroot}/%{_sysconfdir}/bash_completion.d/spacecmd
 
 %{__mkdir_p} %{buildroot}/%{python_sitelib}/spacecmd
-%{__install} -p -m0644 src/lib/*.py %{buildroot}/%{python_sitelib}/spacecmd/
+%{__install} -p -m0644 src/spacecmd/*.py %{buildroot}/%{python_sitelib}/spacecmd/
 
 %{__mkdir_p} %{buildroot}/%{_mandir}/man1
 %{__gzip} -c src/doc/spacecmd.1 > %{buildroot}/%{_mandir}/man1/spacecmd.1.gz
