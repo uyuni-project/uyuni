@@ -36,6 +36,21 @@ help() {
 }
 
 
+#
+# Check if tito installed
+#
+check_requirements () {
+    if [ "$(which tito 2>/dev/null)" == "" ]; then
+	cat <<EOF
+Please install tito. Read more how to do this here:
+https://github.com/uyuni-project/uyuni/wiki/tito
+EOF
+	exit 1;
+    fi
+}
+
+check_requirements;
+
 # read the options
 ARGS=$(getopt -o h --long help,no_revert,force,packages:,osc_project_wc:,repository: -n "${SCRIPT}" -- "$@")
 if [ $? -ne 0 ];
