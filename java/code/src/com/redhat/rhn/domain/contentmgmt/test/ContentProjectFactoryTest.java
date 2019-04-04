@@ -44,7 +44,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Tests for {@link com.redhat.rhn.domain.contentmgmt.ContentProjectFactory}
@@ -421,20 +420,20 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         Channel channel = ChannelTestUtils.createBaseChannel(user);
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
-        ContentProjectFactory.save(target);
+        envdev.addTarget(target);
         Channel channel2 = ChannelTestUtils.createBaseChannel(user);
         SoftwareEnvironmentTarget target2 = new SoftwareEnvironmentTarget(envdev, channel2);
-        ContentProjectFactory.save(target2);
+        envdev.addTarget(target2);
 
-        List<EnvironmentTarget> targetsDev = ContentProjectFactory.lookupEnvironmentTargets(envdev).collect(toList());
+        List<EnvironmentTarget> targetsDev = envdev.getTargets();
         assertEquals(2, targetsDev.size());
         assertContains(targetsDev, target);
         assertContains(targetsDev, target2);
 
         Channel channel3 = ChannelTestUtils.createBaseChannel(user);
         SoftwareEnvironmentTarget target3 = new SoftwareEnvironmentTarget(envtest, channel3);
-        ContentProjectFactory.save(target3);
-        List<EnvironmentTarget> targetsTest = ContentProjectFactory.lookupEnvironmentTargets(envtest).collect(toList());
+        envtest.addTarget(target3);
+        List<EnvironmentTarget> targetsTest = envtest.getTargets();
         assertEquals(1, targetsTest.size());
         assertContains(targetsTest, target3);
     }
@@ -452,13 +451,13 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.setFirstEnvironment(envdev);
         Channel channel = ChannelTestUtils.createBaseChannel(user);
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
-        ContentProjectFactory.save(target);
+        envdev.addTarget(target);
         String channelLabel = channel.getLabel();
 
-        assertEquals(1, ContentProjectFactory.lookupEnvironmentTargets(envdev).count());
+        assertEquals(1, envdev.getTargets().size());
         assertNotNull(ChannelFactory.lookupByLabel(channelLabel));
         ContentProjectFactory.purgeTarget(target);
-        assertEquals(0, ContentProjectFactory.lookupEnvironmentTargets(envdev).count());
+        assertEquals(0, envdev.getTargets().size());
         assertNull(ChannelFactory.lookupByLabel(channelLabel));
     }
 }

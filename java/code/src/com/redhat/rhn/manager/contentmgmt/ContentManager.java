@@ -366,7 +366,7 @@ public class ContentManager {
                 .orElseThrow(() -> new ContentManagementException("Environment " + envLabel +
                         " does not have successor"));
 
-        Map<Boolean, List<Channel>> envChannels = ContentProjectFactory.lookupEnvironmentTargets(env)
+        Map<Boolean, List<Channel>> envChannels = env.getTargets().stream()
                 .flatMap(tgt -> stream(tgt.asSoftwareTarget()))
                 .map(tgt -> tgt.getChannel())
                 .collect(partitioningBy(Channel::isBaseChannel));
@@ -456,7 +456,7 @@ public class ContentManager {
         Set<Channel> newTargets = newSrcTgtPairs.stream()
                 .map(pair -> pair.getRight())
                 .collect(toSet());
-        ContentProjectFactory.lookupEnvironmentTargets(env)
+        env.getTargets().stream()
                 .flatMap(t -> stream(t.asSoftwareTarget()))
                 .filter(tgt -> !newTargets.contains(tgt.getChannel()))
                 .sorted((c1, c2) -> Boolean.compare(c1.getChannel().isBaseChannel(), c2.getChannel().isBaseChannel()))

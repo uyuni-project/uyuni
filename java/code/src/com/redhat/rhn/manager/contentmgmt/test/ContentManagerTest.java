@@ -586,7 +586,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(channel, cp.lookupSwSourceLeader().get().getChannel());
         ContentManager.buildProject("cplabel", empty(), false, user);
 
-        List<EnvironmentTarget> tgts = ContentProjectFactory.lookupEnvironmentTargets(env).collect(toList());
+        List<EnvironmentTarget> tgts = env.getTargets();
         assertEquals(1, tgts.size());
         Channel tgtChannel = tgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-fst-" + channel.getLabel(), tgtChannel.getLabel());
@@ -603,7 +603,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(2), env.getVersion());
 
-        tgts = ContentProjectFactory.lookupEnvironmentTargets(env).collect(toList());
         assertEquals(2, tgts.size());
         Set<String> tgtLabels = tgts.stream().map(tgt -> tgt.asSoftwareTarget().get().getChannel().getLabel()).collect(toSet());
         assertContains(tgtLabels, "cplabel-fst-" + channel.getLabel());
@@ -626,7 +625,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(Long.valueOf(3), env.getVersion());
 
         assertEquals(newChannel, cp.lookupSwSourceLeader().get().getChannel()); // leader is changed
-        tgts = ContentProjectFactory.lookupEnvironmentTargets(env).collect(toList());
         assertEquals(1, tgts.size());
         assertEquals("cplabel-fst-" + newChannel.getLabel(), tgts.get(0).asSoftwareTarget().get().getChannel().getLabel());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
@@ -650,7 +648,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         alreadyExistingTgt.setLabel("cplabel-fst-" + channel.getLabel());
 
         ContentManager.buildProject("cplabel", empty(), false, user);
-        List<EnvironmentTarget> environmentTargets = ContentProjectFactory.lookupEnvironmentTargets(env).collect(toList());
+        List<EnvironmentTarget> environmentTargets = env.getTargets();
         assertEquals(1, environmentTargets.size());
         assertEquals(alreadyExistingTgt, environmentTargets.get(0).asSoftwareTarget().get().getChannel());
     }
@@ -708,7 +706,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(Long.valueOf(1), env.getVersion());
 
         ContentEnvironment envUser1 = ContentManager.lookupEnvironment("fst", "cplabel", userSameOrg).get();
-        List<EnvironmentTarget> tgts = ContentProjectFactory.lookupEnvironmentTargets(envUser1).collect(toList());
+        List<EnvironmentTarget> tgts = envUser1.getTargets();
         assertEquals(1, tgts.size());
         Channel tgtChannel = tgts.get(0).asSoftwareTarget().get().getChannel();
         // its assets should be accessible to a regular user in the org
@@ -771,7 +769,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // 3. promote
         ContentManager.promoteProject("cplabel", "dev", false, user);
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
-        List<EnvironmentTarget> testTgts = ContentProjectFactory.lookupEnvironmentTargets(testEnv).collect(toList());
+        List<EnvironmentTarget> testTgts = testEnv.getTargets();
         assertEquals(2, testTgts.size());
         Channel tgtChannel1 = testTgts.get(0).asSoftwareTarget().get().getChannel();
         Channel tgtChannel2 = testTgts.get(1).asSoftwareTarget().get().getChannel();
@@ -784,7 +782,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // 4. promote further
         ContentManager.promoteProject("cplabel", "test", false, user);
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
-        List<EnvironmentTarget> prodTgts = ContentProjectFactory.lookupEnvironmentTargets(prodEnv).collect(toList());
+        List<EnvironmentTarget> prodTgts = prodEnv.getTargets();
         assertEquals(2, prodTgts.size());
         tgtChannel1 = prodTgts.get(0).asSoftwareTarget().get().getChannel();
         tgtChannel2 = prodTgts.get(1).asSoftwareTarget().get().getChannel();
@@ -794,15 +792,15 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // 5. build with changed sources
         ContentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(2), devEnv.getVersion());
-        assertEquals(1, ContentProjectFactory.lookupEnvironmentTargets(devEnv).count());
-        assertEquals(2, ContentProjectFactory.lookupEnvironmentTargets(testEnv).count());
-        assertEquals(2, ContentProjectFactory.lookupEnvironmentTargets(prodEnv).count());
+        assertEquals(1, devEnv.getTargets().size());
+        assertEquals(2, testEnv.getTargets().size());
+        assertEquals(2, prodEnv.getTargets().size());
         assertNull(ChannelFactory.lookupByLabel("cplabel-dev-" + channel1.getLabel())); // channel has been deleted
 
         // 6. next promotion cycle
         ContentManager.promoteProject("cplabel", "dev", false, user);
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
-        testTgts = ContentProjectFactory.lookupEnvironmentTargets(testEnv).collect(toList());
+        testTgts = testEnv.getTargets();
         assertEquals(1, testTgts.size());
         Channel tgtChannel = testTgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-test-" + channel2.getLabel(), tgtChannel.getLabel());
@@ -811,7 +809,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // 7. last promotion cycle
         ContentManager.promoteProject("cplabel", "test", false, user);
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
-        prodTgts = ContentProjectFactory.lookupEnvironmentTargets(prodEnv).collect(toList());
+        prodTgts = prodEnv.getTargets();
         assertEquals(1, prodTgts.size());
         tgtChannel = prodTgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-prod-" + channel2.getLabel(), tgtChannel.getLabel());
