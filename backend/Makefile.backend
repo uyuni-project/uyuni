@@ -2,7 +2,6 @@
 #
 THIS_MAKEFILE := $(realpath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(dir $(THIS_MAKEFILE))
-include $(CURRENT_DIR)../rel-eng/Makefile.python
 
 CODE_DIRS = common server upload_server satellite_tools satellite_exporter po wsgi cdn_tools
 PYLINT_DIRS = common upload_server satellite_tools satellite_exporter wsgi
