@@ -20,6 +20,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.CascadeType;
@@ -31,6 +33,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -51,6 +54,7 @@ public class ContentEnvironment extends BaseDomainHelper {
     private String description;
     private Long version = 0L;
     private ContentProject contentProject;
+    private List<EnvironmentTarget> targets = new ArrayList<>();
     private ContentEnvironment nextEnvironment;
     private ContentEnvironment prevEnvironment;
 
@@ -124,6 +128,44 @@ public class ContentEnvironment extends BaseDomainHelper {
     @JoinColumn(name = "project_id")
     public ContentProject getContentProject() {
         return contentProject;
+    }
+
+    /**
+     * Gets the targets.
+     *
+     * @return targets
+     */
+    @OneToMany(mappedBy = "contentEnvironment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<EnvironmentTarget> getTargets() {
+        return targets;
+    }
+
+    /**
+     * Sets the targets.
+     *
+     * @param targetsIn the targets
+     */
+    public void setTargets(List<EnvironmentTarget> targetsIn) {
+        this.targets = targetsIn;
+    }
+
+    /**
+     * Add target
+     *
+     * @param target the target
+     */
+    public void addTarget(EnvironmentTarget target) {
+        target.setContentEnvironment(this);
+        targets.add(target);
+    }
+
+    /**
+     * Remove target
+     * @param target the target
+     */
+    public void removeTarget(EnvironmentTarget target) {
+        targets.remove(target);
+        target.setContentEnvironment(null);
     }
 
     /**

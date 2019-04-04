@@ -260,6 +260,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param target the Environment Target
      */
     public static void purgeTarget(EnvironmentTarget target) {
+        target.getContentEnvironment().removeTarget(target);
         INSTANCE.removeObject(target);
         target.asSoftwareTarget().ifPresent(swTgt -> ChannelFactory.remove(swTgt.getChannel()));
     }

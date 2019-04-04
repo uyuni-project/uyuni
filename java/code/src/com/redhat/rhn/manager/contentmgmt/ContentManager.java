@@ -523,7 +523,7 @@ public class ContentManager {
                 });
 
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, targetChannel);
-        ContentProjectFactory.save(target);
+        env.addTarget(target);
         return targetChannel;
     }
 

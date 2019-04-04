@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -41,6 +42,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import simple.http.serve.ContentFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -222,6 +224,32 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, numRemoved);
         assertEquals(asList(mid, snd), ContentProjectFactory.listProjectEnvironments(cp));
         assertEquals(mid, cp.getFirstEnvironmentOpt().get());
+    }
+
+    /**
+     * Test that removing a Environment also removes its targets
+     * to the first environment of the project is updated
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testRemoveEnvironmentTargets() throws Exception {
+        ContentProject cp = ContentManager.createProject("cplabel", "cpname", "description", user);
+        ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", user);
+        Channel channel = createPopulatedChannel();
+
+        SoftwareEnvironmentTarget tgt = new SoftwareEnvironmentTarget(env, channel);
+        ContentProjectFactory.save(tgt);
+        env.addTarget(tgt);
+
+        ContentManager.removeEnvironment("fst", "cplabel", user);
+        // the target is removed
+        assertFalse(HibernateFactory.getSession()
+                .createQuery("select t from SoftwareEnvironmentTarget t where t.channel = :channel")
+                .setParameter("channel", channel)
+                .uniqueResultOptional()
+                .isPresent());
+        // but the channel stays
+        assertNotNull(ChannelFactory.lookupById(channel.getId()));
     }
 
     /**
