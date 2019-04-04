@@ -153,6 +153,7 @@ const SubscriptionMatchingTabContainer = React.createClass({
           <Messages
             messages={data.messages}
             systems={data.systems}
+            subscriptions={data.subscriptions}
             saveState={(state) => {this.state["messageTableState"] = state;}}
             loadState={() => this.state["messageTableState"]}
           />

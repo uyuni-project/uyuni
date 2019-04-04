@@ -11,7 +11,7 @@ const Utils = Functions.Utils;
 const Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
-  buildRows: function(rawMessages, systems) {
+  buildRows: function(rawMessages, systems, subscriptions) {
     return rawMessages.map(function(rawMessage, index) {
       const data = rawMessage["data"];
       var message;
@@ -33,6 +33,10 @@ const Messages = React.createClass({
           message = t("System has an unknown number of sockets, assuming 16");
           additionalInformation = systems[data["id"]].name;
           break;
+        case "hb_merge_subscriptions" :
+          message = t("Two subscriptions with the same part number are in a bundle - merged into a single one");
+          additionalInformation = subscriptions[data["new_subscription_id"]].partNumber;
+          break;
         default:
           message = rawMessage["type"];
           // we do not know the shape of the data, it could even be a complex nested object (bsc#1125600)
@@ -53,7 +57,7 @@ const Messages = React.createClass({
         <div>
           <p>{t("Please review warning and information messages below.")}</p>
           <Table
-            data={this.buildRows(this.props.messages, this.props.systems)}
+            data={this.buildRows(this.props.messages, this.props.systems, this.props.subscriptions)}
             identifier={(row) => row.id}
             loadState={this.props.loadState}
             saveState={this.props.saveState}
