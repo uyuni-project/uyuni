@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Apr 04 14:43:04 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
 - Update get_kernel_live_version module to support older Salt versions (bsc#1131490)
 
 -------------------------------------------------------------------
