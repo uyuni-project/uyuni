@@ -1,3 +1,4 @@
+- Do not implicitly set parent channel when cloning (bsc#1130492)
 - Do not report Provisioning installed product to subscription matcher (bsc#1128838)
 - Show minion id in System Details GUI and API
 - Fix base channel selection for Ubuntu systems (bsc#1132579)
