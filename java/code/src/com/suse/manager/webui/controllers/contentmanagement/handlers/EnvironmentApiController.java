@@ -81,6 +81,7 @@ public class EnvironmentApiController {
                 createEnvironmentRequest.getLabel(),
                 createEnvironmentRequest.getName(),
                 createEnvironmentRequest.getDescription(),
+                true,
                 user
         );
 

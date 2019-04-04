@@ -156,6 +156,7 @@ public class ContentManager {
      * @param label - the Environment label
      * @param name - the Environment name
      * @param description - the Environment description
+     * @param async run the time-expensive operations asynchronously?
      * @param user - the user performing the action
      * @throws EntityNotExistsException - if Content Project with given label or Content Environment in the Project
      * is not found
@@ -164,7 +165,7 @@ public class ContentManager {
      * @return the created Content Environment
      */
     public static ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
-            String label, String name, String description, User user) {
+            String label, String name, String description, boolean async, User user) {
         ensureOrgAdmin(user);
         lookupEnvironment(label, projectLabel, user).ifPresent(e -> { throw new EntityExistsException(e); });
         return lookupProject(projectLabel, user)
@@ -174,6 +175,13 @@ public class ContentManager {
                             ContentProjectFactory.lookupEnvironmentByLabelAndProject(pl, cp)
                                     .orElseThrow(() -> new EntityNotExistsException(ContentEnvironment.class, label)));
                     ContentProjectFactory.insertEnvironment(newEnv, predecessor);
+                    // TODO: for now only support populating non-first environments
+                    // populating first environment will be implemented as soon as backward-promote is implemented
+                    predecessor.ifPresent(p -> {
+                        if (!p.getTargets().isEmpty()) {
+                            promoteProject(projectLabel, p.getLabel(), true, user);
+                        }
+                    });
                     return newEnv;
                 }).orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
     }

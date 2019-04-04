@@ -233,7 +233,7 @@ public class ContentManagementHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
         try {
             return ContentManager.createEnvironment(projectLabel, ofNullable(nullIfEmpty(predecessorLabel)), label,
-                    name, description, loggedInUser);
+                    name, description, true, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
