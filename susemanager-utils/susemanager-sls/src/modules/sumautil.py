@@ -140,7 +140,12 @@ def _klp():
     :return:
     '''
     # get 'kgr' for versions prior to SLE 15
-    klp = salt.utils.path.which_bin(['klp', 'kgr'])
+    try:
+        from salt.utils.path import which_bin
+    except:
+        from salt.utils import which_bin
+
+    klp = which_bin(['klp', 'kgr'])
     patchname = None
     if klp is not None:
         try:
