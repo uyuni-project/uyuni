@@ -1,3 +1,4 @@
+- Show undetected subscription-matching message object as a string anyway (bsc#1125600)
 - Fix action scheduler time picker prefill when the server is on  "UTC/GMT" timezone (bsc#1121195)
 - Allow username input on bootstrap page when using Salt-SSH
 - Add cache buster for static files (js/css) to fix caching issues after upgrading.
