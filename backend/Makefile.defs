@@ -8,10 +8,6 @@ TOP		?= .
 ROOT		?= /usr/share/rhn
 export ROOT
 
-ifeq ("$(PYTHON_BIN)", "")
-    PYTHON_BIN = "python"
-endif
-
 SPACEWALK_ROOT	?= $(shell $(PYTHON_BIN) -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")/spacewalk
 export SPACEWALK_ROOT
 
