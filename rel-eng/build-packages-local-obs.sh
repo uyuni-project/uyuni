@@ -40,10 +40,10 @@ help() {
 # Check if tito installed
 #
 check_requirements () {
-    if [ "$(which toto 2>/dev/null)" == "" ]; then
+    if [ "$(which tito 2>/dev/null)" == "" ]; then
 	cat <<EOF
 Please install tito. Read more how to do this here:
-https://github.com/SUSE/spacewalk/wiki/Tagging-and-the-Release-Process#tito
+https://github.com/uyuni-project/uyuni/wiki/tito
 EOF
 	exit 1;
     fi
