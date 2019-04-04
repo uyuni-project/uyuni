@@ -119,12 +119,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(envprod);
         ContentProjectFactory.insertEnvironment(envprod, of(envtest));
 
-        HibernateFactory.getSession().flush();
-        envtest = TestUtils.reload(envtest);
-
         ContentProjectFactory.removeEnvironment(envtest);
-
-        HibernateFactory.getSession().flush();
 
         ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
@@ -142,8 +137,6 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(empty(), first.getPrevEnvironmentOpt());
 
         ContentProjectFactory.removeEnvironment(envdev);
-
-        HibernateFactory.getSession().flush();
 
         fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         ContentEnvironment newfirst = fromDb.getFirstEnvironmentOpt().get();
