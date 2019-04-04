@@ -1,5 +1,6 @@
 # Makefile for the backend directory
 #
+SPACEWALK_FILES = __init__
 CODE_DIRS = common server upload_server satellite_tools satellite_exporter po wsgi cdn_tools
 PYLINT_DIRS = common upload_server satellite_tools satellite_exporter wsgi
 CONF_DIRS = apache-conf rhn-conf logrotate
