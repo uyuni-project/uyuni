@@ -37,7 +37,8 @@ const Messages = createReactClass({
           break;
         default:
           message = rawMessage["type"];
-          additionalInformation = data;
+          // we do not know the shape of the data, it could even be a complex nested object (bsc#1125600)
+          additionalInformation = JSON.stringify(data);
       }
       return {
         id: index,
