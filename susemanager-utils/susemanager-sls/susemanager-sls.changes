@@ -1,3 +1,4 @@
+- Update get_kernel_live_version module to support older Salt versions (bsc#1131490)
 - Update get_kernel_live_version module to support SLES 15 live patches
 - Do not configure Salt Mine in newly registered minions (bsc#1122837)
 - Fix Salt error related to remove_traditional_stack when bootstrapping an Ubuntu
