@@ -1,3 +1,5 @@
+- modify file url translation to point correctly to the new
+  documentation URLs
 - add makefile and pylint configuration
 
 -------------------------------------------------------------------
