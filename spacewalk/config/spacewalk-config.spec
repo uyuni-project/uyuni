@@ -33,7 +33,7 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.0.5
+Version:        4.0.6
 Release:        1%{?dist}
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -169,6 +169,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES xsendfile
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
+sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 %endif
 if [ -e %{apacheconfdir}/ssl.key/spacewalk.key ]; then
   ln -s spacewalk.key %{apacheconfdir}/ssl.key/server.key

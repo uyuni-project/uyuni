@@ -31,7 +31,7 @@ Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.7
+Version:        4.0.8
 Release:        1%{?dist}
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -330,6 +330,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
+sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 
 # In case of an update, remove superfluous stuff
 # from cobbler-proxy.conf (bnc#796581)
