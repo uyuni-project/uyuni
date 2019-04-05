@@ -104,7 +104,7 @@ class TestSCActivationKeyMethods:
 
     def test_do_activationkey_removepackages_help_args(self, shell):
         """
-        Test add packages method call shows help if only one argument is passed.
+        Test remove packages method call shows help if only one argument is passed.
         """
         shell.help_activationkey_removepackages = MagicMock()
         shell.client = MagicMock()
