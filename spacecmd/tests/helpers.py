@@ -12,6 +12,7 @@ class FileHandleMock(StringIO):
     def __init__(self):
         self._init_params = None
         StringIO.__init__(self)
+        self._closed = False
 
     def __call__(self, *args, **kwargs):
         self.__init_params = args, kwargs
@@ -21,6 +22,7 @@ class FileHandleMock(StringIO):
         """
         Bypass closing.
         """
+        self._closed = True
 
     def get_content(self):
         """
