@@ -111,5 +111,27 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey = MagicMock()
         shell.client.activationkey.removePackages = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_removepackages(shell, "package")
+        spacecmd.activationkey.do_activationkey_removepackages(shell, "key")
         assert shell.help_activationkey_removepackages.called
+
+    def test_do_activationkey_removepackages_args(self, shell):
+        """
+        Test remove packages method calls "removePackages" API call.
+        """
+        shell.help_activationkey_removepackages = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.removePackages = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_removepackages(shell, "key package")
+        assert not shell.help_activationkey_removepackages.called
+        assert shell.client.activationkey.removePackages.called
+        print()
+        session, fun, args = shell.client.activationkey.removePackages.call_args_list[0][0]
+        assert session == shell.session
+        print()
+        assert fun == "key"
+        assert isinstance(args, list)
+        assert len(args) == 1
+        assert "name" in args[0]
+        assert args[0]["name"] == "package"
