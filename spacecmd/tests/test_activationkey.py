@@ -88,3 +88,16 @@ class TestSCActivationKeyMethods:
         assert len(args) == 2
         for arg in args:
             assert arg["name"] in ["something", "here"]
+
+    def test_do_activationkey_removepackages_noargs(self, shell):
+        """
+        Test remove packages method call shows help on no args.
+        """
+        shell.help_activationkey_removepackages = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.removePackages = MagicMock()
+
+        # TODO: Add help for remove packages!
+        spacecmd.activationkey.do_activationkey_removepackages(shell, "")
+        assert not shell.help_activationkey_removePackages.called
