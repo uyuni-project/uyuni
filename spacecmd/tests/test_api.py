@@ -39,6 +39,7 @@ class TestSCAPI:
         assert out.get_content() == '[\n  "one",\n  "two",\n  "three"\n]'
         assert out.get_init_kwargs() == {}
         assert out.get_init_args() == ('/tmp/spacecmd.log', 'w')
+        assert out._closed
 
     def test_args_format(self):
         """
@@ -59,6 +60,7 @@ class TestSCAPI:
         assert out.get_content() == '>>> one\n>>> two\n>>> three\n'
         assert out.get_init_kwargs() == {}
         assert out.get_init_args() == ('/tmp/spacecmd.log', 'w')
+        assert out._closed
 
     def test_args_args(self):
         """
@@ -77,3 +79,4 @@ class TestSCAPI:
             api.do_api(shell, "call -A first,second,123 -o /tmp/spacecmd.log")
         assert shell.client.call.called
         assert shell.client.call.call_args_list[0][0] == ('session', 'first', 'second', 123)
+        assert out._closed
