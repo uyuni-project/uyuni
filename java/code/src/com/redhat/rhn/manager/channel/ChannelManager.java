@@ -2516,7 +2516,7 @@ public class ChannelManager extends BaseManager {
                 "/pub");
         File theFile = new File(mountPoint + File.separator + pathPrefix +
                 File.separator + channel.getLabel() + File.separator +
-                "repomd.xml");
+                (channel.isTypeDeb() ? "Release" : "repomd.xml"));
         if (!theFile.exists()) {
             // No repo file, dont bother computing build date
             return null;
