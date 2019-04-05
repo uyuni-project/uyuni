@@ -9,30 +9,34 @@ print_incorrect_syntax() {
   echo "ERROR: Invalid usage options (use -h for help)"
 }
 
-help() {
-  echo ""
-  echo "Wrapper to build spacewalk packages from the git repo using osc build"
-  echo ""
-  echo "Syntax: "
-  echo ""
-  echo "${SCRIPT} <ARGUMENTS>"
-  echo ""
-  echo "Mandatory:"
-  echo ""
-  echo " --osc_project_wc=<PATH>    Path to the OSC project working path"
-  echo " --repository=<REPOSITORY>  Repository to use for osc build (e.g. SLE_15 or"
-  echo "                            SLE_12_SP3)"
-  echo ""
-  echo "Optional:"
-  echo ""
-  echo " --packages=<PACKAGE_NAMES> One or more package names, separated by commas."
-  echo "                            If not present, all packages will be built"
-  echo " --no_revert                DANGEROUS: Do not revert changes on OSC project"
-  echo "                            working copy. Should use it only for debugging"
-  echo " --force                    Continue even if there are uncommited changes."
-  echo "                            Can be a problem if such changes affect the"
-  echo "                            packages you intend to build"
-  echo ""
+#
+# Print usage/help
+#
+function usage() {
+    cat <<EOF
+Wrapper to build spacewalk packages from the git repo using osc build
+
+Syntax:
+
+${SCRIPT} <ARGUMENTS>
+
+  --osc_project_wc=<PATH>    Path to the OSC project working path
+  --repository=<REPOSITORY>  Repository to use for osc build.
+                             For example, SLE_15 or SLE_12_SP3.
+
+Optional:
+
+  --packages=<PACKAGE_NAMES> One or more package names, separated by commas."
+                             If not present, all packages will be built"
+
+  --no_revert                DANGEROUS: Do not revert changes on OSC project
+                             working copy. Should use it only for debugging.
+
+  --force                    Continue even if there are uncommited changes.
+                             Can be a problem if such changes affect the
+                             packages you intend to build.
+
+EOF
 }
 
 
@@ -61,7 +65,7 @@ fi
 eval set -- "${ARGS}"
 while true ; do
   case "${1}" in
-    -h|--help)        help; exit 1;;
+    -h|--help)        usage; exit 1;;
     --packages)       PACKAGES="$(echo ${2}|tr ',' ' ')"; shift 2;;
     --osc_project_wc) OSC_PROJECT_WC="${2}"; shift 2;;
     --repository)     REPOSITORY="${2}"; shift 2;;
