@@ -233,7 +233,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testRemoveEnvironmentTargets() throws Exception {
         ContentProject cp = ContentManager.createProject("cplabel", "cpname", "description", user);
         ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
-        Channel channel = createPopulatedChannel();
+        Channel channel = createChannelInEnvironment(env, empty());
 
         SoftwareEnvironmentTarget tgt = new SoftwareEnvironmentTarget(env, channel);
         ContentProjectFactory.save(tgt);
@@ -276,10 +276,8 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         ContentEnvironment fst = ContentManager.
                 createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
-        Channel channel = createPopulatedChannel(); // todo createChannelInEnv
-        channel.setLabel("cplabel-fst-" + channel.getLabel());
-        channel.setName("cplabel-fst-" + channel.getName());
         fst.setVersion(3L);
+        Channel channel = createChannelInEnvironment(fst, empty());
         fst.addTarget(new SoftwareEnvironmentTarget(fst, channel));
         ContentManager.createEnvironment(cp.getLabel(), of(fst.getLabel()), "last", "last env", "desc2", false, user);
 
@@ -668,8 +666,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         Channel channel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
-        Channel alreadyExistingTgt = createPopulatedChannel();
-        alreadyExistingTgt.setLabel("cplabel-fst-" + channel.getLabel());
+        Channel alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
 
         ContentManager.buildProject("cplabel", empty(), false, user);
         List<EnvironmentTarget> environmentTargets = env.getTargets();
@@ -690,11 +687,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         Channel channel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
-        Channel alreadyExistingTgt = createPopulatedChannel();
-
         Org otherOrg = UserTestUtils.createNewOrgFull("testOrg2");
+        Channel alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
         alreadyExistingTgt.setOrg(otherOrg);
-        alreadyExistingTgt.setLabel("cplabel-fst-" + channel.getLabel());
 
         try {
             ContentManager.buildProject("cplabel", empty(), false, user);
@@ -907,11 +902,19 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(user, false));
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
         Package pack = PackageTest.createTestPackage(user.getOrg());
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(
-                user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         channel.addPackage(pack);
         channel.addErrata(errata);
         ChannelFactory.save(channel);
+        return channel;
+    }
+
+    // simulates a Channel in an Environment
+    private Channel createChannelInEnvironment(ContentEnvironment env, Optional<String> label) throws Exception {
+        Channel channel = createPopulatedChannel();
+        String prefix = env.getContentProject().getLabel() + "-" + env.getLabel() + "-";
+        channel.setLabel(prefix + label.orElse(channel.getLabel()));
+        channel.setName(prefix + label.orElse(channel.getName()));
         return channel;
     }
 }
