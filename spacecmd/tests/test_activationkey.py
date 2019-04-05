@@ -35,3 +35,20 @@ class TestSCActivationKey:
             call_id, ret_text = completer.call_args_list[0][0]
             assert call_id == "do_activation_list"
             assert ret_text == text
+
+
+class TestSCActivationKeyMethods:
+    """
+    Test actuvation key methods.
+    """
+    def test_do_activationkey_addpackages_noargs(self, shell):
+        """
+        Test add packages method call shows help on no args.
+        """
+        shell.help_activationkey_addpackages = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addPackages = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addpackages(shell, "")
+        assert shell.help_activationkey_addpackages.called
