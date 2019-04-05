@@ -59,3 +59,21 @@ class TestSCAPI:
         assert out.get_content() == '>>> one\n>>> two\n>>> three\n'
         assert out.get_init_kwargs() == {}
         assert out.get_init_args() == ('/tmp/spacecmd.log', 'w')
+
+    def test_args_args(self):
+        """
+        Test args option.
+        """
+        shell = MagicMock()
+        shell.help_api = MagicMock()
+        shell.client = MagicMock()
+        shell.client.call = MagicMock(return_value=["one", "two", "three"])
+        shell.session = "session"
+
+        log = MagicMock()
+        out = helpers.FileHandleMock()
+        with patch("spacecmd.api.open", out, create=True) as mop, \
+             patch("spacecmd.api.logging", log) as mlog:
+            api.do_api(shell, "call -A first,second,123 -o /tmp/spacecmd.log")
+        assert shell.client.call.called
+        assert shell.client.call.call_args_list[0][0] == ('session', 'first', 'second', 123)
