@@ -6,7 +6,7 @@ OSC="osc -A https://api.suse.de"
 EXCLUDED_PACKAGES=(heirloom-pkgtools oracle-server-admin oracle-server-scripts rhnclient smartpm jabberd-selinux oracle-rhnsat-selinux oracle-selinux oracle-xe-selinux spacewalk-monitoring-selinux spacewalk-proxy-selinux spacewalk-selinux cx_Oracle apt-spacewalk perl-DBD-Oracle spacewalk-jpp-workaround)
 
 print_incorrect_syntax() {
-  echo "ERROR: Incorrect syntax (use -h for help)"
+  echo "ERROR: Invalid usage options (use -h for help)"
 }
 
 help() {
