@@ -1,3 +1,4 @@
+- Fix retrieval of build time for .deb repositories (bsc#1131721)
 - Remove the obsolete help dispatcher servlet which was used to translate the documentation URLs
 - Disable ActionChainCleanup if database is Postgres
 - Track and expose build status of Content Environment
