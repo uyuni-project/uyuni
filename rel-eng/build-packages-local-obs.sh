@@ -6,33 +6,37 @@ OSC="osc -A https://api.suse.de"
 EXCLUDED_PACKAGES=(heirloom-pkgtools oracle-server-admin oracle-server-scripts rhnclient smartpm jabberd-selinux oracle-rhnsat-selinux oracle-selinux oracle-xe-selinux spacewalk-monitoring-selinux spacewalk-proxy-selinux spacewalk-selinux cx_Oracle apt-spacewalk perl-DBD-Oracle spacewalk-jpp-workaround)
 
 print_incorrect_syntax() {
-  echo "ERROR: Incorrect syntax (use -h for help)"
+  echo "ERROR: Invalid usage options (use -h for help)"
 }
 
-help() {
-  echo ""
-  echo "Wrapper to build spacewalk packages from the git repo using osc build"
-  echo ""
-  echo "Syntax: "
-  echo ""
-  echo "${SCRIPT} <ARGUMENTS>"
-  echo ""
-  echo "Mandatory:"
-  echo ""
-  echo " --osc_project_wc=<PATH>    Path to the OSC project working path"
-  echo " --repository=<REPOSITORY>  Repository to use for osc build (e.g. SLE_15 or"
-  echo "                            SLE_12_SP3)"
-  echo ""
-  echo "Optional:"
-  echo ""
-  echo " --packages=<PACKAGE_NAMES> One or more package names, separated by commas."
-  echo "                            If not present, all packages will be built"
-  echo " --no_revert                DANGEROUS: Do not revert changes on OSC project"
-  echo "                            working copy. Should use it only for debugging"
-  echo " --force                    Continue even if there are uncommited changes."
-  echo "                            Can be a problem if such changes affect the"
-  echo "                            packages you intend to build"
-  echo ""
+#
+# Print usage/help
+#
+function usage() {
+    cat <<EOF
+Wrapper to build spacewalk packages from the git repo using osc build
+
+Syntax:
+
+${SCRIPT} <ARGUMENTS>
+
+  --osc_project_wc=<PATH>    Path to the OSC project working path
+  --repository=<REPOSITORY>  Repository to use for osc build.
+                             For example, SLE_15 or SLE_12_SP3.
+
+Optional:
+
+  --packages=<PACKAGE_NAMES> One or more package names, separated by commas."
+                             If not present, all packages will be built"
+
+  --no_revert                DANGEROUS: Do not revert changes on OSC project
+                             working copy. Should use it only for debugging.
+
+  --force                    Continue even if there are uncommited changes.
+                             Can be a problem if such changes affect the
+                             packages you intend to build.
+
+EOF
 }
 
 
@@ -49,6 +53,31 @@ EOF
     fi
 }
 
+#
+# Check if there are uncommitted changes
+#
+check_repo () {
+    filelist=$(git status -s | grep -e '^\sM\s')
+    is_dirty=""
+    if [[ ! -z $filelist ]]; then
+	echo -e "There are following uncommitted changes found:\n\n$filelist\n"
+	is_dirty="1"
+    fi
+
+    untracked=$(git status -s | grep -e '^??\s')
+    if [[ ! -z untracked ]]; then
+	echo -e "There are still untracked files found in this repository:\n"
+	echo -e "$(echo "$untracked" | sed -e 's/[? ]*//')\n"
+	is_dirty="1"
+    fi
+
+    if [ "$is_dirty" != "" ]; then
+	echo "Use --force option to skip this check."
+	exit 1;
+    fi
+}
+
+
 check_requirements;
 
 # read the options
@@ -61,7 +90,7 @@ fi
 eval set -- "${ARGS}"
 while true ; do
   case "${1}" in
-    -h|--help)        help; exit 1;;
+    -h|--help)        usage; exit 1;;
     --packages)       PACKAGES="$(echo ${2}|tr ',' ' ')"; shift 2;;
     --osc_project_wc) OSC_PROJECT_WC="${2}"; shift 2;;
     --repository)     REPOSITORY="${2}"; shift 2;;
@@ -83,18 +112,9 @@ if [ ! -d ${OSC_PROJECT_WC} ]; then
   exit 1
 fi
 
-if [[ ! -z $(git status -s) ]]; then
-  if [ "${FORCE}" == "TRUE" ]; then
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    echo "WARNING!!!! Uncommited changes detected, but continuing as --force was present!!!"
-    echo "Keep in mind that if any of the changes is part of the packages you are trying to"
-    echo "build, those changes WILL NOT be part of the build!!!"
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  else
-    echo "ERROR: Uncommited changes detected. Commit or stash them, or if you are sure that"
-    echo "such changes will not affect the packages you intend to build, use --force"
-    exit 1
-  fi
+
+if [ "${FORCE}" != "TRUE" ]; then
+    check_repo;
 fi
 
 # If --packages was not present, build all packages
