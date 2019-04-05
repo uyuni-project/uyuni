@@ -52,3 +52,15 @@ class TestSCActivationKeyMethods:
 
         spacecmd.activationkey.do_activationkey_addpackages(shell, "")
         assert shell.help_activationkey_addpackages.called
+
+    def test_do_activationkey_addpackages_help_args(self, shell):
+        """
+        Test add packages method call shows help on help args passed.
+        """
+        shell.help_activationkey_addpackages = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addPackages = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addpackages(shell, "help")
+        assert shell.help_activationkey_addpackages.called
