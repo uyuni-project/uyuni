@@ -4,6 +4,8 @@ Test activation key methods.
 """
 from mock import MagicMock, patch
 import pytest
+import time
+import hashlib
 import spacecmd.activationkey
 
 
@@ -13,6 +15,7 @@ def shell():
     Create fake shell.
     """
     base = MagicMock()
+    base.session = hashlib.sha256(str(time.time()).encode("utf-8")).hexdigest()
     base.do_activationkey_list = MagicMock(return_value="do_activation_list")
 
     return base
