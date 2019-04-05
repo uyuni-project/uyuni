@@ -121,7 +121,6 @@ install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 install -d -m 755 %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
-install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
 cp -pR css/* %{buildroot}/%{wwwdocroot}/css
 cp -pR fonts %{buildroot}/%{wwwdocroot}/
 cp -pR img %{buildroot}/%{wwwdocroot}/
@@ -130,20 +129,6 @@ cp -pR img %{buildroot}/%{wwwdocroot}/
 cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
-
-%if  0%{?suse_version}
-cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
-docs.getting_started_guide=/rhn/help/getting-started/index.jsp
-docs.reference_guide=/rhn/help/reference/index.jsp
-docs.best_practices_guide=/rhn/help/best-practices/index.jsp
-docs.advanced_topics_guide=/rhn/help/advanced-topics/index.jsp
-docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
-docs.proxy_release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/3.0/
-ENDOFCONFIG
-%else
-cp -p conf/rhn_docs.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf
-ln -s %{_datadir}/patternfly1/resources/fonts/* %{buildroot}%{wwwdocroot}/fonts/
-%endif
 
 %files
 %dir %{wwwdocroot}/css
@@ -156,7 +141,6 @@ ln -s %{_datadir}/patternfly1/resources/fonts/* %{buildroot}%{wwwdocroot}/fonts/
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
-%{_prefix}/share/rhn/config-defaults/rhn_docs.conf
 %doc LICENSE
 %if 0%{?suse_version}
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn
@@ -164,7 +148,6 @@ ln -s %{_datadir}/patternfly1/resources/fonts/* %{buildroot}%{wwwdocroot}/fonts/
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF/lib/
 %dir %{_prefix}/share/rhn
 %dir %{_prefix}/share/rhn/lib
-%attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %endif
 
 %files devel
