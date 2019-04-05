@@ -67,3 +67,24 @@ class TestSCActivationKeyMethods:
 
         spacecmd.activationkey.do_activationkey_addpackages(shell, "help")
         assert shell.help_activationkey_addpackages.called
+
+    def test_do_activationkey_addpackages_args(self, shell):
+        """
+        Test add packages method call shows help on args passed.
+        """
+        shell.help_activationkey_addpackages = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addPackages = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addpackages(shell, "call something here")
+        assert not shell.help_activationkey_addpackages.called
+        assert shell.client.activationkey.addPackages.called
+        print()
+        session, fun, args = shell.client.activationkey.addPackages.call_args_list[0][0]
+        assert session == shell.session
+        assert fun == "call"
+        assert isinstance(args, list)
+        assert len(args) == 2
+        for arg in args:
+            assert arg["name"] in ["something", "here"]
