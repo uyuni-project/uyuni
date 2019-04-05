@@ -101,3 +101,15 @@ class TestSCActivationKeyMethods:
         # TODO: Add help for remove packages!
         spacecmd.activationkey.do_activationkey_removepackages(shell, "")
         assert not shell.help_activationkey_removePackages.called
+
+    def test_do_activationkey_removepackages_help_args(self, shell):
+        """
+        Test add packages method call shows help if only one argument is passed.
+        """
+        shell.help_activationkey_removepackages = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.removePackages = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_removepackages(shell, "package")
+        assert shell.help_activationkey_removepackages.called
