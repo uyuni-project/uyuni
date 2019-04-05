@@ -53,6 +53,31 @@ EOF
     fi
 }
 
+#
+# Check if there are uncommitted changes
+#
+check_repo () {
+    filelist=$(git status -s | grep -e '^\sM\s')
+    is_dirty=""
+    if [[ ! -z $filelist ]]; then
+	echo -e "There are following uncommitted changes found:\n\n$filelist\n"
+	is_dirty="1"
+    fi
+
+    untracked=$(git status -s | grep -e '^??\s')
+    if [[ ! -z untracked ]]; then
+	echo -e "There are still untracked files found in this repository:\n"
+	echo -e "$(echo "$untracked" | sed -e 's/[? ]*//')\n"
+	is_dirty="1"
+    fi
+
+    if [ "$is_dirty" != "" ]; then
+	echo "Use --force option to skip this check."
+	exit 1;
+    fi
+}
+
+
 check_requirements;
 
 # read the options
@@ -87,18 +112,9 @@ if [ ! -d ${OSC_PROJECT_WC} ]; then
   exit 1
 fi
 
-if [[ ! -z $(git status -s) ]]; then
-  if [ "${FORCE}" == "TRUE" ]; then
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    echo "WARNING!!!! Uncommited changes detected, but continuing as --force was present!!!"
-    echo "Keep in mind that if any of the changes is part of the packages you are trying to"
-    echo "build, those changes WILL NOT be part of the build!!!"
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  else
-    echo "ERROR: Uncommited changes detected. Commit or stash them, or if you are sure that"
-    echo "such changes will not affect the packages you intend to build, use --force"
-    exit 1
-  fi
+
+if [ "${FORCE}" != "TRUE" ]; then
+    check_repo;
 fi
 
 # If --packages was not present, build all packages
