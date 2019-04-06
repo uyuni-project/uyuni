@@ -1107,13 +1107,20 @@ class RepoSync(object):
             log(0, '')
             log(0, "  Linking packages to the channel.")
             # Packages to append to channel
-            import_batch = [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link]
-            backend = SQLBackend()
-            caller = "server.app.yumreposync"
-            importer = ChannelPackageSubscription(import_batch,
-                                                  backend, caller=caller, repogen=False)
-            importer.run()
-            backend.commit()
+            import_batches = list(self.chunks(
+                [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link],
+                1000))
+            count = 0
+            for import_batch in import_batches:
+                backend = SQLBackend()
+                caller = "server.app.yumreposync"
+                importer = ChannelPackageSubscription(import_batch,
+                                                      backend, caller=caller, repogen=False)
+                importer.run()
+                backend.commit()
+                del importer.batch
+                count += len(import_batch)
+                log(0, "    {} packages linked".format(count))
             self.regen = True
         self._normalize_orphan_vendor_packages()
         return failed_packages
@@ -2314,3 +2321,7 @@ class RepoSync(object):
         for cid in channels:
             update_needed_cache(cid)
         rhnSQL.commit()
+
+    @staticmethod
+    def chunks(seq, n):
+        return (seq[i:i+n] for i in range(0, len(seq), n))
