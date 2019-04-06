@@ -24,7 +24,7 @@ Feature: PXE boot a Retail terminal
     And I manually install the "vsftpd" formula on the server
     And I manually install the "saltboot" formula on the server
     And I manually install the "pxe" formula on the server
-    And I wait for "16" seconds
+    And I synchronize the Salt execution modules on "proxy"
 
 @proxy
 @private_net
