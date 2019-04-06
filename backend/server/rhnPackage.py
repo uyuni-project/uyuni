@@ -205,8 +205,9 @@ def get_info_for_package(pkg, channel_id, org_id):
               'channel_id': channel_id,
               'org_id': org_id}
     # yum repo has epoch="0" not only when epoch is "0" but also if it's NULL
+    # in DB we cannot insert an empty string, so we check for NULL or '0'
     if pkg[3] == '0' or pkg[3] == '':
-        epochStatement = "(epoch is null or epoch = :epoch)"
+        epochStatement = "(epoch is null or epoch = '0')"
     else:
         epochStatement = "epoch = :epoch"
     if params['org_id']:
