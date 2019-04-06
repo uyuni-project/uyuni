@@ -286,6 +286,15 @@ When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package
   $server.run("zypper --non-interactive remove #{package}-formula")
 end
 
+When(/^I synchronize the Salt execution modules on "([^"]*)"$/) do |host|
+  # WORKAROUND - remove me when fixed
+  # bsc#1131846 - salt chokes on ipv6 addresses when synchronizing client exec execution modules
+  $server.run("sed -i \"s/'ss', '-ant'/'ss', '-ant4'/\" /usr/lib/python3.6/site-packages/salt/utils/network.py", false)
+  # ---------------------------------
+  system_name = get_system_name(host)
+  $server.run("salt #{system_name} saltutil.sync_modules")
+end
+
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'

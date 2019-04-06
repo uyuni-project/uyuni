@@ -29,7 +29,7 @@ Feature: Build OS images
 @private_net
   Scenario: Move the image to the branch server
     When I manually install the "image-sync" formula on the server
-    And I wait for "16" seconds
+    And I synchronize the Salt execution modules on "proxy"
     And I apply state "image-sync" to "proxy"
     Then the image "POS_Image_JeOS6" should exist on "proxy"
 
