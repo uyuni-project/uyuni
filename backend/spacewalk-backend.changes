@@ -1,3 +1,4 @@
+- fix linking of packages in reposync (bsc#1131677)
 - Fix: handle non-standard filenames for comps.xml (bsc#1120242)
 - mgr-sign-metadata can optionally clear-sign metadata files
 
