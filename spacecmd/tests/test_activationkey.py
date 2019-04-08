@@ -16,6 +16,8 @@ def shell():
     """
     base = MagicMock()
     base.session = hashlib.sha256(str(time.time()).encode("utf-8")).hexdigest()
+    base.client = MagicMock()
+    base.client.activationkey = MagicMock()
     base.do_activationkey_list = MagicMock(return_value="do_activation_list")
 
     return base
@@ -49,8 +51,6 @@ class TestSCActivationKeyMethods:
         Test add packages method call shows help on no args.
         """
         shell.help_activationkey_addpackages = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addPackages = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addpackages(shell, "")
@@ -61,8 +61,6 @@ class TestSCActivationKeyMethods:
         Test add packages method call shows help on help args passed.
         """
         shell.help_activationkey_addpackages = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addPackages = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addpackages(shell, "help")
@@ -73,8 +71,6 @@ class TestSCActivationKeyMethods:
         Test add packages method call shows help on args passed.
         """
         shell.help_activationkey_addpackages = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addPackages = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addpackages(shell, "call something here")
@@ -94,8 +90,6 @@ class TestSCActivationKeyMethods:
         Test remove packages method call shows help on no args.
         """
         shell.help_activationkey_removepackages = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removePackages = MagicMock()
 
         # TODO: Add help for remove packages!
@@ -107,8 +101,6 @@ class TestSCActivationKeyMethods:
         Test remove packages method call shows help if only one argument is passed.
         """
         shell.help_activationkey_removepackages = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removePackages = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removepackages(shell, "key")
@@ -119,8 +111,6 @@ class TestSCActivationKeyMethods:
         Test remove packages method calls "removePackages" API call.
         """
         shell.help_activationkey_removepackages = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removePackages = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removepackages(shell, "key package")
@@ -139,8 +129,6 @@ class TestSCActivationKeyMethods:
         Test addgroup without args calls help.
         """
         shell.help_activationkey_addgroups = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addServerGroups = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addgroups(shell, "")
@@ -151,8 +139,6 @@ class TestSCActivationKeyMethods:
         Test add groups method call shows help if only one argument is passed.
         """
         shell.help_activationkey_addgroups = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addServerGroups = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addgroups(shell, "key")
@@ -163,8 +149,6 @@ class TestSCActivationKeyMethods:
         Test "addgroups" method calls "addServerGroups" API call.
         """
         shell.help_activationkey_addgroups = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addServerGroups = MagicMock()
         shell.client.systemgroup.getDetails = MagicMock(return_value={"id": 42})
 
@@ -183,8 +167,6 @@ class TestSCActivationKeyMethods:
         Test removegroup without args calls help.
         """
         shell.help_activationkey_removegroups = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeServerGroups = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removegroups(shell, "")
@@ -195,8 +177,6 @@ class TestSCActivationKeyMethods:
         Test remove groups method call shows help if only one argument is passed.
         """
         shell.help_activationkey_removegroups = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeServerGroups = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removegroups(shell, "key")
@@ -208,8 +188,6 @@ class TestSCActivationKeyMethods:
         Test "removegroups" method calls "removeServerGroups" API call.
         """
         shell.help_activationkey_removegroups = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeServerGroups = MagicMock()
         shell.client.systemgroup.getDetails = MagicMock(return_value={"id": 42})
 
@@ -228,8 +206,6 @@ class TestSCActivationKeyMethods:
         Test addentitlements without args calls help.
         """
         shell.help_activationkey_addentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addentitlements(shell, "")
@@ -241,8 +217,6 @@ class TestSCActivationKeyMethods:
         Test addentitlements method call shows help if only one argument is passed.
         """
         shell.help_activationkey_addentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addentitlements(shell, "key")
@@ -254,8 +228,6 @@ class TestSCActivationKeyMethods:
         Test "addentitlements" method calls "addEntitlements" API call.
         """
         shell.help_activationkey_addentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addentitlements(shell, "key entitlement")
@@ -273,8 +245,6 @@ class TestSCActivationKeyMethods:
         Test addentitlements without args calls help.
         """
         shell.help_activationkey_addentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addentitlements(shell, "")
@@ -286,8 +256,6 @@ class TestSCActivationKeyMethods:
         Test addentitlements method call shows help if only one argument is passed.
         """
         shell.help_activationkey_addentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addentitlements(shell, "key")
@@ -299,8 +267,6 @@ class TestSCActivationKeyMethods:
         Test "addentitlements" method calls "addEntitlements" API call.
         """
         shell.help_activationkey_addentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addentitlements(shell, "key entitlement")
@@ -318,8 +284,6 @@ class TestSCActivationKeyMethods:
         Test removeentitlements without args calls help.
         """
         shell.help_activationkey_removeentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removeentitlements(shell, "")
@@ -331,8 +295,6 @@ class TestSCActivationKeyMethods:
         Test removeentitlements method call shows help if only one argument is passed.
         """
         shell.help_activationkey_removeentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removeentitlements(shell, "key")
@@ -344,8 +306,6 @@ class TestSCActivationKeyMethods:
         Test "removeentitlements" method calls "removeEntitlements" API call.
         """
         shell.help_activationkey_removeentitlements = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeEntitlements = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removeentitlements(shell, "key entitlement")
@@ -363,8 +323,6 @@ class TestSCActivationKeyMethods:
         Test addchildchannels without args calls help.
         """
         shell.help_activationkey_addchildchannels = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addChildChannels = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addchildchannels(shell, "")
@@ -376,8 +334,6 @@ class TestSCActivationKeyMethods:
         Test addchildchannels method call shows help if only one argument is passed.
         """
         shell.help_activationkey_addchildchannels = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addChildChannels = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addchildchannels(shell, "key")
@@ -389,8 +345,6 @@ class TestSCActivationKeyMethods:
         Test "addchildchannels" method calls "addChildChannels" API call.
         """
         shell.help_activationkey_addchildchannels = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.addChildChannels = MagicMock()
 
         spacecmd.activationkey.do_activationkey_addchildchannels(shell, "key some_channel")
@@ -408,8 +362,6 @@ class TestSCActivationKeyMethods:
         Test removechildchannels without args calls help.
         """
         shell.help_activationkey_removechildchannels = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeChildChannels = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removechildchannels(shell, "")
@@ -421,8 +373,6 @@ class TestSCActivationKeyMethods:
         Test removechildchannels method call shows help if only one argument is passed.
         """
         shell.help_activationkey_removechildchannels = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeChildChannels = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removechildchannels(shell, "key")
@@ -434,8 +384,6 @@ class TestSCActivationKeyMethods:
         Test "removechildchannels" method calls "removeChildChannels" API call.
         """
         shell.help_activationkey_removechildchannels = MagicMock()
-        shell.client = MagicMock()
-        shell.client.activationkey = MagicMock()
         shell.client.activationkey.removeChildChannels = MagicMock()
 
         spacecmd.activationkey.do_activationkey_removechildchannels(shell, "key some_channel")
