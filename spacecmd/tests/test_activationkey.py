@@ -420,3 +420,15 @@ class TestSCActivationKeyMethods:
         with patch("spacecmd.activationkey.print", mprint):
             spacecmd.activationkey.do_activationkey_listchildchannels(shell, "key")
         assert mprint.call_args_list[0][0][0] == "one\nthree\ntwo"  # Sorted
+
+    def test_do_activationkey_listbasechannel_noargs(self, shell):
+        """
+        Test listbasechannels command triggers help on no args
+        """
+        shell.help_activationkey_listbasechannel = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(return_value={"base_channel_label"})
+
+        spacecmd.activationkey.do_activationkey_listbasechannel(shell, "")
+        assert shell.help_activationkey_listbasechannel.called
+        assert not shell.client.activationkey.getDetails.called
+
