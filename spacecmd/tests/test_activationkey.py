@@ -396,3 +396,13 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == ['some_channel']
 
+    def test_do_activationkey_listchildchannels_noargs(self, shell):
+        """
+        Test listchildchannels command triggers help on no args
+        """
+        shell.help_activationkey_listchildchannels = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(return_value={"child_channel_labels"})
+
+        spacecmd.activationkey.do_activationkey_listchildchannels(shell, "")
+        assert shell.help_activationkey_listchildchannels.called
+        assert not shell.client.activationkey.getDetails.called
