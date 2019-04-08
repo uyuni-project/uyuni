@@ -126,10 +126,8 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removepackages(shell, "key package")
         assert not shell.help_activationkey_removepackages.called
         assert shell.client.activationkey.removePackages.called
-        print()
         session, fun, args = shell.client.activationkey.removePackages.call_args_list[0][0]
         assert session == shell.session
-        print()
         assert fun == "key"
         assert isinstance(args, list)
         assert len(args) == 1
