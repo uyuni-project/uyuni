@@ -133,3 +133,16 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert "name" in args[0]
         assert args[0]["name"] == "package"
+
+    def test_do_activationkey_addgroups_noargs(self, shell):
+        """
+        Test addgroup without args calls help.
+        """
+        shell.help_activationkey_addgroups = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addServerGroups = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addgroups(shell, "")
+        assert shell.help_activationkey_addgroups.called
+
