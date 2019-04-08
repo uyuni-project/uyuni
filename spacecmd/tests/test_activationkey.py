@@ -236,3 +236,16 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addentitlements.called
         assert not shell.client.activationkey.addEntitlements.called
 
+    def test_do_activationkey_addentitlements_help_args(self, shell):
+        """
+        Test addentitlements method call shows help if only one argument is passed.
+        """
+        shell.help_activationkey_addentitlements = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addEntitlements = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addentitlements(shell, "key")
+        assert shell.help_activationkey_addentitlements.called
+        assert not shell.client.activationkey.addEntitlements.called
+
