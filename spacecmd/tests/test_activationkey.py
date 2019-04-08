@@ -472,3 +472,14 @@ class TestSCActivationKeyMethods:
         assert len(mprint.call_args_list) == 2
         assert mprint.call_args_list[0][0][0] == "RD-2D"
         assert mprint.call_args_list[1][0][0] == "C-3PO"
+
+    def test_do_activationkey_listentitlements_noargs(self, shell):
+        """
+        Test listentitlements command triggers help on no args
+        """
+        shell.help_activationkey_listentitlements = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_listentitlements(shell, "")
+        assert shell.help_activationkey_listentitlements.called
+        assert not shell.client.activationkey.getDetails.called
