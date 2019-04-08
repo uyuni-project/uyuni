@@ -325,3 +325,16 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removeentitlements(shell, "")
         assert shell.help_activationkey_removeentitlements.called
         assert not shell.client.activationkey.removeEntitlements.called
+
+    def test_do_activationkey_removeentitlements_help_args(self, shell):
+        """
+        Test removeentitlements method call shows help if only one argument is passed.
+        """
+        shell.help_activationkey_removeentitlements = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.removeEntitlements = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_removeentitlements(shell, "key")
+        assert shell.help_activationkey_removeentitlements.called
+        assert not shell.client.activationkey.removeEntitlements.called
