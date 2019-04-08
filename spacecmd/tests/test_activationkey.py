@@ -432,3 +432,17 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_listbasechannel.called
         assert not shell.client.activationkey.getDetails.called
 
+    def test_do_activationkey_listbasechannel_args(self, shell):
+        """
+        Test listbasechannels command prints base channel by the activation key passed.
+        """
+        shell.help_activationkey_listbasechannel = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(return_value={
+            "base_channel_label": "Darth Vader",
+        })
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint):
+            spacecmd.activationkey.do_activationkey_listbasechannel(shell, "key")
+        assert mprint.call_args_list[0][0][0] == "Darth Vader"
+
