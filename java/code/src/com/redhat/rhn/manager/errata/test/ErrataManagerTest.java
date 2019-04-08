@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.errata.test;
 
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -63,10 +64,10 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.hibernate.criterion.Restrictions;
 import org.jmock.Expectations;
@@ -76,6 +77,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1595,5 +1597,56 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndFlush(errata3);
 
         assertTrue(ErrataManager.updateStackUpdateNeeded(user, server));
+    }
+
+    /**
+     * Tests truncating errata - simple case (overlap of errata in channels)
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testTruncateErrataSimple() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
+
+        Channel src = ChannelFactoryTest.createTestChannel(user);
+        Channel tgt = ChannelFactoryTest.createTestChannel(user);
+
+        ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
+        ErrataFactory.publishToChannel(Arrays.asList(errata1, errata2), tgt, user, false);
+
+        ErrataManager.truncateErrata(src, tgt, user);
+
+        assertEquals(src.getErratas(), tgt.getErratas());
+    }
+
+    /**
+     * Tests truncating errata - simple case (overlap of erratum and its clone in channels)
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testTruncateErrataCloned() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+        Errata errata1Clone = ErrataTestUtils.createTestClonedErrata(user, errata1, new HashSet<>(), pack);
+        TestUtils.saveAndFlush(errata1Clone);
+        Errata errataInTgt = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errataInTgt);
+
+        Channel src = ChannelFactoryTest.createTestChannel(user);
+        Channel tgt = ChannelFactoryTest.createTestChannel(user);
+
+        ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
+        ErrataFactory.publishToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, user, false);
+
+        ErrataManager.truncateErrata(src, tgt, user);
+
+        assertEquals(1, tgt.getErratas().size());
+        // the clone will "survive" in the tgt channel as it has original in the src
+        assertEquals(errata1Clone, tgt.getErratas().iterator().next());
     }
 }
