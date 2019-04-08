@@ -9,9 +9,10 @@ Feature: System package list is updated if packages are manually installed or re
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-minion" without error control
 
-  Scenario: Pre-requisite: refresh package list first on SLE minion machine
+  Scenario: Pre-requisite: refresh package list and check installed packages on SLE minion client
     When I refresh packages list via spacecmd on "sle-minion"
     And I wait until refresh package list on "sle-minion" is finished
+    Then spacecmd should show packages "milkyway-dummy-1.0" installed on "sle-minion"
 
   Scenario: Pre-requisite: ensure the errata cache is computed
     Given I am on the Systems overview page of this "sle-minion"
