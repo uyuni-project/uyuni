@@ -313,3 +313,15 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == ['entitlement']
 
+    def test_do_activationkey_removeentitlements_noargs(self, shell):
+        """
+        Test removeentitlements without args calls help.
+        """
+        shell.help_activationkey_removeentitlements = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.removeEntitlements = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_removeentitlements(shell, "")
+        assert shell.help_activationkey_removeentitlements.called
+        assert not shell.client.activationkey.removeEntitlements.called
