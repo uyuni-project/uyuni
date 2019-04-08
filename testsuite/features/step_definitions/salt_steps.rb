@@ -286,6 +286,11 @@ When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package
   $server.run("zypper --non-interactive remove #{package}-formula")
 end
 
+When(/^I synchronize the Salt execution modules on "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  $server.run("salt #{system_name} saltutil.sync_modules")
+end
+
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
