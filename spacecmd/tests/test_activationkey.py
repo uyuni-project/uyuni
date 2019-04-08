@@ -446,3 +446,14 @@ class TestSCActivationKeyMethods:
             spacecmd.activationkey.do_activationkey_listbasechannel(shell, "key")
         assert mprint.call_args_list[0][0][0] == "Darth Vader"
 
+    def test_do_activationkey_listgroups_noargs(self, shell):
+        """
+        Test listgroups command triggers help on no args
+        """
+        shell.help_activationkey_listgroups = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock(site_effect=[{"name": "RD-2D"}, {"name": "C-3PO"}])
+
+        spacecmd.activationkey.do_activationkey_listgroups(shell, "")
+        assert shell.help_activationkey_listgroups.called
+        assert not shell.client.activationkey.getDetails.called
