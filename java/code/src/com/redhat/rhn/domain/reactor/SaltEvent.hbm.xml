@@ -16,7 +16,7 @@
             WHERE id IN (
               SELECT id
               FROM suseSaltEvent
-              ORDER BY minion_id NULLS LAST, id
+              ORDER BY minion_id NULLS FIRST, id
               FOR UPDATE SKIP LOCKED
               LIMIT :limit
             )
