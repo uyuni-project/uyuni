@@ -51,6 +51,17 @@ Feature: Manage a group of systems
     When I follow "Groups" in the content area
     Then I should see a "new-systems-group" text
 
+@centos_minion
+  Scenario: Add the CentOS minion to the group in a different way
+    Given I am on the groups page
+    Then I should see a "System Groups" text
+    When I follow "new-systems-group"
+    And I follow "Target Systems"
+    Then I should see a "The following are systems that may be added to this group." text
+    When I check the "ceos-minion" client
+    And I click on "Add Systems"
+    Then I should see a "1 systems were added to new-systems-group server group" text
+
   Scenario: Add the new group to SSM
     Given I am on the groups page
     When I click on "Use in SSM" in row "new-systems-group"
@@ -70,6 +81,19 @@ Feature: Manage a group of systems
     And I should see a "General System Configuration" text
     And the "locale" formula should be unchecked
 
+@centos_minion
+  Scenario: Apply the highstate to the group
+    Given I am on the groups page
+    Then I should see a "System Groups" text
+    When I follow "new-systems-group"
+    And I follow "States"
+    And I click on "Apply Highstate"
+    Then I should see a "Applying the highstate has been scheduled." text
+    When I follow "scheduled"
+    Then I should see a "Apply states (highstate)" text
+    And I should see a "Action Details" text
+    And I wait until I see "2 systems successfully completed this action." text, refreshing the page
+
   Scenario: Remove SLE client from new group
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Groups"
@@ -84,6 +108,8 @@ Feature: Manage a group of systems
     And I click on "Leave Selected Groups"
     Then I should see a "1 system groups removed." text
 
+  # CentOS minion is intentionally not removed from group
+ 
   Scenario: Cleanup: uninstall formula from the server
     Given I am authorized
     When I manually uninstall the "locale" formula from the server
