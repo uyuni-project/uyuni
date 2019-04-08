@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -260,6 +259,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param target the Environment Target
      */
     public static void purgeTarget(EnvironmentTarget target) {
+        target.getContentEnvironment().removeTarget(target);
         INSTANCE.removeObject(target);
         target.asSoftwareTarget().ifPresent(swTgt -> ChannelFactory.remove(swTgt.getChannel()));
     }
@@ -279,20 +279,6 @@ public class ContentProjectFactory extends HibernateFactory {
         return getSession().createQuery(query)
                 .uniqueResultOptional()
                 .filter(tgt -> ChannelFactory.isAccessibleByUser(tgt.getChannel().getLabel(), user.getId()));
-    }
-
-    /**
-     * Looks up {@link EnvironmentTarget}s of given {@link ContentEnvironment}
-     *
-     * @param env the Environment
-     * @return the Stream of {@link EnvironmentTarget}s
-     */
-    public static Stream<EnvironmentTarget> lookupEnvironmentTargets(ContentEnvironment env) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<EnvironmentTarget> query = builder.createQuery(EnvironmentTarget.class);
-        Root<EnvironmentTarget> root = query.from(EnvironmentTarget.class);
-        query.where(builder.equal(root.get("contentEnvironment"), env));
-        return getSession().createQuery(query).stream();
     }
 
     /**
