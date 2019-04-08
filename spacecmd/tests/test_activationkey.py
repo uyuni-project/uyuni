@@ -189,3 +189,17 @@ class TestSCActivationKeyMethods:
 
         spacecmd.activationkey.do_activationkey_removegroups(shell, "")
         assert shell.help_activationkey_removegroups.called
+
+    def test_do_activationkey_removegroups_help_args(self, shell):
+        """
+        Test remove groups method call shows help if only one argument is passed.
+        """
+        shell.help_activationkey_removegroups = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.removeServerGroups = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_removegroups(shell, "key")
+        assert shell.help_activationkey_removegroups.called
+        assert not shell.client.activationkey.removeServerGroups.called
+
