@@ -483,3 +483,15 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_listentitlements(shell, "")
         assert shell.help_activationkey_listentitlements.called
         assert not shell.client.activationkey.getDetails.called
+
+    def test_do_activationkey_listentitlements_args(self, shell):
+        """
+        Test listentitlements command prints entitlements by the activation key passed.
+        """
+        shell.help_activationkey_listentitlements = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(return_value={"entitlements": ["one", "two", "three"]})
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint):
+            spacecmd.activationkey.do_activationkey_listentitlements(shell, "key")
+        assert mprint.call_args_list[0][0][0] == 'one\ntwo\nthree'
