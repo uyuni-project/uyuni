@@ -371,3 +371,15 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addchildchannels.called
         assert not shell.client.activationkey.addChildChannels.called
 
+    def test_do_activationkey_addchildchannels_help_args(self, shell):
+        """
+        Test addchildchannels method call shows help if only one argument is passed.
+        """
+        shell.help_activationkey_addchildchannels = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addChildChannels = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addchildchannels(shell, "key")
+        assert shell.help_activationkey_addchildchannels.called
+        assert not shell.client.activationkey.addChildChannels.called
