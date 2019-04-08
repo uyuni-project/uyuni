@@ -178,3 +178,14 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == [42]
 
+    def test_do_activationkey_removegroups_noargs(self, shell):
+        """
+        Test removegroup without args calls help.
+        """
+        shell.help_activationkey_removegroups = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.removeServerGroups = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_removegroups(shell, "")
+        assert shell.help_activationkey_removegroups.called
