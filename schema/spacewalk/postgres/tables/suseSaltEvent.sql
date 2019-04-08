@@ -7,4 +7,4 @@ CREATE TABLE suseSaltEvent (
 );
 
 CREATE INDEX suse_salt_event_minion_id_idx
-  ON suseSaltEvent (minion_id NULLS LAST, id);
+  ON suseSaltEvent (minion_id NULLS FIRST, id);
