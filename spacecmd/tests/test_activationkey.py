@@ -158,3 +158,23 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addgroups(shell, "key")
         assert shell.help_activationkey_addgroups.called
 
+    def test_do_activationkey_addgroups_args(self, shell):
+        """
+        Test "addgroups" method calls "addServerGroups" API call.
+        """
+        shell.help_activationkey_addgroups = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addServerGroups = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock(return_value={"id": 42})
+
+        spacecmd.activationkey.do_activationkey_addgroups(shell, "key group")
+        assert not shell.help_activationkey_addgroups.called
+        assert shell.client.activationkey.addServerGroups.called
+        session, fun, args = shell.client.activationkey.addServerGroups.call_args_list[0][0]
+        assert session == shell.session
+        assert fun == "key"
+        assert isinstance(args, list)
+        assert len(args) == 1
+        assert args == [42]
+
