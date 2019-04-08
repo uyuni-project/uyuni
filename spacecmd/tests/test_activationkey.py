@@ -403,3 +403,15 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == ['some_channel']
 
+    def test_do_activationkey_removechildchannels_noargs(self, shell):
+        """
+        Test removechildchannels without args calls help.
+        """
+        shell.help_activationkey_removechildchannels = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.removeChildChannels = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_removechildchannels(shell, "")
+        assert shell.help_activationkey_removechildchannels.called
+        assert not shell.client.activationkey.removeChildChannels.called
