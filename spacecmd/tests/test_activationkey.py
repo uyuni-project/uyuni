@@ -146,3 +146,15 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addgroups(shell, "")
         assert shell.help_activationkey_addgroups.called
 
+    def test_do_activationkey_addgroups_help_args(self, shell):
+        """
+        Test add groups method call shows help if only one argument is passed.
+        """
+        shell.help_activationkey_addgroups = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addServerGroups = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addgroups(shell, "key")
+        assert shell.help_activationkey_addgroups.called
+
