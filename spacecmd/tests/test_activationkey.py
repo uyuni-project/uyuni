@@ -457,3 +457,18 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_listgroups(shell, "")
         assert shell.help_activationkey_listgroups.called
         assert not shell.client.activationkey.getDetails.called
+
+    def test_do_activationkey_listgroups_args(self, shell):
+        """
+        Test listgroups command prints groups by the activation key passed.
+        """
+        shell.help_activationkey_listgroups = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(return_value={"server_group_ids": [2, 3]})
+        shell.client.systemgroup.getDetails = MagicMock(side_effect=[{"name": "RD-2D"}, {"name": "C-3PO"}])
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint):
+            spacecmd.activationkey.do_activationkey_listgroups(shell, "key")
+        assert len(mprint.call_args_list) == 2
+        assert mprint.call_args_list[0][0][0] == "RD-2D"
+        assert mprint.call_args_list[1][0][0] == "C-3PO"
