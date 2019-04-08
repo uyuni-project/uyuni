@@ -383,3 +383,23 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addchildchannels(shell, "key")
         assert shell.help_activationkey_addchildchannels.called
         assert not shell.client.activationkey.addChildChannels.called
+
+    def test_do_activationkey_addchildchannels_args(self, shell):
+        """
+        Test "addchildchannels" method calls "addChildChannels" API call.
+        """
+        shell.help_activationkey_addchildchannels = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addChildChannels = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addchildchannels(shell, "key some_channel")
+        assert not shell.help_activationkey_addchildchannels.called
+        assert shell.client.activationkey.addChildChannels.called
+        session, fun, args = shell.client.activationkey.addChildChannels.call_args_list[0][0]
+        assert session == shell.session
+        assert fun == "key"
+        assert isinstance(args, list)
+        assert len(args) == 1
+        assert args == ['some_channel']
+
