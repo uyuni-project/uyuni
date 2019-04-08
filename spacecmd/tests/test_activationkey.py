@@ -357,3 +357,17 @@ class TestSCActivationKeyMethods:
         assert isinstance(args, list)
         assert len(args) == 1
         assert args == ['entitlement']
+
+    def test_do_activationkey_addchildchannels_noargs(self, shell):
+        """
+        Test addchildchannels without args calls help.
+        """
+        shell.help_activationkey_addchildchannels = MagicMock()
+        shell.client = MagicMock()
+        shell.client.activationkey = MagicMock()
+        shell.client.activationkey.addChildChannels = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addchildchannels(shell, "")
+        assert shell.help_activationkey_addchildchannels.called
+        assert not shell.client.activationkey.addChildChannels.called
+
