@@ -960,12 +960,14 @@ When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
 end
 
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
+  round_minute = 60 # spacecmd uses timestamps with precision to minutes only
+  long_wait_delay = 600
   current_time = Time.now.strftime('%Y%m%d%H%M')
-  timeout_time = (Time.now + DEFAULT_TIMEOUT).strftime('%Y%m%d%H%M')
+  timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
   node = get_system_name(client)
-  cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node}"
+  cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node} | grep 'Package List Refresh scheduled by admin' | head -1"
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    Timeout.timeout(long_wait_delay) do
       loop do
         result, code = $server.run(cmd, false)
         break if result.include? '1    0    0'
@@ -974,6 +976,16 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
       end
     end
   rescue Timeout::Error
-    raise "'refresh package list' did not finish in #{DEFAULT_TIMEOUT} seconds"
+    raise "'refresh package list' did not finish in #{long_wait_delay} seconds"
+  end
+end
+
+When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |packages, client|
+  node = get_system_name(client)
+  command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
+  result, code = $server.run(command, false)
+  packages.split(' ').each do |package|
+    pkg = package.strip
+    raise "package #{pkg} is not installed" unless result.include? pkg
   end
 end

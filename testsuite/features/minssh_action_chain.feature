@@ -16,9 +16,10 @@ Feature: Salt SSH action chain
     And I run "zypper -n ref" on "ssh-minion"
 
 @ssh_minion
-  Scenario: Pre-requisite: refresh package list
+  Scenario: Pre-requisite: refresh package list and check newly installed packages on SSH minion
     When I refresh packages list via spacecmd on "ssh-minion"
     And I wait until refresh package list on "ssh-minion" is finished
+    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "ssh-minion"
 
 @ssh_minion
   Scenario: Pre-requisite: wait until downgrade is finished
