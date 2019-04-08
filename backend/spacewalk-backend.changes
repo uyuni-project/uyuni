@@ -1,6 +1,12 @@
 - add makefile for python linter and unit/integration tests
 
 -------------------------------------------------------------------
+Mon Apr 08 10:26:33 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.13-1
+- fix linking of packages in reposync (bsc#1131677)
+
+-------------------------------------------------------------------
 Fri Mar 29 10:29:46 CET 2019 - jgonzalez@suse.com
 
 - version 4.0.12-1
