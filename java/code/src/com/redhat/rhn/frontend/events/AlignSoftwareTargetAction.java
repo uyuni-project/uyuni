@@ -20,12 +20,17 @@ import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.user.UserManager;
 import org.apache.log4j.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.function.Consumer;
 
 /**
  * Align Errata and Packages of {@link Channel} to given {@link Channel}
@@ -39,17 +44,27 @@ public class AlignSoftwareTargetAction implements MessageAction {
     public void execute(EventMessage msgIn) {
         AlignSoftwareTargetMsg msg = (AlignSoftwareTargetMsg) msgIn;
         Channel source = ChannelFactory.lookupById(msg.getSource().getId());
-        Channel target = ChannelFactory.lookupById(msg.getTarget().getId());
+        Long targetId = msg.getTarget().getId();
+        SoftwareEnvironmentTarget target = ContentProjectFactory
+                .lookupSwEnvironmentTargetById(targetId)
+                .orElseThrow(() -> new EntityNotExistsException(targetId));
+        Channel targetChannel = target.getChannel();
 
-        if (!UserManager.verifyChannelAdmin(msg.getUser(), target)) {
-            throw new PermissionException("User " + msg.getUser().getLogin() + " has no permission for channel " +
-                    target.getLabel());
+        try {
+            if (!UserManager.verifyChannelAdmin(msg.getUser(), targetChannel)) {
+                throw new PermissionException("User " + msg.getUser().getLogin() + " has no permission for channel " +
+                        targetChannel.getLabel());
+            }
+
+            LOG.info("Asynchronously aligning: " + msg);
+            Instant start = Instant.now();
+            ChannelManager.alignEnvironmentTargetSync(source, targetChannel, msg.getUser());
+            target.setStatus(Status.BUILT);
+            LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
         }
-
-        LOG.info("Asynchronously aligning: " + msg);
-        Instant start = Instant.now();
-        ChannelManager.alignEnvironmentTargetSync(source, target, msg.getUser());
-        LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
+        catch (Throwable t) {
+            throw new AlignSoftwareTargetException(target, t);
+        }
     }
 
     @Override
@@ -58,7 +73,38 @@ public class AlignSoftwareTargetAction implements MessageAction {
     }
 
     @Override
+    public Consumer<Exception> getExceptionHandler() {
+        return (e) -> {
+            if (e instanceof AlignSoftwareTargetException) {
+                LOG.error("Error aligning channel", e);
+                AlignSoftwareTargetException exc = ((AlignSoftwareTargetException) e);
+                exc.getTarget().setStatus(Status.FAILED);
+                ContentProjectFactory.save(exc.getTarget());
+            }
+        };
+    }
+
+    @Override
     public boolean needsTransactionHandling() {
         return true;
+    }
+
+    private class AlignSoftwareTargetException extends RuntimeException {
+
+        private SoftwareEnvironmentTarget target;
+
+        AlignSoftwareTargetException(SoftwareEnvironmentTarget targetIn, Throwable cause) {
+            super(cause);
+            this.target = targetIn;
+        }
+
+        /**
+         * Gets the target.
+         *
+         * @return target
+         */
+        public SoftwareEnvironmentTarget getTarget() {
+            return target;
+        }
     }
 }

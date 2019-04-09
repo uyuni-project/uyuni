@@ -39,7 +39,6 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
-import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
@@ -2764,7 +2763,11 @@ public class ChannelManager extends BaseManager {
             throw new PermissionException("User " + user.getLogin() + " has no permission for channel " +
                     tgt.getChannel().getLabel());
         }
-        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt.getChannel(), user);
+
+        // adjust the target status
+        tgt.setStatus(EnvironmentTarget.Status.BUILDING);
+
+        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, user);
         if (async) {
             MessageQueue.publish(msg);
         }
