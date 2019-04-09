@@ -506,3 +506,25 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_listpackages(shell, "")
         assert shell.help_activationkey_listpackages.called
         assert not shell.client.activationkey.getDetails.called
+
+    def test_do_activationkey_listpackages_args_arch(self, shell):
+        """
+        Test listpackages command prints packages by the activation key passed with the arch included.
+        """
+        shell.help_activationkey_listpackages = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(
+            return_value={"packages": [
+                {"name": "libzypp", "arch": "ZX80"},
+                {"name": "java-11-openjdk-devel", "arch": "CBM64"},
+            ]}
+        )
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint):
+            spacecmd.activationkey.do_activationkey_listpackages(shell, "key")
+        assert mprint.called
+        assert len(mprint.call_args_list) == 2
+        # keep ordering
+        assert mprint.call_args_list[0][0][0] == "libzypp.ZX80"
+        assert mprint.call_args_list[1][0][0] == "java-11-openjdk-devel.CBM64"
+
