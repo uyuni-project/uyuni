@@ -805,3 +805,22 @@ class TestSCActivationKeyMethods:
             assert keyname in keys
             keys.pop(keys.index(keyname))
         assert not keys
+
+    @patch("spacecmd.activationkey.filter_results", MagicMock(return_value=["some_patches", "some_stuff"]))
+    def test_do_activationkey_activationkey_list_args(self, shell):
+        """
+        Test activationkey_list command is calling listActivationKeys API.
+        """
+        shell.client.activationkey.listActivationKeys = MagicMock(
+            return_value=[
+                {"key": "some_patches", "description": "Some key"},
+                {"key": "some_stuff", "description": "Some other key"},
+                {"key": "some_reactivation", "description": "Kickstart re-activation key"},
+            ]
+        )
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint) as mpr:
+            ret = sorted(spacecmd.activationkey.do_activationkey_list(shell, "key some*", doreturn=True))
+        assert len(ret) == 2
+        assert ret == ['some_patches', 'some_stuff']
