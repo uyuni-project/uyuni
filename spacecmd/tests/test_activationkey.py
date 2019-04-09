@@ -763,3 +763,14 @@ class TestSCActivationKeyMethods:
         assert bch == "lightsaber_patches_sle42sp8"
         assert entl == ["expanded", "universe"]
         assert universal
+
+    def test_do_activationkey_activationkey_delete_insuff_args(self, shell):
+        """
+        Test activationkey_delete command triggers help on insufficient args.
+        """
+        shell.help_activationkey_delete = MagicMock()
+        shell.client.activationkey.delete = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_delete(shell, "")
+        assert shell.help_activationkey_delete.called
+        assert not shell.client.activationkey.delete.called
