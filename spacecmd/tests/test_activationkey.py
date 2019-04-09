@@ -548,3 +548,14 @@ class TestSCActivationKeyMethods:
         # keep ordering
         assert mprint.call_args_list[0][0][0] == "libzypp"
         assert mprint.call_args_list[1][0][0] == "java-11-openjdk-devel"
+
+    def test_do_activationkey_listconfigchannels_noargs(self, shell):
+        """
+        Test listconfigchannels command triggers help on no args
+        """
+        shell.help_activationkey_listconfigchannels = MagicMock()
+        shell.client.activationkey.listConfigChannels = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_listconfigchannels(shell, "")
+        assert shell.help_activationkey_listconfigchannels.called
+        assert not shell.client.activationkey.listConfigChannels.called
