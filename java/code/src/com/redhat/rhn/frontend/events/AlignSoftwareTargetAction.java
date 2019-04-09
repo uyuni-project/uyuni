@@ -48,7 +48,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
         LOG.info("Asynchronously aligning: " + msg);
         Instant start = Instant.now();
-        ChannelManager.alignChannelsSync(source, target, msg.getUser());
+        ChannelManager.alignEnvironmentTargetSync(source, target, msg.getUser());
         LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
     }
 

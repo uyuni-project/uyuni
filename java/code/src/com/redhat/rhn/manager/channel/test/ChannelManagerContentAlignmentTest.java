@@ -88,7 +88,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
     public void testAlignEntities() throws Exception {
         // let's add a package to the target. it should be removed after aligning
         tgtChannel.getPackages().add(PackageTest.createTestPackage(user.getOrg()));
-        ChannelManager.alignChannelsSync(srcChannel, tgtChannel, user);
+        ChannelManager.alignEnvironmentTargetSync(srcChannel, tgtChannel, user);
 
         // check that newest packages cache has been updated
         assertEquals(
@@ -116,7 +116,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(pack2.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
         assertNull(ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
 
-        ChannelManager.alignChannelsSync(srcChannel, tgtChannel, user);
+        ChannelManager.alignEnvironmentTargetSync(srcChannel, tgtChannel, user);
         assertEquals(pkg.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
         assertNull(ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
     }
@@ -136,7 +136,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
 
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
 
-        ChannelManager.alignChannelsSync(srcChannel, tgtChannel, user);
+        ChannelManager.alignEnvironmentTargetSync(srcChannel, tgtChannel, user);
         assertEquals(errata.getId(), SystemManager.relevantErrata(user, server.getId()).get(0).getId());
     }
 
@@ -158,7 +158,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         List<SystemOverview> systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, pkg.getId());
         assertTrue(systemsWithNeededPackage.isEmpty());
 
-        ChannelManager.alignChannelsSync(srcChannel, tgtChannel, user);
+        ChannelManager.alignEnvironmentTargetSync(srcChannel, tgtChannel, user);
         systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, pkg.getId());
         assertEquals(1, systemsWithNeededPackage.size());
         assertEquals(server.getId(), systemsWithNeededPackage.get(0).getId());
@@ -188,7 +188,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(1, systemsWithNeededPackage.size());
         assertEquals(server.getId(), systemsWithNeededPackage.get(0).getId());
 
-        ChannelManager.alignChannelsSync(srcChannel, tgtChannel, user);
+        ChannelManager.alignEnvironmentTargetSync(srcChannel, tgtChannel, user);
         systemsWithNeededPackage = SystemManager.listSystemsWithNeededPackage(user, otherPkg.getId());
         assertTrue(systemsWithNeededPackage.isEmpty());
     }
@@ -204,7 +204,7 @@ public class ChannelManagerContentAlignmentTest extends BaseTestCaseWithUser {
         Errata toRemove = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());;
         tgtChannel.addErrata(toRemove);
 
-        ChannelManager.alignChannelsSync(srcChannel, tgtChannel, user);
+        ChannelManager.alignEnvironmentTargetSync(srcChannel, tgtChannel, user);
 
         // check that packages and errata have been aligned
         assertEquals(srcChannel.getPackages(), tgtChannel.getPackages());

@@ -39,6 +39,9 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.org.Org;
@@ -2749,19 +2752,19 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * Align packages and errata of the target channel to the source one
+     * Align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
      *
-     * @param src the source Channel
-     * @param tgt the target Channel
+     * @param src the source {@link Channel}
+     * @param tgt the target {@link SoftwareEnvironmentTarget}
      * @param async run this operation asynchronously?
      * @param user the user
      */
-    public static void alignChannels(Channel src, Channel tgt, boolean async, User user) {
-        if (!UserManager.verifyChannelAdmin(user, tgt)) {
+    public static void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, boolean async, User user) {
+        if (!UserManager.verifyChannelAdmin(user, tgt.getChannel())) {
             throw new PermissionException("User " + user.getLogin() + " has no permission for channel " +
-                    tgt.getLabel());
+                    tgt.getChannel().getLabel());
         }
-        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, user);
+        AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt.getChannel(), user);
         if (async) {
             MessageQueue.publish(msg);
         }
@@ -2771,14 +2774,14 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * Synchronously align packages and errata of the target channel to the source one.
-     * This method is potentially time-expensive and should be run asynchronously (@see alignChannels)
+     * Synchronously align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
+     * This method is potentially time-expensive and should be run asynchronously (@see alignEnvironmentTarget)
      *
-     * @param src the source
-     * @param tgt the target
+     * @param src the source {@link Channel}
+     * @param tgt the target {@link SoftwareEnvironmentTarget}
      * @param user the user
      */
-    public static void alignChannelsSync(Channel src, Channel tgt, User user) {
+    public static void alignEnvironmentTargetSync(Channel src, Channel tgt, User user) {
         // align packages and the cache (rhnServerNeededCache)
         alignPackages(src, tgt);
 
