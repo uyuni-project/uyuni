@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Apr 09 10:33:53 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.7.15-1
 - Show undetected subscription-matching message object as a string anyway (bsc#1125600)
 - Fix action scheduler time picker prefill when the server is on  "UTC/GMT" timezone (bsc#1121195)
 - Allow username input on bootstrap page when using Salt-SSH
