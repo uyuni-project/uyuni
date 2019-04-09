@@ -602,3 +602,44 @@ class TestSCActivationKeyMethods:
         assert "unrecognized arguments" in str(exc)
         assert not shell.help_activationkey_addconfigchannels.called
         assert not shell.client.activationkey.addConfigChannels.called
+
+    @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
+    def test_do_activationkey_addconfigchannels_check_args_noninteractive(self, shell):
+        """
+        Test addconfigchannels command calls addConfigChannels API function on params added.
+        """
+        shell.help_activationkey_addconfigchannels = MagicMock()
+        shell.client.activationkey.addConfigChannels = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "key rd2d-upgrade -b")
+
+        assert not shell.help_activationkey_addconfigchannels.called
+        assert shell.client.activationkey.addConfigChannels.called
+
+        session, keys, channels, order = shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        assert shell.session == session
+        assert len(keys) == len(channels) == 1
+        assert "key" in keys
+        assert "rd2d-upgrade" in channels
+        assert bool == type(order)
+        assert not order
+
+        shell.client.activationkey.addConfigChannels = MagicMock()
+        spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "key rd2d-upgrade")
+        session, keys, channels, order = shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        assert shell.session == session
+        assert len(keys) == len(channels) == 1
+        assert "key" in keys
+        assert "rd2d-upgrade" in channels
+        assert bool == type(order)
+        assert order
+
+        shell.client.activationkey.addConfigChannels = MagicMock()
+        spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "key rd2d-upgrade -t")
+        session, keys, channels, order = shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        assert shell.session == session
+        assert len(keys) == len(channels) == 1
+        assert "key" in keys
+        assert "rd2d-upgrade" in channels
+        assert bool == type(order)
+        assert order
