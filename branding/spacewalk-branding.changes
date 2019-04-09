@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Apr 09 10:18:51 CEST 2019 - jgonzalez@suse.com
+
+- version 2.8.5.15-1
 - Introduce a description label for the new 'minion-checkin' Taskomatic job (bsc#1122837)
 
 -------------------------------------------------------------------
