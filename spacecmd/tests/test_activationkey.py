@@ -588,3 +588,17 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "")
         assert shell.help_activationkey_addconfigchannels.called
         assert not shell.client.activationkey.addConfigChannels.called
+
+    def test_do_activationkey_addconfigchannels_unknown_noargs(self, shell):
+        """
+        Test addconfigchannels command raises an Exception on unknown passed args.
+        """
+        shell.help_activationkey_addconfigchannels = MagicMock()
+        shell.client.activationkey.addConfigChannels = MagicMock()
+
+        with pytest.raises(Exception) as exc:
+            spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "--you-shall-not-pass=True")
+
+        assert "unrecognized arguments" in str(exc)
+        assert not shell.help_activationkey_addconfigchannels.called
+        assert not shell.client.activationkey.addConfigChannels.called
