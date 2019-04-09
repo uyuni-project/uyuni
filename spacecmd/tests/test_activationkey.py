@@ -577,3 +577,14 @@ class TestSCActivationKeyMethods:
             spacecmd.activationkey.do_activationkey_listconfigchannels(shell, "key")
         assert mprint.called
         assert mprint.call_args_list[0][0][0] == 'commodore64\nlightsaber_patches\npascal_for_msdos'
+
+    def test_do_activationkey_addconfigchannels_noargs(self, shell):
+        """
+        Test addconfigchannels command triggers help on no args.
+        """
+        shell.help_activationkey_addconfigchannels = MagicMock()
+        shell.client.activationkey.addConfigChannels = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "")
+        assert shell.help_activationkey_addconfigchannels.called
+        assert not shell.client.activationkey.addConfigChannels.called
