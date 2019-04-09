@@ -683,3 +683,19 @@ class TestSCActivationKeyMethods:
         assert "key" in keys
         assert "some_patches" in channels
         assert len(keys) == len(channels) == 1
+
+    @patch("spacecmd.activationkey.config_channel_order",
+           MagicMock(return_value=["lightsaber_patches", "rd2d_upgrade"]))
+    def test_do_activationkey_setconfigchannelorder_noargs(self, shell):
+        """
+        Test setconfigchannelorder command triggers help on no args.
+        """
+        for cmd in [""]:
+            shell.help_activationkey_setconfigchannelorder = MagicMock()
+            shell.client.activationkey.listConfigChannels = MagicMock()
+            shell.client.activationkey.setConfigChannels = MagicMock()
+            shell.do_configchannel_list = MagicMock()
+
+            spacecmd.activationkey.do_activationkey_setconfigchannelorder(shell, cmd)
+            assert shell.help_activationkey_setconfigchannelorder.called
+            assert not shell.client.activationkey.setConfigChannels.called
