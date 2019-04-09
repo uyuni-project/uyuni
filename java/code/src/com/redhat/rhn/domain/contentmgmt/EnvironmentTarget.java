@@ -18,8 +18,11 @@ package com.redhat.rhn.domain.contentmgmt;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Optional;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,11 +45,37 @@ public abstract class EnvironmentTarget {
 
     private Long id;
     private ContentEnvironment contentEnvironment;
+    private Status status;
+
+    /**
+     * Status of the {@link EnvironmentTarget}
+     */
+    public enum Status {
+        NEW("new"),
+        BUILDING("building"),
+        BUILT("built"),
+        FAILED("failed");
+
+        private final String label;
+
+        Status(String labelIn) {
+            this.label = labelIn;
+        }
+
+        /**
+         * Return the label
+         * @return the label
+         */
+        public String getLabel() {
+            return label;
+        }
+    }
 
     /**
      * Standard constructor
      */
     public EnvironmentTarget() {
+        status = Status.NEW;
     }
 
     /**
@@ -55,6 +84,7 @@ public abstract class EnvironmentTarget {
      * @param contentEnvironmentIn the Environment
      */
     public EnvironmentTarget(ContentEnvironment contentEnvironmentIn) {
+        this();
         this.contentEnvironment = contentEnvironmentIn;
     }
 
@@ -106,10 +136,31 @@ public abstract class EnvironmentTarget {
         contentEnvironment = contentEnvironmentIn;
     }
 
+    /**
+     * Gets the status.
+     *
+     * @return status
+     */
+    @Column
+    @Enumerated(EnumType.STRING)
+    public Status getStatus() {
+        return status;
+    }
+
+    /**
+     * Sets the status.
+     *
+     * @param statusIn the status
+     */
+    public void setStatus(Status statusIn) {
+        this.status = statusIn;
+    }
+
     protected ToStringBuilder toStringBuilder() {
         return new ToStringBuilder(this)
                 .append("id", id)
-                .append("contentEnvironment", contentEnvironment);
+                .append("contentEnvironment", contentEnvironment)
+                .append("status", status);
     }
 
     @Override
