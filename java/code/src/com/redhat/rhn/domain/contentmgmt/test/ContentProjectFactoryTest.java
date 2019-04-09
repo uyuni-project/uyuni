@@ -439,6 +439,34 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests looking up non-existing {@link SoftwareEnvironmentTarget}
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLookupNonExistingEnvironmentTargetById() throws Exception {
+        assertFalse(ContentProjectFactory.lookupSwEnvironmentTargetById(123321L).isPresent());
+    }
+
+    /**
+     * Tests looking up {@link SoftwareEnvironmentTarget}
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLookupEnvironmentTargetById() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
+        ContentProjectFactory.save(target);
+
+        assertEquals(target, ContentProjectFactory.lookupSwEnvironmentTargetById(target.getId()).get());
+    }
+
+    /**
      * Test purging {@link SoftwareEnvironmentTarget}
      *
      * @throws Exception if anything goes wrong

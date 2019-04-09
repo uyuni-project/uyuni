@@ -282,6 +282,20 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up SoftwareEnvironmentTarget with given id
+     *
+     * @param id the id
+     * @return Optional of {@link com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget}
+     */
+    public static Optional<SoftwareEnvironmentTarget> lookupSwEnvironmentTargetById(long id) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SoftwareEnvironmentTarget> query = builder.createQuery(SoftwareEnvironmentTarget.class);
+        Root<SoftwareEnvironmentTarget> from = query.from(SoftwareEnvironmentTarget.class);
+        query.where(builder.equal(from.get("id"), id));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
      * Save a Project source
      *
      * @param source the project source
