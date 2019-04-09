@@ -559,3 +559,21 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_listconfigchannels(shell, "")
         assert shell.help_activationkey_listconfigchannels.called
         assert not shell.client.activationkey.listConfigChannels.called
+
+    def test_do_activationkey_listconfigchannels_args(self, shell):
+        """
+        Test listconfigchannels command prints entitlements by the activation key passed.
+        """
+        channels = [
+            {"label": "commodore64"},
+            {"label": "pascal_for_msdos"},
+            {"label": "lightsaber_patches"}
+        ]
+        shell.help_activationkey_listconfigchannels = MagicMock()
+        shell.client.activationkey.listConfigChannels = MagicMock(return_value=channels)
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint):
+            spacecmd.activationkey.do_activationkey_listconfigchannels(shell, "key")
+        assert mprint.called
+        assert mprint.call_args_list[0][0][0] == 'commodore64\nlightsaber_patches\npascal_for_msdos'
