@@ -86,6 +86,12 @@ mv $RPM_BUILD_ROOT/etc/httpd $RPM_BUILD_ROOT%{apacheconfdir}
 sed -i 's|var/www/html|srv/www/htdocs|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %endif
 
+%if 0%{?sle_version} && !0%{?is_opensuse}
+sed -i -e 's|@PRODUCT|suse-manager|g' -e 's|@VERSION|beta3|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-docs.conf
+%else
+sed -i -e 's|@PRODUCT|uyuni|g' -e 's|@VERSION|4.0|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-docs.conf
+%endif
+
 tar -C $RPM_BUILD_ROOT%{prepdir} -cf - etc \
      | tar -C $RPM_BUILD_ROOT -xvf -
 
@@ -105,6 +111,7 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %defattr(-,root,root,-)
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
 %config(noreplace) %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
+%config(noreplace) %{apacheconfdir}/conf.d/zz-spacewalk-docs.conf
 %config(noreplace) %{apacheconfdir}/conf.d/os-images.conf
 %config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
