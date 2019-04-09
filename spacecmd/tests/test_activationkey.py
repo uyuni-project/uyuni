@@ -665,3 +665,21 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removeconfigchannels(shell, "key")
         assert shell.help_activationkey_removeconfigchannels.called
         assert not shell.client.activationkey.removeConfigChannels.called
+
+    def test_do_activationkey_removeconfigchannels_args(self, shell):
+        """
+        Test removeconfigchannels command is calling removeConfigChannels API by the activation key passed.
+        """
+        shell.help_activationkey_removeconfigchannels = MagicMock()
+        shell.client.activationkey.removeConfigChannels = MagicMock()
+
+        mprint = MagicMock()
+        spacecmd.activationkey.do_activationkey_removeconfigchannels(shell, "key some_patches")
+        assert not shell.help_activationkey_removeconfigchannels.called
+        assert shell.client.activationkey.removeConfigChannels.called
+
+        session, keys, channels = shell.client.activationkey.removeConfigChannels.call_args_list[0][0]
+        assert shell.session == session
+        assert "key" in keys
+        assert "some_patches" in channels
+        assert len(keys) == len(channels) == 1
