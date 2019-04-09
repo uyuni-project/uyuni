@@ -21,6 +21,7 @@ CREATE TABLE suseContentEnvironmentTarget(
                        REFERENCES suseContentEnvironment(id)
                        ON DELETE CASCADE,
     type       VARCHAR2(16) NOT NULL,
+    status     VARCHAR2(32) NOT NULL DEFAULT 'NEW',
     channel_id NUMBER
                    CONSTRAINT suse_ct_env_tgt_chanid_fk
                        REFERENCES rhnChannel(id)
