@@ -774,3 +774,34 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_delete(shell, "")
         assert shell.help_activationkey_delete.called
         assert not shell.client.activationkey.delete.called
+
+    @patch("spacecmd.activationkey.filter_results", MagicMock(return_value=["some_patches", "some_stuff"]))
+    def test_do_activationkey_activationkey_delete_args(self, shell):
+        """
+        Test activationkey_delete command is calling "delete" (key) API.
+        """
+        shell.help_activationkey_delete = MagicMock()
+        shell.client.activationkey.delete = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint) as mpr, \
+             patch("spacecmd.activationkey.logging", logger) as lgr:
+            spacecmd.activationkey.do_activationkey_delete(shell, "key some*")
+            assert not shell.help_activationkey_delete.called
+
+        assert not logger.error.called
+        assert logger.debug.called
+        assert logger.debug.call_args_list[0][0][0] == ("activationkey_delete called with args"
+                                                        " ['key', 'some.*'], keys=['some_patches', 'some_stuff']")
+        assert logger.debug.call_args_list[1][0][0] == "Deleting key some_patches"
+        assert logger.debug.call_args_list[2][0][0] == "Deleting key some_stuff"
+
+        assert shell.client.activationkey.delete.called
+        keys = ["some_stuff", "some_patches"]
+        for call in shell.client.activationkey.delete.call_args_list:
+            session, keyname = call[0]
+            assert shell.session == session
+            assert keyname in keys
+            keys.pop(keys.index(keyname))
+        assert not keys
