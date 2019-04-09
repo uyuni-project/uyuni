@@ -699,3 +699,23 @@ class TestSCActivationKeyMethods:
             spacecmd.activationkey.do_activationkey_setconfigchannelorder(shell, cmd)
             assert shell.help_activationkey_setconfigchannelorder.called
             assert not shell.client.activationkey.setConfigChannels.called
+
+    @patch("spacecmd.activationkey.config_channel_order",
+           MagicMock(return_value=["lightsaber_patches", "rd2d_upgrade"]))
+    def test_do_activationkey_setconfigchannelorder_args(self, shell):
+        """
+        Test setconfigchannelorder command triggers setConfigChannels API call with proper function
+        """
+        shell.help_activationkey_setconfigchannelorder = MagicMock()
+        shell.client.activationkey.listConfigChannels = MagicMock()
+        shell.client.activationkey.setConfigChannels = MagicMock()
+        shell.do_configchannel_list = MagicMock()
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint):
+            spacecmd.activationkey.do_activationkey_setconfigchannelorder(shell, "key")
+        assert not shell.help_activationkey_setconfigchannelorder.called
+        assert shell.client.activationkey.setConfigChannels.called
+        assert len(mprint.call_args_list) == 4
+        assert mprint.call_args_list[2][0][0] == "[1] lightsaber_patches"
+        assert mprint.call_args_list[3][0][0] == "[2] rd2d_upgrade"
