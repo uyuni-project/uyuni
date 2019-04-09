@@ -654,3 +654,14 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removeconfigchannels(shell, "")
         assert shell.help_activationkey_removeconfigchannels.called
         assert not shell.client.activationkey.removeConfigChannels.called
+    
+    def test_do_activationkey_removeconfigchannels_insuff_args(self, shell):
+        """
+        Test removeconfigchannels command triggers help on insufficient args.
+        """
+        shell.help_activationkey_removeconfigchannels = MagicMock()
+        shell.client.activationkey.removeConfigChannels = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_removeconfigchannels(shell, "key")
+        assert shell.help_activationkey_removeconfigchannels.called
+        assert not shell.client.activationkey.removeConfigChannels.called
