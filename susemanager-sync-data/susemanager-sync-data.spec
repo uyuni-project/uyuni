@@ -1,5 +1,5 @@
 Name:           susemanager-sync-data
-Version:        3.2.13
+Version:        3.2.14
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 Group:          Productivity/Other

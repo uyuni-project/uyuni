@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Apr 09 10:47:11 CEST 2019 - jgonzalez@suse.com
+
+- version 3.2.14-1
 - allow access to susemanager tools channels without res subscription (bsc#1127542)
 - add Ubuntu product definitions
 - adapt to SCC changes
