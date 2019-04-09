@@ -495,3 +495,14 @@ class TestSCActivationKeyMethods:
         with patch("spacecmd.activationkey.print", mprint):
             spacecmd.activationkey.do_activationkey_listentitlements(shell, "key")
         assert mprint.call_args_list[0][0][0] == 'one\ntwo\nthree'
+
+    def test_do_activationkey_listpackages_noargs(self, shell):
+        """
+        Test listpackages command triggers help on no args
+        """
+        shell.help_activationkey_listpackages = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_listpackages(shell, "")
+        assert shell.help_activationkey_listpackages.called
+        assert not shell.client.activationkey.getDetails.called
