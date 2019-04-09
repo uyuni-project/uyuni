@@ -1,3 +1,4 @@
+- Change the return type of the Cobbler method last_modified_time to Double
 - Populate Content Environment on inserting it in a Project
 - Add makefile and pylint configuration
 

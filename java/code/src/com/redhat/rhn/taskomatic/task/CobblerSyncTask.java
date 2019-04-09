@@ -68,9 +68,8 @@ public class CobblerSyncTask extends RhnJavaJob {
 
             Double mtime = null;
             try {
-                String mtimeStr = (String) invoker.invokeMethod("last_modified_time",
+                mtime = (Double)invoker.invokeMethod("last_modified_time",
                         new ArrayList());
-                mtime = Double.parseDouble(mtimeStr);
             }
             catch (XmlRpcFault e) {
                 log.error("Error calling cobbler.", e);
