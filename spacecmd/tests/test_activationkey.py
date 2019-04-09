@@ -719,3 +719,47 @@ class TestSCActivationKeyMethods:
         assert len(mprint.call_args_list) == 4
         assert mprint.call_args_list[2][0][0] == "[1] lightsaber_patches"
         assert mprint.call_args_list[3][0][0] == "[2] rd2d_upgrade"
+
+    @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
+    def test_do_activationkey_create_nointeract_argstest(self, shell):
+        """
+        Test call activation key API "create".
+        """
+        shell.client.activationkey.create = MagicMock(return_value="superglue")
+        shell.list_base_channels = MagicMock(return_value=["lightsaber_patches_sle42sp8"])
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            spacecmd.activationkey.do_activationkey_create(shell, "")
+
+        assert logger.info.called
+        assert shell.client.activationkey.create.called
+        assert logger.info.call_args_list[0][0][0] == "Created activation key superglue"
+
+        session, name, descr, bch, entl, universal = shell.client.activationkey.create.call_args_list[0][0]
+        assert shell.session == session
+        assert name == descr == bch == ""
+        assert entl == []
+        assert not universal
+
+        shell.client.activationkey.create = MagicMock(return_value="woodblock")
+        shell.list_base_channels = MagicMock(return_value=["lightsaber_patches_sle42sp8"])
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            spacecmd.activationkey.do_activationkey_create(
+                shell, ("--name lightsaber --description 'The signature weapon of the Jedi Order' "
+                        "--base-channel lightsaber_patches_sle42sp8 --entitlements expanded,universe "
+                        "--universal"))
+
+        assert logger.info.called
+        assert shell.client.activationkey.create.called
+        assert logger.info.call_args_list[0][0][0] == "Created activation key woodblock"
+
+        session, name, descr, bch, entl, universal = shell.client.activationkey.create.call_args_list[0][0]
+        assert shell.session == session
+        assert name == "lightsaber"
+        assert "Jedi Order" in descr
+        assert bch == "lightsaber_patches_sle42sp8"
+        assert entl == ["expanded", "universe"]
+        assert universal
