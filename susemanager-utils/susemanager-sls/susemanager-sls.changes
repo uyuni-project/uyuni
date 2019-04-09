@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Apr 09 10:46:33 CEST 2019 - jgonzalez@suse.com
+
+- version 3.2.23-1
 - Update get_kernel_live_version module to support older Salt versions (bsc#1131490)
 - Update get_kernel_live_version module to support SLES 15 live patches
 - Do not configure Salt Mine in newly registered minions (bsc#1122837)
