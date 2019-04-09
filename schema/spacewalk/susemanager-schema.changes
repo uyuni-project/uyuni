@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Apr 09 10:44:23 CEST 2019 - jgonzalez@suse.com
+
+- version 3.2.18-1
 - Add a Taskomatic job to perform minion check-in regularly, drop use of Salt's Mine (bsc#1122837)
 - fix performance regression in inter-server-sync (bsc#1128781)
 - Set minion-action-cleanup run frequency from hourly to daily at midnight
