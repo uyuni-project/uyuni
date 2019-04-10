@@ -735,8 +735,14 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Proxy Release Notes">
-        <source>Proxy Release Notes</source>
+      <trans-unit id="product_proxy">
+        <source>@@PRODUCT_NAME@@ Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="product_server">
+        <source>@@PRODUCT_NAME@@ Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>

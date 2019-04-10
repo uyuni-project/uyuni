@@ -7,7 +7,7 @@
     <bean:message key="footer.jsp.copyright" />
   </div>
   <div class="footer-release">
-    <bean:message key="footer.jsp.release" arg0="/rhn/help/dispatcher/release_notes" arg1="${rhn:getConfig('web.version')}" />
+    <bean:message key="footer.jsp.release" arg0="/docs/release-notes/release-notes-server.html" arg1="${rhn:getConfig('web.version')}" />
   </div>
   <%@ include file="/WEB-INF/pages/common/fragments/bugzilla.jspf" %>
   <c:set var="custom_footer" scope="page" value="${rhn:getConfig('java.custom_footer')}" />

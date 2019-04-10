@@ -1258,7 +1258,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="footer.jsp.release">
-        <source>@@PRODUCT_NAME@@ release &lt;a href="{0}"&gt;{1}&lt;/a&gt;</source>
+        <source>@@PRODUCT_NAME@@ release &lt;a href="{0}" target="_blank"&gt;{1}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
           <context context-type="paramnotes">
