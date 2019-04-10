@@ -7,6 +7,7 @@ import pytest
 import time
 import hashlib
 import spacecmd.activationkey
+from xmlrpc import client as xmlrpclib
 
 
 @pytest.fixture
@@ -1145,3 +1146,23 @@ class TestSCActivationKeyMethods:
             assert key_details[dkey] == details[dkey]
         assert type(details["universal_default"]) == bool
         assert details["universal_default"]
+
+    def test_export_activationkey_getdetails_exception_handling(self, shell):
+        """
+        Test export_activationkey_getdetails XMLRPC failure.
+        """
+    
+        key_details = {
+            "server_group_ids": [],
+        }
+        logger = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock()
+        shell.client.activationkey.listConfigChannels = MagicMock(side_effect=xmlrpclib.Fault("boom", "box"))
+        shell.client.activationkey.checkConfigDeployment = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock(return_value=key_details)
+
+        with patch("spacecmd.activationkey.logging", logger):
+            spacecmd.activationkey.export_activationkey_getdetails(shell, "")
+        assert logger.debug.call_args_list[1][0][0] == ("activationkey.listConfigChannel threw an exeception, "
+                                                        "setting config_channels=False")
+        
