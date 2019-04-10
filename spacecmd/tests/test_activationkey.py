@@ -1107,3 +1107,16 @@ class TestSCActivationKeyMethods:
             assert key_details[dkey] == details[dkey]
         assert type(details["usage_limit"]) == int
         assert details["usage_limit"] == 42
+
+    def test_do_activationkey_addconfigchannels_setuniversaldefault_noargs(self, shell):
+        """
+        Test do_activationkey_addconfigchannels_setuniversaldefault involes help message on issuficient arguments.
+        """
+        shell.help_activationkey_setuniversaldefault = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_setuniversaldefault(shell, "")
+        assert shell.help_activationkey_setuniversaldefault.called
+        assert not shell.client.activationkey.setDetails.called
+        assert not shell.client.activationkey.getDetails.called
