@@ -44,7 +44,7 @@ def _prepareDestDir(dest):
   Check target directory does not exists
   '''
   if os.path.isdir(dest):
-    raise salt.exceptions.SaltException('Working directory "{}" exists before sources are prepared'.format(dest))
+    raise salt.exceptions.SaltException('Working directory "{0}" exists before sources are prepared'.format(dest))
 
 def _prepareLocal(source, dest):
   '''
@@ -100,7 +100,7 @@ def _prepareGit(source, dest, root):
   if rev == '':
     rev = 'master'
 
-  log.debug('GIT URL: {}, Revision: {}, subdir: {}'.format(url, rev, subdir))
+  log.debug('GIT URL: {0}, Revision: {1}, subdir: {2}'.format(url, rev, subdir))
   __salt__['git.init'](tmpdir)
   __salt__['git.remote_set'](tmpdir, url)
   __salt__['git.fetch'](tmpdir)
@@ -126,7 +126,7 @@ def prepare_source(source, root):
     [http[s]://|git://][user@]hostname/repository[#revision[:subdirectory]]
   '''
   dest = os.path.join(root, 'source')
-  log.debug('Preparing build source for {} to {}'.format(source, dest))
+  log.debug('Preparing build source for {0} to {1}'.format(source, dest))
   if _isLocal(source):
     return _prepareLocal(source, dest)
   elif _isTarball(source):
@@ -134,4 +134,4 @@ def prepare_source(source, root):
   elif _isGit(source):
     return _prepareGit(source, dest, root)
   else:
-    raise salt.exceptions.SaltException('Unknown source format "{}"'.format(source))
+    raise salt.exceptions.SaltException('Unknown source format "{0}"'.format(source))

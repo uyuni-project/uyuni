@@ -37,6 +37,23 @@ def parse_buildinfo(dest):
                 group[match.group('name')] = match.group('val')
     return ret
 
+# fallback for SLES11 Kiwi that does not create the buildinfo file
+def guess_buildinfo(dest):
+    ret = {'main': {}}
+    files = __salt__['file.readdir'](dest)
+
+    pattern_basename = re.compile(r"^(?P<basename>.*)\.packages$")
+    pattern_pxe = re.compile(r"^initrd-netboot")
+    for f in files:
+        match = pattern_basename.match(f)
+        if match:
+            ret['main']['image.basename'] = match.group('basename')
+
+        match = pattern_pxe.match(f)
+        if match:
+            ret['main']['image.type'] = 'pxe'
+    return ret
+
 def parse_packages(path):
     ret = []
     if __salt__['file.file_exists'](path):
@@ -91,10 +108,10 @@ _compression_types = [
 
 def image_details(dest, bundle_dest = None):
     res = {}
-    buildinfo = parse_buildinfo(dest)
+    buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
 
-    basename = buildinfo.get('main', {}).get('image.basename')
-    image_type = buildinfo.get('main', {}).get('image.type')
+    basename = buildinfo.get('main', {}).get('image.basename', '')
+    image_type = buildinfo.get('main', {}).get('image.type', 'unknown')
 
     pattern = re.compile(r"^(?P<name>.*)\.(?P<arch>.*)-(?P<version>.*)$")
     match = pattern.match(basename)
@@ -215,7 +232,7 @@ def inspect_bundle(dest, basename):
     match = pattern.match(sha256_str)
     if match:
         d = match.groupdict()
-        d['hash'] = 'sha256:{}'.format(d['hash'])
+        d['hash'] = 'sha256:{0}'.format(d['hash'])
         res.update(d)
         res['filepath'] = os.path.join(dest, res['filename'])
 
