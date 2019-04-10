@@ -1064,3 +1064,21 @@ class TestSCActivationKeyMethods:
             assert key_details[dkey] == details[dkey]
         assert details["base_channel_label"] == "death_star_patches_channel"
         assert details["usage_limit"] == -1
+
+    def test_do_activationkey_addconfigchannels_setusagelimit_noargs(self, shell):
+        """
+        Test do_activationkey_addconfigchannels_setusagelimit involes help message on issuficient arguments.
+        """
+        shell.help_activationkey_setusagelimit = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_setusagelimit(shell, "")
+        assert shell.help_activationkey_setusagelimit.called
+        assert not shell.client.activationkey.setDetails.called
+        assert not shell.client.activationkey.getDetails.called
+
+        spacecmd.activationkey.do_activationkey_setusagelimit(shell, "key")
+        assert shell.help_activationkey_setusagelimit.called
+        assert not shell.client.activationkey.setDetails.called
+        assert not shell.client.activationkey.getDetails.called
