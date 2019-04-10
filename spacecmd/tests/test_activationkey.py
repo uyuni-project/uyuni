@@ -926,3 +926,13 @@ class TestSCActivationKeyMethods:
         for idx, line in enumerate(out):
             assert line == expectation[idx]
     
+    def test_do_activationkey_enableconfigdeployment_noargs(self, shell):
+        """
+        Test activationkey_enableconfigdeployment command is invoking help message on insufficient arguments.
+        """
+        shell.help_activationkey_enableconfigdeployment = MagicMock()
+        shell.client.activationkey.enableConfigDeployment = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_enableconfigdeployment(shell, "")
+        assert shell.help_activationkey_enableconfigdeployment.called
+        assert not shell.client.activationkey.enableConfigDeployment.called
