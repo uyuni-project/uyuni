@@ -160,6 +160,47 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests computing environment status based on its targets
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testComputeEnvironmentStatus() throws Exception {
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+
+        assertFalse(envdev.computeStatus().isPresent());
+
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
+        envdev.addTarget(target);
+        assertFalse(envdev.computeStatus().isPresent());
+
+        Channel channel2 = ChannelTestUtils.createBaseChannel(user);
+        SoftwareEnvironmentTarget target2 = new SoftwareEnvironmentTarget(envdev, channel2);
+        envdev.addTarget(target2);
+
+        target.setStatus(EnvironmentTarget.Status.BUILDING);
+        target2.setStatus(EnvironmentTarget.Status.BUILT);
+        assertEquals(EnvironmentTarget.Status.BUILDING, envdev.computeStatus().get());
+
+        target.setStatus(EnvironmentTarget.Status.BUILDING);
+        target2.setStatus(EnvironmentTarget.Status.FAILED);
+        assertEquals(EnvironmentTarget.Status.BUILDING, envdev.computeStatus().get());
+
+        target.setStatus(EnvironmentTarget.Status.BUILT);
+        target2.setStatus(EnvironmentTarget.Status.FAILED);
+        assertEquals(EnvironmentTarget.Status.FAILED, envdev.computeStatus().get());
+
+        target.setStatus(EnvironmentTarget.Status.BUILT);
+        target2.setStatus(EnvironmentTarget.Status.BUILT);
+        assertEquals(EnvironmentTarget.Status.BUILT, envdev.computeStatus().get());
+    }
+
+    /**
      * Tests saving a ContentProject and listing it from the DB.
      */
     public void testSaveAndList() {

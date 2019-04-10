@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -23,7 +24,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,6 +41,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -298,5 +302,33 @@ public class ContentEnvironment extends BaseDomainHelper {
                 .append("version", getVersion())
                 .append("next env id", ofNullable(getNextEnvironment()).map(e -> e.getId()).orElse(null))
                 .toString();
+    }
+
+    /**
+     * Computes status of the {@link ContentEnvironment} based on the status of its {@link EnvironmentTarget}s
+     *
+     * If there are no targets or only new targets (waiting for building) -> empty
+     * If at least 1 target is building -> BUILDING
+     * If at least 1 target is failed -> FAILED
+     * Otherwise -> BUILT
+     *
+     * @return the computed status
+     */
+    public Optional<Status> computeStatus() {
+        Set<Status> statuses = getTargets().stream()
+                .map(t -> t.getStatus())
+                .collect(Collectors.toSet());
+
+        if (statuses.isEmpty() || statuses.stream().allMatch(s -> s == Status.NEW)) {
+            return empty();
+        }
+        if (statuses.contains(Status.BUILDING)) {
+            return of(Status.BUILDING);
+        }
+        if (statuses.contains(Status.FAILED)) {
+            return of(Status.FAILED);
+        }
+
+        return of(Status.BUILT);
     }
 }

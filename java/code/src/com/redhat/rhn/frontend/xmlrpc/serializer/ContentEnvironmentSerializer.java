@@ -33,6 +33,7 @@ import java.io.Writer;
  *   #prop("string", "name")
  *   #prop("string", "description")
  *   #prop("int", "version")
+ *   #prop("string", "status")
  *   #prop("string", "contentProjectLabel")
  *   #prop("string", "previousEnvironmentLabel")
  *   #prop("string", "nextEnvironmentLabel")
@@ -61,6 +62,7 @@ public class ContentEnvironmentSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("name", environment.getName());
         helper.add("description", environment.getDescription());
         helper.add("version", environment.getVersion());
+        helper.add("status", environment.computeStatus().map(s -> s.getLabel()).orElse("unknown"));
         helper.add("contentProjectLabel", environment.getContentProject().getLabel());
         helper.add("previousEnvironmentLabel", environment.getPrevEnvironmentOpt()
                 .map(e -> e.getLabel()).orElse(null));
