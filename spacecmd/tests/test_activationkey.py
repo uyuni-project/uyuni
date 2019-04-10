@@ -856,3 +856,19 @@ class TestSCActivationKeyMethods:
         assert mprint.called
         assert mprint.call_args_list[0][0][0] == 'chair.lan\nhouseshoe.lan'
 
+    def test_do_activationkey_details_noargs(self, shell):
+        """
+        Test activationkey_details shows a help screen if no sufficient arguments has been passed.
+        """
+        shell.help_activationkey_details = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock()
+        shell.client.activationkey.listConfigChannels = MagicMock()
+        shell.client.activationkey.checkConfigDeployment = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_listsystems(shell, "")
+        assert shell.help_activationkey_listsystems.called
+        assert not shell.client.activationkey.getDetails.called
+        assert not shell.client.systemgroup.getDetails.called
+        assert not shell.client.activationkey.listConfigChannels.called
+        assert not shell.client.activationkey.checkConfigDeployment.called
