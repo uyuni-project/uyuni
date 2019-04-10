@@ -135,7 +135,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     @Override
     public boolean doesOsSupportsOSImageBuilding() {
-        return !isSLES10() && !isSLES11() && !isSLES15();
+        return !isSLES10() && !isSLES15();
     }
 
     /**
