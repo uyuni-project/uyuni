@@ -856,7 +856,7 @@ end
 
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   round_minute = 60 # spacecmd uses timestamps with precision to minutes only
-  long_wait_delay = 600 
+  long_wait_delay = 600
   current_time = Time.now.strftime('%Y%m%d%H%M')
   timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
   node = get_system_name(client)
