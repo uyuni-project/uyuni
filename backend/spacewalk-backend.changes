@@ -1,3 +1,6 @@
+- Solve situations where synced packages have epoch 0 but reposync
+  does not find them them on the database.
+- Fix path to the RPM database used by Zypper at reposync.
 - add makefile for python linter and unit/integration tests
 
 -------------------------------------------------------------------

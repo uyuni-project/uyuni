@@ -491,7 +491,7 @@ type=rpm-md
             zypper_cmd,
             REPOSYNC_ZYPPER_ROOT,
             os.path.join(repo.root, "etc/zypp/repos.d/"),
-            os.path.join(repo.root, "var/cache/zypp/"),
+            'var/lib/rpm',
             os.path.join(repo.root, "var/cache/zypp/raw/"),
             os.path.join(repo.root, "var/cache/zypp/solv/")
         ))
