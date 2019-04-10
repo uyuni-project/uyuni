@@ -137,17 +137,13 @@ public class RemoteMinionCommands {
                         SaltService.INSTANCE.matchAsyncSSH(target, failAfter);
 
                 Map<String, CompletionStage<Result<Boolean>>> res = new HashMap<>();
-                try {
-                    res = SaltService.INSTANCE
-                            .matchAsync(target, failAfter);
-                }
-                catch (NullPointerException e) {
-                    if (!resSSH.isPresent()) {
-                        // just return, no need to wait for salt-ssh results
-                        sendMessage(session, new ActionErrorEventDto(null,
-                                "ERR_TARGET_NO_MATCH", e.getMessage()));
-                        return;
-                    }
+
+                res = SaltService.INSTANCE.matchAsync(target, failAfter);
+                if (res.isEmpty() && !resSSH.isPresent()) {
+                    // just return, no need to wait for salt-ssh results
+                    sendMessage(session, new ActionErrorEventDto(null,
+                            "ERR_TARGET_NO_MATCH", ""));
+                    return;
                 }
 
                 previewedMinions = Collections
