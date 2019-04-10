@@ -1015,3 +1015,27 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_setbasechannel.called
         assert not shell.client.activationkey.setDetails.called
         assert not shell.client.activationkey.getDetails.called
+
+    def test_do_activationkey_addconfigchannels_setbasechannel_args(self, shell):
+        """
+        Test do_activationkey_addconfigchannels_setbasechannel calls setDetails API call on proper args.
+        """
+        key_details = {
+            "base_channel_label": "death_star_channel",
+            "description": "Darth Vader's base channel",
+            "usage_limit": 42,
+            "universal_default": True,
+        }
+        shell.help_activationkey_setbasechannel = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(return_value=key_details)
+
+        spacecmd.activationkey.do_activationkey_setbasechannel(shell, "red_key death_star_patches_channel")
+        session, keyname, details = shell.client.activationkey.setDetails.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname == "red_key"
+
+        for dkey in ["description", "usage_limit", "universal_default"]:
+            assert dkey in details
+            assert key_details[dkey] == details[dkey]
+        assert details["base_channel_label"] == "death_star_patches_channel"
