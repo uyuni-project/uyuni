@@ -961,3 +961,14 @@ class TestSCActivationKeyMethods:
             assert keyname in keynames
             keynames.pop(keynames.index(keyname))
         assert keynames == []
+
+    def test_do_activationkey_disableconfigdeployment_noargs(self, shell):
+        """
+        Test activationkey_disableconfigdeployment command is invoking help message on insufficient arguments.
+        """
+        shell.help_activationkey_disableconfigdeployment = MagicMock()
+        shell.client.activationkey.disableConfigDeployment = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_disableconfigdeployment(shell, "")
+        assert shell.help_activationkey_disableconfigdeployment.called
+        assert not shell.client.activationkey.disableConfigDeployment.called
