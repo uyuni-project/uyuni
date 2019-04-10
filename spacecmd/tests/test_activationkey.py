@@ -997,3 +997,21 @@ class TestSCActivationKeyMethods:
             assert keyname in keynames
             keynames.pop(keynames.index(keyname))
         assert keynames == []
+
+    def test_do_activationkey_addconfigchannels_setbasechannel_noargs(self, shell):
+        """
+        Test do_activationkey_addconfigchannels_setbasechannel involes help message on issuficient arguments.
+        """
+        shell.help_activationkey_setbasechannel = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_setbasechannel(shell, "")
+        assert shell.help_activationkey_setbasechannel.called
+        assert not shell.client.activationkey.setDetails.called
+        assert not shell.client.activationkey.getDetails.called
+
+        spacecmd.activationkey.do_activationkey_setbasechannel(shell, "key")
+        assert shell.help_activationkey_setbasechannel.called
+        assert not shell.client.activationkey.setDetails.called
+        assert not shell.client.activationkey.getDetails.called
