@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -322,9 +324,12 @@ public class ContentEnvironment extends BaseDomainHelper {
         if (statuses.isEmpty() || statuses.stream().allMatch(s -> s == Status.NEW)) {
             return empty();
         }
-        if (statuses.contains(Status.BUILDING)) {
+        if (statuses.contains(Status.BUILDING) || getTargets().stream()
+                .flatMap(t -> Opt.stream(t.asSoftwareTarget()))
+                .anyMatch(st -> ChannelManager.isChannelLabelInProgress(st.getChannel().getLabel()))) {
             return of(Status.BUILDING);
         }
+
         if (statuses.contains(Status.FAILED)) {
             return of(Status.FAILED);
         }
