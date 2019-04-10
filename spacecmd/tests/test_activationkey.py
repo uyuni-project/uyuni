@@ -1082,3 +1082,28 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_setusagelimit.called
         assert not shell.client.activationkey.setDetails.called
         assert not shell.client.activationkey.getDetails.called
+
+    def test_do_activationkey_addconfigchannels_setusagelimit_args(self, shell):
+        """
+        Test do_activationkey_addconfigchannels_setbasechannel resets usage limit from 0 to -1.
+        """
+        key_details = {
+            "base_channel_label": "death_star_channel",
+            "description": "Darth Vader's base channel",
+            "usage_limit": 0,
+            "universal_default": True,
+        }
+        shell.help_activationkey_setusagelimit = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(return_value=key_details)
+
+        spacecmd.activationkey.do_activationkey_setusagelimit(shell, "red_key 42")
+        session, keyname, details = shell.client.activationkey.setDetails.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname == "red_key"
+
+        for dkey in ["description", "universal_default", "base_channel_label"]:
+            assert dkey in details
+            assert key_details[dkey] == details[dkey]
+        assert type(details["usage_limit"]) == int
+        assert details["usage_limit"] == 42
