@@ -1162,8 +1162,7 @@ def export_activationkey_getdetails(self, key):
         ccdlist = self.client.activationkey.listConfigChannels(self.session,
                                                                key)
     except xmlrpclib.Fault:
-        logging.debug("activationkey.listConfigChannel threw an exeception, \
-            setting config_channels=False")
+        logging.debug("activationkey.listConfigChannel threw an exeception, setting config_channels=False")
 
     cclist = [c['label'] for c in ccdlist]
     logging.debug("Got config channel label list of %s" % cclist)
