@@ -5,6 +5,7 @@
 - Change the return type of the Cobbler method last_modified_time to Double
 - Populate Content Environment on inserting it in a Project
 - Add makefile and pylint configuration
+- allow access to susemanager tools channels without res subscription (bsc#1127542)
 
 -------------------------------------------------------------------
 Fri Mar 29 10:31:49 CET 2019 - jgonzalez@suse.com
