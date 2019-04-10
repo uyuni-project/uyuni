@@ -835,3 +835,24 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_listsystems(shell, "")
         assert shell.help_activationkey_listsystems.called
         assert not shell.client.activationkey.listActivatedSystems.called
+
+    def test_do_activationkey_listsystems_args(self, shell):
+        """
+        Test activationkey_listsystems command is calling listActivatedSystems API function.
+        """
+        shell.help_activationkey_listsystems = MagicMock()
+        shell.client.activationkey.listActivatedSystems = MagicMock(
+            return_value=[
+                {"hostname": "chair.lan"},
+                {"hostname": "houseshoe.lan"},
+            ]
+        )
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint) as mpr:
+            spacecmd.activationkey.do_activationkey_listsystems(shell, "key")
+        assert not shell.help_activationkey_listsystems.called
+        assert shell.client.activationkey.listActivatedSystems.called
+        assert mprint.called
+        assert mprint.call_args_list[0][0][0] == 'chair.lan\nhouseshoe.lan'
+
