@@ -824,3 +824,14 @@ class TestSCActivationKeyMethods:
             ret = sorted(spacecmd.activationkey.do_activationkey_list(shell, "key some*", doreturn=True))
         assert len(ret) == 2
         assert ret == ['some_patches', 'some_stuff']
+
+    def test_do_activationkey_listsystems_noargs(self, shell):
+        """
+        Test activationkey_listsystems command is invoking help message on insufficient arguments.
+        """
+        shell.help_activationkey_listsystems = MagicMock()
+        shell.client.activationkey.listActivatedSystems = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_listsystems(shell, "")
+        assert shell.help_activationkey_listsystems.called
+        assert not shell.client.activationkey.listActivatedSystems.called
