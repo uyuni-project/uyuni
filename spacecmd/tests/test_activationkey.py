@@ -872,3 +872,57 @@ class TestSCActivationKeyMethods:
         assert not shell.client.systemgroup.getDetails.called
         assert not shell.client.activationkey.listConfigChannels.called
         assert not shell.client.activationkey.checkConfigDeployment.called
+
+    def test_do_activationkey_details_args(self, shell):
+        """
+        Test activationkey_details returns key details if proper arguments passed.
+        """
+        shell.help_activationkey_details = MagicMock()
+
+        shell.client.activationkey.getDetails = MagicMock(
+            return_value={
+                "key": "somekey",
+                "description": "Key description",
+                "universal_default": "yes",
+                "usage_limit": "42",
+                "contact_method": "230V/AC",
+                "server_group_ids": ["a", "b", "c"],
+                "child_channel_labels": ["child_channel_1", "child_channel_2"],
+                "entitlements": ["entitlement_1", "entitlement_2"],
+                "packages": [{"name": "emacs"}],
+                "base_channel_label": "base_channel",
+            }
+        )
+        shell.client.activationkey.listConfigChannels = MagicMock(
+            return_value=[
+                {"label": "somekey_config_channel_1"},
+                {"label": "somekey_config_channel_2"},
+            ]
+        )
+        shell.client.activationkey.checkConfigDeployment = MagicMock(return_value=0)
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {"name": "group_a"},
+                {"name": "group_b"},
+                {"name": "group_c"},
+            ]
+        )
+
+        mprint = MagicMock()
+        with patch("spacecmd.activationkey.print", mprint) as mpr:        
+            out = spacecmd.activationkey.do_activationkey_details(shell, "somekey")
+        assert not mprint.called
+
+        expectation = ['Key:                    somekey',
+                       'Description:            Key description', 'Universal Default:      yes',
+                       'Usage Limit:            42', 'Deploy Config Channels: False',
+                       'Contact Method:         230V/AC', '', 'Software Channels', '-----------------',
+                       'base_channel', ' |-- child_channel_1', ' |-- child_channel_2', '',
+                       'Configuration Channels', '----------------------', 'somekey_config_channel_1',
+                       'somekey_config_channel_2', '', 'Entitlements', '------------',
+                       'entitlement_1\nentitlement_2', '', 'System Groups', '-------------',
+                       'group_a\ngroup_b\ngroup_c', '', 'Packages', '--------', 'emacs']
+        assert len(out) == len(expectation)
+        for idx, line in enumerate(out):
+            assert line == expectation[idx]
+    
