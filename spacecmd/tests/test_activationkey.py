@@ -972,3 +972,28 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_disableconfigdeployment(shell, "")
         assert shell.help_activationkey_disableconfigdeployment.called
         assert not shell.client.activationkey.disableConfigDeployment.called
+
+    def test_do_activationkey_disableconfigdeployment_args(self, shell):
+        """
+        Test activationkey_disableconfigdeployment command is invoking disableConfigDeployment API call.
+        """
+        shell.help_activationkey_disableconfigdeployment = MagicMock()
+        shell.client.activationkey.disableConfigDeployment = MagicMock()
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            spacecmd.activationkey.do_activationkey_disableconfigdeployment(shell, "foo bar baz")
+
+        assert logger.debug.called
+        assert logger.debug.call_args_list[0][0][0] == "Disabling config file deployment for foo"
+        assert logger.debug.call_args_list[1][0][0] == "Disabling config file deployment for bar"
+        assert logger.debug.call_args_list[2][0][0] == "Disabling config file deployment for baz"
+
+        keynames = ["foo", "bar", "baz"]
+        assert shell.client.activationkey.disableConfigDeployment.called
+        for call in shell.client.activationkey.disableConfigDeployment.call_args_list:
+            session, keyname = call[0]
+            assert shell.session == session
+            assert keyname in keynames
+            keynames.pop(keynames.index(keyname))
+        assert keynames == []
