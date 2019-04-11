@@ -1166,3 +1166,51 @@ class TestSCActivationKeyMethods:
         assert logger.debug.call_args_list[1][0][0] == ("activationkey.listConfigChannel threw an exeception, "
                                                         "setting config_channels=False")
         
+    def test_export_activationkey_getdetails(self, shell):
+        """
+        Test export_activationkey_getdetails.
+        """
+
+        key_details = {
+            "server_group_ids": [1, 2, 3],
+        }
+
+        gr_details = [
+            {"name": "first"},
+            {"name": "second"},
+            {"name": "third"},
+        ]
+        logger = MagicMock()
+        shell.client.activationkey.getDetails = MagicMock(return_value=key_details)
+        shell.client.activationkey.listConfigChannels = MagicMock(
+            return_value=[
+                {"label": "rd2d_patches_channel"},
+                {"label": "k_2so_firmware_channel"},
+            ]
+        )
+        shell.client.activationkey.checkConfigDeployment = MagicMock(return_value=True)
+        shell.client.systemgroup.getDetails = MagicMock(side_effect=gr_details)
+
+        with patch("spacecmd.activationkey.logging", logger):
+            out = spacecmd.activationkey.export_activationkey_getdetails(shell, "red_key")
+
+        {
+            'server_group_ids': [1, 2, 3],
+            'config_channels': ['rd2d_patches_channel',
+                                'k_2so_firmware_channel'],
+            'config_deploy': True,
+            'server_groups': ['first', 'second', 'third']
+        }
+
+        assert "server_group_ids" in out
+        assert out["server_group_ids"] == [1, 2, 3]
+        assert "config_channels" in out
+        for cfg_channel in ['rd2d_patches_channel',
+                            'k_2so_firmware_channel']:
+            assert cfg_channel in out["config_channels"]
+        assert "config_deploy" in out
+        assert out["config_deploy"]
+        assert "server_groups" in out
+        assert len(out["server_groups"]) == 3
+        for srv_group in ['first', 'second', 'third']:
+            assert srv_group in out["server_groups"]
