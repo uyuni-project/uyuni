@@ -286,9 +286,9 @@ When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package
   $server.run("zypper --non-interactive remove #{package}-formula")
 end
 
-When(/^I synchronize the Salt execution modules on "([^"]*)"$/) do |host|
+When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $server.run("salt #{system_name} saltutil.sync_modules")
+  $server.run("salt #{system_name} saltutil.sync_all")
 end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|

@@ -61,7 +61,7 @@ Feature: Manage a group of systems
   Scenario: Install some formula on the server
     Given I am on the groups page
     When I manually install the "locale" formula on the server
-    And I synchronize the Salt execution modules on "sle-minion"
+    And I synchronize all Salt dynamic modules on "sle-minion"
 
   Scenario: New formula page is rendered for the system group
     And I follow "new-systems-group"
