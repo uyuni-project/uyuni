@@ -225,6 +225,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
              ) latest
              JOIN rhnPackageName pn ON pn.id = latest.name_id
             where pn.name not like '%-migration'
+              and EXISTS (
+                     SELECT 1
+                       FROM rhnServerPackage SP
+                      WHERE SP.server_id = :sid
+              )
               and NOT EXISTS (
                      SELECT 1
                        FROM rhnServerPackage SP
