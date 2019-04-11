@@ -1315,3 +1315,14 @@ class TestSCActivationKeyMethods:
             assert not spacecmd.activationkey.check_activationkey(shell, "")
         assert logger.error.called
         assert logger.error.call_args_list[0][0][0] == 'no activationkey label given'
+
+    def test_check_activationkey_not_a_key(self, shell):
+        """
+        Test check activation key helper returns False on not a key.
+        """
+        shell.is_activationkey = MagicMock(return_value=False)
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            assert not spacecmd.activationkey.check_activationkey(shell, "some_not_a_key")
+        assert logger.error.called
+        assert logger.error.call_args_list[0][0][0] == 'invalid activationkey label some_not_a_key'
