@@ -1479,3 +1479,14 @@ class TestSCActivationKeyMethods:
             assert shell.session == session
             assert "description" in arg
             assert arg["description"] == "some description of it here"
+
+    def test_do_activationkey_setcontactmethod_noargs(self, shell):
+        """
+        Test do_activationkey_setcontactmethod command triggers help on no args.
+        """
+        shell.help_activationkey_setcontactmethod = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_setcontactmethod(shell, "")
+        assert shell.help_activationkey_setcontactmethod.called
+        assert not shell.client.activationkey.setDetails.called
