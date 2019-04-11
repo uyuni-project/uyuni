@@ -1,3 +1,4 @@
+- add SLES11 SP4 LTSS channels for ppc64 (bsc#1132103)
 - allow access to susemanager tools channels without res subscription (bsc#1127542)
 
 -------------------------------------------------------------------
