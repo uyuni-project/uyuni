@@ -1,3 +1,4 @@
+- Fix product package conflicts with SLES for SAP systems (bsc#1130551)
 - Add support for Salt batch execution mode
 - fix NPE on remote commands when no targets match (bsc1123375)
 - Fix apidoc return order on mergePackages

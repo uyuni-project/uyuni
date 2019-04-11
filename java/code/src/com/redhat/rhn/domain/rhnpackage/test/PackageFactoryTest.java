@@ -135,6 +135,10 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        Channel channel = ChannelFactoryTest.createBaseChannel(user);
        testServer.addChannel(channel);
 
+       // Create an installed package so the Server package list won't be empty
+       ErrataTestUtils.createTestInstalledPackage(ErrataTestUtils.createTestPackage(user, channel, "x86_64"),
+               testServer);
+
        Package testPackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
        PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
        PackageProvides provideProduct = new PackageProvides();
@@ -152,6 +156,31 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        assertEquals(1, missing.size());
        assertEquals(testPackage.getNameEvra() ,missing.get(0).getNameEvra());
    }
+
+    public void testFindMissingProductPackageNoPackageProfile() throws Exception {
+        Server testServer = ServerFactoryTest.createTestServer(user, true);
+
+        Channel channel = ChannelFactoryTest.createBaseChannel(user);
+        testServer.addChannel(channel);
+
+        Package testPackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
+        PackageProvides provideProduct = new PackageProvides();
+        provideProduct.setCapability(productCap);
+        provideProduct.setPack(testPackage);
+        provideProduct.setSense(0L);
+        TestUtils.saveAndFlush(provideProduct);
+
+        ServerFactory.save(testServer);
+        testServer = (Server) reload(testServer);
+
+        List<Package> missing = PackageFactory.
+                findMissingProductPackagesOnServer(testServer.getId());
+
+        // Since there is no packages in the server (no package profile data available),
+        // no missing products will be reported
+        assertEquals(0, missing.size());
+    }
 
    public void testInstalledProductPackage() throws Exception {
        Server testServer = ServerFactoryTest.createTestServer(user, true);
