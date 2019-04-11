@@ -1276,3 +1276,19 @@ class TestSCActivationKeyMethods:
         ]
         for idx, call in enumerate(logger.info.call_args_list):
             assert call[0][0] == expectation[idx]
+
+    def test_do_activationkey_import_noargs(self, shell):
+        """
+        Test activationkey_import command is invoking help message on insufficient arguments.
+        """
+        shell.help_activationkey_import = MagicMock()
+        shell.import_activationkey_fromdetails = MagicMock(return_value=False)
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            spacecmd.activationkey.do_activationkey_import(shell, "")
+
+        assert shell.help_activationkey_import.called
+        assert not shell.import_activationkey_fromdetails.called
+        assert logger.error.called
+        assert logger.error.call_args_list[0][0][0] == 'No filename passed'
