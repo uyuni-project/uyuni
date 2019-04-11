@@ -15,7 +15,7 @@ Feature: Setup SUSE Manager for Retail branch network
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server
     And I manually install the "bind" formula on the server
-    And I synchronize the Salt execution modules on "proxy"
+    And I synchronize all Salt dynamic modules on "proxy"
 
 @proxy
 @private_net

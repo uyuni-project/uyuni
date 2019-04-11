@@ -9,7 +9,7 @@ Feature: Use salt formulas
   Scenario: Install a formula package on the server
      Given I am authorized
      When I manually install the "locale" formula on the server
-     And I synchronize the Salt execution modules on "sle-minion"
+     And I synchronize all Salt dynamic modules on "sle-minion"
 
   Scenario: The new formula appears on the server
      Given I am authorized
