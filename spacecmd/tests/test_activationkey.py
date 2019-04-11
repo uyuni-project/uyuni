@@ -1490,3 +1490,22 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_setcontactmethod(shell, "")
         assert shell.help_activationkey_setcontactmethod.called
         assert not shell.client.activationkey.setDetails.called
+
+    def test_do_activationkey_setcontactmethod_args(self, shell):
+        """
+        Test do_activationkey_setdescription command triggers activationkey.setDetails API call.
+        """
+        shell.help_activationkey_setcontactmethod = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_setcontactmethod(shell, "key_one 230V")
+        assert not shell.help_activationkey_setcontactmethod.called
+        assert shell.client.activationkey.setDetails.called
+
+        for call in shell.client.activationkey.setDetails.call_args_list:
+            session, key, arg = call[0]
+            assert shell.session == session
+            assert "contact_method" in arg
+            assert arg["contact_method"] == "230V"
+
+    
