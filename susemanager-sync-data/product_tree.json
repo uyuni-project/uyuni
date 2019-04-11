@@ -16720,6 +16720,22 @@
         "product_type": "base"
     },
     {
+        "channel_label": "sles11-sp4-ltss-updates-ppc64",
+        "parent_channel_label": "sles11-sp4-pool-ppc64",
+        "product_id": 1301,
+        "repository_id": 3880,
+        "parent_product_id": null,
+        "root_product_id": 1301,
+        "update_tag": "slessp4",
+        "url": "https://updates.suse.com/repo/$RCE/SLES11-SP4-LTSS-Updates/sle-11-ppc64/",
+        "release_stage": "released",
+        "mandatory": false,
+        "signed": true,
+        "recommended": false,
+        "channel_name": "SLES11-SP4-LTSS-Updates for ppc64",
+        "product_type": "base"
+    },
+    {
         "channel_label": "sle11-hae-sp4-pool-ppc64",
         "parent_channel_label": "sles11-sp4-pool-ppc64",
         "product_id": 1258,
