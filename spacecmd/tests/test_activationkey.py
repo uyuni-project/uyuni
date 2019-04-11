@@ -1462,3 +1462,20 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_setdescription(shell, "")
         assert shell.help_activationkey_setdescription.called
         assert not shell.client.activationkey.setDetails.called
+
+    def test_do_activationkey_setdescription_args(self, shell):
+        """
+        Test do_activationkey_setdescription command triggers activationkey.setDetails API call.
+        """
+        shell.help_activationkey_enable = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_setdescription(shell, "key_one some description of it here")
+        assert not shell.help_activationkey_enable.called
+        assert shell.client.activationkey.setDetails.called
+
+        for call in shell.client.activationkey.setDetails.call_args_list:
+            session, key, arg = call[0]
+            assert shell.session == session
+            assert "description" in arg
+            assert arg["description"] == "some description of it here"
