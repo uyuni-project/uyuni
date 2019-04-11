@@ -1244,7 +1244,7 @@ def do_activationkey_export(self, args):
             return
 
     if json_dump_to_file(keydetails_list, filename) != True:
-        logging.error("Failed to save exported keys to file" % filename)
+        logging.error("Failed to save exported keys to file: {}".format(filename))
         return
 
 ####################
