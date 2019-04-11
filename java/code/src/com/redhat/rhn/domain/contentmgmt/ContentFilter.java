@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,7 +45,7 @@ public abstract class ContentFilter extends BaseDomainHelper {
     private Long id;
     private Org org;
     private String name;
-    private String criteria;
+    private FilterCriteria criteria;
 
     /**
      * Gets the id.
@@ -110,8 +111,8 @@ public abstract class ContentFilter extends BaseDomainHelper {
      *
      * @return criteria
      */
-    @Column
-    public String getCriteria() {
+    @Embedded
+    public FilterCriteria getCriteria() {
         return criteria;
     }
 
@@ -120,7 +121,7 @@ public abstract class ContentFilter extends BaseDomainHelper {
      *
      * @param criteriaIn - the criteria
      */
-    public void setCriteria(String criteriaIn) {
+    public void setCriteria(FilterCriteria criteriaIn) {
         criteria = criteriaIn;
     }
 
