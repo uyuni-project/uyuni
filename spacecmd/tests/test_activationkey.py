@@ -1400,3 +1400,23 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_disable(shell, "")
         assert shell.help_activationkey_disable.called
         assert not shell.client.activationkey.setDetails.called
+
+    def test_do_activationkey_diable_args(self, shell):
+        """
+        Test do_activationkey_disable command triggers activationkey.setDetails API call.
+        """
+        keys = ["key_one", "key_two"]
+        shell.help_activationkey_disable = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+        shell.do_activationkey_list = MagicMock(return_value=keys)
+
+        spacecmd.activationkey.do_activationkey_disable(shell, "key_*")
+        assert not shell.help_activationkey_disable.called
+        assert shell.client.activationkey.setDetails.called
+
+        for call in shell.client.activationkey.setDetails.call_args_list:
+            session, key, arg = call[0]
+            assert shell.session == session
+            assert key in keys
+            assert "disabled" in arg
+            assert arg["disabled"]
