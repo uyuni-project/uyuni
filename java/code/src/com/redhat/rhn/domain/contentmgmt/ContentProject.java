@@ -294,7 +294,7 @@ public class ContentProject extends BaseDomainHelper {
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
     @OrderColumn(name = "position")
-    protected List<ContentProjectFilter> getProjectFilters() {
+    public List<ContentProjectFilter> getProjectFilters() {
         return filters;
     }
 
