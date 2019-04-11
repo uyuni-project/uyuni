@@ -1451,3 +1451,14 @@ class TestSCActivationKeyMethods:
             assert key in keys
             assert "disabled" in arg
             assert not arg["disabled"]
+
+    def test_do_activationkey_setdescription_noargs(self, shell):
+        """
+        Test do_activationkey_setdescription command triggers help on no args.
+        """
+        shell.help_activationkey_setdescription = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_setdescription(shell, "")
+        assert shell.help_activationkey_setdescription.called
+        assert not shell.client.activationkey.setDetails.called
