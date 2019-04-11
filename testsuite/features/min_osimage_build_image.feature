@@ -29,6 +29,7 @@ Feature: Build OS images
 @private_net
   Scenario: Move the image to the branch server
     When I manually install the "image-sync" formula on the server
+    And I enable repositories before installing branch server
     And I synchronize all Salt dynamic modules on "proxy"
     And I apply state "image-sync" to "proxy"
     Then the image "POS_Image_JeOS6" should exist on "proxy"
@@ -41,3 +42,6 @@ Feature: Build OS images
     And I click on "Delete"
     And I click on "Delete" in "Delete Selected Image(s)" modal
     And I wait until I see "Deleted successfully." text
+
+  Scenario: Cleanup: Disable the repositories on branch server
+    When I disable repositories after installing branch server
