@@ -1336,3 +1336,23 @@ class TestSCActivationKeyMethods:
         with patch("spacecmd.activationkey.logging", logger):
             assert spacecmd.activationkey.check_activationkey(shell, "some_not_a_key")
         assert not logger.error.called
+
+    def test_activationkey_diff_noarg(self, shell):
+        """
+        Test dump activation key helper invokes help message on insufficient arguments.
+        """
+        for args in ["", "one two three", "some more args here"]:
+            shell.help_activationkey_diff = MagicMock()
+            shell.dump_activationkey = MagicMock()
+            shell.check_activationkey = MagicMock()
+            shell.do_activationkey_getcorresponding = MagicMock()
+
+            _diff = MagicMock()
+            with patch("spacecmd.activationkey.diff", _diff):
+                spacecmd.activationkey.do_activationkey_diff(shell, "")
+
+            assert shell.help_activationkey_diff.called
+            assert not shell.dump_activationkey.called
+            assert not shell.check_activationkey.called
+            assert not shell.do_activationkey_getcorresponding.called
+            assert not _diff.called
