@@ -1576,7 +1576,7 @@ def do_activationkey_diff(self, args):
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if len(args) != 1 and len(args) != 2:
+    if len(args) not in [1, 2]:
         self.help_activationkey_diff()
         return
 
