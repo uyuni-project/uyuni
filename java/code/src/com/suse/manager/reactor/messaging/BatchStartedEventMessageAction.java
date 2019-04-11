@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.BatchStartedEvent.Data;
-import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
 
