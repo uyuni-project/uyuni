@@ -1356,3 +1356,22 @@ class TestSCActivationKeyMethods:
             assert not shell.check_activationkey.called
             assert not shell.do_activationkey_getcorresponding.called
             assert not _diff.called
+
+    def test_activationkey_diff_arg(self, shell):
+        """
+        Test dump activation key helper invokes expected sequence of function calls.
+        """
+        shell.help_activationkey_diff = MagicMock()
+        shell.dump_activationkey = MagicMock()
+        shell.check_activationkey = MagicMock()
+        shell.do_activationkey_getcorresponding = MagicMock()
+
+        _diff = MagicMock()
+        with patch("spacecmd.activationkey.diff", _diff):
+            spacecmd.activationkey.do_activationkey_diff(shell, "some_key")
+
+        assert not shell.help_activationkey_diff.called
+        assert shell.dump_activationkey.called
+        assert shell.check_activationkey.called
+        assert shell.do_activationkey_getcorresponding.called
+        assert _diff.called
