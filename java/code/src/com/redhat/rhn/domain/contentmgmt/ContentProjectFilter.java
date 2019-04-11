@@ -19,6 +19,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -93,6 +95,7 @@ public class ContentProjectFilter {
      *
      * @return state
      */
+    @Enumerated(EnumType.STRING)
     public State getState() {
         return state;
     }
