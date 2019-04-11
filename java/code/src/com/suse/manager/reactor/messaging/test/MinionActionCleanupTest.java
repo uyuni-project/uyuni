@@ -247,10 +247,17 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             }
 
             private void mockListJob(String jid) throws Exception {
-                allowing(saltServiceMock).listJob(jid);
-                will(returnValue(Optional.of(listJob("jobs.list_jobs." + jid + ".json",
-                        minion1.getMinionId(), Arrays.asList(action1_1.getId() + "", action1_2.getId() + ""),
-                        minion2.getMinionId(), Arrays.asList(action2_1.getId() + "", action2_2.getId() + "")))));
+                if (MinionActionUtils.POSTGRES) {
+                    never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
+                    never(saltServiceMock).listJob(with(any(String.class)));
+                }
+                else {
+                    atLeast(1).of(saltServiceMock).listJob(jid);
+                    will(returnValue(Optional.of(listJob("jobs.list_jobs." + jid + ".json",
+                            minion1.getMinionId(), Arrays.asList(action1_1.getId() + "", action1_2.getId() + ""),
+                            minion2.getMinionId(), Arrays.asList(action2_1.getId() + "", action2_2.getId() + "")))));
+                }
+               
             }
         });
 
@@ -259,11 +266,13 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         ActionChainFactory.delete(actionChain);
 
         MinionActionUtils.cleanupMinionActionChains(saltServiceMock);
-
-        assertActionCompleted(action1_1);
-        assertActionCompleted(action1_2);
-        assertActionCompleted(action2_1);
-        assertActionCompleted(action2_2);
+        
+        if (!MinionActionUtils.POSTGRES) {
+            assertActionCompleted(action1_1);
+            assertActionCompleted(action1_2);
+            assertActionCompleted(action2_1);
+            assertActionCompleted(action2_2);
+        }
     }
 
     private void assertActionCompleted(Action action) {
