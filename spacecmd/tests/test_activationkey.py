@@ -1214,3 +1214,34 @@ class TestSCActivationKeyMethods:
         assert len(out["server_groups"]) == 3
         for srv_group in ['first', 'second', 'third']:
             assert srv_group in out["server_groups"]
+
+    @patch("spacecmd.activationkey.json_dump_to_file", MagicMock())
+    @patch("spacecmd.activationkey.os.path.isfile", MagicMock(return_value=False))
+    def test_do_activationkey_export_noarg(self, shell):
+        """
+        Test do_activationkey_export exports to 'akey_all.json' if not specified otherwise.
+        """
+        logger = MagicMock()
+        shell.do_activationkey_list = MagicMock(return_value=["one", "two", "three"])
+        shell.export_activationkey_getdetails = MagicMock(side_effect=[{}, {}, {}])
+        shell.client.activationkey.checkConfigDeployment = MagicMock(return_value=True)
+
+        with patch("spacecmd.activationkey.logging", logger):
+            spacecmd.activationkey.do_activationkey_export(shell, "")
+
+        print()
+        assert logger.debug.called
+        assert logger.error.called
+        assert logger.info.called
+
+        assert logger.error.call_args_list[0][0][0] == "Failed to save exported keys to file: akey_all.json"
+        assert logger.debug.call_args_list[0][0][0] == "About to dump 3 keys to akey_all.json"
+
+        expectation = [
+            'Exporting ALL activation keys to akey_all.json',
+            'Exporting key one to akey_all.json',
+            'Exporting key two to akey_all.json',
+            'Exporting key three to akey_all.json',
+        ]
+        for idx, call in enumerate(logger.info.call_args_list):
+            assert call[0][0] == expectation[idx]
