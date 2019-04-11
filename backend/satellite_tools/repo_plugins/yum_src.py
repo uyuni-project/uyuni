@@ -38,9 +38,9 @@ import urlgrabber
 
 try:
     from urllib import urlencode
-    from urlparse import urlsplit
+    from urlparse import urlsplit, urlparse, urlunparse
 except:
-    from urllib.parse import urlsplit, urlencode
+    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse
 
 import xml.etree.ElementTree as etree
 
@@ -56,6 +56,7 @@ from spacewalk.common.suseLib import get_proxy
 # namespace prefix to parse patches.xml file
 PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
 REPO_XML = '{http://linux.duke.edu/metadata/repo}'
+METALINK_XML = '{http://www.metalinker.org/}'
 
 CACHE_DIR = '/var/cache/rhn/reposync'
 SPACEWALK_LIB = '/var/lib/spacewalk'
@@ -462,6 +463,72 @@ class ContentSource:
         self.gpgkey_autotrust = None
         self.groupsfile = None
 
+    def _get_mirror_list(self, repo, url):
+        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
+        returnlist = []
+        content = []
+        urlgrabber.urlgrab(url, mirrorlist_path)
+
+        def _replace_and_check_url(url_list):
+            goodurls = []
+            skipped = None
+            for url in url_list:
+                # obvious bogons get ignored b/c, we could get more interesting checks but <shrug>
+                if url in ['', None]:
+                    continue
+                try:
+                    # This started throwing ValueErrors, BZ 666826
+                    (s,b,p,q,f,o) = urlparse(url)
+                    if p[-1] != '/':
+                        p = p + '/'
+                except (ValueError, IndexError, KeyError) as e:
+                    s = 'blah'
+
+                if s not in ['http', 'ftp', 'file', 'https']:
+                    skipped = url
+                    continue
+                else:
+                    goodurls.append(urlunparse((s,b,p,q,f,o)))
+            return goodurls
+
+        try:
+           with open(mirrorlist_path, 'r') as mirrorlist_file:
+               content = mirrorlist_file.readlines()
+        except Exception as exc:
+            self.error_msg("Could not read mirrorlist: {}".format(exc))
+
+        try:
+            # Try to read a metalink XML
+            for files in etree.parse(mirrorlist_path).getroot():
+                file_elem = files.find(METALINK_XML+'file')
+                if file_elem.get('name') == 'repomd.xml':
+                    _urls = file_elem.find(METALINK_XML+'resources').findall(METALINK_XML+'url')
+                    for _url in _urls:
+                        # The mirror urls in the metalink file are for repomd.xml so it
+                        # gives a list of mirrors for that one file, but we want the list
+                        # of mirror baseurls. Joy of reusing other people's stds. :)
+                        if not _url.text.endswith("/repodata/repomd.xml"):
+                            continue
+                        returnlist.append(_url.text[:-len("/repodata/repomd.xml")])
+        except Exception as exc:
+            # If no metalink XML, we try to read a mirrorlist
+            for line in content:
+                if re.match('^\s*\#.*', line) or re.match('^\s*$', line):
+                    continue
+                mirror = re.sub('\n$', '', line) # no more trailing \n's
+                (mirror, count) = re.subn('\$ARCH', '$BASEARCH', mirror)
+                returnlist.append(mirror)
+
+        returnlist = _replace_and_check_url(returnlist)
+
+        try:
+           # Write the final mirrorlist that is going to be pass to Zypper
+           with open(mirrorlist_path, 'w') as mirrorlist_file:
+               mirrorlist_file.write(os.linesep.join(returnlist))
+        except Exception as exc:
+            self.error_msg("Could not write the calculated mirrorlist: {}".format(exc))
+        return returnlist
+
     def setup_repo(self, repo):
         """
         Setup repository and fetch metadata
@@ -469,11 +536,15 @@ class ContentSource:
         self.zypposync = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url)
 
+        mirrorlist = self._get_mirror_list(repo, zypp_repo_url)
+        repo.baseurl = repo.baseurl + mirrorlist
+        repo.urls = repo.baseurl
+
         # Manually call Zypper
         repo_cfg = '''[{reponame}]
 enabled=1
 autorefresh=0
-baseurl={baseurl}
+{repo_url}={url}
 gpgcheck={gpgcheck}
 repo_gpgcheck={gpgcheck}
 type=rpm-md
@@ -481,7 +552,8 @@ type=rpm-md
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(
                 reponame=self.channel_label or self.reponame,
-                baseurl=zypp_repo_url,
+                repo_url='baseurl' if not mirrorlist else 'mirrorlist',
+                url=zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt'),
                 gpgcheck="0" if self.insecure else "1"
             ))
         zypper_cmd = "zypper"
