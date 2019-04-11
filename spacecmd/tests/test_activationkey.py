@@ -1389,3 +1389,14 @@ class TestSCActivationKeyMethods:
         with patch("spacecmd.activationkey.get_string_diff_dicts", gsdd):
             out = spacecmd.activationkey.do_activationkey_diff(shell, "some_key")
         assert out == ['--- some_key\n', '+++ some_channel\n', '@@ -1 +1 @@\n', '-some data', '+some data again']
+    
+    def test_do_activationkey_diable_noargs(self, shell):
+        """
+        Test do_activationkey_disable command triggers help on no args.
+        """
+        shell.help_activationkey_disable = MagicMock()
+        shell.client.activationkey.setDetails = MagicMock()
+
+        spacecmd.activationkey.do_activationkey_disable(shell, "")
+        assert shell.help_activationkey_disable.called
+        assert not shell.client.activationkey.setDetails.called
