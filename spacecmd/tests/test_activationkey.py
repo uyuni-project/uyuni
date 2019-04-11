@@ -1375,3 +1375,17 @@ class TestSCActivationKeyMethods:
         assert shell.check_activationkey.called
         assert shell.do_activationkey_getcorresponding.called
         assert _diff.called
+
+    def test_activationkey_diff(self, shell):
+        """
+        Test dump activation key helper returns key diffs.
+        """
+        shell.help_activationkey_diff = MagicMock()
+        shell.dump_activationkey = MagicMock(side_effect=[["some data"], ["some data again"]])
+        shell.check_activationkey = MagicMock(return_value=True)
+        shell.do_activationkey_getcorresponding = MagicMock(return_value="some_channel")
+
+        gsdd = MagicMock(return_value=({"one": "two", "three": "three"}, {"one": "two", "three": "four"}))
+        with patch("spacecmd.activationkey.get_string_diff_dicts", gsdd):
+            out = spacecmd.activationkey.do_activationkey_diff(shell, "some_key")
+        assert out == ['--- some_key\n', '+++ some_channel\n', '@@ -1 +1 @@\n', '-some data', '+some data again']
