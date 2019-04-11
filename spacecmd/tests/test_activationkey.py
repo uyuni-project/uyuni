@@ -1292,3 +1292,16 @@ class TestSCActivationKeyMethods:
         assert not shell.import_activationkey_fromdetails.called
         assert logger.error.called
         assert logger.error.call_args_list[0][0][0] == 'No filename passed'
+
+    @pytest.mark.skip(reason="Not implemented test stub")
+    def test_do_activationkey_fromdetails(self, shell):
+        """
+        Test activation key from details.
+        """
+
+    @pytest.mark.skip(reason="Not implemented test stub")
+    def test_do_activationkey_clone(self, shell):
+        """
+        Test activation key from details.
+        """
+
