@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import com.redhat.rhn.domain.rhnpackage.Package;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -27,7 +29,7 @@ import javax.persistence.Transient;
 public class PackageFilter extends ContentFilter<Package> {
 
     @Override
-    public boolean test(Package pack) {
+    public boolean testInternal(Package pack) {
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();
@@ -44,7 +46,7 @@ public class PackageFilter extends ContentFilter<Package> {
     private static <T> T getField(Package pack, String field, Class<T> type) {
         switch (field) {
             case "name":
-                return type.cast(pack.getName());
+                return type.cast(pack.getPackageName().getName());
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }
