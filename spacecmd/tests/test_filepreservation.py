@@ -11,9 +11,9 @@ class TestSCFilePreservation:
     """
     Test class for testing spacecmd file preservation.
     """
-    def test_do_filepreservation_list_return(self, shell):
+    def test_do_filepreservation_list_noreturn(self, shell):
         """
-        Test do_filepreservation_list no arguments passed.
+        Test do_filepreservation_list return to the STDOUT
         """
         shell.client.kickstart.filepreservation.listAllFilePreservations = MagicMock(
             return_value=[
