@@ -20,10 +20,12 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
@@ -354,6 +356,111 @@ public class ContentManager {
         ContentProject project = lookupProject(projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(projectLabel));
         return ContentProjectFactory.lookupProjectSource(project, sourceType, sourceLabel, user);
+    }
+
+    /**
+     * List filters visible to given user
+     *
+     * @param user the user
+     * @return the filters
+     */
+    public static List<ContentFilter> listFilters(User user) {
+        return ContentProjectFactory.listFilters(user);
+    }
+
+    /**
+     * Look up filter by id and user
+     *
+     * @param id the id
+     * @param user the user
+     * @return the matching filter
+     */
+    public static Optional<ContentFilter> lookupFilterById(Long id, User user) {
+        Optional<ContentFilter> filter = ContentProjectFactory.lookupFilterById(id);
+        return filter.filter(f -> f.getOrg().equals(user.getOrg()));
+    }
+
+    /**
+     * Create a new {@link ContentFilter}
+     *
+     * @param name the filter name
+     * @param rule the filter {@link ContentFilter.Rule}
+     * @param entityType the entity type that the filter will deal with
+     * @param criteria the {@link FilterCriteria} for filtering
+     * @param user the user
+     * @return the created filter
+     */
+    public static ContentFilter createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
+            FilterCriteria criteria, User user) {
+        ensureOrgAdmin(user);
+        return ContentProjectFactory.createFilter(name, rule, entityType, criteria, user);
+    }
+    // todo check behavior consistency with other crud methods
+
+    /**
+     * Update a {@link ContentFilter}
+     *
+     * @param id the filter id
+     * @param name optional with name to update
+     * @param rule optional with {@link ContentFilter.Rule} to update
+     * @param criteria optional with {@link FilterCriteria} to update
+     * @param user the user
+     * @return the updated filter
+     */
+    public static ContentFilter updateFilter(Long id, Optional<String> name, Optional<ContentFilter.Rule> rule,
+            Optional<FilterCriteria> criteria, User user) {
+        ensureOrgAdmin(user);
+        ContentFilter filter = lookupFilterById(id, user)
+                .orElseThrow(() -> new EntityNotExistsException(id));
+        return ContentProjectFactory.updateFilter(filter, name, rule, criteria);
+    }
+
+    /**
+     * Remove {@link ContentFilter}
+     *
+     * @param id the filter id
+     * @param user the user
+     * @return true if removed
+     */
+    public static boolean removeFilter(Long id, User user) {
+        ensureOrgAdmin(user);
+        ContentFilter filter = lookupFilterById(id, user)
+                .orElseThrow(() -> new EntityNotExistsException(id));
+        return ContentProjectFactory.remove(filter);
+    }
+
+    /**
+     * Attach a {@link ContentFilter} to a {@link ContentProject}
+     *
+     * @param projectLabel the project label
+     * @param filterId the filter id
+     * @param user the user
+     * @return attached filter
+     */
+    public static ContentFilter attachFilter(String projectLabel, Long filterId, User user) {
+        ensureOrgAdmin(user);
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
+        ContentFilter filter = lookupFilterById(filterId, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
+        project.attachFilter(filter);
+        return filter;
+    }
+
+    /**
+     * Detach a {@link ContentFilter} from a {@link ContentProject}
+     *
+     * @param projectLabel the project label
+     * @param filterId the filter id
+     * @param user the user
+     */
+    public static void detachFilter(String projectLabel, Long filterId, User user) {
+        ensureOrgAdmin(user);
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
+        ContentFilter filter = lookupFilterById(filterId, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
+        project.detachFilter(filter);
     }
 
     /**
