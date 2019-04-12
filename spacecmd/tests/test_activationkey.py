@@ -1687,6 +1687,32 @@ class TestSCActivationKeyMethods:
         for idx, call in enumerate(logger.debug.call_args_list):
             assert call[0][0] == expectations[idx]
 
+    @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
+    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    def test_do_activationkey_clone_keyargs_unfiltered(self, shell):
+        """
+        Test do_activationkey_clone not filtered out keys.
+        """
+        shell.do_activationkey_list = MagicMock(return_value=["key_some_clone_name"])
+        shell.help_activationkey_clone = MagicMock()
+        shell.export_activationkey_getdetails = MagicMock()
+        shell.list_base_channels = MagicMock()
+        shell.list_child_channels = MagicMock()
+        shell.do_configchannel_list = MagicMock()
+        shell.import_activtionkey_fromdetails = MagicMock()
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            ret = spacecmd.activationkey.do_activationkey_clone(shell, "key_some* -c key_clone_name")
+        expectations = [
+            "Got args=['key_some.*'] 1",
+            "Filtered akeys ['key_some_clone_name']",
+            "all akeys ['key_some_clone_name']",
+            "Cloning key_some_clone_name",
+        ]
+        for idx, call in enumerate(logger.debug.call_args_list):
+            assert call[0][0] == expectations[idx]
+
     def test_check_activationkey_nokey(self, shell):
         """
         Test check activation key helper returns False on no key.
