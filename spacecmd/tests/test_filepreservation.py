@@ -67,3 +67,17 @@ class TestSCFilePreservation:
         ]
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
+
+    def test_do_filepreservation_delete_noargs(self, shell):
+        """
+        Test do_filepreservation_delete no args.
+        """
+        shell.help_filepreservation_delete = MagicMock()
+        shell.client.kickstart.filepreservation.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+
+        spacecmd.filepreservation.do_filepreservation_delete(shell, "")
+
+        assert shell.help_filepreservation_delete.called
+        assert not shell.client.kickstart.filepreservation.delete.called
+        assert not shell.user_confirm.called
