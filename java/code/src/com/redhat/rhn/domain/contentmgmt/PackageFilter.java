@@ -28,6 +28,26 @@ public class PackageFilter extends ContentFilter<Package> {
 
     @Override
     public boolean test(Package pack) {
+        FilterCriteria.Matcher matcher = getCriteria().getMatcher();
+        String field = getCriteria().getField();
+        String value = getCriteria().getValue();
+
+        switch (matcher) {
+            case CONTAINS:
+                return getField(pack, field, String.class).contains(value);
+            default:
+                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+
+        }
+    }
+
+    private static <T> T getField(Package pack, String field, Class<T> type) {
+        switch (field) {
+            case "name":
+                return type.cast(pack.getName());
+            default:
+                throw new UnsupportedOperationException("Field " + field + " not supported");
+        }
     }
 
     @Override
