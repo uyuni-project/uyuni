@@ -432,6 +432,10 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static ContentFilter createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
             FilterCriteria criteria, User user) {
+        if (rule == ContentFilter.Rule.ALLOW) {
+            throw new UnsupportedOperationException("Rule ALLOW is not supported yet");
+        }
+
         ContentFilter filter;
         switch (entityType) {
             case PACKAGE:
@@ -463,6 +467,11 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static ContentFilter updateFilter(ContentFilter filter, Optional<String> name,
             Optional<ContentFilter.Rule> rule, Optional<FilterCriteria> criteria) {
+        rule.ifPresent(r -> {
+            if (r == ContentFilter.Rule.ALLOW) {
+                throw new UnsupportedOperationException("Rule ALLOW is not supported yet");
+            }
+        });
         name.ifPresent(n -> filter.setName(n));
         rule.ifPresent(r -> filter.setRule(r));
         criteria.ifPresent(c -> filter.setCriteria(c));

@@ -594,11 +594,11 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
     public void testLookupFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.ALLOW, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
 
         ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), user).get();
         assertEquals(filter, fromDb);
-        assertEquals(Rule.ALLOW, fromDb.getRule());
+        assertEquals(Rule.DENY, fromDb.getRule());
     }
 
     public void testLookupFilterNonAuthorizedUser() {
@@ -1035,7 +1035,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
         assertEquals(Long.valueOf(0), env.getVersion());
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.ALLOW, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
         Channel channel = createPopulatedChannel();
         ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
