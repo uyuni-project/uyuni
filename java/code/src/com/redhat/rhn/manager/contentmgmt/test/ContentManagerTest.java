@@ -1029,6 +1029,28 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    public void testBuildProjectWithFilters() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        assertEquals(Long.valueOf(0), env.getVersion());
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.ALLOW, ContentFilter.EntityType.PACKAGE, criteria, user);
+        Channel channel = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        // ATTACHED filters should get BUILT
+        ContentManager.attachFilter("cplabel", filter.getId(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(1, cp.getProjectFilters().size());
+        assertEquals(ContentProjectFilter.State.BUILT, cp.getProjectFilters().get(0).getState());
+
+        // DETACHED filters should get removed
+        ContentManager.detachFilter("cplabel", filter.getId(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertTrue(cp.getProjectFilters().isEmpty());
+    }
+
     private Channel createPopulatedChannel() throws Exception {
         return createPopulatedChannel(user);
     }
