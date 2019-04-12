@@ -24,6 +24,8 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +47,47 @@ public abstract class ContentFilter extends BaseDomainHelper {
     private Long id;
     private Org org;
     private String name;
+    private Rule rule;
     private FilterCriteria criteria;
+
+    /**
+     * Type of the filter
+     */
+    public enum Rule {
+        ALLOW("allow"),
+        DENY("deny");
+
+        private final String label;
+
+        Rule(String typeIn) {
+            this.label = typeIn;
+        }
+
+        /**
+         * Gets the label.
+         *
+         * @return label
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
+         * Looks up Rule by label
+         *
+         * @param label the label
+         * @throws java.lang.IllegalArgumentException if no matching Rule is found
+         * @return the matching Rule
+         */
+        public static Rule lookupByLabel(String label) {
+            for (Rule value : values()) {
+                if (value.label.equals(label)) {
+                    return value;
+                }
+            }
+            throw new IllegalArgumentException("Unsupported label: " + label);
+        }
+    }
 
     /**
      * Gets the id.
@@ -104,6 +146,25 @@ public abstract class ContentFilter extends BaseDomainHelper {
      */
     public void setName(String nameIn) {
         name = nameIn;
+    }
+
+    /**
+     * Gets the rule.
+     *
+     * @return rule
+     */
+    @Enumerated(EnumType.STRING)
+    public Rule getRule() {
+        return rule;
+    }
+
+    /**
+     * Sets the rule.
+     *
+     * @param ruleIn the rule
+     */
+    public void setRule(Rule ruleIn) {
+        this.rule = ruleIn;
     }
 
     /**
