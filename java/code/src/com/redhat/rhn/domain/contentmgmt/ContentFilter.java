@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.function.Predicate;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embedded;
@@ -38,12 +39,14 @@ import javax.persistence.Transient;
 
 /**
  * Content Filter
+ *
+ * @param <T> the entity being filtered
  */
 @Entity
 @Table(name = "suseContentFilter")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
-public abstract class ContentFilter extends BaseDomainHelper {
+public abstract class ContentFilter<T> extends BaseDomainHelper implements Predicate<T> {
 
     private Long id;
     private Org org;
