@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -2777,13 +2778,15 @@ public class ChannelManager extends BaseManager {
      * Synchronously align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
      * This method is potentially time-expensive and should be run asynchronously (@see alignEnvironmentTarget)
      *
+     * @param filters the {@link PackageFilter}s
      * @param src the source {@link Channel}
      * @param tgt the target {@link SoftwareEnvironmentTarget}
      * @param user the user
      */
-    public static void alignEnvironmentTargetSync(Channel src, Channel tgt, User user) {
+    public static void alignEnvironmentTargetSync(Collection<PackageFilter> filters, Channel src, Channel tgt,
+            User user) {
         // align packages and the cache (rhnServerNeededCache)
-        alignPackages(src, tgt);
+        alignPackages(src, tgt, filters);
 
         // align errata and the cache (rhnServerNeededCache)
         ErrataManager.mergeErrataToChannel(user, src.getErratas(), tgt, src, false, false);
@@ -2798,7 +2801,7 @@ public class ChannelManager extends BaseManager {
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 
-    private static void alignPackages(Channel srcChannel, Channel tgtChannel) {
+    private static void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
         Set<Package> onlyInTgt = new HashSet<>(tgtChannel.getPackages());
         onlyInTgt.removeAll(srcChannel.getPackages());
         Set<Package> onlyInSrc = new HashSet<>(srcChannel.getPackages());
