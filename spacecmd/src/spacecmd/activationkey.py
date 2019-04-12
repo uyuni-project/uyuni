@@ -1162,8 +1162,7 @@ def export_activationkey_getdetails(self, key):
         ccdlist = self.client.activationkey.listConfigChannels(self.session,
                                                                key)
     except xmlrpclib.Fault:
-        logging.debug("activationkey.listConfigChannel threw an exeception, \
-            setting config_channels=False")
+        logging.debug("activationkey.listConfigChannel threw an exeception, setting config_channels=False")
 
     cclist = [c['label'] for c in ccdlist]
     logging.debug("Got config channel label list of %s" % cclist)
@@ -1245,7 +1244,7 @@ def do_activationkey_export(self, args):
             return
 
     if json_dump_to_file(keydetails_list, filename) != True:
-        logging.error("Failed to save exported keys to file" % filename)
+        logging.error("Failed to save exported keys to file: {}".format(filename))
         return
 
 ####################
@@ -1577,7 +1576,7 @@ def do_activationkey_diff(self, args):
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if len(args) != 1 and len(args) != 2:
+    if len(args) not in [1, 2]:
         self.help_activationkey_diff()
         return
 
