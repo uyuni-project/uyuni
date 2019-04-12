@@ -111,3 +111,19 @@ class TestSCFilePreservation:
 
         assert shell.help_filepreservation_details.called
         assert not shell.client.kickstart.filepreservation.details.called
+
+    def test_do_filepreservation_details_args(self, shell):
+        """
+        Test do_filepreservation_details key passed.
+        """
+        shell.help_filepreservation_details = MagicMock()
+        shell.client.kickstart.filepreservation.getDetails = MagicMock()
+
+        spacecmd.filepreservation.do_filepreservation_details(shell, "somekey")
+
+        assert not shell.help_filepreservation_details.called
+        assert shell.client.kickstart.filepreservation.getDetails.called
+
+        session, keyname = shell.client.kickstart.filepreservation.getDetails.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname == "somekey"
