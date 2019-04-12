@@ -1,3 +1,4 @@
+- Use Python 3 to run spacewalk-reports (bsc#1132353)
 - add makefile and pylint configuration
 
 -------------------------------------------------------------------
