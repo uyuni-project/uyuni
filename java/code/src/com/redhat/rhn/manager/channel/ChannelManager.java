@@ -108,6 +108,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -2802,24 +2803,36 @@ public class ChannelManager extends BaseManager {
     }
 
     private static void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
-        Set<Package> onlyInTgt = new HashSet<>(tgtChannel.getPackages());
-        onlyInTgt.removeAll(srcChannel.getPackages());
+        Set<Package> oldTgtPackages = new HashSet<>(tgtChannel.getPackages());
         Set<Package> onlyInSrc = new HashSet<>(srcChannel.getPackages());
         onlyInSrc.removeAll(tgtChannel.getPackages());
 
         // align the packages
         tgtChannel.getPackages().clear();
-        tgtChannel.getPackages().addAll(srcChannel.getPackages());
+        Set<Package> newPackages = filterPackages(srcChannel.getPackages(), filters);
+        tgtChannel.getPackages().addAll(newPackages);
 
         // remove cache entries for only in tgt
-        ErrataCacheManager.deleteCacheEntriesForChannelPackages(tgtChannel.getId(), extractPackageIds(onlyInTgt));
+        oldTgtPackages.removeAll(newPackages);
+        ErrataCacheManager.deleteCacheEntriesForChannelPackages(tgtChannel.getId(), extractPackageIds(oldTgtPackages));
 
         // add cache entries for new ones
-        ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null, extractPackageIds(onlyInSrc));
+        ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null,
+                extractPackageIds(filterPackages(onlyInSrc, filters)));
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
         return packages.stream().map(p -> p.getId()).collect(Collectors.toList());
+    }
+
+    private static Set<Package> filterPackages(Set<Package> packages, Collection<PackageFilter> packageFilters) {
+        Predicate<Package> compositePredicate = packageFilters.stream()
+                .map(f -> (Predicate) f)
+                .reduce((f1, f2) -> f1.and(f2))
+                .orElse(p -> true);
+        return packages.stream()
+                .filter(compositePredicate)
+                .collect(Collectors.toSet());
     }
 
     /**
