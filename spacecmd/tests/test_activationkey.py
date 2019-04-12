@@ -1593,6 +1593,35 @@ class TestSCActivationKeyMethods:
             spacecmd.activationkey.do_activationkey_clone(shell, "--nonsense=true")
 
         assert "Exception: unrecognized arguments: --nonsense=true" in str(exc)
+
+    @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
+    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    def test_do_activationkey_clone_existing_clone_arg(self, shell):
+        """
+        Test do_activationkey_clone existing clone name passed to the arguments.
+        """
+        shell.do_activationkey_list = MagicMock(return_value=["key_clone_name"])
+        shell.help_activationkey_clone = MagicMock()
+        shell.export_activationkey_getdetails = MagicMock()
+        shell.list_base_channels = MagicMock()
+        shell.list_child_channels = MagicMock()
+        shell.do_configchannel_list = MagicMock()
+        shell.import_activtionkey_fromdetails = MagicMock()
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            ret = spacecmd.activationkey.do_activationkey_clone(shell, "-c key_clone_name")
+
+        assert logger.error.called
+        assert not shell.help_activationkey_clone.called
+        assert shell.do_activationkey_list.called
+        assert not shell.export_activationkey_getdetails.called
+        assert not shell.list_base_channels.called
+        assert not shell.list_child_channels.called
+        assert not shell.do_configchannel_list.called
+        assert not shell.import_activtionkey_fromdetails.called
+        assert logger.error.call_args_list[0][0][0] == "Key key_clone_name already exists"
+        assert ret is None
     def test_check_activationkey_nokey(self, shell):
         """
         Test check activation key helper returns False on no key.
