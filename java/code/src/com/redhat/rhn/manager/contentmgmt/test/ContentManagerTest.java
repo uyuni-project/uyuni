@@ -21,12 +21,19 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher;
+import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
@@ -558,6 +565,125 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
                 .setParameter("cp", cp)
                 .list()
                 .isEmpty());
+    }
+
+    public void testCreateAndListFilter() {
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+
+        List<ContentFilter> filters = ContentManager.listFilters(user);
+        assertEquals(1, filters.size());
+        ContentFilter fromDb = filters.get(0);
+        assertTrue(fromDb instanceof PackageFilter);
+        assertEquals(filter, fromDb);
+        assertEquals(Rule.DENY, fromDb.getRule());
+        assertEquals(criteria, fromDb.getCriteria());
+    }
+
+    public void testLookupNonexistingFilter() {
+        long id = -1234565L;
+        // cleanup first
+        try {
+            ContentManager.removeFilter(id, user);
+        }
+        catch (EntityNotExistsException e) {
+            // pass
+        }
+        assertFalse(ContentManager.lookupFilterById(id, user).isPresent());
+    }
+
+    public void testLookupFilter() {
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.ALLOW, EntityType.PACKAGE, criteria, user);
+
+        ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), user).get();
+        assertEquals(filter, fromDb);
+        assertEquals(Rule.ALLOW, fromDb.getRule());
+    }
+
+    public void testLookupFilterNonAuthorizedUser() {
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+
+        Org rangersOrg = UserTestUtils.createNewOrgFull("rangers");
+        User anotherAdmin = UserTestUtils.createUser("Chuck", rangersOrg.getId());
+        anotherAdmin.addPermanentRole(ORG_ADMIN);
+        assertFalse(ContentManager.lookupFilterById(filter.getId(), anotherAdmin).isPresent());
+        assertTrue(ContentManager.listFilters(anotherAdmin).isEmpty());
+    }
+
+    public void testUpdateFilter() {
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+
+        FilterCriteria newCriteria = new FilterCriteria(Matcher.CONTAINS, "newname", "bbb");
+        ContentManager.updateFilter(filter.getId(), of("newname"), empty(), of(newCriteria), user);
+        ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), user).get();
+        assertEquals("newname", fromDb.getName());
+        assertEquals(newCriteria, fromDb.getCriteria());
+    }
+
+    public void testRemoveFilter() {
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+
+        Long id = filter.getId();
+        ContentManager.removeFilter(id, user);
+        assertFalse(ContentManager.lookupFilterById(id, user).isPresent());
+    }
+
+    public void testAttachFilter() {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+
+        ContentManager.attachFilter("cplabel", filter.getId(), user);
+
+        ContentProject fromDb = ContentManager.lookupProject("cplabel", user).get();
+        assertEquals(1, fromDb.getProjectFilters().size());
+        ContentProjectFilter projectFilter = fromDb.getProjectFilters().get(0);
+        assertEquals(ContentProjectFilter.State.ATTACHED, projectFilter.getState());
+
+        // attaching a DETACHED filter should result in BUILT filter
+        projectFilter.setState(ContentProjectFilter.State.DETACHED);
+        ContentManager.attachFilter("cplabel", filter.getId(), user);
+        fromDb = ContentManager.lookupProject("cplabel", user).get();
+        assertEquals(ContentProjectFilter.State.BUILT, fromDb.getProjectFilters().get(0).getState());
+    }
+
+    public void testDetachNoFilter() {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentManager.detachFilter("cplabel", filter.getId(), user);
+    }
+
+    public void testDetachFilter() {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+
+        ContentManager.attachFilter("cplabel", filter.getId(), user);
+        ContentManager.detachFilter("cplabel", filter.getId(), user);
+        ContentProject fromDb = ContentManager.lookupProject("cplabel", user).get();
+        assertTrue(fromDb.getProjectFilters().isEmpty());
+    }
+
+    public void testDetachBuiltFilter() {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+
+        ContentManager.attachFilter("cplabel", filter.getId(), user);
+        cp.getProjectFilters().get(0).setState(ContentProjectFilter.State.BUILT);
+        ContentManager.detachFilter("cplabel", filter.getId(), user);
+        ContentProject fromDb = ContentManager.lookupProject("cplabel", user).get();
+        assertEquals(1, fromDb.getProjectFilters().size());
+        assertEquals(ContentProjectFilter.State.DETACHED, fromDb.getProjectFilters().get(0).getState());
     }
 
     /**

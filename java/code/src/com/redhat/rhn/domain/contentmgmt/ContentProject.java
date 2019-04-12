@@ -308,6 +308,51 @@ public class ContentProject extends BaseDomainHelper {
     }
 
     /**
+     * Attach a {@link ContentFilter} to {@link ContentProject}
+     *
+     * @param filter the filter to attach
+     */
+    public void attachFilter(ContentFilter filter) {
+        ContentProjectFilter projectFilter = new ContentProjectFilter(this, filter);
+
+        int idx = filters.indexOf(projectFilter);
+        if (idx != -1) {
+            ContentProjectFilter toUpdate = filters.get(idx);
+            if (toUpdate.getState() == ContentProjectFilter.State.DETACHED) {
+                toUpdate.setState(ContentProjectFilter.State.BUILT);
+            }
+        }
+        else {
+            filters.add(projectFilter);
+        }
+    }
+
+    /**
+     * Detach a {@link ContentFilter} from a {@link ContentProject}
+     *
+     * @param filter the filter to detach
+     */
+    public void detachFilter(ContentFilter filter) {
+        ContentProjectFilter projectFilter = new ContentProjectFilter(this, filter);
+
+        int idx = filters.indexOf(projectFilter);
+        if (idx != -1) {
+            ContentProjectFilter toUpdate = filters.get(idx);
+
+            switch (toUpdate.getState()) {
+                case BUILT:
+                    toUpdate.setState(ContentProjectFilter.State.DETACHED);
+                    break;
+                case ATTACHED:
+                    filters.remove(idx);
+                    break;
+                default:
+                    // no-op
+            }
+        }
+    }
+
+    /**
      * Gets the historyEntries.
      *
      * @return historyEntries

@@ -43,7 +43,38 @@ public class FilterCriteria {
      * The matcher type
      */
     public enum Matcher {
-        CONTAINS;
+        CONTAINS("contains");
+
+        private String label;
+
+        Matcher(String labelIn) {
+            this.label = labelIn;
+        }
+
+        /**
+         * Gets the label.
+         *
+         * @return label
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
+         * Looks up Matcher by label
+         *
+         * @param label the label
+         * @throws java.lang.IllegalArgumentException if no matching matcher is found
+         * @return the matching matcher
+         */
+        public static Matcher lookupByLabel(String label) {
+            for (Matcher value : values()) {
+                if (value.label.equals(label)) {
+                    return value;
+                }
+            }
+            throw new IllegalArgumentException("Unsupported label: " + label);
+        }
     }
 
     /**
