@@ -1453,6 +1453,51 @@ class TestSCActivationKeyMethods:
         session, keydata = shell.client.activationkey.disableConfigDeployment.call_args_list[0][0]
         assert shell.session == session
         assert keydata == shell.client.activationkey.create()
+
+    def test_do_activationkey_fromdetails_cfgdeploy(self, shell):
+        """
+        Test import_activationkey_fromdetails configuration deployment was set.
+        """
+        shell.client.activationkey.create = MagicMock(return_value={"name": "whatever"})
+        shell.do_activationkey_list = MagicMock(return_value=["some_existing_key"])
+        shell.client.activationkey.addChildChannels = MagicMock()
+        shell.client.activationkey.enableConfigDeployment = MagicMock()
+        shell.client.activationkey.disableConfigDeployment = MagicMock()
+        shell.client.activationkey.addConfigChannels = MagicMock()
+        shell.client.activationkey.addServerGroups = MagicMock()
+        shell.client.activationkey.addPackages = MagicMock()
+        shell.client.systemgroup.getDetails = MagicMock(return_value=None)
+        shell.client.systemgroup.create = MagicMock(
+            side_effect=[
+                {"id": 1},
+                {"id": 2},
+                {"id": 3},
+            ]
+        )
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            ret = spacecmd.activationkey.import_activationkey_fromdetails(
+                shell,
+                {
+                    "key": "somekey",
+                    "usage_limit": 42,
+                    "base_channel_label": "none",
+                    "description": "Key description",
+                    "entitlements": ["one", "two", "three"],
+                    "universal_default": True,
+                    "child_channel_labels": "child_channel_labels",
+                    "config_channels": ["config_channel"],
+                    "server_groups": ["one", "two", "three"],
+                    "packages": ["emacs"],
+                    "config_deploy": 1,
+                }
+            )
+        assert shell.client.activationkey.enableConfigDeployment.called
+        assert not shell.client.activationkey.disableConfigDeployment.called
+        session, keydata = shell.client.activationkey.enableConfigDeployment.call_args_list[0][0]
+        assert shell.session == session
+        assert keydata == shell.client.activationkey.create()
     def test_check_activationkey_nokey(self, shell):
         """
         Test check activation key helper returns False on no key.
