@@ -1293,11 +1293,36 @@ class TestSCActivationKeyMethods:
         assert logger.error.called
         assert logger.error.call_args_list[0][0][0] == 'No filename passed'
 
-    @pytest.mark.skip(reason="Not implemented test stub")
-    def test_do_activationkey_fromdetails(self, shell):
+    def test_do_activationkey_fromdetails_existingkey(self, shell):
         """
-        Test activation key from details.
+        Test import_activationkey_fromdetails does not import anything if key already exist.
         """
+        shell.client.activationkey.create = MagicMock()
+        shell.do_activationkey_list = MagicMock(return_value=["somekey"])
+        shell.client.activationkey.addChildChannels = MagicMock()
+        shell.client.activationkey.enableConfigDeployment = MagicMock()
+        shell.client.activationkey.disableConfigDeployment = MagicMock()
+        shell.client.activationkey.addConfigChannels = MagicMock()
+        shell.client.activationkey.addServerGroups = MagicMock()
+        shell.client.activationkey.addPackages = MagicMock()
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            ret = spacecmd.activationkey.import_activationkey_fromdetails(shell, {"key": "somekey"})
+        assert not shell.client.activationkey.create.called
+        assert shell.do_activationkey_list.called
+        assert not shell.client.activationkey.addChildChannels.called
+        assert not shell.client.activationkey.enableConfigDeployment.called
+        assert not shell.client.activationkey.disableConfigDeployment.called
+        assert not shell.client.activationkey.addConfigChannels.called
+        assert not shell.client.activationkey.addServerGroups.called
+        assert not shell.client.activationkey.addServerGroups.called
+        assert not shell.client.activationkey.addPackages.called
+
+        assert logger.warning.called
+        assert logger.warning.call_args_list[0][0][0] == 'somekey already exists! Skipping!'
+        assert type(ret) == bool
+        assert not ret
 
     @pytest.mark.skip(reason="Not implemented test stub")
     def test_do_activationkey_clone(self, shell):
