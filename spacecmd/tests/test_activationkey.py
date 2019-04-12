@@ -1324,11 +1324,51 @@ class TestSCActivationKeyMethods:
         assert type(ret) == bool
         assert not ret
 
-    @pytest.mark.skip(reason="Not implemented test stub")
-    def test_do_activationkey_clone(self, shell):
+    def test_do_activationkey_fromdetails_newkey_no_usage_limit(self, shell):
         """
-        Test activation key from details.
+        Test import_activationkey_fromdetails no usage limit.
         """
+        shell.client.activationkey.create = MagicMock(return_value={})
+        shell.do_activationkey_list = MagicMock(return_value=["some_existing_key"])
+        shell.client.activationkey.addChildChannels = MagicMock()
+        shell.client.activationkey.enableConfigDeployment = MagicMock()
+        shell.client.activationkey.disableConfigDeployment = MagicMock()
+        shell.client.activationkey.addConfigChannels = MagicMock()
+        shell.client.activationkey.addServerGroups = MagicMock()
+        shell.client.activationkey.addPackages = MagicMock()
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            ret = spacecmd.activationkey.import_activationkey_fromdetails(
+                shell,
+                {
+                    "key": "somekey",
+                    "usage_limit": 0,
+                    "base_channel_label": "none",
+                    "description": "Key description",
+                    "entitlements": ["one", "two", "three"],
+                    "universal_default": True,
+                }
+            )
+        assert shell.do_activationkey_list.called
+        assert shell.client.activationkey.create.called
+        assert not shell.client.activationkey.addChildChannels.called
+        assert not shell.client.activationkey.enableConfigDeployment.called
+        assert not shell.client.activationkey.disableConfigDeployment.called
+        assert not shell.client.activationkey.addConfigChannels.called
+        assert not shell.client.activationkey.addServerGroups.called
+        assert not shell.client.activationkey.addServerGroups.called
+        assert not shell.client.activationkey.addPackages.called
+        assert logger.debug.call_args_list[0][0][0] == "Found key somekey, importing as somekey"
+
+        assert len(shell.client.activationkey.create.call_args_list[0][0]) == 6
+        session, keyname, descr, basech, entl, udef = shell.client.activationkey.create.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname == "somekey"
+        assert descr == "Key description"
+        assert basech == ""
+        assert entl == ["one", "two", "three"]
+        assert udef
 
     def test_check_activationkey_nokey(self, shell):
         """
