@@ -13,6 +13,7 @@ type Props = {
   onSave: Function,
   renderCreationContent: Function,
   renderContent: Function,
+  disableEditing?: boolean,
   className?: string,
   onCancel?: Function,
   onOpen?: Function,
@@ -47,6 +48,7 @@ const CreatorPanel = (props: Props) => {
         title={props.title}
         className={props.className}
         buttons={
+          !props.disableEditing &&
           <ModalLink
             id={`${props.id}-modal-link`}
             icon="fa-plus"
@@ -65,61 +67,64 @@ const CreatorPanel = (props: Props) => {
       </Panel>
 
 
-      <Dialog id={modalNameId}
-              title={props.title}
-              closableModal={false}
-              className="modal-lg"
-              content={
-                props.renderCreationContent({
-                  open,
-                  item,
-                  setItem: setStateItem
-                })
-              }
-              onClosePopUp={() => setOpen(false)}
-              buttons={
-                <React.Fragment>
-                  <div className="btn-group col-lg-6">
-                    {
-                      props.onDelete && <Button
-                        id={`${props.id}-modal-delete-button`}
-                        className="btn-danger"
-                        text={t('Delete')}
-                        disabled={props.disableOperations}
-                        handler={() => props.onDelete && props.onDelete({
-                          item,
-                          closeDialog: () => closeDialog(modalNameId)
-                        })}
-                      />
-                    }
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="pull-right btn-group">
-                      <Button
-                        id={`${props.id}-modal-cancel-button`}
-                        className="btn-default"
-                        text={t('Cancel')}
-                        handler={() => {
-                          if (props.onCancel) {
-                            props.onCancel();
-                          }
-                          closeDialog(modalNameId);
-                        }}
-                      />
-                      <Button
-                        id={`${props.id}-modal-save-button`}
-                        className="btn-primary"
-                        text={t('Save')}
-                        disabled={props.disableOperations}
-                        handler={() => props.onSave({
-                          item,
-                          closeDialog: () => closeDialog(modalNameId)
-                        })}
-                      />
+      {
+        !props.disableEditing &&
+        <Dialog id={modalNameId}
+                title={props.title}
+                closableModal={false}
+                className="modal-lg"
+                content={
+                  props.renderCreationContent({
+                    open,
+                    item,
+                    setItem: setStateItem
+                  })
+                }
+                onClosePopUp={() => setOpen(false)}
+                buttons={
+                  <React.Fragment>
+                    <div className="btn-group col-lg-6">
+                      {
+                        props.onDelete && <Button
+                          id={`${props.id}-modal-delete-button`}
+                          className="btn-danger"
+                          text={t('Delete')}
+                          disabled={props.disableOperations}
+                          handler={() => props.onDelete && props.onDelete({
+                            item,
+                            closeDialog: () => closeDialog(modalNameId)
+                          })}
+                        />
+                      }
                     </div>
-                  </div>
-                </React.Fragment>
-              } />
+                    <div className="col-lg-6">
+                      <div className="pull-right btn-group">
+                        <Button
+                          id={`${props.id}-modal-cancel-button`}
+                          className="btn-default"
+                          text={t('Cancel')}
+                          handler={() => {
+                            if (props.onCancel) {
+                              props.onCancel();
+                            }
+                            closeDialog(modalNameId);
+                          }}
+                        />
+                        <Button
+                          id={`${props.id}-modal-save-button`}
+                          className="btn-primary"
+                          text={t('Save')}
+                          disabled={props.disableOperations}
+                          handler={() => props.onSave({
+                            item,
+                            closeDialog: () => closeDialog(modalNameId)
+                          })}
+                        />
+                      </div>
+                    </div>
+                  </React.Fragment>
+                }/>
+      }
     </React.Fragment>
   );
 };

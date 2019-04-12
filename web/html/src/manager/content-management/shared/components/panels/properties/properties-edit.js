@@ -9,6 +9,8 @@ import PropertiesView from "./properties-view";
 import produce from "immer";
 
 import type {ProjectHistoryEntry, ProjectPropertiesType} from '../../../type/project.type.js';
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 type Props = {
   projectId: string,
@@ -22,6 +24,8 @@ const PropertiesEdit = (props: Props) => {
   const {onAction, cancelAction, isLoading} = useProjectActionsApi({
     projectId: props.projectId, projectResource: "properties"
   });
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
 
   const defaultDraftHistory = {
     version: props.currentHistoryEntry ? props.currentHistoryEntry.version + 1 : 1 ,
@@ -39,6 +43,7 @@ const PropertiesEdit = (props: Props) => {
         id="properties"
         creatingText="Edit"
         panelLevel="2"
+        disableEditing={!hasEditingPermissions}
         title={t('Project Properties')}
         collapsible
         customIconClass="fa-small"

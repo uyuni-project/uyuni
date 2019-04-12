@@ -7,6 +7,8 @@ import PropertiesCreate from "../shared/components/panels/properties/properties-
 import {showErrorToastr} from "components/toastr/toastr";
 import withPageWrapper from 'components/general/with-page-wrapper';
 import {hot} from 'react-hot-loader';
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 const CreateProject = () => {
 
@@ -20,6 +22,12 @@ const CreateProject = () => {
   });
 
   const { onAction } = useProjectActionsApi({});
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
+
+  if(!hasEditingPermissions) {
+    return (<p>{t("You do not have permissions to perform this action")}</p>)
+  }
 
   return (
           <TopPanel

@@ -11,6 +11,8 @@ import {mapAddEnvironmentRequest, mapUpdateEnvironmentRequest} from './environme
 
 import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 import type {ProjectHistoryEntry} from "../../../type/project.type";
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 type Props = {
   projectId: string,
@@ -24,6 +26,8 @@ const EnvironmentLifecycle = (props: Props) => {
   const {onAction, cancelAction, isLoading} = useProjectActionsApi({
     projectId: props.projectId, projectResource:"environments"
   });
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
 
   return (
     <CreatorPanel
@@ -31,6 +35,7 @@ const EnvironmentLifecycle = (props: Props) => {
       title="Environment Lifecycle"
       creatingText="Add new Environment"
       panelLevel="2"
+      disableEditing={!hasEditingPermissions}
       collapsible
       customIconClass="fa-small"
       disableOperations={isLoading}
@@ -81,6 +86,7 @@ const EnvironmentLifecycle = (props: Props) => {
                       title={environment.name}
                       creatingText="Edit"
                       panelLevel="3"
+                      disableEditing={!hasEditingPermissions}
                       disableOperations={isLoading}
                       onSave={({ item, closeDialog }) =>
                         onAction(mapUpdateEnvironmentRequest(item, props.projectId), "update")

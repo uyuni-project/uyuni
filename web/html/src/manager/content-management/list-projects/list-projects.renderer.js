@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ListProjects from './list-projects';
+import {RolesProvider} from "core/auth/roles-context";
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.contentManagement = window.pageRenderers.contentManagement || {};
@@ -13,10 +14,12 @@ window.pageRenderers.contentManagement.listProjects.renderer = (id, {projects, f
   }  catch(error) {}
 
   ReactDOM.render(
+    <RolesProvider>
       <ListProjects
         projects={projectsJson}
         flashMessage={flashMessage}
-      />,
-      document.getElementById(id),
-    );
+      />
+    </RolesProvider>,
+    document.getElementById(id),
+  );
 };

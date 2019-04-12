@@ -18,6 +18,8 @@ import withPageWrapper from 'components/general/with-page-wrapper';
 import type {ProjectType} from '../shared/type/project.type';
 import {hot} from 'react-hot-loader';
 import _last from "lodash/last";
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 type Props = {
   project: ProjectType,
@@ -28,6 +30,8 @@ const Project = (props: Props) => {
 
   const [project, setProject] = useState(props.project);
   const {onAction} = useProjectActionsApi({ projectId: project.properties.label });
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
 
 
   useEffect(()=> {
@@ -51,74 +55,76 @@ const Project = (props: Props) => {
     .filter(source => editedStates.includes(source.state))
     .map(source => ({channelId: source.channelId, type: "Source", name: source.name, state: statesDesc[source.state]}));
   const isProjectEdited = changesToBuild.length > 0;
+  const isBuildDisabled = !hasEditingPermissions || _isEmpty(project.environments) || _isEmpty(project.softwareSources);
 
   return (
-    <TopPanel
-      title={t('Content Lifecycle Project - {0}', project.properties.name)}
-      // icon="fa-plus"
-      button= {
-        <div className="pull-right btn-group">
-          <ModalButton
-            className="btn-danger"
-            title={t("Delete")}
-            text={t('Delete')}
-            target="delete-project-modal" />
-        </div>
-      }
-    >
-      <DeleteDialog id="delete-project-modal"
-          title={t("Delete Project")}
-          content={<span>{t("Are you sure you want to delete project")} <strong>{projectId}</strong>?</span>}
-          onConfirm={() =>
-            onAction(project, 'delete')
-            .then(() => {
-              window.location.href = `/rhn/manager/contentmanagement/projects`
-            })
-            .catch((error) => {
-              showErrorToastr(error);
-            })
-          }
-      />
-      <PropertiesEdit
-        projectId={projectId}
-        properties={project.properties}
-        currentHistoryEntry={currentHistoryEntry}
-        showDraftVersion={isProjectEdited}
-        onChange={(projectWithNewProperties) => {
-          setProject(projectWithNewProperties)
-        }}
-      />
-
-      <div className="panel-group-contentmngt">
-        <Sources
+      <TopPanel
+        title={t('Content Lifecycle Project - {0}', project.properties.name)}
+        // icon="fa-plus"
+        button= {
+          hasEditingPermissions &&
+          <div className="pull-right btn-group">
+            <ModalButton
+              className="btn-danger"
+              title={t("Delete")}
+              text={t('Delete')}
+              target="delete-project-modal" />
+          </div>
+        }
+      >
+        <DeleteDialog id="delete-project-modal"
+                      title={t("Delete Project")}
+                      content={<span>{t("Are you sure you want to delete project")} <strong>{projectId}</strong>?</span>}
+                      onConfirm={() =>
+                        onAction(project, 'delete')
+                          .then(() => {
+                            window.location.href = `/rhn/manager/contentmanagement/projects`
+                          })
+                          .catch((error) => {
+                            showErrorToastr(error);
+                          })
+                      }
+        />
+        <PropertiesEdit
           projectId={projectId}
-          softwareSources={project.softwareSources}
-          onChange={(projectWithNewSources) => {
-            setProject(projectWithNewSources)
+          properties={project.properties}
+          currentHistoryEntry={currentHistoryEntry}
+          showDraftVersion={isProjectEdited}
+          onChange={(projectWithNewProperties) => {
+            setProject(projectWithNewProperties)
           }}
         />
-        <Filters/>
-      </div>
 
-      <Build
-        projectId={projectId}
-        disabled={_isEmpty(project.environments) || _isEmpty(project.softwareSources)}
-        currentHistoryEntry={currentHistoryEntry}
-        onBuild={(projectWithNewSources) => {
-          setProject(projectWithNewSources)
-        }}
-        changesToBuild={changesToBuild}
-      />
+        <div className="panel-group-contentmngt">
+          <Sources
+            projectId={projectId}
+            softwareSources={project.softwareSources}
+            onChange={(projectWithNewSources) => {
+              setProject(projectWithNewSources)
+            }}
+          />
+          <Filters/>
+        </div>
 
-      <EnvironmentLifecycle
-        projectId={projectId}
-        environments={project.environments}
-        historyEntries={project.properties.historyEntries}
-        onChange={(projectWithNewEnvironment) => {
-          setProject(projectWithNewEnvironment)
-        }}
-      />
-    </TopPanel>
+        <Build
+          projectId={projectId}
+          disabled={isBuildDisabled}
+          currentHistoryEntry={currentHistoryEntry}
+          onBuild={(projectWithNewSources) => {
+            setProject(projectWithNewSources)
+          }}
+          changesToBuild={changesToBuild}
+        />
+
+        <EnvironmentLifecycle
+          projectId={projectId}
+          environments={project.environments}
+          historyEntries={project.properties.historyEntries}
+          onChange={(projectWithNewEnvironment) => {
+            setProject(projectWithNewEnvironment)
+          }}
+        />
+      </TopPanel>
   );
 };
 

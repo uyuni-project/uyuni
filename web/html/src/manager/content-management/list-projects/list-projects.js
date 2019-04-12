@@ -1,12 +1,14 @@
 // @flow
 import React, {useEffect} from 'react';
 import {TopPanel} from 'components/panels/TopPanel';
-import {Table, Column, SearchField} from 'components/table';
+import {Column, SearchField, Table} from 'components/table';
 import Functions from 'utils/functions';
 import {LinkButton} from 'components/buttons';
-import { showSuccessToastr } from 'components/toastr/toastr';
+import {showSuccessToastr} from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';
-import { hot } from 'react-hot-loader';
+import {hot} from 'react-hot-loader';
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 type ContentProjectOverviewType = {
   properties: {
@@ -24,6 +26,8 @@ type Props = {
 };
 
 const ListProjects = (props: Props) => {
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
 
   useEffect(()=> {
     if(props.flashMessage) {
@@ -48,14 +52,17 @@ const ListProjects = (props: Props) => {
 
   const panelButtons = (
     <div className="pull-right btn-group">
-      <LinkButton
-        id="createcontentproject"
-        icon="fa-plus"
-        className="btn-link"
-        title={t('Create a new content lifecycle project')}
-        text={t('Create Project')}
-        href="/rhn/manager/contentmanagement/project"
-      />
+      {
+        hasEditingPermissions &&
+          <LinkButton
+            id="createcontentproject"
+            icon="fa-plus"
+            className="btn-link"
+            title={t('Create a new content lifecycle project')}
+            text={t('Create Project')}
+            href="/rhn/manager/contentmanagement/project"
+          />
+      }
     </div>
   );
 

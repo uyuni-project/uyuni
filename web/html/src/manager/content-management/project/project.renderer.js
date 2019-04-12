@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Project from './project';
+import {RolesProvider} from "core/auth/roles-context";
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.contentManagement = window.pageRenderers.contentManagement || {};
@@ -12,10 +13,12 @@ window.pageRenderers.contentManagement.project.renderer = (id, {project, wasFres
   }  catch(error) {}
 
   ReactDOM.render(
-    <Project
-      project={projectJson}
-      { ...( wasFreshlyCreatedMessage && { wasFreshlyCreatedMessage } ) }
-    />,
+    <RolesProvider>
+      <Project
+        project={projectJson}
+        { ...( wasFreshlyCreatedMessage && { wasFreshlyCreatedMessage } ) }
+      />
+    </RolesProvider>,
     document.getElementById(id),
   );
 };

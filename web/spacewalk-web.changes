@@ -1,3 +1,4 @@
+- Content lifecycle management - show destructive operations only for users with the org admin role
 - Add cache buster for static files (js/css) to fix caching issues after upgrading.
 - Show undetected subscription-matching message object as a string anyway (bsc#1125600)
 
