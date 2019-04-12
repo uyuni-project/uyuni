@@ -1,3 +1,4 @@
+- Implement packages filtering on Content Project build
 - Implement Content Filters operations and expose them in XMLRPC
 - Disable ActionChainCleanup if database is Postgres
 - Track and expose build status of Content Environment
