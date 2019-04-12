@@ -2,6 +2,10 @@
 """
 Testing helpers
 """
+import time
+import pytest
+import hashlib
+from mock import MagicMock
 from io import StringIO
 
 
@@ -42,3 +46,17 @@ class FileHandleMock(StringIO):
         Get initial keywords.
         """
         return self.__init_params[1]
+
+
+@pytest.fixture
+def shell():
+    """
+    Create fake shell.
+    """
+    base = MagicMock()
+    base.session = hashlib.sha256(str(time.time()).encode("utf-8")).hexdigest()
+    base.client = MagicMock()
+    base.client.activationkey = MagicMock()
+    base.do_activationkey_list = MagicMock(return_value="do_activation_list")
+
+    return base
