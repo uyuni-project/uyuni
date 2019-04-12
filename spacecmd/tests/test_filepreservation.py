@@ -46,3 +46,24 @@ class TestSCFilePreservation:
             ret = spacecmd.filepreservation.do_filepreservation_list(shell, "", doreturn=True)
         assert not mprint.called
         assert ret == ['list_one', 'list_two', 'list_three']
+
+    def test_do_filepreservation_create_noargs_prompted_name(self, shell):
+        """
+        Test do_filepreservation_create no args passed so prompt appears.
+        """
+        shell.client.kickstart.filepreservation.create = MagicMock()
+
+        mprint = MagicMock()
+        prmt = MagicMock(side_effect=["prompted_name", "file_one", "file_two", ""])
+        with patch("spacecmd.filepreservation.prompt_user", prmt) as pmt, \
+             patch("spacecmd.filepreservation.print", mprint) as mpt:
+            spacecmd.filepreservation.do_filepreservation_create(shell, "")
+
+        expectations = [
+            'File List', '---------', '', '',
+            'File List', '---------', 'file_one', '',
+            'File List', '---------', 'file_one\nfile_two', '', '',
+            'File List', '---------', 'file_one\nfile_two'
+        ]
+        for idx, call in enumerate(mprint.call_args_list):
+            assert call[0][0] == expectations[idx]
