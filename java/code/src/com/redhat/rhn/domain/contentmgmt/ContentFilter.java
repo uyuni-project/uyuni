@@ -34,6 +34,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Content Filter
@@ -49,6 +50,45 @@ public abstract class ContentFilter extends BaseDomainHelper {
     private String name;
     private Rule rule;
     private FilterCriteria criteria;
+
+    /**
+     * Entity type that is dealt with by filter.
+     */
+    public enum EntityType {
+        PACKAGE("package"),
+        ERRATUM("erratum");
+
+        private String label;
+
+        EntityType(String labelIn) {
+            this.label = labelIn;
+        }
+
+        /**
+         * Gets the label.
+         *
+         * @return label
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
+         * Looks up Entity type by label
+         *
+         * @param label the label
+         * @throws java.lang.IllegalArgumentException if no matching Entity type is found
+         * @return the matching Entity type
+         */
+        public static EntityType lookupByLabel(String label) {
+            for (EntityType value : values()) {
+                if (value.label.equals(label)) {
+                    return value;
+                }
+            }
+            throw new IllegalArgumentException("Unsupported label: " + label);
+        }
+    }
 
     /**
      * Type of the filter
@@ -88,6 +128,13 @@ public abstract class ContentFilter extends BaseDomainHelper {
             throw new IllegalArgumentException("Unsupported label: " + label);
         }
     }
+
+    /**
+     * Get {@link EntityType} of this object
+     * @return the {@link EntityType}
+     */
+    @Transient
+    public abstract EntityType getEntityType();
 
     /**
      * Gets the id.

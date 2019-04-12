@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 /**
  * Package Filter
@@ -25,4 +26,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue("package")
 public class PackageFilter extends ContentFilter {
 
+    @Override
+    @Transient
+    public EntityType getEntityType() {
+        return EntityType.PACKAGE;
+    }
 }
