@@ -6691,7 +6691,23 @@ public class SystemHandler extends BaseHandler {
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = null;
             if (StringUtils.isBlank(targetIdent)) {
-                targetProducts = targets.get(targets.size() - 1);
+                log.info("Target migration id is empty. " +
+                        "Looking for the closes product version having synced channels.");
+                List<SUSEProductSet> syncedTargets = targets.stream()
+                        .filter(ps -> {
+                            if (log.isDebugEnabled()) {
+                                if (ps.getIsEveryChannelSynced()) {
+                                    log.debug(ps.toString() + " is completely synced.");
+                                }
+                                else {
+                                    log.debug("Discarding " + ps.toString() + ". Is not completely synced.");
+                                }
+                            }
+                            return ps.getIsEveryChannelSynced();
+                        })
+                        .collect(toList());
+                targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
+                log.info("Using migration target: " + targetProducts);
             }
             else {
                 for (SUSEProductSet target : targets) {
@@ -6703,8 +6719,14 @@ public class SystemHandler extends BaseHandler {
                 }
             }
             if (targetProducts == null) {
+                String targetsInfo = "Possible targets with incompletely synced channels: " +
+                        System.getProperty("line.separator") +
+                        targets.stream().map(t -> t + " : " +
+                                t.getMissingChannelsMessage())
+                                .collect(Collectors.joining(System.getProperty("line.separator")));
+                log.error("No target products found for migration: " + targetsInfo);
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
-                        "No target found for SP migration");
+                        "No target found for SP migration. " + targetsInfo);
             }
             if (!targetProducts.getIsEveryChannelSynced()) {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
