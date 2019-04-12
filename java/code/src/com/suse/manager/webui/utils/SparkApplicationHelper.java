@@ -16,23 +16,25 @@ package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.common.security.PermissionException;
+
+import com.suse.manager.webui.Languages;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.manager.webui.Languages;
-
-import de.neuland.jade4j.JadeConfiguration;
 
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import de.neuland.jade4j.JadeConfiguration;
 import spark.ModelAndView;
 import spark.Response;
 import spark.Route;
@@ -77,6 +79,31 @@ public class SparkApplicationHelper {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
             return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Use in routes to automatically get the current user in your controller and inject the roles into your template.
+     * Example: <code>Spark.get("/url", withRolesTemplate(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withRolesTemplate(TemplateViewRouteWithUser route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            ModelAndView modelAndView = route.handle(request, response, user);
+            List<String> roles = user.getRoles().stream()
+                    .map(role -> role.getLabel())
+                    .collect(Collectors.toList());
+            Object model = modelAndView.getModel();
+            if (model instanceof Map) {
+                ((Map) model).put("roles", GSON.toJson(roles));
+            }
+            else {
+                throw new UnsupportedOperationException("User roles can be added only to" +
+                        " a Map!");
+            }
+            return modelAndView;
         };
     }
 

@@ -9,6 +9,8 @@ import {getVersionMessageByNumber} from "../properties/properties.utils";
 import useProjectActionsApi from "../../../api/use-project-actions-api";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import {Loading} from "components/loading/loading";
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 
 type Props = {
@@ -25,6 +27,8 @@ const Promote = (props: Props) => {
   const {onAction, cancelAction, isLoading} = useProjectActionsApi({
     projectId: props.projectId, projectResource: "promote"
   });
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
 
   useEffect(() => {
     if(!open){
@@ -34,7 +38,9 @@ const Promote = (props: Props) => {
 
   const versionMessage = getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) || "not built";
   const modalNameId = `${props.environmentPromote.label}-cm-promote-env-modal`;
-  const disabled = !props.environmentPromote.version
+  const disabled =
+    !hasEditingPermissions
+    || !props.environmentPromote.version
     || props.environmentPromote.version <= props.environmentTarget.version;
   return (
     <div

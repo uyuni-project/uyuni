@@ -9,6 +9,8 @@ import useProjectActionsApi from "../../../api/use-project-actions-api";
 import ChannelsSelection from "./channels/channels-selection";
 import {Panel} from "../../../../../../components/panels/Panel";
 import styles from "./sources.css";
+import useRoles from "core/auth/use-roles";
+import {isOrgAdmin} from "core/auth/auth.utils";
 
 type SourcesProps = {
   projectId: string,
@@ -78,7 +80,8 @@ const Sources = (props: SourcesProps) => {
   const {onAction, cancelAction, isLoading} = useProjectActionsApi({
     projectId: props.projectId, projectResource: "softwaresources"
   });
-
+  const roles = useRoles();
+  const hasEditingPermissions = isOrgAdmin(roles);
 
   return (
     <CreatorPanel
@@ -86,6 +89,7 @@ const Sources = (props: SourcesProps) => {
       title="Sources"
       creatingText="Add new Source"
       panelLevel="2"
+      disableEditing={!hasEditingPermissions}
       collapsible
       customIconClass="fa-small"
       onCancel={() => cancelAction()}

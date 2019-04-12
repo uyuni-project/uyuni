@@ -15,7 +15,7 @@
 package com.suse.manager.webui.controllers.contentmanagement;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withRolesTemplate;
 import static spark.Spark.get;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
@@ -60,11 +60,11 @@ public class ContentManagementViewsController {
      */
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/contentmanagement/project",
-                withCsrfToken(ContentManagementViewsController::createProjectView), jade);
+                withCsrfToken(withRolesTemplate(ContentManagementViewsController::createProjectView)), jade);
         get("/manager/contentmanagement/project/:label",
-                withCsrfToken(withUser(ContentManagementViewsController::editProjectView)), jade);
+                withCsrfToken(withRolesTemplate(ContentManagementViewsController::editProjectView)), jade);
         get("/manager/contentmanagement/projects",
-                withUser(ContentManagementViewsController::listProjectsView), jade);
+                withRolesTemplate(ContentManagementViewsController::listProjectsView), jade);
     }
 
     /**
@@ -72,9 +72,10 @@ public class ContentManagementViewsController {
      *
      * @param req the request object
      * @param res the response object
+     * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView createProjectView(Request req, Response res) {
+    public static ModelAndView createProjectView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
         return new ModelAndView(data, "controllers/contentmanagement/templates/create-project.jade");
     }
