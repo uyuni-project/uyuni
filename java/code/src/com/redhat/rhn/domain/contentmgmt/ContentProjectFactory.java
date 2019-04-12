@@ -495,6 +495,14 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Remove {@link ContentProjectFilter}
+     * @param filter the filter
+     */
+    public static void remove(ContentProjectFilter filter) {
+        INSTANCE.removeObject(filter);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

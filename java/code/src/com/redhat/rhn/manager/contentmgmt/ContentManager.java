@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
@@ -549,11 +550,26 @@ public class ContentManager {
         // remove the detached sources
         sourcesToHandle.getOrDefault(DETACHED, emptyList()).stream()
                 .forEach(src -> removeSource(src));
+
+        Map<ContentProjectFilter.State, List<ContentProjectFilter>> filtersToHandle =
+                project.getProjectFilters().stream().collect(groupingBy(f -> f.getState()));
+        // newly attached filters get built
+        filtersToHandle.getOrDefault(ContentProjectFilter.State.ATTACHED, emptyList()).stream()
+                .forEach(f -> f.setState(ContentProjectFilter.State.BUILT));
+        // remove the detached filters
+        filtersToHandle.getOrDefault(ContentProjectFilter.State.DETACHED, emptyList()).stream()
+                .forEach(f -> removeFilter(f));
+
     }
 
     private static void removeSource(ProjectSource source) {
         source.getContentProject().removeSource(source);
         ContentProjectFactory.remove(source);
+    }
+
+    private static void removeFilter(ContentProjectFilter filter) {
+        filter.getProject().getProjectFilters().remove(filter);
+        ContentProjectFactory.remove(filter);
     }
 
     /**
