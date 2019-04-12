@@ -1,3 +1,5 @@
+- Take into account only synced products when scheduling SP migration from the API (bsc#1131929)
+
 -------------------------------------------------------------------
 Tue Apr 16 12:54:27 CEST 2019 - jgonzalez@suse.com
 
