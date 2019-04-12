@@ -140,6 +140,21 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
     public abstract EntityType getEntityType();
 
     /**
+     * Test whether an object passes the filter
+     *
+     * @param t the object
+     * @return true if the object passes the filter
+     */
+    public abstract boolean testInternal(T t);
+
+    @Override
+    public boolean test(T t) {
+        boolean result = testInternal(t);
+        // we want to invert the test if Rule type is DENY
+        return rule == Rule.ALLOW ? result : !result;
+    }
+
+    /**
      * Gets the id.
      *
      * @return id

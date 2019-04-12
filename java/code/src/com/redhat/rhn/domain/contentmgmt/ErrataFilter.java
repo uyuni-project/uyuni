@@ -29,7 +29,7 @@ import javax.persistence.Transient;
 public class ErrataFilter extends ContentFilter<Errata> {
 
     @Override
-    public boolean test(Errata errata) {
+    public boolean testInternal(Errata errata) {
         return false;
     }
 
