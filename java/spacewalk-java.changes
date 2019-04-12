@@ -1,3 +1,4 @@
+- Implement packages filtering on Content Project build
 - Implement Content Filters operations and expose them in XMLRPC
 - Track and expose build status of Content Environment
 - Enable SLES11 OS Image Build Host
