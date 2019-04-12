@@ -1370,6 +1370,44 @@ class TestSCActivationKeyMethods:
         assert entl == ["one", "two", "three"]
         assert udef
 
+    def test_do_activationkey_fromdetails_newkey_fixed_usage_limit(self, shell):
+        """
+        Test import_activationkey_fromdetails usage limit given.
+        """
+        shell.client.activationkey.create = MagicMock(return_value={})
+        shell.do_activationkey_list = MagicMock(return_value=["some_existing_key"])
+        shell.client.activationkey.addChildChannels = MagicMock()
+        shell.client.activationkey.enableConfigDeployment = MagicMock()
+        shell.client.activationkey.disableConfigDeployment = MagicMock()
+        shell.client.activationkey.addConfigChannels = MagicMock()
+        shell.client.activationkey.addServerGroups = MagicMock()
+        shell.client.activationkey.addPackages = MagicMock()
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            ret = spacecmd.activationkey.import_activationkey_fromdetails(
+                shell,
+                {
+                    "key": "somekey",
+                    "usage_limit": 42,
+                    "base_channel_label": "none",
+                    "description": "Key description",
+                    "entitlements": ["one", "two", "three"],
+                    "universal_default": True,
+                }
+            )
+        assert len(shell.client.activationkey.create.call_args_list[0][0]) == 7
+        session, keyname, descr, basech, ulim, entl, udef = shell.client.activationkey.create.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname == "somekey"
+        assert descr == "Key description"
+        assert basech == ""
+        assert ulim == 42
+        assert entl == ["one", "two", "three"]
+        assert udef
+
+        # This is expected: see mock return on API call "create".
+        assert logger.error.call_args_list[0][0][0] == 'Failed to import key somekey'
     def test_check_activationkey_nokey(self, shell):
         """
         Test check activation key helper returns False on no key.
