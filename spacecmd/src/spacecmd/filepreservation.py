@@ -38,16 +38,12 @@ def help_filepreservation_list(self):
 
 
 def do_filepreservation_list(self, args, doreturn=False):
-    lists = \
-        self.client.kickstart.filepreservation.listAllFilePreservations(
-            self.session)
-    lists = [l.get('name') for l in lists]
+    lists = [l.get('name') for l in self.client.kickstart.filepreservation.listAllFilePreservations(self.session)]
 
-    if doreturn:
-        return lists
+    if not doreturn:
+        print('\n'.join(sorted(lists)))
     else:
-        if lists:
-            print('\n'.join(sorted(lists)))
+        return lists
 
 ####################
 
