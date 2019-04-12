@@ -24,7 +24,11 @@ import javax.persistence.Transient;
  */
 @Entity
 @DiscriminatorValue("package")
-public class PackageFilter extends ContentFilter {
+public class PackageFilter extends ContentFilter<Package> {
+
+    @Override
+    public boolean test(Package pack) {
+    }
 
     @Override
     @Transient
