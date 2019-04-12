@@ -135,6 +135,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ContentProjectSerializer.class);
         SERIALIZER_CLASSES.add(ContentEnvironmentSerializer.class);
         SERIALIZER_CLASSES.add(ContentProjectSourceSerializer.class);
+        SERIALIZER_CLASSES.add(ContentFilterSerializer.class);
+        SERIALIZER_CLASSES.add(ContentProjectFilterSerializer.class);
     }
 
     /**
