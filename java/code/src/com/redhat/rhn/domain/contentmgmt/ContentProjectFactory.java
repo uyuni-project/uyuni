@@ -480,6 +480,21 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * List {@link ContentProject}s using given {@link ContentFilter}
+     *
+     * @param filter the Filter
+     * @return list of Projects
+     */
+    public static List<ContentProject> listFilterProjects(ContentFilter filter) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT cp FROM ContentProject cp " +
+                                "WHERE cp.id IN (SELECT cpf.project.id FROM ContentProjectFilter cpf " +
+                                                 "WHERE cpf.filter.id = :fid)")
+                .setParameter("fid", filter.getId())
+                .list();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
