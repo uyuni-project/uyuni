@@ -16,13 +16,17 @@
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
@@ -439,6 +443,226 @@ public class ContentManagementHandler extends BaseHandler {
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
         }
+    }
+
+    /**
+     * List {@link ContentFilter}s
+     *
+     * @param loggedInUser the logged in user
+     * @return the list of {@link ContentFilter}s
+     *
+     * @xmlrpc.doc List all Content Filters
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype
+     * #array()
+     * $ContentFilterSerializer
+     * #array_end()
+     */
+    public List<ContentFilter> listFilters(User loggedInUser) {
+        return ContentManager.listFilters(loggedInUser);
+    }
+
+    /**
+     * Lookup {@link ContentFilter} by id
+     *
+     * @param loggedInUser the logged in user
+     * @param id the filter id
+     * @return the matching {@link ContentFilter}
+     *
+     * @xmlrpc.doc Lookup a Content Filter by id
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "id", "Filter id")
+     * @xmlrpc.returntype $ContentFilterSerializer
+     */
+    public ContentFilter lookupFilter(User loggedInUser, Integer id) {
+        return ContentManager.lookupFilterById(id.longValue(), loggedInUser)
+                .orElseThrow(() -> new EntityNotExistsFaultException(id));
+    }
+
+    /**
+     * Create a {@link ContentFilter}
+     *
+     * @param loggedInUser the logged in user
+     * @param name the Filter name
+     * @param rule the Filter rule
+     * @param entityType the Filter entity type
+     * @param criteria the filter criteria
+     * @return the created {@link ContentFilter}
+     *
+     * @xmlrpc.doc Create a Content Filter
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "name", "Filter name")
+     * @xmlrpc.param #param_desc("string", "rule", "Filter rule (e.g. 'deny')")
+     * @xmlrpc.param #param_desc("string", "entityType", "Filter entityType (e.g. 'package')")
+     * @xmlrpc.param
+     *  #struct("criteria")
+     *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
+     *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
+     *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
+     *  #struct_end()
+     * @xmlrpc.returntype $ContentFilterSerializer
+     */
+    public ContentFilter createFilter(User loggedInUser, String name, String rule, String entityType,
+            Map<String, Object> criteria) {
+        ensureOrgAdmin(loggedInUser);
+
+        ContentFilter.Rule ruleObj = ContentFilter.Rule.lookupByLabel(rule);
+        ContentFilter.EntityType entityTypeObj = ContentFilter.EntityType.lookupByLabel(entityType);
+        FilterCriteria criteriaObj = createCriteria(criteria).orElseThrow(
+                () -> new InvalidArgsException("criteria must be specified")
+        );
+
+        return ContentManager.createFilter(name, ruleObj, entityTypeObj, criteriaObj, loggedInUser);
+    }
+
+    /**
+     * Update a {@link ContentFilter}
+     *
+     * @param loggedInUser the logged in user
+     * @param filterId the Filter id
+     * @param name the Filter name
+     * @param rule the Filter rule
+     * @param criteria the filter criteria
+     * @return the updated {@link ContentFilter}
+     *
+     * @xmlrpc.doc Update a Content Filter
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "filterId", "Filter id")
+     * @xmlrpc.param #param_desc("string", "name", "New filter name")
+     * @xmlrpc.param #param_desc("string", "rule", "New filter rule (e.g. 'deny')")
+     * @xmlrpc.param
+     *  #struct("criteria")
+     *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
+     *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
+     *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
+     *  #struct_end()
+     * @xmlrpc.returntype $ContentFilterSerializer
+     */
+    public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name, String rule,
+            Map<String, Object> criteria) {
+        ensureOrgAdmin(loggedInUser);
+
+        Optional<ContentFilter.Rule> ruleObj;
+        if (rule.isEmpty()) {
+            ruleObj = empty();
+        }
+        else {
+            ruleObj = Optional.of(ContentFilter.Rule.lookupByLabel(rule));
+        }
+        Optional<FilterCriteria> criteriaObj = createCriteria(criteria);
+
+        return ContentManager.updateFilter(
+                filterId.longValue(),
+                ofNullable(name),
+                ruleObj,
+                criteriaObj,
+                loggedInUser);
+    }
+
+    private Optional<FilterCriteria> createCriteria(Map<String, Object> criteria) {
+        if (criteria.isEmpty()) {
+            return empty();
+        }
+        if (!criteria.containsKey("matcher") || !criteria.containsKey("field") ||
+                !criteria.containsKey("value")) {
+            throw new InvalidArgsException("Incomplete filter criteria");
+        }
+        return of(new FilterCriteria(
+                FilterCriteria.Matcher.lookupByLabel((String) criteria.get("matcher")),
+                (String) criteria.get("field"),
+                (String) criteria.get("value")));
+    }
+
+    /**
+     * Remove a {@link ContentFilter}
+     *
+     * @param loggedInUser the logged in user
+     * @param filterId the filter id
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Remove a Content Filter
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "id", "Filter id")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int removeFilter(User loggedInUser, Integer filterId) {
+        ensureOrgAdmin(loggedInUser);
+        try {
+            ContentManager.removeFilter(filterId.longValue(), loggedInUser);
+            return 1;
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
+    }
+
+    /**
+     * List {@link ContentProject} filters
+     *
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Project label
+     * @return the list of filters
+     *
+     * @xmlrpc.doc List all Filters associated with a Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
+     * @xmlrpc.returntype
+     * #array()
+     * $ContentProjectFilterSerializer
+     * #array_end()
+     */
+    public List<ContentProjectFilter> listProjectFilters(User loggedInUser, String projectLabel) {
+        return lookupProject(loggedInUser, projectLabel).getProjectFilters();
+    }
+
+    /**
+     * Attach a {@link ContentFilter} to a {@link ContentProject}
+     *
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Project label
+     * @param filterId the Filter id to attach
+     * @return the attached Filter
+     *
+     * @xmlrpc.doc Attach a Filter to a Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
+     * @xmlrpc.param #param_desc("int", "id", "Filter id to attach")
+     * @xmlrpc.returntype $ContentFilterSerializer
+     */
+    public ContentFilter attachFilter(User loggedInUser, String projectLabel, Integer filterId) {
+        ensureOrgAdmin(loggedInUser);
+        try {
+            return ContentManager.attachFilter(projectLabel, filterId.longValue(), loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+
+    }
+
+    /**
+     * Detach a {@link ContentFilter} from a {@link ContentProject}
+     *
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Project label
+     * @param filterId the Filter id to detach
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Detach a Filter from a Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
+     * @xmlrpc.param #param_desc("int", "id", "Filter id to detach")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int detachFilter(User loggedInUser, String projectLabel, Integer filterId) {
+        ensureOrgAdmin(loggedInUser);
+        try {
+            ContentManager.detachFilter(projectLabel, filterId.longValue(), loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+        return 1;
     }
 
     /**
