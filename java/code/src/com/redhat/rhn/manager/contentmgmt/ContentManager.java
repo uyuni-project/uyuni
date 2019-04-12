@@ -426,6 +426,9 @@ public class ContentManager {
         ensureOrgAdmin(user);
         ContentFilter filter = lookupFilterById(id, user)
                 .orElseThrow(() -> new EntityNotExistsException(id));
+        if (!ContentProjectFactory.listFilterProjects(filter).isEmpty()) {
+            throw new ContentManagementException("Can't delete filter " + id + " - it is used in Content Projects");
+        }
         return ContentProjectFactory.remove(filter);
     }
 
