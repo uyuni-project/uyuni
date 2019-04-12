@@ -25,6 +25,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -296,6 +297,18 @@ public class ContentProject extends BaseDomainHelper {
     @OrderColumn(name = "position")
     public List<ContentProjectFilter> getProjectFilters() {
         return filters;
+    }
+
+    /**
+     * Get the {@link PackageFilter}s
+     *
+     * @return the Package filters
+     */
+    @Transient
+    public List<PackageFilter> getPackageFilters() {
+        return (List<PackageFilter>) getProjectFilters().stream()
+                .flatMap(f -> Opt.stream(f.getFilter().asPackageFilter()))
+                .collect(Collectors.toList());
     }
 
     /**

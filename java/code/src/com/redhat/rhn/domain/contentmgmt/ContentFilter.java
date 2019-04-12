@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -138,6 +139,20 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
      */
     @Transient
     public abstract EntityType getEntityType();
+
+    /**
+     * Returns the filter as {@link PackageFilter} if it is one
+     *
+     * @return Optional of {@link PackageFilter}
+     */
+    public abstract Optional<PackageFilter> asPackageFilter();
+
+    /**
+     * Returns the filter as {@link ErrataFilter} if it is one
+     *
+     * @return Optional of {@link ErrataFilter}
+     */
+    public abstract Optional<ErrataFilter> asErrataFilter();
 
     /**
      * Test whether an object passes the filter
