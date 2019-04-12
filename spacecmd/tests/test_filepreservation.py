@@ -81,3 +81,21 @@ class TestSCFilePreservation:
         assert shell.help_filepreservation_delete.called
         assert not shell.client.kickstart.filepreservation.delete.called
         assert not shell.user_confirm.called
+
+    def test_do_filepreservation_delete_args(self, shell):
+        """
+        Test do_filepreservation_delete key name passed.
+        """
+        shell.help_filepreservation_delete = MagicMock()
+        shell.client.kickstart.filepreservation.delete = MagicMock()
+        shell.user_confirm = MagicMock(return_value=True)
+
+        spacecmd.filepreservation.do_filepreservation_delete(shell, "some_key")
+
+        assert not shell.help_filepreservation_delete.called
+        assert shell.client.kickstart.filepreservation.delete.called
+        assert shell.user_confirm.called
+
+        session, keyname = shell.client.kickstart.filepreservation.delete.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname == "some_key"
