@@ -558,7 +558,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     public void testListFilterProjects() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.ALLOW, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
 
