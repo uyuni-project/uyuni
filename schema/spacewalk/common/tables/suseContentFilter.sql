@@ -21,6 +21,7 @@ CREATE TABLE suseContentFilter(
                      REFERENCES web_customer(id)
                      ON DELETE CASCADE,
     type     VARCHAR2(16) NOT NULL,
+    rule     VARCHAR2(16) NOT NULL,
     name     VARCHAR2(128) NOT NULL,
     matcher  VARCHAR2(32) NOT NULL,
     field    VARCHAR2(32) NOT NULL,
