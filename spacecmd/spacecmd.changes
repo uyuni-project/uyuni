@@ -1,3 +1,4 @@
+- add unit tests for spacecmd.api, spacecmd.activationkey and spacecmd.filepreservation
 - add unit tests for spacecmd.shell
 - Save SSM list on system delete and update cache (bsc#1130077, bsc#1125744)
 - add makefile and pylint configuration
