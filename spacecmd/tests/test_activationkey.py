@@ -1651,6 +1651,42 @@ class TestSCActivationKeyMethods:
         assert not shell.import_activtionkey_fromdetails.called
         assert logger.error.call_args_list[0][0][0] == "Error no activationkey to clone passed!"
         assert ret is None
+
+    @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
+    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    def test_do_activationkey_clone_keyargs_to_clone_filtered(self, shell):
+        """
+        Test do_activationkey_clone filtered out keys.
+        """
+        shell.do_activationkey_list = MagicMock(return_value=["key_some_clone_name"])
+        shell.help_activationkey_clone = MagicMock()
+        shell.export_activationkey_getdetails = MagicMock()
+        shell.list_base_channels = MagicMock()
+        shell.list_child_channels = MagicMock()
+        shell.do_configchannel_list = MagicMock()
+        shell.import_activtionkey_fromdetails = MagicMock()
+
+        logger = MagicMock()
+        with patch("spacecmd.activationkey.logging", logger):
+            ret = spacecmd.activationkey.do_activationkey_clone(shell, "orig_key -c key_clone_name")
+
+        assert not logger.error.called
+        assert not shell.help_activationkey_clone.called
+        assert shell.do_activationkey_list.called
+        assert not shell.export_activationkey_getdetails.called
+        assert not shell.list_base_channels.called
+        assert not shell.list_child_channels.called
+        assert not shell.do_configchannel_list.called
+        assert not shell.import_activtionkey_fromdetails.called
+
+        expectations = [
+            "Got args=['orig_key'] 1",
+            "Filtered akeys []",
+            "all akeys ['key_some_clone_name']",
+        ]
+        for idx, call in enumerate(logger.debug.call_args_list):
+            assert call[0][0] == expectations[idx]
+
     def test_check_activationkey_nokey(self, shell):
         """
         Test check activation key helper returns False on no key.
