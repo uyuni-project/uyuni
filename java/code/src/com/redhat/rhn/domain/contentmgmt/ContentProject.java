@@ -38,7 +38,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -294,7 +293,6 @@ public class ContentProject extends BaseDomainHelper {
      * @return filters
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
-    @OrderColumn(name = "position")
     public List<ContentProjectFilter> getProjectFilters() {
         return filters;
     }
