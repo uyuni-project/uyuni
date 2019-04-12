@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.errata.Errata;
 
+import java.util.Optional;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -37,5 +38,15 @@ public class ErrataFilter extends ContentFilter<Errata> {
     @Transient
     public EntityType getEntityType() {
         return EntityType.ERRATUM;
+    }
+
+    @Override
+    public Optional<PackageFilter> asPackageFilter() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<ErrataFilter> asErrataFilter() {
+        return Optional.of(this);
     }
 }
