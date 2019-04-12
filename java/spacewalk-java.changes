@@ -1,3 +1,4 @@
+- Implement Content Filters operations and expose them in XMLRPC
 - Track and expose build status of Content Environment
 - Enable SLES11 OS Image Build Host
 - Add support for Salt batch execution mode
