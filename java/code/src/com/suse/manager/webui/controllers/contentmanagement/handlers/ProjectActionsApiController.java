@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.user.User;
@@ -49,10 +50,24 @@ public class ProjectActionsApiController {
 
     /** Init routes for ContentManagement Sources Api.*/
     public static void initRoutes() {
+        get("/manager/contentmanagement/api/projects/:projectId",
+                withUser(ProjectActionsApiController::project));
         post("/manager/contentmanagement/api/projects/:projectId/build",
                 withUser(ProjectActionsApiController::buildProject));
         post("/manager/contentmanagement/api/projects/:projectId/promote",
                 withUser(ProjectActionsApiController::promoteProject));
+    }
+
+    /**
+     * Return the JSON with the project updated result.
+     * @param req the http request
+     * @param res the http response
+     * @param user the current user
+     * @return the JSON data
+     */
+    public static String project(Request req, Response res, User user) {
+        String projectLabel = req.params("projectId");
+        return ControllerUtils.fullProjectJson(res, projectLabel, user);
     }
 
     /**
@@ -94,5 +109,7 @@ public class ProjectActionsApiController {
 
         return ControllerUtils.fullProjectJson(res, projectLabel, user);
     }
+
+
 
 }

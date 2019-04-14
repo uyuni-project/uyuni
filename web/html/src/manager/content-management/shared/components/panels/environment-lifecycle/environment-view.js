@@ -32,7 +32,7 @@ const EnvironmentView = React.memo((props: Props) => {
         props.environment.version > 0 ?
           <dl className="row">
             <dt className="col-xs-3">Status:</dt>
-            <dd className="col-xs-9">To be implemented</dd>
+            <dd className="col-xs-9">{props.environment.status}</dd>
           </dl>
           : null
       }

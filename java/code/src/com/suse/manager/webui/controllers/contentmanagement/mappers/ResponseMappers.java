@@ -103,6 +103,11 @@ public class ResponseMappers {
                     environmentResponse.setVersion(envDB.getVersion());
                     environmentResponse.setDescription(envDB.getDescription());
                     environmentResponse.setProjectLabel(envDB.getContentProject().getLabel());
+                    environmentResponse.setStatus(
+                            envDB.computeStatus()
+                                    .map(status -> status.getLabel())
+                                    .orElse(null)
+                    );
                     return environmentResponse;
                 })
                 .collect(Collectors.toList());
