@@ -25,6 +25,7 @@ export type ProjectEnvironmentType = {
   label: string,
   name: string,
   description: string,
+  status: string,
   version: number
 }
 

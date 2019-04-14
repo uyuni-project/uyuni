@@ -24,6 +24,11 @@ public class EnvironmentResponse {
     private String name;
     private String description;
     private Long version;
+    private String status;
+
+    public void setStatus(String statusIn) {
+        this.status = statusIn;
+    }
 
     public void setProjectLabel(String projectLabelIn) {
         this.projectLabel = projectLabelIn;
