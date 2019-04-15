@@ -76,7 +76,7 @@ class TestSCCusomInfo:
 
     def test_do_custominfo_deletekey_noargs(self, shell):
         """
-        Test do_custominfo_deletekey description shows help on no args.
+        Test do_custominfo_deletekey shows help on no args.
         """
         errmsg = "No arguments passed"
         shell.client.system.custominfo.deleteKey = MagicMock()
@@ -90,3 +90,27 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_deletekey(shell, "")
 
         assert errmsg in str(exc)
+
+    def test_do_custominfo_deletekey_args(self, shell):
+        """
+        test do_custominfo_deletekey calls deleteKey API function.
+        """
+        keylist=["some_key", "some_other_key", "this_key_stays"]
+        shell.client.system.custominfo.deleteKey = MagicMock()
+        shell.do_custominfo_listkeys = MagicMock(return_value=keylist)
+        shell.help_custominfo_deletekey = MagicMock(side_effect=Exception("Kaboom"))
+        shell.user_confirm = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.custominfo.logging", logger):
+            custominfo.do_custominfo_deletekey(shell, "some*")
+
+        assert shell.client.system.custominfo.deleteKey.called
+        for call in shell.client.system.custominfo.deleteKey.call_args_list:
+            session, keyname = call[0]
+            assert shell.session == session
+            assert keyname in keylist
+            keylist.pop(keylist.index(keyname))
+        assert len(keylist) == 1
+        assert "this_key_stays" in keylist
+
