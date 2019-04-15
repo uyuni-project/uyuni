@@ -126,6 +126,7 @@ class TestSCCusomInfo:
         shell.client.system.custominfo.listAllKeys = MagicMock(return_value=keylist)
         mprint = MagicMock()
         with patch("spacecmd.custominfo.print", mprint):
-            custominfo.do_custominfo_listkeys(shell, "")
+            ret = custominfo.do_custominfo_listkeys(shell, "")
 
+        assert ret is None
         assert mprint.called
