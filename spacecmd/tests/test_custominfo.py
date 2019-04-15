@@ -114,3 +114,18 @@ class TestSCCusomInfo:
         assert len(keylist) == 1
         assert "this_key_stays" in keylist
 
+    def test_do_custominfo_listkeys_stdout(self, shell):
+        """
+        Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function to STDOUT.
+        """
+        keylist=[
+            {"label": "some_key"},
+            {"label": "some_other_key"},
+            {"label": "this_key_stays"},
+        ]
+        shell.client.system.custominfo.listAllKeys = MagicMock(return_value=keylist)
+        mprint = MagicMock()
+        with patch("spacecmd.custominfo.print", mprint):
+            custominfo.do_custominfo_listkeys(shell, "")
+
+        assert mprint.called
