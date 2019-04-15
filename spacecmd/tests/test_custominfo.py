@@ -168,3 +168,20 @@ class TestSCCusomInfo:
         assert not logger.debug.called
         assert not logger.error.called
         assert not shell.client.system.custominfo.listAllKeys.called
+
+    def test_do_custominfo_details_no_key(self, shell):
+        """
+        Test do_custominfo_details shows error to the log if key name doesn't match.
+        """
+        shell.client.system.custominfo.listAllKeys = MagicMock()
+        shell.do_custominfo_listkeys = MagicMock(return_value=["key_one", "key_two"])
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.custominfo.logging", logger):
+            with patch("spacecmd.custominfo.print", mprint):
+                custominfo.do_custominfo_details(shell, "keyname")
+
+        assert not shell.client.system.custominfo.listAllKeys.called
+        assert logger.debug.call_args_list[0][0][0] == "customkey_details called with args: 'keyname', keys: ''."
+        assert logger.error.call_args_list[0][0][0] == "No keys matched argument 'keyname'."
