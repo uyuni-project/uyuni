@@ -237,3 +237,39 @@ class TestSCCusomInfo:
         assert mprint.called
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
+
+    def test_do_custominfo_details_keydetails(self, shell):
+        """
+        Test do_custominfo_details prints key details not available in format.
+        """
+        shell.SEPARATOR = "***"
+        shell.client.system.custominfo.listAllKeys = MagicMock(
+            return_value=[
+                {"label": "key_one", "description": "descr one", "last_modified": "123", "system_count": 1},
+                {"label": "key_two", "description": "descr two", "last_modified": "234", "system_count": 2},
+            ]
+        )
+        shell.do_custominfo_listkeys = MagicMock(return_value=["key_one", "key_two"])
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.custominfo.logging", logger):
+            with patch("spacecmd.custominfo.print", mprint):
+                custominfo.do_custominfo_details(shell, "key*")
+
+        expectations = [
+            'Label:        key_one',
+            'Description:  descr one',
+            'Modified:     123',
+            'System Count: 1',
+            '***',
+            'Label:        key_two',
+            'Description:  descr two',
+            'Modified:     234',
+            'System Count: 2'
+        ]
+
+        assert shell.client.system.custominfo.listAllKeys.called
+        assert mprint.called
+        for idx, call in enumerate(mprint.call_args_list):
+            assert call[0][0] == expectations[idx]
