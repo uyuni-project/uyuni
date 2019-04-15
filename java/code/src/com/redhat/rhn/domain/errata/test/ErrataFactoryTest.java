@@ -520,7 +520,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(clone.getOriginal().equals(published));
     }
 
-    public void listErrataChannelPackages() {
+    public void testListErrataChannelPackages() {
         try {
             Channel chan = ChannelTestUtils.createBaseChannel(user);
             Errata e = ErrataFactoryTest.createTestErrata(user.getId());
@@ -545,5 +545,19 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Test listing errata by channel
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testListErrataByChannel() throws Exception {
+        Channel chan = ChannelTestUtils.createBaseChannel(user);
+        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
+        chan.getErratas().add(e);
+
+        List<PublishedErrata> errata = ErrataFactory.listByChannel(user.getOrg(), chan);
+        assertEquals(1, errata.size());
+        assertEquals(e, errata.iterator().next());
+    }
 }
 

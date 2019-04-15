@@ -994,6 +994,20 @@ public class ErrataFactory extends HibernateFactory {
         singleton.removeObject(deleteme);
     }
 
+    /**
+     * Lists errata assigned to a particular channel.
+     *
+     * @param org the Org in question
+     * @param channel the channel you want to get the errata for
+     * @return A list of Errata objects
+     */
+    public static List<PublishedErrata> listByChannel(Org org, Channel channel) {
+        return HibernateFactory.getSession().
+                getNamedQuery("PublishedErrata.listByChannel")
+                .setParameter("org", org)
+                .setParameter("channel", channel)
+                .list();
+    }
 
     /**
      * Lists errata assigned to a particular channel,

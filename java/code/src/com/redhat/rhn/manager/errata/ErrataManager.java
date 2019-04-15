@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Bug;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
@@ -91,6 +92,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -261,7 +263,7 @@ public class ErrataManager extends BaseManager {
      */
     public static Set<Errata> mergeErrataToChannel(User user, Set<Errata> errataToMergeIn,
             Channel toChannel, Channel fromChannel) {
-        return mergeErrataToChannel(user, errataToMergeIn, toChannel, fromChannel, false, true);
+        return mergeErrataToChannel(user, errataToMergeIn, toChannel, fromChannel, true, true);
     }
 
     /**
@@ -310,18 +312,29 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Removes errata from target channel that are not present in the source channel.
+     * Removes cloned errata from target channel that are not in the source channel
+     * or that do not have original in the source channel.
      *
      * @param srcChannel the source channel
      * @param tgtChannel the target channel
      * @param user the user
      */
     public static void truncateErrata(Channel srcChannel, Channel tgtChannel, User user) {
-        // 2-pass approach to prevent concurrent modification error
-        Set<Errata> toRemove = tgtChannel.getErratas().stream()
-                .filter(e -> !srcChannel.getErratas().contains(e))
-                .collect(toSet());
-        toRemove.forEach(e -> removeErratumFromChannel(e, tgtChannel, user));
+        Set<Errata> srcErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), srcChannel));
+        Set<Errata> tgtErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), tgtChannel));
+
+        // let's remove errata that aren't in the source errata nor is their original
+        tgtErrata.stream()
+                .filter(e -> !(srcErrata.contains(e) ||
+                        asCloned(e).map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
+                .forEach(e -> removeErratumFromChannel(e, tgtChannel, user));
+    }
+
+    private static Optional<ClonedErrata> asCloned(Errata e) {
+        if (e instanceof ClonedErrata) {
+            return Optional.of((ClonedErrata) e);
+        }
+        return Optional.empty();
     }
 
     /**
