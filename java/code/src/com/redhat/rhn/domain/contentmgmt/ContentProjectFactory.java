@@ -284,6 +284,20 @@ public class ContentProjectFactory extends HibernateFactory {
     /**
      * Looks up SoftwareEnvironmentTarget with given id
      *
+     * @param label the {@link Channel} label
+     * @return Optional of {@link com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget}
+     */
+    public static Optional<SoftwareEnvironmentTarget> lookupEnvironmentTargetByChannelLabel(String label) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SoftwareEnvironmentTarget> query = builder.createQuery(SoftwareEnvironmentTarget.class);
+        Root<SoftwareEnvironmentTarget> from = query.from(SoftwareEnvironmentTarget.class);
+        query.where(builder.equal(from.get("channel").get("label"), label));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Looks up SoftwareEnvironmentTarget with a given channel
+     *
      * @param id the id
      * @return Optional of {@link com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget}
      */

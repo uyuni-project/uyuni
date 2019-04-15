@@ -22,15 +22,22 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
-
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.BUILT;
+import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.FAILED;
+import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.GENERATING_REPODATA;
 
 
 /**
@@ -85,13 +92,15 @@ public class ChannelRepodataWorker implements QueueWorker {
      * runner method to process the parentQueue
      */
     public void run() {
+        // if a channel has a EnvironmentTarget associated, we update it too
+        Optional<SoftwareEnvironmentTarget> envTarget = ContentProjectFactory
+                .lookupEnvironmentTargetByChannelLabel(channelLabelToProcess);
         try {
             parentQueue.workerStarting();
             if (!isChannelLabelAlreadyInProcess()) {
                 markInProgress(true);
                 populateQueueEntryDetails();
-                Channel channelToProcess = ChannelFactory
-                        .lookupByLabel(channelLabelToProcess);
+                Channel channelToProcess = ChannelFactory.lookupByLabel(channelLabelToProcess);
                 // if the channelExists in the db still
                 if (channelToProcess != null) {
                     // see if the channel is stale, or one of the entries has
@@ -113,6 +122,8 @@ public class ChannelRepodataWorker implements QueueWorker {
                     repoWriter.deleteRepomdFiles(channelLabelToProcess, true);
                 }
 
+                setEnvironmentTargetStatus(envTarget, BUILT);
+
                 dequeueChannel();
             }
             else {
@@ -127,12 +138,23 @@ public class ChannelRepodataWorker implements QueueWorker {
             parentQueue.getQueueRun().failed();
             // unmark channel to be worked on
             markInProgress(false);
+            setEnvironmentTargetStatus(envTarget, FAILED);
             parentQueue.changeRun(null);
         }
         finally {
             parentQueue.workerDone();
             HibernateFactory.closeSession();
         }
+    }
+
+    // helper method for setting state of environment target
+    private void setEnvironmentTargetStatus(Optional<SoftwareEnvironmentTarget> environmentTarget, Status built) {
+        environmentTarget
+                .filter(t -> t.getStatus() == GENERATING_REPODATA)
+                .ifPresent(t -> {
+                    t.setStatus(built);
+                    ContentProjectFactory.save(t);
+                });
     }
 
     /**
