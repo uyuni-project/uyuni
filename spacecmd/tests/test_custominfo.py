@@ -12,7 +12,7 @@ class TestSCCusomInfo:
     """
     Test for custominfo API.
     """
-    def test_do_custominfo_createkey(self, shell):
+    def test_do_custominfo_createkey_no_keyname(self, shell):
         """
         Test do_custominfo_createkey do not break on no key name provided, falling back to interactive mode.
         """
@@ -24,4 +24,21 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_createkey(shell, "")
 
         assert "Empty key" in str(exc)
+
+
+    def test_do_custominfo_createkey_no_descr(self, shell):
+        """
+        Test do_custominfo_createkey description gets the name of the key, if not provided.
+        """
+        shell.client.system.custominfo.createKey = MagicMock()
+        prompter = MagicMock(side_effect=["keyname", ""])
+
+        with patch("spacecmd.custominfo.prompt_user", prompter):
+            custominfo.do_custominfo_createkey(shell, "")
+
+        assert shell.client.system.custominfo.createKey.called
+        session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname == descr
+
 
