@@ -273,3 +273,15 @@ class TestSCCusomInfo:
         assert mprint.called
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
+
+    def test_custominfo_updatekey_noarg_name(self, shell):
+        """
+        Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
+        """
+        shell.client.system.custominfo.updateKey = MagicMock(side_effect=Exception("interactive mode"))
+        prompt = MagicMock()
+        with patch("spacecmd.custominfo.prompt_user", prompt):
+            with pytest.raises(Exception) as exc:
+                custominfo.do_custominfo_updatekey(shell, "")
+
+        assert "interactive mode" in str(exc)
