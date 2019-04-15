@@ -137,11 +137,11 @@ public class SCCClientUtils {
      * @return the filename
      */
     public static String getLogFilename(URI uri, String user) {
-        Pattern pattern = Pattern.compile(".*/connect/(.*)");
+        Pattern pattern = Pattern.compile(".*/(connect|suma)/(.*)");
         Matcher matcher = pattern.matcher(uri.toString());
         matcher.matches();
-        String urlFragment = matcher.group(1);
-        String name = user + "_" + urlFragment + ".json";
+        String urlFragment = matcher.group(2);
+        String name = user + "_" + urlFragment + (urlFragment.endsWith(".json") ? "" : ".json");
 
         return name.replaceAll("[^a-zA-Z0-9\\._]+", "_");
     }

@@ -19,12 +19,14 @@ import com.redhat.rhn.domain.product.ReleaseStage;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * JSON representation of an entry in the suse products tree file
  */
-public class StaticInfoEntry {
+public class ProductTreeEntry {
 
     @SerializedName("channel_label")
     private String channelLabel;
@@ -63,6 +65,15 @@ public class StaticInfoEntry {
 
     @SerializedName("product_type")
     private Optional<ProductType> productType = Optional.empty();
+
+    private List<String> tags = Collections.emptyList();
+
+    /**
+     * @return the tags
+     */
+    public List<String> getTags() {
+        return tags;
+    }
 
     /**
      * @return the product type

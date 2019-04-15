@@ -41,7 +41,7 @@ import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
-import com.redhat.rhn.manager.content.StaticInfoEntry;
+import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -343,7 +343,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
         List<UpgradePathJson> upgradePaths = gson.fromJson(inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() {}.getType());
         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
-        List<StaticInfoEntry> staticTreeChanged = JsonParser.GSON.fromJson(inReaderTree, new TypeToken<List<StaticInfoEntry>>() {}.getType());
+        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(inReaderTree, new TypeToken<List<ProductTreeEntry>>() {}.getType());
 
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
@@ -407,7 +407,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
         List<UpgradePathJson> upgradePaths = gson.fromJson(inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() {}.getType());
         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
-        List<StaticInfoEntry> staticTreeChanged = JsonParser.GSON.fromJson(inReaderTree, new TypeToken<List<StaticInfoEntry>>() {}.getType());
+        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(inReaderTree, new TypeToken<List<ProductTreeEntry>>() {}.getType());
         InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
 

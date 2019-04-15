@@ -52,7 +52,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
@@ -1168,20 +1167,34 @@ public class ContentSyncManager {
         return product;
     }
 
+    private List<ProductTreeEntry> loadStaticTree() {
+        String tag = Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG);
+        return loadStaticTree(tag);
+    }
+
     /*
      * load the static tree from file
      */
-    private static List<StaticInfoEntry> loadStaticTree() {
-        List<StaticInfoEntry> tree = new ArrayList<>();
+    private List<ProductTreeEntry> loadStaticTree(String tag) {
+        List<ProductTreeEntry> tree = new ArrayList<>();
         try {
-            tree = JsonParser.GSON.fromJson(new BufferedReader(new InputStreamReader(
-                            new FileInputStream(sumaProductTreeJson))),
-                    SCCClientUtils.toListType(StaticInfoEntry.class));
+            List<Credentials> credentials = filterCredentials();
+            for (Credentials c : credentials) {
+                try {
+                    SCCClient scc = getSCCClient(c);
+                    tree = scc.productTree();
+                }
+                catch (SCCClientException | URISyntaxException e) {
+                    throw new ContentSyncException(e);
+                }
+            }
         }
-        catch (IOException e) {
-            log.error(e);
+        catch (ContentSyncException e) {
+            e.printStackTrace();
         }
-        return tree;
+        return tree.stream().filter(e -> {
+            return e.getTags().isEmpty() || e.getTags().contains(tag);
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -1206,7 +1219,7 @@ public class ContentSyncManager {
        return products.stream().flatMap(p -> p.getRepositories().stream()).collect(Collectors.toList());
     }
 
-    private static Map<Long, Optional<ProductType>> productTypesById(List<StaticInfoEntry> tree) {
+    private static Map<Long, Optional<ProductType>> productTypesById(List<ProductTreeEntry> tree) {
         return tree.stream()
                 .collect(Collectors.groupingBy(
                         e -> e.getProductId(), Collectors.mapping(
@@ -1228,7 +1241,7 @@ public class ContentSyncManager {
      * @param tree the static suse product tree
      */
     public static void updateProducts(Map<Long, SCCProductJson> productsById, Map<Long, SCCRepositoryJson> reposById,
-            List<StaticInfoEntry> tree) {
+            List<ProductTreeEntry> tree) {
         Map<String, PackageArch> packageArchMap = PackageFactory.lookupPackageArch()
                 .stream().collect(Collectors.toMap(a -> a.getLabel(), a -> a));
         Map<String, ChannelFamily> channelFamilyMap = ChannelFamilyFactory.getAllChannelFamilies()
@@ -1481,7 +1494,7 @@ public class ContentSyncManager {
      * @param additionalRepos list of additional static repos
      */
     public void updateSUSEProducts(List<SCCProductJson> products, List<UpgradePathJson> upgradePathJsons,
-                                   List<StaticInfoEntry> staticTree, List<SCCRepositoryJson> additionalRepos) {
+                                   List<ProductTreeEntry> staticTree, List<SCCRepositoryJson> additionalRepos) {
         log.info("ContentSyncManager.updateSUSEProducts called");
         Map<Long, SUSEProduct> processed = new HashMap<>();
 

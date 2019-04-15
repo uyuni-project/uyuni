@@ -16,6 +16,7 @@ package com.suse.scc.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCProductJson;
@@ -79,6 +80,12 @@ public class SCCFileClient implements SCCClient {
     public List<SCCOrderJson> listOrders() throws SCCClientException {
         return getList("organizations_orders.json",
                 SCCOrderJson.class);
+    }
+
+    @Override
+    public List<ProductTreeEntry> productTree() throws SCCClientException {
+        return getList("product_tree.json",
+                ProductTreeEntry.class);
     }
 
     /**
