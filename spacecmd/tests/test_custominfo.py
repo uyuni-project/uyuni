@@ -43,13 +43,29 @@ class TestSCCusomInfo:
 
     def test_do_custominfo_createkey_descr_interactive(self, shell):
         """
-        Test do_custominfo_createkey description gets the name of the key from the args.
+        Test do_custominfo_createkey description gets the name of the key from interactive prompt.
         """
         shell.client.system.custominfo.createKey = MagicMock()
         prompter = MagicMock(side_effect=["keyname", "keydescr"])
 
         with patch("spacecmd.custominfo.prompt_user", prompter):
             custominfo.do_custominfo_createkey(shell, "")
+
+        assert shell.client.system.custominfo.createKey.called
+        session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname != descr
+        assert keyname == "keyname"
+        assert descr == "keydescr"
+
+    def test_do_custominfo_createkey_descr_args(self, shell):
+        """
+        Test do_custominfo_createkey description gets the name of the key from the args.
+        """
+        shell.client.system.custominfo.createKey = MagicMock()
+        prompter = MagicMock(side_effect=Exception("Kaboom"))
+
+        custominfo.do_custominfo_createkey(shell, "keyname keydescr")
 
         assert shell.client.system.custominfo.createKey.called
         session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
