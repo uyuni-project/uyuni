@@ -285,3 +285,15 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_updatekey(shell, "")
 
         assert "interactive mode" in str(exc)
+
+    def test_custominfo_updatekey_noarg_descr(self, shell):
+        """
+        Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
+        """
+        shell.client.system.custominfo.updateKey = MagicMock()
+        prompt = MagicMock(side_effect=["keyname", Exception("interactive mode for descr")])
+        with patch("spacecmd.custominfo.prompt_user", prompt):
+            with pytest.raises(Exception) as exc:
+                custominfo.do_custominfo_updatekey(shell, "")
+
+        assert "interactive mode for descr" in str(exc)
