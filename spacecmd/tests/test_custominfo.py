@@ -201,3 +201,39 @@ class TestSCCusomInfo:
 
         assert shell.client.system.custominfo.listAllKeys.called
         assert not mprint.called
+
+    def test_do_custominfo_details_keydetails_na(self, shell):
+        """
+        Test do_custominfo_details prints key details not available in format.
+        """
+        shell.SEPARATOR = "***"
+        shell.client.system.custominfo.listAllKeys = MagicMock(
+            return_value=[
+                {"label": "key_one"},
+                {"label": "key_two"},
+            ]
+        )
+        shell.do_custominfo_listkeys = MagicMock(return_value=["key_one", "key_two"])
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.custominfo.logging", logger):
+            with patch("spacecmd.custominfo.print", mprint):
+                custominfo.do_custominfo_details(shell, "key*")
+
+        expectations = [
+            'Label:        key_one',
+            'Description:  N/A',
+            'Modified:     N/A',
+            'System Count: 0',
+            '***',
+            'Label:        key_two',
+            'Description:  N/A',
+            'Modified:     N/A',
+            'System Count: 0'
+        ]
+
+        assert shell.client.system.custominfo.listAllKeys.called
+        assert mprint.called
+        for idx, call in enumerate(mprint.call_args_list):
+            assert call[0][0] == expectations[idx]
