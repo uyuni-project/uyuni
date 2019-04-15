@@ -149,3 +149,22 @@ class TestSCCusomInfo:
         assert isinstance(ret, list)
         for key in keylist:
             assert key["label"] in ret
+
+    def test_do_custominfo_details_noarg(self, shell):
+        """
+        Test do_custominfo_details shows help when no arguments has been passed.
+        """
+        keylist=["some_key", "some_other_key", "this_key_stays"]
+        shell.help_custominfo_details = MagicMock(side_effect=Exception("Help info"))
+        shell.client.system.custominfo.listAllKeys = MagicMock()
+        shell.do_custominfo_listkeys = MagicMock(return_value=keylist)
+        logger = MagicMock()
+
+        with patch("spacecmd.custominfo.logging", logger):
+            with pytest.raises(Exception) as exc:
+                custominfo.do_custominfo_details(shell, "")
+
+        assert "Help info" in str(exc)
+        assert not logger.debug.called
+        assert not logger.error.called
+        assert not shell.client.system.custominfo.listAllKeys.called
