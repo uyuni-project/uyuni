@@ -138,11 +138,11 @@ def do_custominfo_details(self, args):
 
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys('', True), args)
-    logging.debug("customkey_details called with args %s, keys=%s" %
-                  (args, keys))
+    logging.debug("customkey_details called with args: '{}', keys: '{}'.".format(
+        ", ".join(args), ", ".join(keys)))
 
     if not keys:
-        logging.error("No keys matched argument %s" % args)
+        logging.error("No keys matched argument '{}'.".format(", ".join(args)))
         return
 
     add_separator = False
