@@ -93,7 +93,7 @@ class TestSCCusomInfo:
 
     def test_do_custominfo_deletekey_args(self, shell):
         """
-        test do_custominfo_deletekey calls deleteKey API function.
+        Test do_custominfo_deletekey calls deleteKey API function.
         """
         keylist=["some_key", "some_other_key", "this_key_stays"]
         shell.client.system.custominfo.deleteKey = MagicMock()
