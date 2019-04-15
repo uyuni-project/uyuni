@@ -278,8 +278,8 @@ class TestSCCusomInfo:
         """
         Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
         """
-        shell.client.system.custominfo.updateKey = MagicMock(side_effect=Exception("interactive mode"))
-        prompt = MagicMock()
+        shell.client.system.custominfo.updateKey = MagicMock()
+        prompt = MagicMock(side_effect=Exception("interactive mode"))
         with patch("spacecmd.custominfo.prompt_user", prompt):
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_updatekey(shell, "")
