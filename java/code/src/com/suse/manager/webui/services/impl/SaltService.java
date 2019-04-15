@@ -871,10 +871,8 @@ public class SaltService {
      */
     public void updateSystemInfo(MinionList minionTarget) {
         try {
-            Map<String, Object> metadata = new HashMap<>();
-            metadata.put(ScheduleMetadata.SUMA_MINION_STARTUP, true);
-            callAsync(State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
-                            Optional.empty()).withMetadata(metadata), minionTarget);
+            callAsync(State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty()), minionTarget,
+                    Optional.of(ScheduleMetadata.getDefaultMetadata().withMinionStartup()));
         }
         catch (SaltException ex) {
             LOG.debug("Error while executing util.systeminfo state: " + ex.getMessage());
