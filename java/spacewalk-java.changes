@@ -1,3 +1,5 @@
+- Fix base channel selection for Ubuntu systems (bsc#1132579)
+
 -------------------------------------------------------------------
 Tue Apr 09 10:33:27 CEST 2019 - jgonzalez@suse.com
 

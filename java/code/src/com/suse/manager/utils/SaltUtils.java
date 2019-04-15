@@ -1150,6 +1150,18 @@ public class SaltUtils {
                     rhelReleaseFile, centosReleaseFile);
             server.setInstalledProducts(products);
         }
+        else if ("ubuntu".equalsIgnoreCase((String) result.getGrains().get("os"))) {
+            String osArch = result.getGrains().get("osarch") + "-deb";
+            String osVersion = (String) result.getGrains().get("osrelease");
+            // Check if we have a product for the specific arch and version
+            SUSEProduct ubuntuProduct = SUSEProductFactory.findSUSEProduct("ubuntu-client", osVersion, null, osArch,
+                    false);
+            if (ubuntuProduct != null) {
+                InstalledProduct installedProduct = SUSEProductFactory.findInstalledProduct(ubuntuProduct)
+                        .orElse(new InstalledProduct(ubuntuProduct));
+                server.setInstalledProducts(Collections.singleton(installedProduct));
+            }
+        }
 
         // Update live patching version
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
