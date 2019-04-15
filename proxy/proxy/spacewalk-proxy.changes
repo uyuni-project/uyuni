@@ -1,3 +1,4 @@
+- do not reset rhn.conf on proxy during upgrade (bsc#1132197)
 - fix proxying chunked HTTP content via suse manager proxy
   This happens when calling XMLRPC API via the proxy
   (bsc#1128133)
