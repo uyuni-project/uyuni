@@ -130,3 +130,22 @@ class TestSCCusomInfo:
 
         assert ret is None
         assert mprint.called
+
+    def test_do_custominfo_listkeys_as_data(self, shell):
+        """
+        Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function as data.
+        """
+        keylist=[
+            {"label": "some_key"},
+            {"label": "some_other_key"},
+            {"label": "this_key_stays"},
+        ]
+        shell.client.system.custominfo.listAllKeys = MagicMock(return_value=keylist)
+        mprint = MagicMock()
+        with patch("spacecmd.custominfo.print", mprint):
+            ret = custominfo.do_custominfo_listkeys(shell, "", doreturn=True)
+
+        assert not mprint.called
+        assert isinstance(ret, list)
+        for key in keylist:
+            assert key["label"] in ret
