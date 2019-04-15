@@ -31,8 +31,10 @@ def processCommandline():
         OS image building""")
     parser.add_argument('--ca-cert-full-path',
         help='CA certificate filename (default: %s)' % CA_CERT_FULL_PATH_DEFAULT,
-        default=CA_CERT_FULL_PATH_DEFAULT
-        )
+        default=CA_CERT_FULL_PATH_DEFAULT)
+    parser.add_argument('--target-os',
+        help='Target OS',
+        default='')
 
     args = parser.parse_args()
     if not os.path.isfile(args.ca_cert_full_path):
@@ -47,8 +49,12 @@ def processCommandline():
 
 def genCaRpm(options):
     OSIMAGE_RPM_CERTIFICATE_PATH = "/usr/share/susemanager/salt/images"
-    CA_CERT_RPM_NAME_OSIMAGE = CA_CRT_RPM_NAME + "-osimage"
-    OSIMAGE_RPM_REQUIRES = "ca-certificates"
+    if options.target_os == 'SLE11':
+        CA_CERT_RPM_NAME_OSIMAGE = CA_CRT_RPM_NAME + "-osimage-sle11"
+        OSIMAGE_RPM_REQUIRES = ["openssl-certs", "coreutils"]
+    else:
+        CA_CERT_RPM_NAME_OSIMAGE = CA_CRT_RPM_NAME + "-osimage"
+        OSIMAGE_RPM_REQUIRES = ["ca-certificates"]
 
     ca_cert_name = os.path.basename(options.ca_cert_full_path)
     ca_cert = options.ca_cert_full_path
@@ -61,12 +67,13 @@ def genCaRpm(options):
 
     args = (os.path.join(CERT_PATH, 'gen-rpm.sh') + " "
             "--name %s --version %s --release %s --packager %s --vendor %s "
-            "--requires %s "
+            "%s "
             "--group 'RHN/Security' --summary %s --description %s "
             "--post %s --postun %s "
             "/usr/share/rhn/%s=%s"
             % (repr(CA_CERT_RPM_NAME_OSIMAGE), ver, rel, None,
-               None, OSIMAGE_RPM_REQUIRES,
+               None,
+               " ".join("--requires " + r for r in OSIMAGE_RPM_REQUIRES),
                repr(CA_CERT_RPM_SUMMARY),
                repr(CA_CERT_RPM_SUMMARY),
                repr(update_trust_script), repr(update_trust_script),

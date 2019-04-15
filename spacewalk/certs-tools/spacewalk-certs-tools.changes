@@ -1,3 +1,4 @@
+- Generate SLE11 specific ssl-cert-osimage package
 - Add support for Ubuntu to bootstrap script
 - Add makefile and pylintrc for PyLint
 

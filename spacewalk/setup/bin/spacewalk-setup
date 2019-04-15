@@ -737,6 +737,7 @@ sub setup_ssl_certs {
 
     Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-tool', @opts], 35, 'Could not import CA certificate.');
     Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', @osImageOpts], 35, 'Could not import CA certificate.');
+    Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', '--target-os', 'SLE11', @osImageOpts], 35, 'Could not import CA certificate.');
   } else {
     check_ca_cert();
     print Spacewalk::Setup::loc("** SSL: Generating CA rpm from present CA cert.\n");
@@ -819,7 +820,8 @@ sub generate_ca_cert {
   my @osImageOpts = ( "--ca-cert-full-path=$params{dir}/" . DEFAULT_CA_CERT_NAME);
 
   Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-tool', @opts], 35, 'Could not generate CA certificate.');
-  Spacewalk::Setup::system_or_exit([('/usr/sbin/mgr-package-rpm-certificate-osimage', @osImageOpts)], 35, 'Could not generate CA certificate.');
+  Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', @osImageOpts], 35, 'Could not generate CA certificate.');
+  Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', '--target-os', 'SLE11', @osImageOpts], 35, 'Could not import CA certificate.');
 
   return;
 }
@@ -832,6 +834,7 @@ sub generate_ca_rpm {
 
   Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-tool', @opts], 35, 'Could not generate CA certificate.');
   Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', @osImageOpts], 35, 'Could not generate CA certificate.');
+  Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', '--target-os', 'SLE11', @osImageOpts], 35, 'Could not import CA certificate.');
 
   return;
 }
