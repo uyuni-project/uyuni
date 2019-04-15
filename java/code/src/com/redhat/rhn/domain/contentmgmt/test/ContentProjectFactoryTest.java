@@ -183,6 +183,10 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         SoftwareEnvironmentTarget target2 = new SoftwareEnvironmentTarget(envdev, channel2);
         envdev.addTarget(target2);
 
+        target.setStatus(EnvironmentTarget.Status.NEW);
+        target2.setStatus(EnvironmentTarget.Status.BUILDING);
+        assertEquals(EnvironmentTarget.Status.BUILDING, envdev.computeStatus().get());
+
         target.setStatus(EnvironmentTarget.Status.BUILDING);
         target2.setStatus(EnvironmentTarget.Status.BUILT);
         assertEquals(EnvironmentTarget.Status.BUILDING, envdev.computeStatus().get());
@@ -190,6 +194,18 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         target.setStatus(EnvironmentTarget.Status.BUILDING);
         target2.setStatus(EnvironmentTarget.Status.FAILED);
         assertEquals(EnvironmentTarget.Status.BUILDING, envdev.computeStatus().get());
+
+        target.setStatus(EnvironmentTarget.Status.BUILDING);
+        target2.setStatus(EnvironmentTarget.Status.GENERATING_REPODATA);
+        assertEquals(EnvironmentTarget.Status.BUILDING, envdev.computeStatus().get());
+
+        target.setStatus(EnvironmentTarget.Status.GENERATING_REPODATA);
+        target2.setStatus(EnvironmentTarget.Status.FAILED);
+        assertEquals(EnvironmentTarget.Status.GENERATING_REPODATA, envdev.computeStatus().get());
+
+        target.setStatus(EnvironmentTarget.Status.GENERATING_REPODATA);
+        target2.setStatus(EnvironmentTarget.Status.BUILT);
+        assertEquals(EnvironmentTarget.Status.GENERATING_REPODATA, envdev.computeStatus().get());
 
         target.setStatus(EnvironmentTarget.Status.BUILT);
         target2.setStatus(EnvironmentTarget.Status.FAILED);

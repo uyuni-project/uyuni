@@ -53,6 +53,7 @@ public abstract class EnvironmentTarget {
     public enum Status {
         NEW("new"),
         BUILDING("building"),
+        GENERATING_REPODATA("generating_repodata"),
         BUILT("built"),
         FAILED("failed");
 

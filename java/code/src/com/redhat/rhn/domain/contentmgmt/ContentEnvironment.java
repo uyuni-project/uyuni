@@ -17,8 +17,6 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
-import com.redhat.rhn.manager.channel.ChannelManager;
-import com.suse.utils.Opt;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -309,10 +307,11 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * Computes status of the {@link ContentEnvironment} based on the status of its {@link EnvironmentTarget}s
      *
-     * If there are no targets or only new targets (waiting for building) -> empty
-     * If at least 1 target is building -> BUILDING
-     * If at least 1 target is failed -> FAILED
-     * Otherwise -> BUILT
+     * If there are no targets or only new targets (waiting for building) -> empty,
+     * else if at least 1 target is building -> BUILDING,
+     * else if at least 1 target is generating repodata -> GENERATING_REPODATA,
+     * else if at least 1 target is failed -> FAILED,
+     * otherwise -> BUILT.
      *
      * @return the computed status
      */
@@ -324,10 +323,13 @@ public class ContentEnvironment extends BaseDomainHelper {
         if (statuses.isEmpty() || statuses.stream().allMatch(s -> s == Status.NEW)) {
             return empty();
         }
-        if (statuses.contains(Status.BUILDING) || getTargets().stream()
-                .flatMap(t -> Opt.stream(t.asSoftwareTarget()))
-                .anyMatch(st -> ChannelManager.isChannelLabelInProgress(st.getChannel().getLabel()))) {
+
+        if (statuses.contains(Status.BUILDING)) {
             return of(Status.BUILDING);
+        }
+
+        if (statuses.contains(Status.GENERATING_REPODATA)) {
+            return of(Status.GENERATING_REPODATA);
         }
 
         if (statuses.contains(Status.FAILED)) {
