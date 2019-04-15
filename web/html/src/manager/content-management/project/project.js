@@ -37,9 +37,9 @@ const Project = (props: Props) => {
   useInterval(() => {
     onAction('get')
       .then(project => {
-        useState(setProject(project))
+        setProject(project)
       });
-  }, 10000);
+  }, 5000);
 
   useEffect(()=> {
     if(props.wasFreshlyCreatedMessage) {
