@@ -77,6 +77,7 @@ public class RegistrationUtils {
     );
 
     private static final String OS = "os";
+    private static final String OS_ARCH = "osarch";
 
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
@@ -357,6 +358,13 @@ public class RegistrationUtils {
                     return Stream.empty();
                 }
             }).collect(toSet());
+        }
+        else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString(OS))) {
+            SUSEProduct product = SUSEProductFactory.findSUSEProduct("ubuntu-client",
+                    grains.getValueAsString("osrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
+            if (product != null) {
+                return Collections.singleton(product);
+            }
         }
         return emptySet();
     }
