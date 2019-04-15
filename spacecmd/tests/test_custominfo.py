@@ -74,3 +74,19 @@ class TestSCCusomInfo:
         assert keyname == "keyname"
         assert descr == "keydescr"
 
+    def test_do_custominfo_deletekey_noargs(self, shell):
+        """
+        Test do_custominfo_deletekey description shows help on no args.
+        """
+        errmsg = "No arguments passed"
+        shell.client.system.custominfo.deleteKey = MagicMock()
+        shell.do_custominfo_listkeys = MagicMock()
+        shell.help_custominfo_deletekey = MagicMock(side_effect=Exception(errmsg))
+        shell.user_confirm = MagicMock()
+        logger = MagicMock()
+
+        with patch("spacecmd.custominfo.logging", logger):
+            with pytest.raises(Exception) as exc:
+                custominfo.do_custominfo_deletekey(shell, "")
+
+        assert errmsg in str(exc)
