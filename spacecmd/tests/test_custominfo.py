@@ -309,3 +309,18 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_updatekey(shell, "keyname")
 
         assert "interactive mode for descr" in str(exc)
+
+    def test_custominfo_updatekey_all_args(self, shell):
+        """
+        Test do_custominfo_updatekey description is taken by arguments, interactive mode is not initiated.
+        """
+        shell.client.system.custominfo.updateKey = MagicMock()
+        prompt = MagicMock(side_effect=[Exception("interactive mode for descr")])
+        with patch("spacecmd.custominfo.prompt_user", prompt):
+            custominfo.do_custominfo_updatekey(shell, "keyname 'some key description here'")
+
+        assert shell.client.system.custominfo.updateKey.called
+        session, keyname, description = shell.client.system.custominfo.updateKey.call_args_list[0][0]
+        assert shell.session == session
+        assert keyname == "keyname"
+        assert description == "some key description here"
