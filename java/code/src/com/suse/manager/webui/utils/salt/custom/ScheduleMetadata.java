@@ -39,20 +39,25 @@ public class ScheduleMetadata {
     @SerializedName(BATCH_MODE)
     private final boolean batchMode;
 
+    @SerializedName(SUMA_MINION_STARTUP)
+    private boolean minionStartup;
+
     /**
      * Constructor for ScheduleMetadata
      * @param sumaActionIdIn the Id of the action
      * @param forcePackageListRefreshIn whether the schedule action should force a package list refresh
      * @param actionChainIn whether the schedule action is corresponds to an action chain
      * @param batchModeIn whether the schedule action is executed in batch mode
+     * @param minionStartupIn whether the schedule action corresponds to a minion start up
      */
     public ScheduleMetadata(Long sumaActionIdIn, boolean forcePackageListRefreshIn, boolean actionChainIn,
-            boolean batchModeIn) {
+            boolean batchModeIn, boolean minionStartupIn) {
         super();
         this.sumaActionId = sumaActionIdIn;
         this.forcePackageListRefresh = forcePackageListRefreshIn;
         this.actionChain = actionChainIn;
         this.batchMode = batchModeIn;
+        this.minionStartup = minionStartupIn;
     }
 
     /**
@@ -60,13 +65,15 @@ public class ScheduleMetadata {
      * @param forcePackageListRefreshIn whether the schedule action should force a package list refresh
      * @param actionChainIn whether the schedule action is corresponds to an action chain
      * @param batchModeIn whether the schedule action is executed in batch mode
+     * @param minionStartupIn whether the schedule action corresponds to a minion start up
      */
     public ScheduleMetadata(boolean forcePackageListRefreshIn, boolean actionChainIn,
-            boolean batchModeIn) {
+            boolean batchModeIn, boolean minionStartupIn) {
         super();
         this.forcePackageListRefresh = forcePackageListRefreshIn;
         this.actionChain = actionChainIn;
         this.batchMode = batchModeIn;
+        this.minionStartup = minionStartupIn;
     }
 
     /**
@@ -74,11 +81,8 @@ public class ScheduleMetadata {
      * @return the new instance of ScheduleMetadata
      */
     public static ScheduleMetadata getDefaultMetadata() {
-        return new ScheduleMetadata(false, false, false);
+        return new ScheduleMetadata(false, false, false, false);
     }
-
-    @SerializedName(SUMA_MINION_STARTUP)
-    private boolean minionStartup;
 
     /**
      * Returns a new instance of ScheduleMetadata for actions to be executed in regular minions.
@@ -90,9 +94,9 @@ public class ScheduleMetadata {
     public static ScheduleMetadata getMetadataForRegularMinionActions(boolean isStagingJob,
             boolean forcePackageListRefresh, long actionId) {
         if (!isStagingJob) {
-            return new ScheduleMetadata(actionId, forcePackageListRefresh, false, false);
+            return new ScheduleMetadata(actionId, forcePackageListRefresh, false, false, false);
         }
-        return new ScheduleMetadata(forcePackageListRefresh, false, false);
+        return new ScheduleMetadata(forcePackageListRefresh, false, false, false);
     }
 
     /**
@@ -100,7 +104,7 @@ public class ScheduleMetadata {
      * @return an instance of ScheduleMetadata with batchMode flag set in true
      */
     public ScheduleMetadata withBatchMode() {
-        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, true);
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, true, minionStartup);
     }
 
     /**
@@ -108,7 +112,15 @@ public class ScheduleMetadata {
      * @return an instance of ScheduleMetadata with the actionChain flag set in true
      */
     public ScheduleMetadata withActionChain() {
-        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, true, batchMode);
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, true, batchMode, minionStartup);
+    }
+
+    /**
+     * Sets the minionStartup flag in true
+     * @return an instance of ScheduleMetadata with the minionStartup flag set in true
+     */
+    public ScheduleMetadata withMinionStartup() {
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, batchMode, true);
     }
 
     /**
