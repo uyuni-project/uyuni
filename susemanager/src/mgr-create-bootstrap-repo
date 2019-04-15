@@ -282,6 +282,7 @@ def create_repo(label, flush, additional=[]):
                 logging.debug("copy {0} / {1} to {2}".format(basepath, p['path'], rpmdir))
                 if not dryrun:
                     shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
+            break
 
     if dryrun:
         if repotype == 'deb':
