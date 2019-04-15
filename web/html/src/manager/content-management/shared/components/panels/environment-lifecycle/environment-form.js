@@ -27,7 +27,9 @@ const EnvironmentForm = (props: Props) =>
           // ref={nameInputRef}
           label={t("Name")}
           labelClass="col-md-3"
-          divClass="col-md-8"/>
+          divClass="col-md-8"
+          disabled={props.editing}
+        />
       </div>
       <div className="row">
         <Text
