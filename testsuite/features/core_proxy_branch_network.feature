@@ -22,7 +22,10 @@ Feature: Setup SUSE Manager for Retail branch network
   Scenario: Enable the branch network formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
-    And I check the "branch-network" formula
+    Then I should see a "Choose formulas" text
+    And I should see a "Suse Manager For Retail" text
+    And I should see a "General System Configuration" text
+    When I check the "branch-network" formula
     And I check the "dhcpd" formula
     And I check the "bind" formula
     And I click on "Save"
