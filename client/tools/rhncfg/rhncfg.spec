@@ -200,10 +200,11 @@ for i in \
     ln -s $(basename "$i")%{default_suffix} "$RPM_BUILD_ROOT$i"
 done
 
-%if 0%{?suse_version}
 ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
 ln -s rhncfg-client $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-client
 ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
+
+%if 0%{?suse_version}
 %py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
