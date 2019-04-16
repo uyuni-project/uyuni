@@ -51,7 +51,7 @@ const EnvironmentView = React.memo((props: Props) => {
           <dl className="row">
             <dt className="col-xs-3">Status:</dt>
             <dd className="col-xs-9">
-              {environmentStatusEnum[props.environment.status].text || ''}
+              {environmentStatusEnum[props.environment.status].text}
               &nbsp;
               {
                 environmentStatusEnum[props.environment.status].isBuilding &&
