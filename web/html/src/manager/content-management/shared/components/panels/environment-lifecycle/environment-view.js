@@ -4,11 +4,29 @@ import React from 'react';
 import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 import type {ProjectHistoryEntry} from "../../../type/project.type";
 import {getVersionMessageByNumber} from "../properties/properties.utils";
+import {objectDefaultValueHandler} from "core/utils/objects";
 
 type Props = {
   environment: ProjectEnvironmentType,
   historyEntries: Array<ProjectHistoryEntry>
 }
+
+type EnvironmentStatusEnumType = {
+  [key:string]: {
+    text: string,
+    isBuilding: boolean
+  }
+}
+
+const environmentStatusEnum: EnvironmentStatusEnumType = new Proxy({
+    'new': {text: "New", isBuilding: false},
+    'building': {text: "Building", isBuilding: true},
+    'generating_repodata': {text: "Generating repositories data", isBuilding: true},
+    'built': {text: "Built", isBuilding: false},
+    'failed': {text: "Failed", isBuilding: false},
+  },
+  objectDefaultValueHandler({text: '', isBuilding: false})
+);
 
 // $FlowFixMe  // upgrade flow
 const EnvironmentView = React.memo((props: Props) => {
@@ -33,10 +51,10 @@ const EnvironmentView = React.memo((props: Props) => {
           <dl className="row">
             <dt className="col-xs-3">Status:</dt>
             <dd className="col-xs-9">
-              {props.environment.status}
+              {environmentStatusEnum[props.environment.status].text || ''}
               &nbsp;
               {
-                props.environment.status === 'building' &&
+                environmentStatusEnum[props.environment.status].isBuilding &&
                   <i className="fa fa-spinner fa-spin fa-1-5x" />
               }
             </dd>
