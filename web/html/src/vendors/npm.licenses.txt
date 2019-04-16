@@ -32,7 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@babel/runtime v7.4.2 - Sebastian McKenzie <sebmck@gmail.com>
+@babel/runtime v7.4.3 - Sebastian McKenzie <sebmck@gmail.com>
 https://github.com/babel/babel/tree/master/packages/babel-runtime
 --------------------------------------------------------------------------------
 
@@ -527,13 +527,13 @@ terms above.
 
 
 --------------------------------------------------------------------------------
-memoize-one v5.0.0 - Alex Reardon <alexreardon@gmail.com>
+memoize-one v5.0.4 - Alex Reardon <alexreardon@gmail.com>
 https://github.com/alexreardon/memoize-one.git
 --------------------------------------------------------------------------------
 
 MIT License
 
-Copyright (c) 2017 Alexander Reardon
+Copyright (c) 2019 Alexander Reardon
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -855,7 +855,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-transition-group v2.7.0
+react-transition-group v2.9.0
 https://github.com/reactjs/react-transition-group.git
 --------------------------------------------------------------------------------
 
