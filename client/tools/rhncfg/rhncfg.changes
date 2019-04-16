@@ -1,3 +1,6 @@
+- create client tools compat links also for non-SUSE systems
+  (bsc#1131408)
+
 -------------------------------------------------------------------
 Wed May 23 08:59:19 CEST 2018 - jgonzalez@suse.com
 
