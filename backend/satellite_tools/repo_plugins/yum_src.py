@@ -467,7 +467,11 @@ class ContentSource:
         mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
         returnlist = []
         content = []
-        urlgrabber.urlgrab(url, mirrorlist_path)
+        try:
+            urlgrabber.urlgrab(url, mirrorlist_path)
+        except Exception as exc:
+            # no mirror list found continue without
+            return returnlist
 
         def _replace_and_check_url(url_list):
             goodurls = []
