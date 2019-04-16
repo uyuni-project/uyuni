@@ -1,3 +1,5 @@
+- create client tools compat links also for non-SUSE systems
+  (bsc#1131408)
 - Add makefile and configuration for pylint
 
 -------------------------------------------------------------------
