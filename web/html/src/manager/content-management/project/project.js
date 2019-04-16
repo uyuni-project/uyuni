@@ -30,7 +30,7 @@ type Props = {
 const Project = (props: Props) => {
 
   const [project, setProject] = useState(props.project);
-  const {onAction} = useProjectActionsApi({ projectId: project.properties.label });
+  const {onAction, cancelAction: cancelRefreshAction} = useProjectActionsApi({ projectId: project.properties.label });
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
@@ -98,7 +98,8 @@ const Project = (props: Props) => {
         currentHistoryEntry={currentHistoryEntry}
         showDraftVersion={isProjectEdited}
         onChange={(projectWithNewProperties) => {
-          setProject(projectWithNewProperties)
+          setProject(projectWithNewProperties);
+          cancelRefreshAction();
         }}
       />
 
@@ -107,7 +108,8 @@ const Project = (props: Props) => {
           projectId={projectId}
           softwareSources={project.softwareSources}
           onChange={(projectWithNewSources) => {
-            setProject(projectWithNewSources)
+            setProject(projectWithNewSources);
+            cancelRefreshAction();
           }}
         />
         <Filters/>
@@ -118,7 +120,8 @@ const Project = (props: Props) => {
         disabled={isBuildDisabled}
         currentHistoryEntry={currentHistoryEntry}
         onBuild={(projectWithNewSources) => {
-          setProject(projectWithNewSources)
+          setProject(projectWithNewSources);
+          cancelRefreshAction();
         }}
         changesToBuild={changesToBuild}
       />
@@ -128,7 +131,8 @@ const Project = (props: Props) => {
         environments={project.environments}
         historyEntries={project.properties.historyEntries}
         onChange={(projectWithNewEnvironment) => {
-          setProject(projectWithNewEnvironment)
+          setProject(projectWithNewEnvironment);
+          cancelRefreshAction();
         }}
       />
     </TopPanel>
