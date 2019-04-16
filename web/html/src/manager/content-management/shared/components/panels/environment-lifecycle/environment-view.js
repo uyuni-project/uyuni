@@ -20,7 +20,7 @@ type EnvironmentStatusEnumType = {
 
 const environmentStatusEnum: EnvironmentStatusEnumType = new Proxy({
     'new': {text: "New", isBuilding: false},
-    'building': {text: "Building", isBuilding: true},
+    'building': {text: "Cloning channels", isBuilding: true},
     'generating_repodata': {text: "Generating repositories data", isBuilding: true},
     'built': {text: "Built", isBuilding: false},
     'failed': {text: "Failed", isBuilding: false},
