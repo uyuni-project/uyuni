@@ -651,23 +651,28 @@ When(/^I set up the private network on the terminals$/) do
   # /etc/sysconfig/network/ifcfg-eth1
   nodes = [$client, $minion]
   conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
+  file = "/etc/sysconfig/network/ifcfg-eth1"
   nodes.each do |node|
     next if node.nil?
-    node.run("echo -e \"#{conf}\" > /etc/sysconfig/network/ifcfg-eth1 && ifup eth1")
+    node.run("echo -e \"#{conf}\" > #{file} && ifup eth1")
   end
-  # /etc/sysconfig/network-scripts/ifcfg-eth1
+  # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
   nodes = [$ceos_minion]
   conf = "DEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
+  file = "/etc/sysconfig/network-scripts/ifcfg-eth1"
+  conf2 = "GATEWAYDEV=eth0"
+  file2 = "/etc/sysconfig/network"
   nodes.each do |node|
     next if node.nil?
-    node.run("echo -e \"#{conf}\" > /etc/sysconfig/network-scripts/ifcfg-eth1 && systemctl restart network")
+    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
   end
   # /etc/resolv.conf
   nodes = [$client, $minion, $ceos_minion]
   script = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
+  file = "/etc/resolv.conf"
   nodes.each do |node|
     next if node.nil?
-    node.run("sed -i #{script} /etc/resolv.conf")
+    node.run("sed -i #{script} #{file}")
   end
 end
 
