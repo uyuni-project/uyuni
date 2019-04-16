@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
@@ -610,7 +611,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         List<EnvironmentTarget> tgts = env.getTargets();
         assertEquals(1, tgts.size());
-        Channel tgtChannel = tgts.get(0).asSoftwareTarget().get().getChannel();
+        EnvironmentTarget target = tgts.get(0);
+        Channel tgtChannel = target.asSoftwareTarget().get().getChannel();
+        assertEquals(Status.GENERATING_REPODATA, target.getStatus());
         assertEquals("cplabel-fst-" + channel.getLabel(), tgtChannel.getLabel());
         assertTrue(channel.getClonedChannels().contains(tgtChannel));
         assertEquals(channel, tgtChannel.getOriginal());
@@ -625,6 +628,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(2), env.getVersion());
 
+        tgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.asSoftwareTarget().get().getStatus()));
         assertEquals(2, tgts.size());
         Set<String> tgtLabels = tgts.stream().map(tgt -> tgt.asSoftwareTarget().get().getChannel().getLabel()).collect(toSet());
         assertContains(tgtLabels, "cplabel-fst-" + channel.getLabel());
@@ -647,6 +651,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(Long.valueOf(3), env.getVersion());
 
         assertEquals(newChannel, cp.lookupSwSourceLeader().get().getChannel()); // leader is changed
+        assertEquals(Status.GENERATING_REPODATA, tgts.get(0).asSoftwareTarget().get().getStatus());
         assertEquals(1, tgts.size());
         assertEquals("cplabel-fst-" + newChannel.getLabel(), tgts.get(0).asSoftwareTarget().get().getChannel().getLabel());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
@@ -789,6 +794,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.promoteProject("cplabel", "dev", false, user);
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         List<EnvironmentTarget> testTgts = testEnv.getTargets();
+        testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
         assertEquals(2, testTgts.size());
         Channel tgtChannel1 = testTgts.get(0).asSoftwareTarget().get().getChannel();
         Channel tgtChannel2 = testTgts.get(1).asSoftwareTarget().get().getChannel();
@@ -802,6 +808,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.promoteProject("cplabel", "test", false, user);
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         List<EnvironmentTarget> prodTgts = prodEnv.getTargets();
+        prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
         assertEquals(2, prodTgts.size());
         tgtChannel1 = prodTgts.get(0).asSoftwareTarget().get().getChannel();
         tgtChannel2 = prodTgts.get(1).asSoftwareTarget().get().getChannel();
@@ -820,6 +827,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.promoteProject("cplabel", "dev", false, user);
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         testTgts = testEnv.getTargets();
+        testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
         assertEquals(1, testTgts.size());
         Channel tgtChannel = testTgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-test-" + channel2.getLabel(), tgtChannel.getLabel());
@@ -829,6 +837,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         ContentManager.promoteProject("cplabel", "test", false, user);
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         prodTgts = prodEnv.getTargets();
+        prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
         assertEquals(1, prodTgts.size());
         tgtChannel = prodTgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-prod-" + channel2.getLabel(), tgtChannel.getLabel());

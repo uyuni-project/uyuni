@@ -458,21 +458,22 @@ public class ContentManager {
     private static void alignEnvironment(ContentEnvironment env, Channel baseChannel, Stream<Channel> childChannels,
             boolean async, User user) {
         // ensure targets for the sources exist
-        List<Pair<Channel, Channel>> newSrcTgtPairs = cloneChannelsToEnv(env, baseChannel, childChannels, user);
+        List<Pair<Channel, SoftwareEnvironmentTarget>> newSrcTgtPairs =
+                cloneChannelsToEnv(env, baseChannel, childChannels, user);
 
         // remove targets that are not needed anymore
-        Set<Channel> newTargets = newSrcTgtPairs.stream()
+        Set<SoftwareEnvironmentTarget> newTargets = newSrcTgtPairs.stream()
                 .map(pair -> pair.getRight())
                 .collect(toSet());
         env.getTargets().stream()
                 .flatMap(t -> stream(t.asSoftwareTarget()))
-                .filter(tgt -> !newTargets.contains(tgt.getChannel()))
-                .sorted((c1, c2) -> Boolean.compare(c1.getChannel().isBaseChannel(), c2.getChannel().isBaseChannel()))
+                .filter(tgt -> !newTargets.contains(tgt))
+                .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
         // align the contents
-        newSrcTgtPairs
-                .forEach(srcTgt -> ChannelManager.alignChannels(srcTgt.getLeft(), srcTgt.getRight(), async, user));
+        newSrcTgtPairs.forEach(srcTgt -> ChannelManager.
+                alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), async, user));
     }
 
     /**
@@ -482,26 +483,27 @@ public class ContentManager {
      * @param leader the "leader" Channel
      * @param channels the "non-leader" Channels
      * @param user the user
-     * @return the List of [original Channel, newly cloned Channel] Pairs
+     * @return the List of [original Channel, SoftwareEnvironmentTarget] Pairs
      */
-    private static List<Pair<Channel, Channel>> cloneChannelsToEnv(ContentEnvironment env, Channel leader,
-            Stream<Channel> channels, User user) {
+    private static List<Pair<Channel, SoftwareEnvironmentTarget>> cloneChannelsToEnv(ContentEnvironment env,
+            Channel leader, Stream<Channel> channels, User user) {
         // first make sure the leader exists
-        Channel leaderTarget = lookupTargetChannel(leader, env, user)
+        SoftwareEnvironmentTarget leaderTarget = lookupTarget(leader, env, user)
                 .map(tgt -> {
-                    tgt.setParentChannel(null);
+                    tgt.getChannel().setParentChannel(null);
                     return tgt;
                 })
                 .orElseGet(() -> createSoftwareTarget(leader, empty(), env, user));
 
         // then do the same with the children
-        Stream<Pair<Channel, Channel>> nonLeaderTargets = channels
-                .map(src -> lookupTargetChannel(src, env, user)
+        Stream<Pair<Channel, SoftwareEnvironmentTarget>> nonLeaderTargets = channels
+                .map(src -> lookupTarget(src, env, user)
                         .map(tgt -> {
-                            tgt.setParentChannel(leaderTarget);
+                            tgt.getChannel().setParentChannel(leaderTarget.getChannel());
                             return Pair.of(src, tgt);
                         })
-                        .orElseGet(() -> Pair.of(src, createSoftwareTarget(src, of(leaderTarget), env, user))));
+                        .orElseGet(() ->
+                                Pair.of(src, createSoftwareTarget(src, of(leaderTarget.getChannel()), env, user))));
 
         return Stream.concat(
                 Stream.of(Pair.of(leader, leaderTarget)),
@@ -509,14 +511,14 @@ public class ContentManager {
                 .collect(toList());
     }
 
-    private static Optional<Channel> lookupTargetChannel(Channel srcChannel, ContentEnvironment env, User user) {
+    private static Optional<SoftwareEnvironmentTarget> lookupTarget(Channel srcChannel, ContentEnvironment env,
+            User user) {
         return ContentProjectFactory
-                .lookupEnvironmentTargetByChannelLabel(channelLabelInEnvironment(srcChannel.getLabel(), env), user)
-                .map(t -> t.getChannel());
+                .lookupEnvironmentTargetByChannelLabel(channelLabelInEnvironment(srcChannel.getLabel(), env), user);
     }
 
-    private static Channel createSoftwareTarget(Channel sourceChannel, Optional<Channel> leader, ContentEnvironment env,
-            User user) {
+    private static SoftwareEnvironmentTarget createSoftwareTarget(Channel sourceChannel, Optional<Channel> leader,
+            ContentEnvironment env, User user) {
         String targetLabel = channelLabelInEnvironment(sourceChannel.getLabel(), env);
 
         Channel targetChannel = ofNullable(ChannelFactory.lookupByLabelAndUser(targetLabel, user))
@@ -532,7 +534,7 @@ public class ContentManager {
 
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, targetChannel);
         env.addTarget(target);
-        return targetChannel;
+        return target;
     }
 
     /**
