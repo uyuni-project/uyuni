@@ -2124,4 +2124,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public void setFqdns(Set<ServerFQDN> fqdnsIn) {
         this.fqdns = fqdnsIn;
     }
+
+    /**
+     * Whether server supports monitoring or not.
+     * @return false per default
+     */
+    public boolean doesOsSupportsMonitoring() {
+        return false;
+    }
 }
