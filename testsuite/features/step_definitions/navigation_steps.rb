@@ -218,18 +218,13 @@ end
 # Click on a link
 #
 When(/^I follow "([^"]*)"$/) do |text|
-  begin
-    click_link(text)
-  rescue
-    sleep 3
-    click_link(text)
-  end
+  click_link(text, wait: CLICK_TIMEOUT)
 end
 #
 # Click on the first link
 #
 When(/^I follow first "([^"]*)"$/) do |text|
-  click_link(text, match: :first)
+  click_link(text, wait: CLICK_TIMEOUT, match: :first)
 end
 
 #

@@ -57,6 +57,7 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
     And I wait until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
+    And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
     And I wait at most #{final_timeout} seconds until the event is completed, refreshing the page
   )
@@ -88,14 +89,14 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
 end
 
 # spacewalk errors steps
-Then(/^I control that up2date logs on client under test contains no Traceback error$/) do
+Then(/^the up2date logs on client should contain no Traceback error$/) do
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
   _out, code = $client.run(cmd)
   raise 'error found, check the client up2date logs' if code.nonzero?
 end
 
 # salt failures log check
-Then(/^I control that salt event log on server contains no failures$/) do
+Then(/^the salt event log on server should contain no failures$/) do
   # upload salt event parser log
   file = 'salt_event_parser.py'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -214,10 +215,8 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-  When I am authorized as "admin" with password "admin"
-  And I follow "Home" in the left menu
-  And I follow "Systems" in the left menu
-  And I follow "Overview" in the left menu
+    When I am authorized as "admin" with password "admin"
+    And I follow "Systems > Overview" in the left menu
   )
 end
 

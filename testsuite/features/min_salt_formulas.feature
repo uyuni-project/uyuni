@@ -50,7 +50,7 @@ Feature: Use salt formulas
      And the pillar data for "timezone" should be empty on "ssh-minion"
      And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
 
-  Scenario: Test the parametrized formula via the highstate
+  Scenario: Use the parametrized formula in test mode
      Given I am on the Systems overview page of this "sle-minion"
      And I follow "States" in the content area
      Then I should see the toggler "disabled"

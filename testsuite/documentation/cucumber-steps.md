@@ -94,6 +94,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
   Then I should not be authorized
 ```
 
+
 <a name="b2" />
 
 #### Navigating through pages
@@ -212,6 +213,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I close the window
 ```
 
+
 <a name="b3" />
 
 #### Texts
@@ -270,6 +272,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I follow first "Schedule System Reboot"
   When I click on "Use in SSM" for "newgroup"
 ```
+
 
 <a name="b5" />
 
@@ -614,6 +617,7 @@ The check box can be identified by name, id or label text.
   When I apply highstate on "sle-minion"
 ```
 
+
 <a name="b12" />
 
 #### XML-RPC
@@ -639,6 +643,7 @@ For example:
 ```cucumber
   When I call actionchain.add_package_install()
 ```
+
 
 <a name="b13" />
 
@@ -680,6 +685,7 @@ Then "test-vm" virtual machine on "virt-server" should have a "disk.qcow2" scsi 
 Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
 Then "test-vm" virtual machine on "virt-server" should have no cdrom
 ```
+
 
 <a name="c" />
 

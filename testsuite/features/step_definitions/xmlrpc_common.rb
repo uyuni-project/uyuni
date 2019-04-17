@@ -532,7 +532,7 @@ Then(/^I should get status "([^\"]+)" for this client$/) do |status|
   step "I should get status \"#{status}\" for system \"#{client_system_id_to_i}\""
 end
 
-Then(/^I should get the test-channel$/) do
+Then(/^I should get the test channel$/) do
   arch = `uname -m`
   arch.chomp!
   channel = if arch != 'x86_64'

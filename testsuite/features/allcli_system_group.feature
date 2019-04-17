@@ -84,7 +84,7 @@ Feature: Manage a group of systems
     And I click on "Leave Selected Groups"
     Then I should see a "1 system groups removed." text
 
-  Scenario: Cleanup: uninstall formula package from the server
+  Scenario: Cleanup: uninstall formula from the server
     Given I am authorized
     When I manually uninstall the "locale" formula from the server
 

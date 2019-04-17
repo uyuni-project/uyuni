@@ -10,17 +10,18 @@ require 'capybara/cucumber'
 require 'simplecov'
 require 'minitest/unit'
 require 'securerandom'
-require "selenium-webdriver"
+require 'selenium-webdriver'
 
 ## codecoverage gem
 SimpleCov.start
 server = ENV['SERVER']
 # maximal wait before giving up
 # the tests return much before that delay in case of success
-DEFAULT_TIMEOUT = 250
 $stdout.sync = true
-Capybara.default_wait_time = 10
 STARTTIME = Time.new.to_i
+Capybara.default_max_wait_time = 10
+DEFAULT_TIMEOUT = 250
+CLICK_TIMEOUT = Capybara.default_max_wait_time * 2
 
 def enable_assertions
   # include assertion globally
@@ -47,10 +48,10 @@ Capybara.app_host = "https://#{server}"
 After do |scenario|
   if scenario.failed?
     img_name = "#{SecureRandom.urlsafe_base64}.png"
-    img = save_screenshot(img_name)
+    save_screenshot(img_name)
     encoded_img = Base64.encode64(File.read(img_name))
     FileUtils.rm_rf(img_name)
-    #embedding the base64 image in a cucumber html report
+    # embed the base64 image in the cucumber HTML report
     embed("data:image/png;base64,#{encoded_img}", 'image/png')
     debug_server_on_realtime_failure
   end
