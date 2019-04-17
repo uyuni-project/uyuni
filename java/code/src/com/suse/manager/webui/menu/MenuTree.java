@@ -235,7 +235,10 @@ public class MenuTree {
                     .withDir("/rhn/manager/contentmanagement")
                 .addChild(new MenuItem("contentmanagement.nav.projects")
                         .withPrimaryUrl("/rhn/manager/contentmanagement/projects")
-                        .withDir("/rhn/manager/contentmanagement/project")));
+                        .withDir("/rhn/manager/contentmanagement/project"))
+                .addChild(new MenuItem("contentmanagement.nav.filters")
+                        .withPrimaryUrl("/rhn/manager/contentmanagement/filters")
+                        .withDir("/rhn/manager/contentmanagement/filter")));
 
             // Audit
             nodes.add(new MenuItem("Audit").withIcon("fa-search").withDir("/rhn/audit")

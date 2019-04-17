@@ -2092,6 +2092,10 @@ tree will not be usable for autoinstalling.
         <source>Content Lifecycle Projects</source>
       </trans-unit>
 
+      <trans-unit id="contentmanagement.nav.filters">
+        <source>Filters</source>
+      </trans-unit>
+
       <!-- CVE Audit Messages -->
       <trans-unit id="cveaudit.nav.title">
         <source>CVE Audit</source>
