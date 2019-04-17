@@ -15,6 +15,22 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.EMPTY;
+import static com.suse.utils.Opt.stream;
+import static java.util.Collections.emptyList;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -36,6 +52,7 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -43,22 +60,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.EMPTY;
-import static com.suse.utils.Opt.stream;
-import static java.util.Collections.emptyList;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Content Management functionality
@@ -448,6 +449,7 @@ public class ContentManager {
         ContentFilter filter = lookupFilterById(filterId, user)
                 .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
         project.attachFilter(filter);
+        ContentProjectFactory.save(project);
         return filter;
     }
 
@@ -465,6 +467,7 @@ public class ContentManager {
         ContentFilter filter = lookupFilterById(filterId, user)
                 .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
         project.detachFilter(filter);
+        ContentProjectFactory.save(project);
     }
 
     /**

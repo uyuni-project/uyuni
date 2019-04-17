@@ -1,0 +1,21 @@
+include /templates/common.jade
+
+#content-management-list-filters
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+
+div#init_data_filters(style="display: none")
+    | #{contentFilters}
+
+script(src='/javascript/manager/content-management/list-filters/list-filters.renderer.bundle.js')
+
+script(type='text/javascript').
+    pageRenderers.contentManagement.listFilters.renderer(
+        'content-management-list-filters',
+        {
+          filters: document.getElementById('init_data_filters').textContent,
+          openFilterId: #{openFilterId ? openFilterId : "null" },
+          flashMessage: "#{flashMessage}"
+        }
+    );

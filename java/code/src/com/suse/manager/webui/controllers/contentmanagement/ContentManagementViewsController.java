@@ -18,29 +18,31 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withRolesTemplate;
 import static spark.Spark.get;
 
+import com.google.gson.Gson;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
-
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
+import com.suse.manager.webui.controllers.contentmanagement.response.FilterResponse;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.utils.Json;
-
-import com.google.gson.Gson;
-
-import org.apache.log4j.Logger;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+import org.apache.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
+
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
 
 /**
  * Spark controller class for content management pages.
@@ -59,12 +61,16 @@ public class ContentManagementViewsController {
      * Invoked from Router. Init routes for ContentManagement Views.
      */
     public static void initRoutes(JadeTemplateEngine jade) {
+        // Projects
         get("/manager/contentmanagement/project",
                 withCsrfToken(withRolesTemplate(ContentManagementViewsController::createProjectView)), jade);
         get("/manager/contentmanagement/project/:label",
                 withCsrfToken(withRolesTemplate(ContentManagementViewsController::editProjectView)), jade);
         get("/manager/contentmanagement/projects",
                 withRolesTemplate(ContentManagementViewsController::listProjectsView), jade);
+
+        get("/manager/contentmanagement/filters",
+                withCsrfToken(withUser(ContentManagementViewsController::listFiltersView)), jade);
     }
 
     /**
@@ -126,6 +132,33 @@ public class ContentManagementViewsController {
         data.put("contentProjects", GSON.toJson(ResponseMappers.mapProjectListingFromDB(environmentsByProject)));
 
         return new ModelAndView(data, "controllers/contentmanagement/templates/list-projects.jade");
+    }
+
+    /**
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the current user
+     * @return
+     */
+    public static ModelAndView listFiltersView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+
+        Map<ContentFilter, List<ContentProject>> filtersWithProjects = ContentManager.listFilters(user)
+                .stream()
+                .collect(Collectors.toMap(p -> p, p -> ContentProjectFactory.listFilterProjects(p)));
+
+
+        List<FilterResponse> filterResponse = ResponseMappers.mapFilterListingFromDB(filtersWithProjects);
+
+        data.put("flashMessage", FlashScopeHelper.flash(req));
+        data.put("contentFilters", GSON.toJson(filterResponse));
+        if (req.queryParams("openFilterId") != null) {
+            data.put("openFilterId", req.queryParams("openFilterId"));
+        }
+
+
+        return new ModelAndView(data, "controllers/contentmanagement/templates/list-filters.jade");
     }
 
 }
