@@ -12,8 +12,8 @@ Feature: The Setup Wizard
     And I should see a "Arch" text
     And I should see a "Channels" text
     And I should not see a "WebYaST 1.3" text
-    And I enter "RHEL Expanded Support 5" in the css "input[name='product-description-filter']"
-    And I should see a "RHEL Expanded Support 5" text
+    And I enter "RHEL Expanded Support 7" in the css "input[name='product-description-filter']"
+    And I should see a "RHEL Expanded Support 7" text
     Then I enter "" in the css "input[name='product-description-filter']"
     And I enter "SUSE Linux Enterprise Server 12 SP2" in the css "input[name='product-description-filter']"
     And I select "x86_64" in the dropdown list of the architecture filter
