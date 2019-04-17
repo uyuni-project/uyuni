@@ -11,7 +11,7 @@ const Filters = (props:  Props) => {
       title={t('Filters')}
       collapseId="filters-id"
       customIconClass="fa-small"
-      // buttons={ this.renderModalAddButton('newFilter', t('Add new Filter')) }
+      // buttons={ this.renderModalAddButton('newFilter', t('Edit Filters')) }
     >
       <div className="min-height-panel">
         <h4>{t("To be implemented in the next beta")}</h4>
