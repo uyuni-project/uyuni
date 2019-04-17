@@ -83,6 +83,7 @@
 - features/min_docker_auth_registry.feature
 - features/srv_docker_advanced_content_management.feature
 - features/srv_docker_cve_audit.feature
+# OS image build tests are required for proxy_retail_pxeboot feature
 - features/min_osimage_build_image.feature
 - features/min_salt_install_package.feature
 - features/srv_power_management.feature

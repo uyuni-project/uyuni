@@ -442,10 +442,10 @@ end
 #
 # Test for a text in the whole page
 #
-Then(/^I should see a "([^"]*)" text$/) do |arg1|
-  unless page.has_content?(arg1)
+Then(/^I should see a "([^"]*)" text$/) do |text|
+  unless page.has_content?(text)
     sleep 2
-    raise unless page.has_content?(arg1)
+    raise unless page.has_content?(text)
   end
 end
 

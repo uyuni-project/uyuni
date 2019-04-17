@@ -15,7 +15,7 @@ Feature: Action chain on salt minions
 
   Scenario: Pre-requisite: refresh package list and check installed packages after downgrade on SLE minion
     When I refresh packages list via spacecmd on "sle-minion"
-    And I wait until refresh package list on "sle-minion" is finished 
+    And I wait until refresh package list on "sle-minion" is finished
     Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle-minion"
 
   Scenario: Pre-requisite: wait until downgrade is finished

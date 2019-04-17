@@ -155,8 +155,7 @@ Feature: Management of configuration of all types of clients in a single channel
 @ubuntu_minion
   Scenario: Unsubscribe Ubuntu minion and delete configuration files
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area

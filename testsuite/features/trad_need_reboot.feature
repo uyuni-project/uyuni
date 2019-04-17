@@ -8,10 +8,10 @@ Feature: Reboot required after patch
 
   Scenario: Check requiring reboot in the web UI
     Given I am authorized
-    And I follow "Systems > Overview" in the left menu
-    When I click Systems, under Systems node
+    When I follow "Systems > Overview" in the left menu
+    And I click Systems, under Systems node
     Then I should see a "All" link in the left menu
-    And  I follow "All" in the left menu
+    When I follow "All" in the left menu
     Then I should see a "Requiring Reboot" link in the left menu
 
   Scenario: No reboot notice if no need to reboot
@@ -45,11 +45,11 @@ Feature: Reboot required after patch
     And I follow "All" in the left menu
     And I follow this "sle-client" link
     Then I should see a "The system requires a reboot" text
-    And I follow "Overview" in the left menu
+    When I follow "Overview" in the left menu
     And I click Systems, under Systems node
     And I follow "Requiring Reboot" in the left menu
     Then I should see "sle-client" as link
 
   Scenario: Cleanup: remove packages and restore non-update repo after needing reboot tests
-    And I run "zypper -n rm andromeda-dummy" on "sle-client"
+    When I run "zypper -n rm andromeda-dummy" on "sle-client"
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client"

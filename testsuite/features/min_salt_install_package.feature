@@ -10,7 +10,7 @@ Feature: Install a patch on the client via Salt through the UI
 
   Scenario: Pre-requisite: refresh package list and check old packages installed on SLE minion client
     When I refresh packages list via spacecmd on "sle-minion"
-    And I wait until refresh package list on "sle-minion" is finished  
+    And I wait until refresh package list on "sle-minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "sle-minion"
 
   Scenario: Pre-requisite: ensure the errata cache is computed before patchin Salt minion

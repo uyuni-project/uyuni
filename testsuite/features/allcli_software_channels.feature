@@ -211,7 +211,7 @@ Feature: Chanel subscription via SSM
 
   Scenario: Cleanup: remove remaining systems from SSM
     Given I am authorized as "admin" with password "admin"
-    And I am on the System Overview page
+    When I am on the System Overview page
     And I uncheck the "sle-minion" client
     And I uncheck the "sle-client" client
-    And I should see "0" systems selected for SSM
+    Then I should see "0" systems selected for SSM

@@ -12,9 +12,11 @@ To acheive idempotency, you may create preparation scenarios at the beginning of
 
 The rest of this document details individual requirements for idempotency.
 
+
 ## Registration
 
 Each client must be correctly registered (in bootstrapped state) at the beginning of the feature.
+
 
 ## Base channel
 
@@ -22,9 +24,11 @@ As a standard status, we require that traditional clients and Salt minions have 
 
 If you remove a traditional client or minion, **always re-add** the base channel, otherwise all package and patch tests will fail.
 
+
 ## CentOS and Ubuntu minions
 
 CentOS and Ubuntu clients are always registered as SSH salt minions by defaut.
+
 
 ## Patches tests
 
@@ -61,4 +65,3 @@ Always re-enable these entitlements when you delete the minion and re-register i
 ## Other
 
 For more prerequisites, look at the core features.
-

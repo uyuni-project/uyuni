@@ -53,6 +53,6 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @ubuntu_minion
-  Scenario: Check events history for failures on SSH-managed Ubuntu minion 
+  Scenario: Check events history for failures on SSH-managed Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu-minion"
     Then I check for failed events on history event page

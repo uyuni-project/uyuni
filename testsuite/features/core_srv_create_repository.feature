@@ -90,8 +90,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Add a test repository for Ubuntu
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Create Repository"
@@ -104,8 +103,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Add the Ubuntu repository to the AMD64 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-Deb-AMD64"
@@ -117,8 +115,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Synchronize the Ubuntu repository in the AMD64 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-Deb-AMD64"
@@ -158,8 +155,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Reposync handles wrong encoding on DEB attributes
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Channels"
+    When I follow "Channels"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Packages" in the content area
     Then I should see a "blackhole-dummy" text

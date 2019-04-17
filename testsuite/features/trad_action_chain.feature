@@ -267,4 +267,4 @@ Feature: Action chain on traditional clients
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
-    When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control
+    When I run "rm -f /tmp/action_chain.log" on "sle-client" without error control

@@ -41,6 +41,6 @@ Feature: Setup SUSE Manager proxy
     And I wait until I see "SUSE Manager Proxy" text, refreshing the page
 
 @proxy
-  Scenario: Check events history for failures on the proxy 
+  Scenario: Check events history for failures on the proxy
     Given I am on the Systems overview page of this "proxy"
     Then I check for failed events on history event page

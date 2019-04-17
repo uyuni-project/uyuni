@@ -83,12 +83,12 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then I run spacecmd listevents for "sle-minion"
 
   Scenario: Verify that minion bootstrapped with activation key
-     Given I am on the Systems overview page of this "sle-minion"
-     Then I should see a "Activation Key: 	1-MINION-TEST" text
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I should see a "Activation Key: 	1-MINION-TEST" text
 
   Scenario: Verify that minion bootstrapped with base channel
-     Given I am on the Systems page
-     Then I should see a "Test-Channel-x86_64" text
+    Given I am on the Systems page
+    Then I should see a "Test-Channel-x86_64" text
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel
@@ -123,7 +123,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Cleanup: delete the activation key
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     And I follow "Minion testing" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"
@@ -132,7 +132,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Cleanup: turn the SLES minion into a container build host after activation key tests
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Details" in the content area
-    And I follow "Properties" in the content area
+    When I follow "Properties" in the content area
     And I check "container_build_host"
     And I click on "Update Properties"
 

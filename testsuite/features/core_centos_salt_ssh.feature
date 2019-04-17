@@ -52,7 +52,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @centos_minion
-  Scenario: Prepare a SSH-managed CentOS minion 
+  Scenario: Prepare a SSH-managed CentOS minion
     Given I am authorized
     When I enable repository "Devel_Galaxy_Manager_3.2_RES-Manager-Tools-7-x86_64" on this "ceos-client"
     And  I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos-client"
@@ -62,6 +62,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And  I install package "spacewalk-oscap scap-security-guide" on this "ceos-client"
 
 @centos_minion
-  Scenario: Check events history for failures on SSH-managed CentOS minion 
+  Scenario: Check events history for failures on SSH-managed CentOS minion
     Given I am on the Systems overview page of this "ceos-ssh-minion"
     Then I check for failed events on history event page

@@ -93,6 +93,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
   Then I should not be authorized
 ```
 
+
 <a name="b2" />
 
 #### Navigating through pages
@@ -198,6 +199,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
 ```cucumber
   When I reload the page
 ```
+
 
 <a name="b3" />
 
@@ -594,6 +596,7 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I apply highstate on "sle-minion"
 ```
+
 
 <a name="b12" />
 
