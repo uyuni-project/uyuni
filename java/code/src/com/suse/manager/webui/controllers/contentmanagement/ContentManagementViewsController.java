@@ -16,33 +16,35 @@ package com.suse.manager.webui.controllers.contentmanagement;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withRolesTemplate;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 
-import com.google.gson.Gson;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.contentmanagement.response.FilterResponse;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.utils.Json;
+
+import com.google.gson.Gson;
+
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.log4j.Logger;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
-
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static spark.Spark.get;
 
 /**
  * Spark controller class for content management pages.
@@ -139,7 +141,7 @@ public class ContentManagementViewsController {
      * @param req the request object
      * @param res the response object
      * @param user the current user
-     * @return
+     * @return the ModelAndView object to render the page
      */
     public static ModelAndView listFiltersView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
