@@ -1,4 +1,4 @@
-# COPYRIGHT 2015-2018 SUSE LLC
+# COPYRIGHT 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'json'

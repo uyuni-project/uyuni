@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC.
+# Copyright (c) 2017-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 Feature: The system details of each minion and client provides an overview of the system

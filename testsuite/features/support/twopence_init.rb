@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 SUSE-LINUX
+# Copyright (c) 2016-2019 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 require 'twopence'
