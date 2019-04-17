@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 SUSE LLC
+# Copyright (c) 2016-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to bootstrap a Salt minion via the GUI

@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Novell, Inc.
+# Copyright (c) 2013-2019 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'

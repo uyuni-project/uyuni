@@ -1,4 +1,6 @@
 # Copyright 2015-2019 SUSE LLC
+# Licensed under the terms of the MIT license.
+
 require 'timeout'
 require 'open-uri'
 require 'tempfile'
