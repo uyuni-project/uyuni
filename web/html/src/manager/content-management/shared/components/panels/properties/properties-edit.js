@@ -41,7 +41,7 @@ const PropertiesEdit = (props: Props) => {
   return (
       <CreatorPanel
         id="properties"
-        creatingText="Edit"
+        creatingText="Edit Properties"
         panelLevel="2"
         disableEditing={!hasEditingPermissions}
         title={t('Project Properties')}

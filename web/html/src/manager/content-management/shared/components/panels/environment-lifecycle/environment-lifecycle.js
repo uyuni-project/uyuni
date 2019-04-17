@@ -33,7 +33,7 @@ const EnvironmentLifecycle = (props: Props) => {
     <CreatorPanel
       id="environmentLifecycle"
       title="Environment Lifecycle"
-      creatingText="Add new Environment"
+      creatingText="Add Environment"
       panelLevel="2"
       disableEditing={!hasEditingPermissions}
       collapsible
