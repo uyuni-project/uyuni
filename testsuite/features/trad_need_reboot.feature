@@ -1,4 +1,4 @@
-# COPYRIGHT (c) 2017-2018 SUSE LLC
+# COPYRIGHT (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Reboot required after patch

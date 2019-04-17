@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2018 Novell, Inc.
+# Copyright (c) 2010-2019 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 Feature: Cobbler and distribution autoinstallation
