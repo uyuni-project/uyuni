@@ -67,7 +67,7 @@ public class ProjectActionsApiController {
      */
     public static String project(Request req, Response res, User user) {
         String projectLabel = req.params("projectId");
-        return ControllerUtils.fullProjectJson(res, projectLabel, user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, projectLabel, user);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ProjectActionsApiController {
         String projectLabel = projectLabelRequest.getProjectLabel();
         ContentManager.buildProject(projectLabel, Optional.ofNullable(projectLabelRequest.getMessage()), true, user);
 
-        return ControllerUtils.fullProjectJson(res, projectLabel, user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, projectLabel, user);
     }
 
     /**
@@ -107,7 +107,7 @@ public class ProjectActionsApiController {
         String projectLabel = projectPromoteReq.getProjectLabel();
         ContentManager.promoteProject(projectLabel, projectPromoteReq.getEnvironmentPromoteLabel(), true, user);
 
-        return ControllerUtils.fullProjectJson(res, projectLabel, user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, projectLabel, user);
     }
 
 

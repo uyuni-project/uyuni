@@ -104,7 +104,7 @@ public class ProjectApiController {
                 String.format("Project %s created successfully.", projectPropertiesRequest.getLabel())
         );
 
-        return ControllerUtils.fullProjectJson(res, createdProject.getLabel(), user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, createdProject.getLabel(), user);
     }
 
     /**
@@ -161,7 +161,7 @@ public class ProjectApiController {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
         }
 
-        return ControllerUtils.fullProjectJson(res, updatedProject.getLabel(), user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, updatedProject.getLabel(), user);
     }
 
 }

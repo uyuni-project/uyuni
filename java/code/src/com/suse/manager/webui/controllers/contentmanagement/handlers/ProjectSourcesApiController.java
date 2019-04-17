@@ -91,7 +91,7 @@ public class ProjectSourcesApiController {
                 user
         ));
 
-        return ControllerUtils.fullProjectJson(res, projectLabel, user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, projectLabel, user);
     }
 
 }
