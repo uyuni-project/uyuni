@@ -1,6 +1,5 @@
 // @flow
 import React, {useState} from 'react';
-import useProjectActionsApi from "../shared/api/use-project-actions-api";
 import {TopPanel} from "components/panels/TopPanel";
 import TopPanelButtons from "./top-panel-buttons";
 import PropertiesCreate from "../shared/components/panels/properties/properties-create";
@@ -9,6 +8,7 @@ import withPageWrapper from 'components/general/with-page-wrapper';
 import {hot} from 'react-hot-loader';
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
+import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 
 const CreateProject = () => {
 
@@ -20,8 +20,7 @@ const CreateProject = () => {
         historyEntries: [],
       }
   });
-
-  const { onAction } = useProjectActionsApi({});
+  const { onAction } = useLifecycleActionsApi({resource: 'projects'});
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 

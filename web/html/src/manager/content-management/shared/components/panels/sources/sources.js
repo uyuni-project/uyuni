@@ -5,12 +5,12 @@ import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 
 import type {ProjectSoftwareSourceType} from '../../../type/project.type.js';
-import useProjectActionsApi from "../../../api/use-project-actions-api";
 import ChannelsSelection from "./channels/channels-selection";
 import {Panel} from "../../../../../../components/panels/Panel";
 import styles from "./sources.css";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
+import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 
 type SourcesProps = {
   projectId: string,
@@ -77,8 +77,8 @@ const renderSourceEntry = (source) => {
 
 const Sources = (props: SourcesProps) => {
 
-  const {onAction, cancelAction, isLoading} = useProjectActionsApi({
-    projectId: props.projectId, projectResource: "softwaresources"
+  const {onAction, cancelAction, isLoading} = useLifecycleActionsApi({
+    resource: 'projects', nestedResource: "softwaresources"
   });
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
@@ -100,7 +100,7 @@ const Sources = (props: SourcesProps) => {
           softwareSources: item.map(label => ({label})),
         };
 
-        onAction(requestParam, "update")
+        onAction(requestParam, "update", props.projectId)
           .then((projectWithUpdatedSources) => {
             closeDialog();
             showSuccessToastr(t("Sources edited successfully"));

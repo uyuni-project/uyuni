@@ -7,12 +7,10 @@ import PropertiesEdit from "../shared/components/panels/properties/properties-ed
 import Build from "../shared/components/panels/build/build";
 import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
 import {showErrorToastr, showSuccessToastr} from 'components/toastr/toastr';
-import Filters from "../shared/components/panels/filters/filters";
 import _isEmpty from "lodash/isEmpty";
 import "./project.css";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 import {ModalButton} from "components/dialog/ModalButton";
-import useProjectActionsApi from '../shared/api/use-project-actions-api';
 import withPageWrapper from 'components/general/with-page-wrapper';
 
 import type {ProjectType} from '../shared/type/project.type';
@@ -21,6 +19,8 @@ import _last from "lodash/last";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useInterval from "core/hooks/use-interval";
+import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
+import FiltersProject from "../shared/components/panels/filters-project/filters-project";
 
 type Props = {
   project: ProjectType,
@@ -30,12 +30,12 @@ type Props = {
 const Project = (props: Props) => {
 
   const [project, setProject] = useState(props.project);
-  const {onAction, cancelAction: cancelRefreshAction} = useProjectActionsApi({ projectId: project.properties.label });
+  const {onAction, cancelAction: cancelRefreshAction} = useLifecycleActionsApi({resource: 'projects'});
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
   useInterval(() => {
-    onAction('get')
+    onAction({}, 'get', project.properties.label)
       .then(project => {
         setProject(project)
       });
@@ -58,9 +58,15 @@ const Project = (props: Props) => {
   const projectId = project.properties.label;
   const currentHistoryEntry = _last(project.properties.historyEntries);
 
-  const changesToBuild = project.softwareSources
+  let changesToBuild = project.softwareSources
     .filter(source => editedStates.includes(source.state))
-    .map(source => ({channelId: source.channelId, type: "Source", name: source.name, state: statesDesc[source.state]}));
+    .map(source => `Source: ${source.type} ${source.name} ${statesDesc[source.state]}`);
+  changesToBuild = changesToBuild.concat(
+    project
+      .filters
+      .filter(filter => editedStates.includes(filter.state))
+      .map(filter => `Filter: ${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name ${statesDesc[filter.state]}`)
+  );
   const isProjectEdited = changesToBuild.length > 0;
   const isBuildDisabled = !hasEditingPermissions || _isEmpty(project.environments) || _isEmpty(project.softwareSources);
 
@@ -83,7 +89,8 @@ const Project = (props: Props) => {
                     title={t("Delete Project")}
                     content={<span>{t("Are you sure you want to delete project")} <strong>{projectId}</strong>?</span>}
                     onConfirm={() =>
-                      onAction(project, 'delete')
+
+                      onAction(project, 'delete', project.properties.label)
                         .then(() => {
                           window.location.href = `/rhn/manager/contentmanagement/projects`
                         })
@@ -112,7 +119,14 @@ const Project = (props: Props) => {
             cancelRefreshAction();
           }}
         />
-        <Filters/>
+        <FiltersProject
+          projectId={projectId}
+          selectedFilters={project.filters}
+          onChange={(projectWithNewSources) => {
+            setProject(projectWithNewSources)
+            cancelRefreshAction();
+          }}
+        />
       </div>
 
       <Build
