@@ -14,6 +14,7 @@ Feature: Install and upgrade package on the Ubuntu minion via Salt through the U
     And I click on "Update Package List"
     And I follow "Events" in the content area
     And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    And I wait until package "virgo-dummy" is installed on "ubuntu-minion" via spacecmd
 
 @ubuntu_minion
   Scenario: Install a package on the minion
