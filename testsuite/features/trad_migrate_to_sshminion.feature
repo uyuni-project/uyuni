@@ -108,20 +108,23 @@ Feature: Migrate a traditional client into a Salt SSH minion
     When I remove package "perseus-dummy-1.1-1.1" from this "sle-migrated-minion"
     And I remove package "orion-dummy-1.1-1.1" from this "sle-migrated-minion"
 
-  Scenario: Cleanup: migrate ssh-minion back to traditional client
+  Scenario: Cleanup: unregister migrated SSH minion
     Given I am on the Systems overview page of this "sle-migrated-minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     Then "sle-migrated-minion" should not be registered
-    When I enable SUSE Manager tools repository on "sle-migrated-minion"
-    And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-migrated-minion"
+
+  Scenario: Cleanup: register SSH minion again as traditional client
+    When I enable SUSE Manager tools repository on "sle-client"
+    And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-client"
+    And I remove package "salt-minion" from this "sle-client"
     And I register using "1-SUSE-DEV-x86_64" key
 
   Scenario: Cleanup: change contact method of activation key back to default
     Given I am authorized as "admin" with password "admin"
-    And I follow "Systems" in the left menu
+    When I follow "Systems" in the left menu
     And I follow "Activation Keys"
     And I follow "SUSE Test PKG Key x86_64" in the content area
     And I select "Default" from "contactMethodId"

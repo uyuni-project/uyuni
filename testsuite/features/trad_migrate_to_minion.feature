@@ -81,16 +81,18 @@ Feature: Migrate a traditional client into a Salt minion
     When I wait until file "/tmp/remote-command-on-migrated-test" exists on "sle-migrated-minion"
     And I remove "/tmp/remote-command-on-migrated-test" from "sle-migrated-minion"
 
-  Scenario: Cleanup: migrate back to traditional client
+  Scenario: Cleanup: unregister migrated minion
     Given I am on the Systems overview page of this "sle-migrated-minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     Then "sle-migrated-minion" should not be registered
-    When I enable SUSE Manager tools repository on "sle-migrated-minion"
-    And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-migrated-minion"
-    And I remove package "salt-minion" from this "sle-migrated-minion"
+
+  Scenario: Cleanup: register minion again as traditional client
+    When I enable SUSE Manager tools repository on "sle-client"
+    And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-client"
+    And I remove package "salt-minion" from this "sle-client"
     And I register using "1-SUSE-DEV-x86_64" key
 
   Scenario: Cleanup: check that this is again a traditional client
