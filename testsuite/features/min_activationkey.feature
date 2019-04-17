@@ -14,8 +14,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Create a configuration channel for the activation key
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Key Channel" as "cofName"
@@ -26,8 +25,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Add a configuration file to the key configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Key Channel"
     And I follow "Create Configuration File or Directory"
@@ -85,12 +83,12 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then I run spacecmd listevents for "sle-minion"
 
   Scenario: Verify that minion bootstrapped with activation key
-     Given I am on the Systems overview page of this "sle-minion"
-     Then I should see a "Activation Key: 	1-MINION-TEST" text
+    Given I am on the Systems overview page of this "sle-minion"
+    Then I should see a "Activation Key: 	1-MINION-TEST" text
 
   Scenario: Verify that minion bootstrapped with base channel
-     Given I am on the Systems page
-     Then I should see a "Test-Channel-x86_64" text
+    Given I am on the Systems page
+    Then I should see a "Test-Channel-x86_64" text
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel
@@ -117,8 +115,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Cleanup: remove the key configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Key Channel"
     And I follow "Delete Channel"
@@ -126,7 +123,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Cleanup: delete the activation key
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     And I follow "Minion testing" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"

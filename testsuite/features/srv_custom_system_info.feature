@@ -5,9 +5,7 @@ Feature: Custom system info key-value pairs
 
   Background:
     Given I am authorized
-    And I follow "Home" in the left menu
-    And I follow "Systems"
-    And I follow "Overview" in the left menu
+    When I follow "Systems > Overview" in the left menu
 
   Scenario: Create a new key
     When I follow "Custom System Info" in the left menu

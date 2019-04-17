@@ -163,7 +163,7 @@ Then(/^I execute spacewalk-debug on the server$/) do
   end
 end
 
-When(/^the susmanager repo file should exist on the "([^"]*)"$/) do |host|
+Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
   step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
 end
 

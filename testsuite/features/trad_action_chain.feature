@@ -84,8 +84,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Create a configuration channel for testing action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
@@ -96,8 +95,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Add a configuration file to configuration channel for testing action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
@@ -109,9 +107,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Subscribe system to configuration channel for testing action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
+    When I follow "Systems > Overview" in the left menu
     And I follow this "sle-client" link
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
@@ -123,8 +119,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Add a configuration file deployment to the action chain on traditional client
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
@@ -249,7 +244,6 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove traditional client from configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
     When I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Action Chain Channel"
@@ -260,8 +254,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove configuration channel for traditional client
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
+    When I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
@@ -274,4 +267,4 @@ Feature: Action chain on traditional clients
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
-    When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control
+    When I run "rm -f /tmp/action_chain.log" on "sle-client" without error control

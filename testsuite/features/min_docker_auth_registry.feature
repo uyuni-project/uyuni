@@ -5,7 +5,7 @@ Feature: Build image with authenticated registry
 
   Scenario: Create an authenticated image store as Docker admin
     Given I am authorized as "docker" with password "docker"
-    And I follow "Images" in the left menu
+    When I follow "Images" in the left menu
     And I follow "Stores" in the left menu
     And I follow "Create"
     And I enter "portus" as "label"
@@ -15,7 +15,7 @@ Feature: Build image with authenticated registry
 
   Scenario: Create a profile for the authenticated image store as Docker admin
     Given I am authorized as "docker" with password "docker"
-    And I follow "Images" in the left menu
+    When I follow "Images" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Create"
     And I enter "portus_profile" as "label"
@@ -26,9 +26,9 @@ Feature: Build image with authenticated registry
 
   Scenario: Build an image in the authenticated image store
     Given I am authorized as "docker" with password "docker"
-    And I navigate to images build webpage
+    When I navigate to images build webpage
     And I select "portus_profile" from "profileId"
-    When I enter "latest" as "version"
+    And I enter "latest" as "version"
     And I select sle-minion hostname in Build Host
     And I click on "submit-btn"
     Then I wait until I see "portus_profile" text

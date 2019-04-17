@@ -9,8 +9,7 @@ Feature: Add a repository to a channel
 
   Scenario: Add a test repository for x86_64
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Create Repository"
@@ -22,8 +21,7 @@ Feature: Add a repository to a channel
 
   Scenario: Disable metadata check for the x86_64 test repository
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Test-Repository-x86_64"
@@ -34,8 +32,7 @@ Feature: Add a repository to a channel
 
   Scenario: Add the repository to the x86_64 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Test-Channel-x86_64"
@@ -47,8 +44,7 @@ Feature: Add a repository to a channel
   Scenario: Synchronize the repository in the x86_64 channel
     Given I am authorized as "testing" with password "testing"
     When I enable source package syncing
-    And I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Channels" in the left menu
@@ -60,8 +56,7 @@ Feature: Add a repository to a channel
 
   Scenario: Add a test repository for i586
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Create Repository"
@@ -73,8 +68,7 @@ Feature: Add a repository to a channel
 
   Scenario: Add the repository to the i586 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Test-Channel-i586"
@@ -86,7 +80,6 @@ Feature: Add a repository to a channel
   Scenario: Synchronize the repository in the i586 channel
     Given I am authorized as "testing" with password "testing"
     When I disable source package syncing
-    And I follow "Home" in the left menu
     And I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Channels" in the left menu
@@ -99,8 +92,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Add a test repository for Ubuntu
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Create Repository"
@@ -113,8 +105,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Add the Ubuntu repository to the AMD64 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Test-Channel-Deb-AMD64"
@@ -126,8 +117,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Synchronize the Ubuntu repository in the AMD64 channel
     Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Channels" in the left menu
@@ -160,8 +150,7 @@ Feature: Add a repository to a channel
 
   Scenario: Reposync handles wrong encoding on RPM attributes
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages" in the content area
     Then I should see a "blackhole-dummy" text
@@ -169,8 +158,7 @@ Feature: Add a repository to a channel
 @ubuntu_minion
   Scenario: Reposync handles wrong encoding on DEB attributes
     Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Channel List"
+    When I follow "Channel List"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Packages" in the content area
     Then I should see a "blackhole-dummy" text

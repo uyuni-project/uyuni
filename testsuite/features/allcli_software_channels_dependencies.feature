@@ -29,8 +29,8 @@ Feature: Chanel subscription with recommended/required dependencies
     When I am on the System Overview page
     And I check the "sle-minion" client
     And I check the "sle-client" client
-    And I should see "2" systems selected for SSM
-    And I am on System Set Manager Overview
+    Then I should see "2" systems selected for SSM
+    When I am on System Set Manager Overview
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text

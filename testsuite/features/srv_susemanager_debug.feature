@@ -7,10 +7,10 @@ Feature: Debug SUSE Manager after the testsuite has run
     Then I execute spacewalk-debug on the server
 
   Scenario: Check spacewalk upd2date logs on client
-    Then I control that up2date logs on client under test contains no Traceback error
+    Then the up2date logs on client should contain no Traceback error
 
   Scenario: Check the tomcat logs on server
     Then I check the tomcat logs for errors
 
   Scenario: Check salt event log for failures on server
-    Then I control that salt event log on server contains no failures
+    Then the salt event log on server should contain no failures
