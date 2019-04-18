@@ -624,7 +624,7 @@ And(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/)
 end
 
 When(/^I open avahi port on the proxy$/) do
-  $proxy.run('firewall-cmd --permanent --add-service=mdns')
+  $proxy.run('firewall-cmd --permanent --zone=public --add-service=mdns')
   $proxy.run('firewall-cmd --reload')
 end
 
