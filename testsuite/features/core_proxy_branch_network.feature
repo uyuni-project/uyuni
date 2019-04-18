@@ -123,12 +123,6 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Let avahi work on the branch server
-    Given service "firewalld" is active on "proxy"
-    When I open avahi port on the proxy
-
-@proxy
-@private_net
   Scenario: Apply the branch network formulas via the highstate
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
@@ -141,6 +135,12 @@ Feature: Setup SUSE Manager for Retail branch network
     And service "named" is active on "proxy"
     And service "firewalld" is enabled on "proxy"
     And service "firewalld" is active on "proxy"
+
+@proxy
+@private_net
+  Scenario: Let avahi work on the branch server
+    Given service "firewalld" is active on "proxy"
+    When I open avahi port on the proxy
 
 @proxy
 @private_net
