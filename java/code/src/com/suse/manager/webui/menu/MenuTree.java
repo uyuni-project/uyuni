@@ -231,7 +231,7 @@ public class MenuTree {
                     .withVisibility(adminRoles.get("org"))));
 
             // Content Management
-            nodes.add(new MenuItem("contentmanagement.nav.title").withIcon("spacewalk-icon-software-channels")
+            nodes.add(new MenuItem("contentmanagement.nav.title").withIcon("spacewalk-icon-lifecycle")
                     .withDir("/rhn/manager/contentmanagement")
                 .addChild(new MenuItem("contentmanagement.nav.projects")
                         .withPrimaryUrl("/rhn/manager/contentmanagement/projects")

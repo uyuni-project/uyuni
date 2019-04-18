@@ -1,3 +1,4 @@
+- Add Content Lifecycle Management icon
 - Remove the obsolate rhn_docs.conf file
 - Introduce a description label for the new 'minion-checkin' Taskomatic job (bsc#1122837)
 

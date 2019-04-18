@@ -67,7 +67,7 @@ const ListProjects = (props: Props) => {
   );
 
   return (
-      <TopPanel title={t('Content Lifecycle Projects')} icon="spacewalk-icon-software-channels" button={panelButtons}>
+      <TopPanel title={t('Content Lifecycle Projects')} icon="spacewalk-icon-lifecycle" button={panelButtons}>
         <Table
           data={normalizedProjects}
           identifier={row => row.label}

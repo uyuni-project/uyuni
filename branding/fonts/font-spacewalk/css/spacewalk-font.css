@@ -215,3 +215,6 @@
 .spacewalk-icon-desktop-filled-unpatched:before {
   content: "\e805";
 }
+.spacewalk-icon-lifecycle:before {
+  content: "\ea00";
+}
