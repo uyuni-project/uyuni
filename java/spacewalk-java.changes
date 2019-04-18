@@ -1,3 +1,4 @@
+- Add Content Lifecycle Management icon
 - Remove the obsolete help dispatcher servlet which was used to translate the documentation URLs
 - Implement packages filtering on Content Project build
 - Implement Content Filters operations and expose them in XMLRPC
