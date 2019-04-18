@@ -75,7 +75,7 @@ const ListFilters = (props: Props) => {
         />
         <Column
           columnKey="action-buttons"
-          header={t('Action buttons')}
+          header={t('')}
           cell={ row =>
             <FilterEdit
               id={`edit-filter-button-${row.id}`}
