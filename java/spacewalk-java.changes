@@ -1,3 +1,4 @@
+- Fix NPE on Salt job returns
 - Fix base channel selection for Ubuntu systems (bsc#1132579)
 - Fix retrieval of build time for .deb repositories (bsc#1131721)
 - Remove the obsolete help dispatcher servlet which was used to translate the documentation URLs
