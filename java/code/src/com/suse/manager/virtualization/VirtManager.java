@@ -46,7 +46,7 @@ public class VirtManager {
                 new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
 
         Optional<String> result = saltService.callSync(call, minionId);
-        return result.map(xml -> GuestDefinition.parse(xml));
+        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
     }
 
     /**
