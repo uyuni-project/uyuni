@@ -1,3 +1,4 @@
+- fix connection type test for proxy (bsc#1132080)
 - open needed firewall ports also when firewall not currently
   running (bsc#1131231)
 - Add makefile and lintrc for pylint
