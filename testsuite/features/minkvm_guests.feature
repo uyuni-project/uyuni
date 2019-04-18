@@ -79,6 +79,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Edit a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
+    And I wait until I do not see "Loading..." text
     Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
     And option "VNC" is selected as "graphicsType"
@@ -102,6 +103,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Add a network interface to a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
+    And I wait until I do not see "Loading..." text
     And I click on "add_nic"
     And I select "test-net0" from "network1_source"
     And I click on "Update"
@@ -112,6 +114,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Delete a network interface from a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
+    And I wait until I do not see "Loading..." text
     And I click on "remove_nic1"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -121,6 +124,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Add a disk and a cdrom to a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
+    And I wait until I do not see "Loading..." text
     And I click on "add_disk"
     And I click on "add_disk"
     And I select "CDROM" from "disk2_device"
@@ -134,6 +138,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Delete a disk from a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm-server"
     When I click on "Edit" in row "test-vm"
+    And I wait until I do not see "Loading..." text
     And I click on "remove_disk2"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
