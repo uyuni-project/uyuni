@@ -47,7 +47,7 @@ const ListFilters = (props: Props) => {
   );
 
   return (
-    <TopPanel title={t('Filter')} icon="spacewalk-icon-software-channels" button={panelButtons}>
+    <TopPanel title={t('Filter')} icon="fa-filter" button={panelButtons}>
       <Table
         data={displayedFilters}
         identifier={row => row.name}
