@@ -6,11 +6,11 @@ import {closeDialog, Dialog} from "components/dialog/Dialog";
 import {Button} from "components/buttons";
 import type {ProjectEnvironmentType, ProjectHistoryEntry} from "../../../type/project.type";
 import {getVersionMessageByNumber} from "../properties/properties.utils";
-import useProjectActionsApi from "../../../api/use-project-actions-api";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import {Loading} from "components/loading/loading";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
+import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 
 
 type Props = {
@@ -24,8 +24,8 @@ type Props = {
 
 const Promote = (props: Props) => {
   const [open, setOpen] = useState(false);
-  const {onAction, cancelAction, isLoading} = useProjectActionsApi({
-    projectId: props.projectId, projectResource: "promote"
+  const {onAction, cancelAction, isLoading} = useLifecycleActionsApi({
+    resource: 'projects', nestedResource: 'promote'
   });
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
@@ -102,7 +102,7 @@ const Promote = (props: Props) => {
                   onAction({
                     projectLabel: props.projectId,
                     environmentPromoteLabel: props.environmentPromote.label
-                  }, "action")
+                  }, "action", props.projectId)
                     .then((projectWithUpdatedSources) => {
                       closeDialog(modalNameId);
                       showSuccessToastr(`Version ${props.versionToPromote} successfully promoted into ${props.environmentTarget.name}`)

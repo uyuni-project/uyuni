@@ -24,8 +24,7 @@ CREATE TABLE suseContentFilterProject(
                    CONSTRAINT suse_ct_filter_pid_fk
                        REFERENCES suseContentProject(id)
                        ON DELETE CASCADE,
-    state      VARCHAR2(16),
-    position   NUMBER
+    state      VARCHAR2(16)
 )
 ENABLE ROW MOVEMENT
 ;

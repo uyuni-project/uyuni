@@ -25,6 +25,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +38,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -293,9 +293,20 @@ public class ContentProject extends BaseDomainHelper {
      * @return filters
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
-    @OrderColumn(name = "position")
-    protected List<ContentProjectFilter> getProjectFilters() {
+    public List<ContentProjectFilter> getProjectFilters() {
         return filters;
+    }
+
+    /**
+     * Get the {@link PackageFilter}s
+     *
+     * @return the Package filters
+     */
+    @Transient
+    public List<PackageFilter> getPackageFilters() {
+        return (List<PackageFilter>) getProjectFilters().stream()
+                .flatMap(f -> Opt.stream(f.getFilter().asPackageFilter()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -305,6 +316,51 @@ public class ContentProject extends BaseDomainHelper {
      */
     public void setProjectFilters(List<ContentProjectFilter> filtersIn) {
         filters = filtersIn;
+    }
+
+    /**
+     * Attach a {@link ContentFilter} to {@link ContentProject}
+     *
+     * @param filter the filter to attach
+     */
+    public void attachFilter(ContentFilter filter) {
+        ContentProjectFilter projectFilter = new ContentProjectFilter(this, filter);
+
+        int idx = filters.indexOf(projectFilter);
+        if (idx != -1) {
+            ContentProjectFilter toUpdate = filters.get(idx);
+            if (toUpdate.getState() == ContentProjectFilter.State.DETACHED) {
+                toUpdate.setState(ContentProjectFilter.State.BUILT);
+            }
+        }
+        else {
+            filters.add(projectFilter);
+        }
+    }
+
+    /**
+     * Detach a {@link ContentFilter} from a {@link ContentProject}
+     *
+     * @param filter the filter to detach
+     */
+    public void detachFilter(ContentFilter filter) {
+        ContentProjectFilter projectFilter = new ContentProjectFilter(this, filter);
+
+        int idx = filters.indexOf(projectFilter);
+        if (idx != -1) {
+            ContentProjectFilter toUpdate = filters.get(idx);
+
+            switch (toUpdate.getState()) {
+                case BUILT:
+                    toUpdate.setState(ContentProjectFilter.State.DETACHED);
+                    break;
+                case ATTACHED:
+                    filters.remove(idx);
+                    break;
+                default:
+                    // no-op
+            }
+        }
     }
 
     /**

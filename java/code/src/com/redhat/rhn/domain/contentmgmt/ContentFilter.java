@@ -17,12 +17,19 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Optional;
+import java.util.function.Predicate;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,20 +38,138 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Content Filter
+ *
+ * @param <T> the entity being filtered
  */
 @Entity
 @Table(name = "suseContentFilter")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
-public abstract class ContentFilter extends BaseDomainHelper {
+public abstract class ContentFilter<T> extends BaseDomainHelper implements Predicate<T> {
 
     private Long id;
     private Org org;
     private String name;
-    private String criteria;
+    private Rule rule;
+    private FilterCriteria criteria;
+
+    /**
+     * Entity type that is dealt with by filter.
+     */
+    public enum EntityType {
+        PACKAGE("package"),
+        ERRATUM("erratum");
+
+        private String label;
+
+        EntityType(String labelIn) {
+            this.label = labelIn;
+        }
+
+        /**
+         * Gets the label.
+         *
+         * @return label
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
+         * Looks up Entity type by label
+         *
+         * @param label the label
+         * @throws java.lang.IllegalArgumentException if no matching Entity type is found
+         * @return the matching Entity type
+         */
+        public static EntityType lookupByLabel(String label) {
+            for (EntityType value : values()) {
+                if (value.label.equals(label)) {
+                    return value;
+                }
+            }
+            throw new IllegalArgumentException("Unsupported label: " + label);
+        }
+    }
+
+    /**
+     * Type of the filter
+     */
+    public enum Rule {
+        ALLOW("allow"),
+        DENY("deny");
+
+        private final String label;
+
+        Rule(String typeIn) {
+            this.label = typeIn;
+        }
+
+        /**
+         * Gets the label.
+         *
+         * @return label
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
+         * Looks up Rule by label
+         *
+         * @param label the label
+         * @throws java.lang.IllegalArgumentException if no matching Rule is found
+         * @return the matching Rule
+         */
+        public static Rule lookupByLabel(String label) {
+            for (Rule value : values()) {
+                if (value.label.equals(label)) {
+                    return value;
+                }
+            }
+            throw new IllegalArgumentException("Unsupported label: " + label);
+        }
+    }
+
+    /**
+     * Get {@link EntityType} of this object
+     * @return the {@link EntityType}
+     */
+    @Transient
+    public abstract EntityType getEntityType();
+
+    /**
+     * Returns the filter as {@link PackageFilter} if it is one
+     *
+     * @return Optional of {@link PackageFilter}
+     */
+    public abstract Optional<PackageFilter> asPackageFilter();
+
+    /**
+     * Returns the filter as {@link ErrataFilter} if it is one
+     *
+     * @return Optional of {@link ErrataFilter}
+     */
+    public abstract Optional<ErrataFilter> asErrataFilter();
+
+    /**
+     * Test whether an object passes the filter
+     *
+     * @param t the object
+     * @return true if the object passes the filter
+     */
+    public abstract boolean testInternal(T t);
+
+    @Override
+    public boolean test(T t) {
+        boolean result = testInternal(t);
+        // we want to invert the test if Rule type is DENY
+        return rule == Rule.ALLOW ? result : !result;
+    }
 
     /**
      * Gets the id.
@@ -106,12 +231,31 @@ public abstract class ContentFilter extends BaseDomainHelper {
     }
 
     /**
+     * Gets the rule.
+     *
+     * @return rule
+     */
+    @Enumerated(EnumType.STRING)
+    public Rule getRule() {
+        return rule;
+    }
+
+    /**
+     * Sets the rule.
+     *
+     * @param ruleIn the rule
+     */
+    public void setRule(Rule ruleIn) {
+        this.rule = ruleIn;
+    }
+
+    /**
      * Gets the criteria.
      *
      * @return criteria
      */
-    @Column
-    public String getCriteria() {
+    @Embedded
+    public FilterCriteria getCriteria() {
         return criteria;
     }
 
@@ -120,7 +264,7 @@ public abstract class ContentFilter extends BaseDomainHelper {
      *
      * @param criteriaIn - the criteria
      */
-    public void setCriteria(String criteriaIn) {
+    public void setCriteria(FilterCriteria criteriaIn) {
         criteria = criteriaIn;
     }
 

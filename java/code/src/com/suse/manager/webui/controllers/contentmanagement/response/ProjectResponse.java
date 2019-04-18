@@ -23,10 +23,15 @@ public class ProjectResponse {
 
     private ProjectPropertiesResponse properties;
     private List<ProjectSoftwareSourceResponse> softwareSources;
+    private List<ProjectFilterResponse> filters;
     private List<EnvironmentResponse> environments;
 
     public void setProperties(ProjectPropertiesResponse propertiesIn) {
         this.properties = propertiesIn;
+    }
+
+    public void setFilters(List<ProjectFilterResponse> filtersIn) {
+        this.filters = filtersIn;
     }
 
     public void setEnvironments(List<EnvironmentResponse> environmentsIn) {

@@ -20,10 +20,12 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.State;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
@@ -31,6 +33,7 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -40,6 +43,7 @@ import java.util.Optional;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
@@ -544,5 +548,25 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.purgeTarget(target);
         assertEquals(0, envdev.getTargets().size());
         assertNull(ChannelFactory.lookupByLabel(channelLabel));
+    }
+
+    /**
+     * Test listing {@link ContentProject}s used by given {@link ContentFilter}
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testListFilterProjects() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
+        ContentFilter filter = ContentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        assertTrue(ContentProjectFactory.listFilterProjects(filter).isEmpty());
+        cp.attachFilter(filter);
+        assertEquals(1, ContentProjectFactory.listFilterProjects(filter).size());
+        assertEquals(cp, ContentProjectFactory.listFilterProjects(filter).get(0));
+        cp.detachFilter(filter);
+        assertTrue(ContentProjectFactory.listFilterProjects(filter).isEmpty());
     }
 }

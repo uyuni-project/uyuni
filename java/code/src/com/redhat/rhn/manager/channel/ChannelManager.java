@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -107,6 +108,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -2777,13 +2779,15 @@ public class ChannelManager extends BaseManager {
      * Synchronously align packages and errata of the {@link SoftwareEnvironmentTarget} to the source {@link Channel}
      * This method is potentially time-expensive and should be run asynchronously (@see alignEnvironmentTarget)
      *
+     * @param filters the {@link PackageFilter}s
      * @param src the source {@link Channel}
      * @param tgt the target {@link SoftwareEnvironmentTarget}
      * @param user the user
      */
-    public static void alignEnvironmentTargetSync(Channel src, Channel tgt, User user) {
+    public static void alignEnvironmentTargetSync(Collection<PackageFilter> filters, Channel src, Channel tgt,
+            User user) {
         // align packages and the cache (rhnServerNeededCache)
-        alignPackages(src, tgt);
+        alignPackages(src, tgt, filters);
 
         // align errata and the cache (rhnServerNeededCache)
         ErrataManager.mergeErrataToChannel(user, src.getErratas(), tgt, src, false, false);
@@ -2798,25 +2802,37 @@ public class ChannelManager extends BaseManager {
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 
-    private static void alignPackages(Channel srcChannel, Channel tgtChannel) {
-        Set<Package> onlyInTgt = new HashSet<>(tgtChannel.getPackages());
-        onlyInTgt.removeAll(srcChannel.getPackages());
+    private static void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
+        Set<Package> oldTgtPackages = new HashSet<>(tgtChannel.getPackages());
         Set<Package> onlyInSrc = new HashSet<>(srcChannel.getPackages());
         onlyInSrc.removeAll(tgtChannel.getPackages());
 
         // align the packages
         tgtChannel.getPackages().clear();
-        tgtChannel.getPackages().addAll(srcChannel.getPackages());
+        Set<Package> newPackages = filterPackages(srcChannel.getPackages(), filters);
+        tgtChannel.getPackages().addAll(newPackages);
 
         // remove cache entries for only in tgt
-        ErrataCacheManager.deleteCacheEntriesForChannelPackages(tgtChannel.getId(), extractPackageIds(onlyInTgt));
+        oldTgtPackages.removeAll(newPackages);
+        ErrataCacheManager.deleteCacheEntriesForChannelPackages(tgtChannel.getId(), extractPackageIds(oldTgtPackages));
 
         // add cache entries for new ones
-        ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null, extractPackageIds(onlyInSrc));
+        ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null,
+                extractPackageIds(filterPackages(onlyInSrc, filters)));
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
         return packages.stream().map(p -> p.getId()).collect(Collectors.toList());
+    }
+
+    private static Set<Package> filterPackages(Set<Package> packages, Collection<PackageFilter> packageFilters) {
+        Predicate<Package> compositePredicate = packageFilters.stream()
+                .map(f -> (Predicate) f)
+                .reduce((f1, f2) -> f1.and(f2))
+                .orElse(p -> true);
+        return packages.stream()
+                .filter(compositePredicate)
+                .collect(Collectors.toSet());
     }
 
     /**

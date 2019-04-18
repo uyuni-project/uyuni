@@ -3,7 +3,6 @@ import React from 'react';
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import PropertiesForm from "./properties-form";
 import {Loading} from "components/loading/loading";
-import useProjectActionsApi from "../../../api/use-project-actions-api";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import PropertiesView from "./properties-view";
 import produce from "immer";
@@ -11,6 +10,7 @@ import produce from "immer";
 import type {ProjectHistoryEntry, ProjectPropertiesType} from '../../../type/project.type.js';
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
+import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 
 type Props = {
   projectId: string,
@@ -21,8 +21,8 @@ type Props = {
 };
 
 const PropertiesEdit = (props: Props) => {
-  const {onAction, cancelAction, isLoading} = useProjectActionsApi({
-    projectId: props.projectId, projectResource: "properties"
+  const {onAction, cancelAction, isLoading} = useLifecycleActionsApi({
+    resource: 'projects', nestedResource: "properties"
   });
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
@@ -50,7 +50,7 @@ const PropertiesEdit = (props: Props) => {
         onOpen={({ setItem }) => setItem(props.properties)}
         disableOperations={isLoading}
         onSave={({ item, closeDialog }) => {
-          return onAction(item, "update")
+          return onAction(item, "update", props.projectId)
             .then((editedProject) => {
               closeDialog();
               showSuccessToastr(t("Project properties updated successfully"));

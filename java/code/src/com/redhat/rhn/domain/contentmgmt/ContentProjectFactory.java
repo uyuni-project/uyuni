@@ -393,6 +393,125 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * List filters visible to given user
+     *
+     * @param user the user
+     * @return the filters
+     */
+    public static List<ContentFilter> listFilters(User user) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ContentFilter> criteria = builder.createQuery(ContentFilter.class);
+        Root<ContentFilter> root = criteria.from(ContentFilter.class);
+        criteria.where(builder.equal(root.get("org"), user.getOrg()));
+        return getSession().createQuery(criteria).list();
+    }
+
+    /**
+     * Look up filter by id
+     *
+     * @param id the id
+     * @return the matching filter
+     */
+    public static Optional<ContentFilter> lookupFilterById(Long id) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ContentFilter> criteria = builder.createQuery(ContentFilter.class);
+        Root<ContentFilter> root = criteria.from(ContentFilter.class);
+        criteria.where(builder.equal(root.get("id"), id));
+        return getSession().createQuery(criteria).uniqueResultOptional();
+    }
+
+    /**
+     * Create a new {@link ContentFilter}
+     *
+     * @param name the filter name
+     * @param rule the filter {@link ContentFilter.Rule}
+     * @param entityType the entity type that the filter will deal with
+     * @param criteria the {@link FilterCriteria} for filtering
+     * @param user the User
+     * @return the created filter
+     */
+    public static ContentFilter createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
+            FilterCriteria criteria, User user) {
+        if (rule == ContentFilter.Rule.ALLOW) {
+            throw new UnsupportedOperationException("Rule ALLOW is not supported yet");
+        }
+
+        ContentFilter filter;
+        switch (entityType) {
+            case PACKAGE:
+                filter = new PackageFilter();
+                break;
+            case ERRATUM:
+                filter = new ErrataFilter();
+                break;
+            default:
+                throw new IllegalArgumentException("Incompatible type " + entityType);
+        }
+
+        filter.setName(name);
+        filter.setOrg(user.getOrg());
+        filter.setRule(rule);
+        filter.setCriteria(criteria);
+        INSTANCE.saveObject(filter);
+        return filter;
+    }
+
+    /**
+     * Update a {@link ContentFilter}
+     *
+     * @param filter the filter to update
+     * @param name optional with name to update
+     * @param rule optional with {@link ContentFilter.Rule} to update
+     * @param criteria optional with {@link FilterCriteria} to update
+     * @return the updated filter
+     */
+    public static ContentFilter updateFilter(ContentFilter filter, Optional<String> name,
+            Optional<ContentFilter.Rule> rule, Optional<FilterCriteria> criteria) {
+        rule.ifPresent(r -> {
+            if (r == ContentFilter.Rule.ALLOW) {
+                throw new UnsupportedOperationException("Rule ALLOW is not supported yet");
+            }
+        });
+        name.ifPresent(n -> filter.setName(n));
+        rule.ifPresent(r -> filter.setRule(r));
+        criteria.ifPresent(c -> filter.setCriteria(c));
+        return filter;
+    }
+
+    /**
+     * Remove {@link ContentFilter}
+     *
+     * @param filter the filter
+     * @return true if removed
+     */
+    public static boolean remove(ContentFilter filter) {
+        return INSTANCE.removeObject(filter) != 0;
+    }
+
+    /**
+     * List {@link ContentProject}s using given {@link ContentFilter}
+     *
+     * @param filter the Filter
+     * @return list of Projects
+     */
+    public static List<ContentProject> listFilterProjects(ContentFilter filter) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT cp FROM ContentProject cp " +
+                                "WHERE cp.id IN (SELECT cpf.project.id FROM ContentProjectFilter cpf " +
+                                                 "WHERE cpf.filter.id = :fid)")
+                .setParameter("fid", filter.getId())
+                .list();
+    }
+
+    /**
+     * Remove {@link ContentProjectFilter}
+     * @param filter the filter
+     */
+    public static void remove(ContentProjectFilter filter) {
+        INSTANCE.removeObject(filter);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

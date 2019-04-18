@@ -4,13 +4,13 @@ import {useState} from 'react';
 import Network from '../../../../utils/network';
 
 type Props = {
-  projectId?: string,
-  projectResource?: string,
+  resource: string,
+  nestedResource?: string,
 };
 
 type returnUseProjectActionsApi = {
-  onAction: Function,
-  cancelAction: Function,
+  onAction: (Object, string, ?string) => Promise<Object>,
+  cancelAction: () => void,
   isLoading: boolean,
 }
 
@@ -22,14 +22,14 @@ const networkAction = {
   "delete": Network.del,
 }
 
-const getApiUrl = (projectId, projectResource) => {
-  if (!projectId) {
-    return "/rhn/manager/contentmanagement/api/projects";
+const getApiUrl = (resource, nestedResource, id) => {
+  if (!id) {
+    return `/rhn/manager/contentmanagement/api/${resource}`;
   } else {
-    if(!projectResource) {
-      return `/rhn/manager/contentmanagement/api/projects/${projectId}`;
+    if(!nestedResource) {
+      return `/rhn/manager/contentmanagement/api/${resource}/${id}`;
     } else {
-      return `/rhn/manager/contentmanagement/api/projects/${projectId}/${projectResource}`;
+      return `/rhn/manager/contentmanagement/api/${resource}/${id}/${nestedResource}`;
     }
   }
 }
@@ -37,15 +37,15 @@ const getApiUrl = (projectId, projectResource) => {
 const getErrorMessage = ({messages = [], errors}) => messages.filter(Boolean).concat(Object.values(errors)).join("</br>");
 
 
-const useProjectActionsApi = (props:Props): returnUseProjectActionsApi => {
+const useLifecycleActionsApi = (props:Props): returnUseProjectActionsApi => {
   const [isLoading, setIsLoading] = useState(false);
   const [onGoingNetworkRequest, setOnGoingNetworkRequest] = useState(null);
 
-  const onAction = (actionBodyRequest: Object, action: string) => {
+  const onAction = (actionBodyRequest, action, id) => {
     if(!isLoading) {
       setIsLoading(true);
 
-      const apiUrl = getApiUrl(props.projectId, props.projectResource);
+      const apiUrl = getApiUrl(props.resource, props.nestedResource, id);
       const networkMethod = networkAction[action] || networkAction["get"];
       const networkRequest = networkMethod(apiUrl, JSON.stringify(actionBodyRequest), 'application/json');
       setOnGoingNetworkRequest(networkRequest);
@@ -73,10 +73,10 @@ const useProjectActionsApi = (props:Props): returnUseProjectActionsApi => {
 
           setIsLoading(false);
 
-
-
           throw errMessages;
         });
+    } else {
+      return new Promise(() => {});
     }
   }
 
@@ -91,4 +91,4 @@ const useProjectActionsApi = (props:Props): returnUseProjectActionsApi => {
   };
 }
 
-export default useProjectActionsApi
+export default useLifecycleActionsApi

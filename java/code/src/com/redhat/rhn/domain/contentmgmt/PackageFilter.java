@@ -15,14 +15,57 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import com.redhat.rhn.domain.rhnpackage.Package;
+
+import java.util.Optional;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 /**
  * Package Filter
  */
 @Entity
 @DiscriminatorValue("package")
-public class PackageFilter extends ContentFilter {
+public class PackageFilter extends ContentFilter<Package> {
 
+    @Override
+    public boolean testInternal(Package pack) {
+        FilterCriteria.Matcher matcher = getCriteria().getMatcher();
+        String field = getCriteria().getField();
+        String value = getCriteria().getValue();
+
+        switch (matcher) {
+            case CONTAINS:
+                return getField(pack, field, String.class).contains(value);
+            default:
+                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+
+        }
+    }
+
+    private static <T> T getField(Package pack, String field, Class<T> type) {
+        switch (field) {
+            case "name":
+                return type.cast(pack.getPackageName().getName());
+            default:
+                throw new UnsupportedOperationException("Field " + field + " not supported");
+        }
+    }
+
+    @Override
+    @Transient
+    public EntityType getEntityType() {
+        return EntityType.PACKAGE;
+    }
+
+    @Override
+    public Optional<PackageFilter> asPackageFilter() {
+        return Optional.of(this);
+    }
+
+    @Override
+    public Optional<ErrataFilter> asErrataFilter() {
+        return Optional.empty();
+    }
 }

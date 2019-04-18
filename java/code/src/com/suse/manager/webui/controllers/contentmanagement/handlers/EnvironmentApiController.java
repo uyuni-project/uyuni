@@ -85,7 +85,7 @@ public class EnvironmentApiController {
                 user
         );
 
-        return ControllerUtils.fullProjectJson(res, createEnvironmentRequest.getProjectLabel(), user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, createEnvironmentRequest.getProjectLabel(), user);
     }
 
     /**
@@ -111,7 +111,7 @@ public class EnvironmentApiController {
                 user
         );
 
-        return ControllerUtils.fullProjectJson(res, updateEnvironmentRequest.getProjectLabel(), user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, updateEnvironmentRequest.getProjectLabel(), user);
 
     }
 
@@ -136,7 +136,7 @@ public class EnvironmentApiController {
                 user
         );
 
-        return ControllerUtils.fullProjectJson(res, removeEnvironmentRequest.getProjectLabel(), user);
+        return ControllerApiUtils.fullProjectJsonResponse(res, removeEnvironmentRequest.getProjectLabel(), user);
     }
 
 }

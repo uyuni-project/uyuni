@@ -21,8 +21,11 @@ CREATE TABLE suseContentFilter(
                      REFERENCES web_customer(id)
                      ON DELETE CASCADE,
     type     VARCHAR2(16) NOT NULL,
+    rule     VARCHAR2(16) NOT NULL,
     name     VARCHAR2(128) NOT NULL,
-    criteria CLOB,
+    matcher  VARCHAR2(32) NOT NULL,
+    field    VARCHAR2(32) NOT NULL,
+    value    VARCHAR2(128) NOT NULL,
     created  TIMESTAMP WITH LOCAL TIME ZONE
                  DEFAULT (current_timestamp) NOT NULL,
     modified TIMESTAMP WITH LOCAL TIME ZONE

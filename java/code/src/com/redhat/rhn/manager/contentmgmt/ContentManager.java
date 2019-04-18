@@ -15,32 +15,6 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
-import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
-import com.redhat.rhn.domain.contentmgmt.ContentProject;
-import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
-import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
-import com.redhat.rhn.domain.contentmgmt.ProjectSource;
-import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
-import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
-import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.EntityExistsException;
-import com.redhat.rhn.manager.EntityNotExistsException;
-import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.channel.CloneChannelCommand;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
@@ -56,6 +30,36 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
+
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.channel.CloneChannelCommand;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Content Management functionality
@@ -357,6 +361,116 @@ public class ContentManager {
     }
 
     /**
+     * List filters visible to given user
+     *
+     * @param user the user
+     * @return the filters
+     */
+    public static List<ContentFilter> listFilters(User user) {
+        return ContentProjectFactory.listFilters(user);
+    }
+
+    /**
+     * Look up filter by id and user
+     *
+     * @param id the id
+     * @param user the user
+     * @return the matching filter
+     */
+    public static Optional<ContentFilter> lookupFilterById(Long id, User user) {
+        Optional<ContentFilter> filter = ContentProjectFactory.lookupFilterById(id);
+        return filter.filter(f -> f.getOrg().equals(user.getOrg()));
+    }
+
+    /**
+     * Create a new {@link ContentFilter}
+     *
+     * @param name the filter name
+     * @param rule the filter {@link ContentFilter.Rule}
+     * @param entityType the entity type that the filter will deal with
+     * @param criteria the {@link FilterCriteria} for filtering
+     * @param user the user
+     * @return the created filter
+     */
+    public static ContentFilter createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
+            FilterCriteria criteria, User user) {
+        ensureOrgAdmin(user);
+        return ContentProjectFactory.createFilter(name, rule, entityType, criteria, user);
+    }
+    // todo check behavior consistency with other crud methods
+
+    /**
+     * Update a {@link ContentFilter}
+     *
+     * @param id the filter id
+     * @param name optional with name to update
+     * @param rule optional with {@link ContentFilter.Rule} to update
+     * @param criteria optional with {@link FilterCriteria} to update
+     * @param user the user
+     * @return the updated filter
+     */
+    public static ContentFilter updateFilter(Long id, Optional<String> name, Optional<ContentFilter.Rule> rule,
+            Optional<FilterCriteria> criteria, User user) {
+        ensureOrgAdmin(user);
+        ContentFilter filter = lookupFilterById(id, user)
+                .orElseThrow(() -> new EntityNotExistsException(id));
+        return ContentProjectFactory.updateFilter(filter, name, rule, criteria);
+    }
+
+    /**
+     * Remove {@link ContentFilter}
+     *
+     * @param id the filter id
+     * @param user the user
+     * @return true if removed
+     */
+    public static boolean removeFilter(Long id, User user) {
+        ensureOrgAdmin(user);
+        ContentFilter filter = lookupFilterById(id, user)
+                .orElseThrow(() -> new EntityNotExistsException(id));
+        if (!ContentProjectFactory.listFilterProjects(filter).isEmpty()) {
+            throw new ContentManagementException("Can't delete filter " + id + " - it is used in Content Projects");
+        }
+        return ContentProjectFactory.remove(filter);
+    }
+
+    /**
+     * Attach a {@link ContentFilter} to a {@link ContentProject}
+     *
+     * @param projectLabel the project label
+     * @param filterId the filter id
+     * @param user the user
+     * @return attached filter
+     */
+    public static ContentFilter attachFilter(String projectLabel, Long filterId, User user) {
+        ensureOrgAdmin(user);
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
+        ContentFilter filter = lookupFilterById(filterId, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
+        project.attachFilter(filter);
+        ContentProjectFactory.save(project);
+        return filter;
+    }
+
+    /**
+     * Detach a {@link ContentFilter} from a {@link ContentProject}
+     *
+     * @param projectLabel the project label
+     * @param filterId the filter id
+     * @param user the user
+     */
+    public static void detachFilter(String projectLabel, Long filterId, User user) {
+        ensureOrgAdmin(user);
+        ContentProject project = lookupProject(projectLabel, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentProject.class, projectLabel));
+        ContentFilter filter = lookupFilterById(filterId, user)
+                .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
+        project.detachFilter(filter);
+        ContentProjectFactory.save(project);
+    }
+
+    /**
      * Promote given {@link ContentEnvironment} of given {@link ContentProject}
      * to the successor {@link ContentEnvironment}
      *
@@ -439,11 +553,26 @@ public class ContentManager {
         // remove the detached sources
         sourcesToHandle.getOrDefault(DETACHED, emptyList()).stream()
                 .forEach(src -> removeSource(src));
+
+        Map<ContentProjectFilter.State, List<ContentProjectFilter>> filtersToHandle =
+                project.getProjectFilters().stream().collect(groupingBy(f -> f.getState()));
+        // newly attached filters get built
+        filtersToHandle.getOrDefault(ContentProjectFilter.State.ATTACHED, emptyList()).stream()
+                .forEach(f -> f.setState(ContentProjectFilter.State.BUILT));
+        // remove the detached filters
+        filtersToHandle.getOrDefault(ContentProjectFilter.State.DETACHED, emptyList()).stream()
+                .forEach(f -> removeFilter(f));
+
     }
 
     private static void removeSource(ProjectSource source) {
         source.getContentProject().removeSource(source);
         ContentProjectFactory.remove(source);
+    }
+
+    private static void removeFilter(ContentProjectFilter filter) {
+        filter.getProject().getProjectFilters().remove(filter);
+        ContentProjectFactory.remove(filter);
     }
 
     /**

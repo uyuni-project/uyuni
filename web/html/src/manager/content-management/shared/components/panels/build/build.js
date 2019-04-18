@@ -9,21 +9,16 @@ import {Form} from "../../../../../../components/input/Form";
 import {Text} from "../../../../../../components/input/Text";
 import {Loading} from "../../../../../../components/loading/loading";
 import DownArrow from '../../down-arrow/down-arrow';
-import useProjectActionsApi from "../../../api/use-project-actions-api";
 
 import type {ProjectHistoryEntry} from '../../../type/project.type.js';
 import {showErrorToastr, showSuccessToastr} from "../../../../../../components/toastr/toastr";
+import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 
 type Props = {
   projectId: string,
   onBuild: Function,
   currentHistoryEntry?: ProjectHistoryEntry,
-  changesToBuild: Array<{
-    channelId: number,
-    type: string,
-    name: string,
-    state: string,
-  }>,
+  changesToBuild: Array<string>,
   disabled?: boolean,
 }
 
@@ -31,8 +26,8 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
 
   const [open, setOpen] = useState(false);
   const [buildVersionForm, setBuildVersionForm] = useState({})
-  const {onAction, cancelAction, isLoading} = useProjectActionsApi({
-    projectId: projectId, projectResource: "build"
+  const {onAction, cancelAction, isLoading} = useLifecycleActionsApi({
+    resource: 'projects', nestedResource: 'build'
   });
 
   const modalNameId = "cm-create-build-modal";
@@ -98,11 +93,10 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                       <dd className="col-md-9">
                         <ul className="list-unstyled">
                           {
-                            changesToBuild.map((change) => {
-                              const versionMessage = `${change.type} ${change.name} ${change.state}`
+                            changesToBuild.map((change, index) => {
                               return (
-                                <li key={change.channelId}>
-                                  {versionMessage}
+                                <li key={index}>
+                                  {change}
                                 </li>
                               )
                             })
@@ -130,7 +124,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                           onAction({
                             projectLabel: projectId,
                             message: buildVersionForm.message,
-                          }, "action")
+                          }, "action", projectId)
                             .then((projectWithUpdatedSources) => {
                               closeDialog(modalNameId);
                               showSuccessToastr(`Version ${buildVersionForm.version} successfully built into ${projectWithUpdatedSources.environments[0].name}`)

@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
+import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -30,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -58,7 +60,8 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
             LOG.info("Asynchronously aligning: " + msg);
             Instant start = Instant.now();
-            ChannelManager.alignEnvironmentTargetSync(source, targetChannel, msg.getUser());
+            List<PackageFilter> packageFilters = target.getContentEnvironment().getContentProject().getPackageFilters();
+            ChannelManager.alignEnvironmentTargetSync(packageFilters, source, targetChannel, msg.getUser());
             target.setStatus(Status.GENERATING_REPODATA);
             LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
         }
