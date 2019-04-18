@@ -48,7 +48,7 @@ const FilterEdit = (props: FilterEditProps) => {
   const modalNameId = `${props.id}-modal`;
 
   useEffect(() => {
-    if(props.filter.id === props.openFilterId) {
+    if(props.filter.id === props.openFilterId || (props.openFilterId === -1 && !props.editing)) {
       showDialog(modalNameId);
       setOpen(true);
       setItem(props.filter);

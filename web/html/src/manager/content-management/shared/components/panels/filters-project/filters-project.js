@@ -18,16 +18,16 @@ type FiltersProps = {
 const renderFilterEntry = (filter) => {
   const descr = `${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name`;
   const filterButton =
-    <div className={styles.icon_wrapper_vertical_center}>
-      <LinkButton
-        id={`edit-filter-${filter.id}`}
-        icon='fa-edit'
-        title={t(`Edit Filter ${filter.name}`)}
-        className='pull-right'
-        text={t("Edit")}
-        href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}`}
-      />
-    </div>;
+      <div className={styles.icon_wrapper_vertical_center}>
+        <LinkButton
+          id={`edit-filter-${filter.id}`}
+          icon='fa-edit'
+          title={t(`Edit Filter ${filter.name}`)}
+          className='pull-right'
+          text={t("Edit")}
+          href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}`}
+        />
+      </div>;
 
   if (filter.state === 'ATTACHED') {
     return (

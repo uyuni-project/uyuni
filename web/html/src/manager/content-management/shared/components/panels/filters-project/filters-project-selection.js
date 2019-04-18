@@ -43,40 +43,35 @@ const FiltersProjectSelection = (props:  FiltersProps): Node => {
     )
   }
 
-  if (allFilters && allFilters.length > 0) {
-    return allFilters.map(filter =>
-      <div key={filter.id} className='checkbox'>
-        <input type='checkbox'
-               value={filter.id}
-               id={'child_' + filter.id}
-               name='filterSelection'
-               checked={onGoingSelectedFilters.includes(filter.id)}
-               onChange={(event) => setOnGoingSelectedFilters(
-                 _xor(onGoingSelectedFilters, [parseInt(event.target.value, 10)])
-               )}
-        />
-        <label
-          htmlFor={"child_" + filter.id}>
-          {`${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name`}
-        </label>
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <h4>
-        No filters defined
-        <LinkButton
-          id={`filters-page-link`}
-          icon='fa-edit'
-          text={t("Filters")}
-          href="/rhn/manager/contentmanagement/filters"
-        />
-      </h4>
-    </div>
-  )
-
+    <React.Fragment>
+    {
+      allFilters && allFilters.length > 0 && allFilters.map(filter =>
+          <div key={filter.id} className='checkbox'>
+            <input type='checkbox'
+                  value={filter.id}
+                  id={'child_' + filter.id}
+                  name='filterSelection'
+                  checked={onGoingSelectedFilters.includes(filter.id)}
+                  onChange={(event) => setOnGoingSelectedFilters(
+                    _xor(onGoingSelectedFilters, [parseInt(event.target.value, 10)])
+                  )}
+            />
+            <label
+              htmlFor={"child_" + filter.id}>
+              {`${filter.name}: deny ${filter.type} containing ${filter.criteria} in the name`}
+            </label>
+          </div>
+      )
+    }
+    <LinkButton
+        id={`create-new-filter-link`}
+        icon='fa-plus'
+        text={t("Create new Filter")}
+        href="/rhn/manager/contentmanagement/filters?openFilterId=-1"
+    />
+    </React.Fragment>
+  );
 };
 
 export default FiltersProjectSelection;
