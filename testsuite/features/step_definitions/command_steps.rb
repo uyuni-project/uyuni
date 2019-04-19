@@ -628,6 +628,12 @@ When(/^I open avahi port on the proxy$/) do
   $proxy.run('firewall-cmd --reload')
 end
 
+# WORKAROUND
+# bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
+When(/^I reopen the IPv6 default route on the proxy$/) do
+  $proxy.run('ip -6 r a default via fe80::1 dev eth0')
+end
+
 When(/^I copy server\'s keys to the proxy$/) do
   ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
     return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
