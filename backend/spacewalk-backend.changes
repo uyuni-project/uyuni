@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 22 12:07:39 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.14-1
 - Add support for mirrorlist and metalink on Zypper reposync.
 - Solve situations where synced packages have epoch 0 but reposync
   does not find them them on the database.
