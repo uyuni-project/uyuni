@@ -123,6 +123,11 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
+  Scenario: Let avahi work on the branch server
+    When I open avahi port on the proxy
+
+@proxy
+@private_net
   Scenario: Apply the branch network formulas via the highstate
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
@@ -138,12 +143,10 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Let avahi work on the branch server
-    Given service "firewalld" is active on "proxy"
-    When I open avahi port on the proxy
+  Scenario: Workaround - reopen default IPv6 route
     # WORKAROUND
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
-    And I reopen the IPv6 default route on the proxy
+    When I reopen the IPv6 default route on the proxy
 
 @proxy
 @private_net
