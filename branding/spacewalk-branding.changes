@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 22 12:08:09 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.9-1
 - Add Content Lifecycle Management icon
 - Remove the obsolate rhn_docs.conf file
 - Introduce a description label for the new 'minion-checkin' Taskomatic job (bsc#1122837)
