@@ -444,9 +444,7 @@ py3clean -p python3-%{name}-actions
 %files client
 %defattr(-,root,root,-)
 %{_bindir}/rhncfg-client
-%if 0%{?suse_version}
 %{_bindir}/mgrcfg-client
-%endif
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-client.conf
 %{_mandir}/man8/rhncfg-client.8*
 
@@ -466,9 +464,7 @@ py3clean -p python3-%{name}-actions
 
 %files management
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
 %{_bindir}/mgrcfg-manager
-%endif
 %{_bindir}/rhncfg-manager
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-manager.conf
 %{_mandir}/man8/rhncfg-manager.8*
@@ -489,9 +485,7 @@ py3clean -p python3-%{name}-actions
 
 %files actions
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
 %{_bindir}/mgr-actions-control
-%endif
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
 %{_mandir}/man8/rhn-actions-control.8*
