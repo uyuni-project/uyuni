@@ -27,7 +27,7 @@ Name:           spacewalk-reports
 Summary:        Script based reporting
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.0.3
+Version:        4.0.4
 Release:        1%{?dist}
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
