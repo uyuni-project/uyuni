@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 22 12:23:43 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.11-1
 - Enable SLES11 OS Image Build Host
 - Add support for Salt batch execution mode
 - Do not configure Salt Mine in newly registered minions (bsc#1122837)
