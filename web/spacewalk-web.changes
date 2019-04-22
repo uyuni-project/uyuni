@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 22 12:18:26 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.10-1
 - Add Content Lifecycle Management icon
 - Content Lifecycle Management: first filter functionality - deny by package name
 - Content lifecycle management - Fix text issues
