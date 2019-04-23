@@ -97,6 +97,7 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-eve
 %{_bindir}/rhn-install-ssl-cert.pl
 %{_bindir}/mgr-events-config.py
 %{_sbindir}/rhn-sat-restart-silent
+%{_sbindir}/mgr-monitoring-ctl
 %{rhnroot}/RHN-GPG-KEY
 %{_mandir}/man8/rhn-satellite.8*
 %{_mandir}/man8/rhn-config-schema.pl.8*

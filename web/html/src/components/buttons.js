@@ -32,7 +32,7 @@ class AsyncButton extends _ButtonBase {
     super(props);
     ["trigger"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
-        value: "initial"
+        value: props.initialValue ? props.initialValue : "initial"
     };
   }
 
@@ -114,7 +114,11 @@ AsyncButton.propTypes = {
    * Any additional css classes for the button.
    * @see defaultType
    */
-  className: PropTypes.string
+  className: PropTypes.string,
+  /**
+   * Initial state of the button ('failure', 'warning' or 'initial')
+   */
+  initialValue: PropTypes.string
 };
 
 /**

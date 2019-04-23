@@ -37,7 +37,7 @@ SCRIPTS = rhn-config-satellite.pl \
                rhn-generate-pem.pl \
                mgr-events-config.py
 
-SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper
+SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl
 
 CONF_FILES = service-list
 

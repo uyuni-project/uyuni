@@ -1,0 +1,19 @@
+## Path:           Applications/PostgreSQLExporter
+## Description:    Prometheus exporter for PostgreSQL
+## Type:           string()
+## Default:        "postgresql://user:passwd@localhost:5432/database?sslmode=disable"
+## ServiceRestart: postgres-exporter
+#
+# Connection URL to postgresql instance
+#
+DATA_SOURCE_NAME="postgresql://{{ pillar['db_user'] }}:{{ pillar['db_pass'] }}@localhost:5432/susemanager?sslmode=disable"
+
+## Path:           Applications/PostgreSQLExporter
+## Description:    Prometheus exporter for PostgreSQL
+## Type:           string()
+## Default:        ""
+## ServiceRestart: postgres-exporter
+#
+# Extra options for postgres-exporter
+#
+POSTGRES_EXPORTER_PARAMS="--extend.query-path /etc/postgres_exporter/postgres_exporter_queries.yaml"

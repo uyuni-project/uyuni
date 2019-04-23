@@ -1,0 +1,13 @@
+include /templates/common.jade
+
+#monitoring
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+
+script(src='/javascript/manager/admin/config/monitoring.renderer.bundle.js?cb=#{webVersion}')
+
+script(type='text/javascript').
+    pageRenderers.admin.monitoring.renderer(
+        'monitoring'
+    );

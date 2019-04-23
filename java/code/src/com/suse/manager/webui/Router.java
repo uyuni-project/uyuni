@@ -29,6 +29,7 @@ import static spark.Spark.notFound;
 import static spark.Spark.post;
 
 import com.suse.manager.webui.controllers.ActivationKeysController;
+import com.suse.manager.webui.controllers.AdminConfigController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
@@ -324,6 +325,13 @@ public class Router implements SparkApplication {
                 withProductAdmin(ProductsController::synchronizeSubscriptions));
         post("/manager/admin/setup/sync/repositories",
                 withProductAdmin(ProductsController::synchronizeRepositories));
+
+        // Admin - monitoring
+        get("/manager/admin/config/monitoring",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminConfigController::showMonitoring))), jade);
+        get("/manager/api/admin/config/monitoring", withOrgAdmin(AdminConfigController::status));
+        post("/manager/api/admin/config/monitoring",
+                withOrgAdmin(AdminConfigController::changeMonitoringStatus));
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
