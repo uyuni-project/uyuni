@@ -27,6 +27,10 @@ all :: all-code all-conf
 # now include some Macros
 include Makefile.defs
 
+__pylint ::
+	$(call update_pip_env)
+	pylint --rcfile=pylintrc $(shell find -name '*.py') > reports/pylint.log || true
+
 install :: install-code install-conf
 
 clean :: clean-code clean-conf
@@ -61,9 +65,12 @@ docker_oracle_tests ::
 	@echo "Running Oracle tests"
 	docker run --privileged --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora /manager/backend/test/docker-backend-oracle-tests.sh
 
-# This is obsolete target. Use Makefile.python
 docker_pylint ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/backend; make -f Makefile.python __pylint"
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/backend; make -f Makefile.backend __pylint"
 
 docker_shell ::
 	docker run --rm=true -t -i -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
+
+test ::
+	echo "test"
+
