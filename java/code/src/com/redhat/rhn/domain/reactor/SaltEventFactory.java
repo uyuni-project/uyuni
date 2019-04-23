@@ -23,6 +23,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -43,26 +45,38 @@ public class SaltEventFactory extends HibernateFactory {
 
     /**
      * Returns the approximate number of Salt events currently queued.
-     * @return the count
+     * @param queuesCount the number of queues handling events
+     * @return the list of events count per queue
      */
-    public static long countSaltEvents() {
-        return (Long) singleton.lookupObjectByNamedQuery("SaltEvent.countSaltEvents", Collections.EMPTY_MAP);
+    @SuppressWarnings("unchecked")
+    public static List<Long> countSaltEvents(int queuesCount) {
+        List<Object[]> countObjects = singleton.listObjectsByNamedQuery("SaltEvent.countSaltEvents",
+                    Collections.EMPTY_MAP);
+
+        return IntStream.range(0, queuesCount).mapToLong(i -> {
+            return countObjects.stream()
+                    .filter(c -> c[0].equals(i))
+                    .map(c -> (Long) c[1])
+                    .findFirst()
+                    .orElse(Long.valueOf(0L));
+        }).boxed().collect(Collectors.toList());
     }
 
     /**
      * Returns Salt events, if any, up to limit.
      * @param limit the maximum count of events to return
+     * @param queue the thread to pop events for
      * @return events
      */
     @SuppressWarnings("unchecked")
-    public static Stream<SaltEvent> popSaltEvents(int limit) {
+    public static Stream<SaltEvent> popSaltEvents(int limit, int queue) {
         List<Object[]> eventObjects = singleton.listObjectsByNamedQuery(
                 "SaltEvent.popSaltEvents",
-                new HashMap() { { put("limit", limit); } }
+                new HashMap<String, Object>() { { put("limit", limit); put("queue", queue); } }
         );
 
         return eventObjects.stream()
-                .map(o -> new SaltEvent((long)o[0], (String)o[1], (String)o[2]));
+                .map(o -> new SaltEvent((long)o[0], (String)o[1], (String)o[2], (int)o[3]));
     }
 
     /**
@@ -74,7 +88,7 @@ public class SaltEventFactory extends HibernateFactory {
     public static List<Long> deleteSaltEvents(Collection<Long> ids) {
         return singleton.listObjectsByNamedQuery(
                 "SaltEvent.deleteSaltEvents",
-                new HashMap() { { put("ids", ids); } }
+                new HashMap<String, Object>() { { put("ids", ids); } }
         );
     }
 }
