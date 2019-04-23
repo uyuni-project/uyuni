@@ -31,12 +31,14 @@ import com.impossibl.postgres.jdbc.PGDataSource;
 import com.suse.salt.netapi.event.AbstractEventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.parser.JsonParser;
+
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -44,6 +46,9 @@ import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 /**
@@ -56,14 +61,16 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     private static final int THREAD_POOL_SIZE = ConfigDefaults.get().getSaltEventThreadPoolSize();
 
     private PGConnection connection;
-    private final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
-            THREAD_POOL_SIZE,
-            THREAD_POOL_SIZE,
+    private final List<ThreadPoolExecutor> executorServices = IntStream.range(0, THREAD_POOL_SIZE).mapToObj(i ->
+        new ThreadPoolExecutor(
+            1,
+            1,
             0L,
             TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>(),
-            new BasicThreadFactory.Builder().namingPattern("salt-event-thread-%d").build()
-    );
+            new BasicThreadFactory.Builder().namingPattern(String.format("salt-event-thread-%d", i)).build()
+        )
+    ).collect(Collectors.toList());
 
     /**
      * Default constructor, connects to Postgres and waits for events.
@@ -89,7 +96,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             startConnectionWatchdog();
 
             LOG.debug("Listening succeeded, making sure there is no event left in queue...");
-            notification(SaltEventFactory.countSaltEvents());
+            notification(SaltEventFactory.countSaltEvents(THREAD_POOL_SIZE));
         }
         catch (SQLException e) {
             throw new SaltException(e);
@@ -113,10 +120,17 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                         // if we have any rows in suseSaltEvent that do not yet have a process task queued or executing
                         // then schedule tasks for them
                         // this can only happen in case we lost notifications somehow
-                        long allJobs = SaltEventFactory.countSaltEvents();
-                        long queuedJobs = executorService.getTaskCount() - executorService.getCompletedTaskCount();
-                        long missingJobs = allJobs - queuedJobs;
-                        if (missingJobs > 0) {
+                        List<Long> allJobs = SaltEventFactory.countSaltEvents(THREAD_POOL_SIZE);
+
+                        List<Long> queuedJobs = executorServices.stream()
+                                .map(executor -> executor.getTaskCount() - executor.getCompletedTaskCount())
+                                .collect(Collectors.toList());
+
+                        List<Long> missingJobs = IntStream.range(0, THREAD_POOL_SIZE)
+                            .mapToObj(i -> allJobs.get(i) - queuedJobs.get(i))
+                            .collect(Collectors.toList());
+
+                        if (missingJobs.stream().mapToLong(l -> l).sum() > 0) {
                             LOG.warn("Found " + missingJobs + " events without a job. Scheduling...");
                             notification(missingJobs);
                         }
@@ -132,40 +146,46 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
     @Override
     public void notification(int processId, String channelName, String payload) {
-        notification(Long.parseLong(payload));
+        List<Long> counts = Arrays.stream(payload.split(","))
+                .map(str -> Long.valueOf(str))
+                .collect(Collectors.toList());
+        notification(counts);
     }
 
     /**
      * Called every time a notification from Postgres (ultimately from mgr_engine.py) is fired.
-     * @param count the number of INSERTed events to be handled
+     * @param counts the list of the number of INSERTed events to be handled by queue.
      */
-    public void notification(long count) {
+    public void notification(List<Long> counts) {
         // compute the number of jobs we need to do - each job COMMITs individually
         // jobs = events / MAX_EVENTS_PER_COMMIT (rounded up)
-        long jobs = (count + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
+        IntStream.range(0, THREAD_POOL_SIZE).forEach(queue -> {
+            long jobs = (counts.get(queue) + MAX_EVENTS_PER_COMMIT - 1) / MAX_EVENTS_PER_COMMIT;
 
-        // queue one handlingTransaction(processEvents) call per job
-        for (int j = 0; j < jobs; j++) {
-            executorService.execute(() -> {
-                List<SaltEvent> uncommittedEvents = new LinkedList<>();
-                TransactionHelper.handlingTransaction(
-                        () -> processEvents(uncommittedEvents),
-                        e -> handleExceptions(uncommittedEvents, e));
+            // queue one handlingTransaction(processEvents) call per job
+            LongStream.range(0L, jobs).forEach(job -> {
+                executorServices.get(queue).execute(() -> {
+                    List<SaltEvent> uncommittedEvents = new LinkedList<>();
+                    TransactionHelper.handlingTransaction(
+                            () -> processEvents(uncommittedEvents, queue),
+                            e -> handleExceptions(uncommittedEvents, e));
+                });
             });
-        }
+        });
     }
 
     /**
      * Reads one or more events from suseSaltEvent and notifies listeners (typically, {@link PGEventListener}).
      * @param uncommittedEvents used to keep track of events being processed
+     * @param queue the index of the thread processing the events
      */
-    private void processEvents(List<SaltEvent> uncommittedEvents) {
-        Stream<SaltEvent> events = SaltEventFactory.popSaltEvents(MAX_EVENTS_PER_COMMIT)
+    private void processEvents(List<SaltEvent> uncommittedEvents, int queue) {
+        Stream<SaltEvent> events = SaltEventFactory.popSaltEvents(MAX_EVENTS_PER_COMMIT, queue)
                 .sorted(comparing(SaltEvent::getMinionId, nullsLast(naturalOrder())).thenComparing(SaltEvent::getId));
 
         events.forEach(event -> {
             if (LOG.isTraceEnabled()) {
-                LOG.trace("Handling event " + event.getId());
+                LOG.trace("Handling event " + event.getId() + " in worker #" + queue);
                 LOG.trace(event.getData());
             }
             uncommittedEvents.add(event);

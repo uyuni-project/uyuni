@@ -3,9 +3,12 @@
 <hibernate-mapping>
     <sql-query name="SaltEvent.countSaltEvents">
         <![CDATA[
-          SELECT COUNT(*) as count
-              FROM suseSaltEvent;
+          SELECT queue,
+                 COUNT(*) as count
+              FROM suseSaltEvent
+              GROUP BY queue;
         ]]>
+        <return-scalar column="queue" type="integer"/>
         <return-scalar column="count" type="long"/>
     </sql-query>
 
@@ -16,15 +19,17 @@
             WHERE id IN (
               SELECT id
               FROM suseSaltEvent
+              WHERE queue = :queue
               ORDER BY minion_id NULLS FIRST, id
               FOR UPDATE SKIP LOCKED
               LIMIT :limit
             )
-            RETURNING id, minion_id, data;
+            RETURNING id, minion_id, data, queue;
         ]]>
         <return-scalar column="id" type="long"/>
         <return-scalar column="minion_id" type="string"/>
         <return-scalar column="data" type="string"/>
+        <return-scalar column="queue" type="integer"/>
     </sql-query>
 
     <sql-query name="SaltEvent.deleteSaltEvents">

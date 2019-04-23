@@ -7,6 +7,10 @@ import pwd
 import yaml
 from spacewalk.common.rhnConfig import initCFG, CFG
 
+initCFG('java')
+
+thread_pool_size = CFG.salt_event_thread_pool_size
+
 initCFG()
 
 config = {
@@ -18,6 +22,9 @@ config = {
                 "dbname": CFG.db_name,
                 "user": CFG.db_user,
                 "password": CFG.db_password
+            },
+            "events": {
+                "thread_pool_size": thread_pool_size
             }
         }
     }]
