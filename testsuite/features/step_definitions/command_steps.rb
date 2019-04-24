@@ -965,6 +965,7 @@ end
 
 When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_schedulepackagerefresh #{node}"
   $server.run(command)
 end
@@ -975,6 +976,7 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   current_time = Time.now.strftime('%Y%m%d%H%M')
   timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
   node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
   cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node} | grep 'Package List Refresh scheduled by admin' | head -1"
   begin
     Timeout.timeout(long_wait_delay) do
@@ -992,6 +994,7 @@ end
 
 When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |packages, client|
   node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   result, code = $server.run(command, false)
   packages.split(' ').each do |package|
@@ -1002,6 +1005,7 @@ end
 
 When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) do |pkg, client|
   node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   long_wait_delay = 600
   begin
