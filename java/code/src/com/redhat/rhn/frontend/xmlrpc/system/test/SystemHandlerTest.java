@@ -2686,6 +2686,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(result, server.getId().intValue());
     }
 
+    /**
+     * Create a minion server, get details by id, compare the returned server minion_id
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testGetMinionId() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        Server server = (Server) getMockedHandler().getDetails(admin, minion.getId().intValue());
+
+        assertEquals(minion.getMinionId(), server.getMinionId());
+    }
+
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock);
