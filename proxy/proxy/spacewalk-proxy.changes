@@ -1,3 +1,5 @@
+- Fix config declaration for rhn.conf (bsc#1132197)
+
 -------------------------------------------------------------------
 Mon Apr 22 12:13:52 CEST 2019 - jgonzalez@suse.com
 

@@ -476,7 +476,7 @@ fi
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 # config files
 %attr(755,root,%{apache_group}) %dir %{rhnconf}
-%attr(640,root,%{apache_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{rhnconf}/rhn.conf
+%attr(640,root,%{apache_group}) %config(noreplace) %{rhnconf}/rhn.conf
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
 # this file is created by either cli or webui installer
