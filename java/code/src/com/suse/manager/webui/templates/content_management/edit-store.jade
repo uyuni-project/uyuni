@@ -3,8 +3,8 @@ include ../common.jade
 #image-store-edit
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const storeId = "#{store_id}"
+    window.csrfToken = "#{csrf_token}";
+    window.storeId = "#{store_id}"
 
 script(src='/javascript/manager/image-store-edit.bundle.js?cb=#{webVersion}', type='text/javascript')
 

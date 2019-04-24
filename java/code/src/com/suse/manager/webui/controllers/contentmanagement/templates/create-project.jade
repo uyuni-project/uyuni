@@ -5,7 +5,7 @@ include /templates/common.jade
 #content-management-create-project
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 
 script(src='/javascript/manager/content-management/create-project/create-project.renderer.bundle.js?cb=#{webVersion}')
 

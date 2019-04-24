@@ -158,6 +158,7 @@ public class DialognavRenderer extends Renderable {
         }
 
         li.addBody(aHref(href, node.getName(), node.getTarget()));
+
         sb.append(li.render());
         sb.append("\n");
     }
@@ -201,6 +202,7 @@ public class DialognavRenderer extends Renderable {
         }
 
         a.setAttribute("href", url);
+        a.setAttribute("class", "js-spa");
         a.addBody(text);
         return a.render();
     }

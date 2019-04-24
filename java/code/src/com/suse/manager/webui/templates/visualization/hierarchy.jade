@@ -5,9 +5,9 @@ script(src='/javascript/d3.js?cb=#{webVersion}', type='text/javascript')
 #hierarchy
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const endpoint = "#{endpoint}";
-    const title = "#{title}";
-    const view = "#{view}";
+    window.csrfToken = "#{csrf_token}";
+    window.endpoint = "#{endpoint}";
+    window.title = "#{title}";
+    window.view = "#{view}";
 
 script(src='/javascript/manager/visualization/hierarchy.bundle.js?cb=#{webVersion}', type='text/javascript')

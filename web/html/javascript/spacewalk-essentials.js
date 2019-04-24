@@ -114,47 +114,48 @@ function sstScrollBehaviorSetup(sst) {
 // when the page scrolls down and the toolbar is going up and hidden,
 // the toolbar takes a fixed place right below the header bar
 function handleSst() {
-  var sst = $('.spacewalk-section-toolbar');
-
-  if ($('.move-to-fixed-toolbar').length > 0) {
-    // if there is no 'spacewalk-section-toolbar', then create it
-    if (sst.length == 0) {
-      sst = $('<div class="spacewalk-section-toolbar">');
-      $('.spacewalk-list.list').before(sst);
-    }
-
-    // move each named tag into the 'spacewalk-section-toolbar'
-    $('.move-to-fixed-toolbar').each(function() {
-      sst.append($(this));
-      $(this).removeClass('move-to-fixed-toolbar');
-    });
-  }
-
-  // move children of each named tag
-  // into the 'spacewalk-section-toolbar > action-button-wrapper'
-  if ($('.move-children-to-fixed-toolbar').length > 0) {
-    // if there is no 'spacewalk-section-toolbar', then create it
-    if (sst.length == 0) {
-      sst = $('<div class="spacewalk-section-toolbar">');
-      $('.spacewalk-list.list').before(sst);
-    }
-    var selectorButtonWrapper = $('.selector-button-wrapper');
-    // if there is no 'action-button-wrapper', then create it
-    if (selectorButtonWrapper.length == 0) {
-      selectorButtonWrapper = $('<div class="selector-button-wrapper">');
-      sst.prepend(selectorButtonWrapper);
-    }
-    $('.move-children-to-fixed-toolbar').each(function() {
-      selectorButtonWrapper.append($(this).children());
-      $(this).removeClass('move-children-to-fixed-toolbar');
-    });
-  }
+  // // TODO: PROBLEM CICLO INFINITO
+  // var sst = $('.spacewalk-section-toolbar');
+  //
+  // if ($('.move-to-fixed-toolbar').length > 0) {
+  //   // if there is no 'spacewalk-section-toolbar', then create it
+  //   if (sst.length == 0) {
+  //     sst = $('<div class="spacewalk-section-toolbar">');
+  //     $('.spacewalk-list.list').before(sst);
+  //   }
+  //
+  //   // move each named tag into the 'spacewalk-section-toolbar'
+  //   $('.move-to-fixed-toolbar').each(function() {
+  //     sst.append($(this));
+  //     $(this).removeClass('move-to-fixed-toolbar');
+  //   });
+  // }
+  //
+  // // move children of each named tag
+  // // into the 'spacewalk-section-toolbar > action-button-wrapper'
+  // if ($('.move-children-to-fixed-toolbar').length > 0) {
+  //   // if there is no 'spacewalk-section-toolbar', then create it
+  //   if (sst.length == 0) {
+  //     sst = $('<div class="spacewalk-section-toolbar">');
+  //     $('.spacewalk-list.list').before(sst);
+  //
+  //   var selectorButtonWrapper = $('.selector-button-wrapper');
+  //   // if there is no 'action-button-wrapper', then create it
+  //   if (selectorButtonWrapper.length == 0) {
+  //     selectorButtonWrapper = $('<div class="selector-button-wrapper">');
+  //     sst.prepend(selectorButtonWrapper);
+  //   }
+  //   $('.move-children-to-fixed-toolbar').each(function() {
+  //     selectorButtonWrapper.append($(this).children());
+  //     $(this).removeClass('move-children-to-fixed-toolbar');
+  //   });
+  // }
 
   // setup the function only if there is the 'spacewalk-section-toolbar'
   // and the function is not yet setup
-  if (!sstScrollBehaviorSetupIsDone && sst.length > 0) {
-    sstScrollBehaviorSetup(sst);
-  }
+  // if (!sstScrollBehaviorSetupIsDone && sst.length > 0) {
+  //   sstScrollBehaviorSetup(sst);
+  // }
 }
 
 function sstStyle() {

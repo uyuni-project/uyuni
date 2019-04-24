@@ -3,7 +3,7 @@ include ../common.jade
 #cveaudit
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+    window.csrfToken = "#{csrf_token}";
 
 +userPreferences
 script(src='/javascript/manager/cveaudit.bundle.js?cb=#{webVersion}', type='text/javascript')

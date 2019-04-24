@@ -2,10 +2,10 @@ include ../common.jade
 #products
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const issMaster_flag_from_backend = #{issMaster};
-    const refreshNeeded_flag_from_backend = #{refreshNeeded};
-    const refreshRunning_flag_from_backend = #{refreshRunning};
+    window.csrfToken = "#{csrf_token}";
+    window.issMaster_flag_from_backend = #{issMaster};
+    window.refreshNeeded_flag_from_backend = #{refreshNeeded};
+    window.refreshRunning_flag_from_backend = #{refreshRunning};
 
 +userPreferences
 script(src='/javascript/manager/products.bundle.js?cb=#{webVersion}', type='text/javascript')

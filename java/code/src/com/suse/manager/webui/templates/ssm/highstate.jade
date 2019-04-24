@@ -9,10 +9,10 @@
 #highstate
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const minions = !{minions};
-    const timezone = "#{h.renderTimezone()}";
-    const localTime = "#{h.renderLocalTime()}";
-    const actionChains = !{actionChains};
+    window.csrfToken = "#{csrf_token}";
+    window.minions = !{minions};
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+    window.actionChains = !{actionChains};
 
 script(src='/javascript/manager/highstate.bundle.js?cb=#{webVersion}', type='text/javascript')

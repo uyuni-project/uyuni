@@ -23,7 +23,10 @@
 <c:set var="pageList" value="${requestScope.pageList}" />
 <c:set var="emptyListKey" value="erratalist.jsp.nopublishederrata"/>
 
-<%@ include file="/WEB-INF/pages/common/fragments/errata/ownedlistdisplay.jspf" %>
+
+<div id="wrong">
+    <%@ include file="/WEB-INF/pages/common/fragments/errata/ownedlistdisplay.jspf" %>
+</div>
 
 </body>
 </html:html>

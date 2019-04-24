@@ -46,6 +46,7 @@
     "react-dom": "^16.8.2",
     "react-hot-loader": "^4.7.0",
     "react-select": "^2.4.2",
+    "senna": "^2.7.6",
     "toastr": "^2.1.4",
     "use-immer": "^0.1.0"
   },

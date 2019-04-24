@@ -3,8 +3,16 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 
+// event.preventDefault();
+// $('#page-body').load(event.target.href + (event.target.href.includes("?") ? '&excludeBody=true' : '?excludeBody=true'))
+
+// $.ajaxSetup({ cache: false });
+
+// var app = senna.dataAttributeHandler.getApp();
+// app.setLinkSelector("a.js-spa");
+
 const Link = (props) =>
-  <a href={props.url} className={props.cssClass} target={props.target}
+  <a href={props.url} className={props.cssClass + " js-spa"} target={props.target}
     title={props.title} onClick={props.handleClick}>
     {props.preIcon ? <i className={'fa ' + props.preIcon}></i> : null}
     {

@@ -3,12 +3,12 @@ include ../common.jade
 #image-view
 
 script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
-    const imageId = "#{id}";
-    const isAdmin = #{isAdmin};
-    const timezone = "#{h.renderTimezone()}";
-    const localTime = "#{h.renderLocalTime()}";
-    const isRuntimeInfoEnabled = #{isRuntimeInfoEnabled};
+    window.csrfToken = "#{csrf_token}";
+    window.imageId = "#{id}";
+    window.isAdmin = #{isAdmin};
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+    window.isRuntimeInfoEnabled = #{isRuntimeInfoEnabled};
 
 +userPreferences
 script(src='/javascript/manager/image-view.bundle.js?cb=#{webVersion}', type='text/javascript')

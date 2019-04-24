@@ -11,6 +11,7 @@ const { join } = require('path')
 
 const oldPagesEntries = {
   'polyfill': './manager/polyfill.js',
+  'senna': './manager/senna.js',
   'errors/not-found': './manager/errors/not-found.js',
   'visualization/hierarchy': './manager/visualization/hierarchy.js',
   'bootstrap-minions': './manager/bootstrap-minions.js',
