@@ -38,11 +38,11 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *      #prop("string", "epoch")
  *      #prop("int", "id")
  *      #prop("string", "arch_label")
+ *      #prop("dateTime.iso8601", "last_modified")
  *      #prop_desc("string", "path", "The path on that file system that the package
  *             resides")
  *      #prop_desc("string", "provider", "The provider of the package, determined by
  *              the gpg key it was signed with.")
- *      #prop("dateTime.iso8601", "last_modified")
  *  #struct_end()
  *
  */
