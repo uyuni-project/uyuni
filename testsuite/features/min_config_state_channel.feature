@@ -7,7 +7,8 @@ Feature: Configuration state channels
 
   Scenario: Create a state channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Create State Channel"
     Then I should see a "New Config Channel" text
@@ -33,7 +34,8 @@ Feature: Configuration state channels
 
   Scenario: Salt state details
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "My State Channel"
     Then I should see a "1 system subscribed" text
@@ -54,7 +56,8 @@ Feature: Configuration state channels
 
   Scenario: Try to remove init.sls file
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "My State Channel"
     And I follow "View/Edit 'init.sls' File"
@@ -65,7 +68,8 @@ Feature: Configuration state channels
 
   Scenario: Cleanup: remove the state channel and the file
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "My State Channel"
     And I follow "Delete Channel"

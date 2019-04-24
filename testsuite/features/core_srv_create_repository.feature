@@ -44,7 +44,7 @@ Feature: Add a repository to a channel
   Scenario: Synchronize the repository in the x86_64 channel
     Given I am authorized as "testing" with password "testing"
     When I enable source package syncing
-    When I follow "Channel List"
+    And I follow "Channel List"
     And I follow "Manage" in the left menu
     And I follow "Repositories" in the left menu
     And I follow "Channels" in the left menu

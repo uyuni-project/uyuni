@@ -14,7 +14,8 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Create a configuration channel for the activation key
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Key Channel" as "cofName"
@@ -25,7 +26,8 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Add a configuration file to the key configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Key Channel"
     And I follow "Create Configuration File or Directory"
@@ -115,7 +117,8 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Cleanup: remove the key configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Key Channel"
     And I follow "Delete Channel"
