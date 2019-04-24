@@ -1,3 +1,4 @@
+- Prevent Actions that were actually completed to be displayed as "in progress" forever(bsc#1131780)
 - Disable Salt presence ping for synchronous calls
 - Add unit tests for base channel assignments when registering RES minions
 - Enable batching mode for salt synchronous calls
