@@ -719,7 +719,7 @@ public class SaltService {
      * Note that salt-ssh systems are also called by this method.
      *
      * @param <T> the return type of the call
-     * @param call the call to execute
+     * @param callIn the call to execute
      * @param target minions targeted by the call
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
@@ -790,7 +790,7 @@ public class SaltService {
      * @param <T> the return type of the call
      * @param callIn the call to execute
      * @param target minions targeted by the call
-     * @param metadata the metadata to be passed in the call
+     * @param metadataIn the metadata to be passed in the call
      * @return the LocalAsyncResult of the call
      * @throws SaltException in case of an error executing the job with Salt
      */

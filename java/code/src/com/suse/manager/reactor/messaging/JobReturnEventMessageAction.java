@@ -39,7 +39,6 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
-import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
 
