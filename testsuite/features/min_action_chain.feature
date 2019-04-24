@@ -74,7 +74,8 @@ Feature: Action chain on salt minions
 
   Scenario: Create a configuration channel for testing action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
@@ -85,7 +86,8 @@ Feature: Action chain on salt minions
 
   Scenario: Add a configuration file to configuration channel for testing action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
@@ -96,9 +98,7 @@ Feature: Action chain on salt minions
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Systems > Overview" in the left menu
-    And I follow this "sle-minion" link
+    Given I am on the Systems overview page of this "sle-minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -109,7 +109,8 @@ Feature: Action chain on salt minions
 
   Scenario: Add a configuration file deployment to the action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
@@ -296,7 +297,8 @@ Feature: Action chain on salt minions
 
   Scenario: Cleanup: remove Salt client from configuration channel
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
@@ -306,7 +308,8 @@ Feature: Action chain on salt minions
 
   Scenario: Cleanup: remove configuration channel for Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
