@@ -96,10 +96,8 @@ Feature: Action chain on salt minions
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Systems > Overview" in the left menu
-    And I follow this "sle-minion" link
-    And I follow "Configuration" in the content area
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
     And I check "Action Chain Channel" in the list
@@ -169,8 +167,8 @@ Feature: Action chain on salt minions
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    Then I click on "Save and Schedule"
-    And I should see a "Action Chain new action chain has been scheduled for execution." text
+    And I click on "Save and Schedule"
+    Then I should see a "Action Chain new action chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain was executed successfully
     When I wait for "virgo-dummy" to be installed on this "sle-minion"
@@ -194,7 +192,7 @@ Feature: Action chain on salt minions
     And I follow "Action Chains"
     And I follow "new action chain"
     And I follow "delete action chain" in the content area
-    Then I click on "Delete"
+    And I click on "Delete"
 
   Scenario: Add an action chain using system set manager for traditional client and Salt minion
     Given I am authorized as "admin" with password "admin"
@@ -229,14 +227,14 @@ Feature: Action chain on salt minions
 
   Scenario: Verify action chain for two systems
     Given I am on the Systems overview page of this "sle-minion"
-    And I run "rhn-actions-control --enable-all" on "sle-client"
-    When I follow "Schedule"
+    When I run "rhn-actions-control --enable-all" on "sle-client"
+    And I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
     And I should see a "1. Install or update andromeda-dummy on 2 systems" text
     And I should see a "2. Run a remote command on 2 systems" text
-    Then I click on "Save and Schedule"
-    And I should see a "Action Chain new action chain has been scheduled for execution." text
+    And I click on "Save and Schedule"
+    Then I should see a "Action Chain new action chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain from the system set manager was executed successfully
     Given I am authorized as "admin" with password "admin"
@@ -253,7 +251,7 @@ Feature: Action chain on salt minions
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion"
-    When I follow "Software" in the content area
+    And I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
@@ -289,8 +287,8 @@ Feature: Action chain on salt minions
     And I call actionchain.add_script_run() with the script "touch /tmp/action_chain_done"
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
-    Then I wait until there are no more action chains
-    When I wait until file "/tmp/action_chain_done" exists on "sle-minion"
+    And I wait until there are no more action chains
+    And I wait until file "/tmp/action_chain_done" exists on "sle-minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle-minion"
     And I wait until there are no more scheduled actions
 
