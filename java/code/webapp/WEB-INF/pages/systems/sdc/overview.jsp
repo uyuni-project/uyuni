@@ -112,6 +112,12 @@
             </c:choose>
             </td>
           </tr>
+          <c:if test="${minionId != ''}">
+            <tr>
+              <td><bean:message key="sdc.details.overview.minionId"/></td>
+              <td><c:out value="${minionId}" /></td>
+            </tr>
+          </c:if>
           <c:if test="${system.virtualGuest}">
             <tr>
               <td><bean:message key="sdc.details.overview.virtualization"/></td>

@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system;
 
-import static java.util.stream.Collectors.toList;
-
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -154,13 +152,7 @@ import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.cobbler.SystemRecord;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -185,6 +177,11 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.cobbler.SystemRecord;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * SystemHandler
@@ -754,6 +751,7 @@ public class SystemHandler extends BaseHandler {
      *     #struct("server details")
      *       #prop_desc("int", "id", "The server's id")
      *       #prop_desc("string", "name", "The server's name")
+     *       #prop_desc("string", "minion_id", "The server's minion id, in case it is a salt minion client")
      *       #prop_desc("dateTime.iso8601", "last_checkin",
      *         "Last time server successfully checked in (in UTC)")
      *       #prop_desc("int", "ram", "The amount of physical memory in MB.")
@@ -789,6 +787,7 @@ public class SystemHandler extends BaseHandler {
                 Map<String, Object> m = new HashMap<String, Object>();
                 m.put("id", server.getId());
                 m.put("name", server.getName());
+                m.put("minion_id", server.getMinionId());
                 m.put("last_checkin", convertLocalToUtc(server.getLastCheckin()));
 
                 m.put("ram", server.getRam());

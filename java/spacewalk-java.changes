@@ -1,3 +1,4 @@
+- Show minion id in System Details GUI and API
 - Fix base channel selection for Ubuntu systems (bsc#1132579)
 - Fix retrieval of build time for .deb repositories (bsc#1131721)
 - Fix product package conflicts with SLES for SAP systems (bsc#1130551)
