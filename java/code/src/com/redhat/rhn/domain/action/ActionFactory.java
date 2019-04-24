@@ -853,6 +853,25 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Update the status of several rhnServerAction rows identified by server and action IDs.
+     * @param actionIn associated action of rhnServerAction records
+     * @param serverIds server Ids for which action is scheduled
+     * @param status {@link ActionStatus} object that needs to be set
+     */
+    public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
+        List list = HibernateFactory.getSession()
+                .getNamedQuery("Action.updateServerActions")
+                .setParameter("action_id", actionIn.getId())
+                .setParameter("server_ids", serverIds)
+                .setParameter("status", status.getId())
+                .list();
+        if (log.isDebugEnabled()) {
+            log.debug("Updated number of serverActions " + list.size() + " for action " + actionIn.getId());
+            log.debug("Action status" + status.getName() + " set for these servers: " + list);
+        }
+    }
+
+    /**
      * Save a {@link ServerAction} object.
      * @param serverActionIn the server action to save
      */

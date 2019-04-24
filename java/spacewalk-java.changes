@@ -1,3 +1,4 @@
+- Prevent Actions that were actually completed to be displayed as "in progress" forever (bsc#1131780)
 - Enable batching mode for salt synchronous calls
 - Show minion id in System Details GUI and API
 - Do not report Provisioning installed product to subscription matcher (bsc#1128838)
