@@ -1,3 +1,4 @@
+- Fix apidoc return order on mergePackages
 - Explicitly mention country code in the advanced search (bsc#1131892)
 
 -------------------------------------------------------------------
