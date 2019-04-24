@@ -17082,6 +17082,12 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.overview.minionId">
+        <source>Minion Id:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.hostname">
         <source>Hostname:</source>
         <context-group name="ctx">
