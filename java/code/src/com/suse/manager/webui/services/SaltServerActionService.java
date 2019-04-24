@@ -22,6 +22,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -410,29 +411,18 @@ public class SaltServerActionService {
 
             results = execute(actionIn, call, targetMinions, forcePackageListRefresh, isStagingJob);
 
-            results.get(true).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Asynchronous call on minion: " +
-                                minionServer.getMinionId());
-                    }
-                    if (!isStagingJob) {
-                        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        ActionFactory.save(serverAction);
-                    }
-                });
-            });
-
-            results.get(false).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    LOG.warn("Failed to schedule action for minion: " +
-                            minionServer.getMinionId());
-                    if (!isStagingJob) {
-                        serverAction.fail("Failed to schedule action.");
-                        ActionFactory.save(serverAction);
-                    }
-                });
-            });
+            if (!isStagingJob) {
+                List<Long> succeededServerIds = results.get(true).stream()
+                        .map(MinionSummary::getServerId).collect(toList());
+                if (!succeededServerIds.isEmpty()) {
+                    ActionFactory.updateServerActions(actionIn, succeededServerIds, ActionFactory.STATUS_PICKED_UP);
+                }
+                List<Long> failedServerIds  = results.get(false).stream()
+                        .map(MinionSummary::getServerId).collect(toList());
+                if (!failedServerIds.isEmpty()) {
+                    ActionFactory.updateServerActions(actionIn, failedServerIds, ActionFactory.STATUS_FAILED);
+                }
+            }
         }
     }
 
