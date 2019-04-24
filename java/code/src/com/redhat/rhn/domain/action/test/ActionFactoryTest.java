@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.test.TimeUtilsTest;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -57,8 +58,10 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * ActionFactoryTest
@@ -342,6 +345,38 @@ public class ActionFactoryTest extends RhnBaseTestCase {
                     ActionFactory.TYPE_PACKAGES_VERIFY);
         assertTrue(ActionFactory.checkActionArchType(newA, "verify"));
     }
+
+    public void testUpdateServerActions() throws Exception {
+
+        User user1 = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+        Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
+        Server newS = ServerFactoryTest.createTestServer(user1, true);
+        a1.addServerAction(ServerActionTest.createServerAction(newS, a1));
+        ServerAction sa1 = (ServerAction) a1.getServerActions().toArray()[0];
+        ServerAction sa2 = (ServerAction) a1.getServerActions().toArray()[1];
+
+
+        sa1.setStatus(ActionFactory.STATUS_FAILED);
+        sa1.setRemainingTries(0L);
+        ActionFactory.save(a1);
+        flushAndEvict(sa1);
+        flushAndEvict(sa2);
+
+        List<Long> list = new ArrayList<>();
+        list.add(sa1.getServerId());
+
+        ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_PICKED_UP);
+        HibernateFactory.reload(sa1);
+        assertTrue(sa1.getStatus().equals(ActionFactory.STATUS_PICKED_UP));
+
+        list.clear();
+        list.add(sa2.getServerId());
+        ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_COMPLETED);
+        HibernateFactory.reload(sa2);
+        assertTrue(sa2.getStatus().equals(ActionFactory.STATUS_COMPLETED));
+    }
+
 
     public static Action createAction(User usr, ActionType type) throws Exception {
         Action newA = ActionFactory.createAction(type);

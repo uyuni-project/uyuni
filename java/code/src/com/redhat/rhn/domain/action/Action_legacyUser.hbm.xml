@@ -621,4 +621,27 @@ select sa.server_id
         <return alias="ra" class="com.redhat.rhn.domain.action.Action"/>
     </sql-query>
 
+    <sql-query name="Action.updateServerActions">
+        <return-scalar column="server_id" type="long"/>
+        <![CDATA[
+        UPDATE rhnServerAction
+            SET status = :status
+        WHERE
+            action_id  = :action_id
+        AND server_id  IN (
+              SELECT
+                   server_id
+              FROM
+                   rhnServerAction
+              WHERE
+                   action_id = :action_id
+              AND
+                   server_id IN (:server_ids)
+              FOR UPDATE
+            )
+        RETURNING server_id;
+        ]]>
+
+    </sql-query>
+
 </hibernate-mapping>

@@ -22,6 +22,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -410,29 +411,19 @@ public class SaltServerActionService {
 
             results = execute(actionIn, call, targetMinions, forcePackageListRefresh, isStagingJob);
 
-            results.get(true).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Asynchronous call on minion: " +
-                                minionServer.getMinionId());
-                    }
-                    if (!isStagingJob) {
-                        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        ActionFactory.save(serverAction);
-                    }
-                });
-            });
+            List<Long> serverIdsSuccess = results.get(true).stream().map(ms -> ms.getServerId()).collect(toList());
+            List<Long> serverIdsFail = results.get(false).stream().map(ms -> ms.getServerId()).collect(toList());
 
-            results.get(false).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    LOG.warn("Failed to schedule action for minion: " +
-                            minionServer.getMinionId());
-                    if (!isStagingJob) {
-                        serverAction.fail("Failed to schedule action.");
-                        ActionFactory.save(serverAction);
-                    }
-                });
-            });
+            if (!isStagingJob) {
+                if (!serverIdsSuccess.isEmpty()) {
+                    ActionFactory.updateServerActions(actionIn, serverIdsSuccess, ActionFactory.STATUS_PICKED_UP);
+                }
+                if (!serverIdsFail.isEmpty()) {
+                    ActionFactory.updateServerActions(actionIn, serverIdsFail, ActionFactory.STATUS_FAILED);
+                }
+
+            }
+
         }
     }
 
