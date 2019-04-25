@@ -1,3 +1,5 @@
+- Enable Salt presence ping for synchronous calls (bsc#1133264)
+
 -------------------------------------------------------------------
 Thu Apr 25 17:59:56 CEST 2019 - jgonzalez@suse.com
 
