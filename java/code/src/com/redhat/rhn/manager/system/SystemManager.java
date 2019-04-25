@@ -2043,18 +2043,6 @@ public class SystemManager extends BaseManager {
                         formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
                     }
                     FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
-
-                    // Save the default formula data
-                    Map<String, Object> data = new HashMap<>();
-                    Map<String, Object> nodeExporter = new HashMap<>();
-                    nodeExporter.put("enabled", true);
-                    Map<String, Object> postgresExporter = new HashMap<>();
-                    postgresExporter.put("enabled", false);
-                    postgresExporter.put("data_source_name", "postgresql://user:passwd@localhost:5432/database?sslmode=disable");
-                    data.put("node_exporter", nodeExporter);
-                    data.put("postgres_exporter", postgresExporter);
-                    FormulaFactory.saveServerFormulaData(data, minion.getMinionId(),
-                            FormulaFactory.PROMETHEUS_EXPORTERS);
                 }
                 catch (UnsupportedOperationException | IOException e) {
                     log.error("Error assigning formula: " + e.getMessage(), e);

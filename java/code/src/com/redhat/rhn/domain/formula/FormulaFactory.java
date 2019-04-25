@@ -216,6 +216,21 @@ public class FormulaFactory {
         catch (FileAlreadyExistsException e) {
         }
 
+        // Add the monitoring system type if one of the exporters is enabled
+        MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
+            if (PROMETHEUS_EXPORTERS.equals(formulaName) && hasMonitoringEnabled(formData)) {
+                if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING)) {
+                    if (!SystemManager.canEntitleServer(s, EntitlementManager.MONITORING) ||
+                            SystemManager.entitleServer(s, EntitlementManager.MONITORING).hasErrors()) {
+                        throw new UnsupportedOperationException("Monitoring system type cannot be assigned");
+                    }
+                }
+            }
+            else if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
+                SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+            }
+        });
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(GSON.toJson(formData));
         }
@@ -483,16 +498,17 @@ public class FormulaFactory {
             serverFormulas.put(minionId, orderedFormulas);
         }
 
-        // Assign monitoring system type in case "prometheus-exporters" is used
+        // TODO: Save default data for each formula in a generic way (load from yaml, write to json)
         if (orderedFormulas.contains(PROMETHEUS_EXPORTERS)) {
-            MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
-                if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING)) {
-                    if (!SystemManager.canEntitleServer(s, EntitlementManager.MONITORING) ||
-                            SystemManager.entitleServer(s, EntitlementManager.MONITORING).hasErrors()) {
-                        throw new UnsupportedOperationException("Monitoring system type cannot be assigned");
-                    }
-                }
-            });
+            Map<String, Object> data = new HashMap<>();
+            Map<String, Object> nodeExporter = new HashMap<>();
+            nodeExporter.put("enabled", true);
+            Map<String, Object> postgresExporter = new HashMap<>();
+            postgresExporter.put("enabled", false);
+            postgresExporter.put("data_source_name", "postgresql://user:passwd@localhost:5432/database?sslmode=disable");
+            data.put("node_exporter", nodeExporter);
+            data.put("postgres_exporter", postgresExporter);
+            FormulaFactory.saveServerFormulaData(data, minionId, FormulaFactory.PROMETHEUS_EXPORTERS);
         }
 
         // Write server_formulas file
@@ -615,4 +631,10 @@ public class FormulaFactory {
         return Optional.ofNullable(getMetadata(name).getOrDefault(param, null));
     }
 
+    @SuppressWarnings("unchecked")
+    private static boolean hasMonitoringEnabled(Map<String, Object> formData) {
+        Map<String, Object> nodeExporter = (Map<String, Object>) formData.get("node_exporter");
+        Map<String, Object> postgresExporter = (Map<String, Object>) formData.get("postgres_exporter");
+        return (boolean) nodeExporter.get("enabled") || (boolean) postgresExporter.get("enabled");
+    }
 }
