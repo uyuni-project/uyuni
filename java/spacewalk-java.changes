@@ -1,4 +1,8 @@
-- Fix offline use of SUSE Manager bsc#1133420
+-------------------------------------------------------------------
+Thu Apr 25 17:59:56 CEST 2019 - jgonzalez@suse.com
+
+- version 4.0.14-1
+- Fix offline use of SUSE Manager (bsc#1133420)
 
 -------------------------------------------------------------------
 Mon Apr 22 12:11:55 CEST 2019 - jgonzalez@suse.com
