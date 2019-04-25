@@ -21,6 +21,7 @@ import re
 import fnmatch
 import requests
 from spacewalk.common import fileutils
+from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
@@ -192,9 +193,8 @@ class ContentSource(object):
 
         # read the proxy configuration in /etc/rhn/rhn.conf
         initCFG('server.satellite')
-        self.proxy_addr = CFG.http_proxy
-        self.proxy_user = CFG.http_proxy_username
-        self.proxy_pass = CFG.http_proxy_password
+
+        self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
         self.authtoken = None
 
         self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
