@@ -1167,7 +1167,7 @@ public class ContentSyncManager {
         return product;
     }
 
-    private List<ProductTreeEntry> loadStaticTree() {
+    private List<ProductTreeEntry> loadStaticTree() throws ContentSyncException {
         String tag = Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG);
         return loadStaticTree(tag);
     }
@@ -1175,22 +1175,17 @@ public class ContentSyncManager {
     /*
      * load the static tree from file
      */
-    private List<ProductTreeEntry> loadStaticTree(String tag) {
+    private List<ProductTreeEntry> loadStaticTree(String tag) throws ContentSyncException {
         List<ProductTreeEntry> tree = new ArrayList<>();
-        try {
-            List<Credentials> credentials = filterCredentials();
-            for (Credentials c : credentials) {
-                try {
-                    SCCClient scc = getSCCClient(c);
-                    tree = scc.productTree();
-                }
-                catch (SCCClientException | URISyntaxException e) {
-                    throw new ContentSyncException(e);
-                }
+        List<Credentials> credentials = filterCredentials();
+        for (Credentials c : credentials) {
+            try {
+                SCCClient scc = getSCCClient(c);
+                tree = scc.productTree();
             }
-        }
-        catch (ContentSyncException e) {
-            e.printStackTrace();
+            catch (SCCClientException | URISyntaxException e) {
+                throw new ContentSyncException(e);
+            }
         }
         return tree.stream().filter(e -> {
             return e.getTags().isEmpty() || e.getTags().contains(tag);
