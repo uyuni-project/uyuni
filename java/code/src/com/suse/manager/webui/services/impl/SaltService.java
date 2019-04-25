@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -132,6 +133,12 @@ public class SaltService {
     private final String SALT_USER = "admin";
     private final String SALT_PASSWORD = "";
     private final AuthModule AUTH_MODULE = AuthModule.AUTO;
+
+    // Salt presence properties
+    private final Integer SALT_PRESENCE_TIMEOUT =
+            ConfigDefaults.get().getSaltPresencePingTimeout();
+    private final Integer SALT_PRESENCE_GATHER_JOB_TIMEOUT =
+            ConfigDefaults.get().getSaltPresencePingGatherJobTimeout();
 
     // Shared salt client instance
     private final SaltClient SALT_CLIENT;
@@ -737,6 +744,41 @@ public class SaltService {
         List<String> sshMinionIds = minionPartitions.get(true);
         List<String> regularMinionIds = minionPartitions.get(false);
 
+        // Filter out minion ids of minions that do not appear active.
+        // Only checking minion presence when LocalCall has no timeouts attribute
+        if (!callIn.getPayload().keySet().containsAll(
+                Arrays.asList("timeout", "gather_job_timeout"))) {
+            // To avoid blocking if any targeted minion is down, we first check which
+            // minions are actually up and running, and then exclude unreachable minions
+            // from the current synchronous call.
+            Set<String> regularActiveMinions = regularMinionIds.isEmpty() ?
+                    Collections.emptySet() :
+                    presencePing(new MinionList(regularMinionIds)).keySet();
+
+            Set<String> sshActiveMinions = sshMinionIds.isEmpty() ?
+                    Collections.emptySet() :
+                    presencePingSSH(new MinionList(sshMinionIds)).entrySet()
+                        .stream()
+                        .filter(
+                            s -> s.getValue().toXor().fold(error -> false, result -> true))
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toSet());
+
+            Set<String> unreachableMinions = uniqueMinionIds.stream()
+                .filter(id -> !regularActiveMinions.contains(id))
+                .filter(id -> !sshActiveMinions.contains(id))
+                .sorted()
+                .collect(Collectors.toSet());
+
+            if (!unreachableMinions.isEmpty()) {
+                LOG.warn("Some of the targeted minions cannot be reached: " +
+                        unreachableMinions.toString() +
+                        ". Excluding them from the synchronous call.");
+                sshMinionIds.retainAll(sshActiveMinions);
+                regularMinionIds.retainAll(regularActiveMinions);
+            }
+        }
+
         Map<String, Result<T>> results = new HashMap<>();
 
         if (!sshMinionIds.isEmpty()) {
@@ -842,6 +884,43 @@ public class SaltService {
                 throw new SaltException(cause);
             }
         }
+    }
+
+    /**
+     * Pings a target set of minions using a short timeout to check presence
+     * @param targetIn the target
+     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
+     * @throws SaltException if we get a failure from Salt
+     */
+    public Map<String, Result<Boolean>> presencePing(MinionList targetIn)
+            throws SaltException {
+        return adaptException(new LocalCall<>("test.ping",
+                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
+                Optional.of(SALT_PRESENCE_TIMEOUT),
+                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT))
+                .callSync(SALT_CLIENT, targetIn, PW_AUTH))
+                .entrySet().stream().filter(kv -> {
+            return kv.getValue().result().orElse(true);
+        }).collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
+    }
+
+    /**
+     * Pings a target set of SSH minions using a short timeout to check presence
+     * @param targetInSSH the SSH target
+     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
+     * @throws SaltException if we get a failure from Salt
+     */
+    public Map<String, Result<Boolean>> presencePingSSH(MinionList targetInSSH)
+            throws SaltException {
+        return saltSSHService.callSyncSSH(
+            new LocalCall<>("test.ping",
+                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
+                Optional.of(SALT_PRESENCE_TIMEOUT),
+                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT)), targetInSSH)
+                .entrySet().stream().filter(kv -> {
+                    return kv.getValue().result().orElse(true);
+                })
+                .collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
     }
 
     /**
