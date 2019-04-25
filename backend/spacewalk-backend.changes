@@ -1,3 +1,6 @@
+- Use suseLib.get_proxy to get the HTTP proxy configuration 
+  properly on DEB repos (bsc#1133424)
+
 -------------------------------------------------------------------
 Tue Apr 09 10:17:22 CEST 2019 - jgonzalez@suse.com
 
