@@ -94,6 +94,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String UPGRADE_PATHS_EMPTY_JSON = JARPATH + "upgrade_paths_empty.json";
 
     public void testSubscriptionDeleteCaching() throws Exception {
+
         File upgradePathsJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_JSON).getPath());
         int productId = 12345;
@@ -116,6 +117,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Call updateSUSEProducts()
         ContentSyncManager csm = new ContentSyncManager();
+        csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.setUpgradePathsJson(upgradePathsJson);
         csm.updateSUSEProducts(products);
 
@@ -471,6 +473,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Call updateSUSEProducts()
         ContentSyncManager csm = new ContentSyncManager();
+        csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.setUpgradePathsJson(upgradePathsJson);
         csm.updateSUSEProducts(products);
 
@@ -526,6 +529,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Call updateSUSEProducts()
         ContentSyncManager csm = new ContentSyncManager();
+        csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.setUpgradePathsJson(upgradePathsJson);
         csm.updateSUSEProducts(products);
 
@@ -887,6 +891,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Update SUSE products and upgrade paths
             ContentSyncManager csm = new ContentSyncManager();
+            csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
             csm.setUpgradePathsJson(upgradePathsEmptyJson);
             csm.updateSUSEProducts(products);
             HibernateFactory.getSession().flush();
@@ -951,6 +956,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Update SUSE products and upgrade paths
             ContentSyncManager csm = new ContentSyncManager();
+            csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
             csm.setUpgradePathsJson(upgradePathsEmptyJson);
             csm.updateSUSEProducts(products);
 
@@ -1142,7 +1148,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             ContentSyncManager csm = new ContentSyncManager();
             csm.setUpgradePathsJson(upTemp);
-            csm.setSumaProductTreeJson(treeTemp);
+            csm.setSumaProductTreeJson(Optional.of(treeTemp));
             csm.updateChannelFamilies(channelFamilies);
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
             csm.updateSUSEProducts(csm.getProducts());
@@ -1238,7 +1244,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             ContentSyncManager csm = new ContentSyncManager();
             csm.setUpgradePathsJson(upTemp);
-            csm.setSumaProductTreeJson(treeTemp);
+            csm.setSumaProductTreeJson(Optional.of(treeTemp));
             csm.updateChannelFamilies(channelFamilies);
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
             csm.updateSUSEProducts(csm.getProducts());
@@ -1408,6 +1414,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                         new TypeToken<List<SCCProductJson>>() { } .getType());
 
         ContentSyncManager csm = new ContentSyncManager();
+        csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.setUpgradePathsJson(upgradePathsJson);
 
         csm.updateSUSEProducts(sccProducts);

@@ -52,6 +52,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
@@ -125,8 +126,7 @@ public class ContentSyncManager {
             "/usr/share/susemanager/scc/additional_products.json");
     private static File additionalRepositoriesJson = new File(
             "/usr/share/susemanager/scc/additional_repositories.json");
-    private static File sumaProductTreeJson = new File(
-            "/usr/share/susemanager/scc/product_tree.json");
+    private static Optional<File> sumaProductTreeJson = Optional.empty();
 
     // File to parse this system's UUID from
     private static final File UUID_FILE =
@@ -157,7 +157,7 @@ public class ContentSyncManager {
      * Set the product_tree.json {@link File} to read from.
      * @param file the product_tree.json file
      */
-    public void setSumaProductTreeJson(File file) {
+    public void setSumaProductTreeJson(Optional<File> file) {
         sumaProductTreeJson = file;
     }
 
@@ -1177,14 +1177,26 @@ public class ContentSyncManager {
      */
     private List<ProductTreeEntry> loadStaticTree(String tag) throws ContentSyncException {
         List<ProductTreeEntry> tree = new ArrayList<>();
-        List<Credentials> credentials = filterCredentials();
-        for (Credentials c : credentials) {
+        if (sumaProductTreeJson.isPresent()) {
             try {
-                SCCClient scc = getSCCClient(c);
-                tree = scc.productTree();
+                tree = JsonParser.GSON.fromJson(new BufferedReader(new InputStreamReader(
+                                new FileInputStream(sumaProductTreeJson.get()))),
+                        SCCClientUtils.toListType(ProductTreeEntry.class));
             }
-            catch (SCCClientException | URISyntaxException e) {
-                throw new ContentSyncException(e);
+            catch (IOException e) {
+                log.error(e);
+            }
+        }
+        else {
+            List<Credentials> credentials = filterCredentials();
+            for (Credentials c : credentials) {
+                try {
+                    SCCClient scc = getSCCClient(c);
+                    tree = scc.productTree();
+                }
+                catch (SCCClientException | URISyntaxException e) {
+                    throw new ContentSyncException(e);
+                }
             }
         }
         return tree.stream().filter(e -> {
