@@ -17,6 +17,7 @@ package com.suse.scc.client;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCProductJson;
@@ -120,6 +121,7 @@ public class SCCFileClient implements SCCClient {
     private <T> T readJSON(String filename, Type resultType)
             throws IOException {
         Gson gson = new GsonBuilder()
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
         return (T) gson.fromJson(
