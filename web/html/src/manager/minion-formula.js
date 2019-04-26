@@ -9,6 +9,11 @@ var FormulaFormModule = require("../components/FormulaForm");
 var FormulaForm = FormulaFormModule.FormulaForm;
 const capitalize = require("../utils/functions").Utils.capitalize;
 
+const msgMap = {
+  "formula_saved" : <p>{t("Formula saved. Apply the ")}<a href={'/rhn/manager/systems/details/highstate?sid=' + serverId}>{t("Highstate")}</a>{t(" for the changes to take effect.")}</p>,
+  "error_invalid_target" : t("Invalid target type.")
+}
+
 function addFormulaNavBar(formulaList, activeId) {
     $("#formula-nav-bar").remove();
 
@@ -28,7 +33,8 @@ ReactDOM.render(
           formulaId={formulaId}
           systemId={serverId}
           getFormulaUrl={function(id) {return "/rhn/manager/systems/details/formula/" + id + "?sid=" + serverId;}}
-          scope="system" />,
+          scope="system"
+          messageTexts={msgMap} />,
     document.getElementById('formula')
 );
 

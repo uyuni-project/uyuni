@@ -212,7 +212,7 @@ public class FormulaController {
                     SaltService.INSTANCE.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
-                    return errorResponse(response, Arrays.asList("Invalid target type!"));
+                    return errorResponse(response, Arrays.asList("error_invalid_target")); //Invalid target type!
             }
         }
         catch (IOException | UnsupportedOperationException e) {
@@ -220,7 +220,7 @@ public class FormulaController {
                     Arrays.asList("Error while saving formula data: " +
                             e.getMessage()));
         }
-        return GSON.toJson(Arrays.asList("Formula saved!"));
+        return GSON.toJson(Arrays.asList("formula_saved")); // Formula saved!
     }
 
     /**
@@ -312,14 +312,14 @@ public class FormulaController {
                     FormulaFactory.saveGroupFormulas(id, selectedFormulas, user.getOrg());
                     break;
                 default:
-                    return errorResponse(response, Arrays.asList("Invalid target type!"));
+                    return errorResponse(response, Arrays.asList("error_invalid_target"));
             }
         }
         catch (IOException | UnsupportedOperationException e) {
             return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
         }
-        return GSON.toJson(Arrays.asList("Formulas saved!"));
+        return GSON.toJson(Arrays.asList("formulas_saved"));
     }
 
     /**

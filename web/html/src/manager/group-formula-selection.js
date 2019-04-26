@@ -8,6 +8,15 @@ const Network = require("../utils/network");
 const FormulaSelection = require("../components/formula-selection").FormulaSelection;
 const capitalize = require("../utils/functions").Utils.capitalize;
 
+const messageTexts = {
+  "formulas_saved" : <p>{t("Formula saved. Apply the ")}<a href={'/rhn/manager/groups/details/highstate?sgid=' + groupId}>{t("Highstate")}</a>{t(" for the changes to take effect.")}</p>,
+  "error_invalid_target" : t("Invalid target type.")
+}
+
+function getMessageText(msg) {
+  return messageTexts[msg] ? t(messageTexts[msg]) : msg;
+}
+
 function saveRequest(component, selectedFormulas) {
     const formData = {};
     formData.type = "GROUP";
@@ -20,7 +29,7 @@ function saveRequest(component, selectedFormulas) {
         "application/json"
     ).promise.then(data => {
         component.setState({
-            messages: data
+            messages: data.map(msg => getMessageText(msg))
         });
     },
     (xhr) => {
