@@ -1,3 +1,5 @@
+- Fix wrong bugzilla entry at changelog
+
 -------------------------------------------------------------------
 Mon Apr 22 12:01:01 CEST 2019 - jgonzalez@suse.com
 
@@ -14,7 +16,7 @@ Fri Oct 26 09:53:34 CEST 2018 - jgonzalez@suse.com
 Fri Aug 10 16:01:34 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.1-1
-- Bump version to 4.0.0 (bsc#11040346)
+- Bump version to 4.0.0 (bsc#1104034)
 - Rename package to mgr-custom-info to allow version 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 
