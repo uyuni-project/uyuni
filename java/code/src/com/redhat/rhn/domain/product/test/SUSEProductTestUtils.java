@@ -39,7 +39,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.StaticInfoEntry;
+import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -291,7 +291,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "channel_families.json"));
         List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
         InputStreamReader inputStreamReader4 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "product_tree.json"));
-        List<StaticInfoEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<StaticInfoEntry>>() {}.getType());
+        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() {}.getType());
         InputStreamReader inputStreamReader5 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "repositories.json"));
         List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader5, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
 

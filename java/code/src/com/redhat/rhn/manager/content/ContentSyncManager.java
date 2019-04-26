@@ -126,8 +126,7 @@ public class ContentSyncManager {
             "/usr/share/susemanager/scc/additional_products.json");
     private static File additionalRepositoriesJson = new File(
             "/usr/share/susemanager/scc/additional_repositories.json");
-    private static File sumaProductTreeJson = new File(
-            "/usr/share/susemanager/scc/product_tree.json");
+    private static Optional<File> sumaProductTreeJson = Optional.empty();
 
     // File to parse this system's UUID from
     private static final File UUID_FILE =
@@ -158,7 +157,7 @@ public class ContentSyncManager {
      * Set the product_tree.json {@link File} to read from.
      * @param file the product_tree.json file
      */
-    public void setSumaProductTreeJson(File file) {
+    public void setSumaProductTreeJson(Optional<File> file) {
         sumaProductTreeJson = file;
     }
 
@@ -1168,20 +1167,41 @@ public class ContentSyncManager {
         return product;
     }
 
+    private List<ProductTreeEntry> loadStaticTree() throws ContentSyncException {
+        String tag = Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG);
+        return loadStaticTree(tag);
+    }
+
     /*
      * load the static tree from file
      */
-    private static List<StaticInfoEntry> loadStaticTree() {
-        List<StaticInfoEntry> tree = new ArrayList<>();
-        try {
-            tree = JsonParser.GSON.fromJson(new BufferedReader(new InputStreamReader(
-                            new FileInputStream(sumaProductTreeJson))),
-                    SCCClientUtils.toListType(StaticInfoEntry.class));
+    private List<ProductTreeEntry> loadStaticTree(String tag) throws ContentSyncException {
+        List<ProductTreeEntry> tree = new ArrayList<>();
+        if (sumaProductTreeJson.isPresent()) {
+            try {
+                tree = JsonParser.GSON.fromJson(new BufferedReader(new InputStreamReader(
+                                new FileInputStream(sumaProductTreeJson.get()))),
+                        SCCClientUtils.toListType(ProductTreeEntry.class));
+            }
+            catch (IOException e) {
+                log.error(e);
+            }
         }
-        catch (IOException e) {
-            log.error(e);
+        else {
+            List<Credentials> credentials = filterCredentials();
+            for (Credentials c : credentials) {
+                try {
+                    SCCClient scc = getSCCClient(c);
+                    tree = scc.productTree();
+                }
+                catch (SCCClientException | URISyntaxException e) {
+                    throw new ContentSyncException(e);
+                }
+            }
         }
-        return tree;
+        return tree.stream().filter(e -> {
+            return e.getTags().isEmpty() || e.getTags().contains(tag);
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -1206,7 +1226,7 @@ public class ContentSyncManager {
        return products.stream().flatMap(p -> p.getRepositories().stream()).collect(Collectors.toList());
     }
 
-    private static Map<Long, Optional<ProductType>> productTypesById(List<StaticInfoEntry> tree) {
+    private static Map<Long, Optional<ProductType>> productTypesById(List<ProductTreeEntry> tree) {
         return tree.stream()
                 .collect(Collectors.groupingBy(
                         e -> e.getProductId(), Collectors.mapping(
@@ -1228,7 +1248,7 @@ public class ContentSyncManager {
      * @param tree the static suse product tree
      */
     public static void updateProducts(Map<Long, SCCProductJson> productsById, Map<Long, SCCRepositoryJson> reposById,
-            List<StaticInfoEntry> tree) {
+            List<ProductTreeEntry> tree) {
         Map<String, PackageArch> packageArchMap = PackageFactory.lookupPackageArch()
                 .stream().collect(Collectors.toMap(a -> a.getLabel(), a -> a));
         Map<String, ChannelFamily> channelFamilyMap = ChannelFamilyFactory.getAllChannelFamilies()
@@ -1481,7 +1501,7 @@ public class ContentSyncManager {
      * @param additionalRepos list of additional static repos
      */
     public void updateSUSEProducts(List<SCCProductJson> products, List<UpgradePathJson> upgradePathJsons,
-                                   List<StaticInfoEntry> staticTree, List<SCCRepositoryJson> additionalRepos) {
+                                   List<ProductTreeEntry> staticTree, List<SCCRepositoryJson> additionalRepos) {
         log.info("ContentSyncManager.updateSUSEProducts called");
         Map<Long, SUSEProduct> processed = new HashMap<>();
 

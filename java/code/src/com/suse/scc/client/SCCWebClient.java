@@ -18,6 +18,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.redhat.rhn.manager.content.ProductTreeEntry;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCProductJson;
@@ -34,6 +36,7 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.NoRouteToHostException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -129,6 +132,12 @@ public class SCCWebClient implements SCCClient {
                 SCCOrderJson.class);
     }
 
+    @Override
+    public List<ProductTreeEntry> productTree() throws SCCClientException {
+        return getList("/suma/product_tree.json",
+                ProductTreeEntry.class);
+    }
+
     /**
      * Perform a GET request and parse the result into list of given {@link Class}.
      *
@@ -201,12 +210,18 @@ public class SCCWebClient implements SCCClient {
                 // Parse result type from JSON
                 Gson gson = new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                        .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
                         .create();
                 T result = gson.fromJson(streamReader, resultType);
 
-                Integer perPage = Integer.parseInt(response.getFirstHeader("Per-Page").getValue());
-                int total = Integer.parseInt(response.getFirstHeader("Total").getValue());
-                int numPages = (int)Math.ceil(total / perPage.floatValue());
+                Optional<Integer> perPageOpt = Optional.ofNullable(response.getFirstHeader("Per-Page"))
+                        .map(h -> Integer.parseInt(h.getValue()));
+                Optional<Integer> totalOpt = Optional.ofNullable(response.getFirstHeader("Total"))
+                        .map(h -> Integer.parseInt(h.getValue()));
+                Optional<Integer> numPagesOpt = perPageOpt.flatMap(perPage -> totalOpt
+                        .map(total -> (int)Math.ceil(total / perPage.floatValue())));
+
+                int numPages = numPagesOpt.orElse(1);
 
                 String nextUrl = null;
                 Header linkHeader = response.getFirstHeader("Link");

@@ -204,6 +204,7 @@ public class ConfigDefaults {
      * SUSE Manager defaults
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
+    public static final String PRODUCT_TREE_TAG = "java.product_tree.tag";
 
     public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE = "java.message_queue_thread_pool_size";
 
