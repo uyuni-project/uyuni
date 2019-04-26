@@ -1,3 +1,5 @@
+- Fix wrong bugzilla entry at changelog
+
 -------------------------------------------------------------------
 Mon Dec 17 14:32:34 CET 2018 - jgonzalez@suse.com
 
@@ -21,7 +23,7 @@ Fri Oct 26 09:54:38 CEST 2018 - jgonzalez@suse.com
 Fri Aug 10 16:04:03 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.1-1
-- Bump version to 4.0.0 (bsc#11040346)
+- Bump version to 4.0.0 (bsc#1104034)
 - Rename package to mgr-daemon to allow version 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 

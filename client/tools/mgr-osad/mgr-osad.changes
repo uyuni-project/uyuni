@@ -1,3 +1,5 @@
+- Fix wrong bugzilla entry at changelog
+
 -------------------------------------------------------------------
 Mon Apr 22 12:01:44 CEST 2019 - jgonzalez@suse.com
 
@@ -27,13 +29,13 @@ Fri Oct 26 09:55:23 CEST 2018 - jgonzalez@suse.com
 Fri Aug 10 17:04:37 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.2-1
-- Fix SPEC issue for subpackage mgr-osa-dispatcher-selinux (bsc#11040346)
+- Fix SPEC issue for subpackage mgr-osa-dispatcher-selinux (bsc#1104034)
 
 -------------------------------------------------------------------
 Fri Aug 10 16:02:12 CEST 2018 - jgonzalez@suse.com
 
 - version 4.0.1-1
-- Bump version to 4.0.0 (bsc#11040346)
+- Bump version to 4.0.0 (bsc#1104034)
 - Rename package to mgr-osad to allow version 4.0.0 (bsc#1104034)
 - Fix copyright for the package specfile (bsc#1103696)
 
