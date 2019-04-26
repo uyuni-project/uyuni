@@ -910,3 +910,22 @@ When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) 
     raise "package #{pkg} is not installed after #{long_wait_delay} seconds"
   end
 end
+
+When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) do |pkg, client|
+  node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
+  command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
+  long_wait_delay = 600
+  begin
+    Timeout.timeout(long_wait_delay) do
+      loop do
+        result, code = $server.run(command, false)
+        sleep 1
+        next if result.include? pkg
+        break
+      end
+    end
+  rescue Timeout::Error
+    raise "package #{pkg} is still present after #{long_wait_delay} seconds"
+  end
+end
