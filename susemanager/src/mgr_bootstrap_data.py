@@ -734,6 +734,18 @@ DATA = {
         'PDID' : [1772, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15_NO_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
+    'RHEL6-x86_64' : {
+        'PDID' : [-5, 1682], 'PKGLIST' : RES6,
+        'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
+    },
+    'RHEL6-i386' : {
+        'PDID' : [-6, 1681], 'PKGLIST' : RES6,
+        'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
+    },
+    'RHEL7-x86_64' : {
+        'PDID' : [-7, 1683], 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/res/7/bootstrap/'
+    },
     'ubuntu-16.04-amd64' : {
         'PDID' : [-2, 1917], 'PKGLIST' : PKGLISTUBUNTU1604,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/16/4/bootstrap/',
