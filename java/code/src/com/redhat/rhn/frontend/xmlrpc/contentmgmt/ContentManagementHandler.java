@@ -153,7 +153,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc Remove Content Project
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Content Project label")
-     * @xmlrpc.returntype int - the number of removed objects
+     * @xmlrpc.returntype #return_int_success()
      */
     public int removeProject(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
@@ -296,7 +296,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
-     * @xmlrpc.returntype int - the number of removed objects
+     * @xmlrpc.returntype #return_int_success()
      */
     public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
@@ -425,14 +425,14 @@ public class ContentManagementHandler extends BaseHandler {
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
      * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
-     * @return the number of Sources removed
+     * @return the number of Sources detached
      *
      * @xmlrpc.doc Detach a Source from a Project
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
      * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @xmlrpc.returntype int - the number of detached sources
+     * @xmlrpc.returntype #return_int_success()
      */
     public int detachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
         ensureOrgAdmin(loggedInUser);
