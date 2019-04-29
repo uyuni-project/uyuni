@@ -207,8 +207,13 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.returntype $ContentEnvironmentSerializer
      */
     public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel, String envLabel) {
-        return ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
-                .orElseThrow(() -> new EntityNotExistsFaultException(envLabel));
+        try {
+            return ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
+                    .orElseThrow(() -> new EntityNotExistsFaultException(envLabel));
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     /**
@@ -301,7 +306,12 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
-        return ContentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
+        try {
+            return ContentManager.removeEnvironment(envLabel, projectLabel, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     /**
@@ -526,6 +536,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param name the Filter name
      * @param rule the Filter rule
      * @param criteria the filter criteria
+     * @throws EntityNotExistsFaultException when Filter is not found
      * @return the updated {@link ContentFilter}
      *
      * @xmlrpc.doc Update a Content Filter
@@ -554,12 +565,17 @@ public class ContentManagementHandler extends BaseHandler {
         }
         Optional<FilterCriteria> criteriaObj = createCriteria(criteria);
 
-        return ContentManager.updateFilter(
-                filterId.longValue(),
-                ofNullable(name),
-                ruleObj,
-                criteriaObj,
-                loggedInUser);
+        try {
+            return ContentManager.updateFilter(
+                    filterId.longValue(),
+                    ofNullable(name),
+                    ruleObj,
+                    criteriaObj,
+                    loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     private Optional<FilterCriteria> createCriteria(Map<String, Object> criteria) {
@@ -605,6 +621,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the logged in user
      * @param projectLabel the Project label
+     * @throws EntityNotExistsFaultException when Project is not found
      * @return the list of filters
      *
      * @xmlrpc.doc List all Filters associated with a Project
@@ -616,7 +633,12 @@ public class ContentManagementHandler extends BaseHandler {
      * #array_end()
      */
     public List<ContentProjectFilter> listProjectFilters(User loggedInUser, String projectLabel) {
-        return lookupProject(loggedInUser, projectLabel).getProjectFilters();
+        try {
+            return lookupProject(loggedInUser, projectLabel).getProjectFilters();
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
     }
 
     /**
