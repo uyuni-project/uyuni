@@ -512,6 +512,8 @@ public class ContentManager {
      * @param async run the time-expensive operations asynchronously? (in the test code it is useful to run them
      * synchronously)
      * @param user the user
+     * @throws EntityNotExistsException if Project does not exist
+     * @throws ContentManagementException when there are no Environments in the Project
      */
     public static void buildProject(String projectLabel, Optional<String> message, boolean async, User user) {
         ensureOrgAdmin(user);
@@ -531,6 +533,7 @@ public class ContentManager {
      * @param firstEnv first Environment of the Project
      * @param async run the time-expensive operations asynchronously?
      * @param user the user
+     * @throws ContentManagementException when there is no leader channel in the Project
      */
     private static void buildSoftwareSources(ContentEnvironment firstEnv, boolean async, User user) {
         ContentProject project = firstEnv.getContentProject();

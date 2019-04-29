@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
@@ -24,6 +25,7 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.ContentManagementFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
@@ -698,6 +700,8 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the user
      * @param projectLabel the Project label
+     * @throws EntityNotExistsFaultException when Project does not exist
+     * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
      * @xmlrpc.doc Build a Project
@@ -707,7 +711,15 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int buildProject(User loggedInUser, String projectLabel) {
         ensureOrgAdmin(loggedInUser);
-        ContentManager.buildProject(projectLabel, empty(), true, loggedInUser);
+        try {
+            ContentManager.buildProject(projectLabel, empty(), true, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
         return 1;
     }
 
@@ -717,6 +729,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the user
      * @param message the log message to be assigned to the build
      * @param projectLabel the Project label
+     * @throws EntityNotExistsFaultException when Project does not exist
+     * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
      * @xmlrpc.doc Build a Project
@@ -727,7 +741,15 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int buildProject(User loggedInUser, String projectLabel, String message) {
         ensureOrgAdmin(loggedInUser);
-        ContentManager.buildProject(projectLabel, of(message), true, loggedInUser);
+        try {
+            ContentManager.buildProject(projectLabel, of(message), true, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
         return 1;
     }
 
@@ -737,6 +759,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the user
      * @param projectLabel the Project label
      * @param envLabel the Environment label
+     * @throws EntityNotExistsFaultException when Project does not exist
+     * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
      * @xmlrpc.doc Promote an Environment in a Project
@@ -747,7 +771,15 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
-        ContentManager.promoteProject(projectLabel, envLabel, true, loggedInUser);
+        try {
+            ContentManager.promoteProject(projectLabel, envLabel, true, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
         return 1;
     }
 }
