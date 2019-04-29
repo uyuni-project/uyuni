@@ -52,7 +52,7 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * List Content Projects visible to user
      *
-     * @param loggedInUser - the logged in user
+     * @param loggedInUser the logged in user
      * @return the list of Content Projects visible to user
      *
      * @xmlrpc.doc Look up Content Project with given label
@@ -69,8 +69,8 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Look up Content Project
      *
-     * @param loggedInUser - the logged in user
-     * @param label - the label
+     * @param loggedInUser the logged in user
+     * @param label the label
      * @return the Content Project with given label
      *
      * @xmlrpc.doc Look up Content Project with given label
@@ -86,10 +86,10 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Create Content Project
      *
-     * @param loggedInUser - the logged in user
-     * @param label - the label
-     * @param name - the name
-     * @param description - the description
+     * @param loggedInUser the logged in user
+     * @param label the label
+     * @param name the name
+     * @param description the description
      * @throws EntityExistsFaultException when Project already exists
      * @return the created Content Project
      *
@@ -113,9 +113,9 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Update Content Project
      *
-     * @param loggedInUser - the logged in user
-     * @param label - the new label
-     * @param props - the map with the Content Project properties
+     * @param loggedInUser the logged in user
+     * @param label the new label
+     * @param props the map with the Content Project properties
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the updated Content Project
      *
@@ -145,8 +145,8 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Remove Content Project
      *
-     * @param loggedInUser - the logged in user
-     * @param label - the label
+     * @param loggedInUser the logged in user
+     * @param label the label
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
@@ -168,8 +168,8 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * List Environments in a Content Project with the respect to their ordering
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the List of Content Environments with respect to their ordering
      *
@@ -193,9 +193,9 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Look up Content Environment based on Content Project and Content Environment label
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
-     * @param envLabel - the Content Environment label
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
+     * @param envLabel the Content Environment label
      * @throws EntityNotExistsException when Project does not exist
      * @return found Content Environment or null if no such environment exists
      *
@@ -213,12 +213,12 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Create a Content Environment and appends it behind given Content Environment
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
-     * @param predecessorLabel - the Predecessor label
-     * @param label - the Content Environment Label
-     * @param name - the Content Environment name
-     * @param description - the Content Environment description
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
+     * @param predecessorLabel the Predecessor label
+     * @param label the Content Environment Label
+     * @param name the Content Environment name
+     * @param description the Content Environment description
      * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
      * @throws EntityExistsFaultException when Environment with given parameters already exists
      * @return the created Content Environment
@@ -250,10 +250,10 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Update Content Environment
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
-     * @param envLabel - the Environment label
-     * @param props - the map with the Environment properties
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
+     * @param envLabel the Environment label
+     * @param props the map with the Environment properties
      * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
      * @return the updated Environment
      *
@@ -286,9 +286,9 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Remove a Content Environment
      *
-     * @param loggedInUser - the logged in user
-     * @param projectLabel - the Content Project label
-     * @param envLabel - the Content Environment label
+     * @param loggedInUser the logged in user
+     * @param projectLabel the Content Project label
+     * @param envLabel the Content Environment label
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
