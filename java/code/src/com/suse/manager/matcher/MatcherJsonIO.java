@@ -48,6 +48,7 @@ import com.suse.matcher.json.ProductJson;
 import com.suse.matcher.json.SubscriptionJson;
 import com.suse.matcher.json.SystemJson;
 import com.suse.matcher.json.VirtualizationGroupJson;
+import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -76,10 +77,10 @@ public class MatcherJsonIO {
     private final ServerArch s390arch;
 
     /** Cached list of mandatory product IDs for an s390x system. */
-    private final List<Long> productIdsForS390xSystem;
+    private final Optional<Long> productIdForS390xSystem;
 
     /** Cached list of mandatory product IDs for a regular system. */
-    private final List<Long> productIdsForSystem;
+    private final Optional<Long> productIdForSystem;
 
     /** Translation of unlimited virtual lifecycle products to single variant. **/
     private final Map<Long, Long> lifecycleProductsTranslation;
@@ -104,20 +105,14 @@ public class MatcherJsonIO {
 
         s390arch = ServerFactory.lookupServerArchByLabel("s390x");
 
-        productIdsForS390xSystem = of(
-                productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z")
-        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
-
-        Optional<Long> mgmtUnlimitedVirtualProd = productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual");
-
-        Optional<Long> mgmtSingleProd = productIdForEntitlement("SUSE-Manager-Mgmt-Single");
-        productIdsForSystem = of(
-                mgmtSingleProd
-        ).filter(Optional::isPresent).map(Optional::get).collect(toList());
-
+        productIdForS390xSystem = productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z");
+        productIdForSystem = productIdForEntitlement("SUSE-Manager-Mgmt-Single");
         lifecycleProductsTranslation = new HashMap<>();
-        mgmtUnlimitedVirtualProd.ifPresent(
-                from -> mgmtSingleProd.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
+        productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual").ifPresent(
+                from -> productIdForSystem.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
+        productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual").ifPresent(
+                from -> productIdForEntitlement("SUSE-Manager-Prov-Single")
+                        .ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
         productFactory = new CachingSUSEProductFactory();
     }
@@ -319,25 +314,25 @@ public class MatcherJsonIO {
 
         // add SUSE Manager entitlements
         return concat(
-            products.stream().map(SUSEProduct::getProductId),
-            entitlementIdsForServer(server, entitlements)
+                products.stream().map(SUSEProduct::getProductId),
+                Opt.stream(entitlementIdForServer(server, entitlements))
         );
     }
 
     /**
      * Returns SUSE Manager entitlement product ids for a server.
      */
-    private Stream<Long> entitlementIdsForServer(Server server, Set<String> entitlements) {
+    private Optional<Long> entitlementIdForServer(Server server, Set<String> entitlements) {
         if (entitlements.contains(EntitlementManager.SALT_ENTITLED) ||
                 entitlements.contains(EntitlementManager.ENTERPRISE_ENTITLED)) {
             if (server.getServerArch().equals(s390arch)) {
-                return productIdsForS390xSystem.stream();
+                return productIdForS390xSystem;
             }
             else {
-                return productIdsForSystem.stream();
+                return productIdForSystem;
             }
         }
-        return empty();
+        return Optional.empty();
     }
 
     /**
