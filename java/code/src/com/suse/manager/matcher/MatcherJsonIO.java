@@ -110,9 +110,6 @@ public class MatcherJsonIO {
         lifecycleProductsTranslation = new HashMap<>();
         productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual").ifPresent(
                 from -> productIdForSystem.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
-        productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual").ifPresent(
-                from -> productIdForEntitlement("SUSE-Manager-Prov-Single")
-                        .ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
         productFactory = new CachingSUSEProductFactory();
     }
